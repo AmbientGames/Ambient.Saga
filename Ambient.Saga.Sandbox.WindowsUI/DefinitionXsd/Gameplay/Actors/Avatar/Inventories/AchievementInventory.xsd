@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../../Achievements/Achievement.xsd" />
+    <xs:complexType name="AchievementEntry">
+        <xs:attribute name="AchievementRef" type="AchievementRef" use="required" />
+        <xs:attribute name="UnlockedDate" type="xs:string" use="optional" />
+        <xs:attribute name="ProgressPercentage" type="xs:float" default="0" />
+    </xs:complexType>
+    <xs:complexType name="AchievementInventory">
+        <xs:sequence>
+            <xs:element name="Achievement" type="AchievementEntry" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

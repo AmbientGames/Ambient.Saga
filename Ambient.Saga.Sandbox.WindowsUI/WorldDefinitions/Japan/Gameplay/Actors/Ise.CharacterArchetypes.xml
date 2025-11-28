@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CharacterArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Spawns a random boss character">
+    <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
+    <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
+    <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
+    <CharacterRef>BOSS_ToyōkeDaijingūOuterShrine</CharacterRef>
+    <CharacterRef>BOSS_KazamiyaGekū</CharacterRef>
+    <CharacterRef>BOSS_Tsuchinomiya</CharacterRef>
+    <CharacterRef>BOSS_Takanomiya</CharacterRef>
+  </CharacterArchetype>
+  <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="Spawns a random merchant">
+    <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</CharacterRef>
+    <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
+    <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</CharacterRef>
+    <CharacterRef>MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0</CharacterRef>
+    <CharacterRef>MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2</CharacterRef>
+    <CharacterRef>MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5</CharacterRef>
+  </CharacterArchetype>
+</CharacterArchetypes>

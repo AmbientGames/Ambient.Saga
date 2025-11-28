@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="InteractableBase.xsd" />
+    <xs:include schemaLocation="Actors/Characters/Dialogue.xsd" />
+    <xs:complexType name="Interactable">
+        <xs:complexContent>
+            <xs:extension base="InteractableBase">
+                <xs:sequence>
+                    <xs:element name="DialogueTreeRef" type="DialogueTreeRef" minOccurs="0"></xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

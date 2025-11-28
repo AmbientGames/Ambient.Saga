@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:attributeGroup name="StatBlock">
+        <xs:attribute name="Health" type="xs:float" use="optional" default="1.0"></xs:attribute>
+        <xs:attribute name="Stamina" type="xs:float" use="optional" default="1.0"></xs:attribute>
+        <xs:attribute name="Mana" type="xs:float" use="optional" default="1.0"></xs:attribute>
+        <xs:attribute name="Temperature" type="xs:float" use="optional" default="37.0"></xs:attribute>
+        <xs:attribute name="Hunger" type="xs:float" use="optional" default="0.0"></xs:attribute>
+        <xs:attribute name="Thirst" type="xs:float" use="optional" default="0.0"></xs:attribute>
+        <xs:attribute name="Insulation" type="xs:float" use="optional" default="0.0"></xs:attribute>
+        <xs:attribute name="Strength" type="xs:float" use="optional" default="0.0"></xs:attribute>
+        <xs:attribute name="Defense" type="xs:float" use="optional" default="0.0"></xs:attribute>
+        <xs:attribute name="Speed" type="xs:float" use="optional" default="0.0"></xs:attribute>
+        <xs:attribute name="Magic" type="xs:float" use="optional" default="0.0"></xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="ProgressBlock">
+        <xs:attribute name="Level" type="xs:int" use="optional" default="1"></xs:attribute>
+        <xs:attribute name="Credits" type="xs:float" use="optional" default="0"></xs:attribute>
+        <xs:attribute name="Experience" type="xs:float" use="optional" default="0"></xs:attribute>
+    </xs:attributeGroup>
+</xs:schema>

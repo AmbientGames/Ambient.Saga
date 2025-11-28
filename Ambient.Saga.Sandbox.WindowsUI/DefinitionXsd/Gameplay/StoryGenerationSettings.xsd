@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:simpleType name="SourceLocationType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Structure" />
+            <xs:enumeration value="Landmark" />
+            <xs:enumeration value="QuestSignpost" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GenerationStyle">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RadialExploration" />
+            <xs:enumeration value="Trail" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="SourceLocation">
+        <xs:attribute name="DisplayName" type="xs:string" use="required" />
+        <xs:attribute name="Description" type="xs:string" use="optional" />
+        <xs:attribute name="Type" type="SourceLocationType" use="required" />
+        <xs:attribute name="Lat" type="xs:double" use="required" />
+        <xs:attribute name="Lon" type="xs:double" use="required" />
+    </xs:complexType>
+    <xs:complexType name="StoryGenerationSettings">
+        <xs:sequence>
+            <xs:element name="SourceLocation" type="SourceLocation" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="Enabled" type="xs:boolean" use="optional" default="false" />
+        <xs:attribute name="GenerationStyle" type="GenerationStyle" use="optional" default="Trail" />
+        <xs:attribute name="Spacing" type="xs:double" use="optional" default="500" />
+        <xs:attribute name="Seed" type="xs:int" use="optional" default="0" />
+        <xs:attribute name="Theme" type="xs:string" use="optional" />
+    </xs:complexType>
+</xs:schema>

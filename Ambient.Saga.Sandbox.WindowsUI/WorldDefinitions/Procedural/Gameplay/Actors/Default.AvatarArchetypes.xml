@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AvatarArchetypes xmlns="Ambient.Domain"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ========================================
+         ADVENTURER ARCHETYPES
+         Classic fantasy character classes
+         Balanced starting loadouts for exploration and combat
+         ======================================== -->
+
+    <!-- The Leader: Balanced "versatile" archetype -->
+    <AvatarArchetype RefName="Leader" DisplayName="Wandering Adventurer"
+                     Description="A versatile adventurer with balanced abilities - can master multiple elemental affinities and adapt to any challenge"
+                     AffinityRef="Physical">
+        <SpawnStats Health="1.0" Stamina="1.0" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="50" Experience="0" Strength="0.10" Defense="0.10" Speed="0.10" Magic="0.10"/>
+        <SpawnCapabilities>
+            <Equipment>
+                <Entry EquipmentRef="Hood" Condition="1.0"/>
+                <Entry EquipmentRef="Tunic" Condition="1.0"/>
+                <Entry EquipmentRef="Pants" Condition="1.0"/>
+                <Entry EquipmentRef="HikingBoots" Condition="1.0"/>
+                <Entry EquipmentRef="Backpack" Condition="1.0"/>
+                <Entry EquipmentRef="WoodenSword" Condition="1.0"/>
+            </Equipment>
+            <Consumables>
+                <Entry ConsumableRef="HealingSalve" Quantity="3"/>
+                <Entry ConsumableRef="Bread" Quantity="5"/>
+                <Entry ConsumableRef="Waterskin" Quantity="3"/>
+            </Consumables>
+            <Spells>
+                <Entry SpellRef="Heal" Condition="1.0"/>
+            </Spells>
+            <Blocks>
+                <Entry BlockRef="Cache" Quantity="1"/>
+                <Entry BlockRef="BlastFurnace" Quantity="1"/>
+                <Entry BlockRef="WoodStove" Quantity="1"/>
+                <Entry BlockRef="CharcoalKiln" Quantity="1"/>
+                <Entry BlockRef="Lamp" Quantity="20"/>
+                <Entry BlockRef="Coal" Quantity="20"/>
+                <Entry BlockRef="IronOre" Quantity="20"/>
+                <Entry BlockRef="ManganeseOre" Quantity="20"/>
+                <Entry BlockRef="Oil" Quantity="20"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.8"/>
+                <Entry ToolRef="Pickaxe" Condition="0.7"/>
+                <Entry ToolRef="Axe" Condition="0.7"/>
+                <Entry ToolRef="Spade" Condition="0.7"/>
+            </Tools>
+            <BuildingMaterials>
+                <Entry BuildingMaterialRef="Mortar" Quantity="50"/>
+            </BuildingMaterials>
+        </SpawnCapabilities>
+        <RespawnStats Health="1.0" Stamina="1.0" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="25" Experience="0" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0.08"/>
+        <RespawnCapabilities>
+            <Consumables>
+                <Entry ConsumableRef="Bread" Quantity="2"/>
+            </Consumables>
+            <Blocks>
+                <Entry BlockRef="Lamp" Quantity="1"/>
+                <Entry BlockRef="Coal" Quantity="1"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.5"/>
+                <Entry ToolRef="Pickaxe" Condition="1.0"/>
+                <Entry ToolRef="Axe" Condition="1.0"/>
+                <Entry ToolRef="Spade" Condition="1.0"/>
+            </Tools>
+        </RespawnCapabilities>
+    </AvatarArchetype>
+
+    <!-- The Swift Scout: Wind specialist -->
+    <AvatarArchetype RefName="Jokester" DisplayName="Swift Scout"
+                     Description="A nimble and agile scout who moves like the wind - excels at speed and evasion with wind magic"
+                     AffinityRef="Breeze">
+        <SpawnStats Health="1.0" Stamina="1.0" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="40" Experience="0" Strength="0.12" Defense="0.08" Speed="0.14" Magic="0.08"/>
+        <SpawnCapabilities>
+            <Equipment>
+                <Entry EquipmentRef="Hood" Condition="1.0"/>
+                <Entry EquipmentRef="Tunic" Condition="1.0"/>
+                <Entry EquipmentRef="Pants" Condition="1.0"/>
+                <Entry EquipmentRef="SwiftBoots" Condition="1.0"/>
+                <Entry EquipmentRef="Backpack" Condition="1.0"/>
+                <Entry EquipmentRef="WoodenSword" Condition="1.0"/>
+            </Equipment>
+            <Consumables>
+                <Entry ConsumableRef="HealingSalve" Quantity="3"/>
+                <Entry ConsumableRef="DriedFruit" Quantity="8"/>
+                <Entry ConsumableRef="Ale" Quantity="4"/>
+            </Consumables>
+            <Spells>
+                <Entry SpellRef="Breeze" Condition="1.0"/>
+                <Entry SpellRef="Hasten" Condition="1.0"/>
+            </Spells>
+            <Blocks>
+                <Entry BlockRef="Cache" Quantity="1"/>
+                <Entry BlockRef="BlastFurnace" Quantity="1"/>
+                <Entry BlockRef="WoodStove" Quantity="1"/>
+                <Entry BlockRef="CharcoalKiln" Quantity="1"/>
+                <Entry BlockRef="Lamp" Quantity="20"/>
+                <Entry BlockRef="Coal" Quantity="20"/>
+                <Entry BlockRef="IronOre" Quantity="20"/>
+                <Entry BlockRef="ManganeseOre" Quantity="20"/>
+                <Entry BlockRef="Oil" Quantity="20"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.8"/>
+                <Entry ToolRef="Pickaxe" Condition="0.7"/>
+                <Entry ToolRef="Axe" Condition="0.7"/>
+                <Entry ToolRef="Spade" Condition="0.7"/>
+            </Tools>
+            <BuildingMaterials>
+                <Entry BuildingMaterialRef="Mortar" Quantity="50"/>
+            </BuildingMaterials>
+        </SpawnCapabilities>
+        <RespawnStats Health="1.0" Stamina="1.0" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="20" Experience="0" Strength="0.10" Defense="0.06" Speed="0.12" Magic="0.06"/>
+        <RespawnCapabilities>
+            <Consumables>
+                <Entry ConsumableRef="Bread" Quantity="2"/>
+            </Consumables>
+            <Blocks>
+                <Entry BlockRef="Lamp" Quantity="1"/>
+                <Entry BlockRef="Coal" Quantity="1"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.5"/>
+                <Entry ToolRef="Pickaxe" Condition="1.0"/>
+                <Entry ToolRef="Axe" Condition="1.0"/>
+                <Entry ToolRef="Spade" Condition="1.0"/>
+            </Tools>
+        </RespawnCapabilities>
+    </AvatarArchetype>
+
+    <!-- The Brawler: Ice/Physical specialist -->
+    <AvatarArchetype RefName="MartialArtist" DisplayName="Frost Brawler"
+                     Description="A powerful hand-to-hand combatant who channels frost magic through their fists - high strength and endurance"
+                     AffinityRef="Frost">
+        <SpawnStats Health="1.0" Stamina="1.0" Mana="0.9" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="35" Experience="0" Strength="0.14" Defense="0.12" Speed="0.13" Magic="0.06"/>
+        <SpawnCapabilities>
+            <Equipment>
+                <Entry EquipmentRef="Hood" Condition="1.0"/>
+                <Entry EquipmentRef="Tunic" Condition="1.0"/>
+                <Entry EquipmentRef="Pants" Condition="1.0"/>
+                <Entry EquipmentRef="HikingBoots" Condition="1.0"/>
+                <Entry EquipmentRef="Backpack" Condition="1.0"/>
+                <Entry EquipmentRef="MetalBat" Condition="1.0"/>
+            </Equipment>
+            <Consumables>
+                <Entry ConsumableRef="HealingSalve" Quantity="4"/>
+                <Entry ConsumableRef="MealRation" Quantity="3"/>
+                <Entry ConsumableRef="Waterskin" Quantity="4"/>
+            </Consumables>
+            <Spells>
+                <Entry SpellRef="Frost" Condition="1.0"/>
+                <Entry SpellRef="Strengthen" Condition="1.0"/>
+            </Spells>
+            <Blocks>
+                <Entry BlockRef="Cache" Quantity="1"/>
+                <Entry BlockRef="BlastFurnace" Quantity="1"/>
+                <Entry BlockRef="WoodStove" Quantity="1"/>
+                <Entry BlockRef="CharcoalKiln" Quantity="1"/>
+                <Entry BlockRef="Lamp" Quantity="20"/>
+                <Entry BlockRef="Coal" Quantity="20"/>
+                <Entry BlockRef="IronOre" Quantity="20"/>
+                <Entry BlockRef="ManganeseOre" Quantity="20"/>
+                <Entry BlockRef="Oil" Quantity="20"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.7"/>
+                <Entry ToolRef="Pickaxe" Condition="0.7"/>
+                <Entry ToolRef="Axe" Condition="0.8"/>
+                <Entry ToolRef="Spade" Condition="0.7"/>
+            </Tools>
+            <BuildingMaterials>
+                <Entry BuildingMaterialRef="Mortar" Quantity="50"/>
+            </BuildingMaterials>
+        </SpawnCapabilities>
+        <RespawnStats Health="1.0" Stamina="1.0" Mana="0.8" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="18" Experience="0" Strength="0.12" Defense="0.10" Speed="0.11" Magic="0.04"/>
+        <RespawnCapabilities>
+            <Consumables>
+                <Entry ConsumableRef="Bread" Quantity="2"/>
+            </Consumables>
+            <Blocks>
+                <Entry BlockRef="Lamp" Quantity="1"/>
+                <Entry BlockRef="Coal" Quantity="1"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.5"/>
+                <Entry ToolRef="Pickaxe" Condition="1.0"/>
+                <Entry ToolRef="Axe" Condition="1.0"/>
+                <Entry ToolRef="Spade" Condition="1.0"/>
+            </Tools>
+        </RespawnCapabilities>
+    </AvatarArchetype>
+
+    <!-- The Priestess: Fire/Divine specialist -->
+    <AvatarArchetype RefName="TempleMaiden" DisplayName="Fire Priestess"
+                     Description="A devoted priestess who channels sacred flames and divine blessings - devastating magic with healing support"
+                     AffinityRef="Fire">
+        <SpawnStats Health="1.0" Stamina="0.8" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="60" Experience="0" Strength="0.06" Defense="0.08" Speed="0.09" Magic="0.18"/>
+        <SpawnCapabilities>
+            <Equipment>
+                <Entry EquipmentRef="ShadowMask" Condition="1.0"/>
+                <Entry EquipmentRef="PriestRobes" Condition="1.0"/>
+                <Entry EquipmentRef="Pants" Condition="1.0"/>
+                <Entry EquipmentRef="HikingBoots" Condition="1.0"/>
+                <Entry EquipmentRef="SpiritShield" Condition="1.0"/>
+                <Entry EquipmentRef="SpiritStaff" Condition="1.0"/>
+            </Equipment>
+            <Consumables>
+                <Entry ConsumableRef="Salve" Quantity="3"/>
+                <Entry ConsumableRef="MealRation" Quantity="3"/>
+                <Entry ConsumableRef="Ale" Quantity="5"/>
+                <Entry ConsumableRef="Talisman" Quantity="1"/>
+            </Consumables>
+            <Spells>
+                <Entry SpellRef="Fire" Condition="1.0"/>
+                <Entry SpellRef="Heal" Condition="1.0"/>
+                <Entry SpellRef="GreaterHeal" Condition="1.0"/>
+            </Spells>
+            <Blocks>
+                <Entry BlockRef="Cache" Quantity="1"/>
+                <Entry BlockRef="BlastFurnace" Quantity="1"/>
+                <Entry BlockRef="WoodStove" Quantity="1"/>
+                <Entry BlockRef="CharcoalKiln" Quantity="1"/>
+                <Entry BlockRef="Lamp" Quantity="20"/>
+                <Entry BlockRef="Coal" Quantity="20"/>
+                <Entry BlockRef="IronOre" Quantity="20"/>
+                <Entry BlockRef="ManganeseOre" Quantity="20"/>
+                <Entry BlockRef="Oil" Quantity="20"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.6"/>
+                <Entry ToolRef="Pickaxe" Condition="0.5"/>
+                <Entry ToolRef="Axe" Condition="0.6"/>
+                <Entry ToolRef="Spade" Condition="0.7"/>
+            </Tools>
+            <BuildingMaterials>
+                <Entry BuildingMaterialRef="Mortar" Quantity="50"/>
+            </BuildingMaterials>
+        </SpawnCapabilities>
+        <RespawnStats Health="1.0" Stamina="0.7" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="30" Experience="0" Strength="0.04" Defense="0.06" Speed="0.07" Magic="0.15"/>
+        <RespawnCapabilities>
+            <Consumables>
+                <Entry ConsumableRef="Bread" Quantity="2"/>
+            </Consumables>
+            <Blocks>
+                <Entry BlockRef="Lamp" Quantity="1"/>
+                <Entry BlockRef="Coal" Quantity="1"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.5"/>
+                <Entry ToolRef="Pickaxe" Condition="1.0"/>
+                <Entry ToolRef="Axe" Condition="1.0"/>
+                <Entry ToolRef="Spade" Condition="1.0"/>
+            </Tools>
+        </RespawnCapabilities>
+    </AvatarArchetype>
+
+    <!-- The Storm Mage: Electric specialist -->
+    <AvatarArchetype RefName="TechGeek" DisplayName="Storm Mage"
+                     Description="A master of lightning magic who calls down thunderbolts from the heavens - high magical power and tactical precision"
+                     AffinityRef="Spark">
+        <SpawnStats Health="1.0" Stamina="0.85" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="70" Experience="0" Strength="0.07" Defense="0.09" Speed="0.11" Magic="0.15"/>
+        <SpawnCapabilities>
+            <Equipment>
+                <Entry EquipmentRef="Hood" Condition="1.0"/>
+                <Entry EquipmentRef="Tunic" Condition="1.0"/>
+                <Entry EquipmentRef="Pants" Condition="1.0"/>
+                <Entry EquipmentRef="HikingBoots" Condition="1.0"/>
+                <Entry EquipmentRef="Backpack" Condition="1.0"/>
+                <Entry EquipmentRef="StormRod" Condition="1.0"/>
+            </Equipment>
+            <Consumables>
+                <Entry ConsumableRef="HealingSalve" Quantity="4"/>
+                <Entry ConsumableRef="Stew" Quantity="5"/>
+                <Entry ConsumableRef="Ale" Quantity="6"/>
+            </Consumables>
+            <Spells>
+                <Entry SpellRef="Spark" Condition="1.0"/>
+                <Entry SpellRef="Heal" Condition="1.0"/>
+            </Spells>
+            <Blocks>
+                <Entry BlockRef="Cache" Quantity="1"/>
+                <Entry BlockRef="BlastFurnace" Quantity="1"/>
+                <Entry BlockRef="WoodStove" Quantity="1"/>
+                <Entry BlockRef="CharcoalKiln" Quantity="1"/>
+                <Entry BlockRef="Lamp" Quantity="20"/>
+                <Entry BlockRef="Coal" Quantity="20"/>
+                <Entry BlockRef="IronOre" Quantity="20"/>
+                <Entry BlockRef="ManganeseOre" Quantity="20"/>
+                <Entry BlockRef="Oil" Quantity="20"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="1.0"/>
+                <Entry ToolRef="Pickaxe" Condition="0.8"/>
+                <Entry ToolRef="Axe" Condition="0.6"/>
+                <Entry ToolRef="Spade" Condition="0.7"/>
+            </Tools>
+            <BuildingMaterials>
+                <Entry BuildingMaterialRef="Mortar" Quantity="50"/>
+            </BuildingMaterials>
+        </SpawnCapabilities>
+        <RespawnStats Health="1.0" Stamina="0.8" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="35" Experience="0" Strength="0.05" Defense="0.07" Speed="0.09" Magic="0.12"/>
+        <RespawnCapabilities>
+            <Consumables>
+                <Entry ConsumableRef="Bread" Quantity="2"/>
+            </Consumables>
+            <Blocks>
+                <Entry BlockRef="Lamp" Quantity="1"/>
+                <Entry BlockRef="Coal" Quantity="1"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.8"/>
+                <Entry ToolRef="Pickaxe" Condition="1.0"/>
+                <Entry ToolRef="Axe" Condition="1.0"/>
+                <Entry ToolRef="Spade" Condition="1.0"/>
+            </Tools>
+        </RespawnCapabilities>
+    </AvatarArchetype>
+
+    <!-- The Inquisitor: Light/Dark specialist -->
+    <AvatarArchetype RefName="Detective" DisplayName="Inquisitor"
+                     Description="A seeker of truth who commands both holy light and dark curses - balanced offense with strategic utility"
+                     AffinityRef="Light">
+        <SpawnStats Health="1.0" Stamina="0.9" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="55" Experience="0" Strength="0.09" Defense="0.10" Speed="0.12" Magic="0.14"/>
+        <SpawnCapabilities>
+            <Equipment>
+                <Entry EquipmentRef="Hood" Condition="1.0"/>
+                <Entry EquipmentRef="FurCloak" Condition="1.0"/>
+                <Entry EquipmentRef="Pants" Condition="1.0"/>
+                <Entry EquipmentRef="HikingBoots" Condition="1.0"/>
+                <Entry EquipmentRef="Backpack" Condition="1.0"/>
+                <Entry EquipmentRef="WoodenSword" Condition="1.0"/>
+            </Equipment>
+            <Consumables>
+                <Entry ConsumableRef="HealingSalve" Quantity="4"/>
+                <Entry ConsumableRef="MealRation" Quantity="3"/>
+                <Entry ConsumableRef="HerbTea" Quantity="5"/>
+            </Consumables>
+            <Spells>
+                <Entry SpellRef="Light" Condition="1.0"/>
+                <Entry SpellRef="Curse" Condition="1.0"/>
+                <Entry SpellRef="Fortify" Condition="1.0"/>
+            </Spells>
+            <Blocks>
+                <Entry BlockRef="Cache" Quantity="1"/>
+                <Entry BlockRef="BlastFurnace" Quantity="1"/>
+                <Entry BlockRef="WoodStove" Quantity="1"/>
+                <Entry BlockRef="CharcoalKiln" Quantity="1"/>
+                <Entry BlockRef="Lamp" Quantity="20"/>
+                <Entry BlockRef="Coal" Quantity="20"/>
+                <Entry BlockRef="IronOre" Quantity="20"/>
+                <Entry BlockRef="ManganeseOre" Quantity="20"/>
+                <Entry BlockRef="Oil" Quantity="20"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.9"/>
+                <Entry ToolRef="Pickaxe" Condition="0.7"/>
+                <Entry ToolRef="Axe" Condition="0.7"/>
+                <Entry ToolRef="Spade" Condition="0.7"/>
+            </Tools>
+            <BuildingMaterials>
+                <Entry BuildingMaterialRef="Mortar" Quantity="50"/>
+            </BuildingMaterials>
+        </SpawnCapabilities>
+        <RespawnStats Health="1.0" Stamina="0.85" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="28" Experience="0" Strength="0.07" Defense="0.08" Speed="0.10" Magic="0.11"/>
+        <RespawnCapabilities>
+            <Consumables>
+                <Entry ConsumableRef="Bread" Quantity="2"/>
+            </Consumables>
+            <Blocks>
+                <Entry BlockRef="Lamp" Quantity="1"/>
+                <Entry BlockRef="Coal" Quantity="1"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.7"/>
+                <Entry ToolRef="Pickaxe" Condition="1.0"/>
+                <Entry ToolRef="Axe" Condition="1.0"/>
+                <Entry ToolRef="Spade" Condition="1.0"/>
+            </Tools>
+        </RespawnCapabilities>
+    </AvatarArchetype>
+
+    <!-- The Veteran: Almighty specialist -->
+    <AvatarArchetype RefName="ShadowHunter" DisplayName="Veteran Hunter"
+                     Description="A battle-hardened veteran who wields the Almighty power - highest overall stats with powerful support abilities"
+                     AffinityRef="Almighty">
+        <SpawnStats Health="1.0" Stamina="1.0" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="80" Experience="0" Strength="0.13" Defense="0.13" Speed="0.11" Magic="0.13"/>
+        <SpawnCapabilities>
+            <Equipment>
+                <Entry EquipmentRef="ProtectiveHelmet" Condition="1.0"/>
+                <Entry EquipmentRef="ProtectiveVest" Condition="1.0"/>
+                <Entry EquipmentRef="ProtectiveLeggings" Condition="1.0"/>
+                <Entry EquipmentRef="HikingBoots" Condition="1.0"/>
+                <Entry EquipmentRef="SpiritShield" Condition="1.0"/>
+                <Entry EquipmentRef="ElementalBlade" Condition="1.0"/>
+            </Equipment>
+            <Consumables>
+                <Entry ConsumableRef="Salve" Quantity="4"/>
+                <Entry ConsumableRef="RevivalPotion" Quantity="2"/>
+                <Entry ConsumableRef="MealRation" Quantity="5"/>
+                <Entry ConsumableRef="EscapeScroll" Quantity="3"/>
+            </Consumables>
+            <Spells>
+                <Entry SpellRef="Power" Condition="1.0"/>
+                <Entry SpellRef="GreaterHeal" Condition="1.0"/>
+                <Entry SpellRef="Cleanse" Condition="1.0"/>
+            </Spells>
+            <Blocks>
+                <Entry BlockRef="Cache" Quantity="1"/>
+                <Entry BlockRef="BlastFurnace" Quantity="1"/>
+                <Entry BlockRef="WoodStove" Quantity="1"/>
+                <Entry BlockRef="CharcoalKiln" Quantity="1"/>
+                <Entry BlockRef="Lamp" Quantity="20"/>
+                <Entry BlockRef="Coal" Quantity="20"/>
+                <Entry BlockRef="IronOre" Quantity="20"/>
+                <Entry BlockRef="ManganeseOre" Quantity="20"/>
+                <Entry BlockRef="Oil" Quantity="20"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.9"/>
+                <Entry ToolRef="Pickaxe" Condition="0.7"/>
+                <Entry ToolRef="Axe" Condition="0.8"/>
+                <Entry ToolRef="Spade" Condition="0.8"/>
+            </Tools>
+            <BuildingMaterials>
+                <Entry BuildingMaterialRef="Mortar" Quantity="50"/>
+            </BuildingMaterials>
+        </SpawnCapabilities>
+        <RespawnStats Health="1.0" Stamina="1.0" Mana="1.0" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="40" Experience="0" Strength="0.11" Defense="0.11" Speed="0.09" Magic="0.11"/>
+        <RespawnCapabilities>
+            <Consumables>
+                <Entry ConsumableRef="HealingSalve" Quantity="2"/>
+                <Entry ConsumableRef="Bread" Quantity="3"/>
+            </Consumables>
+            <Blocks>
+                <Entry BlockRef="Lamp" Quantity="1"/>
+                <Entry BlockRef="Coal" Quantity="1"/>
+            </Blocks>
+            <Tools>
+                <Entry ToolRef="Multitool" Condition="0.7"/>
+                <Entry ToolRef="Pickaxe" Condition="1.0"/>
+                <Entry ToolRef="Axe" Condition="1.0"/>
+                <Entry ToolRef="Spade" Condition="1.0"/>
+            </Tools>
+        </RespawnCapabilities>
+    </AvatarArchetype>
+
+</AvatarArchetypes>

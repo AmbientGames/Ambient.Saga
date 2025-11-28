@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Consumables xmlns="Ambient.Domain"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <!-- ========================================
+         BASIC CONSUMABLES FOR THEME
+         Referenced by NPC archetypes
+         ======================================== -->
+
+    <!-- HEALTH/MANA -->
+    <Consumable RefName="HealingPotion" DisplayName="Healing Potion" Description="[AI: Red potion restoring health]"
+                WholesalePrice="25">
+        <Effects Health="0.30" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="0" Credits="0"/>
+    </Consumable>
+
+    <Consumable RefName="GreaterHealingPotion" DisplayName="Greater Healing Potion" Description="[AI: Powerful healing elixir]"
+                WholesalePrice="75">
+        <Effects Health="0.60" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="0" Credits="0"/>
+    </Consumable>
+
+    <Consumable RefName="ManaPotion" DisplayName="Mana Potion" Description="[AI: Blue potion restoring mana]"
+                WholesalePrice="30">
+        <Effects Health="0" Stamina="0" Mana="0.40" Hunger="0" Thirst="0" Temperature="0" Credits="0"/>
+    </Consumable>
+
+    <!-- FOOD/DRINK -->
+    <Consumable RefName="Bread" DisplayName="Bread" Description="[AI: Fresh baked bread]"
+                WholesalePrice="5">
+        <Effects Health="0.05" Stamina="0.10" Mana="0" Hunger="20" Thirst="0" Temperature="0" Credits="0"/>
+    </Consumable>
+
+    <Consumable RefName="Ale" DisplayName="Ale" Description="[AI: Hearty ale in mug]"
+                WholesalePrice="8">
+        <Effects Health="0.02" Stamina="0.15" Mana="0" Hunger="5" Thirst="15" Temperature="0" Credits="0"/>
+    </Consumable>
+
+</Consumables>

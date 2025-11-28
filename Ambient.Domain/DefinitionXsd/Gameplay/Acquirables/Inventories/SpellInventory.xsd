@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../Spell.xsd" />
+    <xs:include schemaLocation="../../CommonTypes.xsd" />
+    <xs:complexType name="SpellEntry">
+        <xs:attribute name="SpellRef" type="SpellRef" use="required" />
+        <xs:attribute name="Condition" type="Condition01Float" use="required"></xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="SpellInventory">
+        <xs:sequence>
+            <xs:element name="Entry" type="SpellEntry" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

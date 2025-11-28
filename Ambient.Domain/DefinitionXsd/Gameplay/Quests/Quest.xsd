@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../EntityBase.xsd" />
+    <xs:include schemaLocation="../../Refs.xsd" />
+    <xs:include schemaLocation="../Acquirables/Equipment.xsd" />
+    <xs:include schemaLocation="../Acquirables/Consumable.xsd" />
+    <xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
+    <xs:include schemaLocation="../Achievements/Achievement.xsd" />
+
+    <!-- Reference Types -->
+    <xs:simpleType name="QuestRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="QuestStageRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="QuestObjectiveRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="QuestBranchRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Objective Types (reuse existing transaction types) -->
+    <xs:simpleType name="QuestObjectiveType">
+        <xs:restriction base="xs:string">
+            <!-- Combat objectives -->
+            <xs:enumeration value="CharacterDefeated" />
+            <xs:enumeration value="CharactersDefeatedByTag" />
+            <xs:enumeration value="CharactersDefeatedByType" />
+
+            <!-- Discovery objectives -->
+            <xs:enumeration value="SagaDiscovered" />
+            <xs:enumeration value="LocationReached" />
+            <xs:enumeration value="TriggerActivated" />
+
+            <!-- Social objectives -->
+            <xs:enumeration value="DialogueCompleted" />
+            <xs:enumeration value="DialogueChoiceSelected" />
+            <xs:enumeration value="DialogueNodeVisited" />
+
+            <!-- Economy objectives -->
+            <xs:enumeration value="ItemCollected" />
+            <xs:enumeration value="ItemDelivered" />
+            <xs:enumeration value="ItemCrafted" />
+            <xs:enumeration value="ItemTraded" />
+            <xs:enumeration value="CurrencyCollected" />
+
+            <!-- Quest token objectives -->
+            <xs:enumeration value="QuestTokenCollected" />
+
+            <!-- Custom objectives -->
+            <xs:enumeration value="Custom" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Fail Condition Types -->
+    <xs:simpleType name="QuestFailConditionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="CharacterDied" />
+            <xs:enumeration value="TimeExpired" />
+            <xs:enumeration value="ItemLost" />
+            <xs:enumeration value="LocationLeft" />
+            <xs:enumeration value="WrongChoiceMade" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Reward Types -->
+    <xs:simpleType name="QuestRewardCondition">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="OnSuccess" />
+            <xs:enumeration value="OnFailure" />
+            <xs:enumeration value="OnBranch" />
+            <xs:enumeration value="OnObjective" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Quest Objective -->
+    <xs:complexType name="QuestObjective">
+        <xs:attribute name="RefName" type="QuestObjectiveRef" use="required" />
+        <xs:attribute name="Type" type="QuestObjectiveType" use="required" />
+        <xs:attribute name="DisplayName" type="xs:string" use="optional" />
+
+        <!-- Target filters -->
+        <xs:attribute name="CharacterRef" type="xs:string" use="optional" />
+        <xs:attribute name="CharacterTag" type="xs:string" use="optional" />
+        <xs:attribute name="CharacterType" type="xs:string" use="optional" />
+        <xs:attribute name="DialogueRef" type="xs:string" use="optional" />
+        <xs:attribute name="ChoiceRef" type="xs:string" use="optional" />
+        <xs:attribute name="NodeRef" type="xs:string" use="optional" />
+        <xs:attribute name="ItemRef" type="xs:string" use="optional" />
+        <xs:attribute name="LocationRef" type="xs:string" use="optional" />
+        <xs:attribute name="SagaArcRef" type="xs:string" use="optional" />
+        <xs:attribute name="TriggerRef" type="xs:string" use="optional" />
+        <xs:attribute name="QuestTokenRef" type="xs:string" use="optional" />
+
+        <!-- Progress tracking -->
+        <xs:attribute name="Threshold" type="xs:int" use="optional" default="1" />
+        <xs:attribute name="Optional" type="xs:boolean" use="optional" default="false" />
+        <xs:attribute name="Hidden" type="xs:boolean" use="optional" default="false" />
+    </xs:complexType>
+
+    <!-- Quest Branch (mutually exclusive choice) -->
+    <xs:complexType name="QuestBranch">
+        <xs:sequence>
+            <xs:element name="Objective" type="QuestObjective" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="RefName" type="QuestBranchRef" use="required" />
+        <xs:attribute name="DisplayName" type="xs:string" use="optional" />
+        <xs:attribute name="NextStage" type="QuestStageRef" use="optional" />
+        <xs:attribute name="IsSuccess" type="xs:boolean" use="optional" default="true" />
+    </xs:complexType>
+
+    <!-- Quest Stage -->
+    <xs:complexType name="QuestStage">
+        <xs:sequence>
+            <xs:choice minOccurs="0">
+                <!-- Either objectives (all must complete) OR branches (pick one) -->
+                <xs:element name="Objectives">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Objective" type="QuestObjective" minOccurs="1" maxOccurs="unbounded" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Branches">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Branch" type="QuestBranch" minOccurs="2" maxOccurs="unbounded" />
+                        </xs:sequence>
+                        <xs:attribute name="Exclusive" type="xs:boolean" use="optional" default="true" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+            <!-- Stage-level rewards (given when stage completes) -->
+            <xs:element name="Rewards" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Reward" type="QuestReward" minOccurs="1" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <!-- Stage-level fail conditions (e.g., time limits for timed stages, NPC death for escort stages) -->
+            <xs:element name="FailConditions" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="FailCondition" type="QuestFailCondition" minOccurs="1" maxOccurs="unbounded" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="RefName" type="QuestStageRef" use="required" />
+        <xs:attribute name="DisplayName" type="xs:string" use="required" />
+        <xs:attribute name="NextStage" type="QuestStageRef" use="optional" />
+    </xs:complexType>
+
+    <!-- Quest Reward -->
+    <xs:complexType name="QuestReward">
+        <xs:sequence>
+            <xs:element name="Currency" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:attribute name="Amount" type="xs:int" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Equipment" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="EquipmentRef" type="EquipmentRef" use="required" />
+                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Consumable" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="ConsumableRef" type="ConsumableRef" use="required" />
+                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="QuestToken" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="QuestTokenRef" type="QuestTokenRef" use="required" />
+                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Achievement" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="AchievementRef" type="AchievementRef" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Experience" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:attribute name="Amount" type="xs:int" use="required" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Reputation" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="FactionRef" type="FactionRef" use="required" />
+                    <xs:attribute name="Amount" type="xs:int" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Condition" type="QuestRewardCondition" use="required" />
+        <xs:attribute name="BranchRef" type="QuestBranchRef" use="optional" />
+        <xs:attribute name="ObjectiveRef" type="QuestObjectiveRef" use="optional" />
+    </xs:complexType>
+
+    <!-- Quest Fail Condition -->
+    <xs:complexType name="QuestFailCondition">
+        <xs:attribute name="Type" type="QuestFailConditionType" use="required" />
+        <xs:attribute name="CharacterRef" type="xs:string" use="optional" />
+        <xs:attribute name="ItemRef" type="xs:string" use="optional" />
+        <xs:attribute name="LocationRef" type="xs:string" use="optional" />
+        <xs:attribute name="DialogueRef" type="xs:string" use="optional" />
+        <xs:attribute name="ChoiceRef" type="xs:string" use="optional" />
+        <xs:attribute name="TimeLimit" type="xs:int" use="optional" />
+    </xs:complexType>
+
+    <!-- Quest Prerequisite -->
+    <xs:complexType name="QuestPrerequisite">
+        <xs:attribute name="QuestRef" type="QuestRef" use="optional" />
+        <xs:attribute name="MinimumLevel" type="xs:int" use="optional" />
+        <xs:attribute name="RequiredItemRef" type="xs:string" use="optional" />
+        <xs:attribute name="RequiredAchievementRef" type="AchievementRef" use="optional" />
+        <xs:attribute name="FactionRef" type="xs:string" use="optional" />
+        <xs:attribute name="RequiredReputationLevel" type="xs:string" use="optional" />
+    </xs:complexType>
+
+    <!-- Quest (Main Definition) -->
+    <xs:complexType name="Quest">
+        <xs:complexContent>
+            <xs:extension base="EntityBase">
+                <xs:sequence>
+                    <!-- Prerequisites to accept quest -->
+                    <xs:element name="Prerequisites" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Prerequisite" type="QuestPrerequisite" minOccurs="1" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <!-- Quest stages (linear progression) -->
+                    <xs:element name="Stages">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Stage" type="QuestStage" minOccurs="1" maxOccurs="unbounded" />
+                            </xs:sequence>
+                            <xs:attribute name="StartStage" type="QuestStageRef" use="required" />
+                        </xs:complexType>
+                    </xs:element>
+
+                    <!-- Rewards based on outcome -->
+                    <xs:element name="Rewards" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Reward" type="QuestReward" minOccurs="1" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <!-- Global fail conditions -->
+                    <xs:element name="FailConditions" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="FailCondition" type="QuestFailCondition" minOccurs="1" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Quest Collection -->
+    <xs:complexType name="Quests">
+        <xs:sequence>
+            <xs:element name="Quest" type="Quest" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

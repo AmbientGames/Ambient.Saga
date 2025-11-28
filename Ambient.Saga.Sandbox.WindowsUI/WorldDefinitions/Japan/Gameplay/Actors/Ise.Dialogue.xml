@@ -1,0 +1,1075 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DialogueTrees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <DialogueTree RefName="DIALOGUE_BOSS_Kazahinominomiya" DisplayName="Guardian of Kazahinomi-no-Miya Dialogue" Description="Dialogue tree for Guardian of Kazahinomi-no-Miya" StartNodeId="greeting">
+    <Node NodeId="battle">
+      <Text>[AI: Boss accepts challenge with intimidating response]</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_Kazahinominomiya" />
+    </Node>
+    <Node NodeId="battle_opening">
+      <Text>So, you wish to challenge me? Very well! I, Guardian of Kazahinomi-no-Miya, guardian of Kazahinomi-no-Miya, accept!</Text>
+      <Action Type="ChangeStance" RefName="Offensive" />
+    </Node>
+    <Node NodeId="battle_first_blood">
+      <Text>You've drawn first blood... Impressive! But this battle has only just begun!</Text>
+    </Node>
+    <Node NodeId="battle_berserk">
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Kazahinomi-no-Miya with everything I have!</Text>
+      <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
+      <Action Type="ChangeStance" RefName="Offensive" />
+      <Action Type="ChangeAffinity" RefName="Fire" />
+    </Node>
+    <Node NodeId="battle_retreat">
+      <Text>You're stronger than I thought... I must be more careful now!</Text>
+      <Action Type="ChangeStance" RefName="Defensive" />
+      <Action Type="HealSelf" Amount="15" />
+    </Node>
+    <Node NodeId="battle_last_stand">
+      <Text>*breathing heavily* I'm nearly finished... Will you show mercy, or end this?</Text>
+      <Choice Text="Let them surrender (gain Merciful trait)" NextNodeId="battle_accept_surrender" />
+      <Choice Text="Finish them! (gain Ruthless trait)" NextNodeId="battle_no_mercy" />
+    </Node>
+    <Node NodeId="battle_accept_surrender">
+      <Text>[AI: Guardian of Kazahinomi-no-Miya expresses gratitude/confusion at being spared, yields and offers weapon/gold]</Text>
+      <Action Type="EndBattle" RefName="Victory" />
+      <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_no_mercy">
+      <Text>[AI: Guardian of Kazahinomi-no-Miya accepts fate with honor, makes desperate final attack]</Text>
+      <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_defeated">
+      <Text>You have... bested me... Kazahinomi-no-Miya... is yours... You've earned it...</Text>
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Boss protecting Kazahinomi-no-Miya. Theme: Challenge, guardian, test of strength]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I challenge you!" NextNodeId="battle" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guardian of Kazahinomi-no-Miya responds warmly, mentions nearby locations: KōtaiJingūInnerShrine, Aramatsurinomiya]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guardian of Kazahinomi-no-Miya provides lore about Kazahinomi-no-Miya]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine) Dialogue" Description="Dialogue tree for Guardian of Kōtai Jingū (Inner Shrine)" StartNodeId="greeting">
+    <Node NodeId="battle">
+      <Text>[AI: Boss accepts challenge with intimidating response]</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_KōtaiJingūInnerShrine" />
+    </Node>
+    <Node NodeId="battle_opening">
+      <Text>So, you wish to challenge me? Very well! I, Guardian of Kōtai Jingū (Inner Shrine), guardian of Kōtai Jingū (Inner Shrine), accept!</Text>
+      <Action Type="ChangeStance" RefName="Offensive" />
+    </Node>
+    <Node NodeId="battle_first_blood">
+      <Text>You've drawn first blood... Impressive! But this battle has only just begun!</Text>
+    </Node>
+    <Node NodeId="battle_berserk">
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Kōtai Jingū (Inner Shrine) with everything I have!</Text>
+      <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
+      <Action Type="ChangeStance" RefName="Offensive" />
+      <Action Type="ChangeAffinity" RefName="Fire" />
+    </Node>
+    <Node NodeId="battle_retreat">
+      <Text>You're stronger than I thought... I must be more careful now!</Text>
+      <Action Type="ChangeStance" RefName="Defensive" />
+      <Action Type="HealSelf" Amount="15" />
+    </Node>
+    <Node NodeId="battle_last_stand">
+      <Text>*breathing heavily* I'm nearly finished... Will you show mercy, or end this?</Text>
+      <Choice Text="Let them surrender (gain Merciful trait)" NextNodeId="battle_accept_surrender" />
+      <Choice Text="Finish them! (gain Ruthless trait)" NextNodeId="battle_no_mercy" />
+    </Node>
+    <Node NodeId="battle_accept_surrender">
+      <Text>[AI: Guardian of Kōtai Jingū (Inner Shrine) expresses gratitude/confusion at being spared, yields and offers weapon/gold]</Text>
+      <Action Type="EndBattle" RefName="Victory" />
+      <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_no_mercy">
+      <Text>[AI: Guardian of Kōtai Jingū (Inner Shrine) accepts fate with honor, makes desperate final attack]</Text>
+      <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_defeated">
+      <Text>You have... bested me... Kōtai Jingū (Inner Shrine)... is yours... You've earned it...</Text>
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Boss protecting Kōtai Jingū (Inner Shrine). Theme: Challenge, guardian, test of strength]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I challenge you!" NextNodeId="battle" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guardian of Kōtai Jingū (Inner Shrine) responds warmly, mentions nearby locations: Kazahinominomiya, Aramatsurinomiya]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guardian of Kōtai Jingū (Inner Shrine) provides lore about Kōtai Jingū (Inner Shrine)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya Dialogue" Description="Dialogue tree for Guardian of Aramatsuri-no-Miya" StartNodeId="greeting">
+    <Node NodeId="battle">
+      <Text>[AI: Boss accepts challenge with intimidating response]</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_Aramatsurinomiya" />
+    </Node>
+    <Node NodeId="battle_opening">
+      <Text>So, you wish to challenge me? Very well! I, Guardian of Aramatsuri-no-Miya, guardian of Aramatsuri-no-Miya, accept!</Text>
+      <Action Type="ChangeStance" RefName="Offensive" />
+    </Node>
+    <Node NodeId="battle_first_blood">
+      <Text>You've drawn first blood... Impressive! But this battle has only just begun!</Text>
+    </Node>
+    <Node NodeId="battle_berserk">
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Aramatsuri-no-Miya with everything I have!</Text>
+      <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
+      <Action Type="ChangeStance" RefName="Offensive" />
+      <Action Type="ChangeAffinity" RefName="Fire" />
+    </Node>
+    <Node NodeId="battle_retreat">
+      <Text>You're stronger than I thought... I must be more careful now!</Text>
+      <Action Type="ChangeStance" RefName="Defensive" />
+      <Action Type="HealSelf" Amount="15" />
+    </Node>
+    <Node NodeId="battle_last_stand">
+      <Text>*breathing heavily* I'm nearly finished... Will you show mercy, or end this?</Text>
+      <Choice Text="Let them surrender (gain Merciful trait)" NextNodeId="battle_accept_surrender" />
+      <Choice Text="Finish them! (gain Ruthless trait)" NextNodeId="battle_no_mercy" />
+    </Node>
+    <Node NodeId="battle_accept_surrender">
+      <Text>[AI: Guardian of Aramatsuri-no-Miya expresses gratitude/confusion at being spared, yields and offers weapon/gold]</Text>
+      <Action Type="EndBattle" RefName="Victory" />
+      <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_no_mercy">
+      <Text>[AI: Guardian of Aramatsuri-no-Miya accepts fate with honor, makes desperate final attack]</Text>
+      <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_defeated">
+      <Text>You have... bested me... Aramatsuri-no-Miya... is yours... You've earned it...</Text>
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Boss protecting Aramatsuri-no-Miya. Theme: Challenge, guardian, test of strength]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I challenge you!" NextNodeId="battle" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guardian of Aramatsuri-no-Miya responds warmly, mentions nearby locations: KōtaiJingūInnerShrine, Kazahinominomiya]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guardian of Aramatsuri-no-Miya provides lore about Aramatsuri-no-Miya]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4) Dialogue" Description="Dialogue tree for Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4). Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7) Dialogue" Description="Dialogue tree for Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7). Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0, ToyōkeDaijingūOuterShrine]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine) Dialogue" Description="Dialogue tree for Guardian of Toyōke Daijingū (Outer Shrine)" StartNodeId="greeting">
+    <Node NodeId="battle">
+      <Text>[AI: Boss accepts challenge with intimidating response]</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_ToyōkeDaijingūOuterShrine" />
+    </Node>
+    <Node NodeId="battle_opening">
+      <Text>So, you wish to challenge me? Very well! I, Guardian of Toyōke Daijingū (Outer Shrine), guardian of Toyōke Daijingū (Outer Shrine), accept!</Text>
+      <Action Type="ChangeStance" RefName="Offensive" />
+    </Node>
+    <Node NodeId="battle_first_blood">
+      <Text>You've drawn first blood... Impressive! But this battle has only just begun!</Text>
+    </Node>
+    <Node NodeId="battle_berserk">
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Toyōke Daijingū (Outer Shrine) with everything I have!</Text>
+      <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
+      <Action Type="ChangeStance" RefName="Offensive" />
+      <Action Type="ChangeAffinity" RefName="Fire" />
+    </Node>
+    <Node NodeId="battle_retreat">
+      <Text>You're stronger than I thought... I must be more careful now!</Text>
+      <Action Type="ChangeStance" RefName="Defensive" />
+      <Action Type="HealSelf" Amount="15" />
+    </Node>
+    <Node NodeId="battle_last_stand">
+      <Text>*breathing heavily* I'm nearly finished... Will you show mercy, or end this?</Text>
+      <Choice Text="Let them surrender (gain Merciful trait)" NextNodeId="battle_accept_surrender" />
+      <Choice Text="Finish them! (gain Ruthless trait)" NextNodeId="battle_no_mercy" />
+    </Node>
+    <Node NodeId="battle_accept_surrender">
+      <Text>[AI: Guardian of Toyōke Daijingū (Outer Shrine) expresses gratitude/confusion at being spared, yields and offers weapon/gold]</Text>
+      <Action Type="EndBattle" RefName="Victory" />
+      <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_no_mercy">
+      <Text>[AI: Guardian of Toyōke Daijingū (Outer Shrine) accepts fate with honor, makes desperate final attack]</Text>
+      <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_defeated">
+      <Text>You have... bested me... Toyōke Daijingū (Outer Shrine)... is yours... You've earned it...</Text>
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Boss protecting Toyōke Daijingū (Outer Shrine). Theme: Challenge, guardian, test of strength]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I challenge you!" NextNodeId="battle" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guardian of Toyōke Daijingū (Outer Shrine) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0, KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guardian of Toyōke Daijingū (Outer Shrine) provides lore about Toyōke Daijingū (Outer Shrine)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1) responds warmly, mentions nearby locations: KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0, KazamiyaGekū]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū) Dialogue" Description="Dialogue tree for Guardian of Kazamiya (Gekū)" StartNodeId="greeting">
+    <Node NodeId="battle">
+      <Text>[AI: Boss accepts challenge with intimidating response]</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_KazamiyaGekū" />
+    </Node>
+    <Node NodeId="battle_opening">
+      <Text>So, you wish to challenge me? Very well! I, Guardian of Kazamiya (Gekū), guardian of Kazamiya (Gekū), accept!</Text>
+      <Action Type="ChangeStance" RefName="Offensive" />
+    </Node>
+    <Node NodeId="battle_first_blood">
+      <Text>You've drawn first blood... Impressive! But this battle has only just begun!</Text>
+    </Node>
+    <Node NodeId="battle_berserk">
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Kazamiya (Gekū) with everything I have!</Text>
+      <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
+      <Action Type="ChangeStance" RefName="Offensive" />
+      <Action Type="ChangeAffinity" RefName="Fire" />
+    </Node>
+    <Node NodeId="battle_retreat">
+      <Text>You're stronger than I thought... I must be more careful now!</Text>
+      <Action Type="ChangeStance" RefName="Defensive" />
+      <Action Type="HealSelf" Amount="15" />
+    </Node>
+    <Node NodeId="battle_last_stand">
+      <Text>*breathing heavily* I'm nearly finished... Will you show mercy, or end this?</Text>
+      <Choice Text="Let them surrender (gain Merciful trait)" NextNodeId="battle_accept_surrender" />
+      <Choice Text="Finish them! (gain Ruthless trait)" NextNodeId="battle_no_mercy" />
+    </Node>
+    <Node NodeId="battle_accept_surrender">
+      <Text>[AI: Guardian of Kazamiya (Gekū) expresses gratitude/confusion at being spared, yields and offers weapon/gold]</Text>
+      <Action Type="EndBattle" RefName="Victory" />
+      <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_no_mercy">
+      <Text>[AI: Guardian of Kazamiya (Gekū) accepts fate with honor, makes desperate final attack]</Text>
+      <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_defeated">
+      <Text>You have... bested me... Kazamiya (Gekū)... is yours... You've earned it...</Text>
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Boss protecting Kazamiya (Gekū). Theme: Challenge, guardian, test of strength]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I challenge you!" NextNodeId="battle" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guardian of Kazamiya (Gekū) responds warmly, mentions nearby locations: Tsuchinomiya, Takanomiya]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guardian of Kazamiya (Gekū) provides lore about Kazamiya (Gekū)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya Dialogue" Description="Dialogue tree for Guardian of Tsuchi-no-Miya" StartNodeId="greeting">
+    <Node NodeId="battle">
+      <Text>[AI: Boss accepts challenge with intimidating response]</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_Tsuchinomiya" />
+    </Node>
+    <Node NodeId="battle_opening">
+      <Text>So, you wish to challenge me? Very well! I, Guardian of Tsuchi-no-Miya, guardian of Tsuchi-no-Miya, accept!</Text>
+      <Action Type="ChangeStance" RefName="Offensive" />
+    </Node>
+    <Node NodeId="battle_first_blood">
+      <Text>You've drawn first blood... Impressive! But this battle has only just begun!</Text>
+    </Node>
+    <Node NodeId="battle_berserk">
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Tsuchi-no-Miya with everything I have!</Text>
+      <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
+      <Action Type="ChangeStance" RefName="Offensive" />
+      <Action Type="ChangeAffinity" RefName="Fire" />
+    </Node>
+    <Node NodeId="battle_retreat">
+      <Text>You're stronger than I thought... I must be more careful now!</Text>
+      <Action Type="ChangeStance" RefName="Defensive" />
+      <Action Type="HealSelf" Amount="15" />
+    </Node>
+    <Node NodeId="battle_last_stand">
+      <Text>*breathing heavily* I'm nearly finished... Will you show mercy, or end this?</Text>
+      <Choice Text="Let them surrender (gain Merciful trait)" NextNodeId="battle_accept_surrender" />
+      <Choice Text="Finish them! (gain Ruthless trait)" NextNodeId="battle_no_mercy" />
+    </Node>
+    <Node NodeId="battle_accept_surrender">
+      <Text>[AI: Guardian of Tsuchi-no-Miya expresses gratitude/confusion at being spared, yields and offers weapon/gold]</Text>
+      <Action Type="EndBattle" RefName="Victory" />
+      <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_no_mercy">
+      <Text>[AI: Guardian of Tsuchi-no-Miya accepts fate with honor, makes desperate final attack]</Text>
+      <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_defeated">
+      <Text>You have... bested me... Tsuchi-no-Miya... is yours... You've earned it...</Text>
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Boss protecting Tsuchi-no-Miya. Theme: Challenge, guardian, test of strength]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I challenge you!" NextNodeId="battle" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guardian of Tsuchi-no-Miya responds warmly, mentions nearby locations: KazamiyaGekū, Takanomiya]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guardian of Tsuchi-no-Miya provides lore about Tsuchi-no-Miya]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_BOSS_Takanomiya" DisplayName="Guardian of Taka-no-Miya Dialogue" Description="Dialogue tree for Guardian of Taka-no-Miya" StartNodeId="greeting">
+    <Node NodeId="battle">
+      <Text>[AI: Boss accepts challenge with intimidating response]</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_Takanomiya" />
+    </Node>
+    <Node NodeId="battle_opening">
+      <Text>So, you wish to challenge me? Very well! I, Guardian of Taka-no-Miya, guardian of Taka-no-Miya, accept!</Text>
+      <Action Type="ChangeStance" RefName="Offensive" />
+    </Node>
+    <Node NodeId="battle_first_blood">
+      <Text>You've drawn first blood... Impressive! But this battle has only just begun!</Text>
+    </Node>
+    <Node NodeId="battle_berserk">
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Taka-no-Miya with everything I have!</Text>
+      <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
+      <Action Type="ChangeStance" RefName="Offensive" />
+      <Action Type="ChangeAffinity" RefName="Fire" />
+    </Node>
+    <Node NodeId="battle_retreat">
+      <Text>You're stronger than I thought... I must be more careful now!</Text>
+      <Action Type="ChangeStance" RefName="Defensive" />
+      <Action Type="HealSelf" Amount="15" />
+    </Node>
+    <Node NodeId="battle_last_stand">
+      <Text>*breathing heavily* I'm nearly finished... Will you show mercy, or end this?</Text>
+      <Choice Text="Let them surrender (gain Merciful trait)" NextNodeId="battle_accept_surrender" />
+      <Choice Text="Finish them! (gain Ruthless trait)" NextNodeId="battle_no_mercy" />
+    </Node>
+    <Node NodeId="battle_accept_surrender">
+      <Text>[AI: Guardian of Taka-no-Miya expresses gratitude/confusion at being spared, yields and offers weapon/gold]</Text>
+      <Action Type="EndBattle" RefName="Victory" />
+      <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_no_mercy">
+      <Text>[AI: Guardian of Taka-no-Miya accepts fate with honor, makes desperate final attack]</Text>
+      <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_defeated">
+      <Text>You have... bested me... Taka-no-Miya... is yours... You've earned it...</Text>
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Boss protecting Taka-no-Miya. Theme: Challenge, guardian, test of strength]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I challenge you!" NextNodeId="battle" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guardian of Taka-no-Miya responds warmly, mentions nearby locations: Tsuchinomiya, KazamiyaGekū]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guardian of Taka-no-Miya provides lore about Taka-no-Miya]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Trader at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1). Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1) responds warmly, mentions nearby locations: ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0, KazamiyaGekū]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1) provides lore about Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) responds warmly, mentions nearby locations: Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7, ToyōkeDaijingūOuterShrine]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2) responds warmly, mentions nearby locations: Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" DisplayName="Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3) Dialogue" Description="Dialogue tree for Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3). Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3) responds warmly, mentions nearby locations: Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4) responds warmly, mentions nearby locations: Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5) responds warmly, mentions nearby locations: Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" DisplayName="Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) Dialogue" Description="Dialogue tree for Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6). Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) responds warmly, mentions nearby locations: Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7) responds warmly, mentions nearby locations: Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8) responds warmly, mentions nearby locations: Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0, Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya Dialogue" Description="Dialogue tree for Guard at Kazahinomi-no-Miya" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Defensive guard protecting the structure. May attack if provoked]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guard at Kazahinomi-no-Miya responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guard at Kazahinomi-no-Miya provides lore about Kazahinomi-no-Miya]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile undead encountered near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile bandit encountered near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6). Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0_3" DisplayName="Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile bandit encountered near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1). Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5_4" DisplayName="Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) Dialogue" Description="Dialogue tree for Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile undead encountered near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6). Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+</DialogueTrees>

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../Refs.xsd" />
+
+    <!-- Narrative role in story arc (for AI understanding) -->
+    <xs:simpleType name="NarrativeRole">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Introduction" />
+            <xs:enumeration value="IncitingIncident" />
+            <xs:enumeration value="RisingAction" />
+            <xs:enumeration value="Climax" />
+            <xs:enumeration value="FallingAction" />
+            <xs:enumeration value="Resolution" />
+            <xs:enumeration value="SideQuest" />
+            <xs:enumeration value="Optional" />
+            <xs:enumeration value="Secret" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Relationship types between narrative elements -->
+    <xs:simpleType name="NarrativeRelationshipType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="caused-by" />
+            <xs:enumeration value="leads-to" />
+            <xs:enumeration value="foreshadows" />
+            <xs:enumeration value="resolves" />
+            <xs:enumeration value="parallels" />
+            <xs:enumeration value="contrasts" />
+            <xs:enumeration value="reveals" />
+            <xs:enumeration value="references" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Story thread identifier -->
+    <xs:simpleType name="StoryThreadRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Connection to another narrative element -->
+    <xs:complexType name="NarrativeConnection">
+        <xs:attribute name="TargetRef" type="xs:string" use="required" />
+        <xs:attribute name="Relationship" type="NarrativeRelationshipType" use="required" />
+        <xs:attribute name="Description" type="xs:string" use="optional" />
+    </xs:complexType>
+
+    <!-- AI metadata for SagaArcs (game engine ignores this) -->
+    <xs:complexType name="SagaArcAIMetadata">
+        <xs:sequence>
+            <xs:element name="StoryThreadRef" type="StoryThreadRef" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="ThematicTags" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Comma-separated thematic tags (e.g., "corruption,mystery,betrayal")</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="NarrativeConnection" type="NarrativeConnection" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="NarrativeRole" type="NarrativeRole" use="optional" />
+        <xs:attribute name="NarrativeSequence" type="xs:int" use="optional">
+            <xs:annotation>
+                <xs:documentation>Position in the main story thread (0-based)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Tone" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Emotional tone (e.g., "ominous", "hopeful", "mysterious")</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <!-- AI metadata for Characters (for dialogue generation hints) -->
+    <xs:complexType name="CharacterAIMetadata">
+        <xs:sequence>
+            <xs:element name="MentionsSagaArcRef" type="SagaArcRef" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>SagaArc RefNames this character should mention in dialogue</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="MentionsCharacterRef" type="CharacterRef" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Other Character RefNames this character should mention</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Personality" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Personality description for AI dialogue generation</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Role" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Narrative role (e.g., "mentor", "antagonist", "questgiver")</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>

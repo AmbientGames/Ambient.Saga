@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../../../EntityBase.xsd" />
+    <xs:simpleType name="CombatStanceRef">
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:complexType name="CombatStance">
+        <xs:complexContent>
+            <xs:extension base="EntityBase">
+                <xs:attribute name="StrengthMultiplier" type="xs:float" use="optional" default="1.0" />
+                <xs:attribute name="DefenseMultiplier" type="xs:float" use="optional" default="1.0" />
+                <xs:attribute name="SpeedMultiplier" type="xs:float" use="optional" default="1.0" />
+                <xs:attribute name="MagicMultiplier" type="xs:float" use="optional" default="1.0" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CombatStances">
+        <xs:sequence>
+            <xs:element name="CombatStance" type="CombatStance" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

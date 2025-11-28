@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Theme RefName="IseFieldTrip" DisplayName="Ise Field Trip" xmlns="Ambient.StoryGenerator">
+    <Description>Modern Japan school field trip investigation game. Students uncover mysteries in Ise while bonding with classmates and locals. Features social bonds, inner manifestations, and turn-based combat against shadow-like entities.</Description>
+    <Author>Ambient Games</Author>
+    <Version>1.0</Version>
+    <Tags>
+        <Tag>Modern</Tag>
+        <Tag>Japan</Tag>
+        <Tag>School</Tag>
+        <Tag>Investigation</Tag>
+        <Tag>SocialLinks</Tag>
+        <Tag>Mystery</Tag>
+    </Tags>
+</Theme>

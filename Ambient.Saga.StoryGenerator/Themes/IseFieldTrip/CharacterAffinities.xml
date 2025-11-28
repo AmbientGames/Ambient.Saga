@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CharacterAffinities   xmlns="Ambient.Domain"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ========================================
+         ISE FIELD TRIP AFFINITIES
+         Modern Japan investigation RPG
+         Inner manifestation power system
+         ======================================== -->
+
+    <!-- HEROIC AFFINITIES (Player-aligned) -->
+
+    <!-- Courage - Brave determination -->
+    <Affinity RefName="Courage" DisplayName="Courage" Description="Bravery and determination in face of adversity">
+        <Matchup TargetAffinityRef="Shadow" Multiplier="1.5"/>  <!-- Strong vs fear -->
+        <Matchup TargetAffinityRef="Curse" Multiplier="1.3"/>   <!-- Strong vs darkness -->
+        <Matchup TargetAffinityRef="Void" Multiplier="0.8"/>    <!-- Slightly weak vs emptiness -->
+    </Affinity>
+
+    <!-- Thunder - Lightning strikes -->
+    <Affinity RefName="Thunder" DisplayName="Thunder" Description="Swift lightning attacks">
+        <Matchup TargetAffinityRef="Wind" Multiplier="1.5"/>    <!-- Strong vs Wind -->
+        <Matchup TargetAffinityRef="Shadow" Multiplier="1.2"/>  <!-- Slight advantage vs Shadow -->
+    </Affinity>
+
+    <!-- Wind - Cutting gales -->
+    <Affinity RefName="Wind" DisplayName="Wind" Description="Razor wind and cutting gales">
+        <Matchup TargetAffinityRef="Void" Multiplier="1.5"/>    <!-- Strong vs Void -->
+        <Matchup TargetAffinityRef="Thunder" Multiplier="0.5"/> <!-- Weak vs Thunder -->
+    </Affinity>
+
+    <!-- Light - Healing and purification -->
+    <Affinity RefName="Light" DisplayName="Light" Description="Radiant light that heals and protects">
+        <Matchup TargetAffinityRef="Shadow" Multiplier="2.0"/>  <!-- Super effective vs Shadow -->
+        <Matchup TargetAffinityRef="Curse" Multiplier="2.0"/>   <!-- Super effective vs Curse -->
+        <Matchup TargetAffinityRef="Void" Multiplier="1.3"/>    <!-- Strong vs Void -->
+    </Affinity>
+
+    <!-- Wisdom - Knowledge and analysis -->
+    <Affinity RefName="Wisdom" DisplayName="Wisdom" Description="Knowledge revealing truth and weakness">
+        <Matchup TargetAffinityRef="Shadow" Multiplier="1.5"/>  <!-- Understands darkness -->
+        <Matchup TargetAffinityRef="Truth" Multiplier="1.2"/>   <!-- Synergy with Truth -->
+    </Affinity>
+
+    <!-- Truth - Detective insight -->
+    <Affinity RefName="Truth" DisplayName="Truth" Description="Piercing truth that reveals all">
+        <Matchup TargetAffinityRef="Shadow" Multiplier="1.8"/>  <!-- Exposes hidden selves -->
+        <Matchup TargetAffinityRef="Curse" Multiplier="1.5"/>   <!-- Strong vs deception -->
+        <Matchup TargetAffinityRef="Wisdom" Multiplier="1.2"/>  <!-- Synergy with Wisdom -->
+    </Affinity>
+
+    <!-- Divine - Sacred shrine power -->
+    <Affinity RefName="Divine" DisplayName="Divine" Description="Sacred power of Ise Shrine">
+        <Matchup TargetAffinityRef="Shadow" Multiplier="2.0"/>  <!-- Purifies darkness -->
+        <Matchup TargetAffinityRef="Curse" Multiplier="2.0"/>   <!-- Cleanses curses -->
+        <Matchup TargetAffinityRef="Void" Multiplier="1.5"/>    <!-- Strong vs emptiness -->
+        <Matchup TargetAffinityRef="Light" Multiplier="1.3"/>   <!-- Synergy with Light -->
+    </Affinity>
+
+    <!-- Fortune - Luck and prosperity -->
+    <Affinity RefName="Fortune" DisplayName="Fortune" Description="Luck and favorable outcomes">
+        <!-- No strong matchups - utility affinity -->
+    </Affinity>
+
+    <!-- ENEMY AFFINITIES (Hostile) -->
+
+    <!-- Shadow - Inner darkness -->
+    <Affinity RefName="Shadow" DisplayName="Shadow" Description="Suppressed emotions and hidden selves">
+        <Matchup TargetAffinityRef="Light" Multiplier="0.5"/>   <!-- Weak to Light -->
+        <Matchup TargetAffinityRef="Divine" Multiplier="0.5"/>  <!-- Weak to Divine -->
+        <Matchup TargetAffinityRef="Truth" Multiplier="0.6"/>   <!-- Weak to Truth -->
+        <Matchup TargetAffinityRef="Courage" Multiplier="0.7"/> <!-- Weak to Courage -->
+        <Matchup TargetAffinityRef="Curse" Multiplier="1.5"/>   <!-- Resists darkness -->
+        <Matchup TargetAffinityRef="Void" Multiplier="1.3"/>    <!-- Resists emptiness -->
+    </Affinity>
+
+    <!-- Void - Emptiness and despair -->
+    <Affinity RefName="Void" DisplayName="Void" Description="Emptiness that consumes all">
+        <Matchup TargetAffinityRef="Light" Multiplier="0.7"/>   <!-- Weak to Light -->
+        <Matchup TargetAffinityRef="Divine" Multiplier="0.7"/>  <!-- Weak to Divine -->
+        <Matchup TargetAffinityRef="Wind" Multiplier="0.5"/>    <!-- Weak to Wind -->
+        <Matchup TargetAffinityRef="Courage" Multiplier="1.2"/> <!-- Slight resist to Courage -->
+    </Affinity>
+
+    <!-- Curse - Malevolent corruption -->
+    <Affinity RefName="Curse" DisplayName="Curse" Description="Corruption spreading negativity">
+        <Matchup TargetAffinityRef="Light" Multiplier="0.5"/>   <!-- Weak to Light -->
+        <Matchup TargetAffinityRef="Divine" Multiplier="0.5"/>  <!-- Weak to Divine -->
+        <Matchup TargetAffinityRef="Truth" Multiplier="0.7"/>   <!-- Weak to Truth -->
+        <Matchup TargetAffinityRef="Courage" Multiplier="0.8"/> <!-- Weak to Courage -->
+        <Matchup TargetAffinityRef="Shadow" Multiplier="1.5"/>  <!-- Synergy with Shadow -->
+    </Affinity>
+
+    <!-- ========================================
+         SPECIAL AFFINITIES
+         ======================================== -->
+
+    <!-- Almighty - Untyped power -->
+    <Affinity RefName="Almighty" DisplayName="Almighty" Description="Pure power bypassing all affinities" NeutralMultiplier="1.0">
+        <!-- No matchups - Almighty ignores all resistances -->
+    </Affinity>
+
+    <!-- Physical - Non-elemental physical -->
+    <Affinity RefName="Physical" DisplayName="Physical" Description="Physical melee and weapon attacks">
+        <Matchup TargetAffinityRef="Shadow" Multiplier="0.5"/>  <!-- Weak vs incorporeal -->
+        <Matchup TargetAffinityRef="Void" Multiplier="0.7"/>    <!-- Weak vs emptiness -->
+    </Affinity>
+
+    <!-- Spirit - Ancestral connection -->
+    <Affinity RefName="Spirit" DisplayName="Spirit" Description="Connection to ancestral spirits and the supernatural">
+        <Matchup TargetAffinityRef="Shadow" Multiplier="1.3"/>  <!-- Strong vs shadows -->
+        <Matchup TargetAffinityRef="Void" Multiplier="1.2"/>    <!-- Resistant to emptiness -->
+        <Matchup TargetAffinityRef="Divine" Multiplier="1.2"/>  <!-- Synergy with Divine -->
+    </Affinity>
+
+    <!-- ========================================
+         NOTES FOR DEVELOPER
+         ======================================== -->
+    <!--
+    This affinity system is designed for turn-based combat where:
+    - Exploiting weaknesses is rewarded (like hitting for critical)
+    - Party members can switch equipment/spells to match situations
+    - Enemy types have clear strengths and weaknesses
+
+    Key strategies:
+    - Light/Divine affinities counter all dark enemies
+    - Shadow Self enemies vulnerable to Truth, Courage, Light, Divine
+    - Wisdom/Truth affinities good for analysis and investigation
+    - Fortune is utility (no combat advantage but other benefits)
+
+    Multipliers:
+    - 2.0x = Super effective (critical weakness)
+    - 1.5-1.8x = Strong against
+    - 1.2-1.3x = Slight advantage / synergy
+    - 1.0x = Neutral
+    - 0.5-0.8x = Resisted / weak to
+    - 0.0x = Null/Immune (not used in this theme)
+
+    For Ise Field Trip setting:
+    - Students discover their "inner manifestations" (courage, wisdom, etc.)
+    - Shadow Selves represent suppressed emotions (like P4)
+    - Divine affinity represents Ise Shrine's sacred power
+    - Truth affinity represents investigation/detective work
+    -->
+
+</CharacterAffinities>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="Inventories/EquipmentInventory.xsd" />
+    <xs:include schemaLocation="Inventories/ConsumableInventory.xsd" />
+    <xs:include schemaLocation="Inventories/SpellInventory.xsd" />
+    <xs:include schemaLocation="Inventories/BlockInventory.xsd" />
+    <xs:include schemaLocation="Inventories/ToolInventory.xsd" />
+    <xs:include schemaLocation="Inventories/BuildingMaterialInventory.xsd" />
+    <xs:include schemaLocation="Inventories/QuestTokenInventory.xsd" />
+    <xs:complexType name="ItemCollection">
+        <xs:sequence>
+            <xs:element name="Equipment" type="EquipmentInventory" minOccurs="0" />
+            <xs:element name="Consumables" type="ConsumableInventory" minOccurs="0" />
+            <xs:element name="Spells" type="SpellInventory" minOccurs="0" />
+            <xs:element name="Blocks" type="BlockInventory" minOccurs="0" />
+            <xs:element name="Tools" type="ToolInventory" minOccurs="0" />
+            <xs:element name="BuildingMaterials" type="BuildingMaterialInventory" minOccurs="0" />
+            <xs:element name="QuestTokens" type="QuestTokenInventory" minOccurs="0" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

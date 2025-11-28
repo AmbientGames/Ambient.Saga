@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Faction RefName="FACTION_THREAD_MAIN" DisplayName="[AI: Faction for THREAD_MAIN]" Description="[AI: Faction description for story thread THREAD_MAIN]" StartingReputation="0" Category="City">
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment RefName="[AI: Basic faction item]" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment RefName="[AI: Rare faction item]" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment RefName="[AI: Epic faction item]" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment RefName="[AI: Legendary faction item]" Quantity="1" DiscountPercent="0.5" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="CITY_GUARDS" DisplayName="Generic Fantasy Guard" Description="Protectors of civilization and urban order. Generic Fantasy Guard maintains peace in settled areas." StartingReputation="0" Category="Military">
+    <Relationships>
+      <Relationship FactionRef="MERCHANTS_GUILD" RelationshipType="Allied" SpilloverPercent="0.25" />
+      <Relationship FactionRef="BANDITS" RelationshipType="Enemy" SpilloverPercent="0.5" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment RefName="[AI: Basic faction item]" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment RefName="[AI: Rare faction item]" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment RefName="[AI: Epic faction item]" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment RefName="[AI: Legendary faction item]" Quantity="1" DiscountPercent="0.5" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="MERCHANTS_GUILD" DisplayName="Generic Fantasy Trade Guild" Description="Influential trading organization controlling commerce. Generic Fantasy Trade Guild values profit and fair dealing." StartingReputation="0" Category="Merchant">
+    <Relationships>
+      <Relationship FactionRef="CITY_GUARDS" RelationshipType="Allied" SpilloverPercent="0.15" />
+      <Relationship FactionRef="BANDITS" RelationshipType="Enemy" SpilloverPercent="0.3" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Consumable RefName="[AI: Merchant discount items]" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment RefName="[AI: Rare trade goods]" Quantity="1" DiscountPercent="0.25" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment RefName="[AI: Exclusive merchant items]" Quantity="1" DiscountPercent="0.6" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="EXPLORERS_SOCIETY" DisplayName="[AI: Explorers Society Name]" Description="[AI: Adventurers and cartographers seeking discovery]" StartingReputation="0" Category="Guild">
+    <Relationships>
+      <Relationship FactionRef="WILDERNESS_WARDENS" RelationshipType="Allied" SpilloverPercent="0.2" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment RefName="[AI: Explorer's map or compass]" Quantity="1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment RefName="[AI: Advanced navigation tools]" Quantity="1" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="BANDITS" DisplayName="[AI: Bandit Faction Name]" Description="[AI: Outlaws and raiders threatening civilization]" StartingReputation="-3000" Category="Criminal">
+    <Relationships>
+      <Relationship FactionRef="CITY_GUARDS" RelationshipType="Enemy" SpilloverPercent="0.5" />
+      <Relationship FactionRef="MERCHANTS_GUILD" RelationshipType="Enemy" SpilloverPercent="0.3" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment RefName="[AI: Basic faction item]" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment RefName="[AI: Rare faction item]" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment RefName="[AI: Epic faction item]" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment RefName="[AI: Legendary faction item]" Quantity="1" DiscountPercent="0.5" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="WILDERNESS_WARDENS" DisplayName="[AI: Wilderness Wardens Name]" Description="[AI: Guardians of nature and ancient forests]" StartingReputation="0" Category="Nature">
+    <Relationships>
+      <Relationship FactionRef="EXPLORERS_SOCIETY" RelationshipType="Allied" SpilloverPercent="0.2" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Consumable RefName="[AI: Nature-based consumables]" Quantity="1" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment RefName="[AI: Druidic equipment]" Quantity="1" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+</Factions>

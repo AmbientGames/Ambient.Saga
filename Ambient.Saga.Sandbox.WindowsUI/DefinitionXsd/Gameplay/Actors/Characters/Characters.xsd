@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../CharacterBase/CharacterBase.xsd" />
+    <xs:include schemaLocation="Dialogue.xsd" />
+    <xs:include schemaLocation="../../Acquirables/QuestToken.xsd" />
+    <xs:include schemaLocation="../../Interactable.xsd" />
+    <xs:include schemaLocation="../../AIMetadata.xsd" />
+    <xs:simpleType name="BattleTriggerCondition">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="HealthBelow">
+                <xs:annotation>
+                    <xs:documentation>Triggers when character's health drops below Value (0.0-1.0)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HealthAbove">
+                <xs:annotation>
+                    <xs:documentation>Triggers when character's health is above Value (0.0-1.0)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PlayerHealthBelow">
+                <xs:annotation>
+                    <xs:documentation>Triggers when player's health drops below Value (0.0-1.0)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TurnNumber">
+                <xs:annotation>
+                    <xs:documentation>Triggers on specific turn number</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="StanceChanged">
+                <xs:annotation>
+                    <xs:documentation>Triggers when character changes stance</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="AffinityChanged">
+                <xs:annotation>
+                    <xs:documentation>Triggers when character changes affinity</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OnVictory">
+                <xs:annotation>
+                    <xs:documentation>Triggers when battle ends in victory</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="OnDefeat">
+                <xs:annotation>
+                    <xs:documentation>Triggers when character is defeated</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Character">
+        <xs:complexContent>
+            <xs:extension base="CharacterBase">
+                <xs:sequence>
+                    <xs:element name="Interactable" type="Interactable" minOccurs="0"></xs:element>
+                    <xs:element name="Traits" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Trait" minOccurs="0" maxOccurs="unbounded">
+                                    <xs:complexType>
+                                        <xs:attribute name="Name" type="CharacterTraitType" use="required" />
+                                        <xs:attribute name="Value" type="xs:int" use="optional"></xs:attribute>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="BattleDialogue" minOccurs="0" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Mid-battle dialogue triggers that activate based on battle conditions</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Trigger" minOccurs="0" maxOccurs="unbounded">
+                                    <xs:complexType>
+                                        <xs:attribute name="Condition" type="BattleTriggerCondition" use="required" />
+                                        <xs:attribute name="Value" type="xs:float" use="required" />
+                                        <xs:attribute name="DialogueTreeRef" type="xs:string" use="required">
+                                            <xs:annotation>
+                                                <xs:documentation>Reference to DialogueTree to show when triggered</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:attribute>
+                                        <xs:attribute name="StartNodeId" type="DialogueNodeId" use="required">
+                                            <xs:annotation>
+                                                <xs:documentation>Starting node ID within the dialogue tree</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:attribute>
+                                        <xs:attribute name="OnceOnly" type="xs:boolean" use="optional" default="true">
+                                            <xs:annotation>
+                                                <xs:documentation>If true, trigger fires only once per battle</xs:documentation>
+                                            </xs:annotation>
+                                        </xs:attribute>
+                                    </xs:complexType>
+                                </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="InitiationBehavior" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="InitialGreeting" type="xs:string"></xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="InitialState" type="CharacterStateType" use="optional" default="Neutral"></xs:attribute>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="AIMetadata" type="CharacterAIMetadata" minOccurs="0" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>AI-only metadata for dialogue generation (ignored by game engine)</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="ModelRef" type="ModelRef" use="optional" />
+                <xs:attribute name="RespawnIntervalSeconds" type="xs:int" use="optional" default="0"></xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Characters">
+        <xs:sequence>
+            <xs:element name="Character" type="Character" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

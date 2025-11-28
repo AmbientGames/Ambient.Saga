@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Equipment xmlns="Ambient.Domain"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ========================================
+         EQUIPMENT
+         Medieval-fantasy adventurer gear
+         Balanced equipment for exploration and combat
+         ======================================== -->
+
+    <!-- HEAD EQUIPMENT -->
+    <Equipment RefName="WoolCap" DisplayName="Warm WoolCap" Description="Knit hat to keep warm on the expedition" SlotRef="Head"
+          ModelRef="WoolCap" WholesalePrice="10">
+        <Effects Health="0.05" Defense="0.02" Strength="0" Speed="0" Magic="0" Temperature="3"/>
+    </Equipment>
+
+    <Equipment RefName="Hood" DisplayName="Leather Hood" Description="Simple leather hood for protection" SlotRef="Head"
+          ModelRef="Hood" WholesalePrice="8">
+        <Effects Health="0.03" Defense="0.01" Strength="0" Speed="0.01" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="ProtectiveHelmet" DisplayName="Protective Helmet" Description="Safety gear found in the temple storage" SlotRef="Head"
+          ModelRef="ProtectiveHelmet" WholesalePrice="40">
+        <Effects Health="0.10" Defense="0.08" Strength="0" Speed="-0.01" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="ShadowMask" DisplayName="Shadow Mask" Description="Strange mask that pulses with energy - protects against dark attacks" SlotRef="Head"
+          ModelRef="ShadowMask" WholesalePrice="120" AffinityRef="Shadow">
+        <Effects Health="0.08" Defense="0.06" Strength="0" Speed="0" Magic="0.05"/>
+    </Equipment>
+
+    <!-- CHEST EQUIPMENT -->
+    <Equipment RefName="Tunic" DisplayName="Cloth Tunic" Description="Simple cloth tunic for travelers" SlotRef="Chest"
+          ModelRef="Tunic" WholesalePrice="30">
+        <Effects Health="0.05" Defense="0.03" Strength="0" Speed="0.01" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="FurCloak" DisplayName="Fur Cloak" Description="Warm fur cloak for cold climates" SlotRef="Chest"
+          ModelRef="FurCloak" WholesalePrice="50">
+        <Effects Health="0.10" Defense="0.05" Strength="0" Speed="0" Magic="0" Insulation="10"/>
+    </Equipment>
+
+    <Equipment RefName="TrackSuit" DisplayName="Leather Jerkin" Description="Light leather armor for quick movement" SlotRef="Chest"
+          ModelRef="TrackSuit" WholesalePrice="40">
+        <Effects Health="0.08" Defense="0.04" Strength="0" Speed="0.05" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="PriestRobes" DisplayName="Priest Robes" Description="Sacred robes blessed with divine magic" SlotRef="Chest"
+          ModelRef="PriestRobes" WholesalePrice="150" AffinityRef="Divine">
+        <Effects Health="0.10" Defense="0.06" Strength="0" Speed="0" Magic="0.15" Mana="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="ProtectiveVest" DisplayName="Reinforced Vest" Description="Protective gear enhanced with mysterious energy" SlotRef="Chest"
+          ModelRef="ProtectiveVest" WholesalePrice="100" AffinityRef="Physical">
+        <Effects Health="0.15" Defense="0.12" Strength="0.03" Speed="-0.01" Magic="0"/>
+    </Equipment>
+
+    <!-- LEGS EQUIPMENT -->
+    <Equipment RefName="Pants" DisplayName="Cloth Trousers" Description="Comfortable cloth trousers" SlotRef="Legs"
+          ModelRef="Pants" WholesalePrice="25">
+        <Effects Health="0.05" Defense="0.02" Strength="0" Speed="0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="TrackPants" DisplayName="Leather Leggings" Description="Light leather leggings for mobility" SlotRef="Legs"
+          ModelRef="TrackPants" WholesalePrice="30">
+        <Effects Health="0.05" Defense="0.02" Strength="0" Speed="0.04" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="CargoPants" DisplayName="Sturdy Breeches" Description="Practical breeches with pouches" SlotRef="Legs"
+          ModelRef="CargoPants" WholesalePrice="35">
+        <Effects Health="0.08" Defense="0.04" Strength="0.01" Speed="0" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="ProtectiveLeggings" DisplayName="Reinforced Leggings" Description="Protective leg gear found at a temple" SlotRef="Legs"
+          ModelRef="ProtectiveLeggings" WholesalePrice="80">
+        <Effects Health="0.12" Defense="0.08" Strength="0" Speed="-0.01" Magic="0"/>
+    </Equipment>
+
+    <!-- FEET EQUIPMENT -->
+    <Equipment RefName="RunningBoots" DisplayName="Soft Boots" Description="Comfortable leather boots" SlotRef="Feet"
+          ModelRef="Boots" WholesalePrice="40">
+        <Effects Health="0" Defense="0.02" Strength="0" Speed="0.06" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="HikingBoots" DisplayName="Hiking Boots" Description="Sturdy boots for rough terrain" SlotRef="Feet"
+          ModelRef="Boots" WholesalePrice="60">
+        <Effects Health="0.05" Defense="0.05" Strength="0.01" Speed="0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="SwiftBoots" DisplayName="Phantom Boots" Description="Mysterious shoes that boost speed dramatically" SlotRef="Feet"
+          ModelRef="SwiftBoots" WholesalePrice="120" AffinityRef="Breeze">
+        <Effects Health="0" Defense="0.03" Strength="0" Speed="0.12" Magic="0"/>
+    </Equipment>
+
+    <!-- LEFT HAND EQUIPMENT -->
+    <Equipment RefName="Backpack" DisplayName="Leather Satchel" Description="Sturdy leather pack for carrying supplies" SlotRef="LeftHand"
+          ModelRef="Backpack" WholesalePrice="30">
+        <Effects Health="0.08" Defense="0.03" Strength="0" Speed="0" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="SpiritShield" DisplayName="Spiritual Ward" Description="Talisman that manifests as protective barrier" SlotRef="LeftHand"
+          ModelRef="SpiritShield" WholesalePrice="100" AffinityRef="Light">
+        <Effects Health="0.10" Defense="0.12" Strength="0" Speed="0" Magic="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="Smartphone" DisplayName="Mystic Tome" Description="Ancient tome inscribed with arcane knowledge" SlotRef="LeftHand"
+          ModelRef="Smartphone" WholesalePrice="200">
+        <Effects Health="0" Defense="0" Strength="0" Speed="0.02" Magic="0.05" Mana="0.05"/>
+    </Equipment>
+
+    <!-- RIGHT HAND EQUIPMENT -->
+    <Equipment RefName="WoodenSword" DisplayName="Training Sword" Description="Wooden practice sword" SlotRef="RightHand"
+          ModelRef="WoodenSword" WholesalePrice="25" AffinityRef="Physical">
+        <Effects Health="0" Defense="0.01" Strength="0.08" Speed="0.03" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="MetalBat" DisplayName="Iron Club" Description="Heavy iron club - effective blunt weapon" SlotRef="RightHand"
+          ModelRef="MetalBat" WholesalePrice="40" AffinityRef="Physical">
+        <Effects Health="0" Defense="0" Strength="0.15" Speed="0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="GolfClub" DisplayName="Wooden Mace" Description="Simple wooden mace - reliable weapon" SlotRef="RightHand"
+          ModelRef="GolfClub" WholesalePrice="50" AffinityRef="Physical">
+        <Effects Health="0" Defense="0" Strength="0.12" Speed="0.04" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="ElementalBlade" DisplayName="Enchanted Blade" Description="Mystic sword that channels elemental power" SlotRef="RightHand"
+          ModelRef="ElementalBlade" WholesalePrice="180" AffinityRef="Fire">
+        <Effects Health="0" Defense="0.02" Strength="0.20" Speed="0.03" Magic="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="SpiritStaff" DisplayName="Divine Staff" Description="Sacred staff blessed with divine power - enhances all magic" SlotRef="RightHand"
+          ModelRef="SpiritStaff" WholesalePrice="160" AffinityRef="Divine">
+        <Effects Health="0" Defense="0.03" Strength="0.03" Speed="0" Magic="0.22" Mana="0.12"/>
+    </Equipment>
+
+    <Equipment RefName="StormRod" DisplayName="Lightning Rod" Description="Enchanted rod crackling with electrical energy" SlotRef="RightHand"
+          ModelRef="StormRod" WholesalePrice="150" AffinityRef="Spark">
+        <Effects Health="0" Defense="0.02" Strength="0.05" Speed="0.01" Magic="0.18" Mana="0.08"/>
+    </Equipment>
+
+</Equipment>

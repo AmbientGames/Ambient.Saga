@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../../EntityBase.xsd" />
+    <xs:include schemaLocation="../../Acquirables/QuestToken.xsd" />
+    <xs:include schemaLocation="../../Acquirables/Equipment.xsd" />
+    <xs:include schemaLocation="../../Acquirables/Tool.xsd" />
+    <xs:include schemaLocation="../../Acquirables/Consumable.xsd" />
+    <xs:include schemaLocation="../../Acquirables/BuildingMaterial.xsd" />
+    <xs:include schemaLocation="../../Acquirables/Spell.xsd" />
+    <xs:include schemaLocation="../../Achievements/Achievement.xsd" />
+    <xs:include schemaLocation="../../Quests/Quest.xsd" />
+    <xs:include schemaLocation="../../CommonTypes.xsd" />
+    <xs:simpleType name="DialogueTreeRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DialogueNodeId">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DialogueConditionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="HasQuestToken" />
+            <xs:enumeration value="LacksQuestToken" />
+            <xs:enumeration value="HasConsumable" />
+            <xs:enumeration value="LacksConsumable" />
+            <xs:enumeration value="HasMaterial" />
+            <xs:enumeration value="LacksMaterial" />
+            <xs:enumeration value="HasEquipment" />
+            <xs:enumeration value="LacksEquipment" />
+            <xs:enumeration value="HasTool" />
+            <xs:enumeration value="LacksTool" />
+            <xs:enumeration value="HasSpell" />
+            <xs:enumeration value="LacksSpell" />
+            <xs:enumeration value="HasAchievement" />
+            <xs:enumeration value="QuestActive" />
+            <xs:enumeration value="QuestCompleted" />
+            <xs:enumeration value="QuestNotStarted" />
+            <xs:enumeration value="Credits" />
+            <xs:enumeration value="Health" />
+            <xs:enumeration value="PlayerVisitCount" />
+            <xs:enumeration value="NodeVisited" />
+            <xs:enumeration value="BossDefeatedCount" />
+            <xs:enumeration value="ReputationLevel" />
+            <xs:enumeration value="ReputationValue" />
+            <xs:enumeration value="TraitComparison" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ComparisonOperator">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Equals" />
+            <xs:enumeration value="NotEquals" />
+            <xs:enumeration value="GreaterThan" />
+            <xs:enumeration value="GreaterThanOrEqual" />
+            <xs:enumeration value="LessThan" />
+            <xs:enumeration value="LessThanOrEqual" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="ConditionLogic">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="AND"></xs:enumeration>
+            <xs:enumeration value="OR"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DialogueActionType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="GiveQuestToken" />
+            <xs:enumeration value="TakeQuestToken" />
+            <xs:enumeration value="GiveConsumable" />
+            <xs:enumeration value="TakeConsumable" />
+            <xs:enumeration value="GiveMaterial" />
+            <xs:enumeration value="TakeMaterial" />
+            <xs:enumeration value="GiveBlock" />
+            <xs:enumeration value="TakeBlock" />
+            <xs:enumeration value="GiveEquipment" />
+            <xs:enumeration value="TakeEquipment" />
+            <xs:enumeration value="GiveTool" />
+            <xs:enumeration value="TakeTool" />
+            <xs:enumeration value="GiveSpell" />
+            <xs:enumeration value="TakeSpell" />
+            <xs:enumeration value="TransferCurrency"></xs:enumeration>
+            <xs:enumeration value="UnlockAchievement" />
+            <xs:enumeration value="AcceptQuest"></xs:enumeration>
+            <xs:enumeration value="CompleteQuest"></xs:enumeration>
+            <xs:enumeration value="AbandonQuest"></xs:enumeration>
+            <xs:enumeration value="OpenMerchantTrade"></xs:enumeration>
+            <xs:enumeration value="StartBossBattle"></xs:enumeration>
+            <xs:enumeration value="StartCombat"></xs:enumeration>
+            <xs:enumeration value="SpawnCharacters"></xs:enumeration>
+            <xs:enumeration value="AssignTrait"></xs:enumeration>
+            <xs:enumeration value="RemoveTrait"></xs:enumeration>
+            <xs:enumeration value="SetCharacterState"></xs:enumeration>
+            <xs:enumeration value="ChangeReputation"></xs:enumeration>
+            <!-- Mid-Battle Actions -->
+            <xs:enumeration value="ChangeStance">
+                <xs:annotation>
+                    <xs:documentation>Change character's combat stance mid-battle (uses RefName for stance)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ChangeAffinity">
+                <xs:annotation>
+                    <xs:documentation>Change character's elemental affinity mid-battle (uses RefName for affinity)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="CastSpell">
+                <xs:annotation>
+                    <xs:documentation>Character casts a spell mid-battle (uses RefName for spell)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="SummonAlly">
+                <xs:annotation>
+                    <xs:documentation>Summon an ally character to join battle (uses CharacterRef or CharacterArchetypeRef)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="EndBattle">
+                <xs:annotation>
+                    <xs:documentation>End the battle immediately with specified result</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="HealSelf">
+                <xs:annotation>
+                    <xs:documentation>Character heals themselves (uses Amount for heal percentage)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="ApplyStatusEffect">
+                <xs:annotation>
+                    <xs:documentation>Apply status effect to target (uses RefName for status effect)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="CharacterStateType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Neutral"></xs:enumeration>
+            <xs:enumeration value="Friendly"></xs:enumeration>
+            <xs:enumeration value="Hostile"></xs:enumeration>
+            <xs:enumeration value="InBattle"></xs:enumeration>
+            <xs:enumeration value="Fleeing"></xs:enumeration>
+            <xs:enumeration value="Defeated"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="CharacterTraitType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Hostile"></xs:enumeration>
+            <xs:enumeration value="Friendly"></xs:enumeration>
+            <xs:enumeration value="WillTrade"></xs:enumeration>
+            <xs:enumeration value="BossFight"></xs:enumeration>
+            <xs:enumeration value="Aggression"></xs:enumeration>
+            <xs:enumeration value="Morale"></xs:enumeration>
+            <xs:enumeration value="FleeThreshold"></xs:enumeration>
+            <xs:enumeration value="SummonChance"></xs:enumeration>
+            <xs:enumeration value="DefenseBonus"></xs:enumeration>
+            <xs:enumeration value="TradeDiscount"></xs:enumeration>
+            <!-- Bargaining/Trade Traits -->
+            <xs:enumeration value="WillingToBargain">
+                <xs:annotation>
+                    <xs:documentation>Merchant's openness to negotiation (0-100, higher = easier to bargain with)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="BargainSkill">
+                <xs:annotation>
+                    <xs:documentation>Player's bargaining ability (0-100, higher = better discounts)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="NegotiatedDiscount">
+                <xs:annotation>
+                    <xs:documentation>Final negotiated discount percentage after bargaining</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <!-- Battle Behavior Traits -->
+            <xs:enumeration value="BerserkThreshold">
+                <xs:annotation>
+                    <xs:documentation>Health % that triggers berserk mode (switch to Offensive stance)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TacticalRetreat">
+                <xs:annotation>
+                    <xs:documentation>Health % that triggers defensive tactics (switch to Defensive stance)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LastStand">
+                <xs:annotation>
+                    <xs:documentation>Health % that triggers desperate all-out attack</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Merciful">
+                <xs:annotation>
+                    <xs:documentation>Player shows mercy in battle (spares defeated enemies)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Ruthless">
+                <xs:annotation>
+                    <xs:documentation>Player is ruthless in battle (finishes defeated enemies)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="DialogueCondition">
+        <xs:attribute name="Type" type="DialogueConditionType" use="required" />
+        <xs:attribute name="RefName" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="Operator" type="ComparisonOperator" use="optional" default="Equals" />
+        <xs:attribute name="Value" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="FactionRef" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="Trait" type="CharacterTraitType" use="optional"></xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="DialogueChoice">
+        <xs:attribute name="Text" type="xs:string" use="required"></xs:attribute>
+        <xs:attribute name="NextNodeId" type="DialogueNodeId" use="required"></xs:attribute>
+        <xs:attribute name="Cost" type="xs:int" use="optional"></xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="DialogueAction">
+        <xs:attribute name="Type" type="DialogueActionType" use="required" />
+        <xs:attribute name="RefName" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="CharacterRef" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="CharacterArchetypeRef" type="xs:string" use="optional"></xs:attribute>
+        <xs:attribute name="Amount" type="xs:int" use="optional" default="1"></xs:attribute>
+        <xs:attribute name="Trait" type="CharacterTraitType" use="optional"></xs:attribute>
+        <xs:attribute name="TraitValue" type="xs:int" use="optional"></xs:attribute>
+        <xs:attribute name="FactionRef" type="xs:string" use="optional"></xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="DialogueNode">
+        <xs:sequence>
+            <xs:element name="Condition" type="DialogueCondition" minOccurs="0" maxOccurs="unbounded"></xs:element>
+            <xs:element name="Text" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
+            <xs:element name="Action" type="DialogueAction" minOccurs="0" maxOccurs="unbounded"></xs:element>
+            <xs:element name="Choice" type="DialogueChoice" minOccurs="0" maxOccurs="unbounded"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="NodeId" type="DialogueNodeId" use="required"></xs:attribute>
+        <xs:attribute name="NextNodeId" type="DialogueNodeId" use="optional"></xs:attribute>
+        <xs:attribute name="ConditionLogic" type="ConditionLogic" use="optional" default="AND"></xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="DialogueTree">
+        <xs:complexContent>
+            <xs:extension base="EntityBase">
+                <xs:sequence>
+                    <xs:element name="Node" type="DialogueNode" minOccurs="1" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute name="StartNodeId" type="DialogueNodeId" use="required"></xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="DialogueTrees">
+        <xs:sequence>
+            <xs:element name="DialogueTree" type="DialogueTree" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../SharedRefs.xsd" />
+    <xs:complexType name="EffectiveSubstance">
+        <xs:attribute name="SubstanceRef" type="SubstanceRef" use="required" />
+        <xs:attribute name="EffectivenessMultiplier" type="xs:float" use="optional" default="1.0" />
+    </xs:complexType>
+    <xs:complexType name="EffectiveSubstances">
+        <xs:sequence>
+            <xs:element name="Substance" type="EffectiveSubstance" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CompatibleSubstance">
+        <xs:attribute name="SubstanceRef" type="SubstanceRef" use="required" />
+    </xs:complexType>
+    <xs:complexType name="CompatibleSubstances">
+        <xs:sequence>
+            <xs:element name="Substance" type="CompatibleSubstance" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

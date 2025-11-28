@@ -1,0 +1,52 @@
+﻿using Ambient.Saga.Presentation.UI.Services;
+using Ambient.Saga.Sandbox.WindowsUI.Services;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Ambient.Saga.Sandbox.WindowsUI
+{
+    internal static class Program
+    {
+        /// <summary>
+        ///  The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
+        {
+            try
+            {
+                // To customize application configuration such as set high DPI settings or default font,
+                // see https://aka.ms/applicationconfiguration.
+                // IMPORTANT: Must be called before any WinForms controls are created
+                ApplicationConfiguration.Initialize();
+
+                // Enable dark mode
+                System.Windows.Forms.Application.SetColorMode(SystemColorMode.Dark);
+
+                // Initialize Steam (creates Timer control, so must be after ApplicationConfiguration)
+                ServiceProviderSetup.InitializeSteam();
+
+                // Set Steam status for Schema.Sandbox library
+                SteamContext.IsSteamInitialized = ServiceProviderSetup.IsSteamInitialized;
+
+                // Build dependency injection container
+                var services = ServiceProviderSetup.BuildServiceProvider();
+
+                // Create and run main window using DI
+                var mainWindow = services.GetRequiredService<MainWindow>();
+                System.Windows.Forms.Application.Run(mainWindow);
+
+                // Cleanup on exit
+                ServiceProviderSetup.ShutdownSteam();
+                services.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Application startup failed: {ex.Message}\n\n{ex.StackTrace}",
+                    "Startup Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+    }
+}

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Example: Trade Bargaining Dialogue
+    Demonstrates how players can negotiate prices with merchants using traits
+-->
+<DialogueTrees xmlns="Ambient.Domain"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <DialogueTree RefName="SHREWD_MERCHANT" DisplayName="Shrewd Merchant Trade" StartNodeId="greeting">
+
+        <!-- Greeting -->
+        <Node NodeId="greeting">
+            <Text>Welcome, traveler! I have the finest goods in all the land.</Text>
+            <Text>Quality comes at a price, of course...</Text>
+            <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+            <Choice Text="Your prices seem high. Can we negotiate?" NextNodeId="attempt_bargain" />
+            <Choice Text="I'll come back later" NextNodeId="leave" />
+        </Node>
+
+        <!-- Player attempts to bargain -->
+        <Node NodeId="attempt_bargain">
+            <Condition Type="HasTrait" Trait="WillingToBargain" />
+            <Text>Ah, a shrewd customer! I respect that.</Text>
+            <Text>Very well, let's see if we can come to an arrangement...</Text>
+            <Choice Text="Offer a lower price (requires BargainSkill 30+)" NextNodeId="bargain_check_low" />
+            <Choice Text="Ask for a modest discount" NextNodeId="bargain_check_medium" />
+            <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+        </Node>
+
+        <!-- Merchant unwilling to bargain -->
+        <Node NodeId="attempt_bargain">
+            <Text>My prices are firm, friend. Quality doesn't come cheap.</Text>
+            <Choice Text="Fine, I'll pay your price (open trade)" NextNodeId="open_trade" />
+            <Choice Text="Then I'll take my business elsewhere" NextNodeId="leave" />
+        </Node>
+
+        <!-- Low offer (requires high skill) -->
+        <Node NodeId="bargain_check_low">
+            <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+            <Text>That's... quite a bold offer. But you drive a hard bargain.</Text>
+            <Text>Alright, 30% off. But don't tell anyone!</Text>
+            <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+            <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />  <!-- Skill improves! -->
+            <Action Type="OpenMerchantTrade" />
+        </Node>
+
+        <!-- Low offer failed -->
+        <Node NodeId="bargain_check_low">
+            <Text>Ha! That's insulting. Do you think I'm a fool?</Text>
+            <Text>Take your lowball offers elsewhere!</Text>
+            <Action Type="SetCharacterState" RefName="Unfriendly" />
+            <Choice Text="I apologize. Can we try again?" NextNodeId="attempt_bargain" />
+            <Choice Text="Fine, I'm leaving" NextNodeId="leave" />
+        </Node>
+
+        <!-- Medium offer (moderate skill check) -->
+        <Node NodeId="bargain_check_medium">
+            <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+            <Text>A reasonable request from a reasonable customer.</Text>
+            <Text>I can give you 15% off. That's my final offer.</Text>
+            <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+            <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />  <!-- Skill improves slightly -->
+            <Action Type="OpenMerchantTrade" />
+        </Node>
+
+        <!-- Medium offer failed -->
+        <Node NodeId="bargain_check_medium">
+            <Text>I appreciate the attempt, but I can't go that low.</Text>
+            <Text>Best I can do is 5% off, as a courtesy.</Text>
+            <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+            <Action Type="OpenMerchantTrade" />
+        </Node>
+
+        <!-- Just open trade (no discount) -->
+        <Node NodeId="open_trade">
+            <Text>Excellent choice! Let me show you what I have...</Text>
+            <Action Type="OpenMerchantTrade" />
+        </Node>
+
+        <!-- Leave -->
+        <Node NodeId="leave">
+            <Text>Come back anytime, friend!</Text>
+        </Node>
+
+    </DialogueTree>
+
+    <!-- Generous Merchant (easier to bargain with) -->
+    <DialogueTree RefName="GENEROUS_MERCHANT" DisplayName="Generous Merchant Trade" StartNodeId="greeting_generous">
+
+        <Node NodeId="greeting_generous">
+            <Text>Hello there! Looking for a good deal?</Text>
+            <Text>I'm always happy to work with customers!</Text>
+            <Choice Text="Let's see what you have" NextNodeId="open_trade_generous" />
+            <Choice Text="Could you give me a discount?" NextNodeId="easy_bargain" />
+        </Node>
+
+        <!-- Easy bargain (generous merchant has high WillingToBargain trait) -->
+        <Node NodeId="easy_bargain">
+            <Text>Of course! I like your style.</Text>
+            <Text>How about 20% off? Consider it a friendship discount!</Text>
+            <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="20" />
+            <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="10" />  <!-- Skill improves even on easy win -->
+            <Action Type="OpenMerchantTrade" />
+        </Node>
+
+        <Node NodeId="open_trade_generous">
+            <Text>Right this way!</Text>
+            <Action Type="OpenMerchantTrade" />
+        </Node>
+
+    </DialogueTree>
+
+</DialogueTrees>

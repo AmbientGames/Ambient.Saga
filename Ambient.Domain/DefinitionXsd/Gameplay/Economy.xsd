@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:simpleType name="WholesalePrice">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="MarkupMultiplier">
+        <xs:restriction base="xs:float">
+            <xs:minInclusive value="0.0" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:attributeGroup name="TradePricingAttributes">
+        <xs:attribute name="WholesalePrice" type="WholesalePrice" use="optional" default="2147483647"></xs:attribute>
+        <xs:attribute name="MerchantMarkupMultiplier" type="MarkupMultiplier" use="optional" default="1.5"></xs:attribute>
+    </xs:attributeGroup>
+</xs:schema>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../Characters/Characters.xsd" />
+    <xs:include schemaLocation="../../Characters/Catalogs/CharacterAffinities.xsd" />
+    <xs:complexType name="Summon">
+        <xs:attribute name="AffinityRef" type="CharacterAffinityRef" />
+        <xs:attribute name="CapturedFromCharacterRef" type="CharacterRef" use="required" />
+        <xs:attribute name="CapturedDate" type="xs:string" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="SummonInventory">
+        <xs:sequence>
+            <xs:element name="Summon" type="Summon" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Equipment xmlns="Ambient.Domain"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <!-- ========================================
+         ISE FIELD TRIP EQUIPMENT
+         Modern Japan themed items
+         ======================================== -->
+
+    <!-- WEAPONS (Everyday items used as weapons) -->
+    <Equipment RefName="BaseballBat" DisplayName="Baseball Bat" Description="[AI: Aluminum bat from sports club]" SlotRef="RightHand"
+          ModelRef="BaseballBat" WholesalePrice="80" Rarity="Common">
+        <Effects Health="0" Defense="0" Strength="0.14" Speed="0" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="HardcoverBook" DisplayName="Hardcover Book" Description="[AI: Heavy textbook that doubles as a weapon]" SlotRef="LeftHand"
+          ModelRef="HardcoverBook" WholesalePrice="50" Rarity="Common">
+        <Effects Health="0" Defense="0.03" Strength="0.06" Speed="0" Magic="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="PocketKnife" DisplayName="Pocket Knife" Description="[AI: Small utility knife]" SlotRef="RightHand"
+          ModelRef="PocketKnife" WholesalePrice="60" Rarity="Common">
+        <Effects Health="0" Defense="0" Strength="0.10" Speed="0.05" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="SacredStaff" DisplayName="Sacred Staff" Description="[AI: Ceremonial staff used in shrine rituals]" SlotRef="BothHands"
+          ModelRef="SacredStaff" WholesalePrice="200" Rarity="Rare" AffinityRef="Divine">
+        <Effects Health="0.05" Defense="0.08" Strength="0.04" Speed="0" Magic="0.18" Mana="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="DetectiveRevolver" DisplayName="Service Revolver" Description="[AI: Police-issue handgun]" SlotRef="RightHand"
+          ModelRef="DetectiveRevolver" WholesalePrice="500" Rarity="Rare">
+        <Effects Health="0" Defense="0" Strength="0.20" Speed="0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="Ofuda" DisplayName="Ofuda Talismans" Description="[AI: Paper charms for warding off evil]" SlotRef="LeftHand"
+          ModelRef="Ofuda" WholesalePrice="100" Rarity="Uncommon" AffinityRef="Divine">
+        <Effects Health="0.03" Defense="0.10" Strength="0" Speed="0" Magic="0.12"/>
+    </Equipment>
+
+    <!-- PROTECTIVE GEAR / CLOTHING -->
+    <Equipment RefName="SchoolBag" DisplayName="School Bag" Description="[AI: Standard student backpack]" SlotRef="Chest"
+          ModelRef="SchoolBag" WholesalePrice="60" Rarity="Common">
+        <Effects Health="0.05" Defense="0.05" Strength="0" Speed="-0.01" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="BlackHoodie" DisplayName="Black Hoodie" Description="[AI: Casual hooded sweatshirt]" SlotRef="Chest"
+          ModelRef="BlackHoodie" WholesalePrice="80" Rarity="Common">
+        <Effects Health="0.05" Defense="0.06" Strength="0" Speed="0.02" Magic="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="BusinessSuit" DisplayName="Business Suit" Description="[AI: Professional teacher's attire]" SlotRef="Chest"
+          ModelRef="BusinessSuit" WholesalePrice="300" Rarity="Common">
+        <Effects Health="0.08" Defense="0.08" Strength="0" Speed="-0.02" Magic="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="MikoRobes" DisplayName="Miko Robes" Description="[AI: Traditional shrine maiden outfit]" SlotRef="Chest"
+          ModelRef="MikoRobes" WholesalePrice="250" Rarity="Uncommon" AffinityRef="Divine">
+        <Effects Health="0.10" Defense="0.10" Strength="0" Speed="0" Magic="0.15" Mana="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="TrenchCoat" DisplayName="Trench Coat" Description="[AI: Classic detective coat]" SlotRef="Chest"
+          ModelRef="TrenchCoat" WholesalePrice="200" Rarity="Uncommon">
+        <Effects Health="0.08" Defense="0.12" Strength="0.02" Speed="0" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="Apron" DisplayName="Shop Apron" Description="[AI: Shopkeeper's work apron]" SlotRef="Chest"
+          ModelRef="Apron" WholesalePrice="40" Rarity="Common">
+        <Effects Health="0.03" Defense="0.04" Strength="0" Speed="0.01" Magic="0"/>
+    </Equipment>
+
+    <!-- FOOTWEAR -->
+    <Equipment RefName="SneakersBlue" DisplayName="Blue Sneakers" Description="[AI: Comfortable casual shoes]" SlotRef="Feet"
+          ModelRef="SneakersBlue" WholesalePrice="90" Rarity="Common">
+        <Effects Health="0.03" Defense="0.04" Strength="0.01" Speed="0.08" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="AthleticShoes" DisplayName="Athletic Shoes" Description="[AI: High-performance running shoes]" SlotRef="Feet"
+          ModelRef="AthleticShoes" WholesalePrice="150" Rarity="Common">
+        <Effects Health="0.05" Defense="0.05" Strength="0.02" Speed="0.12" Magic="0"/>
+    </Equipment>
+
+    <!-- ACCESSORIES -->
+    <Equipment RefName="Glasses" DisplayName="Glasses" Description="[AI: Prescription eyewear]" SlotRef="Head"
+          ModelRef="Glasses" WholesalePrice="120" Rarity="Common">
+        <Effects Health="0" Defense="0.02" Strength="0" Speed="0" Magic="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="CharmBracelet" DisplayName="Charm Bracelet" Description="[AI: Fashionable accessory bracelet]" SlotRef="LeftHand"
+          ModelRef="CharmBracelet" WholesalePrice="150" Rarity="Uncommon">
+        <Effects Health="0.05" Defense="0.05" Strength="0" Speed="0" Magic="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="SportsWatch" DisplayName="Sports Watch" Description="[AI: Digital watch with stopwatch function]" SlotRef="LeftHand"
+          ModelRef="SportsWatch" WholesalePrice="100" Rarity="Common">
+        <Effects Health="0.03" Defense="0.02" Strength="0.02" Speed="0.05" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="BadgeID" DisplayName="Police Badge" Description="[AI: Official police identification]" SlotRef="LeftHand"
+          ModelRef="BadgeID" WholesalePrice="0" Rarity="Rare">
+        <Effects Health="0.05" Defense="0.08" Strength="0.05" Speed="0" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="Briefcase" DisplayName="Briefcase" Description="[AI: Professional leather briefcase]" SlotRef="LeftHand"
+          ModelRef="Briefcase" WholesalePrice="180" Rarity="Common">
+        <Effects Health="0.05" Defense="0.08" Strength="0.04" Speed="-0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="DesignerBag" DisplayName="Designer Bag" Description="[AI: Expensive fashionable handbag]" SlotRef="LeftHand"
+          ModelRef="DesignerBag" WholesalePrice="500" Rarity="Rare">
+        <Effects Health="0.05" Defense="0.06" Strength="0" Speed="0" Magic="0.12"/>
+    </Equipment>
+
+    <!-- NEW WEAPONS FOR ARCHETYPES -->
+    <Equipment RefName="BrassKnuckles" DisplayName="Brass Knuckles" Description="[AI: Metal knuckles for bare-fist fighting]" SlotRef="RightHand"
+          ModelRef="BrassKnuckles" WholesalePrice="150" Rarity="Uncommon">
+        <Effects Health="0" Defense="0" Strength="0.16" Speed="0.04" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="Paintbrush" DisplayName="Artistic Paintbrush" Description="[AI: Brush that channels creative energy]" SlotRef="RightHand"
+          ModelRef="Paintbrush" WholesalePrice="100" Rarity="Uncommon" AffinityRef="Truth">
+        <Effects Health="0" Defense="0.02" Strength="0.04" Speed="0.02" Magic="0.14"/>
+    </Equipment>
+
+    <Equipment RefName="Laptop" DisplayName="High-Tech Laptop" Description="[AI: Powerful computer for hacking]" SlotRef="BothHands"
+          ModelRef="Laptop" WholesalePrice="800" Rarity="Rare" AffinityRef="Thunder">
+        <Effects Health="0.02" Defense="0.04" Strength="0" Speed="0.08" Magic="0.16"/>
+    </Equipment>
+
+    <Equipment RefName="OccultTome" DisplayName="Occult Tome" Description="[AI: Ancient book of dark knowledge]" SlotRef="LeftHand"
+          ModelRef="OccultTome" WholesalePrice="300" Rarity="Rare" AffinityRef="Void">
+        <Effects Health="0" Defense="0.04" Strength="0.02" Speed="0" Magic="0.20" Mana="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="Guitar" DisplayName="Electric Guitar" Description="[AI: Instrument that channels emotional power]" SlotRef="BothHands"
+          ModelRef="Guitar" WholesalePrice="400" Rarity="Uncommon" AffinityRef="Light">
+        <Effects Health="0.05" Defense="0.06" Strength="0.06" Speed="0" Magic="0.14"/>
+    </Equipment>
+
+    <Equipment RefName="Sketchbook" DisplayName="Artist's Sketchbook" Description="[AI: Portfolio of artistic visions]" SlotRef="LeftHand"
+          ModelRef="Sketchbook" WholesalePrice="80" Rarity="Common">
+        <Effects Health="0.02" Defense="0.04" Strength="0" Speed="0.02" Magic="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="ReporterNotebook" DisplayName="Reporter's Notebook" Description="[AI: Professional journalist's notepad]" SlotRef="LeftHand"
+          ModelRef="ReporterNotebook" WholesalePrice="60" Rarity="Common" AffinityRef="Truth">
+        <Effects Health="0.02" Defense="0.03" Strength="0" Speed="0.04" Magic="0.08"/>
+    </Equipment>
+
+    <!-- NEW PROTECTIVE GEAR -->
+    <Equipment RefName="LeatherJacket" DisplayName="Leather Jacket" Description="[AI: Tough delinquent's jacket]" SlotRef="Chest"
+          ModelRef="LeatherJacket" WholesalePrice="200" Rarity="Uncommon">
+        <Effects Health="0.10" Defense="0.14" Strength="0.04" Speed="-0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="Beret" DisplayName="Artist's Beret" Description="[AI: Classic artistic headwear]" SlotRef="Head"
+          ModelRef="Beret" WholesalePrice="50" Rarity="Common">
+        <Effects Health="0.02" Defense="0.02" Strength="0" Speed="0" Magic="0.06"/>
+    </Equipment>
+
+    <Equipment RefName="TraditionalKimono" DisplayName="Traditional Kimono" Description="[AI: Elegant Japanese formal wear]" SlotRef="Chest"
+          ModelRef="TraditionalKimono" WholesalePrice="400" Rarity="Rare" AffinityRef="Wisdom">
+        <Effects Health="0.08" Defense="0.10" Strength="0" Speed="-0.04" Magic="0.18" Mana="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="Happi" DisplayName="Festival Happi Coat" Description="[AI: Traditional festival jacket]" SlotRef="Chest"
+          ModelRef="Happi" WholesalePrice="120" Rarity="Common">
+        <Effects Health="0.06" Defense="0.06" Strength="0.02" Speed="0.04" Magic="0.04"/>
+    </Equipment>
+
+    <Equipment RefName="TravelVest" DisplayName="Travel Vest" Description="[AI: Multi-pocket tourist vest]" SlotRef="Chest"
+          ModelRef="TravelVest" WholesalePrice="150" Rarity="Common">
+        <Effects Health="0.08" Defense="0.08" Strength="0" Speed="0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="SunHat" DisplayName="Sun Hat" Description="[AI: Wide-brimmed hat for sun protection]" SlotRef="Head"
+          ModelRef="SunHat" WholesalePrice="40" Rarity="Common">
+        <Effects Health="0.04" Defense="0.04" Strength="0" Speed="0" Magic="0"/>
+    </Equipment>
+
+    <!-- NEW FOOTWEAR -->
+    <Equipment RefName="SteelToeBoots" DisplayName="Steel-Toe Boots" Description="[AI: Heavy combat boots]" SlotRef="Feet"
+          ModelRef="SteelToeBoots" WholesalePrice="180" Rarity="Uncommon">
+        <Effects Health="0.08" Defense="0.10" Strength="0.06" Speed="0.02" Magic="0"/>
+    </Equipment>
+
+    <!-- NEW ACCESSORIES -->
+    <Equipment RefName="PentagramPendant" DisplayName="Pentagram Pendant" Description="[AI: Occult symbol necklace]" SlotRef="LeftHand"
+          ModelRef="PentagramPendant" WholesalePrice="200" Rarity="Rare" AffinityRef="Void">
+        <Effects Health="0" Defense="0.06" Strength="0" Speed="0" Magic="0.16" Mana="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="Headphones" DisplayName="Gaming Headphones" Description="[AI: High-quality audio headset]" SlotRef="Head"
+          ModelRef="Headphones" WholesalePrice="180" Rarity="Common" AffinityRef="Thunder">
+        <Effects Health="0.02" Defense="0.04" Strength="0" Speed="0.06" Magic="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="ConcertTicket" DisplayName="Concert Ticket" Description="[AI: Lucky ticket from favorite band]" SlotRef="LeftHand"
+          ModelRef="ConcertTicket" WholesalePrice="80" Rarity="Common">
+        <Effects Health="0.04" Defense="0.04" Strength="0" Speed="0.02" Magic="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="FestivalFan" DisplayName="Festival Fan" Description="[AI: Decorative traditional fan]" SlotRef="LeftHand"
+          ModelRef="FestivalFan" WholesalePrice="60" Rarity="Common">
+        <Effects Health="0.03" Defense="0.04" Strength="0.02" Speed="0.04" Magic="0.06"/>
+    </Equipment>
+
+    <Equipment RefName="PressPass" DisplayName="Press Pass" Description="[AI: Journalist credentials]" SlotRef="LeftHand"
+          ModelRef="PressPass" WholesalePrice="0" Rarity="Rare" AffinityRef="Truth">
+        <Effects Health="0.04" Defense="0.06" Strength="0" Speed="0.04" Magic="0.08"/>
+    </Equipment>
+
+    <!-- MORE VARIETY WEAPONS -->
+    <Equipment RefName="UmbrellaWeapon" DisplayName="Reinforced Umbrella" Description="[AI: Sturdy umbrella usable as weapon]" SlotRef="BothHands"
+          ModelRef="UmbrellaWeapon" WholesalePrice="90" Rarity="Common">
+        <Effects Health="0.04" Defense="0.08" Strength="0.08" Speed="0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="ChainWallet" DisplayName="Chain Wallet" Description="[AI: Heavy wallet on chain]" SlotRef="LeftHand"
+          ModelRef="ChainWallet" WholesalePrice="120" Rarity="Uncommon">
+        <Effects Health="0.04" Defense="0.06" Strength="0.10" Speed="0.02" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="Tonfa" DisplayName="Police Tonfa" Description="[AI: Law enforcement baton]" SlotRef="RightHand"
+          ModelRef="Tonfa" WholesalePrice="150" Rarity="Uncommon">
+        <Effects Health="0.04" Defense="0.10" Strength="0.12" Speed="0.04" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="Naginata" DisplayName="Ceremonial Naginata" Description="[AI: Traditional polearm from shrine]" SlotRef="BothHands"
+          ModelRef="Naginata" WholesalePrice="400" Rarity="Rare" AffinityRef="Divine">
+        <Effects Health="0.06" Defense="0.08" Strength="0.16" Speed="0" Magic="0.14"/>
+    </Equipment>
+
+    <Equipment RefName="Bokken" DisplayName="Wooden Sword" Description="[AI: Practice sword from kendo club]" SlotRef="RightHand"
+          ModelRef="Bokken" WholesalePrice="70" Rarity="Common">
+        <Effects Health="0.02" Defense="0.04" Strength="0.12" Speed="0.06" Magic="0"/>
+    </Equipment>
+
+    <Equipment RefName="Shinai" DisplayName="Bamboo Sword" Description="[AI: Flexible bamboo training sword]" SlotRef="RightHand"
+          ModelRef="Shinai" WholesalePrice="60" Rarity="Common">
+        <Effects Health="0.02" Defense="0.02" Strength="0.10" Speed="0.08" Magic="0"/>
+    </Equipment>
+
+</Equipment>

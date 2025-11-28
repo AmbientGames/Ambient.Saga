@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="AcquirableBase.xsd" />
+    <xs:simpleType name="QuestTokenRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="QuestToken">
+        <xs:complexContent>
+            <xs:extension base="AcquirableBase"></xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="QuestTokens">
+        <xs:sequence>
+            <xs:element name="QuestToken" type="QuestToken" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../CharacterBase/CharacterBase.xsd" />
+    <xs:include schemaLocation="Inventories/AchievementInventory.xsd" />
+    <xs:include schemaLocation="Inventories/SagaArcInventory.xsd" />
+    <xs:include schemaLocation="Inventories/QuestInventory.xsd" />
+    <xs:include schemaLocation="Inventories/SummonInventory.xsd" />
+    <xs:include schemaLocation="../../Acquirables/Tool.xsd" />
+    <xs:include schemaLocation="../../Acquirables/BuildingMaterial.xsd" />
+    <xs:include schemaLocation="AvatarArchetype.xsd" />
+    <xs:include schemaLocation="../Characters/Catalogs/CharacterAffinities.xsd" />
+    <xs:complexType name="AvatarBase">
+        <xs:complexContent>
+            <xs:extension base="CharacterBase">
+                <xs:sequence>
+                    <xs:element name="Achievements" type="AchievementInventory" minOccurs="0" />
+                    <xs:element name="Quests" type="QuestInventory" minOccurs="0" />
+                    <xs:element name="SagaArcs" type="SagaArcInventory" minOccurs="0" />
+                    <xs:element name="Summons" type="SummonInventory" minOccurs="0" />
+                </xs:sequence>
+                <xs:attribute name="ArchetypeRef" type="ArchetypeRef" use="optional" />
+                <xs:attribute name="ActiveAffinityRef" type="CharacterAffinityRef" use="optional" />
+                <xs:attribute name="CurrentToolRef" type="ToolRef" use="optional" />
+                <xs:attribute name="CurrentBuildingMaterialRef" type="BuildingMaterialRef" use="optional" />
+                <xs:attribute name="VelX" type="xs:float" default="0" />
+                <xs:attribute name="VelY" type="xs:float" default="0" />
+                <xs:attribute name="VelZ" type="xs:float" default="0" />
+                <xs:attribute name="ViewX" type="xs:float" default="0" />
+                <xs:attribute name="ViewY" type="xs:float" default="0" />
+                <xs:attribute name="ViewZ" type="xs:float" default="1" />
+                <xs:attribute name="PlayTimeHours" type="xs:float" default="0" />
+                <xs:attribute name="BlocksPlaced" type="xs:long" default="0" />
+                <xs:attribute name="BlocksDestroyed" type="xs:long" default="0" />
+                <xs:attribute name="DistanceTraveled" type="xs:float" default="0" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CharacterArchetypes xmlns="Ambient.Domain"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- COMMON SHADOWS - Basic hostile encounters -->
+    <CharacterArchetype RefName="RandomDarkCreature" DisplayName="Random Shadow"
+                        Description="Spawns a common dark creature from the mystical realm">
+        <CharacterRef>Wraith_Cowardly</CharacterRef>
+        <CharacterRef>Fiend_Avenger</CharacterRef>
+        <CharacterRef>Phantom_Chilling</CharacterRef>
+        <CharacterRef>Elemental_Stormy</CharacterRef>
+        <CharacterRef>Sprite_Swift</CharacterRef>
+    </CharacterArchetype>
+
+    <!-- ELEMENTAL SHADOWS - Specific affinity types for themed encounters -->
+    <CharacterArchetype RefName="FireDarkCreatures" DisplayName="Fire-Type Shadows"
+                        Description="Spawns Shadows with fire affinity (Fire line)">
+        <CharacterRef>Fiend_Avenger</CharacterRef>
+    </CharacterArchetype>
+
+    <CharacterArchetype RefName="IceDarkCreatures" DisplayName="Ice-Type Shadows"
+                        Description="Spawns Shadows with ice affinity (Frost line)">
+        <CharacterRef>Phantom_Chilling</CharacterRef>
+    </CharacterArchetype>
+
+    <CharacterArchetype RefName="ElectricDarkCreatures" DisplayName="Electric-Type Shadows"
+                        Description="Spawns Shadows with electric affinity (Spark line)">
+        <CharacterRef>Elemental_Stormy</CharacterRef>
+    </CharacterArchetype>
+
+    <CharacterArchetype RefName="WindDarkCreatures" DisplayName="Wind-Type Shadows"
+                        Description="Spawns Shadows with wind affinity (Breeze line)">
+        <CharacterRef>Sprite_Swift</CharacterRef>
+    </CharacterArchetype>
+
+    <!-- MINI-BOSS SHADOWS - Stronger encounters -->
+    <CharacterArchetype RefName="MiniBossDarkCreature" DisplayName="Mini-Boss Dark Creature"
+                        Description="Spawns a powerful mini-boss Shadow">
+        <CharacterRef>Fiend_Contrarian</CharacterRef>
+        <CharacterRef>Wraith_Desirous</CharacterRef>
+    </CharacterArchetype>
+
+    <!-- BOSS SHADOWS - Major encounters -->
+    <CharacterArchetype RefName="BossDarkCreature" DisplayName="Boss Shadow"
+                        Description="Spawns a major boss-tier Shadow">
+        <CharacterRef>Boss_Dark_Doppelganger</CharacterRef>
+        <CharacterRef>Boss_Temple_Guardian</CharacterRef>
+    </CharacterArchetype>
+
+    <!-- SPECIAL SHADOWS - Rare/unique encounters -->
+    <CharacterArchetype RefName="RareShadow" DisplayName="Rare Shadow"
+                        Description="Spawns a rare or special Shadow encounter">
+        <CharacterRef>Boss_Golden_Hand</CharacterRef>
+    </CharacterArchetype>
+
+    <CharacterArchetype RefName="UltimateBoss" DisplayName="Ultimate Boss"
+                        Description="Spawns the most dangerous enemy - The Reaper">
+        <CharacterRef>Boss_Reaper</CharacterRef>
+    </CharacterArchetype>
+
+    <!-- MERCHANTS - Friendly shopkeepers -->
+    <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant"
+                        Description="Spawns a merchant who will trade with you">
+        <CharacterRef>TradingPost_Merchant</CharacterRef>
+    </CharacterArchetype>
+
+    <!-- SPECIAL ENCOUNTERS - Unique NPCs -->
+    <CharacterArchetype RefName="SpecialEncounter" DisplayName="Special Encounter"
+                        Description="Spawns a unique character with special dialogue">
+        <CharacterRef>Mysterious_Fox</CharacterRef>
+        <CharacterRef>Traveler_Witness</CharacterRef>
+    </CharacterArchetype>
+
+    <!-- MIXED ENCOUNTERS - Variety pack -->
+    <CharacterArchetype RefName="RandomEncounter" DisplayName="Random Encounter"
+                        Description="Spawns any type of character - could be friend or foe">
+        <CharacterRef>Wraith_Cowardly</CharacterRef>
+        <CharacterRef>Fiend_Avenger</CharacterRef>
+        <CharacterRef>Sprite_Swift</CharacterRef>
+        <CharacterRef>TradingPost_Merchant</CharacterRef>
+        <CharacterRef>Traveler_Witness</CharacterRef>
+        <CharacterRef>Mysterious_Fox</CharacterRef>
+    </CharacterArchetype>
+
+    <!-- AFFINITY-MATCHED ENCOUNTERS - For testing affinity matchups -->
+    <CharacterArchetype RefName="FireEnemies" DisplayName="Fire Affinity Enemies"
+                        Description="Spawns enemies with Fire (Fire) affinity for testing Ice matchups">
+        <CharacterRef>Fiend_Avenger</CharacterRef>
+    </CharacterArchetype>
+
+    <CharacterArchetype RefName="FrostEnemies" DisplayName="Ice Affinity Enemies"
+                        Description="Spawns enemies with Frost (Ice) affinity for testing Fire matchups">
+        <CharacterRef>Phantom_Chilling</CharacterRef>
+    </CharacterArchetype>
+
+    <CharacterArchetype RefName="SparkEnemies" DisplayName="Electric Affinity Enemies"
+                        Description="Spawns enemies with Spark (Electric) affinity for testing matchups">
+        <CharacterRef>Elemental_Stormy</CharacterRef>
+    </CharacterArchetype>
+
+    <CharacterArchetype RefName="BreezeEnemies" DisplayName="Wind Affinity Enemies"
+                        Description="Spawns enemies with Breeze (Wind) affinity for testing matchups">
+        <CharacterRef>Sprite_Swift</CharacterRef>
+    </CharacterArchetype>
+
+</CharacterArchetypes>

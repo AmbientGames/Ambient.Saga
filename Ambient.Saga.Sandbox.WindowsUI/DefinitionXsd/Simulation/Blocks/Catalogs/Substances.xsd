@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../../EntityBase.xsd" />
+    <xs:simpleType name="SystemSubstance">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Aggregate" />
+            <xs:enumeration value="Carbon" />
+            <xs:enumeration value="Stone" />
+            <xs:enumeration value="Metal" />
+            <xs:enumeration value="Steel" />
+            <xs:enumeration value="SteelReinforcedConcrete" />
+            <xs:enumeration value="Plant" />
+            <xs:enumeration value="Wood" />
+            <xs:enumeration value="Other" />
+            <xs:enumeration value="Reserved9" />
+            <xs:enumeration value="Reserved10" />
+            <xs:enumeration value="Reserved11" />
+            <xs:enumeration value="Reserved12" />
+            <xs:enumeration value="Reserved13" />
+            <xs:enumeration value="Reserved14" />
+            <xs:enumeration value="Reserved15" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Substance">
+        <xs:complexContent>
+            <xs:extension base="EntityBase">
+                <xs:attribute name="OrdinalId" type="xs:unsignedByte" use="required" />
+                <xs:attribute name="WholesalePrice" type="xs:int" use="required" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="Substances">
+        <xs:sequence>
+            <xs:element name="Substance" type="Substance" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QuestTokens xmlns="Ambient.Domain"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ========================================
+         QUEST TOKENS
+         Used for quest progression and dialogue conditions
+         ======================================== -->
+
+    <!-- MAIN QUEST TOKENS -->
+    <QuestToken RefName="FieldTripActive" DisplayName="Expedition Active"
+                Description="Currently on the Oakvale expedition"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="ShadowInvestigationActive" DisplayName="Shadow Investigation Active"
+                Description="Investigating the mysterious Shadows"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <!-- SHRINE VISITATION TOKENS -->
+    <QuestToken RefName="VisitedInnerTemple" DisplayName="Visited Inner Temple"
+                Description="Proof of visiting Kōtai Jingū (Naikū)"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="VisitedOuterTemple" DisplayName="Visited Outer Temple"
+                Description="Proof of visiting Toyōke Daijingū (Gekū)"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="PilgrimageComplete" DisplayName="Pilgrimage Complete"
+                Description="Completed the sacred pilgrimage"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <!-- BOSS QUEST TOKENS -->
+    <QuestToken RefName="ShadowSelfActive" DisplayName="Dark Doppelganger Confrontation Active"
+                Description="Preparing to confront your Dark Doppelganger"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="ShadowSelfDefeated" DisplayName="Dark Doppelganger Defeated"
+                Description="Defeated your Dark Doppelganger and gained its power"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="ShadowSelfAccepted" DisplayName="Dark Doppelganger Accepted"
+                Description="Accepted your Dark Doppelganger peacefully"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="DivineGuardianActive" DisplayName="Divine Guardian Challenge Active"
+                Description="Challenged the Divine Guardian of Oakvale"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="DivineGuardianDefeated" DisplayName="Divine Guardian Defeated"
+                Description="Defeated the Divine Guardian and earned divine blessing"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="GoldenHandDefeated" DisplayName="Golden Hand Defeated"
+                Description="Defeated the rare Golden Hand"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="ReaperChallenged" DisplayName="Challenged The Reaper"
+                Description="Dared to challenge Death itself"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="ReaperDefeated" DisplayName="The Reaper Defeated"
+                Description="Defeated The Reaper - death could not claim you"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <!-- SIDE QUEST TOKENS (for 20 side quests) -->
+    <QuestToken RefName="SideQuest01Active" DisplayName="Side Quest 1 Active"
+                Description="Quest marker for Shadow Hunt at location 1"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest01Complete" DisplayName="Side Quest 1 Complete"
+                Description="Cleared Shadows from location 1"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest02Active" DisplayName="Side Quest 2 Active"
+                Description="Quest marker for Shadow Hunt at location 2"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest02Complete" DisplayName="Side Quest 2 Complete"
+                Description="Cleared Shadows from location 2"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest03Active" DisplayName="Side Quest 3 Active"
+                Description="Quest marker for Shadow Hunt at location 3"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest03Complete" DisplayName="Side Quest 3 Complete"
+                Description="Cleared Shadows from location 3"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest04Active" DisplayName="Side Quest 4 Active"
+                Description="Quest marker for Shadow Hunt at location 4"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest04Complete" DisplayName="Side Quest 4 Complete"
+                Description="Cleared Shadows from location 4"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest05Active" DisplayName="Side Quest 5 Active"
+                Description="Quest marker for Shadow Hunt at location 5"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest05Complete" DisplayName="Side Quest 5 Complete"
+                Description="Cleared Shadows from location 5"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest06Active" DisplayName="Side Quest 6 Active"
+                Description="Quest marker for Shadow Hunt at location 6"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest06Complete" DisplayName="Side Quest 6 Complete"
+                Description="Cleared Shadows from location 6"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest07Active" DisplayName="Side Quest 7 Active"
+                Description="Quest marker for Shadow Hunt at location 7"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest07Complete" DisplayName="Side Quest 7 Complete"
+                Description="Cleared Shadows from location 7"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest08Active" DisplayName="Side Quest 8 Active"
+                Description="Quest marker for Shadow Hunt at location 8"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest08Complete" DisplayName="Side Quest 8 Complete"
+                Description="Cleared Shadows from location 8"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest09Active" DisplayName="Side Quest 9 Active"
+                Description="Quest marker for Shadow Hunt at location 9"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest09Complete" DisplayName="Side Quest 9 Complete"
+                Description="Cleared Shadows from location 9"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest10Active" DisplayName="Side Quest 10 Active"
+                Description="Quest marker for Shadow Hunt at location 10"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest10Complete" DisplayName="Side Quest 10 Complete"
+                Description="Cleared Shadows from location 10"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest11Active" DisplayName="Side Quest 11 Active"
+                Description="Quest marker for Shadow Hunt at location 11"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest11Complete" DisplayName="Side Quest 11 Complete"
+                Description="Cleared Shadows from location 11"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest12Active" DisplayName="Side Quest 12 Active"
+                Description="Quest marker for Shadow Hunt at location 12"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest12Complete" DisplayName="Side Quest 12 Complete"
+                Description="Cleared Shadows from location 12"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest13Active" DisplayName="Side Quest 13 Active"
+                Description="Quest marker for Shadow Hunt at location 13"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest13Complete" DisplayName="Side Quest 13 Complete"
+                Description="Cleared Shadows from location 13"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest14Active" DisplayName="Side Quest 14 Active"
+                Description="Quest marker for Shadow Hunt at location 14"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest14Complete" DisplayName="Side Quest 14 Complete"
+                Description="Cleared Shadows from location 14"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest15Active" DisplayName="Side Quest 15 Active"
+                Description="Quest marker for Shadow Hunt at location 15"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest15Complete" DisplayName="Side Quest 15 Complete"
+                Description="Cleared Shadows from location 15"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest16Active" DisplayName="Side Quest 16 Active"
+                Description="Quest marker for Shadow Hunt at location 16"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest16Complete" DisplayName="Side Quest 16 Complete"
+                Description="Cleared Shadows from location 16"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest17Active" DisplayName="Side Quest 17 Active"
+                Description="Quest marker for Shadow Hunt at location 17"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest17Complete" DisplayName="Side Quest 17 Complete"
+                Description="Cleared Shadows from location 17"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest18Active" DisplayName="Side Quest 18 Active"
+                Description="Quest marker for Shadow Hunt at location 18"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest18Complete" DisplayName="Side Quest 18 Complete"
+                Description="Cleared Shadows from location 18"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest19Active" DisplayName="Side Quest 19 Active"
+                Description="Quest marker for Shadow Hunt at location 19"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest19Complete" DisplayName="Side Quest 19 Complete"
+                Description="Cleared Shadows from location 19"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="SideQuest20Active" DisplayName="Side Quest 20 Active"
+                Description="Quest marker for Shadow Hunt at location 20"
+                ModelRef="Scroll" TextureRef="ParchmentScroll"/>
+
+    <QuestToken RefName="SideQuest20Complete" DisplayName="Side Quest 20 Complete"
+                Description="Cleared Shadows from location 20"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <!-- FOX QUESTLINE TOKENS -->
+    <QuestToken RefName="MetMysteriousFox" DisplayName="Met Mysterious Fox"
+                Description="Encountered the mysterious fox at the temple"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <!-- AFFINITY COLLECTION TOKENS -->
+    <QuestToken RefName="UnlockedFire" DisplayName="Unlocked Fire Affinity"
+                Description="Unlocked the Fire (Fire) affinity"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="UnlockedFrost" DisplayName="Unlocked Ice Affinity"
+                Description="Unlocked the Frost (Ice) affinity"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="UnlockedSpark" DisplayName="Unlocked Electric Affinity"
+                Description="Unlocked the Spark (Electric) affinity"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="UnlockedBreeze" DisplayName="Unlocked Wind Affinity"
+                Description="Unlocked the Breeze (Wind) affinity"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="UnlockedLight" DisplayName="Unlocked Light Affinity"
+                Description="Unlocked the Light (Light) affinity"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="UnlockedCurse" DisplayName="Unlocked Dark Affinity"
+                Description="Unlocked the Curse (Dark) affinity"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="UnlockedAlmighty" DisplayName="Unlocked Almighty Affinity"
+                Description="Unlocked the Almighty affinity"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+    <QuestToken RefName="UnlockedDivine" DisplayName="Unlocked Divine Affinity"
+                Description="Unlocked the Divine affinity (Oakvale exclusive)"
+                ModelRef="RoundToken" TextureRef="StoneToken"/>
+
+</QuestTokens>

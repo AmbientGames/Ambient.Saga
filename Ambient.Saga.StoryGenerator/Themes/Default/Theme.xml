@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Theme RefName="Default" DisplayName="Generic Fantasy" xmlns="Ambient.StoryGenerator">
+    <Description>Generic fantasy theme with standard RPG character archetypes, equipment, and spells. Suitable for medieval fantasy worlds.</Description>
+    <Author>Ambient Games</Author>
+    <Version>1.0</Version>
+    <Tags>
+        <Tag>Fantasy</Tag>
+        <Tag>Medieval</Tag>
+        <Tag>Generic</Tag>
+    </Tags>
+</Theme>

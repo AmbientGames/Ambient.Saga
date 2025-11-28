@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Achievement RefName="ACH_COMPLETE_ISE" DisplayName="Hero of Ise" Description="Completed the main quest in Ise">
+    <Criteria Type="SagaArcsCompleted" Threshold="7" />
+  </Achievement>
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_ISE" DisplayName="Champion" Description="Defeated all bosses in Ise">
+    <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="7" />
+  </Achievement>
+  <Achievement RefName="ACH_EXPLORER_ISE" DisplayName="Explorer" Description="Discovered all locations in Ise">
+    <Criteria Type="SagaArcsDiscovered" Threshold="7" />
+  </Achievement>
+  <Achievement RefName="ACH_SOCIAL_ISE" DisplayName="Social Butterfly" Description="Met all characters in Ise">
+    <Criteria Type="UniqueCharactersMet" Threshold="30" />
+  </Achievement>
+  <Achievement RefName="ACH_DIALOGUE_MASTER_ISE" DisplayName="Master Conversationalist" Description="Completed all dialogue trees in Ise">
+    <Criteria Type="DialogueTreesCompleted" Threshold="30" />
+  </Achievement>
+  <Achievement RefName="ACH_COLLECTOR_ISE" DisplayName="Completionist" Description="Earned all quest tokens in Ise">
+    <Criteria Type="QuestTokensEarned" Threshold="7" />
+  </Achievement>
+  <Achievement RefName="ACH_MERCHANT_ISE" DisplayName="Master Trader" Description="Traded with all merchants in Ise">
+    <Criteria Type="ItemsTraded" Threshold="30" />
+  </Achievement>
+  <Achievement RefName="ACH_DIPLOMAT_ISE" DisplayName="Diplomat" Description="Made friends throughout Ise">
+    <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="15" />
+  </Achievement>
+</Achievements>

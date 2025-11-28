@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.StoryGenerator" xmlns="Ambient.StoryGenerator" elementFormDefault="qualified">
+
+    <xs:annotation>
+        <xs:documentation>
+            Story Generation Configuration Schema
+
+            This schema defines the configuration for procedural story generation.
+            Generation configurations are SEPARATE from world runtime configurations
+            and live in the StoryGenerator project, not in world definitions.
+
+            Usage:
+            - Create one GenerationConfiguration XML file per generated world
+            - Place files in Ambient.Game.StoryGenerator/GenerationConfigs/
+            - Sandbox checks for matching config and shows "Generate Story" button
+            - Generator outputs to WorldTemplates/{WorldRef}.xml
+        </xs:documentation>
+    </xs:annotation>
+
+    <xs:simpleType name="SourceLocationType">
+        <xs:annotation>
+            <xs:documentation>Type of real-world location for story generation</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Structure">
+                <xs:annotation>
+                    <xs:documentation>Buildings, castles, temples (potential character locations)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Landmark">
+                <xs:annotation>
+                    <xs:documentation>Natural or man-made landmarks (discovery points)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="QuestSignpost">
+                <xs:annotation>
+                    <xs:documentation>Quest markers and signposts</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="GenerationStyle">
+        <xs:annotation>
+            <xs:documentation>How the generator connects locations into narrative arcs</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="RadialExploration">
+                <xs:annotation>
+                    <xs:documentation>Spread from spawn point outward in concentric circles</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Trail">
+                <xs:annotation>
+                    <xs:documentation>Create minimum spanning tree between locations</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="SourceLocation">
+        <xs:annotation>
+            <xs:documentation>Real-world GPS location used as input for story generation</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="DisplayName" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Human-readable name (e.g., "Fushimi Inari Shrine")</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Description" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Historical/cultural context for AI content generation</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Type" type="SourceLocationType" use="required">
+            <xs:annotation>
+                <xs:documentation>What kind of location this is (Structure/Landmark/QuestSignpost)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Lat" type="xs:double" use="required">
+            <xs:annotation>
+                <xs:documentation>Latitude in decimal degrees</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Lon" type="xs:double" use="required">
+            <xs:annotation>
+                <xs:documentation>Longitude in decimal degrees</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="GenerationConfiguration">
+        <xs:annotation>
+            <xs:documentation>
+                Root configuration for story generation.
+                One file per generated world (e.g., KyotoGeneration.xml, MarsGeneration.xml)
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="SourceLocations" type="SourceLocation" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Real-world locations to use as story anchor points</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+
+        <xs:attribute name="WorldRef" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>RefName of the target WorldConfiguration (e.g., "KyotoGenerated")</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="DisplayName" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Human-readable name for this generation config</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="Description" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Description of what this generator creates</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="GenerationStyle" type="GenerationStyle" use="optional" default="Trail">
+            <xs:annotation>
+                <xs:documentation>How to connect locations (RadialExploration or Trail)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="Spacing" type="xs:double" use="optional" default="500">
+            <xs:annotation>
+                <xs:documentation>Approximate spacing between generated content in game units</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="Seed" type="xs:int" use="optional" default="0">
+            <xs:annotation>
+                <xs:documentation>Random seed for reproducible generation (0 = use time)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="Theme" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Theme reference or description for AI content generation (e.g., "Feudal Japan", "Medieval fantasy")</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="OutputPath" type="xs:string" use="optional" default="Generated">
+            <xs:annotation>
+                <xs:documentation>Relative path within WorldTemplates for generated files (default: "Generated")</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:element name="GenerationConfiguration" type="GenerationConfiguration">
+        <xs:annotation>
+            <xs:documentation>Root element for story generation configuration files</xs:documentation>
+        </xs:annotation>
+    </xs:element>
+
+</xs:schema>

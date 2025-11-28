@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../EntityBase.xsd" />
+    <xs:include schemaLocation="../../Refs.xsd" />
+    <xs:include schemaLocation="../Acquirables/Equipment.xsd" />
+    <xs:include schemaLocation="../Acquirables/Consumable.xsd" />
+    <xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
+
+    <!-- Reputation Level Enumeration -->
+    <xs:simpleType name="ReputationLevel">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Hated" />       <!-- -42000 to -21000 -->
+            <xs:enumeration value="Hostile" />     <!-- -21000 to -6000 -->
+            <xs:enumeration value="Unfriendly" />  <!-- -6000 to -3000 -->
+            <xs:enumeration value="Neutral" />     <!-- -3000 to 3000 -->
+            <xs:enumeration value="Friendly" />    <!-- 3000 to 9000 -->
+            <xs:enumeration value="Honored" />     <!-- 9000 to 21000 -->
+            <xs:enumeration value="Revered" />     <!-- 21000 to 42000 -->
+            <xs:enumeration value="Exalted" />     <!-- 42000+ -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Faction Relationship Type -->
+    <xs:complexType name="FactionRelationship">
+        <xs:attribute name="FactionRef" type="FactionRef" use="required" />
+        <xs:attribute name="RelationshipType" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Allied" />
+                    <xs:enumeration value="Enemy" />
+                    <xs:enumeration value="Rival" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <!-- Reputation spillover: gaining/losing rep with this faction affects allied/enemy factions -->
+        <xs:attribute name="SpilloverPercent" type="xs:float" use="optional" default="0.25" />
+    </xs:complexType>
+
+    <!-- Reputation Reward (unlocked at specific reputation level) -->
+    <xs:complexType name="ReputationReward">
+        <xs:sequence>
+            <xs:element name="Equipment" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="EquipmentRef" type="EquipmentRef" use="required" />
+                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+                    <xs:attribute name="DiscountPercent" type="xs:float" use="optional" default="0" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Consumable" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="ConsumableRef" type="ConsumableRef" use="required" />
+                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+                    <xs:attribute name="DiscountPercent" type="xs:float" use="optional" default="0" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="QuestToken" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="QuestTokenRef" type="QuestTokenRef" use="required" />
+                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="RequiredLevel" type="ReputationLevel" use="required" />
+    </xs:complexType>
+
+    <!-- Faction (Main Definition) -->
+    <xs:complexType name="Faction">
+        <xs:complexContent>
+            <xs:extension base="EntityBase">
+                <xs:sequence>
+                    <!-- Allied/Enemy factions with reputation spillover -->
+                    <xs:element name="Relationships" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Relationship" type="FactionRelationship" minOccurs="1" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <!-- Reputation rewards (items unlocked at certain levels) -->
+                    <xs:element name="ReputationRewards" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Reward" type="ReputationReward" minOccurs="1" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+
+                <!-- Starting reputation for new characters (default: 0 = Neutral) -->
+                <xs:attribute name="StartingReputation" type="xs:int" use="optional" default="0" />
+
+                <!-- Faction category (for grouping) -->
+                <xs:attribute name="Category" use="optional">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="City" />
+                            <xs:enumeration value="Guild" />
+                            <xs:enumeration value="Military" />
+                            <xs:enumeration value="Religious" />
+                            <xs:enumeration value="Criminal" />
+                            <xs:enumeration value="Merchant" />
+                            <xs:enumeration value="Nature" />
+                            <xs:enumeration value="Other" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <!-- Faction Collection -->
+    <xs:complexType name="Factions">
+        <xs:sequence>
+            <xs:element name="Faction" type="Faction" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

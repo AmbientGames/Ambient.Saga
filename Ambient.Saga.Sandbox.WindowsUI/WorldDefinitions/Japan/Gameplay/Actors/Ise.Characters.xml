@@ -1,0 +1,541 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Character RefName="BOSS_Kazahinominomiya" DisplayName="Guardian of Kazahinomi-no-Miya" Description="Character at Kazahinomi-no-Miya">
+    <Stats Health="0.8" Stamina="1.0" Mana="1.0" Strength="0.15" Defense="0.10" Speed="0.05" Magic="0.08" Credits="50" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="CourageBurst" Condition="1.0" />
+        <Entry SpellRef="TruthSeeker" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="BossFight" Value="1" />
+      <Trait Name="Hostile" Value="1" />
+      <Trait Name="TacticalRetreat" Value="30" />
+      <Trait Name="LastStand" Value="15" />
+    </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Halt! I am the guardian of Kazahinomi-no-Miya. None may pass without proving their worth!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
+      <MentionsSagaArcRef>KōtaiJingūInnerShrine</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine)" Description="Character at Kōtai Jingū (Inner Shrine)">
+    <Stats Health="0.8" Stamina="1.0" Mana="1.0" Strength="0.15" Defense="0.10" Speed="0.05" Magic="0.08" Credits="50" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="InspiringSong" Condition="1.0" />
+        <Entry SpellRef="SystemAnalyze" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="BossFight" Value="1" />
+      <Trait Name="Hostile" Value="1" />
+      <Trait Name="TacticalRetreat" Value="30" />
+      <Trait Name="LastStand" Value="15" />
+    </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Halt! I am the guardian of Kōtai Jingū (Inner Shrine). None may pass without proving their worth!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
+      <MentionsSagaArcRef>Kazahinominomiya</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya" Description="Character at Aramatsuri-no-Miya">
+    <Stats Health="0.8" Stamina="1.0" Mana="1.0" Strength="0.15" Defense="0.10" Speed="0.05" Magic="0.08" Credits="50" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="Confusion" Condition="1.0" />
+        <Entry SpellRef="MassHeal" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="BossFight" Value="1" />
+      <Trait Name="Hostile" Value="1" />
+      <Trait Name="TacticalRetreat" Value="30" />
+      <Trait Name="LastStand" Value="15" />
+    </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Halt! I am the guardian of Aramatsuri-no-Miya. None may pass without proving their worth!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
+      <MentionsSagaArcRef>KōtaiJingūInnerShrine</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Kazahinominomiya</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)">
+    <Stats Health="0.5" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="1000" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="DarkKnowledge" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)">
+    <Stats Health="0.5" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="1000" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="ParalyzingFear" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4). I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)">
+    <Stats Health="0.5" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="1000" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="LightBeam" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="20" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7). I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine)" Description="Character at Toyōke Daijingū (Outer Shrine)">
+    <Stats Health="0.8" Stamina="1.0" Mana="1.0" Strength="0.15" Defense="0.10" Speed="0.05" Magic="0.08" Credits="50" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="Illusion" Condition="1.0" />
+        <Entry SpellRef="PanicAttack" Condition="1.0" />
+        <Entry SpellRef="Dispel" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="BossFight" Value="1" />
+      <Trait Name="Hostile" Value="1" />
+      <Trait Name="TacticalRetreat" Value="30" />
+      <Trait Name="LastStand" Value="15" />
+    </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Halt! I am the guardian of Toyōke Daijingū (Outer Shrine). None may pass without proving their worth!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
+      <MentionsSagaArcRef>KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
+      <MentionsSagaArcRef>KazamiyaGekū</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū)" Description="Character at Kazamiya (Gekū)">
+    <Stats Health="0.8" Stamina="1.0" Mana="1.0" Strength="0.15" Defense="0.10" Speed="0.05" Magic="0.08" Credits="50" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="MemoryDrain" Condition="1.0" />
+        <Entry SpellRef="TeamRally" Condition="1.0" />
+        <Entry SpellRef="RecklessCharge" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="BossFight" Value="1" />
+      <Trait Name="Hostile" Value="1" />
+      <Trait Name="TacticalRetreat" Value="30" />
+      <Trait Name="LastStand" Value="15" />
+    </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Halt! I am the guardian of Kazamiya (Gekū). None may pass without proving their worth!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
+      <MentionsSagaArcRef>Tsuchinomiya</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Takanomiya</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya" Description="Character at Tsuchi-no-Miya">
+    <Stats Health="0.8" Stamina="1.0" Mana="1.0" Strength="0.15" Defense="0.10" Speed="0.05" Magic="0.08" Credits="50" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="DissonantChord" Condition="1.0" />
+        <Entry SpellRef="SacredWard" Condition="1.0" />
+        <Entry SpellRef="StatusAffliction" Condition="1.0" />
+        <Entry SpellRef="ColorSplash" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="BossFight" Value="1" />
+      <Trait Name="Hostile" Value="1" />
+      <Trait Name="TacticalRetreat" Value="30" />
+      <Trait Name="LastStand" Value="15" />
+    </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Tsuchinomiya" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Halt! I am the guardian of Tsuchi-no-Miya. None may pass without proving their worth!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
+      <MentionsSagaArcRef>KazamiyaGekū</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Takanomiya</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="BOSS_Takanomiya" DisplayName="Guardian of Taka-no-Miya" Description="Character at Taka-no-Miya">
+    <Stats Health="0.8" Stamina="1.0" Mana="1.0" Strength="0.15" Defense="0.10" Speed="0.05" Magic="0.08" Credits="50" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="VoidGaze" Condition="1.0" />
+        <Entry SpellRef="SpiritContact" Condition="1.0" />
+        <Entry SpellRef="Dispel" Condition="1.0" />
+        <Entry SpellRef="DarkKnowledge" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="BossFight" Value="1" />
+      <Trait Name="Hostile" Value="1" />
+      <Trait Name="TacticalRetreat" Value="30" />
+      <Trait Name="LastStand" Value="15" />
+    </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Halt! I am the guardian of Taka-no-Miya. None may pass without proving their worth!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
+      <MentionsSagaArcRef>Tsuchinomiya</MentionsSagaArcRef>
+      <MentionsSagaArcRef>KazamiyaGekū</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)">
+    <Stats Health="0.5" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="1000" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="MemoryDrain" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="50" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1). I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
+      <MentionsSagaArcRef>KazamiyaGekū</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" DisplayName="Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)">
+    <Stats Health="0.5" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="1000" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="CurseWave" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3). I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" DisplayName="Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)">
+    <Stats Health="0.5" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="1000" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="EnviousStrike" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="20" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6). I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya" Description="Character at Kazahinomi-no-Miya">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Spells>
+        <Entry SpellRef="CurseWave" Condition="1.0" />
+        <Entry SpellRef="Resurrection" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Kazahinomi-no-Miya.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Vigilant, loyal, aggressive when threatened" Role="defender" />
+  </Character>
+  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1).</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6).</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+  <Character RefName="HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0_3" DisplayName="Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1).</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+  <Character RefName="HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5_4" DisplayName="Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)">
+    <Stats Health="0.6" Stamina="1.0" Mana="1.0" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6).</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+</Characters>

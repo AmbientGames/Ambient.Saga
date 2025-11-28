@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Spells xmlns="Ambient.Domain"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ========================================
+         FIRE SPELLS (Fire line)
+         ======================================== -->
+    <Spell RefName="Fire" DisplayName="Fire" Description="Basic fire spell - burns single enemy"
+           DurabilityLoss="0.01" WholesalePrice="10" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Fire">
+        <Effects Health="0.25" Temperature="3" Mana="-0.08"/>
+    </Spell>
+
+    <Spell RefName="Fireball" DisplayName="Fireball" Description="Intermediate fire spell - stronger flames"
+           DurabilityLoss="0.015" WholesalePrice="40" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Fire">
+        <Effects Health="0.45" Temperature="5" Mana="-0.16"/>
+    </Spell>
+
+    <Spell RefName="Inferno" DisplayName="Inferno" Description="Severe fire spell - devastating inferno"
+           DurabilityLoss="0.02" WholesalePrice="100" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Fire">
+        <Effects Health="0.75" Temperature="7" Mana="-0.24"/>
+    </Spell>
+
+    <!-- ========================================
+         ICE SPELLS (Frost line)
+         ======================================== -->
+    <Spell RefName="Frost" DisplayName="Frost" Description="Basic ice spell - freezes single enemy"
+           DurabilityLoss="0.01" WholesalePrice="10" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Frost">
+        <Effects Health="0.22" Temperature="-5" Mana="-0.08"/>
+    </Spell>
+
+    <Spell RefName="IceBlast" DisplayName="IceBlast" Description="Intermediate ice spell - sharp ice crystals"
+           DurabilityLoss="0.015" WholesalePrice="40" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Frost">
+        <Effects Health="0.42" Temperature="-7" Mana="-0.16"/>
+    </Spell>
+
+    <Spell RefName="Blizzard" DisplayName="Blizzard" Description="Severe ice spell - absolute zero blast"
+           DurabilityLoss="0.02" WholesalePrice="100" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Frost">
+        <Effects Health="0.72" Temperature="-10" Mana="-0.24"/>
+    </Spell>
+
+    <!-- ========================================
+         ELECTRIC SPELLS (Spark line)
+         ======================================== -->
+    <Spell RefName="Spark" DisplayName="Spark" Description="Basic electric spell - shock single enemy"
+           DurabilityLoss="0.01" WholesalePrice="10" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Spark">
+        <Effects Health="0.28" Mana="-0.08"/>
+    </Spell>
+
+    <Spell RefName="ThunderBolt" DisplayName="ThunderBolt" Description="Intermediate electric spell - lightning strike"
+           DurabilityLoss="0.015" WholesalePrice="40" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Spark">
+        <Effects Health="0.50" Mana="-0.16"/>
+    </Spell>
+
+    <Spell RefName="Storm" DisplayName="Storm" Description="Severe electric spell - devastating thunderbolt"
+           DurabilityLoss="0.02" WholesalePrice="100" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Spark">
+        <Effects Health="0.80" Mana="-0.24"/>
+    </Spell>
+
+    <!-- ========================================
+         WIND SPELLS (Breeze line)
+         ======================================== -->
+    <Spell RefName="Breeze" DisplayName="Breeze" Description="Basic wind spell - razor gust"
+           DurabilityLoss="0.01" WholesalePrice="10" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Breeze">
+        <Effects Health="0.24" Mana="-0.08"/>
+    </Spell>
+
+    <Spell RefName="Gale" DisplayName="Gale" Description="Intermediate wind spell - cutting cyclone"
+           DurabilityLoss="0.015" WholesalePrice="40" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Breeze">
+        <Effects Health="0.44" Mana="-0.16"/>
+    </Spell>
+
+    <Spell RefName="Tempest" DisplayName="Tempest" Description="Severe wind spell - vacuum blade tornado"
+           DurabilityLoss="0.02" WholesalePrice="100" MerchantMarkupMultiplier="1.5"
+           UseType="Offensive" AffinityRef="Breeze">
+        <Effects Health="0.74" Mana="-0.24"/>
+    </Spell>
+
+    <!-- ========================================
+         LIGHT SPELLS (Light line - instant kill in P4G, heavy damage here)
+         ======================================== -->
+    <Spell RefName="Light" DisplayName="Light" Description="Blessed light - banishes darkness"
+           DurabilityLoss="0.02" WholesalePrice="50" MerchantMarkupMultiplier="2.0"
+           UseType="Offensive" AffinityRef="Light">
+        <Effects Health="0.50" Mana="-0.12"/>
+    </Spell>
+
+    <Spell RefName="Radiance" DisplayName="Radiance" Description="Divine light - purges evil"
+           DurabilityLoss="0.03" WholesalePrice="120" MerchantMarkupMultiplier="2.0"
+           UseType="Offensive" AffinityRef="Light">
+        <Effects Health="1.0" Mana="-0.18"/>
+    </Spell>
+
+    <!-- ========================================
+         DARK SPELLS (Curse line - curse/instant kill)
+         ======================================== -->
+    <Spell RefName="Curse" DisplayName="Curse" Description="Dark curse - drags into darkness"
+           DurabilityLoss="0.02" WholesalePrice="50" MerchantMarkupMultiplier="2.0"
+           UseType="Offensive" AffinityRef="Curse">
+        <Effects Health="0.48" Mana="-0.12"/>
+    </Spell>
+
+    <Spell RefName="Darkness" DisplayName="Darkness" Description="Deathly curse - condemns to void"
+           DurabilityLoss="0.03" WholesalePrice="120" MerchantMarkupMultiplier="2.0"
+           UseType="Offensive" AffinityRef="Curse">
+        <Effects Health="0.95" Mana="-0.18"/>
+    </Spell>
+
+    <!-- ========================================
+         ALMIGHTY SPELLS (Power line - pierce all defenses)
+         ======================================== -->
+    <Spell RefName="Power" DisplayName="Power" Description="Almighty power - ignores all resistances"
+           DurabilityLoss="0.025" WholesalePrice="80" MerchantMarkupMultiplier="2.5"
+           UseType="Offensive" AffinityRef="Almighty">
+        <Effects Health="0.55" Mana="-0.20"/>
+    </Spell>
+
+    <Spell RefName="GreatPower" DisplayName="GreatPower" Description="Greater almighty - overwhelming force"
+           DurabilityLoss="0.03" WholesalePrice="200" MerchantMarkupMultiplier="2.5"
+           UseType="Offensive" AffinityRef="Almighty">
+        <Effects Health="0.90" Mana="-0.30"/>
+    </Spell>
+
+    <Spell RefName="SupremePower" DisplayName="SupremePower" Description="Supreme almighty - ultimate destruction"
+           DurabilityLoss="0.04" WholesalePrice="500" MerchantMarkupMultiplier="3.0"
+           UseType="Offensive" AffinityRef="Almighty">
+        <Effects Health="1.0" Mana="-0.50"/>
+    </Spell>
+
+    <!-- ========================================
+         HEALING SPELLS (Heal line)
+         ======================================== -->
+    <Spell RefName="Heal" DisplayName="Heal" Description="Minor healing - restore small amount of HP"
+           DurabilityLoss="0.01" WholesalePrice="15" MerchantMarkupMultiplier="1.5"
+           UseType="Defensive">
+        <Effects Health="0.30" Mana="-0.06"/>
+    </Spell>
+
+    <Spell RefName="GreaterHeal" DisplayName="GreaterHeal" Description="Moderate healing - restore decent HP"
+           DurabilityLoss="0.015" WholesalePrice="50" MerchantMarkupMultiplier="1.5"
+           UseType="Defensive">
+        <Effects Health="0.60" Mana="-0.12"/>
+    </Spell>
+
+    <Spell RefName="FullHeal" DisplayName="FullHeal" Description="Full healing - restore to max HP"
+           DurabilityLoss="0.02" WholesalePrice="150" MerchantMarkupMultiplier="2.0"
+           UseType="Defensive">
+        <Effects Health="1.0" Stamina="0.20" Mana="-0.30"/>
+    </Spell>
+
+    <!-- ========================================
+         SUPPORT SPELLS (Kaja line - buffs)
+         ======================================== -->
+    <Spell RefName="Strengthen" DisplayName="Strengthen" Description="Raise attack power temporarily"
+           DurabilityLoss="0.01" WholesalePrice="30" MerchantMarkupMultiplier="1.5"
+           UseType="Defensive">
+        <Effects Strength="0.05" Stamina="0.10" Mana="-0.10"/>
+    </Spell>
+
+    <Spell RefName="Fortify" DisplayName="Fortify" Description="Raise defense temporarily"
+           DurabilityLoss="0.01" WholesalePrice="30" MerchantMarkupMultiplier="1.5"
+           UseType="Defensive">
+        <Effects Defense="0.05" Health="0.10" Mana="-0.10"/>
+    </Spell>
+
+    <Spell RefName="Hasten" DisplayName="Hasten" Description="Raise speed/evasion temporarily"
+           DurabilityLoss="0.01" WholesalePrice="30" MerchantMarkupMultiplier="1.5"
+           UseType="Defensive">
+        <Effects Speed="0.05" Stamina="0.10" Mana="-0.10"/>
+    </Spell>
+
+    <!-- ========================================
+         SPECIAL/UTILITY
+         ======================================== -->
+    <Spell RefName="Revive" DisplayName="Revive" Description="Revive fallen ally - emergency resurrection"
+           DurabilityLoss="0.05" WholesalePrice="200" MerchantMarkupMultiplier="3.0"
+           UseType="Defensive">
+        <Effects Health="0.50" Stamina="0.30" Mana="-0.40"/>
+    </Spell>
+
+    <Spell RefName="Cleanse" DisplayName="Cleanse" Description="Cure all ailments - complete purification"
+           DurabilityLoss="0.03" WholesalePrice="100" MerchantMarkupMultiplier="2.0"
+           UseType="Defensive">
+        <Effects Health="0.20" Hunger="-0.20" Stamina="0.20" Temperature="3" Thirst="-0.20" Insulation="0" Mana="-0.20"/>
+    </Spell>
+
+</Spells>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="Ambient.StoryGenerator"
+           xmlns="Ambient.StoryGenerator"
+           elementFormDefault="qualified">
+
+    <!-- Theme manifest - metadata about a content theme -->
+    <xs:element name="Theme" type="Theme" />
+
+    <xs:complexType name="Theme">
+        <xs:sequence>
+            <xs:element name="Description" type="xs:string" minOccurs="0" />
+            <xs:element name="Author" type="xs:string" minOccurs="0" />
+            <xs:element name="Version" type="xs:string" minOccurs="0" />
+            <xs:element name="Tags" type="TagList" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="RefName" type="xs:string" use="required" />
+        <xs:attribute name="DisplayName" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="TagList">
+        <xs:sequence>
+            <xs:element name="Tag" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!--
+    Note: Actual content files (CharacterArchetypes.xml, Equipment.xml, etc.)
+    use the standard Ambient.Domain schemas. The theme directory structure is:
+
+    Themes/{ThemeRefName}/
+    ├── Theme.xml                      (this schema)
+    ├── CharacterArchetypes.xml        (Ambient.Domain schema)
+    ├── Equipment.xml                  (Ambient.Domain schema)
+    ├── Spells.xml                     (Ambient.Domain schema)
+    ├── Consumables.xml                (Ambient.Domain schema)
+    ├── Tools.xml                      (Ambient.Domain schema)
+    └── Factions.xml                   (Ambient.Domain schema)
+    -->
+
+</xs:schema>

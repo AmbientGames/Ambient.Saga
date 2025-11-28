@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CombatStances xmlns="Ambient.Domain"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ========================================
+         COMBAT STANCES
+         Generic tactical postures for any game type
+         Multipliers: 1.0 = neutral, 1.2 = +20%, 0.8 = -20%
+         ======================================== -->
+
+    <!-- Balanced - Neutral stance, no bonuses or penalties -->
+    <CombatStance RefName="Balanced" DisplayName="Balanced" Description="Well-rounded stance with no significant strengths or weaknesses"
+            StrengthMultiplier="1.0"
+            DefenseMultiplier="1.0"
+            SpeedMultiplier="1.0"
+            MagicMultiplier="1.0"/>
+
+    <!-- Defensive - Prioritize survival, sacrifice offense -->
+    <CombatStance RefName="Defensive" DisplayName="Defensive" Description="Focus on defense and survival at the cost of attack power"
+            StrengthMultiplier="0.8"
+            DefenseMultiplier="1.3"
+            SpeedMultiplier="0.9"
+            MagicMultiplier="0.9"/>
+
+    <!-- Offensive - Prioritize damage, sacrifice defense -->
+    <CombatStance RefName="Offensive" DisplayName="Offensive" Description="Aggressive stance that deals more damage but lowers defenses"
+            StrengthMultiplier="1.3"
+            DefenseMultiplier="0.7"
+            SpeedMultiplier="1.0"
+            MagicMultiplier="1.1"/>
+
+    <!-- Evasive - Prioritize speed and dodging, sacrifice durability -->
+    <CombatStance RefName="Evasive" DisplayName="Evasive" Description="Quick and agile stance that relies on speed over raw defense"
+            StrengthMultiplier="0.9"
+            DefenseMultiplier="0.8"
+            SpeedMultiplier="1.4"
+            MagicMultiplier="1.0"/>
+
+    <!-- ========================================
+         USAGE NOTES
+         ======================================== -->
+    <!--
+    Stances can be switched during battle (similar to affinity switching).
+    They modify combat stats multiplicatively:
+
+    - Balanced: No modifiers - stable baseline
+    - Defensive: High defense (+30%), lower attack (-20%), slightly slower
+    - Offensive: High attack (+30%), low defense (-30%), slight magic boost
+    - Evasive: Very high speed (+40%), lower defense (-20%), slightly lower attack
+
+    Game developers can create custom stances for their specific game mechanics
+    by adding new stance definitions with appropriate multipliers.
+    -->
+
+</CombatStances>

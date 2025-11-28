@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorldConfigurations
+    xmlns="Ambient.Domain"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="Ambient.Domain ..\DefinitionXsd\WorldConfiguration.xsd">
+    <WorldConfiguration
+        RefName="Ise"
+        DisplayName="Ise, Japan"
+        Description="Ise: Japan's Sacred City - Persona 4 Golden themed field trip"
+        Template="Japan"
+        ConsumableItemsRef="Ise"
+        SpellsRef="Ise"
+        EquipmentRef="Ise"
+        QuestTokensRef="Ise"
+        CharactersRef="Ise"
+        CharacterArchetypesRef="Ise"
+        CharacterAffinitiesRef="Ise"
+        CombatStancesRef="Ise"
+        ToolsRef="Ise"
+        BuildingMaterialsRef="Ise"
+        DialogueTreesRef="Ise"
+        AvatarArchetypesRef="Ise"
+        SagaFeaturesRef="Ise"
+        AchievementsRef="Ise"
+        FactionsRef="Ise"
+        QuestsRef="Ise"
+        SagaArcsRef="Ise"
+        SagaTriggerPatternsRef="Ise"
+        SpawnLatitude="34.492"
+        SpawnLongitude="136.702"
+        ChunkHeight="256"
+        Region="Japan"
+        Difficulty="Normal"
+        RecommendedFor="RPG Development"
+        Seed="0.5739283232"
+        BlockScaleFactor="0.5"
+        Gravity="10.0"
+        ShortNightsAndWinter="true"
+        LoadoutSlotsRef="Ise">
+        <HeightMapSettings
+            RelativePath="GeographicData/Ise_Compressed.tif"
+            HorizontalScale="1.0"
+            VerticalScale="1.0"
+            VerticalShift="0" />
+    </WorldConfiguration>
+</WorldConfigurations>

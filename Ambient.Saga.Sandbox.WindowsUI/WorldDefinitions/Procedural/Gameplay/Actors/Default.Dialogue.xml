@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DialogueTrees xmlns="Ambient.Domain"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ========================================
+         MEDIEVAL FANTASY DIALOGUE
+         Dark creatures don't negotiate - they're hostile
+         ======================================== -->
+
+    <!-- ========================================
+         COMMON SHADOW - Immediately hostile
+         ======================================== -->
+    <DialogueTree RefName="CommonDarkCreature" DisplayName="Common Dark Creature Encounter" StartNodeId="hostile_spawn">
+        <Node NodeId="hostile_spawn">
+            <Text>*The dark creature appears before you*</Text>
+            <Text>*The dark creature's form warps and distorts*</Text>
+            <Action Type="AssignTrait" Trait="Hostile"/>
+            <Action Type="AssignTrait" Trait="Aggression" TraitValue="60"/>
+            <Action Type="AssignTrait" Trait="Morale" TraitValue="50"/>
+            <Action Type="AssignTrait" Trait="FleeThreshold" TraitValue="20"/>
+            <Action Type="StartCombat" CharacterRef="@Self"/>
+        </Node>
+    </DialogueTree>
+
+    <!-- ========================================
+         AGGRESSIVE SHADOW - High aggression
+         ======================================== -->
+    <DialogueTree RefName="AggressiveDarkCreature" DisplayName="Aggressive Dark Creature" StartNodeId="angry_spawn">
+        <Node NodeId="angry_spawn">
+            <Text>RAAAAGH! I am rage incarnate!</Text>
+            <Text>*The dark creature lunges forward with fury*</Text>
+            <Action Type="AssignTrait" Trait="Hostile"/>
+            <Action Type="AssignTrait" Trait="Aggression" TraitValue="85"/>
+            <Action Type="AssignTrait" Trait="Morale" TraitValue="75"/>
+            <Action Type="AssignTrait" Trait="FleeThreshold" TraitValue="10"/>
+            <Action Type="StartCombat" CharacterRef="@Self"/>
+        </Node>
+    </DialogueTree>
+
+    <!-- ========================================
+         MINI-BOSS SHADOW - Stronger variant
+         ======================================== -->
+    <DialogueTree RefName="MiniBossDarkCreature" DisplayName="Mini-Boss Dark Creature" StartNodeId="check_defeated">
+
+        <Node NodeId="check_defeated" NextNodeId="first_encounter">
+            <Condition Type="BossDefeatedCount" RefName="@Self" Operator="GreaterThan" Value="0"/>
+            <Text>*The dark entity's form is weakened...*</Text>
+            <Text>You... have grown stronger...</Text>
+        </Node>
+
+        <Node NodeId="first_encounter">
+            <Text>I am a powerful dark entity!</Text>
+            <Text>Face me, if you dare!</Text>
+            <Choice Text="I'll defeat you!" NextNodeId="start_battle"/>
+            <Choice Text="I need to prepare..." NextNodeId="flee"/>
+        </Node>
+
+        <Node NodeId="start_battle">
+            <Text>Then witness dark power!</Text>
+            <Action Type="AssignTrait" Trait="Hostile"/>
+            <Action Type="AssignTrait" Trait="Aggression" TraitValue="70"/>
+            <Action Type="AssignTrait" Trait="Morale" TraitValue="80"/>
+            <Action Type="AssignTrait" Trait="FleeThreshold" TraitValue="15"/>
+            <Action Type="StartCombat" CharacterRef="@Self"/>
+        </Node>
+
+        <Node NodeId="flee">
+            <Text>Flee if you must...</Text>
+            <Text>But we shall meet again...</Text>
+        </Node>
+
+    </DialogueTree>
+
+    <!-- ========================================
+         SHADOW SELF BOSS - Major confrontation
+         Represents defeating the darkness
+         ======================================== -->
+    <DialogueTree RefName="DarkDoppelgangerBoss" DisplayName="Dark Doppelganger Boss" StartNodeId="check_defeated">
+
+        <Node NodeId="check_defeated" NextNodeId="first_encounter">
+            <Condition Type="BossDefeatedCount" RefName="@Self" Operator="GreaterThan" Value="0"/>
+            <Text>*A calm presence emanates from the creature*</Text>
+            <Text>You've conquered me... I am defeated.</Text>
+            <Text>There is nothing left to prove.</Text>
+        </Node>
+
+        <Node NodeId="first_encounter">
+            <Text>I am the darkness within you.</Text>
+            <Text>All the darkness you fight...</Text>
+            <Text>I AM YOUR DARKNESS!</Text>
+            <Choice Text="No... I reject you!" NextNodeId="denial"/>
+            <Choice Text="You're right... I must face you." NextNodeId="acceptance"/>
+        </Node>
+
+        <!-- Denial path - leads to battle -->
+        <Node NodeId="denial">
+            <Text>REJECT ME?! THEN FACE MY WRATH!</Text>
+            <Text>*The creature's form grows massive and distorted*</Text>
+            <Action Type="AssignTrait" Trait="Hostile"/>
+            <Action Type="AssignTrait" Trait="BossFight"/>
+            <Action Type="AssignTrait" Trait="Aggression" TraitValue="90"/>
+            <Action Type="AssignTrait" Trait="Morale" TraitValue="95"/>
+            <Action Type="AssignTrait" Trait="FleeThreshold" TraitValue="5"/>
+            <Action Type="StartBossBattle" CharacterRef="@Self"/>
+        </Node>
+
+        <!-- Acceptance path - no battle, rewards -->
+        <Node NodeId="acceptance">
+            <Text>...</Text>
+            <Text>*The creature's form becomes calm, then begins to glow*</Text>
+            <Text>At last... you understand.</Text>
+            <Text>*A brilliant light engulfs you both*</Text>
+            <Text>You have gained a new power - the power to face yourself!</Text>
+            <Action Type="AssignTrait" Trait="Friendly"/>
+            <Action Type="GiveEquipment" RefName="ShadowMask"/>
+            <Action Type="TransferCurrency" Amount="2000"/>
+            <Action Type="UnlockAchievement" RefName="ACH_SHADOW_SELF_ACCEPTED"/>
+        </Node>
+
+    </DialogueTree>
+
+    <!-- ========================================
+         GOLDEN HAND - Rare treasure Shadow
+         Flees quickly, must defeat fast
+         ======================================== -->
+    <DialogueTree RefName="GoldenHandBoss" DisplayName="Golden Hand" StartNodeId="spawn">
+
+        <Node NodeId="spawn">
+            <Text>*A golden Shadow appears, radiating wealth!*</Text>
+            <Text>*It looks ready to flee at any moment!*</Text>
+            <Action Type="AssignTrait" Trait="Hostile"/>
+            <Action Type="AssignTrait" Trait="Aggression" TraitValue="20"/>
+            <Action Type="AssignTrait" Trait="Morale" TraitValue="10"/>
+            <Action Type="AssignTrait" Trait="FleeThreshold" TraitValue="90"/>
+            <Action Type="StartCombat" CharacterRef="@Self"/>
+        </Node>
+
+    </DialogueTree>
+
+    <!-- ========================================
+         THE REAPER - Death incarnate
+         Extremely dangerous optional boss
+         ======================================== -->
+    <DialogueTree RefName="ReaperBoss" DisplayName="The Reaper" StartNodeId="check_defeated">
+
+        <Node NodeId="check_defeated" NextNodeId="first_encounter">
+            <Condition Type="BossDefeatedCount" RefName="@Self" Operator="GreaterThan" Value="0"/>
+            <Text>*The chains rattle ominously*</Text>
+            <Text>You have already faced Death once...</Text>
+            <Text>Do not tempt fate again.</Text>
+        </Node>
+
+        <Node NodeId="first_encounter">
+            <Text>*The sound of dragging chains fills the air*</Text>
+            <Text>*An overwhelming presence of Death approaches*</Text>
+            <Text>Your time... has come...</Text>
+            <Choice Text="I won't run from Death!" NextNodeId="brave"/>
+            <Choice Text="RUN!" NextNodeId="flee"/>
+        </Node>
+
+        <Node NodeId="brave">
+            <Text>Brave... or foolish...</Text>
+            <Text>Come then. Face your mortality.</Text>
+            <Action Type="AssignTrait" Trait="Hostile"/>
+            <Action Type="AssignTrait" Trait="BossFight"/>
+            <Action Type="AssignTrait" Trait="Aggression" TraitValue="95"/>
+            <Action Type="AssignTrait" Trait="Morale" TraitValue="100"/>
+            <Action Type="AssignTrait" Trait="FleeThreshold" TraitValue="0"/>
+            <Action Type="StartBossBattle" CharacterRef="@Self"/>
+        </Node>
+
+        <Node NodeId="flee">
+            <Text>*The chains fade into the distance*</Text>
+            <Text>Wise... for now...</Text>
+        </Node>
+
+    </DialogueTree>
+
+    <!-- ========================================
+         SHRINE GUARDIAN BOSS - Protector of Oakvale
+         ======================================== -->
+    <DialogueTree RefName="TempleGuardianBoss" DisplayName="Divine Guardian" StartNodeId="check_defeated">
+
+        <Node NodeId="check_defeated" NextNodeId="check_worthy">
+            <Condition Type="BossDefeatedCount" RefName="@Self" Operator="GreaterThan" Value="0"/>
+            <Text>You have already proven your worth, young seeker.</Text>
+            <Text>The blessing of Oakvale remains with you.</Text>
+        </Node>
+
+        <!-- Check if player has Temple Charm (shows respect) -->
+        <Node NodeId="check_worthy" NextNodeId="unworthy">
+            <Condition Type="HasConsumable" RefName="Talisman" Operator="GreaterThanOrEqual" Value="1"/>
+            <Text>You carry a sacred charm... you have shown respect for this holy place.</Text>
+            <Text>Yet to earn the true blessing of Oakvale, you must prove yourself in combat.</Text>
+            <Text>Do you dare face the guardian of Amaterasu's temple?</Text>
+            <Choice Text="I accept the trial!" NextNodeId="worthy_battle"/>
+            <Choice Text="I need more time" NextNodeId="worthy_retreat"/>
+        </Node>
+
+        <!-- No temple charm -->
+        <Node NodeId="unworthy">
+            <Text>Halt, outsider. This is sacred ground.</Text>
+            <Text>You have not shown proper respect to the temple.</Text>
+            <Text>Return with a sacred charm as proof of your devotion.</Text>
+        </Node>
+
+        <!-- Worthy battle -->
+        <Node NodeId="worthy_battle">
+            <Text>Very well. Show me your strength, and earn the blessing of the Sun Goddess!</Text>
+            <Action Type="AssignTrait" Trait="Hostile"/>
+            <Action Type="AssignTrait" Trait="BossFight"/>
+            <Action Type="AssignTrait" Trait="Aggression" TraitValue="75"/>
+            <Action Type="AssignTrait" Trait="Morale" TraitValue="90"/>
+            <Action Type="AssignTrait" Trait="FleeThreshold" TraitValue="10"/>
+            <Action Type="TakeConsumable" RefName="Talisman" Amount="1"/>
+            <Action Type="StartBossBattle" CharacterRef="@Self"/>
+        </Node>
+
+        <Node NodeId="worthy_retreat">
+            <Text>Preparation is the mark of a wise warrior.</Text>
+            <Text>Return when you are ready.</Text>
+        </Node>
+
+    </DialogueTree>
+
+    <!-- ========================================
+         KONBINI MERCHANT - Modern convenience store
+         ======================================== -->
+    <DialogueTree RefName="TradingPostMerchant" DisplayName="TradingPost Merchant" StartNodeId="greeting">
+
+        <Node NodeId="greeting">
+            <Text>Welcome to the trading post!</Text>
+            <Text>Can I help you find anything?</Text>
+            <Choice Text="Let me see what you have" NextNodeId="open_trade"/>
+            <Choice Text="What do you recommend?" NextNodeId="recommendations"/>
+            <Choice Text="Just browsing" NextNodeId="browsing"/>
+        </Node>
+
+        <Node NodeId="open_trade">
+            <Text>Sure thing! Take your time browsing.</Text>
+            <Action Type="AssignTrait" Trait="Friendly"/>
+            <Action Type="AssignTrait" Trait="WillTrade"/>
+            <Action Type="OpenMerchantTrade" CharacterRef="@Self"/>
+        </Node>
+
+        <Node NodeId="recommendations">
+            <Text>The onigiri are fresh today, and the instant ramen is always popular.</Text>
+            <Text>If you're exploring the temples, grab some sports drinks to stay hydrated!</Text>
+            <Choice Text="Sounds good, I'll take a look" NextNodeId="open_trade"/>
+            <Choice Text="Thanks for the tip!" NextNodeId="thanks"/>
+        </Node>
+
+        <Node NodeId="browsing">
+            <Text>No problem! Let me know if you need anything.</Text>
+        </Node>
+
+        <Node NodeId="thanks">
+            <Text>Anytime! Have a great day!</Text>
+        </Node>
+
+    </DialogueTree>
+
+    <!-- ========================================
+         MYSTERIOUS FOX - Healing service 
+         ======================================== -->
+    <DialogueTree RefName="MysteriousFox" DisplayName="Mysterious Fox" StartNodeId="greeting">
+
+        <Node NodeId="greeting">
+            <Text>*A fox with knowing eyes approaches*</Text>
+            <Text>*It seems to gesture toward the temple*</Text>
+            <Text>*You sense it wants to help... for a price*</Text>
+            <Action Type="AssignTrait" Trait="Friendly"/>
+            <Action Type="AssignTrait" Trait="WillTrade"/>
+            <Choice Text="Heal me (1000 yen)" NextNodeId="heal" Cost="1000"/>
+            <Choice Text="Full restore (2000 yen)" NextNodeId="full_restore" Cost="2000"/>
+            <Choice Text="No thanks" NextNodeId="decline"/>
+        </Node>
+
+        <Node NodeId="heal">
+            <Text>*The fox touches your hand with its tail*</Text>
+            <Text>*A warm, healing energy flows through you*</Text>
+            <Action Type="TransferCurrency" Amount="-1000"/>
+            <Action Type="GiveConsumable" RefName="Salve" Amount="1"/>
+        </Node>
+
+        <Node NodeId="full_restore">
+            <Text>*The fox places its paw on your chest*</Text>
+            <Text>*Divine light envelops you, restoring all your strength!*</Text>
+            <Action Type="TransferCurrency" Amount="-2000"/>
+            <Action Type="GiveConsumable" RefName="RevivalPotion" Amount="1"/>
+            <Action Type="GiveConsumable" RefName="Salve" Amount="2"/>
+        </Node>
+
+        <Node NodeId="decline">
+            <Text>*The fox tilts its head, then wanders off*</Text>
+        </Node>
+
+    </DialogueTree>
+
+    <!-- ========================================
+         STUDENT WITNESS - Info about Shadows
+         ======================================== -->
+    <DialogueTree RefName="TravelerWitness" DisplayName="Fellow Traveler" StartNodeId="first_meeting">
+
+        <Node NodeId="first_meeting" NextNodeId="return_visit">
+            <Condition Type="PlayerVisitCount" RefName="@Self" Operator="Equals" Value="1"/>
+            <Text>Oh! You're from our school, right?</Text>
+            <Text>This place is amazing, but... have you noticed anything weird?</Text>
+            <Text>I swear I've been seeing strange shadows moving around...</Text>
+            <Choice Text="Tell me more" NextNodeId="more_info"/>
+            <Choice Text="Probably just your imagination" NextNodeId="dismiss"/>
+        </Node>
+
+        <Node NodeId="return_visit">
+            <Text>Hey again! Still exploring the temples?</Text>
+            <Text>Be careful out there...</Text>
+        </Node>
+
+        <Node NodeId="more_info">
+            <Text>Right?! They're like... distorted figures.</Text>
+            <Text>They appear when I'm alone, then vanish.</Text>
+            <Text>Some look almost human, but wrong somehow...</Text>
+            <Text>Maybe they're connected to the temple's legends?</Text>
+            <Action Type="AssignTrait" Trait="Friendly"/>
+            <Action Type="GiveConsumable" RefName="DriedFruit" Amount="3"/>
+        </Node>
+
+        <Node NodeId="dismiss">
+            <Text>Yeah... you're probably right.</Text>
+            <Text>This place just has a weird atmosphere, that's all.</Text>
+        </Node>
+
+    </DialogueTree>
+
+</DialogueTrees>

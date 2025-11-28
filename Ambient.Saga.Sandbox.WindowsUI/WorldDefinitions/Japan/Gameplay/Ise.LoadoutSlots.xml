@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LoadoutSlots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <LoadoutSlot RefName="Head" DisplayName="Head" Category="Armor" />
+  <LoadoutSlot RefName="Chest" DisplayName="Chest" Category="Armor" />
+  <LoadoutSlot RefName="Legs" DisplayName="Legs" Category="Armor" />
+  <LoadoutSlot RefName="Feet" DisplayName="Feet" Category="Armor" />
+  <LoadoutSlot RefName="LeftHand" DisplayName="Left Hand" Category="Weapon" />
+  <LoadoutSlot RefName="RightHand" DisplayName="Right Hand" Category="Weapon" />
+  <LoadoutSlot RefName="Affinity" DisplayName="Affinity" Category="Special" IsSpecial="true" />
+  <LoadoutSlot RefName="Stance" DisplayName="Stance" Category="Special" IsSpecial="true" />
+</LoadoutSlots>

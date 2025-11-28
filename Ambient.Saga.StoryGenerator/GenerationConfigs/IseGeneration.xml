@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GenerationConfiguration xmlns="Ambient.StoryGenerator" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.StoryGenerator ../DefinitionXsd/GenerationConfiguration.xsd" WorldRef="Ise" DisplayName="Ise, Japan (AI Story Generated) (Generation Config)" Description="Ise with procedurally generated story connections" GenerationStyle="Trail" Spacing="500" Seed="42" Theme="IseFieldTrip" OutputPath="Generated">
+    <SourceLocations DisplayName="Kōtai Jingū (Inner Shrine)" Description="Inner Shrine of Ise Jingū, dedicated to Amaterasu Ōmikami" Type="Structure" Lat="34.455020" Lon="136.725820" />
+    <SourceLocations DisplayName="Toyōke Daijingū (Outer Shrine)" Description="Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" Type="Structure" Lat="34.486900" Lon="136.703100" />
+    <SourceLocations DisplayName="Aramatsuri-no-Miya" Description="Auxiliary shrine within Naikū complex" Type="Structure" Lat="34.456090" Lon="136.725930" />
+    <SourceLocations DisplayName="Kazahinomi-no-Miya" Description="Wind shrine within Naikū complex" Type="Structure" Lat="34.454720" Lon="136.725920" />
+    <SourceLocations DisplayName="Taka-no-Miya" Description="Auxiliary shrine within Gekū complex" Type="Structure" Lat="34.493250" Lon="136.702240" />
+    <SourceLocations DisplayName="Tsuchi-no-Miya" Description="Earth shrine within Gekū complex" Type="Structure" Lat="34.492200" Lon="136.702060" />
+    <SourceLocations DisplayName="Kazamiya (Gekū)" Description="Wind shrine at Gekū complex" Type="Structure" Lat="34.492020" Lon="136.702160" />
+</GenerationConfiguration>

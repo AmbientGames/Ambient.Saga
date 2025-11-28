@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="Acquirables/Consumable.xsd" />
+    <xs:include schemaLocation="Acquirables/Spell.xsd" />
+    <xs:include schemaLocation="Acquirables/Equipment.xsd" />
+    <xs:include schemaLocation="Acquirables/Tool.xsd" />
+    <xs:include schemaLocation="Acquirables/BuildingMaterial.xsd" />
+    <xs:include schemaLocation="Acquirables/QuestToken.xsd" />
+    <xs:include schemaLocation="Actors/Characters/Characters.xsd" />
+    <xs:include schemaLocation="Actors/Characters/CharacterArchetype.xsd" />
+    <xs:include schemaLocation="Actors/Characters/Catalogs/CharacterAffinities.xsd" />
+    <xs:include schemaLocation="Actors/Characters/Catalogs/CombatStances.xsd" />
+    <xs:include schemaLocation="Actors/Characters/Catalogs/StatusEffects.xsd" />
+    <xs:include schemaLocation="LoadoutSlots.xsd" />
+    <xs:include schemaLocation="Actors/Avatar/AvatarBase.xsd" />
+    <xs:include schemaLocation="Actors/Avatar/AvatarArchetype.xsd" />
+    <xs:include schemaLocation="Actors/Characters/Dialogue.xsd" />
+    <xs:include schemaLocation="Achievements/Achievement.xsd" />
+    <xs:include schemaLocation="Factions/Faction.xsd" />
+    <xs:include schemaLocation="Quests/Quest.xsd" />
+    <xs:include schemaLocation="SagaEngine/SagaArcs.xsd" />
+    <xs:include schemaLocation="SagaEngine/SagaTriggerPatterns.xsd" />
+    <xs:include schemaLocation="SagaEngine/SagaFeatures.xsd" />
+    <xs:element name="Consumables" type="ConsumableCatalog">
+        <xs:key name="UniqueConsumableRefName">
+            <xs:selector xpath="Consumable" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="Spells" type="SpellCatalog">
+        <xs:key name="UniqueSpellRefName">
+            <xs:selector xpath="Spell" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="DialogueTrees" type="DialogueTrees">
+        <xs:key name="UniqueDialogueTreeRefName">
+            <xs:selector xpath="DialogueTree" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="AvatarArchetypes" type="AvatarArchetypes">
+        <xs:key name="UniqueArchetypeRefName">
+            <xs:selector xpath="AvatarArchetype" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="Equipment" type="EquipmentCatalog">
+        <xs:key name="UniqueEquipmentRefName">
+            <xs:selector xpath="Equipment" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="Characters" type="Characters">
+        <xs:key name="UniqueCharacterRefName">
+            <xs:selector xpath="Character" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="CharacterArchetypes" type="CharacterArchetypes">
+        <xs:key name="UniqueCharacterArchetypeRefName">
+            <xs:selector xpath="CharacterArchetype" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="CharacterAffinities" type="CharacterAffinities">
+        <xs:key name="UniqueCharacterAffinityRefName">
+            <xs:selector xpath="Affinity" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="CombatStances" type="CombatStances">
+        <xs:key name="UniqueCombatStanceRefName">
+            <xs:selector xpath="CombatStance" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="LoadoutSlots" type="LoadoutSlots">
+        <xs:key name="UniqueLoadoutSlotRefName">
+            <xs:selector xpath="LoadoutSlot" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="StatusEffects" type="StatusEffects">
+        <xs:key name="UniqueStatusEffectRefName">
+            <xs:selector xpath="StatusEffect" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="Tools" type="ToolCatalog">
+        <xs:key name="UniqueToolRefName">
+            <xs:selector xpath="Tool" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="BuildingMaterials" type="BuildingMaterialCatalog">
+        <xs:key name="UniqueMaterialRefName">
+            <xs:selector xpath="BuildingMaterial" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="Achievements" type="Achievements">
+        <xs:key name="UniqueAchievementRefName">
+            <xs:selector xpath="Achievement" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="Factions" type="Factions">
+        <xs:key name="UniqueFactionRefName">
+            <xs:selector xpath="Faction" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="QuestTokens" type="QuestTokens">
+        <xs:key name="UniqueQuestTokenRefName">
+            <xs:selector xpath="QuestToken" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="Quests" type="Quests">
+        <xs:key name="UniqueQuestRefName">
+            <xs:selector xpath="Quest" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="SagaFeatures" type="SagaFeatures">
+        <xs:key name="UniqueSagaFeatureRefName">
+            <xs:selector xpath="SagaFeature" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="SagaTriggerPatterns" type="SagaTriggerPatterns">
+        <xs:key name="UniqueSagaTriggerPatternRefName">
+            <xs:selector xpath="SagaTriggerPattern" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="SagaArcs" type="SagaArcs">
+        <xs:key name="UniqueSagaArcRefName">
+            <xs:selector xpath="SagaArc" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:complexType name="GameplayComponents">
+        <xs:sequence>
+            <xs:element ref="Consumables" />
+            <xs:element ref="Spells" />
+            <xs:element ref="DialogueTrees" />
+            <xs:element ref="AvatarArchetypes" />
+            <xs:element ref="Equipment" />
+            <xs:element ref="Characters" />
+            <xs:element ref="CharacterArchetypes" />
+            <xs:element ref="CharacterAffinities" />
+            <xs:element ref="CombatStances" />
+            <xs:element ref="LoadoutSlots" />
+            <xs:element ref="StatusEffects" />
+            <xs:element ref="Tools" />
+            <xs:element ref="BuildingMaterials" />
+            <xs:element ref="Achievements" />
+            <xs:element ref="Factions" />
+            <xs:element ref="QuestTokens" />
+            <xs:element ref="Quests" />
+            <xs:element ref="SagaFeatures" />
+            <xs:element ref="SagaTriggerPatterns" />
+            <xs:element ref="SagaArcs" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

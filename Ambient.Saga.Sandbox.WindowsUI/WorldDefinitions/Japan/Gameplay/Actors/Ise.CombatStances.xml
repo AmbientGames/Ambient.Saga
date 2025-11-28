@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CombatStances xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <CombatStance RefName="Balanced" DisplayName="Balanced" Description="Well-rounded stance with no significant strengths or weaknesses" StrengthMultiplier="1.0" DefenseMultiplier="1.0" SpeedMultiplier="1.0" MagicMultiplier="1.0" />
+  <CombatStance RefName="Defensive" DisplayName="Defensive" Description="Focus on defense and survival at the cost of attack power" StrengthMultiplier="0.8" DefenseMultiplier="1.3" SpeedMultiplier="0.9" MagicMultiplier="0.9" />
+  <CombatStance RefName="Offensive" DisplayName="Offensive" Description="Aggressive stance that deals more damage but lowers defenses" StrengthMultiplier="1.3" DefenseMultiplier="0.7" SpeedMultiplier="1.0" MagicMultiplier="1.1" />
+</CombatStances>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="DegradableAcquirable.xsd" />
+    <xs:include schemaLocation="../Usability.xsd" />
+    <xs:include schemaLocation="CharacterEffects.xsd" />
+    <xs:simpleType name="SpellRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Spell">
+        <xs:complexContent>
+            <xs:extension base="DegradableAcquirable">
+                <xs:sequence>
+                    <xs:element name="Effects" type="CharacterEffects" minOccurs="1" maxOccurs="1" />
+                </xs:sequence>
+                <xs:attributeGroup ref="UseAttributes" />
+                <!-- Status effects applied on cast -->
+                <xs:attribute name="StatusEffectRef" type="xs:string" use="optional" />
+                <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="1.0" />
+                <!-- Cleanse status effects -->
+                <xs:attribute name="CleansesStatusEffects" type="xs:boolean" use="optional" default="false" />
+                <xs:attribute name="CleanseTargetSelf" type="xs:boolean" use="optional" default="true" />
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="SpellCatalog">
+        <xs:sequence>
+            <xs:element name="Spell" type="Spell" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
