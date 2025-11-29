@@ -19,7 +19,7 @@ dotnet test --filter "FullyQualifiedName~GameplayTests"
 dotnet test /p:CollectCoverage=true
 
 # Build specific project
-dotnet build Ambient.SagaEngine/Ambient.SagaEngine.csproj
+dotnet build Ambient.Saga.Engine/Ambient.Saga.Engine.csproj
 ```
 
 ## Architecture
@@ -31,15 +31,15 @@ Ambient/                           # Core 3-layer architecture
 └── Infrastructure/                # EF Core, LiteDB, external integrations
 
 Ambient.Saga/                      # Game-specific systems
-├── SagaEngine/                    # CQRS application (Commands, Queries, Handlers)
+├── Engine/                        # CQRS application (Commands, Queries, Handlers)
 ├── Presentation.UI/               # ImGui game overlay (.NET 10-windows)
 ├── Sandbox.WindowsUI/             # WinForms/WPF test application
-└── StoryGenerator/                # Procedural generation tools
+└── WorldForge/                    # Procedural world generation tools
 ```
 
 ### CQRS Pattern (MediatR)
 
-Commands and queries live in `Ambient.SagaEngine/Application/`:
+Commands and queries live in `Ambient.Saga.Engine/Application/`:
 - Commands modify state: `Commands/Saga/` → handled by `Handlers/Saga/`
 - Queries read state: `Queries/Saga/` or `Queries/Loading/`
 - All commands pass through validation/logging pipeline behaviors (`Behaviors/`)
@@ -47,7 +47,7 @@ Commands and queries live in `Ambient.SagaEngine/Application/`:
 
 ### Key Domain Systems
 
-Located in `Ambient.SagaEngine/Domain/Rpg/`:
+Located in `Ambient.Saga.Engine/Domain/Rpg/`:
 - `Dialogue/` - XML-based dialogue trees with conditions and actions
 - `Battle/` - Turn-based combat system
 - `Quests/` - Quest tracking with stages
@@ -76,8 +76,8 @@ Uses official NuGet source only (see `nuget.config`).
 ## Key Documentation
 
 - `Ambient.Saga.Presentation.UI/Services/DIALOGUE_SYSTEM.md` - Dialogue tree implementation
-- `Ambient.SagaEngine/Application/Commands/Saga/README.md` - Available saga commands
-- `Ambient.SagaEngine.Tests/IntegrationTests/Cqrs/README.md` - CQRS test patterns
+- `Ambient.Saga.Engine/Application/Commands/Saga/README.md` - Available saga commands
+- `Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs/README.md` - CQRS test patterns
 
 ## Tech Stack
 

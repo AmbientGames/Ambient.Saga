@@ -10,14 +10,14 @@ using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Presentation.UI.Models;
 using Ambient.Saga.Presentation.UI.Services;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.StoryGenerator;
-using Ambient.SagaEngine.Application.Commands.Saga;
-using Ambient.SagaEngine.Application.Queries.Loading;
-using Ambient.SagaEngine.Application.Queries.Saga;
-using Ambient.SagaEngine.Application.Results.Saga;
-using Ambient.SagaEngine.Contracts;
-using Ambient.SagaEngine.Domain.Rpg.Sagas;
-using Ambient.SagaEngine.Domain.Services;
+using Ambient.Saga.WorldForge;
+using Ambient.Saga.Engine.Application.Commands.Saga;
+using Ambient.Saga.Engine.Application.Queries.Loading;
+using Ambient.Saga.Engine.Application.Queries.Saga;
+using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.Engine.Contracts;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas;
+using Ambient.Saga.Engine.Domain.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SixLabors.ImageSharp.PixelFormats;
@@ -1195,7 +1195,7 @@ public partial class MainViewModel : ObservableObject
             // For procedural worlds with GenerationConfiguration, create a placeholder heightmap
             // so spiral-generated SagaArcs can be visualized
             var solutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
-            var configsDir = Path.Combine(solutionDir, "Ambient.Saga.StoryGenerator", "GenerationConfigs");
+            var configsDir = Path.Combine(solutionDir, "Ambient.Saga.WorldForge", "GenerationConfigs");
             var generationConfigLoader = new GenerationConfigurationLoader(configsDir);
             if (generationConfigLoader.HasGenerationConfig(world.WorldConfiguration.RefName))
             {

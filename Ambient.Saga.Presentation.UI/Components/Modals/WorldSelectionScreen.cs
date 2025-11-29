@@ -1,5 +1,5 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.StoryGenerator;
+using Ambient.Saga.WorldForge;
 using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
@@ -84,7 +84,7 @@ public class WorldSelectionScreen
 
             // Generate button (appears when world has a generation config)
             var solutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
-            var configsDir = Path.Combine(solutionDir, "Ambient.Saga.StoryGenerator", "GenerationConfigs");
+            var configsDir = Path.Combine(solutionDir, "Ambient.Saga.WorldForge", "GenerationConfigs");
             var generationConfigLoader = new GenerationConfigurationLoader(configsDir);
             if (generationConfigLoader.HasGenerationConfig(viewModel.SelectedConfiguration.RefName))
             {
@@ -97,7 +97,7 @@ public class WorldSelectionScreen
 
                     try
                     {
-                        var generator = new StoryGenerator.StoryGenerator();
+                        var generator = new Ambient.Saga.WorldForge.StoryGenerator();
                         var generationConfig = generationConfigLoader.LoadConfig(viewModel.SelectedConfiguration.RefName);
 
                         // Get the source WorldDefinitions directory (not bin)

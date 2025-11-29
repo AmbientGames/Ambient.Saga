@@ -8,7 +8,7 @@ namespace Ambient.Saga.Sandbox.Tests;
 ///
 /// TODO: These tests need to be rewritten for the new CQRS repository.
 /// The old SagaInstanceRepository_Old used synchronous methods and different patterns.
-/// The new repository (Ambient.SagaEngine.Infrastructure.Persistence.SagaInstanceRepository) uses:
+/// The new repository (Ambient.Saga.Engine.Infrastructure.Persistence.SagaInstanceRepository) uses:
 /// - Async methods (GetOrCreateInstanceAsync, AddTransactionsAsync, etc.)
 /// - Separate collections for instances and transactions
 /// - Transaction records with manual InstanceId linking
@@ -40,5 +40,5 @@ public class SagaInstanceRepositoryTests : IDisposable
     }
 
     // All tests removed - will be rewritten for CQRS async repository
-    // See Ambient.SagaEngine.Infrastructure.Persistence.SagaInstanceRepository for new implementation
+    // See Ambient.Saga.Engine.Infrastructure.Persistence.SagaInstanceRepository for new implementation
 }

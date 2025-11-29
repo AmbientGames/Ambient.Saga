@@ -1,8 +1,8 @@
 ﻿using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
-using Ambient.SagaEngine.Domain.Rpg.Sagas.TransactionLog;
-using Ambient.SagaEngine.Infrastructure.Persistence;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Infrastructure.Persistence;
 using LiteDB;
 using Xunit.Abstractions;
 

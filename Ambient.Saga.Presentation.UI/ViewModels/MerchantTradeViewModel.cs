@@ -1,8 +1,8 @@
 ﻿using Ambient.Domain;
-using Ambient.SagaEngine.Application.Commands.Saga;
-using Ambient.SagaEngine.Domain.Rpg.Sagas;
-using Ambient.SagaEngine.Domain.Rpg.Trade;
-using Ambient.SagaEngine.Domain.Rpg.ValueObjects;
+using Ambient.Saga.Engine.Application.Commands.Saga;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas;
+using Ambient.Saga.Engine.Domain.Rpg.Trade;
+using Ambient.Saga.Engine.Domain.Rpg.ValueObjects;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MediatR;
@@ -161,7 +161,7 @@ public partial class MerchantTradeViewModel : ObservableObject
                 return null;
 
             // Query SagaState for character traits
-            var query = new SagaEngine.Application.Queries.Saga.GetSagaStateQuery
+            var query = new Ambient.Saga.Engine.Application.Queries.Saga.GetSagaStateQuery
             {
                 AvatarId = _context.AvatarId,
                 SagaRef = _context.CurrentSagaRef

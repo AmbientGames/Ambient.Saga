@@ -1,6 +1,6 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Presentation.UI.Services;
-using Ambient.SagaEngine.Application.Queries.Saga;
+using Ambient.Saga.Engine.Application.Queries.Saga;
 using MediatR;
 
 namespace Ambient.Saga.Presentation.UI.Components.Modals;

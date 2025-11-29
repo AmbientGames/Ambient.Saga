@@ -3,7 +3,7 @@ using Ambient.Domain.Contracts;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Saga.Presentation.UI.Services;
-using Ambient.SagaEngine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
