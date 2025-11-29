@@ -1,4 +1,4 @@
-﻿namespace Ambient.Domain.Tests.UnitTests.Gameplay;
+﻿namespace Ambient.Domain.Tests;
 
 /// <summary>
 /// Unit tests for the Tool partial class that represents game tools.

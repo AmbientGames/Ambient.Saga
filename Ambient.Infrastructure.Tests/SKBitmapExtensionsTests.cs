@@ -1,7 +1,7 @@
 ﻿using Ambient.Infrastructure.Extensions;
 using SkiaSharp;
 
-namespace Ambient.Infrastructure.Tests.UnitTests
+namespace Ambient.Infrastructure.Tests
 {
     public class SKBitmapExtensionsTests : IDisposable
     {

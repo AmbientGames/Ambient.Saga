@@ -4,7 +4,7 @@ using System.Reflection;
 using Xunit;
 using Ambient.Application.Utilities;
 
-namespace Ambient.Application.Tests.UnitTests
+namespace Ambient.Application.Tests
 {
     public class FileManagerTests : IDisposable
     {

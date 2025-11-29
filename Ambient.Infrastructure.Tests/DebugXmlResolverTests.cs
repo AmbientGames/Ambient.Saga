@@ -1,7 +1,7 @@
 ﻿using Ambient.Infrastructure.Utilities;
 using System.Xml;
 
-namespace Ambient.Infrastructure.Tests.UnitTests;
+namespace Ambient.Infrastructure.Tests;
 
 /// <summary>
 /// Unit tests for the DebugXmlResolver class that extends XmlUrlResolver for debugging XML operations.

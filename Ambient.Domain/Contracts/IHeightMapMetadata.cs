@@ -1,4 +1,4 @@
-﻿namespace Ambient.Domain;
+﻿namespace Ambient.Domain.Contracts;
 
 /// <summary>
 /// Interface for complete height map metadata including geographic bounds and TIFF properties.

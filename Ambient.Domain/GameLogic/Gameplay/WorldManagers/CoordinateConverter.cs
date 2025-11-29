@@ -1,4 +1,5 @@
-﻿using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.DefinitionExtensions;
 
 namespace Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 
@@ -135,8 +136,8 @@ public static class CoordinateConverter
         else
         {
             // Height map: convert through pixel coordinates
-            var pixelOffsetX = modelX / world.HeightMapLongitudeScale_Validated;
-            var absolutePixelX = world.HeightMapSpawnPixelX_Validated + pixelOffsetX;
+            var pixelOffsetX = modelX / world.HeightMapLongitudeScale;
+            var absolutePixelX = world.HeightMapSpawnPixelX + pixelOffsetX;
             return HeightMapPixelXToLongitude(absolutePixelX, world.HeightMapMetadata);
         }
     }
@@ -157,8 +158,8 @@ public static class CoordinateConverter
         {
             // Height map: convert through pixel coordinates
             var pixelX = HeightMapLongitudeToPixelX(longitude, world.HeightMapMetadata);
-            var pixelOffsetX = pixelX - world.HeightMapSpawnPixelX_Validated;
-            return pixelOffsetX * world.HeightMapLongitudeScale_Validated;
+            var pixelOffsetX = pixelX - world.HeightMapSpawnPixelX;
+            return pixelOffsetX * world.HeightMapLongitudeScale;
         }
     }
 
@@ -177,8 +178,8 @@ public static class CoordinateConverter
         else
         {
             // Height map: convert through pixel coordinates
-            var pixelOffsetZ = modelZ / world.HeightMapLatitudeScale_Validated;
-            var absolutePixelY = world.HeightMapSpawnPixelY_Validated - pixelOffsetZ;
+            var pixelOffsetZ = modelZ / world.HeightMapLatitudeScale;
+            var absolutePixelY = world.HeightMapSpawnPixelY - pixelOffsetZ;
             return HeightMapPixelYToLatitude(absolutePixelY, world.HeightMapMetadata);
         }
     }
@@ -199,8 +200,8 @@ public static class CoordinateConverter
         {
             // Height map: convert through pixel coordinates
             var pixelY = HeightMapLatitudeToPixelY(latitude, world.HeightMapMetadata);
-            var pixelOffsetZ = world.HeightMapSpawnPixelY_Validated - pixelY;
-            return pixelOffsetZ * world.HeightMapLatitudeScale_Validated;
+            var pixelOffsetZ = world.HeightMapSpawnPixelY - pixelY;
+            return pixelOffsetZ * world.HeightMapLatitudeScale;
         }
     }
 

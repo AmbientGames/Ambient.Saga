@@ -1,4 +1,4 @@
-﻿namespace Ambient.Domain.Tests.UnitTests.Gameplay;
+﻿namespace Ambient.Domain.Tests;
 
 /// <summary>
 /// Unit tests for the Achievement class that represents game achievements.

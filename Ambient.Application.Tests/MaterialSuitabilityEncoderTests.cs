@@ -1,8 +1,6 @@
-﻿using Ambient.Application.Utilities;
-using Ambient.Domain.GameLogic.Gameplay.Avatar;
-using Xunit;
+﻿using Ambient.Domain.GameLogic.Gameplay.Avatar;
 
-namespace Ambient.Application.Tests.UnitTests
+namespace Ambient.Application.Tests
 {
     public class MaterialSuitabilityEncoderTests
     {
@@ -122,7 +120,7 @@ namespace Ambient.Application.Tests.UnitTests
             Assert.True((combined & wood) == 0, "Wood should not be present in combined value");
         }        private static bool IsPowerOfTwo(uint value)
         {
-            return value > 0 && (value & (value - 1)) == 0;
+            return value > 0 && (value & value - 1) == 0;
         }
     }
 }

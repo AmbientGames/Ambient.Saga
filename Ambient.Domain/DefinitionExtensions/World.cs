@@ -30,18 +30,6 @@ public partial class World : IWorld
     [XmlIgnore] public WorldConfiguration[] AvailableWorldConfigurations;
     [XmlIgnore] public WorldTemplate WorldTemplate;
     [XmlIgnore] public bool IsProcedural = true;
-
-    [XmlIgnore] public int ActiveAvatars;
-    [XmlIgnore] public int ActiveAvatarCount; 
-    [XmlIgnore] public Stopwatch UtcDelta {  get; set; }
-    [XmlIgnore] public long UtcTickAtSignIn {  get; set; }
-    [XmlIgnore] public ushort[] DerivedBlockDistribution;
-    [XmlIgnore] public int DaysInMonth = 30;
-    [XmlIgnore] public byte[] AtlasTextureImagePngBytes;
-    [XmlIgnore] public int AtlasTextureCount;
-    [XmlIgnore] public ushort DefaultBlockId;
-    [XmlIgnore] public ushort DefaultBlockId2;
-    [XmlIgnore] public int HomeLongitude;
     [XmlIgnore] public GameplayComponents Gameplay => WorldTemplate.Gameplay;
     [XmlIgnore] public Dictionary<string, Tool> ToolsLookup = new Dictionary<string, Tool>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, BuildingMaterial> BuildingMaterialsLookup = new Dictionary<string, BuildingMaterial>(StringComparer.OrdinalIgnoreCase);
@@ -63,31 +51,20 @@ public partial class World : IWorld
     [XmlIgnore] public Dictionary<string, SagaArc> SagaArcLookup = new Dictionary<string, SagaArc>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, List<SagaTrigger>> SagaTriggersLookup = new Dictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Faction> FactionsLookup = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public byte[] ModData;
     [XmlIgnore] public int BlocksBeneathSeaLevel = 64; // this is a todo... coordinate converter requires this - we probably need an interface to do this right.
     [XmlIgnore] public double VerticalScale;
     [XmlIgnore] public double VerticalShift;
     [XmlIgnore] public GeoTiffMetadata HeightMapMetadata;
-    [XmlIgnore] public int HeightMapSpawnPixelX_Validated;
-    [XmlIgnore] public int HeightMapSpawnPixelY_Validated;
-    [XmlIgnore] public double HeightMapLatitudeScale_Validated;
-    [XmlIgnore] public double HeightMapLongitudeScale_Validated;
+    [XmlIgnore] public int HeightMapSpawnPixelX;
+    [XmlIgnore] public int HeightMapSpawnPixelY;
+    [XmlIgnore] public double HeightMapLatitudeScale;
+    [XmlIgnore] public double HeightMapLongitudeScale;
 
     public World()
     {
         // these are mostly for tests, it seems
         WorldConfiguration = new WorldConfiguration();
         WorldTemplate = new WorldTemplate();
-    }
-
-    /// <summary>
-    /// Initializes and starts the internal time delta tracking for world simulation.
-    /// This establishes the world's internal clock independent of system time.
-    /// </summary>
-    public void StartUtcDelta()
-    {
-        UtcDelta = new Stopwatch();
-        UtcDelta.Start();
     }
 
     /// <summary>

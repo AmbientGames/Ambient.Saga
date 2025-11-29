@@ -16,8 +16,8 @@ public static class WorldConfigurationService
         // Only calculate for height map worlds with metadata loaded
         if (world.IsProcedural)
         {
-            world.HeightMapSpawnPixelX_Validated = 0;
-            world.HeightMapSpawnPixelY_Validated = 0;
+            world.HeightMapSpawnPixelX = 0;
+            world.HeightMapSpawnPixelY = 0;
             return;
         }
 
@@ -25,8 +25,8 @@ public static class WorldConfigurationService
         var spawnLongitude = world.WorldConfiguration.SpawnLongitude;
         var spawnLatitude = world.WorldConfiguration.SpawnLatitude;
         
-        world.HeightMapSpawnPixelX_Validated = (int)Math.Round(CoordinateConverter.HeightMapLongitudeToPixelX(spawnLongitude, world.HeightMapMetadata));
-        world.HeightMapSpawnPixelY_Validated = (int)Math.Round(CoordinateConverter.HeightMapLatitudeToPixelY(spawnLatitude, world.HeightMapMetadata));
+        world.HeightMapSpawnPixelX = (int)Math.Round(CoordinateConverter.HeightMapLongitudeToPixelX(spawnLongitude, world.HeightMapMetadata));
+        world.HeightMapSpawnPixelY = (int)Math.Round(CoordinateConverter.HeightMapLatitudeToPixelY(spawnLatitude, world.HeightMapMetadata));
     }
 
     public static double GetProceduralScaleFactor(double chunkHeight)
@@ -54,6 +54,5 @@ public static class WorldConfigurationService
     public static void InitializeWorldTiming(World world)
     {
         world.UtcStartTick = DateTime.UtcNow.Ticks - 10 * world.WorldConfiguration.SecondsInHour * TimeSpan.TicksPerSecond;
-        world.ActiveAvatarCount = 1;
     }
 }

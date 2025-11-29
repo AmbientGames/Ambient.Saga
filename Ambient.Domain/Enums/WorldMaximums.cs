@@ -28,7 +28,7 @@ public class WorldMaximums
     /// <summary>
     /// The maximum number of achievements.
     /// </summary>
-    public const int MaxAchievements = Constants.ByteCapacity;
+    public const int MaxAchievements = byte.MaxValue;
 
     /// <summary>
     /// The maximum number of different tools.

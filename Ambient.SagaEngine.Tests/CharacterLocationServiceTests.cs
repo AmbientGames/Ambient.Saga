@@ -45,16 +45,16 @@ public class CharacterLocationServiceTests
             };
 
             // Set spawn at center of map
-            world.HeightMapSpawnPixelX_Validated = 1800;
-            world.HeightMapSpawnPixelY_Validated = 1800;
+            world.HeightMapSpawnPixelX = 1800;
+            world.HeightMapSpawnPixelY = 1800;
 
             // Calculate scale values (matching WorldAssetLoader logic)
             var mapResolution = world.WorldConfiguration.HeightMapSettings.MapResolutionInMeters;
-            world.HeightMapLatitudeScale_Validated = mapResolution * horizontalScale;
+            world.HeightMapLatitudeScale = mapResolution * horizontalScale;
 
             var centerLatitude = (world.HeightMapMetadata.North + world.HeightMapMetadata.South) / 2.0;
             var latitudeCorrectionFactor = Math.Cos(centerLatitude * Math.PI / 180.0);
-            world.HeightMapLongitudeScale_Validated = world.HeightMapLatitudeScale_Validated / latitudeCorrectionFactor;
+            world.HeightMapLongitudeScale = world.HeightMapLatitudeScale / latitudeCorrectionFactor;
         }
 
         return world;

@@ -69,18 +69,18 @@ public static class WorldAssetLoader
         }
 
         // Calculate derived values from WorldConfiguration
-        world.HeightMapLatitudeScale_Validated = world.IsProcedural ? 1 : (int)Math.Round(worldConfiguration.HeightMapSettings.MapResolutionInMeters * worldConfiguration.HeightMapSettings.HorizontalScale);
+        world.HeightMapLatitudeScale = world.IsProcedural ? 1 : (int)Math.Round(worldConfiguration.HeightMapSettings.MapResolutionInMeters * worldConfiguration.HeightMapSettings.HorizontalScale);
 
         // Calculate longitude scale with latitude correction
         if (world.IsProcedural)
         {
-            world.HeightMapLongitudeScale_Validated = 1;
+            world.HeightMapLongitudeScale = 1;
         }
         else
         {
             var centerLatitude = (world.HeightMapMetadata.North + world.HeightMapMetadata.South) / 2.0;
             var latitudeCorrectionFactor = Math.Cos(centerLatitude * Math.PI / 180.0);
-            world.HeightMapLongitudeScale_Validated = world.HeightMapLatitudeScale_Validated / latitudeCorrectionFactor;
+            world.HeightMapLongitudeScale = world.HeightMapLatitudeScale / latitudeCorrectionFactor;
         }
 
 
@@ -91,13 +91,13 @@ public static class WorldAssetLoader
         // Calculate longitude scale with latitude correction
         if (world.IsProcedural)
         {
-            world.HeightMapLongitudeScale_Validated = 1;
+            world.HeightMapLongitudeScale = 1;
         }
         else
         {
             var centerLatitude = (world.HeightMapMetadata.North + world.HeightMapMetadata.South) / 2.0;
             var latitudeCorrectionFactor = Math.Cos(centerLatitude * Math.PI / 180.0);
-            world.HeightMapLongitudeScale_Validated = world.HeightMapLatitudeScale_Validated / latitudeCorrectionFactor;
+            world.HeightMapLongitudeScale = world.HeightMapLatitudeScale / latitudeCorrectionFactor;
         }
 
         // Calculate spawn anchor points after height map metadata is loaded

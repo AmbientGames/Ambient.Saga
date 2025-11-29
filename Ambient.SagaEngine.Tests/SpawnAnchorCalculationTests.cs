@@ -45,12 +45,12 @@ public class SpawnAnchorCalculationTests
             
             // Assert
             var tolerance = 2.0; // Allow small rounding differences
-            var diffX = Math.Abs(expectedLongitudeCellX - world.HeightMapSpawnPixelX_Validated);
-            var diffY = Math.Abs(expectedLatitudeCellY - world.HeightMapSpawnPixelY_Validated);
+            var diffX = Math.Abs(expectedLongitudeCellX - world.HeightMapSpawnPixelX);
+            var diffY = Math.Abs(expectedLatitudeCellY - world.HeightMapSpawnPixelY);
             
             _output.WriteLine($"Configuration: {configRefName}");
             _output.WriteLine($"Expected: ({expectedLongitudeCellX}, {expectedLatitudeCellY})");
-            _output.WriteLine($"Calculated: ({world.HeightMapSpawnPixelX_Validated}, {world. HeightMapSpawnPixelY_Validated})");
+            _output.WriteLine($"Calculated: ({world.HeightMapSpawnPixelX}, {world. HeightMapSpawnPixelY})");
             _output.WriteLine($"Spawn Location: ({world.WorldConfiguration.SpawnLatitude}°, {world.WorldConfiguration.SpawnLongitude}°)");
             
             if (world.HeightMapMetadata != null)
@@ -60,9 +60,9 @@ public class SpawnAnchorCalculationTests
             }
             
             Assert.True(diffX <= tolerance, 
-                $" HeightMapSpawnPixelX_Validated ({world.HeightMapSpawnPixelX_Validated}) should be within {tolerance} pixels of expected value ({expectedLongitudeCellX}). Difference: {diffX}");
+                $" HeightMapSpawnPixelX_Validated ({world.HeightMapSpawnPixelX}) should be within {tolerance} pixels of expected value ({expectedLongitudeCellX}). Difference: {diffX}");
             Assert.True(diffY <= tolerance, 
-                $" HeightMapSpawnPixelY_Validated ({world.HeightMapSpawnPixelY_Validated}) should be within {tolerance} pixels of expected value ({expectedLatitudeCellY}). Difference: {diffY}");
+                $" HeightMapSpawnPixelY_Validated ({world.HeightMapSpawnPixelY}) should be within {tolerance} pixels of expected value ({expectedLatitudeCellY}). Difference: {diffY}");
         }
         catch (Exception ex)
         {
@@ -86,8 +86,8 @@ public class SpawnAnchorCalculationTests
         var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Lat0Height256");
         
         // Assert - Procedural worlds should have zero anchor points
-        Assert.Equal(0, world. HeightMapSpawnPixelX_Validated);
-        Assert.Equal(0, world. HeightMapSpawnPixelY_Validated);
+        Assert.Equal(0, world. HeightMapSpawnPixelX);
+        Assert.Equal(0, world. HeightMapSpawnPixelY);
         
         _output.WriteLine($"Procedural world {world.WorldConfiguration.RefName} correctly returned (0, 0) anchor points");
     }

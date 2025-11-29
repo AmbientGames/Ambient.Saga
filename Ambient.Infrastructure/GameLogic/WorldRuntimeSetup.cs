@@ -1,5 +1,4 @@
-﻿using Ambient.Application.Utilities;
-using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.DefinitionExtensions;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using System.Diagnostics;
 

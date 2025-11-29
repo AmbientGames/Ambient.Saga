@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+﻿using Ambient.Domain.Contracts;
 
 namespace Ambient.Domain.ValueObjects;
 

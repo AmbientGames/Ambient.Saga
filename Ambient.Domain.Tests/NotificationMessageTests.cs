@@ -1,7 +1,7 @@
 using Ambient.Domain.ValueObjects;
 using Xunit;
 
-namespace Ambient.Domain.Tests.UnitTests;
+namespace Ambient.Domain.Tests;
 
 /// <summary>
 /// Unit tests for the NotificationMessage class and its associated functionality.

@@ -207,8 +207,8 @@ public static class SagaProximityService
             return interactions;
 
         // Get proper scale factors for model-to-meters conversion (X and Z have different scales due to latitude correction)
-        var scaleX = world.IsProcedural ? 1.0 : world.HeightMapLongitudeScale_Validated;
-        var scaleZ = world.IsProcedural ? 1.0 : world.HeightMapLatitudeScale_Validated;
+        var scaleX = world.IsProcedural ? 1.0 : world.HeightMapLongitudeScale;
+        var scaleZ = world.IsProcedural ? 1.0 : world.HeightMapLatitudeScale;
         var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
 
         const double FEATURE_RADIUS_METERS = 5.0; // Hardcoded proximity for features
