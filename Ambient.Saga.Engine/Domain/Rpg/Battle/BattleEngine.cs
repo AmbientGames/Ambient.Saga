@@ -250,59 +250,95 @@ public class BattleEngine
     }
 
     // ============================================================================
-    // STANCE MULTIPLIER HELPERS
+    // STAT MULTIPLIER HELPERS
     // ============================================================================
 
     /// <summary>
-    /// Get effective Strength stat with stance multiplier applied.
+    /// Get effective Strength stat with archetype bias and stance multiplier applied.
     /// </summary>
     private float GetEffectiveStrength(Combatant combatant)
     {
-        var baseStrength = combatant.Strength;
-        if (_world == null || !combatant.CombatProfile.TryGetValue("Stance", out var stanceRef) || string.IsNullOrEmpty(stanceRef))
-            return baseStrength;
+        var effectiveStrength = combatant.Strength;
 
-        var stance = _world.TryGetCombatStanceByRefName(stanceRef);
-        return stance != null ? baseStrength * stance.StrengthMultiplier : baseStrength;
+        // Apply archetype bias (small ±10% adjustments)
+        if (combatant.ArchetypeBias != null)
+            effectiveStrength *= combatant.ArchetypeBias.Strength;
+
+        // Apply stance multiplier
+        if (_world != null && combatant.CombatProfile.TryGetValue("Stance", out var stanceRef) && !string.IsNullOrEmpty(stanceRef))
+        {
+            var stance = _world.TryGetCombatStanceByRefName(stanceRef);
+            if (stance?.Effects != null)
+                effectiveStrength *= stance.Effects.Strength;
+        }
+
+        return effectiveStrength;
     }
 
     /// <summary>
-    /// Get effective Defense stat with stance multiplier applied.
+    /// Get effective Defense stat with archetype bias and stance multiplier applied.
     /// </summary>
     private float GetEffectiveDefense(Combatant combatant)
     {
-        var baseDefense = combatant.Defense;
-        if (_world == null || !combatant.CombatProfile.TryGetValue("Stance", out var stanceRef) || string.IsNullOrEmpty(stanceRef))
-            return baseDefense;
+        var effectiveDefense = combatant.Defense;
 
-        var stance = _world.TryGetCombatStanceByRefName(stanceRef);
-        return stance != null ? baseDefense * stance.DefenseMultiplier : baseDefense;
+        // Apply archetype bias (small ±10% adjustments)
+        if (combatant.ArchetypeBias != null)
+            effectiveDefense *= combatant.ArchetypeBias.Defense;
+
+        // Apply stance multiplier
+        if (_world != null && combatant.CombatProfile.TryGetValue("Stance", out var stanceRef) && !string.IsNullOrEmpty(stanceRef))
+        {
+            var stance = _world.TryGetCombatStanceByRefName(stanceRef);
+            if (stance?.Effects != null)
+                effectiveDefense *= stance.Effects.Defense;
+        }
+
+        return effectiveDefense;
     }
 
     /// <summary>
-    /// Get effective Speed stat with stance multiplier applied.
+    /// Get effective Speed stat with archetype bias and stance multiplier applied.
     /// </summary>
     private float GetEffectiveSpeed(Combatant combatant)
     {
-        var baseSpeed = combatant.Speed;
-        if (_world == null || !combatant.CombatProfile.TryGetValue("Stance", out var stanceRef) || string.IsNullOrEmpty(stanceRef))
-            return baseSpeed;
+        var effectiveSpeed = combatant.Speed;
 
-        var stance = _world.TryGetCombatStanceByRefName(stanceRef);
-        return stance != null ? baseSpeed * stance.SpeedMultiplier : baseSpeed;
+        // Apply archetype bias (small ±10% adjustments)
+        if (combatant.ArchetypeBias != null)
+            effectiveSpeed *= combatant.ArchetypeBias.Speed;
+
+        // Apply stance multiplier
+        if (_world != null && combatant.CombatProfile.TryGetValue("Stance", out var stanceRef) && !string.IsNullOrEmpty(stanceRef))
+        {
+            var stance = _world.TryGetCombatStanceByRefName(stanceRef);
+            if (stance?.Effects != null)
+                effectiveSpeed *= stance.Effects.Speed;
+        }
+
+        return effectiveSpeed;
     }
 
     /// <summary>
-    /// Get effective Magic stat with stance multiplier applied.
+    /// Get effective Magic stat with archetype bias and stance multiplier applied.
     /// </summary>
     private float GetEffectiveMagic(Combatant combatant)
     {
-        var baseMagic = combatant.Magic;
-        if (_world == null || !combatant.CombatProfile.TryGetValue("Stance", out var stanceRef) || string.IsNullOrEmpty(stanceRef))
-            return baseMagic;
+        var effectiveMagic = combatant.Magic;
 
-        var stance = _world.TryGetCombatStanceByRefName(stanceRef);
-        return stance != null ? baseMagic * stance.MagicMultiplier : baseMagic;
+        // Apply archetype bias (small ±10% adjustments)
+        if (combatant.ArchetypeBias != null)
+            effectiveMagic *= combatant.ArchetypeBias.Magic;
+
+        // Apply stance multiplier
+        if (_world != null && combatant.CombatProfile.TryGetValue("Stance", out var stanceRef) && !string.IsNullOrEmpty(stanceRef))
+        {
+            var stance = _world.TryGetCombatStanceByRefName(stanceRef);
+            if (stance?.Effects != null)
+                effectiveMagic *= stance.Effects.Magic;
+        }
+
+        return effectiveMagic;
     }
 
     // ============================================================================

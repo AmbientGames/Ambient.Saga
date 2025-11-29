@@ -160,15 +160,18 @@ public class GameplayTests : IAsyncLifetime
     }
 
     [Fact]
-    public void CombatStances_ShouldHaveValidMultipliers()
+    public void CombatStances_ShouldHaveValidEffects()
     {
         Assert.NotNull(_world?.Gameplay.CombatStances);
         foreach (var combatStance in _world.Gameplay.CombatStances!)
         {
-            Assert.InRange(combatStance.StrengthMultiplier, 0.1f, 3.0f);
-            Assert.InRange(combatStance.DefenseMultiplier, 0.1f, 3.0f);
-            Assert.InRange(combatStance.SpeedMultiplier, 0.1f, 3.0f);
-            Assert.InRange(combatStance.MagicMultiplier, 0.1f, 3.0f);
+            if (combatStance.Effects == null)
+                continue;
+
+            Assert.InRange(combatStance.Effects.Strength, 0.1f, 3.0f);
+            Assert.InRange(combatStance.Effects.Defense, 0.1f, 3.0f);
+            Assert.InRange(combatStance.Effects.Speed, 0.1f, 3.0f);
+            Assert.InRange(combatStance.Effects.Magic, 0.1f, 3.0f);
         }
     }
 

@@ -22,66 +22,15 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class CombatStance : EntityBase {
         
-        private float strengthMultiplierField;
-        
-        private float defenseMultiplierField;
-        
-        private float speedMultiplierField;
-        
-        private float magicMultiplierField;
-        
-        public CombatStance() {
-            this.strengthMultiplierField = ((float)(1F));
-            this.defenseMultiplierField = ((float)(1F));
-            this.speedMultiplierField = ((float)(1F));
-            this.magicMultiplierField = ((float)(1F));
-        }
+        private CharacterEffects effectsField;
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
-        public float StrengthMultiplier {
+        public CharacterEffects Effects {
             get {
-                return this.strengthMultiplierField;
+                return this.effectsField;
             }
             set {
-                this.strengthMultiplierField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
-        public float DefenseMultiplier {
-            get {
-                return this.defenseMultiplierField;
-            }
-            set {
-                this.defenseMultiplierField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
-        public float SpeedMultiplier {
-            get {
-                return this.speedMultiplierField;
-            }
-            set {
-                this.speedMultiplierField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
-        public float MagicMultiplier {
-            get {
-                return this.magicMultiplierField;
-            }
-            set {
-                this.magicMultiplierField = value;
+                this.effectsField = value;
             }
         }
     }

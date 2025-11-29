@@ -33,10 +33,11 @@ public class CombatStancesXmlGenerator : IXmlContentGenerator
                     new XAttribute("RefName", "Balanced"),
                     new XAttribute("DisplayName", "Balanced"),
                     new XAttribute("Description", "Well-rounded stance with no significant strengths or weaknesses"),
-                    new XAttribute("StrengthMultiplier", "1.0"),
-                    new XAttribute("DefenseMultiplier", "1.0"),
-                    new XAttribute("SpeedMultiplier", "1.0"),
-                    new XAttribute("MagicMultiplier", "1.0")
+                    new XElement(ns + "Effects",
+                        new XAttribute("Strength", "1.0"),
+                        new XAttribute("Defense", "1.0"),
+                        new XAttribute("Speed", "1.0"),
+                        new XAttribute("Magic", "1.0"))
                 ));
 
                 // Defensive
@@ -44,10 +45,11 @@ public class CombatStancesXmlGenerator : IXmlContentGenerator
                     new XAttribute("RefName", "Defensive"),
                     new XAttribute("DisplayName", "Defensive"),
                     new XAttribute("Description", "Focus on defense and survival at the cost of attack power"),
-                    new XAttribute("StrengthMultiplier", "0.8"),
-                    new XAttribute("DefenseMultiplier", "1.3"),
-                    new XAttribute("SpeedMultiplier", "0.9"),
-                    new XAttribute("MagicMultiplier", "0.9")
+                    new XElement(ns + "Effects",
+                        new XAttribute("Strength", "0.8"),
+                        new XAttribute("Defense", "1.3"),
+                        new XAttribute("Speed", "0.9"),
+                        new XAttribute("Magic", "0.9"))
                 ));
 
                 // Offensive
@@ -55,10 +57,11 @@ public class CombatStancesXmlGenerator : IXmlContentGenerator
                     new XAttribute("RefName", "Offensive"),
                     new XAttribute("DisplayName", "Offensive"),
                     new XAttribute("Description", "Aggressive stance that deals more damage but lowers defenses"),
-                    new XAttribute("StrengthMultiplier", "1.3"),
-                    new XAttribute("DefenseMultiplier", "0.7"),
-                    new XAttribute("SpeedMultiplier", "1.0"),
-                    new XAttribute("MagicMultiplier", "1.1")
+                    new XElement(ns + "Effects",
+                        new XAttribute("Strength", "1.3"),
+                        new XAttribute("Defense", "0.7"),
+                        new XAttribute("Speed", "1.0"),
+                        new XAttribute("Magic", "1.1"))
                 ));
 
                 Directory.CreateDirectory(Path.GetDirectoryName(outputPath)!);

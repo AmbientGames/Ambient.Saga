@@ -17,6 +17,8 @@ public static class AvatarSpawner
         avatar.Stats = new CharacterStats();
         CharacterStatsCopier.CopyCharacterStats(archetype.SpawnStats, avatar.Stats);
 
+        avatar.ArchetypeBias = archetype.ArchetypeBias;
+
         avatar.Capabilities = new ItemCollection();
         avatar.Capabilities.Blocks = archetype.SpawnCapabilities.Blocks?.ToArray() ?? [];
         avatar.Capabilities.Tools = archetype.SpawnCapabilities.Tools?.ToArray() ?? [];

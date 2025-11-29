@@ -455,27 +455,30 @@ public static class WorldValidationService
 
         // CombatStances don't have cross-references like affinities do
         // This method exists for consistency and future expansion
-        // Basic validation: confirm combat stances have valid multipliers
+        // Basic validation: confirm combat stances have valid effect values
         foreach (var combatStance in world.Gameplay.CombatStances)
         {
             var combatStanceContext = $"CombatStance '{combatStance.RefName}'";
 
-            // Validate multipliers are reasonable (0.1 to 3.0)
-            if (combatStance.StrengthMultiplier < 0.1f || combatStance.StrengthMultiplier > 3.0f)
+            if (combatStance.Effects == null)
+                continue;
+
+            // Validate effects are reasonable (0.1 to 3.0 for multiplier-style values)
+            if (combatStance.Effects.Strength < 0.1f || combatStance.Effects.Strength > 3.0f)
             {
-                errors.Add($"{combatStanceContext}: StrengthMultiplier {combatStance.StrengthMultiplier} is outside reasonable range (0.1 - 3.0)");
+                errors.Add($"{combatStanceContext}: Strength {combatStance.Effects.Strength} is outside reasonable range (0.1 - 3.0)");
             }
-            if (combatStance.DefenseMultiplier < 0.1f || combatStance.DefenseMultiplier > 3.0f)
+            if (combatStance.Effects.Defense < 0.1f || combatStance.Effects.Defense > 3.0f)
             {
-                errors.Add($"{combatStanceContext}: DefenseMultiplier {combatStance.DefenseMultiplier} is outside reasonable range (0.1 - 3.0)");
+                errors.Add($"{combatStanceContext}: Defense {combatStance.Effects.Defense} is outside reasonable range (0.1 - 3.0)");
             }
-            if (combatStance.SpeedMultiplier < 0.1f || combatStance.SpeedMultiplier > 3.0f)
+            if (combatStance.Effects.Speed < 0.1f || combatStance.Effects.Speed > 3.0f)
             {
-                errors.Add($"{combatStanceContext}: SpeedMultiplier {combatStance.SpeedMultiplier} is outside reasonable range (0.1 - 3.0)");
+                errors.Add($"{combatStanceContext}: Speed {combatStance.Effects.Speed} is outside reasonable range (0.1 - 3.0)");
             }
-            if (combatStance.MagicMultiplier < 0.1f || combatStance.MagicMultiplier > 3.0f)
+            if (combatStance.Effects.Magic < 0.1f || combatStance.Effects.Magic > 3.0f)
             {
-                errors.Add($"{combatStanceContext}: MagicMultiplier {combatStance.MagicMultiplier} is outside reasonable range (0.1 - 3.0)");
+                errors.Add($"{combatStanceContext}: Magic {combatStance.Effects.Magic} is outside reasonable range (0.1 - 3.0)");
             }
         }
     }

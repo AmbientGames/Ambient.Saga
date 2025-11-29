@@ -24,6 +24,8 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class CharacterBase : EntityBase {
         
+        private CharacterEffects archetypeBiasField;
+        
         private CharacterStats statsField;
         
         private ItemCollection capabilitiesField;
@@ -40,6 +42,16 @@ namespace Ambient.Domain {
             this.xField = 0D;
             this.yField = 0D;
             this.zField = 0D;
+        }
+        
+        /// <remarks/>
+        public CharacterEffects ArchetypeBias {
+            get {
+                return this.archetypeBiasField;
+            }
+            set {
+                this.archetypeBiasField = value;
+            }
         }
         
         /// <remarks/>

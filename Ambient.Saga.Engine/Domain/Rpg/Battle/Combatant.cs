@@ -27,6 +27,9 @@ public class Combatant
     // Affinity for elemental bonuses (settable for testing/runtime changes)
     public string? AffinityRef { get; set; }
 
+    // Archetype bias - small stat multipliers (±10%) from base archetype
+    public CharacterEffects? ArchetypeBias { get; init; }
+
     // Reference to capabilities for spell/equipment access
     public ItemCollection? Capabilities { get; init; }
 
@@ -64,6 +67,7 @@ public class Combatant
             Speed = avatar.Stats.Speed,
             Magic = avatar.Stats.Magic,
             AffinityRef = avatar.AffinityRef,
+            ArchetypeBias = avatar.ArchetypeBias,
             Capabilities = avatar.Capabilities,
             CombatProfile = avatar.CombatProfile != null
                 ? new Dictionary<string, string>(avatar.CombatProfile)
@@ -90,6 +94,7 @@ public class Combatant
             Speed = character.Stats.Speed,
             Magic = character.Stats.Magic,
             AffinityRef = character.AffinityRef,
+            ArchetypeBias = character.ArchetypeBias,
             Capabilities = character.Capabilities,
             CombatProfile = character.CombatProfile != null
                 ? new Dictionary<string, string>(character.CombatProfile)
