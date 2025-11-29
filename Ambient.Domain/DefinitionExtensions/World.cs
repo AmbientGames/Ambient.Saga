@@ -64,7 +64,7 @@ public partial class World : IWorld
     [XmlIgnore] public Dictionary<string, List<SagaTrigger>> SagaTriggersLookup = new Dictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Faction> FactionsLookup = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public byte[] ModData;
-    [XmlIgnore] public int BlocksBeneathSeaLevel = ChunkConstants.ChunkSectionHeight * 2;
+    [XmlIgnore] public int BlocksBeneathSeaLevel = 64; // this is a todo... coordinate converter requires this - we probably need an interface to do this right.
     [XmlIgnore] public double VerticalScale;
     [XmlIgnore] public double VerticalShift;
     [XmlIgnore] public GeoTiffMetadata HeightMapMetadata;
