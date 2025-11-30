@@ -64,12 +64,16 @@ namespace Ambient.Saga.Sandbox.WindowsUI.Services
                 "imgui",
                 (sp, key) => sp.GetRequiredService<ImGuiArchetypeSelector>());
 
+            // World content generator (mock implementation - WorldForge not included in open-source build)
+            services.AddSingleton<IWorldContentGenerator, MockWorldContentGenerator>();
+
             // Modal manager for ImGui archetype selector (with circular dependency resolution)
             services.AddSingleton(sp =>
             {
                 var selector = sp.GetRequiredService<ImGuiArchetypeSelector>();
                 var mediator = sp.GetRequiredService<IMediator>();
-                var modalManager = new ModalManager(selector, mediator);
+                var worldContentGenerator = sp.GetRequiredService<IWorldContentGenerator>();
+                var modalManager = new ModalManager(selector, mediator, worldContentGenerator);
                 selector.SetModalManager(modalManager); // Wire up circular reference
                 return modalManager;
             });

@@ -1,5 +1,5 @@
-﻿using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.WorldForge;
+using Ambient.Saga.Presentation.UI.Services;
+using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
@@ -20,6 +20,15 @@ namespace Ambient.Saga.Presentation.UI.Components.Modals;
 /// </summary>
 public class WorldSelectionScreen
 {
+    private readonly IWorldContentGenerator _worldContentGenerator;
+    private string? _lastGenerationMessage;
+    private bool _showGenerationMessage;
+
+    public WorldSelectionScreen(IWorldContentGenerator worldContentGenerator)
+    {
+        _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
+    }
+
     public void Render(MainViewModel viewModel, ref bool isOpen)
     {
         if (!isOpen) return;
@@ -82,37 +91,30 @@ public class WorldSelectionScreen
             ImGui.Separator();
             ImGui.Spacing();
 
-            // Generate button (appears when world has a generation config)
-            var solutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
-            var configsDir = Path.Combine(solutionDir, "Ambient.Saga.WorldForge", "GenerationConfigs");
-            var generationConfigLoader = new GenerationConfigurationLoader(configsDir);
-            if (generationConfigLoader.HasGenerationConfig(viewModel.SelectedConfiguration.RefName))
-            {
-                ImGui.TextColored(new Vector4(1, 0.647f, 0, 1), "Story Generation:");
-                ImGui.Spacing();
+            // World Content Generation section
+            ImGui.TextColored(new Vector4(1, 0.647f, 0, 1), "World Content Generation:");
+            ImGui.Spacing();
 
-                if (ImGui.Button("Generate Story Content", new Vector2(-1, 30)))
+            if (_worldContentGenerator.IsAvailable)
+            {
+                // Full WorldForge is available - show generation button
+                if (ImGui.Button("Generate World Content", new Vector2(-1, 30)))
                 {
                     Debug.WriteLine($"Generate button clicked for: {viewModel.SelectedConfiguration.RefName}");
 
                     try
                     {
-                        var generator = new Ambient.Saga.WorldForge.StoryGenerator();
-                        var generationConfig = generationConfigLoader.LoadConfig(viewModel.SelectedConfiguration.RefName);
-
-                        // Get the source WorldDefinitions directory (not bin)
+                        var solutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
                         var outputDirectory = Path.Combine(solutionDir, "Ambient.Saga.Sandbox.WindowsUI", "WorldDefinitions");
 
-                        Debug.WriteLine($"Generating story content to: {outputDirectory}");
-                        var generatedFiles = generator.GenerateStoryContent(viewModel.SelectedConfiguration, generationConfig, outputDirectory);
+                        Debug.WriteLine($"Generating world content to: {outputDirectory}");
+                        var generatedFiles = _worldContentGenerator.GenerateWorldContent(viewModel.SelectedConfiguration, outputDirectory);
 
                         Debug.WriteLine($"Generated {generatedFiles.Count} files:");
                         foreach (var file in generatedFiles)
                         {
                             Debug.WriteLine($"  - {file}");
                         }
-
-                        Debug.WriteLine($"Updated WorldConfigurations.xml refs for {viewModel.SelectedConfiguration.RefName}");
 
                         // Copy generated files to exe directory for game loading
                         var exeDirectory = AppContext.BaseDirectory;
@@ -121,19 +123,42 @@ public class WorldSelectionScreen
                         Debug.WriteLine($"Copying generated files to exe directory: {exeWorldDefinitions}");
                         CopyGeneratedFilesToExeDirectory(outputDirectory, exeWorldDefinitions, generatedFiles);
 
-                        Debug.WriteLine("Story generation and deployment complete!");
+                        _lastGenerationMessage = $"Generated {generatedFiles.Count} files successfully!";
+                        _showGenerationMessage = true;
+                        Debug.WriteLine("World content generation and deployment complete!");
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine($"Error generating story content: {ex.Message}");
+                        _lastGenerationMessage = $"Error: {ex.Message}";
+                        _showGenerationMessage = true;
+                        Debug.WriteLine($"Error generating world content: {ex.Message}");
                         Debug.WriteLine($"Stack trace: {ex.StackTrace}");
                     }
                 }
-
-                ImGui.Spacing();
-                ImGui.Separator();
-                ImGui.Spacing();
             }
+            else
+            {
+                // WorldForge is not available - show disabled button with explanation
+                ImGui.BeginDisabled();
+                ImGui.Button("Generate World Content", new Vector2(-1, 30));
+                ImGui.EndDisabled();
+
+                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _worldContentGenerator.StatusMessage);
+            }
+
+            // Show generation result message
+            if (_showGenerationMessage && !string.IsNullOrEmpty(_lastGenerationMessage))
+            {
+                ImGui.Spacing();
+                var color = _lastGenerationMessage.StartsWith("Error")
+                    ? new Vector4(1, 0.3f, 0.3f, 1)
+                    : new Vector4(0.3f, 1, 0.3f, 1);
+                ImGui.TextColored(color, _lastGenerationMessage);
+            }
+
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
 
             // Load button
             var canLoad = viewModel.LoadSelectedConfigurationCommand?.CanExecute(null) == true;

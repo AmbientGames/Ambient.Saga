@@ -12,7 +12,7 @@ namespace Ambient.Saga.Presentation.UI.Components.Modals;
 public class ModalManager
 {
     // Modal instances
-    private WorldSelectionScreen _worldSelectionScreen = new();
+    private WorldSelectionScreen _worldSelectionScreen;
     private ArchetypeSelectionModal _archetypeSelectionModal = new();
     private AvatarInfoModal _avatarInfoModal = new();
     private CharactersModal _charactersModal = new();
@@ -30,12 +30,13 @@ public class ModalManager
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
     private readonly IMediator _mediator;
 
-    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator)
+    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator)
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
+        _worldSelectionScreen = new WorldSelectionScreen(worldContentGenerator);
     }
 
     // Modal state flags
