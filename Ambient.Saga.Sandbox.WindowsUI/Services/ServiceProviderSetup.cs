@@ -65,6 +65,7 @@ namespace Ambient.Saga.Sandbox.WindowsUI.Services
                 (sp, key) => sp.GetRequiredService<ImGuiArchetypeSelector>());
 
             // World content generator (mock implementation - WorldForge not included in open-source build)
+            // To use real WorldForge, change to: services.AddSingleton<IWorldContentGenerator, Ambient.Saga.WorldForge.WorldContentGenerator>();
             services.AddSingleton<IWorldContentGenerator, MockWorldContentGenerator>();
 
             // Modal manager for ImGui archetype selector (with circular dependency resolution)

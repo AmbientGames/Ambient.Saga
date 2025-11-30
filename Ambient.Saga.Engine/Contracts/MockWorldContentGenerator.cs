@@ -1,6 +1,6 @@
 using Ambient.Domain;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.Engine.Contracts;
 
 /// <summary>
 /// Mock implementation of IWorldContentGenerator for when WorldForge is not available.

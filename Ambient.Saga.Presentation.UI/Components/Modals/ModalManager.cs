@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Presentation.UI.ViewModels;
+﻿using Ambient.Saga.Engine.Contracts;
+using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Presentation.UI.Services;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using MediatR;

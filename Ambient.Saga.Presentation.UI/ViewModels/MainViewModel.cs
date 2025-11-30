@@ -10,7 +10,6 @@ using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Presentation.UI.Models;
 using Ambient.Saga.Presentation.UI.Services;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.WorldForge;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using Ambient.Saga.Engine.Application.Queries.Saga;
@@ -1192,48 +1191,8 @@ public partial class MainViewModel : ObservableObject
         // Check if this world has height map settings
         if (world.IsProcedural)
         {
-            // For procedural worlds with GenerationConfiguration, create a placeholder heightmap
-            // so spiral-generated SagaArcs can be visualized
-            var solutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
-            var configsDir = Path.Combine(solutionDir, "Ambient.Saga.WorldForge", "GenerationConfigs");
-            var generationConfigLoader = new GenerationConfigurationLoader(configsDir);
-            if (generationConfigLoader.HasGenerationConfig(world.WorldConfiguration.RefName))
-            {
-                StatusMessage = "Creating placeholder visualization for procedural world...";
-                const int placeholderSize = 1024;
-                var placeholderBitmap = await CreatePlaceholderHeightMapAsync(placeholderSize, placeholderSize);
-                HeightMapImage = placeholderBitmap;
-                AvatarInfo.UpdateHeightMapStatus(true);
-
-                // Create fake HeightMapMetadata for coordinate conversion
-                // Spiral extends ~260m from spawn, so create bounds of ±0.003° (~330m at equator)
-                var spawnLat = world.WorldConfiguration.SpawnLatitude;
-                var spawnLon = world.WorldConfiguration.SpawnLongitude;
-                const double boundsSize = 0.003; // degrees
-
-                world.HeightMapMetadata = new Ambient.Domain.ValueObjects.GeoTiffMetadata
-                {
-                    North = spawnLat + boundsSize,
-                    South = spawnLat - boundsSize,
-                    East = spawnLon + boundsSize,
-                    West = spawnLon - boundsSize,
-                    ImageWidth = placeholderSize,
-                    ImageHeight = placeholderSize,
-                    BitsPerSample = 16,
-                    SamplesPerPixel = 1,
-                    PixelScale = (boundsSize * 2 / placeholderSize, boundsSize * 2 / placeholderSize, 0),
-                    TiePoint = (0, 0, 0, spawnLon - boundsSize, spawnLat + boundsSize, 0)
-                };
-
-                HeightMapInfo = "Placeholder visualization (1024 x 1024)\nProcedural world with spiral SagaArcs\n" +
-                               $"Bounds: {world.HeightMapMetadata.North:F4}°N to {world.HeightMapMetadata.South:F4}°S, " +
-                               $"{world.HeightMapMetadata.West:F4}°W to {world.HeightMapMetadata.East:F4}°E";
-                UpdateMinimumZoom();
-            }
-            else
-            {
-                HeightMapInfo = "This world uses procedural settings (no height map)";
-            }
+            // Procedural worlds don't have height maps
+            HeightMapInfo = "This world uses procedural settings (no height map)";
             return;
         }
 

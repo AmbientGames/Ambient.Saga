@@ -1,6 +1,6 @@
 using Ambient.Domain;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.Engine.Contracts;
 
 /// <summary>
 /// Interface for world content generation (characters, dialogue, quests, equipment, etc.).
