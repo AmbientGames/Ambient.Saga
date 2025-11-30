@@ -11,6 +11,7 @@
     <xs:include schemaLocation="Actors/Characters/Catalogs/CharacterAffinities.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/CombatStances.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/StatusEffects.xsd" />
+    <xs:include schemaLocation="Actors/Characters/Catalogs/BaseArchetypes.xsd" />
     <xs:include schemaLocation="LoadoutSlots.xsd" />
     <xs:include schemaLocation="Actors/Avatar/AvatarBase.xsd" />
     <xs:include schemaLocation="Actors/Avatar/AvatarArchetype.xsd" />
@@ -85,6 +86,12 @@
         <xs:key name="UniqueStatusEffectRefName">
             <xs:selector xpath="StatusEffect" />
             <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="BaseArchetypes" type="BaseArchetypes">
+        <xs:key name="UniqueBaseArchetypeId">
+            <xs:selector xpath="BaseArchetype" />
+            <xs:field xpath="@ArchetypeId" />
         </xs:key>
     </xs:element>
     <xs:element name="Tools" type="ToolCatalog">

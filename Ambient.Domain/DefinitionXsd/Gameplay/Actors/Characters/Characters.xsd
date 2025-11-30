@@ -5,6 +5,21 @@
     <xs:include schemaLocation="../../Acquirables/QuestToken.xsd" />
     <xs:include schemaLocation="../../Interactable.xsd" />
     <xs:include schemaLocation="../../AIMetadata.xsd" />
+    <!-- ============================================================================
+         LOADOUT PROFILE
+         Determines how much equipment/spells a character receives during generation.
+         Used with archetype + affinity to select appropriate gear.
+         ============================================================================ -->
+    <xs:simpleType name="LoadoutProfileType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="None" />
+            <xs:enumeration value="Light" />
+            <xs:enumeration value="Standard" />
+            <xs:enumeration value="Elite" />
+            <xs:enumeration value="Boss" />
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:simpleType name="BattleTriggerCondition">
         <xs:restriction base="xs:string">
             <xs:enumeration value="HealthBelow">
@@ -111,7 +126,8 @@
                     </xs:element>
                 </xs:sequence>
                 <xs:attribute name="ModelRef" type="ModelRef" use="optional" />
-                <xs:attribute name="RespawnIntervalSeconds" type="xs:int" use="optional" default="0"></xs:attribute>
+                <xs:attribute name="RespawnIntervalSeconds" type="xs:int" use="optional" default="0" />
+                <xs:attribute name="LoadoutProfile" type="LoadoutProfileType" use="optional" default="Standard" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

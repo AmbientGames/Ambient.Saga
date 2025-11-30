@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BaseArchetypes xmlns="Ambient.Domain"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="Ambient.Domain ..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ============================================================================
+         CANONICAL BASE ARCHETYPES
+
+         These define the mechanical defaults for each archetype.
+         Themes reference these by ArchetypeId to apply reskinning.
+
+         ArchetypeBias values are multipliers around 1.0 (±10%):
+         - 1.0 = neutral
+         - 1.1 = +10% bonus
+         - 0.9 = -10% penalty
+
+         Starting equipment is defined by themes, not base archetypes.
+         Equipment self-identifies as Offensive/Defensive via UseType attribute.
+         Spell categories define starting spell types.
+         ============================================================================ -->
+
+    <!-- WARRIOR: Balanced melee fighter -->
+    <BaseArchetype ArchetypeId="Warrior" RefName="CANON_WARRIOR"
+                   DisplayName="Warrior"
+                   Description="A balanced melee combatant skilled in close quarters combat."
+                   DefaultAffinityRef="IRON">
+        <ArchetypeBias Strength="1.05" Defense="1.05" Speed="0.95" Magic="0.95" />
+        <DefaultSpellCategories>
+            <Category>Combat</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+    <!-- BARBARIAN: High damage, low defense berserker -->
+    <BaseArchetype ArchetypeId="Barbarian" RefName="CANON_BARBARIAN"
+                   DisplayName="Barbarian"
+                   Description="A ferocious berserker who trades defense for raw power."
+                   DefaultAffinityRef="FIRE">
+        <ArchetypeBias Strength="1.10" Defense="0.90" Speed="1.00" Magic="0.95" />
+        <DefaultSpellCategories>
+            <Category>Rage</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+    <!-- ROGUE: Fast, sneaky, critical hits -->
+    <BaseArchetype ArchetypeId="Rogue" RefName="CANON_ROGUE"
+                   DisplayName="Rogue"
+                   Description="A swift and cunning fighter who strikes from the shadows."
+                   DefaultAffinityRef="UMBRAL">
+        <ArchetypeBias Strength="0.95" Defense="0.90" Speed="1.10" Magic="1.00" />
+        <DefaultSpellCategories>
+            <Category>Stealth</Category>
+            <Category>Poison</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+    <!-- RANGER: Ranged combat, nature affinity -->
+    <BaseArchetype ArchetypeId="Ranger" RefName="CANON_RANGER"
+                   DisplayName="Ranger"
+                   Description="A skilled hunter and tracker at home in the wilderness."
+                   DefaultAffinityRef="WILD">
+        <ArchetypeBias Strength="1.00" Defense="0.95" Speed="1.05" Magic="1.00" />
+        <DefaultSpellCategories>
+            <Category>Nature</Category>
+            <Category>Tracking</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+    <!-- MAGE: Offensive spellcaster, elemental damage -->
+    <BaseArchetype ArchetypeId="Mage" RefName="CANON_MAGE"
+                   DisplayName="Mage"
+                   Description="A wielder of destructive elemental magic."
+                   DefaultAffinityRef="ARCANE">
+        <ArchetypeBias Strength="0.90" Defense="0.90" Speed="1.00" Magic="1.10" />
+        <DefaultSpellCategories>
+            <Category>Elemental</Category>
+            <Category>Destruction</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+    <!-- WIZARD: Utility spellcaster, buffs/debuffs -->
+    <BaseArchetype ArchetypeId="Wizard" RefName="CANON_WIZARD"
+                   DisplayName="Wizard"
+                   Description="A scholarly mage focused on utility and manipulation."
+                   DefaultAffinityRef="ARCANE">
+        <ArchetypeBias Strength="0.90" Defense="0.95" Speed="0.95" Magic="1.10" />
+        <DefaultSpellCategories>
+            <Category>Arcane</Category>
+            <Category>Buff</Category>
+            <Category>Debuff</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+    <!-- CLERIC: Healer, holy magic, undead bane -->
+    <BaseArchetype ArchetypeId="Cleric" RefName="CANON_CLERIC"
+                   DisplayName="Cleric"
+                   Description="A divine healer and protector blessed with holy power."
+                   DefaultAffinityRef="HOLY">
+        <ArchetypeBias Strength="0.95" Defense="1.05" Speed="0.95" Magic="1.05" />
+        <DefaultSpellCategories>
+            <Category>Healing</Category>
+            <Category>Holy</Category>
+            <Category>Protection</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+    <!-- BARD: Jack of all trades, buffs, charm -->
+    <BaseArchetype ArchetypeId="Bard" RefName="CANON_BARD"
+                   DisplayName="Bard"
+                   Description="A versatile performer whose songs inspire allies and confound foes."
+                   DefaultAffinityRef="SPIRIT">
+        <ArchetypeBias Strength="0.95" Defense="0.95" Speed="1.05" Magic="1.05" />
+        <DefaultSpellCategories>
+            <Category>Charm</Category>
+            <Category>Buff</Category>
+            <Category>Illusion</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+    <!-- SUMMONER: Pet/minion master, extra affinity slot -->
+    <BaseArchetype ArchetypeId="Summoner" RefName="CANON_SUMMONER"
+                   DisplayName="Summoner"
+                   Description="A master of conjuration who calls forth allies to fight."
+                   DefaultAffinityRef="VOID"
+                   ExtraAffinitySlots="1">
+        <ArchetypeBias Strength="0.90" Defense="0.90" Speed="1.00" Magic="1.10" />
+        <DefaultSpellCategories>
+            <Category>Summoning</Category>
+            <Category>Conjuration</Category>
+        </DefaultSpellCategories>
+    </BaseArchetype>
+
+</BaseArchetypes>

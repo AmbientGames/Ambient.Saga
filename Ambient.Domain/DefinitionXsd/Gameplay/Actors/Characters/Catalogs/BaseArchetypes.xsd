@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+	<xs:include schemaLocation="../../../../EntityBase.xsd" />
+	<xs:include schemaLocation="../../../Acquirables/CharacterEffects.xsd" />
+	<xs:include schemaLocation="../../Characters/Catalogs/CharacterAffinities.xsd" />
+
+	<!-- ============================================================================
+         BASE ARCHETYPE ENUMERATION
+         Canonical archetype identifiers used across the system.
+         Themes reference these IDs to apply reskinning.
+         ============================================================================ -->
+	<xs:simpleType name="BaseArchetypeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Warrior" />
+			<xs:enumeration value="Barbarian" />
+			<xs:enumeration value="Rogue" />
+			<xs:enumeration value="Ranger" />
+			<xs:enumeration value="Mage" />
+			<xs:enumeration value="Wizard" />
+			<xs:enumeration value="Cleric" />
+			<xs:enumeration value="Bard" />
+			<xs:enumeration value="Summoner" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- Reference type for linking to a base archetype -->
+	<xs:simpleType name="BaseArchetypeRef">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- ============================================================================
+         CANONICAL ARCHETYPE DEFINITION
+         Defines the mechanical defaults for each base archetype:
+         - ArchetypeBias: Small stat multipliers (±10%)
+         - DefaultAffinity: Used to select appropriate themed gear/spells
+         - DefaultSpellCategories: Optional role-based classification (e.g., Rage, Support)
+         - ExtraAffinitySlots: Bonus affinity slots (e.g., Summoner gets +1)
+
+         Note: Equipment is identified as Offensive/Defensive via UseType attribute
+         on individual items, not by archetype. Starting equipment is defined by
+         affinity filters in theme or content rules.
+         ============================================================================ -->
+	<xs:complexType name="BaseArchetype">
+		<xs:complexContent>
+			<xs:extension base="EntityBase">
+				<xs:sequence>
+					<xs:element name="ArchetypeBias" type="CharacterEffects" minOccurs="0" maxOccurs="1" />
+					<xs:element name="DefaultSpellCategories" type="SpellCategoryList" minOccurs="0" maxOccurs="1" />
+				</xs:sequence>
+				<xs:attribute name="ArchetypeId" type="BaseArchetypeType" use="required" />
+				<xs:attribute name="DefaultAffinityRef" type="CharacterAffinityRef" use="optional" />
+				<xs:attribute name="ExtraAffinitySlots" type="xs:int" use="optional" default="0" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<!-- List of spell categories for an archetype -->
+	<xs:complexType name="SpellCategoryList">
+		<xs:sequence>
+			<xs:element name="Category" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- Collection of base archetype definitions -->
+	<xs:complexType name="BaseArchetypes">
+		<xs:sequence>
+			<xs:element name="BaseArchetype" type="BaseArchetype" maxOccurs="unbounded" />
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

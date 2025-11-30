@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CharacterAffinities xmlns="Ambient.Domain"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="Ambient.Domain ..\DefinitionXsd\Gameplay\Gameplay.xsd">
+
+    <!-- ============================================================================
+         CANONICAL CHARACTER AFFINITIES
+
+         These define the 12 elemental/thematic affinities used across the system.
+         Each affinity represents a flavor that can combine with any archetype.
+
+         Themes reference these by RefName to apply reskinning.
+         Matchups define damage multipliers against other affinities.
+         ============================================================================ -->
+
+    <!-- IRON: Metal, grit, fortification, industry -->
+    <Affinity RefName="IRON"
+              DisplayName="Iron"
+              Description="The affinity of metal, grit, fortification, and industry.">
+        <Matchup TargetAffinityRef="STORM" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="ARCANE" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- FIRE: Heat, destruction, zeal -->
+    <Affinity RefName="FIRE"
+              DisplayName="Fire"
+              Description="The affinity of heat, destruction, and zeal.">
+        <Matchup TargetAffinityRef="WILD" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="WATER" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- WATER: Flow, frost, renewal -->
+    <Affinity RefName="WATER"
+              DisplayName="Water"
+              Description="The affinity of flow, frost, and renewal.">
+        <Matchup TargetAffinityRef="FIRE" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="STORM" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- STORM: Wind/lightning, speed, chaos -->
+    <Affinity RefName="STORM"
+              DisplayName="Storm"
+              Description="The affinity of wind, lightning, speed, and chaos.">
+        <Matchup TargetAffinityRef="WATER" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="STONE" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- STONE: Earth, weight, endurance -->
+    <Affinity RefName="STONE"
+              DisplayName="Stone"
+              Description="The affinity of earth, weight, and endurance.">
+        <Matchup TargetAffinityRef="STORM" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="WILD" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- WILD: Plants/animals, instinct, growth -->
+    <Affinity RefName="WILD"
+              DisplayName="Wild"
+              Description="The affinity of plants, animals, instinct, and growth.">
+        <Matchup TargetAffinityRef="STONE" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="FIRE" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- ARCANE: Pure magic, knowledge, anomaly -->
+    <Affinity RefName="ARCANE"
+              DisplayName="Arcane"
+              Description="The affinity of pure magic, knowledge, and anomaly.">
+        <Matchup TargetAffinityRef="IRON" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="VOID" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- HOLY: Light, order, healing, wards -->
+    <Affinity RefName="HOLY"
+              DisplayName="Holy"
+              Description="The affinity of light, order, healing, and wards.">
+        <Matchup TargetAffinityRef="UMBRAL" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="VOID" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- UMBRAL: Shadow, decay, curse, poison -->
+    <Affinity RefName="UMBRAL"
+              DisplayName="Umbral"
+              Description="The affinity of shadow, decay, curse, and poison.">
+        <Matchup TargetAffinityRef="SPIRIT" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="HOLY" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- CONSTRUCT: Tech, machines, fabrication, drones -->
+    <Affinity RefName="CONSTRUCT"
+              DisplayName="Construct"
+              Description="The affinity of technology, machines, fabrication, and drones.">
+        <Matchup TargetAffinityRef="WILD" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="SPIRIT" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- VOID: Space, entropy, anti-magic, weirdness -->
+    <Affinity RefName="VOID"
+              DisplayName="Void"
+              Description="The affinity of space, entropy, anti-magic, and weirdness.">
+        <Matchup TargetAffinityRef="ARCANE" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="CONSTRUCT" Multiplier="0.75" />
+    </Affinity>
+
+    <!-- SPIRIT: Souls, ancestors, dreams, fate -->
+    <Affinity RefName="SPIRIT"
+              DisplayName="Spirit"
+              Description="The affinity of souls, ancestors, dreams, and fate.">
+        <Matchup TargetAffinityRef="CONSTRUCT" Multiplier="1.25" />
+        <Matchup TargetAffinityRef="UMBRAL" Multiplier="0.75" />
+    </Affinity>
+
+</CharacterAffinities>

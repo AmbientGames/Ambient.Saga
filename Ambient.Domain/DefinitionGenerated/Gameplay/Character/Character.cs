@@ -36,8 +36,11 @@ namespace Ambient.Domain {
         
         private int respawnIntervalSecondsField;
         
+        private LoadoutProfileType loadoutProfileField;
+        
         public Character() {
             this.respawnIntervalSecondsField = 0;
+            this.loadoutProfileField = LoadoutProfileType.Standard;
         }
         
         /// <remarks/>
@@ -112,6 +115,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.respawnIntervalSecondsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(LoadoutProfileType.Standard)]
+        public LoadoutProfileType LoadoutProfile {
+            get {
+                return this.loadoutProfileField;
+            }
+            set {
+                this.loadoutProfileField = value;
             }
         }
     }
