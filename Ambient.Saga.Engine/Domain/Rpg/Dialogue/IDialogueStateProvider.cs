@@ -80,4 +80,34 @@ public interface IDialogueStateProvider
     /// <param name="characterRef">Character whose dialogue tree is being navigated</param>
     /// <param name="nodeId">Dialogue node being visited</param>
     bool ShouldAwardNodeRewards(string characterRef, string nodeId);
+
+    // ===== PARTY MANAGEMENT =====
+    /// <summary>
+    /// Gets the current party size.
+    /// </summary>
+    int GetPartySize();
+
+    /// <summary>
+    /// Checks if a party slot is available.
+    /// </summary>
+    bool HasAvailablePartySlot();
+
+    /// <summary>
+    /// Checks if a character is in the party.
+    /// </summary>
+    /// <param name="characterRef">Character to check (null/empty checks current dialogue character)</param>
+    bool IsInParty(string? characterRef);
+
+    /// <summary>
+    /// Adds a character to the party.
+    /// </summary>
+    /// <param name="characterRef">Character to add</param>
+    /// <returns>True if successful, false if no slot available or already in party</returns>
+    bool AddPartyMember(string characterRef);
+
+    /// <summary>
+    /// Removes a character from the party.
+    /// </summary>
+    /// <param name="characterRef">Character to remove</param>
+    void RemovePartyMember(string characterRef);
 }

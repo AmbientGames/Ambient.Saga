@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ambient.Saga.Engine\Ambient.Saga.Engine.csproj" />
+    <ProjectReference Include="..\Ambient.Saga.WorldForge\Ambient.Saga.WorldForge.csproj" />
   </ItemGroup>
 
 </Project>

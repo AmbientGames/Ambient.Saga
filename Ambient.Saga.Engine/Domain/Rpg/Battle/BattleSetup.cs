@@ -24,6 +24,9 @@ public class BattleSetup
     public ItemCollection OpponentCapabilities { get; set; } = new ItemCollection();
     public CharacterStats? OpponentStatsOverride { get; set; } = null;
 
+    // Party companions (characters who fight alongside player)
+    public List<Character> CompanionCharacters { get; set; } = new List<Character>();
+
     public void SetupFromWorld(World world)
     {
         LoadedWorld = world;
@@ -104,15 +107,53 @@ public class BattleSetup
         enemyCombatant.CombatProfile["Stance"] = "Balanced";
         System.Diagnostics.Debug.WriteLine($"  Set opponent stance: Balanced");
 
-        // Create BattleEngine with CombatAI for opponent
+        // Create companion combatants
+        var companions = new List<Combatant>();
+        foreach (var companionChar in CompanionCharacters)
+        {
+            if (companionChar.Stats == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"  Skipping companion {companionChar.DisplayName} - no stats defined");
+                continue;
+            }
+
+            var companionCombatant = new Combatant
+            {
+                RefName = companionChar.RefName,
+                DisplayName = companionChar.DisplayName,
+                Health = companionChar.Stats.Health,
+                Energy = companionChar.Stats.Stamina,
+                Strength = companionChar.Stats.Strength,
+                Defense = companionChar.Stats.Defense,
+                Speed = companionChar.Stats.Speed,
+                Magic = companionChar.Stats.Magic,
+                AffinityRef = companionChar.AffinityRef,
+                ArchetypeBias = companionChar.ArchetypeBias,
+                Capabilities = companionChar.Capabilities
+            };
+
+            // Initialize equipped slots
+            InitializeEquippedSlots(companionCombatant, LoadedWorld);
+            companionCombatant.CombatProfile["Stance"] = "Balanced";
+
+            companions.Add(companionCombatant);
+            System.Diagnostics.Debug.WriteLine($"  Added companion: {companionCombatant.DisplayName} (HP: {companionCombatant.Health:F2})");
+        }
+
+        // Create BattleEngine with CombatAI for opponent and companions
         var enemyMind = new CombatAI(LoadedWorld);
-        var battleEngine = new BattleEngine(playerCombatant, enemyCombatant, enemyMind, LoadedWorld);
+        var battleEngine = new BattleEngine(playerCombatant, enemyCombatant, enemyMind, LoadedWorld,
+            companions: companions.Count > 0 ? companions : null);
 
         // Set player's available affinities
         battleEngine.SetPlayerAffinities(AvatarAffinityRefs);
 
         System.Diagnostics.Debug.WriteLine($"\n=== BATTLE ENGINE CREATED ===");
         System.Diagnostics.Debug.WriteLine($"Player: {playerCombatant.DisplayName} (HP: {playerCombatant.Health:F2})");
+        if (companions.Count > 0)
+        {
+            System.Diagnostics.Debug.WriteLine($"Companions: {string.Join(", ", companions.Select(c => c.DisplayName))}");
+        }
         System.Diagnostics.Debug.WriteLine($"Enemy: {enemyCombatant.DisplayName} (HP: {enemyCombatant.Health:F2})");
 
         return battleEngine;

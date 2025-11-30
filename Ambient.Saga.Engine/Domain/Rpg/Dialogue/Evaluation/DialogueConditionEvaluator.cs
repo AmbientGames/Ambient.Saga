@@ -65,6 +65,11 @@ public class DialogueConditionEvaluator
             DialogueConditionType.ReputationLevel => EvaluateReputationLevel(condition),
             DialogueConditionType.ReputationValue => EvaluateNumeric(_stateProvider.GetFactionReputation(condition.FactionRef ?? ""), condition),
 
+            // Party conditions
+            DialogueConditionType.PartySlotAvailable => _stateProvider.HasAvailablePartySlot(),
+            DialogueConditionType.IsInParty => _stateProvider.IsInParty(condition.RefName),
+            DialogueConditionType.PartySize => EvaluateNumeric(_stateProvider.GetPartySize(), condition),
+
             _ => throw new NotSupportedException($"Unknown condition type: {condition.Type}")
         };
     }

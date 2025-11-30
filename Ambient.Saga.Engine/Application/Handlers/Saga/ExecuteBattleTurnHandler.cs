@@ -183,46 +183,99 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
             else
             {
-                // Execute enemy's response turn
-                System.Diagnostics.Debug.WriteLine("[ExecuteBattleTurn] Executing enemy response");
-                var enemyEvent = battleEngine.ExecuteEnemyTurn();
-
-                var enemyAfterAction = battleEngine.GetEnemy();
-                var enemyTurnTx = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
-                    command.AvatarId.ToString(),
-                    command.BattleInstanceId,
-                    turnNumber + 1,
-                    enemyEvent.ActorName,
-                    false,  // Not player turn
-                    enemyEvent.DecisionType,
-                    enemyEvent.ItemRefName,
-                    enemyEvent.Damage,
-                    enemyEvent.Healing,
-                    enemyEvent.TargetName,
-                    enemyEvent.TargetHealthAfter,
-                    enemyEvent.ActorEnergyAfter,
-                    enemyAfterAction,
-                    _world,
-                    instance.InstanceId);
-
-                instance.AddTransaction(enemyTurnTx);
-                newTransactions.Add(enemyTurnTx);
-
-                System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Enemy turn: {enemyEvent.DecisionType}, dealt {enemyEvent.Damage:F2} damage");
-
-                // Check if battle ended after enemy's turn
-                if (battleEngine.State == BattleState.Victory ||
-                    battleEngine.State == BattleState.Defeat ||
-                    battleEngine.State == BattleState.Fled)
+                // Execute companion turns (if any)
+                while (battleEngine.State == BattleState.CompanionTurn)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Battle ended: {battleEngine.State}");
-                    await CreateBattleEndTransactions(
-                        command,
-                        instance,
-                        battleEngine,
-                        turnNumber + 1,
-                        enemyCharacterInstanceId,
-                        newTransactions);
+                    var companion = battleEngine.CurrentCompanion;
+                    if (companion == null) break;
+
+                    System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Executing companion turn: {companion.DisplayName}");
+                    var companionEvent = battleEngine.ExecuteCompanionTurn();
+
+                    // Create transaction for companion's turn
+                    turnNumber++;
+                    var companionTurnTx = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
+                        command.AvatarId.ToString(),
+                        command.BattleInstanceId,
+                        turnNumber,
+                        companionEvent.ActorName,
+                        false,  // Not player turn (companion is allied but AI-controlled)
+                        companionEvent.DecisionType,
+                        companionEvent.ItemRefName,
+                        companionEvent.Damage,
+                        companionEvent.Healing,
+                        companionEvent.TargetName,
+                        companionEvent.TargetHealthAfter,
+                        companionEvent.ActorEnergyAfter,
+                        companion,
+                        _world,
+                        instance.InstanceId);
+
+                    instance.AddTransaction(companionTurnTx);
+                    newTransactions.Add(companionTurnTx);
+
+                    System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Companion turn: {companionEvent.DecisionType}, dealt {companionEvent.Damage:F2} damage");
+
+                    // Check if battle ended after companion's turn
+                    if (battleEngine.State == BattleState.Victory ||
+                        battleEngine.State == BattleState.Defeat)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Battle ended during companion turn: {battleEngine.State}");
+                        await CreateBattleEndTransactions(
+                            command,
+                            instance,
+                            battleEngine,
+                            turnNumber,
+                            enemyCharacterInstanceId,
+                            newTransactions);
+                        break;
+                    }
+                }
+
+                // Execute enemy's response turn (if battle hasn't ended)
+                if (battleEngine.State == BattleState.EnemyTurn)
+                {
+                    System.Diagnostics.Debug.WriteLine("[ExecuteBattleTurn] Executing enemy response");
+                    var enemyEvent = battleEngine.ExecuteEnemyTurn();
+
+                    turnNumber++;
+                    var enemyAfterAction = battleEngine.GetEnemy();
+                    var enemyTurnTx = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
+                        command.AvatarId.ToString(),
+                        command.BattleInstanceId,
+                        turnNumber,
+                        enemyEvent.ActorName,
+                        false,  // Not player turn
+                        enemyEvent.DecisionType,
+                        enemyEvent.ItemRefName,
+                        enemyEvent.Damage,
+                        enemyEvent.Healing,
+                        enemyEvent.TargetName,
+                        enemyEvent.TargetHealthAfter,
+                        enemyEvent.ActorEnergyAfter,
+                        enemyAfterAction,
+                        _world,
+                        instance.InstanceId);
+
+                    instance.AddTransaction(enemyTurnTx);
+                    newTransactions.Add(enemyTurnTx);
+
+                    System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Enemy turn: {enemyEvent.DecisionType}, dealt {enemyEvent.Damage:F2} damage");
+
+                    // Check if battle ended after enemy's turn
+                    if (battleEngine.State == BattleState.Victory ||
+                        battleEngine.State == BattleState.Defeat ||
+                        battleEngine.State == BattleState.Fled)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Battle ended: {battleEngine.State}");
+                        await CreateBattleEndTransactions(
+                            command,
+                            instance,
+                            battleEngine,
+                            turnNumber,
+                            enemyCharacterInstanceId,
+                            newTransactions);
+                    }
                 }
             }
 

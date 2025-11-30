@@ -11,6 +11,7 @@ public enum BattleState
 {
     NotStarted,
     PlayerTurn,
+    CompanionTurn,
     EnemyTurn,
     Victory,
     Defeat,
@@ -31,18 +32,33 @@ public class BattleEngine
     private const float BASE_DAMAGE_MINIMUM = 0.05f;      // Minimum 5% damage from weapon/spell attacks
 
     private readonly Combatant _player;
+    private readonly List<Combatant> _companions;  // Party members (excluding player)
     private readonly Combatant _enemy;
     private readonly ICombatAI? _enemyMind;  // Tactical AI for enemy
+    private readonly ICombatAI? _companionMind;  // AI for companion turns
     private readonly Random _random;
     private readonly World? _world;  // Needed for affinity lookups and item resolution
 
     private int _turnNumber;
+    private int _currentCompanionIndex;  // Which companion's turn it is
     private readonly List<CombatEvent> _actionHistory = new();
 
     public BattleState State { get; private set; }
     public List<string> CombatLog { get; } = new();
     public List<string> PlayerAffinityRefs { get; private set; } = new();
     public IReadOnlyList<CombatEvent> ActionHistory => _actionHistory.AsReadOnly();
+
+    /// <summary>
+    /// All party members (player + companions) for UI display.
+    /// </summary>
+    public IReadOnlyList<Combatant> Party => new[] { _player }.Concat(_companions).ToList().AsReadOnly();
+
+    /// <summary>
+    /// Current companion taking their turn (null if not companion turn).
+    /// </summary>
+    public Combatant? CurrentCompanion => State == BattleState.CompanionTurn && _currentCompanionIndex < _companions.Count
+        ? _companions[_currentCompanionIndex]
+        : null;
 
     /// <summary>
     /// Create a new battle engine.
@@ -52,16 +68,22 @@ public class BattleEngine
     /// <param name="enemyMind">AI brain for enemy tactical decisions (optional for player-vs-player)</param>
     /// <param name="world">World data for affinity matchups and item lookups (required for advanced combat)</param>
     /// <param name="randomSeed">Optional seed for deterministic behavior in tests</param>
-    public BattleEngine(Combatant player, Combatant enemy, ICombatAI? enemyMind = null, World? world = null, int? randomSeed = null)
+    /// <param name="companions">Optional party companions who fight alongside the player</param>
+    /// <param name="companionMind">AI brain for companion tactical decisions (uses enemyMind if not provided)</param>
+    public BattleEngine(Combatant player, Combatant enemy, ICombatAI? enemyMind = null, World? world = null, int? randomSeed = null,
+        List<Combatant>? companions = null, ICombatAI? companionMind = null)
     {
         _player = player ?? throw new ArgumentNullException(nameof(player));
         _enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));
+        _companions = companions ?? new List<Combatant>();
         _enemyMind = enemyMind;
+        _companionMind = companionMind ?? enemyMind;  // Companions use same AI as enemy if not specified
         _world = world;
         _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();
 
         State = BattleState.NotStarted;
         _turnNumber = 0;
+        _currentCompanionIndex = 0;
     }
 
     /// <summary>
@@ -73,7 +95,15 @@ public class BattleEngine
             return;
 
         CombatLog.Add("=== BATTLE START ===");
-        CombatLog.Add($"{_player.DisplayName} vs {_enemy.DisplayName}!");
+        if (_companions.Count > 0)
+        {
+            var partyNames = string.Join(", ", _companions.Select(c => c.DisplayName));
+            CombatLog.Add($"{_player.DisplayName} (with {partyNames}) vs {_enemy.DisplayName}!");
+        }
+        else
+        {
+            CombatLog.Add($"{_player.DisplayName} vs {_enemy.DisplayName}!");
+        }
 
         // Opponent always initiates the interaction
         State = BattleState.EnemyTurn;
@@ -97,10 +127,13 @@ public class BattleEngine
             };
         }
 
+        // Select target from party (player + alive companions)
+        var target = SelectEnemyTarget();
+
         if (_enemyMind == null)
         {
             // Fallback: basic attack if no AI provided
-            var fallbackAction = ExecuteAttack(_enemy, _player);
+            var fallbackAction = ExecuteAttack(_enemy, target);
             RecordAction(fallbackAction);
             CheckBattleEnd();
             return fallbackAction;
@@ -110,8 +143,8 @@ public class BattleEngine
         var snapshot = CreateBattleSnapshot(forEnemy: true);
         var decision = _enemyMind.DecideTurn(snapshot);
 
-        // Execute the AI's decision
-        var action = ExecuteDecision(_enemy, _player, decision);
+        // Execute the AI's decision against selected target
+        var action = ExecuteDecision(_enemy, target, decision);
         RecordAction(action);
 
         if (action.Success)
@@ -120,6 +153,142 @@ public class BattleEngine
         }
 
         return action;
+    }
+
+    /// <summary>
+    /// Select which party member the enemy will target.
+    /// Currently uses simple logic: random alive party member, weighted toward player.
+    /// </summary>
+    private Combatant SelectEnemyTarget()
+    {
+        // Build list of alive targets
+        var aliveTargets = new List<Combatant>();
+        if (_player.IsAlive)
+            aliveTargets.Add(_player);
+        aliveTargets.AddRange(_companions.Where(c => c.IsAlive));
+
+        if (aliveTargets.Count == 0)
+            return _player;  // Shouldn't happen, but fallback
+
+        if (aliveTargets.Count == 1)
+            return aliveTargets[0];
+
+        // Weight toward player (50% chance to target player, 50% split among companions)
+        if (_player.IsAlive && _random.NextDouble() < 0.5)
+            return _player;
+
+        // Random from all alive targets
+        return aliveTargets[_random.Next(aliveTargets.Count)];
+    }
+
+    /// <summary>
+    /// Execute a companion's turn using AI.
+    /// </summary>
+    public CombatEvent ExecuteCompanionTurn()
+    {
+        if (State != BattleState.CompanionTurn || _currentCompanionIndex >= _companions.Count)
+        {
+            return new CombatEvent
+            {
+                Success = false,
+                Message = "Not companion's turn"
+            };
+        }
+
+        var companion = _companions[_currentCompanionIndex];
+
+        // Skip if companion is dead
+        if (!companion.IsAlive)
+        {
+            AdvanceCompanionTurn();
+            return new CombatEvent
+            {
+                Success = true,
+                Message = $"{companion.DisplayName} is defeated and cannot act"
+            };
+        }
+
+        CombatLog.Add($"--- {companion.DisplayName}'s turn ---");
+
+        CombatEvent action;
+        if (_companionMind == null)
+        {
+            // Fallback: basic attack
+            action = ExecuteAttack(companion, _enemy);
+        }
+        else
+        {
+            // AI decides (companions always target the enemy)
+            var snapshot = CreateCompanionBattleSnapshot(companion);
+            var decision = _companionMind.DecideTurn(snapshot);
+            action = ExecuteDecision(companion, _enemy, decision);
+        }
+
+        RecordAction(action);
+
+        if (action.Success)
+        {
+            CheckBattleEnd();
+        }
+
+        // Move to next companion or next phase
+        if (State == BattleState.CompanionTurn)  // Not ended by CheckBattleEnd
+        {
+            AdvanceCompanionTurn();
+        }
+
+        return action;
+    }
+
+    /// <summary>
+    /// Advance to next companion or to enemy turn.
+    /// </summary>
+    private void AdvanceCompanionTurn()
+    {
+        _currentCompanionIndex++;
+
+        // Skip dead companions
+        while (_currentCompanionIndex < _companions.Count && !_companions[_currentCompanionIndex].IsAlive)
+        {
+            _currentCompanionIndex++;
+        }
+
+        if (_currentCompanionIndex >= _companions.Count)
+        {
+            // All companions have acted, enemy's turn
+            State = BattleState.EnemyTurn;
+            CombatLog.Add($"--- {_enemy.DisplayName}'s turn ---");
+        }
+    }
+
+    /// <summary>
+    /// Create battle snapshot from a companion's perspective.
+    /// </summary>
+    private BattleView CreateCompanionBattleSnapshot(Combatant companion)
+    {
+        // Companion sees enemy but with hidden capabilities
+        var observableEnemy = new Combatant
+        {
+            RefName = _enemy.RefName,
+            DisplayName = _enemy.DisplayName,
+            Health = _enemy.Health,
+            Energy = _enemy.Energy,
+            Strength = GetEffectiveStrength(_enemy),
+            Defense = GetEffectiveDefense(_enemy),
+            Speed = GetEffectiveSpeed(_enemy),
+            Magic = GetEffectiveMagic(_enemy),
+            AffinityRef = _enemy.AffinityRef,
+            IsDefending = _enemy.IsDefending,
+            Capabilities = null  // Hidden
+        };
+
+        return new BattleView
+        {
+            Self = companion,
+            Opponent = observableEnemy,
+            History = _actionHistory.ToList(),
+            TurnNumber = _turnNumber
+        };
     }
 
     /// <summary>
@@ -977,19 +1146,40 @@ public class BattleEngine
             return;
         }
 
+        // Player down = defeat (companions flee without leader)
         if (_player.Health <= 0)
         {
             State = BattleState.Defeat;
             CombatLog.Add("=== DEFEAT ===");
             CombatLog.Add($"{_player.DisplayName} has been defeated...");
+            if (_companions.Count > 0)
+            {
+                CombatLog.Add("Your companions flee without their leader!");
+            }
             return;
         }
 
-        // Switch turns
+        // Switch turns: Player -> Companions -> Enemy -> Player
         if (State == BattleState.PlayerTurn)
         {
-            State = BattleState.EnemyTurn;
-            CombatLog.Add($"--- {_enemy.DisplayName}'s turn ---");
+            // After player, companions go (if any alive)
+            var aliveCompanions = _companions.Where(c => c.IsAlive).ToList();
+            if (aliveCompanions.Count > 0)
+            {
+                State = BattleState.CompanionTurn;
+                _currentCompanionIndex = 0;
+                // Skip to first alive companion
+                while (_currentCompanionIndex < _companions.Count && !_companions[_currentCompanionIndex].IsAlive)
+                {
+                    _currentCompanionIndex++;
+                }
+            }
+            else
+            {
+                // No companions, enemy turn
+                State = BattleState.EnemyTurn;
+                CombatLog.Add($"--- {_enemy.DisplayName}'s turn ---");
+            }
         }
         else if (State == BattleState.EnemyTurn)
         {
@@ -997,12 +1187,18 @@ public class BattleEngine
             CombatLog.Add($"--- {_player.DisplayName}'s turn ---");
             _turnNumber++;
         }
+        // CompanionTurn advancement is handled in AdvanceCompanionTurn()
     }
 
     /// <summary>
     /// Get the current player combatant (for UI binding).
     /// </summary>
     public Combatant GetPlayer() => _player;
+
+    /// <summary>
+    /// Get companion combatants (for UI binding).
+    /// </summary>
+    public IReadOnlyList<Combatant> GetCompanions() => _companions.AsReadOnly();
 
     /// <summary>
     /// Get the current enemy combatant (for UI binding).

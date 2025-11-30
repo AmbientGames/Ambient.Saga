@@ -265,6 +265,61 @@ public class DialogueActionExecutor
                 });
                 break;
 
+            // Party management - IDEMPOTENT (only modify on first visit)
+            case DialogueActionType.JoinParty:
+                if (shouldAwardRewards)
+                {
+                    // Use CharacterRef from action, or fall back to the current dialogue character
+                    var joinCharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef;
+                    _stateProvider.AddPartyMember(joinCharacterRef);
+
+                    // Raise event for UI/system handling
+                    _raisedEvents.Add(new PartyMemberJoinedEvent
+                    {
+                        DialogueTreeRef = dialogueTreeRef,
+                        NodeId = nodeId,
+                        CharacterRef = joinCharacterRef
+                    });
+
+                    if (_sagaContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreatePartyMemberJoinedTransaction(
+                            _sagaContext.AvatarId,
+                            joinCharacterRef,
+                            _sagaContext.SagaInstance.InstanceId
+                        );
+                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                    }
+                }
+                break;
+
+            case DialogueActionType.LeaveParty:
+                if (shouldAwardRewards)
+                {
+                    // Use CharacterRef from action, or fall back to the current dialogue character
+                    var leaveCharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef;
+                    _stateProvider.RemovePartyMember(leaveCharacterRef);
+
+                    // Raise event for UI/system handling
+                    _raisedEvents.Add(new PartyMemberLeftEvent
+                    {
+                        DialogueTreeRef = dialogueTreeRef,
+                        NodeId = nodeId,
+                        CharacterRef = leaveCharacterRef
+                    });
+
+                    if (_sagaContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreatePartyMemberLeftTransaction(
+                            _sagaContext.AvatarId,
+                            leaveCharacterRef,
+                            _sagaContext.SagaInstance.InstanceId
+                        );
+                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                    }
+                }
+                break;
+
             default:
                 throw new NotSupportedException($"Unknown action type: {action.Type}");
         }

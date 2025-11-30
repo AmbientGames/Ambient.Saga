@@ -616,4 +616,167 @@ public class DialogueActionExecutorTests
     }
 
     #endregion
+
+    #region Party Actions
+
+    [Fact]
+    public void JoinParty_AddsCharacterToParty()
+    {
+        _state.MaxPartySlots = 2;
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.JoinParty,
+            CharacterRef = "LYRA_THE_HEALER"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.True(_state.IsInParty("LYRA_THE_HEALER"));
+        Assert.Equal(1, _state.GetPartySize());
+    }
+
+    [Fact]
+    public void JoinParty_WhenPartyFull_DoesNotAdd()
+    {
+        _state.MaxPartySlots = 1;
+        _state.AddPartyMember("COMPANION_A");
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.JoinParty,
+            CharacterRef = "LYRA_THE_HEALER"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.False(_state.IsInParty("LYRA_THE_HEALER"));
+        Assert.Equal(1, _state.GetPartySize());
+    }
+
+    [Fact]
+    public void JoinParty_WhenAlreadyInParty_DoesNotDuplicate()
+    {
+        _state.MaxPartySlots = 2;
+        _state.AddPartyMember("LYRA_THE_HEALER");
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.JoinParty,
+            CharacterRef = "LYRA_THE_HEALER"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.True(_state.IsInParty("LYRA_THE_HEALER"));
+        Assert.Equal(1, _state.GetPartySize());
+    }
+
+    [Fact]
+    public void JoinParty_RaisesPartyMemberJoinedEvent()
+    {
+        _state.MaxPartySlots = 2;
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.JoinParty,
+            CharacterRef = "LYRA_THE_HEALER"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as PartyMemberJoinedEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("LYRA_THE_HEALER", evt.CharacterRef);
+    }
+
+    [Fact]
+    public void LeaveParty_RemovesCharacterFromParty()
+    {
+        _state.MaxPartySlots = 2;
+        _state.AddPartyMember("LYRA_THE_HEALER");
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.LeaveParty,
+            CharacterRef = "LYRA_THE_HEALER"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.False(_state.IsInParty("LYRA_THE_HEALER"));
+        Assert.Equal(0, _state.GetPartySize());
+    }
+
+    [Fact]
+    public void LeaveParty_WhenNotInParty_DoesNothing()
+    {
+        _state.MaxPartySlots = 2;
+        _state.AddPartyMember("COMPANION_A");
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.LeaveParty,
+            CharacterRef = "LYRA_THE_HEALER"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.True(_state.IsInParty("COMPANION_A"));
+        Assert.Equal(1, _state.GetPartySize());
+    }
+
+    [Fact]
+    public void LeaveParty_RaisesPartyMemberLeftEvent()
+    {
+        _state.MaxPartySlots = 2;
+        _state.AddPartyMember("LYRA_THE_HEALER");
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.LeaveParty,
+            CharacterRef = "LYRA_THE_HEALER"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as PartyMemberLeftEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("LYRA_THE_HEALER", evt.CharacterRef);
+    }
+
+    [Fact]
+    public void PartyActions_CanBeCombinedWithOtherActions()
+    {
+        _state.MaxPartySlots = 2;
+
+        var actions = new[]
+        {
+            new DialogueAction
+            {
+                Type = DialogueActionType.GiveQuestToken,
+                RefName = "companion_recruited"
+            },
+            new DialogueAction
+            {
+                Type = DialogueActionType.JoinParty,
+                CharacterRef = "LYRA_THE_HEALER"
+            },
+            new DialogueAction
+            {
+                Type = DialogueActionType.TransferCurrency,
+                Amount = -50  // Pay a recruitment fee
+            }
+        };
+
+        _executor.ExecuteAll(actions, "test_tree", "node1", "test_character");
+
+        Assert.True(_state.HasQuestToken("companion_recruited"));
+        Assert.True(_state.IsInParty("LYRA_THE_HEALER"));
+        Assert.Equal(-50, _state.GetCredits());
+    }
+
+    #endregion
 }

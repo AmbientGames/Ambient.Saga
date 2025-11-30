@@ -34,7 +34,7 @@ public class BlocksTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Lat0Height256");
+        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Ise");
 
         //_world.AvailableWorldConfigurations = await WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
 

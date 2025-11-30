@@ -61,15 +61,21 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                     existingBattle.SequenceNumber);
             }
 
-            // Create battle engine with deterministic seed
+            // Create battle engine with deterministic seed and companions
             var battleEngine = new BattleEngine(
                 command.PlayerCombatant,
                 command.EnemyCombatant,
                 command.EnemyMind,
                 _world,
-                command.RandomSeed);
+                command.RandomSeed,
+                companions: command.CompanionCombatants);
 
             battleEngine.SetPlayerAffinities(command.PlayerAffinityRefs);
+
+            if (command.CompanionCombatants?.Count > 0)
+            {
+                System.Diagnostics.Debug.WriteLine($"[StartBattle] Party includes {command.CompanionCombatants.Count} companions: {string.Join(", ", command.CompanionCombatants.Select(c => c.DisplayName))}");
+            }
 
             // Create BattleStarted transaction
             var battleStartedTransaction = BattleTransactionHelper.CreateBattleStartedTransaction(

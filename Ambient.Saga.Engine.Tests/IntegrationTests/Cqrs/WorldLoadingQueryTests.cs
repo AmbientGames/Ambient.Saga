@@ -17,15 +17,30 @@ public class WorldLoadingQueryTests : IDisposable
 
     public WorldLoadingQueryTests()
     {
-        // Both WorldDefinitions and DefinitionXsd are copied to the bin directory during build
-        _dataDirectory = Path.Combine(Directory.GetCurrentDirectory(), "WorldDefinitions");
-        _definitionDirectory = Path.Combine(Directory.GetCurrentDirectory(), "DefinitionXsd");
+        // Use the Sandbox directory for world definitions
+        var domainDirectory = FindSandboxDirectory();
+        _dataDirectory = Path.Combine(domainDirectory, "WorldDefinitions");
+        _definitionDirectory = Path.Combine(domainDirectory, "DefinitionXsd");
 
         // Setup MediatR with world loading handlers
         var services = new ServiceCollection();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoadWorldHandler).Assembly));
         var serviceProvider = services.BuildServiceProvider();
         _mediator = serviceProvider.GetRequiredService<IMediator>();
+    }
+
+    private static string FindSandboxDirectory()
+    {
+        var directory = AppDomain.CurrentDomain.BaseDirectory;
+        while (directory != null)
+        {
+            var domainPath = Path.Combine(directory, "Ambient.Saga.Sandbox.WindowsUI");
+            if (Directory.Exists(domainPath))
+                return domainPath;
+            directory = Directory.GetParent(directory)?.FullName;
+        }
+
+        throw new InvalidOperationException("Could not find Sandbox directory");
     }
 
     [Fact]

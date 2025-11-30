@@ -121,5 +121,11 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         ApplyStatusEffect,
+        
+        /// <remarks/>
+        JoinParty,
+        
+        /// <remarks/>
+        LeaveParty,
     }
 }

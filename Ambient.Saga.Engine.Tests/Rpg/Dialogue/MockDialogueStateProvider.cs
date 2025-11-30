@@ -141,4 +141,30 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     {
         throw new NotImplementedException();
     }
+
+    // Party management
+    private readonly List<string> _partyMembers = new();
+    public int MaxPartySlots { get; set; } = 1;
+
+    public int GetPartySize() => _partyMembers.Count;
+
+    public bool HasAvailablePartySlot() => _partyMembers.Count < MaxPartySlots;
+
+    public bool IsInParty(string? characterRef) =>
+        !string.IsNullOrEmpty(characterRef) && _partyMembers.Contains(characterRef);
+
+    public bool AddPartyMember(string characterRef)
+    {
+        if (string.IsNullOrEmpty(characterRef) || IsInParty(characterRef) || !HasAvailablePartySlot())
+            return false;
+
+        _partyMembers.Add(characterRef);
+        return true;
+    }
+
+    public void RemovePartyMember(string characterRef)
+    {
+        if (!string.IsNullOrEmpty(characterRef))
+            _partyMembers.Remove(characterRef);
+    }
 }

@@ -7,13 +7,13 @@ namespace Ambient.Saga.Engine.Tests;
 /// <summary>
 /// Integration tests for WorldValidationService that load real world XML data from Ambient.Domain.
 /// Validates that the actual world configurations pass all validation rules.
-/// NOTE: "Ise" is the target configuration for RPG content, but using "Lat0Height256" for testing.
+/// NOTE: "Ise" is the target configuration for RPG content and is now the only available configuration.
 /// </summary>
 public class WorldValidationServiceIntegrationTests
 {
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
-    private const string TestWorldConfiguration = "Lat0Height256";
+    private const string TestWorldConfiguration = "Ise";
 
     public WorldValidationServiceIntegrationTests()
     {

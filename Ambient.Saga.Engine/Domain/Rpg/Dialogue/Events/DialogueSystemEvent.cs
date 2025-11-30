@@ -74,3 +74,19 @@ public class AbandonQuestEvent : DialogueSystemEvent
     public string QuestRef { get; init; } = string.Empty;
     public string SagaRef { get; init; } = string.Empty;
 }
+
+/// <summary>
+/// Raised when a character joins the player's party via dialogue.
+/// </summary>
+public class PartyMemberJoinedEvent : DialogueSystemEvent
+{
+    public string CharacterRef { get; init; } = string.Empty;
+}
+
+/// <summary>
+/// Raised when a character leaves the player's party via dialogue.
+/// </summary>
+public class PartyMemberLeftEvent : DialogueSystemEvent
+{
+    public string CharacterRef { get; init; } = string.Empty;
+}

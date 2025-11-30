@@ -30,6 +30,8 @@ namespace Ambient.Domain {
         
         private Summon[] summonsField;
         
+        private PartyInventory partyField;
+        
         private string archetypeRefField;
         
         private string activeAffinityRefField;
@@ -111,6 +113,16 @@ namespace Ambient.Domain {
             }
             set {
                 this.summonsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public PartyInventory Party {
+            get {
+                return this.partyField;
+            }
+            set {
+                this.partyField = value;
             }
         }
         

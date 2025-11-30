@@ -311,4 +311,48 @@ public static class DialogueTransactionHelper
             ? visit.VisitCount
             : 0;
     }
+
+    /// <summary>
+    /// Creates a transaction for a party member joining.
+    /// </summary>
+    public static SagaTransaction CreatePartyMemberJoinedTransaction(
+        string avatarId,
+        string characterRef,
+        Guid sagaInstanceId)
+    {
+        return new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.PartyMemberJoined,
+            AvatarId = avatarId,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["CharacterRef"] = characterRef,
+                ["SagaInstanceId"] = sagaInstanceId.ToString()
+            }
+        };
+    }
+
+    /// <summary>
+    /// Creates a transaction for a party member leaving.
+    /// </summary>
+    public static SagaTransaction CreatePartyMemberLeftTransaction(
+        string avatarId,
+        string characterRef,
+        Guid sagaInstanceId)
+    {
+        return new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.PartyMemberLeft,
+            AvatarId = avatarId,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["CharacterRef"] = characterRef,
+                ["SagaInstanceId"] = sagaInstanceId.ToString()
+            }
+        };
+    }
 }

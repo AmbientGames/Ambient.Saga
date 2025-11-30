@@ -1,5 +1,6 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Domain.Rpg.Party;
 using Ambient.Saga.Engine.Domain.Rpg.Reputation;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
@@ -182,7 +183,14 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     public int GetFactionReputation(string factionRef)
     {
         if (_getSagaStateFunc == null)
-            return 0; // No Saga state provider - return neutral (0)
+        {
+            // No Saga state provider - check faction starting reputation
+            if (_w.FactionsLookup.TryGetValue(factionRef, out var factionDef))
+            {
+                return factionDef.StartingReputation;
+            }
+            return 0; // Neutral
+        }
 
         // Check all Saga instances for faction reputation
         foreach (var saga in _w.Gameplay?.SagaArcs ?? Array.Empty<SagaArc>())
@@ -192,6 +200,14 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
             {
                 return reputation;
             }
+        }
+
+        // If no saga arcs in world, try getting state directly (for tests)
+        // This handles the case where tests provide a getSagaStateFunc but minimal world has no SagaArcs
+        var directState = _getSagaStateFunc(string.Empty);
+        if (directState != null && directState.FactionReputation.TryGetValue(factionRef, out var directReputation))
+        {
+            return directReputation;
         }
 
         // Not found - check if faction has starting reputation
@@ -249,5 +265,68 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
 
         // Not found in any Saga state - this is first visit, award rewards
         return true;
+    }
+
+    // ===== PARTY MANAGEMENT =====
+
+    /// <summary>
+    /// Gets the current party size.
+    /// </summary>
+    public int GetPartySize() => PartyManager.GetPartySize(_a.Party);
+
+    /// <summary>
+    /// Checks if a party slot is available based on reputation with the slot faction.
+    /// </summary>
+    public bool HasAvailablePartySlot()
+    {
+        var slotFactionRef = _a.Party?.SlotFactionRef;
+        if (string.IsNullOrEmpty(slotFactionRef))
+        {
+            // No faction configured - use default of 1 slot at Neutral
+            return PartyManager.HasAvailableSlot(_a.Party, 0);
+        }
+
+        var reputation = GetFactionReputation(slotFactionRef);
+        return PartyManager.HasAvailableSlot(_a.Party, reputation);
+    }
+
+    /// <summary>
+    /// Checks if a character is in the party.
+    /// If characterRef is null/empty, checks if the current dialogue character is in party.
+    /// </summary>
+    public bool IsInParty(string? characterRef)
+    {
+        var refToCheck = string.IsNullOrEmpty(characterRef) ? _currentCharacterRef : characterRef;
+        return PartyManager.IsInParty(_a.Party, refToCheck ?? "");
+    }
+
+    /// <summary>
+    /// Adds a character to the party.
+    /// </summary>
+    public bool AddPartyMember(string characterRef)
+    {
+        if (string.IsNullOrEmpty(characterRef))
+            return false;
+
+        var slotFactionRef = _a.Party?.SlotFactionRef;
+        var reputation = string.IsNullOrEmpty(slotFactionRef) ? 0 : GetFactionReputation(slotFactionRef);
+
+        var updatedParty = PartyManager.AddPartyMember(_a.Party, characterRef, reputation);
+        if (updatedParty == null)
+            return false; // No slot available
+
+        _a.Party = updatedParty;
+        return true;
+    }
+
+    /// <summary>
+    /// Removes a character from the party.
+    /// </summary>
+    public void RemovePartyMember(string characterRef)
+    {
+        if (string.IsNullOrEmpty(characterRef))
+            return;
+
+        _a.Party = PartyManager.RemovePartyMember(_a.Party, characterRef);
     }
 }

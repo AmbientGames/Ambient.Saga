@@ -46,6 +46,10 @@ public enum SagaTransactionType
     // Trading and economy
     ItemTraded,              // Tracks merchant trade transactions
 
+    // Party management
+    PartyMemberJoined,       // Companion joined the party
+    PartyMemberLeft,         // Companion left the party
+
     // Loot and rewards
     LootAwarded,
     EffectApplied,

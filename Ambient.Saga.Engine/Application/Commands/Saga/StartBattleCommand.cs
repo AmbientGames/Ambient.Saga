@@ -59,4 +59,9 @@ public record StartBattleCommand : IRequest<SagaCommandResult>
     /// Avatar entity participating in battle (for state updates)
     /// </summary>
     public required AvatarEntity Avatar { get; init; }
+
+    /// <summary>
+    /// Party companion combatants (optional, for party battles)
+    /// </summary>
+    public List<Combatant>? CompanionCombatants { get; init; }
 }

@@ -91,5 +91,14 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         TraitComparison,
+        
+        /// <remarks/>
+        PartySlotAvailable,
+        
+        /// <remarks/>
+        IsInParty,
+        
+        /// <remarks/>
+        PartySize,
     }
 }

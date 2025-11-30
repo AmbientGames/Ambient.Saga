@@ -79,16 +79,18 @@ public class SpawnAnchorCalculationTests
         }
     }
 
-    [Fact]
-    public async Task CalculateSpawnAnchorPoints_ProceduralWorld_ShouldReturnZero()
-    {
-        // Arrange & Act - Load a procedural world
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Lat0Height256");
-        
-        // Assert - Procedural worlds should have zero anchor points
-        Assert.Equal(0, world. HeightMapSpawnPixelX);
-        Assert.Equal(0, world. HeightMapSpawnPixelY);
-        
-        _output.WriteLine($"Procedural world {world.WorldConfiguration.RefName} correctly returned (0, 0) anchor points");
-    }
+    // OBSOLETE: Lat0Height256 procedural configuration no longer exists
+    // Only "Ise" (HeightMapSettings) configuration is available
+    //[Fact]
+    //public async Task CalculateSpawnAnchorPoints_ProceduralWorld_ShouldReturnZero()
+    //{
+    //    // Arrange & Act - Load a procedural world
+    //    var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Lat0Height256");
+    //
+    //    // Assert - Procedural worlds should have zero anchor points
+    //    Assert.Equal(0, world. HeightMapSpawnPixelX);
+    //    Assert.Equal(0, world. HeightMapSpawnPixelY);
+    //
+    //    _output.WriteLine($"Procedural world {world.WorldConfiguration.RefName} correctly returned (0, 0) anchor points");
+    //}
 }

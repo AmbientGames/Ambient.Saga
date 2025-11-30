@@ -46,6 +46,22 @@
             <xs:enumeration value="ReputationLevel" />
             <xs:enumeration value="ReputationValue" />
             <xs:enumeration value="TraitComparison" />
+            <!-- Party Conditions -->
+            <xs:enumeration value="PartySlotAvailable">
+                <xs:annotation>
+                    <xs:documentation>Check if player has an available party slot</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="IsInParty">
+                <xs:annotation>
+                    <xs:documentation>Check if a specific character is in the party (uses CharacterRef or current NPC)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PartySize">
+                <xs:annotation>
+                    <xs:documentation>Check current party size (uses Operator and Value)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="ComparisonOperator">
@@ -127,6 +143,17 @@
             <xs:enumeration value="ApplyStatusEffect">
                 <xs:annotation>
                     <xs:documentation>Apply status effect to target (uses RefName for status effect)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <!-- Party Actions -->
+            <xs:enumeration value="JoinParty">
+                <xs:annotation>
+                    <xs:documentation>NPC joins the player's party (uses CharacterRef, requires available slot)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LeaveParty">
+                <xs:annotation>
+                    <xs:documentation>NPC leaves the player's party (uses CharacterRef)</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
         </xs:restriction>

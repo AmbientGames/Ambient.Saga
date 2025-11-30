@@ -25,7 +25,8 @@ public class WorldFactory
                     Equipment = Array.Empty<Equipment>(),
                     Consumables = Array.Empty<Consumable>(),
                     QuestTokens = Array.Empty<QuestToken>(),
-                    Factions = Array.Empty<Faction>()
+                    Factions = Array.Empty<Faction>(),
+                    SagaArcs = Array.Empty<SagaArc>()
                 }
             }
         };
