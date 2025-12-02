@@ -21,7 +21,6 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(SagaTrigger))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AvatarArchetype))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Faction))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(BaseArchetype))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StatusEffect))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CombatStance))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CharacterArchetype))]
