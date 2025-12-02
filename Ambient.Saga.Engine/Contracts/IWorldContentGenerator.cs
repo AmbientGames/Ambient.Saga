@@ -4,7 +4,6 @@ namespace Ambient.Saga.Engine.Contracts;
 
 /// <summary>
 /// Interface for world content generation (characters, dialogue, quests, equipment, etc.).
-/// Allows for mock implementations when the full WorldForge is not available.
 /// </summary>
 public interface IWorldContentGenerator
 {

@@ -1,9 +1,9 @@
 using Ambient.Domain;
+using Ambient.Saga.Engine.Contracts;
 
-namespace Ambient.Saga.Engine.Contracts;
+namespace Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;
 
 /// <summary>
-/// Mock implementation of IWorldContentGenerator for when WorldForge is not available.
 /// Returns IsAvailable = false and provides an appropriate message.
 /// </summary>
 public class MockWorldContentGenerator : IWorldContentGenerator
@@ -12,7 +12,7 @@ public class MockWorldContentGenerator : IWorldContentGenerator
     public bool IsAvailable => false;
 
     /// <inheritdoc />
-    public string StatusMessage => "World content generation requires WorldForge, which is not included in this build.";
+    public string StatusMessage => "World content generation mock for future world content generator.";
 
     /// <inheritdoc />
     public List<string> GenerateWorldContent(WorldConfiguration worldConfig, string outputDirectory)

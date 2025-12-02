@@ -98,7 +98,6 @@ public class WorldSelectionScreen
 
             if (_worldContentGenerator.IsAvailable)
             {
-                // Full WorldForge is available - show generation button
                 if (ImGui.Button("Generate World Content", new Vector2(-1, 30)))
                 {
                     Debug.WriteLine($"Generate button clicked for: {viewModel.SelectedConfiguration.RefName}");
@@ -139,7 +138,6 @@ public class WorldSelectionScreen
             }
             else
             {
-                // WorldForge is not available - show disabled button with explanation
                 ImGui.BeginDisabled();
                 ImGui.Button("Generate World Content", new Vector2(-1, 30));
                 ImGui.EndDisabled();

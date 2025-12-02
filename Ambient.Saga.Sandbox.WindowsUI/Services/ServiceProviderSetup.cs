@@ -1,14 +1,14 @@
-﻿using Ambient.Saga.Sandbox.WindowsUI;
-using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Components.Modals;
-using Ambient.Saga.Presentation.UI.Services;
-using Ambient.Saga.Engine.Application.Behaviors;
+﻿using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
+using Ambient.Saga.Presentation.UI.Components.Modals;
+using Ambient.Saga.Presentation.UI.Services;
+using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -64,8 +64,7 @@ namespace Ambient.Saga.Sandbox.WindowsUI.Services
                 "imgui",
                 (sp, key) => sp.GetRequiredService<ImGuiArchetypeSelector>());
 
-            // World content generator (mock implementation - WorldForge not included in open-source build)
-            // To use real WorldForge, change to: services.AddSingleton<IWorldContentGenerator, Ambient.Saga.WorldForge.WorldContentGenerator>();
+            // World content generator (mock implementation)
             services.AddSingleton<IWorldContentGenerator, MockWorldContentGenerator>();
 
             // Modal manager for ImGui archetype selector (with circular dependency resolution)
