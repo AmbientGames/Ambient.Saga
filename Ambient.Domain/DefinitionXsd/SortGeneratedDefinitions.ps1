@@ -18,7 +18,7 @@ New-Item -ItemType Directory -Path $coreDir -Force | Out-Null
 
 # Define keywords for each category (order matters - first match wins)
 $presentationWords = @("Asset", "Model")
-$gameplayWords = @("Saga", "Interactable", "Trigger", "Structure", "Quest", "Landmark", "Character", "Avatar", "Dialogue", "Tool", "Equipment", "Consumable", "Spell", "Reward", "Achievement", "Acquirable", "Summon", "Affinity", "Entity", "Comparison", "Condition", "Item", "CombatStance", "StatusEffect", "Reputation", "Narrative", "Loadout", "Faction", "Content", "Procedural")
+$gameplayWords = @("Saga", "Interactable", "Trigger", "Structure", "Quest", "Landmark", "Character", "Avatar", "Dialogue", "Tool", "Equipment", "Consumable", "Spell", "Reward", "Achievement", "Acquirable", "Summon", "Affinity", "Entity", "Comparison", "Condition", "Item", "CombatStance", "StatusEffect", "Reputation", "Narrative", "Loadout", "Faction", "Content", "Procedural", "Party")
 $simulationWords = @("Block", "Climate", "Living", "Material", "Substance", "State", "Style", "Process", "Simulation", "Tree", "Shrub", "Ground", "Leaf", "Static", "ItemChoice")
 $coreWords = @("World", "Schema", "Gameplay", "Presentation", "Preset", "HeightMap", "Procedural", "TemplateMetadata")
 $enumTypes = @("WorldGameMode", "BlockMode", "EffectLevel", "StaticBlockGenerationMode", "BlockCategory", "DispositionType", "TextureGenerationMode", "LeafShape", "SystemSubstance", "SystemState", "SystemStyle", "SystemLivingShape", "WorldDataSource", "ProceduralGenerationMode", "WorldLifeMode", "TriggerType", "Seed", "ChunkCount", "LoadoutSlot", "ToolType", "QuestDifficulty", "ItemUseType", "CharacterTraitType")

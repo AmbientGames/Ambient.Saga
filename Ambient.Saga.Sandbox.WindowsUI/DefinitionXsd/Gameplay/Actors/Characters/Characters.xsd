@@ -5,6 +5,7 @@
     <xs:include schemaLocation="../../Acquirables/QuestToken.xsd" />
     <xs:include schemaLocation="../../Interactable.xsd" />
     <xs:include schemaLocation="../../AIMetadata.xsd" />
+
     <xs:simpleType name="BattleTriggerCondition">
         <xs:restriction base="xs:string">
             <xs:enumeration value="HealthBelow">
@@ -111,7 +112,7 @@
                     </xs:element>
                 </xs:sequence>
                 <xs:attribute name="ModelRef" type="ModelRef" use="optional" />
-                <xs:attribute name="RespawnIntervalSeconds" type="xs:int" use="optional" default="0"></xs:attribute>
+                <xs:attribute name="RespawnIntervalSeconds" type="xs:int" use="optional" default="0" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
