@@ -10,8 +10,9 @@
             <xs:minInclusive value="0.0" />
         </xs:restriction>
     </xs:simpleType>
+
     <xs:attributeGroup name="TradePricingAttributes">
-        <xs:attribute name="WholesalePrice" type="WholesalePrice" use="optional" default="2147483647"></xs:attribute>
-        <xs:attribute name="MerchantMarkupMultiplier" type="MarkupMultiplier" use="optional" default="1.5"></xs:attribute>
+        <xs:attribute name="WholesalePrice" type="WholesalePrice" use="optional" default="2147483647" />
+        <xs:attribute name="MerchantMarkupMultiplier" type="MarkupMultiplier" use="optional" default="1.5" />
     </xs:attributeGroup>
 </xs:schema>

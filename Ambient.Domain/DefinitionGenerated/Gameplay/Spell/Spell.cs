@@ -24,9 +24,17 @@ namespace Ambient.Domain {
         
         private CharacterEffects effectsField;
         
+        private CharacterEffects minimumStatsField;
+        
         private float durabilityLossField;
         
         private ItemUseType useTypeField;
+        
+        private SpellCategoryType categoryField;
+        
+        private EquipmentCategoryType requiresEquippedField;
+        
+        private bool requiresEquippedFieldSpecified;
         
         private string statusEffectRefField;
         
@@ -55,6 +63,16 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
+        public CharacterEffects MinimumStats {
+            get {
+                return this.minimumStatsField;
+            }
+            set {
+                this.minimumStatsField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(typeof(float), "0.01")]
         public float DurabilityLoss {
@@ -75,6 +93,39 @@ namespace Ambient.Domain {
             }
             set {
                 this.useTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public SpellCategoryType Category {
+            get {
+                return this.categoryField;
+            }
+            set {
+                this.categoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public EquipmentCategoryType RequiresEquipped {
+            get {
+                return this.requiresEquippedField;
+            }
+            set {
+                this.requiresEquippedField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool RequiresEquippedSpecified {
+            get {
+                return this.requiresEquippedFieldSpecified;
+            }
+            set {
+                this.requiresEquippedFieldSpecified = value;
             }
         }
         

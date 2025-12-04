@@ -31,11 +31,14 @@ namespace Ambient.Domain {
         
         private string affinityRefField;
         
+        private ItemRarityType rarityField;
+        
         private int wholesalePriceField;
         
         private float merchantMarkupMultiplierField;
         
         public Acquirable() {
+            this.rarityField = ItemRarityType.Common;
             this.wholesalePriceField = 2147483647;
             this.merchantMarkupMultiplierField = ((float)(1.5F));
         }
@@ -48,6 +51,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.affinityRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(ItemRarityType.Common)]
+        public ItemRarityType Rarity {
+            get {
+                return this.rarityField;
+            }
+            set {
+                this.rarityField = value;
             }
         }
         

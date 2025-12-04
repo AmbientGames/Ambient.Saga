@@ -24,7 +24,11 @@ namespace Ambient.Domain {
         
         private CharacterEffects effectsField;
         
+        private CharacterEffects minimumStatsField;
+        
         private string slotRefField;
+        
+        private EquipmentCategoryType categoryField;
         
         private float durabilityLossField;
         
@@ -57,6 +61,16 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
+        public CharacterEffects MinimumStats {
+            get {
+                return this.minimumStatsField;
+            }
+            set {
+                this.minimumStatsField = value;
+            }
+        }
+        
+        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string SlotRef {
             get {
@@ -64,6 +78,17 @@ namespace Ambient.Domain {
             }
             set {
                 this.slotRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public EquipmentCategoryType Category {
+            get {
+                return this.categoryField;
+            }
+            set {
+                this.categoryField = value;
             }
         }
         

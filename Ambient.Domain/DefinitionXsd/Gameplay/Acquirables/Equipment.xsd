@@ -14,8 +14,12 @@
             <xs:extension base="DegradableAcquirable">
                 <xs:sequence>
                     <xs:element name="Effects" type="CharacterEffects" />
+                    <!-- Minimum stats required to equip this item -->
+                    <xs:element name="MinimumStats" type="CharacterEffects" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="SlotRef" type="LoadoutSlotRef" use="required" />
+                <!-- Equipment category (what class of item this is) -->
+                <xs:attribute name="Category" type="EquipmentCategoryType" use="required" />
                 <xs:attributeGroup ref="UseAttributes" />
                 <!-- Status effects applied on hit/critical hit -->
                 <xs:attribute name="StatusEffectRef" type="xs:string" use="optional" />
