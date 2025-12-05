@@ -320,6 +320,105 @@ public class DialogueActionExecutor
                 }
                 break;
 
+            // Faction reputation - IDEMPOTENT (only change on first visit)
+            case DialogueActionType.ChangeReputation:
+                if (shouldAwardRewards)
+                {
+                    _stateProvider.ChangeReputation(action.FactionRef, action.Amount);
+
+                    // Raise event for UI/system handling
+                    _raisedEvents.Add(new ReputationChangedEvent
+                    {
+                        DialogueTreeRef = dialogueTreeRef,
+                        NodeId = nodeId,
+                        FactionRef = action.FactionRef,
+                        Amount = action.Amount
+                    });
+
+                    if (_sagaContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreateReputationChangedTransaction(
+                            _sagaContext.AvatarId,
+                            action.FactionRef,
+                            action.Amount,
+                            _sagaContext.SagaInstance.InstanceId
+                        );
+                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                    }
+                }
+                break;
+
+            // Battle-related actions - NOT IDEMPOTENT (always raise events)
+            // These are system events that trigger battle mechanics
+            case DialogueActionType.ChangeStance:
+                _raisedEvents.Add(new ChangeStanceEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    StanceRef = action.RefName,
+                    CharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef
+                });
+                break;
+
+            case DialogueActionType.ChangeAffinity:
+                _raisedEvents.Add(new ChangeAffinityEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    AffinityRef = action.RefName,
+                    CharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef
+                });
+                break;
+
+            case DialogueActionType.CastSpell:
+                _raisedEvents.Add(new CastSpellEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    SpellRef = action.RefName,
+                    CharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef
+                });
+                break;
+
+            case DialogueActionType.SummonAlly:
+                _raisedEvents.Add(new SummonAllyEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    CharacterRef = action.CharacterRef,
+                    CharacterArchetypeRef = action.CharacterArchetypeRef
+                });
+                break;
+
+            case DialogueActionType.EndBattle:
+                _raisedEvents.Add(new EndBattleEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    Result = action.RefName // RefName contains the result: "Victory", "Defeat", "Flee", "Draw"
+                });
+                break;
+
+            case DialogueActionType.HealSelf:
+                _raisedEvents.Add(new HealSelfEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    CharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef,
+                    Amount = action.Amount
+                });
+                break;
+
+            case DialogueActionType.ApplyStatusEffect:
+                _raisedEvents.Add(new ApplyStatusEffectEvent
+                {
+                    DialogueTreeRef = dialogueTreeRef,
+                    NodeId = nodeId,
+                    StatusEffectRef = action.RefName,
+                    TargetCharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef
+                });
+                break;
+
             default:
                 throw new NotSupportedException($"Unknown action type: {action.Type}");
         }

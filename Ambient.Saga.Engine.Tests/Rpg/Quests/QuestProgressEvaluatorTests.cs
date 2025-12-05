@@ -634,4 +634,258 @@ public class QuestProgressEvaluatorTests
     }
 
     #endregion
+
+    #region ItemCrafted Objective Tests
+
+    [Fact]
+    public void EvaluateObjectiveProgress_ItemCrafted_CountsCorrectly()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var quest = CreateTestQuest();
+
+        var objective = new QuestObjective
+        {
+            RefName = "CRAFT_SWORDS",
+            Type = QuestObjectiveType.ItemCrafted,
+            ItemRef = "IRON_SWORD",
+            Threshold = 3
+        };
+
+        var stage = new QuestStage
+        {
+            RefName = "CRAFTING",
+            DisplayName = "Craft Weapons"
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            CreateTransaction(SagaTransactionType.ItemCrafted, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "IRON_SWORD",
+                ["Quantity"] = "1"
+            }),
+            CreateTransaction(SagaTransactionType.ItemCrafted, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "IRON_SWORD",
+                ["Quantity"] = "2"
+            }),
+            // Different item - should not count
+            CreateTransaction(SagaTransactionType.ItemCrafted, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "STEEL_SWORD",
+                ["Quantity"] = "1"
+            })
+        };
+
+        // Act
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, world);
+
+        // Assert
+        Assert.Equal(3, progress);
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_ItemCrafted_WithoutItemRef_CountsAllCraftedItems()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var quest = CreateTestQuest();
+
+        var objective = new QuestObjective
+        {
+            RefName = "CRAFT_ANYTHING",
+            Type = QuestObjectiveType.ItemCrafted,
+            // No ItemRef - count all crafted items
+            Threshold = 5
+        };
+
+        var stage = new QuestStage
+        {
+            RefName = "CRAFTING",
+            DisplayName = "Craft Items"
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            CreateTransaction(SagaTransactionType.ItemCrafted, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "IRON_SWORD",
+                ["Quantity"] = "2"
+            }),
+            CreateTransaction(SagaTransactionType.ItemCrafted, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "STEEL_ARMOR",
+                ["Quantity"] = "1"
+            }),
+            CreateTransaction(SagaTransactionType.ItemCrafted, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "HEALTH_POTION",
+                ["Quantity"] = "3"
+            })
+        };
+
+        // Act
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, world);
+
+        // Assert
+        Assert.Equal(6, progress);
+    }
+
+    #endregion
+
+    #region CurrencyCollected Objective Tests
+
+    [Fact]
+    public void EvaluateObjectiveProgress_CurrencyCollected_SumsPositiveAmounts()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var quest = CreateTestQuest();
+
+        var objective = new QuestObjective
+        {
+            RefName = "COLLECT_GOLD",
+            Type = QuestObjectiveType.CurrencyCollected,
+            Threshold = 1000
+        };
+
+        var stage = new QuestStage
+        {
+            RefName = "EARNING",
+            DisplayName = "Earn Gold"
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            CreateTransaction(SagaTransactionType.CurrencyChanged, new Dictionary<string, string>
+            {
+                ["Amount"] = "500"
+            }),
+            CreateTransaction(SagaTransactionType.CurrencyChanged, new Dictionary<string, string>
+            {
+                ["Amount"] = "300"
+            }),
+            // Negative amount (spending) should NOT count
+            CreateTransaction(SagaTransactionType.CurrencyChanged, new Dictionary<string, string>
+            {
+                ["Amount"] = "-100"
+            }),
+            CreateTransaction(SagaTransactionType.CurrencyChanged, new Dictionary<string, string>
+            {
+                ["Amount"] = "250"
+            })
+        };
+
+        // Act
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, world);
+
+        // Assert
+        Assert.Equal(1050, progress); // 500 + 300 + 250 = 1050 (ignoring -100)
+    }
+
+    #endregion
+
+    #region Custom Objective Tests
+
+    [Fact]
+    public void EvaluateObjectiveProgress_CustomObjective_ReturnsThreshold_WhenMarkedComplete()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var quest = CreateTestQuest();
+
+        var objective = new QuestObjective
+        {
+            RefName = "BONUS_STEALTH",
+            Type = QuestObjectiveType.Custom,
+            Threshold = 1
+        };
+
+        var stage = new QuestStage
+        {
+            RefName = "INFILTRATION",
+            DisplayName = "Infiltrate the Castle"
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            CreateTransaction(SagaTransactionType.CustomObjectiveCompleted, new Dictionary<string, string>
+            {
+                ["ObjectiveRef"] = "BONUS_STEALTH"
+            })
+        };
+
+        // Act
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, world);
+
+        // Assert
+        Assert.Equal(1, progress); // Returns threshold when complete
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_CustomObjective_ReturnsZero_WhenNotComplete()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var quest = CreateTestQuest();
+
+        var objective = new QuestObjective
+        {
+            RefName = "BONUS_STEALTH",
+            Type = QuestObjectiveType.Custom,
+            Threshold = 1
+        };
+
+        var stage = new QuestStage
+        {
+            RefName = "INFILTRATION",
+            DisplayName = "Infiltrate the Castle"
+        };
+
+        var transactions = new List<SagaTransaction>();
+
+        // Act
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, world);
+
+        // Assert
+        Assert.Equal(0, progress);
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_CustomObjective_IgnoresDifferentObjectiveRef()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var quest = CreateTestQuest();
+
+        var objective = new QuestObjective
+        {
+            RefName = "BONUS_STEALTH",
+            Type = QuestObjectiveType.Custom,
+            Threshold = 1
+        };
+
+        var stage = new QuestStage
+        {
+            RefName = "INFILTRATION",
+            DisplayName = "Infiltrate the Castle"
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            CreateTransaction(SagaTransactionType.CustomObjectiveCompleted, new Dictionary<string, string>
+            {
+                ["ObjectiveRef"] = "DIFFERENT_OBJECTIVE"
+            })
+        };
+
+        // Act
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, world);
+
+        // Assert
+        Assert.Equal(0, progress);
+    }
+
+    #endregion
 }

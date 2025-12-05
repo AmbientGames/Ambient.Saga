@@ -45,6 +45,8 @@ public enum SagaTransactionType
 
     // Trading and economy
     ItemTraded,              // Tracks merchant trade transactions
+    ItemCrafted,             // Item crafted by player
+    CurrencyChanged,         // Currency gained or lost
 
     // Party management
     PartyMemberJoined,       // Companion joined the party
@@ -64,6 +66,7 @@ public enum SagaTransactionType
     QuestFailed,             // Quest failed (fail condition triggered or wrong choice)
     QuestAbandoned,          // Quest dropped by player
     QuestProgressed,         // DEPRECATED: Use QuestObjectiveCompleted instead
+    CustomObjectiveCompleted, // Custom objective manually marked complete
 
     // Structure interactions
     StructureDamaged,

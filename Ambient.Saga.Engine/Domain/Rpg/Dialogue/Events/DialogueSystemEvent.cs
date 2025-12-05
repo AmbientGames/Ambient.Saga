@@ -90,3 +90,80 @@ public class PartyMemberLeftEvent : DialogueSystemEvent
 {
     public string CharacterRef { get; init; } = string.Empty;
 }
+
+/// <summary>
+/// Raised when dialogue requests changing faction reputation.
+/// </summary>
+public class ReputationChangedEvent : DialogueSystemEvent
+{
+    public string FactionRef { get; init; } = string.Empty;
+    public int Amount { get; init; }
+}
+
+/// <summary>
+/// Raised when dialogue requests changing combat stance mid-battle.
+/// </summary>
+public class ChangeStanceEvent : DialogueSystemEvent
+{
+    public string StanceRef { get; init; } = string.Empty;
+    public string CharacterRef { get; init; } = string.Empty;
+}
+
+/// <summary>
+/// Raised when dialogue requests changing elemental affinity mid-battle.
+/// </summary>
+public class ChangeAffinityEvent : DialogueSystemEvent
+{
+    public string AffinityRef { get; init; } = string.Empty;
+    public string CharacterRef { get; init; } = string.Empty;
+}
+
+/// <summary>
+/// Raised when dialogue requests casting a spell mid-battle.
+/// </summary>
+public class CastSpellEvent : DialogueSystemEvent
+{
+    public string SpellRef { get; init; } = string.Empty;
+    public string CharacterRef { get; init; } = string.Empty;
+}
+
+/// <summary>
+/// Raised when dialogue requests summoning an ally to battle.
+/// </summary>
+public class SummonAllyEvent : DialogueSystemEvent
+{
+    public string CharacterRef { get; init; } = string.Empty;
+    public string CharacterArchetypeRef { get; init; } = string.Empty;
+}
+
+/// <summary>
+/// Raised when dialogue requests ending the current battle.
+/// </summary>
+public class EndBattleEvent : DialogueSystemEvent
+{
+    /// <summary>
+    /// Result of the battle: "Victory", "Defeat", "Flee", "Draw"
+    /// </summary>
+    public string Result { get; init; } = string.Empty;
+}
+
+/// <summary>
+/// Raised when dialogue requests healing a character.
+/// </summary>
+public class HealSelfEvent : DialogueSystemEvent
+{
+    public string CharacterRef { get; init; } = string.Empty;
+    /// <summary>
+    /// Heal amount as a percentage (0-100) or absolute value depending on context.
+    /// </summary>
+    public int Amount { get; init; }
+}
+
+/// <summary>
+/// Raised when dialogue requests applying a status effect.
+/// </summary>
+public class ApplyStatusEffectEvent : DialogueSystemEvent
+{
+    public string StatusEffectRef { get; init; } = string.Empty;
+    public string TargetCharacterRef { get; init; } = string.Empty;
+}

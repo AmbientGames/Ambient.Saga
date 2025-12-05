@@ -5,7 +5,11 @@
       "Bash(xargs -I {} bash -c \"echo \"\"File: {}\"\" && grep -E \"\"^namespace|^public (class|interface|record)\"\" \"\"{}\"\" | head -3\")",
       "Bash(find:*)",
       "Bash(grep:*)",
-      "Bash(powershell.exe:*)"
+      "Bash(powershell.exe:*)",
+      "Bash(tree:*)",
+      "Bash(xargs ls:*)",
+      "Bash(cat:*)",
+      "Bash(comm -23:*)"
     ],
     "deny": [],
     "ask": []

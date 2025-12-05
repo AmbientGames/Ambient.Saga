@@ -127,19 +127,30 @@ public class MockDialogueStateProvider : IDialogueStateProvider
         throw new NotImplementedException();
     }
 
-    public int GetFactionReputation(string factionRef)
-    {
-        throw new NotImplementedException();
-    }
+    // Faction reputation
+    private readonly Dictionary<string, int> _factionReputation = new();
+
+    public int GetFactionReputation(string factionRef) => _factionReputation.GetValueOrDefault(factionRef, 0);
 
     public string GetFactionReputationLevel(string factionRef)
     {
-        throw new NotImplementedException();
+        var rep = GetFactionReputation(factionRef);
+        return rep switch
+        {
+            < -6000 => "Hated",
+            < -3000 => "Hostile",
+            < 0 => "Unfriendly",
+            < 3000 => "Neutral",
+            < 6000 => "Friendly",
+            < 12000 => "Honored",
+            < 21000 => "Revered",
+            _ => "Exalted"
+        };
     }
 
     public void ChangeReputation(string factionRef, int amount)
     {
-        throw new NotImplementedException();
+        _factionReputation[factionRef] = GetFactionReputation(factionRef) + amount;
     }
 
     // Party management

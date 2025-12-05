@@ -355,4 +355,28 @@ public static class DialogueTransactionHelper
             }
         };
     }
+
+    /// <summary>
+    /// Creates a transaction for changing faction reputation.
+    /// </summary>
+    public static SagaTransaction CreateReputationChangedTransaction(
+        string avatarId,
+        string factionRef,
+        int amount,
+        Guid sagaInstanceId)
+    {
+        return new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.ReputationChanged,
+            AvatarId = avatarId,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["FactionRef"] = factionRef,
+                ["Amount"] = amount.ToString(),
+                ["SagaInstanceId"] = sagaInstanceId.ToString()
+            }
+        };
+    }
 }

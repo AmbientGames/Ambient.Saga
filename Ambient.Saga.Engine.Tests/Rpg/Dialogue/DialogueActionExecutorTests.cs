@@ -779,4 +779,243 @@ public class DialogueActionExecutorTests
     }
 
     #endregion
+
+    #region Reputation Actions
+
+    [Fact]
+    public void ChangeReputation_IncreasesReputation()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ChangeReputation,
+            FactionRef = "MERCHANTS_GUILD",
+            Amount = 500
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Equal(500, _state.GetFactionReputation("MERCHANTS_GUILD"));
+    }
+
+    [Fact]
+    public void ChangeReputation_DecreasesReputation()
+    {
+        // Start with some reputation
+        _state.ChangeReputation("THIEVES_GUILD", 1000);
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ChangeReputation,
+            FactionRef = "THIEVES_GUILD",
+            Amount = -300
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Equal(700, _state.GetFactionReputation("THIEVES_GUILD"));
+    }
+
+    [Fact]
+    public void ChangeReputation_RaisesReputationChangedEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ChangeReputation,
+            FactionRef = "MERCHANTS_GUILD",
+            Amount = 500
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as ReputationChangedEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("MERCHANTS_GUILD", evt.FactionRef);
+        Assert.Equal(500, evt.Amount);
+    }
+
+    [Fact]
+    public void ChangeReputation_IsIdempotent_OnlyChangesOnFirstVisit()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ChangeReputation,
+            FactionRef = "MERCHANTS_GUILD",
+            Amount = 500
+        };
+
+        // First execution - should change reputation
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+        Assert.Equal(500, _state.GetFactionReputation("MERCHANTS_GUILD"));
+
+        // Second execution with shouldAwardRewards = false - should NOT change
+        _executor.Execute(action, "test_tree", "node1", "test_character", false);
+        Assert.Equal(500, _state.GetFactionReputation("MERCHANTS_GUILD"));
+    }
+
+    #endregion
+
+    #region Battle Actions
+
+    [Fact]
+    public void ChangeStance_RaisesChangeStanceEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ChangeStance,
+            RefName = "AGGRESSIVE_STANCE"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as ChangeStanceEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("AGGRESSIVE_STANCE", evt.StanceRef);
+        Assert.Equal("test_character", evt.CharacterRef);
+    }
+
+    [Fact]
+    public void ChangeStance_UsesActionCharacterRef_WhenProvided()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ChangeStance,
+            RefName = "DEFENSIVE_STANCE",
+            CharacterRef = "BOSS_CHARACTER"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        var evt = _executor.RaisedEvents[0] as ChangeStanceEvent;
+        Assert.Equal("BOSS_CHARACTER", evt!.CharacterRef);
+    }
+
+    [Fact]
+    public void ChangeAffinity_RaisesChangeAffinityEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ChangeAffinity,
+            RefName = "FIRE_AFFINITY"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as ChangeAffinityEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("FIRE_AFFINITY", evt.AffinityRef);
+        Assert.Equal("test_character", evt.CharacterRef);
+    }
+
+    [Fact]
+    public void CastSpell_RaisesCastSpellEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.CastSpell,
+            RefName = "FIREBALL"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as CastSpellEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("FIREBALL", evt.SpellRef);
+        Assert.Equal("test_character", evt.CharacterRef);
+    }
+
+    [Fact]
+    public void SummonAlly_RaisesSummonAllyEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.SummonAlly,
+            CharacterRef = "GUARDIAN_SPIRIT",
+            CharacterArchetypeRef = "SUMMON_ARCHETYPE"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as SummonAllyEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("GUARDIAN_SPIRIT", evt.CharacterRef);
+        Assert.Equal("SUMMON_ARCHETYPE", evt.CharacterArchetypeRef);
+    }
+
+    [Fact]
+    public void EndBattle_RaisesEndBattleEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.EndBattle,
+            RefName = "Victory"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as EndBattleEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("Victory", evt.Result);
+    }
+
+    [Fact]
+    public void HealSelf_RaisesHealSelfEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.HealSelf,
+            Amount = 50
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as HealSelfEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("test_character", evt.CharacterRef);
+        Assert.Equal(50, evt.Amount);
+    }
+
+    [Fact]
+    public void ApplyStatusEffect_RaisesApplyStatusEffectEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ApplyStatusEffect,
+            RefName = "POISON",
+            CharacterRef = "TARGET_ENEMY"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as ApplyStatusEffectEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("POISON", evt.StatusEffectRef);
+        Assert.Equal("TARGET_ENEMY", evt.TargetCharacterRef);
+    }
+
+    [Fact]
+    public void BattleActions_AreNotIdempotent_AlwaysRaiseEvents()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.ChangeStance,
+            RefName = "AGGRESSIVE_STANCE"
+        };
+
+        // Execute twice with shouldAwardRewards = false
+        // Battle actions should still raise events (they're NOT idempotent)
+        _executor.Execute(action, "test_tree", "node1", "test_character", false);
+        _executor.Execute(action, "test_tree", "node1", "test_character", false);
+
+        Assert.Equal(2, _executor.RaisedEvents.Count);
+    }
+
+    #endregion
 }
