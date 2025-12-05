@@ -1164,6 +1164,26 @@ public class BattleEngine
 
         CombatLog.Add($"{effectTarget.DisplayName} HP: {effectTarget.HealthPercent:F1}%");
 
+        // PHASE 4: Apply status effect from consumable (if defined)
+        string? appliedStatusEffect = null;
+        if (!string.IsNullOrEmpty(consumable.StatusEffectRef))
+        {
+            // Status effect target follows the same logic as regular effects
+            appliedStatusEffect = TryApplyStatusEffect(
+                consumable.StatusEffectRef,
+                consumable.StatusEffectChance,
+                effectTarget,
+                _turnNumber,
+                consumable.DisplayName);
+        }
+
+        // PHASE 4: Handle consumable cleansing status effects
+        if (consumable.CleansesStatusEffects)
+        {
+            var cleanseTarget = consumable.CleanseTargetSelf ? user : target;
+            CleanseStatusEffects(cleanseTarget, consumable.DisplayName);
+        }
+
         return new CombatEvent
         {
             ActionType = BattleActionType.UseItem,
@@ -1172,7 +1192,8 @@ public class BattleEngine
             Damage = isOffensive ? Math.Abs(totalHealthChange) : 0,
             Healing = !isOffensive ? totalHealthChange : 0,
             Success = true,
-            Message = $"{user.DisplayName} uses {consumable.DisplayName}!"
+            Message = $"{user.DisplayName} uses {consumable.DisplayName}!",
+            StatusEffectApplied = appliedStatusEffect
         };
     }
 

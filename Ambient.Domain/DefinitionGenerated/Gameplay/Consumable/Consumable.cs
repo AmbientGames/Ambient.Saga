@@ -28,9 +28,20 @@ namespace Ambient.Domain {
         
         private ItemUseType useTypeField;
         
+        private string statusEffectRefField;
+        
+        private float statusEffectChanceField;
+        
+        private bool cleansesStatusEffectsField;
+        
+        private bool cleanseTargetSelfField;
+        
         public Consumable() {
             this.durabilityLossField = ((float)(0.01F));
             this.useTypeField = ItemUseType.Defensive;
+            this.statusEffectChanceField = ((float)(1F));
+            this.cleansesStatusEffectsField = false;
+            this.cleanseTargetSelfField = true;
         }
         
         /// <remarks/>
@@ -64,6 +75,53 @@ namespace Ambient.Domain {
             }
             set {
                 this.useTypeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string StatusEffectRef {
+            get {
+                return this.statusEffectRefField;
+            }
+            set {
+                this.statusEffectRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
+        public float StatusEffectChance {
+            get {
+                return this.statusEffectChanceField;
+            }
+            set {
+                this.statusEffectChanceField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool CleansesStatusEffects {
+            get {
+                return this.cleansesStatusEffectsField;
+            }
+            set {
+                this.cleansesStatusEffectsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(true)]
+        public bool CleanseTargetSelf {
+            get {
+                return this.cleanseTargetSelfField;
+            }
+            set {
+                this.cleanseTargetSelfField = value;
             }
         }
     }

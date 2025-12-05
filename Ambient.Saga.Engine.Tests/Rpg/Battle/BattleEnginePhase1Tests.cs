@@ -1474,4 +1474,237 @@ public class BattleEnginePhase1Tests
     }
 
     #endregion
+
+    #region Phase 4: Consumable Status Effect Tests
+
+    [Fact]
+    public void ExecuteUseConsumable_WithStatusEffect_AppliesEffectToTarget()
+    {
+        // Arrange - Create a consumable that applies poison
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 1.0f,
+            consumables: new[] { new ConsumableEntry { ConsumableRef = "PoisonVial", Quantity = 1 } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
+        var engine = new BattleEngine(player, enemy, world: worldWithConsumable, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Use offensive consumable with status effect
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.UseConsumable,
+            Parameter = "PoisonVial"
+        });
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Equal("Poison", result.StatusEffectApplied);
+        Assert.Single(enemy.ActiveStatusEffects);
+        Assert.Equal("Poison", enemy.ActiveStatusEffects[0].StatusEffectRef);
+    }
+
+    [Fact]
+    public void ExecuteUseConsumable_DefensiveWithStatusEffect_AppliesEffectToSelf()
+    {
+        // Arrange - Create a defensive consumable that buffs
+        var player = CreateCombatantWithCapabilities("Player", health: 0.5f, energy: 1.0f,
+            consumables: new[] { new ConsumableEntry { ConsumableRef = "StrengthPotion", Quantity = 1 } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
+        var engine = new BattleEngine(player, enemy, world: worldWithConsumable, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Use defensive consumable with status effect
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.UseConsumable,
+            Parameter = "StrengthPotion"
+        });
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Equal("StrengthBuff", result.StatusEffectApplied);
+        Assert.Single(player.ActiveStatusEffects);
+        Assert.Equal("StrengthBuff", player.ActiveStatusEffects[0].StatusEffectRef);
+    }
+
+    [Fact]
+    public void ExecuteUseConsumable_WithCleanse_RemovesStatusEffects()
+    {
+        // Arrange - Player has poison, will use antidote
+        var player = CreateCombatantWithCapabilities("Player", health: 0.5f, energy: 1.0f,
+            consumables: new[] { new ConsumableEntry { ConsumableRef = "Antidote", Quantity = 1 } });
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Poison",
+            RemainingTurns = 3,
+            Stacks = 2,
+            AppliedOnTurn = 1
+        });
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
+        var engine = new BattleEngine(player, enemy, world: worldWithConsumable, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Use antidote to cleanse
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.UseConsumable,
+            Parameter = "Antidote"
+        });
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Empty(player.ActiveStatusEffects);
+    }
+
+    [Fact]
+    public void ExecuteUseConsumable_WithStatusEffectChance_MayNotApply()
+    {
+        // Arrange - Create consumable with 50% chance
+        var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
+
+        // Run multiple times with different seeds to verify chance works
+        var appliedCount = 0;
+        for (int i = 0; i < 20; i++)
+        {
+            var testPlayer = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 1.0f,
+                consumables: new[] { new ConsumableEntry { ConsumableRef = "UnreliablePoisonVial", Quantity = 1 } });
+            var testEnemy = CreateCombatant("Enemy", health: 1.0f);
+
+            var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithConsumable, randomSeed: i);
+            engine.StartBattle();
+
+            var result = engine.ExecutePlayerDecision(new CombatAction
+            {
+                ActionType = ActionType.UseConsumable,
+                Parameter = "UnreliablePoisonVial"
+            });
+
+            if (!string.IsNullOrEmpty(result.StatusEffectApplied))
+            {
+                appliedCount++;
+            }
+        }
+
+        // Assert - With 50% chance, we should have some successes and some failures
+        Assert.True(appliedCount > 0, "Some applications should succeed");
+        Assert.True(appliedCount < 20, "Some applications should fail");
+    }
+
+    [Fact]
+    public void ExecuteUseConsumable_NoStatusEffect_NoEffectApplied()
+    {
+        // Arrange - Basic health potion with no status effect
+        var player = CreateCombatantWithCapabilities("Player", health: 0.5f, energy: 1.0f,
+            consumables: new[] { new ConsumableEntry { ConsumableRef = "BasicHealthPotion", Quantity = 1 } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
+        var engine = new BattleEngine(player, enemy, world: worldWithConsumable, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.UseConsumable,
+            Parameter = "BasicHealthPotion"
+        });
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Null(result.StatusEffectApplied);
+        Assert.Empty(player.ActiveStatusEffects);
+        Assert.Empty(enemy.ActiveStatusEffects);
+    }
+
+    /// <summary>
+    /// Creates a test world with Phase 4 consumables that have status effect support.
+    /// </summary>
+    private static World CreateTestWorldWithPhase4Consumables()
+    {
+        var baseWorld = CreateTestWorldWithPhase3StatusEffects();
+
+        // Add offensive consumable with status effect
+        var poisonVial = new Consumable
+        {
+            RefName = "PoisonVial",
+            DisplayName = "Poison Vial",
+            UseType = ItemUseType.Offensive,
+            StatusEffectRef = "Poison",
+            StatusEffectChance = 1.0f,
+            Effects = new CharacterEffects { Health = -0.05f }
+        };
+
+        // Add defensive consumable with status effect (buff)
+        var strengthPotion = new Consumable
+        {
+            RefName = "StrengthPotion",
+            DisplayName = "Strength Potion",
+            UseType = ItemUseType.Defensive,
+            StatusEffectRef = "StrengthBuff",
+            StatusEffectChance = 1.0f,
+            Effects = new CharacterEffects { Health = 0.1f }
+        };
+
+        // Add cleansing consumable
+        var antidote = new Consumable
+        {
+            RefName = "Antidote",
+            DisplayName = "Antidote",
+            UseType = ItemUseType.Defensive,
+            CleansesStatusEffects = true,
+            CleanseTargetSelf = true,
+            Effects = new CharacterEffects { Health = 0.05f }
+        };
+
+        // Add unreliable poison vial with 50% chance
+        var unreliablePoisonVial = new Consumable
+        {
+            RefName = "UnreliablePoisonVial",
+            DisplayName = "Unreliable Poison Vial",
+            UseType = ItemUseType.Offensive,
+            StatusEffectRef = "Poison",
+            StatusEffectChance = 0.5f, // 50% chance
+            Effects = new CharacterEffects { Health = -0.03f }
+        };
+
+        // Add basic health potion with no status effect
+        var basicHealthPotion = new Consumable
+        {
+            RefName = "BasicHealthPotion",
+            DisplayName = "Basic Health Potion",
+            UseType = ItemUseType.Defensive,
+            Effects = new CharacterEffects { Health = 0.2f }
+        };
+
+        // Add strength buff status effect
+        var strengthBuff = new StatusEffect
+        {
+            RefName = "StrengthBuff",
+            DisplayName = "Strength Buff",
+            Type = StatusEffectType.StatBoost,
+            StrengthModifier = 0.25f, // +25% strength
+            DurationTurns = 3,
+            MaxStacks = 1,
+            Cleansable = false
+        };
+
+        baseWorld.Gameplay.Consumables = baseWorld.Gameplay.Consumables
+            .Concat(new[] { poisonVial, strengthPotion, antidote, unreliablePoisonVial, basicHealthPotion }).ToArray();
+        baseWorld.ConsumablesLookup["PoisonVial"] = poisonVial;
+        baseWorld.ConsumablesLookup["StrengthPotion"] = strengthPotion;
+        baseWorld.ConsumablesLookup["Antidote"] = antidote;
+        baseWorld.ConsumablesLookup["UnreliablePoisonVial"] = unreliablePoisonVial;
+        baseWorld.ConsumablesLookup["BasicHealthPotion"] = basicHealthPotion;
+
+        baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects.Concat(new[] { strengthBuff }).ToArray();
+        baseWorld.StatusEffectsLookup["StrengthBuff"] = strengthBuff;
+
+        return baseWorld;
+    }
+
+    #endregion
 }

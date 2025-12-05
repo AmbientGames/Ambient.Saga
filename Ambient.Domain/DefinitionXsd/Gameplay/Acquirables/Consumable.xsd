@@ -15,6 +15,12 @@
                     <xs:element name="Effects" type="CharacterEffects" />
                 </xs:sequence>
                 <xs:attributeGroup ref="UseAttributes" />
+                <!-- Status effects applied on use -->
+                <xs:attribute name="StatusEffectRef" type="xs:string" use="optional" />
+                <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="1.0" />
+                <!-- Cleanse status effects -->
+                <xs:attribute name="CleansesStatusEffects" type="xs:boolean" use="optional" default="false" />
+                <xs:attribute name="CleanseTargetSelf" type="xs:boolean" use="optional" default="true" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
