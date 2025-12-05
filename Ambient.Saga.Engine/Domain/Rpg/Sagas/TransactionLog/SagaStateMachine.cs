@@ -372,7 +372,19 @@ public class SagaStateMachine
             CurrentY = spawnHeight          // Height (terrain-adjusted by game)
         };
 
+        // Copy traits from character template definition (e.g., Hostile, Friendly, BossFight)
+        if (characterTemplate.Traits != null)
+        {
+            foreach (var trait in characterTemplate.Traits)
+            {
+                var traitName = trait.Name.ToString();
+                // Value is optional - 0 means boolean flag, non-zero is numeric trait
+                characterState.Traits[traitName] = trait.Value != 0 ? trait.Value : null;
+            }
+        }
+
         // Copy any existing traits from the global trait list for this character template
+        // (traits assigned through dialogue or game events override template traits)
         if (state.CharacterTraits.TryGetValue(characterRef!, out var existingTraits))
         {
             foreach (var traitName in existingTraits)

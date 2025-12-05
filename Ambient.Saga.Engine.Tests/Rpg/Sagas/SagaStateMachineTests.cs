@@ -766,4 +766,229 @@ public class SagaStateMachineTests
         // Assert - All transactions processed successfully
         Assert.Equal(3, state.TransactionCount);
     }
+
+    #region Phase 2: Character Trait Spawning Tests
+
+    [Fact]
+    public void ReplayToNow_CharacterSpawnedWithHostileTrait_TraitCopiedToState()
+    {
+        // Arrange - Add a character with Hostile trait to the world
+        var characterWithTrait = new Character
+        {
+            RefName = "HostileEnemy",
+            DisplayName = "Hostile Enemy",
+            Stats = new CharacterStats { Health = 100, Mana = 50 },
+            Capabilities = new ItemCollection(),
+            Traits = new CharacterTrait[]
+            {
+                new CharacterTrait { Name = CharacterTraitType.Hostile }
+            }
+        };
+        _testWorld.CharactersLookup["HostileEnemy"] = characterWithTrait;
+
+        var instance = new SagaInstance { SagaRef = "TestSaga" };
+        var characterId = Guid.NewGuid();
+
+        instance.AddTransaction(new SagaTransaction
+        {
+            Type = SagaTransactionType.CharacterSpawned,
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 1,
+            Data = new()
+            {
+                ["CharacterInstanceId"] = characterId.ToString(),
+                ["CharacterRef"] = "HostileEnemy",
+                ["LatitudeZ"] = "35.0",
+                ["LongitudeX"] = "139.0",
+                ["Y"] = "50.0"
+            }
+        });
+
+        // Act
+        var state = _stateMachine.ReplayToNow(instance);
+
+        // Assert
+        var character = state.Characters[characterId.ToString()];
+        Assert.True(character.Traits.ContainsKey("Hostile"));
+        Assert.Null(character.Traits["Hostile"]); // Boolean flag trait has null value
+    }
+
+    [Fact]
+    public void ReplayToNow_CharacterSpawnedWithNumericTrait_TraitValueCopied()
+    {
+        // Arrange - Add a character with Aggression numeric trait
+        var characterWithTrait = new Character
+        {
+            RefName = "AggressiveEnemy",
+            DisplayName = "Aggressive Enemy",
+            Stats = new CharacterStats { Health = 100, Mana = 50 },
+            Capabilities = new ItemCollection(),
+            Traits = new CharacterTrait[]
+            {
+                new CharacterTrait { Name = CharacterTraitType.Aggression, Value = 75 }
+            }
+        };
+        _testWorld.CharactersLookup["AggressiveEnemy"] = characterWithTrait;
+
+        var instance = new SagaInstance { SagaRef = "TestSaga" };
+        var characterId = Guid.NewGuid();
+
+        instance.AddTransaction(new SagaTransaction
+        {
+            Type = SagaTransactionType.CharacterSpawned,
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 1,
+            Data = new()
+            {
+                ["CharacterInstanceId"] = characterId.ToString(),
+                ["CharacterRef"] = "AggressiveEnemy",
+                ["LatitudeZ"] = "35.0",
+                ["LongitudeX"] = "139.0",
+                ["Y"] = "50.0"
+            }
+        });
+
+        // Act
+        var state = _stateMachine.ReplayToNow(instance);
+
+        // Assert
+        var character = state.Characters[characterId.ToString()];
+        Assert.True(character.Traits.ContainsKey("Aggression"));
+        Assert.Equal(75, character.Traits["Aggression"]);
+    }
+
+    [Fact]
+    public void ReplayToNow_CharacterSpawnedWithMultipleTraits_AllTraitsCopied()
+    {
+        // Arrange - Add a character with multiple traits
+        var characterWithTraits = new Character
+        {
+            RefName = "BossFightEnemy",
+            DisplayName = "Boss Fight Enemy",
+            Stats = new CharacterStats { Health = 500, Mana = 200 },
+            Capabilities = new ItemCollection(),
+            Traits = new CharacterTrait[]
+            {
+                new CharacterTrait { Name = CharacterTraitType.Hostile },
+                new CharacterTrait { Name = CharacterTraitType.BossFight },
+                new CharacterTrait { Name = CharacterTraitType.Aggression, Value = 90 },
+                new CharacterTrait { Name = CharacterTraitType.FleeThreshold, Value = 10 }
+            }
+        };
+        _testWorld.CharactersLookup["BossFightEnemy"] = characterWithTraits;
+
+        var instance = new SagaInstance { SagaRef = "TestSaga" };
+        var characterId = Guid.NewGuid();
+
+        instance.AddTransaction(new SagaTransaction
+        {
+            Type = SagaTransactionType.CharacterSpawned,
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 1,
+            Data = new()
+            {
+                ["CharacterInstanceId"] = characterId.ToString(),
+                ["CharacterRef"] = "BossFightEnemy",
+                ["LatitudeZ"] = "35.0",
+                ["LongitudeX"] = "139.0",
+                ["Y"] = "50.0"
+            }
+        });
+
+        // Act
+        var state = _stateMachine.ReplayToNow(instance);
+
+        // Assert
+        var character = state.Characters[characterId.ToString()];
+        Assert.Equal(4, character.Traits.Count);
+        Assert.True(character.Traits.ContainsKey("Hostile"));
+        Assert.True(character.Traits.ContainsKey("BossFight"));
+        Assert.True(character.Traits.ContainsKey("Aggression"));
+        Assert.True(character.Traits.ContainsKey("FleeThreshold"));
+        Assert.Null(character.Traits["Hostile"]);
+        Assert.Null(character.Traits["BossFight"]);
+        Assert.Equal(90, character.Traits["Aggression"]);
+        Assert.Equal(10, character.Traits["FleeThreshold"]);
+    }
+
+    [Fact]
+    public void ReplayToNow_CharacterSpawnedWithNoTraits_TraitsDictionaryEmpty()
+    {
+        // Arrange - Use existing TestBoss which has no traits
+        var instance = new SagaInstance { SagaRef = "TestSaga" };
+        var characterId = Guid.NewGuid();
+
+        instance.AddTransaction(new SagaTransaction
+        {
+            Type = SagaTransactionType.CharacterSpawned,
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 1,
+            Data = new()
+            {
+                ["CharacterInstanceId"] = characterId.ToString(),
+                ["CharacterRef"] = "TestBoss",
+                ["LatitudeZ"] = "35.0",
+                ["LongitudeX"] = "139.0",
+                ["Y"] = "50.0"
+            }
+        });
+
+        // Act
+        var state = _stateMachine.ReplayToNow(instance);
+
+        // Assert
+        var character = state.Characters[characterId.ToString()];
+        Assert.Empty(character.Traits);
+    }
+
+    [Fact]
+    public void ReplayToNow_CharacterSpawnedWithFriendlyTrait_NotHostile()
+    {
+        // Arrange - Add a friendly NPC
+        var friendlyNpc = new Character
+        {
+            RefName = "FriendlyMerchant",
+            DisplayName = "Friendly Merchant",
+            Stats = new CharacterStats { Health = 100, Mana = 0 },
+            Capabilities = new ItemCollection(),
+            Traits = new CharacterTrait[]
+            {
+                new CharacterTrait { Name = CharacterTraitType.Friendly },
+                new CharacterTrait { Name = CharacterTraitType.WillTrade },
+                new CharacterTrait { Name = CharacterTraitType.TradeDiscount, Value = 15 }
+            }
+        };
+        _testWorld.CharactersLookup["FriendlyMerchant"] = friendlyNpc;
+
+        var instance = new SagaInstance { SagaRef = "TestSaga" };
+        var characterId = Guid.NewGuid();
+
+        instance.AddTransaction(new SagaTransaction
+        {
+            Type = SagaTransactionType.CharacterSpawned,
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 1,
+            Data = new()
+            {
+                ["CharacterInstanceId"] = characterId.ToString(),
+                ["CharacterRef"] = "FriendlyMerchant",
+                ["LatitudeZ"] = "35.0",
+                ["LongitudeX"] = "139.0",
+                ["Y"] = "50.0"
+            }
+        });
+
+        // Act
+        var state = _stateMachine.ReplayToNow(instance);
+
+        // Assert
+        var character = state.Characters[characterId.ToString()];
+        Assert.True(character.Traits.ContainsKey("Friendly"));
+        Assert.True(character.Traits.ContainsKey("WillTrade"));
+        Assert.True(character.Traits.ContainsKey("TradeDiscount"));
+        Assert.False(character.Traits.ContainsKey("Hostile")); // Should NOT have Hostile
+        Assert.Equal(15, character.Traits["TradeDiscount"]);
+    }
+
+    #endregion
 }

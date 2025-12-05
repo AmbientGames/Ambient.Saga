@@ -661,6 +661,16 @@ public class BattleEngine
             };
         }
 
+        // VALIDATION: Check MinimumStats - weapon may have stat requirements
+        if (weapon.MinimumStats != null)
+        {
+            var failedRequirement = CheckMinimumStats(attacker, weapon.MinimumStats, weapon.DisplayName);
+            if (failedRequirement != null)
+            {
+                return failedRequirement;
+            }
+        }
+
         // Find weapon's condition from attacker's capabilities
         var weaponCondition = 1.0f;
         if (attacker.Capabilities?.Equipment != null)

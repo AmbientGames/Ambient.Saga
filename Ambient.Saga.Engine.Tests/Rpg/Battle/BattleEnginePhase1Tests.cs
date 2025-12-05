@@ -984,4 +984,175 @@ public class BattleEnginePhase1Tests
     }
 
     #endregion
+
+    #region Phase 2: Equipment MinimumStats Validation Tests
+
+    [Fact]
+    public void ExecuteWeaponAttack_MinimumStrength_FailsWhenTooLow()
+    {
+        // Arrange
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.1f, energy: 1.0f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "HeavySword", Condition = 1.0f } }); // Low strength
+        player.CombatProfile["RightHand"] = "HeavySword";
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var worldWithHeavySword = CreateTestWorldWithHeavyWeapon();
+        var engine = new BattleEngine(player, enemy, world: worldWithHeavySword, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Try to attack with weapon requiring high strength
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack,
+            Parameter = "HeavySword" // Requires 0.5 Strength
+        });
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Contains("Strength", result.Message);
+    }
+
+    [Fact]
+    public void ExecuteWeaponAttack_MinimumStrength_SucceedsWhenMet()
+    {
+        // Arrange
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.6f, energy: 1.0f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "HeavySword", Condition = 1.0f } }); // High strength
+        player.CombatProfile["RightHand"] = "HeavySword";
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var worldWithHeavySword = CreateTestWorldWithHeavyWeapon();
+        var engine = new BattleEngine(player, enemy, world: worldWithHeavySword, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack,
+            Parameter = "HeavySword"
+        });
+
+        // Assert
+        Assert.True(result.Success);
+    }
+
+    [Fact]
+    public void ExecuteWeaponAttack_MinimumDefense_FailsWhenTooLow()
+    {
+        // Arrange
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, defense: 0.1f, energy: 1.0f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "GuardianBlade", Condition = 1.0f } }); // Low defense
+        player.CombatProfile["RightHand"] = "GuardianBlade";
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var worldWithGuardianBlade = CreateTestWorldWithHeavyWeapon();
+        var engine = new BattleEngine(player, enemy, world: worldWithGuardianBlade, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack,
+            Parameter = "GuardianBlade" // Requires 0.4 Defense
+        });
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Contains("Defense", result.Message);
+    }
+
+    [Fact]
+    public void ExecuteWeaponAttack_NoMinimumStats_SucceedsWithLowStats()
+    {
+        // Arrange - Player with minimal stats using basic weapon
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.1f, energy: 1.0f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
+        player.CombatProfile["RightHand"] = "IronSword"; // No MinimumStats requirement
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack,
+            Parameter = "IronSword"
+        });
+
+        // Assert
+        Assert.True(result.Success); // Basic sword has no stat requirements
+    }
+
+    [Fact]
+    public void ExecuteWeaponAttack_MinimumMagic_FailsForMeleeWithMagicRequirement()
+    {
+        // Arrange - A magic-infused weapon that requires high magic stat
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.1f, energy: 1.0f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "EnchantedBlade", Condition = 1.0f } }); // Low magic
+        player.CombatProfile["RightHand"] = "EnchantedBlade";
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var worldWithEnchantedBlade = CreateTestWorldWithHeavyWeapon();
+        var engine = new BattleEngine(player, enemy, world: worldWithEnchantedBlade, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack,
+            Parameter = "EnchantedBlade" // Requires 0.4 Magic
+        });
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Contains("Magic", result.Message);
+    }
+
+    /// <summary>
+    /// Creates a test world with additional heavy weapons that have MinimumStats requirements.
+    /// </summary>
+    private static World CreateTestWorldWithHeavyWeapon()
+    {
+        var baseWorld = CreateTestWorld();
+
+        // Add heavy weapon with Strength requirement
+        var heavySword = new Equipment
+        {
+            RefName = "HeavySword",
+            DisplayName = "Heavy Sword",
+            Category = EquipmentCategoryType.TwoHandedMelee,
+            MinimumStats = new CharacterEffects { Strength = 0.5f },
+            Effects = new CharacterEffects { Health = -0.2f }
+        };
+
+        // Add guardian blade with Defense requirement
+        var guardianBlade = new Equipment
+        {
+            RefName = "GuardianBlade",
+            DisplayName = "Guardian Blade",
+            Category = EquipmentCategoryType.OneHandedMelee,
+            MinimumStats = new CharacterEffects { Defense = 0.4f },
+            Effects = new CharacterEffects { Health = -0.15f }
+        };
+
+        // Add enchanted blade with Magic requirement
+        var enchantedBlade = new Equipment
+        {
+            RefName = "EnchantedBlade",
+            DisplayName = "Enchanted Blade",
+            Category = EquipmentCategoryType.OneHandedMelee,
+            MinimumStats = new CharacterEffects { Magic = 0.4f },
+            Effects = new CharacterEffects { Health = -0.18f }
+        };
+
+        baseWorld.Gameplay.Equipment = baseWorld.Gameplay.Equipment.Concat(new[] { heavySword, guardianBlade, enchantedBlade }).ToArray();
+        baseWorld.EquipmentLookup["HeavySword"] = heavySword;
+        baseWorld.EquipmentLookup["GuardianBlade"] = guardianBlade;
+        baseWorld.EquipmentLookup["EnchantedBlade"] = enchantedBlade;
+
+        return baseWorld;
+    }
+
+    #endregion
 }
