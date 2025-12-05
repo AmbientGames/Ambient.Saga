@@ -133,7 +133,8 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
             {
                 new QuestPrerequisite
                 {
-                    MinimumLevel = 10
+                    MinimumLevel = 10,
+                    MinimumLevelSpecified = true
                 }
             },
             Stages = new QuestStages
@@ -664,7 +665,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
 
         // Assert
         Assert.False(result.Successful);
-        Assert.Contains("COLLECT_HERBS", result.ErrorMessage);
+        Assert.Contains("Collect Healing Herbs", result.ErrorMessage);
     }
 
     [Fact]

@@ -2,6 +2,7 @@
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Domain.Entities;
 using Ambient.Domain.Extensions;
+using Ambient.Saga.Engine.Domain.Rpg.Reputation;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Quests;
 
@@ -144,11 +145,19 @@ public static class QuestRewardDistributor
     /// Check if an avatar meets all quest prerequisites.
     /// Returns (canAccept, reason).
     /// </summary>
+    /// <param name="quest">Quest to check prerequisites for</param>
+    /// <param name="avatar">Avatar attempting to accept the quest</param>
+    /// <param name="world">World containing factions and other definitions</param>
+    /// <param name="completedQuests">Set of completed quest refs</param>
+    /// <param name="factionReputation">Dictionary of faction reputation values (optional)</param>
+    /// <param name="unlockedAchievements">Set of unlocked achievement refs (optional)</param>
     public static (bool canAccept, string? reason) CheckPrerequisites(
         Quest quest,
         AvatarEntity avatar,
         World world,
-        HashSet<string> completedQuests)
+        HashSet<string> completedQuests,
+        Dictionary<string, int>? factionReputation = null,
+        HashSet<string>? unlockedAchievements = null)
     {
         if (quest.Prerequisites == null || quest.Prerequisites.Length == 0)
             return (true, null);
@@ -162,12 +171,12 @@ public static class QuestRewardDistributor
                 {
                     var requiredQuest = world.TryGetQuestByRefName(prereq.QuestRef);
                     var questName = requiredQuest?.DisplayName ?? prereq.QuestRef;
-                    return (false, $"Cannot accept quest: Must complete quest '{questName}' ({prereq.QuestRef}) first");
+                    return (false, $"Must complete quest '{questName}' first");
                 }
             }
 
-            // Check minimum level
-            if (prereq.MinimumLevel > 0)
+            // Check minimum level (use MinimumLevelSpecified for proper XSD alignment)
+            if (prereq.MinimumLevelSpecified && prereq.MinimumLevel > 0)
             {
                 var avatarLevel = avatar.Stats?.Level ?? 1;
                 if (avatarLevel < prereq.MinimumLevel)
@@ -205,18 +214,45 @@ public static class QuestRewardDistributor
                 }
             }
 
-            // Achievement prerequisite - TODO: Check achievement unlocks
+            // Check achievement prerequisite
             if (!string.IsNullOrEmpty(prereq.RequiredAchievementRef))
             {
-                // NOTE: Achievement system integration needed
-                // For now, skip this check (assume always met)
+                var hasAchievement = unlockedAchievements?.Contains(prereq.RequiredAchievementRef) ?? false;
+                if (!hasAchievement)
+                {
+                    // Try to get display name from world
+                    var achievementName = prereq.RequiredAchievementRef;
+                    if (world.AchievementsLookup.TryGetValue(prereq.RequiredAchievementRef, out var achievement))
+                    {
+                        achievementName = achievement.DisplayName ?? prereq.RequiredAchievementRef;
+                    }
+                    return (false, $"Must unlock achievement '{achievementName}'");
+                }
             }
 
-            // Reputation prerequisite - TODO: Check faction reputation
+            // Check faction reputation prerequisite
             if (!string.IsNullOrEmpty(prereq.FactionRef) && !string.IsNullOrEmpty(prereq.RequiredReputationLevel))
             {
-                // NOTE: Reputation system not yet implemented
-                // For now, skip this check (assume always met)
+                // Parse the required reputation level
+                if (!Enum.TryParse<ReputationLevel>(prereq.RequiredReputationLevel, ignoreCase: true, out var requiredLevel))
+                {
+                    // Invalid reputation level specified - log and skip check
+                    continue;
+                }
+
+                // Get current reputation with faction (default to 0 / Neutral)
+                var currentReputation = factionReputation?.GetValueOrDefault(prereq.FactionRef, 0) ?? 0;
+
+                if (!ReputationManager.MeetsReputationRequirement(currentReputation, requiredLevel))
+                {
+                    // Try to get faction display name
+                    var factionName = prereq.FactionRef;
+                    if (world.FactionsLookup.TryGetValue(prereq.FactionRef, out var faction))
+                    {
+                        factionName = faction.DisplayName ?? prereq.FactionRef;
+                    }
+                    return (false, $"Must have {requiredLevel} reputation with {factionName}");
+                }
             }
         }
 

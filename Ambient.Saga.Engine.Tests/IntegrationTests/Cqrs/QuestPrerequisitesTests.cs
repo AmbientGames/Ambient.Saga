@@ -156,7 +156,8 @@ public class QuestPrerequisitesTests : IDisposable
             {
                 new QuestPrerequisite
                 {
-                    MinimumLevel = 10
+                    MinimumLevel = 10,
+                    MinimumLevelSpecified = true
                 }
             },
             Stages = new QuestStages
@@ -240,6 +241,7 @@ public class QuestPrerequisitesTests : IDisposable
                 {
                     QuestRef = "QUEST_A",
                     MinimumLevel = 5,
+                    MinimumLevelSpecified = true,
                     RequiredItemRef = "GUILD_TOKEN"
                 }
             },
@@ -271,6 +273,103 @@ public class QuestPrerequisitesTests : IDisposable
             }
         };
 
+        // Quest F: Requires achievement
+        var questF = new Quest
+        {
+            RefName = "MASTER_QUEST",
+            DisplayName = "Master's Challenge",
+            Description = "Requires Dragon Slayer achievement",
+            Prerequisites = new[]
+            {
+                new QuestPrerequisite
+                {
+                    RequiredAchievementRef = "DRAGON_SLAYER"
+                }
+            },
+            Stages = new QuestStages
+            {
+                StartStage = "CHALLENGE",
+                Stage = new[]
+                {
+                    new QuestStage
+                    {
+                        RefName = "CHALLENGE",
+                        DisplayName = "Master's Challenge",
+                        Objectives = new QuestStageObjectives
+                        {
+                            Objective = new[]
+                            {
+                                new QuestObjective
+                                {
+                                    RefName = "MASTER_OBJ",
+                                    Type = QuestObjectiveType.CharacterDefeated,
+                                    CharacterRef = "MASTER_BOSS",
+                                    Threshold = 1,
+                                    DisplayName = "Defeat the Master"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Quest G: Requires faction reputation
+        var questG = new Quest
+        {
+            RefName = "GUILD_ELITE_QUEST",
+            DisplayName = "Elite Guild Mission",
+            Description = "Requires Honored reputation with Adventurer's Guild",
+            Prerequisites = new[]
+            {
+                new QuestPrerequisite
+                {
+                    FactionRef = "ADVENTURERS_GUILD",
+                    RequiredReputationLevel = "Honored"
+                }
+            },
+            Stages = new QuestStages
+            {
+                StartStage = "ELITE_MISSION",
+                Stage = new[]
+                {
+                    new QuestStage
+                    {
+                        RefName = "ELITE_MISSION",
+                        DisplayName = "Elite Mission",
+                        Objectives = new QuestStageObjectives
+                        {
+                            Objective = new[]
+                            {
+                                new QuestObjective
+                                {
+                                    RefName = "ELITE_OBJ",
+                                    Type = QuestObjectiveType.ItemCollected,
+                                    ItemRef = "RARE_ARTIFACT",
+                                    Threshold = 1,
+                                    DisplayName = "Retrieve the artifact"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Achievement for testing
+        var dragonSlayerAchievement = new Achievement
+        {
+            RefName = "DRAGON_SLAYER",
+            DisplayName = "Dragon Slayer"
+        };
+
+        // Faction for testing
+        var adventurersGuild = new Faction
+        {
+            RefName = "ADVENTURERS_GUILD",
+            DisplayName = "Adventurer's Guild"
+        };
+
         var sagaArc = new SagaArc
         {
             RefName = "TEST_SAGA",
@@ -287,7 +386,9 @@ public class QuestPrerequisitesTests : IDisposable
                 Gameplay = new GameplayComponents
                 {
                     SagaArcs = new[] { sagaArc },
-                    Quests = new[] { questA, questB, questC, questD, questE }
+                    Quests = new[] { questA, questB, questC, questD, questE, questF, questG },
+                    Achievements = new[] { dragonSlayerAchievement },
+                    Factions = new[] { adventurersGuild }
                 }
             }
         };
@@ -298,6 +399,8 @@ public class QuestPrerequisitesTests : IDisposable
         {
             world.QuestsLookup[quest.RefName] = quest;
         }
+        world.AchievementsLookup[dragonSlayerAchievement.RefName] = dragonSlayerAchievement;
+        world.FactionsLookup[adventurersGuild.RefName] = adventurersGuild;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger>();
 
         return world;
@@ -349,9 +452,9 @@ public class QuestPrerequisitesTests : IDisposable
             Avatar = avatar
         });
 
-        // THEN: Should fail with prerequisite error mentioning QUEST_A
+        // THEN: Should fail with prerequisite error mentioning the starter quest
         Assert.False(result.Successful);
-        Assert.Contains("QUEST_A", result.ErrorMessage);
+        Assert.Contains("Starter Quest", result.ErrorMessage);
     }
 
     [Fact]
@@ -508,7 +611,7 @@ public class QuestPrerequisitesTests : IDisposable
 
         // THEN: Should fail (first failure wins - Quest A not completed)
         Assert.False(result.Successful);
-        Assert.Contains("QUEST_A", result.ErrorMessage);
+        Assert.Contains("Starter Quest", result.ErrorMessage);
     }
 
     [Fact]
@@ -559,6 +662,147 @@ public class QuestPrerequisitesTests : IDisposable
 
         // THEN: Should succeed
         Assert.True(result.Successful, result.ErrorMessage);
+    }
+
+    #endregion
+
+    #region Tier 2: Achievement Prerequisite Tests
+
+    [Fact]
+    public async Task AcceptQuest_WithAchievementPrerequisite_FailsWhenNotUnlocked()
+    {
+        // GIVEN: Quest requires Dragon Slayer achievement, avatar hasn't unlocked it
+        var avatar = CreateTestAvatar();
+
+        // WHEN: Try to accept Master Quest without achievement
+        var result = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArrcRef = "TEST_SAGA",
+            QuestRef = "MASTER_QUEST",
+            QuestGiverRef = "MASTER",
+            Avatar = avatar
+        });
+
+        // THEN: Should fail with achievement requirement error
+        Assert.False(result.Successful);
+        Assert.Contains("achievement", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("Dragon Slayer", result.ErrorMessage);
+    }
+
+    // Note: Testing success case requires wiring up achievement unlock tracking
+    // which currently requires IWorldStateRepository integration. The CheckPrerequisites
+    // method now properly checks unlockedAchievements when provided.
+
+    #endregion
+
+    #region Tier 2: Faction Reputation Prerequisite Tests
+
+    [Fact]
+    public async Task AcceptQuest_WithReputationPrerequisite_FailsWhenNotMet()
+    {
+        // GIVEN: Quest requires Honored reputation with Adventurer's Guild
+        // Avatar has no reputation (defaults to Neutral)
+        var avatar = CreateTestAvatar();
+
+        // WHEN: Try to accept Elite Guild Quest without reputation
+        var result = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArrcRef = "TEST_SAGA",
+            QuestRef = "GUILD_ELITE_QUEST",
+            QuestGiverRef = "GUILD_MASTER",
+            Avatar = avatar
+        });
+
+        // THEN: Should fail with reputation requirement error
+        Assert.False(result.Successful);
+        Assert.Contains("reputation", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+        Assert.Contains("Honored", result.ErrorMessage);
+        Assert.Contains("Adventurer's Guild", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task AcceptQuest_WithReputationPrerequisite_SucceedsWhenMet()
+    {
+        // GIVEN: Quest requires Honored reputation (9000+ points)
+        var avatar = CreateTestAvatar();
+
+        // First create an instance and add reputation transactions
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+
+        // Add reputation to reach Honored (9000+ points)
+        var reputationTx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.ReputationChanged,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["FactionRef"] = "ADVENTURERS_GUILD",
+                ["ReputationChange"] = "15000" // Well above Honored threshold (9000)
+            }
+        };
+        var transactions = new List<SagaTransaction> { reputationTx };
+        await _repository.AddTransactionsAsync(instance.InstanceId, transactions, CancellationToken.None);
+        await _repository.CommitTransactionsAsync(instance.InstanceId, transactions.Select(t => t.TransactionId).ToList(), CancellationToken.None);
+
+        // WHEN: Try to accept Elite Guild Quest
+        var result = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArrcRef = "TEST_SAGA",
+            QuestRef = "GUILD_ELITE_QUEST",
+            QuestGiverRef = "GUILD_MASTER",
+            Avatar = avatar
+        });
+
+        // THEN: Should succeed
+        Assert.True(result.Successful, result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task AcceptQuest_WithReputationPrerequisite_FailsWhenBelowThreshold()
+    {
+        // GIVEN: Quest requires Honored reputation (9000+ points)
+        var avatar = CreateTestAvatar();
+
+        // First create an instance and add some reputation (but not enough)
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+
+        // Add reputation to Friendly (3000-9000 points) - not enough for Honored
+        var reputationTx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.ReputationChanged,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["FactionRef"] = "ADVENTURERS_GUILD",
+                ["ReputationChange"] = "5000" // Only Friendly, not Honored
+            }
+        };
+        var transactions = new List<SagaTransaction> { reputationTx };
+        await _repository.AddTransactionsAsync(instance.InstanceId, transactions, CancellationToken.None);
+        await _repository.CommitTransactionsAsync(instance.InstanceId, transactions.Select(t => t.TransactionId).ToList(), CancellationToken.None);
+
+        // WHEN: Try to accept Elite Guild Quest
+        var result = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArrcRef = "TEST_SAGA",
+            QuestRef = "GUILD_ELITE_QUEST",
+            QuestGiverRef = "GUILD_MASTER",
+            Avatar = avatar
+        });
+
+        // THEN: Should fail with reputation requirement error
+        Assert.False(result.Successful);
+        Assert.Contains("Honored", result.ErrorMessage);
     }
 
     #endregion

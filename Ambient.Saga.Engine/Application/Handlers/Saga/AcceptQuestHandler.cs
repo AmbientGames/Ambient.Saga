@@ -75,12 +75,13 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
                 return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{quest.DisplayName}' already completed");
             }
 
-            // Check quest prerequisites
+            // Check quest prerequisites (pass faction reputation from saga state)
             var (canAccept, prerequisiteReason) = QuestRewardDistributor.CheckPrerequisites(
                 quest,
                 command.Avatar,
                 _world,
-                currentState.CompletedQuests);
+                currentState.CompletedQuests,
+                currentState.FactionReputation);
 
             if (!canAccept)
             {
