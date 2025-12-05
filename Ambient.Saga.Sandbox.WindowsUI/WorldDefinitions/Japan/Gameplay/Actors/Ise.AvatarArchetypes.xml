@@ -4,274 +4,485 @@
     <SpawnStats Health="1.05" Stamina="0.95" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.105" Defense="0.105" Speed="0.095" Magic="0.095" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1" />
       </Equipment>
       <Consumables>
         <Entry ConsumableRef="HealingPotion" Quantity="7" />
-        <Entry ConsumableRef="PoisonVial" Quantity="1" />
+        <Entry ConsumableRef="CookedMeat" Quantity="6" />
+        <Entry ConsumableRef="Ale" Quantity="2" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BindElemental" Condition="1" />
-        <Entry SpellRef="Teleport" Condition="1" />
+        <Entry SpellRef="Icebolt" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="1.05" Stamina="0.95" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.084" Defense="0.084" Speed="0.076" Magic="0.076" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenShield" Condition="1" />
+        <Entry EquipmentRef="SteelShield" Condition="1" />
+        <Entry EquipmentRef="PlateArmor" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
-        <Entry ConsumableRef="PoisonVial" Quantity="2" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
+        <Entry ConsumableRef="Ale" Quantity="2" />
+        <Entry ConsumableRef="ManaPotion" Quantity="2" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BloodFrenzy" Condition="1" />
+        <Entry SpellRef="CloakOfNight" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="CANON_BARBARIAN" DisplayName="Delinquent" Description="The rebellious student with a heart of gold hidden beneath a tough exterior. Their affinity takes the form of an oni, raw emotion given devastating physical form." AffinityRef="CANON_FIRE">
     <SpawnStats Health="0.9" Stamina="1" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.11000001" Defense="0.089999996" Speed="0.1" Magic="0.095" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ShadowDagger" Condition="1" />
+        <Entry EquipmentRef="Dagger" Condition="1" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HealingPotion" Quantity="2" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="1" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="BloodFrenzy" Condition="1" />
         <Entry SpellRef="BerserkerRage" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.9" Stamina="1" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.08800001" Defense="0.072" Speed="0.080000006" Magic="0.076" />
     <RespawnCapabilities>
       <Equipment>
         <Entry EquipmentRef="ChainmailArmor" Condition="1" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Water" Quantity="1" />
-        <Entry ConsumableRef="HealingPotion" Quantity="4" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="BerserkerRage" Condition="1" />
+        <Entry SpellRef="BloodFrenzy" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="CANON_ROGUE" DisplayName="Transfer Student" Description="The mysterious new student who arrived mid-semester. Nobody knows their past, and their affinity is a kitsune - cunning, quick, and full of secrets." AffinityRef="CANON_UMBRAL">
     <SpawnStats Health="0.9" Stamina="1.1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.089999996" Speed="0.11000001" Magic="0.1" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ShadowDagger" Condition="1" />
-        <Entry EquipmentRef="SteelShield" Condition="1" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1" />
+        <Entry EquipmentRef="RustyAxe" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="1" />
-        <Entry ConsumableRef="HealingPotion" Quantity="4" />
-        <Entry ConsumableRef="Ale" Quantity="4" />
+        <Entry ConsumableRef="Bread" Quantity="4" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1" />
         <Entry SpellRef="CloakOfNight" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.9" Stamina="1.1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.072" Speed="0.08800001" Magic="0.080000006" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelShield" Condition="1" />
-        <Entry EquipmentRef="ChainmailArmor" Condition="1" />
+        <Entry EquipmentRef="Lute" Condition="1" />
+        <Entry EquipmentRef="WoodenShield" Condition="1" />
       </Equipment>
       <Consumables>
+        <Entry ConsumableRef="ManaPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
-        <Entry ConsumableRef="PoisonVial" Quantity="1" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="ShadowStep" Condition="1" />
-        <Entry SpellRef="CloakOfNight" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="CANON_RANGER" DisplayName="Photography Club" Description="Always observing from the sidelines, camera in hand. Their keen perception awakened a tengu affinity, granting supernatural awareness and precision strikes from afar." AffinityRef="CANON_WILD">
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.1" Defense="0.095" Speed="0.105" Magic="0.1" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="MerchantCloak" Condition="1" />
-        <Entry EquipmentRef="LeatherArmor" Condition="1" />
+        <Entry EquipmentRef="WoodenShield" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
-        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="WildRegeneration" Condition="1" />
+        <Entry SpellRef="NaturesGrasp" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.95" Stamina="1.05" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.080000006" Defense="0.076" Speed="0.084" Magic="0.080000006" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Lute" Condition="1" />
+        <Entry EquipmentRef="IronSword" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+        <Entry ConsumableRef="Ale" Quantity="4" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="NaturesGrasp" Condition="1" />
         <Entry SpellRef="WildRegeneration" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="CANON_MAGE" DisplayName="Honor Student" Description="Top of the class with perfect grades, but socially awkward. Their brilliant mind manifests a affinity of pure elemental force - an onmyoji spirit wielding the classical elements." AffinityRef="CANON_ARCANE">
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.089999996" Speed="0.1" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateArmor" Condition="1" />
-        <Entry EquipmentRef="IronSword" Condition="1" />
+        <Entry EquipmentRef="RustyAxe" Condition="1" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="2" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BerserkerRage" Condition="1" />
-        <Entry SpellRef="Distraction" Condition="1" />
+        <Entry SpellRef="Blessing" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.072" Speed="0.080000006" Magic="0.08800001" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="RustyAxe" Condition="1" />
+        <Entry EquipmentRef="Greatsword" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
-        <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="7" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SummonSpirit" Condition="1" />
-        <Entry SpellRef="WildRegeneration" Condition="1" />
+        <Entry SpellRef="Freeze" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="CANON_WIZARD" DisplayName="Occult Club" Description="President of the occult research club, always talking about spirits and curses. Turns out they were right all along. Their affinity is an ancient yokai sage of forbidden knowledge." AffinityRef="CANON_ARCANE">
     <SpawnStats Health="0.95" Stamina="0.95" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.095" Speed="0.095" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="RustyAxe" Condition="1" />
-        <Entry EquipmentRef="SteelShield" Condition="1" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
-        <Entry ConsumableRef="HealingPotion" Quantity="2" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="1" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="Wisdom" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.95" Stamina="0.95" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.076" Speed="0.076" Magic="0.08800001" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="RustyAxe" Condition="1" />
-        <Entry EquipmentRef="Greatsword" Condition="1" />
+        <Entry EquipmentRef="Lute" Condition="1" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ElixirOfLife" Quantity="4" />
+        <Entry ConsumableRef="HealingPotion" Quantity="7" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="5" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="Wisdom" Condition="1" />
-        <Entry SpellRef="Curse" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="CANON_CLERIC" DisplayName="Shrine Maiden" Description="A part-time miko at a local shrine, drawn to Ise by fate. Their deep spiritual connection awakens a divine affinity - a manifestation of Amaterasu's blessing." AffinityRef="CANON_HOLY">
     <SpawnStats Health="1.05" Stamina="0.95" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.105" Speed="0.095" Magic="0.105" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherArmor" Condition="1" />
-        <Entry EquipmentRef="IronSword" Condition="1" />
+        <Entry EquipmentRef="PlateArmor" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Water" Quantity="1" />
-        <Entry ConsumableRef="ThrowingKnife" Quantity="3" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="4" />
+        <Entry ConsumableRef="PoisonVial" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Blessing" Condition="1" />
+        <Entry SpellRef="Heal" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="1.05" Stamina="0.95" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.084" Speed="0.076" Magic="0.084" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenStaff" Condition="1" />
-        <Entry EquipmentRef="ChainmailArmor" Condition="1" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonVial" Quantity="3" />
-        <Entry ConsumableRef="CookedMeat" Quantity="1" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Blessing" Condition="1" />
         <Entry SpellRef="Heal" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="CANON_BARD" DisplayName="Idol Trainee" Description="Dreams of becoming a famous idol while balancing school. Their charisma and voice manifest a celestial affinity that inspires allies and charms enemies with supernatural melodies." AffinityRef="CANON_SPIRIT">
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.095" Speed="0.105" Magic="0.105" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="MerchantCloak" Condition="1" />
+        <Entry EquipmentRef="Greatsword" Condition="1" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1" />
       </Equipment>
       <Consumables>
+        <Entry ConsumableRef="PoisonVial" Quantity="1" />
+        <Entry ConsumableRef="CookedMeat" Quantity="5" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="2" />
-        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Wisdom" Condition="1" />
-        <Entry SpellRef="InspiringVerse" Condition="1" />
+        <Entry SpellRef="SoothingSong" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.95" Stamina="1.05" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.076" Speed="0.084" Magic="0.084" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenStaff" Condition="1" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PhoenixTears" Quantity="1" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="4" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="Distraction" Condition="1" />
         <Entry SpellRef="Wisdom" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="CANON_SUMMONER" DisplayName="Shrine Heir" Description="Child of a kannushi priest, raised among rituals and traditions. They can forge contracts with shikigami spirits, commanding multiple affinity-like entities in battle." AffinityRef="CANON_VOID">
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.089999996" Speed="0.1" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ShadowDagger" Condition="1" />
-        <Entry EquipmentRef="SteelShield" Condition="1" />
+        <Entry EquipmentRef="WoodenShield" Condition="1" />
+        <Entry EquipmentRef="Greatsword" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="1" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fireball" Condition="1" />
-        <Entry SpellRef="Icebolt" Condition="1" />
+        <Entry SpellRef="SummonSpirit" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.072" Speed="0.080000006" Magic="0.08800001" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenShield" Condition="1" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="2" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
+        <Entry ConsumableRef="CookedMeat" Quantity="5" />
+        <Entry ConsumableRef="Ale" Quantity="3" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="WildRegeneration" Condition="1" />
         <Entry SpellRef="NaturesGrasp" Condition="1" />
+        <Entry SpellRef="SummonSpirit" Condition="1" />
       </Spells>
+      <Tools>
+        <Entry ToolRef="Multitool" Condition="1" />
+        <Entry ToolRef="Pickaxe" Condition="1" />
+        <Entry ToolRef="Axe" Condition="1" />
+        <Entry ToolRef="Spade" Condition="1" />
+      </Tools>
+      <BuildingMaterials>
+        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
+      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
 </AvatarArchetypes>

@@ -8,13 +8,47 @@
             <xs:minLength value="1" />
         </xs:restriction>
     </xs:simpleType>
+
+    <!-- Spell category for archetype loadout matching -->
+    <xs:simpleType name="SpellCategoryType">
+        <xs:restriction base="xs:string">
+            <!-- Combat roles -->
+            <xs:enumeration value="Damage" />
+            <xs:enumeration value="Healing" />
+            <xs:enumeration value="Buff" />
+            <xs:enumeration value="Debuff" />
+            <xs:enumeration value="Control" />
+            <xs:enumeration value="Summon" />
+            <!-- Thematic -->
+            <xs:enumeration value="Elemental" />
+            <xs:enumeration value="Holy" />
+            <xs:enumeration value="Unholy" />
+            <xs:enumeration value="Nature" />
+            <xs:enumeration value="Arcane" />
+            <!-- Utility -->
+            <xs:enumeration value="Utility" />
+            <xs:enumeration value="Movement" />
+            <xs:enumeration value="Stealth" />
+            <!-- Archetype-specific -->
+            <xs:enumeration value="Rage" />
+            <xs:enumeration value="Charm" />
+            <xs:enumeration value="Illusion" />
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:complexType name="Spell">
         <xs:complexContent>
             <xs:extension base="DegradableAcquirable">
                 <xs:sequence>
                     <xs:element name="Effects" type="CharacterEffects" minOccurs="1" maxOccurs="1" />
+                    <!-- Minimum stats required to cast this spell -->
+                    <xs:element name="MinimumStats" type="CharacterEffects" minOccurs="0" />
                 </xs:sequence>
                 <xs:attributeGroup ref="UseAttributes" />
+                <!-- Spell category for archetype loadout matching -->
+                <xs:attribute name="Category" type="SpellCategoryType" use="required" />
+                <!-- Equipment category that must be equipped to cast (e.g., Staff, Wand, Focus) -->
+                <xs:attribute name="RequiresEquipped" type="EquipmentCategoryType" use="optional" />
                 <!-- Status effects applied on cast -->
                 <xs:attribute name="StatusEffectRef" type="xs:string" use="optional" />
                 <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="1.0" />

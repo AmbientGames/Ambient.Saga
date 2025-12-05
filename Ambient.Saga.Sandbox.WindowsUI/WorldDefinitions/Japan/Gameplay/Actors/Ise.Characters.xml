@@ -4,27 +4,26 @@
     <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
         <Entry EquipmentRef="IronSword" Condition="1.0" />
         <Entry EquipmentRef="Lute" Condition="1.0" />
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bread" Quantity="4" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="1" />
-        <Entry ConsumableRef="HealingPotion" Quantity="4" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
-        <Entry ConsumableRef="ManaPotion" Quantity="4" />
-        <Entry ConsumableRef="Water" Quantity="4" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="4" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+        <Entry ConsumableRef="Ale" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
         <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-        <Entry SpellRef="Heal" Condition="1.0" />
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-        <Entry SpellRef="Freeze" Condition="1.0" />
         <Entry SpellRef="SoothingSong" Condition="1.0" />
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+        <Entry SpellRef="BindElemental" Condition="1.0" />
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -54,27 +53,27 @@
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
         <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
       </Equipment>
       <Consumables>
         <Entry ConsumableRef="PhoenixTears" Quantity="3" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="1" />
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="4" />
+        <Entry ConsumableRef="Ale" Quantity="2" />
+        <Entry ConsumableRef="Water" Quantity="1" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="5" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Distraction" Condition="1.0" />
-        <Entry SpellRef="Wisdom" Condition="1.0" />
-        <Entry SpellRef="Heal" Condition="1.0" />
-        <Entry SpellRef="Poison" Condition="1.0" />
+        <Entry SpellRef="Teleport" Condition="1.0" />
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="BindElemental" Condition="1.0" />
+        <Entry SpellRef="Wisdom" Condition="1.0" />
         <Entry SpellRef="Curse" Condition="1.0" />
+        <Entry SpellRef="Blessing" Condition="1.0" />
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -104,23 +103,23 @@
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
+        <Entry EquipmentRef="Lute" Condition="1.0" />
         <Entry EquipmentRef="WoodenShield" Condition="1.0" />
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
-        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonVial" Quantity="2" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="1" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="4" />
-        <Entry ConsumableRef="Ale" Quantity="1" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="6" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Blessing" Condition="1.0" />
         <Entry SpellRef="Teleport" Condition="1.0" />
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-        <Entry SpellRef="DivineLight" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+        <Entry SpellRef="BindElemental" Condition="1.0" />
+        <Entry SpellRef="Curse" Condition="1.0" />
+        <Entry SpellRef="WildRegeneration" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -150,20 +149,21 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+        <Entry ConsumableRef="ManaPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="2" />
       </Consumables>
       <Spells>
         <Entry SpellRef="ShadowStep" Condition="1.0" />
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). I have wares to offer - take a look!</InitialGreeting>
@@ -202,13 +202,12 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
         <Entry SpellRef="CloakOfNight" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -254,22 +253,20 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
         <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="1" />
-        <Entry ConsumableRef="ManaPotion" Quantity="3" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
         <Entry SpellRef="CloakOfNight" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7). I have wares to offer - take a look!</InitialGreeting>
@@ -296,20 +293,23 @@
     <Stats Health="1.05" Stamina="1.0" Mana="0.9" Strength="0.11" Defense="0.07" Speed="0.06" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
         <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
-        <Entry ConsumableRef="ManaPotion" Quantity="1" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="5" />
+        <Entry ConsumableRef="Water" Quantity="4" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="4" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="2" />
+        <Entry ConsumableRef="ManaPotion" Quantity="2" />
+        <Entry ConsumableRef="Ale" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -351,22 +351,24 @@
     <Stats Health="1.05" Stamina="1.0" Mana="0.9" Strength="0.11" Defense="0.07" Speed="0.06" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
-        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
         <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="1" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="4" />
-        <Entry ConsumableRef="HealingPotion" Quantity="3" />
-        <Entry ConsumableRef="PoisonVial" Quantity="4" />
+        <Entry ConsumableRef="HealingPotion" Quantity="4" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
+        <Entry ConsumableRef="CookedMeat" Quantity="4" />
+        <Entry ConsumableRef="ManaPotion" Quantity="1" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
         <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -396,22 +398,21 @@
     <Stats Health="1.30" Stamina="1.0" Mana="0.9" Strength="0.14" Defense="0.09" Speed="0.08" Magic="0.08" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
         <Entry EquipmentRef="Dagger" Condition="1.0" />
-        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
-        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
         <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GreaterHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="4" />
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="ManaPotion" Quantity="3" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="2" />
+        <Entry ConsumableRef="CookedMeat" Quantity="5" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -441,17 +442,18 @@
     <Stats Health="1.30" Stamina="1.0" Mana="0.9" Strength="0.14" Defense="0.09" Speed="0.08" Magic="0.08" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
-        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
-        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
         <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
-        <Entry ConsumableRef="HealingPotion" Quantity="2" />
-        <Entry ConsumableRef="Water" Quantity="4" />
-        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+        <Entry ConsumableRef="PoisonVial" Quantity="4" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="1" />
       </Consumables>
       <Spells>
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
@@ -485,20 +487,22 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="4" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="2" />
+        <Entry ConsumableRef="HealingPotion" Quantity="4" />
+        <Entry ConsumableRef="Water" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
         <Entry SpellRef="CloakOfNight" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1). I have wares to offer - take a look!</InitialGreeting>
@@ -537,11 +541,11 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
-        <Entry ConsumableRef="PoisonVial" Quantity="2" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="ShadowStep" Condition="1.0" />
@@ -550,7 +554,7 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3). I have wares to offer - take a look!</InitialGreeting>
@@ -589,19 +593,19 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ElixirOfLife" Quantity="4" />
+        <Entry ConsumableRef="Water" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SoothingSong" Condition="1.0" />
+        <Entry SpellRef="Distraction" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6). I have wares to offer - take a look!</InitialGreeting>
@@ -640,16 +644,17 @@
     <Stats Health="0.57" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
-        <Entry ConsumableRef="Water" Quantity="2" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="4" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
         <Entry SpellRef="WildRegeneration" Condition="1.0" />
+        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -664,15 +669,14 @@
     <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bread" Quantity="4" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="1" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="WildRegeneration" Condition="1.0" />
         <Entry SpellRef="NaturesGrasp" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -688,16 +692,18 @@
     <Stats Health="0.43" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
         <Entry EquipmentRef="SteelShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonVial" Quantity="2" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
-        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+        <Entry ConsumableRef="PoisonVial" Quantity="4" />
+        <Entry ConsumableRef="Water" Quantity="2" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
+        <Entry ConsumableRef="CookedMeat" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SoothingSong" Condition="1.0" />
         <Entry SpellRef="Distraction" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -713,14 +719,14 @@
     <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="3" />
-        <Entry ConsumableRef="PoisonVial" Quantity="1" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="WildRegeneration" Condition="1.0" />
         <Entry SpellRef="NaturesGrasp" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -736,16 +742,19 @@
     <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="4" />
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="4" />
+        <Entry ConsumableRef="PoisonVial" Quantity="1" />
+        <Entry ConsumableRef="Bread" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>

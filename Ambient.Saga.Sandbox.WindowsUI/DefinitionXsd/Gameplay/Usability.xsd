@@ -1,14 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="CommonTypes.xsd" />
+
+    <!-- How an item is used in combat -->
     <xs:simpleType name="ItemUseType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Offensive"></xs:enumeration>
-            <xs:enumeration value="Defensive"></xs:enumeration>
+            <xs:enumeration value="Offensive" />
+            <xs:enumeration value="Defensive" />
         </xs:restriction>
     </xs:simpleType>
+
+    <!-- What class of equipment this is -->
+    <xs:simpleType name="EquipmentCategoryType">
+        <xs:restriction base="xs:string">
+            <!-- Melee Weapons -->
+            <xs:enumeration value="OneHandedMelee" />
+            <xs:enumeration value="TwoHandedMelee" />
+            <xs:enumeration value="Unarmed" />
+            <!-- Casting Implements -->
+            <xs:enumeration value="Staff" />
+            <xs:enumeration value="Wand" />
+            <xs:enumeration value="Focus" />
+            <xs:enumeration value="Instrument" />
+            <!-- Defensive -->
+            <xs:enumeration value="Shield" />
+            <!-- Armor -->
+            <xs:enumeration value="ArmorLight" />
+            <xs:enumeration value="ArmorMedium" />
+            <xs:enumeration value="ArmorHeavy" />
+            <xs:enumeration value="ArmorRobes" />
+            <!-- Other -->
+            <xs:enumeration value="Accessory" />
+        </xs:restriction>
+    </xs:simpleType>
+
     <xs:attributeGroup name="UseAttributes">
-        <xs:attribute name="DurabilityLoss" type="NonNegativeFloat" use="optional" default="0.01"></xs:attribute>
-        <xs:attribute name="UseType" type="ItemUseType" use="optional" default="Defensive"></xs:attribute>
+        <xs:attribute name="DurabilityLoss" type="NonNegativeFloat" use="optional" default="0.01" />
+        <xs:attribute name="UseType" type="ItemUseType" use="optional" default="Defensive" />
     </xs:attributeGroup>
 </xs:schema>

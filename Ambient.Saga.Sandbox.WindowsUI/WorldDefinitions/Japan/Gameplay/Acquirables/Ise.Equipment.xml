@@ -1,66 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Equipment RefName="IronSword" DisplayName="Shinai" Description="A bamboo practice sword from kendo club. Channels spiritual energy when awakened." SlotRef="RightHand" WholesalePrice="50" ModelRef="model_shinai" UseType="Offensive">
+  <Equipment RefName="IronSword" DisplayName="Shinai" Description="A bamboo practice sword from kendo club. Channels spiritual energy when awakened." SlotRef="RightHand" Category="OneHandedMelee" WholesalePrice="50" ModelRef="model_shinai" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0.1" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="RustyAxe" DisplayName="Fire Extinguisher" Description="A heavy emergency tool. Surprisingly effective against spirits." SlotRef="RightHand" WholesalePrice="20" ModelRef="model_extinguisher" UseType="Offensive">
+  <Equipment RefName="RustyAxe" DisplayName="Fire Extinguisher" Description="A heavy emergency tool. Surprisingly effective against spirits." SlotRef="RightHand" Category="OneHandedMelee" WholesalePrice="20" ModelRef="model_extinguisher" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0.08" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Greatsword" DisplayName="Wooden Sword" Description="A bokken from the school dojo. Said to be blessed by a master swordsman." SlotRef="BothHands" WholesalePrice="200" ModelRef="model_bokken" UseType="Offensive">
+  <Equipment RefName="Greatsword" DisplayName="Wooden Sword" Description="A bokken from the school dojo. Said to be blessed by a master swordsman." SlotRef="BothHands" Category="TwoHandedMelee" WholesalePrice="200" ModelRef="model_bokken" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0.2" Speed="-0.05" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WoodenStaff" DisplayName="Selfie Stick" Description="Extended for maximum reach. Also works as a spiritual focus." SlotRef="BothHands" WholesalePrice="15" ModelRef="model_selfie" UseType="Offensive">
+  <Equipment RefName="WoodenStaff" DisplayName="Selfie Stick" Description="Extended for maximum reach. Also works as a spiritual focus." SlotRef="BothHands" Category="Staff" WholesalePrice="15" ModelRef="model_selfie" UseType="Offensive">
     <Effects Health="0" Defense="0.02" Strength="0.02" Speed="0" Magic="0.05" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="MageStaff" DisplayName="Gohei Wand" Description="A shrine maiden's purification wand. Channels divine energy." SlotRef="BothHands" WholesalePrice="150" ModelRef="model_gohei" AffinityRef="Ice" UseType="Offensive">
+  <Equipment RefName="MageStaff" DisplayName="Gohei Wand" Description="A shrine maiden's purification wand. Channels divine energy." SlotRef="BothHands" Category="Staff" WholesalePrice="150" ModelRef="model_gohei" AffinityRef="Ice" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0" Speed="0" Magic="0.15" Mana="0.1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="LeatherArmor" DisplayName="School Blazer" Description="Standard uniform jacket. Spirit-warded by school prayers." SlotRef="Chest" WholesalePrice="40" ModelRef="model_blazer">
+  <Equipment RefName="LeatherArmor" DisplayName="School Blazer" Description="Standard uniform jacket. Spirit-warded by school prayers." SlotRef="Chest" Category="ArmorLight" WholesalePrice="40" ModelRef="model_blazer">
     <Effects Health="0.05" Defense="0.08" Strength="0" Speed="0.01" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ChainmailArmor" DisplayName="Track Jacket" Description="Athletic wear from the sports clubs. Flexible protection." SlotRef="Chest" WholesalePrice="100" ModelRef="model_track">
+  <Equipment RefName="ChainmailArmor" DisplayName="Track Jacket" Description="Athletic wear from the sports clubs. Flexible protection." SlotRef="Chest" Category="ArmorMedium" WholesalePrice="100" ModelRef="model_track">
     <Effects Health="0.1" Defense="0.15" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="PlateArmor" DisplayName="Kendo Bogu" Description="Full kendo armor. Traditional protection against spirits." SlotRef="Chest" WholesalePrice="300" ModelRef="model_bogu">
+  <Equipment RefName="PlateArmor" DisplayName="Kendo Bogu" Description="Full kendo armor. Traditional protection against spirits." SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="300" ModelRef="model_bogu">
     <Effects Health="0.15" Defense="0.25" Strength="0.05" Speed="-0.05" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ElderRobes" DisplayName="Shrine Vestments" Description="Formal miko or kannushi robes. Sacred barrier woven in." SlotRef="Chest" WholesalePrice="80" ModelRef="model_vestment" AffinityRef="Spirit">
+  <Equipment RefName="ElderRobes" DisplayName="Shrine Vestments" Description="Formal miko or kannushi robes. Sacred barrier woven in." SlotRef="Chest" Category="ArmorRobes" WholesalePrice="80" ModelRef="model_vestment" AffinityRef="Spirit">
     <Effects Health="0.05" Defense="0.05" Strength="0" Speed="0" Magic="0.1" Mana="0.05" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WizardRobes" DisplayName="Lab Coat" Description="From the science club. Covered in protective formulas." SlotRef="Chest" WholesalePrice="200" ModelRef="model_labcoat" AffinityRef="Ice">
+  <Equipment RefName="WizardRobes" DisplayName="Lab Coat" Description="From the science club. Covered in protective formulas." SlotRef="Chest" Category="ArmorRobes" WholesalePrice="200" ModelRef="model_labcoat" AffinityRef="Ice">
     <Effects Health="0.05" Defense="0.05" Strength="0" Speed="0" Magic="0.2" Mana="0.15" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Dagger" DisplayName="Box Cutter" Description="Standard school supply. Sharp enough for spirits too." SlotRef="RightHand" WholesalePrice="25" ModelRef="model_cutter" UseType="Offensive">
+  <Equipment RefName="Dagger" DisplayName="Box Cutter" Description="Standard school supply. Sharp enough for spirits too." SlotRef="RightHand" Category="OneHandedMelee" WholesalePrice="25" ModelRef="model_cutter" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0.05" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ShadowDagger" DisplayName="Letter Opener" Description="An antique from the occult club. Inscribed with shadow runes." SlotRef="RightHand" WholesalePrice="120" ModelRef="model_opener" UseType="Offensive">
+  <Equipment RefName="ShadowDagger" DisplayName="Letter Opener" Description="An antique from the occult club. Inscribed with shadow runes." SlotRef="RightHand" Category="OneHandedMelee" WholesalePrice="120" ModelRef="model_opener" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0.08" Speed="0.1" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ApprenticWand" DisplayName="Mechanical Pencil" Description="A 0.5mm automatic pencil. Draws spirit seals in the air." SlotRef="RightHand" WholesalePrice="30" ModelRef="model_pencil" UseType="Offensive">
+  <Equipment RefName="ApprenticWand" DisplayName="Mechanical Pencil" Description="A 0.5mm automatic pencil. Draws spirit seals in the air." SlotRef="RightHand" Category="Wand" WholesalePrice="30" ModelRef="model_pencil" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="CrystalWand" DisplayName="Conductor's Baton" Description="From the school orchestra. Commands elemental harmonies." SlotRef="RightHand" WholesalePrice="180" ModelRef="model_baton" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="CrystalWand" DisplayName="Conductor's Baton" Description="From the school orchestra. Commands elemental harmonies." SlotRef="RightHand" Category="Wand" WholesalePrice="180" ModelRef="model_baton" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0" Speed="0" Magic="0.18" Mana="0.08" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SummonerOrb" DisplayName="Gacha Ball" Description="A prize capsule containing a bound spirit contract." SlotRef="RightHand" WholesalePrice="100" ModelRef="model_gacha" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="SummonerOrb" DisplayName="Gacha Ball" Description="A prize capsule containing a bound spirit contract." SlotRef="RightHand" Category="Focus" WholesalePrice="100" ModelRef="model_gacha" AffinityRef="Spirit" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="0.05" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Lute" DisplayName="Guitar" Description="An acoustic guitar. Its music reaches the spirit world." SlotRef="BothHands" WholesalePrice="60" ModelRef="model_guitar" UseType="Offensive">
+  <Equipment RefName="Lute" DisplayName="Guitar" Description="An acoustic guitar. Its music reaches the spirit world." SlotRef="BothHands" Category="Instrument" WholesalePrice="60" ModelRef="model_guitar" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0" Speed="0.03" Magic="0.1" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="EnchantedLute" DisplayName="Idol Microphone" Description="A wireless mic that amplifies the soul's voice." SlotRef="BothHands" WholesalePrice="200" ModelRef="model_mic" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="EnchantedLute" DisplayName="Idol Microphone" Description="A wireless mic that amplifies the soul's voice." SlotRef="BothHands" Category="Instrument" WholesalePrice="200" ModelRef="model_mic" AffinityRef="Spirit" UseType="Offensive">
     <Effects Health="0" Defense="0" Strength="0" Speed="0.05" Magic="0.15" Mana="0.05" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WoodenShield" DisplayName="School Bag" Description="A sturdy randoseru. Blocks both homework and curses." SlotRef="LeftHand" WholesalePrice="25" ModelRef="model_bag">
+  <Equipment RefName="WoodenShield" DisplayName="School Bag" Description="A sturdy randoseru. Blocks both homework and curses." SlotRef="LeftHand" Category="Shield" WholesalePrice="25" ModelRef="model_bag">
     <Effects Health="0.05" Defense="0.1" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SteelShield" DisplayName="Laptop Case" Description="Reinforced electronics case. Deflects spiritual attacks." SlotRef="LeftHand" WholesalePrice="120" ModelRef="model_laptop">
+  <Equipment RefName="SteelShield" DisplayName="Laptop Case" Description="Reinforced electronics case. Deflects spiritual attacks." SlotRef="LeftHand" Category="Shield" WholesalePrice="120" ModelRef="model_laptop">
     <Effects Health="0.08" Defense="0.18" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="MerchantCloak" DisplayName="Hoodie" Description="Casual streetwear. Helps you blend into crowds." SlotRef="Back" WholesalePrice="30" ModelRef="model_hoodie">
+  <Equipment RefName="MerchantCloak" DisplayName="Hoodie" Description="Casual streetwear. Helps you blend into crowds." SlotRef="Back" Category="Accessory" WholesalePrice="30" ModelRef="model_hoodie">
     <Effects Health="0" Defense="0.02" Strength="0" Speed="0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="RangerCloak" DisplayName="Camera Strap" Description="Professional photography gear. Enhances perception." SlotRef="Back" WholesalePrice="50" ModelRef="model_strap" AffinityRef="Nature">
+  <Equipment RefName="RangerCloak" DisplayName="Camera Strap" Description="Professional photography gear. Enhances perception." SlotRef="Back" Category="Accessory" WholesalePrice="50" ModelRef="model_strap" AffinityRef="Nature">
     <Effects Health="0" Defense="0.03" Strength="0" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
 </Equipment>
