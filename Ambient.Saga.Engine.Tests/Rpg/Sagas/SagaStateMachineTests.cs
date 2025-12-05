@@ -825,7 +825,7 @@ public class SagaStateMachineTests
             Capabilities = new ItemCollection(),
             Traits = new CharacterTrait[]
             {
-                new CharacterTrait { Name = CharacterTraitType.Aggression, Value = 75 }
+                new CharacterTrait { Name = CharacterTraitType.Aggression, Value = 75, ValueSpecified = true }
             }
         };
         _testWorld.CharactersLookup["AggressiveEnemy"] = characterWithTrait;
@@ -871,8 +871,8 @@ public class SagaStateMachineTests
             {
                 new CharacterTrait { Name = CharacterTraitType.Hostile },
                 new CharacterTrait { Name = CharacterTraitType.BossFight },
-                new CharacterTrait { Name = CharacterTraitType.Aggression, Value = 90 },
-                new CharacterTrait { Name = CharacterTraitType.FleeThreshold, Value = 10 }
+                new CharacterTrait { Name = CharacterTraitType.Aggression, Value = 90, ValueSpecified = true },
+                new CharacterTrait { Name = CharacterTraitType.FleeThreshold, Value = 10, ValueSpecified = true }
             }
         };
         _testWorld.CharactersLookup["BossFightEnemy"] = characterWithTraits;
@@ -955,7 +955,7 @@ public class SagaStateMachineTests
             {
                 new CharacterTrait { Name = CharacterTraitType.Friendly },
                 new CharacterTrait { Name = CharacterTraitType.WillTrade },
-                new CharacterTrait { Name = CharacterTraitType.TradeDiscount, Value = 15 }
+                new CharacterTrait { Name = CharacterTraitType.TradeDiscount, Value = 15, ValueSpecified = true }
             }
         };
         _testWorld.CharactersLookup["FriendlyMerchant"] = friendlyNpc;

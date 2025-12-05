@@ -155,8 +155,9 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
 
                 foreach (var choice in currentNode.Choice)
                 {
-                    // Check if choice is available (can afford cost)
-                    var isAvailable = choice.Cost <= playerCredits;
+                    // Check if choice is available (can afford cost if specified)
+                    var hasCost = choice.CostSpecified && choice.Cost > 0;
+                    var isAvailable = !hasCost || choice.Cost <= playerCredits;
 
                     choices.Add(new DialogueChoiceOption
                     {
@@ -164,7 +165,7 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
                         Text = choice.Text ?? string.Empty,
                         IsAvailable = isAvailable,
                         BlockedReason = isAvailable ? null : $"Requires {choice.Cost} credits",
-                        Cost = choice.Cost
+                        Cost = hasCost ? choice.Cost : 0
                     });
                 }
             }

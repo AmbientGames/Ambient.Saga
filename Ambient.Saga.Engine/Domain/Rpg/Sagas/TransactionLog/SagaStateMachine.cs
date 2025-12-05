@@ -378,8 +378,9 @@ public class SagaStateMachine
             foreach (var trait in characterTemplate.Traits)
             {
                 var traitName = trait.Name.ToString();
-                // Value is optional - 0 means boolean flag, non-zero is numeric trait
-                characterState.Traits[traitName] = trait.Value != 0 ? trait.Value : null;
+                // ValueSpecified indicates if a numeric value was provided in XML
+                // When ValueSpecified is false, treat as boolean flag (null value)
+                characterState.Traits[traitName] = trait.ValueSpecified ? trait.Value : null;
             }
         }
 

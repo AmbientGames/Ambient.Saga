@@ -91,8 +91,8 @@ public class DialogueEngine
         if (choice == null)
             throw new ArgumentNullException(nameof(choice));
 
-        // Deduct cost if present
-        if (choice.Cost > 0)
+        // Deduct cost if specified in XML
+        if (choice.CostSpecified && choice.Cost > 0)
         {
             if (_stateProvider.GetCredits() < choice.Cost)
                 throw new InvalidOperationException($"Insufficient credits for choice (requires {choice.Cost})");

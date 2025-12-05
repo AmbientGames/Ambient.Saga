@@ -110,7 +110,8 @@ public class DialogueEngineTests
                         {
                             Text = "Pay 50 credits",
                             NextNodeId = "info",
-                            Cost = 50
+                            Cost = 50,
+                            CostSpecified = true
                         }
                     }
                 },
@@ -149,7 +150,8 @@ public class DialogueEngineTests
                         {
                             Text = "Pay 50 credits",
                             NextNodeId = "info",
-                            Cost = 50
+                            Cost = 50,
+                            CostSpecified = true
                         }
                     }
                 },
