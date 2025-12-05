@@ -1,428 +1,277 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <AvatarArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <AvatarArchetype RefName="LEADER_STUDENT" DisplayName="Class Leader" Description="[AI: Natural leader with strong sense of justice and determination]" AffinityRef="Courage">
-    <SpawnStats Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="5000" Experience="0" Strength="0.12" Defense="0.1" Speed="0.1" Magic="0.12" />
+  <AvatarArchetype RefName="CANON_WARRIOR" DisplayName="Team Captain" Description="The dependable class representative and kendo club captain. Their affinity manifests as a samurai guardian spirit, channeling unwavering determination and protective instincts." AffinityRef="CANON_IRON">
+    <SpawnStats Health="1.05" Stamina="0.95" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.105" Defense="0.105" Speed="0.095" Magic="0.095" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="SchoolBag" Condition="1" />
-        <Entry EquipmentRef="SneakersBlue" Condition="1" />
+        <Entry EquipmentRef="Greatsword" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bento" Quantity="2" />
-        <Entry ConsumableRef="SodaCan" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="7" />
+        <Entry ConsumableRef="PoisonVial" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BraveryStrike" Condition="1" />
+        <Entry SpellRef="BindElemental" Condition="1" />
+        <Entry SpellRef="Teleport" Condition="1" />
       </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="3000" Experience="0" Strength="0.1" Defense="0.08" Speed="0.1" Magic="0.1" />
-    <RespawnCapabilities>
-      <Consumables>
-        <Entry ConsumableRef="Bento" Quantity="1" />
-      </Consumables>
-    </RespawnCapabilities>
-  </AvatarArchetype>
-  <AvatarArchetype RefName="ATHLETIC_STUDENT" DisplayName="Athletic Student" Description="[AI: Energetic athlete with high stamina and physical prowess]" AffinityRef="Thunder">
-    <SpawnStats Health="1.2" Stamina="1.3" Mana="0.7" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="3000" Experience="0" Strength="0.16" Defense="0.12" Speed="0.14" Magic="0.06" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="BaseballBat" Condition="1" />
-        <Entry EquipmentRef="AthleticShoes" Condition="1" />
-        <Entry EquipmentRef="SportsWatch" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="Sportsdrink" Quantity="5" />
-        <Entry ConsumableRef="EnergyGel" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="ThunderKick" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="1.1" Stamina="1.2" Mana="0.7" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="2000" Experience="0" Strength="0.14" Defense="0.1" Speed="0.12" Magic="0.06" />
+    <RespawnStats Health="1.05" Stamina="0.95" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.084" Defense="0.084" Speed="0.076" Magic="0.076" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="BaseballBat" Condition="0.8" />
-      </Equipment>
-    </RespawnCapabilities>
-  </AvatarArchetype>
-  <AvatarArchetype RefName="BOOKISH_STUDENT" DisplayName="Bookish Student" Description="[AI: Intelligent scholar with deep knowledge and analytical skills]" AffinityRef="Wind">
-    <SpawnStats Health="0.8" Stamina="0.8" Mana="1.4" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="4000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.08" Magic="0.18" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="HardcoverBook" Condition="1" />
-        <Entry EquipmentRef="Glasses" Condition="1" />
+        <Entry EquipmentRef="WoodenShield" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CoffeeCan" Quantity="4" />
-        <Entry ConsumableRef="ChocolateBar" Quantity="3" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
+        <Entry ConsumableRef="PoisonVial" Quantity="2" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="GaleForce" Condition="1" />
-        <Entry SpellRef="Analyze" Condition="1" />
+        <Entry SpellRef="BloodFrenzy" Condition="1" />
+      </Spells>
+    </RespawnCapabilities>
+  </AvatarArchetype>
+  <AvatarArchetype RefName="CANON_BARBARIAN" DisplayName="Delinquent" Description="The rebellious student with a heart of gold hidden beneath a tough exterior. Their affinity takes the form of an oni, raw emotion given devastating physical form." AffinityRef="CANON_FIRE">
+    <SpawnStats Health="0.9" Stamina="1" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.11000001" Defense="0.089999996" Speed="0.1" Magic="0.095" />
+    <SpawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="ShadowDagger" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="HealingPotion" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="BerserkerRage" Condition="1" />
       </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="0.8" Stamina="0.8" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="3000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.08" Magic="0.16" />
+    <RespawnStats Health="0.9" Stamina="1" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.08800001" Defense="0.072" Speed="0.080000006" Magic="0.076" />
     <RespawnCapabilities>
-      <Consumables>
-        <Entry ConsumableRef="CoffeeCan" Quantity="2" />
-      </Consumables>
-    </RespawnCapabilities>
-  </AvatarArchetype>
-  <AvatarArchetype RefName="POPULAR_STUDENT" DisplayName="Popular Student" Description="[AI: Charismatic and kind student who supports others]" AffinityRef="Light">
-    <SpawnStats Health="0.9" Stamina="1" Mana="1.2" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="8000" Experience="0" Strength="0.08" Defense="0.1" Speed="0.1" Magic="0.14" />
-    <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="DesignerBag" Condition="1" />
-        <Entry EquipmentRef="CharmBracelet" Condition="1" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="FancyPastry" Quantity="3" />
-        <Entry ConsumableRef="HerbalTea" Quantity="2" />
+        <Entry ConsumableRef="Water" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="4" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="HealingLight" Condition="1" />
-        <Entry SpellRef="Encouragement" Condition="1" />
+        <Entry SpellRef="BerserkerRage" Condition="1" />
+      </Spells>
+    </RespawnCapabilities>
+  </AvatarArchetype>
+  <AvatarArchetype RefName="CANON_ROGUE" DisplayName="Transfer Student" Description="The mysterious new student who arrived mid-semester. Nobody knows their past, and their affinity is a kitsune - cunning, quick, and full of secrets." AffinityRef="CANON_UMBRAL">
+    <SpawnStats Health="0.9" Stamina="1.1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.089999996" Speed="0.11000001" Magic="0.1" />
+    <SpawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="ShadowDagger" Condition="1" />
+        <Entry EquipmentRef="SteelShield" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="CookedMeat" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="4" />
+        <Entry ConsumableRef="Ale" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="ShadowStep" Condition="1" />
+        <Entry SpellRef="CloakOfNight" Condition="1" />
       </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="6000" Experience="0" Strength="0.08" Defense="0.1" Speed="0.1" Magic="0.12" />
+    <RespawnStats Health="0.9" Stamina="1.1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.072" Speed="0.08800001" Magic="0.080000006" />
     <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="SteelShield" Condition="1" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1" />
+      </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HerbalTea" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="PoisonVial" Quantity="1" />
       </Consumables>
+      <Spells>
+        <Entry SpellRef="ShadowStep" Condition="1" />
+        <Entry SpellRef="CloakOfNight" Condition="1" />
+      </Spells>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="TRANSFER_STUDENT" DisplayName="Transfer Student" Description="[AI: Quiet student with mysterious past and hidden powers]" AffinityRef="Shadow">
-    <SpawnStats Health="1" Stamina="0.9" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="2000" Experience="0" Strength="0.1" Defense="0.12" Speed="0.12" Magic="0.16" />
+  <AvatarArchetype RefName="CANON_RANGER" DisplayName="Photography Club" Description="Always observing from the sidelines, camera in hand. Their keen perception awakened a tengu affinity, granting supernatural awareness and precision strikes from afar." AffinityRef="CANON_WILD">
+    <SpawnStats Health="0.95" Stamina="1.05" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.1" Defense="0.095" Speed="0.105" Magic="0.1" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="PocketKnife" Condition="1" />
-        <Entry EquipmentRef="BlackHoodie" Condition="1" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ConvenienceStoreMeal" Quantity="3" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStrike" Condition="1" />
-        <Entry SpellRef="VoidGaze" Condition="1" />
+        <Entry SpellRef="WildRegeneration" Condition="1" />
       </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="1" Stamina="0.9" Mana="1.2" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1500" Experience="0" Strength="0.1" Defense="0.12" Speed="0.12" Magic="0.14" />
-    <RespawnCapabilities />
+    <RespawnStats Health="0.95" Stamina="1.05" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.080000006" Defense="0.076" Speed="0.084" Magic="0.080000006" />
+    <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="Lute" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="NaturesGrasp" Condition="1" />
+        <Entry SpellRef="WildRegeneration" Condition="1" />
+      </Spells>
+    </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="HOMEROOM_TEACHER" DisplayName="Homeroom Teacher" Description="[AI: Caring teacher who looks after students during the field trip]" AffinityRef="Wisdom">
-    <SpawnStats Health="1" Stamina="0.9" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="15000" Experience="0" Strength="0.08" Defense="0.1" Speed="0.06" Magic="0.12" />
+  <AvatarArchetype RefName="CANON_MAGE" DisplayName="Honor Student" Description="Top of the class with perfect grades, but socially awkward. Their brilliant mind manifests a affinity of pure elemental force - an onmyoji spirit wielding the classical elements." AffinityRef="CANON_ARCANE">
+    <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.089999996" Speed="0.1" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Briefcase" Condition="1" />
-        <Entry EquipmentRef="BusinessSuit" Condition="1" />
+        <Entry EquipmentRef="PlateArmor" Condition="1" />
+        <Entry EquipmentRef="IronSword" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bento" Quantity="2" />
-        <Entry ConsumableRef="GreenTea" Quantity="3" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="WordsOfWisdom" Condition="1" />
+        <Entry SpellRef="BerserkerRage" Condition="1" />
+        <Entry SpellRef="Distraction" Condition="1" />
       </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="1" Stamina="0.9" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="12000" Experience="0" Strength="0.08" Defense="0.1" Speed="0.06" Magic="0.1" />
-    <RespawnCapabilities />
+    <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.072" Speed="0.080000006" Magic="0.08800001" />
+    <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="RustyAxe" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="SummonSpirit" Condition="1" />
+        <Entry SpellRef="WildRegeneration" Condition="1" />
+      </Spells>
+    </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="SHRINE_MAIDEN" DisplayName="Shrine Maiden" Description="[AI: Young miko at Ise Shrine with spiritual knowledge]" AffinityRef="Divine">
-    <SpawnStats Health="0.9" Stamina="0.9" Mana="1.5" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="3000" Experience="0" Strength="0.06" Defense="0.1" Speed="0.08" Magic="0.2" />
+  <AvatarArchetype RefName="CANON_WIZARD" DisplayName="Occult Club" Description="President of the occult research club, always talking about spirits and curses. Turns out they were right all along. Their affinity is an ancient yokai sage of forbidden knowledge." AffinityRef="CANON_ARCANE">
+    <SpawnStats Health="0.95" Stamina="0.95" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.095" Speed="0.095" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="SacredStaff" Condition="1" />
-        <Entry EquipmentRef="MikoRobes" Condition="1" />
-        <Entry EquipmentRef="Ofuda" Condition="1" />
+        <Entry EquipmentRef="RustyAxe" Condition="1" />
+        <Entry EquipmentRef="SteelShield" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Omochi" Quantity="3" />
-        <Entry ConsumableRef="SacredSake" Quantity="1" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="2" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="DivinePurification" Condition="1" />
-        <Entry SpellRef="SacredBarrier" Condition="1" />
+        <Entry SpellRef="Wisdom" Condition="1" />
       </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="0.9" Stamina="0.9" Mana="1.4" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="2500" Experience="0" Strength="0.06" Defense="0.1" Speed="0.08" Magic="0.18" />
-    <RespawnCapabilities />
+    <RespawnStats Health="0.95" Stamina="0.95" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.076" Speed="0.076" Magic="0.08800001" />
+    <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="RustyAxe" Condition="1" />
+        <Entry EquipmentRef="Greatsword" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ElixirOfLife" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Wisdom" Condition="1" />
+        <Entry SpellRef="Curse" Condition="1" />
+      </Spells>
+    </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="YOUNG_DETECTIVE" DisplayName="Young Detective" Description="[AI: Police detective investigating strange incidents in Ise]" AffinityRef="Truth">
-    <SpawnStats Health="1.1" Stamina="1" Mana="0.9" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="20000" Experience="0" Strength="0.12" Defense="0.12" Speed="0.1" Magic="0.08" />
+  <AvatarArchetype RefName="CANON_CLERIC" DisplayName="Shrine Maiden" Description="A part-time miko at a local shrine, drawn to Ise by fate. Their deep spiritual connection awakens a divine affinity - a manifestation of Amaterasu's blessing." AffinityRef="CANON_HOLY">
+    <SpawnStats Health="1.05" Stamina="0.95" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.105" Speed="0.095" Magic="0.105" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="DetectiveRevolver" Condition="1" />
-        <Entry EquipmentRef="TrenchCoat" Condition="1" />
-        <Entry EquipmentRef="BadgeID" Condition="1" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1" />
+        <Entry EquipmentRef="IronSword" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CoffeeCan" Quantity="5" />
-        <Entry ConsumableRef="InstantRamen" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="1" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="3" />
       </Consumables>
+      <Spells>
+        <Entry SpellRef="Blessing" Condition="1" />
+      </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="1.1" Stamina="1" Mana="0.9" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="15000" Experience="0" Strength="0.12" Defense="0.12" Speed="0.1" Magic="0.08" />
-    <RespawnCapabilities />
+    <RespawnStats Health="1.05" Stamina="0.95" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.084" Speed="0.076" Magic="0.084" />
+    <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="WoodenStaff" Condition="1" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="PoisonVial" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="1" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Blessing" Condition="1" />
+        <Entry SpellRef="Heal" Condition="1" />
+      </Spells>
+    </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="SHOP_OWNER" DisplayName="Shop Owner" Description="[AI: Friendly local shop owner selling snacks and supplies]" AffinityRef="Fortune">
-    <SpawnStats Health="0.9" Stamina="0.8" Mana="0.6" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="50000" Experience="0" Strength="0.08" Defense="0.08" Speed="0.06" Magic="0.06" />
+  <AvatarArchetype RefName="CANON_BARD" DisplayName="Idol Trainee" Description="Dreams of becoming a famous idol while balancing school. Their charisma and voice manifest a celestial affinity that inspires allies and charms enemies with supernatural melodies." AffinityRef="CANON_SPIRIT">
+    <SpawnStats Health="0.95" Stamina="1.05" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.095" Speed="0.105" Magic="0.105" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Apron" Condition="1" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Onigiri" Quantity="20" />
-        <Entry ConsumableRef="SodaCan" Quantity="15" />
-        <Entry ConsumableRef="Bento" Quantity="10" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="2" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
       </Consumables>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.9" Stamina="0.8" Mana="0.6" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="40000" Experience="0" Strength="0.08" Defense="0.08" Speed="0.06" Magic="0.06" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="SHADOW_SELF" DisplayName="Shadow Self" Description="[AI: Manifestation of suppressed emotions and hidden truths]" AffinityRef="Shadow">
-    <SpawnStats Health="1.5" Stamina="1.2" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.18" Defense="0.14" Speed="0.12" Magic="0.16" />
-    <SpawnCapabilities>
       <Spells>
-        <Entry SpellRef="DarkPulse" Condition="1" />
-        <Entry SpellRef="FearInduction" Condition="1" />
+        <Entry SpellRef="Wisdom" Condition="1" />
+        <Entry SpellRef="InspiringVerse" Condition="1" />
       </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="1.4" Stamina="1.1" Mana="1.2" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.16" Defense="0.12" Speed="0.12" Magic="0.14" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="VOID_CREATURE" DisplayName="Void Creature" Description="[AI: Creature born from collective negative emotions]" AffinityRef="Void">
-    <SpawnStats Health="1.3" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.16" Defense="0.12" Speed="0.14" Magic="0.12" />
-    <SpawnCapabilities>
+    <RespawnStats Health="0.95" Stamina="1.05" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.076" Speed="0.084" Magic="0.084" />
+    <RespawnCapabilities>
+      <Equipment>
+        <Entry EquipmentRef="WoodenStaff" Condition="1" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="PhoenixTears" Quantity="1" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="4" />
+      </Consumables>
       <Spells>
-        <Entry SpellRef="VoidSlash" Condition="1" />
+        <Entry SpellRef="Wisdom" Condition="1" />
       </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="1.2" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.14" Defense="0.1" Speed="0.12" Magic="0.1" />
-    <RespawnCapabilities />
+    </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="CORRUPTED_SPIRIT" DisplayName="Corrupted Spirit" Description="[AI: Once-benevolent spirit twisted by darkness]" AffinityRef="Curse">
-    <SpawnStats Health="1" Stamina="1.1" Mana="1.4" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.1" Defense="0.1" Speed="0.1" Magic="0.2" />
-    <SpawnCapabilities>
-      <Spells>
-        <Entry SpellRef="CurseWave" Condition="1" />
-        <Entry SpellRef="StatusAffliction" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="1" Stamina="1" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.1" Defense="0.1" Speed="0.1" Magic="0.18" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="DELINQUENT_STUDENT" DisplayName="Delinquent Student" Description="[AI: Rough exterior hiding a good heart]" AffinityRef="Courage">
-    <SpawnStats Health="1.3" Stamina="1.2" Mana="0.6" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1500" Experience="0" Strength="0.18" Defense="0.14" Speed="0.1" Magic="0.04" />
+  <AvatarArchetype RefName="CANON_SUMMONER" DisplayName="Shrine Heir" Description="Child of a kannushi priest, raised among rituals and traditions. They can forge contracts with shikigami spirits, commanding multiple affinity-like entities in battle." AffinityRef="CANON_VOID">
+    <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.089999996" Speed="0.1" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherJacket" Condition="1" />
-        <Entry EquipmentRef="SteelToeBoots" Condition="1" />
-        <Entry EquipmentRef="BrassKnuckles" Condition="1" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1" />
+        <Entry EquipmentRef="SteelShield" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="InstantRamen" Quantity="4" />
-        <Entry ConsumableRef="SodaCan" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="1" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="RecklessCharge" Condition="1" />
+        <Entry SpellRef="Fireball" Condition="1" />
+        <Entry SpellRef="Icebolt" Condition="1" />
       </Spells>
     </SpawnCapabilities>
-    <RespawnStats Health="1.2" Stamina="1.1" Mana="0.6" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.16" Defense="0.12" Speed="0.1" Magic="0.04" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="ARTISTIC_STUDENT" DisplayName="Artistic Student" Description="[AI: Sensitive artist who sees hidden beauty and darkness]" AffinityRef="Truth">
-    <SpawnStats Health="0.7" Stamina="0.9" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="6000" Experience="0" Strength="0.06" Defense="0.06" Speed="0.08" Magic="0.16" />
-    <SpawnCapabilities>
+    <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.072" Speed="0.080000006" Magic="0.08800001" />
+    <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Paintbrush" Condition="1" />
-        <Entry EquipmentRef="Beret" Condition="1" />
-        <Entry EquipmentRef="Sketchbook" Condition="1" />
+        <Entry EquipmentRef="WoodenShield" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ArtisanCoffee" Quantity="3" />
-        <Entry ConsumableRef="FancyPastry" Quantity="2" />
+        <Entry ConsumableRef="ManaPotion" Quantity="2" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="VisionReveal" Condition="1" />
-        <Entry SpellRef="ColorSplash" Condition="1" />
+        <Entry SpellRef="WildRegeneration" Condition="1" />
+        <Entry SpellRef="NaturesGrasp" Condition="1" />
       </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.7" Stamina="0.9" Mana="1.2" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="5000" Experience="0" Strength="0.06" Defense="0.06" Speed="0.08" Magic="0.14" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="TECH_STUDENT" DisplayName="Tech-Savvy Student" Description="[AI: Computer genius who can hack and analyze digital clues]" AffinityRef="Thunder">
-    <SpawnStats Health="0.8" Stamina="0.7" Mana="1.2" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="10000" Experience="0" Strength="0.04" Defense="0.06" Speed="0.12" Magic="0.16" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="Laptop" Condition="1" />
-        <Entry EquipmentRef="Headphones" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="EnergyDrink" Quantity="5" />
-        <Entry ConsumableRef="ChocolateBar" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="DataStrike" Condition="1" />
-        <Entry SpellRef="SystemAnalyze" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.8" Stamina="0.7" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="8000" Experience="0" Strength="0.04" Defense="0.06" Speed="0.12" Magic="0.14" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="OCCULT_STUDENT" DisplayName="Occult Enthusiast" Description="[AI: Student obsessed with paranormal and supernatural]" AffinityRef="Void">
-    <SpawnStats Health="0.9" Stamina="0.8" Mana="1.4" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="3500" Experience="0" Strength="0.06" Defense="0.08" Speed="0.06" Magic="0.18" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="OccultTome" Condition="1" />
-        <Entry EquipmentRef="PentagramPendant" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="HerbalTea" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="DarkKnowledge" Condition="1" />
-        <Entry SpellRef="SpiritContact" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.9" Stamina="0.8" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="3000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.06" Magic="0.16" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="MUSIC_STUDENT" DisplayName="Music Student" Description="[AI: Talented musician whose melodies affect emotions]" AffinityRef="Light">
-    <SpawnStats Health="0.9" Stamina="1" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="7000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.1" Magic="0.16" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="Guitar" Condition="1" />
-        <Entry EquipmentRef="ConcertTicket" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ThroatLozenge" Quantity="5" />
-        <Entry ConsumableRef="SodaCan" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="InspiringSong" Condition="1" />
-        <Entry SpellRef="DissonantChord" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.9" Stamina="1" Mana="1.2" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="6000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.1" Magic="0.14" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="TOURIST_PHOTOGRAPHER" DisplayName="Tourist Photographer" Description="[AI: Foreign tourist documenting Ise's mysteries]" AffinityRef="Fortune">
-    <SpawnStats Health="0.9" Stamina="0.9" Mana="0.8" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="25000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.08" Magic="0.06" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="TravelVest" Condition="1" />
-        <Entry EquipmentRef="SunHat" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="TravelSnacks" Quantity="5" />
-        <Entry ConsumableRef="WaterBottle" Quantity="3" />
-      </Consumables>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.9" Stamina="0.9" Mana="0.8" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="20000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.08" Magic="0.06" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="JOURNALIST" DisplayName="Investigative Journalist" Description="[AI: Reporter investigating strange incidents for a story]" AffinityRef="Truth">
-    <SpawnStats Health="1" Stamina="0.9" Mana="0.8" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="18000" Experience="0" Strength="0.08" Defense="0.08" Speed="0.1" Magic="0.1" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="PressPass" Condition="1" />
-        <Entry EquipmentRef="ReporterNotebook" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="CoffeeCan" Quantity="6" />
-        <Entry ConsumableRef="ConvenienceStoreMeal" Quantity="3" />
-      </Consumables>
-    </SpawnCapabilities>
-    <RespawnStats Health="1" Stamina="0.9" Mana="0.8" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="15000" Experience="0" Strength="0.08" Defense="0.08" Speed="0.1" Magic="0.1" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="INN_KEEPER" DisplayName="Inn Keeper" Description="[AI: Elderly innkeeper with knowledge of local legends]" AffinityRef="Wisdom">
-    <SpawnStats Health="0.8" Stamina="0.7" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="30000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.04" Magic="0.14" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="TraditionalKimono" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="GreenTea" Quantity="10" />
-        <Entry ConsumableRef="Omochi" Quantity="5" />
-        <Entry ConsumableRef="Onigiri" Quantity="8" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="AncientWisdom" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.8" Stamina="0.7" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="25000" Experience="0" Strength="0.06" Defense="0.08" Speed="0.04" Magic="0.14" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="FESTIVAL_ORGANIZER" DisplayName="Festival Organizer" Description="[AI: Energetic organizer of local festivals and events]" AffinityRef="Fortune">
-    <SpawnStats Health="1" Stamina="1.2" Mana="0.7" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="22000" Experience="0" Strength="0.08" Defense="0.08" Speed="0.12" Magic="0.06" />
-    <SpawnCapabilities>
-      <Equipment>
-        <Entry EquipmentRef="Happi" Condition="1" />
-        <Entry EquipmentRef="FestivalFan" Condition="1" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="Yakisoba" Quantity="5" />
-        <Entry ConsumableRef="Takoyaki" Quantity="5" />
-        <Entry ConsumableRef="Ramune" Quantity="4" />
-      </Consumables>
-    </SpawnCapabilities>
-    <RespawnStats Health="1" Stamina="1.2" Mana="0.7" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="20000" Experience="0" Strength="0.08" Defense="0.08" Speed="0.12" Magic="0.06" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="ANXIETY_MANIFESTATION" DisplayName="Anxiety Manifestation" Description="[AI: Physical form of overwhelming anxiety and worry]" AffinityRef="Curse">
-    <SpawnStats Health="1.1" Stamina="1.3" Mana="1.2" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.08" Defense="0.08" Speed="0.16" Magic="0.14" />
-    <SpawnCapabilities>
-      <Spells>
-        <Entry SpellRef="PanicAttack" Condition="1" />
-        <Entry SpellRef="ParalyzingFear" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="1" Stamina="1.2" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.08" Defense="0.08" Speed="0.14" Magic="0.12" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="REGRET_PHANTOM" DisplayName="Regret Phantom" Description="[AI: Ghostly embodiment of past mistakes and regrets]" AffinityRef="Shadow">
-    <SpawnStats Health="1.2" Stamina="1" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.1" Defense="0.12" Speed="0.08" Magic="0.18" />
-    <SpawnCapabilities>
-      <Spells>
-        <Entry SpellRef="MemoryDrain" Condition="1" />
-        <Entry SpellRef="DarkPulse" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="1.1" Stamina="1" Mana="1.2" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.1" Defense="0.12" Speed="0.08" Magic="0.16" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="ENVY_WRAITH" DisplayName="Envy Wraith" Description="[AI: Twisted form born from jealousy and envy]" AffinityRef="Curse">
-    <SpawnStats Health="0.9" Stamina="1.1" Mana="1.4" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.2" Defense="0.06" Speed="0.14" Magic="0.16" />
-    <SpawnCapabilities>
-      <Spells>
-        <Entry SpellRef="EnviousStrike" Condition="1" />
-        <Entry SpellRef="StealPower" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.8" Stamina="1" Mana="1.3" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.18" Defense="0.06" Speed="0.12" Magic="0.14" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="DESPAIR_COLOSSUS" DisplayName="Despair Colossus" Description="[AI: Massive entity formed from accumulated hopelessness]" AffinityRef="Void">
-    <SpawnStats Health="2" Stamina="1.5" Mana="0.8" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.2" Defense="0.2" Speed="0.04" Magic="0.08" />
-    <SpawnCapabilities>
-      <Spells>
-        <Entry SpellRef="CrushingDespair" Condition="1" />
-        <Entry SpellRef="VoidSlash" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="1.8" Stamina="1.4" Mana="0.8" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.18" Defense="0.18" Speed="0.04" Magic="0.08" />
-    <RespawnCapabilities />
-  </AvatarArchetype>
-  <AvatarArchetype RefName="DELUSION_ECHO" DisplayName="Delusion Echo" Description="[AI: Illusory entity that distorts perception]" AffinityRef="Shadow">
-    <SpawnStats Health="0.8" Stamina="1.2" Mana="1.5" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.06" Defense="0.1" Speed="0.14" Magic="0.22" />
-    <SpawnCapabilities>
-      <Spells>
-        <Entry SpellRef="Illusion" Condition="1" />
-        <Entry SpellRef="Confusion" Condition="1" />
-        <Entry SpellRef="FalseHope" Condition="1" />
-      </Spells>
-    </SpawnCapabilities>
-    <RespawnStats Health="0.8" Stamina="1.1" Mana="1.4" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="0" Experience="0" Strength="0.06" Defense="0.1" Speed="0.12" Magic="0.2" />
-    <RespawnCapabilities />
+    </RespawnCapabilities>
   </AvatarArchetype>
 </AvatarArchetypes>

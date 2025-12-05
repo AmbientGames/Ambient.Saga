@@ -6,7 +6,7 @@
     <WorldConfiguration
         RefName="Ise"
         DisplayName="Ise, Japan"
-        Description="Ise: Japan's Sacred City - Persona 4 Golden themed field trip"
+        Description="Ise: Japan's Sacred City - High school student field trip"
         Template="Japan"
         ConsumableItemsRef="Ise"
         SpellsRef="Ise"

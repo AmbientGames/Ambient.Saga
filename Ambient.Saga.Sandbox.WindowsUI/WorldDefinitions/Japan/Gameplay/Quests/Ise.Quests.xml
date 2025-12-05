@@ -159,7 +159,7 @@
             <Currency Amount="3500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="SchoolBag" Quantity="1" />
+            <Equipment EquipmentRef="Greatsword" Quantity="1" />
           </Reward>
           <Reward Condition="OnSuccess">
             <QuestToken QuestTokenRef="TOKEN_HERO_6" Quantity="1" />
@@ -179,7 +179,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Ofuda" Quantity="1" />
+            <Equipment EquipmentRef="Greatsword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -196,7 +196,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="OccultTome" Quantity="1" />
+            <Equipment EquipmentRef="Dagger" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -213,7 +213,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="BlackHoodie" Quantity="1" />
+            <Equipment EquipmentRef="WoodenStaff" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -230,7 +230,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Apron" Quantity="1" />
+            <Equipment EquipmentRef="LeatherArmor" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -247,7 +247,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="SunHat" Quantity="1" />
+            <Equipment EquipmentRef="Lute" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -261,7 +261,7 @@
       <Stage RefName="HEAR_LEGEND" DisplayName="Hear the Legend">
         <Objectives>
           <Objective RefName="FIND_LOREKEEPER" Type="LocationReached" Threshold="1" DisplayName="Find the lorekeeper at Kazahinomi-no-Miya" SagaArcRef="Kazahinominomiya" />
-          <Objective RefName="LEARN_STORY" Type="DialogueCompleted" Threshold="1" DisplayName="Learn the ancient story" CharacterRef="ARTISTIC_STUDENT" />
+          <Objective RefName="LEARN_STORY" Type="DialogueCompleted" Threshold="1" DisplayName="Learn the ancient story" CharacterRef="NPC_LOREKEEPER" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -286,7 +286,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Kōtai Jingū (Inner Shrine)" SagaArcRef="KōtaiJingūInnerShrine" />
           <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Kōtai Jingū (Inner Shrine)" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="BlackHoodie" />
+          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Dagger" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -296,7 +296,7 @@
             <Experience Amount="1000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="PentagramPendant" Quantity="1" />
+            <Equipment EquipmentRef="WoodenStaff" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -304,7 +304,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Aramatsuri-no-Miya" SagaArcRef="Aramatsurinomiya" />
           <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Aramatsuri-no-Miya" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="TrenchCoat" />
+          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Lute" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -314,7 +314,7 @@
             <Experience Amount="1300" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Apron" Quantity="1" />
+            <Equipment EquipmentRef="MageStaff" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -322,7 +322,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Toyōke Daijingū (Outer Shrine)" SagaArcRef="ToyōkeDaijingūOuterShrine" />
           <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Toyōke Daijingū (Outer Shrine)" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Laptop" />
+          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherArmor" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -332,7 +332,7 @@
             <Experience Amount="1600" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Glasses" Quantity="1" />
+            <Equipment EquipmentRef="Dagger" Quantity="1" />
           </Reward>
           <Reward Condition="OnSuccess">
             <QuestToken QuestTokenRef="TOKEN_ANCIENT_ARTIFACT_COMPONENTS" Quantity="1" />
@@ -364,7 +364,7 @@
             <Experience Amount="10000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="BadgeID" Quantity="2" />
+            <Equipment EquipmentRef="ChainmailArmor" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
@@ -372,12 +372,12 @@
   </Quest>
   <Quest RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Secret: The Forgotten Shrine" Description="An ancient shrine marked on a mysterious map. What secrets does it hold?">
     <Prerequisites>
-      <Prerequisite MinimumLevel="20" RequiredItemRef="OccultTome" />
+      <Prerequisite MinimumLevel="20" RequiredItemRef="LeatherArmor" />
     </Prerequisites>
     <Stages StartStage="FIND_SHRINE">
       <Stage RefName="FIND_SHRINE" DisplayName="Locate the Hidden Shrine" NextStage="UNLOCK_SHRINE">
         <Objectives>
-          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Kazahinomi-no-Miya" SagaArcRef="Kazahinominomiya" Hidden="true" />
+          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Kōtai Jingū (Inner Shrine)" SagaArcRef="KōtaiJingūInnerShrine" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="UNLOCK_SHRINE" DisplayName="Unlock the Shrine's Secrets">
@@ -393,7 +393,7 @@
             <Experience Amount="5000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="HardcoverBook" Quantity="1" />
+            <Equipment EquipmentRef="Dagger" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -406,13 +406,13 @@
     <Stages StartStage="DISCOVER_WORKSHOP">
       <Stage RefName="DISCOVER_WORKSHOP" DisplayName="Discover the Hidden Workshop" NextStage="CRAFT_MASTERPIECE">
         <Objectives>
-          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Kōtai Jingū (Inner Shrine)" SagaArcRef="KōtaiJingūInnerShrine" Hidden="true" />
+          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Kazahinomi-no-Miya" SagaArcRef="Kazahinominomiya" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Craft the Ultimate Masterpiece">
         <Objectives>
-          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="Sketchbook" />
-          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="BadgeID" />
+          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="WoodenShield" />
+          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="ApprenticWand" />
           <Objective RefName="BONUS_FLAWLESS_CRAFT" Type="Custom" Threshold="1" DisplayName="Achieve 100% quality on first try" Optional="true" />
         </Objectives>
         <Rewards>
@@ -423,7 +423,7 @@
             <Experience Amount="8000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="SchoolBag" Quantity="2" />
+            <Equipment EquipmentRef="ElderRobes" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
@@ -457,7 +457,7 @@
             <Experience Amount="7000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="TravelVest" Quantity="1" />
+            <Equipment EquipmentRef="RustyAxe" Quantity="1" />
           </Reward>
         </Rewards>
         <FailConditions>

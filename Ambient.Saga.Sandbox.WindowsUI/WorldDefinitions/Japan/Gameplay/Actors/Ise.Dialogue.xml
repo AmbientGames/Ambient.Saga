@@ -1000,18 +1000,18 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile undead encountered near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). Attacks on sight]</Text>
+      <Text>[AI: Hostile bandit encountered near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Undead near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)]</Text>
+      <Text>[AI: Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) provides lore about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -1036,36 +1036,36 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0_3" DisplayName="Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0_3" DisplayName="Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) Dialogue" Description="Dialogue tree for Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1). Attacks on sight]</Text>
+      <Text>[AI: Hostile undead encountered near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1). Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)]</Text>
+      <Text>[AI: Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5_4" DisplayName="Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) Dialogue" Description="Dialogue tree for Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5_4" DisplayName="Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile undead encountered near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6). Attacks on sight]</Text>
+      <Text>[AI: Hostile bandit encountered near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6). Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)]</Text>
+      <Text>[AI: Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6) provides lore about Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">

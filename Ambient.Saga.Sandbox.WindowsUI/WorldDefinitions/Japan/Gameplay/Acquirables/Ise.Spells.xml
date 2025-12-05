@@ -1,156 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Spells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Spell RefName="BraveryStrike" DisplayName="Bravery Strike" Description="[AI: Courageous attack channeling determination]" WholesalePrice="150" AffinityRef="Courage">
-    <Effects Health="-0.25" Stamina="0" Mana="0" Strength="0.05" Defense="0" Speed="0" Magic="0" />
+  <Spell RefName="Heal" DisplayName="Dia" Description="An affinity skill that mends wounds with spiritual light." WholesalePrice="100" AffinityRef="Divine">
+    <Effects Health="0.2" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
   </Spell>
-  <Spell RefName="ThunderKick" DisplayName="Thunder Kick" Description="[AI: Lightning-fast physical strike]" WholesalePrice="180" AffinityRef="Thunder">
-    <Effects Health="-0.3" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.1" Magic="0" />
+  <Spell RefName="Wisdom" DisplayName="Rakukaja" Description="A defensive buff that hardens the spirit's resolve." WholesalePrice="150" AffinityRef="Spirit">
+    <Effects Health="0" Stamina="0" Mana="0.1" Strength="0" Defense="0" Speed="0" Magic="0.05" />
   </Spell>
-  <Spell RefName="GaleForce" DisplayName="Gale Force" Description="[AI: Powerful wind attack]" WholesalePrice="200" AffinityRef="Wind">
-    <Effects Health="-0.28" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  <Spell RefName="Teleport" DisplayName="Traesto" Description="Escape technique - phase through the spirit world briefly." WholesalePrice="200" AffinityRef="Arcane">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0.5" Magic="0" />
   </Spell>
-  <Spell RefName="Analyze" DisplayName="Analyze" Description="[AI: Reveals enemy weaknesses and strengths]" WholesalePrice="120" AffinityRef="Wisdom">
-    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0.1" />
-  </Spell>
-  <Spell RefName="ShadowStrike" DisplayName="Shadow Strike" Description="[AI: Attack from darkness itself]" WholesalePrice="220" AffinityRef="Shadow">
-    <Effects Health="-0.35" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="VoidGaze" DisplayName="Void Gaze" Description="[AI: Peer into emptiness to find truth]" WholesalePrice="180" AffinityRef="Void">
-    <Effects Health="0" Stamina="0" Mana="0.1" Strength="0" Defense="0" Speed="0" Magic="0.12" />
-  </Spell>
-  <Spell RefName="HealingLight" DisplayName="Healing Light" Description="[AI: Warm light that restores vitality]" WholesalePrice="170" AffinityRef="Light">
-    <Effects Health="0.3" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="Encouragement" DisplayName="Encouragement" Description="[AI: Inspiring words that boost allies]" WholesalePrice="140" AffinityRef="Light">
-    <Effects Health="0.1" Stamina="0.15" Mana="0.05" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" />
-  </Spell>
-  <Spell RefName="WordsOfWisdom" DisplayName="Words of Wisdom" Description="[AI: Teacher's guidance providing clarity]" WholesalePrice="130" AffinityRef="Wisdom">
-    <Effects Health="0" Stamina="0.1" Mana="0.15" Strength="0" Defense="0.05" Speed="0" Magic="0.08" />
-  </Spell>
-  <Spell RefName="DivinePurification" DisplayName="Divine Purification" Description="[AI: Sacred ritual cleansing negative energy]" WholesalePrice="280" AffinityRef="Divine">
-    <Effects Health="0.2" Stamina="0" Mana="0" Strength="0" Defense="0.15" Speed="0" Magic="0.1" />
-  </Spell>
-  <Spell RefName="SacredBarrier" DisplayName="Sacred Barrier" Description="[AI: Protective shield of spiritual power]" WholesalePrice="200" AffinityRef="Divine">
-    <Effects Health="0.1" Stamina="0" Mana="0" Strength="0" Defense="0.25" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="DarkPulse" DisplayName="Dark Pulse" Description="[AI: Wave of negative energy]" WholesalePrice="0" AffinityRef="Shadow">
+  <Spell RefName="Fireball" DisplayName="Agi" Description="Summon flames from Kagutsuchi's domain." WholesalePrice="120" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="-0.3" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
   </Spell>
-  <Spell RefName="FearInduction" DisplayName="Fear Induction" Description="[AI: Instills paralyzing fear in target]" WholesalePrice="0" AffinityRef="Shadow">
-    <Effects Health="0" Stamina="-0.2" Mana="0" Strength="-0.1" Defense="-0.1" Speed="-0.15" Magic="0" />
+  <Spell RefName="Icebolt" DisplayName="Bufu" Description="A shard of frozen spirit energy." WholesalePrice="100" AffinityRef="Ice" UseType="Offensive">
+    <Effects Health="-0.2" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.1" Magic="0" />
   </Spell>
-  <Spell RefName="VoidSlash" DisplayName="Void Slash" Description="[AI: Slash from emptiness itself]" WholesalePrice="0" AffinityRef="Void">
-    <Effects Health="-0.32" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  <Spell RefName="Freeze" DisplayName="Mabufula" Description="Flash-freeze an area with arctic wind." WholesalePrice="150" AffinityRef="Ice" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.3" Magic="0" />
   </Spell>
-  <Spell RefName="CurseWave" DisplayName="Curse Wave" Description="[AI: Spreading curse that weakens]" WholesalePrice="0" AffinityRef="Curse">
-    <Effects Health="-0.15" Stamina="-0.15" Mana="-0.1" Strength="-0.05" Defense="-0.05" Speed="-0.05" Magic="-0.05" />
+  <Spell RefName="BerserkerRage" DisplayName="Tarukaja" Description="Channel oni fury to boost attack power." WholesalePrice="80" AffinityRef="Rage" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0.25" Defense="-0.1" Speed="0.1" Magic="0" />
   </Spell>
-  <Spell RefName="StatusAffliction" DisplayName="Status Affliction" Description="[AI: Inflicts various negative conditions]" WholesalePrice="0" AffinityRef="Curse">
-    <Effects Health="-0.1" Stamina="-0.1" Mana="0" Strength="0" Defense="-0.08" Speed="-0.08" Magic="0" />
+  <Spell RefName="BloodFrenzy" DisplayName="Rebellion" Description="Critical hit rate surge from awakened spirit." WholesalePrice="150" AffinityRef="Rage" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="0.2" Mana="0" Strength="0.35" Defense="-0.15" Speed="0.15" Magic="0" />
   </Spell>
-  <Spell RefName="TeamRally" DisplayName="Team Rally" Description="[AI: Rallying cry boosting entire party]" WholesalePrice="300" AffinityRef="Courage">
-    <Effects Health="0.15" Stamina="0.15" Mana="0" Strength="0.08" Defense="0.08" Speed="0.08" Magic="0" />
+  <Spell RefName="SoothingSong" DisplayName="Media" Description="A healing melody that reaches all allies." WholesalePrice="90" AffinityRef="Spirit">
+    <Effects Health="0.15" Stamina="0.1" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
   </Spell>
-  <Spell RefName="MassHeal" DisplayName="Mass Heal" Description="[AI: Healing light affecting all allies]" WholesalePrice="350" AffinityRef="Light">
-    <Effects Health="0.25" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  <Spell RefName="InspiringVerse" DisplayName="Matarukaja" Description="An inspiring song that boosts party attack." WholesalePrice="120" AffinityRef="Spirit">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0.1" Defense="0.1" Speed="0.05" Magic="0" />
   </Spell>
-  <Spell RefName="RecklessCharge" DisplayName="Reckless Charge" Description="[AI: Powerful but wild charging attack]" WholesalePrice="190" AffinityRef="Courage">
-    <Effects Health="-0.35" Stamina="-0.1" Mana="0" Strength="0.08" Defense="-0.05" Speed="0" Magic="0" />
+  <Spell RefName="Distraction" DisplayName="Pulinpa" Description="Confusing rhythm that muddles enemy minds." WholesalePrice="80" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="-0.15" Speed="0" Magic="0" />
   </Spell>
-  <Spell RefName="VisionReveal" DisplayName="Vision Reveal" Description="[AI: Artistic sight revealing hidden truths]" WholesalePrice="160" AffinityRef="Truth">
-    <Effects Health="0" Stamina="0" Mana="0.1" Strength="0" Defense="0" Speed="0" Magic="0.14" />
+  <Spell RefName="ShadowStep" DisplayName="Sukukaja" Description="Borrow speed from Tsukuyomi's shadow." WholesalePrice="100" AffinityRef="Shadow">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="0.2" Speed="0.15" Magic="0" />
   </Spell>
-  <Spell RefName="ColorSplash" DisplayName="Color Splash" Description="[AI: Vibrant paint attack]" WholesalePrice="170" AffinityRef="Truth">
-    <Effects Health="-0.22" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.08" Magic="0" />
+  <Spell RefName="CloakOfNight" DisplayName="Sukunda" Description="Slow enemies by weighing down their shadows." WholesalePrice="180" AffinityRef="Shadow">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="0.3" Speed="0.2" Magic="0" />
   </Spell>
-  <Spell RefName="DataStrike" DisplayName="Data Strike" Description="[AI: Digital lightning attack]" WholesalePrice="210" AffinityRef="Thunder">
-    <Effects Health="-0.32" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  <Spell RefName="NaturesGrasp" DisplayName="Makajam" Description="Seal enemy magic with forest spirit vines." WholesalePrice="90" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.25" Magic="0" />
   </Spell>
-  <Spell RefName="SystemAnalyze" DisplayName="System Analyze" Description="[AI: Hack enemy weaknesses digitally]" WholesalePrice="140" AffinityRef="Thunder">
-    <Effects Health="0" Stamina="0" Mana="0.08" Strength="0" Defense="0" Speed="0.08" Magic="0.12" />
+  <Spell RefName="WildRegeneration" DisplayName="Invigorate" Description="Passive SP recovery from nature spirits." WholesalePrice="110" AffinityRef="Nature">
+    <Effects Health="0.25" Stamina="0.1" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
   </Spell>
-  <Spell RefName="DarkKnowledge" DisplayName="Dark Knowledge" Description="[AI: Forbidden lore dealing damage]" WholesalePrice="230" AffinityRef="Void">
-    <Effects Health="-0.3" Stamina="0" Mana="0.1" Strength="0" Defense="0" Speed="0" Magic="0" />
+  <Spell RefName="SummonSpirit" DisplayName="Call Shikigami" Description="Summon a paper spirit servant to fight." WholesalePrice="150" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0.15" Defense="0.1" Speed="0" Magic="0" />
   </Spell>
-  <Spell RefName="SpiritContact" DisplayName="Spirit Contact" Description="[AI: Commune with supernatural entities]" WholesalePrice="180" AffinityRef="Void">
-    <Effects Health="0" Stamina="0" Mana="0.15" Strength="0" Defense="0.08" Speed="0" Magic="0.12" />
+  <Spell RefName="BindElemental" DisplayName="Contract" Description="Bind a minor spirit to your service." WholesalePrice="250" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0.2" Defense="0.15" Speed="0.1" Magic="0.1" />
   </Spell>
-  <Spell RefName="InspiringSong" DisplayName="Inspiring Song" Description="[AI: Uplifting melody boosting party]" WholesalePrice="180" AffinityRef="Light">
-    <Effects Health="0.12" Stamina="0.12" Mana="0.08" Strength="0.06" Defense="0.06" Speed="0.06" Magic="0.06" />
+  <Spell RefName="DivineLight" DisplayName="Hama" Description="Amaterasu's light banishes darkness." WholesalePrice="100" AffinityRef="Divine" UseType="Offensive">
+    <Effects Health="-0.25" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
   </Spell>
-  <Spell RefName="DissonantChord" DisplayName="Dissonant Chord" Description="[AI: Harsh sound damaging enemies]" WholesalePrice="190" AffinityRef="Light">
-    <Effects Health="-0.28" Stamina="0" Mana="0" Strength="0" Defense="-0.08" Speed="0" Magic="0" />
+  <Spell RefName="Blessing" DisplayName="Rakunda" Description="Divine protection that weakens enemy defense." WholesalePrice="130" AffinityRef="Divine">
+    <Effects Health="0.1" Stamina="0" Mana="0" Strength="0" Defense="0.15" Speed="0" Magic="0.05" />
   </Spell>
-  <Spell RefName="AncientWisdom" DisplayName="Ancient Wisdom" Description="[AI: Elderly sage's deep knowledge]" WholesalePrice="160" AffinityRef="Wisdom">
-    <Effects Health="0.1" Stamina="0.1" Mana="0.2" Strength="0" Defense="0.08" Speed="0" Magic="0.12" />
+  <Spell RefName="Curse" DisplayName="Mudo" Description="Tsukuyomi's curse - instant dark damage." WholesalePrice="100" AffinityRef="Shadow" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="-0.15" Defense="-0.1" Speed="0" Magic="0" />
   </Spell>
-  <Spell RefName="PanicAttack" DisplayName="Panic Attack" Description="[AI: Overwhelming anxiety assault]" WholesalePrice="0" AffinityRef="Curse">
-    <Effects Health="-0.2" Stamina="-0.2" Mana="0" Strength="-0.12" Defense="-0.12" Speed="-0.12" Magic="0" />
-  </Spell>
-  <Spell RefName="ParalyzingFear" DisplayName="Paralyzing Fear" Description="[AI: Fear that freezes targets]" WholesalePrice="0" AffinityRef="Curse">
-    <Effects Health="0" Stamina="-0.25" Mana="0" Strength="0" Defense="-0.15" Speed="-0.2" Magic="0" />
-  </Spell>
-  <Spell RefName="MemoryDrain" DisplayName="Memory Drain" Description="[AI: Steal vitality through regrets]" WholesalePrice="0" AffinityRef="Shadow">
-    <Effects Health="-0.28" Stamina="0" Mana="-0.2" Strength="0" Defense="0" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="EnviousStrike" DisplayName="Envious Strike" Description="[AI: Jealousy-fueled devastating blow]" WholesalePrice="0" AffinityRef="Curse">
-    <Effects Health="-0.45" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="StealPower" DisplayName="Steal Power" Description="[AI: Drain opponent's strength]" WholesalePrice="0" AffinityRef="Curse">
-    <Effects Health="0" Stamina="0.1" Mana="0.1" Strength="0.08" Defense="0" Speed="0" Magic="0.08" />
-  </Spell>
-  <Spell RefName="CrushingDespair" DisplayName="Crushing Despair" Description="[AI: Heavy weight of hopelessness]" WholesalePrice="0" AffinityRef="Void">
-    <Effects Health="-0.4" Stamina="-0.15" Mana="0" Strength="-0.1" Defense="0" Speed="-0.15" Magic="0" />
-  </Spell>
-  <Spell RefName="Illusion" DisplayName="Illusion" Description="[AI: Create false perceptions]" WholesalePrice="0" AffinityRef="Shadow">
-    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="-0.15" Speed="0" Magic="-0.1" />
-  </Spell>
-  <Spell RefName="Confusion" DisplayName="Confusion" Description="[AI: Muddle target's thoughts]" WholesalePrice="0" AffinityRef="Shadow">
-    <Effects Health="0" Stamina="-0.12" Mana="-0.12" Strength="-0.08" Defense="-0.08" Speed="-0.08" Magic="-0.08" />
-  </Spell>
-  <Spell RefName="FalseHope" DisplayName="False Hope" Description="[AI: Deceptive promise that drains]" WholesalePrice="0" AffinityRef="Shadow">
-    <Effects Health="-0.25" Stamina="0" Mana="-0.2" Strength="0" Defense="0" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="CourageBurst" DisplayName="Courage Burst" Description="[AI: Explosive surge of bravery]" WholesalePrice="240" AffinityRef="Courage">
-    <Effects Health="-0.38" Stamina="0" Mana="0" Strength="0.1" Defense="0" Speed="0.08" Magic="0" />
-  </Spell>
-  <Spell RefName="ThunderStorm" DisplayName="Thunder Storm" Description="[AI: Multi-hit lightning barrage]" WholesalePrice="300" AffinityRef="Thunder">
-    <Effects Health="-0.4" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.12" Magic="0" />
-  </Spell>
-  <Spell RefName="Cyclone" DisplayName="Cyclone" Description="[AI: Swirling wind vortex]" WholesalePrice="260" AffinityRef="Wind">
-    <Effects Health="-0.35" Stamina="0" Mana="0" Strength="0" Defense="-0.1" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="LightBeam" DisplayName="Light Beam" Description="[AI: Focused ray of pure light]" WholesalePrice="220" AffinityRef="Light">
-    <Effects Health="-0.3" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="Dispel" DisplayName="Dispel" Description="[AI: Remove negative effects]" WholesalePrice="180" AffinityRef="Light">
-    <Effects Health="0.08" Stamina="0.12" Mana="0.08" Strength="0.05" Defense="0.05" Speed="0.05" Magic="0.05" />
-  </Spell>
-  <Spell RefName="MindRead" DisplayName="Mind Read" Description="[AI: Perceive enemy intentions]" WholesalePrice="150" AffinityRef="Wisdom">
-    <Effects Health="0" Stamina="0" Mana="0.12" Strength="0" Defense="0.1" Speed="0.1" Magic="0.1" />
-  </Spell>
-  <Spell RefName="TruthSeeker" DisplayName="Truth Seeker" Description="[AI: Reveal all deceptions]" WholesalePrice="200" AffinityRef="Truth">
-    <Effects Health="0" Stamina="0" Mana="0.15" Strength="0" Defense="0" Speed="0" Magic="0.18" />
-  </Spell>
-  <Spell RefName="HolySmite" DisplayName="Holy Smite" Description="[AI: Divine judgment strike]" WholesalePrice="320" AffinityRef="Divine">
-    <Effects Health="-0.45" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="SacredWard" DisplayName="Sacred Ward" Description="[AI: Protective divine blessing]" WholesalePrice="250" AffinityRef="Divine">
-    <Effects Health="0.15" Stamina="0" Mana="0" Strength="0" Defense="0.2" Speed="0" Magic="0.1" />
-  </Spell>
-  <Spell RefName="Purify" DisplayName="Purify" Description="[AI: Cleanse corruption and curses]" WholesalePrice="230" AffinityRef="Divine">
-    <Effects Health="0.2" Stamina="0.1" Mana="0.1" Strength="0" Defense="0.12" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="Resurrection" DisplayName="Resurrection" Description="[AI: Revive fallen ally with divine power]" WholesalePrice="500" AffinityRef="Divine">
-    <Effects Health="0.5" Stamina="0.2" Mana="0.2" Strength="0" Defense="0" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="Counter" DisplayName="Counter" Description="[AI: Defensive stance that reflects damage]" WholesalePrice="160" AffinityRef="Physical">
-    <Effects Health="0" Stamina="0" Mana="0" Strength="0.1" Defense="0.15" Speed="0" Magic="0" />
-  </Spell>
-  <Spell RefName="EvadeBoost" DisplayName="Evade Boost" Description="[AI: Increase evasion dramatically]" WholesalePrice="140" AffinityRef="Wind">
-    <Effects Health="0" Stamina="0.1" Mana="0" Strength="0" Defense="0" Speed="0.2" Magic="0" />
-  </Spell>
-  <Spell RefName="PowerCharge" DisplayName="Power Charge" Description="[AI: Build up strength for next attack]" WholesalePrice="120" AffinityRef="Courage">
-    <Effects Health="0" Stamina="0" Mana="0" Strength="0.2" Defense="-0.1" Speed="0" Magic="0" />
+  <Spell RefName="Poison" DisplayName="Poisma" Description="Toxic spirit miasma that lingers." WholesalePrice="80" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.15" Stamina="-0.1" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
   </Spell>
 </Spells>
