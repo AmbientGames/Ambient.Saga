@@ -2392,4 +2392,128 @@ public class BattleEnginePhase1Tests
     }
 
     #endregion
+
+    #region Phase 3: NeutralMultiplier Tests
+
+    [Fact]
+    public void CalculateAffinityMultiplier_NoMatchup_UsesNeutralMultiplier()
+    {
+        // Arrange - Create world with affinities that have custom NeutralMultiplier
+        var world = CreateTestWorldWithAffinities();
+
+        // Act - Calculate multiplier for Fire vs Earth (no explicit matchup defined)
+        var multiplier = EffectApplier.CalculateAffinityMultiplier("Fire", "Earth", world);
+
+        // Assert - Should use Fire's NeutralMultiplier (0.9)
+        Assert.Equal(0.9f, multiplier);
+    }
+
+    [Fact]
+    public void CalculateAffinityMultiplier_SameAffinity_UsesNeutralMultiplier()
+    {
+        // Arrange
+        var world = CreateTestWorldWithAffinities();
+
+        // Act - Calculate multiplier for Fire vs Fire
+        var multiplier = EffectApplier.CalculateAffinityMultiplier("Fire", "Fire", world);
+
+        // Assert - Should use Fire's NeutralMultiplier (0.9)
+        Assert.Equal(0.9f, multiplier);
+    }
+
+    [Fact]
+    public void CalculateAffinityMultiplier_ExplicitMatchup_UsesMatchupMultiplier()
+    {
+        // Arrange
+        var world = CreateTestWorldWithAffinities();
+
+        // Act - Calculate multiplier for Fire vs Ice (explicit matchup)
+        var multiplier = EffectApplier.CalculateAffinityMultiplier("Fire", "Ice", world);
+
+        // Assert - Should use explicit matchup multiplier (1.5)
+        Assert.Equal(1.5f, multiplier);
+    }
+
+    [Fact]
+    public void CalculateAffinityMultiplier_NullAffinity_ReturnsOne()
+    {
+        // Arrange
+        var world = CreateTestWorldWithAffinities();
+
+        // Act
+        var multiplier = EffectApplier.CalculateAffinityMultiplier(null, "Fire", world);
+
+        // Assert - No bonus when attacker has no affinity
+        Assert.Equal(1.0f, multiplier);
+    }
+
+    [Fact]
+    public void CalculateAffinityMultiplier_DefaultNeutralMultiplier_ReturnsOne()
+    {
+        // Arrange - Create world with affinity that has default NeutralMultiplier
+        var world = CreateTestWorldWithAffinities();
+
+        // Act - Ice has default NeutralMultiplier (1.0)
+        var multiplier = EffectApplier.CalculateAffinityMultiplier("Ice", "Ice", world);
+
+        // Assert
+        Assert.Equal(1.0f, multiplier);
+    }
+
+    private static World CreateTestWorldWithAffinities()
+    {
+        var world = new World();
+
+        var fireAffinity = new CharacterAffinity
+        {
+            RefName = "Fire",
+            DisplayName = "Fire",
+            NeutralMultiplier = 0.9f, // Custom neutral multiplier
+            Matchup = new[]
+            {
+                new AffinityMatchup { TargetAffinityRef = "Ice", Multiplier = 1.5f }, // Strong vs Ice
+                new AffinityMatchup { TargetAffinityRef = "Water", Multiplier = 0.5f } // Weak vs Water
+            }
+        };
+
+        var iceAffinity = new CharacterAffinity
+        {
+            RefName = "Ice",
+            DisplayName = "Ice",
+            // NeutralMultiplier defaults to 1.0
+            Matchup = new[]
+            {
+                new AffinityMatchup { TargetAffinityRef = "Fire", Multiplier = 0.5f }
+            }
+        };
+
+        var earthAffinity = new CharacterAffinity
+        {
+            RefName = "Earth",
+            DisplayName = "Earth",
+            NeutralMultiplier = 1.1f, // Slightly stronger neutral
+            Matchup = Array.Empty<AffinityMatchup>()
+        };
+
+        world.WorldTemplate = new WorldTemplate
+        {
+            Gameplay = new GameplayComponents
+            {
+                CharacterAffinities = new[] { fireAffinity, iceAffinity, earthAffinity },
+                Equipment = Array.Empty<Equipment>(),
+                Spells = Array.Empty<Spell>(),
+                StatusEffects = Array.Empty<StatusEffect>(),
+                Consumables = Array.Empty<Consumable>(),
+                Characters = Array.Empty<Character>(),
+                DialogueTrees = Array.Empty<DialogueTree>(),
+                QuestTokens = Array.Empty<QuestToken>(),
+                Factions = Array.Empty<Faction>(),
+                SagaArcs = Array.Empty<SagaArc>()
+            }
+        };
+
+        return world;
+    }
+
+    #endregion
 }

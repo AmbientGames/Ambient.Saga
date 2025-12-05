@@ -25,6 +25,9 @@
                 <xs:attribute name="StatusEffectRef" type="xs:string" use="optional" />
                 <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="0.0" />
                 <xs:attribute name="StatusEffectOnCritOnly" type="xs:boolean" use="optional" default="false" />
+                <!-- PHASE 5: Status effects applied when defending (e.g., shield grants buff) -->
+                <xs:attribute name="OnDefendStatusEffectRef" type="xs:string" use="optional" />
+                <xs:attribute name="OnDefendStatusEffectChance" type="xs:float" use="optional" default="1.0" />
                 <!-- Critical hit chance modifier (0.0 to 1.0, added to base crit chance) -->
                 <xs:attribute name="CriticalHitBonus" type="xs:float" use="optional" default="0.0" />
             </xs:extension>

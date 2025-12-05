@@ -145,7 +145,7 @@ public static class EffectApplier
     /// <summary>
     /// Calculate affinity multiplier from attacker affinity vs defender affinity.
     /// EXACT COPY of BattleUI.cs CalculateAffinityMultiplier method (lines 963-991).
-    /// Returns 1.5 for strong matchup, 0.5 for weak matchup, 1.0 for neutral
+    /// Returns 1.5 for strong matchup, 0.5 for weak matchup, NeutralMultiplier for neutral
     /// </summary>
     public static float CalculateAffinityMultiplier(string? attackerAffinity, string? defenderAffinity, World world)
     {
@@ -153,9 +153,13 @@ public static class EffectApplier
         if (string.IsNullOrEmpty(attackerAffinity) || string.IsNullOrEmpty(defenderAffinity))
             return 1.0f;
 
-        // Same affinity = neutral
+        // Same affinity = neutral (use NeutralMultiplier if available)
         if (attackerAffinity == defenderAffinity)
-            return 1.0f;
+        {
+            var sameAffinityData = world?.Gameplay?.CharacterAffinities?
+                .FirstOrDefault(a => a.RefName == attackerAffinity);
+            return sameAffinityData?.NeutralMultiplier ?? 1.0f;
+        }
 
         // Look up matchup in world data
         if (world?.Gameplay?.CharacterAffinities == null)
@@ -165,7 +169,7 @@ public static class EffectApplier
             .FirstOrDefault(a => a.RefName == attackerAffinity);
 
         if (attackerAffinityData?.Matchup == null)
-            return 1.0f;
+            return attackerAffinityData?.NeutralMultiplier ?? 1.0f;
 
         var matchup = attackerAffinityData.Matchup
             .FirstOrDefault(m => m.TargetAffinityRef == defenderAffinity);
@@ -173,8 +177,8 @@ public static class EffectApplier
         if (matchup != null)
             return matchup.Multiplier;
 
-        // No matchup defined = neutral
-        return 1.0f;
+        // No matchup defined = use attacker's NeutralMultiplier
+        return attackerAffinityData.NeutralMultiplier;
     }
 
     /// <summary>

@@ -1606,12 +1606,17 @@ public partial class MainViewModel : ObservableObject
         FeatureType? featureType = null;
         if (sagaFeature != null)
         {
-            if (sagaFeature.Type == SagaFeatureType.Landmark)
-                featureType = FeatureType.Landmark;
-            else if (sagaFeature.Type == SagaFeatureType.Structure)
-                featureType = FeatureType.Structure;
-            else if (sagaFeature.Type == SagaFeatureType.Quest)
-                featureType = FeatureType.QuestSignpost;
+            featureType = sagaFeature.Type switch
+            {
+                SagaFeatureType.Landmark => FeatureType.Landmark,
+                SagaFeatureType.Structure => FeatureType.Structure,
+                SagaFeatureType.Quest => FeatureType.QuestSignpost,
+                SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
+                SagaFeatureType.Teleporter => FeatureType.Teleporter,
+                SagaFeatureType.Vendor => FeatureType.Vendor,
+                SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
+                _ => FeatureType.Structure
+            };
         }
 
         // Check cooldown/availability before showing loot
@@ -1640,20 +1645,54 @@ public partial class MainViewModel : ObservableObject
             var feature = CurrentWorld.TryGetSagaFeatureByRefName(saga2.SagaFeatureRef);
             if (feature != null)
             {
-                if (feature.Type == SagaFeatureType.Landmark)
+                switch (feature.Type)
                 {
-                    // Show lore content
-                    if (!string.IsNullOrEmpty(feature.Interactable?.Content))
-                    {
-                        lootCharacter.Description = feature.Interactable.Content;
-                        ActivityLog.Insert(0, $"📜 {feature.Interactable.Content}");
-                    }
-                    effects = feature.Interactable?.Effects;
-                }
-                else if (feature.Type == SagaFeatureType.Structure)
-                {
-                    loot = feature.Interactable?.Loot;
-                    effects = feature.Interactable?.Effects;
+                    case SagaFeatureType.Landmark:
+                        // Show lore content
+                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
+                        {
+                            lootCharacter.Description = feature.Interactable.Content;
+                            ActivityLog.Insert(0, $"📜 {feature.Interactable.Content}");
+                        }
+                        effects = feature.Interactable?.Effects;
+                        break;
+
+                    case SagaFeatureType.Structure:
+                    case SagaFeatureType.ResourceNode:
+                        // Structures and resource nodes can have loot
+                        loot = feature.Interactable?.Loot;
+                        effects = feature.Interactable?.Effects;
+                        break;
+
+                    case SagaFeatureType.Vendor:
+                        // Vendors have items to trade
+                        loot = feature.Interactable?.Loot;
+                        effects = feature.Interactable?.Effects;
+                        break;
+
+                    case SagaFeatureType.CraftingStation:
+                        // Crafting stations show available recipes
+                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
+                        {
+                            lootCharacter.Description = feature.Interactable.Content;
+                        }
+                        effects = feature.Interactable?.Effects;
+                        break;
+
+                    case SagaFeatureType.Teleporter:
+                        // Teleporters show destination info
+                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
+                        {
+                            lootCharacter.Description = feature.Interactable.Content;
+                        }
+                        effects = feature.Interactable?.Effects;
+                        break;
+
+                    default:
+                        // Default: treat like structure
+                        loot = feature.Interactable?.Loot;
+                        effects = feature.Interactable?.Effects;
+                        break;
                 }
             }
             else
@@ -1682,15 +1721,20 @@ public partial class MainViewModel : ObservableObject
 
         // Track current entity for trigger recording
         _currentEntityRef = entityRef;
-        // TODO: Set _currentEntityType based on saga feature type
+        // Set _currentEntityType based on saga feature type
         if (sagaFeature != null)
         {
-            if (sagaFeature.Type == SagaFeatureType.Landmark)
-                _currentEntityType = FeatureType.Landmark;
-            else if (sagaFeature.Type == SagaFeatureType.Structure)
-                _currentEntityType = FeatureType.Structure;
-            else if (sagaFeature.Type == SagaFeatureType.Quest)
-                _currentEntityType = FeatureType.QuestSignpost;
+            _currentEntityType = sagaFeature.Type switch
+            {
+                SagaFeatureType.Landmark => FeatureType.Landmark,
+                SagaFeatureType.Structure => FeatureType.Structure,
+                SagaFeatureType.Quest => FeatureType.QuestSignpost,
+                SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
+                SagaFeatureType.Teleporter => FeatureType.Teleporter,
+                SagaFeatureType.Vendor => FeatureType.Vendor,
+                SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
+                _ => FeatureType.Structure
+            };
         }
 
         // Set the character and show trade UI

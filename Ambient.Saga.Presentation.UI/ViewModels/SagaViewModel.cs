@@ -95,7 +95,11 @@ public partial class SagaViewModel : ObservableObject
                     SagaFeatureType.Landmark => FeatureType.Landmark,
                     SagaFeatureType.Structure => FeatureType.Structure,
                     SagaFeatureType.Quest => FeatureType.QuestSignpost,
-                    _ => FeatureType.Structure // Default for new types
+                    SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
+                    SagaFeatureType.Teleporter => FeatureType.Teleporter,
+                    SagaFeatureType.Vendor => FeatureType.Vendor,
+                    SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
+                    _ => FeatureType.Structure // Default for unknown types
                 };
             }
         }
