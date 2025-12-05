@@ -417,6 +417,45 @@ public class BattleEngine
 
     private CombatEvent ExecuteDecision(Combatant actor, Combatant target, CombatAction decision)
     {
+        // PHASE 3: Check for Stun - prevents ALL actions
+        if (HasStatusEffectOfType(actor, StatusEffectType.Stun))
+        {
+            CombatLog.Add($"💫 {actor.DisplayName} is stunned and cannot act!");
+            return new CombatEvent
+            {
+                ActionType = BattleActionType.Attack, // Placeholder
+                ActorName = actor.DisplayName,
+                Success = false,
+                Message = $"{actor.DisplayName} is stunned and cannot act!"
+            };
+        }
+
+        // PHASE 3: Check for Silence - prevents spell casting
+        if (decision.ActionType == ActionType.CastSpell && HasStatusEffectOfType(actor, StatusEffectType.Silence))
+        {
+            CombatLog.Add($"🔇 {actor.DisplayName} is silenced and cannot cast spells!");
+            return new CombatEvent
+            {
+                ActionType = BattleActionType.SpecialAttack,
+                ActorName = actor.DisplayName,
+                Success = false,
+                Message = $"{actor.DisplayName} is silenced and cannot cast spells!"
+            };
+        }
+
+        // PHASE 3: Check for Root - prevents fleeing
+        if (decision.ActionType == ActionType.Flee && HasStatusEffectOfType(actor, StatusEffectType.Root))
+        {
+            CombatLog.Add($"🌿 {actor.DisplayName} is rooted and cannot flee!");
+            return new CombatEvent
+            {
+                ActionType = BattleActionType.Flee,
+                ActorName = actor.DisplayName,
+                Success = false,
+                Message = $"{actor.DisplayName} is rooted and cannot flee!"
+            };
+        }
+
         Equipment? weapon = null;
         Spell? spell = null;
         Consumable? consumable = null;
@@ -584,6 +623,22 @@ public class BattleEngine
 
     private CombatEvent ExecuteAttack(Combatant attacker, Combatant defender)
     {
+        // PHASE 3: Check accuracy (Blind effects reduce hit chance)
+        var accuracy = GetAccuracyModifier(attacker);
+        if (_random.NextDouble() > accuracy)
+        {
+            CombatLog.Add($"👁️ {attacker.DisplayName}'s attack misses due to reduced accuracy!");
+            return new CombatEvent
+            {
+                ActionType = BattleActionType.Attack,
+                ActorName = attacker.DisplayName,
+                TargetName = defender.DisplayName,
+                Damage = 0,
+                Success = true, // Action succeeded but missed
+                Message = $"{attacker.DisplayName}'s attack misses!"
+            };
+        }
+
         // Calculate damage: Strength - (Defense / 2), with random variance
         // Apply stance multipliers to both attacker's strength and defender's defense
         var effectiveStrength = GetEffectiveStrength(attacker);
@@ -669,6 +724,22 @@ public class BattleEngine
             {
                 return failedRequirement;
             }
+        }
+
+        // PHASE 3: Check accuracy (Blind effects reduce hit chance)
+        var accuracy = GetAccuracyModifier(attacker);
+        if (_random.NextDouble() > accuracy)
+        {
+            CombatLog.Add($"👁️ {attacker.DisplayName}'s attack with {weapon.DisplayName} misses due to reduced accuracy!");
+            return new CombatEvent
+            {
+                ActionType = BattleActionType.Attack,
+                ActorName = attacker.DisplayName,
+                TargetName = defender.DisplayName,
+                Damage = 0,
+                Success = true, // Action succeeded but missed
+                Message = $"{attacker.DisplayName}'s attack with {weapon.DisplayName} misses!"
+            };
         }
 
         // Find weapon's condition from attacker's capabilities
@@ -1626,5 +1697,45 @@ public class BattleEngine
         }
 
         return Math.Max(0.1f, modifier); // Minimum 10% of stat
+    }
+
+    /// <summary>
+    /// Check if a combatant has an active status effect of the specified type.
+    /// </summary>
+    public bool HasStatusEffectOfType(Combatant combatant, StatusEffectType type)
+    {
+        if (_world == null) return false;
+
+        foreach (var active in combatant.ActiveStatusEffects)
+        {
+            var statusEffect = _world.TryGetStatusEffectByRefName(active.StatusEffectRef);
+            if (statusEffect != null && statusEffect.Type == type)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Get combined accuracy modifier from all active status effects (for Blind effects).
+    /// Returns a multiplier (1.0 = normal, 0.5 = 50% accuracy, etc.).
+    /// </summary>
+    public float GetAccuracyModifier(Combatant combatant)
+    {
+        if (_world == null) return 1.0f;
+
+        var modifier = 1.0f;
+        foreach (var active in combatant.ActiveStatusEffects)
+        {
+            var statusEffect = _world.TryGetStatusEffectByRefName(active.StatusEffectRef);
+            if (statusEffect == null) continue;
+
+            // Apply accuracy modifier (typically negative for Blind effects)
+            modifier += statusEffect.AccuracyModifier * active.Stacks;
+        }
+
+        return Math.Max(0.1f, modifier); // Minimum 10% accuracy
     }
 }

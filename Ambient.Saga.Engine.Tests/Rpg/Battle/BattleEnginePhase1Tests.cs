@@ -1155,4 +1155,323 @@ public class BattleEnginePhase1Tests
     }
 
     #endregion
+
+    #region Phase 3: Stun/Silence/Root/Blind Status Effect Behavior Tests
+
+    [Fact]
+    public void ExecuteDecision_Stunned_CannotAct()
+    {
+        // Arrange
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Add Stun effect to player
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Stun",
+            RemainingTurns = 2,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var worldWithStun = CreateTestWorldWithPhase3StatusEffects();
+        var engine = new BattleEngine(player, enemy, world: worldWithStun, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Try to attack while stunned
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack
+        });
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Contains("stunned", result.Message);
+    }
+
+    [Fact]
+    public void ExecuteDecision_Silenced_CannotCastSpells()
+    {
+        // Arrange
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+            spells: new[] { new SpellEntry { SpellRef = "Heal", Condition = 1.0f } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Add Silence effect to player
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Silence",
+            RemainingTurns = 2,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var worldWithSilence = CreateTestWorldWithPhase3StatusEffects();
+        var engine = new BattleEngine(player, enemy, world: worldWithSilence, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Try to cast spell while silenced
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.CastSpell,
+            Parameter = "Heal"
+        });
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Contains("silenced", result.Message);
+    }
+
+    [Fact]
+    public void ExecuteDecision_Silenced_CanStillAttack()
+    {
+        // Arrange
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Add Silence effect to player
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Silence",
+            RemainingTurns = 2,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var worldWithSilence = CreateTestWorldWithPhase3StatusEffects();
+        var engine = new BattleEngine(player, enemy, world: worldWithSilence, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Attack should work while silenced
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack
+        });
+
+        // Assert - Silence doesn't prevent attacks
+        Assert.True(result.Success);
+    }
+
+    [Fact]
+    public void ExecuteDecision_Rooted_CannotFlee()
+    {
+        // Arrange
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Add Root effect to player
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Root",
+            RemainingTurns = 2,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var worldWithRoot = CreateTestWorldWithPhase3StatusEffects();
+        var engine = new BattleEngine(player, enemy, world: worldWithRoot, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Try to flee while rooted
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Flee
+        });
+
+        // Assert
+        Assert.False(result.Success);
+        Assert.Contains("rooted", result.Message);
+    }
+
+    [Fact]
+    public void ExecuteDecision_Rooted_CanStillAttack()
+    {
+        // Arrange
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Add Root effect to player
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Root",
+            RemainingTurns = 2,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var worldWithRoot = CreateTestWorldWithPhase3StatusEffects();
+        var engine = new BattleEngine(player, enemy, world: worldWithRoot, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Attack should work while rooted
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack
+        });
+
+        // Assert - Root doesn't prevent attacks
+        Assert.True(result.Success);
+    }
+
+    [Fact]
+    public void ExecuteAttack_Blinded_CanMiss()
+    {
+        // Arrange
+        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
+
+        // Add Blind effect with very low accuracy (10%)
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Blind",
+            RemainingTurns = 5,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var worldWithBlind = CreateTestWorldWithPhase3StatusEffects();
+
+        // Run multiple attacks to check if misses occur
+        var missCount = 0;
+        for (int i = 0; i < 20; i++)
+        {
+            var testPlayer = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+            testPlayer.ActiveStatusEffects.Add(new ActiveStatusEffect
+            {
+                StatusEffectRef = "Blind",
+                RemainingTurns = 5,
+                Stacks = 1,
+                AppliedOnTurn = 1
+            });
+            var testEnemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
+
+            var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithBlind, randomSeed: i);
+            engine.StartBattle();
+
+            var result = engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+            if (result.Damage == 0 && result.Message.Contains("misses"))
+            {
+                missCount++;
+            }
+        }
+
+        // Assert - With 50% accuracy reduction, we should have some misses
+        Assert.True(missCount > 0, "Blind effect should cause some attacks to miss");
+    }
+
+    [Fact]
+    public void GetAccuracyModifier_ReturnsReducedAccuracy()
+    {
+        // Arrange
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Add Blind effect
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Blind",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var worldWithBlind = CreateTestWorldWithPhase3StatusEffects();
+        var engine = new BattleEngine(player, enemy, world: worldWithBlind, randomSeed: 42);
+
+        // Act
+        var accuracy = engine.GetAccuracyModifier(player);
+
+        // Assert - Blind has -0.5 AccuracyModifier, so accuracy = 1.0 + (-0.5) = 0.5
+        Assert.Equal(0.5f, accuracy, 2);
+    }
+
+    [Fact]
+    public void HasStatusEffectOfType_ReturnsTrue_WhenEffectPresent()
+    {
+        // Arrange
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Stun",
+            RemainingTurns = 2,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var worldWithStun = CreateTestWorldWithPhase3StatusEffects();
+        var engine = new BattleEngine(player, enemy, world: worldWithStun, randomSeed: 42);
+
+        // Act
+        var hasStun = engine.HasStatusEffectOfType(player, StatusEffectType.Stun);
+        var hasSilence = engine.HasStatusEffectOfType(player, StatusEffectType.Silence);
+
+        // Assert
+        Assert.True(hasStun);
+        Assert.False(hasSilence);
+    }
+
+    /// <summary>
+    /// Creates a test world with Phase 3 status effects (Stun, Silence, Root, Blind).
+    /// </summary>
+    private static World CreateTestWorldWithPhase3StatusEffects()
+    {
+        var baseWorld = CreateTestWorld();
+
+        // Add Stun status effect
+        var stun = new StatusEffect
+        {
+            RefName = "Stun",
+            DisplayName = "Stunned",
+            Type = StatusEffectType.Stun,
+            DurationTurns = 2,
+            MaxStacks = 1,
+            Cleansable = true
+        };
+
+        // Add Silence status effect
+        var silence = new StatusEffect
+        {
+            RefName = "Silence",
+            DisplayName = "Silenced",
+            Type = StatusEffectType.Silence,
+            DurationTurns = 3,
+            MaxStacks = 1,
+            Cleansable = true
+        };
+
+        // Add Root status effect
+        var root = new StatusEffect
+        {
+            RefName = "Root",
+            DisplayName = "Rooted",
+            Type = StatusEffectType.Root,
+            DurationTurns = 2,
+            MaxStacks = 1,
+            Cleansable = true
+        };
+
+        // Add Blind status effect with accuracy reduction
+        var blind = new StatusEffect
+        {
+            RefName = "Blind",
+            DisplayName = "Blinded",
+            Type = StatusEffectType.Blind,
+            AccuracyModifier = -0.5f, // -50% accuracy
+            DurationTurns = 3,
+            MaxStacks = 2,
+            Cleansable = true
+        };
+
+        baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects.Concat(new[] { stun, silence, root, blind }).ToArray();
+        baseWorld.StatusEffectsLookup["Stun"] = stun;
+        baseWorld.StatusEffectsLookup["Silence"] = silence;
+        baseWorld.StatusEffectsLookup["Root"] = root;
+        baseWorld.StatusEffectsLookup["Blind"] = blind;
+
+        return baseWorld;
+    }
+
+    #endregion
 }
