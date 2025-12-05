@@ -138,9 +138,15 @@ public static class QuestProgressEvaluator
     /// <summary>
     /// Check if quest has failed due to fail conditions.
     /// </summary>
+    /// <param name="quest">The quest definition to check</param>
+    /// <param name="transactions">Committed transactions to evaluate</param>
+    /// <param name="currentTime">Current time for time-based fail conditions (optional)</param>
+    /// <param name="currentLocationRef">Player's current location for location-based fail conditions (optional)</param>
     public static (bool failed, string? reason) CheckFailConditions(
         Quest quest,
-        List<SagaTransaction> transactions)
+        List<SagaTransaction> transactions,
+        DateTime? currentTime = null,
+        string? currentLocationRef = null)
     {
         if (quest.FailConditions == null)
             return (false, null);
@@ -157,6 +163,21 @@ public static class QuestProgressEvaluator
                 case QuestFailConditionType.WrongChoiceMade:
                     if (WasWrongChoiceMade(failCondition, transactions))
                         return (true, "Quest failed: Wrong choice made");
+                    break;
+
+                case QuestFailConditionType.TimeExpired:
+                    if (HasTimeExpired(quest.RefName, failCondition, transactions, currentTime))
+                        return (true, "Quest failed: Time limit expired");
+                    break;
+
+                case QuestFailConditionType.ItemLost:
+                    if (WasItemLost(failCondition, transactions))
+                        return (true, $"Quest failed: Required item {failCondition.ItemRef} was lost");
+                    break;
+
+                case QuestFailConditionType.LocationLeft:
+                    if (HasLeftLocation(failCondition, transactions, currentLocationRef))
+                        return (true, $"Quest failed: Left required location {failCondition.LocationRef}");
                     break;
             }
         }
@@ -320,5 +341,90 @@ public static class QuestProgressEvaluator
             t.GetData<string>("DialogueRef") == failCondition.DialogueRef &&
             t.TryGetData<string>("ChoiceRef", out var choice) &&
             choice == failCondition.ChoiceRef);
+    }
+
+    private static bool HasTimeExpired(
+        string questRef,
+        QuestFailCondition failCondition,
+        List<SagaTransaction> transactions,
+        DateTime? currentTime)
+    {
+        // Time limit must be specified
+        if (!failCondition.TimeLimitSpecified || failCondition.TimeLimit <= 0)
+            return false;
+
+        // Need current time to check
+        if (!currentTime.HasValue)
+            return false;
+
+        // Find when the quest was accepted
+        var questAcceptedTransaction = transactions
+            .Where(t => t.Type == SagaTransactionType.QuestAccepted &&
+                       t.GetData<string>("QuestRef") == questRef)
+            .OrderBy(t => t.LocalTimestamp)
+            .FirstOrDefault();
+
+        if (questAcceptedTransaction == null)
+            return false; // Quest not started yet
+
+        // Calculate elapsed time since quest was accepted
+        var questStartTime = questAcceptedTransaction.LocalTimestamp;
+        var elapsed = currentTime.Value - questStartTime;
+
+        // TimeLimit is in seconds
+        return elapsed.TotalSeconds > failCondition.TimeLimit;
+    }
+
+    private static bool WasItemLost(QuestFailCondition failCondition, List<SagaTransaction> transactions)
+    {
+        if (string.IsNullOrEmpty(failCondition.ItemRef))
+            return false;
+
+        // Check if player had the item at some point (via LootAwarded or QuestTokenAwarded or ItemTraded Buy)
+        var hadItem = transactions.Any(t =>
+            (t.Type == SagaTransactionType.LootAwarded && t.GetData<string>("ItemRef") == failCondition.ItemRef) ||
+            (t.Type == SagaTransactionType.QuestTokenAwarded && t.GetData<string>("QuestTokenRef") == failCondition.ItemRef) ||
+            (t.Type == SagaTransactionType.ItemTraded && t.GetData<string>("ItemRef") == failCondition.ItemRef && t.GetData<string>("Direction") == "Buy"));
+
+        if (!hadItem)
+            return false;
+
+        // Check if the item was subsequently lost (sold, traded away, or explicitly removed)
+        var lostItem = transactions.Any(t =>
+            t.Type == SagaTransactionType.ItemTraded &&
+            t.GetData<string>("ItemRef") == failCondition.ItemRef &&
+            t.GetData<string>("Direction") == "Sell");
+
+        return lostItem;
+    }
+
+    private static bool HasLeftLocation(
+        QuestFailCondition failCondition,
+        List<SagaTransaction> transactions,
+        string? currentLocationRef)
+    {
+        if (string.IsNullOrEmpty(failCondition.LocationRef))
+            return false;
+
+        // If we have a current location, directly check if player is no longer at required location
+        if (!string.IsNullOrEmpty(currentLocationRef))
+        {
+            // Simple string comparison - player is not at the required location
+            return currentLocationRef != failCondition.LocationRef;
+        }
+
+        // Fall back to checking via LocationClaimed transactions
+        // Find the most recent location claim
+        var lastLocationClaim = transactions
+            .Where(t => t.Type == SagaTransactionType.LocationClaimed)
+            .OrderByDescending(t => t.LocalTimestamp)
+            .FirstOrDefault();
+
+        if (lastLocationClaim == null)
+            return false; // No location data available
+
+        // Check if the location claim indicates leaving the required area
+        var locationRef = lastLocationClaim.GetData<string>("LocationRef");
+        return !string.IsNullOrEmpty(locationRef) && locationRef != failCondition.LocationRef;
     }
 }

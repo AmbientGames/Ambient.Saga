@@ -83,6 +83,19 @@ public static class AchievementProgressEvaluator
             AchievementCriteriaType.LootAwarded => CountLootAwarded(allTransactions),
             AchievementCriteriaType.QuestTokensEarned => CountQuestTokensEarned(allTransactions, criteria.QuestTokenRef),
 
+            // Quest achievements
+            AchievementCriteriaType.QuestsCompleted => CountQuestsCompleted(allTransactions),
+            AchievementCriteriaType.QuestsCompletedByRef => CountQuestsCompletedByRef(allTransactions, criteria.QuestRef),
+
+            // Reputation achievements
+            AchievementCriteriaType.ReputationReached => CheckReputationReached(allTransactions, criteria.FactionRef, criteria.ReputationLevel),
+            AchievementCriteriaType.FactionsAtReputationLevel => CountFactionsAtReputationLevel(allTransactions, criteria.ReputationLevel),
+
+            // Battle achievements
+            AchievementCriteriaType.StatusEffectsApplied => CountStatusEffectsApplied(allTransactions, criteria.StatusEffectType),
+            AchievementCriteriaType.CriticalHitsDealt => CountCriticalHitsDealt(allTransactions),
+            AchievementCriteriaType.CombosExecuted => CountCombosExecuted(allTransactions),
+
             // Traditional voxel metrics (not event-sourced yet)
             AchievementCriteriaType.BlocksPlaced => 0, // TODO: Implement if needed
             AchievementCriteriaType.BlocksDestroyed => 0, // TODO: Implement if needed
@@ -299,6 +312,120 @@ public static class AchievementProgressEvaluator
         }
 
         return query.Count();
+    }
+
+    #endregion
+
+    #region Quest Metrics
+
+    private static float CountQuestsCompleted(List<SagaTransaction> transactions)
+    {
+        return transactions
+            .Where(t => t.Type == SagaTransactionType.QuestCompleted)
+            .Select(t => t.GetData<string>("QuestRef"))
+            .Distinct()
+            .Count();
+    }
+
+    private static float CountQuestsCompletedByRef(List<SagaTransaction> transactions, string? questRef)
+    {
+        if (string.IsNullOrEmpty(questRef))
+            return CountQuestsCompleted(transactions);
+
+        return transactions
+            .Where(t => t.Type == SagaTransactionType.QuestCompleted)
+            .Any(t => t.GetData<string>("QuestRef") == questRef) ? 1 : 0;
+    }
+
+    #endregion
+
+    #region Reputation Metrics
+
+    private static float CheckReputationReached(List<SagaTransaction> transactions, string? factionRef, string? reputationLevel)
+    {
+        if (string.IsNullOrEmpty(factionRef))
+            return 0;
+
+        // Calculate total reputation changes for the faction
+        var totalReputation = transactions
+            .Where(t => t.Type == SagaTransactionType.ReputationChanged &&
+                       t.GetData<string>("FactionRef") == factionRef)
+            .Sum(t => t.TryGetData<int>("Amount", out var amount) ? amount : 0);
+
+        // Check if the reputation level is reached
+        // Reputation levels: Hated < -6000, Hostile < -3000, Unfriendly < 0, Neutral < 3000,
+        //                    Friendly < 6000, Honored < 12000, Revered < 21000, Exalted >= 21000
+        var targetThreshold = GetReputationThreshold(reputationLevel);
+
+        return totalReputation >= targetThreshold ? 1 : 0;
+    }
+
+    private static float CountFactionsAtReputationLevel(List<SagaTransaction> transactions, string? reputationLevel)
+    {
+        if (string.IsNullOrEmpty(reputationLevel))
+            return 0;
+
+        // Group reputation changes by faction and sum them
+        var factionReputations = transactions
+            .Where(t => t.Type == SagaTransactionType.ReputationChanged)
+            .GroupBy(t => t.GetData<string>("FactionRef"))
+            .Where(g => !string.IsNullOrEmpty(g.Key))
+            .ToDictionary(
+                g => g.Key!,
+                g => g.Sum(t => t.TryGetData<int>("Amount", out var amount) ? amount : 0)
+            );
+
+        var targetThreshold = GetReputationThreshold(reputationLevel);
+
+        return factionReputations.Values.Count(rep => rep >= targetThreshold);
+    }
+
+    private static int GetReputationThreshold(string? reputationLevel)
+    {
+        return reputationLevel?.ToLowerInvariant() switch
+        {
+            "hated" => -6000,
+            "hostile" => -3000,
+            "unfriendly" => 0,
+            "neutral" => 0,
+            "friendly" => 3000,
+            "honored" => 6000,
+            "revered" => 12000,
+            "exalted" => 21000,
+            _ => 0
+        };
+    }
+
+    #endregion
+
+    #region Battle Metrics
+
+    private static float CountStatusEffectsApplied(List<SagaTransaction> transactions, string? statusEffectType)
+    {
+        var query = transactions.Where(t => t.Type == SagaTransactionType.StatusEffectApplied);
+
+        if (!string.IsNullOrEmpty(statusEffectType))
+        {
+            query = query.Where(t =>
+                t.GetData<string>("StatusEffectRef")?.Contains(statusEffectType, StringComparison.OrdinalIgnoreCase) == true ||
+                t.GetData<string>("StatusEffectType") == statusEffectType);
+        }
+
+        return query.Count();
+    }
+
+    private static float CountCriticalHitsDealt(List<SagaTransaction> transactions)
+    {
+        return transactions
+            .Where(t => t.Type == SagaTransactionType.CriticalHitDealt)
+            .Count();
+    }
+
+    private static float CountCombosExecuted(List<SagaTransaction> transactions)
+    {
+        return transactions
+            .Where(t => t.Type == SagaTransactionType.ComboExecuted)
+            .Count();
     }
 
     #endregion

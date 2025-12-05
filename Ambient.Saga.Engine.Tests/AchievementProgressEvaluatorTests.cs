@@ -55,7 +55,15 @@ public class AchievementProgressEvaluatorTests
         return transaction;
     }
 
-    private Achievement CreateAchievement(AchievementCriteriaType type, float threshold, string? characterRef = null, string? questTokenRef = null)
+    private Achievement CreateAchievement(
+        AchievementCriteriaType type,
+        float threshold,
+        string? characterRef = null,
+        string? questTokenRef = null,
+        string? questRef = null,
+        string? factionRef = null,
+        string? reputationLevel = null,
+        string? statusEffectType = null)
     {
         return new Achievement
         {
@@ -66,7 +74,11 @@ public class AchievementProgressEvaluatorTests
                 Type = type,
                 Threshold = threshold,
                 CharacterRef = characterRef,
-                QuestTokenRef = questTokenRef
+                QuestTokenRef = questTokenRef,
+                QuestRef = questRef,
+                FactionRef = factionRef,
+                ReputationLevel = reputationLevel,
+                StatusEffectType = statusEffectType
             }
         };
     }
@@ -407,6 +419,215 @@ public class AchievementProgressEvaluatorTests
 
         // Assert
         Assert.Empty(newlyUnlocked); // Already unlocked, shouldn't return again
+    }
+
+    #endregion
+
+    #region Quest Completion Tests
+
+    [Fact]
+    public void EvaluateProgress_QuestsCompleted_CountsUniqueQuests()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.QuestsCompleted, 5);
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.QuestCompleted, TestAvatarId, new() { ["QuestRef"] = "Quest1" }),
+            CreateTransaction(SagaTransactionType.QuestCompleted, TestAvatarId, new() { ["QuestRef"] = "Quest2" }),
+            CreateTransaction(SagaTransactionType.QuestCompleted, TestAvatarId, new() { ["QuestRef"] = "Quest1" }), // Duplicate
+            CreateTransaction(SagaTransactionType.QuestCompleted, TestAvatarId, new() { ["QuestRef"] = "Quest3" })
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(0.6f, progress, precision: 2); // 3 unique quests out of 5
+    }
+
+    [Fact]
+    public void EvaluateProgress_QuestsCompletedByRef_ChecksSpecificQuest()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.QuestsCompletedByRef, 1, questRef: "MainQuest");
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.QuestCompleted, TestAvatarId, new() { ["QuestRef"] = "SideQuest" }),
+            CreateTransaction(SagaTransactionType.QuestCompleted, TestAvatarId, new() { ["QuestRef"] = "MainQuest" })
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(1.0f, progress); // MainQuest completed
+    }
+
+    [Fact]
+    public void EvaluateProgress_QuestsCompletedByRef_ReturnsZeroWhenNotCompleted()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.QuestsCompletedByRef, 1, questRef: "MainQuest");
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.QuestCompleted, TestAvatarId, new() { ["QuestRef"] = "SideQuest" })
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(0.0f, progress); // MainQuest not completed
+    }
+
+    #endregion
+
+    #region Reputation Tests
+
+    [Fact]
+    public void EvaluateProgress_ReputationReached_ReturnsTrueWhenThresholdMet()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.ReputationReached, 1, factionRef: "Elves", reputationLevel: "Friendly");
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.ReputationChanged, TestAvatarId, new() { ["FactionRef"] = "Elves", ["Amount"] = 1000 }),
+            CreateTransaction(SagaTransactionType.ReputationChanged, TestAvatarId, new() { ["FactionRef"] = "Elves", ["Amount"] = 2500 })
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(1.0f, progress); // Friendly requires 3000+, we have 3500
+    }
+
+    [Fact]
+    public void EvaluateProgress_ReputationReached_ReturnsZeroWhenNotMet()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.ReputationReached, 1, factionRef: "Elves", reputationLevel: "Exalted");
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.ReputationChanged, TestAvatarId, new() { ["FactionRef"] = "Elves", ["Amount"] = 5000 })
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(0.0f, progress); // Exalted requires 21000+, we only have 5000
+    }
+
+    [Fact]
+    public void EvaluateProgress_FactionsAtReputationLevel_CountsFactions()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.FactionsAtReputationLevel, 3, reputationLevel: "Friendly");
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.ReputationChanged, TestAvatarId, new() { ["FactionRef"] = "Elves", ["Amount"] = 4000 }),
+            CreateTransaction(SagaTransactionType.ReputationChanged, TestAvatarId, new() { ["FactionRef"] = "Dwarves", ["Amount"] = 3500 }),
+            CreateTransaction(SagaTransactionType.ReputationChanged, TestAvatarId, new() { ["FactionRef"] = "Humans", ["Amount"] = 2000 }) // Not enough
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(0.67f, progress, precision: 2); // 2 factions out of 3 at Friendly level
+    }
+
+    #endregion
+
+    #region Battle Achievement Tests
+
+    [Fact]
+    public void EvaluateProgress_StatusEffectsApplied_CountsAllStatusEffects()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.StatusEffectsApplied, 10);
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Poison" }),
+            CreateTransaction(SagaTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Burn" }),
+            CreateTransaction(SagaTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Stun" })
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(0.3f, progress, precision: 2); // 3 out of 10
+    }
+
+    [Fact]
+    public void EvaluateProgress_StatusEffectsApplied_FiltersSpecificType()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.StatusEffectsApplied, 5, statusEffectType: "Poison");
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Poison" }),
+            CreateTransaction(SagaTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "DeadlyPoison" }),
+            CreateTransaction(SagaTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Burn" }),
+            CreateTransaction(SagaTransactionType.StatusEffectApplied, TestAvatarId, new() { ["StatusEffectRef"] = "Poison" })
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(0.6f, progress, precision: 2); // 3 poison-related out of 5 (Poison, DeadlyPoison, Poison)
+    }
+
+    [Fact]
+    public void EvaluateProgress_CriticalHitsDealt_CountsAllCriticals()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.CriticalHitsDealt, 20);
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.CriticalHitDealt, TestAvatarId),
+            CreateTransaction(SagaTransactionType.CriticalHitDealt, TestAvatarId),
+            CreateTransaction(SagaTransactionType.CriticalHitDealt, TestAvatarId),
+            CreateTransaction(SagaTransactionType.CriticalHitDealt, TestAvatarId)
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(0.2f, progress, precision: 2); // 4 out of 20
+    }
+
+    [Fact]
+    public void EvaluateProgress_CombosExecuted_CountsAllCombos()
+    {
+        // Arrange
+        var world = CreateTestWorld();
+        var achievement = CreateAchievement(AchievementCriteriaType.CombosExecuted, 10);
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.ComboExecuted, TestAvatarId),
+            CreateTransaction(SagaTransactionType.ComboExecuted, TestAvatarId),
+            CreateTransaction(SagaTransactionType.ComboExecuted, TestAvatarId)
+        );
+        var sagaInstances = new List<SagaInstance> { saga };
+
+        // Act
+        var progress = AchievementProgressEvaluator.EvaluateProgress(achievement, sagaInstances, world, TestAvatarId);
+
+        // Assert
+        Assert.Equal(0.3f, progress, precision: 2); // 3 out of 10
     }
 
     #endregion

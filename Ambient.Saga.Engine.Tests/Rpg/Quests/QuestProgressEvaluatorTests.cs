@@ -633,6 +633,305 @@ public class QuestProgressEvaluatorTests
         Assert.Contains("Wrong choice made", reason);
     }
 
+    [Fact]
+    public void CheckFailConditions_TimeExpired_ReturnsFailed_WhenTimeLimitExceeded()
+    {
+        // Arrange
+        var questStartTime = DateTime.UtcNow.AddMinutes(-10); // Quest started 10 minutes ago
+        var quest = new Quest
+        {
+            RefName = "TIMED_QUEST",
+            DisplayName = "Timed Quest",
+            FailConditions = new[]
+            {
+                new QuestFailCondition
+                {
+                    Type = QuestFailConditionType.TimeExpired,
+                    TimeLimit = 300, // 5 minutes (300 seconds)
+                    TimeLimitSpecified = true
+                }
+            }
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            new SagaTransaction
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.QuestAccepted,
+                AvatarId = TestAvatarId,
+                Status = TransactionStatus.Committed,
+                LocalTimestamp = questStartTime, // Quest accepted 10 minutes ago
+                Data = new Dictionary<string, string>
+                {
+                    ["QuestRef"] = "TIMED_QUEST"
+                }
+            }
+        };
+
+        var currentTime = DateTime.UtcNow; // 10 minutes after quest start
+
+        // Act
+        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions, currentTime);
+
+        // Assert
+        Assert.True(failed);
+        Assert.Contains("Time limit expired", reason);
+    }
+
+    [Fact]
+    public void CheckFailConditions_TimeExpired_ReturnsNotFailed_WhenWithinTimeLimit()
+    {
+        // Arrange
+        var questStartTime = DateTime.UtcNow.AddMinutes(-2); // Quest started 2 minutes ago
+        var quest = new Quest
+        {
+            RefName = "TIMED_QUEST",
+            DisplayName = "Timed Quest",
+            FailConditions = new[]
+            {
+                new QuestFailCondition
+                {
+                    Type = QuestFailConditionType.TimeExpired,
+                    TimeLimit = 300, // 5 minutes (300 seconds)
+                    TimeLimitSpecified = true
+                }
+            }
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            new SagaTransaction
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.QuestAccepted,
+                AvatarId = TestAvatarId,
+                Status = TransactionStatus.Committed,
+                LocalTimestamp = questStartTime,
+                Data = new Dictionary<string, string>
+                {
+                    ["QuestRef"] = "TIMED_QUEST"
+                }
+            }
+        };
+
+        var currentTime = DateTime.UtcNow; // 2 minutes after quest start
+
+        // Act
+        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions, currentTime);
+
+        // Assert
+        Assert.False(failed);
+        Assert.Null(reason);
+    }
+
+    [Fact]
+    public void CheckFailConditions_ItemLost_ReturnsFailed_WhenRequiredItemSold()
+    {
+        // Arrange
+        var quest = new Quest
+        {
+            RefName = "DELIVERY_QUEST",
+            DisplayName = "Delivery Quest",
+            FailConditions = new[]
+            {
+                new QuestFailCondition
+                {
+                    Type = QuestFailConditionType.ItemLost,
+                    ItemRef = "SACRED_ARTIFACT"
+                }
+            }
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            // Player obtained the item
+            CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "SACRED_ARTIFACT",
+                ["Quantity"] = "1"
+            }),
+            // Player then sold it
+            CreateTransaction(SagaTransactionType.ItemTraded, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "SACRED_ARTIFACT",
+                ["Quantity"] = "1",
+                ["Direction"] = "Sell"
+            })
+        };
+
+        // Act
+        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions);
+
+        // Assert
+        Assert.True(failed);
+        Assert.Contains("SACRED_ARTIFACT", reason);
+        Assert.Contains("lost", reason);
+    }
+
+    [Fact]
+    public void CheckFailConditions_ItemLost_ReturnsNotFailed_WhenItemStillOwned()
+    {
+        // Arrange
+        var quest = new Quest
+        {
+            RefName = "DELIVERY_QUEST",
+            DisplayName = "Delivery Quest",
+            FailConditions = new[]
+            {
+                new QuestFailCondition
+                {
+                    Type = QuestFailConditionType.ItemLost,
+                    ItemRef = "SACRED_ARTIFACT"
+                }
+            }
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            // Player obtained the item and kept it
+            CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
+            {
+                ["ItemRef"] = "SACRED_ARTIFACT",
+                ["Quantity"] = "1"
+            })
+        };
+
+        // Act
+        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions);
+
+        // Assert
+        Assert.False(failed);
+        Assert.Null(reason);
+    }
+
+    [Fact]
+    public void CheckFailConditions_ItemLost_ReturnsNotFailed_WhenItemNeverOwned()
+    {
+        // Arrange
+        var quest = new Quest
+        {
+            RefName = "DELIVERY_QUEST",
+            DisplayName = "Delivery Quest",
+            FailConditions = new[]
+            {
+                new QuestFailCondition
+                {
+                    Type = QuestFailConditionType.ItemLost,
+                    ItemRef = "SACRED_ARTIFACT"
+                }
+            }
+        };
+
+        var transactions = new List<SagaTransaction>();
+
+        // Act
+        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions);
+
+        // Assert
+        Assert.False(failed); // Can't lose what you never had
+        Assert.Null(reason);
+    }
+
+    [Fact]
+    public void CheckFailConditions_LocationLeft_ReturnsFailed_WhenLeftRequiredArea()
+    {
+        // Arrange
+        var quest = new Quest
+        {
+            RefName = "GUARD_DUTY",
+            DisplayName = "Guard Duty",
+            FailConditions = new[]
+            {
+                new QuestFailCondition
+                {
+                    Type = QuestFailConditionType.LocationLeft,
+                    LocationRef = "CASTLE_ENTRANCE"
+                }
+            }
+        };
+
+        var transactions = new List<SagaTransaction>();
+
+        // Player is now at a different location
+        var currentLocationRef = "MARKET_DISTRICT";
+
+        // Act
+        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions, currentLocationRef: currentLocationRef);
+
+        // Assert
+        Assert.True(failed);
+        Assert.Contains("CASTLE_ENTRANCE", reason);
+        Assert.Contains("Left", reason);
+    }
+
+    [Fact]
+    public void CheckFailConditions_LocationLeft_ReturnsNotFailed_WhenStillInRequiredArea()
+    {
+        // Arrange
+        var quest = new Quest
+        {
+            RefName = "GUARD_DUTY",
+            DisplayName = "Guard Duty",
+            FailConditions = new[]
+            {
+                new QuestFailCondition
+                {
+                    Type = QuestFailConditionType.LocationLeft,
+                    LocationRef = "CASTLE_ENTRANCE"
+                }
+            }
+        };
+
+        var transactions = new List<SagaTransaction>();
+
+        // Player is still at the required location
+        var currentLocationRef = "CASTLE_ENTRANCE";
+
+        // Act
+        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions, currentLocationRef: currentLocationRef);
+
+        // Assert
+        Assert.False(failed);
+        Assert.Null(reason);
+    }
+
+    [Fact]
+    public void CheckFailConditions_LocationLeft_FallsBackToTransactionCheck()
+    {
+        // Arrange
+        var quest = new Quest
+        {
+            RefName = "GUARD_DUTY",
+            DisplayName = "Guard Duty",
+            FailConditions = new[]
+            {
+                new QuestFailCondition
+                {
+                    Type = QuestFailConditionType.LocationLeft,
+                    LocationRef = "CASTLE_ENTRANCE"
+                }
+            }
+        };
+
+        var transactions = new List<SagaTransaction>
+        {
+            CreateTransaction(SagaTransactionType.LocationClaimed, new Dictionary<string, string>
+            {
+                ["LocationRef"] = "MARKET_DISTRICT" // Left the required area
+            })
+        };
+
+        // No explicit current location provided - should check transactions
+
+        // Act
+        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions);
+
+        // Assert
+        Assert.True(failed);
+        Assert.Contains("CASTLE_ENTRANCE", reason);
+    }
+
     #endregion
 
     #region ItemCrafted Objective Tests
