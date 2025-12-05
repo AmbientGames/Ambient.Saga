@@ -40,6 +40,10 @@ namespace Ambient.Domain {
         
         private bool statusEffectOnCritOnlyField;
         
+        private string onDefendStatusEffectRefField;
+        
+        private float onDefendStatusEffectChanceField;
+        
         private float criticalHitBonusField;
         
         public Equipment() {
@@ -47,6 +51,7 @@ namespace Ambient.Domain {
             this.useTypeField = ItemUseType.Defensive;
             this.statusEffectChanceField = ((float)(0F));
             this.statusEffectOnCritOnlyField = false;
+            this.onDefendStatusEffectChanceField = ((float)(1F));
             this.criticalHitBonusField = ((float)(0F));
         }
         
@@ -148,6 +153,29 @@ namespace Ambient.Domain {
             }
             set {
                 this.statusEffectOnCritOnlyField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string OnDefendStatusEffectRef {
+            get {
+                return this.onDefendStatusEffectRefField;
+            }
+            set {
+                this.onDefendStatusEffectRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
+        public float OnDefendStatusEffectChance {
+            get {
+                return this.onDefendStatusEffectChanceField;
+            }
+            set {
+                this.onDefendStatusEffectChanceField = value;
             }
         }
         

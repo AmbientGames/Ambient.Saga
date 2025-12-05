@@ -670,6 +670,14 @@ public class BattleEngine
             CombatLog.Add($"{defender.DisplayName}'s defensive positioning reduces damage!");
         }
 
+        // PHASE 5: Apply Vulnerable status effect (increases damage taken)
+        var vulnerabilityMultiplier = GetVulnerabilityMultiplier(defender);
+        if (vulnerabilityMultiplier > 1.0f)
+        {
+            damage *= vulnerabilityMultiplier;
+            CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({vulnerabilityMultiplier:F1}x damage taken)");
+        }
+
         defender.Health = Math.Max(0, defender.Health - damage);
         CombatLog.Add($"{attacker.DisplayName} attacks for {damage * 100:F1}% damage!");
         CombatLog.Add($"{defender.DisplayName} HP: {defender.HealthPercent:F1}%");
@@ -802,6 +810,14 @@ public class BattleEngine
         {
             totalDamage *= 0.85f;  // 15% reduction
             CombatLog.Add($"{defender.DisplayName}'s defensive positioning reduces damage!");
+        }
+
+        // PHASE 5: Apply Vulnerable status effect (increases damage taken)
+        var vulnerabilityMultiplier = GetVulnerabilityMultiplier(defender);
+        if (vulnerabilityMultiplier > 1.0f)
+        {
+            totalDamage *= vulnerabilityMultiplier;
+            CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({vulnerabilityMultiplier:F1}x damage taken)");
         }
 
         // Apply damage
@@ -997,6 +1013,14 @@ public class BattleEngine
         {
             totalDamage *= 0.90f;  // 10% reduction against spells (less effective than physical defense)
             CombatLog.Add($"{defender.DisplayName}'s defensive positioning slightly reduces spell damage!");
+        }
+
+        // PHASE 5: Apply Vulnerable status effect (increases damage taken)
+        var spellVulnerabilityMultiplier = GetVulnerabilityMultiplier(defender);
+        if (spellVulnerabilityMultiplier > 1.0f)
+        {
+            totalDamage *= spellVulnerabilityMultiplier;
+            CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({spellVulnerabilityMultiplier:F1}x damage taken)");
         }
 
         // Apply damage
@@ -1356,6 +1380,33 @@ public class BattleEngine
         combatant.Energy = Math.Min(Combatant.MAX_STAT, combatant.Energy + energyRestore);
         CombatLog.Add($"{combatant.DisplayName} recovers {energyRestore * 100:F0}% energy!");
 
+        // PHASE 5: Apply OnDefend status effects from equipped items
+        string? appliedStatusEffect = null;
+        if (_world != null && combatant.CombatProfile != null)
+        {
+            foreach (var (slot, equipmentRef) in combatant.CombatProfile)
+            {
+                if (string.IsNullOrEmpty(equipmentRef)) continue;
+
+                var equipment = _world.TryGetEquipmentByRefName(equipmentRef);
+                if (equipment?.OnDefendStatusEffectRef != null)
+                {
+                    var result = TryApplyStatusEffect(
+                        equipment.OnDefendStatusEffectRef,
+                        equipment.OnDefendStatusEffectChance,
+                        combatant,
+                        _turnNumber,
+                        equipment.DisplayName);
+
+                    if (result != null)
+                    {
+                        appliedStatusEffect = result;
+                        CombatLog.Add($"🛡️ {equipment.DisplayName} triggers {result} while defending!");
+                    }
+                }
+            }
+        }
+
         return new CombatEvent
         {
             ActionType = BattleActionType.Defend,
@@ -1364,7 +1415,8 @@ public class BattleEngine
             Healing = energyRestore,
             IsDefending = true,
             Success = true,
-            Message = $"{combatant.DisplayName} defends!"
+            Message = $"{combatant.DisplayName} defends!",
+            StatusEffectApplied = appliedStatusEffect
         };
     }
 
@@ -1758,5 +1810,31 @@ public class BattleEngine
         }
 
         return Math.Max(0.1f, modifier); // Minimum 10% accuracy
+    }
+
+    /// <summary>
+    /// Get damage taken multiplier based on Vulnerable status effects.
+    /// Returns a multiplier (1.0 = normal, 1.5 = 50% more damage taken, etc.).
+    /// </summary>
+    public float GetVulnerabilityMultiplier(Combatant defender)
+    {
+        if (_world == null) return 1.0f;
+
+        var multiplier = 1.0f;
+        foreach (var active in defender.ActiveStatusEffects)
+        {
+            var statusEffect = _world.TryGetStatusEffectByRefName(active.StatusEffectRef);
+            if (statusEffect == null) continue;
+
+            // Vulnerable effects increase damage taken
+            // Using DefenseModifier as a negative value increases damage (e.g., -0.25 = +25% damage taken)
+            if (statusEffect.Type == StatusEffectType.Vulnerable)
+            {
+                // DefenseModifier of -0.25 means 25% more damage taken (1.0 - (-0.25) = 1.25)
+                multiplier -= statusEffect.DefenseModifier * active.Stacks;
+            }
+        }
+
+        return Math.Max(0.5f, multiplier); // Cap at minimum 50% damage (can't be immune)
     }
 }

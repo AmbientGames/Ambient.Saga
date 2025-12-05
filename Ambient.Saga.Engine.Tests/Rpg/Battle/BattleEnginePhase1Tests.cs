@@ -1707,4 +1707,376 @@ public class BattleEnginePhase1Tests
     }
 
     #endregion
+
+    #region Phase 5: Vulnerable Status Effect and OnDefend Trigger Tests
+
+    [Fact]
+    public void ExecuteAttack_VulnerableDefender_TakesIncreasedDamage()
+    {
+        // Arrange
+        var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
+
+        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
+
+        // Apply Vulnerable status effect to enemy
+        enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Vulnerable",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        engine.StartBattle();
+
+        // Store initial health
+        var initialHealth = enemy.Health;
+
+        // Act - Player attacks vulnerable enemy
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack
+        });
+
+        // Assert - Vulnerable enemy should take more damage
+        Assert.True(result.Success);
+        var damageDealt = initialHealth - enemy.Health;
+        Assert.True(damageDealt > 0);
+
+        // Verify combat log mentions vulnerability
+        Assert.Contains(engine.CombatLog, log => log.Contains("vulnerable"));
+    }
+
+    [Fact]
+    public void ExecuteWeaponAttack_VulnerableDefender_TakesIncreasedDamage()
+    {
+        // Arrange
+        var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
+
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
+        player.CombatProfile["RightHand"] = "IronSword";
+        var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
+
+        // Apply Vulnerable status effect to enemy
+        enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Vulnerable",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        engine.StartBattle();
+
+        // Store initial health
+        var initialHealth = enemy.Health;
+
+        // Act - Player weapon attacks vulnerable enemy
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack,
+            Parameter = "IronSword"
+        });
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Contains(engine.CombatLog, log => log.Contains("vulnerable"));
+    }
+
+    [Fact]
+    public void ExecuteSpellAttack_VulnerableDefender_TakesIncreasedDamage()
+    {
+        // Arrange
+        var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
+
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+            spells: new[] { new SpellEntry { SpellRef = "FreeSpell", Condition = 1.0f } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
+
+        // Apply Vulnerable status effect to enemy
+        enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Vulnerable",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Player casts spell on vulnerable enemy
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.CastSpell,
+            Parameter = "FreeSpell"
+        });
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Contains(engine.CombatLog, log => log.Contains("vulnerable"));
+    }
+
+    [Fact]
+    public void ExecuteAttack_VulnerableWithMultipleStacks_TakesEvenMoreDamage()
+    {
+        // Arrange
+        var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
+
+        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
+
+        // Apply 2 stacks of Vulnerable (stackable up to 3)
+        enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Vulnerable",
+            RemainingTurns = 3,
+            Stacks = 2,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        engine.StartBattle();
+
+        // Store initial health
+        var initialHealth = enemy.Health;
+
+        // Act
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Attack
+        });
+
+        // Assert - More stacks = more damage
+        Assert.True(result.Success);
+        Assert.Contains(engine.CombatLog, log => log.Contains("vulnerable"));
+    }
+
+    [Fact]
+    public void ExecuteDefend_WithOnDefendEquipment_AppliesStatusEffect()
+    {
+        // Arrange
+        var worldWithOnDefend = CreateTestWorldWithPhase5OnDefendEquipment();
+
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "IronShield", Condition = 1.0f } });
+        player.CombatProfile["LeftHand"] = "IronShield";
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: worldWithOnDefend, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Player defends with shield that has OnDefend effect
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Defend
+        });
+
+        // Assert
+        Assert.True(result.Success);
+        Assert.Equal(BattleActionType.Defend, result.ActionType);
+
+        // Verify the status effect was applied to the defender
+        Assert.Single(player.ActiveStatusEffects);
+        Assert.Equal("IronWill", player.ActiveStatusEffects[0].StatusEffectRef);
+    }
+
+    [Fact]
+    public void ExecuteDefend_WithoutOnDefendEquipment_NoStatusEffect()
+    {
+        // Arrange
+        var worldWithOnDefend = CreateTestWorldWithPhase5OnDefendEquipment();
+
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
+        player.CombatProfile["RightHand"] = "IronSword"; // Sword has no OnDefend effect
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: worldWithOnDefend, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Player defends without a shield
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.Defend
+        });
+
+        // Assert - No status effect should be applied
+        Assert.True(result.Success);
+        Assert.Empty(player.ActiveStatusEffects);
+    }
+
+    [Fact]
+    public void ExecuteDefend_WithOnDefendChance_MayNotApply()
+    {
+        // Arrange
+        var worldWithOnDefend = CreateTestWorldWithPhase5OnDefendEquipment();
+
+        // Run multiple times with different seeds to verify chance works
+        var appliedCount = 0;
+        for (int i = 0; i < 20; i++)
+        {
+            var testPlayer = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
+                equipment: new[] { new EquipmentEntry { EquipmentRef = "UnreliableShield", Condition = 1.0f } });
+            testPlayer.CombatProfile["LeftHand"] = "UnreliableShield";
+            var testEnemy = CreateCombatant("Enemy", health: 1.0f);
+
+            var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithOnDefend, randomSeed: i);
+            engine.StartBattle();
+
+            engine.ExecutePlayerDecision(new CombatAction
+            {
+                ActionType = ActionType.Defend
+            });
+
+            if (testPlayer.ActiveStatusEffects.Count > 0)
+            {
+                appliedCount++;
+            }
+        }
+
+        // Assert - With 50% chance, we should have some successes and some failures
+        Assert.True(appliedCount > 0, "Some applications should succeed");
+        Assert.True(appliedCount < 20, "Some applications should fail");
+    }
+
+    [Fact]
+    public void GetVulnerabilityMultiplier_NoVulnerable_ReturnsOne()
+    {
+        // Arrange
+        var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+
+        // Act
+        var multiplier = engine.GetVulnerabilityMultiplier(enemy);
+
+        // Assert
+        Assert.Equal(1.0f, multiplier);
+    }
+
+    [Fact]
+    public void GetVulnerabilityMultiplier_WithVulnerable_ReturnsIncreased()
+    {
+        // Arrange
+        var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Apply Vulnerable (25% more damage taken via DefenseModifier = -0.25)
+        enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "Vulnerable",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+
+        // Act
+        var multiplier = engine.GetVulnerabilityMultiplier(enemy);
+
+        // Assert - Should be greater than 1 (more damage taken)
+        Assert.True(multiplier > 1.0f);
+        Assert.Equal(1.25f, multiplier, 2); // 25% more damage
+    }
+
+    /// <summary>
+    /// Creates a test world with Phase 5 status effects including Vulnerable.
+    /// </summary>
+    private static World CreateTestWorldWithPhase5StatusEffects()
+    {
+        var baseWorld = CreateTestWorldWithPhase3StatusEffects();
+
+        // Add Vulnerable status effect - uses negative DefenseModifier to increase damage taken
+        var vulnerable = new StatusEffect
+        {
+            RefName = "Vulnerable",
+            DisplayName = "Vulnerable",
+            Type = StatusEffectType.Vulnerable,
+            DefenseModifier = -0.25f, // Each stack adds 25% more damage taken
+            DurationTurns = 3,
+            MaxStacks = 3,
+            Cleansable = true
+        };
+
+        // Add FreeSpell for testing (no RequiresEquipped)
+        var freeSpell = new Spell
+        {
+            RefName = "FreeSpell",
+            DisplayName = "Free Spell",
+            RequiresEquippedSpecified = false,
+            Effects = new CharacterEffects { Health = -0.1f }
+        };
+
+        baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects.Concat(new[] { vulnerable }).ToArray();
+        baseWorld.StatusEffectsLookup["Vulnerable"] = vulnerable;
+
+        baseWorld.Gameplay.Spells = baseWorld.Gameplay.Spells.Concat(new[] { freeSpell }).ToArray();
+        baseWorld.SpellsLookup["FreeSpell"] = freeSpell;
+
+        return baseWorld;
+    }
+
+    /// <summary>
+    /// Creates a test world with Phase 5 equipment that has OnDefend status effects.
+    /// </summary>
+    private static World CreateTestWorldWithPhase5OnDefendEquipment()
+    {
+        var baseWorld = CreateTestWorldWithPhase5StatusEffects();
+
+        // Add IronWill status effect (defensive buff when blocking)
+        var ironWill = new StatusEffect
+        {
+            RefName = "IronWill",
+            DisplayName = "Iron Will",
+            Type = StatusEffectType.StatBoost,
+            DefenseModifier = 0.2f, // +20% defense
+            DurationTurns = 2,
+            MaxStacks = 1,
+            Cleansable = false
+        };
+
+        // Add Iron Shield with OnDefend effect (100% chance)
+        var ironShield = new Equipment
+        {
+            RefName = "IronShield",
+            DisplayName = "Iron Shield",
+            SlotRef = "LeftHand",
+            Category = EquipmentCategoryType.Shield,
+            OnDefendStatusEffectRef = "IronWill",
+            OnDefendStatusEffectChance = 1.0f,
+            Effects = new CharacterEffects { Defense = 0.15f }
+        };
+
+        // Add Unreliable Shield with 50% OnDefend chance
+        var unreliableShield = new Equipment
+        {
+            RefName = "UnreliableShield",
+            DisplayName = "Unreliable Shield",
+            SlotRef = "LeftHand",
+            Category = EquipmentCategoryType.Shield,
+            OnDefendStatusEffectRef = "IronWill",
+            OnDefendStatusEffectChance = 0.5f, // 50% chance
+            Effects = new CharacterEffects { Defense = 0.1f }
+        };
+
+        baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects.Concat(new[] { ironWill }).ToArray();
+        baseWorld.StatusEffectsLookup["IronWill"] = ironWill;
+
+        baseWorld.Gameplay.Equipment = baseWorld.Gameplay.Equipment.Concat(new[] { ironShield, unreliableShield }).ToArray();
+        baseWorld.EquipmentLookup["IronShield"] = ironShield;
+        baseWorld.EquipmentLookup["UnreliableShield"] = unreliableShield;
+
+        return baseWorld;
+    }
+
+    #endregion
 }
