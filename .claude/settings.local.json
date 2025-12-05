@@ -3,7 +3,9 @@
     "allow": [
       "Bash(xargs -I {} bash -c 'echo \"\"\"\"=== {} ===\"\"\"\" && head -5 \"\"\"\"{}\"\"\"\"')",
       "Bash(xargs -I {} bash -c \"echo \"\"File: {}\"\" && grep -E \"\"^namespace|^public (class|interface|record)\"\" \"\"{}\"\" | head -3\")",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(powershell.exe:*)"
     ],
     "deny": [],
     "ask": []

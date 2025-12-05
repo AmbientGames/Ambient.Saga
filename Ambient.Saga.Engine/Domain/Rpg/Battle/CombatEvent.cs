@@ -38,4 +38,5 @@ public class CombatEvent
     public float ActorEnergyAfter { get; init; }
     public string? EquipmentChanged { get; init; }  // For ChangeLoadout actions
     public string? AffinityChanged { get; init; }    // For affinity switches
+    public string? StatusEffectApplied { get; init; }  // Status effect applied during this action
 }

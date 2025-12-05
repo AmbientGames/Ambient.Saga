@@ -127,6 +127,20 @@ public class BattleEngine
             };
         }
 
+        // Process status effects at start of enemy's turn
+        ProcessStatusEffects(_enemy);
+
+        // Check if enemy died from DoT
+        if (!_enemy.IsAlive)
+        {
+            CheckBattleEnd();
+            return new CombatEvent
+            {
+                Success = true,
+                Message = $"{_enemy.DisplayName} succumbed to status effects!"
+            };
+        }
+
         // Select target from party (player + alive companions)
         var target = SelectEnemyTarget();
 
@@ -210,6 +224,20 @@ public class BattleEngine
 
         CombatLog.Add($"--- {companion.DisplayName}'s turn ---");
 
+        // Process status effects at start of companion's turn
+        ProcessStatusEffects(companion);
+
+        // Check if companion died from DoT
+        if (!companion.IsAlive)
+        {
+            AdvanceCompanionTurn();
+            return new CombatEvent
+            {
+                Success = true,
+                Message = $"{companion.DisplayName} succumbed to status effects!"
+            };
+        }
+
         CombatEvent action;
         if (_companionMind == null)
         {
@@ -292,6 +320,23 @@ public class BattleEngine
     }
 
     /// <summary>
+    /// Process player status effects at the start of their turn.
+    /// Should be called by the UI/handler before presenting player options.
+    /// </summary>
+    public void ProcessPlayerTurnStart()
+    {
+        if (State != BattleState.PlayerTurn) return;
+
+        ProcessStatusEffects(_player);
+
+        // Check if player died from DoT
+        if (!_player.IsAlive)
+        {
+            CheckBattleEnd();
+        }
+    }
+
+    /// <summary>
     /// Execute a player decision (for AI-controlled players or UI-driven choices).
     /// </summary>
     public CombatEvent ExecutePlayerDecision(CombatAction decision)
@@ -302,6 +347,17 @@ public class BattleEngine
             {
                 Success = false,
                 Message = "Not player's turn"
+            };
+        }
+
+        // Check if player died from status effects before their action
+        if (!_player.IsAlive)
+        {
+            CheckBattleEnd();
+            return new CombatEvent
+            {
+                Success = false,
+                Message = $"{_player.DisplayName} succumbed to status effects!"
             };
         }
 
@@ -423,7 +479,7 @@ public class BattleEngine
     // ============================================================================
 
     /// <summary>
-    /// Get effective Strength stat with archetype bias and stance multiplier applied.
+    /// Get effective Strength stat with archetype bias, stance multiplier, and status effects applied.
     /// </summary>
     private float GetEffectiveStrength(Combatant combatant)
     {
@@ -441,11 +497,14 @@ public class BattleEngine
                 effectiveStrength *= stance.Effects.Strength;
         }
 
+        // Apply status effect modifiers
+        effectiveStrength *= GetStatusEffectStatModifier(combatant, "Strength");
+
         return effectiveStrength;
     }
 
     /// <summary>
-    /// Get effective Defense stat with archetype bias and stance multiplier applied.
+    /// Get effective Defense stat with archetype bias, stance multiplier, and status effects applied.
     /// </summary>
     private float GetEffectiveDefense(Combatant combatant)
     {
@@ -463,11 +522,14 @@ public class BattleEngine
                 effectiveDefense *= stance.Effects.Defense;
         }
 
+        // Apply status effect modifiers
+        effectiveDefense *= GetStatusEffectStatModifier(combatant, "Defense");
+
         return effectiveDefense;
     }
 
     /// <summary>
-    /// Get effective Speed stat with archetype bias and stance multiplier applied.
+    /// Get effective Speed stat with archetype bias, stance multiplier, and status effects applied.
     /// </summary>
     private float GetEffectiveSpeed(Combatant combatant)
     {
@@ -485,11 +547,14 @@ public class BattleEngine
                 effectiveSpeed *= stance.Effects.Speed;
         }
 
+        // Apply status effect modifiers
+        effectiveSpeed *= GetStatusEffectStatModifier(combatant, "Speed");
+
         return effectiveSpeed;
     }
 
     /// <summary>
-    /// Get effective Magic stat with archetype bias and stance multiplier applied.
+    /// Get effective Magic stat with archetype bias, stance multiplier, and status effects applied.
     /// </summary>
     private float GetEffectiveMagic(Combatant combatant)
     {
@@ -506,6 +571,9 @@ public class BattleEngine
             if (stance?.Effects != null)
                 effectiveMagic *= stance.Effects.Magic;
         }
+
+        // Apply status effect modifiers
+        effectiveMagic *= GetStatusEffectStatModifier(combatant, "Magic");
 
         return effectiveMagic;
     }
@@ -606,6 +674,12 @@ public class BattleEngine
         var effectiveStrength = GetEffectiveStrength(attacker);
         var baseDamage = effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
 
+        // Critical hit calculation - base chance from speed + weapon CriticalHitBonus
+        var effectiveSpeed = GetEffectiveSpeed(attacker);
+        var baseCritChance = Math.Min(0.3f, effectiveSpeed / 100f);
+        var critChance = Math.Min(0.5f, baseCritChance + weapon.CriticalHitBonus); // Cap at 50%
+        var isCritical = _random.NextDouble() < critChance;
+
         // Apply weapon effects using EffectApplier
         var effects = EffectApplier.ApplyEffects(
             weapon.Effects ?? new CharacterEffects(),
@@ -629,6 +703,13 @@ public class BattleEngine
 
         // Total damage = base + effect damage
         var totalDamage = Math.Max(BASE_DAMAGE_MINIMUM, (float)(baseDamage + Math.Abs(effectDamage)));
+
+        // Apply critical hit multiplier
+        if (isCritical)
+        {
+            totalDamage *= 1.5f;
+            CombatLog.Add($"💥 CRITICAL HIT!");
+        }
 
         // Apply defending bonus
         if (defender.IsDefending)
@@ -677,15 +758,33 @@ public class BattleEngine
             }
         }
 
+        // Apply status effect from weapon (if defined)
+        string? appliedStatusEffect = null;
+        if (!string.IsNullOrEmpty(weapon.StatusEffectRef) && weapon.StatusEffectChance > 0)
+        {
+            // Check if status effect should only apply on critical hits
+            var shouldApply = !weapon.StatusEffectOnCritOnly || isCritical;
+            if (shouldApply)
+            {
+                appliedStatusEffect = TryApplyStatusEffect(
+                    weapon.StatusEffectRef,
+                    weapon.StatusEffectChance,
+                    defender,
+                    _turnNumber,
+                    weapon.DisplayName);
+            }
+        }
+
         return new CombatEvent
         {
             ActionType = BattleActionType.Attack,
             ActorName = attacker.DisplayName,
             TargetName = defender.DisplayName,
             Damage = totalDamage,
-            IsCritical = false,
+            IsCritical = isCritical,
             Success = true,
-            Message = $"{attacker.DisplayName} attacks with {weapon.DisplayName}!"
+            Message = $"{attacker.DisplayName} attacks with {weapon.DisplayName}!",
+            StatusEffectApplied = appliedStatusEffect
         };
     }
 
@@ -699,6 +798,47 @@ public class BattleEngine
                 Success = false,
                 Message = "World data required for spell attacks"
             };
+        }
+
+        // VALIDATION: Check RequiresEquipped - spell may require specific equipment category
+        if (spell.RequiresEquippedSpecified && attacker.CombatProfile != null)
+        {
+            var requiredCategory = spell.RequiresEquipped;
+            var hasRequiredEquipment = false;
+
+            // Check both hand slots for the required equipment category
+            foreach (var slot in new[] { "RightHand", "LeftHand" })
+            {
+                if (attacker.CombatProfile.TryGetValue(slot, out var equippedRef) && !string.IsNullOrEmpty(equippedRef))
+                {
+                    var equipment = _world.TryGetEquipmentByRefName(equippedRef);
+                    if (equipment != null && equipment.Category == requiredCategory)
+                    {
+                        hasRequiredEquipment = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!hasRequiredEquipment)
+            {
+                CombatLog.Add($"{attacker.DisplayName} cannot cast {spell.DisplayName} - requires {requiredCategory} equipped!");
+                return new CombatEvent
+                {
+                    Success = false,
+                    Message = $"Requires {requiredCategory} equipped to cast {spell.DisplayName}"
+                };
+            }
+        }
+
+        // VALIDATION: Check MinimumStats - spell may have stat requirements
+        if (spell.MinimumStats != null)
+        {
+            var failedRequirement = CheckMinimumStats(attacker, spell.MinimumStats, spell.DisplayName);
+            if (failedRequirement != null)
+            {
+                return failedRequirement;
+            }
         }
 
         // Find spell's condition from attacker's capabilities
@@ -817,6 +957,26 @@ public class BattleEngine
             }
         }
 
+        // Apply status effect from spell (if defined)
+        string? appliedStatusEffect = null;
+        if (!string.IsNullOrEmpty(spell.StatusEffectRef))
+        {
+            var effectTarget = spell.UseType == ItemUseType.Offensive ? defender : attacker;
+            appliedStatusEffect = TryApplyStatusEffect(
+                spell.StatusEffectRef,
+                spell.StatusEffectChance,
+                effectTarget,
+                _turnNumber,
+                spell.DisplayName);
+        }
+
+        // Handle spell cleansing status effects
+        if (spell.CleansesStatusEffects)
+        {
+            var cleanseTarget = spell.CleanseTargetSelf ? attacker : defender;
+            CleanseStatusEffects(cleanseTarget, spell.DisplayName);
+        }
+
         return new CombatEvent
         {
             ActionType = BattleActionType.SpecialAttack,  // Using SpecialAttack type for spells
@@ -825,7 +985,8 @@ public class BattleEngine
             Damage = totalDamage,
             IsCritical = false,
             Success = true,
-            Message = $"{attacker.DisplayName} casts {spell.DisplayName}!"
+            Message = $"{attacker.DisplayName} casts {spell.DisplayName}!",
+            StatusEffectApplied = appliedStatusEffect
         };
     }
 
@@ -1221,5 +1382,239 @@ public class BattleEngine
     public void SetPlayerAffinities(List<string> affinityRefs)
     {
         PlayerAffinityRefs = affinityRefs ?? new List<string>();
+    }
+
+    // ============================================================================
+    // VALIDATION HELPERS
+    // ============================================================================
+
+    /// <summary>
+    /// Check if combatant meets minimum stat requirements for an item.
+    /// Returns a failed CombatEvent if requirements not met, null if OK.
+    /// </summary>
+    private CombatEvent? CheckMinimumStats(Combatant combatant, CharacterEffects minimumStats, string itemName)
+    {
+        // Check each stat that has a minimum requirement (values > 0 are requirements)
+        if (minimumStats.Strength > 0 && combatant.Strength < minimumStats.Strength)
+        {
+            CombatLog.Add($"{combatant.DisplayName} lacks the Strength to use {itemName}!");
+            return new CombatEvent
+            {
+                Success = false,
+                Message = $"Requires {minimumStats.Strength * 100:F0}% Strength"
+            };
+        }
+
+        if (minimumStats.Defense > 0 && combatant.Defense < minimumStats.Defense)
+        {
+            CombatLog.Add($"{combatant.DisplayName} lacks the Defense to use {itemName}!");
+            return new CombatEvent
+            {
+                Success = false,
+                Message = $"Requires {minimumStats.Defense * 100:F0}% Defense"
+            };
+        }
+
+        if (minimumStats.Speed > 0 && combatant.Speed < minimumStats.Speed)
+        {
+            CombatLog.Add($"{combatant.DisplayName} lacks the Speed to use {itemName}!");
+            return new CombatEvent
+            {
+                Success = false,
+                Message = $"Requires {minimumStats.Speed * 100:F0}% Speed"
+            };
+        }
+
+        if (minimumStats.Magic > 0 && combatant.Magic < minimumStats.Magic)
+        {
+            CombatLog.Add($"{combatant.DisplayName} lacks the Magic to use {itemName}!");
+            return new CombatEvent
+            {
+                Success = false,
+                Message = $"Requires {minimumStats.Magic * 100:F0}% Magic"
+            };
+        }
+
+        // Check energy (Mana/Stamina mapped to Energy in battle)
+        var requiredEnergy = Math.Max(minimumStats.Mana, minimumStats.Stamina);
+        if (requiredEnergy > 0 && combatant.Energy < requiredEnergy)
+        {
+            CombatLog.Add($"{combatant.DisplayName} lacks the Energy to use {itemName}!");
+            return new CombatEvent
+            {
+                Success = false,
+                Message = $"Requires {requiredEnergy * 100:F0}% Energy"
+            };
+        }
+
+        return null; // All requirements met
+    }
+
+    // ============================================================================
+    // STATUS EFFECT HELPERS
+    // ============================================================================
+
+    /// <summary>
+    /// Attempt to apply a status effect to a target with probability check.
+    /// Returns the applied status effect RefName, or null if not applied.
+    /// </summary>
+    private string? TryApplyStatusEffect(string statusEffectRef, float chance, Combatant target, int currentTurn, string sourceName)
+    {
+        if (_world == null) return null;
+
+        // Probability check
+        if (_random.NextDouble() > chance)
+        {
+            return null; // Effect didn't trigger
+        }
+
+        // Look up the status effect definition
+        var statusEffect = _world.TryGetStatusEffectByRefName(statusEffectRef);
+        if (statusEffect == null)
+        {
+            // Status effect not found in catalog - silently ignore (not a hard failure)
+            return null;
+        }
+
+        // Check if target already has this effect
+        var existing = target.ActiveStatusEffects.FirstOrDefault(e => e.StatusEffectRef == statusEffectRef);
+        if (existing != null)
+        {
+            // Already has effect - check stacking rules
+            if (statusEffect.MaxStacks > 0 && existing.Stacks < statusEffect.MaxStacks)
+            {
+                existing.Stacks++;
+                existing.RemainingTurns = statusEffect.DurationTurns; // Refresh duration
+                CombatLog.Add($"🔥 {target.DisplayName}'s {statusEffect.DisplayName} intensifies! (x{existing.Stacks})");
+            }
+            else if (statusEffect.MaxStacks == 0)
+            {
+                // Refresh duration only
+                existing.RemainingTurns = statusEffect.DurationTurns;
+            }
+            // If at max stacks, just refresh duration
+            else
+            {
+                existing.RemainingTurns = statusEffect.DurationTurns;
+            }
+        }
+        else
+        {
+            // Add new status effect
+            target.ActiveStatusEffects.Add(new ActiveStatusEffect
+            {
+                StatusEffectRef = statusEffectRef,
+                RemainingTurns = statusEffect.DurationTurns,
+                Stacks = 1,
+                AppliedOnTurn = currentTurn
+            });
+            CombatLog.Add($"✨ {target.DisplayName} is afflicted with {statusEffect.DisplayName} from {sourceName}!");
+        }
+
+        return statusEffectRef;
+    }
+
+    /// <summary>
+    /// Remove all cleansable status effects from a target.
+    /// </summary>
+    private void CleanseStatusEffects(Combatant target, string sourceName)
+    {
+        if (_world == null) return;
+
+        var cleansedCount = 0;
+        for (int i = target.ActiveStatusEffects.Count - 1; i >= 0; i--)
+        {
+            var active = target.ActiveStatusEffects[i];
+            var statusEffect = _world.TryGetStatusEffectByRefName(active.StatusEffectRef);
+
+            // Only cleanse if the effect is marked as cleansable (or if we can't find definition, allow cleanse)
+            if (statusEffect == null || statusEffect.Cleansable)
+            {
+                target.ActiveStatusEffects.RemoveAt(i);
+                cleansedCount++;
+            }
+        }
+
+        if (cleansedCount > 0)
+        {
+            CombatLog.Add($"✨ {sourceName} cleanses {cleansedCount} status effect(s) from {target.DisplayName}!");
+        }
+    }
+
+    /// <summary>
+    /// Process status effects at the start of a combatant's turn.
+    /// Applies damage-over-time, stat modifiers, and decrements durations.
+    /// </summary>
+    public void ProcessStatusEffects(Combatant combatant)
+    {
+        if (_world == null) return;
+
+        for (int i = combatant.ActiveStatusEffects.Count - 1; i >= 0; i--)
+        {
+            var active = combatant.ActiveStatusEffects[i];
+            var statusEffect = _world.TryGetStatusEffectByRefName(active.StatusEffectRef);
+
+            if (statusEffect == null)
+            {
+                // Invalid status effect reference - remove it
+                combatant.ActiveStatusEffects.RemoveAt(i);
+                continue;
+            }
+
+            // Apply damage per turn (scaled by stacks)
+            if (statusEffect.DamagePerTurn != 0)
+            {
+                var dotDamage = (statusEffect.DamagePerTurn / 100f) * active.Stacks;
+                combatant.Health = Math.Clamp(combatant.Health - dotDamage, 0, Combatant.MAX_STAT);
+
+                if (dotDamage > 0)
+                {
+                    CombatLog.Add($"🔥 {combatant.DisplayName} takes {dotDamage * 100:F1}% damage from {statusEffect.DisplayName}!");
+                }
+                else
+                {
+                    CombatLog.Add($"💚 {combatant.DisplayName} heals {Math.Abs(dotDamage) * 100:F1}% from {statusEffect.DisplayName}!");
+                }
+            }
+
+            // Decrement duration
+            active.RemainingTurns--;
+            if (active.RemainingTurns <= 0)
+            {
+                combatant.ActiveStatusEffects.RemoveAt(i);
+                CombatLog.Add($"✨ {statusEffect.DisplayName} wears off from {combatant.DisplayName}");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Get combined stat modifier from all active status effects.
+    /// Returns a multiplier (1.0 = no change, 0.8 = 20% reduction, 1.2 = 20% increase).
+    /// </summary>
+    public float GetStatusEffectStatModifier(Combatant combatant, string statName)
+    {
+        if (_world == null) return 1.0f;
+
+        var modifier = 1.0f;
+        foreach (var active in combatant.ActiveStatusEffects)
+        {
+            var statusEffect = _world.TryGetStatusEffectByRefName(active.StatusEffectRef);
+            if (statusEffect == null) continue;
+
+            // Get the appropriate modifier based on stat name
+            var effectModifier = statName switch
+            {
+                "Strength" => statusEffect.StrengthModifier,
+                "Defense" => statusEffect.DefenseModifier,
+                "Speed" => statusEffect.SpeedModifier,
+                "Magic" => statusEffect.MagicModifier,
+                _ => 0f
+            };
+
+            // Apply modifier scaled by stacks (additive per stack)
+            modifier += effectModifier * active.Stacks;
+        }
+
+        return Math.Max(0.1f, modifier); // Minimum 10% of stat
     }
 }

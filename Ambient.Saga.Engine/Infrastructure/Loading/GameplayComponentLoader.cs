@@ -38,6 +38,8 @@ internal static class GameplayComponentLoader
         var sagaTriggerPatternsRef = world.WorldConfiguration?.SagaTriggerPatternsRef ?? "Default";
         var sagasRef = world.WorldConfiguration?.SagaArcsRef ?? "Default";
         var factionsRef = world.WorldConfiguration?.FactionsRef ?? "Default";
+        // StatusEffects uses the same ref pattern as CharacterAffinities (same folder)
+        var statusEffectsRef = characterAffinitiesRef;
 
         world.Gameplay.Consumables = (await XmlLoader.LoadFromXmlAsync<ConsumableCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{consumableItemsRef}.Consumable.xml"), xsdFilePath)).Consumable ?? [];
         world.Gameplay.Spells = (await XmlLoader.LoadFromXmlAsync<SpellCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{spellsRef}.Spells.xml"), xsdFilePath)).Spell ?? [];
@@ -58,6 +60,13 @@ internal static class GameplayComponentLoader
         world.Gameplay.SagaTriggerPatterns = (await XmlLoader.LoadFromXmlAsync<SagaTriggerPatterns>(Path.Combine(dataDirectory, "Gameplay", "SagaTriggerPatterns", $"{sagaTriggerPatternsRef}.SagaTriggerPatterns.xml"), xsdFilePath)).SagaTriggerPattern ?? [];
         world.Gameplay.SagaArcs = (await XmlLoader.LoadFromXmlAsync<SagaArcs>(Path.Combine(dataDirectory, "Gameplay", $"{sagasRef}.Sagas.xml"), xsdFilePath)).SagaArc ?? [];
         world.Gameplay.Factions = (await XmlLoader.LoadFromXmlAsync<Factions>(Path.Combine(dataDirectory, "Gameplay", "Factions", $"{factionsRef}.Factions.xml"), xsdFilePath)).Faction ?? [];
+
+        // Load StatusEffects if the file exists (optional component)
+        var statusEffectsPath = Path.Combine(dataDirectory, "Gameplay", "Actors", $"{statusEffectsRef}.StatusEffects.xml");
+        if (File.Exists(statusEffectsPath))
+        {
+            world.Gameplay.StatusEffects = (await XmlLoader.LoadFromXmlAsync<StatusEffects>(statusEffectsPath, xsdFilePath)).StatusEffect ?? [];
+        }
 
         ApplySagaSpawnOffsets(world);
     }
@@ -98,6 +107,10 @@ internal static class GameplayComponentLoader
         BuildLookup(world.Gameplay.SagaTriggerPatterns, world.SagaTriggerPatternsLookup);
         BuildLookup(world.Gameplay.SagaArcs, world.SagaArcLookup);
         BuildLookup(world.Gameplay.Factions, world.FactionsLookup);
+        if (world.Gameplay.StatusEffects != null)
+        {
+            BuildLookup(world.Gameplay.StatusEffects, world.StatusEffectsLookup);
+        }
 
         // Expand all Saga triggers (TriggerPatternRef -> List<SagaTrigger>)
         BuildSagaTriggersLookup(world);

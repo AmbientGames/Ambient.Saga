@@ -51,6 +51,7 @@ public partial class World : IWorld
     [XmlIgnore] public Dictionary<string, SagaArc> SagaArcLookup = new Dictionary<string, SagaArc>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, List<SagaTrigger>> SagaTriggersLookup = new Dictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Faction> FactionsLookup = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, StatusEffect> StatusEffectsLookup = new Dictionary<string, StatusEffect>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public int BlocksBeneathSeaLevel = 64; // this is a todo... coordinate converter requires this - we probably need an interface to do this right.
     [XmlIgnore] public double VerticalScale;
     [XmlIgnore] public double VerticalShift;
@@ -512,6 +513,33 @@ public partial class World : IWorld
     {
         FactionsLookup.TryGetValue(factionRefName, out var faction);
         return faction;
+    }
+
+    /// <summary>
+    /// Looks up a StatusEffect object by its RefName.
+    /// </summary>
+    /// <param name="statusEffectRefName">The RefName of the status effect to find</param>
+    /// <returns>The StatusEffect object with the specified RefName</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the status effect is not found</exception>
+    public StatusEffect GetStatusEffectByRefName(string statusEffectRefName)
+    {
+        if (StatusEffectsLookup.TryGetValue(statusEffectRefName, out var statusEffect))
+        {
+            return statusEffect;
+        }
+
+        throw new InvalidOperationException($"StatusEffect with RefName '{statusEffectRefName}' not found in StatusEffects catalog");
+    }
+
+    /// <summary>
+    /// Tries to look up a StatusEffect object by its RefName. Returns null if not found.
+    /// </summary>
+    /// <param name="statusEffectRefName">The RefName of the status effect to find</param>
+    /// <returns>The StatusEffect object with the specified RefName, or null if not found</returns>
+    public StatusEffect? TryGetStatusEffectByRefName(string statusEffectRefName)
+    {
+        StatusEffectsLookup.TryGetValue(statusEffectRefName, out var statusEffect);
+        return statusEffect;
     }
 
 }
