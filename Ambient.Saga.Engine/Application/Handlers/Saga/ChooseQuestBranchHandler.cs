@@ -1,35 +1,37 @@
-﻿using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
-using Ambient.Saga.Engine.Domain.Rpg.Quests;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
 /// <summary>
-/// Handler for ProgressQuestObjectiveCommand.
-/// Checks if objective threshold has been met and creates QuestObjectiveCompleted transaction.
+/// Handler for ChooseQuestBranchCommand.
+/// Validates branch choice and enforces exclusivity for exclusive branch stages.
 /// </summary>
-internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQuestObjectiveCommand, SagaCommandResult>
+internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBranchCommand, SagaCommandResult>
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
+    private readonly IMediator _mediator;
     private readonly World _world;
 
-    public ProgressQuestObjectiveHandler(
+    public ChooseQuestBranchHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
+        IMediator mediator,
         World world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
+        _mediator = mediator;
         _world = world;
     }
 
-    public async Task<SagaCommandResult> Handle(ProgressQuestObjectiveCommand command, CancellationToken ct)
+    public async Task<SagaCommandResult> Handle(ChooseQuestBranchCommand command, CancellationToken ct)
     {
         try
         {
@@ -72,36 +74,52 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
                 return SagaCommandResult.Failure(instance.InstanceId, $"Stage '{command.StageRef}' not found in quest");
             }
 
-            // Find the objective
-            var objective = stage.Objectives?.Objective?.FirstOrDefault(o => o.RefName == command.ObjectiveRef);
-            if (objective == null)
+            // Verify stage has branches
+            if (stage.Branches == null || stage.Branches.Branch == null || stage.Branches.Branch.Length == 0)
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Objective '{command.ObjectiveRef}' not found in stage");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Stage '{stage.DisplayName}' does not have branches");
             }
 
-            // Check if objective already completed
-            if (questState.CompletedObjectives.TryGetValue(command.StageRef, out var completedObjs) &&
-                completedObjs.Contains(command.ObjectiveRef))
+            // Find the branch being chosen
+            var chosenBranch = stage.Branches.Branch.FirstOrDefault(b => b.RefName == command.BranchRef);
+            if (chosenBranch == null)
             {
-                return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), 0);
+                return SagaCommandResult.Failure(instance.InstanceId, $"Branch '{command.BranchRef}' not found in stage");
             }
 
-            // Evaluate current progress from transaction log
-            var transactions = instance.GetCommittedTransactions();
-            var currentValue = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, _world);
-
-            // Check if threshold met
-            if (currentValue < objective.Threshold)
+            // Check exclusivity - if Exclusive is true (default), only one branch can be chosen
+            if (stage.Branches.Exclusive)
             {
-                // Not yet complete
-                return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), 0);
+                // Check if a branch has already been chosen for this stage
+                var transactions = instance.GetCommittedTransactions();
+                var existingBranchChoice = transactions.FirstOrDefault(t =>
+                    t.Type == SagaTransactionType.QuestBranchChosen &&
+                    t.GetData<string>("QuestRef") == command.QuestRef &&
+                    t.GetData<string>("StageRef") == command.StageRef);
+
+                if (existingBranchChoice != null)
+                {
+                    var alreadyChosenBranch = existingBranchChoice.GetData<string>("BranchRef");
+                    return SagaCommandResult.Failure(
+                        instance.InstanceId,
+                        $"A branch has already been chosen for this stage: '{alreadyChosenBranch}'. " +
+                        "This stage has exclusive branches - only one choice is allowed.");
+                }
             }
 
-            // Create QuestObjectiveCompleted transaction
+            // Verify we're on the correct stage
+            if (questState.CurrentStage != command.StageRef)
+            {
+                return SagaCommandResult.Failure(
+                    instance.InstanceId,
+                    $"Cannot choose branch for stage '{command.StageRef}' - current stage is '{questState.CurrentStage}'");
+            }
+
+            // Create QuestBranchChosen transaction
             var transaction = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.QuestObjectiveCompleted,
+                Type = SagaTransactionType.QuestBranchChosen,
                 AvatarId = command.AvatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,
@@ -109,25 +127,13 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
                 {
                     ["QuestRef"] = command.QuestRef,
                     ["StageRef"] = command.StageRef,
-                    ["ObjectiveRef"] = command.ObjectiveRef,
-                    ["CurrentValue"] = currentValue.ToString(),
-                    ["Threshold"] = objective.Threshold.ToString(),
-                    ["DisplayName"] = objective.DisplayName ?? objective.RefName
+                    ["BranchRef"] = command.BranchRef,
+                    ["DisplayName"] = chosenBranch.DisplayName ?? chosenBranch.RefName,
+                    ["NextStage"] = chosenBranch.NextStage ?? string.Empty
                 }
             };
 
             instance.AddTransaction(transaction);
-
-            // Distribute OnObjective rewards for this specific objective
-            if (quest.Rewards != null && quest.Rewards.Length > 0)
-            {
-                QuestRewardDistributor.DistributeRewards(
-                    quest.Rewards,
-                    Ambient.Domain.QuestRewardCondition.OnObjective,
-                    command.Avatar,
-                    _world,
-                    objectiveRef: command.ObjectiveRef);
-            }
 
             // Persist transaction
             var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
@@ -149,6 +155,15 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
+            // Automatically advance the stage now that a branch has been chosen
+            await _mediator.Send(new AdvanceQuestStageCommand
+            {
+                AvatarId = command.AvatarId,
+                SagaArcRef = command.SagaArcRef,
+                QuestRef = command.QuestRef,
+                Avatar = command.Avatar
+            }, ct);
+
             // Return success
             return SagaCommandResult.Success(
                 instance.InstanceId,
@@ -157,7 +172,7 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
         }
         catch (Exception ex)
         {
-            return SagaCommandResult.Failure(Guid.Empty, $"Error progressing quest objective: {ex.Message}");
+            return SagaCommandResult.Failure(Guid.Empty, $"Error choosing quest branch: {ex.Message}");
         }
     }
 }

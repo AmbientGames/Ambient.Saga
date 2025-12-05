@@ -225,7 +225,78 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
             }
         };
 
-        // Quest 4: Quest chain (requires completing another quest)
+        // Quest 4: Quest with OnObjective rewards
+        var multiObjectiveQuest = new Quest
+        {
+            RefName = "MULTI_OBJECTIVE_QUEST",
+            DisplayName = "Multi-Objective Quest",
+            Description = "A quest with per-objective rewards",
+            Stages = new QuestStages
+            {
+                StartStage = "OBJECTIVES",
+                Stage = new[]
+                {
+                    new QuestStage
+                    {
+                        RefName = "OBJECTIVES",
+                        DisplayName = "Complete Objectives",
+                        Objectives = new QuestStageObjectives
+                        {
+                            Objective = new[]
+                            {
+                                new QuestObjective
+                                {
+                                    RefName = "OBJECTIVE_A",
+                                    Type = QuestObjectiveType.ItemCollected,
+                                    ItemRef = "ITEM_A",
+                                    Threshold = 1,
+                                    DisplayName = "Collect Item A"
+                                },
+                                new QuestObjective
+                                {
+                                    RefName = "OBJECTIVE_B",
+                                    Type = QuestObjectiveType.ItemCollected,
+                                    ItemRef = "ITEM_B",
+                                    Threshold = 1,
+                                    DisplayName = "Collect Item B"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            // OnObjective rewards - currency awarded per objective completion
+            Rewards = new[]
+            {
+                new QuestReward
+                {
+                    Condition = QuestRewardCondition.OnObjective,
+                    ObjectiveRef = "OBJECTIVE_A",
+                    Currency = new QuestRewardCurrency { Amount = 25 },
+                    Consumable = new[]
+                    {
+                        new QuestRewardConsumable { ConsumableRef = "REWARD_ITEM_A", Quantity = 1 }
+                    }
+                },
+                new QuestReward
+                {
+                    Condition = QuestRewardCondition.OnObjective,
+                    ObjectiveRef = "OBJECTIVE_B",
+                    Currency = new QuestRewardCurrency { Amount = 75 },
+                    Consumable = new[]
+                    {
+                        new QuestRewardConsumable { ConsumableRef = "REWARD_ITEM_B", Quantity = 2 }
+                    }
+                },
+                new QuestReward
+                {
+                    Condition = QuestRewardCondition.OnSuccess,
+                    Currency = new QuestRewardCurrency { Amount = 100 }
+                }
+            }
+        };
+
+        // Quest 5: Quest chain (requires completing another quest)
         var herbMaster = new Quest
         {
             RefName = "HERB_MASTER",
@@ -293,7 +364,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
                 Gameplay = new GameplayComponents
                 {
                     SagaArcs = new[] { sagaArc },
-                    Quests = new[] { collectHerbs, dragonHunt, secretVault, herbMaster }
+                    Quests = new[] { collectHerbs, dragonHunt, secretVault, multiObjectiveQuest, herbMaster }
                 }
             }
         };
@@ -302,6 +373,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         world.QuestsLookup[collectHerbs.RefName] = collectHerbs;
         world.QuestsLookup[dragonHunt.RefName] = dragonHunt;
         world.QuestsLookup[secretVault.RefName] = secretVault;
+        world.QuestsLookup[multiObjectiveQuest.RefName] = multiObjectiveQuest;
         world.QuestsLookup[herbMaster.RefName] = herbMaster;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger>();
 
@@ -641,6 +713,166 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
 
         // Assert
         Assert.True(result.Successful, result.ErrorMessage);
+    }
+
+    #endregion
+
+    #region OnObjective Reward Tests
+
+    [Fact]
+    public async Task ProgressQuestObjective_WithOnObjectiveReward_AwardsRewardForSpecificObjective()
+    {
+        // Arrange
+        var avatar = CreateTestAvatar(level: 1, credits: 0, experience: 0);
+        // Accept quest with OnObjective rewards
+        var acceptCommand = new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArrcRef = "TEST_SAGA",
+            QuestRef = "MULTI_OBJECTIVE_QUEST",
+            QuestGiverRef = "QUEST_GIVER",
+            Avatar = avatar
+        };
+        await _mediator.Send(acceptCommand);
+
+        // Simulate collecting ITEM_A (triggers OBJECTIVE_A completion)
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+        var lootTx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.LootAwarded,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["ItemRef"] = "ITEM_A",
+                ["Quantity"] = "1"
+            }
+        };
+        await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { lootTx }, CancellationToken.None);
+        await _repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { lootTx.TransactionId }, CancellationToken.None);
+
+        // Act: Progress objective A (should award OnObjective reward for OBJECTIVE_A)
+        var progressCommand = new ProgressQuestObjectiveCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "MULTI_OBJECTIVE_QUEST",
+            StageRef = "OBJECTIVES",
+            ObjectiveRef = "OBJECTIVE_A",
+            Avatar = avatar
+        };
+        var result = await _mediator.Send(progressCommand);
+
+        // Assert
+        Assert.True(result.Successful, result.ErrorMessage);
+
+        // Check avatar was awarded OnObjective reward for OBJECTIVE_A (25 credits, 1x REWARD_ITEM_A)
+        Assert.Equal(25, avatar.Stats.Credits);
+        Assert.NotNull(avatar.Capabilities.Consumables);
+        var rewardItemA = avatar.Capabilities.Consumables.FirstOrDefault(c => c.ConsumableRef == "REWARD_ITEM_A");
+        Assert.NotNull(rewardItemA);
+        Assert.Equal(1, rewardItemA.Quantity);
+
+        // Should NOT have OBJECTIVE_B reward yet
+        var rewardItemB = avatar.Capabilities.Consumables.FirstOrDefault(c => c.ConsumableRef == "REWARD_ITEM_B");
+        Assert.Null(rewardItemB);
+    }
+
+    [Fact]
+    public async Task ProgressQuestObjective_CompletingMultipleObjectives_AwardsSeparateRewards()
+    {
+        // Arrange
+        var avatar = CreateTestAvatar(level: 1, credits: 0, experience: 0);
+        // Accept quest with OnObjective rewards
+        var acceptCommand = new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArrcRef = "TEST_SAGA",
+            QuestRef = "MULTI_OBJECTIVE_QUEST",
+            QuestGiverRef = "QUEST_GIVER",
+            Avatar = avatar
+        };
+        await _mediator.Send(acceptCommand);
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+
+        // Collect ITEM_A
+        var lootTxA = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.LootAwarded,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["ItemRef"] = "ITEM_A",
+                ["Quantity"] = "1"
+            }
+        };
+        await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { lootTxA }, CancellationToken.None);
+        await _repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { lootTxA.TransactionId }, CancellationToken.None);
+
+        // Progress OBJECTIVE_A
+        var progressA = new ProgressQuestObjectiveCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "MULTI_OBJECTIVE_QUEST",
+            StageRef = "OBJECTIVES",
+            ObjectiveRef = "OBJECTIVE_A",
+            Avatar = avatar
+        };
+        await _mediator.Send(progressA);
+
+        // Collect ITEM_B
+        var lootTxB = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.LootAwarded,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["ItemRef"] = "ITEM_B",
+                ["Quantity"] = "1"
+            }
+        };
+        await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { lootTxB }, CancellationToken.None);
+        await _repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { lootTxB.TransactionId }, CancellationToken.None);
+
+        // Act: Progress OBJECTIVE_B
+        var progressB = new ProgressQuestObjectiveCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "MULTI_OBJECTIVE_QUEST",
+            StageRef = "OBJECTIVES",
+            ObjectiveRef = "OBJECTIVE_B",
+            Avatar = avatar
+        };
+        var result = await _mediator.Send(progressB);
+
+        // Assert
+        Assert.True(result.Successful, result.ErrorMessage);
+
+        // Check avatar was awarded both OnObjective rewards
+        // OBJECTIVE_A: 25 credits, 1x REWARD_ITEM_A
+        // OBJECTIVE_B: 75 credits, 2x REWARD_ITEM_B
+        // Total: 100 credits
+        Assert.Equal(100, avatar.Stats.Credits);
+
+        Assert.NotNull(avatar.Capabilities.Consumables);
+        var rewardItemA = avatar.Capabilities.Consumables.FirstOrDefault(c => c.ConsumableRef == "REWARD_ITEM_A");
+        Assert.NotNull(rewardItemA);
+        Assert.Equal(1, rewardItemA.Quantity);
+
+        var rewardItemB = avatar.Capabilities.Consumables.FirstOrDefault(c => c.ConsumableRef == "REWARD_ITEM_B");
+        Assert.NotNull(rewardItemB);
+        Assert.Equal(2, rewardItemB.Quantity);
     }
 
     #endregion

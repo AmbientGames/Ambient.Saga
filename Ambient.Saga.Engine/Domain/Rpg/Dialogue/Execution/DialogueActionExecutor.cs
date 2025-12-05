@@ -173,8 +173,12 @@ public class DialogueActionExecutor
             case DialogueActionType.AssignTrait:
                 if (shouldAwardRewards)
                 {
+                    if (!action.TraitSpecified)
+                        throw new InvalidOperationException("AssignTrait action requires Trait attribute to be specified");
+
+                    var traitName = action.Trait.ToString();
                     var traitValue = action.TraitValueSpecified ? (int?)action.TraitValue : null;
-                    _stateProvider.AssignTrait(action.Trait.ToString(), traitValue);
+                    _stateProvider.AssignTrait(traitName, traitValue);
 
                     // Create transaction for persistence and achievement tracking
                     // Traits are assigned TO the character being talked to, not the avatar
@@ -183,7 +187,7 @@ public class DialogueActionExecutor
                         var transaction = DialogueTransactionHelper.CreateTraitAssignedTransaction(
                             _sagaContext.AvatarId,
                             characterRef, // Character receiving the trait
-                            action.Trait.ToString(),
+                            traitName,
                             traitValue,
                             _sagaContext.SagaInstance.InstanceId
                         );
@@ -195,7 +199,11 @@ public class DialogueActionExecutor
             case DialogueActionType.RemoveTrait:
                 if (shouldAwardRewards)
                 {
-                    _stateProvider.RemoveTrait(action.Trait.ToString());
+                    if (!action.TraitSpecified)
+                        throw new InvalidOperationException("RemoveTrait action requires Trait attribute to be specified");
+
+                    var traitName = action.Trait.ToString();
+                    _stateProvider.RemoveTrait(traitName);
 
                     // Create transaction for persistence
                     if (_sagaContext != null)
@@ -203,7 +211,7 @@ public class DialogueActionExecutor
                         var transaction = DialogueTransactionHelper.CreateTraitRemovedTransaction(
                             _sagaContext.AvatarId,
                             characterRef, // Character losing the trait
-                            action.Trait.ToString(),
+                            traitName,
                             _sagaContext.SagaInstance.InstanceId
                         );
                         _sagaContext.SagaInstance.AddTransaction(transaction);

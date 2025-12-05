@@ -438,7 +438,8 @@ public class DialogueActionExecutorTests
         var action = new DialogueAction
         {
             Type = DialogueActionType.AssignTrait,
-            Trait = CharacterTraitType.Hostile
+            Trait = CharacterTraitType.Hostile,
+            TraitSpecified = true
         };
 
         _executor.Execute(action, "test_tree", "node1", "test_character", true);
@@ -454,6 +455,7 @@ public class DialogueActionExecutorTests
         {
             Type = DialogueActionType.AssignTrait,
             Trait = CharacterTraitType.Aggression,
+            TraitSpecified = true,
             TraitValue = 75,
             TraitValueSpecified = true
         };
@@ -473,6 +475,7 @@ public class DialogueActionExecutorTests
         {
             Type = DialogueActionType.AssignTrait,
             Trait = CharacterTraitType.Morale,
+            TraitSpecified = true,
             TraitValue = 90,
             TraitValueSpecified = true
         };
@@ -483,6 +486,22 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
+    public void AssignTrait_WithoutTraitSpecified_ThrowsException()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.AssignTrait,
+            // TraitSpecified defaults to false
+            TraitValue = 50,
+            TraitValueSpecified = true
+        };
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            _executor.Execute(action, "test_tree", "node1", "test_character", true));
+        Assert.Contains("AssignTrait action requires Trait attribute", ex.Message);
+    }
+
+    [Fact]
     public void RemoveTrait_RemovesExistingTrait()
     {
         _state.AssignTrait("Hostile", null);
@@ -490,7 +509,8 @@ public class DialogueActionExecutorTests
         var action = new DialogueAction
         {
             Type = DialogueActionType.RemoveTrait,
-            Trait = CharacterTraitType.Hostile
+            Trait = CharacterTraitType.Hostile,
+            TraitSpecified = true
         };
 
         _executor.Execute(action, "test_tree", "node1", "test_character", true);
@@ -504,13 +524,30 @@ public class DialogueActionExecutorTests
         var action = new DialogueAction
         {
             Type = DialogueActionType.RemoveTrait,
-            Trait = CharacterTraitType.Friendly
+            Trait = CharacterTraitType.Friendly,
+            TraitSpecified = true
         };
 
         // Should not throw
         _executor.Execute(action, "test_tree", "node1", "test_character", true);
 
         Assert.False(_state.HasTrait("Friendly"));
+    }
+
+    [Fact]
+    public void RemoveTrait_WithoutTraitSpecified_ThrowsException()
+    {
+        _state.AssignTrait("Hostile", null);
+
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.RemoveTrait
+            // TraitSpecified defaults to false
+        };
+
+        var ex = Assert.Throws<InvalidOperationException>(() =>
+            _executor.Execute(action, "test_tree", "node1", "test_character", true));
+        Assert.Contains("RemoveTrait action requires Trait attribute", ex.Message);
     }
 
     [Fact]
@@ -536,19 +573,22 @@ public class DialogueActionExecutorTests
             new DialogueAction
             {
                 Type = DialogueActionType.AssignTrait,
-                Trait = CharacterTraitType.Hostile
+                Trait = CharacterTraitType.Hostile,
+                TraitSpecified = true
             },
             new DialogueAction
             {
                 Type = DialogueActionType.AssignTrait,
                 Trait = CharacterTraitType.Aggression,
+                TraitSpecified = true,
                 TraitValue = 80,
                 TraitValueSpecified = true
             },
             new DialogueAction
             {
                 Type = DialogueActionType.AssignTrait,
-                Trait = CharacterTraitType.WillTrade
+                Trait = CharacterTraitType.WillTrade,
+                TraitSpecified = true
             }
         };
 

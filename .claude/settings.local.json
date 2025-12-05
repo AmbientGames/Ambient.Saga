@@ -9,7 +9,13 @@
       "Bash(tree:*)",
       "Bash(xargs ls:*)",
       "Bash(cat:*)",
-      "Bash(comm -23:*)"
+      "Bash(comm -23:*)",
+      "Bash(while read file)",
+      "Bash(do sandbox_file=$file//Ambient.Domain/Ambient.Saga.Sandbox.WindowsUI if [ -f $sandbox_file ])",
+      "Bash(then if ! diff -q $file $sandbox_file)",
+      "Bash(then echo 'DIFFERENCE FOUND: $file' fi else echo 'MISSING IN SANDBOX: $file' fi done)",
+      "Bash(ls:*)",
+      "Bash([ -f /mnt/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga/Ambient.Saga.Sandbox.WindowsUI/DefinitionXsd/README.md ])"
     ],
     "deny": [],
     "ask": []

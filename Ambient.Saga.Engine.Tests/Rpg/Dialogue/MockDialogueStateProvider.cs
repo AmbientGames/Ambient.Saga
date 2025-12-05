@@ -109,6 +109,11 @@ public class MockDialogueStateProvider : IDialogueStateProvider
 
     public int? GetTraitValue(string trait) => _traits.GetValueOrDefault(trait);
 
+    /// <summary>
+    /// Test helper to set a trait value directly.
+    /// </summary>
+    public void SetTraitValue(string trait, int value) => _traits[trait] = value;
+
     // Character state (stored as special trait)
     public void SetCharacterState(string characterState) => AssignTrait(characterState, null);
 

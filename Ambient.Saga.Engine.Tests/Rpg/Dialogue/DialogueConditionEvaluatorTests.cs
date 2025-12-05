@@ -535,4 +535,74 @@ public class DialogueConditionEvaluatorTests
     }
 
     #endregion
+
+    #region Trait Comparison Conditions
+
+    [Fact]
+    public void TraitComparison_WithTraitSpecified_EvaluatesCorrectly()
+    {
+        _state.SetTraitValue(CharacterTraitType.Aggression.ToString(), 75);
+
+        var condition = new DialogueCondition
+        {
+            Type = DialogueConditionType.TraitComparison,
+            Trait = CharacterTraitType.Aggression,
+            TraitSpecified = true,
+            Operator = ComparisonOperator.GreaterThanOrEqual,
+            Value = "50"
+        };
+
+        Assert.True(_evaluator.Evaluate(condition));
+    }
+
+    [Fact]
+    public void TraitComparison_WithTraitSpecified_WhenBelowThreshold_ReturnsFalse()
+    {
+        _state.SetTraitValue(CharacterTraitType.Aggression.ToString(), 25);
+
+        var condition = new DialogueCondition
+        {
+            Type = DialogueConditionType.TraitComparison,
+            Trait = CharacterTraitType.Aggression,
+            TraitSpecified = true,
+            Operator = ComparisonOperator.GreaterThanOrEqual,
+            Value = "50"
+        };
+
+        Assert.False(_evaluator.Evaluate(condition));
+    }
+
+    [Fact]
+    public void TraitComparison_WithoutTraitSpecified_ThrowsException()
+    {
+        var condition = new DialogueCondition
+        {
+            Type = DialogueConditionType.TraitComparison,
+            // TraitSpecified defaults to false
+            Operator = ComparisonOperator.GreaterThanOrEqual,
+            Value = "50"
+        };
+
+        var ex = Assert.Throws<InvalidOperationException>(() => _evaluator.Evaluate(condition));
+        Assert.Contains("TraitComparison condition requires Trait attribute", ex.Message);
+    }
+
+    [Fact]
+    public void TraitComparison_WithMissingTraitValue_DefaultsToZero()
+    {
+        // Trait not set in state - should default to 0
+
+        var condition = new DialogueCondition
+        {
+            Type = DialogueConditionType.TraitComparison,
+            Trait = CharacterTraitType.Morale,
+            TraitSpecified = true,
+            Operator = ComparisonOperator.Equals,
+            Value = "0"
+        };
+
+        Assert.True(_evaluator.Evaluate(condition));
+    }
+
+    #endregion
 }

@@ -59,7 +59,7 @@ public class DialogueConditionEvaluator
             DialogueConditionType.QuestNotStarted => _stateProvider.IsQuestNotStarted(condition.RefName),
 
             // Character traits
-            DialogueConditionType.TraitComparison => EvaluateNumeric(_stateProvider.GetTraitValue(condition.Trait.ToString()) ?? 0, condition),
+            DialogueConditionType.TraitComparison => EvaluateTraitComparison(condition),
 
             // Faction reputation
             DialogueConditionType.ReputationLevel => EvaluateReputationLevel(condition),
@@ -127,6 +127,15 @@ public class DialogueConditionEvaluator
             ComparisonOperator.NotEquals => actualValue != expectedValue,
             _ => throw new NotSupportedException($"Boolean conditions only support Equals/NotEquals operators")
         };
+    }
+
+    private bool EvaluateTraitComparison(DialogueCondition condition)
+    {
+        if (!condition.TraitSpecified)
+            throw new InvalidOperationException("TraitComparison condition requires Trait attribute to be specified");
+
+        var traitValue = _stateProvider.GetTraitValue(condition.Trait.ToString()) ?? 0;
+        return EvaluateNumeric(traitValue, condition);
     }
 
     private bool EvaluateReputationLevel(DialogueCondition condition)

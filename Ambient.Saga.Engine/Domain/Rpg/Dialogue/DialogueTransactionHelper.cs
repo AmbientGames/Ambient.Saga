@@ -90,7 +90,8 @@ public static class DialogueTransactionHelper
                         break;
 
                     case DialogueActionType.AssignTrait:
-                        traitsAssigned.Add(action.Trait.ToString());
+                        if (action.TraitSpecified)
+                            traitsAssigned.Add(action.Trait.ToString());
                         break;
 
                     case DialogueActionType.GiveQuestToken:
