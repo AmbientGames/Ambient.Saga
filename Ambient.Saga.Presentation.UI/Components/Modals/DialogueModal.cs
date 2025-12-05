@@ -15,6 +15,8 @@ public class DialogueModal
     private DialogueStateResult? _currentState;
     private bool _isInitialized = false;
     private Guid _lastCharacterInstanceId;
+    private bool _isLoading = false;
+    private string? _errorMessage = null;
 
     public void Render(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
@@ -29,7 +31,13 @@ public class DialogueModal
         {
             _isInitialized = true;
             _lastCharacterInstanceId = character.CharacterInstanceId;
-            _ = InitializeDialogueAsync(viewModel, character);
+            _errorMessage = null;
+            _isLoading = true;
+            Task.Run(async () =>
+            {
+                await InitializeDialogueAsync(viewModel, character);
+                _isLoading = false;
+            });
         }
 
         ImGui.SetNextWindowSize(new Vector2(700, 500), ImGuiCond.FirstUseEver);
@@ -38,7 +46,19 @@ public class DialogueModal
             ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), character.DisplayName);
             ImGui.Separator();
 
-            if (_currentState == null)
+            // Show error if any
+            if (_errorMessage != null)
+            {
+                ImGui.TextColored(new Vector4(1, 0.3f, 0.3f, 1), $"Error: {_errorMessage}");
+                ImGui.Spacing();
+                if (ImGui.Button("Close", new Vector2(120, 0)))
+                {
+                    isOpen = false;
+                    _isInitialized = false;
+                    _errorMessage = null;
+                }
+            }
+            else if (_isLoading || _currentState == null)
             {
                 ImGui.Text("Loading dialogue...");
             }
@@ -88,9 +108,14 @@ public class DialogueModal
                             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 0.5f, 0.5f, 1));
                         }
 
-                        if (ImGui.Selectable(choiceText, false) && canSelect)
+                        if (ImGui.Selectable(choiceText, false) && canSelect && !_isLoading)
                         {
-                            _ = SelectChoiceAsync(viewModel, character, modalManager, choice.ChoiceId);
+                            _isLoading = true;
+                            Task.Run(async () =>
+                            {
+                                await SelectChoiceAsync(viewModel, character, modalManager, choice.ChoiceId);
+                                _isLoading = false;
+                            });
                         }
 
                         if (!canSelect)
@@ -109,10 +134,15 @@ public class DialogueModal
                 }
                 else if (_currentState.CanContinue)
                 {
-                    if (ImGui.Button("Continue...", new Vector2(200, 30)))
+                    if (ImGui.Button("Continue...", new Vector2(200, 30)) && !_isLoading)
                     {
-                        // Refresh dialogue state to advance
-                        _ = RefreshDialogueStateAsync(viewModel, character);
+                        // Advance to next dialogue node
+                        _isLoading = true;
+                        Task.Run(async () =>
+                        {
+                            await AdvanceDialogueAsync(viewModel, character, modalManager);
+                            _isLoading = false;
+                        });
                     }
                 }
 
@@ -154,22 +184,8 @@ public class DialogueModal
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Error initializing dialogue: {ex.Message}");
-            _currentState = new DialogueStateResult
-            {
-                IsActive = true,
-                HasEnded = false,
-                DialogueText = new List<string> { $"Error loading dialogue: {ex.Message}" },
-                Choices = new List<DialogueChoiceOption>
-                {
-                    new DialogueChoiceOption
-                    {
-                        ChoiceId = "close",
-                        Text = "Close",
-                        IsAvailable = true
-                    }
-                },
-                CanContinue = false
-            };
+            _errorMessage = ex.Message;
+            _currentState = null;
         }
     }
 
@@ -223,6 +239,65 @@ public class DialogueModal
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Error selecting choice: {ex.Message}");
+            _errorMessage = ex.Message;
+        }
+    }
+
+    private async Task AdvanceDialogueAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
+    {
+        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+            return;
+
+        try
+        {
+            var command = new AdvanceDialogueCommand
+            {
+                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                SagaArcRef = character.SagaRef,
+                CharacterInstanceId = character.CharacterInstanceId,
+                Avatar = viewModel.PlayerAvatar
+            };
+
+            var result = await viewModel.Mediator.Send(command);
+
+            if (!result.Successful)
+            {
+                _errorMessage = result.ErrorMessage;
+                return;
+            }
+
+            // Check for pending system events (battle, trade transitions)
+            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is List<object> events && events.Count > 0)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {events.Count} pending events from advance");
+
+                var firstEvent = events[0];
+                var eventType = firstEvent.GetType().Name;
+
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Event type: {eventType}");
+
+                // Close dialogue and open appropriate modal
+                modalManager.ShowDialogue = false;
+
+                if (eventType.Contains("OpenMerchantTrade"))
+                {
+                    modalManager.ShowMerchantTrade = true;
+                }
+                else if (eventType.Contains("StartBossBattle") || eventType.Contains("StartCombat"))
+                {
+                    modalManager.ShowBossBattle = true;
+                }
+
+                return;
+            }
+
+            // Refresh dialogue state to show next node
+            await RefreshDialogueStateAsync(viewModel, character);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error advancing dialogue: {ex.Message}");
+            _errorMessage = ex.Message;
         }
     }
 
