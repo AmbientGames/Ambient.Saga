@@ -2079,4 +2079,317 @@ public class BattleEnginePhase1Tests
     }
 
     #endregion
+
+    #region Phase 6: Two-Handed Weapons and Turn-Based Status Effect Triggers
+
+    [Fact]
+    public void TwoHandedWeapon_EquippingOccupiesBothHands()
+    {
+        // Arrange
+        var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
+
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
+            equipment: new[] { new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Equip two-handed weapon in right hand
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.AdjustLoadout,
+            Parameter = "RightHand:GreatSword"
+        });
+
+        // Assert - Both hands should have the same weapon
+        Assert.True(result.Success);
+        Assert.Equal("GreatSword", player.CombatProfile["RightHand"]);
+        Assert.Equal("GreatSword", player.CombatProfile["LeftHand"]);
+    }
+
+    [Fact]
+    public void TwoHandedWeapon_ClearsOtherHandWhenEquipping()
+    {
+        // Arrange
+        var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
+
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
+            equipment: new[]
+            {
+                new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f },
+                new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
+            });
+        player.CombatProfile["RightHand"] = "IronSword"; // One-handed sword in right
+        player.CombatProfile["LeftHand"] = "IronShield"; // Shield in left
+
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Equip two-handed weapon (should clear shield)
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.AdjustLoadout,
+            Parameter = "RightHand:GreatSword"
+        });
+
+        // Assert - Shield should be cleared, both hands have greatsword
+        Assert.True(result.Success);
+        Assert.Equal("GreatSword", player.CombatProfile["RightHand"]);
+        Assert.Equal("GreatSword", player.CombatProfile["LeftHand"]);
+    }
+
+    [Fact]
+    public void TwoHandedWeapon_CannotEquipOneHandedWhenTwoHandedEquipped()
+    {
+        // Arrange
+        var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
+
+        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
+            equipment: new[]
+            {
+                new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f },
+                new EquipmentEntry { EquipmentRef = "IronShield", Condition = 1.0f }
+            });
+        player.CombatProfile["RightHand"] = "GreatSword";
+        player.CombatProfile["LeftHand"] = "GreatSword"; // Two-handed equipped
+
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - Try to equip shield in left hand (blocked by two-handed weapon)
+        var result = engine.ExecutePlayerDecision(new CombatAction
+        {
+            ActionType = ActionType.AdjustLoadout,
+            Parameter = "LeftHand:IronShield"
+        });
+
+        // Assert - Should fail because two-handed weapon occupies both hands
+        Assert.False(result.Success);
+        Assert.Contains("two-handed", result.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public void IsTwoHandedWeapon_ReturnsTrueForTwoHandedMelee()
+    {
+        // Arrange
+        var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        var greatSword = worldWithTwoHanded.TryGetEquipmentByRefName("GreatSword");
+
+        // Act & Assert
+        Assert.True(engine.IsTwoHandedWeapon(greatSword));
+    }
+
+    [Fact]
+    public void IsTwoHandedWeapon_ReturnsFalseForOneHandedMelee()
+    {
+        // Arrange
+        var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
+        var player = CreateCombatant("Player", health: 1.0f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        var ironSword = worldWithTwoHanded.TryGetEquipmentByRefName("IronSword");
+
+        // Act & Assert
+        Assert.False(engine.IsTwoHandedWeapon(ironSword));
+    }
+
+    [Fact]
+    public void StatusEffect_StartOfTurn_AppliesDamageAtTurnStart()
+    {
+        // Arrange
+        var worldWithTiming = CreateTestWorldWithPhase6StatusEffectTiming();
+
+        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Apply StartOfTurn poison to enemy
+        enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "StartOfTurnPoison",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTiming, randomSeed: 42);
+        engine.StartBattle();
+
+        var healthBeforeProcessing = enemy.Health;
+
+        // Act - Process start of turn effects
+        engine.ProcessStatusEffects(enemy);
+
+        // Assert - Damage should be applied (5% per turn)
+        Assert.True(enemy.Health < healthBeforeProcessing);
+        Assert.Contains(engine.CombatLog, log => log.Contains("takes") && log.Contains("damage"));
+    }
+
+    [Fact]
+    public void StatusEffect_EndOfTurn_AppliesDamageAtTurnEnd()
+    {
+        // Arrange
+        var worldWithTiming = CreateTestWorldWithPhase6StatusEffectTiming();
+
+        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Apply EndOfTurn bleed to player
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "EndOfTurnBleed",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTiming, randomSeed: 42);
+        engine.StartBattle();
+
+        var healthBeforeEndOfTurn = player.Health;
+
+        // Act - Process end of turn effects (should apply bleed)
+        engine.ProcessEndOfTurnStatusEffects(player);
+
+        // Assert - Damage should be applied
+        Assert.True(player.Health < healthBeforeEndOfTurn);
+        Assert.Contains(engine.CombatLog, log => log.Contains("takes") && log.Contains("damage"));
+    }
+
+    [Fact]
+    public void StatusEffect_StartOfTurn_DoesNotApplyEndOfTurnEffect()
+    {
+        // Arrange
+        var worldWithTiming = CreateTestWorldWithPhase6StatusEffectTiming();
+
+        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Apply EndOfTurn bleed (should NOT trigger at start of turn)
+        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "EndOfTurnBleed",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTiming, randomSeed: 42);
+        engine.StartBattle();
+
+        var healthBeforeProcessing = player.Health;
+        engine.CombatLog.Clear();
+
+        // Act - Process start of turn effects
+        engine.ProcessStatusEffects(player);
+
+        // Assert - No damage should be applied (EndOfTurn effect processed at StartOfTurn)
+        Assert.Equal(healthBeforeProcessing, player.Health);
+        Assert.DoesNotContain(engine.CombatLog, log => log.Contains("takes") && log.Contains("damage"));
+    }
+
+    [Fact]
+    public void StatusEffect_EndOfTurn_DoesNotApplyStartOfTurnEffect()
+    {
+        // Arrange
+        var worldWithTiming = CreateTestWorldWithPhase6StatusEffectTiming();
+
+        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        // Apply StartOfTurn poison (should NOT trigger at end of turn)
+        enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
+        {
+            StatusEffectRef = "StartOfTurnPoison",
+            RemainingTurns = 3,
+            Stacks = 1,
+            AppliedOnTurn = 1
+        });
+
+        var engine = new BattleEngine(player, enemy, world: worldWithTiming, randomSeed: 42);
+        engine.StartBattle();
+
+        var healthBeforeProcessing = enemy.Health;
+        engine.CombatLog.Clear();
+
+        // Act - Process end of turn effects
+        engine.ProcessEndOfTurnStatusEffects(enemy);
+
+        // Assert - No damage should be applied
+        Assert.Equal(healthBeforeProcessing, enemy.Health);
+        Assert.DoesNotContain(engine.CombatLog, log => log.Contains("takes") && log.Contains("damage"));
+    }
+
+    /// <summary>
+    /// Creates a test world with Phase 6 two-handed weapons.
+    /// </summary>
+    private static World CreateTestWorldWithPhase6TwoHandedWeapons()
+    {
+        var baseWorld = CreateTestWorldWithPhase5OnDefendEquipment();
+
+        // Add two-handed great sword
+        var greatSword = new Equipment
+        {
+            RefName = "GreatSword",
+            DisplayName = "Great Sword",
+            SlotRef = "RightHand",
+            Category = EquipmentCategoryType.TwoHandedMelee,
+            Effects = new CharacterEffects { Strength = 0.3f }
+        };
+
+        baseWorld.Gameplay.Equipment = baseWorld.Gameplay.Equipment.Concat(new[] { greatSword }).ToArray();
+        baseWorld.EquipmentLookup["GreatSword"] = greatSword;
+
+        return baseWorld;
+    }
+
+    /// <summary>
+    /// Creates a test world with Phase 6 status effects with different application timings.
+    /// </summary>
+    private static World CreateTestWorldWithPhase6StatusEffectTiming()
+    {
+        var baseWorld = CreateTestWorldWithPhase6TwoHandedWeapons();
+
+        // Add StartOfTurn poison
+        var startOfTurnPoison = new StatusEffect
+        {
+            RefName = "StartOfTurnPoison",
+            DisplayName = "Venomous Poison",
+            Type = StatusEffectType.DamageOverTime,
+            DamagePerTurn = 5, // 5% damage
+            DurationTurns = 3,
+            ApplicationMethod = ApplicationMethod.StartOfTurn,
+            Cleansable = true
+        };
+
+        // Add EndOfTurn bleed
+        var endOfTurnBleed = new StatusEffect
+        {
+            RefName = "EndOfTurnBleed",
+            DisplayName = "Deep Wound",
+            Type = StatusEffectType.DamageOverTime,
+            DamagePerTurn = 3, // 3% damage
+            DurationTurns = 4,
+            ApplicationMethod = ApplicationMethod.EndOfTurn,
+            Cleansable = true
+        };
+
+        baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects
+            .Concat(new[] { startOfTurnPoison, endOfTurnBleed }).ToArray();
+        baseWorld.StatusEffectsLookup["StartOfTurnPoison"] = startOfTurnPoison;
+        baseWorld.StatusEffectsLookup["EndOfTurnBleed"] = endOfTurnBleed;
+
+        return baseWorld;
+    }
+
+    #endregion
 }

@@ -66,6 +66,9 @@
                 <!-- Can be cleansed by consumables/spells -->
                 <xs:attribute name="Cleansable" type="xs:boolean" use="optional" default="true" />
 
+                <!-- PHASE 6: When this status effect applies its periodic effects -->
+                <xs:attribute name="ApplicationMethod" type="ApplicationMethod" use="optional" default="StartOfTurn" />
+
                 <!-- Visual category (for UI rendering) -->
                 <xs:attribute name="Category" use="optional">
                     <xs:simpleType>

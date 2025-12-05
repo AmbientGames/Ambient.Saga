@@ -262,6 +262,8 @@ public class BattleEngine
         // Move to next companion or next phase
         if (State == BattleState.CompanionTurn)  // Not ended by CheckBattleEnd
         {
+            // PHASE 6: Process EndOfTurn status effects for companion before advancing
+            ProcessEndOfTurnStatusEffects(companion);
             AdvanceCompanionTurn();
         }
 
@@ -1260,8 +1262,26 @@ public class BattleEngine
         if (actor.CombatProfile == null)
             actor.CombatProfile = new Dictionary<string, string>();
 
-        actor.CombatProfile[slot] = value;
-        CombatLog.Add($"  → {slot} set to {value}");
+        // PHASE 6: Use two-handed weapon validation for hand slots
+        if (slot == "RightHand" || slot == "LeftHand")
+        {
+            if (!TryApplyHandSlotEquipment(actor, slot, value, out var errorMessage))
+            {
+                return new CombatEvent
+                {
+                    ActionType = BattleActionType.AdjustLoadout,
+                    ActorName = actor.DisplayName,
+                    TargetName = actor.DisplayName,
+                    Success = false,
+                    Message = errorMessage ?? "Failed to equip item"
+                };
+            }
+        }
+        else
+        {
+            actor.CombatProfile[slot] = value;
+            CombatLog.Add($"  → {slot} set to {value}");
+        }
 
         // Quick adjustment provides defensive benefits (staying guarded)
         actor.IsAdjusting = true;
@@ -1326,6 +1346,15 @@ public class BattleEngine
                 actor.AffinityRef = value;
                 CombatLog.Add($"  → {slot} set to {value}");
                 appliedChanges++;
+            }
+            // PHASE 6: Use two-handed weapon validation for hand slots
+            else if (slot == "RightHand" || slot == "LeftHand")
+            {
+                if (TryApplyHandSlotEquipment(actor, slot, value, out _))
+                {
+                    appliedChanges++;
+                }
+                // If it fails, just skip this change (logged in helper method)
             }
             else
             {
@@ -1477,6 +1506,9 @@ public class BattleEngine
         // Switch turns: Player -> Companions -> Enemy -> Player
         if (State == BattleState.PlayerTurn)
         {
+            // PHASE 6: Process EndOfTurn status effects for player before switching
+            ProcessEndOfTurnStatusEffects(_player);
+
             // After player, companions go (if any alive)
             var aliveCompanions = _companions.Where(c => c.IsAlive).ToList();
             if (aliveCompanions.Count > 0)
@@ -1498,6 +1530,9 @@ public class BattleEngine
         }
         else if (State == BattleState.EnemyTurn)
         {
+            // PHASE 6: Process EndOfTurn status effects for enemy before switching
+            ProcessEndOfTurnStatusEffects(_enemy);
+
             State = BattleState.PlayerTurn;
             CombatLog.Add($"--- {_player.DisplayName}'s turn ---");
             _turnNumber++;
@@ -1699,7 +1734,20 @@ public class BattleEngine
     /// Process status effects at the start of a combatant's turn.
     /// Applies damage-over-time, stat modifiers, and decrements durations.
     /// </summary>
-    public void ProcessStatusEffects(Combatant combatant)
+    public void ProcessStatusEffects(Combatant combatant) => ProcessStatusEffectsWithTiming(combatant, ApplicationMethod.StartOfTurn);
+
+    /// <summary>
+    /// PHASE 6: Process status effects at end of a combatant's turn.
+    /// Only processes effects with EndOfTurn application method.
+    /// </summary>
+    public void ProcessEndOfTurnStatusEffects(Combatant combatant) => ProcessStatusEffectsWithTiming(combatant, ApplicationMethod.EndOfTurn);
+
+    /// <summary>
+    /// PHASE 6: Process status effects with specific timing.
+    /// Only applies periodic effects (DoT) for status effects matching the timing.
+    /// Duration decrement happens at StartOfTurn for all effects.
+    /// </summary>
+    private void ProcessStatusEffectsWithTiming(Combatant combatant, ApplicationMethod timing)
     {
         if (_world == null) return;
 
@@ -1715,8 +1763,8 @@ public class BattleEngine
                 continue;
             }
 
-            // Apply damage per turn (scaled by stacks)
-            if (statusEffect.DamagePerTurn != 0)
+            // PHASE 6: Only apply periodic effects (DoT) if timing matches
+            if (statusEffect.ApplicationMethod == timing && statusEffect.DamagePerTurn != 0)
             {
                 var dotDamage = (statusEffect.DamagePerTurn / 100f) * active.Stacks;
                 combatant.Health = Math.Clamp(combatant.Health - dotDamage, 0, Combatant.MAX_STAT);
@@ -1731,12 +1779,15 @@ public class BattleEngine
                 }
             }
 
-            // Decrement duration
-            active.RemainingTurns--;
-            if (active.RemainingTurns <= 0)
+            // Duration decrement only happens at StartOfTurn (to avoid double-counting)
+            if (timing == ApplicationMethod.StartOfTurn)
             {
-                combatant.ActiveStatusEffects.RemoveAt(i);
-                CombatLog.Add($"✨ {statusEffect.DisplayName} wears off from {combatant.DisplayName}");
+                active.RemainingTurns--;
+                if (active.RemainingTurns <= 0)
+                {
+                    combatant.ActiveStatusEffects.RemoveAt(i);
+                    CombatLog.Add($"✨ {statusEffect.DisplayName} wears off from {combatant.DisplayName}");
+                }
             }
         }
     }
@@ -1836,5 +1887,93 @@ public class BattleEngine
         }
 
         return Math.Max(0.5f, multiplier); // Cap at minimum 50% damage (can't be immune)
+    }
+
+    /// <summary>
+    /// PHASE 6: Check if equipment is a two-handed weapon.
+    /// Two-handed weapons occupy both RightHand and LeftHand slots.
+    /// </summary>
+    public bool IsTwoHandedWeapon(Equipment? equipment)
+    {
+        if (equipment == null) return false;
+        return equipment.Category == EquipmentCategoryType.TwoHandedMelee;
+    }
+
+    /// <summary>
+    /// PHASE 6: Validates and applies equipment to a hand slot, handling two-handed weapon rules.
+    /// Returns true if the equipment was successfully applied, false if validation failed.
+    /// </summary>
+    private bool TryApplyHandSlotEquipment(Combatant actor, string slot, string equipmentRef, out string? errorMessage)
+    {
+        errorMessage = null;
+
+        // Only process hand slots for two-handed validation
+        if (slot != "RightHand" && slot != "LeftHand")
+        {
+            actor.CombatProfile[slot] = equipmentRef;
+            return true;
+        }
+
+        if (_world == null)
+        {
+            actor.CombatProfile[slot] = equipmentRef;
+            return true;
+        }
+
+        var equipment = _world.TryGetEquipmentByRefName(equipmentRef);
+
+        // If equipping a two-handed weapon
+        if (IsTwoHandedWeapon(equipment))
+        {
+            // Check if the OTHER hand has something equipped
+            var otherSlot = slot == "RightHand" ? "LeftHand" : "RightHand";
+            if (actor.CombatProfile.TryGetValue(otherSlot, out var otherEquipRef) && !string.IsNullOrEmpty(otherEquipRef))
+            {
+                // Clear the other hand - two-handed weapons occupy both
+                actor.CombatProfile[otherSlot] = string.Empty;
+                CombatLog.Add($"  → {equipment?.DisplayName ?? equipmentRef} requires both hands - {otherSlot} cleared");
+            }
+
+            // Equip in both hands
+            actor.CombatProfile["RightHand"] = equipmentRef;
+            actor.CombatProfile["LeftHand"] = equipmentRef;
+            CombatLog.Add($"  → Two-handed weapon {equipment?.DisplayName ?? equipmentRef} equipped in both hands");
+            return true;
+        }
+
+        // PHASE 6 FIX: First check if EITHER hand has a two-handed weapon - must block one-handed equip
+        var otherHandSlot = slot == "RightHand" ? "LeftHand" : "RightHand";
+
+        // Check current slot for two-handed weapon
+        var currentSlotEquip = actor.CombatProfile.TryGetValue(slot, out var currentRef) ? currentRef : null;
+        if (!string.IsNullOrEmpty(currentSlotEquip))
+        {
+            var currentEquipment = _world.TryGetEquipmentByRefName(currentSlotEquip);
+            if (IsTwoHandedWeapon(currentEquipment))
+            {
+                // Current slot has two-handed weapon - block one-handed equip
+                errorMessage = $"Cannot equip {equipment?.DisplayName ?? equipmentRef} - {currentEquipment?.DisplayName ?? currentSlotEquip} is a two-handed weapon occupying both hands";
+                CombatLog.Add($"  → {errorMessage}");
+                return false;
+            }
+        }
+
+        // Check other hand for two-handed weapon
+        if (actor.CombatProfile.TryGetValue(otherHandSlot, out var otherHandRef) && !string.IsNullOrEmpty(otherHandRef))
+        {
+            var otherEquip = _world.TryGetEquipmentByRefName(otherHandRef);
+            if (IsTwoHandedWeapon(otherEquip))
+            {
+                // Can't equip in this slot - other hand has a two-handed weapon
+                errorMessage = $"Cannot equip {equipment?.DisplayName ?? equipmentRef} - {otherEquip?.DisplayName ?? otherHandRef} is a two-handed weapon occupying both hands";
+                CombatLog.Add($"  → {errorMessage}");
+                return false;
+            }
+        }
+
+        // Normal one-handed equip
+        actor.CombatProfile[slot] = equipmentRef;
+        CombatLog.Add($"  → {slot} set to {equipment?.DisplayName ?? equipmentRef}");
+        return true;
     }
 }

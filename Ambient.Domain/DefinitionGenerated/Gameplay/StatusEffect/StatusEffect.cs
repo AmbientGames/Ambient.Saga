@@ -44,6 +44,8 @@ namespace Ambient.Domain {
         
         private bool cleansableField;
         
+        private ApplicationMethod applicationMethodField;
+        
         private StatusEffectCategory categoryField;
         
         private bool categoryFieldSpecified;
@@ -59,6 +61,7 @@ namespace Ambient.Domain {
             this.maxStacksField = 1;
             this.applicationChanceField = ((float)(1F));
             this.cleansableField = true;
+            this.applicationMethodField = ApplicationMethod.StartOfTurn;
         }
         
         /// <remarks/>
@@ -189,6 +192,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.cleansableField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(ApplicationMethod.StartOfTurn)]
+        public ApplicationMethod ApplicationMethod {
+            get {
+                return this.applicationMethodField;
+            }
+            set {
+                this.applicationMethodField = value;
             }
         }
         
