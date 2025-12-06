@@ -1,401 +1,512 @@
-﻿//using Ambient.Application.Contracts;
-//using Ambient.Domain;
-//using Ambient.Domain.DefinitionExtensions;
-//using Ambient.Domain.Entities;
-//using Ambient.Domain.GameLogic.Gameplay.Avatar;
-//using Ambient.Saga.Engine.Contracts.Cqrs;
-//using Ambient.Saga.Engine.Contracts.Services;
-//using Ambient.Saga.Engine.Application.Behaviors;
-//using Ambient.Saga.Engine.Application.Commands.Saga;
-//using Ambient.Saga.Engine.Application.ReadModels;
-//using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
-//using Ambient.Saga.Engine.Infrastructure.Persistence;
-//using LiteDB;
-//using MediatR;
-//using Microsoft.Extensions.DependencyInjection;
-//using Xunit.Abstractions;
+using Ambient.Domain;
+using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
+using Ambient.Saga.Engine.Application.Behaviors;
+using Ambient.Saga.Engine.Application.Commands.Saga;
+using Ambient.Saga.Engine.Application.ReadModels;
+using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Infrastructure.Persistence;
+using LiteDB;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Xunit.Abstractions;
 
-//namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
+namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
-///// <summary>
-///// Integration tests for InteractWithFeatureCommand.
-///// Tests feature loot serialization, avatar updates, and compensating transactions.
-///// </summary>
-//[Collection("Sequential CQRS Tests")]
-//public class InteractWithFeatureCommandTests : IDisposable
-//{
-//    private readonly ITestOutputHelper _output;
-//    private readonly ServiceProvider _serviceProvider;
-//    private readonly IMediator _mediator;
-//    private readonly World _world;
-//    private readonly LiteDatabase _database;
-//    private readonly ISagaInstanceRepository _repository;
+/// <summary>
+/// Integration tests for InteractWithFeatureCommand via CQRS pipeline.
+/// Tests feature interactions, loot awarding, quest tokens, and MaxInteractions limits.
+/// </summary>
+[Collection("Sequential CQRS Tests")]
+public class InteractWithFeatureCommandTests : IDisposable
+{
+    private readonly ITestOutputHelper _output;
+    private readonly ServiceProvider _serviceProvider;
+    private readonly IMediator _mediator;
+    private readonly World _world;
+    private readonly LiteDatabase _database;
+    private readonly ISagaInstanceRepository _repository;
 
-//    public InteractWithFeatureCommandTests(ITestOutputHelper output)
-//    {
-//        _output = output;
-//        _database = new LiteDatabase(new MemoryStream());
-//        _world = CreateWorldWithLootChest();
+    public InteractWithFeatureCommandTests(ITestOutputHelper output)
+    {
+        _output = output;
+        _database = new LiteDatabase(new MemoryStream());
+        _world = CreateWorldWithFeatures();
 
-//        var services = new ServiceCollection();
+        var services = new ServiceCollection();
 
-//        services.AddMediatR(cfg =>
-//        {
-//            cfg.RegisterServicesFromAssemblyContaining<InteractWithFeatureCommand>();
-//            cfg.AddOpenBehavior(typeof(SagaLoggingBehavior<,>));
-//            cfg.AddOpenBehavior(typeof(SagaValidationBehavior<,>));
-//            cfg.AddOpenBehavior(typeof(AchievementEvaluationBehavior<,>));
-//        });
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblyContaining<InteractWithFeatureCommand>();
+            cfg.AddOpenBehavior(typeof(SagaLoggingBehavior<,>));
+            cfg.AddOpenBehavior(typeof(SagaValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(AchievementEvaluationBehavior<,>));
+        });
 
-//        services.AddSingleton(_world);
-//        services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
-//        services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
-//        services.AddSingleton<IGameAvatarRepository>(new TestAvatarRepository()); // Mock repository (from FullSagaFlowE2ETests)
-//        services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
+        services.AddSingleton(_world);
+        services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
+        services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
 
-//        _serviceProvider = services.BuildServiceProvider();
-//        _mediator = _serviceProvider.GetRequiredService<IMediator>();
-//        _repository = _serviceProvider.GetRequiredService<ISagaInstanceRepository>();
-//    }
+        _serviceProvider = services.BuildServiceProvider();
+        _mediator = _serviceProvider.GetRequiredService<IMediator>();
+        _repository = _serviceProvider.GetRequiredService<ISagaInstanceRepository>();
+    }
 
-//    [Fact]
-//    public async Task InteractWithFeature_WithLoot_CreatesLootAwardedTransactionWithSerializedItems()
-//    {
-//        // ARRANGE
-//        var avatarId = Guid.NewGuid();
-//        var avatar = CreateAvatar(avatarId);
-//        var sagaRef = "LootChestSaga";
-//        var featureRef = "TreasureChest";
+    private World CreateWorldWithFeatures()
+    {
+        // Create a SagaFeature with loot (treasure chest)
+        var treasureChest = new SagaFeature
+        {
+            RefName = "TreasureChest",
+            DisplayName = "Ancient Treasure Chest",
+            Type = SagaFeatureType.Landmark,
+            Interactable = new InteractableBase
+            {
+                Loot = new ItemCollection
+                {
+                    Equipment = new[]
+                    {
+                        new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
+                    },
+                    Consumables = new[]
+                    {
+                        new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 5 }
+                    }
+                }
+            }
+        };
 
-//        _output.WriteLine("=== TEST: Feature Loot Transaction Serialization ===");
+        // Create a SagaFeature with MaxInteractions limit
+        var limitedChest = new SagaFeature
+        {
+            RefName = "LimitedChest",
+            DisplayName = "Limited Chest",
+            Type = SagaFeatureType.Landmark,
+            Interactable = new InteractableBase
+            {
+                MaxInteractions = 2,
+                Loot = new ItemCollection
+                {
+                    Consumables = new[]
+                    {
+                        new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 1 }
+                    }
+                }
+            }
+        };
 
-//        // ACT: Interact with feature containing loot
-//        var result = await _mediator.Send(new InteractWithFeatureCommand
-//        {
-//            AvatarId = avatarId,
-//            SagaRef = sagaRef,
-//            FeatureRef = featureRef,
-//            Avatar = avatar
-//        });
+        // Create a SagaFeature that gives quest tokens
+        var questSignpost = new SagaFeature
+        {
+            RefName = "QuestSignpost",
+            DisplayName = "Dragon Lair Marker",
+            Type = SagaFeatureType.Quest,
+            QuestRef = "DragonSlayerQuest",
+            Interactable = new InteractableBase
+            {
+                GivesQuestTokenRef = new[] { "DragonSlayerToken" }
+            }
+        };
 
-//        // ASSERT: Command succeeded
-//        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
+        // Create a SagaFeature that requires quest tokens
+        var lockedDoor = new SagaFeature
+        {
+            RefName = "LockedDoor",
+            DisplayName = "Sealed Door",
+            Type = SagaFeatureType.Landmark,
+            Interactable = new InteractableBase
+            {
+                RequiresQuestTokenRef = new[] { "GoldenKey" }
+            }
+        };
 
-//        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-//        var transactions = instance.GetCommittedTransactions().ToList();
+        // Create Saga arcs for each feature
+        var lootChestSaga = new SagaArc
+        {
+            RefName = "LootChestSaga",
+            DisplayName = "Treasure Hunt",
+            LatitudeZ = 35.0,
+            LongitudeX = 139.0,
+            Y = 100.0,
+            SagaFeatureRef = "TreasureChest"
+        };
 
-//        // Should have EntityInteracted + LootAwarded
-//        Assert.Contains(transactions, t => t.Type == SagaTransactionType.EntityInteracted);
-//        var lootTx = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.LootAwarded);
-//        Assert.NotNull(lootTx);
+        var limitedChestSaga = new SagaArc
+        {
+            RefName = "LimitedChestSaga",
+            DisplayName = "Limited Treasure",
+            LatitudeZ = 36.0,
+            LongitudeX = 140.0,
+            Y = 100.0,
+            SagaFeatureRef = "LimitedChest"
+        };
 
-//        // CRITICAL: Loot items must be serialized in transaction Data
-//        Assert.True(lootTx.Data.ContainsKey("Equipment"));
-//        Assert.True(lootTx.Data.ContainsKey("Consumables"));
-//        Assert.True(lootTx.Data.ContainsKey("Spells"));
-//        Assert.True(lootTx.Data.ContainsKey("Blocks"));
-//        Assert.True(lootTx.Data.ContainsKey("Tools"));
-//        Assert.True(lootTx.Data.ContainsKey("BuildingMaterials"));
+        var questMarkerSaga = new SagaArc
+        {
+            RefName = "QuestMarkerSaga",
+            DisplayName = "Quest Marker",
+            LatitudeZ = 37.0,
+            LongitudeX = 141.0,
+            Y = 100.0,
+            SagaFeatureRef = "QuestSignpost"
+        };
 
-//        // Verify equipment serialization format: "RefName:Condition"
-//        var equipment = lootTx.Data["Equipment"];
-//        Assert.Contains("IronSword:1.00", equipment);
-//        _output.WriteLine($"✓ Equipment serialized: {equipment}");
+        var lockedDoorSaga = new SagaArc
+        {
+            RefName = "LockedDoorSaga",
+            DisplayName = "Locked Door",
+            LatitudeZ = 38.0,
+            LongitudeX = 142.0,
+            Y = 100.0,
+            SagaFeatureRef = "LockedDoor"
+        };
 
-//        // Verify consumables serialization format: "RefName:Quantity"
-//        var consumables = lootTx.Data["Consumables"];
-//        Assert.Contains("HealthPotion:5", consumables);
-//        _output.WriteLine($"✓ Consumables serialized: {consumables}");
+        var sagas = new[] { lootChestSaga, limitedChestSaga, questMarkerSaga, lockedDoorSaga };
 
-//        // Verify spells serialization format: "RefName:Condition"
-//        var spells = lootTx.Data["Spells"];
-//        Assert.Contains("Fireball:1.00", spells);
-//        _output.WriteLine($"✓ Spells serialized: {spells}");
+        var world = new World
+        {
+            WorldConfiguration = new WorldConfiguration
+            {
+                RefName = "TestWorld",
+                SpawnLatitude = 35.0,
+                SpawnLongitude = 139.0,
+                ProceduralSettings = new ProceduralSettings
+                {
+                    LatitudeDegreesToUnits = 111320.0,
+                    LongitudeDegreesToUnits = 91300.0
+                }
+            },
+            WorldTemplate = new WorldTemplate
+            {
+                Gameplay = new GameplayComponents
+                {
+                    SagaArcs = sagas,
+                    Characters = Array.Empty<Character>(),
+                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
+                    AvatarArchetypes = Array.Empty<AvatarArchetype>(),
+                    Achievements = Array.Empty<Achievement>(),
+                    CharacterAffinities = Array.Empty<CharacterAffinity>(),
+                    DialogueTrees = Array.Empty<DialogueTree>()
+                }
+            }
+        };
 
-//        _output.WriteLine("✓ All loot items properly serialized in transaction");
-//    }
+        // Initialize lookups
+        world.SagaArcLookup = sagas.ToDictionary(s => s.RefName, s => s);
+        world.SagaTriggersLookup = sagas.ToDictionary(
+            s => s.RefName,
+            s => new List<SagaTrigger>());
 
-//    [Fact]
-//    public async Task InteractWithFeature_WithLoot_CallsAvatarUpdateService()
-//    {
-//        // ARRANGE
-//        var avatarId = Guid.NewGuid();
-//        var avatarEntity = new AvatarEntity
-//        {
-//            AvatarId = avatarId,
-//            DisplayName = "Test Avatar",
-//            Stats = new CharacterStats { Health = 100.0f, Credits = 0 },
-//            Capabilities = new ItemCollection { Equipment = Array.Empty<EquipmentEntry>() }
-//        };
-//        var sagaRef = "LootChestSaga";
-//        var featureRef = "TreasureChest";
+        world.SagaFeaturesLookup[treasureChest.RefName] = treasureChest;
+        world.SagaFeaturesLookup[limitedChest.RefName] = limitedChest;
+        world.SagaFeaturesLookup[questSignpost.RefName] = questSignpost;
+        world.SagaFeaturesLookup[lockedDoor.RefName] = lockedDoor;
 
-//        _output.WriteLine("=== TEST: Avatar Update Service Called ===");
+        return world;
+    }
 
-//        // ACT: Interact with feature
-//        var result = await _mediator.Send(new InteractWithFeatureCommand
-//        {
-//            AvatarId = avatarId,
-//            SagaRef = sagaRef,
-//            FeatureRef = featureRef,
-//            Avatar = avatarEntity
-//        });
+    private AvatarBase CreateAvatar(string name = "Test Hero")
+    {
+        var archetype = new AvatarArchetype
+        {
+            RefName = "TestWarrior",
+            DisplayName = "Test Warrior",
+            Description = "A test warrior",
+            AffinityRef = "Physical",
+            SpawnStats = new CharacterStats
+            {
+                Health = 1.0f,
+                Stamina = 1.0f,
+                Mana = 1.0f,
+                Hunger = 0f,
+                Thirst = 0f,
+                Temperature = 37f,
+                Insulation = 0f,
+                Credits = 100,
+                Experience = 0,
+                Strength = 0.10f,
+                Defense = 0.10f,
+                Speed = 0.10f,
+                Magic = 0.10f
+            },
+            SpawnCapabilities = new ItemCollection
+            {
+                Equipment = Array.Empty<EquipmentEntry>(),
+                Consumables = Array.Empty<ConsumableEntry>(),
+                Spells = Array.Empty<SpellEntry>(),
+                Blocks = Array.Empty<BlockEntry>(),
+                Tools = Array.Empty<ToolEntry>(),
+                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
+                QuestTokens = Array.Empty<QuestTokenEntry>()
+            },
+            RespawnStats = new CharacterStats
+            {
+                Health = 1.0f,
+                Stamina = 1.0f,
+                Mana = 1.0f,
+                Hunger = 0f,
+                Thirst = 0f,
+                Temperature = 37f,
+                Insulation = 0f,
+                Credits = 50,
+                Experience = 0,
+                Strength = 0.08f,
+                Defense = 0.08f,
+                Speed = 0.08f,
+                Magic = 0.08f
+            },
+            RespawnCapabilities = new ItemCollection
+            {
+                Equipment = Array.Empty<EquipmentEntry>(),
+                Consumables = Array.Empty<ConsumableEntry>(),
+                Spells = Array.Empty<SpellEntry>(),
+                Blocks = Array.Empty<BlockEntry>(),
+                Tools = Array.Empty<ToolEntry>(),
+                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
+                QuestTokens = Array.Empty<QuestTokenEntry>()
+            }
+        };
 
-//        // ASSERT: Command succeeded and avatar updated
-//        Assert.True(result.Successful);
-//        Assert.NotNull(result.UpdatedAvatar);
-//        _output.WriteLine("✓ IAvatarUpdateService.UpdateAvatarForLootAsync() called");
-//        _output.WriteLine("✓ Avatar returned in result");
-//    }
+        var avatar = new AvatarBase
+        {
+            ArchetypeRef = "TestWarrior",
+            DisplayName = name,
+            BlockOwnership = new Dictionary<string, int>()
+        };
 
-//    [Fact]
-//    public async Task InteractWithFeature_MaxInteractions_BlocksAfterLimit()
-//    {
-//        // ARRANGE: Feature with MaxInteractions=2
-//        var avatarId = Guid.NewGuid();
-//        var avatar = CreateAvatar(avatarId);
-//        var sagaRef = "LimitedChestSaga";
-//        var featureRef = "LimitedChest";
+        AvatarSpawner.SpawnFromModelAvatar(avatar, archetype);
 
-//        _output.WriteLine("=== TEST: MaxInteractions Enforcement ===");
+        return avatar;
+    }
 
-//        // ACT: Interact twice (should succeed)
-//        var result1 = await _mediator.Send(new InteractWithFeatureCommand
-//        {
-//            AvatarId = avatarId,
-//            SagaRef = sagaRef,
-//            FeatureRef = featureRef,
-//            Avatar = avatar
-//        });
-//        Assert.True(result1.Successful);
-//        _output.WriteLine("✓ Interaction 1/2 succeeded");
+    [Fact]
+    public async Task InteractWithFeature_WithLoot_CreatesLootAwardedTransaction()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateAvatar();
+        avatar.AvatarId = avatarId;
 
-//        var result2 = await _mediator.Send(new InteractWithFeatureCommand
-//        {
-//            AvatarId = avatarId,
-//            SagaRef = sagaRef,
-//            FeatureRef = featureRef,
-//            Avatar = avatar
-//        });
-//        Assert.True(result2.Successful);
-//        _output.WriteLine("✓ Interaction 2/2 succeeded");
+        _output.WriteLine("=== TEST: Feature Loot Transaction ===");
 
-//        // ACT: Interact third time (should fail)
-//        var result3 = await _mediator.Send(new InteractWithFeatureCommand
-//        {
-//            AvatarId = avatarId,
-//            SagaRef = sagaRef,
-//            FeatureRef = featureRef,
-//            Avatar = avatar
-//        });
+        var command = new InteractWithFeatureCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "LootChestSaga",
+            FeatureRef = "TreasureChest",
+            Avatar = avatar
+        };
 
-//        // ASSERT: Third interaction blocked
-//        Assert.False(result3.Successful);
-//        Assert.Contains("reached maximum interactions", result3.ErrorMessage);
-//        _output.WriteLine($"✓ Interaction 3 blocked: {result3.ErrorMessage}");
-//    }
+        // Act
+        var result = await _mediator.Send(command);
 
-//    [Fact]
-//    public async Task InteractWithFeature_QuestTokens_CreatesQuestTokenAwardedTransaction()
-//    {
-//        // ARRANGE
-//        var avatarId = Guid.NewGuid();
-//        var avatar = CreateAvatar(avatarId);
-//        var sagaRef = "QuestMarkerSaga";
-//        var featureRef = "QuestSignpost";
+        // Assert
+        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
+        Assert.NotEmpty(result.TransactionIds);
 
-//        _output.WriteLine("=== TEST: Quest Token Awarded ===");
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "LootChestSaga");
+        var transactions = instance.GetCommittedTransactions().ToList();
 
-//        // ACT: Interact with feature that gives quest tokens
-//        var result = await _mediator.Send(new InteractWithFeatureCommand
-//        {
-//            AvatarId = avatarId,
-//            SagaRef = sagaRef,
-//            FeatureRef = featureRef,
-//            Avatar = avatar
-//        });
+        // Should have EntityInteracted + LootAwarded
+        Assert.Contains(transactions, t => t.Type == SagaTransactionType.EntityInteracted);
+        var lootTx = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.LootAwarded);
+        Assert.NotNull(lootTx);
 
-//        // ASSERT: QuestTokenAwarded transaction created
-//        Assert.True(result.Successful);
+        // Verify loot items are serialized in transaction Data
+        Assert.True(lootTx.Data.ContainsKey("Equipment"));
+        Assert.True(lootTx.Data.ContainsKey("Consumables"));
+        Assert.Contains("IronSword", lootTx.Data["Equipment"]);
+        Assert.Contains("HealthPotion", lootTx.Data["Consumables"]);
 
-//        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-//        var transactions = instance.GetCommittedTransactions().ToList();
+        _output.WriteLine($"✓ Equipment serialized: {lootTx.Data["Equipment"]}");
+        _output.WriteLine($"✓ Consumables serialized: {lootTx.Data["Consumables"]}");
+        _output.WriteLine("✓ LootAwarded transaction created with serialized items");
+    }
 
-//        var tokenTx = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestTokenAwarded);
-//        Assert.NotNull(tokenTx);
-//        Assert.Equal("DragonSlayerToken", tokenTx.Data["QuestTokenRef"]);
-//        _output.WriteLine($"✓ Quest token awarded: {tokenTx.Data["QuestTokenRef"]}");
-//    }
+    [Fact]
+    public async Task InteractWithFeature_MaxInteractions_BlocksAfterLimit()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateAvatar();
+        avatar.AvatarId = avatarId;
 
-//    private World CreateWorldWithLootChest()
-//    {
-//        // Create landmark with loot (treasure chest)
-//        var treasureChest = new Landmark
-//        {
-//            RefName = "TreasureChest",
-//            DisplayName = "Ancient Treasure Chest",
-//            Interactable = new InteractableBase
-//            {
-//                Loot = new ItemCollection
-//                {
-//                    Equipment = new[]
-//                    {
-//                        new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
-//                    },
-//                    Consumables = new[]
-//                    {
-//                        new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 5 }
-//                    },
-//                    Spells = new[]
-//                    {
-//                        new SpellEntry { SpellRef = "Fireball", Condition = 1.0f }
-//                    },
-//                    Blocks = new[]
-//                    {
-//                        new BlockEntry { BlockRef = "Stone", Quantity = 50 }
-//                    },
-//                    Tools = new[]
-//                    {
-//                        new ToolEntry { ToolRef = "Pickaxe", Condition = 0.8f }
-//                    },
-//                    BuildingMaterials = new[]
-//                    {
-//                        new BuildingMaterialEntry { BuildingMaterialRef = "Wood", Quantity = 100 }
-//                    }
-//                }
-//            }
-//        };
+        _output.WriteLine("=== TEST: MaxInteractions Enforcement ===");
 
-//        var lootChestSaga = new SagaArc
-//        {
-//            RefName = "LootChestSaga",
-//            DisplayName = "Treasure Hunt",
-//            LatitudeZ = 35.0,
-//            LongitudeX = 139.0,
-//            Y = 100.0,
-//            Item = "TreasureChest"
-//        };
+        var command = new InteractWithFeatureCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "LimitedChestSaga",
+            FeatureRef = "LimitedChest",
+            Avatar = avatar
+        };
 
-//        // Create landmark with MaxInteractions limit
-//        var limitedChest = new Landmark
-//        {
-//            RefName = "LimitedChest",
-//            DisplayName = "Limited Chest",
-//            Interactable = new InteractableBase
-//            {
-//                MaxInteractions = 2,
-//                Loot = new ItemCollection
-//                {
-//                    Consumables = new[]
-//                    {
-//                        new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 1 }
-//                    }
-//                }
-//            }
-//        };
+        // Act - Interact twice (should succeed)
+        var result1 = await _mediator.Send(command);
+        Assert.True(result1.Successful);
+        _output.WriteLine("✓ Interaction 1/2 succeeded");
 
-//        var limitedChestSaga = new SagaArc
-//        {
-//            RefName = "LimitedChestSaga",
-//            DisplayName = "Limited Treasure",
-//            LatitudeZ = 36.0,
-//            LongitudeX = 140.0,
-//            Y = 100.0,
-//            Item = "LimitedChest"
-//        };
+        var result2 = await _mediator.Send(command);
+        Assert.True(result2.Successful);
+        _output.WriteLine("✓ Interaction 2/2 succeeded");
 
-//        // Create quest signpost with quest token
-//        var questSignpost = new QuestSignpost
-//        {
-//            RefName = "QuestSignpost",
-//            DisplayName = "Dragon Lair Marker",
-//            Interactable = new InteractableBase
-//            {
-//                GivesQuestTokenRef = new[] { "DragonSlayerToken" }
-//            }
-//        };
+        // Act - Interact third time (should fail)
+        var result3 = await _mediator.Send(command);
 
-//        var questMarkerSaga = new SagaArc
-//        {
-//            RefName = "QuestMarkerSaga",
-//            DisplayName = "Quest Marker",
-//            LatitudeZ = 37.0,
-//            LongitudeX = 141.0,
-//            Y = 100.0,
-//            Item = "QuestSignpost"
-//        };
+        // Assert
+        Assert.False(result3.Successful);
+        Assert.Contains("maximum interactions", result3.ErrorMessage);
+        _output.WriteLine($"✓ Interaction 3 blocked: {result3.ErrorMessage}");
+    }
 
-//        var sagas = new[] { lootChestSaga, limitedChestSaga, questMarkerSaga };
-//        var landmarks = new[] { treasureChest, limitedChest };
-//        var questSignposts = new[] { questSignpost };
+    [Fact]
+    public async Task InteractWithFeature_QuestTokens_CreatesQuestTokenAwardedTransaction()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateAvatar();
+        avatar.AvatarId = avatarId;
 
-//        var world = new World
-//        {
-//            IsProcedural = true,
-//            WorldConfiguration = new WorldConfiguration
-//            {
-//                RefName = "TestWorld",
-//                SpawnLatitude = 35.0,
-//                SpawnLongitude = 139.0,
-//                ProceduralSettings = new ProceduralSettings
-//                {
-//                    LatitudeDegreesToUnits = 111320.0,
-//                    LongitudeDegreesToUnits = 91300.0
-//                }
-//            },
-//            WorldTemplate = new WorldTemplate
-//            {
-//                Gameplay = new GameplayComponents
-//                {
-//                    SagaArcs = sagas,
-//                    Landmarks = landmarks,
-//                    QuestSignposts = questSignposts,
-//                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
-//                    AvatarArchetypes = Array.Empty<AvatarArchetype>(),
-//                    Achievements = Array.Empty<Achievement>(),
-//                    CharacterAffinities = Array.Empty<CharacterAffinity>(),
-//                    DialogueTrees = Array.Empty<DialogueTree>()
-//                },
-//                Simulation = new SimulationComponents(),
-//                Presentation = new PresentationComponents()
-//            }
-//        };
+        _output.WriteLine("=== TEST: Quest Token Awarded ===");
 
-//        // Initialize lookups
-//        world.SagaArcLookup = sagas.ToDictionary(s => s.RefName, s => s);
-//        world.SagaTriggersLookup = sagas.ToDictionary(
-//            s => s.RefName,
-//            s => new List<SagaTrigger>
-//            {
-//                new SagaTrigger
-//                {
-//                    RefName = s.RefName,
-//                    TriggerType = SagaTriggerType.SpawnPassive,
-//                    EnterRadius = 10.0f
-//                }
-//            });
+        var command = new InteractWithFeatureCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "QuestMarkerSaga",
+            FeatureRef = "QuestSignpost",
+            Avatar = avatar
+        };
 
-//        world.LandmarksLookup = landmarks.ToDictionary(l => l.RefName, l => l);
-//        world.QuestSignpostsLookup = questSignposts.ToDictionary(q => q.RefName, q => q);
+        // Act
+        var result = await _mediator.Send(command);
 
-//        return world;
-//    }
+        // Assert
+        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
 
-//    private AvatarEntity CreateAvatar(Guid avatarId)
-//    {
-//        return new AvatarEntity
-//        {
-//            Id = avatarId,
-//            AvatarId = avatarId,
-//            DisplayName = "Test Avatar",
-//            Stats = new CharacterStats { Health = 100.0f },
-//            Capabilities = new ItemCollection()
-//        };
-//    }
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "QuestMarkerSaga");
+        var transactions = instance.GetCommittedTransactions().ToList();
 
-//    public void Dispose()
-//    {
-//        _database?.Dispose();
-//        _serviceProvider?.Dispose();
-//    }
-//}
+        var tokenTx = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestTokenAwarded);
+        Assert.NotNull(tokenTx);
+        Assert.Equal("DragonSlayerToken", tokenTx.Data["QuestTokenRef"]);
+        _output.WriteLine($"✓ Quest token awarded: {tokenTx.Data["QuestTokenRef"]}");
+    }
+
+    [Fact]
+    public async Task InteractWithFeature_RequiresQuestToken_BlocksWithoutToken()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateAvatar();
+        avatar.AvatarId = avatarId;
+        // Avatar has no quest tokens
+
+        _output.WriteLine("=== TEST: Required Quest Token ===");
+
+        var command = new InteractWithFeatureCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "LockedDoorSaga",
+            FeatureRef = "LockedDoor",
+            Avatar = avatar
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("quest tokens", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+        _output.WriteLine($"✓ Interaction blocked: {result.ErrorMessage}");
+    }
+
+    [Fact]
+    public async Task InteractWithFeature_NonExistentFeature_ReturnsFailure()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateAvatar();
+        avatar.AvatarId = avatarId;
+
+        var command = new InteractWithFeatureCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "LootChestSaga",
+            FeatureRef = "NonExistentFeature",
+            Avatar = avatar
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("not found", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task InteractWithFeature_InvalidSagaRef_ReturnsFailure()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateAvatar();
+        avatar.AvatarId = avatarId;
+
+        var command = new InteractWithFeatureCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "NonExistentSaga",
+            FeatureRef = "TreasureChest",
+            Avatar = avatar
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("not found", result.ErrorMessage, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task InteractWithFeature_TransactionsCommitted_ProperlyPersisted()
+    {
+        // Arrange
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateAvatar();
+        avatar.AvatarId = avatarId;
+
+        var command = new InteractWithFeatureCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "LootChestSaga",
+            FeatureRef = "TreasureChest",
+            Avatar = avatar
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.True(result.Successful);
+
+        // Verify transactions are committed, not pending
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "LootChestSaga");
+        var allTransactions = instance.Transactions;
+
+        Assert.All(allTransactions, tx =>
+            Assert.Equal(TransactionStatus.Committed, tx.Status));
+
+        // Sequence numbers should be incremented
+        Assert.True(result.NewSequenceNumber > 0);
+    }
+
+    public void Dispose()
+    {
+        _database?.Dispose();
+        _serviceProvider?.Dispose();
+    }
+}
