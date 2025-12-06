@@ -17,7 +17,7 @@ public class AvatarEntity : AvatarBase, IBaseEntity
     /// <summary>
     /// The avatar's role within the world.
     /// </summary>
-    public AvatarRoles Roles { get; set; } 
+    public AvatarRoles Roles { get; set; }
 
     /// <summary>
     /// The sequence number for the avatar's updates.

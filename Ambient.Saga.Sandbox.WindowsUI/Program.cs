@@ -32,15 +32,37 @@ namespace Ambient.Saga.Sandbox.WindowsUI
                 var services = ServiceProviderSetup.BuildServiceProvider();
 
                 // Create and run main window using DI
-                var mainWindow = services.GetRequiredService<MainWindow>();
-                System.Windows.Forms.Application.Run(mainWindow);
+                MainWindow? mainWindow = null;
+                try
+                {
+                    mainWindow = services.GetRequiredService<MainWindow>();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        $"Failed to initialize graphics. Please ensure DirectX 11 is supported.\n\n{ex.Message}",
+                        "Initialization Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    return;
+                }
 
-                // Cleanup on exit
-                ServiceProviderSetup.ShutdownSteam();
-                services.Dispose();
+                try
+                {
+                    System.Windows.Forms.Application.Run(mainWindow);
+                }
+                finally
+                {
+                    // Cleanup on exit - always runs even if exception occurs
+                    ServiceProviderSetup.ShutdownSteam();
+                    services.Dispose();
+                }
             }
             catch (Exception ex)
             {
+                // Ensure Steam is shut down even on startup failure
+                ServiceProviderSetup.ShutdownSteam();
+
                 MessageBox.Show(
                     $"Application startup failed: {ex.Message}\n\n{ex.StackTrace}",
                     "Startup Error",

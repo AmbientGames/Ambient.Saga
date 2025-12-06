@@ -1,6 +1,7 @@
-﻿using Ambient.Application.Contracts;
+using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using LiteDB;
@@ -43,6 +44,8 @@ public class SagaTransactionLogE2ETests : IDisposable
         _world = CreateTestWorld();
     }
 
+    #region Concurrency Tests
+
     [Fact]
     public async Task GetOrCreate_ConcurrentCalls_NoDuplicateInstances()
     {
@@ -74,7 +77,7 @@ public class SagaTransactionLogE2ETests : IDisposable
         var uniqueInstanceIds = instances.Select(i => i.InstanceId).Distinct().ToList();
         Assert.Single(uniqueInstanceIds);
 
-        _output.WriteLine($"✓ All {threadCount} threads got same instance: {uniqueInstanceIds.First()}");
+        _output.WriteLine($"All {threadCount} threads got same instance: {uniqueInstanceIds.First()}");
 
         // Verify database has only ONE instance
         var dbInstances = _database.GetCollection<SagaInstance>("SagaInstances")
@@ -82,7 +85,7 @@ public class SagaTransactionLogE2ETests : IDisposable
             .ToList();
 
         Assert.Single(dbInstances);
-        _output.WriteLine($"✓ Database has exactly 1 instance (no duplicates)");
+        _output.WriteLine($"Database has exactly 1 instance (no duplicates)");
     }
 
     [Fact]
@@ -135,9 +138,13 @@ public class SagaTransactionLogE2ETests : IDisposable
 
         Assert.Equal(expectedSequences, sortedSequences);
 
-        _output.WriteLine($"✓ Sequence numbers strictly monotonic: 1 to {transactionCount}");
+        _output.WriteLine($"Sequence numbers strictly monotonic: 1 to {transactionCount}");
         _output.WriteLine($"  First: {sortedSequences.First()}, Last: {sortedSequences.Last()}");
     }
+
+    #endregion
+
+    #region Atomic Commit Tests
 
     [Fact]
     public async Task CommitTransactions_AtomicBatch_AllOrNothing()
@@ -181,7 +188,7 @@ public class SagaTransactionLogE2ETests : IDisposable
         var committedCount = dbTransactions.Count(t => t.Status == TransactionStatus.Committed);
         Assert.Equal(5, committedCount);
 
-        _output.WriteLine($"✓ All {committedCount} transactions committed atomically");
+        _output.WriteLine($"All {committedCount} transactions committed atomically");
     }
 
     [Fact]
@@ -227,113 +234,41 @@ public class SagaTransactionLogE2ETests : IDisposable
         var committedCount = dbTransactions.Count(t => t.Status == TransactionStatus.Committed);
         Assert.Equal(0, committedCount);
 
-        _output.WriteLine($"✓ Commit failed, all transactions remained Pending (atomic rollback)");
+        _output.WriteLine($"Commit failed, all transactions remained Pending (atomic rollback)");
     }
 
-    //[Fact]
-    //public async Task CompensatingTransactions_AvatarPersistenceFails_ReversalCreated()
-    //{
-    //    // ARRANGE: Setup CQRS pipeline with mocked avatar repository that fails
-    //    var services = new ServiceCollection();
+    [Fact]
+    public async Task CommitTransactions_WrongInstanceId_Fails()
+    {
+        // ARRANGE: Create two saga instances
+        var repository = new SagaInstanceRepository(_database);
+        var avatarId = Guid.NewGuid();
 
-    //    services.AddMediatR(cfg =>
-    //    {
-    //        cfg.RegisterServicesFromAssemblyContaining<LootCharacterCommand>();
-    //        cfg.AddOpenBehavior(typeof(SagaLoggingBehavior<,>));
-    //    });
+        var instance1 = await repository.GetOrCreateInstanceAsync(avatarId, "Saga1");
+        var instance2 = await repository.GetOrCreateInstanceAsync(avatarId, "Saga2");
 
-    //    services.AddSingleton(_world);
-    //    services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
-    //    services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
-    //    services.AddSingleton<IGameAvatarRepository>(new FailingAvatarRepository()); // Fails on save
-    //    services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
+        // Add transaction to instance1
+        var tx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.PlayerEntered,
+            AvatarId = avatarId.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow
+        };
 
-    //    var serviceProvider = services.BuildServiceProvider();
-    //    var mediator = serviceProvider.GetRequiredService<IMediator>();
-    //    var repository = serviceProvider.GetRequiredService<ISagaInstanceRepository>();
+        await repository.AddTransactionsAsync(instance1.InstanceId, [tx]);
 
-    //    // Create defeated character scenario
-    //    var avatarId = Guid.NewGuid();
-    //    var sagaRef = "TestSaga";
-    //    var characterInstanceId = Guid.NewGuid();
+        // ACT: Try to commit with wrong instance ID
+        var commitResult = await repository.CommitTransactionsAsync(instance2.InstanceId, [tx.TransactionId]);
 
-    //    var instance = await repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        // ASSERT: Commit should fail
+        Assert.False(commitResult);
+    }
 
-    //    // Add CharacterSpawned transaction first
-    //    var spawnTx = new SagaTransaction
-    //    {
-    //        TransactionId = Guid.NewGuid(),
-    //        Type = SagaTransactionType.CharacterSpawned,
-    //        AvatarId = avatarId.ToString(),
-    //        Status = TransactionStatus.Pending,
-    //        LocalTimestamp = DateTime.UtcNow,
-    //        Data = new Dictionary<string, string>
-    //        {
-    //            ["CharacterInstanceId"] = characterInstanceId.ToString(),
-    //            ["CharacterRef"] = "TestGuard"
-    //        }
-    //    };
+    #endregion
 
-    //    // Add CharacterDefeated transaction
-    //    var defeatTx = new SagaTransaction
-    //    {
-    //        TransactionId = Guid.NewGuid(),
-    //        Type = SagaTransactionType.CharacterDefeated,
-    //        AvatarId = avatarId.ToString(),
-    //        Status = TransactionStatus.Pending,
-    //        LocalTimestamp = DateTime.UtcNow,
-    //        Data = new Dictionary<string, string>
-    //        {
-    //            ["CharacterInstanceId"] = characterInstanceId.ToString(),
-    //            ["CharacterRef"] = "TestGuard",
-    //            ["VictorAvatarId"] = avatarId.ToString()
-    //        }
-    //    };
-
-    //    await repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { spawnTx, defeatTx });
-    //    await repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { spawnTx.TransactionId, defeatTx.TransactionId });
-
-    //    _output.WriteLine("=== Testing compensating transaction on persistence failure ===");
-
-    //    // ACT: Try to loot (will fail on avatar persistence)
-    //    var lootResult = await mediator.Send(new LootCharacterCommand
-    //    {
-    //        AvatarId = avatarId,
-    //        SagaRef = sagaRef,
-    //        CharacterInstanceId = characterInstanceId,
-    //        Avatar = new AvatarEntity
-    //        {
-    //            Id = avatarId,
-    //            AvatarId = avatarId,
-    //            DisplayName = "Test",
-    //            Stats = new CharacterStats { Health = 1.0f },
-    //            Capabilities = new ItemCollection()
-    //        }
-    //    });
-
-    //    // ASSERT: Command failed but TransactionReversed created
-    //    Assert.False(lootResult.Successful);
-    //    // Error message could be "Character already looted" or contain "Character" depending on state
-    //    Assert.NotEmpty(lootResult.ErrorMessage);
-
-    //    var finalInstance = await repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-    //    var transactions = finalInstance.GetCommittedTransactions();
-
-    //    var lootTx = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.LootAwarded);
-    //    var reversalTx = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.TransactionReversed);
-
-    //    Assert.NotNull(lootTx);
-    //    Assert.NotNull(reversalTx);
-
-    //    Assert.Equal(lootTx.TransactionId.ToString(), reversalTx.Data["ReversedTransactionId"]);
-    //    Assert.Contains("Avatar persistence failed", reversalTx.Data["Reason"]);
-
-    //    _output.WriteLine($"✓ Compensating transaction created");
-    //    _output.WriteLine($"  Original: {reversalTx.Data["OriginalType"]}");
-    //    _output.WriteLine($"  Reason: {reversalTx.Data["Reason"]}");
-
-    //    serviceProvider.Dispose();
-    //}
+    #region State Replay Tests
 
     [Fact]
     public async Task StateReplay_MultipleTransactions_ConsistentState()
@@ -439,55 +374,218 @@ public class SagaTransactionLogE2ETests : IDisposable
         Assert.Equal(state1.Triggers.Count, state2.Triggers.Count);
         Assert.Equal(state1.Characters.Count, state2.Characters.Count);
 
-        _output.WriteLine($"✓ State replay deterministic");
+        _output.WriteLine($"State replay deterministic");
         _output.WriteLine($"  Status: {state1.Status}");
         _output.WriteLine($"  Triggers: {state1.Triggers.Count}");
         _output.WriteLine($"  Characters: {state1.Characters.Count}");
     }
 
-    //[Fact]
-    //public async Task MultipleAvatars_SameSaga_IndependentInstances()
-    //{
-    //    // ARRANGE: Multiple avatars interacting with same saga
-    //    var repository = new SagaInstanceRepository(_database);
-    //    var sagaRef = "SharedSaga";
+    [Fact]
+    public async Task StateReplay_ToSpecificSequence_PartialReplay()
+    {
+        // ARRANGE: Create instance with multiple transactions
+        var repository = new SagaInstanceRepository(_database);
+        var avatarId = Guid.NewGuid();
+        var sagaRef = "TestSaga";
 
-    //    var avatarIds = Enumerable.Range(0, 5).Select(_ => Guid.NewGuid()).ToList();
+        var instance = await repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
 
-    //    _output.WriteLine($"=== Testing {avatarIds.Count} avatars in same saga ===");
+        var transactions = new List<SagaTransaction>
+        {
+            new()
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.SagaDiscovered,
+                AvatarId = avatarId.ToString(),
+                LocalTimestamp = DateTime.UtcNow
+            },
+            new()
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.TriggerActivated,
+                AvatarId = avatarId.ToString(),
+                LocalTimestamp = DateTime.UtcNow,
+                Data = new Dictionary<string, string> { ["SagaTriggerRef"] = "TestTrigger" }
+            },
+            new()
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.TriggerCompleted,
+                AvatarId = avatarId.ToString(),
+                LocalTimestamp = DateTime.UtcNow,
+                Data = new Dictionary<string, string> { ["SagaTriggerRef"] = "TestTrigger" }
+            }
+        };
 
-    //    // ACT: Each avatar creates instance and adds transactions
-    //    var tasks = avatarIds.Select(async avatarId =>
-    //    {
-    //        var instance = await repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        await repository.AddTransactionsAsync(instance.InstanceId, transactions);
+        await repository.CommitTransactionsAsync(instance.InstanceId, transactions.Select(t => t.TransactionId).ToList());
 
-    //        var tx = new SagaTransaction
-    //        {
-    //            TransactionId = Guid.NewGuid(),
-    //            Type = SagaTransactionType.PlayerEntered,
-    //            AvatarId = avatarId.ToString(),
-    //            Status = TransactionStatus.Pending,
-    //            LocalTimestamp = DateTime.UtcNow,
-    //            Data = new Dictionary<string, string>()
-    //        };
+        var trigger = new SagaTrigger { RefName = "TestTrigger", EnterRadius = 100.0f };
+        var saga = new SagaArc { RefName = sagaRef, DisplayName = "Test Saga" };
+        var stateMachine = new SagaStateMachine(saga, new List<SagaTrigger> { trigger }, _world);
 
-    //        await repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { tx });
-    //        await repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { tx.TransactionId });
+        // ACT: Replay to sequence 2 (before TriggerCompleted)
+        var loadedInstance = await repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        var partialState = stateMachine.ReplayToSequence(loadedInstance, 2);
+        var fullState = stateMachine.ReplayToNow(loadedInstance);
 
-    //        return instance.InstanceId;
-    //    });
+        // ASSERT: Partial state shows trigger as active, full state shows completed
+        Assert.Equal(SagaTriggerStatus.Active, partialState.Triggers["TestTrigger"].Status);
+        Assert.Equal(SagaTriggerStatus.Completed, fullState.Triggers["TestTrigger"].Status);
+    }
 
-    //    var instanceIds = await Task.WhenAll(tasks);
+    #endregion
 
-    //    // ASSERT: Each avatar has independent instance
-    //    Assert.Equal(5, instanceIds.Distinct().Count());
+    #region Multi-Avatar Tests
 
-    //    _output.WriteLine($"✓ Each avatar has independent instance");
-    //    foreach (var (avatarId, instanceId) in avatarIds.Zip(instanceIds))
-    //    {
-    //        _output.WriteLine($"  Avatar {avatarId:N}: Instance {instanceId}");
-    //    }
-    //}
+    [Fact]
+    public async Task MultipleAvatars_SameSaga_IndependentInstances()
+    {
+        // ARRANGE: Multiple avatars interacting with same saga
+        var repository = new SagaInstanceRepository(_database);
+        var sagaRef = "SharedSaga";
+
+        var avatarIds = Enumerable.Range(0, 5).Select(_ => Guid.NewGuid()).ToList();
+
+        _output.WriteLine($"=== Testing {avatarIds.Count} avatars in same saga ===");
+
+        // ACT: Each avatar creates instance and adds transactions
+        var tasks = avatarIds.Select(async avatarId =>
+        {
+            var instance = await repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+
+            var tx = new SagaTransaction
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.PlayerEntered,
+                AvatarId = avatarId.ToString(),
+                Status = TransactionStatus.Pending,
+                LocalTimestamp = DateTime.UtcNow,
+                Data = new Dictionary<string, string>()
+            };
+
+            await repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { tx });
+            await repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { tx.TransactionId });
+
+            return instance.InstanceId;
+        });
+
+        var instanceIds = await Task.WhenAll(tasks);
+
+        // ASSERT: Each avatar has independent instance
+        Assert.Equal(5, instanceIds.Distinct().Count());
+
+        _output.WriteLine($"Each avatar has independent instance");
+        foreach (var (avatarId, instanceId) in avatarIds.Zip(instanceIds))
+        {
+            _output.WriteLine($"  Avatar {avatarId:N}: Instance {instanceId}");
+        }
+    }
+
+    [Fact]
+    public async Task GetAllInstancesForAvatar_ReturnsAllSagas()
+    {
+        // ARRANGE: Single avatar in multiple sagas
+        var repository = new SagaInstanceRepository(_database);
+        var avatarId = Guid.NewGuid();
+
+        var sagaRefs = new[] { "Saga1", "Saga2", "Saga3" };
+
+        foreach (var sagaRef in sagaRefs)
+        {
+            var instance = await repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+
+            var tx = new SagaTransaction
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.SagaDiscovered,
+                AvatarId = avatarId.ToString(),
+                LocalTimestamp = DateTime.UtcNow
+            };
+
+            await repository.AddTransactionsAsync(instance.InstanceId, [tx]);
+            await repository.CommitTransactionsAsync(instance.InstanceId, [tx.TransactionId]);
+        }
+
+        // ACT: Get all instances for avatar
+        var instances = await repository.GetAllInstancesForAvatarAsync(avatarId);
+
+        // ASSERT: Returns all 3 instances with their transactions
+        Assert.Equal(3, instances.Count);
+        Assert.All(instances, i => Assert.Single(i.Transactions));
+        Assert.Equal(sagaRefs, instances.Select(i => i.SagaRef).OrderBy(s => s));
+    }
+
+    #endregion
+
+    #region Transaction Query Tests
+
+    [Fact]
+    public async Task GetTransactionsAfterSequence_ReturnsOnlyNewer()
+    {
+        // ARRANGE: Instance with 5 transactions
+        var repository = new SagaInstanceRepository(_database);
+        var avatarId = Guid.NewGuid();
+        var instance = await repository.GetOrCreateInstanceAsync(avatarId, "TestSaga");
+
+        var transactions = Enumerable.Range(1, 5).Select(i => new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.PlayerEntered,
+            AvatarId = avatarId.ToString(),
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string> { ["Index"] = i.ToString() }
+        }).ToList();
+
+        await repository.AddTransactionsAsync(instance.InstanceId, transactions);
+        await repository.CommitTransactionsAsync(instance.InstanceId, transactions.Select(t => t.TransactionId).ToList());
+
+        // ACT: Get transactions after sequence 3
+        var newerTransactions = await repository.GetTransactionsAfterSequenceAsync(instance.InstanceId, 3);
+
+        // ASSERT: Only transactions with sequence 4 and 5
+        Assert.Equal(2, newerTransactions.Count);
+        Assert.All(newerTransactions, t => Assert.True(t.SequenceNumber > 3));
+    }
+
+    [Fact]
+    public async Task RollbackTransactions_MarksAsRejected()
+    {
+        // ARRANGE: Instance with pending transactions
+        var repository = new SagaInstanceRepository(_database);
+        var avatarId = Guid.NewGuid();
+        var instance = await repository.GetOrCreateInstanceAsync(avatarId, "TestSaga");
+
+        var transactions = new List<SagaTransaction>
+        {
+            new()
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.PlayerEntered,
+                AvatarId = avatarId.ToString(),
+                LocalTimestamp = DateTime.UtcNow
+            },
+            new()
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.TriggerActivated,
+                AvatarId = avatarId.ToString(),
+                LocalTimestamp = DateTime.UtcNow,
+                Data = new Dictionary<string, string> { ["SagaTriggerRef"] = "TestTrigger" }
+            }
+        };
+
+        await repository.AddTransactionsAsync(instance.InstanceId, transactions);
+
+        // ACT: Rollback the transactions
+        await repository.RollbackTransactionsAsync(instance.InstanceId, transactions.Select(t => t.TransactionId).ToList());
+
+        // ASSERT: All transactions marked as Rejected
+        var dbTransactions = await repository.GetTransactionsAsync(instance.InstanceId);
+        Assert.All(dbTransactions, t => Assert.Equal(TransactionStatus.Rejected, t.Status));
+    }
+
+    #endregion
 
     public void Dispose()
     {
@@ -545,9 +643,7 @@ public class SagaTransactionLogE2ETests : IDisposable
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),
                     DialogueTrees = Array.Empty<DialogueTree>()
-                },
-                //Simulation = new SimulationComponents(),
-                //Presentation = new PresentationComponents()
+                }
             }
         };
 

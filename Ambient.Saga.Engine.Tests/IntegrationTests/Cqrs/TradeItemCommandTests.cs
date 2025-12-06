@@ -6,6 +6,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using LiteDB;
@@ -46,6 +47,16 @@ public class StubAvatarUpdateService : IAvatarUpdateService
     }
 
     public Task PersistAvatarAsync(AvatarEntity avatar, CancellationToken ct = default)
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task<List<AchievementInstance>> GetAchievementInstancesAsync(Guid avatarId, CancellationToken ct = default)
+    {
+        return Task.FromResult(new List<AchievementInstance>());
+    }
+
+    public Task UpdateAchievementInstancesAsync(Guid avatarId, List<AchievementInstance> instances, CancellationToken ct = default)
     {
         return Task.CompletedTask;
     }

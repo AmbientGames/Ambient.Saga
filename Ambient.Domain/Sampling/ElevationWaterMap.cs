@@ -145,10 +145,9 @@ public class ElevationWaterMap
                             adjustedMinWaterAreaSize = (int)(minWaterAreaSize * (1.0 - elevationFactor * 0.95));
                         }
 
-                        if (adjustedMinWaterAreaSize < 2) 
+                        if (adjustedMinWaterAreaSize < 2)
                         {
                             adjustedMinWaterAreaSize = 2;
-                            System.Diagnostics.Debugger.Break(); 
                         }
 
                         if (area.Count >= adjustedMinWaterAreaSize)

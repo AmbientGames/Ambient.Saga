@@ -1,23 +1,27 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Domain.Entities;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
+using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
 
 namespace Ambient.Saga.Sandbox.Tests.ViewModels;
 
-// Simple stub mediator for testing that simulates basic trade operations
+/// <summary>
+/// Stub mediator for testing MerchantTradeViewModel CQRS operations.
+/// Simulates basic trade operations without actual persistence.
+/// </summary>
 public class StubMediator : IMediator
 {
     public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
     {
-        // For TradeItemCommand, simulate a successful trade by returning a success result
+        // Handle TradeItemCommand
         if (request is TradeItemCommand tradeCmd)
         {
-            // Simulate the trade by directly modifying the avatar's state
             var avatar = tradeCmd.Avatar;
             var totalCost = tradeCmd.PricePerItem * tradeCmd.Quantity;
 
@@ -66,11 +70,22 @@ public class StubMediator : IMediator
             var result = SagaCommandResult.Success(
                 Guid.NewGuid(),
                 new List<Guid> { Guid.NewGuid() },
-                1L, // sequence number
-                null, // data
-                avatar // updated avatar
+                1L,
+                null,
+                avatar
             );
             return Task.FromResult((TResponse)(object)result);
+        }
+
+        // Handle GetSagaStateQuery
+        if (request is GetSagaStateQuery)
+        {
+            var sagaState = new SagaState
+            {
+                SagaRef = "TestSaga",
+                Status = SagaStatus.Active
+            };
+            return Task.FromResult((TResponse)(object)sagaState);
         }
 
         return Task.FromResult(default(TResponse)!);
@@ -107,6 +122,10 @@ public class StubMediator : IMediator
     }
 }
 
+/// <summary>
+/// Unit tests for MerchantTradeViewModel.
+/// Tests CQRS-based trading, category management, and UI state.
+/// </summary>
 public class MerchantTradeViewModelTests
 {
     private readonly World _world;
@@ -121,19 +140,30 @@ public class MerchantTradeViewModelTests
         _player = CreateTestPlayer();
         _merchant = CreateTestMerchant();
         _mediator = new StubMediator();
-        _context = new SagaInteractionContext
+        _context = CreateTestContext();
+    }
+
+    private SagaInteractionContext CreateTestContext()
+    {
+        return new SagaInteractionContext
         {
             World = _world,
             AvatarEntity = _player,
-            ActiveCharacter = _merchant
+            ActiveCharacter = _merchant,
+            CurrentSagaRef = "TestSaga",
+            CurrentCharacterInstanceId = Guid.NewGuid()
         };
     }
 
     private World CreateTestWorld()
     {
-        var world = new World();
-        world.WorldTemplate = new WorldTemplate();
-        world.WorldTemplate.Gameplay = new GameplayComponents();
+        var world = new World
+        {
+            WorldTemplate = new WorldTemplate
+            {
+                Gameplay = new GameplayComponents()
+            }
+        };
 
         // Create test equipment
         world.Gameplay.Equipment = new[]
@@ -166,18 +196,6 @@ public class MerchantTradeViewModelTests
             }
         };
 
-        //// Create test blocks
-        //world.DerivedBlockList = new[]
-        //{
-        //    new DerivedBlock
-        //    {
-        //        RefName = "stone_block",
-        //        DisplayName = "Stone Block",
-        //        WholesalePrice = 10,
-        //        MerchantMarkupMultiplier = 1.1f
-        //    }
-        //};
-
         // Create test tools
         world.Gameplay.Tools = new[]
         {
@@ -207,7 +225,7 @@ public class MerchantTradeViewModelTests
 
     private AvatarEntity CreateTestPlayer(float credits = 1000f)
     {
-        var player = new AvatarEntity
+        return new AvatarEntity
         {
             Id = Guid.NewGuid(),
             AvatarId = Guid.NewGuid(),
@@ -225,41 +243,44 @@ public class MerchantTradeViewModelTests
                 Spells = Array.Empty<SpellEntry>()
             }
         };
-        return player;
     }
 
     private Character CreateTestMerchant()
     {
-        var merchant = new Character();
-
-        // Merchant inventory goes in Interactable.Loot (what they HAVE to sell)
-        merchant.Interactable = new Interactable();
-        merchant.Interactable.Loot = new ItemCollection();
-        merchant.Interactable.Loot.Equipment = new[]
+        return new Character
         {
-            new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f },
-            new EquipmentEntry { EquipmentRef = "steel_armor", Condition = 0.8f }
+            RefName = "TestMerchant",
+            Interactable = new Interactable
+            {
+                Loot = new ItemCollection
+                {
+                    Equipment = new[]
+                    {
+                        new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f },
+                        new EquipmentEntry { EquipmentRef = "steel_armor", Condition = 0.8f }
+                    },
+                    Consumables = new[]
+                    {
+                        new ConsumableEntry { ConsumableRef = "health_potion", Quantity = 10 }
+                    },
+                    Blocks = new[]
+                    {
+                        new BlockEntry { BlockRef = "stone_block", Quantity = 100 }
+                    },
+                    Tools = new[]
+                    {
+                        new ToolEntry { ToolRef = "pickaxe", Condition = 1.0f }
+                    },
+                    Spells = new[]
+                    {
+                        new SpellEntry { SpellRef = "fireball", Condition = 1.0f }
+                    }
+                }
+            }
         };
-        merchant.Interactable.Loot.Consumables = new[]
-        {
-            new ConsumableEntry { ConsumableRef = "health_potion", Quantity = 10 }
-        };
-        merchant.Interactable.Loot.Blocks = new[]
-        {
-            new BlockEntry { BlockRef = "stone_block", Quantity = 100 }
-        };
-        merchant.Interactable.Loot.Tools = new[]
-        {
-            new ToolEntry { ToolRef = "pickaxe", Condition = 1.0f }
-        };
-        merchant.Interactable.Loot.Spells = new[]
-        {
-            new SpellEntry { SpellRef = "fireball", Condition = 1.0f }
-        };
-        return merchant;
     }
 
-    #region Initialization Tests
+    #region Constructor Tests
 
     [Fact]
     public void Constructor_InitializesWithValidContext()
@@ -272,6 +293,20 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
+    public void Constructor_ThrowsOnNullContext()
+    {
+        Assert.Throws<ArgumentNullException>(() =>
+            new MerchantTradeViewModel(null!, _mediator));
+    }
+
+    [Fact]
+    public void Constructor_ThrowsOnNullMediator()
+    {
+        Assert.Throws<ArgumentNullException>(() =>
+            new MerchantTradeViewModel(_context, null!));
+    }
+
+    [Fact]
     public void PlayerAvatar_ReturnsContextAvatar()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
@@ -281,7 +316,27 @@ public class MerchantTradeViewModelTests
 
     #endregion
 
-    #region Category Tests
+    #region Merchant Type Tests
+
+    [Fact]
+    public void ShowBuySellToggle_AlwaysReturnsTrue()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+
+        Assert.True(viewModel.ShowBuySellToggle);
+    }
+
+    [Fact]
+    public void IsMerchant_AlwaysReturnsTrue()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+
+        Assert.True(viewModel.IsMerchant);
+    }
+
+    #endregion
+
+    #region Category Availability Tests
 
     [Fact]
     public void HasEquipment_WithMerchantInventory_ReturnsTrue()
@@ -324,6 +379,14 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
+    public void HasPotentialLoot_WithAnyItems_ReturnsTrue()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+
+        Assert.True(viewModel.HasPotentialLoot);
+    }
+
+    [Fact]
     public void AvailableCategories_WithFullMerchantInventory_ReturnsAllCategories()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
@@ -345,27 +408,28 @@ public class MerchantTradeViewModelTests
         Assert.True(viewModel.ShowCategorySelector);
     }
 
-    [Fact]
-    public void HasPotentialLoot_WithAnyItems_ReturnsTrue()
-    {
-        var viewModel = new MerchantTradeViewModel(_context, _mediator);
-
-        Assert.True(viewModel.HasPotentialLoot);
-    }
-
     #endregion
 
     #region Trade Mode Tests
 
     [Fact]
-    public void TradeMode_SwitchingToSell_RefreshesInventory()
+    public void TradeMode_DefaultsToBuy()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
-        var initialInventory = viewModel.TradeInventory;
+
+        Assert.Equal("Buy", viewModel.TradeMode);
+    }
+
+    [Fact]
+    public void TradeMode_SwitchingToSell_ChangesInventorySource()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+        var buyInventory = viewModel.TradeInventory;
 
         viewModel.TradeMode = "Sell";
 
-        Assert.NotEqual(initialInventory, viewModel.TradeInventory);
+        // In sell mode with empty player inventory, should return empty
+        Assert.Empty(viewModel.TradeInventory);
     }
 
     [Fact]
@@ -377,7 +441,6 @@ public class MerchantTradeViewModelTests
         var inventory = viewModel.TradeInventory;
 
         Assert.NotEmpty(inventory);
-        // In buy mode, should show merchant's equipment
         Assert.True(inventory.Any(i => i.Item.RefName == "iron_sword"));
     }
 
@@ -427,187 +490,131 @@ public class MerchantTradeViewModelTests
 
     #endregion
 
-    #region BuyItem Tests
+    #region Buy Item Tests
 
-    //[Fact]
-    //public void BuyItem_WithSufficientCredits_SuccessfullyPurchases()
-    //{
-    //    var viewModel = new MerchantTradeViewModel(_context, _mediator);
-    //    var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
+    [Fact]
+    public async Task BuyItemCommand_WithSufficientCredits_DeductsCreditsAndAddsItem()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+        var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
+        var initialCredits = _player.Stats.Credits;
 
-    //    // var itemTransferredFired = false; // Event removed - now uses CQRS
-    //    var statusChangedFired = false;
-    //    var activityMessageFired = false;
+        await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
 
-    //    // viewModel.ItemTransferred += (s, e) => itemTransferredFired = true; // Event removed - now uses CQRS
-    //    viewModel.StatusMessageChanged += (s, e) => statusChangedFired = true;
-    //    viewModel.ActivityMessageGenerated += (s, e) => activityMessageFired = true;
+        Assert.True(_player.Stats.Credits < initialCredits);
+        Assert.Contains(_player.Capabilities.Equipment!, e => e.EquipmentRef == "iron_sword");
+    }
 
-    //    viewModel.BuyItemCommand.Execute(itemToBuy);
+    [Fact]
+    public async Task BuyItemCommand_WithSufficientCredits_FiresStatusMessage()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+        var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
 
-    //    Assert.Single(_player.Capabilities.Equipment);
-    //    Assert.Equal("iron_sword", _player.Capabilities.Equipment[0].EquipmentRef);
-    //    Assert.Equal(850, _player.Stats.Credits); // 1000 - 150
-    //    // Assert.True(itemTransferredFired); // Event removed - now uses CQRS
-    //    Assert.True(statusChangedFired);
-    //    Assert.True(activityMessageFired);
-    //}
+        var statusMessageFired = false;
+        viewModel.StatusMessageChanged += (s, e) => statusMessageFired = true;
 
-    //[Fact]
-    //public void BuyItem_WithInsufficientCredits_FiresStatusMessageOnly()
-    //{
-    //    _player.Stats.Credits = 50; // Not enough for iron sword (150)
-    //    var viewModel = new MerchantTradeViewModel(_context, _mediator);
-    //    var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
+        await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
 
-    //    var statusChangedFired = false;
-    //    string? statusMessage = null;
+        Assert.True(statusMessageFired);
+    }
 
-    //    viewModel.StatusMessageChanged += (s, e) =>
-    //    {
-    //        statusChangedFired = true;
-    //        statusMessage = e;
-    //    };
+    [Fact]
+    public async Task BuyItemCommand_WithSufficientCredits_FiresActivityMessage()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+        var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
 
-    //    viewModel.BuyItemCommand.Execute(itemToBuy);
+        string? activityMessage = null;
+        viewModel.ActivityMessageGenerated += (s, e) => activityMessage = e;
 
-    //    Assert.Empty(_player.Capabilities.Equipment);
-    //    Assert.Equal(50, _player.Stats.Credits); // No change
-    //    Assert.True(statusChangedFired);
-    //    Assert.Contains("Not enough money", statusMessage);
-    //}
+        await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
 
-    //[Fact]
-    //public void BuyItem_Consumable_GeneratesCorrectActivityMessage()
-    //{
-    //    var viewModel = new MerchantTradeViewModel(_context, _mediator);
-    //    viewModel.SelectedTradeCategory = "Consumables";
-    //    var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "health_potion");
+        Assert.NotNull(activityMessage);
+        Assert.Contains("Bought", activityMessage);
+        Assert.Contains("Iron Sword", activityMessage);
+    }
 
-    //    string? activityMessage = null;
-    //    viewModel.ActivityMessageGenerated += (s, e) => activityMessage = e;
+    [Fact]
+    public async Task BuyItemCommand_WithInsufficientCredits_FiresErrorStatus()
+    {
+        _player.Stats.Credits = 10; // Not enough for any item
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+        var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
 
-    //    viewModel.BuyItemCommand.Execute(itemToBuy);
+        string? statusMessage = null;
+        viewModel.StatusMessageChanged += (s, e) => statusMessage = e;
 
-    //    Assert.NotNull(activityMessage);
-    //    Assert.Contains("Bought Health Potion", activityMessage);
-    //    Assert.Contains("60", activityMessage); // 50 * 1.2 = 60
-    //}
+        await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
 
-    // [Fact]
-    // public void BuyItem_FiresItemTransferredEventWithCorrectData()
-    // {
-    //     // NOTE: ItemTransferred event removed - ViewModel now uses CQRS for trade operations
-    //     var viewModel = new MerchantTradeViewModel(_context, _mediator);
-    //     var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
+        Assert.NotNull(statusMessage);
+        Assert.Contains("Not enough money", statusMessage);
+    }
 
-    //     ItemTransferredEventArgs? eventArgs = null;
-    //     viewModel.ItemTransferred += (s, e) => eventArgs = e;
+    [Fact]
+    public async Task BuyItemCommand_WithInsufficientCredits_DoesNotAddItem()
+    {
+        _player.Stats.Credits = 10;
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+        var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
 
-    //     viewModel.BuyItemCommand.Execute(itemToBuy);
+        await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
 
-    //     Assert.NotNull(eventArgs);
-    //     Assert.Equal("Iron Sword", eventArgs.ItemName);
-    //     Assert.Equal(150, eventArgs.Price);
-    //     Assert.True(eventArgs.WasPurchase);
-    // }
+        Assert.Empty(_player.Capabilities.Equipment!);
+    }
 
     #endregion
 
-    #region SellItem Tests
-
-    //[Fact]
-    //public void SellItem_SuccessfullyTransfersAndCreditsPlayer()
-    //{
-    //    _player.Capabilities.Equipment = new[]
-    //    {
-    //        new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }
-    //    };
-
-    //    var viewModel = new MerchantTradeViewModel(_context, _mediator);
-    //    viewModel.TradeMode = "Sell";
-    //    var itemToSell = viewModel.TradeInventory.First();
-
-    //    // var itemTransferredFired = false; // Event removed - now uses CQRS
-    //    // viewModel.ItemTransferred += (s, e) => itemTransferredFired = true; // Event removed - now uses CQRS
-
-    //    viewModel.SellItemCommand.Execute(itemToSell);
-
-    //    Assert.Empty(_player.Capabilities.Equipment);
-    //    Assert.Equal(1100, _player.Stats.Credits); // 1000 + 100 wholesale
-    //    // Assert.True(itemTransferredFired); // Event removed - now uses CQRS
-    //}
-
-    // [Fact]
-    // public void SellItem_FiresItemTransferredEventWithCorrectData()
-    // {
-    //     // NOTE: ItemTransferred event removed - ViewModel now uses CQRS for trade operations
-    //     _player.Capabilities.Equipment = new[]
-    //     {
-    //         new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }
-    //     };
-
-    //     var viewModel = new MerchantTradeViewModel(_context, _mediator);
-    //     viewModel.TradeMode = "Sell";
-    //     var itemToSell = viewModel.TradeInventory.First();
-
-    //     ItemTransferredEventArgs? eventArgs = null;
-    //     viewModel.ItemTransferred += (s, e) => eventArgs = e;
-
-    //     viewModel.SellItemCommand.Execute(itemToSell);
-
-    //     Assert.NotNull(eventArgs);
-    //     Assert.Equal("Iron Sword", eventArgs.ItemName);
-    //     Assert.Equal(100, eventArgs.Price); // Wholesale price
-    //     Assert.False(eventArgs.WasPurchase);
-    // }
+    #region Sell Item Tests
 
     [Fact]
-    public void SellItem_WithEmptyInventory_DoesNotCrash()
+    public async Task SellItemCommand_WithItemInInventory_AddsCreditsAndRemovesItem()
+    {
+        _player.Capabilities.Equipment = new[]
+        {
+            new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }
+        };
+        var initialCredits = _player.Stats.Credits;
+
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+        viewModel.TradeMode = "Sell";
+        var itemToSell = viewModel.TradeInventory.First();
+
+        await viewModel.SellItemCommand.ExecuteAsync(itemToSell);
+
+        Assert.True(_player.Stats.Credits > initialCredits);
+        Assert.Empty(_player.Capabilities.Equipment!);
+    }
+
+    [Fact]
+    public async Task SellItemCommand_WithItemInInventory_FiresActivityMessage()
+    {
+        _player.Capabilities.Equipment = new[]
+        {
+            new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }
+        };
+
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+        viewModel.TradeMode = "Sell";
+        var itemToSell = viewModel.TradeInventory.First();
+
+        string? activityMessage = null;
+        viewModel.ActivityMessageGenerated += (s, e) => activityMessage = e;
+
+        await viewModel.SellItemCommand.ExecuteAsync(itemToSell);
+
+        Assert.NotNull(activityMessage);
+        Assert.Contains("Sold", activityMessage);
+        Assert.Contains("Iron Sword", activityMessage);
+    }
+
+    [Fact]
+    public void SellItemInventory_WithEmptyPlayerInventory_ReturnsEmpty()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
         viewModel.TradeMode = "Sell";
 
-        var inventory = viewModel.TradeInventory;
-
-        Assert.Empty(inventory);
-    }
-
-    //[Fact]
-    //public void SellItem_GeneratesCorrectActivityMessage()
-    //{
-    //    _player.Capabilities.Equipment = new[]
-    //    {
-    //        new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }
-    //    };
-
-    //    var viewModel = new MerchantTradeViewModel(_context, _mediator);
-    //    viewModel.TradeMode = "Sell";
-    //    var itemToSell = viewModel.TradeInventory.First();
-
-    //    string? activityMessage = null;
-    //    viewModel.ActivityMessageGenerated += (s, e) => activityMessage = e;
-
-    //    viewModel.SellItemCommand.Execute(itemToSell);
-
-    //    Assert.NotNull(activityMessage);
-    //    Assert.Contains("Sold Iron Sword", activityMessage);
-    //    Assert.Contains("100", activityMessage);
-    //}
-
-    #endregion
-
-    #region Merchant Type Tests
-
-    [Fact]
-    public void ShowBuySellToggle_AlwaysReturnsTrue()
-    {
-        // MerchantTradeViewModel is only instantiated for merchant interactions,
-        // so these properties always return true
-        var viewModel = new MerchantTradeViewModel(_context, _mediator);
-
-        Assert.True(viewModel.ShowBuySellToggle);
-        Assert.True(viewModel.IsMerchant);
+        Assert.Empty(viewModel.TradeInventory);
     }
 
     #endregion
@@ -620,16 +627,18 @@ public class MerchantTradeViewModelTests
         var contextWithNullWorld = new SagaInteractionContext
         {
             World = null,
-            AvatarEntity = _player
+            AvatarEntity = _player,
+            ActiveCharacter = _merchant
         };
 
         var viewModel = new MerchantTradeViewModel(contextWithNullWorld, _mediator);
 
         Assert.NotNull(viewModel);
+        Assert.Empty(viewModel.TradeInventory);
     }
 
     [Fact]
-    public void BuyItem_WithNullAvatar_FiresStatusMessage()
+    public async Task BuyItemCommand_WithNullAvatar_FiresStatusMessage()
     {
         var contextWithNullAvatar = new SagaInteractionContext
         {
@@ -640,13 +649,57 @@ public class MerchantTradeViewModelTests
         var viewModel = new MerchantTradeViewModel(contextWithNullAvatar, _mediator);
         var itemToBuy = viewModel.TradeInventory.FirstOrDefault();
 
-        var statusChangedFired = false;
-        viewModel.StatusMessageChanged += (s, e) => statusChangedFired = true;
+        string? statusMessage = null;
+        viewModel.StatusMessageChanged += (s, e) => statusMessage = e;
 
         if (itemToBuy != null)
-            viewModel.BuyItemCommand.Execute(itemToBuy);
+            await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
 
-        Assert.True(statusChangedFired);
+        Assert.NotNull(statusMessage);
+        Assert.Contains("missing", statusMessage, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task BuyItemCommand_WithNullSagaRef_FiresStatusMessage()
+    {
+        var contextWithNullSaga = new SagaInteractionContext
+        {
+            World = _world,
+            AvatarEntity = _player,
+            ActiveCharacter = _merchant,
+            CurrentSagaRef = null,
+            CurrentCharacterInstanceId = Guid.NewGuid()
+        };
+        var viewModel = new MerchantTradeViewModel(contextWithNullSaga, _mediator);
+        var itemToBuy = viewModel.TradeInventory.First();
+
+        string? statusMessage = null;
+        viewModel.StatusMessageChanged += (s, e) => statusMessage = e;
+
+        await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
+
+        Assert.NotNull(statusMessage);
+        Assert.Contains("missing", statusMessage, StringComparison.OrdinalIgnoreCase);
+    }
+
+    #endregion
+
+    #region Currency Name Tests
+
+    [Fact]
+    public void CurrencyName_ReturnsDefaultWhenNotSet()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+
+        Assert.Equal("Credit", viewModel.CurrencyName);
+    }
+
+    [Fact]
+    public void PluralCurrencyName_ReturnsDefaultWhenNotSet()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+
+        Assert.Equal("Credits", viewModel.PluralCurrencyName);
     }
 
     #endregion

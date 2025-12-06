@@ -1,6 +1,7 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Presentation.UI.Services;
 using Ambient.Saga.Sandbox.WindowsUI.Services;
+using ImGuiNET;
 using Steamworks;
 
 namespace Ambient.Saga.Sandbox.WindowsUI;
@@ -57,6 +58,36 @@ public partial class MainWindow : Form
             else if (e.Button == MouseButtons.Middle) _imguiRenderer?.UpdateMouseButton(2, false);
         };
         _mainPanel.MouseWheel += (s, e) => _imguiRenderer?.UpdateMouseWheel(e.Delta / 120.0f);
+
+        // Wire up keyboard events for ImGui input
+        this.KeyPreview = true;
+        this.KeyDown += (s, e) =>
+        {
+            var imguiKey = MapKeyToImGui(e.KeyCode);
+            if (imguiKey != ImGuiNET.ImGuiKey.None)
+                _imguiRenderer?.UpdateKeyState(imguiKey, true);
+
+            // Handle modifier keys
+            if (e.Control) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, true);
+            if (e.Shift) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, true);
+            if (e.Alt) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, true);
+        };
+        this.KeyUp += (s, e) =>
+        {
+            var imguiKey = MapKeyToImGui(e.KeyCode);
+            if (imguiKey != ImGuiNET.ImGuiKey.None)
+                _imguiRenderer?.UpdateKeyState(imguiKey, false);
+
+            // Handle modifier keys
+            if (!e.Control) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, false);
+            if (!e.Shift) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, false);
+            if (!e.Alt) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, false);
+        };
+        this.KeyPress += (s, e) =>
+        {
+            if (e.KeyChar >= 32) // Printable characters
+                _imguiRenderer?.AddInputCharacter(e.KeyChar);
+        };
 
         // Handle resize
         _mainPanel.Resize += (s, e) =>
@@ -155,4 +186,30 @@ public partial class MainWindow : Form
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern bool PeekMessage(out NativeMessage message, IntPtr window, uint filterMin, uint filterMax, uint remove);
+
+    private static ImGuiKey MapKeyToImGui(Keys key) => key switch
+    {
+        Keys.Tab => ImGuiKey.Tab,
+        Keys.Left => ImGuiKey.LeftArrow,
+        Keys.Right => ImGuiKey.RightArrow,
+        Keys.Up => ImGuiKey.UpArrow,
+        Keys.Down => ImGuiKey.DownArrow,
+        Keys.PageUp => ImGuiKey.PageUp,
+        Keys.PageDown => ImGuiKey.PageDown,
+        Keys.Home => ImGuiKey.Home,
+        Keys.End => ImGuiKey.End,
+        Keys.Insert => ImGuiKey.Insert,
+        Keys.Delete => ImGuiKey.Delete,
+        Keys.Back => ImGuiKey.Backspace,
+        Keys.Space => ImGuiKey.Space,
+        Keys.Enter => ImGuiKey.Enter,
+        Keys.Escape => ImGuiKey.Escape,
+        Keys.A => ImGuiKey.A,
+        Keys.C => ImGuiKey.C,
+        Keys.V => ImGuiKey.V,
+        Keys.X => ImGuiKey.X,
+        Keys.Y => ImGuiKey.Y,
+        Keys.Z => ImGuiKey.Z,
+        _ => ImGuiKey.None
+    };
 }

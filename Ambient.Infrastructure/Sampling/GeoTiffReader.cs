@@ -1,4 +1,5 @@
-﻿using Ambient.Domain.ValueObjects;
+﻿using System.Diagnostics;
+using Ambient.Domain.ValueObjects;
 using BitMiracle.LibTiff.Classic;
 
 namespace Ambient.Infrastructure.Sampling;
@@ -111,7 +112,10 @@ public static class GeoTiffReader
         {
             var data = field[1].GetBytes();
             if (data.Length < 24) // Need at least 3 doubles (8 bytes each)
+            {
+                Debug.WriteLine($"[GeoTiffReader] ModelPixelScale tag has insufficient data: {data.Length} bytes (need 24)");
                 return (0, 0, 0);
+            }
 
             var scaleX = BitConverter.ToDouble(data, 0);
             var scaleY = BitConverter.ToDouble(data, 8);
@@ -119,8 +123,9 @@ public static class GeoTiffReader
 
             return (scaleX, scaleY, scaleZ);
         }
-        catch
+        catch (Exception ex)
         {
+            Debug.WriteLine($"[GeoTiffReader] Error reading ModelPixelScale: {ex.Message}");
             return (0, 0, 0);
         }
     }
@@ -138,7 +143,10 @@ public static class GeoTiffReader
         {
             var data = field[1].GetBytes();
             if (data.Length < 48) // Need at least 6 doubles (8 bytes each)
+            {
+                Debug.WriteLine($"[GeoTiffReader] ModelTiepoint tag has insufficient data: {data.Length} bytes (need 48)");
                 return (0, 0, 0, 0, 0, 0);
+            }
 
             var i = BitConverter.ToDouble(data, 0);  // Raster X (pixel)
             var j = BitConverter.ToDouble(data, 8);  // Raster Y (line)
@@ -149,8 +157,9 @@ public static class GeoTiffReader
 
             return (i, j, k, x, y, z);
         }
-        catch
+        catch (Exception ex)
         {
+            Debug.WriteLine($"[GeoTiffReader] Error reading ModelTiepoint: {ex.Message}");
             return (0, 0, 0, 0, 0, 0);
         }
     }

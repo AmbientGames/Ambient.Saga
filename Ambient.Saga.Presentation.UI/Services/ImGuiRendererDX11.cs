@@ -211,6 +211,18 @@ public class ImGuiRendererDX11 : IDisposable
         io.MouseWheel += delta;
     }
 
+    public void UpdateKeyState(ImGuiKey key, bool down)
+    {
+        var io = ImGui.GetIO();
+        io.AddKeyEvent(key, down);
+    }
+
+    public void AddInputCharacter(char c)
+    {
+        var io = ImGui.GetIO();
+        io.AddInputCharacter(c);
+    }
+
     public void NewFrame(float deltaTime, int width, int height)
     {
         var io = ImGui.GetIO();

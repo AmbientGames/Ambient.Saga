@@ -1,4 +1,5 @@
 ﻿using Ambient.Domain.Entities;
+using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Contracts.Services;
@@ -84,4 +85,20 @@ public interface IAvatarUpdateService
     /// <param name="avatar">The avatar to persist</param>
     /// <param name="ct">Cancellation token</param>
     Task PersistAvatarAsync(AvatarEntity avatar, CancellationToken ct = default);
+
+    /// <summary>
+    /// Gets achievement instances for an avatar.
+    /// </summary>
+    /// <param name="avatarId">The avatar ID</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>List of achievement instances</returns>
+    Task<List<AchievementInstance>> GetAchievementInstancesAsync(Guid avatarId, CancellationToken ct = default);
+
+    /// <summary>
+    /// Updates achievement instances for an avatar.
+    /// </summary>
+    /// <param name="avatarId">The avatar ID</param>
+    /// <param name="instances">The updated achievement instances</param>
+    /// <param name="ct">Cancellation token</param>
+    Task UpdateAchievementInstancesAsync(Guid avatarId, List<AchievementInstance> instances, CancellationToken ct = default);
 }

@@ -3,6 +3,7 @@ using Ambient.Domain;
 using Ambient.Domain.Entities;
 using Ambient.Domain.Extensions;
 using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Application.Services;
@@ -604,5 +605,30 @@ public class AvatarUpdateService : IAvatarUpdateService
             var equipment = avatar.Capabilities.GetOrAddEquipment(equipmentRef);
             equipment.Condition = condition;
         }
+    }
+
+    // In-memory cache for achievement instances (simplified for now - real impl would use LiteDB)
+    private static readonly Dictionary<Guid, List<AchievementInstance>> _achievementCache = new();
+    private static readonly object _cacheLock = new();
+
+    /// <inheritdoc/>
+    public Task<List<AchievementInstance>> GetAchievementInstancesAsync(Guid avatarId, CancellationToken ct = default)
+    {
+        lock (_cacheLock)
+        {
+            if (_achievementCache.TryGetValue(avatarId, out var instances))
+                return Task.FromResult(instances);
+            return Task.FromResult(new List<AchievementInstance>());
+        }
+    }
+
+    /// <inheritdoc/>
+    public Task UpdateAchievementInstancesAsync(Guid avatarId, List<AchievementInstance> instances, CancellationToken ct = default)
+    {
+        lock (_cacheLock)
+        {
+            _achievementCache[avatarId] = instances;
+        }
+        return Task.CompletedTask;
     }
 }

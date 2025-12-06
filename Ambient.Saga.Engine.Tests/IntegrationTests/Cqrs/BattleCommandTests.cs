@@ -70,7 +70,7 @@ public class BattleCommandTests : IDisposable
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
-        services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
+        services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
 
         _serviceProvider = services.BuildServiceProvider();
         _mediator = _serviceProvider.GetRequiredService<IMediator>();
