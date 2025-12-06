@@ -1,0 +1,1147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DialogueTrees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <DialogueTree RefName="DIALOGUE_BOSS_Spawn" DisplayName="Guardian of Spawn Dialogue" Description="Dialogue tree for Guardian of Spawn" StartNodeId="greeting">
+    <Node NodeId="battle">
+      <Text>[AI: Boss accepts challenge with intimidating response]</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_Spawn" />
+    </Node>
+    <Node NodeId="battle_opening">
+      <Text>So, you wish to challenge me? Very well! I, Guardian of Spawn, guardian of Spawn, accept!</Text>
+      <Action Type="ChangeStance" RefName="Offensive" />
+    </Node>
+    <Node NodeId="battle_first_blood">
+      <Text>You've drawn first blood... Impressive! But this battle has only just begun!</Text>
+    </Node>
+    <Node NodeId="battle_berserk">
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Spawn with everything I have!</Text>
+      <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
+      <Action Type="ChangeStance" RefName="Offensive" />
+      <Action Type="ChangeAffinity" RefName="Fire" />
+    </Node>
+    <Node NodeId="battle_retreat">
+      <Text>You're stronger than I thought... I must be more careful now!</Text>
+      <Action Type="ChangeStance" RefName="Defensive" />
+      <Action Type="HealSelf" Amount="15" />
+    </Node>
+    <Node NodeId="battle_last_stand">
+      <Text>*breathing heavily* I'm nearly finished... Will you show mercy, or end this?</Text>
+      <Choice Text="Let them surrender (gain Merciful trait)" NextNodeId="battle_accept_surrender" />
+      <Choice Text="Finish them! (gain Ruthless trait)" NextNodeId="battle_no_mercy" />
+    </Node>
+    <Node NodeId="battle_accept_surrender">
+      <Text>[AI: Guardian of Spawn expresses gratitude/confusion at being spared, yields and offers weapon/gold]</Text>
+      <Action Type="EndBattle" RefName="Victory" />
+      <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_no_mercy">
+      <Text>[AI: Guardian of Spawn accepts fate with honor, makes desperate final attack]</Text>
+      <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
+    </Node>
+    <Node NodeId="battle_defeated">
+      <Text>You have... bested me... Spawn... is yours... You've earned it...</Text>
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Boss protecting Spawn. Theme: Challenge, guardian, test of strength]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I challenge you!" NextNodeId="battle" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guardian of Spawn responds warmly, mentions nearby locations: SpawnSpoke2Ring1, SpawnSpoke3Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guardian of Spawn provides lore about Spawn]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke1Ring1" DisplayName="Trader at Spawn Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 1 Ring 1" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke1Ring1" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke1Ring1" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke1Ring1" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke1Ring1" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 1 Ring 1. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 1 Ring 1 responds warmly, mentions nearby locations: SpawnSpoke2Ring1, Spawn]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 1 Ring 1 provides lore about Spawn Spoke 1 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke1Ring2" DisplayName="Traveler at Spawn Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 1 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 1 Ring 2. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 1 Ring 2 responds warmly, mentions nearby locations: SpawnSpoke1Ring3, SpawnSpoke1Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 1 Ring 2 provides lore about Spawn Spoke 1 Ring 2]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke1Ring3" DisplayName="Traveler at Spawn Spoke 1 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 1 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 1 Ring 3. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 1 Ring 3 responds warmly, mentions nearby locations: SpawnSpoke1Ring2, SpawnSpoke1Ring4]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 1 Ring 3 provides lore about Spawn Spoke 1 Ring 3]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke1Ring4" DisplayName="Trader at Spawn Spoke 1 Ring 4 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 1 Ring 4" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke1Ring4" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke1Ring4" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke1Ring4" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke1Ring4" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 1 Ring 4. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 1 Ring 4 responds warmly, mentions nearby locations: SpawnSpoke1Ring3, SpawnSpoke1Ring5]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 1 Ring 4 provides lore about Spawn Spoke 1 Ring 4]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke1Ring5" DisplayName="Traveler at Spawn Spoke 1 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 1 Ring 5" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 1 Ring 5. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 1 Ring 5 responds warmly, mentions nearby locations: SpawnSpoke1Ring4, SpawnSpoke1Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 1 Ring 5 provides lore about Spawn Spoke 1 Ring 5]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke2Ring1" DisplayName="Traveler at Spawn Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 2 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 2 Ring 1. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 2 Ring 1 responds warmly, mentions nearby locations: SpawnSpoke3Ring1, SpawnSpoke2Ring2]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 2 Ring 1 provides lore about Spawn Spoke 2 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke2Ring2" DisplayName="Trader at Spawn Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 2 Ring 2" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke2Ring2" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke2Ring2" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke2Ring2" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke2Ring2" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 2 Ring 2. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 2 Ring 2 responds warmly, mentions nearby locations: SpawnSpoke2Ring3, SpawnSpoke2Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 2 Ring 2 provides lore about Spawn Spoke 2 Ring 2]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke2Ring3" DisplayName="Traveler at Spawn Spoke 2 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 2 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 2 Ring 3. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 2 Ring 3 responds warmly, mentions nearby locations: SpawnSpoke2Ring4, SpawnSpoke2Ring2]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 2 Ring 3 provides lore about Spawn Spoke 2 Ring 3]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke2Ring4" DisplayName="Traveler at Spawn Spoke 2 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 2 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 2 Ring 4. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 2 Ring 4 responds warmly, mentions nearby locations: SpawnSpoke2Ring5, SpawnSpoke2Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 2 Ring 4 provides lore about Spawn Spoke 2 Ring 4]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke2Ring5" DisplayName="Trader at Spawn Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 2 Ring 5" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke2Ring5" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke2Ring5" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke2Ring5" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke2Ring5" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 2 Ring 5. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 2 Ring 5 responds warmly, mentions nearby locations: SpawnSpoke2Ring4, SpawnSpoke2Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 2 Ring 5 provides lore about Spawn Spoke 2 Ring 5]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke3Ring1" DisplayName="Traveler at Spawn Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 3 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 3 Ring 1. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 3 Ring 1 responds warmly, mentions nearby locations: SpawnSpoke2Ring1, SpawnSpoke3Ring2]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 3 Ring 1 provides lore about Spawn Spoke 3 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke3Ring2" DisplayName="Traveler at Spawn Spoke 3 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 3 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 3 Ring 2. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 3 Ring 2 responds warmly, mentions nearby locations: SpawnSpoke3Ring3, SpawnSpoke3Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 3 Ring 2 provides lore about Spawn Spoke 3 Ring 2]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke3Ring3" DisplayName="Trader at Spawn Spoke 3 Ring 3 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 3 Ring 3" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke3Ring3" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke3Ring3" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke3Ring3" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke3Ring3" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 3 Ring 3. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 3 Ring 3 responds warmly, mentions nearby locations: SpawnSpoke3Ring4, SpawnSpoke3Ring2]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 3 Ring 3 provides lore about Spawn Spoke 3 Ring 3]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke3Ring4" DisplayName="Traveler at Spawn Spoke 3 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 3 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 3 Ring 4. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 3 Ring 4 responds warmly, mentions nearby locations: SpawnSpoke3Ring5, SpawnSpoke3Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 3 Ring 4 provides lore about Spawn Spoke 3 Ring 4]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke3Ring5" DisplayName="Traveler at Spawn Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 3 Ring 5" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 3 Ring 5. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 3 Ring 5 responds warmly, mentions nearby locations: SpawnSpoke3Ring4, SpawnSpoke3Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 3 Ring 5 provides lore about Spawn Spoke 3 Ring 5]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke4Ring1" DisplayName="Trader at Spawn Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 4 Ring 1" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke4Ring1" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke4Ring1" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke4Ring1" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke4Ring1" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 4 Ring 1. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 4 Ring 1 responds warmly, mentions nearby locations: SpawnSpoke3Ring1, Spawn]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 4 Ring 1 provides lore about Spawn Spoke 4 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke4Ring2" DisplayName="Traveler at Spawn Spoke 4 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 4 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 4 Ring 2. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 4 Ring 2 responds warmly, mentions nearby locations: SpawnSpoke4Ring3, SpawnSpoke4Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 4 Ring 2 provides lore about Spawn Spoke 4 Ring 2]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke4Ring3" DisplayName="Traveler at Spawn Spoke 4 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 4 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 4 Ring 3. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 4 Ring 3 responds warmly, mentions nearby locations: SpawnSpoke4Ring2, SpawnSpoke4Ring4]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 4 Ring 3 provides lore about Spawn Spoke 4 Ring 3]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke4Ring4" DisplayName="Trader at Spawn Spoke 4 Ring 4 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 4 Ring 4" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke4Ring4" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke4Ring4" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke4Ring4" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke4Ring4" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 4 Ring 4. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 4 Ring 4 responds warmly, mentions nearby locations: SpawnSpoke4Ring3, SpawnSpoke4Ring5]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 4 Ring 4 provides lore about Spawn Spoke 4 Ring 4]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke4Ring5" DisplayName="Traveler at Spawn Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 4 Ring 5" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 4 Ring 5. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 4 Ring 5 responds warmly, mentions nearby locations: SpawnSpoke4Ring4, SpawnSpoke4Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 4 Ring 5 provides lore about Spawn Spoke 4 Ring 5]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke5Ring1" DisplayName="Traveler at Spawn Spoke 5 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 5 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 5 Ring 1. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 5 Ring 1 responds warmly, mentions nearby locations: Spawn, SpawnSpoke4Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 5 Ring 1 provides lore about Spawn Spoke 5 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke5Ring2" DisplayName="Trader at Spawn Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 5 Ring 2" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke5Ring2" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke5Ring2" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke5Ring2" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke5Ring2" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 5 Ring 2. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 5 Ring 2 responds warmly, mentions nearby locations: SpawnSpoke5Ring1, SpawnSpoke5Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 5 Ring 2 provides lore about Spawn Spoke 5 Ring 2]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke5Ring3" DisplayName="Traveler at Spawn Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 5 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 5 Ring 3. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 5 Ring 3 responds warmly, mentions nearby locations: SpawnSpoke5Ring2, SpawnSpoke5Ring4]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 5 Ring 3 provides lore about Spawn Spoke 5 Ring 3]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke5Ring4" DisplayName="Traveler at Spawn Spoke 5 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 5 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 5 Ring 4. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 5 Ring 4 responds warmly, mentions nearby locations: SpawnSpoke5Ring3, SpawnSpoke5Ring5]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 5 Ring 4 provides lore about Spawn Spoke 5 Ring 4]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke5Ring5" DisplayName="Trader at Spawn Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 5 Ring 5" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke5Ring5" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke5Ring5" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke5Ring5" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke5Ring5" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 5 Ring 5. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 5 Ring 5 responds warmly, mentions nearby locations: SpawnSpoke5Ring4, SpawnSpoke5Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 5 Ring 5 provides lore about Spawn Spoke 5 Ring 5]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke6Ring1" DisplayName="Traveler at Spawn Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 6 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 6 Ring 1. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 6 Ring 1 responds warmly, mentions nearby locations: Spawn, SpawnSpoke1Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 6 Ring 1 provides lore about Spawn Spoke 6 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke6Ring2" DisplayName="Traveler at Spawn Spoke 6 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 6 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 6 Ring 2. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 6 Ring 2 responds warmly, mentions nearby locations: SpawnSpoke6Ring1, SpawnSpoke6Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 6 Ring 2 provides lore about Spawn Spoke 6 Ring 2]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_SpawnSpoke6Ring3" DisplayName="Trader at Spawn Spoke 6 Ring 3 Dialogue" Description="Dialogue tree for Trader at Spawn Spoke 6 Ring 3" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke6Ring3" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke6Ring3" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke6Ring3" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SpawnSpoke6Ring3" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>[AI: Merchant at Spawn Spoke 6 Ring 3. Sells region-appropriate goods, shares rumors]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Trader at Spawn Spoke 6 Ring 3 responds warmly, mentions nearby locations: SpawnSpoke6Ring2, SpawnSpoke6Ring4]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Trader at Spawn Spoke 6 Ring 3 provides lore about Spawn Spoke 6 Ring 3]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke6Ring4" DisplayName="Traveler at Spawn Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 6 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 6 Ring 4. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 6 Ring 4 responds warmly, mentions nearby locations: SpawnSpoke6Ring3, SpawnSpoke6Ring5]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 6 Ring 4 provides lore about Spawn Spoke 6 Ring 4]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_SpawnSpoke6Ring5" DisplayName="Traveler at Spawn Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Spawn Spoke 6 Ring 5" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Spawn Spoke 6 Ring 5. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Spawn Spoke 6 Ring 5 responds warmly, mentions nearby locations: SpawnSpoke6Ring4, SpawnSpoke6Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Spawn Spoke 6 Ring 5 provides lore about Spawn Spoke 6 Ring 5]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_GUARD_Spawn_0" DisplayName="Guard at Spawn Dialogue" Description="Dialogue tree for Guard at Spawn" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Defensive guard protecting the structure. May attack if provoked]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Guard at Spawn responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Guard at Spawn provides lore about Spawn]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SpawnSpoke1Ring1_1" DisplayName="Bandit near Spawn Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Spawn Spoke 1 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile bandit encountered near Spawn Spoke 1 Ring 1. Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Bandit near Spawn Spoke 1 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Bandit near Spawn Spoke 1 Ring 1 provides lore about Spawn Spoke 1 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SpawnSpoke2Ring1_2" DisplayName="Wild Beast near Spawn Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Wild Beast near Spawn Spoke 2 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile wild beast encountered near Spawn Spoke 2 Ring 1. Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Wild Beast near Spawn Spoke 2 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Wild Beast near Spawn Spoke 2 Ring 1 provides lore about Spawn Spoke 2 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SpawnSpoke3Ring1_3" DisplayName="Elemental near Spawn Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Elemental near Spawn Spoke 3 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile elemental encountered near Spawn Spoke 3 Ring 1. Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Elemental near Spawn Spoke 3 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Elemental near Spawn Spoke 3 Ring 1 provides lore about Spawn Spoke 3 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SpawnSpoke4Ring1_4" DisplayName="Undead near Spawn Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Undead near Spawn Spoke 4 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile undead encountered near Spawn Spoke 4 Ring 1. Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Undead near Spawn Spoke 4 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Undead near Spawn Spoke 4 Ring 1 provides lore about Spawn Spoke 4 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SpawnSpoke5Ring1_5" DisplayName="Undead near Spawn Spoke 5 Ring 1 Dialogue" Description="Dialogue tree for Undead near Spawn Spoke 5 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile undead encountered near Spawn Spoke 5 Ring 1. Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Undead near Spawn Spoke 5 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Undead near Spawn Spoke 5 Ring 1 provides lore about Spawn Spoke 5 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SpawnSpoke6Ring1_6" DisplayName="Bandit near Spawn Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Spawn Spoke 6 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Hostile bandit encountered near Spawn Spoke 6 Ring 1. Attacks on sight]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Bandit near Spawn Spoke 6 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Bandit near Spawn Spoke 6 Ring 1 provides lore about Spawn Spoke 6 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+</DialogueTrees>

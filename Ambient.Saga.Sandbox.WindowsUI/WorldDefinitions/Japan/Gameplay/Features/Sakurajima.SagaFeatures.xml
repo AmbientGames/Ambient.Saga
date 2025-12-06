@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SagaFeatures xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <SagaFeature RefName="Spawn" DisplayName="Spawn" Description="Hub center at Spawn" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke1Ring1" DisplayName="Spawn Spoke 1 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke1Ring2" DisplayName="Spawn Spoke 1 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke1Ring3" DisplayName="Spawn Spoke 1 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke1Ring4" DisplayName="Spawn Spoke 1 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke1Ring5" DisplayName="Spawn Spoke 1 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke2Ring1" DisplayName="Spawn Spoke 2 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke2Ring2" DisplayName="Spawn Spoke 2 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke2Ring3" DisplayName="Spawn Spoke 2 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke2Ring4" DisplayName="Spawn Spoke 2 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke2Ring5" DisplayName="Spawn Spoke 2 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke3Ring1" DisplayName="Spawn Spoke 3 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke3Ring2" DisplayName="Spawn Spoke 3 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke3Ring3" DisplayName="Spawn Spoke 3 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke3Ring4" DisplayName="Spawn Spoke 3 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke3Ring5" DisplayName="Spawn Spoke 3 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke4Ring1" DisplayName="Spawn Spoke 4 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke4Ring2" DisplayName="Spawn Spoke 4 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke4Ring3" DisplayName="Spawn Spoke 4 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke4Ring4" DisplayName="Spawn Spoke 4 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke4Ring5" DisplayName="Spawn Spoke 4 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke5Ring1" DisplayName="Spawn Spoke 5 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke5Ring2" DisplayName="Spawn Spoke 5 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke5Ring3" DisplayName="Spawn Spoke 5 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke5Ring4" DisplayName="Spawn Spoke 5 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke5Ring5" DisplayName="Spawn Spoke 5 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke6Ring1" DisplayName="Spawn Spoke 6 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke6Ring2" DisplayName="Spawn Spoke 6 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke6Ring3" DisplayName="Spawn Spoke 6 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke6Ring4" DisplayName="Spawn Spoke 6 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="SpawnSpoke6Ring5" DisplayName="Spawn Spoke 6 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+</SagaFeatures>

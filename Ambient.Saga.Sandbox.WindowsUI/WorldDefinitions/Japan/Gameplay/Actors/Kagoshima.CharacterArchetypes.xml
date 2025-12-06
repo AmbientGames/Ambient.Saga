@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CharacterArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Spawns a random boss character">
+    <CharacterRef>BOSS_Spawn</CharacterRef>
+  </CharacterArchetype>
+  <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="Spawns a random merchant">
+    <CharacterRef>MERCHANT_SpawnSpoke1Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke1Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke2Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke2Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke3Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke4Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke4Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke5Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke5Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_SpawnSpoke6Ring3</CharacterRef>
+  </CharacterArchetype>
+</CharacterArchetypes>

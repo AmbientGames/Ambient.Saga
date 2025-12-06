@@ -4,6 +4,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Achievements;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
 namespace Ambient.Saga.Engine.Application.Behaviors;
@@ -11,22 +12,18 @@ namespace Ambient.Saga.Engine.Application.Behaviors;
 /// <summary>
 /// Pipeline behavior that automatically evaluates achievements after Saga commands.
 /// Runs AFTER command succeeds, checks for newly unlocked achievements.
+///
+/// Uses IServiceProvider to resolve dependencies at runtime rather than constructor injection,
+/// since behaviors are constructed during MediatR initialization before repositories are configured.
 /// </summary>
 public class AchievementEvaluationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly World _world;
-    private readonly ISagaInstanceRepository _sagaRepository;
-    private readonly IAvatarUpdateService _avatarUpdateService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public AchievementEvaluationBehavior(
-        World world,
-        ISagaInstanceRepository sagaRepository,
-        IAvatarUpdateService avatarUpdateService)
+    public AchievementEvaluationBehavior(IServiceProvider serviceProvider)
     {
-        _world = world;
-        _sagaRepository = sagaRepository;
-        _avatarUpdateService = avatarUpdateService;
+        _serviceProvider = serviceProvider;
     }
 
     public async Task<TResponse> Handle(
@@ -44,7 +41,7 @@ public class AchievementEvaluationBehavior<TRequest, TResponse> : IPipelineBehav
             {
                 // Extract avatar ID from command (if available)
                 var avatarId = GetAvatarIdFromCommand(request);
-                if (avatarId.HasValue && _world.Gameplay?.Achievements != null)
+                if (avatarId.HasValue)
                 {
                     await EvaluateAchievementsAsync(avatarId.Value, cancellationToken);
                 }
@@ -61,25 +58,30 @@ public class AchievementEvaluationBehavior<TRequest, TResponse> : IPipelineBehav
 
     private async Task EvaluateAchievementsAsync(Guid avatarId, CancellationToken cancellationToken)
     {
-        // Get all Saga instances for this avatar
-        var sagaInstances = await _sagaRepository.GetAllInstancesForAvatarAsync(avatarId, cancellationToken);
-        if (sagaInstances.Count == 0)
-            return;
+        // Resolve dependencies at runtime (after world is loaded)
+        var world = _serviceProvider.GetRequiredService<World>();
+        var sagaRepository = _serviceProvider.GetRequiredService<ISagaInstanceRepository>();
+        var avatarUpdateService = _serviceProvider.GetRequiredService<IAvatarUpdateService>();
 
         // Get achievements from world
-        var achievements = _world.Gameplay?.Achievements;
+        var achievements = world.Gameplay?.Achievements;
         if (achievements == null || achievements.Length == 0)
             return;
 
+        // Get all Saga instances for this avatar
+        var sagaInstances = await sagaRepository.GetAllInstancesForAvatarAsync(avatarId, cancellationToken);
+        if (sagaInstances.Count == 0)
+            return;
+
         // Get previous achievement state from avatar
-        var previousInstances = await _avatarUpdateService.GetAchievementInstancesAsync(avatarId, cancellationToken);
+        var previousInstances = await avatarUpdateService.GetAchievementInstancesAsync(avatarId, cancellationToken);
 
         // Find newly unlocked achievements
         var newlyUnlocked = AchievementProgressEvaluator.GetNewlyUnlockedAchievements(
             achievements,
             previousInstances,
             sagaInstances,
-            _world,
+            world,
             avatarId.ToString());
 
         if (newlyUnlocked.Count > 0)
@@ -90,10 +92,10 @@ public class AchievementEvaluationBehavior<TRequest, TResponse> : IPipelineBehav
             var allInstances = AchievementProgressEvaluator.EvaluateAllAchievements(
                 achievements,
                 sagaInstances,
-                _world,
+                world,
                 avatarId.ToString());
 
-            await _avatarUpdateService.UpdateAchievementInstancesAsync(avatarId, allInstances, cancellationToken);
+            await avatarUpdateService.UpdateAchievementInstancesAsync(avatarId, allInstances, cancellationToken);
         }
     }
 

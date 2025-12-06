@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Equipment RefName="IronSword" DisplayName="Iron Sword" Description="[AI: Standard guard weapon]" SlotRef="RightHand" Category="OneHandedMelee" WholesalePrice="50" ModelRef="IronSword" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0.1" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RustyAxe" DisplayName="Rusty Axe" Description="[AI: Worn bandit axe]" SlotRef="RightHand" Category="OneHandedMelee" WholesalePrice="20" ModelRef="RustyAxe" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0.08" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Greatsword" DisplayName="Greatsword" Description="[AI: Massive two-handed blade]" SlotRef="BothHands" Category="TwoHandedMelee" WholesalePrice="200" ModelRef="Greatsword" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0.2" Speed="-0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WoodenStaff" DisplayName="Wooden Staff" Description="[AI: Simple walking staff]" SlotRef="BothHands" Category="Staff" WholesalePrice="15" ModelRef="WoodenStaff" UseType="Offensive">
+    <Effects Health="0" Defense="0.02" Strength="0.02" Speed="0" Magic="0.05" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MageStaff" DisplayName="Mage Staff" Description="[AI: Enchanted staff channeling magic]" SlotRef="BothHands" Category="Staff" WholesalePrice="150" ModelRef="MageStaff" AffinityRef="Ice" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0" Speed="0" Magic="0.15" Mana="0.1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LeatherArmor" DisplayName="Leather Armor" Description="[AI: Light protective gear]" SlotRef="Chest" Category="ArmorLight" WholesalePrice="40" ModelRef="LeatherArmor">
+    <Effects Health="0.05" Defense="0.08" Strength="0" Speed="0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ChainmailArmor" DisplayName="Chainmail Armor" Description="[AI: Interlocking metal rings]" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="100" ModelRef="ChainmailArmor">
+    <Effects Health="0.1" Defense="0.15" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="PlateArmor" DisplayName="Plate Armor" Description="[AI: Heavy full-body armor]" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="300" ModelRef="PlateArmor">
+    <Effects Health="0.15" Defense="0.25" Strength="0.05" Speed="-0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ElderRobes" DisplayName="Elder's Robes" Description="[AI: Traditional robes of wisdom]" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="80" ModelRef="ElderRobes" AffinityRef="Spirit">
+    <Effects Health="0.05" Defense="0.05" Strength="0" Speed="0" Magic="0.1" Mana="0.05" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WizardRobes" DisplayName="Wizard Robes" Description="[AI: Enchanted robes of power]" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="200" ModelRef="WizardRobes" AffinityRef="Ice">
+    <Effects Health="0.05" Defense="0.05" Strength="0" Speed="0" Magic="0.2" Mana="0.15" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Dagger" DisplayName="Dagger" Description="[AI: Quick stabbing blade]" SlotRef="RightHand" Category="OneHandedMelee" WholesalePrice="25" ModelRef="Dagger" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0.05" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ShadowDagger" DisplayName="Shadow Dagger" Description="[AI: Dark blade that strikes from shadows]" SlotRef="RightHand" Category="OneHandedMelee" WholesalePrice="120" ModelRef="ShadowDagger" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0.08" Speed="0.1" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ApprenticWand" DisplayName="Apprentice Wand" Description="[AI: Basic channeling focus]" SlotRef="RightHand" Category="Wand" WholesalePrice="30" ModelRef="Wand" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="CrystalWand" DisplayName="Crystal Wand" Description="[AI: Arcane crystal focus]" SlotRef="RightHand" Category="Wand" WholesalePrice="180" ModelRef="CrystalWand" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0" Speed="0" Magic="0.18" Mana="0.08" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SummonerOrb" DisplayName="Summoner's Orb" Description="[AI: Crystal orb for binding spirits]" SlotRef="RightHand" Category="Focus" WholesalePrice="100" ModelRef="Orb" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="0.05" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Lute" DisplayName="Lute" Description="[AI: Stringed instrument for bardic magic]" SlotRef="BothHands" Category="Instrument" WholesalePrice="60" ModelRef="Lute" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0" Speed="0.03" Magic="0.1" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="EnchantedLute" DisplayName="Enchanted Lute" Description="[AI: Magically resonant instrument]" SlotRef="BothHands" Category="Instrument" WholesalePrice="200" ModelRef="EnchantedLute" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="0" Defense="0" Strength="0" Speed="0.05" Magic="0.15" Mana="0.05" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WoodenShield" DisplayName="Wooden Shield" Description="[AI: Basic defensive shield]" SlotRef="LeftHand" Category="Shield" WholesalePrice="25" ModelRef="WoodenShield">
+    <Effects Health="0.05" Defense="0.1" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SteelShield" DisplayName="Steel Shield" Description="[AI: Sturdy metal shield]" SlotRef="LeftHand" Category="Shield" WholesalePrice="120" ModelRef="SteelShield">
+    <Effects Health="0.08" Defense="0.18" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MerchantCloak" DisplayName="Merchant's Cloak" Description="[AI: Travel cloak with hidden pockets]" SlotRef="Back" Category="Accessory" WholesalePrice="30" ModelRef="MerchantCloak">
+    <Effects Health="0" Defense="0.02" Strength="0" Speed="0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RangerCloak" DisplayName="Ranger's Cloak" Description="[AI: Woodland camouflage cloak]" SlotRef="Back" Category="Accessory" WholesalePrice="50" ModelRef="RangerCloak" AffinityRef="Nature">
+    <Effects Health="0" Defense="0.03" Strength="0" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+</Equipment>

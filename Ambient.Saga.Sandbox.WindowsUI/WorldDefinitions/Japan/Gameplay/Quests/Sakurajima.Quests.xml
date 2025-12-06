@@ -1,0 +1,470 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Quest RefName="BOUNTY_Spawn" DisplayName="Bounty: Guardian of Spawn" Description="Defeat Guardian of Spawn and claim the bounty.">
+    <Stages StartStage="DEFEAT">
+      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
+        <Objectives>
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Spawn" CharacterRef="BOSS_Spawn" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="500" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="SummonerOrb" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_ANCIENT_ARTIFACT_01_DISCOVER" DisplayName="Epic: Discover the Ancient Artifact" Description="Begin your epic journey by uncovering ancient legends.">
+    <Prerequisites>
+      <Prerequisite MinimumLevel="10" />
+    </Prerequisites>
+    <Stages StartStage="HEAR_LEGEND">
+      <Stage RefName="HEAR_LEGEND" DisplayName="Hear the Legend">
+        <Objectives>
+          <Objective RefName="FIND_LOREKEEPER" Type="LocationReached" Threshold="1" DisplayName="Find the lorekeeper at Spawn" SagaArcRef="Spawn" />
+          <Objective RefName="LEARN_STORY" Type="DialogueCompleted" Threshold="1" DisplayName="Learn the ancient story" CharacterRef="NPC_LOREKEEPER" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="500" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="800" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="TOKEN_ANCIENT_ARTIFACT_KNOWLEDGE" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_ANCIENT_ARTIFACT_02_GATHER" DisplayName="Epic: Gather the Sacred Components" Description="Collect the legendary components needed to proceed.">
+    <Prerequisites>
+      <Prerequisite QuestRef="EPIC_ANCIENT_ARTIFACT_01_DISCOVER" MinimumLevel="15" RequiredItemRef="TOKEN_ANCIENT_ARTIFACT_KNOWLEDGE" />
+    </Prerequisites>
+    <Stages StartStage="GATHER_COMPONENT_1">
+      <Stage RefName="GATHER_COMPONENT_1" DisplayName="Retrieve Component 1" NextStage="GATHER_COMPONENT_2">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 1" SagaArcRef="SpawnSpoke1Ring1" />
+          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 1" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Greatsword" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="800" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="Greatsword" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="GATHER_COMPONENT_2" DisplayName="Retrieve Component 2" NextStage="GATHER_COMPONENT_3">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 2" SagaArcRef="SpawnSpoke1Ring2" />
+          <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 2" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Dagger" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="1000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1300" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="WoodenStaff" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="GATHER_COMPONENT_3" DisplayName="Retrieve Component 3">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 3" SagaArcRef="SpawnSpoke1Ring3" />
+          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 3" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherArmor" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="1200" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1600" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="Lute" Quantity="1" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="TOKEN_ANCIENT_ARTIFACT_COMPONENTS" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_ANCIENT_ARTIFACT_03_FINALE" DisplayName="Epic: The Final Trial" Description="Face the ultimate challenge and complete your legendary quest.">
+    <Prerequisites>
+      <Prerequisite QuestRef="EPIC_ANCIENT_ARTIFACT_02_GATHER" MinimumLevel="25" RequiredItemRef="TOKEN_ANCIENT_ARTIFACT_COMPONENTS" />
+    </Prerequisites>
+    <Stages StartStage="REACH_FINAL_LOCATION">
+      <Stage RefName="REACH_FINAL_LOCATION" DisplayName="Journey to the Sacred Site" NextStage="FINAL_BATTLE">
+        <Objectives>
+          <Objective RefName="TRAVEL_TO_SITE" Type="LocationReached" Threshold="1" DisplayName="Reach Spawn Spoke 1 Ring 5" SagaArcRef="SpawnSpoke1Ring5" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="FINAL_BATTLE" DisplayName="The Ultimate Confrontation">
+        <Objectives>
+          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the legendary guardian" CharacterTag="boss" />
+          <Objective RefName="BONUS_PERFECT_VICTORY" Type="Custom" Threshold="1" DisplayName="Win without being defeated" Optional="true" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="5000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="10000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="Dagger" Quantity="2" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_LEGENDARY_HERO_01_DISCOVER" DisplayName="Epic: Discover the Legendary Hero" Description="Begin your epic journey by uncovering ancient legends.">
+    <Prerequisites>
+      <Prerequisite MinimumLevel="20" />
+    </Prerequisites>
+    <Stages StartStage="HEAR_LEGEND">
+      <Stage RefName="HEAR_LEGEND" DisplayName="Hear the Legend">
+        <Objectives>
+          <Objective RefName="FIND_LOREKEEPER" Type="LocationReached" Threshold="1" DisplayName="Find the lorekeeper at Spawn Spoke 2 Ring 1" SagaArcRef="SpawnSpoke2Ring1" />
+          <Objective RefName="LEARN_STORY" Type="DialogueCompleted" Threshold="1" DisplayName="Learn the ancient story" CharacterRef="NPC_LOREKEEPER" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="500" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="800" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="TOKEN_LEGENDARY_HERO_KNOWLEDGE" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_LEGENDARY_HERO_02_GATHER" DisplayName="Epic: Gather the Sacred Components" Description="Collect the legendary components needed to proceed.">
+    <Prerequisites>
+      <Prerequisite QuestRef="EPIC_LEGENDARY_HERO_01_DISCOVER" MinimumLevel="25" RequiredItemRef="TOKEN_LEGENDARY_HERO_KNOWLEDGE" />
+    </Prerequisites>
+    <Stages StartStage="GATHER_COMPONENT_1">
+      <Stage RefName="GATHER_COMPONENT_1" DisplayName="Retrieve Component 1" NextStage="GATHER_COMPONENT_2">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 2" SagaArcRef="SpawnSpoke2Ring2" />
+          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 2" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="WoodenStaff" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="800" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="Lute" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="GATHER_COMPONENT_2" DisplayName="Retrieve Component 2" NextStage="GATHER_COMPONENT_3">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 3" SagaArcRef="SpawnSpoke2Ring3" />
+          <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 3" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="MageStaff" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="1000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1300" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="LeatherArmor" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="GATHER_COMPONENT_3" DisplayName="Retrieve Component 3">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 4" SagaArcRef="SpawnSpoke2Ring4" />
+          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 4" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Dagger" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="1200" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1600" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="ChainmailArmor" Quantity="1" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="TOKEN_LEGENDARY_HERO_COMPONENTS" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_LEGENDARY_HERO_03_FINALE" DisplayName="Epic: The Final Trial" Description="Face the ultimate challenge and complete your legendary quest.">
+    <Prerequisites>
+      <Prerequisite QuestRef="EPIC_LEGENDARY_HERO_02_GATHER" MinimumLevel="37" RequiredItemRef="TOKEN_LEGENDARY_HERO_COMPONENTS" />
+    </Prerequisites>
+    <Stages StartStage="REACH_FINAL_LOCATION">
+      <Stage RefName="REACH_FINAL_LOCATION" DisplayName="Journey to the Sacred Site" NextStage="FINAL_BATTLE">
+        <Objectives>
+          <Objective RefName="TRAVEL_TO_SITE" Type="LocationReached" Threshold="1" DisplayName="Reach Spawn Spoke 3 Ring 1" SagaArcRef="SpawnSpoke3Ring1" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="FINAL_BATTLE" DisplayName="The Ultimate Confrontation">
+        <Objectives>
+          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the legendary guardian" CharacterTag="boss" />
+          <Objective RefName="BONUS_PERFECT_VICTORY" Type="Custom" Threshold="1" DisplayName="Win without being defeated" Optional="true" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="7500" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="15000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="ElderRobes" Quantity="2" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_WORLD_SAVIOR_01_DISCOVER" DisplayName="Epic: Discover the World Crisis" Description="Begin your epic journey by uncovering ancient legends.">
+    <Prerequisites>
+      <Prerequisite MinimumLevel="30" />
+    </Prerequisites>
+    <Stages StartStage="HEAR_LEGEND">
+      <Stage RefName="HEAR_LEGEND" DisplayName="Hear the Legend">
+        <Objectives>
+          <Objective RefName="FIND_LOREKEEPER" Type="LocationReached" Threshold="1" DisplayName="Find the lorekeeper at Spawn Spoke 3 Ring 2" SagaArcRef="SpawnSpoke3Ring2" />
+          <Objective RefName="LEARN_STORY" Type="DialogueCompleted" Threshold="1" DisplayName="Learn the ancient story" CharacterRef="NPC_LOREKEEPER" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="500" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="800" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="TOKEN_WORLD_SAVIOR_KNOWLEDGE" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_WORLD_SAVIOR_02_GATHER" DisplayName="Epic: Gather the Sacred Components" Description="Collect the legendary components needed to proceed.">
+    <Prerequisites>
+      <Prerequisite QuestRef="EPIC_WORLD_SAVIOR_01_DISCOVER" MinimumLevel="35" RequiredItemRef="TOKEN_WORLD_SAVIOR_KNOWLEDGE" />
+    </Prerequisites>
+    <Stages StartStage="GATHER_COMPONENT_1">
+      <Stage RefName="GATHER_COMPONENT_1" DisplayName="Retrieve Component 1" NextStage="GATHER_COMPONENT_2">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 3" SagaArcRef="SpawnSpoke3Ring3" />
+          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 3" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherArmor" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="800" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="Dagger" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="GATHER_COMPONENT_2" DisplayName="Retrieve Component 2" NextStage="GATHER_COMPONENT_3">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 4" SagaArcRef="SpawnSpoke3Ring4" />
+          <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 4" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="IronSword" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="1000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1300" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="WoodenShield" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="GATHER_COMPONENT_3" DisplayName="Retrieve Component 3">
+        <Objectives>
+          <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 5" SagaArcRef="SpawnSpoke3Ring5" />
+          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 5" CharacterTag="boss" />
+          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="ApprenticWand" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="1200" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="1600" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="ElderRobes" Quantity="1" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="TOKEN_WORLD_SAVIOR_COMPONENTS" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="EPIC_WORLD_SAVIOR_03_FINALE" DisplayName="Epic: The Final Trial" Description="Face the ultimate challenge and complete your legendary quest.">
+    <Prerequisites>
+      <Prerequisite QuestRef="EPIC_WORLD_SAVIOR_02_GATHER" MinimumLevel="50" RequiredItemRef="TOKEN_WORLD_SAVIOR_COMPONENTS" />
+    </Prerequisites>
+    <Stages StartStage="REACH_FINAL_LOCATION">
+      <Stage RefName="REACH_FINAL_LOCATION" DisplayName="Journey to the Sacred Site" NextStage="FINAL_BATTLE">
+        <Objectives>
+          <Objective RefName="TRAVEL_TO_SITE" Type="LocationReached" Threshold="1" DisplayName="Reach Spawn Spoke 4 Ring 2" SagaArcRef="SpawnSpoke4Ring2" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="FINAL_BATTLE" DisplayName="The Ultimate Confrontation">
+        <Objectives>
+          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the legendary guardian" CharacterTag="boss" />
+          <Objective RefName="BONUS_PERFECT_VICTORY" Type="Custom" Threshold="1" DisplayName="Win without being defeated" Optional="true" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="10000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="20000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="WoodenStaff" Quantity="2" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Secret: The Forgotten Shrine" Description="An ancient shrine marked on a mysterious map. What secrets does it hold?">
+    <Prerequisites>
+      <Prerequisite MinimumLevel="20" RequiredItemRef="SummonerOrb" />
+    </Prerequisites>
+    <Stages StartStage="FIND_SHRINE">
+      <Stage RefName="FIND_SHRINE" DisplayName="Locate the Hidden Shrine" NextStage="UNLOCK_SHRINE">
+        <Objectives>
+          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Spawn Spoke 1 Ring 1" SagaArcRef="SpawnSpoke1Ring1" Hidden="true" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="UNLOCK_SHRINE" DisplayName="Unlock the Shrine's Secrets">
+        <Objectives>
+          <Objective RefName="COLLECT_KEYS" Type="QuestTokenCollected" Threshold="3" DisplayName="Collect 3 shrine keys" ItemRef="TOKEN_SHRINE_KEY" />
+          <Objective RefName="SOLVE_SHRINE_PUZZLE" Type="Custom" Threshold="1" DisplayName="Solve the shrine's ancient puzzle" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="3000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="5000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="WoodenShield" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="HIDDEN_COLLECTOR_PARADISE" DisplayName="Secret: The Collector's Vault" Description="A legendary collector's vault, accessible only to those who possess all the ancient seals.">
+    <Prerequisites>
+      <Prerequisite MinimumLevel="35" RequiredItemRef="SummonerOrb" />
+    </Prerequisites>
+    <Stages StartStage="UNLOCK_VAULT">
+      <Stage RefName="UNLOCK_VAULT" DisplayName="Unlock the Collector's Vault" NextStage="CLAIM_TREASURES">
+        <Objectives>
+          <Objective RefName="REACH_VAULT" Type="LocationReached" Threshold="1" DisplayName="Reach the vault at Spawn Spoke 1 Ring 1" SagaArcRef="SpawnSpoke1Ring1" Hidden="true" />
+          <Objective RefName="PLACE_SEALS" Type="Custom" Threshold="5" DisplayName="Place all 5 ancient seals" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CLAIM_TREASURES" DisplayName="Claim the Legendary Treasures">
+        <Objectives>
+          <Objective RefName="DEFEAT_VAULT_GUARDIAN" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the vault guardian" CharacterTag="boss" />
+          <Objective RefName="LOOT_VAULT" Type="Custom" Threshold="1" DisplayName="Claim the vault's treasures" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="10000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="15000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="WoodenStaff" Quantity="5" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="HIDDEN_TIME_TRIAL" DisplayName="Secret: Speedrunner's Challenge" Description="Complete a series of challenges against the clock. Only the fastest will prevail.">
+    <Prerequisites>
+      <Prerequisite MinimumLevel="25" />
+    </Prerequisites>
+    <Stages StartStage="START_CHALLENGE">
+      <Stage RefName="START_CHALLENGE" DisplayName="Begin the Time Trial" NextStage="COMPLETE_TRIAL">
+        <Objectives>
+          <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Spawn Spoke 6 Ring 5" SagaArcRef="SpawnSpoke6Ring5" />
+        </Objectives>
+        <FailConditions>
+          <FailCondition Type="TimeExpired" TimeLimit="600" />
+        </FailConditions>
+      </Stage>
+      <Stage RefName="COMPLETE_TRIAL" DisplayName="Complete All Challenges">
+        <Objectives>
+          <Objective RefName="DEFEAT_WAVE_1" Type="CharactersDefeatedByTag" Threshold="10" DisplayName="Defeat 10 enemies (Wave 1)" CharacterTag="hostile" />
+          <Objective RefName="COLLECT_SPEED_TOKENS" Type="QuestTokenCollected" Threshold="5" DisplayName="Collect 5 speed tokens" ItemRef="TOKEN_SPEED_CHALLENGE" />
+          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the time keeper" CharacterTag="boss" />
+          <Objective RefName="BONUS_UNDER_5_MIN" Type="Custom" Threshold="1" DisplayName="Complete in under 5 minutes" Optional="true" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="4000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="7000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="MerchantCloak" Quantity="1" />
+          </Reward>
+        </Rewards>
+        <FailConditions>
+          <FailCondition Type="TimeExpired" TimeLimit="600" />
+        </FailConditions>
+      </Stage>
+    </Stages>
+    <FailConditions>
+      <FailCondition Type="TimeExpired" TimeLimit="600" />
+    </FailConditions>
+  </Quest>
+</Quests>

@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BuildingMaterials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <BuildingMaterial RefName="Wood" DisplayName="Wooden Nails" Description="Simple wooden pegs for basic wood construction" TextureRef="Nails" WholesalePrice="2">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Mortar" DisplayName="Mortar" Description="Stone mortar for construction" TextureRef="Mortar" WholesalePrice="3">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Aggregate" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Stone" DisplayName="Stone Mortar" Description="Basic binding paste for masonry" TextureRef="Mortar" WholesalePrice="3">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Aggregate" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Clay" DisplayName="Clay Adhesive" Description="Natural clay binding material" TextureRef="Mortar" WholesalePrice="2">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Aggregate" />
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Carbon" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="WoodGlue" DisplayName="Wood Glue" Description="Strong adhesive for joining wooden components" TextureRef="WoodGlue" WholesalePrice="4">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Cement" DisplayName="Cement" Description="Hydraulic cement for concrete construction" TextureRef="Cement" WholesalePrice="5">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Aggregate" />
+      <Substance SubstanceRef="SteelReinforcedConcrete" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Nails" DisplayName="Metal Nails" Description="Steel fasteners for wood construction" TextureRef="Nails" WholesalePrice="3">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Bolts" DisplayName="Bolts" Description="Threaded fasteners for metal and heavy construction" TextureRef="Bolts" WholesalePrice="4">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Metal" />
+      <Substance SubstanceRef="Steel" />
+      <Substance SubstanceRef="Wood" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Epoxy" DisplayName="Epoxy Resin" Description="Strong adhesive for multiple materials" TextureRef="Epoxy" WholesalePrice="12">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Metal" />
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+</BuildingMaterials>

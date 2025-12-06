@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SagaTriggerPatterns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <SagaTriggerPattern RefName="PeacefulLandmark" DisplayName="Peaceful Landmark" Description="Pure exploration - no combat encounters" EnforceProgression="false">
+    <SagaTrigger RefName="outer_view" DisplayName="Distant View" EnterRadius="50.0" Tags="exploration" />
+    <SagaTrigger RefName="close_view" DisplayName="Close View" EnterRadius="25.0" Tags="exploration" />
+    <SagaTrigger RefName="landmark" DisplayName="Landmark Discovered" EnterRadius="10.0" Tags="exploration,discovery" />
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="PeacefulStructure" DisplayName="Peaceful Structure" Description="Pure exploration - no combat encounters" EnforceProgression="false">
+    <SagaTrigger RefName="outer_view" DisplayName="Distant View" EnterRadius="50.0" Tags="exploration" />
+    <SagaTrigger RefName="close_view" DisplayName="Close View" EnterRadius="25.0" Tags="exploration" />
+    <SagaTrigger RefName="structure" DisplayName="Structure Discovered" EnterRadius="10.0" Tags="exploration,discovery" />
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="MerchantShop" DisplayName="Merchant Shop" Description="Trading post with merchant character" EnforceProgression="false">
+    <SagaTrigger RefName="shop" DisplayName="Shop" EnterRadius="20.0" Tags="merchant,shop">
+      <Spawn>
+        <CharacterArchetypeRef>RandomMerchant</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="BossEncounter" DisplayName="Boss Encounter Pattern" Description="Single boss encounter" EnforceProgression="false">
+    <SagaTrigger RefName="boss" DisplayName="Boss Battle" EnterRadius="25.0" Tags="combat,boss">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="QuestHub" DisplayName="Quest Hub Pattern" Description="Location where quests are given and completed" EnforceProgression="false">
+    <SagaTrigger RefName="quest_giver" DisplayName="Quest Giver" EnterRadius="20.0" Tags="quest,npc">
+      <Spawn>
+        <CharacterArchetypeRef>RandomQuestGiver</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="SimpleEncounter" DisplayName="Simple Encounter" Description="Single random enemy encounter" EnforceProgression="false">
+    <SagaTrigger RefName="enemy" DisplayName="Enemy Appears" EnterRadius="20.0" Tags="combat,enemy">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+</SagaTriggerPatterns>

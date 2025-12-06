@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Spells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Spell RefName="Heal" DisplayName="Heal" Description="[AI: Restores health]" WholesalePrice="100" Category="Healing" AffinityRef="Divine">
+    <Effects Health="0.2" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  </Spell>
+  <Spell RefName="Wisdom" DisplayName="Wisdom" Description="[AI: Grants insight and knowledge]" WholesalePrice="150" Category="Buff" AffinityRef="Spirit">
+    <Effects Health="0" Stamina="0" Mana="0.1" Strength="0" Defense="0" Speed="0" Magic="0.05" />
+  </Spell>
+  <Spell RefName="Teleport" DisplayName="Teleport" Description="[AI: Short-range teleportation]" WholesalePrice="200" Category="Movement" AffinityRef="Arcane">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0.5" Magic="0" />
+  </Spell>
+  <Spell RefName="Fireball" DisplayName="Fireball" Description="[AI: Hurls explosive flame]" WholesalePrice="120" Category="Damage" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="-0.3" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  </Spell>
+  <Spell RefName="Icebolt" DisplayName="Icebolt" Description="[AI: Launches freezing projectile]" WholesalePrice="100" Category="Damage" AffinityRef="Ice" UseType="Offensive">
+    <Effects Health="-0.2" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.1" Magic="0" />
+  </Spell>
+  <Spell RefName="Freeze" DisplayName="Freeze" Description="[AI: Immobilizes target in ice]" WholesalePrice="150" Category="Control" AffinityRef="Ice" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.3" Magic="0" />
+  </Spell>
+  <Spell RefName="BerserkerRage" DisplayName="Berserker Rage" Description="[AI: Unleashes primal fury]" WholesalePrice="80" Category="Rage" AffinityRef="Rage" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0.25" Defense="-0.1" Speed="0.1" Magic="0" />
+  </Spell>
+  <Spell RefName="BloodFrenzy" DisplayName="Blood Frenzy" Description="[AI: Pain fuels destructive power]" WholesalePrice="150" Category="Rage" AffinityRef="Rage" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="0.2" Mana="0" Strength="0.35" Defense="-0.15" Speed="0.15" Magic="0" />
+  </Spell>
+  <Spell RefName="SoothingSong" DisplayName="Soothing Song" Description="[AI: Calming melody that heals allies]" WholesalePrice="90" Category="Charm" AffinityRef="Spirit">
+    <Effects Health="0.15" Stamina="0.1" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  </Spell>
+  <Spell RefName="InspiringVerse" DisplayName="Inspiring Verse" Description="[AI: Words that embolden allies]" WholesalePrice="120" Category="Charm" AffinityRef="Spirit">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0.1" Defense="0.1" Speed="0.05" Magic="0" />
+  </Spell>
+  <Spell RefName="Distraction" DisplayName="Distraction" Description="[AI: Creates illusory diversion]" WholesalePrice="80" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="-0.15" Speed="0" Magic="0" />
+  </Spell>
+  <Spell RefName="ShadowStep" DisplayName="Shadow Step" Description="[AI: Vanish into shadows momentarily]" WholesalePrice="100" Category="Stealth" AffinityRef="Shadow">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="0.2" Speed="0.15" Magic="0" />
+  </Spell>
+  <Spell RefName="CloakOfNight" DisplayName="Cloak of Night" Description="[AI: Become one with darkness]" WholesalePrice="180" Category="Stealth" AffinityRef="Shadow">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="0.3" Speed="0.2" Magic="0" />
+  </Spell>
+  <Spell RefName="NaturesGrasp" DisplayName="Nature's Grasp" Description="[AI: Vines entangle the target]" WholesalePrice="90" Category="Nature" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="-0.25" Magic="0" />
+  </Spell>
+  <Spell RefName="WildRegeneration" DisplayName="Wild Regeneration" Description="[AI: Call upon nature to heal]" WholesalePrice="110" Category="Nature" AffinityRef="Nature">
+    <Effects Health="0.25" Stamina="0.1" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  </Spell>
+  <Spell RefName="SummonSpirit" DisplayName="Summon Spirit" Description="[AI: Calls forth a minor spirit]" WholesalePrice="150" Category="Summon" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0.15" Defense="0.1" Speed="0" Magic="0" />
+  </Spell>
+  <Spell RefName="BindElemental" DisplayName="Bind Elemental" Description="[AI: Binds elemental force to serve]" WholesalePrice="250" Category="Summon" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="0.2" Defense="0.15" Speed="0.1" Magic="0.1" />
+  </Spell>
+  <Spell RefName="DivineLight" DisplayName="Divine Light" Description="[AI: Holy radiance damages enemies]" WholesalePrice="100" Category="Holy" AffinityRef="Divine" UseType="Offensive">
+    <Effects Health="-0.25" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  </Spell>
+  <Spell RefName="Blessing" DisplayName="Blessing" Description="[AI: Divine protection for allies]" WholesalePrice="130" Category="Holy" AffinityRef="Divine">
+    <Effects Health="0.1" Stamina="0" Mana="0" Strength="0" Defense="0.15" Speed="0" Magic="0.05" />
+  </Spell>
+  <Spell RefName="Curse" DisplayName="Curse" Description="[AI: Weakens the target]" WholesalePrice="100" Category="Debuff" AffinityRef="Shadow" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="-0.15" Defense="-0.1" Speed="0" Magic="0" />
+  </Spell>
+  <Spell RefName="Poison" DisplayName="Poison" Description="[AI: Toxic affliction]" WholesalePrice="80" Category="Debuff" AffinityRef="Nature" UseType="Offensive">
+    <Effects Health="-0.15" Stamina="-0.1" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
+  </Spell>
+</Spells>

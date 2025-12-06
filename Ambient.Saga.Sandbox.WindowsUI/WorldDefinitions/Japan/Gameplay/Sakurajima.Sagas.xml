@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <SagaArc RefName="Spawn" DisplayName="Spawn" Description="Hub center at Spawn" LatitudeZ="31.59371" LongitudeX="130.62466" Source="Generated">
+    <SagaFeatureRef>Spawn</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_Spawn" DisplayName="Approaching Spawn" Description="Triggered when entering Spawn" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>BOSS_Spawn</CharacterRef>
+      </Spawn>
+      <GivesQuestTokenRef>TOKEN_Spawn_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke1Ring1" DisplayName="Spawn Spoke 1 Ring 1" Description="Star waypoint at 500m from Spawn" LatitudeZ="31.59371" LongitudeX="130.62993311323905" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke1Ring1</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke1Ring1" DisplayName="Approaching Spawn Spoke 1 Ring 1" Description="Triggered when entering Spawn Spoke 1 Ring 1" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke1Ring1</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_Spawn_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke1Ring1_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke1Ring2" DisplayName="Spawn Spoke 1 Ring 2" Description="Star waypoint at 1000m from Spawn" LatitudeZ="31.59371" LongitudeX="130.6352062264781" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke1Ring2</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke1Ring2" DisplayName="Approaching Spawn Spoke 1 Ring 2" Description="Triggered when entering Spawn Spoke 1 Ring 2" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke1Ring2</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke1Ring1_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke1Ring2_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke1Ring3" DisplayName="Spawn Spoke 1 Ring 3" Description="Star waypoint at 1500m from Spawn" LatitudeZ="31.59371" LongitudeX="130.6404793397171" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke1Ring3</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke1Ring3" DisplayName="Approaching Spawn Spoke 1 Ring 3" Description="Triggered when entering Spawn Spoke 1 Ring 3" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke1Ring3</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke1Ring2_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke1Ring3_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke1Ring4" DisplayName="Spawn Spoke 1 Ring 4" Description="Star waypoint at 2000m from Spawn" LatitudeZ="31.59371" LongitudeX="130.64575245295615" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke1Ring4</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke1Ring4" DisplayName="Approaching Spawn Spoke 1 Ring 4" Description="Triggered when entering Spawn Spoke 1 Ring 4" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke1Ring4</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke1Ring3_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke1Ring4_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke1Ring5" DisplayName="Spawn Spoke 1 Ring 5" Description="Star waypoint at 2500m from Spawn" LatitudeZ="31.59371" LongitudeX="130.6510255661952" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke1Ring5</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke1Ring5" DisplayName="Approaching Spawn Spoke 1 Ring 5" Description="Triggered when entering Spawn Spoke 1 Ring 5" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke1Ring5</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke1Ring4_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke1Ring5_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke2Ring1" DisplayName="Spawn Spoke 2 Ring 1" Description="Star waypoint at 500m from Spawn" LatitudeZ="31.59759980149023" LongitudeX="130.6272965566195" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke2Ring1</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke2Ring1" DisplayName="Approaching Spawn Spoke 2 Ring 1" Description="Triggered when entering Spawn Spoke 2 Ring 1" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke2Ring1</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke1Ring5_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke2Ring1_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke2Ring2" DisplayName="Spawn Spoke 2 Ring 2" Description="Star waypoint at 1000m from Spawn" LatitudeZ="31.601489602980458" LongitudeX="130.62993311323905" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke2Ring2</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke2Ring2" DisplayName="Approaching Spawn Spoke 2 Ring 2" Description="Triggered when entering Spawn Spoke 2 Ring 2" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke2Ring2</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke2Ring1_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke2Ring2_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke2Ring3" DisplayName="Spawn Spoke 2 Ring 3" Description="Star waypoint at 1500m from Spawn" LatitudeZ="31.605379404470686" LongitudeX="130.63256966985855" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke2Ring3</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke2Ring3" DisplayName="Approaching Spawn Spoke 2 Ring 3" Description="Triggered when entering Spawn Spoke 2 Ring 3" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke2Ring3</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke2Ring2_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke2Ring3_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke2Ring4" DisplayName="Spawn Spoke 2 Ring 4" Description="Star waypoint at 2000m from Spawn" LatitudeZ="31.609269205960913" LongitudeX="130.6352062264781" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke2Ring4</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke2Ring4" DisplayName="Approaching Spawn Spoke 2 Ring 4" Description="Triggered when entering Spawn Spoke 2 Ring 4" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke2Ring4</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke2Ring3_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke2Ring4_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke2Ring5" DisplayName="Spawn Spoke 2 Ring 5" Description="Star waypoint at 2500m from Spawn" LatitudeZ="31.61315900745114" LongitudeX="130.6378427830976" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke2Ring5</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke2Ring5" DisplayName="Approaching Spawn Spoke 2 Ring 5" Description="Triggered when entering Spawn Spoke 2 Ring 5" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke2Ring5</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke2Ring4_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke2Ring5_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke3Ring1" DisplayName="Spawn Spoke 3 Ring 1" Description="Star waypoint at 500m from Spawn" LatitudeZ="31.59759980149023" LongitudeX="130.6220234433805" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke3Ring1</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke3Ring1" DisplayName="Approaching Spawn Spoke 3 Ring 1" Description="Triggered when entering Spawn Spoke 3 Ring 1" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke3Ring1</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke2Ring5_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke3Ring1_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke3Ring2" DisplayName="Spawn Spoke 3 Ring 2" Description="Star waypoint at 1000m from Spawn" LatitudeZ="31.601489602980458" LongitudeX="130.61938688676096" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke3Ring2</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke3Ring2" DisplayName="Approaching Spawn Spoke 3 Ring 2" Description="Triggered when entering Spawn Spoke 3 Ring 2" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke3Ring2</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke3Ring1_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke3Ring2_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke3Ring3" DisplayName="Spawn Spoke 3 Ring 3" Description="Star waypoint at 1500m from Spawn" LatitudeZ="31.605379404470686" LongitudeX="130.61675033014146" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke3Ring3</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke3Ring3" DisplayName="Approaching Spawn Spoke 3 Ring 3" Description="Triggered when entering Spawn Spoke 3 Ring 3" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke3Ring3</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke3Ring2_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke3Ring3_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke3Ring4" DisplayName="Spawn Spoke 3 Ring 4" Description="Star waypoint at 2000m from Spawn" LatitudeZ="31.609269205960913" LongitudeX="130.61411377352192" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke3Ring4</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke3Ring4" DisplayName="Approaching Spawn Spoke 3 Ring 4" Description="Triggered when entering Spawn Spoke 3 Ring 4" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke3Ring4</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke3Ring3_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke3Ring4_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke3Ring5" DisplayName="Spawn Spoke 3 Ring 5" Description="Star waypoint at 2500m from Spawn" LatitudeZ="31.61315900745114" LongitudeX="130.61147721690241" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke3Ring5</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke3Ring5" DisplayName="Approaching Spawn Spoke 3 Ring 5" Description="Triggered when entering Spawn Spoke 3 Ring 5" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke3Ring5</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke3Ring4_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke3Ring5_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke4Ring1" DisplayName="Spawn Spoke 4 Ring 1" Description="Star waypoint at 500m from Spawn" LatitudeZ="31.59371" LongitudeX="130.61938688676096" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke4Ring1</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke4Ring1" DisplayName="Approaching Spawn Spoke 4 Ring 1" Description="Triggered when entering Spawn Spoke 4 Ring 1" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke4Ring1</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke3Ring5_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke4Ring1_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke4Ring2" DisplayName="Spawn Spoke 4 Ring 2" Description="Star waypoint at 1000m from Spawn" LatitudeZ="31.59371" LongitudeX="130.61411377352192" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke4Ring2</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke4Ring2" DisplayName="Approaching Spawn Spoke 4 Ring 2" Description="Triggered when entering Spawn Spoke 4 Ring 2" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke4Ring2</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke4Ring1_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke4Ring2_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke4Ring3" DisplayName="Spawn Spoke 4 Ring 3" Description="Star waypoint at 1500m from Spawn" LatitudeZ="31.59371" LongitudeX="130.6088406602829" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke4Ring3</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke4Ring3" DisplayName="Approaching Spawn Spoke 4 Ring 3" Description="Triggered when entering Spawn Spoke 4 Ring 3" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke4Ring3</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke4Ring2_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke4Ring3_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke4Ring4" DisplayName="Spawn Spoke 4 Ring 4" Description="Star waypoint at 2000m from Spawn" LatitudeZ="31.59371" LongitudeX="130.60356754704387" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke4Ring4</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke4Ring4" DisplayName="Approaching Spawn Spoke 4 Ring 4" Description="Triggered when entering Spawn Spoke 4 Ring 4" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke4Ring4</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke4Ring3_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke4Ring4_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke4Ring5" DisplayName="Spawn Spoke 4 Ring 5" Description="Star waypoint at 2500m from Spawn" LatitudeZ="31.59371" LongitudeX="130.59829443380482" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke4Ring5</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke4Ring5" DisplayName="Approaching Spawn Spoke 4 Ring 5" Description="Triggered when entering Spawn Spoke 4 Ring 5" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke4Ring5</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke4Ring4_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke4Ring5_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke5Ring1" DisplayName="Spawn Spoke 5 Ring 1" Description="Star waypoint at 500m from Spawn" LatitudeZ="31.589820198509774" LongitudeX="130.6220234433805" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke5Ring1</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke5Ring1" DisplayName="Approaching Spawn Spoke 5 Ring 1" Description="Triggered when entering Spawn Spoke 5 Ring 1" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke5Ring1</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke4Ring5_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke5Ring1_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke5Ring2" DisplayName="Spawn Spoke 5 Ring 2" Description="Star waypoint at 1000m from Spawn" LatitudeZ="31.585930397019546" LongitudeX="130.61938688676096" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke5Ring2</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke5Ring2" DisplayName="Approaching Spawn Spoke 5 Ring 2" Description="Triggered when entering Spawn Spoke 5 Ring 2" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke5Ring2</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke5Ring1_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke5Ring2_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke5Ring3" DisplayName="Spawn Spoke 5 Ring 3" Description="Star waypoint at 1500m from Spawn" LatitudeZ="31.582040595529318" LongitudeX="130.61675033014146" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke5Ring3</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke5Ring3" DisplayName="Approaching Spawn Spoke 5 Ring 3" Description="Triggered when entering Spawn Spoke 5 Ring 3" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke5Ring3</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke5Ring2_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke5Ring3_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke5Ring4" DisplayName="Spawn Spoke 5 Ring 4" Description="Star waypoint at 2000m from Spawn" LatitudeZ="31.57815079403909" LongitudeX="130.61411377352192" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke5Ring4</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke5Ring4" DisplayName="Approaching Spawn Spoke 5 Ring 4" Description="Triggered when entering Spawn Spoke 5 Ring 4" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke5Ring4</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke5Ring3_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke5Ring4_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke5Ring5" DisplayName="Spawn Spoke 5 Ring 5" Description="Star waypoint at 2500m from Spawn" LatitudeZ="31.57426099254886" LongitudeX="130.61147721690241" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke5Ring5</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke5Ring5" DisplayName="Approaching Spawn Spoke 5 Ring 5" Description="Triggered when entering Spawn Spoke 5 Ring 5" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke5Ring5</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke5Ring4_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke5Ring5_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke6Ring1" DisplayName="Spawn Spoke 6 Ring 1" Description="Star waypoint at 500m from Spawn" LatitudeZ="31.589820198509774" LongitudeX="130.6272965566195" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke6Ring1</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke6Ring1" DisplayName="Approaching Spawn Spoke 6 Ring 1" Description="Triggered when entering Spawn Spoke 6 Ring 1" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke6Ring1</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke5Ring5_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke6Ring1_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke6Ring2" DisplayName="Spawn Spoke 6 Ring 2" Description="Star waypoint at 1000m from Spawn" LatitudeZ="31.585930397019546" LongitudeX="130.62993311323905" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke6Ring2</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke6Ring2" DisplayName="Approaching Spawn Spoke 6 Ring 2" Description="Triggered when entering Spawn Spoke 6 Ring 2" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke6Ring2</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke6Ring1_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke6Ring2_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke6Ring3" DisplayName="Spawn Spoke 6 Ring 3" Description="Star waypoint at 1500m from Spawn" LatitudeZ="31.582040595529318" LongitudeX="130.63256966985855" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke6Ring3</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke6Ring3" DisplayName="Approaching Spawn Spoke 6 Ring 3" Description="Triggered when entering Spawn Spoke 6 Ring 3" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>MERCHANT_SpawnSpoke6Ring3</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke6Ring2_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke6Ring3_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke6Ring4" DisplayName="Spawn Spoke 6 Ring 4" Description="Star waypoint at 2000m from Spawn" LatitudeZ="31.57815079403909" LongitudeX="130.6352062264781" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke6Ring4</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke6Ring4" DisplayName="Approaching Spawn Spoke 6 Ring 4" Description="Triggered when entering Spawn Spoke 6 Ring 4" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke6Ring4</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke6Ring3_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke6Ring4_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+  <SagaArc RefName="SpawnSpoke6Ring5" DisplayName="Spawn Spoke 6 Ring 5" Description="Star waypoint at 2500m from Spawn" LatitudeZ="31.57426099254886" LongitudeX="130.6378427830976" Source="Generated" Locked="true">
+    <SagaFeatureRef>SpawnSpoke6Ring5</SagaFeatureRef>
+    <SagaTrigger RefName="TRIGGER_SpawnSpoke6Ring5" DisplayName="Approaching Spawn Spoke 6 Ring 5" Description="Triggered when entering Spawn Spoke 6 Ring 5" EnterRadius="50.0">
+      <Spawn Count="1">
+        <CharacterRef>NPC_SpawnSpoke6Ring5</CharacterRef>
+      </Spawn>
+      <RequiresQuestTokenRef>TOKEN_SpawnSpoke6Ring4_COMPLETE</RequiresQuestTokenRef>
+      <GivesQuestTokenRef>TOKEN_SpawnSpoke6Ring5_COMPLETE</GivesQuestTokenRef>
+    </SagaTrigger>
+  </SagaArc>
+</SagaArcs>

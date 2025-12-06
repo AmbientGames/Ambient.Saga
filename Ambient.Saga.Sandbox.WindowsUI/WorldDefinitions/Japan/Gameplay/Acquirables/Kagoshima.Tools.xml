@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Tools xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Tool RefName="Multitool" DisplayName="Multitool" TextureRef="Multitool" WholesalePrice="10">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Stone" EffectivenessMultiplier=".5" />
+      <Substance SubstanceRef="Plant" EffectivenessMultiplier=".5" />
+      <Substance SubstanceRef="Wood" EffectivenessMultiplier=".5" />
+      <Substance SubstanceRef="Aggregate" EffectivenessMultiplier=".5" />
+      <Substance SubstanceRef="Carbon" EffectivenessMultiplier=".5" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="Pickaxe" DisplayName="Pickaxe" TextureRef="Pickaxe" WholesalePrice="5">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Stone" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="Axe" DisplayName="Axe" TextureRef="Axe" WholesalePrice="5">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Plant" />
+      <Substance SubstanceRef="Wood" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="Spade" DisplayName="Spade" TextureRef="Spade" WholesalePrice="5">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Aggregate" />
+      <Substance SubstanceRef="Carbon" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="SteelPickaxe" DisplayName="Steel Pickaxe" TextureRef="Pickaxe" WholesalePrice="15">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Stone" EffectivenessMultiplier="3.0" />
+      <Substance SubstanceRef="Aggregate" EffectivenessMultiplier="2.5" />
+      <Substance SubstanceRef="Metal" EffectivenessMultiplier="1.5" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="SteelAxe" DisplayName="Steel Axe" TextureRef="Axe" WholesalePrice="15">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Plant" EffectivenessMultiplier="2.5" />
+      <Substance SubstanceRef="Wood" EffectivenessMultiplier="3.0" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="SteelSpade" DisplayName="Steel Spade" TextureRef="Spade" WholesalePrice="15">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Aggregate" EffectivenessMultiplier="2.5" />
+      <Substance SubstanceRef="Carbon" EffectivenessMultiplier="3.0" />
+    </EffectiveSubstances>
+  </Tool>
+</Tools>

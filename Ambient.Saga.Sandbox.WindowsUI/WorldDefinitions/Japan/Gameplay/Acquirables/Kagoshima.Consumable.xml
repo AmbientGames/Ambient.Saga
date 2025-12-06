@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Consumables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Consumable RefName="HealingPotion" DisplayName="Healing Potion" Description="[AI: Red potion restoring health]" WholesalePrice="25">
+    <Effects Health="0.3" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="0" />
+  </Consumable>
+  <Consumable RefName="GreaterHealingPotion" DisplayName="Greater Healing Potion" Description="[AI: Powerful healing elixir]" WholesalePrice="75">
+    <Effects Health="0.6" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="0" />
+  </Consumable>
+  <Consumable RefName="ManaPotion" DisplayName="Mana Potion" Description="[AI: Blue potion restoring mana]" WholesalePrice="30">
+    <Effects Health="0" Stamina="0" Mana="0.4" Hunger="0" Thirst="0" Temperature="0" />
+  </Consumable>
+  <Consumable RefName="Bread" DisplayName="Bread" Description="[AI: Fresh baked bread]" WholesalePrice="5">
+    <Effects Health="0.05" Stamina="0.1" Mana="0" Hunger="20" Thirst="0" Temperature="0" />
+  </Consumable>
+  <Consumable RefName="Ale" DisplayName="Ale" Description="[AI: Hearty ale in mug]" WholesalePrice="8">
+    <Effects Health="0.02" Stamina="0.15" Mana="0" Hunger="5" Thirst="15" Temperature="0" />
+  </Consumable>
+  <Consumable RefName="Water" DisplayName="Water" Description="[AI: Clean drinking water]" WholesalePrice="2">
+    <Effects Health="0" Stamina="0.05" Mana="0" Hunger="0" Thirst="25" Temperature="0" />
+  </Consumable>
+  <Consumable RefName="CookedMeat" DisplayName="Cooked Meat" Description="[AI: Roasted meat on bone]" WholesalePrice="15">
+    <Effects Health="0.1" Stamina="0.2" Mana="0" Hunger="40" Thirst="0" Temperature="0" />
+  </Consumable>
+  <Consumable RefName="StrengthElixir" DisplayName="Strength Elixir" Description="[AI: Temporarily boosts strength]" WholesalePrice="50" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="SwiftnessPotion" DisplayName="Swiftness Potion" Description="[AI: Temporarily boosts speed]" WholesalePrice="45">
+    <Effects Health="0" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ElixirOfLife" DisplayName="Elixir of Life" Description="[AI: Fully restores health]" WholesalePrice="200">
+    <Effects Health="1" Stamina="0.5" Mana="0" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="PhoenixTears" DisplayName="Phoenix Tears" Description="[AI: Legendary restorative]" WholesalePrice="500">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ThrowingKnife" DisplayName="Throwing Knife" Description="[AI: Small blade for throwing]" WholesalePrice="10" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="PoisonVial" DisplayName="Poison Vial" Description="[AI: Toxic substance in glass vial]" WholesalePrice="35" UseType="Offensive">
+    <Effects Health="-0.25" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+</Consumables>

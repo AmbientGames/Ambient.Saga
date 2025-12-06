@@ -5,7 +5,6 @@
     <TargetFramework>net10.0-windows10.0.17763.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
-    <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject></StartupObject>
   </PropertyGroup>
@@ -38,5 +37,11 @@
   <ItemGroup>
     <None Include="DefinitionXsd\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="DefinitionXsd" />
     <None Include="WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="steam_api64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

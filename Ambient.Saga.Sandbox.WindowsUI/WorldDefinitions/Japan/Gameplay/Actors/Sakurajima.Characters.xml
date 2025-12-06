@@ -1,0 +1,747 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Character RefName="BOSS_Spawn" DisplayName="Guardian of Spawn" Description="Character at Spawn">
+    <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="Ale" Quantity="3" />
+        <Entry ConsumableRef="ManaPotion" Quantity="6" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Fireball" Condition="1.0" />
+        <Entry SpellRef="Poison" Condition="1.0" />
+        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
+        <Entry SpellRef="Freeze" Condition="1.0" />
+        <Entry SpellRef="Wisdom" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="BossFight" Value="1" />
+      <Trait Name="Hostile" Value="1" />
+      <Trait Name="TacticalRetreat" Value="30" />
+      <Trait Name="LastStand" Value="15" />
+    </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Spawn" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Spawn" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Spawn" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Spawn" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Spawn" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Spawn" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Halt! I am the guardian of Spawn. None may pass without proving their worth!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
+      <MentionsSagaArcRef>SpawnSpoke2Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke1Ring1" DisplayName="Trader at Spawn Spoke 1 Ring 1" Description="Character at Spawn Spoke 1 Ring 1">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="CookedMeat" Quantity="6" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="20" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 1 Ring 1. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke2Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Spawn</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke1Ring2" DisplayName="Traveler at Spawn Spoke 1 Ring 2" Description="Character at Spawn Spoke 1 Ring 2">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 1 Ring 2? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke1Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke1Ring3" DisplayName="Traveler at Spawn Spoke 1 Ring 3" Description="Character at Spawn Spoke 1 Ring 3">
+    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 1 Ring 3? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke1Ring2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke1Ring4" DisplayName="Trader at Spawn Spoke 1 Ring 4" Description="Character at Spawn Spoke 1 Ring 4">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Wisdom" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 1 Ring 4. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke1Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke1Ring5" DisplayName="Traveler at Spawn Spoke 1 Ring 5" Description="Character at Spawn Spoke 1 Ring 5">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 1 Ring 5? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke1Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke2Ring1" DisplayName="Traveler at Spawn Spoke 2 Ring 1" Description="Character at Spawn Spoke 2 Ring 1">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.1" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 2 Ring 1? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke3Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Spawn</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke2Ring2" DisplayName="Trader at Spawn Spoke 2 Ring 2" Description="Character at Spawn Spoke 2 Ring 2">
+    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="50" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 2 Ring 2. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke2Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke2Ring3" DisplayName="Traveler at Spawn Spoke 2 Ring 3" Description="Character at Spawn Spoke 2 Ring 3">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 2 Ring 3? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke2Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring5</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke2Ring4" DisplayName="Traveler at Spawn Spoke 2 Ring 4" Description="Character at Spawn Spoke 2 Ring 4">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.1" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 2 Ring 4? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke2Ring5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke2Ring5" DisplayName="Trader at Spawn Spoke 2 Ring 5" Description="Character at Spawn Spoke 2 Ring 5">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Distraction" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="20" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 2 Ring 5. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke2Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke3Ring1" DisplayName="Traveler at Spawn Spoke 3 Ring 1" Description="Character at Spawn Spoke 3 Ring 1">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 3 Ring 1? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke2Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Spawn</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke3Ring2" DisplayName="Traveler at Spawn Spoke 3 Ring 2" Description="Character at Spawn Spoke 3 Ring 2">
+    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 3 Ring 2? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke3Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke2Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke3Ring3" DisplayName="Trader at Spawn Spoke 3 Ring 3" Description="Character at Spawn Spoke 3 Ring 3">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Wisdom" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 3 Ring 3. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke3Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring5</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke3Ring4" DisplayName="Traveler at Spawn Spoke 3 Ring 4" Description="Character at Spawn Spoke 3 Ring 4">
+    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 3 Ring 4? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke3Ring5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke3Ring5" DisplayName="Traveler at Spawn Spoke 3 Ring 5" Description="Character at Spawn Spoke 3 Ring 5">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 3 Ring 5? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke3Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke4Ring1" DisplayName="Trader at Spawn Spoke 4 Ring 1" Description="Character at Spawn Spoke 4 Ring 1">
+    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 4 Ring 1. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke3Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>Spawn</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke4Ring2" DisplayName="Traveler at Spawn Spoke 4 Ring 2" Description="Character at Spawn Spoke 4 Ring 2">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 4 Ring 2? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke4Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke3Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke4Ring3" DisplayName="Traveler at Spawn Spoke 4 Ring 3" Description="Character at Spawn Spoke 4 Ring 3">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.1" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 4 Ring 3? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke4Ring2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke4Ring4" DisplayName="Trader at Spawn Spoke 4 Ring 4" Description="Character at Spawn Spoke 4 Ring 4">
+    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="PoisonVial" Quantity="6" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="50" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 4 Ring 4. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke4Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke4Ring5" DisplayName="Traveler at Spawn Spoke 4 Ring 5" Description="Character at Spawn Spoke 4 Ring 5">
+    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 4 Ring 5? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke4Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke5Ring1" DisplayName="Traveler at Spawn Spoke 5 Ring 1" Description="Character at Spawn Spoke 5 Ring 1">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 5 Ring 1? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>Spawn</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke5Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke5Ring2" DisplayName="Trader at Spawn Spoke 5 Ring 2" Description="Character at Spawn Spoke 5 Ring 2">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
+        <Entry ConsumableRef="PoisonVial" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="SoothingSong" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 5 Ring 2. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke5Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke5Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke4Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke5Ring3" DisplayName="Traveler at Spawn Spoke 5 Ring 3" Description="Character at Spawn Spoke 5 Ring 3">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.1" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 5 Ring 3? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke5Ring2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke5Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke5Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke5Ring4" DisplayName="Traveler at Spawn Spoke 5 Ring 4" Description="Character at Spawn Spoke 5 Ring 4">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.1" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 5 Ring 4? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke5Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke5Ring5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke5Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke5Ring5" DisplayName="Trader at Spawn Spoke 5 Ring 5" Description="Character at Spawn Spoke 5 Ring 5">
+    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="StrengthElixir" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="20" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 5 Ring 5. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke5Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke5Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke5Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke6Ring1" DisplayName="Traveler at Spawn Spoke 6 Ring 1" Description="Character at Spawn Spoke 6 Ring 1">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 6 Ring 1? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>Spawn</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke6Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke6Ring2" DisplayName="Traveler at Spawn Spoke 6 Ring 2" Description="Character at Spawn Spoke 6 Ring 2">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.1" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 6 Ring 2? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke6Ring1</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke6Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke1Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="MERCHANT_SpawnSpoke6Ring3" DisplayName="Trader at Spawn Spoke 6 Ring 3" Description="Character at Spawn Spoke 6 Ring 3">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="HealingPotion" Quantity="1" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="20" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 6 Ring 3. I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
+      <MentionsSagaArcRef>SpawnSpoke6Ring2</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke6Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke6Ring1</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke6Ring4" DisplayName="Traveler at Spawn Spoke 6 Ring 4" Description="Character at Spawn Spoke 6 Ring 4">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.1" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 6 Ring 4? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke6Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke6Ring5</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke6Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="NPC_SpawnSpoke6Ring5" DisplayName="Traveler at Spawn Spoke 6 Ring 5" Description="Character at Spawn Spoke 6 Ring 5">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.1" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Spawn Spoke 6 Ring 5? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
+      <MentionsSagaArcRef>SpawnSpoke6Ring4</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke6Ring3</MentionsSagaArcRef>
+      <MentionsSagaArcRef>SpawnSpoke6Ring2</MentionsSagaArcRef>
+    </AIMetadata>
+  </Character>
+  <Character RefName="GUARD_Spawn_0" DisplayName="Guard at Spawn" Description="Character at Spawn">
+    <Stats Health="0.57" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="Bread" Quantity="4" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="4" />
+        <Entry ConsumableRef="HealingPotion" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
+        <Entry SpellRef="WildRegeneration" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Spawn.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Vigilant, loyal, aggressive when threatened" Role="defender" />
+  </Character>
+  <Character RefName="HOSTILE_SpawnSpoke1Ring1_1" DisplayName="Bandit near Spawn Spoke 1 Ring 1" Description="Character at Spawn Spoke 1 Ring 1">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ManaPotion" Quantity="2" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="4" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Spawn Spoke 1 Ring 1.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+  <Character RefName="HOSTILE_SpawnSpoke2Ring1_2" DisplayName="Wild Beast near Spawn Spoke 2 Ring 1" Description="Character at Spawn Spoke 2 Ring 1">
+    <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ManaPotion" Quantity="4" />
+        <Entry ConsumableRef="HealingPotion" Quantity="2" />
+        <Entry ConsumableRef="PoisonVial" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Spawn Spoke 2 Ring 1.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+  <Character RefName="HOSTILE_SpawnSpoke3Ring1_3" DisplayName="Elemental near Spawn Spoke 3 Ring 1" Description="Character at Spawn Spoke 3 Ring 1">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="Ale" Quantity="5" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Spawn Spoke 3 Ring 1.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+  <Character RefName="HOSTILE_SpawnSpoke4Ring1_4" DisplayName="Undead near Spawn Spoke 4 Ring 1" Description="Character at Spawn Spoke 4 Ring 1">
+    <Stats Health="0.43" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Icebolt" Condition="1.0" />
+        <Entry SpellRef="DivineLight" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Spawn Spoke 4 Ring 1.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+  <Character RefName="HOSTILE_SpawnSpoke5Ring1_5" DisplayName="Undead near Spawn Spoke 5 Ring 1" Description="Character at Spawn Spoke 5 Ring 1">
+    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ManaPotion" Quantity="1" />
+        <Entry ConsumableRef="CookedMeat" Quantity="4" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Spawn Spoke 5 Ring 1.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+  <Character RefName="HOSTILE_SpawnSpoke6Ring1_6" DisplayName="Bandit near Spawn Spoke 6 Ring 1" Description="Character at Spawn Spoke 6 Ring 1">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
+        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome to Spawn Spoke 6 Ring 1.</InitialGreeting>
+    </InitiationBehavior>
+    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
+  </Character>
+</Characters>
