@@ -67,6 +67,11 @@ public class AvatarActionsPanel
         {
             modalManager.ShowWorldCatalog = true;
         }
+
+        if (ImGui.Button("Faction Reputation", new Vector2(-1, 25)))
+        {
+            modalManager.ShowFactionReputation = true;
+        }
     }
 
     private void RenderAvatarInfoTab(MainViewModel viewModel)

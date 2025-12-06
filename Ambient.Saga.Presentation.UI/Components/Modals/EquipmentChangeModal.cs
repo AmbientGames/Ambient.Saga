@@ -257,8 +257,12 @@ public class EquipmentChangeModal
             {
                 if (selectedEquipmentRef == "-- None --" || string.IsNullOrEmpty(selectedEquipmentRef))
                 {
-                    // Removing equipment - skip for now (not implemented)
-                    Console.WriteLine($"Skipping removal of equipment from {slotName}");
+                    // Removing equipment from slot
+                    if (!string.IsNullOrEmpty(currentEquipmentRef))
+                    {
+                        changes.Add($"{slotName}:REMOVE");
+                        Console.WriteLine($"Equipment removal: {slotName} (was {currentEquipmentRef})");
+                    }
                     continue;
                 }
 

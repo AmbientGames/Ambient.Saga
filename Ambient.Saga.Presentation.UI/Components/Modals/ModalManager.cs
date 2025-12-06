@@ -26,6 +26,7 @@ public class ModalManager
     private DialogueModal _dialogueModal = new();
     private LootModal _lootModal = new();
     private BattleModal _battleModal = new();
+    private FactionReputationModal _factionReputationModal = new();
 
     // Reference to ImGui archetype selector for callbacks
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
@@ -54,6 +55,7 @@ public class ModalManager
     public bool ShowQuestDetail { get; set; }
     public bool ShowDialogue { get; set; }
     public bool ShowLoot { get; set; }
+    public bool ShowFactionReputation { get; set; }
 
     // Selected character for interactions
     public CharacterViewModel? SelectedCharacter { get; set; }
@@ -82,7 +84,8 @@ public class ModalManager
         ShowQuestLog ||
         ShowQuestDetail ||
         ShowDialogue ||
-        ShowLoot;
+        ShowLoot ||
+        ShowFactionReputation;
 
     public void Update(float deltaTime)
     {
@@ -190,6 +193,13 @@ public class ModalManager
             _lootModal.Render(viewModel, SelectedCharacter, ref isOpen);
             ShowLoot = isOpen;
         }
+
+        if (ShowFactionReputation)
+        {
+            var isOpen = ShowFactionReputation;
+            _factionReputationModal.Render(viewModel, ref isOpen);
+            ShowFactionReputation = isOpen;
+        }
     }
 
     public void OpenCharacterInteraction(CharacterViewModel character)
@@ -283,6 +293,7 @@ public class ModalManager
         ShowQuestDetail = false;
         ShowDialogue = false;
         ShowLoot = false;
+        ShowFactionReputation = false;
         SelectedCharacter = null;
         _questViewModel = null;
     }
