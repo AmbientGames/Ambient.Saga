@@ -4,23 +4,23 @@
     <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
-        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
-        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
-        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
+        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
+        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="RuneSword" Condition="1.0" />
+        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
+        <Entry EquipmentRef="Buckler" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Ale" Quantity="3" />
-        <Entry ConsumableRef="ManaPotion" Quantity="6" />
+        <Entry ConsumableRef="DriedMeat" Quantity="1" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfHaste" Quantity="4" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fireball" Condition="1.0" />
-        <Entry SpellRef="Poison" Condition="1.0" />
-        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
-        <Entry SpellRef="Freeze" Condition="1.0" />
-        <Entry SpellRef="Wisdom" Condition="1.0" />
+        <Entry SpellRef="Obliterate" Condition="1.0" />
+        <Entry SpellRef="Disintegrate" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -50,20 +50,21 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="Harp" Condition="1.0" />
+        <Entry EquipmentRef="MageGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="6" />
+        <Entry ConsumableRef="MagesBiscuit" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+        <Entry SpellRef="Fortitude" Condition="1.0" />
+        <Entry SpellRef="MightyStrength" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 1 Ring 1. I have wares to offer - take a look!</InitialGreeting>
@@ -102,13 +103,14 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
+        <Entry ConsumableRef="FireBomb" Quantity="1" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Wisdom" Condition="1.0" />
+        <Entry SpellRef="Fortitude" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -153,22 +155,20 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="ShortBow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="3" />
+        <Entry ConsumableRef="WisdomElixir" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
         <Entry SpellRef="CloakOfNight" Condition="1.0" />
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 2 Ring 2. I have wares to offer - take a look!</InitialGreeting>
@@ -207,20 +207,22 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="Longbow" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
+        <Entry ConsumableRef="DragonBlood" Quantity="3" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="FireBomb" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Distraction" Condition="1.0" />
+        <Entry SpellRef="MightyStrength" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 2 Ring 5. I have wares to offer - take a look!</InitialGreeting>
@@ -259,20 +261,22 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
-        <Entry ConsumableRef="GreaterHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="4" />
+        <Entry ConsumableRef="Ale" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Wisdom" Condition="1.0" />
+        <Entry SpellRef="Heroism" Condition="1.0" />
+        <Entry SpellRef="HymnOfValor" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 3 Ring 3. I have wares to offer - take a look!</InitialGreeting>
@@ -311,20 +315,20 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="Longbow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
-        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
+        <Entry ConsumableRef="FlashBomb" Quantity="3" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+        <Entry SpellRef="Backstab" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 4 Ring 1. I have wares to offer - take a look!</InitialGreeting>
@@ -363,10 +367,11 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
+        <Entry EquipmentRef="LargeSword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonVial" Quantity="6" />
+        <Entry ConsumableRef="SuperiorManaPotion" Quantity="1" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="CloakOfNight" Condition="1.0" />
@@ -414,21 +419,20 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="MasterworkLute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
-        <Entry ConsumableRef="PoisonVial" Quantity="4" />
+        <Entry ConsumableRef="IronskinPotion" Quantity="3" />
+        <Entry ConsumableRef="Antidote" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SoothingSong" Condition="1.0" />
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Spawn Spoke 5 Ring 2. I have wares to offer - take a look!</InitialGreeting>
@@ -467,13 +471,16 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
+        <Entry EquipmentRef="RopeBelt" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="4" />
+        <Entry ConsumableRef="HastePotion" Quantity="4" />
+        <Entry ConsumableRef="Torch" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
+        <Entry SpellRef="SmokeBomb" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -518,14 +525,15 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="Glaive" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HealingPotion" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfFireball" Quantity="1" />
+        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+        <Entry SpellRef="Agility" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -570,18 +578,17 @@
     <Stats Health="0.57" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
-        <Entry EquipmentRef="Lute" Condition="1.0" />
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="SteelSword" Condition="1.0" />
+        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bread" Quantity="4" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="4" />
-        <Entry ConsumableRef="HealingPotion" Quantity="2" />
+        <Entry ConsumableRef="ManaPotion" Quantity="2" />
+        <Entry ConsumableRef="SuperiorManaPotion" Quantity="2" />
+        <Entry ConsumableRef="Javelin" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
-        <Entry SpellRef="WildRegeneration" Condition="1.0" />
+        <Entry SpellRef="EagleEye" Condition="1.0" />
+        <Entry SpellRef="ThornBarrier" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -596,19 +603,20 @@
     <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="IronMace" Condition="1.0" />
+        <Entry EquipmentRef="TowerShield" Condition="1.0" />
+        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
         <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="2" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="4" />
-        <Entry ConsumableRef="ThrowingKnife" Quantity="4" />
+        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="Bandage" Quantity="2" />
+        <Entry ConsumableRef="Wine" Quantity="4" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -623,17 +631,17 @@
     <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="KiteShield" Condition="1.0" />
+        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
+        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="4" />
-        <Entry ConsumableRef="HealingPotion" Quantity="2" />
-        <Entry ConsumableRef="PoisonVial" Quantity="3" />
+        <Entry ConsumableRef="CurativePotion" Quantity="3" />
+        <Entry ConsumableRef="ManaGem" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
+        <Entry SpellRef="EntanglingRoots" Condition="1.0" />
+        <Entry SpellRef="StormOfLeaves" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -648,14 +656,16 @@
     <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCap" Condition="1.0" />
+        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Ale" Quantity="5" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
+        <Entry ConsumableRef="AcidBomb" Quantity="4" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
         <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -671,18 +681,16 @@
     <Stats Health="0.43" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
-        <Entry EquipmentRef="Lute" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+        <Entry EquipmentRef="Longbow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CookedMeat" Quantity="3" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="4" />
+        <Entry ConsumableRef="WarriorRation" Quantity="4" />
+        <Entry ConsumableRef="CurativePotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Icebolt" Condition="1.0" />
-        <Entry SpellRef="DivineLight" Condition="1.0" />
+        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
+        <Entry SpellRef="Disintegrate" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -697,18 +705,18 @@
     <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
+        <Entry EquipmentRef="ClothGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="1" />
-        <Entry ConsumableRef="CookedMeat" Quantity="4" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="4" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="4" />
+        <Entry ConsumableRef="ParalyzingPoison" Quantity="4" />
+        <Entry ConsumableRef="FeastPlatter" Quantity="1" />
+        <Entry ConsumableRef="ManaGem" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -723,16 +731,19 @@
     <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
-        <Entry EquipmentRef="RustyAxe" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticWand" Condition="1.0" />
+        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
+        <Entry EquipmentRef="HeavyCrossbow" Condition="1.0" />
+        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+        <Entry EquipmentRef="HandAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+        <Entry ConsumableRef="FrostResistPotion" Quantity="1" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="FlashBomb" Quantity="2" />
+        <Entry ConsumableRef="ThrowingAxe" Quantity="2" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="IgnorePain" Condition="1.0" />
         <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>

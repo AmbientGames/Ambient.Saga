@@ -16,7 +16,7 @@
       </Reward>
     </ReputationRewards>
   </Faction>
-  <Faction RefName="CITY_GUARDS" DisplayName="Sakurajima Theme Guard" Description="Protectors of civilization and urban order. Sakurajima Theme Guard maintains peace in settled areas." StartingReputation="0" Category="Military">
+  <Faction RefName="CITY_GUARDS" DisplayName="Sengoku Japan Guard" Description="Protectors of civilization and urban order. Sengoku Japan Guard maintains peace in settled areas." StartingReputation="0" Category="Military">
     <Relationships>
       <Relationship FactionRef="MERCHANTS_GUILD" RelationshipType="Allied" SpilloverPercent="0.25" />
       <Relationship FactionRef="BANDITS" RelationshipType="Enemy" SpilloverPercent="0.5" />
@@ -36,7 +36,7 @@
       </Reward>
     </ReputationRewards>
   </Faction>
-  <Faction RefName="MERCHANTS_GUILD" DisplayName="Sakurajima Theme Trade Guild" Description="Influential trading organization controlling commerce. Sakurajima Theme Trade Guild values profit and fair dealing." StartingReputation="0" Category="Merchant">
+  <Faction RefName="MERCHANTS_GUILD" DisplayName="Sengoku Japan Trade Guild" Description="Influential trading organization controlling commerce. Sengoku Japan Trade Guild values profit and fair dealing." StartingReputation="0" Category="Merchant">
     <Relationships>
       <Relationship FactionRef="CITY_GUARDS" RelationshipType="Allied" SpilloverPercent="0.15" />
       <Relationship FactionRef="BANDITS" RelationshipType="Enemy" SpilloverPercent="0.3" />

@@ -1,51 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CharacterAffinities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Affinity RefName="CANON_IRON" DisplayName="Iron" Description="The affinity of metal, grit, fortification, and industry.">
-    <Matchup TargetAffinityRef="CANON_STORM" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_ARCANE" Multiplier="0.75" />
+  <Affinity RefName="Iron" DisplayName="Tetsu" Description="The spirit of forged steel - katana, armor, and unwavering resolve">
+    <Matchup TargetAffinityRef="Storm" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Arcane" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_FIRE" DisplayName="Fire" Description="The affinity of heat, destruction, and zeal.">
-    <Matchup TargetAffinityRef="CANON_WILD" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_WATER" Multiplier="0.75" />
+  <Affinity RefName="Fire" DisplayName="Hi" Description="The blazing essence of Kagutsuchi, the fire kami">
+    <Matchup TargetAffinityRef="Wild" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Water" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_WATER" DisplayName="Water" Description="The affinity of flow, frost, and renewal.">
-    <Matchup TargetAffinityRef="CANON_FIRE" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_STORM" Multiplier="0.75" />
+  <Affinity RefName="Water" DisplayName="Mizu" Description="The flowing power of Suijin and the rivers of life">
+    <Matchup TargetAffinityRef="Fire" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Storm" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_STORM" DisplayName="Storm" Description="The affinity of wind, lightning, speed, and chaos.">
-    <Matchup TargetAffinityRef="CANON_WATER" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_STONE" Multiplier="0.75" />
+  <Affinity RefName="Storm" DisplayName="Kaminari" Description="The wrath of Raijin, the thunder god who drums the storms">
+    <Matchup TargetAffinityRef="Water" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Stone" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_STONE" DisplayName="Stone" Description="The affinity of earth, weight, and endurance.">
-    <Matchup TargetAffinityRef="CANON_STORM" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_WILD" Multiplier="0.75" />
+  <Affinity RefName="Stone" DisplayName="Tsuchi" Description="The enduring strength of the mountains and sacred stones">
+    <Matchup TargetAffinityRef="Storm" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Wild" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_WILD" DisplayName="Wild" Description="The affinity of plants, animals, instinct, and growth.">
-    <Matchup TargetAffinityRef="CANON_STONE" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_FIRE" Multiplier="0.75" />
+  <Affinity RefName="Wild" DisplayName="Yasei" Description="The untamed spirit of Inari's forests and wild creatures">
+    <Matchup TargetAffinityRef="Stone" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Fire" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_ARCANE" DisplayName="Arcane" Description="The affinity of pure magic, knowledge, and anomaly.">
-    <Matchup TargetAffinityRef="CANON_IRON" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_VOID" Multiplier="0.75" />
+  <Affinity RefName="Arcane" DisplayName="Onmyo" Description="The cosmic balance of in and yo, light and shadow">
+    <Matchup TargetAffinityRef="Iron" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Void" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_HOLY" DisplayName="Holy" Description="The affinity of light, order, healing, and wards.">
-    <Matchup TargetAffinityRef="CANON_UMBRAL" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_VOID" Multiplier="0.75" />
+  <Affinity RefName="Holy" DisplayName="Kami" Description="The sacred radiance of Amaterasu, the sun goddess">
+    <Matchup TargetAffinityRef="Umbral" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Void" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_UMBRAL" DisplayName="Umbral" Description="The affinity of shadow, decay, curse, and poison.">
-    <Matchup TargetAffinityRef="CANON_SPIRIT" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_HOLY" Multiplier="0.75" />
+  <Affinity RefName="Umbral" DisplayName="Yami" Description="The shadowed domain of Tsukuyomi, the moon god">
+    <Matchup TargetAffinityRef="Spirit" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Holy" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_CONSTRUCT" DisplayName="Construct" Description="The affinity of technology, machines, fabrication, and drones.">
-    <Matchup TargetAffinityRef="CANON_WILD" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_SPIRIT" Multiplier="0.75" />
+  <Affinity RefName="Construct" DisplayName="Karakuri" Description="The ingenious spirit of mechanical puppets and clockwork">
+    <Matchup TargetAffinityRef="Wild" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Spirit" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_VOID" DisplayName="Void" Description="The affinity of space, entropy, anti-magic, and weirdness.">
-    <Matchup TargetAffinityRef="CANON_ARCANE" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_CONSTRUCT" Multiplier="0.75" />
+  <Affinity RefName="Void" DisplayName="Ku" Description="The void element - nothingness from which all things arise">
+    <Matchup TargetAffinityRef="Arcane" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Construct" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_SPIRIT" DisplayName="Spirit" Description="The affinity of souls, ancestors, dreams, and fate.">
-    <Matchup TargetAffinityRef="CANON_CONSTRUCT" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_UMBRAL" Multiplier="0.75" />
+  <Affinity RefName="Spirit" DisplayName="Rei" Description="The essence of departed souls and ancestral spirits">
+    <Matchup TargetAffinityRef="Construct" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Umbral" Multiplier="0.75" />
   </Affinity>
 </CharacterAffinities>

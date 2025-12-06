@@ -1,51 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CharacterAffinities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Affinity RefName="CANON_IRON" DisplayName="Steel Resolve" Description="The unwavering spirit of determination">
-    <Matchup TargetAffinityRef="CANON_STORM" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_ARCANE" Multiplier="0.75" />
+  <Affinity RefName="Iron" DisplayName="Steel Resolve" Description="The unwavering spirit of determination">
+    <Matchup TargetAffinityRef="Storm" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Arcane" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_FIRE" DisplayName="Kagutsuchi" Description="The burning passion of the fire kami">
-    <Matchup TargetAffinityRef="CANON_WILD" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_WATER" Multiplier="0.75" />
+  <Affinity RefName="Fire" DisplayName="Kagutsuchi" Description="The burning passion of the fire kami">
+    <Matchup TargetAffinityRef="Wild" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Water" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_WATER" DisplayName="Suijin" Description="The flowing wisdom of the water kami">
-    <Matchup TargetAffinityRef="CANON_FIRE" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_STORM" Multiplier="0.75" />
+  <Affinity RefName="Water" DisplayName="Suijin" Description="The flowing wisdom of the water kami">
+    <Matchup TargetAffinityRef="Fire" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Storm" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_STORM" DisplayName="Raijin" Description="The thunder god's volatile power">
-    <Matchup TargetAffinityRef="CANON_WATER" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_STONE" Multiplier="0.75" />
+  <Affinity RefName="Storm" DisplayName="Raijin" Description="The thunder god's volatile power">
+    <Matchup TargetAffinityRef="Water" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Stone" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_STONE" DisplayName="Iwanaga" Description="The mountain princess's enduring strength">
-    <Matchup TargetAffinityRef="CANON_STORM" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_WILD" Multiplier="0.75" />
+  <Affinity RefName="Stone" DisplayName="Iwanaga" Description="The mountain princess's enduring strength">
+    <Matchup TargetAffinityRef="Storm" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Wild" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_WILD" DisplayName="Inari" Description="The fox spirit's untamed nature">
-    <Matchup TargetAffinityRef="CANON_STONE" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_FIRE" Multiplier="0.75" />
+  <Affinity RefName="Wild" DisplayName="Inari" Description="The fox spirit's untamed nature">
+    <Matchup TargetAffinityRef="Stone" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Fire" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_ARCANE" DisplayName="Onmyodo" Description="The ancient way of yin and yang">
-    <Matchup TargetAffinityRef="CANON_IRON" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_VOID" Multiplier="0.75" />
+  <Affinity RefName="Arcane" DisplayName="Onmyodo" Description="The ancient way of yin and yang">
+    <Matchup TargetAffinityRef="Iron" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Void" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_HOLY" DisplayName="Amaterasu" Description="The radiant blessing of the sun goddess">
-    <Matchup TargetAffinityRef="CANON_UMBRAL" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_VOID" Multiplier="0.75" />
+  <Affinity RefName="Holy" DisplayName="Amaterasu" Description="The radiant blessing of the sun goddess">
+    <Matchup TargetAffinityRef="Umbral" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Void" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_UMBRAL" DisplayName="Tsukuyomi" Description="The moon god's shadowed mysteries">
-    <Matchup TargetAffinityRef="CANON_SPIRIT" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_HOLY" Multiplier="0.75" />
+  <Affinity RefName="Umbral" DisplayName="Tsukuyomi" Description="The moon god's shadowed mysteries">
+    <Matchup TargetAffinityRef="Spirit" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Holy" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_CONSTRUCT" DisplayName="Karakuri" Description="Clockwork spirits and mechanical dolls">
-    <Matchup TargetAffinityRef="CANON_WILD" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_SPIRIT" Multiplier="0.75" />
+  <Affinity RefName="Construct" DisplayName="Karakuri" Description="Clockwork spirits and mechanical dolls">
+    <Matchup TargetAffinityRef="Wild" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Spirit" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_VOID" DisplayName="Mu" Description="The empty void between worlds">
-    <Matchup TargetAffinityRef="CANON_ARCANE" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_CONSTRUCT" Multiplier="0.75" />
+  <Affinity RefName="Void" DisplayName="Mu" Description="The empty void between worlds">
+    <Matchup TargetAffinityRef="Arcane" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Construct" Multiplier="0.75" />
   </Affinity>
-  <Affinity RefName="CANON_SPIRIT" DisplayName="Tamashii" Description="Pure soul energy manifest">
-    <Matchup TargetAffinityRef="CANON_CONSTRUCT" Multiplier="1.25" />
-    <Matchup TargetAffinityRef="CANON_UMBRAL" Multiplier="0.75" />
+  <Affinity RefName="Spirit" DisplayName="Tamashii" Description="Pure soul energy manifest">
+    <Matchup TargetAffinityRef="Construct" Multiplier="1.25" />
+    <Matchup TargetAffinityRef="Umbral" Multiplier="0.75" />
   </Affinity>
 </CharacterAffinities>

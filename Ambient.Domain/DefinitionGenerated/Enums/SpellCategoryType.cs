@@ -36,10 +36,16 @@ namespace Ambient.Domain {
         Control,
         
         /// <remarks/>
-        Summon,
+        Summoning,
+        
+        /// <remarks/>
+        Conjuration,
         
         /// <remarks/>
         Elemental,
+        
+        /// <remarks/>
+        Destruction,
         
         /// <remarks/>
         Holy,
@@ -54,6 +60,9 @@ namespace Ambient.Domain {
         Arcane,
         
         /// <remarks/>
+        Protection,
+        
+        /// <remarks/>
         Utility,
         
         /// <remarks/>
@@ -61,6 +70,15 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         Stealth,
+        
+        /// <remarks/>
+        Tracking,
+        
+        /// <remarks/>
+        Poison,
+        
+        /// <remarks/>
+        Combat,
         
         /// <remarks/>
         Rage,

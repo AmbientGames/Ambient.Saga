@@ -21,10 +21,10 @@ namespace Ambient.Domain {
     public enum EquipmentCategoryType {
         
         /// <remarks/>
-        OneHandedMelee,
+        OneHanded,
         
         /// <remarks/>
-        TwoHandedMelee,
+        TwoHanded,
         
         /// <remarks/>
         Unarmed,

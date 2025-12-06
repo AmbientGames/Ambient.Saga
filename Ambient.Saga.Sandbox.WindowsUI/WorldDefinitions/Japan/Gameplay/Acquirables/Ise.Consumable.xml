@@ -1,42 +1,279 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Consumables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Consumable RefName="HealingPotion" DisplayName="Pocari Sweat" Description="Refreshing sports drink. Restores stamina." WholesalePrice="25">
-    <Effects Health="0.3" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="0" />
+  <Consumable RefName="MinorHealingPotion" DisplayName="Bandage Pack" Description="A basic first aid bandage from the convenience store" WholesalePrice="10">
+    <Effects Health="0.15" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="GreaterHealingPotion" DisplayName="Energy Drink" Description="Premium energy boost. Full HP recovery." WholesalePrice="75">
-    <Effects Health="0.6" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="0" />
+  <Consumable RefName="HealingPotion" DisplayName="First Aid Kit" Description="A compact emergency medical kit" WholesalePrice="25">
+    <Effects Health="0.3" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="ManaPotion" DisplayName="Ramune" Description="Fizzy marble soda. Restores SP." WholesalePrice="30">
-    <Effects Health="0" Stamina="0" Mana="0.4" Hunger="0" Thirst="0" Temperature="0" />
+  <Consumable RefName="GreaterHealingPotion" DisplayName="Recovery Drink" Description="A fortified health drink from the vending machine" WholesalePrice="75">
+    <Effects Health="0.6" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="Bread" DisplayName="Melon Pan" Description="Sweet melon bread from the school store." WholesalePrice="5">
-    <Effects Health="0.05" Stamina="0.1" Mana="0" Hunger="20" Thirst="0" Temperature="0" />
+  <Consumable RefName="SuperiorHealingPotion" DisplayName="Premium Tonic" Description="An expensive herbal recovery drink" WholesalePrice="150">
+    <Effects Health="0.85" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="Ale" DisplayName="Amazake" Description="Sweet rice drink from the shrine. Non-alcoholic." WholesalePrice="8">
-    <Effects Health="0.02" Stamina="0.15" Mana="0" Hunger="5" Thirst="15" Temperature="0" />
+  <Consumable RefName="ElixirOfLife" DisplayName="Divine Water" Description="Sacred spring water from Ise Grand Shrine" WholesalePrice="300">
+    <Effects Health="1" Stamina="0.5" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="Water" DisplayName="Ocha" Description="Green tea from a vending machine." WholesalePrice="2">
-    <Effects Health="0" Stamina="0.05" Mana="0" Hunger="0" Thirst="25" Temperature="0" />
+  <Consumable RefName="MinorManaPotion" DisplayName="Canned Coffee" Description="A cold canned coffee for a quick mental boost" WholesalePrice="12">
+    <Effects Health="1" Stamina="1" Mana="0.2" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="CookedMeat" DisplayName="Onigiri" Description="Rice ball with savory filling. Filling meal." WholesalePrice="15">
-    <Effects Health="0.1" Stamina="0.2" Mana="0" Hunger="40" Thirst="0" Temperature="0" />
+  <Consumable RefName="ManaPotion" DisplayName="Energy Drink" Description="A caffeinated energy drink for focus" WholesalePrice="30">
+    <Effects Health="1" Stamina="1" Mana="0.4" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="StrengthElixir" DisplayName="Protein Bar" Description="Gym supplement. Temporary strength boost." WholesalePrice="50" UseType="Offensive">
-    <Effects Health="0" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="37" />
+  <Consumable RefName="GreaterManaPotion" DisplayName="Study Drink" Description="A premium focus beverage favored by students" WholesalePrice="80">
+    <Effects Health="1" Stamina="1" Mana="0.65" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="SwiftnessPotion" DisplayName="Coffee" Description="Canned coffee. Increases agility." WholesalePrice="45">
-    <Effects Health="0" Stamina="0" Mana="0" Hunger="0" Thirst="0" Temperature="37" />
+  <Consumable RefName="SuperiorManaPotion" DisplayName="Concentration Elixir" Description="A potent brew of herbs for mental clarity" WholesalePrice="160">
+    <Effects Health="1" Stamina="1" Mana="0.9" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="ElixirOfLife" DisplayName="Shrine Omamori" Description="Blessed protective charm. Full restoration." WholesalePrice="200">
-    <Effects Health="1" Stamina="0.5" Mana="0" Hunger="0" Thirst="0" Temperature="37" />
-  </Consumable>
-  <Consumable RefName="PhoenixTears" DisplayName="Revival Bead" Description="Sacred prayer bead. Revives fallen allies." WholesalePrice="500">
+  <Consumable RefName="ElixirOfArcana" DisplayName="Spirit Nectar" Description="A mystical drink brewed from sacred sake" WholesalePrice="320">
     <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="ThrowingKnife" DisplayName="Shuriken Toy" Description="Souvenir ninja star. Actually sharp." WholesalePrice="10" UseType="Offensive">
+  <Consumable RefName="MinorStaminaPotion" DisplayName="Sports Drink" Description="A basic electrolyte replenishing drink" WholesalePrice="8">
+    <Effects Health="1" Stamina="0.25" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="StaminaPotion" DisplayName="Stamina Gel" Description="A quick-absorbing energy gel for athletes" WholesalePrice="20">
+    <Effects Health="1" Stamina="0.5" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="GreaterStaminaPotion" DisplayName="Pro Athlete Drink" Description="Professional-grade endurance formula" WholesalePrice="50">
+    <Effects Health="1" Stamina="0.8" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="EnduranceElixir" DisplayName="Marathon Tonic" Description="An elite sports supplement for peak performance" WholesalePrice="120">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="RestorationPotion" DisplayName="All-Purpose Tonic" Description="A balanced recovery drink for body and mind" WholesalePrice="60">
+    <Effects Health="0.3" Stamina="1" Mana="0.3" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="RejuvenationPotion" DisplayName="Full Recovery Drink" Description="A complete restoration beverage" WholesalePrice="150">
+    <Effects Health="0.5" Stamina="0.5" Mana="0.5" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="PhoenixTears" DisplayName="Miracle Elixir" Description="A legendary tonic said to restore from any injury" WholesalePrice="800">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="StrengthElixir" DisplayName="Power Protein" Description="A protein shake for temporary strength" WholesalePrice="50" UseType="Offensive">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="GiantStrengthPotion" DisplayName="Sumo Shake" Description="An intense protein blend for maximum power" WholesalePrice="120" UseType="Offensive">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="DefenseElixir" DisplayName="Iron Supplement" Description="A mineral supplement that toughens the body" WholesalePrice="50">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="IronskinPotion" DisplayName="Steel Tonic" Description="A metallic-tasting brew for iron defense" WholesalePrice="120">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="SwiftnessPotion" DisplayName="Quick Caffeine" Description="A fast-acting energy shot for speed" WholesalePrice="45">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="HastePotion" DisplayName="Turbo Shot" Description="An extreme caffeine concentrate for blazing speed" WholesalePrice="100">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="WisdomElixir" DisplayName="Brain Supplement" Description="A nootropic drink for mental enhancement" WholesalePrice="55" UseType="Offensive">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="SorceryPotion" DisplayName="Spirit Amplifier" Description="A drink that amplifies spiritual energy" WholesalePrice="130" UseType="Offensive">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="FireResistPotion" DisplayName="Cool Down Drink" Description="A chilled beverage for heat resistance" WholesalePrice="40">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="FrostResistPotion" DisplayName="Hot Ginger Tea" Description="A warming drink to ward off cold" WholesalePrice="40">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="LightningResistPotion" DisplayName="Grounding Tea" Description="An herbal tea with insulating properties" WholesalePrice="40">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="PoisonResistPotion" DisplayName="Detox Smoothie" Description="A cleansing vegetable drink" WholesalePrice="35">
+    <Effects Health="0.05" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Antidote" DisplayName="Antidote Pills" Description="Anti-toxin medication from the pharmacy" WholesalePrice="20">
+    <Effects Health="0.1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="CurativePotion" DisplayName="Cold Medicine" Description="Over-the-counter medicine for ailments" WholesalePrice="40">
+    <Effects Health="0.15" Stamina="0.1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Panacea" DisplayName="Miracle Medicine" Description="A rare cure-all remedy from traditional medicine" WholesalePrice="200">
+    <Effects Health="0.3" Stamina="0.2" Mana="0.2" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Berries" DisplayName="Gummy Candy" Description="Chewy fruit-flavored candies" WholesalePrice="2">
+    <Effects Health="0.02" Stamina="1" Mana="1" Hunger="10" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Apple" DisplayName="Mochi" Description="Sweet rice cake from the gift shop" WholesalePrice="3">
+    <Effects Health="0.03" Stamina="1" Mana="1" Hunger="12" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Bread" DisplayName="Melon Pan" Description="Sweet melon-shaped bread from the bakery" WholesalePrice="5">
+    <Effects Health="0.05" Stamina="0.1" Mana="1" Hunger="20" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Cheese" DisplayName="Taiyaki" Description="Fish-shaped cake filled with sweet bean paste" WholesalePrice="8">
+    <Effects Health="0.06" Stamina="1" Mana="1" Hunger="18" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="DriedMeat" DisplayName="Beef Jerky" Description="Dried beef snack from the convenience store" WholesalePrice="10">
+    <Effects Health="0.08" Stamina="0.12" Mana="1" Hunger="25" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="CookedMeat" DisplayName="Karaage" Description="Fried chicken pieces from a food stall" WholesalePrice="15">
+    <Effects Health="0.1" Stamina="0.2" Mana="1" Hunger="40" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Stew" DisplayName="Cup Ramen" Description="Instant noodles from the vending machine" WholesalePrice="20">
+    <Effects Health="0.15" Stamina="0.25" Mana="1" Hunger="50" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="RoastChicken" DisplayName="Yakitori Set" Description="Grilled chicken skewers from the festival" WholesalePrice="25">
+    <Effects Health="0.18" Stamina="0.3" Mana="1" Hunger="60" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Pie" DisplayName="Dorayaki" Description="Sweet bean-filled pancakes" WholesalePrice="30">
+    <Effects Health="0.15" Stamina="0.2" Mana="1" Hunger="55" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="FeastPlatter" DisplayName="Bento Box" Description="A complete boxed lunch with rice and sides" WholesalePrice="80">
+    <Effects Health="0.25" Stamina="0.4" Mana="1" Hunger="80" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Water" DisplayName="Bottled Water" Description="Pure mineral water from Mt. Fuji" WholesalePrice="2">
+    <Effects Health="1" Stamina="0.05" Mana="1" Hunger="0" Thirst="25" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Milk" DisplayName="Strawberry Milk" Description="Sweet flavored milk from the vending machine" WholesalePrice="4">
+    <Effects Health="0.03" Stamina="1" Mana="1" Hunger="5" Thirst="20" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Juice" DisplayName="Ramune" Description="Classic Japanese soda with a marble seal" WholesalePrice="6">
+    <Effects Health="0.04" Stamina="0.08" Mana="1" Hunger="0" Thirst="30" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Ale" DisplayName="Amazake" Description="Sweet fermented rice drink (non-alcoholic)" WholesalePrice="8">
+    <Effects Health="0.02" Stamina="0.15" Mana="1" Hunger="5" Thirst="15" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Wine" DisplayName="Grape Juice" Description="Premium grape juice in a fancy bottle" WholesalePrice="15">
+    <Effects Health="0.05" Stamina="0.1" Mana="1" Hunger="0" Thirst="20" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Mead" DisplayName="Honey Lemon" Description="A sweet honey and lemon drink" WholesalePrice="20">
+    <Effects Health="0.08" Stamina="0.15" Mana="1" Hunger="0" Thirst="25" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="HerbalTea" DisplayName="Green Tea" Description="Traditional Japanese green tea" WholesalePrice="12">
+    <Effects Health="0.1" Stamina="1" Mana="0.05" Hunger="0" Thirst="20" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="EnergyDrink" DisplayName="Super Energy" Description="Maximum-strength caffeine drink" WholesalePrice="25">
+    <Effects Health="1" Stamina="0.3" Mana="1" Hunger="0" Thirst="30" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="WarriorRation" DisplayName="Onigiri Set" Description="Rice balls wrapped in nori for sustained energy" WholesalePrice="35" UseType="Offensive">
+    <Effects Health="0.1" Stamina="0.2" Mana="1" Hunger="40" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="MagesBiscuit" DisplayName="Anpan" Description="Sweet bread filled with red bean paste" WholesalePrice="35" UseType="Offensive">
+    <Effects Health="0.08" Stamina="1" Mana="0.15" Hunger="30" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="RangerTrailMix" DisplayName="Sembei Mix" Description="Assorted rice crackers for snacking" WholesalePrice="30">
+    <Effects Health="0.08" Stamina="0.25" Mana="1" Hunger="35" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="MonkRice" DisplayName="Ochazuke" Description="Rice with green tea - simple temple food" WholesalePrice="25">
+    <Effects Health="0.12" Stamina="1" Mana="0.08" Hunger="30" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ThrowingRock" DisplayName="Pachinko Ball" Description="A small steel ball from the arcade" WholesalePrice="1" UseType="Offensive">
+    <Effects Health="-0.05" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ThrowingKnife" DisplayName="Shuriken Toy" Description="A foam ninja star from the gift shop" WholesalePrice="10" UseType="Offensive">
     <Effects Health="-0.1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
-  <Consumable RefName="PoisonVial" DisplayName="Wasabi Packet" Description="Extremely spicy. Causes status effects." WholesalePrice="35" UseType="Offensive">
+  <Consumable RefName="ThrowingStar" DisplayName="Metal Shuriken" Description="A real throwing star found in the museum" WholesalePrice="15" UseType="Offensive">
+    <Effects Health="-0.12" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ThrowingAxe" DisplayName="Dart" Description="A weighted throwing dart" WholesalePrice="20" UseType="Offensive">
+    <Effects Health="-0.15" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Javelin" DisplayName="Javelin" Description="Track and field equipment from school" WholesalePrice="25" UseType="Offensive">
+    <Effects Health="-0.18" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="PoisonedDart" DisplayName="Tainted Dart" Description="A dart coated in a harmful substance" WholesalePrice="30" UseType="Offensive">
+    <Effects Health="-0.2" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="WeakPoison" DisplayName="Cleaning Fluid" Description="A mildly toxic cleaning chemical" WholesalePrice="15" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="PoisonVial" DisplayName="Chemical Solution" Description="A dangerous laboratory compound" WholesalePrice="35" UseType="Offensive">
+    <Effects Health="-0.2" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="DeadlyPoison" DisplayName="Deadly Extract" Description="A lethal poison from unknown sources" WholesalePrice="80" UseType="Offensive">
+    <Effects Health="-0.35" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ParalyzingPoison" DisplayName="Numbing Agent" Description="A paralytic compound" WholesalePrice="60" UseType="Offensive">
+    <Effects Health="-0.15" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="WeakeningPoison" DisplayName="Sapping Solution" Description="A draining chemical mixture" WholesalePrice="55" UseType="Offensive">
+    <Effects Health="-0.1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="SmokeBomb" DisplayName="Smoke Pellet" Description="A ninja smoke pellet from the gift shop" WholesalePrice="25">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="FlashBomb" DisplayName="Camera Flash" Description="A disposable camera rigged to overload" WholesalePrice="30" UseType="Offensive">
+    <Effects Health="-0.05" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="FireBomb" DisplayName="Molotov Cocktail" Description="An improvised incendiary device" WholesalePrice="40" UseType="Offensive">
     <Effects Health="-0.25" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="FrostBomb" DisplayName="Dry Ice Bomb" Description="A container of pressurized dry ice" WholesalePrice="40" UseType="Offensive">
+    <Effects Health="-0.15" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ThunderBomb" DisplayName="Firecracker Bundle" Description="Festival firecrackers bundled together" WholesalePrice="45" UseType="Offensive">
+    <Effects Health="-0.2" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="AcidBomb" DisplayName="Chemical Bomb" Description="A corrosive chemical mixture" WholesalePrice="50" UseType="Offensive">
+    <Effects Health="-0.25" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="HolyWaterBomb" DisplayName="Purification Bomb" Description="Sacred water from the shrine in a breakable container" WholesalePrice="60" UseType="Offensive">
+    <Effects Health="-0.3" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfHealing" DisplayName="Healing Ofuda" Description="A paper talisman inscribed with healing prayers" WholesalePrice="50">
+    <Effects Health="0.35" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfFireball" DisplayName="Kagutsuchi Ofuda" Description="A fire talisman invoking the flame kami" WholesalePrice="60" UseType="Offensive">
+    <Effects Health="-0.35" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfIcebolt" DisplayName="Suijin Ofuda" Description="A water talisman channeling frost" WholesalePrice="55" UseType="Offensive">
+    <Effects Health="-0.25" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfLightning" DisplayName="Raijin Ofuda" Description="A storm talisman crackling with thunder" WholesalePrice="65" UseType="Offensive">
+    <Effects Health="-0.3" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfProtection" DisplayName="Barrier Ofuda" Description="A protective ward against evil" WholesalePrice="70">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfStrength" DisplayName="Strength Ofuda" Description="A talisman granting temporary might" WholesalePrice="75" UseType="Offensive">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfHaste" DisplayName="Swift Ofuda" Description="A talisman of speed and agility" WholesalePrice="80">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfTeleport" DisplayName="Travel Ofuda" Description="A talisman for instant transportation" WholesalePrice="150">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ScrollOfResurrection" DisplayName="Revival Ofuda" Description="A sacred talisman to restore the fallen" WholesalePrice="800">
+    <Effects Health="1" Stamina="0.5" Mana="0.5" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Torch" DisplayName="Flashlight" Description="A battery-powered LED flashlight" WholesalePrice="3">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="Bandage" DisplayName="Adhesive Bandage" Description="A simple stick-on bandage" WholesalePrice="5">
+    <Effects Health="0.08" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="MedicKit" DisplayName="Emergency Kit" Description="A comprehensive first aid kit" WholesalePrice="25">
+    <Effects Health="0.2" Stamina="0.1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="HealingSalve" DisplayName="Medicated Cream" Description="A soothing topical medicine" WholesalePrice="15">
+    <Effects Health="0.12" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="SmellingSalts" DisplayName="Ammonia Stick" Description="A strong stimulant to wake the unconscious" WholesalePrice="20">
+    <Effects Health="1" Stamina="0.4" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ManaGem" DisplayName="Spirit Crystal" Description="A crystallized fragment of spiritual energy" WholesalePrice="100">
+    <Effects Health="1" Stamina="1" Mana="0.5" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="SoulShard" DisplayName="Soul Fragment" Description="A piece of captured spirit essence" WholesalePrice="80" UseType="Offensive">
+    <Effects Health="1" Stamina="1" Mana="0.2" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="ElementalEssence" DisplayName="Kami Essence" Description="Pure elemental energy from a kami" WholesalePrice="120" UseType="Offensive">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="DivineBlessing" DisplayName="Amaterasu's Grace" Description="A blessing from the sun goddess herself" WholesalePrice="150">
+    <Effects Health="0.3" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="DarkEssence" DisplayName="Shadow Essence" Description="Concentrated darkness from the spirit realm" WholesalePrice="140" UseType="Offensive">
+    <Effects Health="1" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
+  <Consumable RefName="DragonBlood" DisplayName="Dragon Spirit Blood" Description="Vital essence from a legendary dragon spirit" WholesalePrice="300" UseType="Offensive">
+    <Effects Health="0.2" Stamina="1" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
 </Consumables>

@@ -11,7 +11,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="SummonerOrb" Quantity="1" />
+            <Equipment EquipmentRef="ScholarsRobe" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -50,7 +50,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 1" SagaArcRef="SpawnSpoke1Ring1" />
           <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 1" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Greatsword" />
+          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Claymore" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -60,7 +60,7 @@
             <Experience Amount="1000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Greatsword" Quantity="1" />
+            <Equipment EquipmentRef="LargeSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -68,7 +68,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 2" SagaArcRef="SpawnSpoke1Ring2" />
           <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 2" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Dagger" />
+          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="ChainCoif" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -78,7 +78,7 @@
             <Experience Amount="1300" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenStaff" Quantity="1" />
+            <Equipment EquipmentRef="Spear" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -86,7 +86,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 3" SagaArcRef="SpawnSpoke1Ring3" />
           <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 3" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherArmor" />
+          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="OakStaff" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -96,7 +96,7 @@
             <Experience Amount="1600" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Lute" Quantity="1" />
+            <Equipment EquipmentRef="PlateLeggings" Quantity="1" />
           </Reward>
           <Reward Condition="OnSuccess">
             <QuestToken QuestTokenRef="TOKEN_ANCIENT_ARTIFACT_COMPONENTS" Quantity="1" />
@@ -128,7 +128,7 @@
             <Experience Amount="10000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Dagger" Quantity="2" />
+            <Equipment EquipmentRef="HoodedCowl" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
@@ -167,7 +167,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 2" SagaArcRef="SpawnSpoke2Ring2" />
           <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 2" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="WoodenStaff" />
+          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Halberd" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -177,7 +177,7 @@
             <Experience Amount="1000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Lute" Quantity="1" />
+            <Equipment EquipmentRef="ChainBoots" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -185,7 +185,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 3" SagaArcRef="SpawnSpoke2Ring3" />
           <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 3" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="MageStaff" />
+          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LightCrossbow" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -195,7 +195,7 @@
             <Experience Amount="1300" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="LeatherArmor" Quantity="1" />
+            <Equipment EquipmentRef="OakStaff" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -203,7 +203,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 4" SagaArcRef="SpawnSpoke2Ring4" />
           <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 4" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Dagger" />
+          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherCap" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -213,7 +213,7 @@
             <Experience Amount="1600" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="ChainmailArmor" Quantity="1" />
+            <Equipment EquipmentRef="OakWand" Quantity="1" />
           </Reward>
           <Reward Condition="OnSuccess">
             <QuestToken QuestTokenRef="TOKEN_LEGENDARY_HERO_COMPONENTS" Quantity="1" />
@@ -245,7 +245,7 @@
             <Experience Amount="15000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="ElderRobes" Quantity="2" />
+            <Equipment EquipmentRef="SoulLantern" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
@@ -284,7 +284,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 3" SagaArcRef="SpawnSpoke3Ring3" />
           <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 3" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherArmor" />
+          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="OakStaff" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -294,7 +294,7 @@
             <Experience Amount="1000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Dagger" Quantity="1" />
+            <Equipment EquipmentRef="RangerHood" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -302,7 +302,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 4" SagaArcRef="SpawnSpoke3Ring4" />
           <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 4" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="IronSword" />
+          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Flamebrand" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -312,7 +312,7 @@
             <Experience Amount="1300" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenShield" Quantity="1" />
+            <Equipment EquipmentRef="PlateGauntlets" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -320,7 +320,7 @@
         <Objectives>
           <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 5" SagaArcRef="SpawnSpoke3Ring5" />
           <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 5" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="ApprenticWand" />
+          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherVest" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -330,7 +330,7 @@
             <Experience Amount="1600" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="ElderRobes" Quantity="1" />
+            <Equipment EquipmentRef="WoodenFlute" Quantity="1" />
           </Reward>
           <Reward Condition="OnSuccess">
             <QuestToken QuestTokenRef="TOKEN_WORLD_SAVIOR_COMPONENTS" Quantity="1" />
@@ -362,7 +362,7 @@
             <Experience Amount="20000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenStaff" Quantity="2" />
+            <Equipment EquipmentRef="Greataxe" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
@@ -370,7 +370,7 @@
   </Quest>
   <Quest RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Secret: The Forgotten Shrine" Description="An ancient shrine marked on a mysterious map. What secrets does it hold?">
     <Prerequisites>
-      <Prerequisite MinimumLevel="20" RequiredItemRef="SummonerOrb" />
+      <Prerequisite MinimumLevel="20" RequiredItemRef="ClothPants" />
     </Prerequisites>
     <Stages StartStage="FIND_SHRINE">
       <Stage RefName="FIND_SHRINE" DisplayName="Locate the Hidden Shrine" NextStage="UNLOCK_SHRINE">
@@ -391,7 +391,7 @@
             <Experience Amount="5000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenShield" Quantity="1" />
+            <Equipment EquipmentRef="MageGloves" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -399,7 +399,7 @@
   </Quest>
   <Quest RefName="HIDDEN_COLLECTOR_PARADISE" DisplayName="Secret: The Collector's Vault" Description="A legendary collector's vault, accessible only to those who possess all the ancient seals.">
     <Prerequisites>
-      <Prerequisite MinimumLevel="35" RequiredItemRef="SummonerOrb" />
+      <Prerequisite MinimumLevel="35" RequiredItemRef="LeatherLeggings" />
     </Prerequisites>
     <Stages StartStage="UNLOCK_VAULT">
       <Stage RefName="UNLOCK_VAULT" DisplayName="Unlock the Collector's Vault" NextStage="CLAIM_TREASURES">
@@ -421,7 +421,7 @@
             <Experience Amount="15000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenStaff" Quantity="5" />
+            <Equipment EquipmentRef="Zweihander" Quantity="5" />
           </Reward>
         </Rewards>
       </Stage>
@@ -455,7 +455,7 @@
             <Experience Amount="7000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="MerchantCloak" Quantity="1" />
+            <Equipment EquipmentRef="RingOfSwiftness" Quantity="1" />
           </Reward>
         </Rewards>
         <FailConditions>

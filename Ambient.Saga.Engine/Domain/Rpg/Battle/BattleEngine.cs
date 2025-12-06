@@ -1896,7 +1896,7 @@ public class BattleEngine
     public bool IsTwoHandedWeapon(Equipment? equipment)
     {
         if (equipment == null) return false;
-        return equipment.Category == EquipmentCategoryType.TwoHandedMelee;
+        return equipment.Category == EquipmentCategoryType.TwoHanded;
     }
 
     /// <summary>

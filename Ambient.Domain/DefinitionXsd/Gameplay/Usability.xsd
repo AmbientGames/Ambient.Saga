@@ -13,9 +13,9 @@
     <!-- What class of equipment this is -->
     <xs:simpleType name="EquipmentCategoryType">
         <xs:restriction base="xs:string">
-            <!-- Melee Weapons -->
-            <xs:enumeration value="OneHandedMelee" />
-            <xs:enumeration value="TwoHandedMelee" />
+            <!-- Weapons -->
+            <xs:enumeration value="OneHanded" />
+            <xs:enumeration value="TwoHanded" />
             <xs:enumeration value="Unarmed" />
             <!-- Casting Implements -->
             <xs:enumeration value="Staff" />
