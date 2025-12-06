@@ -1,156 +1,551 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaFeatures xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaFeature RefName="Spawn" DisplayName="Spawn" Description="Hub center at Spawn" Type="Structure">
+  <SagaFeature RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Hub center at Tsurumaru-jō" Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke1Ring1" DisplayName="Spawn Spoke 1 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke1Ring1" DisplayName="Tsurumaru-jō Spoke 1 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke1Ring2" DisplayName="Spawn Spoke 1 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke1Ring2" DisplayName="Tsurumaru-jō Spoke 1 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke1Ring3" DisplayName="Spawn Spoke 1 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke1Ring3" DisplayName="Tsurumaru-jō Spoke 1 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke1Ring4" DisplayName="Spawn Spoke 1 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke1Ring4" DisplayName="Tsurumaru-jō Spoke 1 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke1Ring5" DisplayName="Spawn Spoke 1 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke1Ring5" DisplayName="Tsurumaru-jō Spoke 1 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke2Ring1" DisplayName="Spawn Spoke 2 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring1" DisplayName="Tsurumaru-jō Spoke 2 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke2Ring2" DisplayName="Spawn Spoke 2 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring2" DisplayName="Tsurumaru-jō Spoke 2 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke2Ring3" DisplayName="Spawn Spoke 2 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring3" DisplayName="Tsurumaru-jō Spoke 2 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke2Ring4" DisplayName="Spawn Spoke 2 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring4" DisplayName="Tsurumaru-jō Spoke 2 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke2Ring5" DisplayName="Spawn Spoke 2 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring5" DisplayName="Tsurumaru-jō Spoke 2 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke3Ring1" DisplayName="Spawn Spoke 3 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring1" DisplayName="Tsurumaru-jō Spoke 3 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke3Ring2" DisplayName="Spawn Spoke 3 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring2" DisplayName="Tsurumaru-jō Spoke 3 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke3Ring3" DisplayName="Spawn Spoke 3 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring3" DisplayName="Tsurumaru-jō Spoke 3 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke3Ring4" DisplayName="Spawn Spoke 3 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring4" DisplayName="Tsurumaru-jō Spoke 3 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke3Ring5" DisplayName="Spawn Spoke 3 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring5" DisplayName="Tsurumaru-jō Spoke 3 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke4Ring1" DisplayName="Spawn Spoke 4 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring1" DisplayName="Tsurumaru-jō Spoke 4 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke4Ring2" DisplayName="Spawn Spoke 4 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring2" DisplayName="Tsurumaru-jō Spoke 4 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke4Ring3" DisplayName="Spawn Spoke 4 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring3" DisplayName="Tsurumaru-jō Spoke 4 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke4Ring4" DisplayName="Spawn Spoke 4 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring4" DisplayName="Tsurumaru-jō Spoke 4 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke4Ring5" DisplayName="Spawn Spoke 4 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring5" DisplayName="Tsurumaru-jō Spoke 4 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke5Ring1" DisplayName="Spawn Spoke 5 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring1" DisplayName="Tsurumaru-jō Spoke 5 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke5Ring2" DisplayName="Spawn Spoke 5 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring2" DisplayName="Tsurumaru-jō Spoke 5 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke5Ring3" DisplayName="Spawn Spoke 5 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring3" DisplayName="Tsurumaru-jō Spoke 5 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke5Ring4" DisplayName="Spawn Spoke 5 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring4" DisplayName="Tsurumaru-jō Spoke 5 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke5Ring5" DisplayName="Spawn Spoke 5 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring5" DisplayName="Tsurumaru-jō Spoke 5 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke6Ring1" DisplayName="Spawn Spoke 6 Ring 1" Description="Star waypoint at 500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring1" DisplayName="Tsurumaru-jō Spoke 6 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke6Ring2" DisplayName="Spawn Spoke 6 Ring 2" Description="Star waypoint at 1000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring2" DisplayName="Tsurumaru-jō Spoke 6 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke6Ring3" DisplayName="Spawn Spoke 6 Ring 3" Description="Star waypoint at 1500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring3" DisplayName="Tsurumaru-jō Spoke 6 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke6Ring4" DisplayName="Spawn Spoke 6 Ring 4" Description="Star waypoint at 2000m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring4" DisplayName="Tsurumaru-jō Spoke 6 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SpawnSpoke6Ring5" DisplayName="Spawn Spoke 6 Ring 5" Description="Star waypoint at 2500m from Spawn" Type="Landmark" SubType="Informational">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring5" DisplayName="Tsurumaru-jō Spoke 6 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Isoteien" DisplayName="Iso-teien" Description="Hub center at Iso-teien" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke1Ring1" DisplayName="Iso-teien Spoke 1 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke1Ring2" DisplayName="Iso-teien Spoke 1 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke1Ring3" DisplayName="Iso-teien Spoke 1 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke1Ring4" DisplayName="Iso-teien Spoke 1 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke1Ring5" DisplayName="Iso-teien Spoke 1 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke2Ring1" DisplayName="Iso-teien Spoke 2 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke2Ring2" DisplayName="Iso-teien Spoke 2 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke2Ring3" DisplayName="Iso-teien Spoke 2 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke2Ring4" DisplayName="Iso-teien Spoke 2 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke2Ring5" DisplayName="Iso-teien Spoke 2 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke3Ring1" DisplayName="Iso-teien Spoke 3 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke3Ring2" DisplayName="Iso-teien Spoke 3 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke3Ring3" DisplayName="Iso-teien Spoke 3 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke3Ring4" DisplayName="Iso-teien Spoke 3 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke3Ring5" DisplayName="Iso-teien Spoke 3 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke4Ring1" DisplayName="Iso-teien Spoke 4 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke4Ring2" DisplayName="Iso-teien Spoke 4 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke4Ring3" DisplayName="Iso-teien Spoke 4 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke4Ring4" DisplayName="Iso-teien Spoke 4 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke4Ring5" DisplayName="Iso-teien Spoke 4 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke5Ring1" DisplayName="Iso-teien Spoke 5 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke5Ring2" DisplayName="Iso-teien Spoke 5 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke5Ring3" DisplayName="Iso-teien Spoke 5 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke5Ring4" DisplayName="Iso-teien Spoke 5 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke5Ring5" DisplayName="Iso-teien Spoke 5 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke6Ring1" DisplayName="Iso-teien Spoke 6 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke6Ring2" DisplayName="Iso-teien Spoke 6 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke6Ring3" DisplayName="Iso-teien Spoke 6 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke6Ring4" DisplayName="Iso-teien Spoke 6 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="IsoteienSpoke6Ring5" DisplayName="Iso-teien Spoke 6 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinsha" DisplayName="Terukuni Daimyōjin-sha" Description="Hub center at Terukuni Daimyōjin-sha" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_0" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (1)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_2" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_3" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_4" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_5" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" Description="Intermediate waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_0" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (1)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_1" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (2)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_2" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (3)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_3" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (4)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_4" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (5)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark" SubType="Informational">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_5" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (6)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>

@@ -1,18 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CharacterArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Spawns a random boss character">
-    <CharacterRef>BOSS_Spawn</CharacterRef>
+    <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
+    <CharacterRef>BOSS_Isoteien</CharacterRef>
+    <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
+    <CharacterRef>BOSS_Isoteien1</CharacterRef>
+    <CharacterRef>BOSS_Tsurumarujō1</CharacterRef>
+    <CharacterRef>BOSS_TerukuniDaimyōjinsha1</CharacterRef>
   </CharacterArchetype>
   <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="Spawns a random merchant">
-    <CharacterRef>MERCHANT_SpawnSpoke1Ring1</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke1Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke2Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke2Ring5</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke3Ring3</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke4Ring1</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke4Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke5Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke5Ring5</CharacterRef>
-    <CharacterRef>MERCHANT_SpawnSpoke6Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke1Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke1Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke2Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke2Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke3Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke4Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke4Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke5Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke5Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_TsurumarujōSpoke6Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke1Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke1Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke2Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke2Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke3Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke4Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke4Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke5Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke5Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_IsoteienSpoke6Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke1Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke2Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke4Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke6Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_0</CharacterRef>
+    <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_3</CharacterRef>
+    <CharacterRef>MERCHANT_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</CharacterRef>
+    <CharacterRef>MERCHANT_Tsurumarujō1_to_Isoteien1_1</CharacterRef>
+    <CharacterRef>MERCHANT_Tsurumarujō1_to_Isoteien1_4</CharacterRef>
   </CharacterArchetype>
 </CharacterArchetypes>

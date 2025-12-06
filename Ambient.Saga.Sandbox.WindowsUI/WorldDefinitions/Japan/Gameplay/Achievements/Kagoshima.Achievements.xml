@@ -1,24 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Hero of Kagoshima" Description="Completed the main quest in Kagoshima">
+    <Criteria Type="SagaArcsCompleted" Threshold="3" />
+  </Achievement>
   <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_KAGOSHIMA" DisplayName="Champion" Description="Defeated all bosses in Kagoshima">
-    <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="1" />
+    <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="6" />
   </Achievement>
   <Achievement RefName="ACH_EXPLORER_KAGOSHIMA" DisplayName="Explorer" Description="Discovered all locations in Kagoshima">
-    <Criteria Type="SagaArcsDiscovered" Threshold="31" />
+    <Criteria Type="SagaArcsDiscovered" Threshold="3" />
   </Achievement>
   <Achievement RefName="ACH_SOCIAL_KAGOSHIMA" DisplayName="Social Butterfly" Description="Met all characters in Kagoshima">
-    <Criteria Type="UniqueCharactersMet" Threshold="38" />
+    <Criteria Type="UniqueCharactersMet" Threshold="132" />
   </Achievement>
   <Achievement RefName="ACH_DIALOGUE_MASTER_KAGOSHIMA" DisplayName="Master Conversationalist" Description="Completed all dialogue trees in Kagoshima">
-    <Criteria Type="DialogueTreesCompleted" Threshold="38" />
+    <Criteria Type="DialogueTreesCompleted" Threshold="132" />
   </Achievement>
   <Achievement RefName="ACH_COLLECTOR_KAGOSHIMA" DisplayName="Completionist" Description="Earned all quest tokens in Kagoshima">
-    <Criteria Type="QuestTokensEarned" Threshold="31" />
+    <Criteria Type="QuestTokensEarned" Threshold="3" />
   </Achievement>
   <Achievement RefName="ACH_MERCHANT_KAGOSHIMA" DisplayName="Master Trader" Description="Traded with all merchants in Kagoshima">
-    <Criteria Type="ItemsTraded" Threshold="50" />
+    <Criteria Type="ItemsTraded" Threshold="175" />
   </Achievement>
   <Achievement RefName="ACH_DIPLOMAT_KAGOSHIMA" DisplayName="Diplomat" Description="Made friends throughout Kagoshima">
-    <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="19" />
+    <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="66" />
   </Achievement>
 </Achievements>

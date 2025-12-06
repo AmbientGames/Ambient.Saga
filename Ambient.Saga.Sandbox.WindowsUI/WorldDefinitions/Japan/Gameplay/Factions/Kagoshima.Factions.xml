@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Faction RefName="FACTION_THREAD_STANDALONE" DisplayName="[AI: Faction for THREAD_STANDALONE]" Description="[AI: Faction description for story thread THREAD_STANDALONE]" StartingReputation="0" Category="City">
+  <Faction RefName="FACTION_THREAD_MAIN" DisplayName="[AI: Faction for THREAD_MAIN]" Description="[AI: Faction description for story thread THREAD_MAIN]" StartingReputation="0" Category="City">
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
         <Equipment EquipmentRef="[AI: Basic faction item]" Quantity="1" DiscountPercent="0.1" />

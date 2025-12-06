@@ -1,24 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Achievement RefName="ACH_COMPLETE_SAKURAJIMA" DisplayName="Hero of Sakurajima" Description="Completed the main quest in Sakurajima">
+    <Criteria Type="SagaArcsCompleted" Threshold="5" />
+  </Achievement>
   <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_SAKURAJIMA" DisplayName="Champion" Description="Defeated all bosses in Sakurajima">
-    <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="1" />
+    <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="6" />
   </Achievement>
   <Achievement RefName="ACH_EXPLORER_SAKURAJIMA" DisplayName="Explorer" Description="Discovered all locations in Sakurajima">
-    <Criteria Type="SagaArcsDiscovered" Threshold="31" />
+    <Criteria Type="SagaArcsDiscovered" Threshold="5" />
   </Achievement>
   <Achievement RefName="ACH_SOCIAL_SAKURAJIMA" DisplayName="Social Butterfly" Description="Met all characters in Sakurajima">
-    <Criteria Type="UniqueCharactersMet" Threshold="38" />
+    <Criteria Type="UniqueCharactersMet" Threshold="235" />
   </Achievement>
   <Achievement RefName="ACH_DIALOGUE_MASTER_SAKURAJIMA" DisplayName="Master Conversationalist" Description="Completed all dialogue trees in Sakurajima">
-    <Criteria Type="DialogueTreesCompleted" Threshold="38" />
+    <Criteria Type="DialogueTreesCompleted" Threshold="235" />
   </Achievement>
   <Achievement RefName="ACH_COLLECTOR_SAKURAJIMA" DisplayName="Completionist" Description="Earned all quest tokens in Sakurajima">
-    <Criteria Type="QuestTokensEarned" Threshold="31" />
+    <Criteria Type="QuestTokensEarned" Threshold="5" />
   </Achievement>
   <Achievement RefName="ACH_MERCHANT_SAKURAJIMA" DisplayName="Master Trader" Description="Traded with all merchants in Sakurajima">
-    <Criteria Type="ItemsTraded" Threshold="50" />
+    <Criteria Type="ItemsTraded" Threshold="320" />
   </Achievement>
   <Achievement RefName="ACH_DIPLOMAT_SAKURAJIMA" DisplayName="Diplomat" Description="Made friends throughout Sakurajima">
-    <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="19" />
+    <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="117" />
   </Achievement>
 </Achievements>

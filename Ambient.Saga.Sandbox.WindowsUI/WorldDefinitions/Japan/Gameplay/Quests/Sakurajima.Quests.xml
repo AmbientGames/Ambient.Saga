@@ -1,10 +1,217 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Quest RefName="BOUNTY_Spawn" DisplayName="Bounty: Guardian of Spawn" Description="Defeat Guardian of Spawn and claim the bounty.">
+  <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="[AI: Epic Quest Chain Title connecting all major locations]" Description="[AI: Description of legendary quest connecting all Official Saga locations]">
+    <Stages StartStage="OFFICIAL_MAIN_CHAIN_STAGE_01">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="[AI: Visit Yunohira Tenbōsho]">
+        <Objectives>
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Yunohira Tenbōsho]" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Yunohira Tenbōsho]" CharacterRef="BOSS_YunohiraTenbōsho" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="[AI: Visit Arimura Yōgan Tenbōjo]">
+        <Objectives>
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Arimura Yōgan Tenbōjo]" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Arimura Yōgan Tenbōjo]" CharacterRef="BOSS_ArimuraYōganTenbōjo" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="[AI: Visit Sakurajima Kō Ferry-ba]">
+        <Objectives>
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Sakurajima Kō Ferry-ba]" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Sakurajima Kō Ferry-ba]" CharacterRef="BOSS_SakurajimaKōFerryba" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_04" DisplayName="[AI: Visit Sakurajima Kasan Hakubutsukan]">
+        <Objectives>
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_04_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Sakurajima Kasan Hakubutsukan]" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_04_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Sakurajima Kasan Hakubutsukan]" CharacterRef="BOSS_SakurajimaKasanHakubutsukan" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_05" DisplayName="[AI: Visit Yōgan Nagisa Kōen Ashiyu]">
+        <Objectives>
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_05_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Yōgan Nagisa Kōen Ashiyu]" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_05_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Sakurajima Kasan Hakubutsukan]" CharacterRef="BOSS_SakurajimaKasanHakubutsukan" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="5000" />
+        <Experience Amount="2500" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="REGIONAL_SakurajimaKōFerryba1" DisplayName="[AI: Regional Quest Chain for Sakurajima Kō Ferry-ba area]" Description="[AI: Explore regional locations and complete challenges]">
+    <Stages StartStage="REGIONAL_SakurajimaKōFerryba1_STAGE_01">
+      <Stage RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_01" DisplayName="[AI: Stage at Sakurajima Kō Ferry-ba]">
+        <Objectives>
+          <Objective RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_02" DisplayName="[AI: Stage at Sakurajima Kasan Hakubutsukan]">
+        <Objectives>
+          <Objective RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_03" DisplayName="[AI: Stage at Yōgan Nagisa Kōen Ashiyu]">
+        <Objectives>
+          <Objective RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_03_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="1500" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1" DisplayName="[AI: Journey from Yunohira Tenbōsho to Sakurajima Kō Ferry-ba]" Description="[AI: Travel 3km from Yunohira Tenbōsho to Sakurajima Kō Ferry-ba]">
+    <Stages StartStage="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_START">
+      <Stage RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Yunohira Tenbōsho]">
+        <Objectives>
+          <Objective RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_END" DisplayName="[AI: Arrive at Sakurajima Kō Ferry-ba]">
+        <Objectives>
+          <Objective RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="600" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1" DisplayName="[AI: Journey from Yunohira Tenbōsho to Sakurajima Kasan Hakubutsukan]" Description="[AI: Travel 3km from Yunohira Tenbōsho to Sakurajima Kasan Hakubutsukan]">
+    <Stages StartStage="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_START">
+      <Stage RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_START" DisplayName="[AI: Begin at Yunohira Tenbōsho]">
+        <Objectives>
+          <Objective RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_END" DisplayName="[AI: Arrive at Sakurajima Kasan Hakubutsukan]">
+        <Objectives>
+          <Objective RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="600" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1" DisplayName="[AI: Journey from Sakurajima Kō Ferry-ba to Sakurajima Kasan Hakubutsukan]" Description="[AI: Travel 1km from Sakurajima Kō Ferry-ba to Sakurajima Kasan Hakubutsukan]">
+    <Stages StartStage="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_START">
+      <Stage RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_START" DisplayName="[AI: Begin at Sakurajima Kō Ferry-ba]">
+        <Objectives>
+          <Objective RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_END" DisplayName="[AI: Arrive at Sakurajima Kasan Hakubutsukan]">
+        <Objectives>
+          <Objective RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1" DisplayName="[AI: Journey from Sakurajima Kō Ferry-ba to Yōgan Nagisa Kōen Ashiyu]" Description="[AI: Travel 1km from Sakurajima Kō Ferry-ba to Yōgan Nagisa Kōen Ashiyu]">
+    <Stages StartStage="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_START">
+      <Stage RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_START" DisplayName="[AI: Begin at Sakurajima Kō Ferry-ba]">
+        <Objectives>
+          <Objective RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_END" DisplayName="[AI: Arrive at Yōgan Nagisa Kōen Ashiyu]">
+        <Objectives>
+          <Objective RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1" DisplayName="[AI: Journey from Sakurajima Kasan Hakubutsukan to Sakurajima Kō Ferry-ba]" Description="[AI: Travel 1km from Sakurajima Kasan Hakubutsukan to Sakurajima Kō Ferry-ba]">
+    <Stages StartStage="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_START">
+      <Stage RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Sakurajima Kasan Hakubutsukan]">
+        <Objectives>
+          <Objective RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_END" DisplayName="[AI: Arrive at Sakurajima Kō Ferry-ba]">
+        <Objectives>
+          <Objective RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1" DisplayName="[AI: Journey from Yōgan Nagisa Kōen Ashiyu to Sakurajima Kō Ferry-ba]" Description="[AI: Travel 1km from Yōgan Nagisa Kōen Ashiyu to Sakurajima Kō Ferry-ba]">
+    <Stages StartStage="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_START">
+      <Stage RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Yōgan Nagisa Kōen Ashiyu]">
+        <Objectives>
+          <Objective RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_END" DisplayName="[AI: Arrive at Sakurajima Kō Ferry-ba]">
+        <Objectives>
+          <Objective RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="MAIN_QUEST_01" DisplayName="Path of Discovery: Beginning 1" Description="Explore the mysteries of Arimura Yōgan Tenbōjo, Yunohira Tenbōsho, Sakurajima Kō Ferry-ba in this welcoming journey of discovery.">
+    <Stages StartStage="EXPLORE_REGION">
+      <Stage RefName="EXPLORE_REGION" DisplayName="Explore the Region" NextStage="GATHER_INFO">
+        <Objectives>
+          <Objective RefName="DISCOVER_LANDMARK_1" Type="LocationReached" Threshold="1" DisplayName="Discover Arimura Yōgan Tenbōjo" SagaArcRef="ArimuraYōganTenbōjo1" />
+          <Objective RefName="DISCOVER_LANDMARK_2" Type="LocationReached" Threshold="1" DisplayName="Discover Yunohira Tenbōsho" SagaArcRef="YunohiraTenbōsho1" />
+          <Objective RefName="DISCOVER_LANDMARK_3" Type="LocationReached" Threshold="1" DisplayName="Discover Sakurajima Kō Ferry-ba" SagaArcRef="SakurajimaKōFerryba1" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="GATHER_INFO" DisplayName="Gather Information" NextStage="RETURN">
+        <Objectives>
+          <Objective RefName="TALK_TO_NPCS" Type="DialogueCompleted" Threshold="3" DisplayName="Speak with local travelers" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="RETURN" DisplayName="Report Findings">
+        <Objectives>
+          <Objective RefName="RETURN_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Return to Sakurajima Kasan Hakubutsukan" SagaArcRef="SakurajimaKasanHakubutsukan1" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="500" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="TOKEN_EXPLORER_4" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="BOUNTY_YunohiraTenbōsho" DisplayName="Bounty: Guardian of Yunohira Tenbōsho" Description="Defeat Guardian of Yunohira Tenbōsho and claim the bounty.">
     <Stages StartStage="DEFEAT">
       <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Spawn" CharacterRef="BOSS_Spawn" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Yunohira Tenbōsho" CharacterRef="BOSS_YunohiraTenbōsho" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -17,352 +224,69 @@
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="EPIC_ANCIENT_ARTIFACT_01_DISCOVER" DisplayName="Epic: Discover the Ancient Artifact" Description="Begin your epic journey by uncovering ancient legends.">
-    <Prerequisites>
-      <Prerequisite MinimumLevel="10" />
-    </Prerequisites>
-    <Stages StartStage="HEAR_LEGEND">
-      <Stage RefName="HEAR_LEGEND" DisplayName="Hear the Legend">
+  <Quest RefName="BOUNTY_ArimuraYōganTenbōjo" DisplayName="Bounty: Guardian of Arimura Yōgan Tenbōjo" Description="Defeat Guardian of Arimura Yōgan Tenbōjo and claim the bounty.">
+    <Stages StartStage="DEFEAT">
+      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="FIND_LOREKEEPER" Type="LocationReached" Threshold="1" DisplayName="Find the lorekeeper at Spawn" SagaArcRef="Spawn" />
-          <Objective RefName="LEARN_STORY" Type="DialogueCompleted" Threshold="1" DisplayName="Learn the ancient story" CharacterRef="NPC_LOREKEEPER" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Arimura Yōgan Tenbōjo" CharacterRef="BOSS_ArimuraYōganTenbōjo" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Experience Amount="800" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_ANCIENT_ARTIFACT_KNOWLEDGE" Quantity="1" />
+            <Equipment EquipmentRef="Claymore" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="EPIC_ANCIENT_ARTIFACT_02_GATHER" DisplayName="Epic: Gather the Sacred Components" Description="Collect the legendary components needed to proceed.">
-    <Prerequisites>
-      <Prerequisite QuestRef="EPIC_ANCIENT_ARTIFACT_01_DISCOVER" MinimumLevel="15" RequiredItemRef="TOKEN_ANCIENT_ARTIFACT_KNOWLEDGE" />
-    </Prerequisites>
-    <Stages StartStage="GATHER_COMPONENT_1">
-      <Stage RefName="GATHER_COMPONENT_1" DisplayName="Retrieve Component 1" NextStage="GATHER_COMPONENT_2">
+  <Quest RefName="BOUNTY_SakurajimaKōFerryba" DisplayName="Bounty: Guardian of Sakurajima Kō Ferry-ba" Description="Defeat Guardian of Sakurajima Kō Ferry-ba and claim the bounty.">
+    <Stages StartStage="DEFEAT">
+      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 1" SagaArcRef="SpawnSpoke1Ring1" />
-          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 1" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Claymore" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Sakurajima Kō Ferry-ba" CharacterRef="BOSS_SakurajimaKōFerryba" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
-            <Currency Amount="800" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="1000" />
+            <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
             <Equipment EquipmentRef="LargeSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
-      <Stage RefName="GATHER_COMPONENT_2" DisplayName="Retrieve Component 2" NextStage="GATHER_COMPONENT_3">
+    </Stages>
+  </Quest>
+  <Quest RefName="BOUNTY_SakurajimaKasanHakubutsukan" DisplayName="Bounty: Guardian of Sakurajima Kasan Hakubutsukan" Description="Defeat Guardian of Sakurajima Kasan Hakubutsukan and claim the bounty.">
+    <Stages StartStage="DEFEAT">
+      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 2" SagaArcRef="SpawnSpoke1Ring2" />
-          <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 2" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="ChainCoif" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Sakurajima Kasan Hakubutsukan" CharacterRef="BOSS_SakurajimaKasanHakubutsukan" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
-            <Currency Amount="1000" />
+            <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Experience Amount="1300" />
+            <Equipment EquipmentRef="ChainCoif" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="BOUNTY_YōganNagisaKōenAshiyu" DisplayName="Bounty: Guardian of Yōgan Nagisa Kōen Ashiyu" Description="Defeat Guardian of Yōgan Nagisa Kōen Ashiyu and claim the bounty.">
+    <Stages StartStage="DEFEAT">
+      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
+        <Objectives>
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Yōgan Nagisa Kōen Ashiyu" CharacterRef="BOSS_YōganNagisaKōenAshiyu" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
             <Equipment EquipmentRef="Spear" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-      <Stage RefName="GATHER_COMPONENT_3" DisplayName="Retrieve Component 3">
-        <Objectives>
-          <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 1 Ring 3" SagaArcRef="SpawnSpoke1Ring3" />
-          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 1 Ring 3" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="OakStaff" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="1200" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="1600" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="PlateLeggings" Quantity="1" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_ANCIENT_ARTIFACT_COMPONENTS" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="EPIC_ANCIENT_ARTIFACT_03_FINALE" DisplayName="Epic: The Final Trial" Description="Face the ultimate challenge and complete your legendary quest.">
-    <Prerequisites>
-      <Prerequisite QuestRef="EPIC_ANCIENT_ARTIFACT_02_GATHER" MinimumLevel="25" RequiredItemRef="TOKEN_ANCIENT_ARTIFACT_COMPONENTS" />
-    </Prerequisites>
-    <Stages StartStage="REACH_FINAL_LOCATION">
-      <Stage RefName="REACH_FINAL_LOCATION" DisplayName="Journey to the Sacred Site" NextStage="FINAL_BATTLE">
-        <Objectives>
-          <Objective RefName="TRAVEL_TO_SITE" Type="LocationReached" Threshold="1" DisplayName="Reach Spawn Spoke 1 Ring 5" SagaArcRef="SpawnSpoke1Ring5" />
-        </Objectives>
-      </Stage>
-      <Stage RefName="FINAL_BATTLE" DisplayName="The Ultimate Confrontation">
-        <Objectives>
-          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the legendary guardian" CharacterTag="boss" />
-          <Objective RefName="BONUS_PERFECT_VICTORY" Type="Custom" Threshold="1" DisplayName="Win without being defeated" Optional="true" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="5000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="10000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="HoodedCowl" Quantity="2" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="EPIC_LEGENDARY_HERO_01_DISCOVER" DisplayName="Epic: Discover the Legendary Hero" Description="Begin your epic journey by uncovering ancient legends.">
-    <Prerequisites>
-      <Prerequisite MinimumLevel="20" />
-    </Prerequisites>
-    <Stages StartStage="HEAR_LEGEND">
-      <Stage RefName="HEAR_LEGEND" DisplayName="Hear the Legend">
-        <Objectives>
-          <Objective RefName="FIND_LOREKEEPER" Type="LocationReached" Threshold="1" DisplayName="Find the lorekeeper at Spawn Spoke 2 Ring 1" SagaArcRef="SpawnSpoke2Ring1" />
-          <Objective RefName="LEARN_STORY" Type="DialogueCompleted" Threshold="1" DisplayName="Learn the ancient story" CharacterRef="NPC_LOREKEEPER" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="500" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="800" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_LEGENDARY_HERO_KNOWLEDGE" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="EPIC_LEGENDARY_HERO_02_GATHER" DisplayName="Epic: Gather the Sacred Components" Description="Collect the legendary components needed to proceed.">
-    <Prerequisites>
-      <Prerequisite QuestRef="EPIC_LEGENDARY_HERO_01_DISCOVER" MinimumLevel="25" RequiredItemRef="TOKEN_LEGENDARY_HERO_KNOWLEDGE" />
-    </Prerequisites>
-    <Stages StartStage="GATHER_COMPONENT_1">
-      <Stage RefName="GATHER_COMPONENT_1" DisplayName="Retrieve Component 1" NextStage="GATHER_COMPONENT_2">
-        <Objectives>
-          <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 2" SagaArcRef="SpawnSpoke2Ring2" />
-          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 2" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Halberd" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="800" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="1000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="ChainBoots" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-      <Stage RefName="GATHER_COMPONENT_2" DisplayName="Retrieve Component 2" NextStage="GATHER_COMPONENT_3">
-        <Objectives>
-          <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 3" SagaArcRef="SpawnSpoke2Ring3" />
-          <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 3" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LightCrossbow" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="1000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="1300" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="OakStaff" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-      <Stage RefName="GATHER_COMPONENT_3" DisplayName="Retrieve Component 3">
-        <Objectives>
-          <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 2 Ring 4" SagaArcRef="SpawnSpoke2Ring4" />
-          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 2 Ring 4" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherCap" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="1200" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="1600" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="OakWand" Quantity="1" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_LEGENDARY_HERO_COMPONENTS" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="EPIC_LEGENDARY_HERO_03_FINALE" DisplayName="Epic: The Final Trial" Description="Face the ultimate challenge and complete your legendary quest.">
-    <Prerequisites>
-      <Prerequisite QuestRef="EPIC_LEGENDARY_HERO_02_GATHER" MinimumLevel="37" RequiredItemRef="TOKEN_LEGENDARY_HERO_COMPONENTS" />
-    </Prerequisites>
-    <Stages StartStage="REACH_FINAL_LOCATION">
-      <Stage RefName="REACH_FINAL_LOCATION" DisplayName="Journey to the Sacred Site" NextStage="FINAL_BATTLE">
-        <Objectives>
-          <Objective RefName="TRAVEL_TO_SITE" Type="LocationReached" Threshold="1" DisplayName="Reach Spawn Spoke 3 Ring 1" SagaArcRef="SpawnSpoke3Ring1" />
-        </Objectives>
-      </Stage>
-      <Stage RefName="FINAL_BATTLE" DisplayName="The Ultimate Confrontation">
-        <Objectives>
-          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the legendary guardian" CharacterTag="boss" />
-          <Objective RefName="BONUS_PERFECT_VICTORY" Type="Custom" Threshold="1" DisplayName="Win without being defeated" Optional="true" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="7500" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="15000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="SoulLantern" Quantity="2" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="EPIC_WORLD_SAVIOR_01_DISCOVER" DisplayName="Epic: Discover the World Crisis" Description="Begin your epic journey by uncovering ancient legends.">
-    <Prerequisites>
-      <Prerequisite MinimumLevel="30" />
-    </Prerequisites>
-    <Stages StartStage="HEAR_LEGEND">
-      <Stage RefName="HEAR_LEGEND" DisplayName="Hear the Legend">
-        <Objectives>
-          <Objective RefName="FIND_LOREKEEPER" Type="LocationReached" Threshold="1" DisplayName="Find the lorekeeper at Spawn Spoke 3 Ring 2" SagaArcRef="SpawnSpoke3Ring2" />
-          <Objective RefName="LEARN_STORY" Type="DialogueCompleted" Threshold="1" DisplayName="Learn the ancient story" CharacterRef="NPC_LOREKEEPER" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="500" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="800" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_WORLD_SAVIOR_KNOWLEDGE" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="EPIC_WORLD_SAVIOR_02_GATHER" DisplayName="Epic: Gather the Sacred Components" Description="Collect the legendary components needed to proceed.">
-    <Prerequisites>
-      <Prerequisite QuestRef="EPIC_WORLD_SAVIOR_01_DISCOVER" MinimumLevel="35" RequiredItemRef="TOKEN_WORLD_SAVIOR_KNOWLEDGE" />
-    </Prerequisites>
-    <Stages StartStage="GATHER_COMPONENT_1">
-      <Stage RefName="GATHER_COMPONENT_1" DisplayName="Retrieve Component 1" NextStage="GATHER_COMPONENT_2">
-        <Objectives>
-          <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 3" SagaArcRef="SpawnSpoke3Ring3" />
-          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 3" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="OakStaff" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="800" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="1000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="RangerHood" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-      <Stage RefName="GATHER_COMPONENT_2" DisplayName="Retrieve Component 2" NextStage="GATHER_COMPONENT_3">
-        <Objectives>
-          <Objective RefName="REACH_LOCATION_2" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 4" SagaArcRef="SpawnSpoke3Ring4" />
-          <Objective RefName="DEFEAT_GUARDIAN_2" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 4" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_2" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="Flamebrand" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="1000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="1300" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="PlateGauntlets" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-      <Stage RefName="GATHER_COMPONENT_3" DisplayName="Retrieve Component 3">
-        <Objectives>
-          <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Spawn Spoke 3 Ring 5" SagaArcRef="SpawnSpoke3Ring5" />
-          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Spawn Spoke 3 Ring 5" CharacterTag="boss" />
-          <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="LeatherVest" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="1200" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="1600" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenFlute" Quantity="1" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_WORLD_SAVIOR_COMPONENTS" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="EPIC_WORLD_SAVIOR_03_FINALE" DisplayName="Epic: The Final Trial" Description="Face the ultimate challenge and complete your legendary quest.">
-    <Prerequisites>
-      <Prerequisite QuestRef="EPIC_WORLD_SAVIOR_02_GATHER" MinimumLevel="50" RequiredItemRef="TOKEN_WORLD_SAVIOR_COMPONENTS" />
-    </Prerequisites>
-    <Stages StartStage="REACH_FINAL_LOCATION">
-      <Stage RefName="REACH_FINAL_LOCATION" DisplayName="Journey to the Sacred Site" NextStage="FINAL_BATTLE">
-        <Objectives>
-          <Objective RefName="TRAVEL_TO_SITE" Type="LocationReached" Threshold="1" DisplayName="Reach Spawn Spoke 4 Ring 2" SagaArcRef="SpawnSpoke4Ring2" />
-        </Objectives>
-      </Stage>
-      <Stage RefName="FINAL_BATTLE" DisplayName="The Ultimate Confrontation">
-        <Objectives>
-          <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the legendary guardian" CharacterTag="boss" />
-          <Objective RefName="BONUS_PERFECT_VICTORY" Type="Custom" Threshold="1" DisplayName="Win without being defeated" Optional="true" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="10000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Experience Amount="20000" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Greataxe" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
@@ -370,12 +294,12 @@
   </Quest>
   <Quest RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Secret: The Forgotten Shrine" Description="An ancient shrine marked on a mysterious map. What secrets does it hold?">
     <Prerequisites>
-      <Prerequisite MinimumLevel="20" RequiredItemRef="ClothPants" />
+      <Prerequisite MinimumLevel="20" RequiredItemRef="PlateLeggings" />
     </Prerequisites>
     <Stages StartStage="FIND_SHRINE">
       <Stage RefName="FIND_SHRINE" DisplayName="Locate the Hidden Shrine" NextStage="UNLOCK_SHRINE">
         <Objectives>
-          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Spawn Spoke 1 Ring 1" SagaArcRef="SpawnSpoke1Ring1" Hidden="true" />
+          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Arimura Yōgan Tenbōjo" SagaArcRef="ArimuraYōganTenbōjo1" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="UNLOCK_SHRINE" DisplayName="Unlock the Shrine's Secrets">
@@ -391,7 +315,37 @@
             <Experience Amount="5000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="MageGloves" Quantity="1" />
+            <Equipment EquipmentRef="HoodedCowl" Quantity="1" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="HIDDEN_MASTER_CRAFTSMAN" DisplayName="Secret: Master Craftsman's Legacy" Description="Only true masters of crafting can unlock this legendary workshop.">
+    <Prerequisites>
+      <Prerequisite MinimumLevel="30" />
+    </Prerequisites>
+    <Stages StartStage="DISCOVER_WORKSHOP">
+      <Stage RefName="DISCOVER_WORKSHOP" DisplayName="Discover the Hidden Workshop" NextStage="CRAFT_MASTERPIECE">
+        <Objectives>
+          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Sakurajima Kasan Hakubutsukan" SagaArcRef="SakurajimaKasanHakubutsukan1" Hidden="true" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Craft the Ultimate Masterpiece">
+        <Objectives>
+          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="ChainBoots" />
+          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="LightCrossbow" />
+          <Objective RefName="BONUS_FLAWLESS_CRAFT" Type="Custom" Threshold="1" DisplayName="Achieve 100% quality on first try" Optional="true" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="5000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="8000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="OakStaff" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
@@ -399,12 +353,12 @@
   </Quest>
   <Quest RefName="HIDDEN_COLLECTOR_PARADISE" DisplayName="Secret: The Collector's Vault" Description="A legendary collector's vault, accessible only to those who possess all the ancient seals.">
     <Prerequisites>
-      <Prerequisite MinimumLevel="35" RequiredItemRef="LeatherLeggings" />
+      <Prerequisite MinimumLevel="35" RequiredItemRef="OakWand" />
     </Prerequisites>
     <Stages StartStage="UNLOCK_VAULT">
       <Stage RefName="UNLOCK_VAULT" DisplayName="Unlock the Collector's Vault" NextStage="CLAIM_TREASURES">
         <Objectives>
-          <Objective RefName="REACH_VAULT" Type="LocationReached" Threshold="1" DisplayName="Reach the vault at Spawn Spoke 1 Ring 1" SagaArcRef="SpawnSpoke1Ring1" Hidden="true" />
+          <Objective RefName="REACH_VAULT" Type="LocationReached" Threshold="1" DisplayName="Reach the vault at Arimura Yōgan Tenbōjo" SagaArcRef="ArimuraYōganTenbōjo1" Hidden="true" />
           <Objective RefName="PLACE_SEALS" Type="Custom" Threshold="5" DisplayName="Place all 5 ancient seals" />
         </Objectives>
       </Stage>
@@ -421,7 +375,7 @@
             <Experience Amount="15000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Zweihander" Quantity="5" />
+            <Equipment EquipmentRef="SoulLantern" Quantity="5" />
           </Reward>
         </Rewards>
       </Stage>
@@ -434,7 +388,7 @@
     <Stages StartStage="START_CHALLENGE">
       <Stage RefName="START_CHALLENGE" DisplayName="Begin the Time Trial" NextStage="COMPLETE_TRIAL">
         <Objectives>
-          <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Spawn Spoke 6 Ring 5" SagaArcRef="SpawnSpoke6Ring5" />
+          <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Yōgan Nagisa Kōen Ashiyu" SagaArcRef="YōganNagisaKōenAshiyu1" />
         </Objectives>
         <FailConditions>
           <FailCondition Type="TimeExpired" TimeLimit="600" />
@@ -455,7 +409,7 @@
             <Experience Amount="7000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="RingOfSwiftness" Quantity="1" />
+            <Equipment EquipmentRef="OakStaff" Quantity="1" />
           </Reward>
         </Rewards>
         <FailConditions>
