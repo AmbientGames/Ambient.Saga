@@ -33,11 +33,7 @@ public class DialogueModal
             _lastCharacterInstanceId = character.CharacterInstanceId;
             _errorMessage = null;
             _isLoading = true;
-            Task.Run(async () =>
-            {
-                await InitializeDialogueAsync(viewModel, character);
-                _isLoading = false;
-            });
+            _ = InitializeDialogueAndSetLoadingAsync(viewModel, character);
         }
 
         ImGui.SetNextWindowSize(new Vector2(700, 500), ImGuiCond.FirstUseEver);
@@ -111,11 +107,7 @@ public class DialogueModal
                         if (ImGui.Selectable(choiceText, false) && canSelect && !_isLoading)
                         {
                             _isLoading = true;
-                            Task.Run(async () =>
-                            {
-                                await SelectChoiceAsync(viewModel, character, modalManager, choice.ChoiceId);
-                                _isLoading = false;
-                            });
+                            _ = SelectChoiceAndSetLoadingAsync(viewModel, character, modalManager, choice.ChoiceId);
                         }
 
                         if (!canSelect)
@@ -138,11 +130,7 @@ public class DialogueModal
                     {
                         // Advance to next dialogue node
                         _isLoading = true;
-                        Task.Run(async () =>
-                        {
-                            await AdvanceDialogueAsync(viewModel, character, modalManager);
-                            _isLoading = false;
-                        });
+                        _ = AdvanceDialogueAndSetLoadingAsync(viewModel, character, modalManager);
                     }
                 }
 
@@ -157,6 +145,42 @@ public class DialogueModal
             }
 
             ImGui.End();
+        }
+    }
+
+    private async Task InitializeDialogueAndSetLoadingAsync(MainViewModel viewModel, CharacterViewModel character)
+    {
+        try
+        {
+            await InitializeDialogueAsync(viewModel, character);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task SelectChoiceAndSetLoadingAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, string choiceId)
+    {
+        try
+        {
+            await SelectChoiceAsync(viewModel, character, modalManager, choiceId);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task AdvanceDialogueAndSetLoadingAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
+    {
+        try
+        {
+            await AdvanceDialogueAsync(viewModel, character, modalManager);
+        }
+        finally
+        {
+            _isLoading = false;
         }
     }
 

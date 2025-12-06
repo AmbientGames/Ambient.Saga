@@ -19,7 +19,7 @@ public class CharactersModal
             ImGui.TextColored(new Vector4(1, 1, 0, 1), "WORLD CHARACTERS");
             ImGui.Separator();
 
-            if (viewModel.Characters.Count > 0)
+            if (viewModel.Characters?.Count > 0)
             {
                 if (ImGui.BeginTable("CharactersTable", 4, ImGuiTableFlags.Borders | ImGuiTableFlags.RowBg | ImGuiTableFlags.ScrollY))
                 {

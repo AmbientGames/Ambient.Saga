@@ -11,12 +11,14 @@ namespace Ambient.Saga.Presentation.UI.Components.Modals;
 public class LootModal
 {
     private bool _hasLooted = false;
+    private bool _isLooting = false;
 
     public void Render(MainViewModel viewModel, CharacterViewModel character, ref bool isOpen)
     {
         if (!isOpen)
         {
             _hasLooted = false;
+            _isLooting = false;
             return;
         }
 
@@ -105,9 +107,20 @@ public class LootModal
                 ImGui.Separator();
                 ImGui.Spacing();
 
-                if (ImGui.Button("Take All", new Vector2(150, 30)))
+                if (_isLooting)
                 {
+                    ImGui.BeginDisabled();
+                }
+
+                if (ImGui.Button(_isLooting ? "Looting..." : "Take All", new Vector2(150, 30)) && !_isLooting)
+                {
+                    _isLooting = true;
                     _ = LootCharacterAsync(viewModel, character);
+                }
+
+                if (_isLooting)
+                {
+                    ImGui.EndDisabled();
                 }
 
                 ImGui.SameLine();
@@ -160,6 +173,10 @@ public class LootModal
         {
             System.Diagnostics.Debug.WriteLine($"Error looting character: {ex.Message}");
             viewModel.ActivityLog?.Insert(0, $"❌ Error looting: {ex.Message}");
+        }
+        finally
+        {
+            _isLooting = false;
         }
     }
 }

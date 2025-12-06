@@ -15,7 +15,8 @@
       "Bash(then if ! diff -q $file $sandbox_file)",
       "Bash(then echo 'DIFFERENCE FOUND: $file' fi else echo 'MISSING IN SANDBOX: $file' fi done)",
       "Bash(ls:*)",
-      "Bash([ -f /mnt/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga/Ambient.Saga.Sandbox.WindowsUI/DefinitionXsd/README.md ])"
+      "Bash([ -f /mnt/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga/Ambient.Saga.Sandbox.WindowsUI/DefinitionXsd/README.md ])",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []

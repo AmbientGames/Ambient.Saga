@@ -276,7 +276,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "EXCLUSIVE_BRANCH_QUEST",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -309,7 +309,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "EXCLUSIVE_BRANCH_QUEST",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -356,7 +356,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "EXCLUSIVE_BRANCH_QUEST",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -405,7 +405,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "NON_EXCLUSIVE_BRANCH_QUEST",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -438,7 +438,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "NON_EXCLUSIVE_BRANCH_QUEST",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -511,7 +511,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "EXCLUSIVE_BRANCH_QUEST",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -545,7 +545,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "EXCLUSIVE_BRANCH_QUEST",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -595,7 +595,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "EXCLUSIVE_BRANCH_QUEST",
             QuestGiverRef = "NPC",
             Avatar = avatar

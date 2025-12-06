@@ -238,7 +238,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         var command = new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DEFEAT_BANDITS",
             QuestGiverRef = "QUEST_BOARD",
             Avatar = avatar
@@ -270,7 +270,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DEFEAT_BANDITS",
             QuestGiverRef = "QUEST_BOARD",
             Avatar = avatar
@@ -280,7 +280,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         var command = new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DEFEAT_BANDITS",
             QuestGiverRef = "QUEST_BOARD",
             Avatar = avatar
@@ -308,7 +308,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DEFEAT_BANDITS",
             QuestGiverRef = "QUEST_BOARD",
             Avatar = avatar
@@ -373,7 +373,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DEFEAT_BANDITS",
             QuestGiverRef = "QUEST_BOARD",
             Avatar = avatar
@@ -437,7 +437,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DEFEAT_BANDITS",
             QuestGiverRef = "QUEST_BOARD",
             Avatar = avatar
@@ -497,7 +497,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DEFEAT_BANDITS",
             QuestGiverRef = "QUEST_BOARD",
             Avatar = avatar
@@ -506,7 +506,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "MURDER_MYSTERY",
             QuestGiverRef = "DETECTIVE",
             Avatar = avatar
@@ -540,7 +540,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         var acceptResult = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = _testAvatarId,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DEFEAT_BANDITS",
             QuestGiverRef = "QUEST_BOARD",
             Avatar = avatar

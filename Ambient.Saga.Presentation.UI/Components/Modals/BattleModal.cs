@@ -326,7 +326,14 @@ public class BattleModal
             battleSetup.SetupFromWorld(viewModel.CurrentWorld);
             battleSetup.SelectedAvatarArchetype = archetype;
             battleSetup.AvatarCapabilities = viewModel.PlayerAvatar.Capabilities ?? new ItemCollection();
-            battleSetup.AvatarAffinityRefs = new List<string> { "Fire", "Water", "Earth", "Wind" };
+            // Get available affinities from world configuration (fallback to archetype affinity if defined)
+            var availableAffinities = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
+                .Select(a => a.RefName).ToList() ?? new List<string>();
+            if (availableAffinities.Count == 0 && !string.IsNullOrEmpty(archetype.AffinityRef))
+            {
+                availableAffinities.Add(archetype.AffinityRef);
+            }
+            battleSetup.AvatarAffinityRefs = availableAffinities;
             battleSetup.SelectedOpponentCharacter = characterTemplate;
             battleSetup.OpponentCapabilities = characterTemplate.Capabilities ?? new ItemCollection();
 
@@ -344,7 +351,7 @@ public class BattleModal
                 EnemyCharacterInstanceId = character.CharacterInstanceId,
                 PlayerCombatant = playerCombatant,
                 EnemyCombatant = enemyCombatant,
-                PlayerAffinityRefs = new List<string> { "Fire", "Water", "Earth", "Wind" },
+                PlayerAffinityRefs = availableAffinities,
                 EnemyMind = new CombatAI(viewModel.CurrentWorld),
                 RandomSeed = new Random().Next(),
                 Avatar = viewModel.PlayerAvatar
@@ -451,6 +458,9 @@ public class BattleModal
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
+        // Clean up previous instance to avoid memory leaks
+        CleanupSpellSelectionModal();
+
         _spellSelectionModal = new SpellSelectionModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
         _spellSelectionModal.SpellSelected += OnSpellSelected;
         _spellSelectionModal.Cancelled += OnModalCancelled;
@@ -460,6 +470,9 @@ public class BattleModal
     private void OpenItemSelectionModal(MainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+
+        // Clean up previous instance to avoid memory leaks
+        CleanupItemSelectionModal();
 
         _itemSelectionModal = new ItemSelectionModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
         _itemSelectionModal.ItemSelected += OnItemSelected;
@@ -471,11 +484,47 @@ public class BattleModal
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
-        var playerAffinityRefs = new List<string> { "Fire", "Water", "Earth", "Wind" }; // TODO: Get from archetype
+        // Clean up previous instance to avoid memory leaks
+        CleanupEquipmentChangeModal();
+
+        // Get available affinities from world configuration
+        var playerAffinityRefs = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
+            .Select(a => a.RefName).ToList() ?? new List<string>();
         _equipmentChangeModal = new EquipmentChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld, playerAffinityRefs);
         _equipmentChangeModal.EquipmentChanged += OnEquipmentChanged;
         _equipmentChangeModal.Cancelled += OnModalCancelled;
         _showEquipmentChange = true;
+    }
+
+    // Cleanup methods to prevent memory leaks from event handlers
+    private void CleanupSpellSelectionModal()
+    {
+        if (_spellSelectionModal != null)
+        {
+            _spellSelectionModal.SpellSelected -= OnSpellSelected;
+            _spellSelectionModal.Cancelled -= OnModalCancelled;
+            _spellSelectionModal = null;
+        }
+    }
+
+    private void CleanupItemSelectionModal()
+    {
+        if (_itemSelectionModal != null)
+        {
+            _itemSelectionModal.ItemSelected -= OnItemSelected;
+            _itemSelectionModal.Cancelled -= OnModalCancelled;
+            _itemSelectionModal = null;
+        }
+    }
+
+    private void CleanupEquipmentChangeModal()
+    {
+        if (_equipmentChangeModal != null)
+        {
+            _equipmentChangeModal.EquipmentChanged -= OnEquipmentChanged;
+            _equipmentChangeModal.Cancelled -= OnModalCancelled;
+            _equipmentChangeModal = null;
+        }
     }
 
     private void OpenMidBattleDialogue(MainViewModel viewModel, CharacterViewModel character)

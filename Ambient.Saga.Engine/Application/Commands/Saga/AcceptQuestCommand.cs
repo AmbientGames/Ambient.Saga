@@ -22,7 +22,7 @@ public record AcceptQuestCommand : IRequest<SagaCommandResult>
     /// <summary>
     /// Saga containing the quest signpost/NPC
     /// </summary>
-    public required string SagaArrcRef { get; init; }
+    public required string SagaArcRef { get; init; }
 
     /// <summary>
     /// Quest being accepted

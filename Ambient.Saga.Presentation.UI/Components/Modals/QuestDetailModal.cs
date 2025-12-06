@@ -526,17 +526,21 @@ public class QuestDetailModal
         }
     }
 
-    private async void AbandonQuest(MainViewModel viewModel)
+    private void AbandonQuest(MainViewModel viewModel)
     {
         if (_isAbandoning || viewModel.PlayerAvatar == null) return;
 
         _isAbandoning = true;
+        _ = AbandonQuestAsync(viewModel);
+    }
 
+    private async Task AbandonQuestAsync(MainViewModel viewModel)
+    {
         try
         {
             var command = new AbandonQuestCommand
             {
-                AvatarId = viewModel.PlayerAvatar.Id,
+                AvatarId = viewModel.PlayerAvatar!.Id,
                 QuestRef = _currentQuestRef!,
                 SagaArcRef = _currentSagaRef!,
                 Avatar = viewModel.PlayerAvatar

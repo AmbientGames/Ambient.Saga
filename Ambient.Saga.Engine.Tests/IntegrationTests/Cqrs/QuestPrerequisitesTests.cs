@@ -446,7 +446,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "QUEST_B",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -467,7 +467,7 @@ public class QuestPrerequisitesTests : IDisposable
         await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "QUEST_A",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -493,7 +493,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "QUEST_B",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -513,7 +513,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DRAGON_HUNT",
             QuestGiverRef = "DRAGON_HUNTER",
             Avatar = avatar
@@ -534,7 +534,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DRAGON_HUNT",
             QuestGiverRef = "DRAGON_HUNTER",
             Avatar = avatar
@@ -554,7 +554,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "SECRET_VAULT",
             QuestGiverRef = "VAULT_KEEPER",
             Avatar = avatar
@@ -579,7 +579,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "SECRET_VAULT",
             QuestGiverRef = "VAULT_KEEPER",
             Avatar = avatar
@@ -603,7 +603,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "EPIC_QUEST",
             QuestGiverRef = "GUILD_MASTER",
             Avatar = avatar
@@ -624,7 +624,7 @@ public class QuestPrerequisitesTests : IDisposable
         await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "QUEST_A",
             QuestGiverRef = "NPC",
             Avatar = avatar
@@ -654,7 +654,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "EPIC_QUEST",
             QuestGiverRef = "GUILD_MASTER",
             Avatar = avatar
@@ -678,7 +678,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "MASTER_QUEST",
             QuestGiverRef = "MASTER",
             Avatar = avatar
@@ -709,7 +709,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "GUILD_ELITE_QUEST",
             QuestGiverRef = "GUILD_MASTER",
             Avatar = avatar
@@ -753,7 +753,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "GUILD_ELITE_QUEST",
             QuestGiverRef = "GUILD_MASTER",
             Avatar = avatar
@@ -794,7 +794,7 @@ public class QuestPrerequisitesTests : IDisposable
         var result = await _mediator.Send(new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "GUILD_ELITE_QUEST",
             QuestGiverRef = "GUILD_MASTER",
             Avatar = avatar

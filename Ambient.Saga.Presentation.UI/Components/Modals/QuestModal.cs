@@ -29,12 +29,14 @@ public class QuestModal
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    public async void Open(string questRef, string sagaRef, string signpostRef, MainViewModel viewModel)
+    public void Open(string questRef, string sagaRef, string signpostRef, MainViewModel viewModel)
     {
         _currentQuestRef = questRef;
         _currentSagaRef = sagaRef;
         _currentSignpostRef = signpostRef;
         _isAccepting = false;
+        _isAlreadyActive = false;
+        _isAlreadyCompleted = false;
 
         // Look up quest template from world
         _currentQuest = viewModel.CurrentWorld?.Gameplay?.Quests?.FirstOrDefault(q => q.RefName == questRef);
@@ -54,8 +56,21 @@ public class QuestModal
         }
 
         // Check if quest is already active or completed (event-sourced from transaction log)
-        _isAlreadyActive = await IsQuestActiveAsync(questRef, sagaRef, viewModel);
-        _isAlreadyCompleted = await IsQuestCompletedAsync(questRef, sagaRef, viewModel);
+        // Fire-and-forget but capture errors
+        _ = LoadQuestStateAsync(questRef, sagaRef, viewModel);
+    }
+
+    private async Task LoadQuestStateAsync(string questRef, string sagaRef, MainViewModel viewModel)
+    {
+        try
+        {
+            _isAlreadyActive = await IsQuestActiveAsync(questRef, sagaRef, viewModel);
+            _isAlreadyCompleted = await IsQuestCompletedAsync(questRef, sagaRef, viewModel);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error loading quest state: {ex.Message}");
+        }
     }
 
     public void Render(MainViewModel viewModel, ref bool isOpen)
@@ -223,19 +238,23 @@ public class QuestModal
         }
     }
 
-    private async void AcceptQuest(MainViewModel viewModel)
+    private void AcceptQuest(MainViewModel viewModel)
     {
         if (_isAccepting || viewModel.PlayerAvatar == null) return;
 
         _isAccepting = true;
+        _ = AcceptQuestAsync(viewModel);
+    }
 
+    private async Task AcceptQuestAsync(MainViewModel viewModel)
+    {
         try
         {
             var command = new AcceptQuestCommand
             {
-                AvatarId = viewModel.PlayerAvatar.Id,
+                AvatarId = viewModel.PlayerAvatar!.Id,
                 QuestRef = _currentQuestRef!,
-                SagaArrcRef = _currentSagaRef!,
+                SagaArcRef = _currentSagaRef!,
                 QuestGiverRef = _currentSignpostRef!,
                 Avatar = viewModel.PlayerAvatar
             };

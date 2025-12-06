@@ -236,24 +236,36 @@ public class ModalManager
         ShowQuest = true;
     }
 
-    public async void OpenQuestDetail(string questRef)
+    public void OpenQuestDetail(string questRef)
     {
         if (_questViewModel?.PlayerAvatar == null) return;
 
-        // Find saga containing this quest using Application layer query
-        var sagaRef = await _mediator.Send(new GetSagaForQuestQuery
+        _ = OpenQuestDetailAsync(questRef);
+    }
+
+    private async Task OpenQuestDetailAsync(string questRef)
+    {
+        try
         {
-            AvatarId = _questViewModel.PlayerAvatar.Id,
-            QuestRef = questRef
-        });
+            // Find saga containing this quest using Application layer query
+            var sagaRef = await _mediator.Send(new GetSagaForQuestQuery
+            {
+                AvatarId = _questViewModel!.PlayerAvatar!.Id,
+                QuestRef = questRef
+            });
 
-        if (sagaRef == null) return;
+            if (sagaRef == null) return;
 
-        _questDetailRef = questRef;
-        _questDetailSagaRef = sagaRef;
+            _questDetailRef = questRef;
+            _questDetailSagaRef = sagaRef;
 
-        await _questDetailModal.OpenAsync(questRef, sagaRef, _questViewModel);
-        ShowQuestDetail = true;
+            await _questDetailModal.OpenAsync(questRef, sagaRef, _questViewModel);
+            ShowQuestDetail = true;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error opening quest detail: {ex.Message}");
+        }
     }
 
     public void CloseAll()

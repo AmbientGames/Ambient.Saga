@@ -38,12 +38,12 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
         try
         {
             // Get Saga instance
-            var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArrcRef, ct);
+            var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
 
             // Verify Saga exists
-            if (!_world.SagaArcLookup.TryGetValue(command.SagaArrcRef, out var sagaTemplate))
+            if (!_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var sagaTemplate))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{command.SagaArrcRef}' not found");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{command.SagaArcRef}' not found");
             }
 
             // Verify quest exists
@@ -54,9 +54,9 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
             }
 
             // Get expanded triggers for state machine
-            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArrcRef, out var expandedTriggers))
+            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var expandedTriggers))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArrcRef}'");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArcRef}'");
             }
 
             // Replay to get current state
@@ -101,7 +101,7 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
                     ["QuestRef"] = command.QuestRef,
                     ["QuestDisplayName"] = quest.DisplayName,
                     ["QuestGiverRef"] = command.QuestGiverRef,
-                    ["SagaArcRef"] = command.SagaArrcRef
+                    ["SagaArcRef"] = command.SagaArcRef
                 }
             };
 
@@ -125,7 +125,7 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
             }
 
             // Invalidate cache
-            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArrcRef, ct);
+            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
             // Quest progress is event-sourced from SagaState - no avatar entity update needed
             // Avatar queries active quests via GetActiveQuestsQuery

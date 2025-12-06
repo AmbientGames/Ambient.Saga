@@ -425,7 +425,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "COLLECT_HERBS",
             QuestGiverRef = "HEALER",
             Avatar = avatar
@@ -490,7 +490,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "COLLECT_HERBS",
             QuestGiverRef = "HEALER",
             Avatar = avatar
@@ -564,7 +564,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var command = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DRAGON_HUNT",
             QuestGiverRef = "DRAGON_HUNTER",
             Avatar = avatar
@@ -586,7 +586,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var command = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "DRAGON_HUNT",
             QuestGiverRef = "DRAGON_HUNTER",
             Avatar = avatar
@@ -607,7 +607,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var command = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "SECRET_VAULT",
             QuestGiverRef = "VAULT_KEEPER",
             Avatar = avatar
@@ -633,7 +633,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var command = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "SECRET_VAULT",
             QuestGiverRef = "VAULT_KEEPER",
             Avatar = avatar
@@ -654,7 +654,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var command = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "HERB_MASTER",
             QuestGiverRef = "MASTER_HERBALIST",
             Avatar = avatar
@@ -703,7 +703,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var command = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "HERB_MASTER",
             QuestGiverRef = "MASTER_HERBALIST",
             Avatar = avatar
@@ -729,7 +729,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "MULTI_OBJECTIVE_QUEST",
             QuestGiverRef = "QUEST_GIVER",
             Avatar = avatar
@@ -790,7 +790,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var acceptCommand = new AcceptQuestCommand
         {
             AvatarId = avatar.Id,
-            SagaArrcRef = "TEST_SAGA",
+            SagaArcRef = "TEST_SAGA",
             QuestRef = "MULTI_OBJECTIVE_QUEST",
             QuestGiverRef = "QUEST_GIVER",
             Avatar = avatar
