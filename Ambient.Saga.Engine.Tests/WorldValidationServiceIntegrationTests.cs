@@ -146,7 +146,7 @@ public class WorldValidationServiceIntegrationTests
         var dataDirectory = Path.Combine(domainDirectory, "WorldDefinitions");
         var definitionDirectory = Path.Combine(domainDirectory, "DefinitionXsd");
 
-        var configurations = WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory).GetAwaiter().GetResult();
+        var configurations = WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory).GetAwaiter().GetResult();
 
         foreach (var config in configurations)
         {

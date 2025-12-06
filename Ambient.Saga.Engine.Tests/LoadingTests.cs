@@ -93,7 +93,7 @@ public class LoadingTests : IAsyncLifetime
     public async Task AvailableWorldConfigurations_ShouldLoadMultipleConfigurations()
     {
         // Act
-        var availableConfigurations = await WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
+        var availableConfigurations = await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
 
         // Assert
         Assert.NotNull(availableConfigurations);

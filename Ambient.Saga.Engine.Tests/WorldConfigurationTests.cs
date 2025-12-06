@@ -214,7 +214,7 @@ public class WorldConfigurationTests
     public async Task WorldConfiguration_ItemProperty_HeightMapType_ShouldHaveCorrectProperties()
     {
         // Test HeightMapSettings through Item property without casting or delegation
-        var configurations = await WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
+        var configurations = await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
         var heightMapConfig = configurations.FirstOrDefault(c => c.Item?.GetType() == typeof(HeightMapSettings));
 
         Assert.NotNull(heightMapConfig);
@@ -258,7 +258,7 @@ public class WorldConfigurationTests
     public async Task WorldConfiguration_ItemProperty_ShouldBeAccessibleWithoutCasting()
     {
         // Test accessing Item properties using GetType() and reflection instead of casting
-        var configurations = await WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
+        var configurations = await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
 
         foreach (var config in configurations)
         {
