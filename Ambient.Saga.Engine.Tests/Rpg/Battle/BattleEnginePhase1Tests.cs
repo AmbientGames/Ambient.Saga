@@ -761,7 +761,7 @@ public class BattleEnginePhase1Tests
         {
             RefName = "IronSword",
             DisplayName = "Iron Sword",
-            Category = EquipmentCategoryType.OneHandedMelee,
+            Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0f,
             Effects = new CharacterEffects { Health = -0.1f }
         };
@@ -770,7 +770,7 @@ public class BattleEnginePhase1Tests
         {
             RefName = "CriticalSword",
             DisplayName = "Critical Sword",
-            Category = EquipmentCategoryType.OneHandedMelee,
+            Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0.3f, // +30% crit chance
             Effects = new CharacterEffects { Health = -0.1f }
         };
@@ -795,7 +795,7 @@ public class BattleEnginePhase1Tests
         {
             RefName = "PoisonDagger",
             DisplayName = "Poison Dagger",
-            Category = EquipmentCategoryType.OneHandedMelee,
+            Category = EquipmentCategoryType.OneHanded,
             StatusEffectRef = "Poison",
             StatusEffectChance = 1.0f, // 100% chance for testing
             Effects = new CharacterEffects { Health = -0.1f }
@@ -805,7 +805,7 @@ public class BattleEnginePhase1Tests
         {
             RefName = "LowChancePoison",
             DisplayName = "Low Chance Poison Dagger",
-            Category = EquipmentCategoryType.OneHandedMelee,
+            Category = EquipmentCategoryType.OneHanded,
             StatusEffectRef = "Poison",
             StatusEffectChance = 0.5f, // 50% chance
             Effects = new CharacterEffects { Health = -0.1f }
@@ -815,7 +815,7 @@ public class BattleEnginePhase1Tests
         {
             RefName = "HighCritSword",
             DisplayName = "High Crit Sword",
-            Category = EquipmentCategoryType.OneHandedMelee,
+            Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0.55f, // 55% crit bonus - should cap at 50% total
             Effects = new CharacterEffects { Health = -0.1f }
         };
@@ -1121,7 +1121,7 @@ public class BattleEnginePhase1Tests
         {
             RefName = "HeavySword",
             DisplayName = "Heavy Sword",
-            Category = EquipmentCategoryType.TwoHandedMelee,
+            Category = EquipmentCategoryType.TwoHanded,
             MinimumStats = new CharacterEffects { Strength = 0.5f },
             Effects = new CharacterEffects { Health = -0.2f }
         };
@@ -1131,7 +1131,7 @@ public class BattleEnginePhase1Tests
         {
             RefName = "GuardianBlade",
             DisplayName = "Guardian Blade",
-            Category = EquipmentCategoryType.OneHandedMelee,
+            Category = EquipmentCategoryType.OneHanded,
             MinimumStats = new CharacterEffects { Defense = 0.4f },
             Effects = new CharacterEffects { Health = -0.15f }
         };
@@ -1141,7 +1141,7 @@ public class BattleEnginePhase1Tests
         {
             RefName = "EnchantedBlade",
             DisplayName = "Enchanted Blade",
-            Category = EquipmentCategoryType.OneHandedMelee,
+            Category = EquipmentCategoryType.OneHanded,
             MinimumStats = new CharacterEffects { Magic = 0.4f },
             Effects = new CharacterEffects { Health = -0.18f }
         };
@@ -2174,7 +2174,7 @@ public class BattleEnginePhase1Tests
     }
 
     [Fact]
-    public void IsTwoHandedWeapon_ReturnsTrueForTwoHandedMelee()
+    public void IsTwoHandedWeapon_ReturnsTrueForTwoHanded()
     {
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
@@ -2189,7 +2189,7 @@ public class BattleEnginePhase1Tests
     }
 
     [Fact]
-    public void IsTwoHandedWeapon_ReturnsFalseForOneHandedMelee()
+    public void IsTwoHandedWeapon_ReturnsFalseForOneHanded()
     {
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
@@ -2342,7 +2342,7 @@ public class BattleEnginePhase1Tests
             RefName = "GreatSword",
             DisplayName = "Great Sword",
             SlotRef = "RightHand",
-            Category = EquipmentCategoryType.TwoHandedMelee,
+            Category = EquipmentCategoryType.TwoHanded,
             Effects = new CharacterEffects { Strength = 0.3f }
         };
 
