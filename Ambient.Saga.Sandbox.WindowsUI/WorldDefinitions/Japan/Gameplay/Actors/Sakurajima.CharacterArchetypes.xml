@@ -26,52 +26,30 @@
     <CharacterRef>MERCHANT_ArimuraYōganTenbōjoSpoke3Ring3</CharacterRef>
     <CharacterRef>MERCHANT_ArimuraYōganTenbōjoSpoke4Ring1</CharacterRef>
     <CharacterRef>MERCHANT_ArimuraYōganTenbōjoSpoke4Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_ArimuraYōganTenbōjoSpoke5Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_ArimuraYōganTenbōjoSpoke5Ring5</CharacterRef>
-    <CharacterRef>MERCHANT_ArimuraYōganTenbōjoSpoke6Ring3</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke1Ring1</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke1Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke2Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke2Ring5</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke3Ring3</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke4Ring1</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke4Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke5Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke5Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_ArimuraYōganTenbōjoSpoke6Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke1Ring2</CharacterRef>
+    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke1Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke5Ring3</CharacterRef>
     <CharacterRef>MERCHANT_SakurajimaKōFerrybaSpoke6Ring3</CharacterRef>
     <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke1Ring1</CharacterRef>
     <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke1Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke2Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke2Ring5</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke3Ring3</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke4Ring1</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke4Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke5Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke5Ring5</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke6Ring3</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke1Ring1</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke1Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke2Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke2Ring5</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke3Ring3</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke4Ring1</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke4Ring4</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke5Ring2</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke5Ring5</CharacterRef>
+    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke6Ring1</CharacterRef>
+    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukanSpoke6Ring4</CharacterRef>
+    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke1Ring3</CharacterRef>
+    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke5Ring1</CharacterRef>
     <CharacterRef>MERCHANT_YōganNagisaKōenAshiyuSpoke6Ring3</CharacterRef>
-    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1</CharacterRef>
-    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2</CharacterRef>
-    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5</CharacterRef>
-    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8</CharacterRef>
-    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11</CharacterRef>
-    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1</CharacterRef>
-    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4</CharacterRef>
-    <CharacterRef>MERCHANT_YōganNagisaKōenAshiyu1</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1</CharacterRef>
-    <CharacterRef>MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4</CharacterRef>
-    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2</CharacterRef>
-    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_5</CharacterRef>
-    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_8</CharacterRef>
-    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11</CharacterRef>
+    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0</CharacterRef>
+    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3</CharacterRef>
+    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6</CharacterRef>
+    <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9</CharacterRef>
+    <CharacterRef>MERCHANT_YunohiraTenbōsho1</CharacterRef>
+    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2</CharacterRef>
+    <CharacterRef>MERCHANT_SakurajimaKōFerryba1</CharacterRef>
+    <CharacterRef>MERCHANT_SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0</CharacterRef>
+    <CharacterRef>MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2</CharacterRef>
+    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0</CharacterRef>
+    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3</CharacterRef>
+    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6</CharacterRef>
+    <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9</CharacterRef>
   </CharacterArchetype>
 </CharacterArchetypes>

@@ -16,38 +16,6 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke1Ring2" DisplayName="Tsurumaru-jō Spoke 1 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.56514676882128" Source="Generated">
-    <SagaFeatureRef>TsurumarujōSpoke1Ring2</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke1Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 1 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 1 Ring 2" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke1Ring2</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke1Ring3" DisplayName="Tsurumaru-jō Spoke 1 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.5704201532319" Source="Generated">
-    <SagaFeatureRef>TsurumarujōSpoke1Ring3</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke1Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 1 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 1 Ring 3" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke1Ring3</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke1Ring4" DisplayName="Tsurumaru-jō Spoke 1 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.57569353764256" Source="Generated">
-    <SagaFeatureRef>TsurumarujōSpoke1Ring4</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke1Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 1 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 1 Ring 4" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke1Ring4</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke1Ring5" DisplayName="Tsurumaru-jō Spoke 1 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.5809669220532" Source="Generated">
-    <SagaFeatureRef>TsurumarujōSpoke1Ring5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke1Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 1 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 1 Ring 5" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke1Ring5</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
   <SagaArc RefName="TsurumarujōSpoke2Ring1" DisplayName="Tsurumaru-jō Spoke 2 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.60238980149023" LongitudeX="130.55723669220532" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke2Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 1" EnterRadius="50.0">
@@ -60,7 +28,7 @@
     <SagaFeatureRef>TsurumarujōSpoke2Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke2Ring2</CharacterRef>
+        <CharacterRef>NPC_TsurumarujōSpoke2Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -68,7 +36,7 @@
     <SagaFeatureRef>TsurumarujōSpoke2Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke2Ring3</CharacterRef>
+        <CharacterRef>MERCHANT_TsurumarujōSpoke2Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -84,7 +52,7 @@
     <SagaFeatureRef>TsurumarujōSpoke2Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke2Ring5</CharacterRef>
+        <CharacterRef>NPC_TsurumarujōSpoke2Ring5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -92,7 +60,7 @@
     <SagaFeatureRef>TsurumarujōSpoke3Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 3 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 3 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke3Ring1</CharacterRef>
+        <CharacterRef>MERCHANT_TsurumarujōSpoke3Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -108,7 +76,7 @@
     <SagaFeatureRef>TsurumarujōSpoke3Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 3 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 3 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke3Ring3</CharacterRef>
+        <CharacterRef>NPC_TsurumarujōSpoke3Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -116,7 +84,7 @@
     <SagaFeatureRef>TsurumarujōSpoke3Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 3 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 3 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke3Ring4</CharacterRef>
+        <CharacterRef>MERCHANT_TsurumarujōSpoke3Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -132,7 +100,7 @@
     <SagaFeatureRef>TsurumarujōSpoke4Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke4Ring1</CharacterRef>
+        <CharacterRef>NPC_TsurumarujōSpoke4Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -140,7 +108,7 @@
     <SagaFeatureRef>TsurumarujōSpoke4Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke4Ring2</CharacterRef>
+        <CharacterRef>MERCHANT_TsurumarujōSpoke4Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -156,7 +124,7 @@
     <SagaFeatureRef>TsurumarujōSpoke4Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke4Ring4</CharacterRef>
+        <CharacterRef>NPC_TsurumarujōSpoke4Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -164,7 +132,7 @@
     <SagaFeatureRef>TsurumarujōSpoke4Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke4Ring5</CharacterRef>
+        <CharacterRef>MERCHANT_TsurumarujōSpoke4Ring5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -180,7 +148,7 @@
     <SagaFeatureRef>TsurumarujōSpoke5Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 5 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 5 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke5Ring2</CharacterRef>
+        <CharacterRef>NPC_TsurumarujōSpoke5Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -188,7 +156,7 @@
     <SagaFeatureRef>TsurumarujōSpoke5Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 5 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 5 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke5Ring3</CharacterRef>
+        <CharacterRef>MERCHANT_TsurumarujōSpoke5Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -204,7 +172,7 @@
     <SagaFeatureRef>TsurumarujōSpoke5Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 5 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 5 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke5Ring5</CharacterRef>
+        <CharacterRef>NPC_TsurumarujōSpoke5Ring5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -212,7 +180,7 @@
     <SagaFeatureRef>TsurumarujōSpoke6Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 6 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 6 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke6Ring1</CharacterRef>
+        <CharacterRef>MERCHANT_TsurumarujōSpoke6Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -228,7 +196,7 @@
     <SagaFeatureRef>TsurumarujōSpoke6Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 6 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 6 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TsurumarujōSpoke6Ring3</CharacterRef>
+        <CharacterRef>NPC_TsurumarujōSpoke6Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -236,7 +204,7 @@
     <SagaFeatureRef>TsurumarujōSpoke6Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 6 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 6 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TsurumarujōSpoke6Ring4</CharacterRef>
+        <CharacterRef>MERCHANT_TsurumarujōSpoke6Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -253,46 +221,6 @@
     <SagaTrigger RefName="TRIGGER_Isoteien" DisplayName="Approaching Iso-teien" Description="Triggered when entering Iso-teien" EnterRadius="50.0">
       <Spawn Count="1">
         <CharacterRef>BOSS_Isoteien</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke1Ring1" DisplayName="Iso-teien Spoke 1 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.58514452358523" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke1Ring1</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke1Ring1" DisplayName="Approaching Iso-teien Spoke 1 Ring 1" Description="Triggered when entering Iso-teien Spoke 1 Ring 1" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>MERCHANT_IsoteienSpoke1Ring1</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke1Ring2" DisplayName="Iso-teien Spoke 1 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.59041904717049" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke1Ring2</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke1Ring2" DisplayName="Approaching Iso-teien Spoke 1 Ring 2" Description="Triggered when entering Iso-teien Spoke 1 Ring 2" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke1Ring2</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke1Ring3" DisplayName="Iso-teien Spoke 1 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.5956935707557" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke1Ring3</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke1Ring3" DisplayName="Approaching Iso-teien Spoke 1 Ring 3" Description="Triggered when entering Iso-teien Spoke 1 Ring 3" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke1Ring3</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke1Ring4" DisplayName="Iso-teien Spoke 1 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.60096809434097" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke1Ring4</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke1Ring4" DisplayName="Approaching Iso-teien Spoke 1 Ring 4" Description="Triggered when entering Iso-teien Spoke 1 Ring 4" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>MERCHANT_IsoteienSpoke1Ring4</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke1Ring5" DisplayName="Iso-teien Spoke 1 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.6062426179262" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke1Ring5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke1Ring5" DisplayName="Approaching Iso-teien Spoke 1 Ring 5" Description="Triggered when entering Iso-teien Spoke 1 Ring 5" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke1Ring5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -416,19 +344,11 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke5Ring1" DisplayName="Iso-teien Spoke 5 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.614720198509772" LongitudeX="130.57723273820739" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke5Ring1</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring1" DisplayName="Approaching Iso-teien Spoke 5 Ring 1" Description="Triggered when entering Iso-teien Spoke 5 Ring 1" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke5Ring1</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
   <SagaArc RefName="IsoteienSpoke5Ring2" DisplayName="Iso-teien Spoke 5 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.610830397019544" LongitudeX="130.57459547641477" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke5Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring2" DisplayName="Approaching Iso-teien Spoke 5 Ring 2" Description="Triggered when entering Iso-teien Spoke 5 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_IsoteienSpoke5Ring2</CharacterRef>
+        <CharacterRef>NPC_IsoteienSpoke5Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -436,7 +356,7 @@
     <SagaFeatureRef>IsoteienSpoke5Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring3" DisplayName="Approaching Iso-teien Spoke 5 Ring 3" Description="Triggered when entering Iso-teien Spoke 5 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke5Ring3</CharacterRef>
+        <CharacterRef>MERCHANT_IsoteienSpoke5Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -445,54 +365,6 @@
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring4" DisplayName="Approaching Iso-teien Spoke 5 Ring 4" Description="Triggered when entering Iso-teien Spoke 5 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke5Ring4</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke5Ring5" DisplayName="Iso-teien Spoke 5 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.59916099254886" LongitudeX="130.5666836910369" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke5Ring5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring5" DisplayName="Approaching Iso-teien Spoke 5 Ring 5" Description="Triggered when entering Iso-teien Spoke 5 Ring 5" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>MERCHANT_IsoteienSpoke5Ring5</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke6Ring1" DisplayName="Iso-teien Spoke 6 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.614720198509772" LongitudeX="130.5825072617926" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke6Ring1</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke6Ring1" DisplayName="Approaching Iso-teien Spoke 6 Ring 1" Description="Triggered when entering Iso-teien Spoke 6 Ring 1" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke6Ring1</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke6Ring2" DisplayName="Iso-teien Spoke 6 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.610830397019544" LongitudeX="130.58514452358523" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke6Ring2</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke6Ring2" DisplayName="Approaching Iso-teien Spoke 6 Ring 2" Description="Triggered when entering Iso-teien Spoke 6 Ring 2" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke6Ring2</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke6Ring3" DisplayName="Iso-teien Spoke 6 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.606940595529316" LongitudeX="130.58778178537787" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke6Ring3</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke6Ring3" DisplayName="Approaching Iso-teien Spoke 6 Ring 3" Description="Triggered when entering Iso-teien Spoke 6 Ring 3" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>MERCHANT_IsoteienSpoke6Ring3</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke6Ring4" DisplayName="Iso-teien Spoke 6 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.60305079403909" LongitudeX="130.59041904717049" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke6Ring4</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke6Ring4" DisplayName="Approaching Iso-teien Spoke 6 Ring 4" Description="Triggered when entering Iso-teien Spoke 6 Ring 4" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke6Ring4</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="IsoteienSpoke6Ring5" DisplayName="Iso-teien Spoke 6 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.59916099254886" LongitudeX="130.5930563089631" Source="Generated">
-    <SagaFeatureRef>IsoteienSpoke6Ring5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_IsoteienSpoke6Ring5" DisplayName="Approaching Iso-teien Spoke 6 Ring 5" Description="Triggered when entering Iso-teien Spoke 6 Ring 5" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_IsoteienSpoke6Ring5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -508,7 +380,7 @@
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke1Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 1 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1</CharacterRef>
+        <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke1Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -516,7 +388,7 @@
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke1Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 1 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke1Ring2</CharacterRef>
+        <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -525,22 +397,6 @@
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 1 Ring 3" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 1 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke1Ring3</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.5716926553811" Source="Generated">
-    <SagaFeatureRef>TerukuniDaimyōjinshaSpoke1Ring4</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring4" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 1 Ring 4" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 1 Ring 4" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke1Ring4</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.57696581922636" Source="Generated">
-    <SagaFeatureRef>TerukuniDaimyōjinshaSpoke1Ring5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring5" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 1 Ring 5" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 1 Ring 5" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke1Ring5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -758,19 +614,11 @@
       <NarrativeConnection TargetRef="Tsurumarujō1" Relationship="leads-to" Description="Next location in quest chain" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_0" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (1)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.615737142857142" LongitudeX="130.57626" Source="Generated">
-    <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_0</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_0" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (1)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (1)" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_0</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
   <SagaArc RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.612864285714288" LongitudeX="130.57265" Source="Generated">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_1" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (2)" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_1</CharacterRef>
+        <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -786,7 +634,7 @@
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_3" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (4)" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_3</CharacterRef>
+        <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -794,7 +642,7 @@
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_4" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (5)" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_4</CharacterRef>
+        <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -826,7 +674,7 @@
     <SagaFeatureRef>Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Approaching Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</CharacterRef>
+        <CharacterRef>NPC_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -849,7 +697,7 @@
     <SagaFeatureRef>TerukuniDaimyōjinsha1_to_Tsurumarujō1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Approaching Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" Description="Triggered when entering Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0</CharacterRef>
+        <CharacterRef>MERCHANT_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -865,7 +713,7 @@
     <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_1" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (2)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (2)" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_Tsurumarujō1_to_Isoteien1_1</CharacterRef>
+        <CharacterRef>NPC_Tsurumarujō1_to_Isoteien1_1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -873,7 +721,7 @@
     <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_2" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (3)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (3)" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>NPC_Tsurumarujō1_to_Isoteien1_2</CharacterRef>
+        <CharacterRef>MERCHANT_Tsurumarujō1_to_Isoteien1_2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
@@ -889,15 +737,7 @@
     <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_4" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (5)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (5)" EnterRadius="50.0">
       <Spawn Count="1">
-        <CharacterRef>MERCHANT_Tsurumarujō1_to_Isoteien1_4</CharacterRef>
-      </Spawn>
-    </SagaTrigger>
-  </SagaArc>
-  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_5" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (6)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.615737142857142" LongitudeX="130.57626" Source="Generated">
-    <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_5" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (6)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (6)" EnterRadius="50.0">
-      <Spawn Count="1">
-        <CharacterRef>NPC_Tsurumarujō1_to_Isoteien1_5</CharacterRef>
+        <CharacterRef>NPC_Tsurumarujō1_to_Isoteien1_4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>

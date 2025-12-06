@@ -118,120 +118,6 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke1Ring2" DisplayName="Traveler at Tsurumaru-jō Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 1 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 1 Ring 2. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 1 Ring 2 responds warmly, mentions nearby locations: IsoteienSpoke5Ring5, TerukuniDaimyōjinshaSpoke1Ring3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 1 Ring 2 provides lore about Tsurumaru-jō Spoke 1 Ring 2]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke1Ring3" DisplayName="Traveler at Tsurumaru-jō Spoke 1 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 1 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 1 Ring 3. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 1 Ring 3 responds warmly, mentions nearby locations: IsoteienSpoke5Ring5, TerukuniDaimyōjinshaSpoke1Ring4]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 1 Ring 3 provides lore about Tsurumaru-jō Spoke 1 Ring 3]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke1Ring4" DisplayName="Trader at Tsurumaru-jō Spoke 1 Ring 4 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 1 Ring 4" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke1Ring4" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke1Ring4" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke1Ring4" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke1Ring4" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 1 Ring 4. Sells region-appropriate goods, shares rumors]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 1 Ring 4 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke1Ring5, TsurumarujōSpoke1Ring5]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 1 Ring 4 provides lore about Tsurumaru-jō Spoke 1 Ring 4]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke1Ring5" DisplayName="Traveler at Tsurumaru-jō Spoke 1 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 1 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 1 Ring 5. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 1 Ring 5 responds warmly, mentions nearby locations: TsurumarujōSpoke1Ring4, TerukuniDaimyōjinshaSpoke1Ring5]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 1 Ring 5 provides lore about Tsurumaru-jō Spoke 1 Ring 5]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke2Ring1" DisplayName="Traveler at Tsurumaru-jō Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 2 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
       <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 2 Ring 1. Provides lore and directions]</Text>
@@ -250,7 +136,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke2Ring2" DisplayName="Trader at Tsurumaru-jō Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 2 Ring 2" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke2Ring2" DisplayName="Traveler at Tsurumaru-jō Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 2 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 2 Ring 2. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 2 Ring 2 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke2Ring3, Isoteien1_to_Tsurumarujō1_4]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 2 Ring 2 provides lore about Tsurumaru-jō Spoke 2 Ring 2]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke2Ring3" DisplayName="Trader at Tsurumaru-jō Spoke 2 Ring 3 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 2 Ring 3" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -268,7 +172,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring3" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -281,47 +185,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring3" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring3" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring3" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 2 Ring 2. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Tsurumaru-jō Spoke 2 Ring 3. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 2 Ring 2 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke2Ring3, Isoteien1_to_Tsurumarujō1_4]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 2 Ring 3 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke2Ring4, Isoteien1_to_Tsurumarujō1_3]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 2 Ring 2 provides lore about Tsurumaru-jō Spoke 2 Ring 2]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke2Ring3" DisplayName="Traveler at Tsurumaru-jō Spoke 2 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 2 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 2 Ring 3. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 2 Ring 3 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke2Ring4, Isoteien1_to_Tsurumarujō1_3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 2 Ring 3 provides lore about Tsurumaru-jō Spoke 2 Ring 3]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 2 Ring 3 provides lore about Tsurumaru-jō Spoke 2 Ring 3]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -346,7 +232,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke2Ring5" DisplayName="Trader at Tsurumaru-jō Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 2 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke2Ring5" DisplayName="Traveler at Tsurumaru-jō Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 2 Ring 5" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 2 Ring 5. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 2 Ring 5 responds warmly, mentions nearby locations: IsoteienSpoke4Ring2, IsoteienSpoke4Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 2 Ring 5 provides lore about Tsurumaru-jō Spoke 2 Ring 5]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke3Ring1" DisplayName="Trader at Tsurumaru-jō Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 3 Ring 1" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -364,7 +268,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring1" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -377,47 +281,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring1" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring1" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke2Ring5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring1" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 2 Ring 5. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Tsurumaru-jō Spoke 3 Ring 1. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 2 Ring 5 responds warmly, mentions nearby locations: IsoteienSpoke4Ring2, IsoteienSpoke4Ring3]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 3 Ring 1 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke2Ring2, TerukuniDaimyōjinshaSpoke2Ring1]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 2 Ring 5 provides lore about Tsurumaru-jō Spoke 2 Ring 5]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke3Ring1" DisplayName="Traveler at Tsurumaru-jō Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 3 Ring 1" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 3 Ring 1. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 3 Ring 1 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke2Ring2, TerukuniDaimyōjinshaSpoke2Ring1]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 3 Ring 1 provides lore about Tsurumaru-jō Spoke 3 Ring 1]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 3 Ring 1 provides lore about Tsurumaru-jō Spoke 3 Ring 1]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -442,7 +328,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke3Ring3" DisplayName="Trader at Tsurumaru-jō Spoke 3 Ring 3 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 3 Ring 3" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke3Ring3" DisplayName="Traveler at Tsurumaru-jō Spoke 3 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 3 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 3 Ring 3. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 3 Ring 3 responds warmly, mentions nearby locations: TsurumarujōSpoke3Ring4, TsurumarujōSpoke3Ring2]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 3 Ring 3 provides lore about Tsurumaru-jō Spoke 3 Ring 3]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke3Ring4" DisplayName="Trader at Tsurumaru-jō Spoke 3 Ring 4 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 3 Ring 4" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -460,7 +364,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring4" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -473,47 +377,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring4" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring4" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke3Ring4" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 3 Ring 3. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Tsurumaru-jō Spoke 3 Ring 4. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 3 Ring 3 responds warmly, mentions nearby locations: TsurumarujōSpoke3Ring4, TsurumarujōSpoke3Ring2]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 3 Ring 4 responds warmly, mentions nearby locations: TsurumarujōSpoke3Ring5, TsurumarujōSpoke3Ring3]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 3 Ring 3 provides lore about Tsurumaru-jō Spoke 3 Ring 3]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke3Ring4" DisplayName="Traveler at Tsurumaru-jō Spoke 3 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 3 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 3 Ring 4. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 3 Ring 4 responds warmly, mentions nearby locations: TsurumarujōSpoke3Ring5, TsurumarujōSpoke3Ring3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 3 Ring 4 provides lore about Tsurumaru-jō Spoke 3 Ring 4]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 3 Ring 4 provides lore about Tsurumaru-jō Spoke 3 Ring 4]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -538,7 +424,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring1" DisplayName="Trader at Tsurumaru-jō Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 4 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke4Ring1" DisplayName="Traveler at Tsurumaru-jō Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 4 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 4 Ring 1. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 4 Ring 1 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke3Ring1, TerukuniDaimyōjinshaSpoke2Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 4 Ring 1 provides lore about Tsurumaru-jō Spoke 4 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring2" DisplayName="Trader at Tsurumaru-jō Spoke 4 Ring 2 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 4 Ring 2" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -556,7 +460,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring2" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -569,47 +473,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring2" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring2" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring2" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 4 Ring 1. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Tsurumaru-jō Spoke 4 Ring 2. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 4 Ring 1 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke3Ring1, TerukuniDaimyōjinshaSpoke2Ring1]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 4 Ring 2 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke3Ring1, TerukuniDaimyōjinshaSpoke3Ring2]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 4 Ring 1 provides lore about Tsurumaru-jō Spoke 4 Ring 1]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke4Ring2" DisplayName="Traveler at Tsurumaru-jō Spoke 4 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 4 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 4 Ring 2. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 4 Ring 2 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke3Ring1, TerukuniDaimyōjinshaSpoke3Ring2]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 4 Ring 2 provides lore about Tsurumaru-jō Spoke 4 Ring 2]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 4 Ring 2 provides lore about Tsurumaru-jō Spoke 4 Ring 2]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -634,7 +520,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring4" DisplayName="Trader at Tsurumaru-jō Spoke 4 Ring 4 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 4 Ring 4" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke4Ring4" DisplayName="Traveler at Tsurumaru-jō Spoke 4 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 4 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 4 Ring 4. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 4 Ring 4 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke4Ring3, TsurumarujōSpoke4Ring5]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 4 Ring 4 provides lore about Tsurumaru-jō Spoke 4 Ring 4]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring5" DisplayName="Trader at Tsurumaru-jō Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 4 Ring 5" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -652,7 +556,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring4" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring5" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -665,47 +569,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring4" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring5" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring4" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring5" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring4" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke4Ring5" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 4 Ring 4. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Tsurumaru-jō Spoke 4 Ring 5. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 4 Ring 4 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke4Ring3, TsurumarujōSpoke4Ring5]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 4 Ring 5 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke4Ring4, TsurumarujōSpoke4Ring4]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 4 Ring 4 provides lore about Tsurumaru-jō Spoke 4 Ring 4]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke4Ring5" DisplayName="Traveler at Tsurumaru-jō Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 4 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 4 Ring 5. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 4 Ring 5 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke4Ring4, TsurumarujōSpoke4Ring4]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 4 Ring 5 provides lore about Tsurumaru-jō Spoke 4 Ring 5]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 4 Ring 5 provides lore about Tsurumaru-jō Spoke 4 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -730,7 +616,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke5Ring2" DisplayName="Trader at Tsurumaru-jō Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 5 Ring 2" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke5Ring2" DisplayName="Traveler at Tsurumaru-jō Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 5 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 5 Ring 2. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 5 Ring 2 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke5Ring1, TerukuniDaimyōjinshaSpoke6Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 5 Ring 2 provides lore about Tsurumaru-jō Spoke 5 Ring 2]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke5Ring3" DisplayName="Trader at Tsurumaru-jō Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 5 Ring 3" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -748,7 +652,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring3" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -761,47 +665,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring3" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring3" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring3" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 5 Ring 2. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Tsurumaru-jō Spoke 5 Ring 3. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 5 Ring 2 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke5Ring1, TerukuniDaimyōjinshaSpoke6Ring1]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 5 Ring 3 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke5Ring2, TerukuniDaimyōjinshaSpoke5Ring1]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 5 Ring 2 provides lore about Tsurumaru-jō Spoke 5 Ring 2]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke5Ring3" DisplayName="Traveler at Tsurumaru-jō Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 5 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 5 Ring 3. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 5 Ring 3 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke5Ring2, TerukuniDaimyōjinshaSpoke5Ring1]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 5 Ring 3 provides lore about Tsurumaru-jō Spoke 5 Ring 3]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 5 Ring 3 provides lore about Tsurumaru-jō Spoke 5 Ring 3]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -826,7 +712,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke5Ring5" DisplayName="Trader at Tsurumaru-jō Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 5 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke5Ring5" DisplayName="Traveler at Tsurumaru-jō Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 5 Ring 5" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 5 Ring 5. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 5 Ring 5 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke5Ring4, TerukuniDaimyōjinshaSpoke5Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 5 Ring 5 provides lore about Tsurumaru-jō Spoke 5 Ring 5]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke6Ring1" DisplayName="Trader at Tsurumaru-jō Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 6 Ring 1" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -844,7 +748,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring1" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -857,47 +761,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring1" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring1" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke5Ring5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring1" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 5 Ring 5. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Tsurumaru-jō Spoke 6 Ring 1. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 5 Ring 5 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke5Ring4, TerukuniDaimyōjinshaSpoke5Ring3]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 6 Ring 1 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke1Ring1, TerukuniDaimyōjinshaSpoke1Ring2]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 5 Ring 5 provides lore about Tsurumaru-jō Spoke 5 Ring 5]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke6Ring1" DisplayName="Traveler at Tsurumaru-jō Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 6 Ring 1" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 6 Ring 1. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 6 Ring 1 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke1Ring1, TerukuniDaimyōjinshaSpoke1Ring2]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 6 Ring 1 provides lore about Tsurumaru-jō Spoke 6 Ring 1]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 6 Ring 1 provides lore about Tsurumaru-jō Spoke 6 Ring 1]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -922,7 +808,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke6Ring3" DisplayName="Trader at Tsurumaru-jō Spoke 6 Ring 3 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 6 Ring 3" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke6Ring3" DisplayName="Traveler at Tsurumaru-jō Spoke 6 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 6 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 6 Ring 3. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 6 Ring 3 responds warmly, mentions nearby locations: TsurumarujōSpoke6Ring2, TsurumarujōSpoke6Ring4]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Tsurumaru-jō Spoke 6 Ring 3 provides lore about Tsurumaru-jō Spoke 6 Ring 3]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke6Ring4" DisplayName="Trader at Tsurumaru-jō Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 6 Ring 4" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -940,7 +844,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring4" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -953,47 +857,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring4" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring4" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring4" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Tsurumaru-jō Spoke 6 Ring 3. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Tsurumaru-jō Spoke 6 Ring 4. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 6 Ring 3 responds warmly, mentions nearby locations: TsurumarujōSpoke6Ring2, TsurumarujōSpoke6Ring4]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 6 Ring 4 responds warmly, mentions nearby locations: TsurumarujōSpoke6Ring3, TsurumarujōSpoke6Ring5]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Tsurumaru-jō Spoke 6 Ring 3 provides lore about Tsurumaru-jō Spoke 6 Ring 3]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke6Ring4" DisplayName="Traveler at Tsurumaru-jō Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 6 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Tsurumaru-jō Spoke 6 Ring 4. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 6 Ring 4 responds warmly, mentions nearby locations: TsurumarujōSpoke6Ring3, TsurumarujōSpoke6Ring5]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Tsurumaru-jō Spoke 6 Ring 4 provides lore about Tsurumaru-jō Spoke 6 Ring 4]</Text>
+      <Text>[AI: Trader at Tsurumaru-jō Spoke 6 Ring 4 provides lore about Tsurumaru-jō Spoke 6 Ring 4]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -1065,185 +951,11 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Guardian of Iso-teien responds warmly, mentions nearby locations: Isoteien1, Isoteien1_to_Tsurumarujō1_0]</Text>
+      <Text>[AI: Guardian of Iso-teien responds warmly, mentions nearby locations: Isoteien1, IsoteienSpoke2Ring1]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
       <Text>[AI: Guardian of Iso-teien provides lore about Iso-teien]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke1Ring1" DisplayName="Trader at Iso-teien Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 1 Ring 1" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke1Ring1" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke1Ring1" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke1Ring1" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke1Ring1" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>[AI: Merchant at Iso-teien Spoke 1 Ring 1. Sells region-appropriate goods, shares rumors]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Trader at Iso-teien Spoke 1 Ring 1 responds warmly, mentions nearby locations: IsoteienSpoke2Ring1, Isoteien]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Trader at Iso-teien Spoke 1 Ring 1 provides lore about Iso-teien Spoke 1 Ring 1]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke1Ring2" DisplayName="Traveler at Iso-teien Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 1 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 1 Ring 2. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 1 Ring 2 responds warmly, mentions nearby locations: IsoteienSpoke1Ring3, IsoteienSpoke1Ring1]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 1 Ring 2 provides lore about Iso-teien Spoke 1 Ring 2]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke1Ring3" DisplayName="Traveler at Iso-teien Spoke 1 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 1 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 1 Ring 3. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 1 Ring 3 responds warmly, mentions nearby locations: IsoteienSpoke1Ring2, IsoteienSpoke1Ring4]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 1 Ring 3 provides lore about Iso-teien Spoke 1 Ring 3]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke1Ring4" DisplayName="Trader at Iso-teien Spoke 1 Ring 4 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 1 Ring 4" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke1Ring4" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke1Ring4" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke1Ring4" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke1Ring4" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>[AI: Merchant at Iso-teien Spoke 1 Ring 4. Sells region-appropriate goods, shares rumors]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Trader at Iso-teien Spoke 1 Ring 4 responds warmly, mentions nearby locations: IsoteienSpoke1Ring5, IsoteienSpoke1Ring3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Trader at Iso-teien Spoke 1 Ring 4 provides lore about Iso-teien Spoke 1 Ring 4]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke1Ring5" DisplayName="Traveler at Iso-teien Spoke 1 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 1 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 1 Ring 5. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 1 Ring 5 responds warmly, mentions nearby locations: IsoteienSpoke1Ring4, IsoteienSpoke1Ring3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 1 Ring 5 provides lore about Iso-teien Spoke 1 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -1605,7 +1317,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Iso-teien Spoke 4 Ring 1 responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_0, Tsurumarujō1_to_Isoteien1_5]</Text>
+      <Text>[AI: Trader at Iso-teien Spoke 4 Ring 1 responds warmly, mentions nearby locations: IsoteienSpoke3Ring1, Isoteien]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -1730,25 +1442,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke5Ring1" DisplayName="Traveler at Iso-teien Spoke 5 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 5 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke5Ring2" DisplayName="Traveler at Iso-teien Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 5 Ring 2" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 5 Ring 1. Provides lore and directions]</Text>
+      <Text>[AI: Traveler resting at Iso-teien Spoke 5 Ring 2. Provides lore and directions]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 1 responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_0, Tsurumarujō1_to_Isoteien1_5]</Text>
+      <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 2 responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_1, Tsurumarujō1_to_Isoteien1_4]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 1 provides lore about Iso-teien Spoke 5 Ring 1]</Text>
+      <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 2 provides lore about Iso-teien Spoke 5 Ring 2]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke5Ring2" DisplayName="Trader at Iso-teien Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 5 Ring 2" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke5Ring3" DisplayName="Trader at Iso-teien Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 5 Ring 3" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -1766,7 +1478,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring3" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -1779,47 +1491,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring3" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring3" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring3" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Iso-teien Spoke 5 Ring 2. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Iso-teien Spoke 5 Ring 3. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Iso-teien Spoke 5 Ring 2 responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_1, Tsurumarujō1_to_Isoteien1_4]</Text>
+      <Text>[AI: Trader at Iso-teien Spoke 5 Ring 3 responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_2, Tsurumarujō1_to_Isoteien1_3]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Iso-teien Spoke 5 Ring 2 provides lore about Iso-teien Spoke 5 Ring 2]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke5Ring3" DisplayName="Traveler at Iso-teien Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 5 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 5 Ring 3. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 3 responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_2, Tsurumarujō1_to_Isoteien1_3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 3 provides lore about Iso-teien Spoke 5 Ring 3]</Text>
+      <Text>[AI: Trader at Iso-teien Spoke 5 Ring 3 provides lore about Iso-teien Spoke 5 Ring 3]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -1833,203 +1527,11 @@
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 4 responds warmly, mentions nearby locations: IsoteienSpoke5Ring3, IsoteienSpoke5Ring5]</Text>
+      <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 4 responds warmly, mentions nearby locations: IsoteienSpoke5Ring3, Isoteien1_to_Tsurumarujō1_3]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
       <Text>[AI: Traveler at Iso-teien Spoke 5 Ring 4 provides lore about Iso-teien Spoke 5 Ring 4]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke5Ring5" DisplayName="Trader at Iso-teien Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 5 Ring 5" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring5" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring5" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring5" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring5" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>[AI: Merchant at Iso-teien Spoke 5 Ring 5. Sells region-appropriate goods, shares rumors]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Trader at Iso-teien Spoke 5 Ring 5 responds warmly, mentions nearby locations: TsurumarujōSpoke1Ring2, TsurumarujōSpoke1Ring3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Trader at Iso-teien Spoke 5 Ring 5 provides lore about Iso-teien Spoke 5 Ring 5]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke6Ring1" DisplayName="Traveler at Iso-teien Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 6 Ring 1" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 6 Ring 1. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 6 Ring 1 responds warmly, mentions nearby locations: Isoteien, IsoteienSpoke1Ring1]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 6 Ring 1 provides lore about Iso-teien Spoke 6 Ring 1]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke6Ring2" DisplayName="Traveler at Iso-teien Spoke 6 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 6 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 6 Ring 2. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 6 Ring 2 responds warmly, mentions nearby locations: IsoteienSpoke6Ring1, IsoteienSpoke6Ring3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 6 Ring 2 provides lore about Iso-teien Spoke 6 Ring 2]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke6Ring3" DisplayName="Trader at Iso-teien Spoke 6 Ring 3 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 6 Ring 3" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke6Ring3" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke6Ring3" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke6Ring3" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke6Ring3" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>[AI: Merchant at Iso-teien Spoke 6 Ring 3. Sells region-appropriate goods, shares rumors]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Trader at Iso-teien Spoke 6 Ring 3 responds warmly, mentions nearby locations: IsoteienSpoke6Ring2, IsoteienSpoke6Ring4]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Trader at Iso-teien Spoke 6 Ring 3 provides lore about Iso-teien Spoke 6 Ring 3]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke6Ring4" DisplayName="Traveler at Iso-teien Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 6 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 6 Ring 4. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 6 Ring 4 responds warmly, mentions nearby locations: IsoteienSpoke6Ring3, IsoteienSpoke6Ring5]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 6 Ring 4 provides lore about Iso-teien Spoke 6 Ring 4]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke6Ring5" DisplayName="Traveler at Iso-teien Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 6 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Iso-teien Spoke 6 Ring 5. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Iso-teien Spoke 6 Ring 5 responds warmly, mentions nearby locations: IsoteienSpoke6Ring4, IsoteienSpoke6Ring3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Iso-teien Spoke 6 Ring 5 provides lore about Iso-teien Spoke 6 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -2094,7 +1596,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Terukuni Daimyōjin-sha Spoke 1 Ring 1. Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 1 responds warmly, mentions nearby locations: TsurumarujōSpoke6Ring1, TsurumarujōSpoke5Ring1]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 1 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 1]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 2" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -2112,7 +1632,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -2125,47 +1645,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Terukuni Daimyōjin-sha Spoke 1 Ring 1. Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Terukuni Daimyōjin-sha Spoke 1 Ring 2. Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 1 responds warmly, mentions nearby locations: TsurumarujōSpoke6Ring1, TsurumarujōSpoke5Ring1]</Text>
+      <Text>[AI: Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 2 responds warmly, mentions nearby locations: TsurumarujōSpoke6Ring1, TsurumarujōSpoke6Ring2]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 1 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 1]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Terukuni Daimyōjin-sha Spoke 1 Ring 2. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 2 responds warmly, mentions nearby locations: TsurumarujōSpoke6Ring1, TsurumarujōSpoke6Ring2]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 2 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 2]</Text>
+      <Text>[AI: Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 2 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 2]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -2179,89 +1681,11 @@
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 3 responds warmly, mentions nearby locations: TsurumarujōSpoke1Ring2, TerukuniDaimyōjinshaSpoke1Ring2]</Text>
+      <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 3 responds warmly, mentions nearby locations: TerukuniDaimyōjinshaSpoke1Ring2, TsurumarujōSpoke6Ring2]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
       <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 3 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 3]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke1Ring4" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 4 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 4" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring4" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring4" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring4" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring4" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>[AI: Merchant at Terukuni Daimyōjin-sha Spoke 1 Ring 4. Sells region-appropriate goods, shares rumors]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 4 responds warmly, mentions nearby locations: TsurumarujōSpoke1Ring3, TerukuniDaimyōjinshaSpoke1Ring5]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 4 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 4]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring5" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Terukuni Daimyōjin-sha Spoke 1 Ring 5. Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 5 responds warmly, mentions nearby locations: TsurumarujōSpoke1Ring4, TerukuniDaimyōjinshaSpoke1Ring4]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 5 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -3101,7 +2525,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Guardian of Iso-teien responds warmly, mentions nearby locations: Isoteien, Isoteien1_to_Tsurumarujō1_0]</Text>
+      <Text>[AI: Guardian of Iso-teien responds warmly, mentions nearby locations: Isoteien, IsoteienSpoke2Ring1]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -3112,7 +2536,7 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Isoteien1_to_Tsurumarujō1_0" DisplayName="Trader at Waypoint between Iso-teien and Tsurumaru-jō (1) Dialogue" Description="Dialogue tree for Trader at Waypoint between Iso-teien and Tsurumaru-jō (1)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Isoteien1_to_Tsurumarujō1_1" DisplayName="Trader at Waypoint between Iso-teien and Tsurumaru-jō (2) Dialogue" Description="Dialogue tree for Trader at Waypoint between Iso-teien and Tsurumaru-jō (2)" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -3130,7 +2554,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_0" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -3143,47 +2567,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_0" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_0" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_0" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Waypoint between Iso-teien and Tsurumaru-jō (1). Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Waypoint between Iso-teien and Tsurumaru-jō (2). Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Waypoint between Iso-teien and Tsurumaru-jō (1) responds warmly, mentions nearby locations: Tsurumarujō1_to_Isoteien1_5, IsoteienSpoke5Ring1]</Text>
+      <Text>[AI: Trader at Waypoint between Iso-teien and Tsurumaru-jō (2) responds warmly, mentions nearby locations: Tsurumarujō1_to_Isoteien1_4, IsoteienSpoke5Ring2]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Waypoint between Iso-teien and Tsurumaru-jō (1) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (1)]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_1" DisplayName="Traveler at Waypoint between Iso-teien and Tsurumaru-jō (2) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Iso-teien and Tsurumaru-jō (2)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Waypoint between Iso-teien and Tsurumaru-jō (2). Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Waypoint between Iso-teien and Tsurumaru-jō (2) responds warmly, mentions nearby locations: Tsurumarujō1_to_Isoteien1_4, IsoteienSpoke5Ring2]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Waypoint between Iso-teien and Tsurumaru-jō (2) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (2)]</Text>
+      <Text>[AI: Trader at Waypoint between Iso-teien and Tsurumaru-jō (2) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (2)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -3208,7 +2614,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Isoteien1_to_Tsurumarujō1_3" DisplayName="Trader at Waypoint between Iso-teien and Tsurumaru-jō (4) Dialogue" Description="Dialogue tree for Trader at Waypoint between Iso-teien and Tsurumaru-jō (4)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_3" DisplayName="Traveler at Waypoint between Iso-teien and Tsurumaru-jō (4) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Iso-teien and Tsurumaru-jō (4)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Iso-teien and Tsurumaru-jō (4). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Iso-teien and Tsurumaru-jō (4) responds warmly, mentions nearby locations: Tsurumarujō1_to_Isoteien1_2, TsurumarujōSpoke2Ring3]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Iso-teien and Tsurumaru-jō (4) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (4)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Isoteien1_to_Tsurumarujō1_4" DisplayName="Trader at Waypoint between Iso-teien and Tsurumaru-jō (5) Dialogue" Description="Dialogue tree for Trader at Waypoint between Iso-teien and Tsurumaru-jō (5)" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -3226,7 +2650,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -3239,47 +2663,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Waypoint between Iso-teien and Tsurumaru-jō (4). Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Waypoint between Iso-teien and Tsurumaru-jō (5). Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Waypoint between Iso-teien and Tsurumaru-jō (4) responds warmly, mentions nearby locations: Tsurumarujō1_to_Isoteien1_2, TsurumarujōSpoke2Ring3]</Text>
+      <Text>[AI: Trader at Waypoint between Iso-teien and Tsurumaru-jō (5) responds warmly, mentions nearby locations: Tsurumarujō1_to_Isoteien1_1, TsurumarujōSpoke2Ring2]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Waypoint between Iso-teien and Tsurumaru-jō (4) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (4)]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_4" DisplayName="Traveler at Waypoint between Iso-teien and Tsurumaru-jō (5) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Iso-teien and Tsurumaru-jō (5)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Waypoint between Iso-teien and Tsurumaru-jō (5). Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Waypoint between Iso-teien and Tsurumaru-jō (5) responds warmly, mentions nearby locations: Tsurumarujō1_to_Isoteien1_1, TsurumarujōSpoke2Ring2]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Waypoint between Iso-teien and Tsurumaru-jō (5) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (5)]</Text>
+      <Text>[AI: Trader at Waypoint between Iso-teien and Tsurumaru-jō (5) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (5)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -3362,60 +2768,18 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Trader at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) Dialogue" Description="Dialogue tree for Trader at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" />
-    </Node>
+  <DialogueTree RefName="DIALOGUE_NPC_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Traveler at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1). Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Traveler resting at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1). Provides lore and directions]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) responds warmly, mentions nearby locations: TerukuniDaimyōjinsha1_to_Tsurumarujō1_0, TerukuniDaimyōjinshaSpoke2Ring1]</Text>
+      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) responds warmly, mentions nearby locations: TerukuniDaimyōjinsha1_to_Tsurumarujō1_0, TerukuniDaimyōjinshaSpoke2Ring1]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) provides lore about Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)]</Text>
+      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) provides lore about Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -3480,18 +2844,60 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Traveler at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Trader at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1) Dialogue" Description="Dialogue tree for Trader at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>[AI: Merchant shows their wares]</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" />
+    </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1). Provides lore and directions]</Text>
+      <Text>[AI: Merchant at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1). Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Traveler at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1) responds warmly, mentions nearby locations: Tsurumarujō1_to_TerukuniDaimyōjinsha1_0, TerukuniDaimyōjinshaSpoke2Ring1]</Text>
+      <Text>[AI: Trader at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1) responds warmly, mentions nearby locations: Tsurumarujō1_to_TerukuniDaimyōjinsha1_0, TerukuniDaimyōjinshaSpoke2Ring1]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Traveler at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1) provides lore about Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)]</Text>
+      <Text>[AI: Trader at Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1) provides lore about Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -3516,7 +2922,25 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Tsurumarujō1_to_Isoteien1_1" DisplayName="Trader at Waypoint between Tsurumaru-jō and Iso-teien (2) Dialogue" Description="Dialogue tree for Trader at Waypoint between Tsurumaru-jō and Iso-teien (2)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_Tsurumarujō1_to_Isoteien1_1" DisplayName="Traveler at Waypoint between Tsurumaru-jō and Iso-teien (2) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Tsurumaru-jō and Iso-teien (2)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>[AI: Traveler resting at Waypoint between Tsurumaru-jō and Iso-teien (2). Provides lore and directions]</Text>
+      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
+      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Iso-teien (2) responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_4, TsurumarujōSpoke2Ring2]</Text>
+      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Iso-teien (2) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (2)]</Text>
+      <Choice Text="[AI: Thank them]" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>[AI: Farewell message]</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Tsurumarujō1_to_Isoteien1_2" DisplayName="Trader at Waypoint between Tsurumaru-jō and Iso-teien (3) Dialogue" Description="Dialogue tree for Trader at Waypoint between Tsurumaru-jō and Iso-teien (3)" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -3534,7 +2958,7 @@
       <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_2" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
@@ -3547,47 +2971,29 @@
       <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_2" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_2" />
     </Node>
     <Node NodeId="open_trade">
       <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_2" />
     </Node>
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Waypoint between Tsurumaru-jō and Iso-teien (2). Sells region-appropriate goods, shares rumors]</Text>
+      <Text>[AI: Merchant at Waypoint between Tsurumaru-jō and Iso-teien (3). Sells region-appropriate goods, shares rumors]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Trader at Waypoint between Tsurumaru-jō and Iso-teien (2) responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_4, TsurumarujōSpoke2Ring2]</Text>
+      <Text>[AI: Trader at Waypoint between Tsurumaru-jō and Iso-teien (3) responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_3, TsurumarujōSpoke2Ring3]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Trader at Waypoint between Tsurumaru-jō and Iso-teien (2) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (2)]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Tsurumarujō1_to_Isoteien1_2" DisplayName="Traveler at Waypoint between Tsurumaru-jō and Iso-teien (3) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Tsurumaru-jō and Iso-teien (3)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Waypoint between Tsurumaru-jō and Iso-teien (3). Provides lore and directions]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Iso-teien (3) responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_3, TsurumarujōSpoke2Ring3]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Iso-teien (3) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (3)]</Text>
+      <Text>[AI: Trader at Waypoint between Tsurumaru-jō and Iso-teien (3) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (3)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -3612,78 +3018,18 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Tsurumarujō1_to_Isoteien1_4" DisplayName="Trader at Waypoint between Tsurumaru-jō and Iso-teien (5) Dialogue" Description="Dialogue tree for Trader at Waypoint between Tsurumaru-jō and Iso-teien (5)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>[AI: Merchant welcomes customer and mentions their wares]</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>[AI: Merchant considers the request based on WillingToBargain trait]</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>[AI: Merchant impressed by negotiation skill, agrees to 30% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_4" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>[AI: Merchant insulted by lowball offer, becomes unfriendly]</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>[AI: Merchant agrees to reasonable 15% discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_4" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>[AI: Merchant can only offer small 5% courtesy discount]</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_4" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>[AI: Merchant shows their wares]</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Tsurumarujō1_to_Isoteien1_4" />
-    </Node>
+  <DialogueTree RefName="DIALOGUE_NPC_Tsurumarujō1_to_Isoteien1_4" DisplayName="Traveler at Waypoint between Tsurumaru-jō and Iso-teien (5) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Tsurumaru-jō and Iso-teien (5)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Merchant at Waypoint between Tsurumaru-jō and Iso-teien (5). Sells region-appropriate goods, shares rumors]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Trader at Waypoint between Tsurumaru-jō and Iso-teien (5) responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_1, IsoteienSpoke5Ring2]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Trader at Waypoint between Tsurumaru-jō and Iso-teien (5) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (5)]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Tsurumarujō1_to_Isoteien1_5" DisplayName="Traveler at Waypoint between Tsurumaru-jō and Iso-teien (6) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Tsurumaru-jō and Iso-teien (6)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Traveler resting at Waypoint between Tsurumaru-jō and Iso-teien (6). Provides lore and directions]</Text>
+      <Text>[AI: Traveler resting at Waypoint between Tsurumaru-jō and Iso-teien (5). Provides lore and directions]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Iso-teien (6) responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_0, IsoteienSpoke5Ring1]</Text>
+      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Iso-teien (5) responds warmly, mentions nearby locations: Isoteien1_to_Tsurumarujō1_1, IsoteienSpoke5Ring2]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Iso-teien (6) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (6)]</Text>
+      <Text>[AI: Traveler at Waypoint between Tsurumaru-jō and Iso-teien (5) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (5)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -3708,378 +3054,306 @@
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring1_1" DisplayName="Elemental near Tsurumaru-jō Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Elemental near Tsurumaru-jō Spoke 1 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring1_1" DisplayName="Wild Beast near Tsurumaru-jō Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Wild Beast near Tsurumaru-jō Spoke 1 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile elemental encountered near Tsurumaru-jō Spoke 1 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile wild beast encountered near Tsurumaru-jō Spoke 1 Ring 1. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Elemental near Tsurumaru-jō Spoke 1 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Wild Beast near Tsurumaru-jō Spoke 1 Ring 1 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Elemental near Tsurumaru-jō Spoke 1 Ring 1 provides lore about Tsurumaru-jō Spoke 1 Ring 1]</Text>
+      <Text>[AI: Wild Beast near Tsurumaru-jō Spoke 1 Ring 1 provides lore about Tsurumaru-jō Spoke 1 Ring 1]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring1_2" DisplayName="Undead near Tsurumaru-jō Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Undead near Tsurumaru-jō Spoke 2 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring5_2" DisplayName="Elemental near Tsurumaru-jō Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Elemental near Tsurumaru-jō Spoke 2 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile undead encountered near Tsurumaru-jō Spoke 2 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile elemental encountered near Tsurumaru-jō Spoke 2 Ring 5. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Undead near Tsurumaru-jō Spoke 2 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Elemental near Tsurumaru-jō Spoke 2 Ring 5 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Undead near Tsurumaru-jō Spoke 2 Ring 1 provides lore about Tsurumaru-jō Spoke 2 Ring 1]</Text>
+      <Text>[AI: Elemental near Tsurumaru-jō Spoke 2 Ring 5 provides lore about Tsurumaru-jō Spoke 2 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring1_3" DisplayName="Wild Beast near Tsurumaru-jō Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Wild Beast near Tsurumaru-jō Spoke 3 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring5_3" DisplayName="Undead near Tsurumaru-jō Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Undead near Tsurumaru-jō Spoke 3 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile wild beast encountered near Tsurumaru-jō Spoke 3 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile undead encountered near Tsurumaru-jō Spoke 3 Ring 5. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Wild Beast near Tsurumaru-jō Spoke 3 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Undead near Tsurumaru-jō Spoke 3 Ring 5 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Wild Beast near Tsurumaru-jō Spoke 3 Ring 1 provides lore about Tsurumaru-jō Spoke 3 Ring 1]</Text>
+      <Text>[AI: Undead near Tsurumaru-jō Spoke 3 Ring 5 provides lore about Tsurumaru-jō Spoke 3 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring1_4" DisplayName="Elemental near Tsurumaru-jō Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Elemental near Tsurumaru-jō Spoke 4 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring5_4" DisplayName="Elemental near Tsurumaru-jō Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Elemental near Tsurumaru-jō Spoke 4 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile elemental encountered near Tsurumaru-jō Spoke 4 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile elemental encountered near Tsurumaru-jō Spoke 4 Ring 5. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Elemental near Tsurumaru-jō Spoke 4 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Elemental near Tsurumaru-jō Spoke 4 Ring 5 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Elemental near Tsurumaru-jō Spoke 4 Ring 1 provides lore about Tsurumaru-jō Spoke 4 Ring 1]</Text>
+      <Text>[AI: Elemental near Tsurumaru-jō Spoke 4 Ring 5 provides lore about Tsurumaru-jō Spoke 4 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring1_5" DisplayName="Bandit near Tsurumaru-jō Spoke 5 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Tsurumaru-jō Spoke 5 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring5_5" DisplayName="Wild Beast near Tsurumaru-jō Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Tsurumaru-jō Spoke 5 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Tsurumaru-jō Spoke 5 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile wild beast encountered near Tsurumaru-jō Spoke 5 Ring 5. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Bandit near Tsurumaru-jō Spoke 5 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Wild Beast near Tsurumaru-jō Spoke 5 Ring 5 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Bandit near Tsurumaru-jō Spoke 5 Ring 1 provides lore about Tsurumaru-jō Spoke 5 Ring 1]</Text>
+      <Text>[AI: Wild Beast near Tsurumaru-jō Spoke 5 Ring 5 provides lore about Tsurumaru-jō Spoke 5 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring1_6" DisplayName="Elemental near Tsurumaru-jō Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Elemental near Tsurumaru-jō Spoke 6 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring5_6" DisplayName="Bandit near Tsurumaru-jō Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Bandit near Tsurumaru-jō Spoke 6 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile elemental encountered near Tsurumaru-jō Spoke 6 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile bandit encountered near Tsurumaru-jō Spoke 6 Ring 5. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Elemental near Tsurumaru-jō Spoke 6 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Bandit near Tsurumaru-jō Spoke 6 Ring 5 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Elemental near Tsurumaru-jō Spoke 6 Ring 1 provides lore about Tsurumaru-jō Spoke 6 Ring 1]</Text>
+      <Text>[AI: Bandit near Tsurumaru-jō Spoke 6 Ring 5 provides lore about Tsurumaru-jō Spoke 6 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke1Ring1_7" DisplayName="Bandit near Iso-teien Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Iso-teien Spoke 1 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke2Ring5_7" DisplayName="Wild Beast near Iso-teien Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Iso-teien Spoke 2 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Iso-teien Spoke 1 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile wild beast encountered near Iso-teien Spoke 2 Ring 5. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Bandit near Iso-teien Spoke 1 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Wild Beast near Iso-teien Spoke 2 Ring 5 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Bandit near Iso-teien Spoke 1 Ring 1 provides lore about Iso-teien Spoke 1 Ring 1]</Text>
+      <Text>[AI: Wild Beast near Iso-teien Spoke 2 Ring 5 provides lore about Iso-teien Spoke 2 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke2Ring1_8" DisplayName="Bandit near Iso-teien Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Iso-teien Spoke 2 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke3Ring5_8" DisplayName="Elemental near Iso-teien Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Elemental near Iso-teien Spoke 3 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Iso-teien Spoke 2 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile elemental encountered near Iso-teien Spoke 3 Ring 5. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Bandit near Iso-teien Spoke 2 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Elemental near Iso-teien Spoke 3 Ring 5 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Bandit near Iso-teien Spoke 2 Ring 1 provides lore about Iso-teien Spoke 2 Ring 1]</Text>
+      <Text>[AI: Elemental near Iso-teien Spoke 3 Ring 5 provides lore about Iso-teien Spoke 3 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke3Ring1_9" DisplayName="Undead near Iso-teien Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Undead near Iso-teien Spoke 3 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke4Ring5_9" DisplayName="Bandit near Iso-teien Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Bandit near Iso-teien Spoke 4 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile undead encountered near Iso-teien Spoke 3 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile bandit encountered near Iso-teien Spoke 4 Ring 5. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Undead near Iso-teien Spoke 3 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Bandit near Iso-teien Spoke 4 Ring 5 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Undead near Iso-teien Spoke 3 Ring 1 provides lore about Iso-teien Spoke 3 Ring 1]</Text>
+      <Text>[AI: Bandit near Iso-teien Spoke 4 Ring 5 provides lore about Iso-teien Spoke 4 Ring 5]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke4Ring1_10" DisplayName="Bandit near Iso-teien Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Iso-teien Spoke 4 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring2_10" DisplayName="Undead near Terukuni Daimyōjin-sha Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Undead near Terukuni Daimyōjin-sha Spoke 1 Ring 2" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Iso-teien Spoke 4 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile undead encountered near Terukuni Daimyōjin-sha Spoke 1 Ring 2. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Bandit near Iso-teien Spoke 4 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Undead near Terukuni Daimyōjin-sha Spoke 1 Ring 2 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Bandit near Iso-teien Spoke 4 Ring 1 provides lore about Iso-teien Spoke 4 Ring 1]</Text>
+      <Text>[AI: Undead near Terukuni Daimyōjin-sha Spoke 1 Ring 2 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 2]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke5Ring1_11" DisplayName="Bandit near Iso-teien Spoke 5 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Iso-teien Spoke 5 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke2Ring4_11" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 2 Ring 4 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 2 Ring 4" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Iso-teien Spoke 5 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile elemental encountered near Terukuni Daimyōjin-sha Spoke 2 Ring 4. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Bandit near Iso-teien Spoke 5 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 2 Ring 4 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Bandit near Iso-teien Spoke 5 Ring 1 provides lore about Iso-teien Spoke 5 Ring 1]</Text>
+      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 2 Ring 4 provides lore about Terukuni Daimyōjin-sha Spoke 2 Ring 4]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke6Ring1_12" DisplayName="Wild Beast near Iso-teien Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Wild Beast near Iso-teien Spoke 6 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke3Ring4_12" DisplayName="Undead near Terukuni Daimyōjin-sha Spoke 3 Ring 4 Dialogue" Description="Dialogue tree for Undead near Terukuni Daimyōjin-sha Spoke 3 Ring 4" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile wild beast encountered near Iso-teien Spoke 6 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile undead encountered near Terukuni Daimyōjin-sha Spoke 3 Ring 4. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Wild Beast near Iso-teien Spoke 6 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Undead near Terukuni Daimyōjin-sha Spoke 3 Ring 4 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Wild Beast near Iso-teien Spoke 6 Ring 1 provides lore about Iso-teien Spoke 6 Ring 1]</Text>
+      <Text>[AI: Undead near Terukuni Daimyōjin-sha Spoke 3 Ring 4 provides lore about Terukuni Daimyōjin-sha Spoke 3 Ring 4]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring1_13" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 1 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke4Ring4_13" DisplayName="Wild Beast near Terukuni Daimyōjin-sha Spoke 4 Ring 4 Dialogue" Description="Dialogue tree for Wild Beast near Terukuni Daimyōjin-sha Spoke 4 Ring 4" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile elemental encountered near Terukuni Daimyōjin-sha Spoke 1 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile wild beast encountered near Terukuni Daimyōjin-sha Spoke 4 Ring 4. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 1 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Wild Beast near Terukuni Daimyōjin-sha Spoke 4 Ring 4 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 1 Ring 1 provides lore about Terukuni Daimyōjin-sha Spoke 1 Ring 1]</Text>
+      <Text>[AI: Wild Beast near Terukuni Daimyōjin-sha Spoke 4 Ring 4 provides lore about Terukuni Daimyōjin-sha Spoke 4 Ring 4]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke2Ring1_14" DisplayName="Bandit near Terukuni Daimyōjin-sha Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Terukuni Daimyōjin-sha Spoke 2 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring4_14" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 4 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 4" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Terukuni Daimyōjin-sha Spoke 2 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile elemental encountered near Terukuni Daimyōjin-sha Spoke 5 Ring 4. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Bandit near Terukuni Daimyōjin-sha Spoke 2 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 4 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Bandit near Terukuni Daimyōjin-sha Spoke 2 Ring 1 provides lore about Terukuni Daimyōjin-sha Spoke 2 Ring 1]</Text>
+      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 4 provides lore about Terukuni Daimyōjin-sha Spoke 5 Ring 4]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke3Ring1_15" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 3 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring4_15" DisplayName="Bandit near Terukuni Daimyōjin-sha Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Bandit near Terukuni Daimyōjin-sha Spoke 6 Ring 4" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile elemental encountered near Terukuni Daimyōjin-sha Spoke 3 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile bandit encountered near Terukuni Daimyōjin-sha Spoke 6 Ring 4. Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 3 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Bandit near Terukuni Daimyōjin-sha Spoke 6 Ring 4 responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 3 Ring 1 provides lore about Terukuni Daimyōjin-sha Spoke 3 Ring 1]</Text>
+      <Text>[AI: Bandit near Terukuni Daimyōjin-sha Spoke 6 Ring 4 provides lore about Terukuni Daimyōjin-sha Spoke 6 Ring 4]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke4Ring1_16" DisplayName="Bandit near Terukuni Daimyōjin-sha Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Terukuni Daimyōjin-sha Spoke 4 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_4_16" DisplayName="Elemental near Waypoint between Iso-teien and Tsurumaru-jō (5) Dialogue" Description="Dialogue tree for Elemental near Waypoint between Iso-teien and Tsurumaru-jō (5)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Terukuni Daimyōjin-sha Spoke 4 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile elemental encountered near Waypoint between Iso-teien and Tsurumaru-jō (5). Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Bandit near Terukuni Daimyōjin-sha Spoke 4 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Elemental near Waypoint between Iso-teien and Tsurumaru-jō (5) responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Bandit near Terukuni Daimyōjin-sha Spoke 4 Ring 1 provides lore about Terukuni Daimyōjin-sha Spoke 4 Ring 1]</Text>
+      <Text>[AI: Elemental near Waypoint between Iso-teien and Tsurumaru-jō (5) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (5)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>[AI: Farewell message]</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring1_17" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 1 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_Tsurumarujō1_to_Isoteien1_1_17" DisplayName="Bandit near Waypoint between Tsurumaru-jō and Iso-teien (2) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Tsurumaru-jō and Iso-teien (2)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>[AI: Hostile elemental encountered near Terukuni Daimyōjin-sha Spoke 5 Ring 1. Attacks on sight]</Text>
+      <Text>[AI: Hostile bandit encountered near Waypoint between Tsurumaru-jō and Iso-teien (2). Attacks on sight]</Text>
       <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
       <Choice Text="[AI: Ask for information]" NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 1 responds warmly, mentions nearby locations: ]</Text>
+      <Text>[AI: Bandit near Waypoint between Tsurumaru-jō and Iso-teien (2) responds warmly, mentions nearby locations: ]</Text>
       <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>[AI: Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 1 provides lore about Terukuni Daimyōjin-sha Spoke 5 Ring 1]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring1_18" DisplayName="Undead near Terukuni Daimyōjin-sha Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Undead near Terukuni Daimyōjin-sha Spoke 6 Ring 1" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Hostile undead encountered near Terukuni Daimyōjin-sha Spoke 6 Ring 1. Attacks on sight]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Undead near Terukuni Daimyōjin-sha Spoke 6 Ring 1 responds warmly, mentions nearby locations: ]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Undead near Terukuni Daimyōjin-sha Spoke 6 Ring 1 provides lore about Terukuni Daimyōjin-sha Spoke 6 Ring 1]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0_19" DisplayName="Undead near Waypoint between Iso-teien and Tsurumaru-jō (1) Dialogue" Description="Dialogue tree for Undead near Waypoint between Iso-teien and Tsurumaru-jō (1)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Hostile undead encountered near Waypoint between Iso-teien and Tsurumaru-jō (1). Attacks on sight]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Undead near Waypoint between Iso-teien and Tsurumaru-jō (1) responds warmly, mentions nearby locations: ]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Undead near Waypoint between Iso-teien and Tsurumaru-jō (1) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (1)]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_5_20" DisplayName="Wild Beast near Waypoint between Iso-teien and Tsurumaru-jō (6) Dialogue" Description="Dialogue tree for Wild Beast near Waypoint between Iso-teien and Tsurumaru-jō (6)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Hostile wild beast encountered near Waypoint between Iso-teien and Tsurumaru-jō (6). Attacks on sight]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Wild Beast near Waypoint between Iso-teien and Tsurumaru-jō (6) responds warmly, mentions nearby locations: ]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Wild Beast near Waypoint between Iso-teien and Tsurumaru-jō (6) provides lore about Waypoint between Iso-teien and Tsurumaru-jō (6)]</Text>
-      <Choice Text="[AI: Thank them]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>[AI: Farewell message]</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_Tsurumarujō1_to_Isoteien1_2_21" DisplayName="Bandit near Waypoint between Tsurumaru-jō and Iso-teien (3) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Tsurumaru-jō and Iso-teien (3)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>[AI: Hostile bandit encountered near Waypoint between Tsurumaru-jō and Iso-teien (3). Attacks on sight]</Text>
-      <Choice Text="[AI: Generate friendly response]" NextNodeId="friendly" />
-      <Choice Text="[AI: Ask for information]" NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>[AI: Bandit near Waypoint between Tsurumaru-jō and Iso-teien (3) responds warmly, mentions nearby locations: ]</Text>
-      <Choice Text="[AI: Continue conversation]" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>[AI: Bandit near Waypoint between Tsurumaru-jō and Iso-teien (3) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (3)]</Text>
+      <Text>[AI: Bandit near Waypoint between Tsurumaru-jō and Iso-teien (2) provides lore about Waypoint between Tsurumaru-jō and Iso-teien (2)]</Text>
       <Choice Text="[AI: Thank them]" NextNodeId="end" />
     </Node>
     <Node NodeId="end">

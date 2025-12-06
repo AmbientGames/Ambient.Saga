@@ -21,7 +21,7 @@ public static class WorldAssetLoader
     public static async Task<World> LoadWorldByConfigurationAsync(string dataDirectory, string definitionDirectory, string configurationRefName)
     {
         // Load available configurations
-        var configurations = await LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory);
+        var configurations = await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory);
         
         // Find the requested configuration
         var worldConfiguration = configurations.FirstOrDefault(c => c.RefName == configurationRefName);
@@ -49,7 +49,6 @@ public static class WorldAssetLoader
         await LoadSimulationAsync(templateDirectory, definitionDirectory, world);
         await LoadPresentationAsync(templateDirectory, definitionDirectory, world);
 
-        LoadWorldConfigurationItem(world);
         world.IsProcedural = world.WorldConfiguration.ProceduralSettings != null;
 
         // Load heightmap metadata first if needed (required for calculations)
@@ -113,26 +112,6 @@ public static class WorldAssetLoader
         return world;
     }
 
-    private static void LoadWorldConfigurationItem(World world)
-    {
-        // Handle based on actual runtime type (no enum needed)
-        switch (world.WorldConfiguration.Item)
-        {
-            case ProceduralSettings proceduralSettings:
-                world.WorldConfiguration.ProceduralSettings = proceduralSettings;
-                break;
-
-            case HeightMapSettings mapSettings:
-                world.WorldConfiguration.HeightMapSettings = mapSettings;
-                break;
-
-            default:
-                Debug.WriteLine("world.WorldConfiguration defaulting to procedural");
-                world.WorldConfiguration.ProceduralSettings = new ProceduralSettings();
-                break;
-        }
-    }
-
     //private static void ConvertSagasToAvatarCoordinates(World world)
     //{
     //    if (world.Gameplay.Sagas != null)
@@ -158,12 +137,6 @@ public static class WorldAssetLoader
     private static async Task LoadPresentationAsync(string dataDirectory, string definitionDirectory, World world)
     {
         //await PresentationComponentLoader.LoadAsync(dataDirectory, definitionDirectory, world);
-    }
-
-    public static async Task<WorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string definitionDirectory)
-    {
-        var xsdFilePath = Path.Combine(definitionDirectory, "WorldConfiguration.xsd");
-        return (await XmlLoader.LoadFromXmlAsync<WorldConfigurations>(Path.Combine(dataDirectory, "WorldConfigurations.xml"), xsdFilePath)).WorldConfiguration;
     }
 
     public static async Task<TemplateMetadata> LoadMetadataAsync(string dataDirectory, string definitionDirectory)

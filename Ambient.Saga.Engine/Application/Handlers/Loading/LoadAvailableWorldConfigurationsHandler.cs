@@ -17,7 +17,7 @@ internal sealed class LoadAvailableWorldConfigurationsHandler : IRequestHandler<
     public async Task<WorldConfiguration[]> Handle(LoadAvailableWorldConfigurationsQuery query, CancellationToken ct)
     {
         // Delegate to existing infrastructure loader
-        return await WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(
+        return await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(
             query.DataDirectory,
             query.DefinitionDirectory);
     }

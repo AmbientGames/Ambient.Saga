@@ -265,47 +265,12 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke5Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 5 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke5Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 5 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke5Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 5 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke5Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 5 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
   <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
   <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -345,97 +310,12 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke2Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 2 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke2Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 2 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke2Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 2 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke2Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 2 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke3Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 3 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke3Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 3 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke3Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 3 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke3Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 3 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke3Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 3 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke4Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 4 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke4Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 4 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke4Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 4 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke4Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 4 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke4Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 4 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
   <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
   <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kō Ferry-ba" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -495,102 +375,7 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke2Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 2 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke2Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 2 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke2Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 2 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke2Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 2 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke2Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 2 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke3Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 3 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke3Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 3 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke3Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 3 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke3Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 3 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke3Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 3 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke4Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 4 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke4Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 4 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke4Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 4 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke4Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 4 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke4Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 4 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
   <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke5Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke5Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke5Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke5Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke5Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -611,11 +396,6 @@
     </Interactable>
   </SagaFeature>
   <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke6Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke6Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -650,102 +430,7 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke2Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 2 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke2Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 2 Ring 2" Description="Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke2Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 2 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke2Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 2 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke2Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 2 Ring 5" Description="Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke3Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 3 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke3Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 3 Ring 2" Description="Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke3Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 3 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke3Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 3 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke3Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 3 Ring 5" Description="Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke4Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 4 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke4Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 4 Ring 2" Description="Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke4Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 4 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke4Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 4 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke4Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 4 Ring 5" Description="Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
   <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke5Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke5Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 2" Description="Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke5Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke5Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke5Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 5" Description="Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -766,11 +451,6 @@
     </Interactable>
   </SagaFeature>
   <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 5" Description="Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark" SubType="Informational">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
