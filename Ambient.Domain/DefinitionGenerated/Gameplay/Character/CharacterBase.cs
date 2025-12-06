@@ -30,6 +30,10 @@ namespace Ambient.Domain {
         
         private ItemCollection capabilitiesField;
         
+        private BaseArchetypeType archetypeRefField;
+        
+        private bool archetypeRefFieldSpecified;
+        
         private string affinityRefField;
         
         private double xField;
@@ -71,6 +75,28 @@ namespace Ambient.Domain {
             }
             set {
                 this.capabilitiesField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public BaseArchetypeType ArchetypeRef {
+            get {
+                return this.archetypeRefField;
+            }
+            set {
+                this.archetypeRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool ArchetypeRefSpecified {
+            get {
+                return this.archetypeRefFieldSpecified;
+            }
+            set {
+                this.archetypeRefFieldSpecified = value;
             }
         }
         

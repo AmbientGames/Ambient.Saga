@@ -32,7 +32,7 @@ namespace Ambient.Domain {
         
         private PartyInventory partyField;
         
-        private string archetypeRefField;
+        private string archetypeRef1Field;
         
         private string activeAffinityRefField;
         
@@ -127,13 +127,13 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ArchetypeRef {
+        [System.Xml.Serialization.XmlAttributeAttribute("ArchetypeRef")]
+        public string ArchetypeRef1 {
             get {
-                return this.archetypeRefField;
+                return this.archetypeRef1Field;
             }
             set {
-                this.archetypeRefField = value;
+                this.archetypeRef1Field = value;
             }
         }
         

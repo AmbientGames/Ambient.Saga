@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+
+    <!-- ============================================================================
+         BASE ARCHETYPE TYPE
+
+         Canonical archetype identifiers that define a character's combat role and
+         mechanical biases. Each archetype has inherent stat tendencies and default
+         spell categories.
+
+         Archetypes:
+         - Warrior: Balanced melee fighter, good all-around stats
+         - Barbarian: High Strength, lower Defense, rage/berserk abilities
+         - Rogue: High Speed, lower Defense, stealth/precision attacks
+         - Ranger: Balanced ranged/melee, nature affinity
+         - Mage: High Magic, low Defense, elemental destruction
+         - Wizard: High Magic, arcane/buff/debuff specialist
+         - Cleric: High Magic + Defense, healing/holy magic
+         - Bard: Balanced stats, support/buff specialist
+         - Summoner: Magic-focused, conjuration abilities
+         ============================================================================ -->
+
+    <xs:simpleType name="BaseArchetypeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Warrior">
+                <xs:annotation>
+                    <xs:documentation>Balanced melee fighter with good all-around stats</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Barbarian">
+                <xs:annotation>
+                    <xs:documentation>High Strength, lower Defense, rage/berserk abilities</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Rogue">
+                <xs:annotation>
+                    <xs:documentation>High Speed, lower Defense, stealth/precision attacks</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Ranger">
+                <xs:annotation>
+                    <xs:documentation>Balanced ranged/melee hybrid with nature affinity</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Mage">
+                <xs:annotation>
+                    <xs:documentation>High Magic, low Defense, elemental destruction spells</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Wizard">
+                <xs:annotation>
+                    <xs:documentation>High Magic, arcane specialist with buff/debuff focus</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Cleric">
+                <xs:annotation>
+                    <xs:documentation>High Magic and Defense, healing and holy magic</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bard">
+                <xs:annotation>
+                    <xs:documentation>Balanced stats, support and buff specialist</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Summoner">
+                <xs:annotation>
+                    <xs:documentation>Magic-focused with conjuration and summoning abilities</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
