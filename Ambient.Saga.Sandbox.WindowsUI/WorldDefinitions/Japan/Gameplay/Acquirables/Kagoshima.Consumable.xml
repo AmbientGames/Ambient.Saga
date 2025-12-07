@@ -258,6 +258,9 @@
   <Consumable RefName="SmellingSalts" DisplayName="Sho no Shio" Description="Camphor salts for revival" WholesalePrice="20">
     <Effects Health="1" Stamina="0.4" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
+  <Consumable RefName="HerbBundle" DisplayName="Yakuso Taba" Description="A bundle of medicinal mountain herbs" WholesalePrice="12">
+    <Effects Health="0.1" Stamina="0.05" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
   <Consumable RefName="ManaGem" DisplayName="Reiseki" Description="A spirit stone" WholesalePrice="100">
     <Effects Health="1" Stamina="1" Mana="0.5" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>

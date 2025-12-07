@@ -20,6 +20,8 @@ public static class WorldValidationService
         ValidateQuestReferences(world, errors);
         ValidateAvatarQuestReferences(world, errors);
         ValidateFactionReferences(world, errors);
+        ValidateGameplayHeuristics(world, errors);
+        ValidateDataQuality(world, errors);
 
         if (errors.Count > 0)
         {
@@ -577,7 +579,152 @@ public static class WorldValidationService
                     }
                 }
             }
+
+            // Flow validation: check for unreachable and dead-end nodes
+            // Get additional entry points from BattleDialogue triggers in characters
+            var additionalEntryPoints = GetBattleDialogueEntryPoints(world, dialogueTree.RefName);
+            ValidateDialogueFlow(dialogueTree, treeContext, additionalEntryPoints, errors);
         }
+    }
+
+    /// <summary>
+    /// Get additional dialogue tree entry points from BattleDialogue triggers on characters.
+    /// Boss characters have BattleDialogue that references specific nodes as entry points
+    /// at different health thresholds (e.g., battle_opening, battle_berserk, battle_defeated).
+    /// </summary>
+    private static HashSet<string> GetBattleDialogueEntryPoints(World world, string dialogueTreeRef)
+    {
+        var entryPoints = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        if (world.Gameplay.Characters == null) return entryPoints;
+
+        foreach (var character in world.Gameplay.Characters)
+        {
+            if (character.BattleDialogue == null) continue;
+
+            foreach (var trigger in character.BattleDialogue)
+            {
+                // Check if this trigger references our dialogue tree
+                if (trigger.DialogueTreeRef == dialogueTreeRef && !string.IsNullOrEmpty(trigger.StartNodeId))
+                {
+                    entryPoints.Add(trigger.StartNodeId);
+                }
+            }
+        }
+
+        return entryPoints;
+    }
+
+    private static void ValidateDialogueFlow(DialogueTree dialogueTree, string treeContext, HashSet<string> additionalEntryPoints, List<string> errors)
+    {
+        if (dialogueTree.Node == null || dialogueTree.Node.Length == 0) return;
+        if (string.IsNullOrEmpty(dialogueTree.StartNodeId)) return;
+
+        // Build node lookup
+        var nodeMap = dialogueTree.Node.ToDictionary(n => n.NodeId, StringComparer.OrdinalIgnoreCase);
+
+        // Collect all entry points: StartNodeId + BattleDialogue triggers + conditional fallback nodes
+        var allEntryPoints = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { dialogueTree.StartNodeId };
+        foreach (var ep in additionalEntryPoints)
+        {
+            allEntryPoints.Add(ep);
+        }
+
+        // Also add conditional fallback nodes (nodes with "_fail" or "_success" suffix that are condition results)
+        // These are alternate paths from condition checks and are reachable via Condition evaluation
+        foreach (var node in dialogueTree.Node)
+        {
+            // Pattern: bargain_hard_check leads to bargain_hard_fail on failure
+            // We need to find if any node has a Condition that could branch to this node
+            if (node.NodeId.EndsWith("_fail", StringComparison.OrdinalIgnoreCase) ||
+                node.NodeId.EndsWith("_success", StringComparison.OrdinalIgnoreCase))
+            {
+                // Check if there's a corresponding _check node that has conditions
+                var baseName = node.NodeId.Replace("_fail", "_check").Replace("_success", "_check");
+                if (nodeMap.ContainsKey(baseName))
+                {
+                    // This is a conditional result node - mark the _check node as having a fallback
+                    // Actually, we need to mark THIS node as reachable from the _check node
+                    // For now, add it as an entry point since condition evaluation can reach it
+                    allEntryPoints.Add(node.NodeId);
+                }
+            }
+        }
+
+        // Find all reachable nodes from all entry points
+        var reachable = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var queue = new Queue<string>();
+
+        foreach (var entryPoint in allEntryPoints)
+        {
+            if (!reachable.Contains(entryPoint))
+            {
+                queue.Enqueue(entryPoint);
+                reachable.Add(entryPoint);
+            }
+        }
+
+        while (queue.Count > 0)
+        {
+            var nodeId = queue.Dequeue();
+            if (!nodeMap.TryGetValue(nodeId, out var node)) continue;
+
+            // Collect all target nodes
+            var targets = new List<string>();
+            if (!string.IsNullOrEmpty(node.NextNodeId))
+                targets.Add(node.NextNodeId);
+            if (node.Choice != null)
+                targets.AddRange(node.Choice.Where(c => !string.IsNullOrEmpty(c.NextNodeId)).Select(c => c.NextNodeId));
+
+            foreach (var target in targets.Where(t => !reachable.Contains(t)))
+            {
+                reachable.Add(target);
+                queue.Enqueue(target);
+            }
+        }
+
+        // Report unreachable nodes
+        foreach (var node in dialogueTree.Node)
+        {
+            if (!reachable.Contains(node.NodeId))
+            {
+                errors.Add($"{treeContext} Node '{node.NodeId}': Unreachable from any entry point");
+            }
+        }
+
+        // Check for dead-end nodes (no choices, no NextNodeId, no terminal action)
+        // BUT allow intentional terminal nodes:
+        // - Nodes named "end" or ending with "_end" are intentional conversation endings
+        // - BattleDialogue nodes (battle_*) that are entry points are allowed to be terminal
+        foreach (var node in dialogueTree.Node)
+        {
+            var hasChoices = node.Choice != null && node.Choice.Length > 0;
+            var hasNextNode = !string.IsNullOrEmpty(node.NextNodeId);
+            var hasTerminalAction = node.Action != null && node.Action.Any(IsTerminalAction);
+
+            if (!hasChoices && !hasNextNode && !hasTerminalAction)
+            {
+                // Check if this is an intentional terminal node
+                var isIntentionalTerminal =
+                    node.NodeId.Equals("end", StringComparison.OrdinalIgnoreCase) ||
+                    node.NodeId.EndsWith("_end", StringComparison.OrdinalIgnoreCase) ||
+                    // All battle_* dialogue nodes are intentional mid-battle interjections
+                    // They display text/trigger actions and then combat continues (no player choice needed)
+                    node.NodeId.StartsWith("battle_", StringComparison.OrdinalIgnoreCase);
+
+                if (!isIntentionalTerminal)
+                {
+                    errors.Add($"{treeContext} Node '{node.NodeId}': Dead-end node (no choices, no NextNodeId, no terminal action)");
+                }
+            }
+        }
+    }
+
+    private static bool IsTerminalAction(DialogueAction action)
+    {
+        return action.Type is DialogueActionType.StartCombat or DialogueActionType.StartBossBattle
+            or DialogueActionType.EndBattle or DialogueActionType.AcceptQuest
+            or DialogueActionType.CompleteQuest or DialogueActionType.OpenMerchantTrade;
     }
 
     private static void ValidateDialogueCondition(World world, List<string> errors, string context, DialogueCondition condition, string dialogueTreeRef, HashSet<string> validNodeIds)
@@ -1199,6 +1346,135 @@ public static class WorldValidationService
                     }
                 }
             }
+
+            // Validate quest structure and completability
+            ValidateQuestStructure(quest, questContext, errors);
+        }
+    }
+
+    private static void ValidateQuestStructure(Quest quest, string questContext, List<string> errors)
+    {
+        if (quest.Stages == null || quest.Stages.Stage == null || quest.Stages.Stage.Length == 0)
+        {
+            errors.Add($"{questContext}: Must have at least one Stage");
+            return;
+        }
+
+        // Build stage lookup
+        var stageMap = quest.Stages.Stage.ToDictionary(s => s.RefName, StringComparer.OrdinalIgnoreCase);
+        var stageRefs = new HashSet<string>(stageMap.Keys, StringComparer.OrdinalIgnoreCase);
+
+        // Validate StartStage exists
+        if (string.IsNullOrEmpty(quest.Stages.StartStage))
+        {
+            errors.Add($"{questContext}: StartStage is required");
+            return;
+        }
+
+        if (!stageRefs.Contains(quest.Stages.StartStage))
+        {
+            errors.Add($"{questContext}: StartStage '{quest.Stages.StartStage}' does not match any Stage.RefName");
+            return;
+        }
+
+        // Validate NextStage references
+        foreach (var stage in quest.Stages.Stage)
+        {
+            if (!string.IsNullOrEmpty(stage.NextStage) && !stageRefs.Contains(stage.NextStage))
+            {
+                errors.Add($"{questContext} Stage '{stage.RefName}': NextStage '{stage.NextStage}' does not match any Stage.RefName");
+            }
+
+            // Validate branch NextStage references
+            if (stage.Item is QuestStageBranches branches && branches.Branch != null)
+            {
+                foreach (var branch in branches.Branch)
+                {
+                    if (!string.IsNullOrEmpty(branch.NextStage) && !stageRefs.Contains(branch.NextStage))
+                    {
+                        errors.Add($"{questContext} Stage '{stage.RefName}' Branch '{branch.RefName}': NextStage '{branch.NextStage}' does not match any Stage.RefName");
+                    }
+                }
+            }
+        }
+
+        // Check quest completability: can we reach a terminal stage from StartStage?
+        var visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        var canComplete = CanReachTerminalStage(quest.Stages.StartStage, stageMap, visited);
+
+        if (!canComplete)
+        {
+            errors.Add($"{questContext}: Quest may not be completable (no terminal stage reachable from StartStage '{quest.Stages.StartStage}')");
+        }
+
+        // Check for unreachable stages
+        var reachable = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        FindReachableStages(quest.Stages.StartStage, stageMap, reachable);
+
+        foreach (var stage in quest.Stages.Stage)
+        {
+            if (!reachable.Contains(stage.RefName))
+            {
+                errors.Add($"{questContext} Stage '{stage.RefName}': Unreachable from StartStage '{quest.Stages.StartStage}'");
+            }
+        }
+    }
+
+    private static bool CanReachTerminalStage(string stageRef, Dictionary<string, QuestStage> stageMap, HashSet<string> visited)
+    {
+        if (string.IsNullOrEmpty(stageRef) || !stageMap.TryGetValue(stageRef, out var stage))
+            return false;
+
+        if (visited.Contains(stageRef))
+            return false; // Cycle detected
+
+        visited.Add(stageRef);
+
+        // Terminal stage: no NextStage and either no branches or all branches have no NextStage
+        var isTerminal = string.IsNullOrEmpty(stage.NextStage);
+        if (stage.Item is QuestStageBranches branches && branches.Branch != null)
+        {
+            // Check if any branch leads somewhere
+            foreach (var branch in branches.Branch)
+            {
+                if (!string.IsNullOrEmpty(branch.NextStage))
+                {
+                    isTerminal = false;
+                    if (CanReachTerminalStage(branch.NextStage, stageMap, new HashSet<string>(visited, StringComparer.OrdinalIgnoreCase)))
+                        return true;
+                }
+            }
+        }
+
+        if (isTerminal)
+            return true;
+
+        // Follow NextStage
+        return CanReachTerminalStage(stage.NextStage, stageMap, visited);
+    }
+
+    private static void FindReachableStages(string stageRef, Dictionary<string, QuestStage> stageMap, HashSet<string> reachable)
+    {
+        if (string.IsNullOrEmpty(stageRef) || !stageMap.TryGetValue(stageRef, out var stage))
+            return;
+
+        if (reachable.Contains(stageRef))
+            return;
+
+        reachable.Add(stageRef);
+
+        // Follow NextStage
+        if (!string.IsNullOrEmpty(stage.NextStage))
+            FindReachableStages(stage.NextStage, stageMap, reachable);
+
+        // Follow branch NextStages
+        if (stage.Item is QuestStageBranches branches && branches.Branch != null)
+        {
+            foreach (var branch in branches.Branch)
+            {
+                if (!string.IsNullOrEmpty(branch.NextStage))
+                    FindReachableStages(branch.NextStage, stageMap, reachable);
+            }
         }
     }
 
@@ -1232,6 +1508,223 @@ public static class WorldValidationService
                 }
             }
 
+        }
+    }
+
+    private static void ValidateGameplayHeuristics(World world, List<string> errors)
+    {
+        // Track where quest tokens are granted (for duplicate grant detection)
+        var tokenGrants = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+
+        // Check dialogue actions for token grants and StartCombat without SetCharacterState
+        if (world.Gameplay.DialogueTrees != null)
+        {
+            foreach (var dialogueTree in world.Gameplay.DialogueTrees)
+            {
+                if (dialogueTree.Node == null) continue;
+
+                foreach (var node in dialogueTree.Node)
+                {
+                    if (node.Action == null) continue;
+
+                    var nodeContext = $"DialogueTree '{dialogueTree.RefName}' Node '{node.NodeId}'";
+
+                    // Track token grants
+                    foreach (var action in node.Action)
+                    {
+                        if (action.Type == DialogueActionType.GiveQuestToken && !string.IsNullOrEmpty(action.RefName))
+                        {
+                            if (!tokenGrants.ContainsKey(action.RefName))
+                                tokenGrants[action.RefName] = new List<string>();
+                            tokenGrants[action.RefName].Add(nodeContext);
+                        }
+                    }
+
+                    // Check StartCombat without SetCharacterState Hostile
+                    var startCombatActions = node.Action
+                        .Where(a => a.Type == DialogueActionType.StartCombat && !string.IsNullOrEmpty(a.CharacterRef))
+                        .ToList();
+
+                    foreach (var combatAction in startCombatActions)
+                    {
+                        var charRef = combatAction.CharacterRef;
+
+                        // Check if there's a SetCharacterState for this character in the same node
+                        // Note: DialogueAction doesn't expose State attribute directly, so we just check
+                        // if SetCharacterState exists for this character (assuming it sets Hostile)
+                        var hasSetCharacterState = node.Action.Any(a =>
+                            a.Type == DialogueActionType.SetCharacterState &&
+                            a.CharacterRef == charRef);
+
+                        if (!hasSetCharacterState)
+                        {
+                            // Check if character is already hostile (Hostile trait = 1)
+                            var isAlreadyHostile = false;
+                            if (world.CharactersLookup.TryGetValue(charRef, out var character))
+                            {
+                                var hostileTrait = character.Traits?.FirstOrDefault(t => t.Name == CharacterTraitType.Hostile);
+                                isAlreadyHostile = hostileTrait?.Value == 1;
+                            }
+
+                            if (!isAlreadyHostile)
+                            {
+                                errors.Add($"{nodeContext}: StartCombat with '{charRef}' without SetCharacterState (and character not already Hostile)");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Check character loot for token grants
+        if (world.Gameplay.Characters != null)
+        {
+            foreach (var character in world.Gameplay.Characters)
+            {
+                if (character.Interactable?.Loot?.QuestTokens != null)
+                {
+                    foreach (var tokenEntry in character.Interactable.Loot.QuestTokens)
+                    {
+                        if (!string.IsNullOrEmpty(tokenEntry.QuestTokenRef))
+                        {
+                            if (!tokenGrants.ContainsKey(tokenEntry.QuestTokenRef))
+                                tokenGrants[tokenEntry.QuestTokenRef] = new List<string>();
+                            tokenGrants[tokenEntry.QuestTokenRef].Add($"Character '{character.RefName}' Loot");
+                        }
+                    }
+                }
+
+                if (character.Interactable?.GivesQuestTokenRef != null)
+                {
+                    foreach (var tokenRef in character.Interactable.GivesQuestTokenRef)
+                    {
+                        if (!string.IsNullOrEmpty(tokenRef))
+                        {
+                            if (!tokenGrants.ContainsKey(tokenRef))
+                                tokenGrants[tokenRef] = new List<string>();
+                            tokenGrants[tokenRef].Add($"Character '{character.RefName}' GivesQuestTokenRef");
+                        }
+                    }
+                }
+            }
+        }
+
+        // Check saga features for token grants
+        if (world.Gameplay.SagaFeatures != null)
+        {
+            foreach (var feature in world.Gameplay.SagaFeatures)
+            {
+                if (feature.Interactable?.GivesQuestTokenRef != null)
+                {
+                    foreach (var tokenRef in feature.Interactable.GivesQuestTokenRef)
+                    {
+                        if (!string.IsNullOrEmpty(tokenRef))
+                        {
+                            if (!tokenGrants.ContainsKey(tokenRef))
+                                tokenGrants[tokenRef] = new List<string>();
+                            tokenGrants[tokenRef].Add($"SagaFeature '{feature.RefName}'");
+                        }
+                    }
+                }
+            }
+        }
+
+        // Report tokens granted in multiple places (informational, not error)
+        // This is useful to know but may be intentional (multiple ways to get a token)
+        foreach (var (token, sources) in tokenGrants)
+        {
+            if (sources.Count > 1)
+            {
+                // Note: This could be a warning rather than error if intentional
+                // For now, just log as informational - uncomment to make it an error
+                // errors.Add($"QuestToken '{token}' granted in multiple locations: {string.Join(", ", sources)}");
+            }
+        }
+    }
+
+    private static void ValidateDataQuality(World world, List<string> errors)
+    {
+        // Validate character stats are in reasonable ranges
+        if (world.Gameplay.Characters != null)
+        {
+            foreach (var character in world.Gameplay.Characters)
+            {
+                if (character.Stats == null) continue;
+
+                var context = $"Character '{character.RefName}'";
+
+                // Determine max stat value based on character type
+                // Boss characters and characters with BossFight trait can have boosted stats
+                var isBoss = character.Traits?.Any(t => t.Name == CharacterTraitType.BossFight && t.Value == 1) == true;
+                var maxStat = isBoss ? 2.0f : 1.0f; // Bosses can have up to 2x normal stats
+
+                ValidateStatRange(character.Stats.Health, "Health", 0, maxStat, context, errors);
+                ValidateStatRange(character.Stats.Stamina, "Stamina", 0, maxStat, context, errors);
+                ValidateStatRange(character.Stats.Mana, "Mana", 0, maxStat, context, errors);
+                ValidateStatRange(character.Stats.Strength, "Strength", 0, maxStat, context, errors);
+                ValidateStatRange(character.Stats.Defense, "Defense", 0, maxStat, context, errors);
+                ValidateStatRange(character.Stats.Speed, "Speed", 0, maxStat, context, errors);
+                ValidateStatRange(character.Stats.Magic, "Magic", 0, maxStat, context, errors);
+
+                if (character.Stats.Credits < 0)
+                {
+                    errors.Add($"{context}: Credits cannot be negative (was {character.Stats.Credits})");
+                }
+            }
+        }
+
+        // Validate dialogue text is not empty
+        if (world.Gameplay.DialogueTrees != null)
+        {
+            foreach (var dialogueTree in world.Gameplay.DialogueTrees)
+            {
+                if (dialogueTree.Node == null) continue;
+
+                foreach (var node in dialogueTree.Node)
+                {
+                    if (node.Text != null)
+                    {
+                        foreach (var text in node.Text)
+                        {
+                            if (string.IsNullOrWhiteSpace(text))
+                            {
+                                errors.Add($"DialogueTree '{dialogueTree.RefName}' Node '{node.NodeId}': Empty Text element");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Validate equipment condition is in range (0 to 1)
+        if (world.Gameplay.Characters != null)
+        {
+            foreach (var character in world.Gameplay.Characters)
+            {
+                ValidateEquipmentCondition(character.Interactable?.Loot, $"Character '{character.RefName}'", errors);
+                ValidateEquipmentCondition(character.Capabilities, $"Character '{character.RefName}'", errors);
+            }
+        }
+    }
+
+    private static void ValidateStatRange(float value, string statName, float min, float max, string context, List<string> errors)
+    {
+        if (value < min || value > max)
+        {
+            errors.Add($"{context}: {statName} value {value} is outside expected range [{min}, {max}]");
+        }
+    }
+
+    private static void ValidateEquipmentCondition(ItemCollection? inventory, string context, List<string> errors)
+    {
+        if (inventory?.Equipment == null) return;
+
+        foreach (var entry in inventory.Equipment)
+        {
+            if (entry.Condition < 0 || entry.Condition > 1)
+            {
+                errors.Add($"{context} Equipment '{entry.EquipmentRef}': Condition {entry.Condition} is outside expected range [0, 1]");
+            }
         }
     }
 }

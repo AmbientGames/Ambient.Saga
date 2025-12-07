@@ -24,6 +24,9 @@
   <Spell RefName="Charge" DisplayName="Bull Rush" Description="Charge forward with unstoppable momentum" WholesalePrice="110" Category="Combat" AffinityRef="Iron" UseType="Offensive">
     <Effects Health="-0.15" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0.2" Magic="0" />
   </Spell>
+  <Spell RefName="WarCry" DisplayName="Rally Shout" Description="A rallying cry that intimidates enemies and steels allies" WholesalePrice="95" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="-0.15" Defense="-0.1" Speed="0" Magic="0" />
+  </Spell>
   <Spell RefName="BerserkerRage" DisplayName="Oni Mode" Description="Unleash your inner demon for devastating power" WholesalePrice="80" Category="Rage" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="0" Stamina="0" Mana="0" Strength="0.25" Defense="-0.1" Speed="0.1" Magic="0" />
   </Spell>

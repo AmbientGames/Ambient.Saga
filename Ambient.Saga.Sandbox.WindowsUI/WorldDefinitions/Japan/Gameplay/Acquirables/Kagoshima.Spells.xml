@@ -24,6 +24,9 @@
   <Spell RefName="Charge" DisplayName="Totsugeki" Description="A charging assault against the enemy" WholesalePrice="110" Category="Combat" AffinityRef="Iron" UseType="Offensive">
     <Effects Health="-0.15" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0.2" Magic="0" />
   </Spell>
+  <Spell RefName="WarCry" DisplayName="Kachidoki" Description="A triumphant battle cry that demoralizes enemies" WholesalePrice="95" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+    <Effects Health="0" Stamina="0" Mana="0" Strength="-0.15" Defense="-0.1" Speed="0" Magic="0" />
+  </Spell>
   <Spell RefName="BerserkerRage" DisplayName="Oni no Ikari" Description="Unleash the demon's fury within" WholesalePrice="80" Category="Rage" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="0" Stamina="0" Mana="0" Strength="0.25" Defense="-0.1" Speed="0.1" Magic="0" />
   </Spell>

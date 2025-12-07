@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
-    <xs:include schemaLocation="../../../EntityBase.xsd" />
-    <xs:include schemaLocation="../../LoadoutSlots.xsd" />
-    <xs:include schemaLocation="../../Acquirables/ItemCollection.xsd" />
-    <xs:include schemaLocation="../../Acquirables/CharacterEffects.xsd" />
-    <xs:include schemaLocation="CharacterStats.xsd" />
-    <xs:include schemaLocation="../Characters/Catalogs/CharacterAffinities.xsd" />
-    <xs:complexType name="CharacterBase">
-        <xs:complexContent>
-            <xs:extension base="EntityBase">
-                <xs:sequence>
-                    <xs:element name="ArchetypeBias" type="CharacterEffects" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="Stats" type="CharacterStats" />
-                    <xs:element name="Capabilities" type="ItemCollection" />
-                </xs:sequence>
-                <xs:attribute name="AffinityRef" type="CharacterAffinityRef" use="optional" />
-                <xs:attribute name="X" type="xs:double" default="0.0" />
-                <xs:attribute name="Y" type="xs:double" default="0.0" />
-                <xs:attribute name="Z" type="xs:double" default="0.0" />
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
+	<xs:include schemaLocation="../../../EntityBase.xsd" />
+	<xs:include schemaLocation="../../LoadoutSlots.xsd" />
+	<xs:include schemaLocation="../../Acquirables/ItemCollection.xsd" />
+	<xs:include schemaLocation="../../Acquirables/CharacterEffects.xsd" />
+	<xs:include schemaLocation="CharacterStats.xsd" />
+	<xs:include schemaLocation="../Characters/Catalogs/CharacterAffinities.xsd" />
+	<xs:complexType name="CharacterBase">
+		<xs:complexContent>
+			<xs:extension base="EntityBase">
+				<xs:sequence>
+					<xs:element name="ArchetypeBias" type="CharacterEffects" minOccurs="0" maxOccurs="1" />
+					<xs:element name="Stats" type="CharacterStats" />
+					<xs:element name="Capabilities" type="ItemCollection" />
+				</xs:sequence>
+				<xs:attribute name="AffinityRef" type="CharacterAffinityRef" use="optional" />
+				<xs:attribute name="X" type="xs:double" default="0.0" />
+				<xs:attribute name="Y" type="xs:double" default="0.0" />
+				<xs:attribute name="Z" type="xs:double" default="0.0" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
 </xs:schema>

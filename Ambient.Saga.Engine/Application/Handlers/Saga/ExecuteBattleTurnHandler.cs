@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -475,9 +476,9 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             };
 
             // Add character tags for quest objective tracking
-            if (enemyCharacter.Tags?.Tag != null && enemyCharacter.Tags.Tag.Count > 0)
+            if (enemyCharacter.Tags != null && enemyCharacter.Tags.Length > 0)
             {
-                data["CharacterTag"] = string.Join(",", enemyCharacter.Tags.Tag);
+                data["CharacterTag"] = string.Join(",", enemyCharacter.Tags);
             }
 
             var characterDefeatedTx = new SagaTransaction

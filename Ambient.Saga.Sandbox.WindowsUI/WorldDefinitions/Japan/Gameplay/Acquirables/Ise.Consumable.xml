@@ -258,6 +258,9 @@
   <Consumable RefName="SmellingSalts" DisplayName="Ammonia Stick" Description="A strong stimulant to wake the unconscious" WholesalePrice="20">
     <Effects Health="1" Stamina="0.4" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>
+  <Consumable RefName="HerbBundle" DisplayName="Natural Remedy Kit" Description="Herbal supplements from the wellness store" WholesalePrice="12">
+    <Effects Health="0.1" Stamina="0.05" Mana="1" Hunger="0" Thirst="0" Temperature="37" />
+  </Consumable>
   <Consumable RefName="ManaGem" DisplayName="Spirit Crystal" Description="A crystallized fragment of spiritual energy" WholesalePrice="100">
     <Effects Health="1" Stamina="1" Mana="0.5" Hunger="0" Thirst="0" Temperature="37" />
   </Consumable>

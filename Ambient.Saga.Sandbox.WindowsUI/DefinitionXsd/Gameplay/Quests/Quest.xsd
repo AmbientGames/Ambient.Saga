@@ -6,6 +6,7 @@
     <xs:include schemaLocation="../Acquirables/Consumable.xsd" />
     <xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
     <xs:include schemaLocation="../Achievements/Achievement.xsd" />
+    <xs:include schemaLocation="../Actors/Characters/Dialogue.xsd" />
 
     <!-- Reference Types -->
     <xs:simpleType name="QuestRef">
@@ -132,6 +133,7 @@
                         <xs:sequence>
                             <xs:element name="Objective" type="QuestObjective" minOccurs="1" maxOccurs="unbounded" />
                         </xs:sequence>
+                        <xs:attribute name="LogicalOperator" type="ConditionLogic" use="optional" default="AND" />
                     </xs:complexType>
                 </xs:element>
                 <xs:element name="Branches">

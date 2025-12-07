@@ -2,25 +2,25 @@
 <Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="[AI: Epic Quest Chain Title connecting all major locations]" Description="[AI: Description of legendary quest connecting all Official Saga locations]">
     <Stages StartStage="OFFICIAL_MAIN_CHAIN_STAGE_01">
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="[AI: Visit Yunohira Tenbōsho]">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="[AI: Visit Yunohira Tenbōsho]" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
         <Objectives>
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Yunohira Tenbōsho]" />
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Yunohira Tenbōsho]" CharacterRef="BOSS_YunohiraTenbōsho" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="[AI: Visit Arimura Yōgan Tenbōjo]">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="[AI: Visit Arimura Yōgan Tenbōjo]" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_03">
         <Objectives>
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Arimura Yōgan Tenbōjo]" />
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Arimura Yōgan Tenbōjo]" CharacterRef="BOSS_ArimuraYōganTenbōjo" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="[AI: Visit Sakurajima Kō Ferry-ba]">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="[AI: Visit Sakurajima Kō Ferry-ba]" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_04">
         <Objectives>
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Sakurajima Kō Ferry-ba]" />
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Sakurajima Kō Ferry-ba]" CharacterRef="BOSS_SakurajimaKōFerryba" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_04" DisplayName="[AI: Visit Sakurajima Kasan Hakubutsukan]">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_04" DisplayName="[AI: Visit Sakurajima Kasan Hakubutsukan]" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_05">
         <Objectives>
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_04_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Sakurajima Kasan Hakubutsukan]" />
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_04_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Sakurajima Kasan Hakubutsukan]" CharacterRef="BOSS_SakurajimaKasanHakubutsukan" />
@@ -42,12 +42,12 @@
   </Quest>
   <Quest RefName="REGIONAL_SakurajimaKōFerryba1" DisplayName="[AI: Regional Quest Chain for Sakurajima Kō Ferry-ba area]" Description="[AI: Explore regional locations and complete challenges]">
     <Stages StartStage="REGIONAL_SakurajimaKōFerryba1_STAGE_01">
-      <Stage RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_01" DisplayName="[AI: Stage at Sakurajima Kō Ferry-ba]">
+      <Stage RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_01" DisplayName="[AI: Stage at Sakurajima Kō Ferry-ba]" NextStage="REGIONAL_SakurajimaKōFerryba1_STAGE_02">
         <Objectives>
           <Objective RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_02" DisplayName="[AI: Stage at Sakurajima Kasan Hakubutsukan]">
+      <Stage RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_02" DisplayName="[AI: Stage at Sakurajima Kasan Hakubutsukan]" NextStage="REGIONAL_SakurajimaKōFerryba1_STAGE_03">
         <Objectives>
           <Objective RefName="REGIONAL_SakurajimaKōFerryba1_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
@@ -66,7 +66,7 @@
   </Quest>
   <Quest RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1" DisplayName="[AI: Journey from Yunohira Tenbōsho to Sakurajima Kō Ferry-ba]" Description="[AI: Travel 3km from Yunohira Tenbōsho to Sakurajima Kō Ferry-ba]">
     <Stages StartStage="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_START">
-      <Stage RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Yunohira Tenbōsho]">
+      <Stage RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Yunohira Tenbōsho]" NextStage="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_END">
         <Objectives>
           <Objective RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKōFerryba1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
@@ -85,7 +85,7 @@
   </Quest>
   <Quest RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1" DisplayName="[AI: Journey from Yunohira Tenbōsho to Sakurajima Kasan Hakubutsukan]" Description="[AI: Travel 3km from Yunohira Tenbōsho to Sakurajima Kasan Hakubutsukan]">
     <Stages StartStage="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_START">
-      <Stage RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_START" DisplayName="[AI: Begin at Yunohira Tenbōsho]">
+      <Stage RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_START" DisplayName="[AI: Begin at Yunohira Tenbōsho]" NextStage="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_END">
         <Objectives>
           <Objective RefName="CONNECT_YunohiraTenbōsho1_TO_SakurajimaKasanHakubutsukan1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
@@ -104,7 +104,7 @@
   </Quest>
   <Quest RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1" DisplayName="[AI: Journey from Sakurajima Kō Ferry-ba to Sakurajima Kasan Hakubutsukan]" Description="[AI: Travel 1km from Sakurajima Kō Ferry-ba to Sakurajima Kasan Hakubutsukan]">
     <Stages StartStage="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_START">
-      <Stage RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_START" DisplayName="[AI: Begin at Sakurajima Kō Ferry-ba]">
+      <Stage RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_START" DisplayName="[AI: Begin at Sakurajima Kō Ferry-ba]" NextStage="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_END">
         <Objectives>
           <Objective RefName="CONNECT_SakurajimaKōFerryba1_TO_SakurajimaKasanHakubutsukan1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
@@ -123,7 +123,7 @@
   </Quest>
   <Quest RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1" DisplayName="[AI: Journey from Sakurajima Kō Ferry-ba to Yōgan Nagisa Kōen Ashiyu]" Description="[AI: Travel 1km from Sakurajima Kō Ferry-ba to Yōgan Nagisa Kōen Ashiyu]">
     <Stages StartStage="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_START">
-      <Stage RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_START" DisplayName="[AI: Begin at Sakurajima Kō Ferry-ba]">
+      <Stage RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_START" DisplayName="[AI: Begin at Sakurajima Kō Ferry-ba]" NextStage="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_END">
         <Objectives>
           <Objective RefName="CONNECT_SakurajimaKōFerryba1_TO_YōganNagisaKōenAshiyu1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
@@ -142,7 +142,7 @@
   </Quest>
   <Quest RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1" DisplayName="[AI: Journey from Sakurajima Kasan Hakubutsukan to Sakurajima Kō Ferry-ba]" Description="[AI: Travel 1km from Sakurajima Kasan Hakubutsukan to Sakurajima Kō Ferry-ba]">
     <Stages StartStage="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_START">
-      <Stage RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Sakurajima Kasan Hakubutsukan]">
+      <Stage RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Sakurajima Kasan Hakubutsukan]" NextStage="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_END">
         <Objectives>
           <Objective RefName="CONNECT_SakurajimaKasanHakubutsukan1_TO_SakurajimaKōFerryba1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
@@ -161,7 +161,7 @@
   </Quest>
   <Quest RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1" DisplayName="[AI: Journey from Yōgan Nagisa Kōen Ashiyu to Sakurajima Kō Ferry-ba]" Description="[AI: Travel 1km from Yōgan Nagisa Kōen Ashiyu to Sakurajima Kō Ferry-ba]">
     <Stages StartStage="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_START">
-      <Stage RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Yōgan Nagisa Kōen Ashiyu]">
+      <Stage RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_START" DisplayName="[AI: Begin at Yōgan Nagisa Kōen Ashiyu]" NextStage="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_END">
         <Objectives>
           <Objective RefName="CONNECT_YōganNagisaKōenAshiyu1_TO_SakurajimaKōFerryba1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
