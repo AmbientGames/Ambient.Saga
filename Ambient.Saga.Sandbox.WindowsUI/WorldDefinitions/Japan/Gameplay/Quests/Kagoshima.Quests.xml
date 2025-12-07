@@ -447,7 +447,7 @@
             <Currency Amount="300" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Consumable ConsumableRef="StaminaPotion" Quantity="3" />
+            <Consumable ConsumableRef="GreaterManaPotion" Quantity="3" />
           </Reward>
         </Rewards>
       </Stage>
@@ -464,7 +464,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="ChainCoif" Quantity="1" />
+            <Equipment EquipmentRef="WoodenClub" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -481,7 +481,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Spear" Quantity="1" />
+            <Equipment EquipmentRef="KnightsSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -498,7 +498,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="OakStaff" Quantity="1" />
+            <Equipment EquipmentRef="RuneSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -515,7 +515,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="PlateLeggings" Quantity="1" />
+            <Equipment EquipmentRef="Knife" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -532,7 +532,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="HoodedCowl" Quantity="1" />
+            <Equipment EquipmentRef="WoodenClub" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>

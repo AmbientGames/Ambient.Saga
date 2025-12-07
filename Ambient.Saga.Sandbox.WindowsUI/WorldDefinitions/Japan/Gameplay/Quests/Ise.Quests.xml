@@ -524,7 +524,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="LargeSword" Quantity="1" />
+            <Equipment EquipmentRef="SteelSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -541,7 +541,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="ChainCoif" Quantity="1" />
+            <Equipment EquipmentRef="WoodenClub" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -558,7 +558,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Spear" Quantity="1" />
+            <Equipment EquipmentRef="KnightsSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -575,7 +575,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="OakStaff" Quantity="1" />
+            <Equipment EquipmentRef="RuneSword" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -592,7 +592,7 @@
             <Currency Amount="500" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="PlateLeggings" Quantity="1" />
+            <Equipment EquipmentRef="Knife" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
