@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaArc RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Hub center at Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.5546" Source="Generated">
+  <SagaArc RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Hub center at Tsurumaru-jō" LatitudeZ="31.59880236355378" LongitudeX="130.5538416944655" Source="Generated">
     <SagaFeatureRef>Tsurumarujō</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō" DisplayName="Approaching Tsurumaru-jō" Description="Triggered when entering Tsurumaru-jō" EnterRadius="50.0">
       <Spawn Count="1">
@@ -8,7 +8,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke1Ring1" DisplayName="Tsurumaru-jō Spoke 1 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.55987338441062" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke1Ring1" DisplayName="Tsurumaru-jō Spoke 1 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.597826441013368" LongitudeX="130.55992145633306" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke1Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke1Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 1 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 1 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -16,7 +16,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring1" DisplayName="Tsurumaru-jō Spoke 2 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.60238980149023" LongitudeX="130.55723669220532" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke2Ring1" DisplayName="Tsurumaru-jō Spoke 2 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.601793432958257" LongitudeX="130.55673533195272" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke2Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -24,7 +24,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring2" DisplayName="Tsurumaru-jō Spoke 2 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.606279602980457" LongitudeX="130.55987338441062" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke2Ring2" DisplayName="Tsurumaru-jō Spoke 2 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.606683233562354" LongitudeX="130.5599006760904" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke2Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -32,7 +32,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring3" DisplayName="Tsurumaru-jō Spoke 2 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.610169404470685" LongitudeX="130.56251007661595" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke2Ring3" DisplayName="Tsurumaru-jō Spoke 2 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.60958241936387" LongitudeX="130.56306183545695" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke2Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -40,7 +40,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring4" DisplayName="Tsurumaru-jō Spoke 2 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.614059205960913" LongitudeX="130.56514676882128" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke2Ring4" DisplayName="Tsurumaru-jō Spoke 2 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.613581825293114" LongitudeX="130.56463421236907" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke2Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -48,7 +48,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring5" DisplayName="Tsurumaru-jō Spoke 2 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.61794900745114" LongitudeX="130.5677834610266" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke2Ring5" DisplayName="Tsurumaru-jō Spoke 2 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.617959086228687" LongitudeX="130.56740376339454" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke2Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 2 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 2 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -56,7 +56,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring1" DisplayName="Tsurumaru-jō Spoke 3 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.60238980149023" LongitudeX="130.55196330779467" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke3Ring1" DisplayName="Tsurumaru-jō Spoke 3 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.602175708293554" LongitudeX="130.55145698891644" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke3Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 3 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 3 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -64,7 +64,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring2" DisplayName="Tsurumaru-jō Spoke 3 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.606279602980457" LongitudeX="130.54932661558937" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke3Ring2" DisplayName="Tsurumaru-jō Spoke 3 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.6063109912827" LongitudeX="130.54834525409376" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke3Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 3 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 3 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -72,7 +72,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring3" DisplayName="Tsurumaru-jō Spoke 3 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.610169404470685" LongitudeX="130.54668992338404" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke3Ring3" DisplayName="Tsurumaru-jō Spoke 3 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.6107344255293" LongitudeX="130.5468529624485" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke3Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 3 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 3 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -80,7 +80,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring4" DisplayName="Tsurumaru-jō Spoke 3 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.614059205960913" LongitudeX="130.5440532311787" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke3Ring4" DisplayName="Tsurumaru-jō Spoke 3 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.613874791996924" LongitudeX="130.5433186353829" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke3Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 3 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 3 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -88,7 +88,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring5" DisplayName="Tsurumaru-jō Spoke 3 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.61794900745114" LongitudeX="130.54141653897338" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke3Ring5" DisplayName="Tsurumaru-jō Spoke 3 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.617211766280032" LongitudeX="130.54184985464966" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke3Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 3 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 3 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -96,7 +96,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring1" DisplayName="Tsurumaru-jō Spoke 4 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.54932661558937" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke4Ring1" DisplayName="Tsurumaru-jō Spoke 4 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.59906869851757" LongitudeX="130.5494110225225" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke4Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -104,7 +104,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring2" DisplayName="Tsurumaru-jō Spoke 4 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.5440532311787" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke4Ring2" DisplayName="Tsurumaru-jō Spoke 4 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.597680083344237" LongitudeX="130.54449913189828" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke4Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -112,7 +112,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring3" DisplayName="Tsurumaru-jō Spoke 4 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.53877984676808" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke4Ring3" DisplayName="Tsurumaru-jō Spoke 4 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.597866448192654" LongitudeX="130.53963765697256" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke4Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -120,7 +120,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring4" DisplayName="Tsurumaru-jō Spoke 4 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.53350646235742" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke4Ring4" DisplayName="Tsurumaru-jō Spoke 4 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.598846400197758" LongitudeX="130.53354112363053" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke4Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -128,7 +128,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring5" DisplayName="Tsurumaru-jō Spoke 4 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.5282330779468" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke4Ring5" DisplayName="Tsurumaru-jō Spoke 4 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.59793590673929" LongitudeX="130.52726487244323" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke4Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 4 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 4 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -136,7 +136,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring1" DisplayName="Tsurumaru-jō Spoke 5 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.594610198509773" LongitudeX="130.55196330779467" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke5Ring1" DisplayName="Tsurumaru-jō Spoke 5 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.594265218135344" LongitudeX="130.55213891223295" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke5Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 5 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 5 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -144,7 +144,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring2" DisplayName="Tsurumaru-jō Spoke 5 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.590720397019545" LongitudeX="130.54932661558937" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke5Ring2" DisplayName="Tsurumaru-jō Spoke 5 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.591297878675714" LongitudeX="130.54827919145723" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke5Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 5 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 5 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -152,7 +152,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring3" DisplayName="Tsurumaru-jō Spoke 5 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.586830595529317" LongitudeX="130.54668992338404" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke5Ring3" DisplayName="Tsurumaru-jō Spoke 5 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.586894846699536" LongitudeX="130.54733430875385" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke5Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 5 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 5 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -160,7 +160,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring4" DisplayName="Tsurumaru-jō Spoke 5 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.58294079403909" LongitudeX="130.5440532311787" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke5Ring4" DisplayName="Tsurumaru-jō Spoke 5 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.583387503137388" LongitudeX="130.54380952310095" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke5Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 5 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 5 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -168,7 +168,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring5" DisplayName="Tsurumaru-jō Spoke 5 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.57905099254886" LongitudeX="130.54141653897338" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke5Ring5" DisplayName="Tsurumaru-jō Spoke 5 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.578419882949067" LongitudeX="130.54041650639306" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke5Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 5 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 5 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -176,7 +176,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke6Ring1" DisplayName="Tsurumaru-jō Spoke 6 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.594610198509773" LongitudeX="130.55723669220532" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke6Ring1" DisplayName="Tsurumaru-jō Spoke 6 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.593802623911905" LongitudeX="130.55783142014806" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke6Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring1" DisplayName="Approaching Tsurumaru-jō Spoke 6 Ring 1" Description="Triggered when entering Tsurumaru-jō Spoke 6 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -184,7 +184,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke6Ring2" DisplayName="Tsurumaru-jō Spoke 6 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.590720397019545" LongitudeX="130.55987338441062" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke6Ring2" DisplayName="Tsurumaru-jō Spoke 6 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.590947846936892" LongitudeX="130.55906081006316" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke6Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring2" DisplayName="Approaching Tsurumaru-jō Spoke 6 Ring 2" Description="Triggered when entering Tsurumaru-jō Spoke 6 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -192,7 +192,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke6Ring3" DisplayName="Tsurumaru-jō Spoke 6 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.586830595529317" LongitudeX="130.56251007661595" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke6Ring3" DisplayName="Tsurumaru-jō Spoke 6 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.586380864270307" LongitudeX="130.56308529863966" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke6Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring3" DisplayName="Approaching Tsurumaru-jō Spoke 6 Ring 3" Description="Triggered when entering Tsurumaru-jō Spoke 6 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -200,7 +200,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke6Ring4" DisplayName="Tsurumaru-jō Spoke 6 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.58294079403909" LongitudeX="130.56514676882128" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke6Ring4" DisplayName="Tsurumaru-jō Spoke 6 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.58256237152028" LongitudeX="130.5654595602018" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke6Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring4" DisplayName="Approaching Tsurumaru-jō Spoke 6 Ring 4" Description="Triggered when entering Tsurumaru-jō Spoke 6 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -208,7 +208,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke6Ring5" DisplayName="Tsurumaru-jō Spoke 6 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.57905099254886" LongitudeX="130.5677834610266" Source="Generated">
+  <SagaArc RefName="TsurumarujōSpoke6Ring5" DisplayName="Tsurumaru-jō Spoke 6 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.578410039717685" LongitudeX="130.5668217669503" Source="Generated">
     <SagaFeatureRef>TsurumarujōSpoke6Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring5" DisplayName="Approaching Tsurumaru-jō Spoke 6 Ring 5" Description="Triggered when entering Tsurumaru-jō Spoke 6 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -216,7 +216,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien" DisplayName="Iso-teien" Description="Hub center at Iso-teien" LatitudeZ="31.61861" LongitudeX="130.57987" Source="Generated">
+  <SagaArc RefName="Isoteien" DisplayName="Iso-teien" Description="Hub center at Iso-teien" LatitudeZ="31.618798064846374" LongitudeX="130.57990361197588" Source="Generated">
     <SagaFeatureRef>Isoteien</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien" DisplayName="Approaching Iso-teien" Description="Triggered when entering Iso-teien" EnterRadius="50.0">
       <Spawn Count="1">
@@ -224,7 +224,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring1" DisplayName="Iso-teien Spoke 2 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.62249980149023" LongitudeX="130.5825072617926" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke2Ring1" DisplayName="Iso-teien Spoke 2 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.621691841405216" LongitudeX="130.58233905355135" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke2Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring1" DisplayName="Approaching Iso-teien Spoke 2 Ring 1" Description="Triggered when entering Iso-teien Spoke 2 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -232,7 +232,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring2" DisplayName="Iso-teien Spoke 2 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.626389602980456" LongitudeX="130.58514452358523" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke2Ring2" DisplayName="Iso-teien Spoke 2 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.62676117087935" LongitudeX="130.58541588493753" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke2Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring2" DisplayName="Approaching Iso-teien Spoke 2 Ring 2" Description="Triggered when entering Iso-teien Spoke 2 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -240,7 +240,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring3" DisplayName="Iso-teien Spoke 2 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.630279404470684" LongitudeX="130.58778178537787" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke2Ring3" DisplayName="Iso-teien Spoke 2 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.629772988447492" LongitudeX="130.58675355953406" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke2Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring3" DisplayName="Approaching Iso-teien Spoke 2 Ring 3" Description="Triggered when entering Iso-teien Spoke 2 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -248,7 +248,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring4" DisplayName="Iso-teien Spoke 2 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.634169205960912" LongitudeX="130.59041904717049" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke2Ring4" DisplayName="Iso-teien Spoke 2 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.63392667965362" LongitudeX="130.58992775247924" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke2Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring4" DisplayName="Approaching Iso-teien Spoke 2 Ring 4" Description="Triggered when entering Iso-teien Spoke 2 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -256,7 +256,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring5" DisplayName="Iso-teien Spoke 2 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.63805900745114" LongitudeX="130.5930563089631" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke2Ring5" DisplayName="Iso-teien Spoke 2 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.637283182191393" LongitudeX="130.59351723020674" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke2Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring5" DisplayName="Approaching Iso-teien Spoke 2 Ring 5" Description="Triggered when entering Iso-teien Spoke 2 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -264,7 +264,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring1" DisplayName="Iso-teien Spoke 3 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.62249980149023" LongitudeX="130.57723273820739" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke3Ring1" DisplayName="Iso-teien Spoke 3 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.621728080924683" LongitudeX="130.57715689411896" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke3Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring1" DisplayName="Approaching Iso-teien Spoke 3 Ring 1" Description="Triggered when entering Iso-teien Spoke 3 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -272,7 +272,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring2" DisplayName="Iso-teien Spoke 3 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.626389602980456" LongitudeX="130.57459547641477" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke3Ring2" DisplayName="Iso-teien Spoke 3 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.625511925391628" LongitudeX="130.57522455667754" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke3Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring2" DisplayName="Approaching Iso-teien Spoke 3 Ring 2" Description="Triggered when entering Iso-teien Spoke 3 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -280,7 +280,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring3" DisplayName="Iso-teien Spoke 3 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.630279404470684" LongitudeX="130.57195821462213" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke3Ring3" DisplayName="Iso-teien Spoke 3 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.630170010060777" LongitudeX="130.57198672471836" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke3Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring3" DisplayName="Approaching Iso-teien Spoke 3 Ring 3" Description="Triggered when entering Iso-teien Spoke 3 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -288,7 +288,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring4" DisplayName="Iso-teien Spoke 3 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.634169205960912" LongitudeX="130.56932095282951" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke3Ring4" DisplayName="Iso-teien Spoke 3 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.634168480742026" LongitudeX="130.56828359825252" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke3Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring4" DisplayName="Approaching Iso-teien Spoke 3 Ring 4" Description="Triggered when entering Iso-teien Spoke 3 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -296,7 +296,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring5" DisplayName="Iso-teien Spoke 3 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.63805900745114" LongitudeX="130.5666836910369" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke3Ring5" DisplayName="Iso-teien Spoke 3 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.63865046955613" LongitudeX="130.56565462507785" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke3Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring5" DisplayName="Approaching Iso-teien Spoke 3 Ring 5" Description="Triggered when entering Iso-teien Spoke 3 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -304,7 +304,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring1" DisplayName="Iso-teien Spoke 4 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.57459547641477" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke4Ring1" DisplayName="Iso-teien Spoke 4 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.617716207438615" LongitudeX="130.57367408555072" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke4Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring1" DisplayName="Approaching Iso-teien Spoke 4 Ring 1" Description="Triggered when entering Iso-teien Spoke 4 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -312,7 +312,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring2" DisplayName="Iso-teien Spoke 4 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.56932095282951" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke4Ring2" DisplayName="Iso-teien Spoke 4 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.618887248478117" LongitudeX="130.5683378142873" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke4Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring2" DisplayName="Approaching Iso-teien Spoke 4 Ring 2" Description="Triggered when entering Iso-teien Spoke 4 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -320,7 +320,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring3" DisplayName="Iso-teien Spoke 4 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.56404642924429" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke4Ring3" DisplayName="Iso-teien Spoke 4 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.619353764504808" LongitudeX="130.56495249382178" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke4Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring3" DisplayName="Approaching Iso-teien Spoke 4 Ring 3" Description="Triggered when entering Iso-teien Spoke 4 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -328,7 +328,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring4" DisplayName="Iso-teien Spoke 4 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.55877190565903" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke4Ring4" DisplayName="Iso-teien Spoke 4 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.61854020142261" LongitudeX="130.55850858607164" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke4Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring4" DisplayName="Approaching Iso-teien Spoke 4 Ring 4" Description="Triggered when entering Iso-teien Spoke 4 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -336,7 +336,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring5" DisplayName="Iso-teien Spoke 4 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.61861" LongitudeX="130.5534973820738" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke4Ring5" DisplayName="Iso-teien Spoke 4 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.618819732735556" LongitudeX="130.55253516424014" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke4Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring5" DisplayName="Approaching Iso-teien Spoke 4 Ring 5" Description="Triggered when entering Iso-teien Spoke 4 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -344,7 +344,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke5Ring2" DisplayName="Iso-teien Spoke 5 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.610830397019544" LongitudeX="130.57459547641477" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke5Ring2" DisplayName="Iso-teien Spoke 5 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.610601550660153" LongitudeX="130.57383912502033" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke5Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring2" DisplayName="Approaching Iso-teien Spoke 5 Ring 2" Description="Triggered when entering Iso-teien Spoke 5 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -352,7 +352,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke5Ring3" DisplayName="Iso-teien Spoke 5 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.606940595529316" LongitudeX="130.57195821462213" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke5Ring3" DisplayName="Iso-teien Spoke 5 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.606827192302205" LongitudeX="130.57257549921474" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke5Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring3" DisplayName="Approaching Iso-teien Spoke 5 Ring 3" Description="Triggered when entering Iso-teien Spoke 5 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -360,7 +360,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke5Ring4" DisplayName="Iso-teien Spoke 5 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.60305079403909" LongitudeX="130.56932095282951" Source="Generated">
+  <SagaArc RefName="IsoteienSpoke5Ring4" DisplayName="Iso-teien Spoke 5 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.603109008203123" LongitudeX="130.5691112460246" Source="Generated">
     <SagaFeatureRef>IsoteienSpoke5Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring4" DisplayName="Approaching Iso-teien Spoke 5 Ring 4" Description="Triggered when entering Iso-teien Spoke 5 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -368,7 +368,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinsha" DisplayName="Terukuni Daimyōjin-sha" Description="Hub center at Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.5506" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinsha" DisplayName="Terukuni Daimyōjin-sha" Description="Hub center at Terukuni Daimyōjin-sha" LatitudeZ="31.594239545484726" LongitudeX="130.55145998229477" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinsha</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha" DisplayName="Approaching Terukuni Daimyōjin-sha" Description="Triggered when entering Terukuni Daimyōjin-sha" EnterRadius="50.0">
       <Spawn Count="1">
@@ -376,7 +376,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.55587316384526" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594760012386615" LongitudeX="130.5563696208337" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke1Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 1 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -384,7 +384,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.56114632769055" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.59373959395549" LongitudeX="130.5619522991025" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke1Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 1 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -392,7 +392,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.5664194915358" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.595427200648153" LongitudeX="130.56606649800642" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke1Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 1 Ring 3" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 1 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -400,7 +400,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59849380149023" LongitudeX="130.55323658192265" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.5988727755698" LongitudeX="130.55252358459748" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke2Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 2 Ring 1" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 2 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -408,7 +408,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.602383602980456" LongitudeX="130.55587316384526" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.601669798555946" LongitudeX="130.55577211669421" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke2Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 2 Ring 2" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 2 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -416,7 +416,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.606273404470684" LongitudeX="130.5585097457679" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.60597347863096" LongitudeX="130.55909286414334" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke2Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 2 Ring 3" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 2 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -424,7 +424,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.610163205960912" LongitudeX="130.56114632769055" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.609531071204575" LongitudeX="130.5603748038441" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke2Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 2 Ring 4" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 2 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -432,7 +432,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.61405300745114" LongitudeX="130.5637829096132" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.61354158201393" LongitudeX="130.56397650798826" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke2Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 2 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -440,7 +440,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59849380149023" LongitudeX="130.54796341807736" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.598516894948812" LongitudeX="130.54899187435723" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke3Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 3 Ring 1" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 3 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -448,7 +448,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.602383602980456" LongitudeX="130.54532683615474" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.602862443241378" LongitudeX="130.54569015966737" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke3Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 3 Ring 2" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 3 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -456,7 +456,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.606273404470684" LongitudeX="130.5426902542321" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.60666002182951" LongitudeX="130.54224564543784" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke3Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 3 Ring 3" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 3 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -464,7 +464,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.610163205960912" LongitudeX="130.54005367230945" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.610256843350673" LongitudeX="130.54108818582324" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke3Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 3 Ring 4" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 3 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -472,7 +472,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.61405300745114" LongitudeX="130.5374170903868" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.614324300997943" LongitudeX="130.53641219907067" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke3Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 3 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -480,7 +480,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.54532683615474" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594325943276242" LongitudeX="130.5462328615848" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke4Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 4 Ring 1" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 4 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -488,7 +488,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.54005367230945" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.593753498779478" LongitudeX="130.53946187992906" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke4Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 4 Ring 2" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 4 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -496,7 +496,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.5347805084642" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594182116954347" LongitudeX="130.53380594630028" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke4Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 4 Ring 3" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 4 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -504,7 +504,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.5295073446189" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.594093407827977" LongitudeX="130.52970232993704" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke4Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 4 Ring 4" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 4 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -512,7 +512,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594604" LongitudeX="130.52423418077365" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59446409070266" LongitudeX="130.52337629143642" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke4Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 4 Ring 5" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 4 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -520,7 +520,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.590714198509772" LongitudeX="130.54796341807736" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59160180133618" LongitudeX="130.54716397123968" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke5Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 5 Ring 1" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 5 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -528,7 +528,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.586824397019544" LongitudeX="130.54532683615474" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.586115901417795" LongitudeX="130.54494953663988" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke5Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 5 Ring 2" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 5 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -536,7 +536,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.582934595529316" LongitudeX="130.5426902542321" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.582617744847372" LongitudeX="130.54322052865322" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke5Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 5 Ring 3" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 5 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -544,7 +544,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.57904479403909" LongitudeX="130.54005367230945" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.57963084221526" LongitudeX="130.53901712035423" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke5Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 5 Ring 4" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 5 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -552,7 +552,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.57515499254886" LongitudeX="130.5374170903868" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.57433136522495" LongitudeX="130.53813594389732" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke5Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 5 Ring 5" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 5 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -560,7 +560,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.590714198509772" LongitudeX="130.55323658192265" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59142627183317" LongitudeX="130.552683511373" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke6Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 6 Ring 1" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 6 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -568,7 +568,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.586824397019544" LongitudeX="130.55587316384526" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.587591014134187" LongitudeX="130.55660222671474" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke6Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 6 Ring 2" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 6 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -576,7 +576,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.582934595529316" LongitudeX="130.5585097457679" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.582537899193188" LongitudeX="130.55860548390677" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke6Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 6 Ring 3" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 6 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -584,7 +584,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.57904479403909" LongitudeX="130.56114632769055" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.579286668301215" LongitudeX="130.56141093350027" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke6Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 6 Ring 4" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 6 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -592,7 +592,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.57515499254886" LongitudeX="130.5637829096132" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.574601566102547" LongitudeX="130.56335489423316" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinshaSpoke6Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Approaching Terukuni Daimyōjin-sha Spoke 6 Ring 5" Description="Triggered when entering Terukuni Daimyōjin-sha Spoke 6 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -600,7 +600,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima" LatitudeZ="31.61861" LongitudeX="130.57987" Source="Generated">
+  <SagaArc RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima" LatitudeZ="31.618039911290246" LongitudeX="130.5788763946425" Source="Generated">
     <SagaFeatureRef>Isoteien1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1" DisplayName="Approaching Iso-teien" Description="Triggered when entering Iso-teien" EnterRadius="50.0">
       <Spawn Count="1">
@@ -614,7 +614,7 @@
       <NarrativeConnection TargetRef="Tsurumarujō1" Relationship="leads-to" Description="Next location in quest chain" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.612864285714288" LongitudeX="130.57265" Source="Generated">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.61238017789125" LongitudeX="130.5735654936435" Source="Generated">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_1" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (2)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -622,7 +622,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_2" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.60999142857143" LongitudeX="130.56904" Source="Generated">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_2" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.610868135386387" LongitudeX="130.56963481396537" Source="Generated">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_2" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (3)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -630,7 +630,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_3" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.607118571428572" LongitudeX="130.56543" Source="Generated">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_3" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.60646246219632" LongitudeX="130.5662397015405" Source="Generated">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_3" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (4)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -638,7 +638,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_4" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.604245714285714" LongitudeX="130.56181999999998" Source="Generated">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_4" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.60368221334806" LongitudeX="130.56138658017042" Source="Generated">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_4" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (5)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -646,7 +646,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_5" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.60137285714286" LongitudeX="130.55821" Source="Generated">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_5" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.601480751877446" LongitudeX="130.55832870526493" Source="Generated">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_5" DisplayName="Approaching Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Triggered when entering Waypoint between Iso-teien and Tsurumaru-jō (6)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -654,7 +654,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" LatitudeZ="31.5985" LongitudeX="130.5546" Source="Generated" Locked="true">
+  <SagaArc RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" LatitudeZ="31.59888217498281" LongitudeX="130.55380161465246" Source="Generated" Locked="true">
     <SagaFeatureRef>Tsurumarujō1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1" DisplayName="Approaching Tsurumaru-jō" Description="Triggered when entering Tsurumaru-jō" EnterRadius="50.0">
       <Spawn Count="1">
@@ -670,7 +670,7 @@
       <NarrativeConnection TargetRef="TerukuniDaimyōjinsha1" Relationship="leads-to" Description="Next location in quest chain" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha" LatitudeZ="31.596552000000003" LongitudeX="130.55259999999998" Source="Generated">
+  <SagaArc RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha" LatitudeZ="31.596728586843998" LongitudeX="130.55237076850997" Source="Generated">
     <SagaFeatureRef>Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Approaching Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -678,7 +678,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" LatitudeZ="31.594604" LongitudeX="130.5506" Source="Generated" Locked="true">
+  <SagaArc RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" LatitudeZ="31.595289152076255" LongitudeX="130.5504836786907" Source="Generated" Locked="true">
     <SagaFeatureRef>TerukuniDaimyōjinsha1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha1" DisplayName="Approaching Terukuni Daimyōjin-sha" Description="Triggered when entering Terukuni Daimyōjin-sha" EnterRadius="50.0">
       <Spawn Count="1">
@@ -693,7 +693,7 @@
       <NarrativeConnection TargetRef="Tsurumarujō1" Relationship="caused-by" Description="Previous location in quest chain" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" Description="Intermediate waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō" LatitudeZ="31.596552000000003" LongitudeX="130.55259999999998" Source="Generated">
+  <SagaArc RefName="TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" Description="Intermediate waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō" LatitudeZ="31.5962789735773" LongitudeX="130.5535793941038" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinsha1_to_Tsurumarujō1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Approaching Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" Description="Triggered when entering Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -701,7 +701,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_0" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (1)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.60137285714286" LongitudeX="130.55821" Source="Generated">
+  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_0" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (1)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.601307470797757" LongitudeX="130.55830084452685" Source="Generated">
     <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_0" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (1)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -709,7 +709,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_1" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (2)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.604245714285714" LongitudeX="130.56181999999998" Source="Generated">
+  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_1" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (2)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.605051046860048" LongitudeX="130.56247538661088" Source="Generated">
     <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_1" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (2)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (2)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -717,7 +717,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_2" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (3)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.607118571428572" LongitudeX="130.56543" Source="Generated">
+  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_2" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (3)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.606450055884288" LongitudeX="130.5646007198056" Source="Generated">
     <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_2" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (3)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (3)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -725,7 +725,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_3" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (4)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.60999142857143" LongitudeX="130.56904" Source="Generated">
+  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_3" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (4)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.609097220819727" LongitudeX="130.5683680812067" Source="Generated">
     <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_3" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (4)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (4)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -733,7 +733,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_4" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (5)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.612864285714288" LongitudeX="130.57265" Source="Generated">
+  <SagaArc RefName="Tsurumarujō1_to_Isoteien1_4" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (5)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" LatitudeZ="31.61365622894505" LongitudeX="130.57311486209923" Source="Generated">
     <SagaFeatureRef>Tsurumarujō1_to_Isoteien1_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_Isoteien1_4" DisplayName="Approaching Waypoint between Tsurumaru-jō and Iso-teien (5)" Description="Triggered when entering Waypoint between Tsurumaru-jō and Iso-teien (5)" EnterRadius="50.0">
       <Spawn Count="1">

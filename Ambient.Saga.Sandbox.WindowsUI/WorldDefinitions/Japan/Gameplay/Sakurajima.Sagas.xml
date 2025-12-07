@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaArc RefName="YunohiraTenbōsho" DisplayName="Yunohira Tenbōsho" Description="Hub center at Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.62998" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho" DisplayName="Yunohira Tenbōsho" Description="Hub center at Yunohira Tenbōsho" LatitudeZ="31.59176236355378" LongitudeX="130.62922175177303" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho" DisplayName="Approaching Yunohira Tenbōsho" Description="Triggered when entering Yunohira Tenbōsho" EnterRadius="50.0">
       <Spawn Count="1">
@@ -8,7 +8,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring1" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.6352529858843" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring1" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.590786441013368" LongitudeX="130.6353010541738" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke1Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke1Ring1" DisplayName="Approaching Yunohira Tenbōsho Spoke 1 Ring 1" Description="Triggered when entering Yunohira Tenbōsho Spoke 1 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -16,7 +16,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring2" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.64052597176862" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring2" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.59086363146803" LongitudeX="130.64002467034362" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke1Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke1Ring2" DisplayName="Approaching Yunohira Tenbōsho Spoke 1 Ring 2" Description="Triggered when entering Yunohira Tenbōsho Spoke 1 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -24,7 +24,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring3" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.64579895765297" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring3" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.591863630581898" LongitudeX="130.64582624499056" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke1Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke1Ring3" DisplayName="Approaching Yunohira Tenbōsho Spoke 1 Ring 3" Description="Triggered when entering Yunohira Tenbōsho Spoke 1 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -32,7 +32,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring4" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.6510719435373" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring4" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.590873014893187" LongitudeX="130.6516235915435" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke1Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke1Ring4" DisplayName="Approaching Yunohira Tenbōsho Spoke 1 Ring 4" Description="Triggered when entering Yunohira Tenbōsho Spoke 1 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -40,7 +40,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring5" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.6563449294216" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke1Ring5" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.590982619332202" LongitudeX="130.65583249734226" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke1Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke1Ring5" DisplayName="Approaching Yunohira Tenbōsho Spoke 1 Ring 5" Description="Triggered when entering Yunohira Tenbōsho Spoke 1 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -48,7 +48,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring1" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.59534980149023" LongitudeX="130.63261649294216" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring1" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.595359880267775" LongitudeX="130.6322368874585" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke2Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke2Ring1" DisplayName="Approaching Yunohira Tenbōsho Spoke 2 Ring 1" Description="Triggered when entering Yunohira Tenbōsho Spoke 2 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -56,7 +56,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring2" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.599239602980457" LongitudeX="130.6352529858843" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring2" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.599025509783782" LongitudeX="130.63474668413247" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke2Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke2Ring2" DisplayName="Approaching Yunohira Tenbōsho Spoke 2 Ring 2" Description="Triggered when entering Yunohira Tenbōsho Spoke 2 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -64,7 +64,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring3" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.603129404470685" LongitudeX="130.63788947882648" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring3" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.60316079277293" LongitudeX="130.63690815053073" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke2Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke2Ring3" DisplayName="Approaching Yunohira Tenbōsho Spoke 2 Ring 3" Description="Triggered when entering Yunohira Tenbōsho Spoke 2 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -72,7 +72,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring4" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.607019205960913" LongitudeX="130.64052597176862" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring4" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.60758422701953" LongitudeX="130.64068900531657" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke2Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke2Ring4" DisplayName="Approaching Yunohira Tenbōsho Spoke 2 Ring 4" Description="Triggered when entering Yunohira Tenbōsho Spoke 2 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -80,7 +80,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring5" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.61090900745114" LongitudeX="130.6431624647108" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke2Ring5" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.610724593487152" LongitudeX="130.6424278937742" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke2Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke2Ring5" DisplayName="Approaching Yunohira Tenbōsho Spoke 2 Ring 5" Description="Triggered when entering Yunohira Tenbōsho Spoke 2 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -88,7 +88,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring1" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.59534980149023" LongitudeX="130.62734350705782" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring1" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.59461256031912" LongitudeX="130.62777671757317" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke3Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke3Ring1" DisplayName="Approaching Yunohira Tenbōsho Spoke 3 Ring 1" Description="Triggered when entering Yunohira Tenbōsho Spoke 3 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -96,7 +96,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring2" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.599239602980457" LongitudeX="130.62470701411567" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring2" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.599808301498026" LongitudeX="130.62479142171907" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke3Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke3Ring2" DisplayName="Approaching Yunohira Tenbōsho Spoke 3 Ring 2" Description="Triggered when entering Yunohira Tenbōsho Spoke 3 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -104,7 +104,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring3" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.603129404470685" LongitudeX="130.6220705211735" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring3" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.60230948781492" LongitudeX="130.62251644405893" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke3Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke3Ring3" DisplayName="Approaching Yunohira Tenbōsho Spoke 3 Ring 3" Description="Triggered when entering Yunohira Tenbōsho Spoke 3 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -112,7 +112,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring4" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.607019205960913" LongitudeX="130.61943402823135" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring4" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.606385654153566" LongitudeX="130.62029191691488" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke3Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke3Ring4" DisplayName="Approaching Yunohira Tenbōsho Spoke 3 Ring 4" Description="Triggered when entering Yunohira Tenbōsho Spoke 3 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -120,7 +120,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring5" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.61090900745114" LongitudeX="130.61679753528918" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke3Ring5" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.611255407648898" LongitudeX="130.6168322011817" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke3Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke3Ring5" DisplayName="Approaching Yunohira Tenbōsho Spoke 3 Ring 5" Description="Triggered when entering Yunohira Tenbōsho Spoke 3 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -128,7 +128,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring1" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.62470701411567" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring1" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.59089590673929" LongitudeX="130.62373888178246" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke4Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke4Ring1" DisplayName="Approaching Yunohira Tenbōsho Spoke 4 Ring 1" Description="Triggered when entering Yunohira Tenbōsho Spoke 4 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -136,7 +136,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring2" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.61943402823135" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring2" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.591115019625573" LongitudeX="130.61960962673157" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke4Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke4Ring2" DisplayName="Approaching Yunohira Tenbōsho Spoke 4 Ring 2" Description="Triggered when entering Yunohira Tenbōsho Spoke 4 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -144,7 +144,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring3" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.614161042347" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring3" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.59203748165617" LongitudeX="130.61311360989976" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke4Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke4Ring3" DisplayName="Approaching Yunohira Tenbōsho Spoke 4 Ring 3" Description="Triggered when entering Yunohira Tenbōsho Spoke 4 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -152,7 +152,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring4" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.6088880564627" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring4" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.59152425117022" LongitudeX="130.60953247385046" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke4Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke4Ring4" DisplayName="Approaching Yunohira Tenbōsho Spoke 4 Ring 4" Description="Triggered when entering Yunohira Tenbōsho Spoke 4 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -160,7 +160,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring5" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.59146" LongitudeX="130.60361507057837" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke4Ring5" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.5919067090983" LongitudeX="130.6033713402179" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke4Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke4Ring5" DisplayName="Approaching Yunohira Tenbōsho Spoke 4 Ring 5" Description="Triggered when entering Yunohira Tenbōsho Spoke 4 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -168,7 +168,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring1" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.587570198509773" LongitudeX="130.62734350705782" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring1" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.58693908890998" LongitudeX="130.62634338305645" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke5Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke5Ring1" DisplayName="Approaching Yunohira Tenbōsho Spoke 5 Ring 1" Description="Triggered when entering Yunohira Tenbōsho Spoke 5 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -176,7 +176,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring2" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.583680397019545" LongitudeX="130.62470701411567" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring2" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.582872822421677" LongitudeX="130.62530167229664" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke5Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke5Ring2" DisplayName="Approaching Yunohira Tenbōsho Spoke 5 Ring 2" Description="Triggered when entering Yunohira Tenbōsho Spoke 5 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -184,7 +184,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring3" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.579790595529317" LongitudeX="130.6220705211735" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring3" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.580018045446664" LongitudeX="130.62125804212673" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke5Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke5Ring3" DisplayName="Approaching Yunohira Tenbōsho Spoke 5 Ring 3" Description="Triggered when entering Yunohira Tenbōsho Spoke 5 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -192,7 +192,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring4" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.57590079403909" LongitudeX="130.61943402823135" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring4" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.57545106278008" LongitudeX="130.62000918280188" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke5Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke5Ring4" DisplayName="Approaching Yunohira Tenbōsho Spoke 5 Ring 4" Description="Triggered when entering Yunohira Tenbōsho Spoke 5 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -200,7 +200,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring5" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.57201099254886" LongitudeX="130.61679753528918" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke5Ring5" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.57163257003005" LongitudeX="130.6171102899959" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke5Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke5Ring5" DisplayName="Approaching Yunohira Tenbōsho Spoke 5 Ring 5" Description="Triggered when entering Yunohira Tenbōsho Spoke 5 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -208,7 +208,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring1" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.587570198509773" LongitudeX="130.63261649294216" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring1" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho" LatitudeZ="31.586929245678597" LongitudeX="130.63165471094965" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke6Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke6Ring1" DisplayName="Approaching Yunohira Tenbōsho Spoke 6 Ring 1" Description="Triggered when entering Yunohira Tenbōsho Spoke 6 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -216,7 +216,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring2" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.583680397019545" LongitudeX="130.6352529858843" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring2" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho" LatitudeZ="31.58386846186592" LongitudeX="130.63528658525578" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke6Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke6Ring2" DisplayName="Approaching Yunohira Tenbōsho Spoke 6 Ring 2" Description="Triggered when entering Yunohira Tenbōsho Spoke 6 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -224,7 +224,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring3" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.579790595529317" LongitudeX="130.63788947882648" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring3" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho" LatitudeZ="31.578982635444305" LongitudeX="130.63772134770846" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke6Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke6Ring3" DisplayName="Approaching Yunohira Tenbōsho Spoke 6 Ring 3" Description="Triggered when entering Yunohira Tenbōsho Spoke 6 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -232,7 +232,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring4" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.57590079403909" LongitudeX="130.64052597176862" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring4" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho" LatitudeZ="31.576272361937985" LongitudeX="130.64079718604506" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke6Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke6Ring4" DisplayName="Approaching Yunohira Tenbōsho Spoke 6 Ring 4" Description="Triggered when entering Yunohira Tenbōsho Spoke 6 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -240,7 +240,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring5" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.57201099254886" LongitudeX="130.6431624647108" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōshoSpoke6Ring5" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho" LatitudeZ="31.57150457652567" LongitudeX="130.64213488200167" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōshoSpoke6Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōshoSpoke6Ring5" DisplayName="Approaching Yunohira Tenbōsho Spoke 6 Ring 5" Description="Triggered when entering Yunohira Tenbōsho Spoke 6 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -248,7 +248,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo" DisplayName="Arimura Yōgan Tenbōjo" Description="Hub center at Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.67911" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo" DisplayName="Arimura Yōgan Tenbōjo" Description="Hub center at Arimura Yōgan Tenbōjo" LatitudeZ="31.554067473692708" LongitudeX="130.6786191263065" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo" DisplayName="Approaching Arimura Yōgan Tenbōjo" Description="Triggered when entering Arimura Yōgan Tenbōjo" EnterRadius="50.0">
       <Spawn Count="1">
@@ -256,7 +256,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.68438088518022" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.553534174740253" LongitudeX="130.68484139219242" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke1Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke1Ring1" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 1 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -264,7 +264,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.68965177036046" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.553538279434456" LongitudeX="130.68957598175786" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke1Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke1Ring2" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 1 Ring 2" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 1 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -272,7 +272,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.69492265554067" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.553432322411172" LongitudeX="130.695551249303" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke1Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke1Ring3" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 1 Ring 3" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 1 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -280,7 +280,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.7001935407209" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.554200605590093" LongitudeX="130.70022202757767" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke1Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke1Ring4" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 1 Ring 4" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 1 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -288,7 +288,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.7054644259011" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke1Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.554309274781115" LongitudeX="130.7044279602487" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke1Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke1Ring5" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 1 Ring 5" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 1 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -296,7 +296,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55819980149023" LongitudeX="130.6817454425901" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.558791263595218" LongitudeX="130.68071725858712" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke2Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke2Ring1" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 2 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -304,7 +304,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.562089602980457" LongitudeX="130.68438088518022" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.561195810419072" LongitudeX="130.6834600531081" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke2Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke2Ring2" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 2 Ring 2" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 2 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -312,7 +312,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.565979404470685" LongitudeX="130.68701632777035" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.566256652948802" LongitudeX="130.68603374448776" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke2Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke2Ring3" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 2 Ring 3" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 2 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -320,7 +320,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.569869205960913" LongitudeX="130.68965177036046" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.57061297046572" LongitudeX="130.69055736098315" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke2Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke2Ring4" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 2 Ring 4" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 2 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -328,7 +328,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.57375900745114" LongitudeX="130.69228721295056" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke2Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.573689208873752" LongitudeX="130.69202402012326" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke2Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke2Ring5" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 2 Ring 5" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 2 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -336,7 +336,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55819980149023" LongitudeX="130.6764745574099" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.558409534225785" LongitudeX="130.6755129632286" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke3Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke3Ring1" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 3 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -344,7 +344,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.562089602980457" LongitudeX="130.6738391148198" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.561860756621066" LongitudeX="130.6730831589461" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke3Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke3Ring2" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 3 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -352,7 +352,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.565979404470685" LongitudeX="130.67120367222967" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.565866001243574" LongitudeX="130.67182068553515" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke3Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke3Ring3" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 3 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -360,7 +360,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.569869205960913" LongitudeX="130.66856822963956" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.569927420124948" LongitudeX="130.66835859749654" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke3Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke3Ring4" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 3 Ring 4" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 3 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -368,7 +368,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.57375900745114" LongitudeX="130.66593278704946" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke3Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.573394552935866" LongitudeX="130.66679257700378" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke3Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke3Ring5" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 3 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -376,7 +376,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.6738391148198" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.554466012386616" LongitudeX="130.67433535727682" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke4Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke4Ring1" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 4 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -384,7 +384,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.66856822963956" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55344559395549" LongitudeX="130.66937385277126" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke4Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke4Ring2" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 4 Ring 2" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 4 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -392,7 +392,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.66329734445935" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.555133200648154" LongitudeX="130.66294450346723" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke4Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke4Ring3" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 4 Ring 3" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 4 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -400,7 +400,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.6580264592791" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55468897407957" LongitudeX="130.65731379981943" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke4Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke4Ring4" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 4 Ring 4" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 4 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -408,7 +408,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55431" LongitudeX="130.6527555740989" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke4Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 5" Description="Star waypoint at 2500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55359619557549" LongitudeX="130.65265457904903" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke4Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke4Ring5" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 4 Ring 5" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 4 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -416,7 +416,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke5Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 5 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.550420198509773" LongitudeX="130.6764745574099" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke5Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 5 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.55012027267005" LongitudeX="130.67705732648136" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke5Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke5Ring1" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 5 Ring 1" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 5 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -424,7 +424,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke6Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.550420198509773" LongitudeX="130.6817454425901" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke6Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo" LatitudeZ="31.549788063753436" LongitudeX="130.68097441312165" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke6Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke6Ring1" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 6 Ring 1" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 6 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -432,7 +432,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjoSpoke6Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.546530397019545" LongitudeX="130.68438088518022" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjoSpoke6Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo" LatitudeZ="31.546018971582335" LongitudeX="130.68457434335286" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjoSpoke6Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjoSpoke6Ring2" DisplayName="Approaching Arimura Yōgan Tenbōjo Spoke 6 Ring 2" Description="Triggered when entering Arimura Yōgan Tenbōjo Spoke 6 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -440,7 +440,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba" DisplayName="Sakurajima Kō Ferry-ba" Description="Hub center at Sakurajima Kō Ferry-ba" LatitudeZ="31.5926" LongitudeX="130.60005" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerryba" DisplayName="Sakurajima Kō Ferry-ba" Description="Hub center at Sakurajima Kō Ferry-ba" LatitudeZ="31.592623093458585" LongitudeX="130.60107839120872" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerryba</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba" DisplayName="Approaching Sakurajima Kō Ferry-ba" Description="Triggered when entering Sakurajima Kō Ferry-ba" EnterRadius="50.0">
       <Spawn Count="1">
@@ -448,7 +448,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.5926" LongitudeX="130.60532305040894" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.593078840260922" LongitudeX="130.60568633576025" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke1Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke1Ring1" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 1 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -456,7 +456,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kō Ferry-ba" LatitudeZ="31.5926" LongitudeX="130.61059610081787" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kō Ferry-ba" LatitudeZ="31.592986617358825" LongitudeX="130.61015155729305" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke1Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke1Ring2" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 1 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -464,7 +464,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.5926" LongitudeX="130.61586915122678" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.59269363738976" LongitudeX="130.61690346965773" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke1Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke1Ring3" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 1 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -472,7 +472,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kō Ferry-ba" LatitudeZ="31.5926" LongitudeX="130.6211422016357" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kō Ferry-ba" LatitudeZ="31.592871293546803" LongitudeX="130.62013754179787" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke1Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke1Ring4" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 1 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -480,7 +480,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.5926" LongitudeX="130.62641525204464" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke1Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.592321943276243" LongitudeX="130.62732125798428" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke1Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke1Ring5" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 1 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -488,7 +488,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke2Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 2 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.59648980149023" LongitudeX="130.60268652520446" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke2Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 2 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.595639300269706" LongitudeX="130.60209472084316" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke2Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke2Ring1" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 2 Ring 1" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 2 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -496,7 +496,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke5Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.588710198509773" LongitudeX="130.59741347479556" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke5Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.58828831546412" LongitudeX="130.5964389742835" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke5Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke5Ring1" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 5 Ring 1" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 5 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -504,7 +504,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke5Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.580930595529317" LongitudeX="130.59214042438663" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke5Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.580420003357293" LongitudeX="130.5923353810936" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke5Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke5Ring3" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 5 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -512,7 +512,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.588710198509773" LongitudeX="130.60268652520446" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.588570289212434" LongitudeX="130.60182869013823" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke6Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke6Ring1" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 6 Ring 1" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 6 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -520,7 +520,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kō Ferry-ba" LatitudeZ="31.584820397019545" LongitudeX="130.60532305040894" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kō Ferry-ba" LatitudeZ="31.58570799984595" LongitudeX="130.60452365413744" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke6Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke6Ring2" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 6 Ring 2" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 6 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -528,7 +528,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.580930595529317" LongitudeX="130.6079595756134" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.580222099927568" LongitudeX="130.60758229995966" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke6Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke6Ring3" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 6 Ring 3" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 6 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -536,7 +536,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kō Ferry-ba" LatitudeZ="31.57704079403909" LongitudeX="130.61059610081787" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kō Ferry-ba" LatitudeZ="31.576723943357145" LongitudeX="130.61112634170857" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke6Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke6Ring4" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 6 Ring 4" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 6 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -544,7 +544,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.57315099254886" LongitudeX="130.61323262602232" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerrybaSpoke6Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kō Ferry-ba" LatitudeZ="31.57373704072503" LongitudeX="130.61219613960063" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerrybaSpoke6Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerrybaSpoke6Ring5" DisplayName="Approaching Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Description="Triggered when entering Sakurajima Kō Ferry-ba Spoke 6 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -552,7 +552,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukan" DisplayName="Sakurajima Kasan Hakubutsukan" Description="Hub center at Sakurajima Kasan Hakubutsukan" LatitudeZ="31.59084" LongitudeX="130.59412" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukan" DisplayName="Sakurajima Kasan Hakubutsukan" Description="Hub center at Sakurajima Kasan Hakubutsukan" LatitudeZ="31.59001637267609" LongitudeX="130.59483897450608" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukan</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukan" DisplayName="Approaching Sakurajima Kasan Hakubutsukan" Description="Triggered when entering Sakurajima Kasan Hakubutsukan" EnterRadius="50.0">
       <Spawn Count="1">
@@ -560,7 +560,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.59084" LongitudeX="130.59939295079354" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.5915520733234" LongitudeX="130.5988398794971" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke1Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke1Ring1" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 1 Ring 1" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 1 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -568,7 +568,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.59084" LongitudeX="130.60466590158708" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.591606617114643" LongitudeX="130.60539499587844" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke1Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke1Ring2" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 1 Ring 2" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 1 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -576,7 +576,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.59084" LongitudeX="130.60993885238062" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.59044330366387" LongitudeX="130.61003459864222" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke1Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke1Ring3" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 1 Ring 3" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 1 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -584,7 +584,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.59084" LongitudeX="130.61521180317413" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.591081874262127" LongitudeX="130.61547644247833" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke1Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke1Ring4" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 1 Ring 4" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 1 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -592,7 +592,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.59084" LongitudeX="130.62048475396767" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke1Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.590286573553687" LongitudeX="130.62005666654517" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke1Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke1Ring5" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -600,7 +600,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke5Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.586950198509772" LongitudeX="130.59148352460323" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke5Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.586380109800018" LongitudeX="130.5904902569932" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke5Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke5Ring1" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 5 Ring 1" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 5 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -608,7 +608,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke6Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.586950198509772" LongitudeX="130.59675647539677" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke6Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 1" Description="Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.586466090686734" LongitudeX="130.5976717143421" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke6Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke6Ring1" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 6 Ring 1" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 6 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -616,7 +616,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke6Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.583060397019544" LongitudeX="130.59939295079354" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke6Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 2" Description="Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.5839371038345" LongitudeX="130.59998759280623" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke6Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke6Ring2" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 6 Ring 2" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 6 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -624,7 +624,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke6Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.579170595529316" LongitudeX="130.6020294261903" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke6Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 3" Description="Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.578514486297063" LongitudeX="130.6028388848516" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke6Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke6Ring3" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 6 Ring 3" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 6 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -632,7 +632,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke6Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.575280794039088" LongitudeX="130.60466590158708" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukanSpoke6Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" Description="Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" LatitudeZ="31.574717293101433" LongitudeX="130.60423261647884" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukanSpoke6Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukanSpoke6Ring4" DisplayName="Approaching Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" Description="Triggered when entering Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -640,7 +640,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyu" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="Hub center at Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.59084" LongitudeX="130.59412" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyu" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="Hub center at Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.590947894734587" LongitudeX="130.59423869184278" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyu</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyu" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu" EnterRadius="50.0">
       <Spawn Count="1">
@@ -648,7 +648,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.59084" LongitudeX="130.59939295079354" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.591222174982807" LongitudeX="130.5985946310952" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke1Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke1Ring1" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 1" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -656,7 +656,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 2" Description="Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.59084" LongitudeX="130.60466590158708" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 2" Description="Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.591016586843995" LongitudeX="130.60443668415232" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke1Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke1Ring2" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 2" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -664,7 +664,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.59084" LongitudeX="130.60993885238062" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.591525152076255" LongitudeX="130.60982253577106" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke1Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke1Ring3" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 3" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -672,7 +672,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.59084" LongitudeX="130.61521180317413" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.590566973577296" LongitudeX="130.6161911372267" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke1Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke1Ring4" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 4" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -680,7 +680,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.59084" LongitudeX="130.62048475396767" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke1Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.590774613654897" LongitudeX="130.62057558822264" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke1Ring5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke1Ring5" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" EnterRadius="50.0">
       <Spawn Count="1">
@@ -688,7 +688,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke5Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.586950198509772" LongitudeX="130.59148352460323" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke5Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.587755531084106" LongitudeX="130.59213878953597" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke5Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke5Ring1" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 1" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -696,7 +696,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke6Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.586950198509772" LongitudeX="130.59675647539677" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke6Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.586281682965488" LongitudeX="130.5959273747466" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke6Ring1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke6Ring1" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 1" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 1" EnterRadius="50.0">
       <Spawn Count="1">
@@ -704,7 +704,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke6Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 2" Description="Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.583060397019544" LongitudeX="130.59939295079354" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke6Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 2" Description="Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.58216618926784" LongitudeX="130.5987212262429" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke6Ring2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke6Ring2" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 2" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 2" EnterRadius="50.0">
       <Spawn Count="1">
@@ -712,7 +712,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke6Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.579170595529316" LongitudeX="130.6020294261903" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke6Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.57996253876008" LongitudeX="130.60249412016807" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke6Ring3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke6Ring3" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 3" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 3" EnterRadius="50.0">
       <Spawn Count="1">
@@ -720,7 +720,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke6Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.575280794039088" LongitudeX="130.60466590158708" Source="Generated">
+  <SagaArc RefName="YōganNagisaKōenAshiyuSpoke6Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" LatitudeZ="31.575108132449923" LongitudeX="130.60485758687966" Source="Generated">
     <SagaFeatureRef>YōganNagisaKōenAshiyuSpoke6Ring4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyuSpoke6Ring4" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" EnterRadius="50.0">
       <Spawn Count="1">
@@ -728,7 +728,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1" DisplayName="Arimura Yōgan Tenbōjo" Description="Observation deck on Taishō-era lava fields near Minamidake" LatitudeZ="31.55431" LongitudeX="130.67911" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1" DisplayName="Arimura Yōgan Tenbōjo" Description="Observation deck on Taishō-era lava fields near Minamidake" LatitudeZ="31.554130188709003" LongitudeX="130.67831837199557" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1" DisplayName="Approaching Arimura Yōgan Tenbōjo" Description="Triggered when entering Arimura Yōgan Tenbōjo" EnterRadius="50.0">
       <Spawn Count="1">
@@ -743,7 +743,7 @@
       <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="foreshadows" Description="Hints at upcoming challenge" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.557167692307694" LongitudeX="130.67533076923078" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.55790637283651" LongitudeX="130.6763099670818" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -751,7 +751,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.560025384615386" LongitudeX="130.67155153846156" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.56072783575919" LongitudeX="130.67086051372064" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -759,7 +759,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.56288307692308" LongitudeX="130.6677723076923" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.562584290100954" LongitudeX="130.6678613925631" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -767,7 +767,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.56574076923077" LongitudeX="130.66399307692308" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.565949288602848" LongitudeX="130.66492704458113" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -775,7 +775,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.568598461538464" LongitudeX="130.66021384615385" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.569178226276122" LongitudeX="130.66073594180494" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -783,7 +783,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.571456153846157" LongitudeX="130.65643461538463" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.57106136767864" LongitudeX="130.656096170116" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -791,7 +791,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.574313846153846" LongitudeX="130.65265538461537" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.5743598807321" LongitudeX="130.65329779932637" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -799,7 +799,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.57717153846154" LongitudeX="130.64887615384615" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.57671668032595" LongitudeX="130.6496953179941" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -807,7 +807,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.58002923076923" LongitudeX="130.64509692307692" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.580324957988427" LongitudeX="130.64444149242573" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -815,7 +815,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.582886923076924" LongitudeX="130.6413176923077" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.582486050483084" LongitudeX="130.64074447764077" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -823,7 +823,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.585744615384616" LongitudeX="130.63753846153844" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.58634467389118" LongitudeX="130.63783412058032" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -831,7 +831,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.58860230769231" LongitudeX="130.63375923076921" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.58785018542896" LongitudeX="130.633591390938" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11" DisplayName="Approaching Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Description="Triggered when entering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -839,7 +839,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1" DisplayName="Yunohira Tenbōsho" Description="Highest public viewpoint on Sakurajima’s north peak (Kitadake)" LatitudeZ="31.59146" LongitudeX="130.62998" Source="Generated" Locked="true">
+  <SagaArc RefName="YunohiraTenbōsho1" DisplayName="Yunohira Tenbōsho" Description="Highest public viewpoint on Sakurajima’s north peak (Kitadake)" LatitudeZ="31.59200883680741" LongitudeX="130.63078259152445" Source="Generated" Locked="true">
     <SagaFeatureRef>YunohiraTenbōsho1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1" DisplayName="Approaching Yunohira Tenbōsho" Description="Triggered when entering Yunohira Tenbōsho" EnterRadius="50.0">
       <Spawn Count="1">
@@ -856,7 +856,7 @@
       <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="foreshadows" Description="Hints at upcoming challenge" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59165" LongitudeX="130.62499166666666" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.592151450862413" LongitudeX="130.62594897959784" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -864,7 +864,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59184" LongitudeX="130.62000333333333" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59263697026785" LongitudeX="130.61993282371475" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -872,7 +872,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59203" LongitudeX="130.615015" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.592732844682402" LongitudeX="130.61600573688716" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -880,7 +880,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59222" LongitudeX="130.61002666666667" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.591601592666056" LongitudeX="130.6102114931414" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -888,7 +888,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59241" LongitudeX="130.60503833333334" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59189062382083" LongitudeX="130.6053218705163" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -896,7 +896,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba1" DisplayName="Sakurajima Kō Ferry-ba" Description="Historic landing point linking Satsuma capital to Sakurajima" LatitudeZ="31.5926" LongitudeX="130.60005" Source="Generated" Locked="true">
+  <SagaArc RefName="SakurajimaKōFerryba1" DisplayName="Sakurajima Kō Ferry-ba" Description="Historic landing point linking Satsuma capital to Sakurajima" LatitudeZ="31.592601620599925" LongitudeX="130.60048983295303" Source="Generated" Locked="true">
     <SagaFeatureRef>SakurajimaKōFerryba1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1" DisplayName="Approaching Sakurajima Kō Ferry-ba" Description="Triggered when entering Sakurajima Kō Ferry-ba" EnterRadius="50.0">
       <Spawn Count="1">
@@ -913,7 +913,7 @@
       <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="foreshadows" Description="Hints at upcoming challenge" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan" LatitudeZ="31.591720000000002" LongitudeX="130.597085" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan" LatitudeZ="31.591020385484295" LongitudeX="130.5977311461197" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Approaching Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="Triggered when entering Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -921,7 +921,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukan1" DisplayName="Sakurajima Kasan Hakubutsukan" Description="Volcano island museum and interpretation hall by the port" LatitudeZ="31.59084" LongitudeX="130.59412" Source="Generated" Locked="true">
+  <SagaArc RefName="SakurajimaKasanHakubutsukan1" DisplayName="Sakurajima Kasan Hakubutsukan" Description="Volcano island museum and interpretation hall by the port" LatitudeZ="31.590566366241003" LongitudeX="130.59416479560036" Source="Generated" Locked="true">
     <SagaFeatureRef>SakurajimaKasanHakubutsukan1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukan1" DisplayName="Approaching Sakurajima Kasan Hakubutsukan" Description="Triggered when entering Sakurajima Kasan Hakubutsukan" EnterRadius="50.0">
       <Spawn Count="1">
@@ -937,7 +937,7 @@
       <NarrativeConnection TargetRef="YōganNagisaKōenAshiyu1" Relationship="leads-to" Description="Next location in quest chain" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyu1" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="Coastal lava-shore park with long ashiyu foot-bath beside the visitor center" LatitudeZ="31.59084" LongitudeX="130.59412" Source="Generated" Locked="true">
+  <SagaArc RefName="YōganNagisaKōenAshiyu1" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="Coastal lava-shore park with long ashiyu foot-bath beside the visitor center" LatitudeZ="31.59123693045802" LongitudeX="130.59348743946742" Source="Generated" Locked="true">
     <SagaFeatureRef>YōganNagisaKōenAshiyu1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyu1" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu" EnterRadius="50.0">
       <Spawn Count="1">
@@ -952,7 +952,7 @@
       <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="caused-by" Description="Previous location in quest chain" />
     </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1)" Description="Intermediate waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba" LatitudeZ="31.591720000000002" LongitudeX="130.597085" Source="Generated">
+  <SagaArc RefName="SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1)" Description="Intermediate waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba" LatitudeZ="31.59177364954133" LongitudeX="130.5976944807597" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" DisplayName="Approaching Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1)" Description="Triggered when entering Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -960,7 +960,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_0" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.59241" LongitudeX="130.60503833333334" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_0" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.59255702074285" LongitudeX="130.60440179747877" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerryba1_to_YunohiraTenbōsho1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_0" DisplayName="Approaching Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1)" Description="Triggered when entering Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -968,7 +968,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.59222" LongitudeX="130.61002666666667" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.593001949812574" LongitudeX="130.60908130939328" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1" DisplayName="Approaching Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" Description="Triggered when entering Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -976,7 +976,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.59203" LongitudeX="130.615015" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.591230832045618" LongitudeX="130.6144120231328" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" DisplayName="Approaching Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3)" Description="Triggered when entering Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -984,7 +984,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.59184" LongitudeX="130.62000333333333" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.591504857832444" LongitudeX="130.61930972008875" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3" DisplayName="Approaching Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4)" Description="Triggered when entering Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -992,7 +992,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.59165" LongitudeX="130.62499166666666" Source="Generated">
+  <SagaArc RefName="SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho" LatitudeZ="31.591274681640552" LongitudeX="130.62450739947818" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4" DisplayName="Approaching Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5)" Description="Triggered when entering Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1000,7 +1000,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.58860230769231" LongitudeX="130.63375923076921" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.589289500865156" LongitudeX="130.63369595618116" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1008,7 +1008,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.585744615384616" LongitudeX="130.63753846153844" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.585506283318256" LongitudeX="130.6374408903698" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1016,7 +1016,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.582886923076924" LongitudeX="130.6413176923077" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.58336070002777" LongitudeX="130.6416609302149" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1024,7 +1024,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.58002923076923" LongitudeX="130.64509692307692" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.580927359996696" LongitudeX="130.64479231717746" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1032,7 +1032,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_4" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.57717153846154" LongitudeX="130.64887615384615" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_4" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.577812848179747" LongitudeX="130.6484777973953" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_4" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1040,7 +1040,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_5" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.574313846153846" LongitudeX="130.65265538461537" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_5" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.573744580618374" LongitudeX="130.65358021644417" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_5" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1048,7 +1048,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.571456153846157" LongitudeX="130.65643461538463" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.571623521184403" LongitudeX="130.65667282010915" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1056,7 +1056,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_7" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.568598461538464" LongitudeX="130.66021384615385" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_7" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.5683953944646" LongitudeX="130.66117674289873" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_7</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_7" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1064,7 +1064,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_8" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.56574076923077" LongitudeX="130.66399307692308" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_8" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.564982694528684" LongitudeX="130.6639321173928" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_8</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_8" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1072,7 +1072,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.56288307692308" LongitudeX="130.6677723076923" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.5635677202286" LongitudeX="130.66737630504514" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1080,7 +1080,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_10" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.560025384615386" LongitudeX="130.67155153846156" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_10" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.56077963506969" LongitudeX="130.67235664040197" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_10</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_10" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -1088,7 +1088,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.557167692307694" LongitudeX="130.67533076923078" Source="Generated">
+  <SagaArc RefName="YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11" DisplayName="Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" Description="Intermediate waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo" LatitudeZ="31.557870393175435" LongitudeX="130.6743102043493" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11" DisplayName="Approaching Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" Description="Triggered when entering Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" EnterRadius="50.0">
       <Spawn Count="1">
