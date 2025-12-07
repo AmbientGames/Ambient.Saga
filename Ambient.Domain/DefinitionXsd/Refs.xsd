@@ -15,9 +15,7 @@
     <!-- Reference Types -->
     <xs:simpleType name="FactionRef">
         <xs:restriction base="xs:string">
-            <xs:pattern value="[A-Z0-9_]+" />
-            <xs:minLength value="1" />
-            <xs:maxLength value="64" />
-        </xs:restriction>
+			<xs:minLength value="1" />
+		</xs:restriction>
     </xs:simpleType>
 </xs:schema>

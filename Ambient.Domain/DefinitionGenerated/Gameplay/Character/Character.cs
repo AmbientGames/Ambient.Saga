@@ -26,6 +26,8 @@ namespace Ambient.Domain {
         
         private CharacterTrait[] traitsField;
         
+        private string[] tagsField;
+        
         private CharacterTrigger[] battleDialogueField;
         
         private CharacterInitiationBehavior initiationBehaviorField;
@@ -58,6 +60,17 @@ namespace Ambient.Domain {
             }
             set {
                 this.traitsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Tag", IsNullable=false)]
+        public string[] Tags {
+            get {
+                return this.tagsField;
+            }
+            set {
+                this.tagsField = value;
             }
         }
         

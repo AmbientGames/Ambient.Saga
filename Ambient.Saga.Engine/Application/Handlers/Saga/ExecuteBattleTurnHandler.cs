@@ -179,6 +179,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                     battleEngine,
                     turnNumber,
                     enemyCharacterInstanceId,
+                    enemyCharacter,
                     newTransactions);
             }
             else
@@ -227,6 +228,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                             battleEngine,
                             turnNumber,
                             enemyCharacterInstanceId,
+                            enemyCharacter,
                             newTransactions);
                         break;
                     }
@@ -274,6 +276,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                             battleEngine,
                             turnNumber,
                             enemyCharacterInstanceId,
+                            enemyCharacter,
                             newTransactions);
                     }
                 }
@@ -439,6 +442,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         BattleEngine battleEngine,
         int totalTurns,
         Guid enemyCharacterInstanceId,
+        Character enemyCharacter,
         List<SagaTransaction> newTransactions)
     {
         var playerVictory = battleEngine.State == BattleState.Victory;
@@ -461,6 +465,21 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         // If player won, create CharacterDefeated transaction
         if (playerVictory)
         {
+            var data = new Dictionary<string, string>
+            {
+                ["CharacterInstanceId"] = enemyCharacterInstanceId.ToString(),
+                ["CharacterRef"] = enemyCharacter.RefName,
+                ["VictorAvatarId"] = command.AvatarId.ToString(),
+                ["DefeatMethod"] = "Battle",
+                ["BattleTransactionId"] = command.BattleInstanceId.ToString()
+            };
+
+            // Add character tags for quest objective tracking
+            if (enemyCharacter.Tags?.Tag != null && enemyCharacter.Tags.Tag.Count > 0)
+            {
+                data["CharacterTag"] = string.Join(",", enemyCharacter.Tags.Tag);
+            }
+
             var characterDefeatedTx = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
@@ -468,13 +487,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 AvatarId = command.AvatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,
-                Data = new Dictionary<string, string>
-                {
-                    ["CharacterInstanceId"] = enemyCharacterInstanceId.ToString(),
-                    ["VictorAvatarId"] = command.AvatarId.ToString(),
-                    ["DefeatMethod"] = "Battle",
-                    ["BattleTransactionId"] = command.BattleInstanceId.ToString()
-                }
+                Data = data
             };
 
             instance.AddTransaction(characterDefeatedTx);

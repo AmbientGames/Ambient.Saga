@@ -24,6 +24,12 @@ namespace Ambient.Domain {
         
         private QuestObjective[] objectiveField;
         
+        private ConditionLogic logicalOperatorField;
+        
+        public QuestStageObjectives() {
+            this.logicalOperatorField = ConditionLogic.AND;
+        }
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Objective")]
         public QuestObjective[] Objective {
@@ -32,6 +38,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.objectiveField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(ConditionLogic.AND)]
+        public ConditionLogic LogicalOperator {
+            get {
+                return this.logicalOperatorField;
+            }
+            set {
+                this.logicalOperatorField = value;
             }
         }
     }

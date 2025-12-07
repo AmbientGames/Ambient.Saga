@@ -87,21 +87,28 @@ public static class QuestProgressEvaluator
                 t.GetData<string>("StageRef") == stage.RefName);
         }
 
-        // Otherwise check if all required objectives are complete
+        // Otherwise check objectives based on logical operator
         if (stage.Objectives == null || stage.Objectives.Objective == null)
             return false;
 
-        foreach (var objective in stage.Objectives.Objective)
+        var requiredObjectives = stage.Objectives.Objective.Where(o => !o.Optional).ToList();
+        if (!requiredObjectives.Any())
+            return true;
+
+        var useOrLogic = stage.Objectives.LogicalOperator == ConditionLogic.OR;
+
+        if (useOrLogic)
         {
-            // Skip optional objectives
-            if (objective.Optional)
-                continue;
-
-            if (!IsObjectiveComplete(quest, stage, objective, transactions, world))
-                return false;
+            // OR logic: at least one required objective must be complete
+            return requiredObjectives.Any(objective =>
+                IsObjectiveComplete(quest, stage, objective, transactions, world));
         }
-
-        return true;
+        else
+        {
+            // AND logic (default): all required objectives must be complete
+            return requiredObjectives.All(objective =>
+                IsObjectiveComplete(quest, stage, objective, transactions, world));
+        }
     }
 
     /// <summary>
@@ -198,8 +205,8 @@ public static class QuestProgressEvaluator
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.CharacterDefeated &&
-            t.TryGetData<string>("CharacterTag", out var tag) &&
-            tag == objective.CharacterTag);
+            t.TryGetData<string>("CharacterTag", out var tags) &&
+            tags.Split(',').Contains(objective.CharacterTag));
     }
 
     private static int CountCharacterDefeatedByType(QuestObjective objective, List<SagaTransaction> transactions)

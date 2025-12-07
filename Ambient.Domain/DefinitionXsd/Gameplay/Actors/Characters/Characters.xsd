@@ -67,6 +67,13 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
+                    <xs:element name="Tags" minOccurs="0" maxOccurs="1">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Tag" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
                     <xs:element name="BattleDialogue" minOccurs="0" maxOccurs="1">
                         <xs:annotation>
                             <xs:documentation>Mid-battle dialogue triggers that activate based on battle conditions</xs:documentation>
