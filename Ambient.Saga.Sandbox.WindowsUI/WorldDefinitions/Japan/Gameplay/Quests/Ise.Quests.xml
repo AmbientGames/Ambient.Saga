@@ -1,5 +1,350 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Quest RefName="BanditChief_Quest" DisplayName="The Rival School" Description="Stand up to bullies from a rival school causing trouble on the trip.">
+    <Stages StartStage="clear_scouts">
+      <Stage RefName="clear_scouts" DisplayName="Clear the Roads" NextStage="assault">
+        <Objectives>
+          <Objective RefName="defeat_scouts" Type="CharactersDefeatedByTag" Threshold="3" DisplayName="Defeat bandit scouts on the roads" CharacterTag="BanditScout" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="20" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="BanditChief_HideoutMap" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="assault" DisplayName="Assault the Hideout" NextStage="boss">
+        <Objectives>
+          <Objective RefName="defeat_enforcers" Type="CharactersDefeatedByTag" Threshold="2" DisplayName="Defeat the bandit enforcers" CharacterTag="BanditEnforcer" />
+          <Objective RefName="rescue_prisoner" Type="DialogueCompleted" Threshold="1" DisplayName="Rescue the captured merchant" DialogueRef="BanditChief_PrisonerRescue" Optional="true" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnObjective" ObjectiveRef="rescue_prisoner">
+            <Experience Amount="15" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="boss" DisplayName="Defeat the Chief" NextStage="report">
+        <Objectives>
+          <Objective RefName="defeat_chief" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the Bandit Chief" CharacterRef="BanditChief_Boss" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="50" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="report" DisplayName="Claim Your Reward">
+        <Objectives>
+          <Objective RefName="turn_in" Type="DialogueCompleted" Threshold="1" DisplayName="Report your victory" DialogueRef="BanditChief_TurnIn" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+      <Reward Condition="OnSuccess">
+        <Experience Amount="100" />
+      </Reward>
+      <Reward Condition="OnSuccess">
+        <Achievement AchievementRef="BANDIT_SLAYER" />
+      </Reward>
+    </Rewards>
+    <FailConditions>
+      <FailCondition Type="CharacterDied" CharacterRef="BanditChief_Prisoner" />
+    </FailConditions>
+  </Quest>
+  <Quest RefName="FalseProphet_Quest" DisplayName="The Urban Legend" Description="Investigate strange rumors spreading among students about a ghost at the inn.">
+    <Stages StartStage="investigate">
+      <Stage RefName="investigate" DisplayName="Gather Information" NextStage="evidence">
+        <Objectives>
+          <Objective RefName="hear_rumors" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn about the prophet" />
+          <Objective RefName="meet_scholar" Type="DialogueCompleted" Threshold="1" DisplayName="Consult the skeptical scholar" DialogueRef="FalseProphet_ScholarMeet" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="evidence" DisplayName="Find Evidence" NextStage="confront">
+        <Objectives>
+          <Objective RefName="follower_testimony" Type="QuestTokenCollected" Threshold="1" DisplayName="Speak to the former follower" />
+          <Objective RefName="fake_relic" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain proof of fake miracles" />
+          <Objective RefName="find_records" Type="QuestTokenCollected" Threshold="1" DisplayName="Find financial evidence" Optional="true" />
+          <Objective RefName="find_dark_secret" Type="QuestTokenCollected" Threshold="1" DisplayName="Uncover the dark secret" Optional="true" Hidden="true" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="confront" DisplayName="Reveal the Truth" />
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="100" />
+        <Experience Amount="100" />
+      </Reward>
+      <Reward Condition="OnBranch">
+        <Experience Amount="50" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="HiddenCache_Quest" DisplayName="The Secret Shrine" Description="Follow clues to discover a hidden shrine off the tourist path.">
+    <Stages StartStage="acquire_map">
+      <Stage RefName="acquire_map" DisplayName="Acquire the Map" NextStage="decipher">
+        <Objectives>
+          <Objective RefName="get_map" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain the ancient map" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="decipher" DisplayName="Follow the Trail" NextStage="navigate">
+        <Objectives>
+          <Objective RefName="first_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Decipher the first location" />
+          <Objective RefName="second_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Find the second clue" />
+          <Objective RefName="third_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Discover the final marker" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="navigate" DisplayName="Reach the Cache" NextStage="overcome" />
+      <Stage RefName="overcome" DisplayName="Breach the Defenses" NextStage="claim">
+        <Objectives>
+          <Objective RefName="defeat_guardian" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the ancient guardian" CharacterRef="HiddenCache_Guardian" />
+          <Objective RefName="disarm_traps" Type="QuestTokenCollected" Threshold="1" DisplayName="Navigate the trap room" Optional="true" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <QuestToken QuestTokenRef="HiddenCache_AncientKey" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="claim" DisplayName="Claim the Treasure">
+        <Objectives>
+          <Objective RefName="find_cache" Type="QuestTokenCollected" Threshold="1" DisplayName="Discover the hidden cache" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+      <Reward Condition="OnSuccess">
+        <Experience Amount="100" />
+      </Reward>
+      <Reward Condition="OnSuccess">
+        <Achievement AchievementRef="TREASUREHUNTER" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="LostTechnique_Quest" DisplayName="The Old Craftsman" Description="Find a master artisan who can teach traditional techniques.">
+    <Stages StartStage="hear_legend">
+      <Stage RefName="hear_legend" DisplayName="Learn the Legend" NextStage="find_path">
+        <Objectives>
+          <Objective RefName="hear_story" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn about the lost technique" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="find_path" DisplayName="Find the Master" NextStage="trial_body">
+        <Objectives>
+          <Objective RefName="get_directions" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn the path to the master" />
+          <Objective RefName="be_accepted" Type="QuestTokenCollected" Threshold="1" DisplayName="Be accepted as a student" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="trial_body" DisplayName="Trial of the Body" NextStage="trial_mind">
+        <Objectives>
+          <Objective RefName="pass_body" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the first trial" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="25" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="trial_mind" DisplayName="Trial of the Mind" NextStage="trial_spirit">
+        <Objectives>
+          <Objective RefName="pass_mind" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the second trial" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="25" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="trial_spirit" DisplayName="Trial of the Spirit" NextStage="learn">
+        <Objectives>
+          <Objective RefName="pass_spirit" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the third trial" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="25" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="learn" DisplayName="Master the Technique">
+        <Objectives>
+          <Objective RefName="achieve_mastery" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn the lost technique" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Experience Amount="150" />
+      </Reward>
+      <Reward Condition="OnSuccess">
+        <Achievement AchievementRef="MASTERSTUDENT" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="MissingHeirloom_Quest" DisplayName="The Missing Omamori" Description="Help find a classmate's missing protective charm before they notice it's gone.">
+    <Stages StartStage="investigate">
+      <Stage RefName="investigate" DisplayName="Investigate the Theft" NextStage="find_thief">
+        <Objectives>
+          <Objective RefName="gather_witness" Type="QuestTokenCollected" Threshold="1" DisplayName="Get a witness statement" />
+          <Objective RefName="gather_footprints" Type="QuestTokenCollected" Threshold="1" DisplayName="Find physical evidence" />
+          <Objective RefName="gather_cloth" Type="QuestTokenCollected" Threshold="1" DisplayName="Find physical evidence" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="find_thief" DisplayName="Track Down the Thief" NextStage="resolve">
+        <Objectives>
+          <Objective RefName="identify_thief" Type="QuestTokenCollected" Threshold="1" DisplayName="Identify the thief" />
+          <Objective RefName="locate_thief" Type="QuestTokenCollected" Threshold="1" DisplayName="Locate the thief's hideout" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="resolve" DisplayName="Recover the Heirloom" NextStage="return" />
+      <Stage RefName="return" DisplayName="Return the Heirloom">
+        <Objectives>
+          <Objective RefName="return_heirloom" Type="DialogueCompleted" Threshold="1" DisplayName="Return the heirloom to its owner" DialogueRef="MissingHeirloom_Return" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="100" />
+        <Experience Amount="50" />
+      </Reward>
+      <Reward Condition="OnBranch">
+        <Experience Amount="25" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="RefugeeEscort_Quest" DisplayName="The Lost Students" Description="Help find and guide separated students back to the group safely.">
+    <Stages StartStage="gather">
+      <Stage RefName="gather" DisplayName="Prepare for Departure" NextStage="first_leg">
+        <Objectives>
+          <Objective RefName="assemble_group" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather the refugees" />
+          <Objective RefName="gather_supplies" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather travel supplies" Optional="true" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="first_leg" DisplayName="Begin the Journey" NextStage="crisis">
+        <Objectives>
+          <Objective RefName="reach_waypoint" Type="QuestTokenCollected" Threshold="1" DisplayName="Reach the first waypoint" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="crisis" DisplayName="Handle the Crisis" NextStage="pursue" />
+      <Stage RefName="pursue" DisplayName="Fight Off Pursuers" NextStage="border">
+        <Objectives>
+          <Objective RefName="defeat_pursuers" Type="CharactersDefeatedByTag" Threshold="3" DisplayName="Defeat the pursuing scouts" CharacterTag="Pursuer" />
+          <Objective RefName="defeat_captain" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the Pursuer Captain" CharacterRef="RefugeeEscort_Captain" Optional="true" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnObjective" ObjectiveRef="defeat_captain">
+            <Currency Amount="50" />
+            <Experience Amount="30" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="border" DisplayName="Cross to Safety">
+        <Objectives>
+          <Objective RefName="complete_journey" Type="QuestTokenCollected" Threshold="1" DisplayName="Reach safe territory" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="75" />
+        <Experience Amount="100" />
+      </Reward>
+    </Rewards>
+    <FailConditions>
+      <FailCondition Type="CharacterDied" CharacterRef="RefugeeEscort_Leader" />
+    </FailConditions>
+  </Quest>
+  <Quest RefName="RivalGuild_Quest" DisplayName="The Photo Contest" Description="Compete against another school in a photography scavenger hunt.">
+    <Stages StartStage="recruit">
+      <Stage RefName="recruit" DisplayName="Join the Guild" NextStage="intel">
+        <Objectives>
+          <Objective RefName="get_charter" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain guild membership" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="intel" DisplayName="Gather Intelligence" NextStage="sabotage">
+        <Objectives>
+          <Objective RefName="buy_info" Type="QuestTokenCollected" Threshold="1" DisplayName="Acquire intelligence on the rivals" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="sabotage" DisplayName="Sabotage Operations" NextStage="confront">
+        <Objectives>
+          <Objective RefName="complete_sabotage" Type="QuestTokenCollected" Threshold="1" DisplayName="Sabotage rival operations" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="50" />
+            <Experience Amount="30" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="confront" DisplayName="Resolve the Conflict" NextStage="report" />
+      <Stage RefName="report" DisplayName="Report to the Guild Master">
+        <Objectives>
+          <Objective RefName="complete_report" Type="DialogueCompleted" Threshold="1" DisplayName="Report your success to the guild master" DialogueRef="RivalGuild_Report" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+        <Experience Amount="100" />
+      </Reward>
+      <Reward Condition="OnBranch">
+        <Currency Amount="100" />
+      </Reward>
+      <Reward Condition="OnBranch" />
+    </Rewards>
+  </Quest>
+  <Quest RefName="WanderingMerchant_Quest" DisplayName="The Lost Tour Guide" Description="Help a separated tour guide find their way back to their group.">
+    <Stages StartStage="departure">
+      <Stage RefName="departure" DisplayName="Begin the Journey" NextStage="first_leg">
+        <Objectives>
+          <Objective RefName="receive_goods" Type="QuestTokenCollected" Threshold="1" DisplayName="Receive the trade goods from the merchant" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="first_leg" DisplayName="Travel to First Destination" NextStage="first_delivery">
+        <Objectives>
+          <Objective RefName="pass_toll" Type="QuestTokenCollected" Threshold="1" DisplayName="Get past the toll checkpoint" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="first_delivery" DisplayName="Complete First Delivery" NextStage="second_leg">
+        <Objectives>
+          <Objective RefName="deliver_first" Type="QuestTokenCollected" Threshold="1" DisplayName="Deliver goods to the first buyer" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="25" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="second_leg" DisplayName="Continue to Final Destination" NextStage="final_delivery">
+        <Objectives>
+          <Objective RefName="gather_intel" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather road intelligence" Optional="true" Hidden="true" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="final_delivery" DisplayName="Complete the Journey">
+        <Objectives>
+          <Objective RefName="finish_journey" Type="QuestTokenCollected" Threshold="1" DisplayName="Complete the trading journey" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="100" />
+        <Experience Amount="75" />
+      </Reward>
+    </Rewards>
+    <FailConditions>
+      <FailCondition Type="CharacterDied" CharacterRef="WanderingMerchant_Merchant" />
+    </FailConditions>
+  </Quest>
   <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="[AI: Epic Quest Chain Title connecting all major locations]" Description="[AI: Description of legendary quest connecting all Official Saga locations]">
     <Stages StartStage="OFFICIAL_MAIN_CHAIN_STAGE_01">
       <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="[AI: Visit Kōtai Jingū (Inner Shrine)]" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
