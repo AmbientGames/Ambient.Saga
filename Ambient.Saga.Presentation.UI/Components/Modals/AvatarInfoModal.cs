@@ -308,12 +308,6 @@ public class AvatarInfoModal
         ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Exploration:");
         ImGui.Text($"Distance Traveled: {avatar.DistanceTraveled:N0} meters");
 
-        // Saga discoveries
-        if (avatar.SagaArcs != null)
-        {
-            ImGui.Text($"Saga Arcs Discovered: {avatar.SagaArcs.TotalDiscovered}");
-        }
-
         ImGui.Spacing();
         ImGui.Separator();
 
@@ -388,7 +382,7 @@ public class AvatarInfoModal
     {
         ImGui.BeginChild("SummonsScroll", new Vector2(0, 0), ImGuiChildFlags.None);
 
-        if (avatar.Summons == null || avatar.Summons.Length == 0)
+        if (avatar.Affinities == null || avatar.Affinities.Length == 0)
         {
             ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No captured summons");
             ImGui.Spacing();
@@ -400,7 +394,7 @@ public class AvatarInfoModal
         ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Summons ({avatar.Summons.Length}):");
         ImGui.Spacing();
 
-        foreach (var summon in avatar.Summons)
+        foreach (var summon in avatar.Affinities)
         {
             var character = viewModel.CurrentWorld?.TryGetCharacterByRefName(summon.CapturedFromCharacterRef);
             var affinity = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(summon.AffinityRef);
@@ -425,7 +419,6 @@ public class AvatarInfoModal
 
         ImGui.EndChild();
     }
-
     private void RenderStatBar(string label, double value, Vector4 color)
     {
         ImGui.Text($"{label}:");

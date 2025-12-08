@@ -646,10 +646,8 @@ public class SagaInteractionService
         if (resolvedSpawns.Count == 0)
             return;
 
-        // Determine spawn distance based on trigger type
-        var spawnRadius = sagaTrigger.TriggerType == SagaTriggerType.SpawnAndInitiate
-            ? 2.0  // Close to avatar - character will immediately initiate
-            : 10.0; // Distant - player must approach
+        // Spawn characters close to avatar - they will immediately initiate interaction
+        var spawnRadius = 2.0;
 
         // Calculate spawn positions in circle around avatar (Saga-relative)
         var spawnPositions = CalculateCircularSpawnPositions(
