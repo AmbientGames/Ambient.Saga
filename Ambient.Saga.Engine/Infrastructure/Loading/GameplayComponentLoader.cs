@@ -42,9 +42,7 @@ internal static class GameplayComponentLoader
         var sagaTriggerPatternsRef = ResolveRef(config.SagaTriggerPatternsRef, defaultRef);
         var sagasRef = ResolveRef(config.SagaArcsRef, defaultRef);
         var factionsRef = ResolveRef(config.FactionsRef, defaultRef);
-
-        // StatusEffects uses the same ref pattern as CharacterAffinities (same folder)
-        var statusEffectsRef = characterAffinitiesRef;
+        var statusEffectsRef = ResolveRef(config.StatusEffectsRef, defaultRef);
 
         world.Gameplay.Consumables = (await XmlLoader.LoadFromXmlAsync<ConsumableCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{consumableItemsRef}.Consumable.xml"), xsdFilePath)).Consumable ?? [];
         world.Gameplay.Spells = (await XmlLoader.LoadFromXmlAsync<SpellCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{spellsRef}.Spells.xml"), xsdFilePath)).Spell ?? [];
