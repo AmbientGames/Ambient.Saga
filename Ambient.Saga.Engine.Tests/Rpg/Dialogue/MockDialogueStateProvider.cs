@@ -183,4 +183,21 @@ public class MockDialogueStateProvider : IDialogueStateProvider
         if (!string.IsNullOrEmpty(characterRef))
             _partyMembers.Remove(characterRef);
     }
+
+    // Affinity management
+    private readonly Dictionary<string, string> _affinities = new(); // AffinityRef -> CapturedFromCharacterRef
+
+    public bool HasAffinity(string affinityRef) => _affinities.ContainsKey(affinityRef);
+
+    public void AddAffinity(string affinityRef, string capturedFromCharacterRef)
+    {
+        if (!string.IsNullOrEmpty(affinityRef) && !_affinities.ContainsKey(affinityRef))
+            _affinities[affinityRef] = capturedFromCharacterRef;
+    }
+
+    /// <summary>
+    /// Test helper to get the character who granted an affinity.
+    /// </summary>
+    public string? GetAffinitySource(string affinityRef) =>
+        _affinities.TryGetValue(affinityRef, out var source) ? source : null;
 }

@@ -110,4 +110,18 @@ public interface IDialogueStateProvider
     /// </summary>
     /// <param name="characterRef">Character to remove</param>
     void RemovePartyMember(string characterRef);
+
+    // ===== AFFINITY MANAGEMENT =====
+    /// <summary>
+    /// Checks if the avatar has a specific affinity.
+    /// </summary>
+    /// <param name="affinityRef">Affinity to check</param>
+    bool HasAffinity(string affinityRef);
+
+    /// <summary>
+    /// Grants an affinity to the avatar, captured from a character.
+    /// </summary>
+    /// <param name="affinityRef">Affinity to grant</param>
+    /// <param name="capturedFromCharacterRef">Character the affinity was captured from</param>
+    void AddAffinity(string affinityRef, string capturedFromCharacterRef);
 }

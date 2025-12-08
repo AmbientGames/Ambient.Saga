@@ -380,4 +380,28 @@ public static class DialogueTransactionHelper
             }
         };
     }
+
+    /// <summary>
+    /// Creates a transaction for granting a character affinity to the avatar.
+    /// </summary>
+    public static SagaTransaction CreateAffinityGrantedTransaction(
+        string avatarId,
+        string affinityRef,
+        string capturedFromCharacterRef,
+        Guid sagaInstanceId)
+    {
+        return new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.AffinityGranted,
+            AvatarId = avatarId,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["AffinityRef"] = affinityRef,
+                ["CapturedFromCharacterRef"] = capturedFromCharacterRef,
+                ["SagaInstanceId"] = sagaInstanceId.ToString()
+            }
+        };
+    }
 }

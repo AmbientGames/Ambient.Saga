@@ -127,5 +127,8 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         LeaveParty,
+        
+        /// <remarks/>
+        GrantAffinity,
     }
 }

@@ -167,3 +167,12 @@ public class ApplyStatusEffectEvent : DialogueSystemEvent
     public string StatusEffectRef { get; init; } = string.Empty;
     public string TargetCharacterRef { get; init; } = string.Empty;
 }
+
+/// <summary>
+/// Raised when dialogue grants a character affinity to the avatar.
+/// </summary>
+public class AffinityGrantedEvent : DialogueSystemEvent
+{
+    public string AffinityRef { get; init; } = string.Empty;
+    public string CapturedFromCharacterRef { get; init; } = string.Empty;
+}

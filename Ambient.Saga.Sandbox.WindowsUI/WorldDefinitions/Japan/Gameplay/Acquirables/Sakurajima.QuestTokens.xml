@@ -5,6 +5,9 @@
   <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Recovered Goods" Description="Goods stolen from travelers and merchants" />
   <QuestToken RefName="BanditChief_Bounty" DisplayName="Bounty Notice" Description="Official bounty for the bandit chief" />
   <QuestToken RefName="BanditChief_RescueStarted" DisplayName="Rescue Attempt" Description="You've begun rescuing the captured merchant" />
+  <QuestToken RefName="ElementalSage_TrialToken" DisplayName="Spirit's Mark" Description="A glowing mark showing the volcano spirit has chosen you for trial" />
+  <QuestToken RefName="ElementalSage_TrialComplete" DisplayName="Guardian's Essence" Description="The spiritual essence proving victory over the flame guardian" />
+  <QuestToken RefName="ElementalSage_AffinityGranted" DisplayName="Hi no Kizuna" Description="The sacred bond connecting you to the fire spirit's power" />
   <QuestToken RefName="FalseProphet_Rumor" DisplayName="Troubling Rumors" Description="Whispers about strange happenings around the prophet" />
   <QuestToken RefName="FalseProphet_FollowerAccount" DisplayName="Follower's Testimony" Description="An ex-follower's account of what really happens" />
   <QuestToken RefName="FalseProphet_FakeRelic" DisplayName="Fake Holy Relic" Description="A prop used to fake miracles" />

@@ -52,6 +52,9 @@ public enum SagaTransactionType
     PartyMemberJoined,       // Companion joined the party
     PartyMemberLeft,         // Companion left the party
 
+    // Affinity management
+    AffinityGranted,         // Character affinity granted to avatar
+
     // Loot and rewards
     LootAwarded,
     EffectApplied,

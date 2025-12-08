@@ -167,6 +167,87 @@
       <Action Type="CompleteQuest" RefName="BanditChief_Quest" Amount="1" />
     </Node>
   </DialogueTree>
+  <DialogueTree RefName="ElementalSage_Introduction" DisplayName="Meeting the Sage" StartNodeId="introduction_hub">
+    <Node NodeId="introduction_hub">
+      <Text>*Flames dance around an ancient figure*</Text>
+      <Choice Text="[First meeting]" NextNodeId="first_meeting" />
+      <Choice Text="[Trial complete, ready for affinity]" NextNodeId="trial_complete" />
+      <Choice Text="[Affinity already granted]" NextNodeId="already_granted_end" />
+    </Node>
+    <Node NodeId="first_meeting">
+      <Condition Type="LacksQuestToken" RefName="ElementalSage_TrialToken" />
+      <Text>A seeker approaches. Few find this place, fewer still are worthy.</Text>
+      <Text>I am the keeper of the Fire affinity - the essence of passion, destruction, and renewal.</Text>
+      <Choice Text="Can you teach me?" NextNodeId="explain_trial" />
+      <Choice Text="What is an affinity?" NextNodeId="explain_affinity" />
+      <Choice Text="I was just passing through." NextNodeId="dismiss_end" />
+    </Node>
+    <Node NodeId="explain_affinity">
+      <Text>Affinities are the elemental essences that flow through all things.</Text>
+      <Text>To wield one is to become attuned to its nature - stronger against some, weaker against others.</Text>
+      <Text>Fire consumes the Wild, but Water quenches even the brightest flame.</Text>
+      <Choice Text="How do I gain this power?" NextNodeId="explain_trial" />
+      <Choice Text="This isn't for me." NextNodeId="dismiss_end" />
+    </Node>
+    <Node NodeId="explain_trial">
+      <Text>Power is earned, not given. You must prove your worth through trial.</Text>
+      <Text>Face my Guardian in combat. Show me your spirit burns bright enough to wield flame.</Text>
+      <Choice Text="I accept your trial." NextNodeId="accept_trial_end" />
+      <Choice Text="I need to prepare first." NextNodeId="prepare_end" />
+    </Node>
+    <Node NodeId="accept_trial_end">
+      <Text>So be it. The Guardian awaits in the chamber below.</Text>
+      <Text>Defeat it, and return to me. Let your determination forge the path.</Text>
+      <Action Type="AcceptQuest" RefName="ElementalSage_Quest" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="ElementalSage_TrialToken" Amount="1" />
+    </Node>
+    <Node NodeId="prepare_end">
+      <Text>Wisdom knows its limits. Return when you are ready, seeker.</Text>
+    </Node>
+    <Node NodeId="dismiss_end">
+      <Text>Few are ready for such power. Perhaps another time, wanderer.</Text>
+    </Node>
+    <Node NodeId="trial_complete">
+      <Condition Type="HasQuestToken" RefName="ElementalSage_TrialComplete" />
+      <Condition Type="LacksQuestToken" RefName="ElementalSage_AffinityGranted" />
+      <Text>*The sage's flames burn brighter*</Text>
+      <Text>You have proven yourself! The Guardian's defeat shows your spirit is strong.</Text>
+      <Text>Now, receive my gift - the Fire affinity shall be yours.</Text>
+      <Choice Text="I am ready." NextNodeId="grant_affinity_end" />
+    </Node>
+    <Node NodeId="grant_affinity_end">
+      <Text>*The sage reaches out, and flames flow from their hand into yours*</Text>
+      <Text>Feel the fire within you now. It will burn those of the Wild, but beware the quenching tide.</Text>
+      <Text>Go forth, flame-bearer. May your passion light the way.</Text>
+      <Action Type="GrantAffinity" RefName="Fire" CharacterRef="ElementalSage_Sage" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="ElementalSage_AffinityGranted" Amount="1" />
+      <Action Type="TakeQuestToken" RefName="ElementalSage_TrialComplete" Amount="1" />
+      <Action Type="TakeQuestToken" RefName="ElementalSage_TrialToken" Amount="1" />
+      <Action Type="CompleteQuest" RefName="ElementalSage_Quest" Amount="1" />
+    </Node>
+    <Node NodeId="already_granted_end">
+      <Condition Type="HasQuestToken" RefName="ElementalSage_AffinityGranted" />
+      <Text>The flame burns within you already, child of fire.</Text>
+      <Text>Use your gift wisely. The world needs more who understand true passion.</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="ElementalSage_GuardianEncounter" DisplayName="Guardian Trial" StartNodeId="guardian_challenge">
+    <Node NodeId="guardian_challenge">
+      <Condition Type="HasQuestToken" RefName="ElementalSage_TrialToken" />
+      <Text>*A construct of living flame rises before you*</Text>
+      <Text>PROVE YOUR WORTH, SEEKER. ONLY THE STRONG MAY CLAIM THE FIRE.</Text>
+      <Choice Text="Face me!" NextNodeId="begin_combat" />
+      <Choice Text="I need more preparation." NextNodeId="retreat_end" />
+    </Node>
+    <Node NodeId="begin_combat">
+      <Text>*The Guardian ignites fully and attacks!*</Text>
+      <Action Type="StartCombat" CharacterRef="ElementalSage_Guardian" Amount="1" />
+    </Node>
+    <Node NodeId="retreat_end">
+      <Text>*The Guardian's flames dim slightly*</Text>
+      <Text>RETURN WHEN YOUR SPIRIT BURNS BRIGHTER.</Text>
+    </Node>
+  </DialogueTree>
   <DialogueTree RefName="FalseProphet_Start" DisplayName="A Concerned Plea" StartNodeId="worry_hub">
     <Node NodeId="worry_hub">
       <Text>*A worried elder approaches you*</Text>

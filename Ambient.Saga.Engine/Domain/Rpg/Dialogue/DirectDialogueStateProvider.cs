@@ -329,4 +329,36 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
 
         _a.Party = PartyManager.RemovePartyMember(_a.Party, characterRef);
     }
+
+    // ===== AFFINITY MANAGEMENT =====
+
+    /// <summary>
+    /// Checks if the avatar has a specific affinity.
+    /// </summary>
+    public bool HasAffinity(string affinityRef)
+    {
+        return _a.Affinities?.Any(a => a.AffinityRef == affinityRef) ?? false;
+    }
+
+    /// <summary>
+    /// Grants an affinity to the avatar, captured from a character.
+    /// </summary>
+    public void AddAffinity(string affinityRef, string capturedFromCharacterRef)
+    {
+        if (string.IsNullOrEmpty(affinityRef))
+            return;
+
+        // Don't add duplicate affinities (same affinity from same character)
+        if (_a.Affinities?.Any(a => a.AffinityRef == affinityRef && a.CapturedFromCharacterRef == capturedFromCharacterRef) ?? false)
+            return;
+
+        var affinities = _a.Affinities?.ToList() ?? new List<Affinity>();
+        affinities.Add(new Affinity
+        {
+            AffinityRef = affinityRef,
+            CapturedFromCharacterRef = capturedFromCharacterRef,
+            AcquiredDate = DateTime.UtcNow.ToString("O")
+        });
+        _a.Affinities = affinities.ToArray();
+    }
 }

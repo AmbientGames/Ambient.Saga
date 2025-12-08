@@ -57,6 +57,30 @@
       <FailCondition Type="CharacterDied" CharacterRef="BanditChief_Prisoner" />
     </FailConditions>
   </Quest>
+  <Quest RefName="ElementalSage_Quest" DisplayName="Trial of the Fire Spirit" Description="Prove your worth to the volcano spirit and receive the blessing of flame.">
+    <Stages StartStage="defeat_guardian">
+      <Stage RefName="defeat_guardian" DisplayName="Face the Guardian" NextStage="receive_affinity">
+        <Objectives>
+          <Objective RefName="defeat_guardian_obj" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the Flame Guardian" CharacterRef="ElementalSage_Guardian" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="30" />
+          </Reward>
+        </Rewards>
+      </Stage>
+      <Stage RefName="receive_affinity" DisplayName="Receive the Fire Affinity">
+        <Objectives>
+          <Objective RefName="speak_sage" Type="DialogueCompleted" Threshold="1" DisplayName="Return to the Sage to receive your reward" DialogueRef="ElementalSage_Introduction" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Experience Amount="50" />
+      </Reward>
+    </Rewards>
+  </Quest>
   <Quest RefName="FalseProphet_Quest" DisplayName="The Wandering Priest" Description="Investigate a charismatic religious figure whose followers are suspiciously devoted.">
     <Stages StartStage="investigate">
       <Stage RefName="investigate" DisplayName="Gather Information" NextStage="evidence">

@@ -5,6 +5,9 @@
   <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Recovered Goods" Description="Goods stolen from travelers and merchants" />
   <QuestToken RefName="BanditChief_Bounty" DisplayName="Bounty Notice" Description="Official bounty for the bandit chief" />
   <QuestToken RefName="BanditChief_RescueStarted" DisplayName="Rescue Attempt" Description="You've begun rescuing the captured merchant" />
+  <QuestToken RefName="ElementalSage_TrialToken" DisplayName="Shrine Visitor Pass" Description="A special talisman allowing entry to the sacred inner grounds" />
+  <QuestToken RefName="ElementalSage_TrialComplete" DisplayName="Trial Completion Seal" Description="A stamp proving you passed the shrine's spiritual test" />
+  <QuestToken RefName="ElementalSage_AffinityGranted" DisplayName="Sacred Fire Blessing" Description="A spiritual connection to the shrine's eternal flame" />
   <QuestToken RefName="FalseProphet_Rumor" DisplayName="Troubling Rumors" Description="Whispers about strange happenings around the prophet" />
   <QuestToken RefName="FalseProphet_FollowerAccount" DisplayName="Follower's Testimony" Description="An ex-follower's account of what really happens" />
   <QuestToken RefName="FalseProphet_FakeRelic" DisplayName="Fake Holy Relic" Description="A prop used to fake miracles" />

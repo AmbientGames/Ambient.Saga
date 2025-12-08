@@ -1034,6 +1034,38 @@ public static class WorldValidationService
                 // No additional validation needed here
                 break;
 
+            // Party management
+            case DialogueActionType.JoinParty:
+            case DialogueActionType.LeaveParty:
+                // CharacterRef specifies which character joins/leaves the party
+                if (string.IsNullOrEmpty(action.CharacterRef))
+                {
+                    errors.Add($"{actionContext}: CharacterRef is required for party management actions");
+                }
+                else
+                {
+                    ValidateReference(world.CharactersLookup, action.CharacterRef, actionContext, "CharacterRef", "Characters", errors);
+                }
+                break;
+
+            // Affinity granting
+            case DialogueActionType.GrantAffinity:
+                // RefName specifies the affinity type (e.g., "Fire", "Water")
+                // CharacterRef specifies which character grants the affinity
+                if (string.IsNullOrEmpty(action.RefName))
+                {
+                    errors.Add($"{actionContext}: RefName is required (specifies affinity type)");
+                }
+                if (string.IsNullOrEmpty(action.CharacterRef))
+                {
+                    errors.Add($"{actionContext}: CharacterRef is required (specifies granting character)");
+                }
+                else
+                {
+                    ValidateReference(world.CharactersLookup, action.CharacterRef, actionContext, "CharacterRef", "Characters", errors);
+                }
+                break;
+
             default:
                 errors.Add($"{actionContext}: Unknown action type");
                 break;

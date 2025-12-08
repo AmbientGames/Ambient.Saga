@@ -328,6 +328,36 @@ public class DialogueActionExecutor
                 }
                 break;
 
+            // Affinity granting - IDEMPOTENT (only grant on first visit)
+            case DialogueActionType.GrantAffinity:
+                if (shouldAwardRewards)
+                {
+                    // Use CharacterRef from action, or fall back to the current dialogue character
+                    var sourceCharacterRef = !string.IsNullOrEmpty(action.CharacterRef) ? action.CharacterRef : characterRef;
+                    _stateProvider.AddAffinity(action.RefName, sourceCharacterRef);
+
+                    // Raise event for UI/system handling
+                    _raisedEvents.Add(new AffinityGrantedEvent
+                    {
+                        DialogueTreeRef = dialogueTreeRef,
+                        NodeId = nodeId,
+                        AffinityRef = action.RefName,
+                        CapturedFromCharacterRef = sourceCharacterRef
+                    });
+
+                    if (_sagaContext != null)
+                    {
+                        var transaction = DialogueTransactionHelper.CreateAffinityGrantedTransaction(
+                            _sagaContext.AvatarId,
+                            action.RefName,
+                            sourceCharacterRef,
+                            _sagaContext.SagaInstance.InstanceId
+                        );
+                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                    }
+                }
+                break;
+
             // Faction reputation - IDEMPOTENT (only change on first visit)
             case DialogueActionType.ChangeReputation:
                 if (shouldAwardRewards)

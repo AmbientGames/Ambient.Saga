@@ -156,6 +156,12 @@
                     <xs:documentation>NPC leaves the player's party (uses CharacterRef)</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
+            <!-- Affinity Actions -->
+            <xs:enumeration value="GrantAffinity">
+                <xs:annotation>
+                    <xs:documentation>Grant a character affinity to the avatar (uses RefName for affinity, CharacterRef for source character)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="CharacterStateType">

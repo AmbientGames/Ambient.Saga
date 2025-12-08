@@ -1058,4 +1058,102 @@ public class DialogueActionExecutorTests
     }
 
     #endregion
+
+    #region Affinity Actions
+
+    [Fact]
+    public void GrantAffinity_AddsAffinityToAvatar()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.GrantAffinity,
+            RefName = "Fire",
+            CharacterRef = "fire_elemental"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.True(_state.HasAffinity("Fire"));
+        Assert.Equal("fire_elemental", _state.GetAffinitySource("Fire"));
+    }
+
+    [Fact]
+    public void GrantAffinity_UsesCurrentCharacterRef_WhenCharacterRefNotSpecified()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.GrantAffinity,
+            RefName = "Lightning"
+            // CharacterRef not specified - should fall back to current dialogue character
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "thunder_mage", true);
+
+        Assert.True(_state.HasAffinity("Lightning"));
+        Assert.Equal("thunder_mage", _state.GetAffinitySource("Lightning"));
+    }
+
+    [Fact]
+    public void GrantAffinity_RaisesAffinityGrantedEvent()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.GrantAffinity,
+            RefName = "Ice",
+            CharacterRef = "frost_wyrm"
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.Single(_executor.RaisedEvents);
+        var evt = _executor.RaisedEvents[0] as AffinityGrantedEvent;
+        Assert.NotNull(evt);
+        Assert.Equal("Ice", evt.AffinityRef);
+        Assert.Equal("frost_wyrm", evt.CapturedFromCharacterRef);
+    }
+
+    [Fact]
+    public void GrantAffinity_IsIdempotent_DoesNotAwardOnSecondVisit()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.GrantAffinity,
+            RefName = "Arcane",
+            CharacterRef = "archmage"
+        };
+
+        // First execution - should award
+        _executor.Execute(action, "test_tree", "node1", "test_character", true);
+
+        Assert.True(_state.HasAffinity("Arcane"));
+        Assert.Single(_executor.RaisedEvents);
+
+        // Clear events
+        _executor.ClearEvents();
+
+        // Second execution with shouldAwardRewards = false - should NOT award again
+        _executor.Execute(action, "test_tree", "node1", "test_character", false);
+
+        // Affinity still exists (from first call), but no new event was raised
+        Assert.True(_state.HasAffinity("Arcane"));
+        Assert.Empty(_executor.RaisedEvents);
+    }
+
+    [Fact]
+    public void GrantAffinity_WithExplicitCharacterRef_OverridesCurrentCharacter()
+    {
+        var action = new DialogueAction
+        {
+            Type = DialogueActionType.GrantAffinity,
+            RefName = "Holy",
+            CharacterRef = "high_priest" // Explicitly set
+        };
+
+        _executor.Execute(action, "test_tree", "node1", "different_character", true);
+
+        Assert.True(_state.HasAffinity("Holy"));
+        Assert.Equal("high_priest", _state.GetAffinitySource("Holy"));
+    }
+
+    #endregion
 }
