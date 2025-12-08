@@ -2,11 +2,11 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../EntityBase.xsd" />
     <xs:include schemaLocation="../../Refs.xsd" />
-    <xs:include schemaLocation="../Acquirables/Equipment.xsd" />
-    <xs:include schemaLocation="../Acquirables/Consumable.xsd" />
-    <xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
+	<xs:include schemaLocation="../Acquirables/Equipment.xsd" />
+	<xs:include schemaLocation="../Acquirables/Consumable.xsd" />
+	<xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
 
-    <!-- Reputation Level Enumeration -->
+	<!-- Reputation Level Enumeration -->
     <xs:simpleType name="ReputationLevel">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Hated" />       <!-- -42000 to -21000 -->
@@ -38,29 +38,29 @@
 
     <!-- Reputation Reward (unlocked at specific reputation level) -->
     <xs:complexType name="ReputationReward">
-        <xs:sequence>
-            <xs:element name="Equipment" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="EquipmentRef" type="EquipmentRef" use="required" />
-                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
-                    <xs:attribute name="DiscountPercent" type="xs:float" use="optional" default="0" />
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="Consumable" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="ConsumableRef" type="ConsumableRef" use="required" />
-                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
-                    <xs:attribute name="DiscountPercent" type="xs:float" use="optional" default="0" />
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="QuestToken" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="QuestTokenRef" type="QuestTokenRef" use="required" />
-                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-        <xs:attribute name="RequiredLevel" type="ReputationLevel" use="required" />
+		<xs:sequence>
+			<xs:element name="Equipment" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="EquipmentRef" type="EquipmentRef" use="required" />
+					<xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+					<xs:attribute name="DiscountPercent" type="xs:float" use="optional" default="0" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Consumable" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="ConsumableRef" type="ConsumableRef" use="required" />
+					<xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+					<xs:attribute name="DiscountPercent" type="xs:float" use="optional" default="0" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="QuestToken" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="QuestTokenRef" type="QuestTokenRef" use="required" />
+					<xs:attribute name="Quantity" type="xs:int" use="optional" default="1" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="RequiredLevel" type="ReputationLevel" use="required" />
     </xs:complexType>
 
     <!-- Faction (Main Definition) -->
@@ -90,22 +90,22 @@
                 <!-- Starting reputation for new characters (default: 0 = Neutral) -->
                 <xs:attribute name="StartingReputation" type="xs:int" use="optional" default="0" />
 
-                <!-- Faction category (for grouping) -->
-                <xs:attribute name="Category" use="optional">
-                    <xs:simpleType>
-                        <xs:restriction base="xs:string">
-                            <xs:enumeration value="City" />
-                            <xs:enumeration value="Guild" />
-                            <xs:enumeration value="Military" />
-                            <xs:enumeration value="Religious" />
-                            <xs:enumeration value="Criminal" />
-                            <xs:enumeration value="Merchant" />
-                            <xs:enumeration value="Nature" />
-                            <xs:enumeration value="Other" />
-                        </xs:restriction>
-                    </xs:simpleType>
-                </xs:attribute>
-            </xs:extension>
+				<!-- Faction category (for grouping) -->
+				<xs:attribute name="Category" use="optional">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="City" />
+							<xs:enumeration value="Guild" />
+							<xs:enumeration value="Military" />
+							<xs:enumeration value="Religious" />
+							<xs:enumeration value="Criminal" />
+							<xs:enumeration value="Merchant" />
+							<xs:enumeration value="Nature" />
+							<xs:enumeration value="Other" />
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
         </xs:complexContent>
     </xs:complexType>
 

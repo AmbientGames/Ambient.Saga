@@ -30,9 +30,6 @@
     <!-- Application Method -->
     <xs:simpleType name="ApplicationMethod">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="OnHit" />           <!-- Applied when weapon/spell hits -->
-            <xs:enumeration value="OnCriticalHit" />   <!-- Only on critical hits -->
-            <xs:enumeration value="OnDefend" />        <!-- Applied when defending -->
             <xs:enumeration value="StartOfTurn" />     <!-- Applied at turn start -->
             <xs:enumeration value="EndOfTurn" />       <!-- Applied at turn end -->
         </xs:restriction>
@@ -60,9 +57,6 @@
                 <!-- Stack limit (0 = no stacking, can only have 1 instance) -->
                 <xs:attribute name="MaxStacks" type="xs:int" use="optional" default="1" />
 
-                <!-- Application chance (0.0 to 1.0) -->
-                <xs:attribute name="ApplicationChance" type="xs:float" use="optional" default="1.0" />
-
                 <!-- Can be cleansed by consumables/spells -->
                 <xs:attribute name="Cleansable" type="xs:boolean" use="optional" default="true" />
 
@@ -75,7 +69,6 @@
                         <xs:restriction base="xs:string">
                             <xs:enumeration value="Debuff" />
                             <xs:enumeration value="Buff" />
-                            <xs:enumeration value="Neutral" />
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:attribute>
