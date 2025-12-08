@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../../EntityBase.xsd" />
-    <xs:include schemaLocation="../../../SharedRefs.xsd" />
     <xs:include schemaLocation="../../Acquirables/ItemCollection.xsd" />
     <xs:include schemaLocation="../../Acquirables/CharacterEffects.xsd" />
     <xs:include schemaLocation="../CharacterBase/CharacterStats.xsd" />
@@ -22,7 +21,6 @@
                     <xs:element name="RespawnCapabilities" type="ItemCollection" minOccurs="1" maxOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="AffinityRef" type="CharacterAffinityRef" use="optional" />
-                <xs:attribute name="ModelRef" type="ModelRef" use="optional" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

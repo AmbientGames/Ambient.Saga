@@ -103,16 +103,7 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
-                    <xs:element name="InitiationBehavior" minOccurs="0">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element name="InitialGreeting" type="xs:string"></xs:element>
-                            </xs:sequence>
-                            <xs:attribute name="InitialState" type="CharacterStateType" use="optional" default="Neutral"></xs:attribute>
-                        </xs:complexType>
-                    </xs:element>
                 </xs:sequence>
-                <xs:attribute name="ModelRef" type="ModelRef" use="optional" />
                 <xs:attribute name="RespawnIntervalSeconds" type="xs:int" use="optional" default="0" />
             </xs:extension>
         </xs:complexContent>

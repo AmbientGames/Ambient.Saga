@@ -1,14 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
-    <xs:include schemaLocation="InteractableBase.xsd" />
+    <xs:include schemaLocation="Acquirables/ItemCollection.xsd" />
+    <xs:include schemaLocation="Acquirables/RewardEffects.xsd" />
+    <xs:include schemaLocation="Acquirables/QuestToken.xsd" />
+    <xs:include schemaLocation="CommonTypes.xsd" />
     <xs:include schemaLocation="Actors/Characters/Dialogue.xsd" />
     <xs:complexType name="Interactable">
-        <xs:complexContent>
-            <xs:extension base="InteractableBase">
-                <xs:sequence>
-                    <xs:element name="DialogueTreeRef" type="DialogueTreeRef" minOccurs="0"></xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
+        <xs:sequence>
+            <xs:element name="Content" type="xs:string" minOccurs="0"></xs:element>
+            <xs:element name="Loot" type="ItemCollection" minOccurs="0"></xs:element>
+            <xs:element name="Effects" type="RewardEffects" minOccurs="0"></xs:element>
+            <xs:element name="RequiresQuestTokenRef" type="QuestTokenRef" minOccurs="0" maxOccurs="unbounded"></xs:element>
+            <xs:element name="GivesQuestTokenRef" type="QuestTokenRef" minOccurs="0" maxOccurs="unbounded"></xs:element>
+            <xs:element name="DialogueTreeRef" type="DialogueTreeRef" minOccurs="0"></xs:element>
+        </xs:sequence>
+        <xs:attribute name="ApproachRadius" type="xs:float" use="optional" default="5.0"></xs:attribute>
+        <xs:attribute name="MaxInteractions" type="xs:int" use="optional" default="-1"></xs:attribute>
+        <xs:attribute name="ReinteractIntervalSeconds" type="NonNegativeInt" use="optional" default="0"></xs:attribute>
     </xs:complexType>
 </xs:schema>
