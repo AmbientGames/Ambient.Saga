@@ -7,14 +7,8 @@
     <xs:include schemaLocation="../Acquirables/RewardEffects.xsd" />
     <xs:include schemaLocation="../Acquirables/ItemCollection.xsd" />
     <xs:include schemaLocation="../CommonTypes.xsd" />
-    <xs:include schemaLocation="../InteractableBase.xsd" />
+    <xs:include schemaLocation="../Interactable.xsd" />
     <xs:include schemaLocation="../Quests/Quest.xsd" />
-    <xs:simpleType name="SagaTriggerType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="SpawnAndInitiate"></xs:enumeration>
-            <xs:enumeration value="SpawnPassive"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
     <xs:simpleType name="Meters">
         <xs:restriction base="xs:float">
             <xs:minInclusive value="0" />
@@ -39,13 +33,11 @@
                 </xs:sequence>
                 <xs:attribute name="EnterRadius" type="Meters" use="required" />
                 <xs:attribute name="Tags" type="xs:string" use="optional" />
-                <xs:attribute name="TriggerType" type="SagaTriggerType" use="optional" default="SpawnPassive"></xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     <xs:simpleType name="QuestDifficulty">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Trivial" />
             <xs:enumeration value="Easy" />
             <xs:enumeration value="Normal" />
             <xs:enumeration value="Hard" />
@@ -67,13 +59,9 @@
         <xs:complexContent>
             <xs:extension base="EntityBase">
                 <xs:sequence>
-                    <xs:element name="Interactable" type="InteractableBase" minOccurs="0"></xs:element>
+                    <xs:element name="Interactable" type="Interactable" minOccurs="0"></xs:element>
                 </xs:sequence>
                 <xs:attribute name="Type" type="SagaFeatureType" use="required" />
-                <xs:attribute name="CategoryType" type="xs:string" use="optional" />
-                <xs:attribute name="SubType" type="xs:string" use="optional" />
-                <xs:attribute name="Tags" type="xs:string" use="optional" />
-                <xs:attribute name="ModelRef" type="ModelRef" use="optional" />
                 <!-- Quest-specific attributes (only used when Type="Quest") -->
                 <xs:attribute name="QuestRef" type="QuestRef" use="optional" />
                 <xs:attribute name="Difficulty" type="QuestDifficulty" use="optional" default="Normal" />
