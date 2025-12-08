@@ -80,49 +80,4 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine)" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
 </SagaFeatures>

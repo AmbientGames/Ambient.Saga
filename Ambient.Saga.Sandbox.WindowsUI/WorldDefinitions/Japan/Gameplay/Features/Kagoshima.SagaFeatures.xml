@@ -420,34 +420,4 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" Description="Intermediate waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_0" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (1)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_1" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (2)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_2" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (3)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_3" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (4)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
-  <SagaFeature RefName="Tsurumarujō1_to_Isoteien1_4" DisplayName="Waypoint between Tsurumaru-jō and Iso-teien (5)" Description="Intermediate waypoint between Tsurumaru-jō and Iso-teien" Type="Landmark">
-    <Interactable>
-      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
-    </Interactable>
-  </SagaFeature>
 </SagaFeatures>

@@ -759,22 +759,26 @@
     <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Claymore" Condition="1.0" />
-        <Entry EquipmentRef="IronMace" Condition="1.0" />
-        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
-        <Entry EquipmentRef="WizardRobes" Condition="1.0" />
-        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+        <Entry EquipmentRef="GoldRing" Condition="1.0" />
+        <Entry EquipmentRef="SilverRing" Condition="1.0" />
+        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
+        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
+        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
+        <Entry EquipmentRef="ShortBow" Condition="1.0" />
+        <Entry EquipmentRef="WizardHat" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonResistPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="2" />
-        <Entry ConsumableRef="ScrollOfHaste" Quantity="1" />
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="4" />
-        <Entry ConsumableRef="HastePotion" Quantity="4" />
+        <Entry ConsumableRef="Ale" Quantity="2" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="2" />
+        <Entry ConsumableRef="AcidBomb" Quantity="1" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="4" />
+        <Entry ConsumableRef="Wine" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
         <Entry SpellRef="Obliterate" Condition="1.0" />
+        <Entry SpellRef="Disintegrate" Condition="1.0" />
+        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -792,25 +796,26 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_YunohiraTenbōsho" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōshoSpoke1Ring1" DisplayName="Trader at Yunohira Tenbōsho Spoke 1 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 1 Ring 1" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_11&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_0&quot;,&quot;YunohiraTenb\u014DshoSpoke2Ring1&quot;]}">
+  <Character RefName="MERCHANT_YunohiraTenbōshoSpoke1Ring1" DisplayName="Trader at Yunohira Tenbōsho Spoke 1 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 1 Ring 1" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_11&quot;,&quot;YunohiraTenb\u014DshoSpoke2Ring1&quot;,&quot;YunohiraTenb\u014Dsho&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SummonerOrb" Condition="1.0" />
+        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CurativePotion" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="3" />
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="1" />
+        <Entry ConsumableRef="ManaGem" Quantity="1" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="2" />
+        <Entry ConsumableRef="ThrowingAxe" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="DiscordantNote" Condition="1.0" />
+        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
   <Character RefName="NPC_YunohiraTenbōshoSpoke1Ring2" DisplayName="Traveler at Yunohira Tenbōsho Spoke 1 Ring 2" Description="Character at Yunohira Tenbōsho Spoke 1 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke1Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke1Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_10&quot;]}">
@@ -825,20 +830,21 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HastePotion" Quantity="5" />
-        <Entry ConsumableRef="DivineBlessing" Quantity="1" />
+        <Entry ConsumableRef="SmellingSalts" Quantity="4" />
+        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="SuperiorManaPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Lullaby" Condition="1.0" />
+        <Entry SpellRef="HymnOfValor" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
   <Character RefName="NPC_YunohiraTenbōshoSpoke1Ring5" DisplayName="Traveler at Yunohira Tenbōsho Spoke 1 Ring 5" Description="Character at Yunohira Tenbōsho Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke1Ring4&quot;,&quot;YunohiraTenb\u014DshoSpoke1Ring3&quot;,&quot;YunohiraTenb\u014DshoSpoke1Ring2&quot;]}">
@@ -853,16 +859,15 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="OakStaff" Condition="1.0" />
+        <Entry EquipmentRef="ChainBoots" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DivineBlessing" Quantity="1" />
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="4" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
+        <Entry ConsumableRef="FrostResistPotion" Quantity="1" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="4" />
+        <Entry ConsumableRef="CurativePotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -883,26 +888,23 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
-        <Entry EquipmentRef="ClothPants" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SmokeBomb" Quantity="1" />
-        <Entry ConsumableRef="WeakeningPoison" Quantity="4" />
-        <Entry ConsumableRef="ThrowingKnife" Quantity="4" />
+        <Entry ConsumableRef="Bandage" Quantity="2" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Heroism" Condition="1.0" />
-        <Entry SpellRef="HymnOfValor" Condition="1.0" />
+        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_YunohiraTenbōshoSpoke3Ring1" DisplayName="Traveler at Yunohira Tenbōsho Spoke 3 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 3 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_4&quot;]}">
+  <Character RefName="NPC_YunohiraTenbōshoSpoke3Ring1" DisplayName="Traveler at Yunohira Tenbōsho Spoke 3 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 3 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;,&quot;YunohiraTenb\u014DshoSpoke2Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
@@ -914,23 +916,20 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Sandals" Condition="1.0" />
-        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
+        <Entry EquipmentRef="CloakOfProtection" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
-        <Entry ConsumableRef="RoastChicken" Quantity="3" />
-        <Entry ConsumableRef="Milk" Quantity="1" />
+        <Entry ConsumableRef="HealingSalve" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Agility" Condition="1.0" />
-        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
+        <Entry SpellRef="Heroism" Condition="1.0" />
+        <Entry SpellRef="SoothingSong" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
   <Character RefName="NPC_YunohiraTenbōshoSpoke3Ring4" DisplayName="Traveler at Yunohira Tenbōsho Spoke 3 Ring 4" Description="Character at Yunohira Tenbōsho Spoke 3 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke3Ring5&quot;,&quot;YunohiraTenb\u014DshoSpoke3Ring3&quot;,&quot;YunohiraTenb\u014DshoSpoke3Ring2&quot;]}">
@@ -941,33 +940,31 @@
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōshoSpoke4Ring1" DisplayName="Trader at Yunohira Tenbōsho Spoke 4 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 4 Ring 1" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;]}">
+  <Character RefName="MERCHANT_YunohiraTenbōshoSpoke4Ring1" DisplayName="Trader at Yunohira Tenbōsho Spoke 4 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 4 Ring 1" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring4&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-        <Entry EquipmentRef="RopeBelt" Condition="1.0" />
+        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonedDart" Quantity="3" />
-        <Entry ConsumableRef="ThrowingStar" Quantity="2" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-        <Entry SpellRef="SmokeBomb" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_YunohiraTenbōshoSpoke4Ring2" DisplayName="Traveler at Yunohira Tenbōsho Spoke 4 Ring 2" Description="Character at Yunohira Tenbōsho Spoke 4 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_3&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;]}">
+  <Character RefName="NPC_YunohiraTenbōshoSpoke4Ring2" DisplayName="Traveler at Yunohira Tenbōsho Spoke 4 Ring 2" Description="Character at Yunohira Tenbōsho Spoke 4 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="NPC_YunohiraTenbōshoSpoke4Ring3" DisplayName="Traveler at Yunohira Tenbōsho Spoke 4 Ring 3" Description="Character at Yunohira Tenbōsho Spoke 4 Ring 3" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_2&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_2&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring4&quot;]}">
+  <Character RefName="NPC_YunohiraTenbōshoSpoke4Ring3" DisplayName="Traveler at Yunohira Tenbōsho Spoke 4 Ring 3" Description="Character at Yunohira Tenbōsho Spoke 4 Ring 3" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_2&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring4&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
@@ -975,20 +972,22 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
+        <Entry EquipmentRef="Longbow" Condition="1.0" />
         <Entry EquipmentRef="Brigandine" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="FeastPlatter" Quantity="2" />
+        <Entry ConsumableRef="GiantStrengthPotion" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="2" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-        <Entry SpellRef="ShadowStrike" Condition="1.0" />
+        <Entry SpellRef="Backstab" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
   <Character RefName="NPC_YunohiraTenbōshoSpoke4Ring5" DisplayName="Traveler at Yunohira Tenbōsho Spoke 4 Ring 5" Description="Character at Yunohira Tenbōsho Spoke 4 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke1Ring2&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring2&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_4&quot;]}">
@@ -1003,20 +1002,20 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="OakStaff" Condition="1.0" />
+        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
-        <Entry ConsumableRef="FireResistPotion" Quantity="2" />
+        <Entry ConsumableRef="DragonBlood" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
+        <Entry SpellRef="Fortitude" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
   <Character RefName="NPC_YunohiraTenbōshoSpoke5Ring3" DisplayName="Traveler at Yunohira Tenbōsho Spoke 5 Ring 3" Description="Character at Yunohira Tenbōsho Spoke 5 Ring 3" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke5Ring2&quot;,&quot;YunohiraTenb\u014DshoSpoke5Ring4&quot;,&quot;YunohiraTenb\u014DshoSpoke5Ring1&quot;]}">
@@ -1031,16 +1030,44 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Stiletto" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
+        <Entry EquipmentRef="Harp" Condition="1.0" />
+        <Entry EquipmentRef="MageGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="4" />
-        <Entry ConsumableRef="Panacea" Quantity="3" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="3" />
+        <Entry ConsumableRef="FrostResistPotion" Quantity="1" />
+        <Entry ConsumableRef="EnduranceElixir" Quantity="2" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStrike" Condition="1.0" />
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="20" />
+    </Traits>
+  </Character>
+  <Character RefName="NPC_YunohiraTenbōshoSpoke6Ring1" DisplayName="Traveler at Yunohira Tenbōsho Spoke 6 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_11&quot;,&quot;YunohiraTenb\u014DshoSpoke1Ring1&quot;,&quot;YunohiraTenb\u014Dsho&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="NPC_YunohiraTenbōshoSpoke6Ring2" DisplayName="Traveler at Yunohira Tenbōsho Spoke 6 Ring 2" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_10&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring3&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="MERCHANT_YunohiraTenbōshoSpoke6Ring3" DisplayName="Trader at Yunohira Tenbōsho Spoke 6 Ring 3" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 3" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_9&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring2&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring4&quot;]}">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ElixirOfArcana" Quantity="1" />
+        <Entry ConsumableRef="Stew" Quantity="1" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="SongOfCourage" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1049,62 +1076,34 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_YunohiraTenbōshoSpoke6Ring1" DisplayName="Traveler at Yunohira Tenbōsho Spoke 6 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_11&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_0&quot;,&quot;YunohiraTenb\u014DshoSpoke1Ring1&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōshoSpoke6Ring2" DisplayName="Traveler at Yunohira Tenbōsho Spoke 6 Ring 2" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_10&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_1&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring1&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōshoSpoke6Ring3" DisplayName="Trader at Yunohira Tenbōsho Spoke 6 Ring 3" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 3" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_9&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_2&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring2&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="Zweihander" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfProtection" Quantity="2" />
-        <Entry ConsumableRef="HealingPotion" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
-    </Traits>
-  </Character>
   <Character RefName="NPC_YunohiraTenbōshoSpoke6Ring4" DisplayName="Traveler at Yunohira Tenbōsho Spoke 6 Ring 4" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke6Ring3&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring5&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_8&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="NPC_YunohiraTenbōshoSpoke6Ring5" DisplayName="Traveler at Yunohira Tenbōsho Spoke 6 Ring 5" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke6Ring4&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_7&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_4&quot;]}">
+  <Character RefName="NPC_YunohiraTenbōshoSpoke6Ring5" DisplayName="Traveler at Yunohira Tenbōsho Spoke 6 Ring 5" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke6Ring4&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_7&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_8&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="BOSS_ArimuraYōganTenbōjo" DisplayName="Guardian of Arimura Yōgan Tenbōjo" Description="Character at Arimura Yōgan Tenbōjo" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_11&quot;]}">
+  <Character RefName="BOSS_ArimuraYōganTenbōjo" DisplayName="Guardian of Arimura Yōgan Tenbōjo" Description="Character at Arimura Yōgan Tenbōjo" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke2Ring1&quot;]}">
     <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
+        <Entry EquipmentRef="OakStaff" Condition="1.0" />
+        <Entry EquipmentRef="Halberd" Condition="1.0" />
         <Entry EquipmentRef="Spear" Condition="1.0" />
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
-        <Entry EquipmentRef="MageStaff" Condition="1.0" />
-        <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
-        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
         <Entry EquipmentRef="ChainGloves" Condition="1.0" />
-        <Entry EquipmentRef="Zweihander" Condition="1.0" />
+        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HealingSalve" Quantity="4" />
-        <Entry ConsumableRef="Panacea" Quantity="3" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
-        <Entry ConsumableRef="RestorationPotion" Quantity="4" />
-        <Entry ConsumableRef="ElementalEssence" Quantity="3" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="FrostResistPotion" Quantity="3" />
+        <Entry ConsumableRef="Wine" Quantity="2" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="GiantStrengthPotion" Quantity="2" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="Obliterate" Condition="1.0" />
         <Entry SpellRef="ArcaneBlast" Condition="1.0" />
         <Entry SpellRef="Disintegrate" Condition="1.0" />
       </Spells>
@@ -1128,20 +1127,22 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
+        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ElixirOfArcana" Quantity="1" />
-        <Entry ConsumableRef="DefenseElixir" Quantity="4" />
+        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="HealingSalve" Quantity="3" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Wisdom" Condition="1.0" />
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+        <Entry SpellRef="Fortitude" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
   <Character RefName="NPC_ArimuraYōganTenbōjoSpoke1Ring2" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 1 Ring 2" Description="Character at Arimura Yōgan Tenbōjo Spoke 1 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke1Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke1Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke2Ring1&quot;]}">
@@ -1156,22 +1157,21 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
-        <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
+        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfHaste" Quantity="2" />
-        <Entry ConsumableRef="IronskinPotion" Quantity="1" />
-        <Entry ConsumableRef="GiantStrengthPotion" Quantity="2" />
+        <Entry ConsumableRef="Mead" Quantity="2" />
+        <Entry ConsumableRef="Milk" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Backstab" Condition="1.0" />
+        <Entry SpellRef="Ambush" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
   <Character RefName="NPC_ArimuraYōganTenbōjoSpoke1Ring5" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 1 Ring 5" Description="Character at Arimura Yōgan Tenbōjo Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke1Ring4&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke1Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke1Ring2&quot;]}">
@@ -1186,22 +1186,22 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ShadowBoots" Condition="1.0" />
-        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="Maul" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="WeakPoison" Quantity="2" />
-        <Entry ConsumableRef="WisdomElixir" Quantity="4" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="4" />
+        <Entry ConsumableRef="RoastChicken" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfProtection" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
-        <Entry SpellRef="Vanish" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="ShadowStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
   <Character RefName="NPC_ArimuraYōganTenbōjoSpoke2Ring3" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 2 Ring 3" Description="Character at Arimura Yōgan Tenbōjo Spoke 2 Ring 3" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke2Ring4&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke2Ring2&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke2Ring5&quot;]}">
@@ -1216,71 +1216,72 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SummonerOrb" Condition="1.0" />
-        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Stew" Quantity="1" />
+        <Entry ConsumableRef="ParalyzingPoison" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fortitude" Condition="1.0" />
+        <Entry SpellRef="Wisdom" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjoSpoke3Ring1" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_11&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke2Ring1&quot;]}">
+  <Character RefName="NPC_ArimuraYōganTenbōjoSpoke3Ring1" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke2Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjoSpoke3Ring2" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_1&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_10&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring3&quot;]}">
+  <Character RefName="NPC_ArimuraYōganTenbōjoSpoke3Ring2" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="MERCHANT_ArimuraYōganTenbōjoSpoke3Ring3" DisplayName="Trader at Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_2&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_9&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring4&quot;]}">
+  <Character RefName="MERCHANT_ArimuraYōganTenbōjoSpoke3Ring3" DisplayName="Trader at Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_2&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring4&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring2&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
+        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Stew" Quantity="3" />
+        <Entry ConsumableRef="DragonBlood" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="HymnOfValor" Condition="1.0" />
-        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
+        <Entry SpellRef="Agility" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
   <Character RefName="NPC_ArimuraYōganTenbōjoSpoke3Ring4" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 3 Ring 4" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring5&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjoSpoke3Ring5" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring4&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_7&quot;]}">
+  <Character RefName="NPC_ArimuraYōganTenbōjoSpoke3Ring5" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring4&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_3&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="MERCHANT_ArimuraYōganTenbōjoSpoke4Ring1" DisplayName="Trader at Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_11&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring1&quot;]}">
+  <Character RefName="MERCHANT_ArimuraYōganTenbōjoSpoke4Ring1" DisplayName="Trader at Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014Djo&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenClub" Condition="1.0" />
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
+        <Entry ConsumableRef="DefenseElixir" Quantity="3" />
+        <Entry ConsumableRef="SmokeBomb" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SongOfCourage" Condition="1.0" />
-        <Entry SpellRef="MightyStrength" Condition="1.0" />
+        <Entry SpellRef="HymnOfValor" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1301,12 +1302,10 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
-        <Entry EquipmentRef="Stiletto" Condition="1.0" />
+        <Entry EquipmentRef="SteelSword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Cheese" Quantity="3" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="1" />
+        <Entry ConsumableRef="ThrowingAxe" Quantity="2" />
       </Consumables>
       <Spells>
         <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
@@ -1315,7 +1314,7 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
   <Character RefName="NPC_ArimuraYōganTenbōjoSpoke4Ring5" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 4 Ring 5" Description="Character at Arimura Yōgan Tenbōjo Spoke 4 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke4Ring4&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke4Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke4Ring2&quot;]}">
@@ -1330,20 +1329,23 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LargeSword" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DivineBlessing" Quantity="4" />
+        <Entry ConsumableRef="DragonBlood" Quantity="4" />
+        <Entry ConsumableRef="PoisonedDart" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfProtection" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="MightyStrength" Condition="1.0" />
-        <Entry SpellRef="Fortitude" Condition="1.0" />
+        <Entry SpellRef="Agility" Condition="1.0" />
+        <Entry SpellRef="HymnOfValor" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
   <Character RefName="NPC_ArimuraYōganTenbōjoSpoke6Ring2" DisplayName="Traveler at Arimura Yōgan Tenbōjo Spoke 6 Ring 2" Description="Character at Arimura Yōgan Tenbōjo Spoke 6 Ring 2" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke6Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke1Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke5Ring1&quot;]}">
@@ -1354,20 +1356,21 @@
     <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ClothCap" Condition="1.0" />
-        <Entry EquipmentRef="CopperRing" Condition="1.0" />
-        <Entry EquipmentRef="HalfPlate" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="ClothGloves" Condition="1.0" />
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
+        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
+        <Entry EquipmentRef="ArchmageRobes" Condition="1.0" />
+        <Entry EquipmentRef="Stiletto" Condition="1.0" />
+        <Entry EquipmentRef="Claymore" Condition="1.0" />
         <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
-        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="ScaleMail" Condition="1.0" />
-        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="FireBomb" Quantity="6" />
-        <Entry ConsumableRef="Cheese" Quantity="2" />
-        <Entry ConsumableRef="GiantStrengthPotion" Quantity="4" />
-        <Entry ConsumableRef="Antidote" Quantity="4" />
+        <Entry ConsumableRef="SorceryPotion" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="6" />
+        <Entry ConsumableRef="Stew" Quantity="2" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="FrostResistPotion" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="Disintegrate" Condition="1.0" />
@@ -1390,59 +1393,57 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_SakurajimaKōFerryba" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_SakurajimaKōFerrybaSpoke1Ring1" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_4&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring2&quot;]}">
+  <Character RefName="NPC_SakurajimaKōFerrybaSpoke1Ring1" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_4&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring2&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="MERCHANT_SakurajimaKōFerrybaSpoke1Ring2" DisplayName="Trader at Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_3&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_1&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring3&quot;]}">
+  <Character RefName="MERCHANT_SakurajimaKōFerrybaSpoke1Ring2" DisplayName="Trader at Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_3&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring3&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring3&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SirenHarp" Condition="1.0" />
-        <Entry EquipmentRef="OakStaff" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="ShortBow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CurativePotion" Quantity="2" />
-        <Entry ConsumableRef="Bread" Quantity="1" />
+        <Entry ConsumableRef="GreaterManaPotion" Quantity="4" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
+        <Entry ConsumableRef="RangerTrailMix" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fortitude" Condition="1.0" />
+        <Entry SpellRef="Lullaby" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_SakurajimaKōFerrybaSpoke1Ring3" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_2&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_2&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring4&quot;]}">
+  <Character RefName="NPC_SakurajimaKōFerrybaSpoke1Ring3" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_2&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring4&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="NPC_SakurajimaKōFerrybaSpoke1Ring4" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_3&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;]}">
+  <Character RefName="NPC_SakurajimaKōFerrybaSpoke1Ring4" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring5&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="MERCHANT_SakurajimaKōFerrybaSpoke1Ring5" DisplayName="Trader at Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring1&quot;]}">
+  <Character RefName="MERCHANT_SakurajimaKōFerrybaSpoke1Ring5" DisplayName="Trader at Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke3Ring1&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SummonerOrb" Condition="1.0" />
-        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
+        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MinorManaPotion" Quantity="2" />
-        <Entry ConsumableRef="FrostBomb" Quantity="1" />
+        <Entry ConsumableRef="DarkEssence" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Wisdom" Condition="1.0" />
-        <Entry SpellRef="SongOfCourage" Condition="1.0" />
+        <Entry SpellRef="SoothingSong" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
   <Character RefName="NPC_SakurajimaKōFerrybaSpoke2Ring1" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 2 Ring 1" Description="Character at Sakurajima Kō Ferry-ba Spoke 2 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerryba&quot;,&quot;SakurajimaK\u014DFerryba1&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring1&quot;]}">
@@ -1457,21 +1458,20 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="4" />
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="3" />
-        <Entry ConsumableRef="LightningResistPotion" Quantity="2" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fortitude" Condition="1.0" />
+        <Entry SpellRef="SoothingSong" Condition="1.0" />
+        <Entry SpellRef="DiscordantNote" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
   <Character RefName="NPC_SakurajimaKōFerrybaSpoke6Ring1" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 6 Ring 1" Description="Character at Sakurajima Kō Ferry-ba Spoke 6 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke1Ring2&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring2&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring5&quot;]}">
@@ -1486,20 +1486,20 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greataxe" Condition="1.0" />
+        <Entry EquipmentRef="WarHammer" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DivineBlessing" Quantity="4" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfLightning" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="HymnOfValor" Condition="1.0" />
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
   <Character RefName="NPC_SakurajimaKōFerrybaSpoke6Ring4" DisplayName="Traveler at Sakurajima Kō Ferry-ba Spoke 6 Ring 4" Description="Character at Sakurajima Kō Ferry-ba Spoke 6 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerrybaSpoke6Ring3&quot;,&quot;SakurajimaK\u014DFerrybaSpoke6Ring5&quot;,&quot;SakurajimaKasanHakubutsukanSpoke6Ring4&quot;]}">
@@ -1514,20 +1514,20 @@
     <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
-        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
-        <Entry EquipmentRef="Brigandine" Condition="1.0" />
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
-        <Entry EquipmentRef="Zweihander" Condition="1.0" />
-        <Entry EquipmentRef="Maul" Condition="1.0" />
-        <Entry EquipmentRef="Longbow" Condition="1.0" />
+        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
+        <Entry EquipmentRef="OakStaff" Condition="1.0" />
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
+        <Entry EquipmentRef="Knife" Condition="1.0" />
+        <Entry EquipmentRef="Spear" Condition="1.0" />
+        <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
+        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="WarriorRation" Quantity="3" />
-        <Entry ConsumableRef="Bandage" Quantity="1" />
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="3" />
-        <Entry ConsumableRef="Apple" Quantity="1" />
-        <Entry ConsumableRef="Cheese" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="3" />
+        <Entry ConsumableRef="Mead" Quantity="3" />
+        <Entry ConsumableRef="ManaGem" Quantity="2" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfIcebolt" Quantity="1" />
       </Consumables>
       <Spells>
         <Entry SpellRef="ConjurePortal" Condition="1.0" />
@@ -1553,16 +1553,15 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenClub" Condition="1.0" />
-        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
+        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Ale" Quantity="3" />
-        <Entry ConsumableRef="HolyWaterBomb" Quantity="4" />
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfProtection" Quantity="4" />
+        <Entry ConsumableRef="DragonBlood" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Lullaby" Condition="1.0" />
+        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1583,16 +1582,15 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Knife" Condition="1.0" />
+        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCap" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MagesBiscuit" Quantity="2" />
-        <Entry ConsumableRef="Pie" Quantity="4" />
-        <Entry ConsumableRef="DeadlyPoison" Quantity="2" />
+        <Entry ConsumableRef="FireResistPotion" Quantity="3" />
+        <Entry ConsumableRef="HastePotion" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="DiscordantNote" Condition="1.0" />
-        <Entry SpellRef="Wisdom" Condition="1.0" />
+        <Entry SpellRef="Fortitude" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1601,7 +1599,7 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_SakurajimaKasanHakubutsukanSpoke1Ring5" DisplayName="Traveler at Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="Character at Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring5&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_3&quot;]}">
+  <Character RefName="NPC_SakurajimaKasanHakubutsukanSpoke1Ring5" DisplayName="Traveler at Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="Character at Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring5&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
@@ -1613,15 +1611,15 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="MasterworkLute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Javelin" Quantity="3" />
+        <Entry ConsumableRef="Pie" Quantity="1" />
+        <Entry ConsumableRef="HealingPotion" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Agility" Condition="1.0" />
-        <Entry SpellRef="SoothingSong" Condition="1.0" />
+        <Entry SpellRef="DiscordantNote" Condition="1.0" />
+        <Entry SpellRef="HymnOfValor" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1642,15 +1640,16 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
-        <Entry EquipmentRef="ShortBow" Condition="1.0" />
+        <Entry EquipmentRef="CloakOfProtection" Condition="1.0" />
+        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Stew" Quantity="4" />
+        <Entry ConsumableRef="Mead" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="DiscordantNote" Condition="1.0" />
-        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
+        <Entry SpellRef="Fortitude" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1663,21 +1662,19 @@
     <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
-        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
-        <Entry EquipmentRef="SilverRing" Condition="1.0" />
-        <Entry EquipmentRef="ClothPants" Condition="1.0" />
-        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
+        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
         <Entry EquipmentRef="LeatherCord" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
+        <Entry EquipmentRef="Maul" Condition="1.0" />
+        <Entry EquipmentRef="CopperRing" Condition="1.0" />
+        <Entry EquipmentRef="Longbow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Juice" Quantity="3" />
-        <Entry ConsumableRef="ParalyzingPoison" Quantity="3" />
-        <Entry ConsumableRef="WeakeningPoison" Quantity="4" />
-        <Entry ConsumableRef="MedicKit" Quantity="4" />
-        <Entry ConsumableRef="Bandage" Quantity="4" />
+        <Entry ConsumableRef="AcidBomb" Quantity="1" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="2" />
+        <Entry ConsumableRef="Torch" Quantity="1" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="4" />
+        <Entry ConsumableRef="ManaGem" Quantity="4" />
       </Consumables>
       <Spells>
         <Entry SpellRef="SummonDemon" Condition="1.0" />
@@ -1711,27 +1708,29 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Spear" Condition="1.0" />
+        <Entry EquipmentRef="ChainBoots" Condition="1.0" />
+        <Entry EquipmentRef="MasterworkLute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="3" />
-        <Entry ConsumableRef="FrostBomb" Quantity="4" />
+        <Entry ConsumableRef="CookedMeat" Quantity="4" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="3" />
+        <Entry ConsumableRef="HerbBundle" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
+        <Entry SpellRef="Fortitude" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
   <Character RefName="NPC_YōganNagisaKōenAshiyuSpoke1Ring4" DisplayName="Traveler at Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 4" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke1Ring4&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring3&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="NPC_YōganNagisaKōenAshiyuSpoke1Ring5" DisplayName="Traveler at Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_3&quot;]}">
+  <Character RefName="NPC_YōganNagisaKōenAshiyuSpoke1Ring5" DisplayName="Traveler at Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
@@ -1739,21 +1738,21 @@
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Claymore" Condition="1.0" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="4" />
-        <Entry ConsumableRef="MonkRice" Quantity="4" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Lullaby" Condition="1.0" />
-        <Entry SpellRef="Wisdom" Condition="1.0" />
+        <Entry SpellRef="Heroism" Condition="1.0" />
+        <Entry SpellRef="Agility" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
   <Character RefName="NPC_YōganNagisaKōenAshiyuSpoke6Ring1" DisplayName="Traveler at Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 1" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 1" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke6Ring1&quot;,&quot;SakurajimaK\u014DFerrybaSpoke5Ring1&quot;,&quot;SakurajimaKasanHakubutsukan&quot;]}">
@@ -1768,16 +1767,41 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
-        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
+        <Entry EquipmentRef="Knife" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="WeakeningPoison" Quantity="4" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
-        <Entry ConsumableRef="RoastChicken" Quantity="1" />
+        <Entry ConsumableRef="DarkEssence" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStrike" Condition="1.0" />
+        <Entry SpellRef="SmokeBomb" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="50" />
+    </Traits>
+  </Character>
+  <Character RefName="NPC_YōganNagisaKōenAshiyuSpoke6Ring4" DisplayName="Traveler at Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke6Ring4&quot;,&quot;SakurajimaKasanHakubutsukanSpoke6Ring3&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke6Ring3&quot;]}">
+    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="NPC_ArimuraYōganTenbōjo1" DisplayName="Traveler at Arimura Yōgan Tenbōjo" Description="Character at Arimura Yōgan Tenbōjo" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke2Ring1&quot;]}">
+    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Trader at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke4Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_1&quot;]}">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="Ale" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Lullaby" Condition="1.0" />
+        <Entry SpellRef="Agility" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1786,25 +1810,146 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_YōganNagisaKōenAshiyuSpoke6Ring4" DisplayName="Traveler at Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke6Ring4&quot;,&quot;SakurajimaKasanHakubutsukanSpoke6Ring3&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke6Ring3&quot;]}">
+  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring2&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_2&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_1&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1" DisplayName="Traveler at Arimura Yōgan Tenbōjo" Description="Character at Arimura Yōgan Tenbōjo" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_11&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+  <Character RefName="MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Trader at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_2&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring4&quot;]}">
+    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="ShortBow" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ScrollOfHaste" Quantity="4" />
+        <Entry ConsumableRef="RoastChicken" Quantity="4" />
+        <Entry ConsumableRef="RangerTrailMix" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="ShadowMeld" Condition="1.0" />
+        <Entry SpellRef="SmokeBomb" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+  </Character>
+  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_5&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_3&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring5&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Trader at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_11&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke4Ring1&quot;]}">
+  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_6&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring5&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Trader at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_7&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_5&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring5&quot;]}">
+    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="AcidBomb" Quantity="2" />
+        <Entry ConsumableRef="HerbalTea" Quantity="2" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="ShadowMeld" Condition="1.0" />
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="50" />
+    </Traits>
+  </Character>
+  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_8&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_6&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring5&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_9&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_7&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring4&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Trader at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke6Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_10&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_8&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="MasterworkLute" Condition="1.0" />
+        <Entry EquipmentRef="Knife" Condition="1.0" />
+        <Entry EquipmentRef="Halberd" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfHealing" Quantity="4" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="4" />
+        <Entry ConsumableRef="Milk" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+        <Entry SpellRef="SoothingSong" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="70" />
+    </Traits>
+  </Character>
+  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke6Ring2&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_11&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_9&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke6Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke1Ring1&quot;,&quot;YunohiraTenb\u014Dsho&quot;]}">
+    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="MERCHANT_YunohiraTenbōsho1" DisplayName="Trader at Yunohira Tenbōsho" Description="Character at Yunohira Tenbōsho" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;]}">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="ElderRobes" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="Stew" Quantity="1" />
+        <Entry ConsumableRef="MedicKit" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Agility" Condition="1.0" />
+        <Entry SpellRef="Wisdom" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="50" />
+    </Traits>
+  </Character>
+  <Character RefName="NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke4Ring1&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring4&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke4Ring2&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring5&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+  </Character>
+  <Character RefName="MERCHANT_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014DshoSpoke4Ring3&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring3&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring4&quot;]}">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="KiteShield" Condition="1.0" />
+        <Entry EquipmentRef="SteelSword" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="DeadlyPoison" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Agility" Condition="1.0" />
         <Entry SpellRef="HymnOfValor" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -1814,154 +1959,11 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_10&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring2&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_2&quot;]}">
+  <Character RefName="NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerrybaSpoke1Ring2&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring4&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_9&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_3&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Trader at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_8&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_7&quot;]}">
-    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="WeakPoison" Quantity="2" />
-        <Entry ConsumableRef="WeakeningPoison" Quantity="1" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SilentStrike" Condition="1.0" />
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_7&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_5&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_6&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_6&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_6&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_5&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Trader at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_5&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_7&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_4&quot;]}">
-    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="SmellingSalts" Quantity="3" />
-        <Entry ConsumableRef="ManaPotion" Quantity="2" />
-        <Entry ConsumableRef="IronskinPotion" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Backstab" Condition="1.0" />
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_4&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_8&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_3&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_9&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_2&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Trader at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_2&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_10&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfHaste" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SongOfCourage" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_1&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring2&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_11&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11" DisplayName="Traveler at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_0&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke1Ring1&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōsho1" DisplayName="Trader at Yunohira Tenbōsho" Description="Character at Yunohira Tenbōsho" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;,&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="ShortBow" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfHealing" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring1&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_3&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring2&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_2&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring3&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring3&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="ElderRobes" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="FireResistPotion" Quantity="3" />
-        <Entry ConsumableRef="ThunderBomb" Quantity="4" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SoothingSong" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_1&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring2&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring4&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerryba1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring5&quot;]}">
+  <Character RefName="NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="Character at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerrybaSpoke1Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring5&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
@@ -1969,16 +1971,14 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
-        <Entry EquipmentRef="LeatherCord" Condition="1.0" />
+        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
+        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Pie" Quantity="1" />
-        <Entry ConsumableRef="HerbalTea" Quantity="2" />
+        <Entry ConsumableRef="AcidBomb" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowMeld" Condition="1.0" />
-        <Entry SpellRef="Ambush" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1987,7 +1987,7 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="Character at Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukan1_to_SakurajimaK\u014DFerryba1_0&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring1&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring1&quot;]}">
+  <Character RefName="NPC_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="Character at Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaKasanHakubutsukanSpoke1Ring1&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring1&quot;,&quot;SakurajimaK\u014DFerryba&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
@@ -1995,24 +1995,23 @@
     <Stats Health="1.30" Stamina="1.0" Mana="1.1" Strength="0.12" Defense="0.09" Speed="0.08" Magic="0.09" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
-        <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
-        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
         <Entry EquipmentRef="Claymore" Condition="1.0" />
-        <Entry EquipmentRef="BreastPlate" Condition="1.0" />
-        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
+        <Entry EquipmentRef="Buckler" Condition="1.0" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
+        <Entry EquipmentRef="HalfPlate" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DefenseElixir" Quantity="1" />
-        <Entry ConsumableRef="RestorationPotion" Quantity="3" />
-        <Entry ConsumableRef="ManaGem" Quantity="4" />
-        <Entry ConsumableRef="RoastChicken" Quantity="4" />
-        <Entry ConsumableRef="SorceryPotion" Quantity="2" />
-        <Entry ConsumableRef="PoisonedDart" Quantity="3" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfLightning" Quantity="3" />
+        <Entry ConsumableRef="Ale" Quantity="1" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="2" />
+        <Entry ConsumableRef="HerbalTea" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ConjurePortal" Condition="1.0" />
         <Entry SpellRef="SummonDemon" Condition="1.0" />
+        <Entry SpellRef="ConjurePortal" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2034,198 +2033,25 @@
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
   </Character>
-  <Character RefName="MERCHANT_SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" DisplayName="Trader at Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1)" Description="Character at Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;SakurajimaK\u014DFerryba1_to_SakurajimaKasanHakubutsukan1_0&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring1&quot;,&quot;Y\u014DganNagisaK\u014DenAshiyuSpoke1Ring1&quot;]}">
-    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="AcidBomb" Quantity="4" />
-        <Entry ConsumableRef="Antidote" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_0" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1)" Description="Character at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_4&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring5&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" Description="Character at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_3&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring2&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring4&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" DisplayName="Trader at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3)" Description="Character at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_2&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring3&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring3&quot;]}">
-    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ThunderBomb" Quantity="2" />
-        <Entry ConsumableRef="FrostResistPotion" Quantity="4" />
-        <Entry ConsumableRef="DivineBlessing" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4)" Description="Character at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_1&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring2&quot;,&quot;SakurajimaKasanHakubutsukanSpoke1Ring5&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5)" Description="Character at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;YunohiraTenb\u014Dsho1_to_SakurajimaK\u014DFerryba1_0&quot;,&quot;YunohiraTenb\u014DshoSpoke4Ring1&quot;,&quot;SakurajimaK\u014DFerrybaSpoke1Ring5&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_11&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring1&quot;,&quot;YunohiraTenb\u014DshoSpoke1Ring1&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ManaGem" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
-        <Entry SpellRef="MightyStrength" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_10&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring2&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_11&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_9&quot;,&quot;YunohiraTenb\u014DshoSpoke6Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_10&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_8&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_9&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_2&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="ClothPants" Condition="1.0" />
-        <Entry EquipmentRef="ClothGloves" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="2" />
-        <Entry ConsumableRef="Berries" Quantity="1" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SongOfCourage" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_4" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_7&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_8&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_3&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_5" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_6&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_7&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_4&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_5&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_6&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_5&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
-        <Entry EquipmentRef="Halberd" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfProtection" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="SongOfCourage" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_7" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_5&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_6&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_8" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_4&quot;,&quot;YunohiraTenb\u014Dsho1_to_ArimuraY\u014DganTenb\u014Djo1_7&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_2&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring3&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_3&quot;]}">
-    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ElixirOfLife" Quantity="1" />
-        <Entry ConsumableRef="EnergyDrink" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
-    </Traits>
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_10" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring2&quot;,&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_2&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
-  <Character RefName="NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;ArimuraY\u014DganTenb\u014Djo1_to_YunohiraTenb\u014Dsho1_0&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke3Ring1&quot;,&quot;ArimuraY\u014DganTenb\u014DjoSpoke4Ring1&quot;]}">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-  </Character>
   <Character RefName="GUARD_YunohiraTenbōsho_0" DisplayName="Guard at Yunohira Tenbōsho" Description="Character at Yunohira Tenbōsho" Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.63" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
+    <Stats Health="0.57" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
-        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
-        <Entry EquipmentRef="SteelSword" Condition="1.0" />
-        <Entry EquipmentRef="OakWand" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="LeatherGloves" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
+        <Entry EquipmentRef="IronShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="2" />
-        <Entry ConsumableRef="HolyWaterBomb" Quantity="2" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfProtection" Quantity="2" />
         <Entry ConsumableRef="WeakPoison" Quantity="4" />
+        <Entry ConsumableRef="WarriorRation" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Disarm" Condition="1.0" />
-        <Entry SpellRef="PowerStrike" Condition="1.0" />
-        <Entry SpellRef="ShieldBash" Condition="1.0" />
+        <Entry SpellRef="WildRegeneration" Condition="1.0" />
+        <Entry SpellRef="PredatorsInstinct" Condition="1.0" />
+        <Entry SpellRef="NaturalRemedy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2233,22 +2059,21 @@
     </Traits>
   </Character>
   <Character RefName="HOSTILE_YunohiraTenbōshoSpoke1Ring1_1" DisplayName="Wild Beast near Yunohira Tenbōsho Spoke 1 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 1 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
+    <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
-        <Entry EquipmentRef="LeatherCap" Condition="1.0" />
+        <Entry EquipmentRef="Claymore" Condition="1.0" />
+        <Entry EquipmentRef="Buckler" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="4" />
-        <Entry ConsumableRef="HerbBundle" Quantity="1" />
-        <Entry ConsumableRef="DivineBlessing" Quantity="2" />
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="4" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="HastePotion" Quantity="2" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Ambush" Condition="1.0" />
-        <Entry SpellRef="SilentStrike" Condition="1.0" />
-        <Entry SpellRef="Backstab" Condition="1.0" />
+        <Entry SpellRef="EagleEye" Condition="1.0" />
+        <Entry SpellRef="HuntersMark" Condition="1.0" />
+        <Entry SpellRef="TrapSense" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2256,20 +2081,24 @@
     </Traits>
   </Character>
   <Character RefName="HOSTILE_YunohiraTenbōshoSpoke2Ring1_2" DisplayName="Elemental near Yunohira Tenbōsho Spoke 2 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 2 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
+    <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WizardHat" Condition="1.0" />
-        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
+        <Entry EquipmentRef="ScaleMail" Condition="1.0" />
+        <Entry EquipmentRef="RopeBelt" Condition="1.0" />
+        <Entry EquipmentRef="HeavyCrossbow" Condition="1.0" />
+        <Entry EquipmentRef="CloakOfProtection" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="1" />
-        <Entry ConsumableRef="SmellingSalts" Quantity="4" />
+        <Entry ConsumableRef="Panacea" Quantity="1" />
+        <Entry ConsumableRef="Torch" Quantity="2" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="2" />
+        <Entry ConsumableRef="SmokeBomb" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
+        <Entry SpellRef="NaturesCompass" Condition="1.0" />
+        <Entry SpellRef="ThornBarrier" Condition="1.0" />
+        <Entry SpellRef="CallOfTheWild" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2277,20 +2106,21 @@
     </Traits>
   </Character>
   <Character RefName="HOSTILE_YunohiraTenbōshoSpoke3Ring1_3" DisplayName="Bandit near Yunohira Tenbōsho Spoke 3 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 3 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherCord" Condition="1.0" />
-        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="WoodenClub" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Ale" Quantity="2" />
-        <Entry ConsumableRef="WisdomElixir" Quantity="3" />
-        <Entry ConsumableRef="ScrollOfProtection" Quantity="3" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="2" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
+        <Entry SpellRef="SmokeBomb" Condition="1.0" />
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2298,22 +2128,20 @@
     </Traits>
   </Character>
   <Character RefName="HOSTILE_YunohiraTenbōshoSpoke4Ring1_4" DisplayName="Elemental near Yunohira Tenbōsho Spoke 4 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 4 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HandAxe" Condition="1.0" />
-        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
-        <Entry EquipmentRef="WizardRobes" Condition="1.0" />
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaGem" Quantity="3" />
-        <Entry ConsumableRef="LightningResistPotion" Quantity="1" />
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="4" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="4" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Obliterate" Condition="1.0" />
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="IgnorePain" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2321,21 +2149,84 @@
     </Traits>
   </Character>
   <Character RefName="HOSTILE_YunohiraTenbōshoSpoke5Ring1_5" DisplayName="Bandit near Yunohira Tenbōsho Spoke 5 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 5 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+        <Entry EquipmentRef="ShadowLeather" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="HerbalTea" Quantity="3" />
+        <Entry ConsumableRef="FlashBomb" Quantity="1" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="HOSTILE_YunohiraTenbōshoSpoke6Ring1_6" DisplayName="Bandit near Yunohira Tenbōsho Spoke 6 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="IronShield" Condition="1.0" />
+        <Entry EquipmentRef="Harp" Condition="1.0" />
+        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
+        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="Panacea" Quantity="4" />
+        <Entry ConsumableRef="CookedMeat" Quantity="1" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="WarStomp" Condition="1.0" />
+        <Entry SpellRef="IgnorePain" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="HOSTILE_ArimuraYōganTenbōjoSpoke1Ring1_7" DisplayName="Undead near Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
+        <Entry EquipmentRef="AssassinsBlade" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="DeadlyPoison" Quantity="4" />
+        <Entry ConsumableRef="RangerTrailMix" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="Ambush" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="HOSTILE_ArimuraYōganTenbōjoSpoke2Ring1_8" DisplayName="Bandit near Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
-        <Entry EquipmentRef="RuneSword" Condition="1.0" />
-        <Entry EquipmentRef="ChainBoots" Condition="1.0" />
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="MageStaff" Condition="1.0" />
+        <Entry EquipmentRef="HeavyCrossbow" Condition="1.0" />
+        <Entry EquipmentRef="IronShield" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HealingPotion" Quantity="1" />
-        <Entry ConsumableRef="DragonBlood" Quantity="2" />
-        <Entry ConsumableRef="Milk" Quantity="2" />
+        <Entry ConsumableRef="ManaPotion" Quantity="1" />
+        <Entry ConsumableRef="WarriorRation" Quantity="1" />
+        <Entry ConsumableRef="MagesBiscuit" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
         <Entry SpellRef="Disintegrate" Condition="1.0" />
         <Entry SpellRef="Obliterate" Condition="1.0" />
       </Spells>
@@ -2344,108 +2235,46 @@
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_YunohiraTenbōshoSpoke6Ring1_6" DisplayName="Elemental near Yunohira Tenbōsho Spoke 6 Ring 1" Description="Character at Yunohira Tenbōsho Spoke 6 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+  <Character RefName="HOSTILE_ArimuraYōganTenbōjoSpoke3Ring1_9" DisplayName="Bandit near Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="GoldRing" Condition="1.0" />
+        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="HolyWaterBomb" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="1" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="2" />
+        <Entry ConsumableRef="MonkRice" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Bloodlust" Condition="1.0" />
+        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="HOSTILE_ArimuraYōganTenbōjoSpoke4Ring1_10" DisplayName="Wild Beast near Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
-        <Entry EquipmentRef="Greataxe" Condition="1.0" />
+        <Entry EquipmentRef="LargeSword" Condition="1.0" />
+        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
+        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
+        <Entry EquipmentRef="Knife" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThunderBomb" Quantity="1" />
-        <Entry ConsumableRef="FrostResistPotion" Quantity="1" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="GreaterManaPotion" Quantity="3" />
+        <Entry ConsumableRef="Panacea" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
         <Entry SpellRef="ShadowMeld" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_ArimuraYōganTenbōjoSpoke1Ring1_7" DisplayName="Undead near Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
-        <Entry EquipmentRef="Longbow" Condition="1.0" />
-        <Entry EquipmentRef="BreastPlate" Condition="1.0" />
-        <Entry EquipmentRef="Zweihander" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="HerbBundle" Quantity="3" />
-        <Entry ConsumableRef="PoisonResistPotion" Quantity="3" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="1" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="TrapSense" Condition="1.0" />
-        <Entry SpellRef="NaturesCompass" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_ArimuraYōganTenbōjoSpoke2Ring1_8" DisplayName="Undead near Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="Claymore" Condition="1.0" />
-        <Entry EquipmentRef="Harp" Condition="1.0" />
-        <Entry EquipmentRef="OakWand" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="HolyWaterBomb" Quantity="2" />
-        <Entry ConsumableRef="DivineBlessing" Quantity="4" />
-        <Entry ConsumableRef="EnduranceElixir" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="WarStomp" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_ArimuraYōganTenbōjoSpoke3Ring1_9" DisplayName="Wild Beast near Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
-        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="Bread" Quantity="4" />
-        <Entry ConsumableRef="Bandage" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Bloodlust" Condition="1.0" />
-        <Entry SpellRef="RecklessAssault" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_ArimuraYōganTenbōjoSpoke4Ring1_10" DisplayName="Bandit near Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="Character at Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="Brigandine" Condition="1.0" />
-        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="Bloodlust" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+        <Entry SpellRef="ShadowStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2456,16 +2285,82 @@
     <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
-        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
-        <Entry EquipmentRef="ChainBoots" Condition="1.0" />
-        <Entry EquipmentRef="RustySword" Condition="1.0" />
+        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
+        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
+        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Berries" Quantity="4" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="FireResistPotion" Quantity="2" />
-        <Entry ConsumableRef="Stew" Quantity="3" />
+        <Entry ConsumableRef="ParalyzingPoison" Quantity="1" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="Obliterate" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="HOSTILE_SakurajimaKōFerrybaSpoke1Ring3_12" DisplayName="Bandit near Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
+        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
+        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
+        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="WeakPoison" Quantity="3" />
+        <Entry ConsumableRef="Ale" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="HOSTILE_SakurajimaKōFerrybaSpoke5Ring3_13" DisplayName="Elemental near Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Description="Character at Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCord" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="MagesBiscuit" Quantity="4" />
+        <Entry ConsumableRef="Milk" Quantity="2" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="4" />
+        <Entry ConsumableRef="SmellingSalts" Quantity="1" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
+        <Entry SpellRef="Disintegrate" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="Hostile" Value="1" />
+    </Traits>
+  </Character>
+  <Character RefName="HOSTILE_SakurajimaKōFerrybaSpoke6Ring5_14" DisplayName="Bandit near Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Description="Character at Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
+        <Entry EquipmentRef="Stiletto" Condition="1.0" />
+        <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
+        <Entry EquipmentRef="ClothCap" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="HerbalTea" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfLightning" Quantity="1" />
       </Consumables>
       <Spells>
         <Entry SpellRef="ArcaneBlast" Condition="1.0" />
@@ -2475,68 +2370,42 @@
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_SakurajimaKōFerrybaSpoke1Ring3_12" DisplayName="Elemental near Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="Character at Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
+  <Character RefName="HOSTILE_SakurajimaKasanHakubutsukanSpoke1Ring5_15" DisplayName="Elemental near Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="Character at Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
-        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
+        <Entry EquipmentRef="Knife" Condition="1.0" />
+        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
+        <Entry EquipmentRef="ShadowDagger" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bread" Quantity="1" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="1" />
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="2" />
+        <Entry ConsumableRef="HealingSalve" Quantity="4" />
+        <Entry ConsumableRef="EnduranceElixir" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="2" />
+        <Entry ConsumableRef="ManaPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_SakurajimaKōFerrybaSpoke5Ring3_13" DisplayName="Elemental near Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Description="Character at Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="RopeBelt" Condition="1.0" />
-        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
-        <Entry EquipmentRef="Zweihander" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="2" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="1" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="PrimalRoar" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-        <Entry SpellRef="Bloodlust" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_SakurajimaKōFerrybaSpoke6Ring5_14" DisplayName="Wild Beast near Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Description="Character at Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+  <Character RefName="HOSTILE_SakurajimaKasanHakubutsukanSpoke6Ring4_16" DisplayName="Undead near Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" Description="Character at Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="VenomFang" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
-        <Entry EquipmentRef="BreastPlate" Condition="1.0" />
+        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
-        <Entry ConsumableRef="DriedMeat" Quantity="2" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfFireball" Quantity="3" />
+        <Entry ConsumableRef="AcidBomb" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="HuntersMark" Condition="1.0" />
-        <Entry SpellRef="StormOfLeaves" Condition="1.0" />
+        <Entry SpellRef="NaturesCompass" Condition="1.0" />
         <Entry SpellRef="CallOfTheWild" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -2544,67 +2413,20 @@
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_SakurajimaKasanHakubutsukanSpoke1Ring5_15" DisplayName="Undead near Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="Character at Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
+  <Character RefName="HOSTILE_YōganNagisaKōenAshiyuSpoke1Ring5_17" DisplayName="Undead near Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
-        <Entry EquipmentRef="WoodenClub" Condition="1.0" />
-        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
+        <Entry EquipmentRef="Knife" Condition="1.0" />
         <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonVial" Quantity="3" />
-        <Entry ConsumableRef="ElixirOfArcana" Quantity="4" />
+        <Entry ConsumableRef="FlashBomb" Quantity="2" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Barkskin" Condition="1.0" />
-        <Entry SpellRef="StormOfLeaves" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_SakurajimaKasanHakubutsukanSpoke6Ring4_16" DisplayName="Bandit near Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" Description="Character at Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
-        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
-        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="FireResistPotion" Quantity="3" />
-        <Entry ConsumableRef="MagesBiscuit" Quantity="2" />
-        <Entry ConsumableRef="ThunderBomb" Quantity="3" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="NaturalRemedy" Condition="1.0" />
-        <Entry SpellRef="NaturesCompass" Condition="1.0" />
-        <Entry SpellRef="StormOfLeaves" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_YōganNagisaKōenAshiyuSpoke1Ring5_17" DisplayName="Wild Beast near Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
-        <Entry EquipmentRef="Harp" Condition="1.0" />
-        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="SorceryPotion" Quantity="1" />
-        <Entry ConsumableRef="Stew" Quantity="2" />
-        <Entry ConsumableRef="FlashBomb" Quantity="4" />
-        <Entry ConsumableRef="AcidBomb" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Obliterate" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2612,63 +2434,63 @@
     </Traits>
   </Character>
   <Character RefName="HOSTILE_YōganNagisaKōenAshiyuSpoke6Ring4_18" DisplayName="Wild Beast near Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="Character at Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ScaleMail" Condition="1.0" />
-        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
+        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
+        <Entry EquipmentRef="FireWand" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="RestorationPotion" Quantity="4" />
-        <Entry ConsumableRef="ThrowingStar" Quantity="3" />
+        <Entry ConsumableRef="MedicKit" Quantity="4" />
+        <Entry ConsumableRef="ThrowingStar" Quantity="2" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Ambush" Condition="1.0" />
-        <Entry SpellRef="ShadowMeld" Condition="1.0" />
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3_19" DisplayName="Elemental near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
+  <Character RefName="HOSTILE_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3_19" DisplayName="Bandit near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
-        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
-        <Entry EquipmentRef="ShadowLeather" Condition="1.0" />
-        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
+        <Entry EquipmentRef="CopperRing" Condition="1.0" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="1" />
-        <Entry ConsumableRef="Ale" Quantity="2" />
+        <Entry ConsumableRef="CookedMeat" Quantity="4" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="3" />
+        <Entry ConsumableRef="DivineBlessing" Quantity="3" />
+        <Entry ConsumableRef="SmellingSalts" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SilentStrike" Condition="1.0" />
-        <Entry SpellRef="Vanish" Condition="1.0" />
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8_20" DisplayName="Undead near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+  <Character RefName="HOSTILE_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8_20" DisplayName="Elemental near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="Character at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateGauntlets" Condition="1.0" />
-        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
-        <Entry EquipmentRef="WizardRobes" Condition="1.0" />
-        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCap" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DefenseElixir" Quantity="3" />
-        <Entry ConsumableRef="SmellingSalts" Quantity="2" />
+        <Entry ConsumableRef="SorceryPotion" Quantity="1" />
+        <Entry ConsumableRef="GreaterManaPotion" Quantity="4" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="4" />
       </Consumables>
       <Spells>
         <Entry SpellRef="Obliterate" Condition="1.0" />
+        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -2679,127 +2501,38 @@
     <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
-        <Entry EquipmentRef="RustySword" Condition="1.0" />
         <Entry EquipmentRef="MageGloves" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="DragonBlood" Quantity="2" />
-        <Entry ConsumableRef="EnergyDrink" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-        <Entry SpellRef="PrimalRoar" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_SakurajimaKōFerryba1_22" DisplayName="Bandit near Sakurajima Kō Ferry-ba" Description="Character at Sakurajima Kō Ferry-ba" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
+        <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
         <Entry EquipmentRef="TowerShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaGem" Quantity="2" />
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="2" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="WarStomp" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1_23" DisplayName="Bandit near Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" Description="Character at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
-        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="MagesBiscuit" Quantity="1" />
-        <Entry ConsumableRef="FireBomb" Quantity="2" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
-        <Entry SpellRef="Obliterate" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1_24" DisplayName="Undead near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="2" />
-        <Entry ConsumableRef="ManaGem" Quantity="4" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Vanish" Condition="1.0" />
-        <Entry SpellRef="SmokeBomb" Condition="1.0" />
-        <Entry SpellRef="ShadowStrike" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="Hostile" Value="1" />
-    </Traits>
-  </Character>
-  <Character RefName="HOSTILE_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6_25" DisplayName="Undead near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
-        <Entry EquipmentRef="Claymore" Condition="1.0" />
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="Javelin" Quantity="4" />
-        <Entry ConsumableRef="FrostResistPotion" Quantity="2" />
-        <Entry ConsumableRef="SmellingSalts" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="2" />
         <Entry ConsumableRef="FireResistPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowMeld" Condition="1.0" />
-        <Entry SpellRef="Backstab" Condition="1.0" />
-        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11_26" DisplayName="Bandit near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" Description="Character at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
+  <Character RefName="HOSTILE_SakurajimaKōFerryba1_22" DisplayName="Elemental near Sakurajima Kō Ferry-ba" Description="Character at Sakurajima Kō Ferry-ba" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="ClothPants" Condition="1.0" />
+        <Entry EquipmentRef="TowerShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="LightningResistPotion" Quantity="2" />
-        <Entry ConsumableRef="GiantStrengthPotion" Quantity="2" />
-        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="2" />
+        <Entry ConsumableRef="ManaGem" Quantity="3" />
+        <Entry ConsumableRef="SorceryPotion" Quantity="2" />
+        <Entry ConsumableRef="HealingPotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Obliterate" Condition="1.0" />
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>

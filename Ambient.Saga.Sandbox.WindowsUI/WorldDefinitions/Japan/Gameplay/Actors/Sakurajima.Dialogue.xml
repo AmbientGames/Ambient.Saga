@@ -2379,7 +2379,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11 or YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11 or YunohiraTenbōshoSpoke2Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2859,7 +2859,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0 or SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0 or SakurajimaKōFerrybaSpoke1Ring5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2877,7 +2877,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1 or SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1 or SakurajimaKasanHakubutsukanSpoke1Ring5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2895,7 +2895,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2 or SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2 or SakurajimaKasanHakubutsukanSpoke1Ring4 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -3165,7 +3165,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11 or YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11 or YunohiraTenbōshoSpoke1Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -3183,7 +3183,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10 or YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10 or YunohiraTenbōshoSpoke6Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -3243,7 +3243,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9 or YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9 or YunohiraTenbōshoSpoke6Ring2 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -3703,7 +3703,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0 or YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0 or ArimuraYōganTenbōjoSpoke2Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -3721,7 +3721,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1 or YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_10 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1 or ArimuraYōganTenbōjoSpoke3Ring3 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -3781,7 +3781,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2 or YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2 or ArimuraYōganTenbōjoSpoke3Ring4 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -3877,7 +3877,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0 or YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0 or ArimuraYōganTenbōjoSpoke3Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4163,7 +4163,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4 or SakurajimaKōFerryba1_to_YunohiraTenbōsho1_0 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4 or SakurajimaKasanHakubutsukanSpoke1Ring2 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4223,7 +4223,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3 or SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3 or SakurajimaKasanHakubutsukanSpoke1Ring3 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4241,7 +4241,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2 or SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2 or SakurajimaKasanHakubutsukanSpoke1Ring4 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4259,7 +4259,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1 or SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1 or SakurajimaKasanHakubutsukanSpoke1Ring5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4319,7 +4319,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0 or SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0 or YunohiraTenbōshoSpoke4Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5395,7 +5395,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11 or ArimuraYōganTenbōjoSpoke3Ring1 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjoSpoke3Ring1 or ArimuraYōganTenbōjoSpoke4Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5413,7 +5413,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_10 or ArimuraYōganTenbōjoSpoke3Ring2 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjoSpoke3Ring2 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5431,7 +5431,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9 or ArimuraYōganTenbōjoSpoke3Ring3 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjoSpoke3Ring3 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5491,7 +5491,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_8 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5509,7 +5509,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_7 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5527,7 +5527,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5587,7 +5587,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_5 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5605,7 +5605,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_4 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5623,7 +5623,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5683,7 +5683,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2 or YunohiraTenbōshoSpoke6Ring3 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōshoSpoke6Ring3 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5701,7 +5701,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1 or YunohiraTenbōshoSpoke6Ring2 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōshoSpoke6Ring2 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5719,7 +5719,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0 or YunohiraTenbōshoSpoke6Ring1 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōshoSpoke6Ring1 or YunohiraTenbōshoSpoke1Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5797,7 +5797,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4 or YunohiraTenbōshoSpoke4Ring1 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōshoSpoke4Ring1 or SakurajimaKōFerrybaSpoke1Ring5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5815,7 +5815,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3 or YunohiraTenbōshoSpoke4Ring2 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōshoSpoke4Ring2 or SakurajimaKasanHakubutsukanSpoke1Ring5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5875,7 +5875,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2 or YunohiraTenbōshoSpoke4Ring3 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōshoSpoke4Ring3 or SakurajimaKōFerrybaSpoke1Ring3 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5893,7 +5893,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1 or SakurajimaKōFerrybaSpoke1Ring2 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited SakurajimaKōFerrybaSpoke1Ring2 or YunohiraTenbōshoSpoke4Ring4 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5911,7 +5911,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited SakurajimaKōFerryba1_to_YunohiraTenbōsho1_0 or SakurajimaKōFerrybaSpoke1Ring1 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited SakurajimaKōFerrybaSpoke1Ring1 or YunohiraTenbōshoSpoke4Ring5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5989,7 +5989,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0 or SakurajimaKasanHakubutsukanSpoke1Ring1 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited SakurajimaKasanHakubutsukanSpoke1Ring1 or YōganNagisaKōenAshiyuSpoke1Ring1 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -6070,582 +6070,6 @@
     </Node>
     <Node NodeId="info">
       <Text>Yōgan Nagisa Kōen Ashiyu has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" DisplayName="Trader at Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1) Dialogue" Description="Dialogue tree for Trader at Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1). I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0 or SakurajimaKasanHakubutsukanSpoke1Ring1 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_0" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4 or SakurajimaKōFerrybaSpoke1Ring1 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (1) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3 or SakurajimaKōFerrybaSpoke1Ring2 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" DisplayName="Trader at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3) Dialogue" Description="Dialogue tree for Trader at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_2" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3). I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2 or YunohiraTenbōshoSpoke4Ring3 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (3) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_3" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1 or YunohiraTenbōshoSpoke4Ring2 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (4) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_4" DisplayName="Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0 or YunohiraTenbōshoSpoke4Ring1 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (5) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1) Dialogue" Description="Dialogue tree for Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_0" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1). I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11 or YunohiraTenbōshoSpoke6Ring1 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (1) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10 or YunohiraTenbōshoSpoke6Ring2 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_2" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9 or YunohiraTenbōshoSpoke6Ring3 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (3) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4) Dialogue" Description="Dialogue tree for Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_3" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4). I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (4) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_4" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (5) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_5" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (6) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7) Dialogue" Description="Dialogue tree for Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7). I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_7" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (8) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_8" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3 or ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (9) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" DisplayName="Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10) Dialogue" Description="Dialogue tree for Trader at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_9" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10). I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2 or ArimuraYōganTenbōjoSpoke3Ring3 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (10) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_10" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1 or ArimuraYōganTenbōjoSpoke3Ring2 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (11) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11" DisplayName="Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0 or ArimuraYōganTenbōjoSpoke3Ring1 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -6760,9 +6184,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_YunohiraTenbōshoSpoke6Ring1_6" DisplayName="Elemental near Yunohira Tenbōsho Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Elemental near Yunohira Tenbōsho Spoke 6 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_YunohiraTenbōshoSpoke6Ring1_6" DisplayName="Bandit near Yunohira Tenbōsho Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Yunohira Tenbōsho Spoke 6 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Elemental snarls menacingly, ready to attack!*</Text>
+      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6796,9 +6220,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjoSpoke2Ring1_8" DisplayName="Undead near Arimura Yōgan Tenbōjo Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Undead near Arimura Yōgan Tenbōjo Spoke 2 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjoSpoke2Ring1_8" DisplayName="Bandit near Arimura Yōgan Tenbōjo Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Arimura Yōgan Tenbōjo Spoke 2 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Undead snarls menacingly, ready to attack!*</Text>
+      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6814,9 +6238,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjoSpoke3Ring1_9" DisplayName="Wild Beast near Arimura Yōgan Tenbōjo Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Wild Beast near Arimura Yōgan Tenbōjo Spoke 3 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjoSpoke3Ring1_9" DisplayName="Bandit near Arimura Yōgan Tenbōjo Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Arimura Yōgan Tenbōjo Spoke 3 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Wild Beast snarls menacingly, ready to attack!*</Text>
+      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6832,9 +6256,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjoSpoke4Ring1_10" DisplayName="Bandit near Arimura Yōgan Tenbōjo Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Bandit near Arimura Yōgan Tenbōjo Spoke 4 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjoSpoke4Ring1_10" DisplayName="Wild Beast near Arimura Yōgan Tenbōjo Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Wild Beast near Arimura Yōgan Tenbōjo Spoke 4 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
+      <Text>*Wild Beast snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6868,9 +6292,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKōFerrybaSpoke1Ring3_12" DisplayName="Elemental near Sakurajima Kō Ferry-ba Spoke 1 Ring 3 Dialogue" Description="Dialogue tree for Elemental near Sakurajima Kō Ferry-ba Spoke 1 Ring 3" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKōFerrybaSpoke1Ring3_12" DisplayName="Bandit near Sakurajima Kō Ferry-ba Spoke 1 Ring 3 Dialogue" Description="Dialogue tree for Bandit near Sakurajima Kō Ferry-ba Spoke 1 Ring 3" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Elemental snarls menacingly, ready to attack!*</Text>
+      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6904,9 +6328,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKōFerrybaSpoke6Ring5_14" DisplayName="Wild Beast near Sakurajima Kō Ferry-ba Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Sakurajima Kō Ferry-ba Spoke 6 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKōFerrybaSpoke6Ring5_14" DisplayName="Bandit near Sakurajima Kō Ferry-ba Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Bandit near Sakurajima Kō Ferry-ba Spoke 6 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Wild Beast snarls menacingly, ready to attack!*</Text>
+      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6922,9 +6346,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKasanHakubutsukanSpoke1Ring5_15" DisplayName="Undead near Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5 Dialogue" Description="Dialogue tree for Undead near Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKasanHakubutsukanSpoke1Ring5_15" DisplayName="Elemental near Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5 Dialogue" Description="Dialogue tree for Elemental near Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Undead snarls menacingly, ready to attack!*</Text>
+      <Text>*Elemental snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6940,9 +6364,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKasanHakubutsukanSpoke6Ring4_16" DisplayName="Bandit near Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Bandit near Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKasanHakubutsukanSpoke6Ring4_16" DisplayName="Undead near Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Undead near Sakurajima Kasan Hakubutsukan Spoke 6 Ring 4" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
+      <Text>*Undead snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6958,9 +6382,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_YōganNagisaKōenAshiyuSpoke1Ring5_17" DisplayName="Wild Beast near Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_YōganNagisaKōenAshiyuSpoke1Ring5_17" DisplayName="Undead near Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5 Dialogue" Description="Dialogue tree for Undead near Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Wild Beast snarls menacingly, ready to attack!*</Text>
+      <Text>*Undead snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -6994,9 +6418,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3_19" DisplayName="Elemental near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4) Dialogue" Description="Dialogue tree for Elemental near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3_19" DisplayName="Bandit near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Elemental snarls menacingly, ready to attack!*</Text>
+      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -7012,9 +6436,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8_20" DisplayName="Undead near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9) Dialogue" Description="Dialogue tree for Undead near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8_20" DisplayName="Elemental near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9) Dialogue" Description="Dialogue tree for Elemental near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Undead snarls menacingly, ready to attack!*</Text>
+      <Text>*Elemental snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -7048,9 +6472,9 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKōFerryba1_22" DisplayName="Bandit near Sakurajima Kō Ferry-ba Dialogue" Description="Dialogue tree for Bandit near Sakurajima Kō Ferry-ba" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKōFerryba1_22" DisplayName="Elemental near Sakurajima Kō Ferry-ba Dialogue" Description="Dialogue tree for Elemental near Sakurajima Kō Ferry-ba" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
+      <Text>*Elemental snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -7060,78 +6484,6 @@
     </Node>
     <Node NodeId="info">
       <Text>Sakurajima Kō Ferry-ba has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_SakurajimaKōFerryba1_to_YunohiraTenbōsho1_1_23" DisplayName="Bandit near Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Sakurajima Kō Ferry-ba and Yunohira Tenbōsho (2) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_1_24" DisplayName="Undead near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2) Dialogue" Description="Dialogue tree for Undead near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*Undead snarls menacingly, ready to attack!*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (2) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_6_25" DisplayName="Undead near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7) Dialogue" Description="Dialogue tree for Undead near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*Undead snarls menacingly, ready to attack!*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (7) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_YunohiraTenbōsho1_to_ArimuraYōganTenbōjo1_11_26" DisplayName="Bandit near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*Bandit snarls menacingly, ready to attack!*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Yunohira Tenbōsho and Arimura Yōgan Tenbōjo (12) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
