@@ -23,8 +23,7 @@ public class SagaStateMachineTests
             RefName = "TestSaga",
             DisplayName = "Test Saga",
             LatitudeZ = 35.0,
-            LongitudeX = 139.0,
-            Y = 50.0
+            LongitudeX = 139.0
         };
 
         // Create test triggers

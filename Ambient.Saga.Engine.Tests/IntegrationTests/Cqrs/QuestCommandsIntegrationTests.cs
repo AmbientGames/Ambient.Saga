@@ -154,7 +154,6 @@ public class QuestCommandsIntegrationTests : IDisposable
                                 {
                                     RefName = "ACCUSE_BUTLER",
                                     DisplayName = "Accuse the Butler",
-                                    IsSuccess = true,
                                     Objective = new QuestObjective
                                     {
                                         RefName = "BUTLER_CHOICE",
@@ -168,7 +167,6 @@ public class QuestCommandsIntegrationTests : IDisposable
                                 {
                                     RefName = "ACCUSE_GARDENER",
                                     DisplayName = "Accuse the Gardener",
-                                    IsSuccess = false,
                                     Objective = new QuestObjective
                                     {
                                         RefName = "GARDENER_CHOICE",
@@ -190,8 +188,7 @@ public class QuestCommandsIntegrationTests : IDisposable
             RefName = "TEST_SAGA",
             DisplayName = "Test Saga",
             LatitudeZ = 35.0,
-            LongitudeX = 139.0,
-            Y = 50.0
+            LongitudeX = 139.0
         };
 
         var world = new World

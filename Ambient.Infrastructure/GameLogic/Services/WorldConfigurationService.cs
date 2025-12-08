@@ -37,20 +37,6 @@ public static class WorldConfigurationService
         return scaleFactor;
     }
 
-    public static void ApplyScaleAndShiftSettings(World world)
-    {
-        if (world.WorldConfiguration.ProceduralSettings != null)
-        {
-            world.VerticalScale = 1 / GetProceduralScaleFactor(world.WorldConfiguration.ChunkHeight);
-            world.VerticalShift = 0;
-        }
-        else
-        {
-            world.VerticalScale = world.WorldConfiguration.HeightMapSettings.VerticalScale;
-            world.VerticalShift = world.WorldConfiguration.HeightMapSettings.VerticalShift;
-        }
-    }
-
     public static void InitializeWorldTiming(World world)
     {
         world.UtcStartTick = DateTime.UtcNow.Ticks - 10 * world.WorldConfiguration.SecondsInHour * TimeSpan.TicksPerSecond;

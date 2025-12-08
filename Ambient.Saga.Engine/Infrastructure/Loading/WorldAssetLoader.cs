@@ -46,8 +46,6 @@ public static class WorldAssetLoader
 
         world.WorldTemplate.Metadata = await LoadMetadataAsync(templateDirectory, definitionDirectory);
         await LoadGamePlayAsync(templateDirectory, definitionDirectory, world);
-        await LoadSimulationAsync(templateDirectory, definitionDirectory, world);
-        await LoadPresentationAsync(templateDirectory, definitionDirectory, world);
 
         world.IsProcedural = world.WorldConfiguration.ProceduralSettings != null;
 
@@ -83,10 +81,6 @@ public static class WorldAssetLoader
         }
 
 
-        //// Calculate derived values from WorldConfiguration
-        //WorldConfigurationService.CalculateUnitsToDegrees(world, worldConfiguration);
-        //world.HeightMapLatitudeScale_Validated = world.IsProcedural ? 1 : (int)Math.Round(worldConfiguration.HeightMapSettings.MapResolutionInMeters * worldConfiguration.HeightMapSettings.HorizontalScale);
-
         // Calculate longitude scale with latitude correction
         if (world.IsProcedural)
         {
@@ -105,38 +99,12 @@ public static class WorldAssetLoader
         // Validate referential integrity after all lookups are built
         WorldValidationService.ValidateReferentialIntegrity(world);
 
-        //ConvertSagasToAvatarCoordinates(world);
-
-        WorldConfigurationService.ApplyScaleAndShiftSettings(world);
-
         return world;
     }
-
-    //private static void ConvertSagasToAvatarCoordinates(World world)
-    //{
-    //    if (world.Gameplay.Sagas != null)
-    //    {
-    //        foreach (var saga in world.Gameplay.Sagas)
-    //        {
-    //            saga.LongitudeXFerRealz = (long)Math.Round(SagaManager.GetLongitudeInput(world, saga.LongitudeX));
-    //            saga.LatitudeZFerRealz = (long)Math.Round(SagaManager.GetLatitudeInput(world, saga.LatitudeZ));
-    //        }
-    //    }
-    //}
 
     private static async Task LoadGamePlayAsync(string dataDirectory, string definitionDirectory, World world)
     {
         await GameplayComponentLoader.LoadAsync(dataDirectory, definitionDirectory, world);
-    }
-
-    private static async Task LoadSimulationAsync(string dataDirectory, string definitionDirectory, World world)
-    {
-        //await SimulationComponentLoader.LoadAsync(dataDirectory, definitionDirectory, world);
-    }
-
-    private static async Task LoadPresentationAsync(string dataDirectory, string definitionDirectory, World world)
-    {
-        //await PresentationComponentLoader.LoadAsync(dataDirectory, definitionDirectory, world);
     }
 
     public static async Task<TemplateMetadata> LoadMetadataAsync(string dataDirectory, string definitionDirectory)

@@ -27,8 +27,7 @@ public class SagaStateMachineVoxelTests
             RefName = "VoxelTestSaga",
             DisplayName = "Voxel Test Saga",
             LatitudeZ = 35.0,
-            LongitudeX = 139.0,
-            Y = 50.0
+            LongitudeX = 139.0
         };
 
         // Create test triggers

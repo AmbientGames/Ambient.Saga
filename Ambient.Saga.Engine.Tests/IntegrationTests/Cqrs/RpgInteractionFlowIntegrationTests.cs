@@ -322,15 +322,13 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             RefName = "MerchantSaga",
             DisplayName = "Friendly Merchant",
             LatitudeZ = 35.0,
-            LongitudeX = 139.0,
-            Y = 50.0
+            LongitudeX = 139.0
         };
 
         var merchantTrigger = new SagaTrigger
         {
             RefName = "MerchantTrigger",
             EnterRadius = 100.0f,
-            TriggerType = SagaTriggerType.SpawnPassive,
             Spawn = new[]
             {
                 new CharacterSpawn

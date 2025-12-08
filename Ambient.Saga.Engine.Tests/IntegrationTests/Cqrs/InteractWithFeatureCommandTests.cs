@@ -63,7 +63,7 @@ public class InteractWithFeatureCommandTests : IDisposable
             RefName = "TreasureChest",
             DisplayName = "Ancient Treasure Chest",
             Type = SagaFeatureType.Landmark,
-            Interactable = new InteractableBase
+            Interactable = new Interactable
             {
                 Loot = new ItemCollection
                 {
@@ -85,7 +85,7 @@ public class InteractWithFeatureCommandTests : IDisposable
             RefName = "LimitedChest",
             DisplayName = "Limited Chest",
             Type = SagaFeatureType.Landmark,
-            Interactable = new InteractableBase
+            Interactable = new Interactable
             {
                 MaxInteractions = 2,
                 Loot = new ItemCollection
@@ -105,7 +105,7 @@ public class InteractWithFeatureCommandTests : IDisposable
             DisplayName = "Dragon Lair Marker",
             Type = SagaFeatureType.Quest,
             QuestRef = "DragonSlayerQuest",
-            Interactable = new InteractableBase
+            Interactable = new Interactable
             {
                 GivesQuestTokenRef = new[] { "DragonSlayerToken" }
             }
@@ -117,7 +117,7 @@ public class InteractWithFeatureCommandTests : IDisposable
             RefName = "LockedDoor",
             DisplayName = "Sealed Door",
             Type = SagaFeatureType.Landmark,
-            Interactable = new InteractableBase
+            Interactable = new Interactable
             {
                 RequiresQuestTokenRef = new[] { "GoldenKey" }
             }
@@ -130,7 +130,6 @@ public class InteractWithFeatureCommandTests : IDisposable
             DisplayName = "Treasure Hunt",
             LatitudeZ = 35.0,
             LongitudeX = 139.0,
-            Y = 100.0,
             SagaFeatureRef = "TreasureChest"
         };
 
@@ -140,7 +139,6 @@ public class InteractWithFeatureCommandTests : IDisposable
             DisplayName = "Limited Treasure",
             LatitudeZ = 36.0,
             LongitudeX = 140.0,
-            Y = 100.0,
             SagaFeatureRef = "LimitedChest"
         };
 
@@ -150,7 +148,6 @@ public class InteractWithFeatureCommandTests : IDisposable
             DisplayName = "Quest Marker",
             LatitudeZ = 37.0,
             LongitudeX = 141.0,
-            Y = 100.0,
             SagaFeatureRef = "QuestSignpost"
         };
 
@@ -160,7 +157,6 @@ public class InteractWithFeatureCommandTests : IDisposable
             DisplayName = "Locked Door",
             LatitudeZ = 38.0,
             LongitudeX = 142.0,
-            Y = 100.0,
             SagaFeatureRef = "LockedDoor"
         };
 

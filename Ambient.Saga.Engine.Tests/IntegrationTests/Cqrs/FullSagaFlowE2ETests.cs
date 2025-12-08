@@ -268,8 +268,7 @@ public class FullSagaFlowE2ETests : IDisposable
             RefName = "MerchantCastleSaga",
             DisplayName = "Merchant Castle",
             LatitudeZ = 35.0,
-            LongitudeX = 139.0,
-            Y = 50.0
+            LongitudeX = 139.0
         };
 
         var guardSaga = new SagaArc
@@ -277,15 +276,13 @@ public class FullSagaFlowE2ETests : IDisposable
             RefName = "GuardPatrolSaga",
             DisplayName = "Guard Patrol",
             LatitudeZ = 35.0,
-            LongitudeX = 139.0,
-            Y = 50.0
+            LongitudeX = 139.0
         };
 
         var merchantTrigger = new SagaTrigger
         {
             RefName = "MerchantTrigger",
             EnterRadius = 100.0f,
-            TriggerType = SagaTriggerType.SpawnPassive,
             Spawn = new[]
             {
                 new CharacterSpawn
@@ -300,7 +297,6 @@ public class FullSagaFlowE2ETests : IDisposable
         {
             RefName = "GuardTrigger",
             EnterRadius = 100.0f,
-            TriggerType = SagaTriggerType.SpawnPassive,
             Spawn = new[]
             {
                 new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Guard" },

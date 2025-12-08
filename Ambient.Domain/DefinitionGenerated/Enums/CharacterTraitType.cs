@@ -42,9 +42,36 @@ namespace Ambient.Domain {
         FleeThreshold,
         
         /// <remarks/>
-        GrantsAffinity,
+        SummonChance,
+        
+        /// <remarks/>
+        DefenseBonus,
         
         /// <remarks/>
         TradeDiscount,
+        
+        /// <remarks/>
+        WillingToBargain,
+        
+        /// <remarks/>
+        BargainSkill,
+        
+        /// <remarks/>
+        NegotiatedDiscount,
+        
+        /// <remarks/>
+        BerserkThreshold,
+        
+        /// <remarks/>
+        TacticalRetreat,
+        
+        /// <remarks/>
+        LastStand,
+        
+        /// <remarks/>
+        Merciful,
+        
+        /// <remarks/>
+        Ruthless,
     }
 }

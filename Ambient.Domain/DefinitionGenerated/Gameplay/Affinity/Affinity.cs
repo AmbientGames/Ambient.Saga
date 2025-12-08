@@ -26,7 +26,7 @@ namespace Ambient.Domain {
         
         private string capturedFromCharacterRefField;
         
-        private string capturedDateField;
+        private string acquiredDateField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -52,12 +52,12 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string CapturedDate {
+        public string AcquiredDate {
             get {
-                return this.capturedDateField;
+                return this.acquiredDateField;
             }
             set {
-                this.capturedDateField = value;
+                this.acquiredDateField = value;
             }
         }
     }

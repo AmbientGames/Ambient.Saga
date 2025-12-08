@@ -20,6 +20,7 @@
 			<!-- Casting Implements -->
 			<xs:enumeration value="Staff" />
 			<xs:enumeration value="Wand" />
+			<xs:enumeration value="Tome" />
 			<xs:enumeration value="Focus" />
 			<xs:enumeration value="Instrument" />
 			<!-- Defensive -->
@@ -29,8 +30,8 @@
 			<xs:enumeration value="ArmorMedium" />
 			<xs:enumeration value="ArmorHeavy" />
 			<xs:enumeration value="ArmorRobes" />
-			<!-- Other -->
-			<xs:enumeration value="Tome" />
+			<!-- Accessories (rings, amulets, belts, cloaks) -->
+			<xs:enumeration value="Accessory" />
 		</xs:restriction>
 	</xs:simpleType>
 

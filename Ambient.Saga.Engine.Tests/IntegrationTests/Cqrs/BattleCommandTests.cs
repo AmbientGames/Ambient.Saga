@@ -495,8 +495,7 @@ public class BattleCommandTests : IDisposable
             RefName = "WeakBossSaga",
             DisplayName = "Weak Boss Arena",
             LatitudeZ = 35.0,
-            LongitudeX = 139.0,
-            Y = 50.0
+            LongitudeX = 139.0
         };
 
         var multiEnemySaga = new SagaArc
@@ -504,15 +503,13 @@ public class BattleCommandTests : IDisposable
             RefName = "MultiEnemySaga",
             DisplayName = "Multi-Enemy Arena",
             LatitudeZ = 35.0,
-            LongitudeX = 139.0,
-            Y = 50.0
+            LongitudeX = 139.0
         };
 
         var weakBossTrigger = new SagaTrigger
         {
             RefName = "WeakBossTrigger",
             EnterRadius = 100.0f,
-            TriggerType = SagaTriggerType.SpawnPassive,
             Spawn = new[]
             {
                 new CharacterSpawn
@@ -527,7 +524,6 @@ public class BattleCommandTests : IDisposable
         {
             RefName = "MultiEnemyTrigger",
             EnterRadius = 100.0f,
-            TriggerType = SagaTriggerType.SpawnPassive,
             Spawn = new[]
             {
                 new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Goblin" },

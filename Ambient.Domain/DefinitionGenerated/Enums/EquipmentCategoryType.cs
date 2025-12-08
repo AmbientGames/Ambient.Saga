@@ -36,6 +36,9 @@ namespace Ambient.Domain {
         Wand,
         
         /// <remarks/>
+        Tome,
+        
+        /// <remarks/>
         Focus,
         
         /// <remarks/>
@@ -57,6 +60,6 @@ namespace Ambient.Domain {
         ArmorRobes,
         
         /// <remarks/>
-        Tome,
+        Accessory,
     }
 }

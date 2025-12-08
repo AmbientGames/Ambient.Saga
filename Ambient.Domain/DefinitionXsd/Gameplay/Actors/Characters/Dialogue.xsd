@@ -168,20 +168,63 @@
             <xs:enumeration value="Defeated"></xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="CharacterTraitType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Hostile"></xs:enumeration>
-            <xs:enumeration value="Friendly"></xs:enumeration>
-            <xs:enumeration value="WillTrade"></xs:enumeration>
-            <xs:enumeration value="BossFight"></xs:enumeration>
-            <xs:enumeration value="Aggression"></xs:enumeration>
-            <xs:enumeration value="Morale"></xs:enumeration>
-            <xs:enumeration value="FleeThreshold"></xs:enumeration>
-			<xs:enumeration value="GrantsAffinity"></xs:enumeration>
+	<xs:simpleType name="CharacterTraitType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Hostile"></xs:enumeration>
+			<xs:enumeration value="Friendly"></xs:enumeration>
+			<xs:enumeration value="WillTrade"></xs:enumeration>
+			<xs:enumeration value="BossFight"></xs:enumeration>
+			<xs:enumeration value="Aggression"></xs:enumeration>
+			<xs:enumeration value="Morale"></xs:enumeration>
+			<xs:enumeration value="FleeThreshold"></xs:enumeration>
+			<xs:enumeration value="SummonChance"></xs:enumeration>
+			<xs:enumeration value="DefenseBonus"></xs:enumeration>
 			<xs:enumeration value="TradeDiscount"></xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:complexType name="DialogueCondition">
+			<!-- Bargaining/Trade Traits -->
+			<xs:enumeration value="WillingToBargain">
+				<xs:annotation>
+					<xs:documentation>Merchant's openness to negotiation (0-100, higher = easier to bargain with)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BargainSkill">
+				<xs:annotation>
+					<xs:documentation>Player's bargaining ability (0-100, higher = better discounts)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NegotiatedDiscount">
+				<xs:annotation>
+					<xs:documentation>Final negotiated discount percentage after bargaining</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<!-- Battle Behavior Traits -->
+			<xs:enumeration value="BerserkThreshold">
+				<xs:annotation>
+					<xs:documentation>Health % that triggers berserk mode (switch to Offensive stance)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TacticalRetreat">
+				<xs:annotation>
+					<xs:documentation>Health % that triggers defensive tactics (switch to Defensive stance)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LastStand">
+				<xs:annotation>
+					<xs:documentation>Health % that triggers desperate all-out attack</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Merciful">
+				<xs:annotation>
+					<xs:documentation>Player shows mercy in battle (spares defeated enemies)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ruthless">
+				<xs:annotation>
+					<xs:documentation>Player is ruthless in battle (finishes defeated enemies)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="DialogueCondition">
         <xs:attribute name="Type" type="DialogueConditionType" use="required" />
         <xs:attribute name="RefName" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="Operator" type="ComparisonOperator" use="optional" default="Equals" />

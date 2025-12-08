@@ -380,18 +380,18 @@ public class AvatarInfoModal
 
     private void RenderSummonsTab(AvatarBase avatar, MainViewModel viewModel)
     {
-        ImGui.BeginChild("SummonsScroll", new Vector2(0, 0), ImGuiChildFlags.None);
+        ImGui.BeginChild("AffinitiesScroll", new Vector2(0, 0), ImGuiChildFlags.None);
 
         if (avatar.Affinities == null || avatar.Affinities.Length == 0)
         {
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No captured summons");
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No acquired affinities");
             ImGui.Spacing();
-            ImGui.TextWrapped("Summons can be captured during combat encounters.");
+            ImGui.TextWrapped("Affinities can be captured during combat encounters.");
             ImGui.EndChild();
             return;
         }
 
-        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Summons ({avatar.Summons.Length}):");
+        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Affinities ({avatar.Affinities.Length}):");
         ImGui.Spacing();
 
         foreach (var summon in avatar.Affinities)
@@ -407,9 +407,9 @@ public class AvatarInfoModal
 
             ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), name);
             ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Affinity: {affinityName}");
-            if (!string.IsNullOrEmpty(summon.CapturedDate))
+            if (!string.IsNullOrEmpty(summon.AcquiredDate))
             {
-                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"Captured: {summon.CapturedDate}");
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"Acquired: {summon.AcquiredDate}");
             }
 
             ImGui.EndChild();
