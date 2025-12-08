@@ -58,6 +58,10 @@ namespace Ambient.Domain {
         
         private string metadataField;
         
+        private string modelRefField;
+        
+        private string textureRefField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string RefName {
@@ -99,6 +103,28 @@ namespace Ambient.Domain {
             }
             set {
                 this.metadataField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string ModelRef {
+            get {
+                return this.modelRefField;
+            }
+            set {
+                this.modelRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string TextureRef {
+            get {
+                return this.textureRefField;
+            }
+            set {
+                this.textureRefField = value;
             }
         }
     }

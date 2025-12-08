@@ -30,31 +30,5 @@ namespace Ambient.Domain {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class AcquirableBase : EntityBase {
-        
-        private string modelRefField;
-        
-        private string textureRefField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ModelRef {
-            get {
-                return this.modelRefField;
-            }
-            set {
-                this.modelRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string TextureRef {
-            get {
-                return this.textureRefField;
-            }
-            set {
-                this.textureRefField = value;
-            }
-        }
     }
 }

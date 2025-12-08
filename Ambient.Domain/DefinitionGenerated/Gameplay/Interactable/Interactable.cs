@@ -20,9 +20,83 @@ namespace Ambient.Domain {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
-    public partial class Interactable : InteractableBase {
+    public partial class Interactable {
+        
+        private string contentField;
+        
+        private ItemCollection lootField;
+        
+        private RewardEffects effectsField;
+        
+        private string[] requiresQuestTokenRefField;
+        
+        private string[] givesQuestTokenRefField;
         
         private string dialogueTreeRefField;
+        
+        private float approachRadiusField;
+        
+        private int maxInteractionsField;
+        
+        private int reinteractIntervalSecondsField;
+        
+        public Interactable() {
+            this.approachRadiusField = ((float)(5F));
+            this.maxInteractionsField = -1;
+            this.reinteractIntervalSecondsField = 0;
+        }
+        
+        /// <remarks/>
+        public string Content {
+            get {
+                return this.contentField;
+            }
+            set {
+                this.contentField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public ItemCollection Loot {
+            get {
+                return this.lootField;
+            }
+            set {
+                this.lootField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public RewardEffects Effects {
+            get {
+                return this.effectsField;
+            }
+            set {
+                this.effectsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("RequiresQuestTokenRef")]
+        public string[] RequiresQuestTokenRef {
+            get {
+                return this.requiresQuestTokenRefField;
+            }
+            set {
+                this.requiresQuestTokenRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("GivesQuestTokenRef")]
+        public string[] GivesQuestTokenRef {
+            get {
+                return this.givesQuestTokenRefField;
+            }
+            set {
+                this.givesQuestTokenRefField = value;
+            }
+        }
         
         /// <remarks/>
         public string DialogueTreeRef {
@@ -31,6 +105,42 @@ namespace Ambient.Domain {
             }
             set {
                 this.dialogueTreeRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "5")]
+        public float ApproachRadius {
+            get {
+                return this.approachRadiusField;
+            }
+            set {
+                this.approachRadiusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(-1)]
+        public int MaxInteractions {
+            get {
+                return this.maxInteractionsField;
+            }
+            set {
+                this.maxInteractionsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(0)]
+        public int ReinteractIntervalSeconds {
+            get {
+                return this.reinteractIntervalSecondsField;
+            }
+            set {
+                this.reinteractIntervalSecondsField = value;
             }
         }
     }

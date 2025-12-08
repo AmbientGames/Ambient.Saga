@@ -21,15 +21,6 @@ namespace Ambient.Domain {
     public enum ApplicationMethod {
         
         /// <remarks/>
-        OnHit,
-        
-        /// <remarks/>
-        OnCriticalHit,
-        
-        /// <remarks/>
-        OnDefend,
-        
-        /// <remarks/>
         StartOfTurn,
         
         /// <remarks/>

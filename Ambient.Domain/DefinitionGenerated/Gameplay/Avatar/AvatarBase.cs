@@ -26,9 +26,7 @@ namespace Ambient.Domain {
         
         private QuestEntry[] questsField;
         
-        private SagaArcInventory sagaArcsField;
-        
-        private Summon[] summonsField;
+        private Affinity[] affinitiesField;
         
         private PartyInventory partyField;
         
@@ -40,18 +38,6 @@ namespace Ambient.Domain {
         
         private string currentBuildingMaterialRefField;
         
-        private float velXField;
-        
-        private float velYField;
-        
-        private float velZField;
-        
-        private float viewXField;
-        
-        private float viewYField;
-        
-        private float viewZField;
-        
         private float playTimeHoursField;
         
         private long blocksPlacedField;
@@ -61,12 +47,6 @@ namespace Ambient.Domain {
         private float distanceTraveledField;
         
         public AvatarBase() {
-            this.velXField = ((float)(0F));
-            this.velYField = ((float)(0F));
-            this.velZField = ((float)(0F));
-            this.viewXField = ((float)(0F));
-            this.viewYField = ((float)(0F));
-            this.viewZField = ((float)(1F));
             this.playTimeHoursField = ((float)(0F));
             this.blocksPlacedField = ((long)(0));
             this.blocksDestroyedField = ((long)(0));
@@ -96,23 +76,13 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        public SagaArcInventory SagaArcs {
-            get {
-                return this.sagaArcsField;
-            }
-            set {
-                this.sagaArcsField = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public Summon[] Summons {
+        public Affinity[] Affinities {
             get {
-                return this.summonsField;
+                return this.affinitiesField;
             }
             set {
-                this.summonsField = value;
+                this.affinitiesField = value;
             }
         }
         
@@ -167,78 +137,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.currentBuildingMaterialRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float VelX {
-            get {
-                return this.velXField;
-            }
-            set {
-                this.velXField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float VelY {
-            get {
-                return this.velYField;
-            }
-            set {
-                this.velYField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float VelZ {
-            get {
-                return this.velZField;
-            }
-            set {
-                this.velZField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float ViewX {
-            get {
-                return this.viewXField;
-            }
-            set {
-                this.viewXField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float ViewY {
-            get {
-                return this.viewYField;
-            }
-            set {
-                this.viewYField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
-        public float ViewZ {
-            get {
-                return this.viewZField;
-            }
-            set {
-                this.viewZField = value;
             }
         }
         

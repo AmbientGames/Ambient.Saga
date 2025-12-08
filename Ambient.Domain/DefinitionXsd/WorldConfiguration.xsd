@@ -1,74 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="EntityBase.xsd" />
-    <xs:simpleType name="BlockMode">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Stub" />
-            <xs:enumeration value="Basic" />
-            <xs:enumeration value="ChamferedCorners" />
-            <xs:enumeration value="ChamferedEdges" />
-            <xs:enumeration value="WorldDefault" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="ChunkCount">
-        <xs:restriction base="xs:int">
-            <xs:enumeration value="1" />
-            <xs:enumeration value="4" />
-            <xs:enumeration value="16" />
-            <xs:enumeration value="64" />
-            <xs:enumeration value="256" />
-            <xs:enumeration value="1024" />
-            <xs:enumeration value="4096" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="WorldGameMode">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Play" />
-            <xs:enumeration value="Explore" />
-            <xs:enumeration value="Paint" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="EffectLevel">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Full" />
-            <xs:enumeration value="High" />
-            <xs:enumeration value="Medium" />
-            <xs:enumeration value="Low" />
-            <xs:enumeration value="None" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="Seed">
-        <xs:restriction base="xs:float">
-            <xs:minInclusive value="0" />
-            <xs:maxInclusive value="1" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="ProceduralGenerationMode">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Rugged" />
-            <xs:enumeration value="Extreme" />
-            <xs:enumeration value="Extreme2" />
-            <xs:enumeration value="Radical" />
-            <xs:enumeration value="Rolling" />
-            <xs:enumeration value="Flat" />
-            <xs:enumeration value="ShangriLa" />
-            <xs:enumeration value="BlankCanvas" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="WorldLifeMode">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="None" />
-            <xs:enumeration value="Living" />
-            <xs:enumeration value="Terraform" />
-            <xs:enumeration value="Genesis" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:simpleType name="WorldDataSource">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Generated" />
-            <xs:enumeration value="GIS" />
-        </xs:restriction>
-    </xs:simpleType>
     <xs:simpleType name="WorldConfigurationRef">
         <xs:restriction base="xs:string">
             <xs:minLength value="1" />
@@ -81,7 +13,6 @@
         <xs:attribute name="VerticalShift" type="xs:double" use="required" />
     </xs:complexType>
     <xs:complexType name="ProceduralSettings">
-        <xs:attribute name="ProceduralGenerationMode" type="ProceduralGenerationMode" default="Rugged" />
         <xs:attribute name="LatitudeDegreesToUnits" type="xs:double" default="250" />
         <xs:attribute name="LongitudeDegreesToUnits" type="xs:double" default="250" />
     </xs:complexType>
@@ -102,6 +33,7 @@
                 <xs:attribute name="CharactersRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="CharacterArchetypesRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="CharacterAffinitiesRef" type="xs:string" use="optional" default="Default" />
+                <xs:attribute name="StatusEffectsRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="CombatStancesRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="LoadoutSlotsRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="ToolsRef" type="xs:string" use="optional" default="Default" />
@@ -115,28 +47,10 @@
                 <xs:attribute name="FactionsRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="SagaTriggerPatternsRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="CurrencyName" type="xs:string" default="Credit" />
-                <xs:attribute name="GameMode" type="WorldGameMode" default="Play" />
-                <xs:attribute name="DataSource" type="WorldDataSource" default="Generated" />
                 <xs:attribute name="StartDate" type="xs:date" default="0001-05-01" />
-                <xs:attribute name="Mod" type="xs:string" default="Ambient.Game.Mod.dll" />
                 <xs:attribute name="SpawnLatitude" type="xs:double" use="required" />
                 <xs:attribute name="SpawnLongitude" type="xs:double" use="required" />
-                <xs:attribute name="ChunkHeight" type="xs:int" use="optional" />
-                <xs:attribute name="BlockMode" type="BlockMode" default="ChamferedEdges" />
-                <xs:attribute name="OwnerChunkCount" type="ChunkCount" default="256" />
-                <xs:attribute name="GuestChunkCount" type="ChunkCount" default="1" />
-                <xs:attribute name="NonOwnerChunkEffectLevel" type="EffectLevel" default="Medium" />
-                <xs:attribute name="MaxPlayers" type="xs:int" default="100" />
-                <xs:attribute name="MaxCapturedSummons" type="xs:int" default="12"></xs:attribute>
-                <xs:attribute name="LifeMode" type="WorldLifeMode" default="Living" />
                 <xs:attribute name="SecondsInHour" type="xs:int" default="60" />
-                <xs:attribute name="Region" type="xs:string" use="optional" />
-                <xs:attribute name="Difficulty" type="xs:string" default="Normal" />
-                <xs:attribute name="RecommendedFor" type="xs:string" use="optional" />
-                <xs:attribute name="Seed" type="Seed" use="required" />
-                <xs:attribute name="BlockScaleFactor" type="xs:float" default="1.0" />
-                <xs:attribute name="Gravity" type="xs:float" default="20.0" />
-                <xs:attribute name="ShortNightsAndWinter" type="xs:boolean" default="false" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

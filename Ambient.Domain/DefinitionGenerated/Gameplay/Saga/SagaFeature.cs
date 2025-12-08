@@ -22,17 +22,9 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class SagaFeature : EntityBase {
         
-        private InteractableBase interactableField;
+        private Interactable interactableField;
         
         private SagaFeatureType typeField;
-        
-        private string categoryTypeField;
-        
-        private string subTypeField;
-        
-        private string tagsField;
-        
-        private string modelRefField;
         
         private string questRefField;
         
@@ -47,7 +39,7 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        public InteractableBase Interactable {
+        public Interactable Interactable {
             get {
                 return this.interactableField;
             }
@@ -64,50 +56,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.typeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string CategoryType {
-            get {
-                return this.categoryTypeField;
-            }
-            set {
-                this.categoryTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string SubType {
-            get {
-                return this.subTypeField;
-            }
-            set {
-                this.subTypeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Tags {
-            get {
-                return this.tagsField;
-            }
-            set {
-                this.tagsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ModelRef {
-            get {
-                return this.modelRefField;
-            }
-            set {
-                this.modelRefField = value;
             }
         }
         

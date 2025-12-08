@@ -13,28 +13,28 @@
     <!-- What class of equipment this is -->
     <xs:simpleType name="EquipmentCategoryType">
         <xs:restriction base="xs:string">
-            <!-- Weapons -->
-            <xs:enumeration value="OneHanded" />
-            <xs:enumeration value="TwoHanded" />
-            <xs:enumeration value="Unarmed" />
-            <!-- Casting Implements -->
-            <xs:enumeration value="Staff" />
-            <xs:enumeration value="Wand" />
-            <xs:enumeration value="Focus" />
-            <xs:enumeration value="Instrument" />
-            <!-- Defensive -->
-            <xs:enumeration value="Shield" />
-            <!-- Armor -->
-            <xs:enumeration value="ArmorLight" />
-            <xs:enumeration value="ArmorMedium" />
-            <xs:enumeration value="ArmorHeavy" />
-            <xs:enumeration value="ArmorRobes" />
-            <!-- Other -->
-            <xs:enumeration value="Accessory" />
-        </xs:restriction>
-    </xs:simpleType>
+			<!-- Weapons -->
+			<xs:enumeration value="OneHanded" />
+			<xs:enumeration value="TwoHanded" />
+			<xs:enumeration value="Unarmed" />
+			<!-- Casting Implements -->
+			<xs:enumeration value="Staff" />
+			<xs:enumeration value="Wand" />
+			<xs:enumeration value="Focus" />
+			<xs:enumeration value="Instrument" />
+			<!-- Defensive -->
+			<xs:enumeration value="Shield" />
+			<!-- Armor -->
+			<xs:enumeration value="ArmorLight" />
+			<xs:enumeration value="ArmorMedium" />
+			<xs:enumeration value="ArmorHeavy" />
+			<xs:enumeration value="ArmorRobes" />
+			<!-- Other -->
+			<xs:enumeration value="Tome" />
+		</xs:restriction>
+	</xs:simpleType>
 
-    <xs:attributeGroup name="UseAttributes">
+<xs:attributeGroup name="UseAttributes">
         <xs:attribute name="DurabilityLoss" type="NonNegativeFloat" use="optional" default="0.01" />
         <xs:attribute name="UseType" type="ItemUseType" use="optional" default="Defensive" />
     </xs:attributeGroup>

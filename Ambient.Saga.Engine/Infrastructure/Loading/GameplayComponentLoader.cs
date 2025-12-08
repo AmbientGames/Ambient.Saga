@@ -18,33 +18,38 @@ internal static class GameplayComponentLoader
 
     private static async Task LoadGameplayData(string dataDirectory, string xsdFilePath, World world)
     {
-        // Load region-specific versions if available (defaults to "Default" if not specified)
-        var consumableItemsRef = world.WorldConfiguration?.ConsumableItemsRef ?? "Default";
-        var spellsRef = world.WorldConfiguration?.SpellsRef ?? "Default";
-        var equipmentRef = world.WorldConfiguration?.EquipmentRef ?? "Default";
-        var QuestTokensRef = world.WorldConfiguration?.QuestTokensRef ?? "Default";
-        var charactersRef = world.WorldConfiguration?.CharactersRef ?? "Default";
-        var characterArchetypesRef = world.WorldConfiguration?.CharacterArchetypesRef ?? "Default";
-        var characterAffinitiesRef = world.WorldConfiguration?.CharacterAffinitiesRef ?? "Default";
-        var combatStancesRef = world.WorldConfiguration?.CombatStancesRef ?? "Default";
-        var loadoutSlotsRef = world.WorldConfiguration?.LoadoutSlotsRef ?? "Default";
-        var toolsRef = world.WorldConfiguration?.ToolsRef ?? "Default";
-        var materialsRef = world.WorldConfiguration?.BuildingMaterialsRef ?? "Default";
-        var dialogueTreesRef = world.WorldConfiguration?.DialogueTreesRef ?? "Default";
-        var avatarArchetypesRef = world.WorldConfiguration?.AvatarArchetypesRef ?? "Default";
-        var sagaFeaturesRef = world.WorldConfiguration?.SagaFeaturesRef ?? "Default";
-        var achievementsRef = world.WorldConfiguration?.AchievementsRef ?? "Default";
-        var questsRef = world.WorldConfiguration?.QuestsRef ?? "Default";
-        var sagaTriggerPatternsRef = world.WorldConfiguration?.SagaTriggerPatternsRef ?? "Default";
-        var sagasRef = world.WorldConfiguration?.SagaArcsRef ?? "Default";
-        var factionsRef = world.WorldConfiguration?.FactionsRef ?? "Default";
+        var config = world.WorldConfiguration;
+
+        // Resolve refs - "Default" means use the WorldConfiguration's RefName
+        var defaultRef = config.RefName;
+
+        var consumableItemsRef = ResolveRef(config.ConsumableItemsRef, defaultRef);
+        var spellsRef = ResolveRef(config.SpellsRef, defaultRef);
+        var equipmentRef = ResolveRef(config.EquipmentRef, defaultRef);
+        var questTokensRef = ResolveRef(config.QuestTokensRef, defaultRef);
+        var charactersRef = ResolveRef(config.CharactersRef, defaultRef);
+        var characterArchetypesRef = ResolveRef(config.CharacterArchetypesRef, defaultRef);
+        var characterAffinitiesRef = ResolveRef(config.CharacterAffinitiesRef, defaultRef);
+        var combatStancesRef = ResolveRef(config.CombatStancesRef, defaultRef);
+        var loadoutSlotsRef = ResolveRef(config.LoadoutSlotsRef, defaultRef);
+        var toolsRef = ResolveRef(config.ToolsRef, defaultRef);
+        var materialsRef = ResolveRef(config.BuildingMaterialsRef, defaultRef);
+        var dialogueTreesRef = ResolveRef(config.DialogueTreesRef, defaultRef);
+        var avatarArchetypesRef = ResolveRef(config.AvatarArchetypesRef, defaultRef);
+        var sagaFeaturesRef = ResolveRef(config.SagaFeaturesRef, defaultRef);
+        var achievementsRef = ResolveRef(config.AchievementsRef, defaultRef);
+        var questsRef = ResolveRef(config.QuestsRef, defaultRef);
+        var sagaTriggerPatternsRef = ResolveRef(config.SagaTriggerPatternsRef, defaultRef);
+        var sagasRef = ResolveRef(config.SagaArcsRef, defaultRef);
+        var factionsRef = ResolveRef(config.FactionsRef, defaultRef);
+
         // StatusEffects uses the same ref pattern as CharacterAffinities (same folder)
         var statusEffectsRef = characterAffinitiesRef;
 
         world.Gameplay.Consumables = (await XmlLoader.LoadFromXmlAsync<ConsumableCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{consumableItemsRef}.Consumable.xml"), xsdFilePath)).Consumable ?? [];
         world.Gameplay.Spells = (await XmlLoader.LoadFromXmlAsync<SpellCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{spellsRef}.Spells.xml"), xsdFilePath)).Spell ?? [];
         world.Gameplay.Equipment = (await XmlLoader.LoadFromXmlAsync<EquipmentCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{equipmentRef}.Equipment.xml"), xsdFilePath)).Equipment ?? [];
-        world.Gameplay.QuestTokens = (await XmlLoader.LoadFromXmlAsync<QuestTokens>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{QuestTokensRef}.QuestTokens.xml"), xsdFilePath)).QuestToken ?? [];
+        world.Gameplay.QuestTokens = (await XmlLoader.LoadFromXmlAsync<QuestTokens>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{questTokensRef}.QuestTokens.xml"), xsdFilePath)).QuestToken ?? [];
         world.Gameplay.Characters = (await XmlLoader.LoadFromXmlAsync<Characters>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{charactersRef}.Characters.xml"), xsdFilePath)).Character ?? [];
         world.Gameplay.CharacterArchetypes = (await XmlLoader.LoadFromXmlAsync<CharacterArchetypes>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{characterArchetypesRef}.CharacterArchetypes.xml"), xsdFilePath)).CharacterArchetype ?? [];
         world.Gameplay.CharacterAffinities = (await XmlLoader.LoadFromXmlAsync<CharacterAffinities>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{characterAffinitiesRef}.CharacterAffinities.xml"), xsdFilePath)).Affinity ?? [];
@@ -157,5 +162,13 @@ internal static class GameplayComponentLoader
                 world.SagaTriggersLookup[saga.RefName] = expandedTriggers;
             }
         }
+    }
+
+    private static string ResolveRef(string? refValue, string defaultRef)
+    {
+        // "Default" or null/empty means use the WorldConfiguration's RefName
+        if (string.IsNullOrEmpty(refValue) || refValue == "Default")
+            return defaultRef;
+        return refValue;
     }
 }

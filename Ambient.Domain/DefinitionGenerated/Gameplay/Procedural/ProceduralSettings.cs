@@ -22,28 +22,13 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class ProceduralSettings {
         
-        private ProceduralGenerationMode proceduralGenerationModeField;
-        
         private double latitudeDegreesToUnitsField;
         
         private double longitudeDegreesToUnitsField;
         
         public ProceduralSettings() {
-            this.proceduralGenerationModeField = ProceduralGenerationMode.Rugged;
             this.latitudeDegreesToUnitsField = 250D;
             this.longitudeDegreesToUnitsField = 250D;
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(ProceduralGenerationMode.Rugged)]
-        public ProceduralGenerationMode ProceduralGenerationMode {
-            get {
-                return this.proceduralGenerationModeField;
-            }
-            set {
-                this.proceduralGenerationModeField = value;
-            }
         }
         
         /// <remarks/>

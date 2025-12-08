@@ -30,23 +30,6 @@ namespace Ambient.Domain {
         
         private double longitudeXField;
         
-        private double yField;
-        
-        private bool yFieldSpecified;
-        
-        private ContentSource sourceField;
-        
-        private int generationSeedField;
-        
-        private bool generationSeedFieldSpecified;
-        
-        private bool lockedField;
-        
-        public SagaArc() {
-            this.sourceField = ContentSource.Official;
-            this.lockedField = false;
-        }
-        
         /// <remarks/>
         public string SagaFeatureRef {
             get {
@@ -88,74 +71,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.longitudeXField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double Y {
-            get {
-                return this.yField;
-            }
-            set {
-                this.yField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool YSpecified {
-            get {
-                return this.yFieldSpecified;
-            }
-            set {
-                this.yFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(ContentSource.Official)]
-        public ContentSource Source {
-            get {
-                return this.sourceField;
-            }
-            set {
-                this.sourceField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int GenerationSeed {
-            get {
-                return this.generationSeedField;
-            }
-            set {
-                this.generationSeedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool GenerationSeedSpecified {
-            get {
-                return this.generationSeedFieldSpecified;
-            }
-            set {
-                this.generationSeedFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool Locked {
-            get {
-                return this.lockedField;
-            }
-            set {
-                this.lockedField = value;
             }
         }
     }

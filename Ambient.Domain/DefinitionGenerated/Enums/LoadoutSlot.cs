@@ -21,51 +21,5 @@ namespace Ambient.Domain {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class LoadoutSlot : EntityBase {
-        
-        private string categoryField;
-        
-        private bool isSpecialField;
-        
-        private int maxEquippedField;
-        
-        public LoadoutSlot() {
-            this.isSpecialField = false;
-            this.maxEquippedField = 1;
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Category {
-            get {
-                return this.categoryField;
-            }
-            set {
-                this.categoryField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool IsSpecial {
-            get {
-                return this.isSpecialField;
-            }
-            set {
-                this.isSpecialField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(1)]
-        public int MaxEquipped {
-            get {
-                return this.maxEquippedField;
-            }
-            set {
-                this.maxEquippedField = value;
-            }
-        }
     }
 }

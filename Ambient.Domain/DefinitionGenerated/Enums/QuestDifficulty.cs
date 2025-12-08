@@ -21,9 +21,6 @@ namespace Ambient.Domain {
     public enum QuestDifficulty {
         
         /// <remarks/>
-        Trivial,
-        
-        /// <remarks/>
         Easy,
         
         /// <remarks/>

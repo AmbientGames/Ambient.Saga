@@ -40,8 +40,6 @@ namespace Ambient.Domain {
         
         private int maxStacksField;
         
-        private float applicationChanceField;
-        
         private bool cleansableField;
         
         private ApplicationMethod applicationMethodField;
@@ -59,7 +57,6 @@ namespace Ambient.Domain {
             this.magicModifierField = ((float)(0F));
             this.accuracyModifierField = ((float)(0F));
             this.maxStacksField = 1;
-            this.applicationChanceField = ((float)(1F));
             this.cleansableField = true;
             this.applicationMethodField = ApplicationMethod.StartOfTurn;
         }
@@ -168,18 +165,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.maxStacksField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
-        public float ApplicationChance {
-            get {
-                return this.applicationChanceField;
-            }
-            set {
-                this.applicationChanceField = value;
             }
         }
         

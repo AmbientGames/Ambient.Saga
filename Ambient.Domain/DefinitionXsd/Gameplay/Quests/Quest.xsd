@@ -120,7 +120,6 @@
         <xs:attribute name="RefName" type="QuestBranchRef" use="required" />
         <xs:attribute name="DisplayName" type="xs:string" use="optional" />
         <xs:attribute name="NextStage" type="QuestStageRef" use="optional" />
-        <xs:attribute name="IsSuccess" type="xs:boolean" use="optional" default="true" />
     </xs:complexType>
 
     <!-- Quest Stage -->
@@ -150,14 +149,6 @@
                 <xs:complexType>
                     <xs:sequence>
                         <xs:element name="Reward" type="QuestReward" minOccurs="1" maxOccurs="unbounded" />
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <!-- Stage-level fail conditions (e.g., time limits for timed stages, NPC death for escort stages) -->
-            <xs:element name="FailConditions" minOccurs="0" maxOccurs="1">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="FailCondition" type="QuestFailCondition" minOccurs="1" maxOccurs="unbounded" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>

@@ -26,8 +26,6 @@ namespace Ambient.Domain {
         
         private QuestReward[] rewardsField;
         
-        private QuestFailCondition[] failConditionsField;
-        
         private string refNameField;
         
         private string displayNameField;
@@ -54,17 +52,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.rewardsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("FailCondition", IsNullable=false)]
-        public QuestFailCondition[] FailConditions {
-            get {
-                return this.failConditionsField;
-            }
-            set {
-                this.failConditionsField = value;
             }
         }
         

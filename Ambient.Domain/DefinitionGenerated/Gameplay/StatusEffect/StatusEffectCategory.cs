@@ -25,8 +25,5 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         Buff,
-        
-        /// <remarks/>
-        Neutral,
     }
 }

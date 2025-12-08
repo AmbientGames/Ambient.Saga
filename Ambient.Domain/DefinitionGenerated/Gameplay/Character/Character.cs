@@ -30,10 +30,6 @@ namespace Ambient.Domain {
         
         private CharacterTrigger[] battleDialogueField;
         
-        private CharacterInitiationBehavior initiationBehaviorField;
-        
-        private string modelRefField;
-        
         private int respawnIntervalSecondsField;
         
         public Character() {
@@ -80,27 +76,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.battleDialogueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public CharacterInitiationBehavior InitiationBehavior {
-            get {
-                return this.initiationBehaviorField;
-            }
-            set {
-                this.initiationBehaviorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ModelRef {
-            get {
-                return this.modelRefField;
-            }
-            set {
-                this.modelRefField = value;
             }
         }
         

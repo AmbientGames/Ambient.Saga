@@ -41,6 +41,8 @@ namespace Ambient.Domain {
         
         private string characterAffinitiesRefField;
         
+        private string statusEffectsRefField;
+        
         private string combatStancesRefField;
         
         private string loadoutSlotsRefField;
@@ -67,51 +69,13 @@ namespace Ambient.Domain {
         
         private string currencyNameField;
         
-        private WorldGameMode gameModeField;
-        
-        private WorldDataSource dataSourceField;
-        
         private System.DateTime startDateField;
-        
-        private string modField;
         
         private double spawnLatitudeField;
         
         private double spawnLongitudeField;
         
-        private int chunkHeightField;
-        
-        private bool chunkHeightFieldSpecified;
-        
-        private BlockMode blockModeField;
-        
-        private int ownerChunkCountField;
-        
-        private int guestChunkCountField;
-        
-        private EffectLevel nonOwnerChunkEffectLevelField;
-        
-        private int maxPlayersField;
-        
-        private int maxCapturedSummonsField;
-        
-        private WorldLifeMode lifeModeField;
-        
         private int secondsInHourField;
-        
-        private string regionField;
-        
-        private string difficultyField;
-        
-        private string recommendedForField;
-        
-        private float seedField;
-        
-        private float blockScaleFactorField;
-        
-        private float gravityField;
-        
-        private bool shortNightsAndWinterField;
         
         public WorldConfiguration() {
             this.consumableItemsRefField = "Default";
@@ -121,6 +85,7 @@ namespace Ambient.Domain {
             this.charactersRefField = "Default";
             this.characterArchetypesRefField = "Default";
             this.characterAffinitiesRefField = "Default";
+            this.statusEffectsRefField = "Default";
             this.combatStancesRefField = "Default";
             this.loadoutSlotsRefField = "Default";
             this.toolsRefField = "Default";
@@ -134,22 +99,8 @@ namespace Ambient.Domain {
             this.factionsRefField = "Default";
             this.sagaTriggerPatternsRefField = "Default";
             this.currencyNameField = "Credit";
-            this.gameModeField = WorldGameMode.Play;
-            this.dataSourceField = WorldDataSource.Generated;
             this.startDateField = new System.DateTime(103680000000000);
-            this.modField = "Ambient.Game.Mod.dll";
-            this.blockModeField = BlockMode.ChamferedEdges;
-            this.ownerChunkCountField = 256;
-            this.guestChunkCountField = 1;
-            this.nonOwnerChunkEffectLevelField = EffectLevel.Medium;
-            this.maxPlayersField = 100;
-            this.maxCapturedSummonsField = 12;
-            this.lifeModeField = WorldLifeMode.Living;
             this.secondsInHourField = 60;
-            this.difficultyField = "Normal";
-            this.blockScaleFactorField = ((float)(1F));
-            this.gravityField = ((float)(20F));
-            this.shortNightsAndWinterField = false;
         }
         
         /// <remarks/>
@@ -256,6 +207,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.characterAffinitiesRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute("Default")]
+        public string StatusEffectsRef {
+            get {
+                return this.statusEffectsRefField;
+            }
+            set {
+                this.statusEffectsRefField = value;
             }
         }
         
@@ -416,30 +379,6 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(WorldGameMode.Play)]
-        public WorldGameMode GameMode {
-            get {
-                return this.gameModeField;
-            }
-            set {
-                this.gameModeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(WorldDataSource.Generated)]
-        public WorldDataSource DataSource {
-            get {
-                return this.dataSourceField;
-            }
-            set {
-                this.dataSourceField = value;
-            }
-        }
-        
-        /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute(DataType="date")]
         [System.ComponentModel.DefaultValueAttribute(typeof(System.DateTime), "0001-05-01")]
         public System.DateTime StartDate {
@@ -448,18 +387,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.startDateField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Ambient.Game.Mod.dll")]
-        public string Mod {
-            get {
-                return this.modField;
-            }
-            set {
-                this.modField = value;
             }
         }
         
@@ -487,112 +414,6 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int ChunkHeight {
-            get {
-                return this.chunkHeightField;
-            }
-            set {
-                this.chunkHeightField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool ChunkHeightSpecified {
-            get {
-                return this.chunkHeightFieldSpecified;
-            }
-            set {
-                this.chunkHeightFieldSpecified = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(BlockMode.ChamferedEdges)]
-        public BlockMode BlockMode {
-            get {
-                return this.blockModeField;
-            }
-            set {
-                this.blockModeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(256)]
-        public int OwnerChunkCount {
-            get {
-                return this.ownerChunkCountField;
-            }
-            set {
-                this.ownerChunkCountField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(1)]
-        public int GuestChunkCount {
-            get {
-                return this.guestChunkCountField;
-            }
-            set {
-                this.guestChunkCountField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(EffectLevel.Medium)]
-        public EffectLevel NonOwnerChunkEffectLevel {
-            get {
-                return this.nonOwnerChunkEffectLevelField;
-            }
-            set {
-                this.nonOwnerChunkEffectLevelField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(100)]
-        public int MaxPlayers {
-            get {
-                return this.maxPlayersField;
-            }
-            set {
-                this.maxPlayersField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(12)]
-        public int MaxCapturedSummons {
-            get {
-                return this.maxCapturedSummonsField;
-            }
-            set {
-                this.maxCapturedSummonsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(WorldLifeMode.Living)]
-        public WorldLifeMode LifeMode {
-            get {
-                return this.lifeModeField;
-            }
-            set {
-                this.lifeModeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(60)]
         public int SecondsInHour {
             get {
@@ -600,87 +421,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.secondsInHourField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Region {
-            get {
-                return this.regionField;
-            }
-            set {
-                this.regionField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Normal")]
-        public string Difficulty {
-            get {
-                return this.difficultyField;
-            }
-            set {
-                this.difficultyField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string RecommendedFor {
-            get {
-                return this.recommendedForField;
-            }
-            set {
-                this.recommendedForField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public float Seed {
-            get {
-                return this.seedField;
-            }
-            set {
-                this.seedField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
-        public float BlockScaleFactor {
-            get {
-                return this.blockScaleFactorField;
-            }
-            set {
-                this.blockScaleFactorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "20")]
-        public float Gravity {
-            get {
-                return this.gravityField;
-            }
-            set {
-                this.gravityField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool ShortNightsAndWinter {
-            get {
-                return this.shortNightsAndWinterField;
-            }
-            set {
-                this.shortNightsAndWinterField = value;
             }
         }
     }

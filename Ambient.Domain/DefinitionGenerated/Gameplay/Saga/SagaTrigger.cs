@@ -32,12 +32,6 @@ namespace Ambient.Domain {
         
         private string tagsField;
         
-        private SagaTriggerType triggerTypeField;
-        
-        public SagaTrigger() {
-            this.triggerTypeField = SagaTriggerType.SpawnPassive;
-        }
-        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Spawn")]
         public CharacterSpawn[] Spawn {
@@ -90,18 +84,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.tagsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(SagaTriggerType.SpawnPassive)]
-        public SagaTriggerType TriggerType {
-            get {
-                return this.triggerTypeField;
-            }
-            set {
-                this.triggerTypeField = value;
             }
         }
     }

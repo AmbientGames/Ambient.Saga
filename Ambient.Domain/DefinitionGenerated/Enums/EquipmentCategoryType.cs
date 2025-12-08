@@ -57,6 +57,6 @@ namespace Ambient.Domain {
         ArmorRobes,
         
         /// <remarks/>
-        Accessory,
+        Tome,
     }
 }

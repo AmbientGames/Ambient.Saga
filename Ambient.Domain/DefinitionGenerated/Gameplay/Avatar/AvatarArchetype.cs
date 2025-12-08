@@ -34,8 +34,6 @@ namespace Ambient.Domain {
         
         private string affinityRefField;
         
-        private string modelRefField;
-        
         /// <remarks/>
         public CharacterEffects ArchetypeBias {
             get {
@@ -94,17 +92,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.affinityRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ModelRef {
-            get {
-                return this.modelRefField;
-            }
-            set {
-                this.modelRefField = value;
             }
         }
     }

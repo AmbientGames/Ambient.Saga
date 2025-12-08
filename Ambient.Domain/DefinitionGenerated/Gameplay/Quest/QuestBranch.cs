@@ -30,12 +30,6 @@ namespace Ambient.Domain {
         
         private string nextStageField;
         
-        private bool isSuccessField;
-        
-        public QuestBranch() {
-            this.isSuccessField = true;
-        }
-        
         /// <remarks/>
         public QuestObjective Objective {
             get {
@@ -76,18 +70,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.nextStageField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(true)]
-        public bool IsSuccess {
-            get {
-                return this.isSuccessField;
-            }
-            set {
-                this.isSuccessField = value;
             }
         }
     }

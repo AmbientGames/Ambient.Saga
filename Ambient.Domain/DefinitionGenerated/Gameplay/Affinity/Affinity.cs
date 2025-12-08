@@ -19,36 +19,45 @@ namespace Ambient.Domain {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="Ambient.Domain")]
-    public partial class CharacterInitiationBehavior {
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
+    public partial class Affinity {
         
-        private string initialGreetingField;
+        private string affinityRefField;
         
-        private CharacterStateType initialStateField;
+        private string capturedFromCharacterRefField;
         
-        public CharacterInitiationBehavior() {
-            this.initialStateField = CharacterStateType.Neutral;
-        }
+        private string capturedDateField;
         
         /// <remarks/>
-        public string InitialGreeting {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string AffinityRef {
             get {
-                return this.initialGreetingField;
+                return this.affinityRefField;
             }
             set {
-                this.initialGreetingField = value;
+                this.affinityRefField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(CharacterStateType.Neutral)]
-        public CharacterStateType InitialState {
+        public string CapturedFromCharacterRef {
             get {
-                return this.initialStateField;
+                return this.capturedFromCharacterRefField;
             }
             set {
-                this.initialStateField = value;
+                this.capturedFromCharacterRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string CapturedDate {
+            get {
+                return this.capturedDateField;
+            }
+            set {
+                this.capturedDateField = value;
             }
         }
     }
