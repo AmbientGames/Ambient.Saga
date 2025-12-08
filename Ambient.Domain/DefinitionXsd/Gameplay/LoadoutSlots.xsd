@@ -13,10 +13,7 @@
     <xs:complexType name="LoadoutSlot">
         <xs:complexContent>
             <xs:extension base="EntityBase">
-                <xs:attribute name="Category" type="xs:string" use="optional" />
-                <xs:attribute name="IsSpecial" type="xs:boolean" use="optional" default="false" />
-                <xs:attribute name="MaxEquipped" type="xs:int" use="optional" default="1" />
-            </xs:extension>
+			</xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
