@@ -600,7 +600,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima" LatitudeZ="31.618039911290246" LongitudeX="130.5788763946425" Source="Generated">
+  <SagaArc RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima" LatitudeZ="31.618039911290246" LongitudeX="130.5788763946425" Source="Generated" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsurumaruj\u014D1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Isoteien1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Isoteien1" DisplayName="Approaching Iso-teien" Description="Triggered when entering Iso-teien" EnterRadius="50.0">
       <Spawn Count="1">
@@ -608,11 +608,6 @@
       </Spawn>
       <GivesQuestTokenRef>TOKEN_Isoteien1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="Introduction" NarrativeSequence="0" Tone="challenging">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>beginning,combat</ThematicTags>
-      <NarrativeConnection TargetRef="Tsurumarujō1" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.61238017789125" LongitudeX="130.5735654936435" Source="Generated">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_1</SagaFeatureRef>
@@ -654,7 +649,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" LatitudeZ="31.59888217498281" LongitudeX="130.55380161465246" Source="Generated" Locked="true">
+  <SagaArc RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" LatitudeZ="31.59888217498281" LongitudeX="130.55380161465246" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Isoteien1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;TerukuniDaimy\u014Djinsha1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Tsurumarujō1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1" DisplayName="Approaching Tsurumaru-jō" Description="Triggered when entering Tsurumaru-jō" EnterRadius="50.0">
       <Spawn Count="1">
@@ -663,12 +658,6 @@
       <RequiresQuestTokenRef>TOKEN_Isoteien1_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_Tsurumarujō1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="RisingAction" NarrativeSequence="1" Tone="challenging">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>combat</ThematicTags>
-      <NarrativeConnection TargetRef="Isoteien1" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="TerukuniDaimyōjinsha1" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha" LatitudeZ="31.596728586843998" LongitudeX="130.55237076850997" Source="Generated">
     <SagaFeatureRef>Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</SagaFeatureRef>
@@ -678,7 +667,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" LatitudeZ="31.595289152076255" LongitudeX="130.5504836786907" Source="Generated" Locked="true">
+  <SagaArc RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" LatitudeZ="31.595289152076255" LongitudeX="130.5504836786907" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsurumaruj\u014D1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
     <SagaFeatureRef>TerukuniDaimyōjinsha1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha1" DisplayName="Approaching Terukuni Daimyōjin-sha" Description="Triggered when entering Terukuni Daimyōjin-sha" EnterRadius="50.0">
       <Spawn Count="1">
@@ -687,11 +676,6 @@
       <RequiresQuestTokenRef>TOKEN_Tsurumarujō1_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_TerukuniDaimyōjinsha1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="Resolution" NarrativeSequence="2" Tone="climactic">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>endgame,combat</ThematicTags>
-      <NarrativeConnection TargetRef="Tsurumarujō1" Relationship="caused-by" Description="Previous location in quest chain" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="TerukuniDaimyōjinsha1_to_Tsurumarujō1_0" DisplayName="Waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō (1)" Description="Intermediate waypoint between Terukuni Daimyōjin-sha and Tsurumaru-jō" LatitudeZ="31.5962789735773" LongitudeX="130.5535793941038" Source="Generated">
     <SagaFeatureRef>TerukuniDaimyōjinsha1_to_Tsurumarujō1_0</SagaFeatureRef>

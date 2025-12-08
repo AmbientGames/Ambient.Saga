@@ -4,7 +4,6 @@
     <xs:include schemaLocation="SagaFeatures.xsd" />
     <xs:include schemaLocation="SagaArcCommon.xsd" />
     <xs:include schemaLocation="SagaTriggerPatterns.xsd" />
-    <xs:include schemaLocation="../AIMetadata.xsd" />
 
     <!-- Content source/provenance for tracking generated vs official content -->
     <xs:simpleType name="ContentSource">
@@ -25,11 +24,6 @@
                         <xs:element name="SagaTriggerPatternRef" type="SagaTriggerPatternRef" />
                         <xs:element name="SagaTrigger" type="SagaTrigger" maxOccurs="unbounded" />
                     </xs:choice>
-                    <xs:element name="AIMetadata" type="SagaArcAIMetadata" minOccurs="0" maxOccurs="1">
-                        <xs:annotation>
-                            <xs:documentation>AI-only metadata for narrative generation (ignored by game engine)</xs:documentation>
-                        </xs:annotation>
-                    </xs:element>
                 </xs:sequence>
                 <xs:attribute name="LatitudeZ" type="xs:double" use="required" />
                 <xs:attribute name="LongitudeX" type="xs:double" use="required" />

@@ -131,7 +131,7 @@ public static class TriggerExpander
                 Description = trigger.Description,
                 EnterRadius = trigger.EnterRadius,
                 Tags = trigger.Tags,
-                ExtensionData = trigger.ExtensionData,
+                Metadata = trigger.Metadata,
                 Spawn = trigger.Spawn
             };
 

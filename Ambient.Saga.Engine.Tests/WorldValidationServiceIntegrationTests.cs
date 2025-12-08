@@ -17,10 +17,12 @@ public class WorldValidationServiceIntegrationTests
 
     public WorldValidationServiceIntegrationTests()
     {
-        // Reference Domain project data directly - no need to copy to test folders
-        var domainDirectory = FindSandboxDirectory();
-        _dataDirectory = Path.Combine(domainDirectory, "WorldDefinitions");
-        _definitionDirectory = Path.Combine(domainDirectory, "DefinitionXsd");
+        // DefinitionXsd is copied to output directory by Ambient.Domain
+        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
+
+        // WorldDefinitions still lives in Sandbox source directory
+        var sandboxDirectory = FindSandboxDirectory();
+        _dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
     }
 
     private static string FindSandboxDirectory()
@@ -142,9 +144,12 @@ public class WorldValidationServiceIntegrationTests
     public static IEnumerable<object[]> GetAllWorldConfigurations()
     {
         // Note: This runs before test execution to discover test cases
-        var domainDirectory = FindSandboxDirectory();
-        var dataDirectory = Path.Combine(domainDirectory, "WorldDefinitions");
-        var definitionDirectory = Path.Combine(domainDirectory, "DefinitionXsd");
+        // DefinitionXsd is copied to output directory by Ambient.Domain
+        var definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
+
+        // WorldDefinitions still lives in Sandbox source directory
+        var sandboxDirectory = FindSandboxDirectory();
+        var dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
 
         var configurations = WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory).GetAwaiter().GetResult();
 

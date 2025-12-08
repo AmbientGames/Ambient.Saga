@@ -4,6 +4,6 @@
         <xs:attribute name="RefName" type="xs:string" use="required" />
         <xs:attribute name="DisplayName" type="xs:string" use="required" />
         <xs:attribute name="Description" type="xs:string" use="optional" />
-        <xs:attribute name="ExtensionData" type="xs:string" use="optional" />
+        <xs:attribute name="Metadata" type="xs:string" use="optional" />
     </xs:complexType>
 </xs:schema>

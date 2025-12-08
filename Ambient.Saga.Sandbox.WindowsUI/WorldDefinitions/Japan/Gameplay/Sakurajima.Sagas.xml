@@ -728,7 +728,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ArimuraYōganTenbōjo1" DisplayName="Arimura Yōgan Tenbōjo" Description="Observation deck on Taishō-era lava fields near Minamidake" LatitudeZ="31.554130188709003" LongitudeX="130.67831837199557" Source="Generated">
+  <SagaArc RefName="ArimuraYōganTenbōjo1" DisplayName="Arimura Yōgan Tenbōjo" Description="Observation deck on Taishō-era lava fields near Minamidake" LatitudeZ="31.554130188709003" LongitudeX="130.67831837199557" Source="Generated" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;welcoming&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,exploration&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;YunohiraTenb\u014Dsho1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;},{&quot;targetRef&quot;:&quot;SakurajimaKasanHakubutsukan1&quot;,&quot;relationship&quot;:&quot;foreshadows&quot;,&quot;description&quot;:&quot;Hints at upcoming challenge&quot;}]}">
     <SagaFeatureRef>ArimuraYōganTenbōjo1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1" DisplayName="Approaching Arimura Yōgan Tenbōjo" Description="Triggered when entering Arimura Yōgan Tenbōjo" EnterRadius="50.0">
       <Spawn Count="1">
@@ -736,12 +736,6 @@
       </Spawn>
       <GivesQuestTokenRef>TOKEN_ArimuraYōganTenbōjo1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="Introduction" NarrativeSequence="0" Tone="welcoming">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>beginning,exploration</ThematicTags>
-      <NarrativeConnection TargetRef="YunohiraTenbōsho1" Relationship="leads-to" Description="Next location in quest chain" />
-      <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="foreshadows" Description="Hints at upcoming challenge" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.55790637283651" LongitudeX="130.6763099670818" Source="Generated">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0</SagaFeatureRef>
@@ -839,7 +833,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="YunohiraTenbōsho1" DisplayName="Yunohira Tenbōsho" Description="Highest public viewpoint on Sakurajima’s north peak (Kitadake)" LatitudeZ="31.59200883680741" LongitudeX="130.63078259152445" Source="Generated" Locked="true">
+  <SagaArc RefName="YunohiraTenbōsho1" DisplayName="Yunohira Tenbōsho" Description="Highest public viewpoint on Sakurajima’s north peak (Kitadake)" LatitudeZ="31.59200883680741" LongitudeX="130.63078259152445" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;welcoming&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,exploration&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;ArimuraY\u014DganTenb\u014Djo1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;SakurajimaK\u014DFerryba1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;},{&quot;targetRef&quot;:&quot;SakurajimaKasanHakubutsukan1&quot;,&quot;relationship&quot;:&quot;foreshadows&quot;,&quot;description&quot;:&quot;Hints at upcoming challenge&quot;}]}">
     <SagaFeatureRef>YunohiraTenbōsho1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1" DisplayName="Approaching Yunohira Tenbōsho" Description="Triggered when entering Yunohira Tenbōsho" EnterRadius="50.0">
       <Spawn Count="1">
@@ -848,13 +842,6 @@
       <RequiresQuestTokenRef>TOKEN_ArimuraYōganTenbōjo1_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_YunohiraTenbōsho1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="RisingAction" NarrativeSequence="1" Tone="welcoming">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>beginning,exploration</ThematicTags>
-      <NarrativeConnection TargetRef="ArimuraYōganTenbōjo1" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="SakurajimaKōFerryba1" Relationship="leads-to" Description="Next location in quest chain" />
-      <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="foreshadows" Description="Hints at upcoming challenge" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.592151450862413" LongitudeX="130.62594897959784" Source="Generated">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0</SagaFeatureRef>
@@ -896,7 +883,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKōFerryba1" DisplayName="Sakurajima Kō Ferry-ba" Description="Historic landing point linking Satsuma capital to Sakurajima" LatitudeZ="31.592601620599925" LongitudeX="130.60048983295303" Source="Generated" Locked="true">
+  <SagaArc RefName="SakurajimaKōFerryba1" DisplayName="Sakurajima Kō Ferry-ba" Description="Historic landing point linking Satsuma capital to Sakurajima" LatitudeZ="31.592601620599925" LongitudeX="130.60048983295303" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;mysterious&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;exploration&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;YunohiraTenb\u014Dsho1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;SakurajimaKasanHakubutsukan1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;},{&quot;targetRef&quot;:&quot;SakurajimaKasanHakubutsukan1&quot;,&quot;relationship&quot;:&quot;foreshadows&quot;,&quot;description&quot;:&quot;Hints at upcoming challenge&quot;}]}">
     <SagaFeatureRef>SakurajimaKōFerryba1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1" DisplayName="Approaching Sakurajima Kō Ferry-ba" Description="Triggered when entering Sakurajima Kō Ferry-ba" EnterRadius="50.0">
       <Spawn Count="1">
@@ -905,13 +892,6 @@
       <RequiresQuestTokenRef>TOKEN_YunohiraTenbōsho1_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_SakurajimaKōFerryba1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="RisingAction" NarrativeSequence="2" Tone="mysterious">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>exploration</ThematicTags>
-      <NarrativeConnection TargetRef="YunohiraTenbōsho1" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="leads-to" Description="Next location in quest chain" />
-      <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="foreshadows" Description="Hints at upcoming challenge" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan" LatitudeZ="31.591020385484295" LongitudeX="130.5977311461197" Source="Generated">
     <SagaFeatureRef>SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0</SagaFeatureRef>
@@ -921,7 +901,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="SakurajimaKasanHakubutsukan1" DisplayName="Sakurajima Kasan Hakubutsukan" Description="Volcano island museum and interpretation hall by the port" LatitudeZ="31.590566366241003" LongitudeX="130.59416479560036" Source="Generated" Locked="true">
+  <SagaArc RefName="SakurajimaKasanHakubutsukan1" DisplayName="Sakurajima Kasan Hakubutsukan" Description="Volcano island museum and interpretation hall by the port" LatitudeZ="31.590566366241003" LongitudeX="130.59416479560036" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;Climax&quot;,&quot;narrativeSequence&quot;:3,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;SakurajimaK\u014DFerryba1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Y\u014DganNagisaK\u014DenAshiyu1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>SakurajimaKasanHakubutsukan1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_SakurajimaKasanHakubutsukan1" DisplayName="Approaching Sakurajima Kasan Hakubutsukan" Description="Triggered when entering Sakurajima Kasan Hakubutsukan" EnterRadius="50.0">
       <Spawn Count="1">
@@ -930,14 +910,8 @@
       <RequiresQuestTokenRef>TOKEN_SakurajimaKōFerryba1_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_SakurajimaKasanHakubutsukan1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="Climax" NarrativeSequence="3" Tone="climactic">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>endgame,combat</ThematicTags>
-      <NarrativeConnection TargetRef="SakurajimaKōFerryba1" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="YōganNagisaKōenAshiyu1" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="YōganNagisaKōenAshiyu1" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="Coastal lava-shore park with long ashiyu foot-bath beside the visitor center" LatitudeZ="31.59123693045802" LongitudeX="130.59348743946742" Source="Generated" Locked="true">
+  <SagaArc RefName="YōganNagisaKōenAshiyu1" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="Coastal lava-shore park with long ashiyu foot-bath beside the visitor center" LatitudeZ="31.59123693045802" LongitudeX="130.59348743946742" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:4,&quot;tone&quot;:&quot;urgent&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,exploration&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;SakurajimaKasanHakubutsukan1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
     <SagaFeatureRef>YōganNagisaKōenAshiyu1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_YōganNagisaKōenAshiyu1" DisplayName="Approaching Yōgan Nagisa Kōen Ashiyu" Description="Triggered when entering Yōgan Nagisa Kōen Ashiyu" EnterRadius="50.0">
       <Spawn Count="1">
@@ -946,11 +920,6 @@
       <RequiresQuestTokenRef>TOKEN_SakurajimaKasanHakubutsukan1_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_YōganNagisaKōenAshiyu1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="Resolution" NarrativeSequence="4" Tone="urgent">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>endgame,exploration</ThematicTags>
-      <NarrativeConnection TargetRef="SakurajimaKasanHakubutsukan1" Relationship="caused-by" Description="Previous location in quest chain" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba (1)" Description="Intermediate waypoint between Sakurajima Kasan Hakubutsukan and Sakurajima Kō Ferry-ba" LatitudeZ="31.59177364954133" LongitudeX="130.5976944807597" Source="Generated">
     <SagaFeatureRef>SakurajimaKasanHakubutsukan1_to_SakurajimaKōFerryba1_0</SagaFeatureRef>

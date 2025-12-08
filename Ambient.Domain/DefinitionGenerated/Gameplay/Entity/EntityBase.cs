@@ -56,7 +56,7 @@ namespace Ambient.Domain {
         
         private string descriptionField;
         
-        private string extensionDataField;
+        private string metadataField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -93,12 +93,12 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ExtensionData {
+        public string Metadata {
             get {
-                return this.extensionDataField;
+                return this.metadataField;
             }
             set {
-                this.extensionDataField = value;
+                this.metadataField = value;
             }
         }
     }

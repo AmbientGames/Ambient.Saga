@@ -6,19 +6,19 @@
       <Relationship FactionRef="RivalGuild_PlayerGuild" RelationshipType="Enemy" SpilloverPercent="0.5" />
     </Relationships>
   </Faction>
-  <Faction RefName="FACTION_THREAD_MAIN" DisplayName="[AI: Faction for THREAD_MAIN]" Description="[AI: Faction description for story thread THREAD_MAIN]" StartingReputation="0" Category="City">
+  <Faction RefName="FACTION_THREAD_MAIN" DisplayName="Sengoku Japan Guard" Description="Protectors of civilization and urban order. Sengoku Japan Guard maintains peace in settled areas." StartingReputation="0" Category="City">
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
-        <Equipment EquipmentRef="[AI: Basic faction item]" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="THREAD_MAIN_REWARD_BASIC" Quantity="1" DiscountPercent="0.1" />
       </Reward>
       <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="[AI: Rare faction item]" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="THREAD_MAIN_REWARD_RARE" Quantity="1" DiscountPercent="0.2" />
       </Reward>
       <Reward RequiredLevel="Revered">
-        <Equipment EquipmentRef="[AI: Epic faction item]" Quantity="1" DiscountPercent="0.3" />
+        <Equipment EquipmentRef="THREAD_MAIN_REWARD_EPIC" Quantity="1" DiscountPercent="0.3" />
       </Reward>
       <Reward RequiredLevel="Exalted">
-        <Equipment EquipmentRef="[AI: Legendary faction item]" Quantity="1" DiscountPercent="0.5" />
+        <Equipment EquipmentRef="THREAD_MAIN_REWARD_LEGENDARY" Quantity="1" DiscountPercent="0.5" />
       </Reward>
     </ReputationRewards>
   </Faction>
@@ -29,16 +29,16 @@
     </Relationships>
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
-        <Equipment EquipmentRef="[AI: Basic faction item]" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="CITY_GUARDS_REWARD_BASIC" Quantity="1" DiscountPercent="0.1" />
       </Reward>
       <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="[AI: Rare faction item]" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="CITY_GUARDS_REWARD_RARE" Quantity="1" DiscountPercent="0.2" />
       </Reward>
       <Reward RequiredLevel="Revered">
-        <Equipment EquipmentRef="[AI: Epic faction item]" Quantity="1" DiscountPercent="0.3" />
+        <Equipment EquipmentRef="CITY_GUARDS_REWARD_EPIC" Quantity="1" DiscountPercent="0.3" />
       </Reward>
       <Reward RequiredLevel="Exalted">
-        <Equipment EquipmentRef="[AI: Legendary faction item]" Quantity="1" DiscountPercent="0.5" />
+        <Equipment EquipmentRef="CITY_GUARDS_REWARD_LEGENDARY" Quantity="1" DiscountPercent="0.5" />
       </Reward>
     </ReputationRewards>
   </Faction>
@@ -49,59 +49,59 @@
     </Relationships>
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
-        <Consumable ConsumableRef="[AI: Merchant discount items]" Quantity="1" DiscountPercent="0.15" />
+        <Consumable ConsumableRef="MERCHANT_DISCOUNT_BASIC" Quantity="1" DiscountPercent="0.15" />
       </Reward>
       <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="[AI: Rare trade goods]" Quantity="1" DiscountPercent="0.25" />
+        <Equipment EquipmentRef="MERCHANT_TRADE_GOODS" Quantity="1" DiscountPercent="0.25" />
       </Reward>
       <Reward RequiredLevel="Exalted">
-        <Equipment EquipmentRef="[AI: Exclusive merchant items]" Quantity="1" DiscountPercent="0.6" />
+        <Equipment EquipmentRef="MERCHANT_EXCLUSIVE" Quantity="1" DiscountPercent="0.6" />
       </Reward>
     </ReputationRewards>
   </Faction>
-  <Faction RefName="EXPLORERS_SOCIETY" DisplayName="[AI: Explorers Society Name]" Description="[AI: Adventurers and cartographers seeking discovery]" StartingReputation="0" Category="Guild">
+  <Faction RefName="EXPLORERS_SOCIETY" DisplayName="Sengoku Japan Craftsmen" Description="Association of skilled craftsmen and professionals. Sengoku Japan Craftsmen upholds quality standards." StartingReputation="0" Category="Guild">
     <Relationships>
       <Relationship FactionRef="WILDERNESS_WARDENS" RelationshipType="Allied" SpilloverPercent="0.2" />
     </Relationships>
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
-        <Equipment EquipmentRef="[AI: Explorer's map or compass]" Quantity="1" />
+        <Equipment EquipmentRef="EXPLORER_MAP" Quantity="1" />
       </Reward>
       <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="[AI: Advanced navigation tools]" Quantity="1" />
+        <Equipment EquipmentRef="EXPLORER_COMPASS" Quantity="1" />
       </Reward>
     </ReputationRewards>
   </Faction>
-  <Faction RefName="BANDITS" DisplayName="[AI: Bandit Faction Name]" Description="[AI: Outlaws and raiders threatening civilization]" StartingReputation="-3000" Category="Criminal">
+  <Faction RefName="BANDITS" DisplayName="Sengoku Japan Outlaws" Description="Outlaws operating outside the law. Sengoku Japan Outlaws takes what it needs by force." StartingReputation="-3000" Category="Criminal">
     <Relationships>
       <Relationship FactionRef="CITY_GUARDS" RelationshipType="Enemy" SpilloverPercent="0.5" />
       <Relationship FactionRef="MERCHANTS_GUILD" RelationshipType="Enemy" SpilloverPercent="0.3" />
     </Relationships>
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
-        <Equipment EquipmentRef="[AI: Basic faction item]" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="BANDITS_REWARD_BASIC" Quantity="1" DiscountPercent="0.1" />
       </Reward>
       <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="[AI: Rare faction item]" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="BANDITS_REWARD_RARE" Quantity="1" DiscountPercent="0.2" />
       </Reward>
       <Reward RequiredLevel="Revered">
-        <Equipment EquipmentRef="[AI: Epic faction item]" Quantity="1" DiscountPercent="0.3" />
+        <Equipment EquipmentRef="BANDITS_REWARD_EPIC" Quantity="1" DiscountPercent="0.3" />
       </Reward>
       <Reward RequiredLevel="Exalted">
-        <Equipment EquipmentRef="[AI: Legendary faction item]" Quantity="1" DiscountPercent="0.5" />
+        <Equipment EquipmentRef="BANDITS_REWARD_LEGENDARY" Quantity="1" DiscountPercent="0.5" />
       </Reward>
     </ReputationRewards>
   </Faction>
-  <Faction RefName="WILDERNESS_WARDENS" DisplayName="[AI: Wilderness Wardens Name]" Description="[AI: Guardians of nature and ancient forests]" StartingReputation="0" Category="Nature">
+  <Faction RefName="WILDERNESS_WARDENS" DisplayName="Sengoku Japan Rangers" Description="Independent survivalists living off the land. Sengoku Japan Rangers respects nature's balance." StartingReputation="0" Category="Nature">
     <Relationships>
       <Relationship FactionRef="EXPLORERS_SOCIETY" RelationshipType="Allied" SpilloverPercent="0.2" />
     </Relationships>
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
-        <Consumable ConsumableRef="[AI: Nature-based consumables]" Quantity="1" />
+        <Consumable ConsumableRef="NATURE_HERBS" Quantity="1" />
       </Reward>
       <Reward RequiredLevel="Revered">
-        <Equipment EquipmentRef="[AI: Druidic equipment]" Quantity="1" />
+        <Equipment EquipmentRef="NATURE_STAFF" Quantity="1" />
       </Reward>
     </ReputationRewards>
   </Faction>

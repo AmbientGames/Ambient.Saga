@@ -10,9 +10,12 @@ public class WorldConfigurationTests
 
     public WorldConfigurationTests()
     {
-        var domainDirectory = FindSandboxDirectory();
-        _dataDirectory = Path.Combine(domainDirectory, "WorldDefinitions");
-        _definitionDirectory = Path.Combine(domainDirectory, "DefinitionXsd");
+        // DefinitionXsd is copied to output directory by Ambient.Domain
+        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
+
+        // WorldDefinitions still lives in Sandbox source directory
+        var sandboxDirectory = FindSandboxDirectory();
+        _dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
     }
 
     private static string FindSandboxDirectory()
@@ -53,11 +56,11 @@ public class WorldConfigurationTests
     [Fact]
     public async Task LoadMetadata_ShouldReturnValidMetadata()
     {
-        // Arrange - Use the Procedural template directory specifically
-        var proceduralTemplateDirectory = Path.Combine(_dataDirectory, "Procedural");
+        // Arrange - Use the Japan template directory
+        var japanTemplateDirectory = Path.Combine(_dataDirectory, "Japan");
 
         // Act
-        var metadata = await WorldAssetLoader.LoadMetadataAsync(proceduralTemplateDirectory, _definitionDirectory);
+        var metadata = await WorldAssetLoader.LoadMetadataAsync(japanTemplateDirectory, _definitionDirectory);
 
         // Assert
         Assert.NotNull(metadata);

@@ -14,7 +14,7 @@ public class AchievementTests
         // Assert
         Assert.NotNull(achievement);
         Assert.Null(achievement.Criteria);
-        Assert.Null(achievement.ExtensionData);
+        Assert.Null(achievement.Metadata);
     }
 
     [Fact]
@@ -80,17 +80,17 @@ public class AchievementTests
     }
 
     [Fact]
-    public void ExtensionData_SetAndGet_WorksCorrectly()
+    public void Metadata_SetAndGet_WorksCorrectly()
     {
         // Arrange
         var achievement = new Achievement();
-        const string extensionData = "custom-data-here";
+        const string Metadata = "custom-data-here";
 
         // Act
-        achievement.ExtensionData = extensionData;
+        achievement.Metadata = Metadata;
 
         // Assert
-        Assert.Equal(extensionData, achievement.ExtensionData);
+        Assert.Equal(Metadata, achievement.Metadata);
     }
 
     [Fact]
@@ -174,7 +174,7 @@ public class AchievementTests
                 Type = AchievementCriteriaType.BlocksDestroyed,
                 Threshold = 1000
             },
-            ExtensionData = "bonus-reward-id"
+            Metadata = "bonus-reward-id"
         };
 
         // Assert
@@ -184,6 +184,6 @@ public class AchievementTests
         Assert.NotNull(achievement.Criteria);
         Assert.Equal(AchievementCriteriaType.BlocksDestroyed, achievement.Criteria.Type);
         Assert.Equal(1000, achievement.Criteria.Threshold);
-        Assert.Equal("bonus-reward-id", achievement.ExtensionData);
+        Assert.Equal("bonus-reward-id", achievement.Metadata);
     }
 }

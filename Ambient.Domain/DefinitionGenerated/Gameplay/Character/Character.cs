@@ -32,8 +32,6 @@ namespace Ambient.Domain {
         
         private CharacterInitiationBehavior initiationBehaviorField;
         
-        private CharacterAIMetadata aIMetadataField;
-        
         private string modelRefField;
         
         private int respawnIntervalSecondsField;
@@ -92,16 +90,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.initiationBehaviorField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public CharacterAIMetadata AIMetadata {
-            get {
-                return this.aIMetadataField;
-            }
-            set {
-                this.aIMetadataField = value;
             }
         }
         

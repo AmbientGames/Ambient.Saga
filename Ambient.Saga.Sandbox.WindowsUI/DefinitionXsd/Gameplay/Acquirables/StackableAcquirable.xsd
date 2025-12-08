@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
-    <xs:include schemaLocation="Acquirable.xsd" />
-    <xs:complexType name="StackableAcquirable">
-        <xs:complexContent>
-            <xs:extension base="Acquirable"></xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-</xs:schema>

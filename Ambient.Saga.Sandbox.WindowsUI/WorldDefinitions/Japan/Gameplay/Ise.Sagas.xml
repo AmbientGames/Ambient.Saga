@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaArc RefName="Kazahinominomiya" DisplayName="Kazahinomi-no-Miya" Description="Wind shrine within Naikū complex" LatitudeZ="34.45502236355378" LongitudeX="136.72513671068958" Source="Generated">
+  <SagaArc RefName="Kazahinominomiya" DisplayName="Kazahinomi-no-Miya" Description="Wind shrine within Naikū complex" LatitudeZ="34.45502236355378" LongitudeX="136.72513671068958" Source="Generated" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Kazahinominomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Kazahinominomiya" DisplayName="Approaching Kazahinomi-no-Miya" Description="Triggered when entering Kazahinomi-no-Miya" EnterRadius="50.0">
       <Spawn Count="1">
@@ -8,13 +8,8 @@
       </Spawn>
       <GivesQuestTokenRef>TOKEN_Kazahinominomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="Introduction" NarrativeSequence="0" Tone="challenging">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>beginning,combat</ThematicTags>
-      <NarrativeConnection TargetRef="KōtaiJingūInnerShrine" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="KōtaiJingūInnerShrine" DisplayName="Kōtai Jingū (Inner Shrine)" Description="Inner Shrine of Ise Jingū, dedicated to Amaterasu Ōmikami" LatitudeZ="34.454346441013364" LongitudeX="136.72586965591907" Source="Generated" Locked="true">
+  <SagaArc RefName="KōtaiJingūInnerShrine" DisplayName="Kōtai Jingū (Inner Shrine)" Description="Inner Shrine of Ise Jingū, dedicated to Amaterasu Ōmikami" LatitudeZ="34.454346441013364" LongitudeX="136.72586965591907" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;IncitingIncident&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Kazahinominomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>KōtaiJingūInnerShrine</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine" DisplayName="Approaching Kōtai Jingū (Inner Shrine)" Description="Triggered when entering Kōtai Jingū (Inner Shrine)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -23,14 +18,8 @@
       <RequiresQuestTokenRef>TOKEN_Kazahinominomiya_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_KōtaiJingūInnerShrine_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="IncitingIncident" NarrativeSequence="1" Tone="challenging">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>beginning,combat</ThematicTags>
-      <NarrativeConnection TargetRef="Kazahinominomiya" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="Aramatsurinomiya" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya" DisplayName="Aramatsuri-no-Miya" Description="Auxiliary shrine within Naikū complex" LatitudeZ="34.45549363146803" LongitudeX="136.7254121346418" Source="Generated" Locked="true">
+  <SagaArc RefName="Aramatsurinomiya" DisplayName="Aramatsuri-no-Miya" Description="Auxiliary shrine within Naikū complex" LatitudeZ="34.45549363146803" LongitudeX="136.7254121346418" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Aramatsurinomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya" DisplayName="Approaching Aramatsuri-no-Miya" Description="Triggered when entering Aramatsuri-no-Miya" EnterRadius="50.0">
       <Spawn Count="1">
@@ -39,12 +28,6 @@
       <RequiresQuestTokenRef>TOKEN_KōtaiJingūInnerShrine_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_Aramatsurinomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="RisingAction" NarrativeSequence="2" Tone="challenging">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>combat</ThematicTags>
-      <NarrativeConnection TargetRef="KōtaiJingūInnerShrine" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="ToyōkeDaijingūOuterShrine" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.45991696391523" LongitudeX="136.72342152345115" Source="Generated">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</SagaFeatureRef>
@@ -110,7 +93,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine" DisplayName="Toyōke Daijingū (Outer Shrine)" Description="Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" LatitudeZ="34.48616275882889" LongitudeX="136.70354767115347" Source="Generated" Locked="true">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine" DisplayName="Toyōke Daijingū (Outer Shrine)" Description="Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" LatitudeZ="34.48616275882889" LongitudeX="136.70354767115347" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:3,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine" DisplayName="Approaching Toyōke Daijingū (Outer Shrine)" Description="Triggered when entering Toyōke Daijingū (Outer Shrine)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -119,12 +102,6 @@
       <RequiresQuestTokenRef>TOKEN_Aramatsurinomiya_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="RisingAction" NarrativeSequence="3" Tone="challenging">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>combat</ThematicTags>
-      <NarrativeConnection TargetRef="Aramatsurinomiya" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="KazamiyaGekū" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū)" LatitudeZ="34.49002869851756" LongitudeX="136.70271722417772" Source="Generated">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</SagaFeatureRef>
@@ -134,7 +111,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="KazamiyaGekū" DisplayName="Kazamiya (Gekū)" Description="Wind shrine at Gekū complex" LatitudeZ="34.49120008334423" LongitudeX="136.70262079766334" Source="Generated" Locked="true">
+  <SagaArc RefName="KazamiyaGekū" DisplayName="Kazamiya (Gekū)" Description="Wind shrine at Gekū complex" LatitudeZ="34.49120008334423" LongitudeX="136.70262079766334" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:4,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>KazamiyaGekū</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_KazamiyaGekū" DisplayName="Approaching Kazamiya (Gekū)" Description="Triggered when entering Kazamiya (Gekū)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -143,14 +120,8 @@
       <RequiresQuestTokenRef>TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_KazamiyaGekū_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="RisingAction" NarrativeSequence="4" Tone="challenging">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>combat</ThematicTags>
-      <NarrativeConnection TargetRef="ToyōkeDaijingūOuterShrine" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="Tsuchinomiya" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="Tsuchinomiya" DisplayName="Tsuchi-no-Miya" Description="Earth shrine within Gekū complex" LatitudeZ="34.49156644819265" LongitudeX="136.70294647040402" Source="Generated" Locked="true">
+  <SagaArc RefName="Tsuchinomiya" DisplayName="Tsuchi-no-Miya" Description="Earth shrine within Gekū complex" LatitudeZ="34.49156644819265" LongitudeX="136.70294647040402" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;Climax&quot;,&quot;narrativeSequence&quot;:5,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Takanomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Tsuchinomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsuchinomiya" DisplayName="Approaching Tsuchi-no-Miya" Description="Triggered when entering Tsuchi-no-Miya" EnterRadius="50.0">
       <Spawn Count="1">
@@ -159,14 +130,8 @@
       <RequiresQuestTokenRef>TOKEN_KazamiyaGekū_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_Tsuchinomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="Climax" NarrativeSequence="5" Tone="climactic">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>endgame,combat</ThematicTags>
-      <NarrativeConnection TargetRef="KazamiyaGekū" Relationship="caused-by" Description="Previous location in quest chain" />
-      <NarrativeConnection TargetRef="Takanomiya" Relationship="leads-to" Description="Next location in quest chain" />
-    </AIMetadata>
   </SagaArc>
-  <SagaArc RefName="Takanomiya" DisplayName="Taka-no-Miya" Description="Auxiliary shrine within Gekū complex" LatitudeZ="34.49359640019776" LongitudeX="136.70227581978799" Source="Generated" Locked="true">
+  <SagaArc RefName="Takanomiya" DisplayName="Taka-no-Miya" Description="Auxiliary shrine within Gekū complex" LatitudeZ="34.49359640019776" LongitudeX="136.70227581978799" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:6,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
     <SagaFeatureRef>Takanomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Takanomiya" DisplayName="Approaching Taka-no-Miya" Description="Triggered when entering Taka-no-Miya" EnterRadius="50.0">
       <Spawn Count="1">
@@ -175,11 +140,6 @@
       <RequiresQuestTokenRef>TOKEN_Tsuchinomiya_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_Takanomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
-    <AIMetadata NarrativeRole="Resolution" NarrativeSequence="6" Tone="climactic">
-      <StoryThreadRef>THREAD_MAIN</StoryThreadRef>
-      <ThematicTags>endgame,combat</ThematicTags>
-      <NarrativeConnection TargetRef="Tsuchinomiya" Relationship="caused-by" Description="Previous location in quest chain" />
-    </AIMetadata>
   </SagaArc>
   <SagaArc RefName="KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48889590673929" LongitudeX="136.70162947876565" Source="Generated">
     <SagaFeatureRef>KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0</SagaFeatureRef>

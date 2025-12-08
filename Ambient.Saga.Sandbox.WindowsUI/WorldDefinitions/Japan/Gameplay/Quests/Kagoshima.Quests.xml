@@ -345,24 +345,24 @@
       <FailCondition Type="CharacterDied" CharacterRef="WanderingMerchant_Merchant" />
     </FailConditions>
   </Quest>
-  <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="[AI: Epic Quest Chain Title connecting all major locations]" Description="[AI: Description of legendary quest connecting all Official Saga locations]">
+  <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="The Grand Journey" Description="An epic quest connecting 3 legendary locations across the realm.">
     <Stages StartStage="OFFICIAL_MAIN_CHAIN_STAGE_01">
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="[AI: Visit Tsurumaru-jō]" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="Visit Tsurumaru-jō" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Tsurumaru-jō]" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Tsurumaru-jō]" CharacterRef="BOSS_Tsurumarujō" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Tsurumaru-jō" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jō" CharacterRef="BOSS_Tsurumarujō" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="[AI: Visit Iso-teien]" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_03">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="Visit Iso-teien" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_03">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Iso-teien]" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Iso-teien]" CharacterRef="BOSS_Isoteien" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Iso-teien" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Iso-teien" CharacterRef="BOSS_Isoteien" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="[AI: Visit Terukuni Daimyōjin-sha]">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="Visit Terukuni Daimyōjin-sha">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="[AI: Reach Terukuni Daimyōjin-sha]" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="[AI: Defeat Guardian of Terukuni Daimyōjin-sha]" CharacterRef="BOSS_TerukuniDaimyōjinsha" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Terukuni Daimyōjin-sha" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyōjin-sha" CharacterRef="BOSS_TerukuniDaimyōjinsha" />
         </Objectives>
       </Stage>
     </Stages>
@@ -373,14 +373,14 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="REGIONAL_Tsurumarujō1" DisplayName="[AI: Regional Quest Chain for Tsurumaru-jō area]" Description="[AI: Explore regional locations and complete challenges]">
+  <Quest RefName="REGIONAL_Tsurumarujō1" DisplayName="Explore the Tsurumaru-jō Region" Description="Discover 2 locations in the Tsurumaru-jō area.">
     <Stages StartStage="REGIONAL_Tsurumarujō1_STAGE_01">
-      <Stage RefName="REGIONAL_Tsurumarujō1_STAGE_01" DisplayName="[AI: Stage at Tsurumaru-jō]" NextStage="REGIONAL_Tsurumarujō1_STAGE_02">
+      <Stage RefName="REGIONAL_Tsurumarujō1_STAGE_01" DisplayName="Explore Tsurumaru-jō" NextStage="REGIONAL_Tsurumarujō1_STAGE_02">
         <Objectives>
           <Objective RefName="REGIONAL_Tsurumarujō1_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_Tsurumarujō1_STAGE_02" DisplayName="[AI: Stage at Terukuni Daimyōjin-sha]">
+      <Stage RefName="REGIONAL_Tsurumarujō1_STAGE_02" DisplayName="Explore Terukuni Daimyōjin-sha">
         <Objectives>
           <Objective RefName="REGIONAL_Tsurumarujō1_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
@@ -392,14 +392,14 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1" DisplayName="[AI: Journey from Tsurumaru-jō to Terukuni Daimyōjin-sha]" Description="[AI: Travel 1km from Tsurumaru-jō to Terukuni Daimyōjin-sha]">
+  <Quest RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1" DisplayName="Journey to Terukuni Daimyōjin-sha" Description="Travel 1km from Tsurumaru-jō to Terukuni Daimyōjin-sha.">
     <Stages StartStage="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_START">
-      <Stage RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_START" DisplayName="[AI: Begin at Tsurumaru-jō]" NextStage="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_END">
+      <Stage RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_START" DisplayName="Depart from Tsurumaru-jō" NextStage="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_END">
         <Objectives>
           <Objective RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_END" DisplayName="[AI: Arrive at Terukuni Daimyōjin-sha]">
+      <Stage RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_END" DisplayName="Arrive at Terukuni Daimyōjin-sha">
         <Objectives>
           <Objective RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
@@ -411,14 +411,14 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1" DisplayName="[AI: Journey from Terukuni Daimyōjin-sha to Tsurumaru-jō]" Description="[AI: Travel 1km from Terukuni Daimyōjin-sha to Tsurumaru-jō]">
+  <Quest RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1" DisplayName="Journey to Tsurumaru-jō" Description="Travel 1km from Terukuni Daimyōjin-sha to Tsurumaru-jō.">
     <Stages StartStage="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_START">
-      <Stage RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_START" DisplayName="[AI: Begin at Terukuni Daimyōjin-sha]" NextStage="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_END">
+      <Stage RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_START" DisplayName="Depart from Terukuni Daimyōjin-sha" NextStage="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_END">
         <Objectives>
           <Objective RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_END" DisplayName="[AI: Arrive at Tsurumaru-jō]">
+      <Stage RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_END" DisplayName="Arrive at Tsurumaru-jō">
         <Objectives>
           <Objective RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>

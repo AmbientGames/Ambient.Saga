@@ -4,7 +4,6 @@
     <xs:include schemaLocation="Dialogue.xsd" />
     <xs:include schemaLocation="../../Acquirables/QuestToken.xsd" />
     <xs:include schemaLocation="../../Interactable.xsd" />
-    <xs:include schemaLocation="../../AIMetadata.xsd" />
 
     <xs:simpleType name="BattleTriggerCondition">
         <xs:restriction base="xs:string">
@@ -111,11 +110,6 @@
                             </xs:sequence>
                             <xs:attribute name="InitialState" type="CharacterStateType" use="optional" default="Neutral"></xs:attribute>
                         </xs:complexType>
-                    </xs:element>
-                    <xs:element name="AIMetadata" type="CharacterAIMetadata" minOccurs="0" maxOccurs="1">
-                        <xs:annotation>
-                            <xs:documentation>AI-only metadata for dialogue generation (ignored by game engine)</xs:documentation>
-                        </xs:annotation>
                     </xs:element>
                 </xs:sequence>
                 <xs:attribute name="ModelRef" type="ModelRef" use="optional" />

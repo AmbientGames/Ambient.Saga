@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
-    <xs:complexType name="EntityBase">
-        <xs:attribute name="RefName" type="xs:string" use="required" />
-        <xs:attribute name="DisplayName" type="xs:string" use="required" />
-        <xs:attribute name="Description" type="xs:string" use="optional" />
-        <xs:attribute name="ExtensionData" type="xs:string" use="optional" />
-    </xs:complexType>
-</xs:schema>

@@ -26,8 +26,6 @@ namespace Ambient.Domain {
         
         private object[] itemsField;
         
-        private SagaArcAIMetadata aIMetadataField;
-        
         private double latitudeZField;
         
         private double longitudeXField;
@@ -68,16 +66,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.itemsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public SagaArcAIMetadata AIMetadata {
-            get {
-                return this.aIMetadataField;
-            }
-            set {
-                this.aIMetadataField = value;
             }
         }
         

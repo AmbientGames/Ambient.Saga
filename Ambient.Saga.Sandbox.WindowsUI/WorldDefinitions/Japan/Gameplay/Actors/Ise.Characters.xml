@@ -708,27 +708,29 @@
       <Trait Name="WillTrade" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="BOSS_Kazahinominomiya" DisplayName="Guardian of Kazahinomi-no-Miya" Description="Character at Kazahinomi-no-Miya">
+  <Character RefName="BOSS_Kazahinominomiya" DisplayName="Guardian of Kazahinomi-no-Miya" Description="Character at Kazahinomi-no-Miya" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
     <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherGloves" Condition="1.0" />
-        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
-        <Entry EquipmentRef="WarHammer" Condition="1.0" />
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
+        <Entry EquipmentRef="Stiletto" Condition="1.0" />
+        <Entry EquipmentRef="LargeSword" Condition="1.0" />
+        <Entry EquipmentRef="MageCloak" Condition="1.0" />
+        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
         <Entry EquipmentRef="MageSlippers" Condition="1.0" />
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
+        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="RangerTrailMix" Quantity="1" />
-        <Entry ConsumableRef="SmokeBomb" Quantity="1" />
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="2" />
-        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="2" />
+        <Entry ConsumableRef="MinorManaPotion" Quantity="4" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="RangerTrailMix" Quantity="4" />
+        <Entry ConsumableRef="SoulShard" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
         <Entry SpellRef="ArcaneBlast" Condition="1.0" />
+        <Entry SpellRef="Disintegrate" Condition="1.0" />
         <Entry SpellRef="Obliterate" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -749,36 +751,32 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Halt! I am the guardian of Kazahinomi-no-Miya. None may pass without proving their worth!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
-      <MentionsSagaArcRef>KōtaiJingūInnerShrine</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine)" Description="Character at Kōtai Jingū (Inner Shrine)">
+  <Character RefName="BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine)" Description="Character at Kōtai Jingū (Inner Shrine)" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Halberd" Condition="1.0" />
-        <Entry EquipmentRef="WizardHat" Condition="1.0" />
-        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
-        <Entry EquipmentRef="ScaleMail" Condition="1.0" />
-        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
-        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
-        <Entry EquipmentRef="Glaive" Condition="1.0" />
+        <Entry EquipmentRef="SilverRing" Condition="1.0" />
+        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCap" Condition="1.0" />
+        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
+        <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
+        <Entry EquipmentRef="LeatherGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="3" />
-        <Entry ConsumableRef="DarkEssence" Quantity="1" />
-        <Entry ConsumableRef="FireBomb" Quantity="3" />
-        <Entry ConsumableRef="FireResistPotion" Quantity="2" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="4" />
+        <Entry ConsumableRef="FireBomb" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfStrength" Quantity="2" />
+        <Entry ConsumableRef="PoisonedDart" Quantity="1" />
+        <Entry ConsumableRef="FrostBomb" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Disarm" Condition="1.0" />
-        <Entry SpellRef="ShieldBash" Condition="1.0" />
-        <Entry SpellRef="Whirlwind" Condition="1.0" />
-        <Entry SpellRef="PerfectStrike" Condition="1.0" />
         <Entry SpellRef="Charge" Condition="1.0" />
+        <Entry SpellRef="BattleCry" Condition="1.0" />
+        <Entry SpellRef="WarCry" Condition="1.0" />
+        <Entry SpellRef="ShieldBash" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -798,36 +796,32 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Halt! I am the guardian of Kōtai Jingū (Inner Shrine). None may pass without proving their worth!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
-      <MentionsSagaArcRef>Kazahinominomiya</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya" Description="Character at Aramatsuri-no-Miya">
+  <Character RefName="BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya" Description="Character at Aramatsuri-no-Miya" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
-        <Entry EquipmentRef="MageGloves" Condition="1.0" />
+        <Entry EquipmentRef="PlateGauntlets" Condition="1.0" />
         <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
-        <Entry EquipmentRef="Buckler" Condition="1.0" />
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
+        <Entry EquipmentRef="ScaleMail" Condition="1.0" />
+        <Entry EquipmentRef="WizardHat" Condition="1.0" />
+        <Entry EquipmentRef="Knife" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bandage" Quantity="2" />
-        <Entry ConsumableRef="SoulShard" Quantity="1" />
-        <Entry ConsumableRef="HerbalTea" Quantity="3" />
-        <Entry ConsumableRef="Torch" Quantity="2" />
-        <Entry ConsumableRef="Antidote" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfProtection" Quantity="2" />
+        <Entry ConsumableRef="RoastChicken" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="2" />
+        <Entry ConsumableRef="ThrowingAxe" Quantity="4" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="HealingPotion" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Taunt" Condition="1.0" />
         <Entry SpellRef="BattleCry" Condition="1.0" />
+        <Entry SpellRef="Charge" Condition="1.0" />
         <Entry SpellRef="WarCry" Condition="1.0" />
-        <Entry SpellRef="CrushingBlow" Condition="1.0" />
+        <Entry SpellRef="ShieldBash" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -847,25 +841,19 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Halt! I am the guardian of Aramatsuri-no-Miya. None may pass without proving their worth!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
-      <MentionsSagaArcRef>KōtaiJingūInnerShrine</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Kazahinominomiya</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)">
+  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_7&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_6&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Buckler" Condition="1.0" />
-        <Entry EquipmentRef="WizardHat" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GreaterManaPotion" Quantity="1" />
+        <Entry ConsumableRef="ManaGem" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Ambush" Condition="1.0" />
-        <Entry SpellRef="ShadowStep" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -876,48 +864,71 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). I have wares to offer - take a look!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_6&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_5&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)">
+  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_3&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
+        <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="1" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="1" />
+        <Entry ConsumableRef="Berries" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Vanish" Condition="1.0" />
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
+        <Entry SpellRef="ShadowStrike" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="20" />
+    </Traits>
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4). I have wares to offer - take a look!</InitialGreeting>
+    </InitiationBehavior>
+  </Character>
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_2&quot;]}">
+    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+  </Character>
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_1&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <InitiationBehavior InitialState="Neutral">
+      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)? It's quite a sight to behold.</InitialGreeting>
+    </InitiationBehavior>
+  </Character>
+  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_1&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_0&quot;]}">
+    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="Harp" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCord" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ScrollOfHealing" Quantity="3" />
+        <Entry ConsumableRef="HerbalTea" Quantity="4" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="ShadowStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -926,104 +937,40 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
-      <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4). I have wares to offer - take a look!</InitialGreeting>
-    </InitiationBehavior>
-    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3</MentionsSagaArcRef>
-    </AIMetadata>
-  </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <InitiationBehavior InitialState="Neutral">
-      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)? It's quite a sight to behold.</InitialGreeting>
-    </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2</MentionsSagaArcRef>
-    </AIMetadata>
-  </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)">
-    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <InitiationBehavior InitialState="Neutral">
-      <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)? It's quite a sight to behold.</InitialGreeting>
-    </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1</MentionsSagaArcRef>
-    </AIMetadata>
-  </Character>
-  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)">
-    <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
-    <Capabilities>
-      <Equipment>
-        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
-      </Equipment>
-      <Consumables>
-        <Entry ConsumableRef="ScrollOfProtection" Quantity="4" />
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="2" />
-        <Entry ConsumableRef="Milk" Quantity="1" />
-      </Consumables>
-      <Spells>
-        <Entry SpellRef="Vanish" Condition="1.0" />
-      </Spells>
-    </Capabilities>
-    <Traits>
-      <Trait Name="WillTrade" Value="1" />
-      <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
-    </Traits>
-    <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7). I have wares to offer - take a look!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_0&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine)" Description="Character at Toyōke Daijingū (Outer Shrine)">
+  <Character RefName="BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine)" Description="Character at Toyōke Daijingū (Outer Shrine)" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;,&quot;KazamiyaGek\u016B_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;]}">
     <Stats Health="1.05" Stamina="1.0" Mana="0.9" Strength="0.11" Defense="0.07" Speed="0.06" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RustySword" Condition="1.0" />
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-        <Entry EquipmentRef="DragonShield" Condition="1.0" />
+        <Entry EquipmentRef="ClothPants" Condition="1.0" />
         <Entry EquipmentRef="WoodenShield" Condition="1.0" />
-        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
-        <Entry EquipmentRef="MageGloves" Condition="1.0" />
-        <Entry EquipmentRef="TowerShield" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
+        <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
+        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="HerosCape" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Ale" Quantity="1" />
-        <Entry ConsumableRef="Juice" Quantity="4" />
-        <Entry ConsumableRef="ScrollOfHaste" Quantity="4" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="WarriorRation" Quantity="4" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="1" />
+        <Entry ConsumableRef="HealingSalve" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfHealing" Quantity="1" />
+        <Entry ConsumableRef="ParalyzingPoison" Quantity="3" />
+        <Entry ConsumableRef="EnduranceElixir" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
         <Entry SpellRef="Bloodlust" Condition="1.0" />
         <Entry SpellRef="UnstoppableForce" Condition="1.0" />
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="WarStomp" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1043,48 +990,39 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Halt! I am the guardian of Toyōke Daijingū (Outer Shrine). None may pass without proving their worth!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
-      <MentionsSagaArcRef>KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)">
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;,&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
-      <MentionsSagaArcRef>KazamiyaGekū</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū)" Description="Character at Kazamiya (Gekū)">
+  <Character RefName="BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū)" Description="Character at Kazamiya (Gekū)" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
     <Stats Health="1.05" Stamina="1.0" Mana="0.9" Strength="0.11" Defense="0.07" Speed="0.06" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
-        <Entry EquipmentRef="Buckler" Condition="1.0" />
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-        <Entry EquipmentRef="ChainBoots" Condition="1.0" />
-        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
-        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+        <Entry EquipmentRef="Halberd" Condition="1.0" />
+        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
+        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="BerserkerAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Mead" Quantity="3" />
-        <Entry ConsumableRef="Milk" Quantity="2" />
-        <Entry ConsumableRef="FlashBomb" Quantity="3" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
+        <Entry ConsumableRef="HerbalTea" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfHealing" Quantity="2" />
+        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+        <Entry ConsumableRef="Stew" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="RecklessAssault" Condition="1.0" />
+        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
         <Entry SpellRef="WarStomp" Condition="1.0" />
-        <Entry SpellRef="PrimalRoar" Condition="1.0" />
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1104,36 +1042,28 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Halt! I am the guardian of Kazamiya (Gekū). None may pass without proving their worth!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
-      <MentionsSagaArcRef>Tsuchinomiya</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Takanomiya</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya" Description="Character at Tsuchi-no-Miya">
+  <Character RefName="BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya" Description="Character at Tsuchi-no-Miya" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
     <Stats Health="1.30" Stamina="1.0" Mana="0.9" Strength="0.14" Defense="0.09" Speed="0.08" Magic="0.08" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
-        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
-        <Entry EquipmentRef="LargeSword" Condition="1.0" />
-        <Entry EquipmentRef="OakWand" Condition="1.0" />
+        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+        <Entry EquipmentRef="Longbow" Condition="1.0" />
+        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
+        <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
+        <Entry EquipmentRef="CloakOfProtection" Condition="1.0" />
         <Entry EquipmentRef="ShortBow" Condition="1.0" />
-        <Entry EquipmentRef="ClothCap" Condition="1.0" />
-        <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="ScrollOfResurrection" Quantity="3" />
-        <Entry ConsumableRef="WeakeningPoison" Quantity="2" />
-        <Entry ConsumableRef="Mead" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfHaste" Quantity="3" />
+        <Entry ConsumableRef="HastePotion" Quantity="1" />
+        <Entry ConsumableRef="WisdomElixir" Quantity="4" />
+        <Entry ConsumableRef="FrostBomb" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-        <Entry SpellRef="RecklessAssault" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
         <Entry SpellRef="Bloodlust" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -1154,34 +1084,31 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Halt! I am the guardian of Tsuchi-no-Miya. None may pass without proving their worth!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
-      <MentionsSagaArcRef>KazamiyaGekū</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Takanomiya</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="BOSS_Takanomiya" DisplayName="Guardian of Taka-no-Miya" Description="Character at Taka-no-Miya">
+  <Character RefName="BOSS_Takanomiya" DisplayName="Guardian of Taka-no-Miya" Description="Character at Taka-no-Miya" Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
     <Stats Health="1.30" Stamina="1.0" Mana="0.9" Strength="0.14" Defense="0.09" Speed="0.08" Magic="0.08" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-        <Entry EquipmentRef="HandAxe" Condition="1.0" />
-        <Entry EquipmentRef="Flamebrand" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
-        <Entry EquipmentRef="BreastPlate" Condition="1.0" />
-        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
-        <Entry EquipmentRef="OakStaff" Condition="1.0" />
+        <Entry EquipmentRef="ClothCap" Condition="1.0" />
+        <Entry EquipmentRef="WoodenFlute" Condition="1.0" />
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
+        <Entry EquipmentRef="Zweihander" Condition="1.0" />
+        <Entry EquipmentRef="Greataxe" Condition="1.0" />
+        <Entry EquipmentRef="Halberd" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Apple" Quantity="1" />
-        <Entry ConsumableRef="DivineBlessing" Quantity="3" />
-        <Entry ConsumableRef="ScrollOfTeleport" Quantity="2" />
-        <Entry ConsumableRef="SuperiorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="LightningResistPotion" Quantity="3" />
+        <Entry ConsumableRef="Stew" Quantity="4" />
+        <Entry ConsumableRef="CurativePotion" Quantity="4" />
+        <Entry ConsumableRef="IronskinPotion" Quantity="3" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="4" />
+        <Entry ConsumableRef="RangerTrailMix" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
         <Entry SpellRef="UnstoppableForce" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -1202,26 +1129,21 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Halt! I am the guardian of Taka-no-Miya. None may pass without proving their worth!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Intimidating, protective, tests worthiness" Role="antagonist">
-      <MentionsSagaArcRef>Tsuchinomiya</MentionsSagaArcRef>
-      <MentionsSagaArcRef>KazamiyaGekū</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)">
+  <Character RefName="MERCHANT_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;,&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ShadowCloak" Condition="1.0" />
-        <Entry EquipmentRef="Buckler" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MonkRice" Quantity="3" />
-        <Entry ConsumableRef="ScrollOfIcebolt" Quantity="4" />
-        <Entry ConsumableRef="SuperiorManaPotion" Quantity="4" />
+        <Entry ConsumableRef="FlashBomb" Quantity="1" />
+        <Entry ConsumableRef="Stew" Quantity="1" />
+        <Entry ConsumableRef="ManaGem" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Backstab" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="ShadowMeld" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1232,105 +1154,71 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1). I have wares to offer - take a look!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</MentionsSagaArcRef>
-      <MentionsSagaArcRef>KazamiyaGekū</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)">
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)">
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_0&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" DisplayName="Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)">
+  <Character RefName="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" DisplayName="Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_1&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
-        <Entry EquipmentRef="Harp" Condition="1.0" />
+        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
-        <Entry ConsumableRef="HastePotion" Quantity="3" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfHaste" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-        <Entry SpellRef="ShadowMeld" Condition="1.0" />
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3). I have wares to offer - take a look!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)">
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)">
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" DisplayName="Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)">
+  <Character RefName="MERCHANT_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" DisplayName="Trader at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_4&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
+        <Entry EquipmentRef="RustySword" Condition="1.0" />
         <Entry EquipmentRef="PlateGauntlets" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-        <Entry ConsumableRef="ParalyzingPoison" Quantity="1" />
-        <Entry ConsumableRef="Wine" Quantity="3" />
+        <Entry ConsumableRef="Bandage" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
-        <Entry SpellRef="SoothingSong" Condition="1.0" />
+        <Entry SpellRef="Agility" Condition="1.0" />
+        <Entry SpellRef="MightyStrength" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1341,51 +1229,38 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome, traveler! You've reached Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6). I have wares to offer - take a look!</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Friendly, business-minded, knowledgeable about area" Role="merchant">
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)">
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)">
+  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_Aramatsurinomiya_6&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Greetings, friend. Are you also visiting Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)? It's quite a sight to behold.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Helpful, weary, observant" Role="informant">
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</MentionsSagaArcRef>
-      <MentionsSagaArcRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</MentionsSagaArcRef>
-      <MentionsSagaArcRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6</MentionsSagaArcRef>
-    </AIMetadata>
   </Character>
-  <Character RefName="GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya" Description="Character at Kazahinomi-no-Miya">
+  <Character RefName="GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya" Description="Character at Kazahinomi-no-Miya" Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.57" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
         <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
-        <Entry EquipmentRef="HalfPlate" Condition="1.0" />
+        <Entry EquipmentRef="VenomFang" Condition="1.0" />
+        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfResurrection" Quantity="3" />
-        <Entry ConsumableRef="WeakeningPoison" Quantity="3" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="Stew" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="EagleEye" Condition="1.0" />
-        <Entry SpellRef="StormOfLeaves" Condition="1.0" />
+        <Entry SpellRef="WildRegeneration" Condition="1.0" />
+        <Entry SpellRef="NaturalRemedy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1394,27 +1269,22 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome to Kazahinomi-no-Miya.</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Vigilant, loyal, aggressive when threatened" Role="defender" />
   </Character>
-  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)">
+  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
-        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
-        <Entry EquipmentRef="RustySword" Condition="1.0" />
-        <Entry EquipmentRef="SilverRing" Condition="1.0" />
+        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
+        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ParalyzingPoison" Quantity="3" />
-        <Entry ConsumableRef="AcidBomb" Quantity="2" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="Wine" Quantity="1" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CallOfTheWild" Condition="1.0" />
+        <Entry SpellRef="ScentOfBlood" Condition="1.0" />
         <Entry SpellRef="Barkskin" Condition="1.0" />
-        <Entry SpellRef="EntanglingRoots" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1423,25 +1293,22 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome to Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1).</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
   </Character>
-  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)">
+  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="TowerShield" Condition="1.0" />
+        <Entry EquipmentRef="ShortBow" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfProtection" Quantity="5" />
-        <Entry ConsumableRef="CurativePotion" Quantity="1" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="4" />
+        <Entry ConsumableRef="Javelin" Quantity="2" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="EnduranceElixir" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
-        <Entry SpellRef="Disintegrate" Condition="1.0" />
         <Entry SpellRef="Obliterate" Condition="1.0" />
+        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1450,25 +1317,23 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome to Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6).</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
   </Character>
-  <Character RefName="HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0_3" DisplayName="Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)">
+  <Character RefName="HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0_3" DisplayName="Undead near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.46" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
-        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
-        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="RangerHood" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="FlashBomb" Quantity="1" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfIcebolt" Quantity="4" />
+        <Entry ConsumableRef="FrostBomb" Quantity="4" />
+        <Entry ConsumableRef="Panacea" Quantity="2" />
+        <Entry ConsumableRef="DragonBlood" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Barkskin" Condition="1.0" />
-        <Entry SpellRef="ScentOfBlood" Condition="1.0" />
-        <Entry SpellRef="WildRegeneration" Condition="1.0" />
+        <Entry SpellRef="ThornBarrier" Condition="1.0" />
+        <Entry SpellRef="TrapSense" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1477,24 +1342,25 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome to Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1).</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
   </Character>
-  <Character RefName="HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5_4" DisplayName="Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)">
+  <Character RefName="HOSTILE_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5_4" DisplayName="Bandit near Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Character at Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="OakWand" Condition="1.0" />
-        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
+        <Entry EquipmentRef="IronShield" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="FireResistPotion" Quantity="2" />
-        <Entry ConsumableRef="Apple" Quantity="1" />
-        <Entry ConsumableRef="SmellingSalts" Quantity="2" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="2" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="4" />
+        <Entry ConsumableRef="MagesBiscuit" Quantity="1" />
+        <Entry ConsumableRef="LightningResistPotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
-        <Entry SpellRef="WarStomp" Condition="1.0" />
-        <Entry SpellRef="PrimalRoar" Condition="1.0" />
+        <Entry SpellRef="Bloodlust" Condition="1.0" />
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1503,6 +1369,5 @@
     <InitiationBehavior InitialState="Neutral">
       <InitialGreeting>Welcome to Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6).</InitialGreeting>
     </InitiationBehavior>
-    <AIMetadata Personality="Aggressive, territorial, dangerous" Role="enemy" />
   </Character>
 </Characters>

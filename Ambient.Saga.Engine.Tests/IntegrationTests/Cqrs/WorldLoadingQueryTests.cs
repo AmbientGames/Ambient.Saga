@@ -17,10 +17,12 @@ public class WorldLoadingQueryTests : IDisposable
 
     public WorldLoadingQueryTests()
     {
-        // Use the Sandbox directory for world definitions
-        var domainDirectory = FindSandboxDirectory();
-        _dataDirectory = Path.Combine(domainDirectory, "WorldDefinitions");
-        _definitionDirectory = Path.Combine(domainDirectory, "DefinitionXsd");
+        // DefinitionXsd is copied to output directory by Ambient.Domain
+        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
+
+        // WorldDefinitions still lives in Sandbox source directory
+        var sandboxDirectory = FindSandboxDirectory();
+        _dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
 
         // Setup MediatR with world loading handlers
         var services = new ServiceCollection();
