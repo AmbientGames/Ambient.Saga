@@ -5,5 +5,7 @@
         <xs:attribute name="DisplayName" type="xs:string" use="required" />
         <xs:attribute name="Description" type="xs:string" use="optional" />
         <xs:attribute name="Metadata" type="xs:string" use="optional" />
-    </xs:complexType>
+		<xs:attribute name="ModelRef" type="ModelRef" use="optional" />
+		<xs:attribute name="TextureRef" type="TextureRef" use="optional" />
+	</xs:complexType>
 </xs:schema>
