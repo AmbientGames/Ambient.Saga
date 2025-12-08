@@ -646,8 +646,9 @@ public class SagaInteractionService
         if (resolvedSpawns.Count == 0)
             return;
 
-        // Spawn characters close to avatar - they will immediately initiate interaction
-        var spawnRadius = 2.0;
+        // Spawn characters close to the avatar so they're within ApproachRadius for interaction
+        // Use a small default radius - characters will be spawned around the avatar, not the trigger center
+        var spawnRadius = 10.0; // Default spawn distance from avatar (within typical ApproachRadius)
 
         // Calculate spawn positions in circle around avatar (Saga-relative)
         var spawnPositions = CalculateCircularSpawnPositions(

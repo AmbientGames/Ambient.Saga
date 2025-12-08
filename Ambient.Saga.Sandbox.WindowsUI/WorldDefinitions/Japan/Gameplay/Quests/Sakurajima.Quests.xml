@@ -735,9 +735,6 @@
         <Objectives>
           <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Yōgan Nagisa Kōen Ashiyu" SagaArcRef="YōganNagisaKōenAshiyu1" />
         </Objectives>
-        <FailConditions>
-          <FailCondition Type="TimeExpired" TimeLimit="600" />
-        </FailConditions>
       </Stage>
       <Stage RefName="COMPLETE_TRIAL" DisplayName="Complete All Challenges">
         <Objectives>
@@ -757,9 +754,6 @@
             <Equipment EquipmentRef="OakStaff" Quantity="1" />
           </Reward>
         </Rewards>
-        <FailConditions>
-          <FailCondition Type="TimeExpired" TimeLimit="600" />
-        </FailConditions>
       </Stage>
     </Stages>
     <FailConditions>

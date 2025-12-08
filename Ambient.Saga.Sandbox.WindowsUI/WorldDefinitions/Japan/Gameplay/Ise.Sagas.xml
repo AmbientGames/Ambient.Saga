@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaArc RefName="Kazahinominomiya" DisplayName="Kazahinomi-no-Miya" Description="Wind shrine within Naikū complex" LatitudeZ="34.45502236355378" LongitudeX="136.72513671068958" Source="Generated" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+  <SagaArc RefName="Kazahinominomiya" DisplayName="Kazahinomi-no-Miya" Description="Wind shrine within Naikū complex" LatitudeZ="34.45502236355378" LongitudeX="136.72513671068958" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Kazahinominomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Kazahinominomiya" DisplayName="Approaching Kazahinomi-no-Miya" Description="Triggered when entering Kazahinomi-no-Miya" EnterRadius="50.0">
       <Spawn Count="1">
@@ -9,7 +9,7 @@
       <GivesQuestTokenRef>TOKEN_Kazahinominomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="KōtaiJingūInnerShrine" DisplayName="Kōtai Jingū (Inner Shrine)" Description="Inner Shrine of Ise Jingū, dedicated to Amaterasu Ōmikami" LatitudeZ="34.454346441013364" LongitudeX="136.72586965591907" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;IncitingIncident&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Kazahinominomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+  <SagaArc RefName="KōtaiJingūInnerShrine" DisplayName="Kōtai Jingū (Inner Shrine)" Description="Inner Shrine of Ise Jingū, dedicated to Amaterasu Ōmikami" LatitudeZ="34.454346441013364" LongitudeX="136.72586965591907" Metadata="{&quot;narrativeRole&quot;:&quot;IncitingIncident&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Kazahinominomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>KōtaiJingūInnerShrine</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine" DisplayName="Approaching Kōtai Jingū (Inner Shrine)" Description="Triggered when entering Kōtai Jingū (Inner Shrine)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -19,7 +19,7 @@
       <GivesQuestTokenRef>TOKEN_KōtaiJingūInnerShrine_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya" DisplayName="Aramatsuri-no-Miya" Description="Auxiliary shrine within Naikū complex" LatitudeZ="34.45549363146803" LongitudeX="136.7254121346418" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+  <SagaArc RefName="Aramatsurinomiya" DisplayName="Aramatsuri-no-Miya" Description="Auxiliary shrine within Naikū complex" LatitudeZ="34.45549363146803" LongitudeX="136.7254121346418" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Aramatsurinomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya" DisplayName="Approaching Aramatsuri-no-Miya" Description="Triggered when entering Aramatsuri-no-Miya" EnterRadius="50.0">
       <Spawn Count="1">
@@ -29,7 +29,7 @@
       <GivesQuestTokenRef>TOKEN_Aramatsurinomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.45991696391523" LongitudeX="136.72342152345115" Source="Generated">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.45991696391523" LongitudeX="136.72342152345115">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Approaching Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Triggered when entering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -37,7 +37,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46234968155986" LongitudeX="136.72142658888475" Source="Generated">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46234968155986" LongitudeX="136.72142658888475">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Approaching Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Triggered when entering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -45,7 +45,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.4658826193322" LongitudeX="136.71779057108705" Source="Generated">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.4658826193322" LongitudeX="136.71779057108705">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Approaching Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Triggered when entering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -53,7 +53,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46979341211088" LongitudeX="136.71539113702505" Source="Generated">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46979341211088" LongitudeX="136.71539113702505">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Approaching Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Triggered when entering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -61,7 +61,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.472992573469995" LongitudeX="136.71272357219289" Source="Generated">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.472992573469995" LongitudeX="136.71272357219289">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Approaching Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Triggered when entering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -69,7 +69,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47666138830224" LongitudeX="136.70969612433115" Source="Generated">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47666138830224" LongitudeX="136.70969612433115">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Approaching Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Triggered when entering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -77,7 +77,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48061835439194" LongitudeX="136.70834177403282" Source="Generated">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48061835439194" LongitudeX="136.70834177403282">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Approaching Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Triggered when entering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -85,7 +85,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.483292252702675" LongitudeX="136.70487773360182" Source="Generated">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.483292252702675" LongitudeX="136.70487773360182">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Approaching Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Triggered when entering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -93,7 +93,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine" DisplayName="Toyōke Daijingū (Outer Shrine)" Description="Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" LatitudeZ="34.48616275882889" LongitudeX="136.70354767115347" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:3,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine" DisplayName="Toyōke Daijingū (Outer Shrine)" Description="Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" LatitudeZ="34.48616275882889" LongitudeX="136.70354767115347" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:3,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine" DisplayName="Approaching Toyōke Daijingū (Outer Shrine)" Description="Triggered when entering Toyōke Daijingū (Outer Shrine)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -103,7 +103,7 @@
       <GivesQuestTokenRef>TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū)" LatitudeZ="34.49002869851756" LongitudeX="136.70271722417772" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū)" LatitudeZ="34.49002869851756" LongitudeX="136.70271722417772">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -111,7 +111,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="KazamiyaGekū" DisplayName="Kazamiya (Gekū)" Description="Wind shrine at Gekū complex" LatitudeZ="34.49120008334423" LongitudeX="136.70262079766334" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:4,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+  <SagaArc RefName="KazamiyaGekū" DisplayName="Kazamiya (Gekū)" Description="Wind shrine at Gekū complex" LatitudeZ="34.49120008334423" LongitudeX="136.70262079766334" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:4,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>KazamiyaGekū</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_KazamiyaGekū" DisplayName="Approaching Kazamiya (Gekū)" Description="Triggered when entering Kazamiya (Gekū)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -121,7 +121,7 @@
       <GivesQuestTokenRef>TOKEN_KazamiyaGekū_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsuchinomiya" DisplayName="Tsuchi-no-Miya" Description="Earth shrine within Gekū complex" LatitudeZ="34.49156644819265" LongitudeX="136.70294647040402" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;Climax&quot;,&quot;narrativeSequence&quot;:5,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Takanomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+  <SagaArc RefName="Tsuchinomiya" DisplayName="Tsuchi-no-Miya" Description="Earth shrine within Gekū complex" LatitudeZ="34.49156644819265" LongitudeX="136.70294647040402" Metadata="{&quot;narrativeRole&quot;:&quot;Climax&quot;,&quot;narrativeSequence&quot;:5,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Takanomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Tsuchinomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsuchinomiya" DisplayName="Approaching Tsuchi-no-Miya" Description="Triggered when entering Tsuchi-no-Miya" EnterRadius="50.0">
       <Spawn Count="1">
@@ -131,7 +131,7 @@
       <GivesQuestTokenRef>TOKEN_Tsuchinomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Takanomiya" DisplayName="Taka-no-Miya" Description="Auxiliary shrine within Gekū complex" LatitudeZ="34.49359640019776" LongitudeX="136.70227581978799" Source="Generated" Locked="true" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:6,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
+  <SagaArc RefName="Takanomiya" DisplayName="Taka-no-Miya" Description="Auxiliary shrine within Gekū complex" LatitudeZ="34.49359640019776" LongitudeX="136.70227581978799" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:6,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
     <SagaFeatureRef>Takanomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Takanomiya" DisplayName="Approaching Taka-no-Miya" Description="Triggered when entering Taka-no-Miya" EnterRadius="50.0">
       <Spawn Count="1">
@@ -141,7 +141,7 @@
       <GivesQuestTokenRef>TOKEN_Takanomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48889590673929" LongitudeX="136.70162947876565" Source="Generated">
+  <SagaArc RefName="KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48889590673929" LongitudeX="136.70162947876565">
     <SagaFeatureRef>KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_KazamiyaGekū_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Approaching Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" Description="Triggered when entering Waypoint between Kazamiya (Gekū) and Toyōke Daijingū (Outer Shrine) (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -149,7 +149,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.48313168629224" LongitudeX="136.70581812680325" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.48313168629224" LongitudeX="136.70581812680325">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_0" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (1)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -157,7 +157,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.480630814989496" LongitudeX="136.70709098106238" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.480630814989496" LongitudeX="136.70709098106238">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_1" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (2)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -165,7 +165,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.47669425117022" LongitudeX="136.71137587397322" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.47669425117022" LongitudeX="136.71137587397322">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_2" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (3)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -173,7 +173,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.47365337576497" LongitudeX="136.71299483136775" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.47365337576497" LongitudeX="136.71299483136775">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_3" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (4)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -181,7 +181,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.46915222373354" LongitudeX="136.7147499507465" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.46915222373354" LongitudeX="136.7147499507465">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_4" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (5)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -189,7 +189,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.46555242540214" LongitudeX="136.7189344336659" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.46555242540214" LongitudeX="136.7189344336659">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_5" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (6)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -197,7 +197,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.46316411658402" LongitudeX="136.72001716784555" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.46316411658402" LongitudeX="136.72001716784555">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_6" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (7)" EnterRadius="50.0">
       <Spawn Count="1">
@@ -205,7 +205,7 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.45906360207432" LongitudeX="136.723987615655" Source="Generated">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya" LatitudeZ="34.45906360207432" LongitudeX="136.723987615655">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_Aramatsurinomiya_7" DisplayName="Approaching Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" Description="Triggered when entering Waypoint between Toyōke Daijingū (Outer Shrine) and Aramatsuri-no-Miya (8)" EnterRadius="50.0">
       <Spawn Count="1">

@@ -783,9 +783,6 @@
         <Objectives>
           <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Taka-no-Miya" SagaArcRef="Takanomiya" />
         </Objectives>
-        <FailConditions>
-          <FailCondition Type="TimeExpired" TimeLimit="600" />
-        </FailConditions>
       </Stage>
       <Stage RefName="COMPLETE_TRIAL" DisplayName="Complete All Challenges">
         <Objectives>
@@ -805,9 +802,6 @@
             <Equipment EquipmentRef="Knife" Quantity="1" />
           </Reward>
         </Rewards>
-        <FailConditions>
-          <FailCondition Type="TimeExpired" TimeLimit="600" />
-        </FailConditions>
       </Stage>
     </Stages>
     <FailConditions>

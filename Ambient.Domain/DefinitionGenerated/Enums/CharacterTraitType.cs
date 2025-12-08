@@ -42,7 +42,7 @@ namespace Ambient.Domain {
         FleeThreshold,
         
         /// <remarks/>
-        SummonChance,
+        GrantsAffinity,
         
         /// <remarks/>
         DefenseBonus,

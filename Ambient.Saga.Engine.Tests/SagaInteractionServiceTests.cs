@@ -1332,7 +1332,7 @@ public class SagaInteractionServiceTests
         // Manually calculate what the positions SHOULD be using the same seed
         var expectedPositions = CalculateExpectedSpawnPositions(
             10.0, 5.0, // Avatar position
-            10.0, // Spawn radius is fixed at 10.0 meters (default trigger type)
+            10.0, // Default spawn radius (keeps characters within typical ApproachRadius)
             3, // Count
             seed);
 

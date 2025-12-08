@@ -1,17 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <StatusEffects xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <StatusEffect RefName="POISON" DisplayName="Poison" Description="Deals damage over time" Type="DamageOverTime" DamagePerTurn="5" DurationTurns="3" Category="Debuff" ApplicationChance="0.3" />
-  <StatusEffect RefName="BLEED" DisplayName="Bleeding" Description="Causes bleeding damage each turn" Type="DamageOverTime" DamagePerTurn="8" DurationTurns="2" Category="Debuff" MaxStacks="3" ApplicationChance="0.25" />
-  <StatusEffect RefName="BURN" DisplayName="Burning" Description="Fire damage over time, decreases defense" Type="DamageOverTime" DamagePerTurn="10" DurationTurns="3" DefenseModifier="-0.1" Category="Debuff" ApplicationChance="0.2" />
-  <StatusEffect RefName="STUN" DisplayName="Stunned" Description="Cannot act for 1 turn" Type="Stun" DurationTurns="1" Category="Debuff" ApplicationChance="0.15" MaxStacks="0" />
-  <StatusEffect RefName="SLOW" DisplayName="Slowed" Description="Reduced movement and attack speed" Type="Slow" DurationTurns="2" SpeedModifier="-0.3" Category="Debuff" ApplicationChance="0.4" />
-  <StatusEffect RefName="ROOT" DisplayName="Rooted" Description="Cannot flee from battle" Type="Root" DurationTurns="2" Category="Debuff" ApplicationChance="0.3" />
-  <StatusEffect RefName="WEAKEN" DisplayName="Weakened" Description="Reduced damage output" Type="Weaken" DurationTurns="3" StrengthModifier="-0.25" Category="Debuff" ApplicationChance="0.35" />
-  <StatusEffect RefName="VULNERABLE" DisplayName="Vulnerable" Description="Takes increased damage" Type="Vulnerable" DurationTurns="2" DefenseModifier="-0.3" Category="Debuff" ApplicationChance="0.25" />
-  <StatusEffect RefName="BLIND" DisplayName="Blinded" Description="Reduced accuracy" Type="Blind" DurationTurns="2" AccuracyModifier="-0.4" Category="Debuff" ApplicationChance="0.3" />
-  <StatusEffect RefName="SILENCE" DisplayName="Silenced" Description="Cannot cast spells" Type="Silence" DurationTurns="2" Category="Debuff" ApplicationChance="0.2" />
-  <StatusEffect RefName="STRENGTH_BOOST" DisplayName="Strength" Description="Increased physical damage" Type="StatBoost" DurationTurns="3" StrengthModifier="0.3" Category="Buff" ApplicationChance="1.0" />
-  <StatusEffect RefName="DEFENSE_BOOST" DisplayName="Fortified" Description="Increased defense" Type="StatBoost" DurationTurns="3" DefenseModifier="0.4" Category="Buff" ApplicationChance="1.0" />
-  <StatusEffect RefName="SPEED_BOOST" DisplayName="Haste" Description="Increased speed and agility" Type="StatBoost" DurationTurns="3" SpeedModifier="0.3" Category="Buff" ApplicationChance="1.0" />
-  <StatusEffect RefName="MAGIC_BOOST" DisplayName="Empowered" Description="Increased magic power" Type="StatBoost" DurationTurns="3" MagicModifier="0.35" Category="Buff" ApplicationChance="1.0" />
+  <StatusEffect RefName="Poison" DisplayName="Doku" Description="Venom from ninja poison slowly drains life" Type="DamageOverTime" Category="Debuff" DamagePerTurn="5" />
+  <StatusEffect RefName="Bleed" DisplayName="Shukketsu" Description="Grievous wounds cause continuous blood loss" Type="DamageOverTime" Category="Debuff" DurationTurns="2" DamagePerTurn="8" MaxStacks="3" />
+  <StatusEffect RefName="Burn" DisplayName="Yakedo" Description="Sacred flames sear the flesh" Type="DamageOverTime" Category="Debuff" DamagePerTurn="10" DefenseModifier="-0.1" />
+  <StatusEffect RefName="Stun" DisplayName="Kizetsu" Description="A heavy blow leaves you dazed" Type="Stun" Category="Debuff" DurationTurns="1" MaxStacks="0" />
+  <StatusEffect RefName="Slow" DisplayName="Chidori" Description="Exhaustion slows your movements" Type="Slow" Category="Debuff" DurationTurns="2" SpeedModifier="-0.3" />
+  <StatusEffect RefName="Root" DisplayName="Shibari" Description="Spiritual chains bind you in place" Type="Root" Category="Debuff" DurationTurns="2" />
+  <StatusEffect RefName="Silence" DisplayName="Fuin" Description="Your spiritual power is sealed" Type="Silence" Category="Debuff" DurationTurns="2" />
+  <StatusEffect RefName="Weaken" DisplayName="Suijaku" Description="Your strength has been sapped" Type="Weaken" Category="Debuff" StrengthModifier="-0.25" />
+  <StatusEffect RefName="Vulnerable" DisplayName="Muko" Description="Your defenses have been broken" Type="Vulnerable" Category="Debuff" DurationTurns="2" DefenseModifier="-0.3" />
+  <StatusEffect RefName="Blind" DisplayName="Mokushi" Description="Darkness clouds your vision" Type="Blind" Category="Debuff" DurationTurns="2" AccuracyModifier="-0.4" />
+  <StatusEffect RefName="StrengthBoost" DisplayName="Chikara" Description="Your strength swells with warrior spirit" Type="StatBoost" Category="Buff" StrengthModifier="0.3" />
+  <StatusEffect RefName="DefenseBoost" DisplayName="Mamori" Description="Your defenses are bolstered" Type="StatBoost" Category="Buff" DefenseModifier="0.4" />
+  <StatusEffect RefName="SpeedBoost" DisplayName="Shinsoku" Description="You move with divine swiftness" Type="StatBoost" Category="Buff" SpeedModifier="0.3" />
+  <StatusEffect RefName="MagicBoost" DisplayName="Reiki" Description="Spiritual energy surges through you" Type="StatBoost" Category="Buff" MagicModifier="0.35" />
+  <StatusEffect RefName="AccuracyBoost" DisplayName="Seigan" Description="Your focus sharpens to a deadly point" Type="StatBoost" Category="Buff" AccuracyModifier="0.25" />
 </StatusEffects>

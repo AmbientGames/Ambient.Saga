@@ -177,7 +177,7 @@
 			<xs:enumeration value="Aggression"></xs:enumeration>
 			<xs:enumeration value="Morale"></xs:enumeration>
 			<xs:enumeration value="FleeThreshold"></xs:enumeration>
-			<xs:enumeration value="SummonChance"></xs:enumeration>
+			<xs:enumeration value="GrantsAffinity"></xs:enumeration>
 			<xs:enumeration value="DefenseBonus"></xs:enumeration>
 			<xs:enumeration value="TradeDiscount"></xs:enumeration>
 			<!-- Bargaining/Trade Traits -->
