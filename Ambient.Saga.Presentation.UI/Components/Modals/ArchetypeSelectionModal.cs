@@ -61,29 +61,64 @@ public class ArchetypeSelectionModal
                         var archetype = archetypes[i];
                         var isSelected = i == _selectedIndex;
 
-                        if (ImGui.Selectable($"##{i}", isSelected, ImGuiSelectableFlags.None, new Vector2(0, 80)))
+                        // Use a child region for each archetype card for better layout control
+                        var cardHeight = 97f;
+
+                        // Store positions before any rendering
+                        var cursorScreenPos = ImGui.GetCursorScreenPos();
+                        var availWidth = ImGui.GetContentRegionAvail().X;
+                        var startPos = ImGui.GetCursorPos();
+
+                        // Invisible button for click detection (render first to establish the interactive area)
+                        if (ImGui.InvisibleButton($"archetype_{i}", new Vector2(availWidth, cardHeight)))
                         {
                             _selectedIndex = i;
                             _selectedArchetype = archetype;
                         }
+
+                        // Check hover state
+                        var isHovered = ImGui.IsItemHovered();
 
                         if (isSelected)
                         {
                             ImGui.SetItemDefaultFocus();
                         }
 
-                        // Draw archetype info on same line as selectable
-                        var cursorPos = ImGui.GetCursorPos();
-                        ImGui.SetCursorPos(new Vector2(cursorPos.X, cursorPos.Y - 75));
+                        // Draw background - selection (green) or hover (subtle)
+                        if (isSelected || isHovered)
+                        {
+                            var drawList = ImGui.GetWindowDrawList();
+                            var bgColor = isSelected
+                                ? new Vector4(0.3f, 0.5f, 0.3f, 0.5f)   // Green for selected
+                                : new Vector4(0.4f, 0.4f, 0.4f, 0.3f);  // Gray for hover
+                            drawList.AddRectFilled(
+                                cursorScreenPos,
+                                new Vector2(cursorScreenPos.X + availWidth, cursorScreenPos.Y + cardHeight),
+                                ImGui.GetColorU32(bgColor),
+                                4.0f);
+                        }
 
-                        ImGui.TextColored(new Vector4(1, 1, 1, 1), archetype.DisplayName);
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Affinity: {archetype.AffinityRef}");
-                        ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + 360);
-                        ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1), archetype.Description ?? "");
+                        // Draw archetype info overlaid on the button area
+                        ImGui.SetCursorPos(new Vector2(startPos.X + 8, startPos.Y + 4));
+
+                        ImGui.TextColored(new Vector4(1, 1, 1, 1), archetype.DisplayName ?? archetype.RefName);
+
+                        ImGui.SetCursorPosX(startPos.X + 8);
+                        ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), $"Affinity: {archetype.AffinityRef ?? "None"}");
+
+                        ImGui.SetCursorPosX(startPos.X + 8);
+                        ImGui.PushTextWrapPos(startPos.X + ImGui.GetContentRegionAvail().X - 8);
+                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), archetype.Description ?? "");
                         ImGui.PopTextWrapPos();
 
-                        ImGui.SetCursorPos(cursorPos);
-                        ImGui.Spacing();
+                        // Move cursor to end of card
+                        ImGui.SetCursorPos(new Vector2(startPos.X, startPos.Y + cardHeight));
+
+                        // Separator between items
+                        if (i < archetypes.Count - 1)
+                        {
+                            ImGui.Separator();
+                        }
                     }
 
                     ImGui.EndChild();
@@ -152,7 +187,73 @@ public class ArchetypeSelectionModal
 
     private void RenderArchetypeDetails(AvatarArchetype archetype, string currencyName)
     {
-        ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Character Stats");
+        // Archetype Bias (permanent stat modifiers)
+        if (archetype.ArchetypeBias != null)
+        {
+            ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), "Archetype Bonuses");
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var bias = archetype.ArchetypeBias;
+            var hasAnyBias = false;
+
+            // Combat stats (default is 0, so any non-zero is a bonus)
+            if (bias.Strength != 0)
+            {
+                RenderModifierLine("Strength", bias.Strength);
+                hasAnyBias = true;
+            }
+            if (bias.Defense != 0)
+            {
+                RenderModifierLine("Defense", bias.Defense);
+                hasAnyBias = true;
+            }
+            if (bias.Speed != 0)
+            {
+                RenderModifierLine("Speed", bias.Speed);
+                hasAnyBias = true;
+            }
+            if (bias.Magic != 0)
+            {
+                RenderModifierLine("Magic", bias.Magic);
+                hasAnyBias = true;
+            }
+
+            // Vitals (default is 1 for Health/Stamina/Mana, so != 1 is a modifier)
+            if (bias.Health != 1)
+            {
+                RenderModifierLine("Health", bias.Health - 1); // Show as modifier from baseline
+                hasAnyBias = true;
+            }
+            if (bias.Stamina != 1)
+            {
+                RenderModifierLine("Stamina", bias.Stamina - 1);
+                hasAnyBias = true;
+            }
+            if (bias.Mana != 1)
+            {
+                RenderModifierLine("Mana", bias.Mana - 1);
+                hasAnyBias = true;
+            }
+
+            // Environmental (default is 0)
+            if (bias.Insulation != 0)
+            {
+                RenderModifierLine("Insulation", bias.Insulation);
+                hasAnyBias = true;
+            }
+
+            if (!hasAnyBias)
+            {
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No stat bonuses");
+            }
+
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+        }
+
+        ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Starting Stats");
         ImGui.Separator();
         ImGui.Spacing();
 
@@ -160,24 +261,69 @@ public class ArchetypeSelectionModal
         {
             var stats = archetype.SpawnStats;
 
-            // Vitals
-            ImGui.Text($"Health:     {stats.Health:P0}");
-            ImGui.Text($"Stamina:    {stats.Stamina:P0}");
-            ImGui.Text($"Mana:       {stats.Mana:P0}");
-            ImGui.Text($"Hunger:     {stats.Hunger:P0}");
-            ImGui.Text($"Thirst:     {stats.Thirst:P0}");
-            ImGui.Spacing();
+            // Two-column layout for stats
+            if (ImGui.BeginTable("StatsTable", 2, ImGuiTableFlags.None))
+            {
+                ImGui.TableSetupColumn("Col1", ImGuiTableColumnFlags.WidthFixed, 120);
+                ImGui.TableSetupColumn("Col2", ImGuiTableColumnFlags.WidthFixed, 120);
 
-            // Combat Stats
-            ImGui.Text($"Strength:   {stats.Strength:P0}");
-            ImGui.Text($"Defense:    {stats.Defense:P0}");
-            ImGui.Text($"Speed:      {stats.Speed:P0}");
-            ImGui.Text($"Magic:      {stats.Magic:P0}");
-            ImGui.Spacing();
+                // Row 1: Vitals
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text($"Health: {stats.Health:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text($"Stamina: {stats.Stamina:P0}");
 
-            // Currency & XP
-            ImGui.Text($"{currencyName}: {stats.Credits}");
-            ImGui.Text($"Experience: {stats.Experience}");
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text($"Mana: {stats.Mana:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text($"Hunger: {stats.Hunger:P0}");
+
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text($"Thirst: {stats.Thirst:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text(""); // Empty
+
+                // Row 2: Combat
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.TextColored(new Vector4(1, 0.8f, 0.6f, 1), "Combat:");
+                ImGui.TableNextColumn();
+                ImGui.Text("");
+
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text($"Strength: {stats.Strength:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text($"Defense: {stats.Defense:P0}");
+
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text($"Speed: {stats.Speed:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text($"Magic: {stats.Magic:P0}");
+
+                // Row 3: Progression
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"{currencyName}:");
+                ImGui.TableNextColumn();
+                ImGui.Text($"{stats.Credits:N0}");
+
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text("Experience:");
+                ImGui.TableNextColumn();
+                ImGui.Text($"{stats.Experience:N0}");
+
+                ImGui.EndTable();
+            }
+        }
+        else
+        {
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Default starting stats");
         }
 
         ImGui.Spacing();
@@ -185,52 +331,97 @@ public class ArchetypeSelectionModal
         ImGui.Spacing();
 
         // Capabilities
+        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Starting Inventory");
+        ImGui.Separator();
+        ImGui.Spacing();
+
         if (archetype.SpawnCapabilities != null)
         {
-            ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Starting Equipment");
-            ImGui.Separator();
-            ImGui.Spacing();
-
             var caps = archetype.SpawnCapabilities;
+            var hasAnyItems = false;
 
             if (caps.Equipment != null && caps.Equipment.Length > 0)
             {
-                ImGui.Text("Equipment:");
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Equipment:");
                 foreach (var item in caps.Equipment)
                 {
-                    ImGui.BulletText($"{item.EquipmentRef} (condition: {item.Condition:P0})");
+                    ImGui.BulletText($"{item.EquipmentRef} ({item.Condition:P0})");
                 }
                 ImGui.Spacing();
+                hasAnyItems = true;
             }
 
             if (caps.Consumables != null && caps.Consumables.Length > 0)
             {
-                ImGui.Text("Consumables:");
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Consumables:");
                 foreach (var item in caps.Consumables)
                 {
-                    ImGui.BulletText($"{item.ConsumableRef} (x{item.Quantity})");
+                    ImGui.BulletText($"{item.ConsumableRef} x{item.Quantity}");
                 }
                 ImGui.Spacing();
+                hasAnyItems = true;
             }
 
             if (caps.Spells != null && caps.Spells.Length > 0)
             {
-                ImGui.Text("Spells:");
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Spells:");
                 foreach (var item in caps.Spells)
                 {
-                    ImGui.BulletText($"{item.SpellRef} (condition: {item.Condition:P0})");
+                    ImGui.BulletText($"{item.SpellRef} ({item.Condition:P0})");
                 }
                 ImGui.Spacing();
+                hasAnyItems = true;
             }
 
             if (caps.Tools != null && caps.Tools.Length > 0)
             {
-                ImGui.Text("Tools:");
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Tools:");
                 foreach (var item in caps.Tools)
                 {
-                    ImGui.BulletText($"{item.ToolRef} (condition: {item.Condition:P0})");
+                    ImGui.BulletText($"{item.ToolRef} ({item.Condition:P0})");
                 }
+                ImGui.Spacing();
+                hasAnyItems = true;
+            }
+
+            if (caps.Blocks != null && caps.Blocks.Length > 0)
+            {
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Blocks:");
+                foreach (var item in caps.Blocks)
+                {
+                    ImGui.BulletText($"{item.BlockRef} x{item.Quantity}");
+                }
+                ImGui.Spacing();
+                hasAnyItems = true;
+            }
+
+            if (caps.BuildingMaterials != null && caps.BuildingMaterials.Length > 0)
+            {
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Building Materials:");
+                foreach (var item in caps.BuildingMaterials)
+                {
+                    ImGui.BulletText($"{item.BuildingMaterialRef} x{item.Quantity}");
+                }
+                hasAnyItems = true;
+            }
+
+            if (!hasAnyItems)
+            {
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No starting items");
             }
         }
+        else
+        {
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No starting items");
+        }
+    }
+
+    private void RenderModifierLine(string statName, float modifier)
+    {
+        var color = modifier > 0
+            ? new Vector4(0.2f, 1, 0.2f, 1)   // Green for positive
+            : new Vector4(1, 0.4f, 0.4f, 1);  // Red for negative
+        var sign = modifier > 0 ? "+" : "";
+        ImGui.TextColored(color, $"{statName}: {sign}{modifier:P0}");
     }
 }
