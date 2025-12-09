@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <QuestToken RefName="BanditChief_HideoutMap" DisplayName="Hideout Map" Description="A crude map showing the bandit hideout location" />
   <QuestToken RefName="BanditChief_ChiefsBadge" DisplayName="Chief's Badge" Description="The bandit chief's symbol of authority - proof of their defeat" />
   <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Recovered Goods" Description="Goods stolen from travelers and merchants" />

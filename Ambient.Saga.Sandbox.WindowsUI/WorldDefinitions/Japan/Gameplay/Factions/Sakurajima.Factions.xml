@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Faction RefName="RivalGuild_PlayerGuild" DisplayName="The Guild" Description="Your adopted guild, ambitious and expanding its influence" StartingReputation="0" Category="Guild" />
   <Faction RefName="RivalGuild_OpposingGuild" DisplayName="The Rival Guild" Description="The opposing guild, ruthless competitors in the trade" StartingReputation="0" Category="Guild">
     <Relationships>

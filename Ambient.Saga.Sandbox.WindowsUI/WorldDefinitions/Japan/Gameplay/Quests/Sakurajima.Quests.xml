@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Quest RefName="BanditChief_Quest" DisplayName="The Lava Tube Raiders" Description="Hunt down criminals using the volcano's caves as their hideout.">
     <Stages StartStage="clear_scouts">
       <Stage RefName="clear_scouts" DisplayName="Clear the Roads" NextStage="assault">

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Achievement RefName="ACH_COMPLETE_ISE" DisplayName="Hero of Ise" Description="Completed the main quest in Ise">
     <Criteria Type="SagaArcsCompleted" Threshold="7" />
   </Achievement>

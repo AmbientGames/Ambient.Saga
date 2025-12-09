@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <SagaArc RefName="Kazahinominomiya" DisplayName="Kazahinomi-no-Miya" Description="Wind shrine within Naikū complex" LatitudeZ="34.45502236355378" LongitudeX="136.72513671068958" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaFeatureRef>Kazahinominomiya</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Kazahinominomiya_WARNING" DisplayName="Danger at Kazahinomi-no-Miya" Description="Signs of danger surround Kazahinomi-no-Miya" EnterRadius="60.0" Tags="exploration,warning,tension" />

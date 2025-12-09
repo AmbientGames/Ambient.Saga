@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Character RefName="BanditChief_QuestGiver" DisplayName="Class Representative" Description="Your class rep who wants everyone to have a good trip">
     <Stats Health="0.80" Stamina="0.7" Mana="0.2" Strength="0.12" Defense="0.15" Speed="0.10" Magic="0.05" Credits="80" />
     <Capabilities>
@@ -759,21 +759,19 @@
     <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenFlute" Condition="1.0" />
-        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
-        <Entry EquipmentRef="LeatherGloves" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
-        <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
-        <Entry EquipmentRef="ScaleMail" Condition="1.0" />
-        <Entry EquipmentRef="Buckler" Condition="1.0" />
+        <Entry EquipmentRef="ChainBoots" Condition="1.0" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
+        <Entry EquipmentRef="Dagger" Condition="1.0" />
+        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
+        <Entry EquipmentRef="SteelSword" Condition="1.0" />
+        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
         <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bandage" Quantity="1" />
-        <Entry ConsumableRef="Wine" Quantity="1" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="4" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="GreaterManaPotion" Quantity="1" />
+        <Entry ConsumableRef="WisdomElixir" Quantity="1" />
+        <Entry ConsumableRef="FlashBomb" Quantity="4" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="1" />
+        <Entry ConsumableRef="Cheese" Quantity="1" />
       </Consumables>
       <Spells>
         <Entry SpellRef="ArcaneBlast" Condition="1.0" />
@@ -800,26 +798,26 @@
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
-        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
-        <Entry EquipmentRef="OakStaff" Condition="1.0" />
-        <Entry EquipmentRef="Longbow" Condition="1.0" />
-        <Entry EquipmentRef="Stiletto" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
+        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
+        <Entry EquipmentRef="LargeSword" Condition="1.0" />
+        <Entry EquipmentRef="KiteShield" Condition="1.0" />
+        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
+        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
+        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThrowingAxe" Quantity="4" />
-        <Entry ConsumableRef="DeadlyPoison" Quantity="3" />
-        <Entry ConsumableRef="ManaPotion" Quantity="4" />
-        <Entry ConsumableRef="SmellingSalts" Quantity="2" />
-        <Entry ConsumableRef="SuperiorManaPotion" Quantity="2" />
-        <Entry ConsumableRef="ThrowingStar" Quantity="2" />
+        <Entry ConsumableRef="ThrowingRock" Quantity="4" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="2" />
+        <Entry ConsumableRef="Ale" Quantity="3" />
+        <Entry ConsumableRef="WisdomElixir" Quantity="4" />
+        <Entry ConsumableRef="ScrollOfProtection" Quantity="4" />
+        <Entry ConsumableRef="Berries" Quantity="4" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="CrushingBlow" Condition="1.0" />
+        <Entry SpellRef="PerfectStrike" Condition="1.0" />
         <Entry SpellRef="ShieldBash" Condition="1.0" />
-        <Entry SpellRef="WarCry" Condition="1.0" />
-        <Entry SpellRef="Charge" Condition="1.0" />
-        <Entry SpellRef="Whirlwind" Condition="1.0" />
         <Entry SpellRef="BattleCry" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -842,27 +840,28 @@
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RopeBelt" Condition="1.0" />
-        <Entry EquipmentRef="Greataxe" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
-        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
-        <Entry EquipmentRef="PlateGauntlets" Condition="1.0" />
-        <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
-        <Entry EquipmentRef="MageBelt" Condition="1.0" />
+        <Entry EquipmentRef="ClothPants" Condition="1.0" />
+        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
+        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
+        <Entry EquipmentRef="GoldRing" Condition="1.0" />
+        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
+        <Entry EquipmentRef="WizardHat" Condition="1.0" />
         <Entry EquipmentRef="CloakOfProtection" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GiantStrengthPotion" Quantity="4" />
-        <Entry ConsumableRef="SorceryPotion" Quantity="4" />
-        <Entry ConsumableRef="DriedMeat" Quantity="3" />
-        <Entry ConsumableRef="Ale" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="4" />
+        <Entry ConsumableRef="ThrowingAxe" Quantity="3" />
+        <Entry ConsumableRef="Mead" Quantity="2" />
+        <Entry ConsumableRef="Bread" Quantity="4" />
+        <Entry ConsumableRef="WisdomElixir" Quantity="1" />
+        <Entry ConsumableRef="HastePotion" Quantity="4" />
+        <Entry ConsumableRef="EnergyDrink" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="Charge" Condition="1.0" />
         <Entry SpellRef="BattleCry" Condition="1.0" />
         <Entry SpellRef="Whirlwind" Condition="1.0" />
-        <Entry SpellRef="WarCry" Condition="1.0" />
         <Entry SpellRef="Disarm" Condition="1.0" />
+        <Entry SpellRef="ShieldBash" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -884,14 +883,14 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Buckler" Condition="1.0" />
+        <Entry EquipmentRef="Knife" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DivineBlessing" Quantity="3" />
+        <Entry ConsumableRef="Pie" Quantity="1" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Ambush" Condition="1.0" />
-        <Entry SpellRef="ShadowStrike" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -912,20 +911,22 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
-        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
+        <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
+        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Torch" Quantity="4" />
+        <Entry ConsumableRef="CurativePotion" Quantity="2" />
+        <Entry ConsumableRef="RoastChicken" Quantity="4" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="Backstab" Condition="1.0" />
         <Entry SpellRef="ShadowStep" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
   <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;]}">
@@ -940,22 +941,21 @@
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="Maul" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ParalyzingPoison" Quantity="4" />
-        <Entry ConsumableRef="ThrowingStar" Quantity="3" />
-        <Entry ConsumableRef="HastePotion" Quantity="2" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="1" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
       </Consumables>
       <Spells>
         <Entry SpellRef="Vanish" Condition="1.0" />
-        <Entry SpellRef="ShadowMeld" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
   <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Character at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Metadata="{&quot;personality&quot;:&quot;Helpful, weary, observant&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
@@ -966,26 +966,26 @@
     <Stats Health="1.05" Stamina="1.0" Mana="0.9" Strength="0.11" Defense="0.07" Speed="0.06" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-        <Entry EquipmentRef="Longbow" Condition="1.0" />
-        <Entry EquipmentRef="ClothPants" Condition="1.0" />
-        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
-        <Entry EquipmentRef="MageGloves" Condition="1.0" />
-        <Entry EquipmentRef="CopperRing" Condition="1.0" />
+        <Entry EquipmentRef="ClothTunic" Condition="1.0" />
+        <Entry EquipmentRef="Spear" Condition="1.0" />
+        <Entry EquipmentRef="BerserkerAxe" Condition="1.0" />
+        <Entry EquipmentRef="OakWand" Condition="1.0" />
+        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonResistPotion" Quantity="1" />
-        <Entry ConsumableRef="Antidote" Quantity="4" />
-        <Entry ConsumableRef="PoisonedDart" Quantity="4" />
-        <Entry ConsumableRef="ScrollOfHaste" Quantity="2" />
+        <Entry ConsumableRef="EnduranceElixir" Quantity="2" />
+        <Entry ConsumableRef="EnergyDrink" Quantity="4" />
+        <Entry ConsumableRef="MagesBiscuit" Quantity="2" />
+        <Entry ConsumableRef="HealingSalve" Quantity="4" />
         <Entry ConsumableRef="Wine" Quantity="1" />
-        <Entry ConsumableRef="SoulShard" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="WarStomp" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
         <Entry SpellRef="RecklessAssault" Condition="1.0" />
-        <Entry SpellRef="PrimalRoar" Condition="1.0" />
+        <Entry SpellRef="Bloodlust" Condition="1.0" />
+        <Entry SpellRef="IgnorePain" Condition="1.0" />
+        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1011,26 +1011,25 @@
     <Stats Health="1.05" Stamina="1.0" Mana="0.9" Strength="0.11" Defense="0.07" Speed="0.06" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
-        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
-        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
+        <Entry EquipmentRef="ShortBow" Condition="1.0" />
+        <Entry EquipmentRef="ScaleMail" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
         <Entry EquipmentRef="CompositeBow" Condition="1.0" />
-        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DefenseElixir" Quantity="2" />
-        <Entry ConsumableRef="SorceryPotion" Quantity="1" />
-        <Entry ConsumableRef="DeadlyPoison" Quantity="4" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
-        <Entry ConsumableRef="ManaGem" Quantity="2" />
-        <Entry ConsumableRef="SmokeBomb" Quantity="4" />
+        <Entry ConsumableRef="ScrollOfIcebolt" Quantity="1" />
+        <Entry ConsumableRef="Berries" Quantity="3" />
+        <Entry ConsumableRef="Stew" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="2" />
+        <Entry ConsumableRef="ManaGem" Quantity="4" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
-        <Entry SpellRef="PrimalRoar" Condition="1.0" />
-        <Entry SpellRef="Bloodlust" Condition="1.0" />
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1052,27 +1051,26 @@
     <Stats Health="1.30" Stamina="1.0" Mana="0.9" Strength="0.14" Defense="0.09" Speed="0.08" Magic="0.08" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Maul" Condition="1.0" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
+        <Entry EquipmentRef="Claymore" Condition="1.0" />
+        <Entry EquipmentRef="WizardHat" Condition="1.0" />
         <Entry EquipmentRef="BerserkerAxe" Condition="1.0" />
-        <Entry EquipmentRef="Glaive" Condition="1.0" />
-        <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
-        <Entry EquipmentRef="ClothCap" Condition="1.0" />
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-        <Entry EquipmentRef="CloakOfProtection" Condition="1.0" />
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
+        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DriedMeat" Quantity="2" />
-        <Entry ConsumableRef="Ale" Quantity="3" />
-        <Entry ConsumableRef="LightningResistPotion" Quantity="4" />
-        <Entry ConsumableRef="WeakeningPoison" Quantity="1" />
+        <Entry ConsumableRef="FlashBomb" Quantity="4" />
+        <Entry ConsumableRef="RoastChicken" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfStrength" Quantity="7" />
+        <Entry ConsumableRef="ScrollOfProtection" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfIcebolt" Quantity="2" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="IgnorePain" Condition="1.0" />
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="RecklessAssault" Condition="1.0" />
-        <Entry SpellRef="Bloodlust" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
         <Entry SpellRef="UnstoppableForce" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1094,27 +1092,27 @@
     <Stats Health="1.30" Stamina="1.0" Mana="0.9" Strength="0.14" Defense="0.09" Speed="0.08" Magic="0.08" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ClothCap" Condition="1.0" />
-        <Entry EquipmentRef="BreastPlate" Condition="1.0" />
-        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
-        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
-        <Entry EquipmentRef="Buckler" Condition="1.0" />
-        <Entry EquipmentRef="LeatherCord" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
-        <Entry EquipmentRef="Greataxe" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
+        <Entry EquipmentRef="IronShield" Condition="1.0" />
+        <Entry EquipmentRef="CopperRing" Condition="1.0" />
+        <Entry EquipmentRef="HandAxe" Condition="1.0" />
+        <Entry EquipmentRef="Halberd" Condition="1.0" />
+        <Entry EquipmentRef="TowerShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="EnduranceElixir" Quantity="4" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="1" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="1" />
-        <Entry ConsumableRef="DragonBlood" Quantity="1" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
+        <Entry ConsumableRef="FireResistPotion" Quantity="1" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfProtection" Quantity="4" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Mead" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="PrimalRoar" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
         <Entry SpellRef="WarStomp" Condition="1.0" />
-        <Entry SpellRef="RecklessAssault" Condition="1.0" />
+        <Entry SpellRef="Bloodlust" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1136,15 +1134,17 @@
     <Stats Health="0.57" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HeavyCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
+        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
+        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SmokeBomb" Quantity="4" />
-        <Entry ConsumableRef="CurativePotion" Quantity="1" />
+        <Entry ConsumableRef="SuperiorManaPotion" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfFireball" Quantity="4" />
+        <Entry ConsumableRef="FlashBomb" Quantity="4" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="EntanglingRoots" Condition="1.0" />
+        <Entry SpellRef="StormOfLeaves" Condition="1.0" />
         <Entry SpellRef="WildRegeneration" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -1156,18 +1156,18 @@
     <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
-        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
+        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
+        <Entry EquipmentRef="IronShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="LightningResistPotion" Quantity="3" />
-        <Entry ConsumableRef="PoisonedDart" Quantity="2" />
-        <Entry ConsumableRef="SuperiorManaPotion" Quantity="1" />
+        <Entry ConsumableRef="Milk" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfHaste" Quantity="2" />
+        <Entry ConsumableRef="RangerTrailMix" Quantity="3" />
+        <Entry ConsumableRef="MagesBiscuit" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="Disintegrate" Condition="1.0" />
-        <Entry SpellRef="Obliterate" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>
@@ -1178,19 +1178,19 @@
     <Stats Health="0.43" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.05" Speed="0.06" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="BreastPlate" Condition="1.0" />
-        <Entry EquipmentRef="Dagger" Condition="1.0" />
-        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
+        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SmellingSalts" Quantity="4" />
-        <Entry ConsumableRef="Juice" Quantity="2" />
-        <Entry ConsumableRef="MedicKit" Quantity="2" />
-        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="2" />
+        <Entry ConsumableRef="EnergyDrink" Quantity="4" />
+        <Entry ConsumableRef="FrostBomb" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfLightning" Quantity="1" />
+        <Entry ConsumableRef="IronskinPotion" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="ShadowStrike" Condition="1.0" />
         <Entry SpellRef="ShadowMeld" Condition="1.0" />
-        <Entry SpellRef="SmokeBomb" Condition="1.0" />
+        <Entry SpellRef="CloakOfNight" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Traits>

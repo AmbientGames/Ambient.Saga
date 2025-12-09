@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LoadoutSlots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<LoadoutSlots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <LoadoutSlot RefName="Head" DisplayName="Headgear" Description="Hats, helmets, and head protection" />
   <LoadoutSlot RefName="Chest" DisplayName="Outfit" Description="Main clothing and body armor" />
   <LoadoutSlot RefName="Legs" DisplayName="Bottoms" Description="Pants, shorts, and leg protection" />
