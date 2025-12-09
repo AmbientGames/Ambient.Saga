@@ -61,13 +61,7 @@
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.45892634822652" LongitudeX="136.72396323218257">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_SPOTTED" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Spotted" Description="Activity visible near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_MERCHANT" DisplayName="Merchant at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="A merchant offers wares at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</CharacterRef>
       </Spawn>
@@ -75,9 +69,7 @@
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46245928599887" LongitudeX="136.720327259465">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1_SECRET" DisplayName="Discovering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="The hidden nature of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
       </Spawn>
@@ -85,9 +77,7 @@
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46637007877755" LongitudeX="136.71792781977732">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2_SECRET" DisplayName="Discovering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="The hidden nature of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
       </Spawn>
@@ -95,13 +85,7 @@
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46956924013666" LongitudeX="136.71526026031657">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3_SPOTTED" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4) Spotted" Description="Activity visible near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3_MERCHANT" DisplayName="Merchant at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="A merchant offers wares at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
       </Spawn>
@@ -109,9 +93,7 @@
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47323805496891" LongitudeX="136.7122328325917">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4_SECRET" DisplayName="Discovering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="The hidden nature of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
       </Spawn>
@@ -119,9 +101,7 @@
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47719502105861" LongitudeX="136.71087843378837">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_SECRET" DisplayName="Discovering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="The hidden nature of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</CharacterRef>
       </Spawn>
@@ -129,13 +109,7 @@
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47986891936934" LongitudeX="136.70741443141142">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6_SPOTTED" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7) Spotted" Description="Activity visible near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6_MERCHANT" DisplayName="Merchant at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="A merchant offers wares at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</CharacterRef>
       </Spawn>
@@ -143,9 +117,7 @@
   </SagaArc>
   <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48273942549556" LongitudeX="136.70608431944754">
     <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7_SECRET" DisplayName="Discovering Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="The hidden nature of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</CharacterRef>
       </Spawn>
@@ -181,9 +153,7 @@
   </SagaArc>
   <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū)" LatitudeZ="34.48864008334423" LongitudeX="136.7030907835183">
     <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0_SECRET" DisplayName="Discovering Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="The hidden nature of Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</CharacterRef>
       </Spawn>

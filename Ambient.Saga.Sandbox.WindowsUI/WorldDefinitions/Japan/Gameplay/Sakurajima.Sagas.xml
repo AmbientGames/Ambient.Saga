@@ -1095,13 +1095,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.5578701434515" LongitudeX="130.67463976565864">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0_SPOTTED" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1) Spotted" Description="Activity visible near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0_MERCHANT" DisplayName="Merchant at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="A merchant offers wares at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0</CharacterRef>
       </Spawn>
@@ -1109,9 +1103,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.55972659779326" LongitudeX="130.67164062060303">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1_SECRET" DisplayName="Discovering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="The hidden nature of Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1</CharacterRef>
       </Spawn>
@@ -1119,9 +1111,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.563091596295155" LongitudeX="130.6687062467329">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2_SECRET" DisplayName="Discovering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="The hidden nature of Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2</CharacterRef>
       </Spawn>
@@ -1129,13 +1119,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.56632053396843" LongitudeX="130.664515156575">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3_SPOTTED" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4) Spotted" Description="Activity visible near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3_MERCHANT" DisplayName="Merchant at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="A merchant offers wares at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3</CharacterRef>
       </Spawn>
@@ -1143,9 +1127,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.56820367537095" LongitudeX="130.65987541125776">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4_SECRET" DisplayName="Discovering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="The hidden nature of Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4</CharacterRef>
       </Spawn>
@@ -1153,9 +1135,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.57150218842441" LongitudeX="130.65707701040495">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5_SECRET" DisplayName="Discovering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="The hidden nature of Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5</CharacterRef>
       </Spawn>
@@ -1163,13 +1143,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.57385898801826" LongitudeX="130.6534745236523">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6_SPOTTED" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7) Spotted" Description="Activity visible near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6_MERCHANT" DisplayName="Merchant at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="A merchant offers wares at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6</CharacterRef>
       </Spawn>
@@ -1177,9 +1151,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.577467265680735" LongitudeX="130.64822074328907">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7_SECRET" DisplayName="Discovering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="The hidden nature of Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7</CharacterRef>
       </Spawn>
@@ -1187,9 +1159,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.57962835817539" LongitudeX="130.6445237259855">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8_SECRET" DisplayName="Discovering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="The hidden nature of Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8</CharacterRef>
       </Spawn>
@@ -1197,13 +1167,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.583486981583487" LongitudeX="130.64161334228328">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9_SPOTTED" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10) Spotted" Description="Activity visible near Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9_MERCHANT" DisplayName="Merchant at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="A merchant offers wares at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9</CharacterRef>
       </Spawn>
@@ -1211,9 +1175,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.584992493121266" LongitudeX="130.63737062685453">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10_SECRET" DisplayName="Discovering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="The hidden nature of Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10</CharacterRef>
       </Spawn>
@@ -1221,9 +1183,7 @@
   </SagaArc>
   <SagaArc RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" LatitudeZ="31.589151144499716" LongitudeX="130.63456179767692">
     <SagaFeatureRef>ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11_SECRET" DisplayName="Discovering Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12)" Description="The hidden nature of Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (12) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_11</CharacterRef>
       </Spawn>
@@ -1247,9 +1207,7 @@
   </SagaArc>
   <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59244697026785" LongitudeX="130.62492115719186">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0_SECRET" DisplayName="Discovering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="The hidden nature of Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0</CharacterRef>
       </Spawn>
@@ -1257,9 +1215,7 @@
   </SagaArc>
   <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.592542844682402" LongitudeX="130.62099406819993">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1_SECRET" DisplayName="Discovering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="The hidden nature of Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1</CharacterRef>
       </Spawn>
@@ -1267,13 +1223,7 @@
   </SagaArc>
   <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.591411592666056" LongitudeX="130.6151998260978">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2_SPOTTED" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3) Spotted" Description="Activity visible near Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2_MERCHANT" DisplayName="Merchant at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="A merchant offers wares at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2</CharacterRef>
       </Spawn>
@@ -1281,9 +1231,7 @@
   </SagaArc>
   <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.59170062382083" LongitudeX="130.61031020327135">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3_SECRET" DisplayName="Discovering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="The hidden nature of Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3</CharacterRef>
       </Spawn>
@@ -1291,9 +1239,7 @@
   </SagaArc>
   <SagaArc RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" LatitudeZ="31.592411620599925" LongitudeX="130.60547816538931">
     <SagaFeatureRef>YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4_SECRET" DisplayName="Discovering Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="The hidden nature of Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4</CharacterRef>
       </Spawn>
@@ -1317,9 +1263,7 @@
   </SagaArc>
   <SagaArc RefName="SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan" LatitudeZ="31.591446366241005" LongitudeX="130.59712979602347">
     <SagaFeatureRef>SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0_SECRET" DisplayName="Discovering Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="The hidden nature of Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0</CharacterRef>
       </Spawn>

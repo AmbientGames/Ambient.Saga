@@ -899,13 +899,7 @@
   </SagaArc>
   <SagaArc RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.613740992529245" LongitudeX="130.573244832322">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_1</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_1_SPOTTED" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2) Spotted" Description="Activity visible near Waypoint between Iso-teien and Tsurumaru-jō (2)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_1_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Iso-teien and Tsurumaru-jō (2)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_1_MERCHANT" DisplayName="Merchant at Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="A merchant offers wares at Waypoint between Iso-teien and Tsurumaru-jō (2)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_1" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_1</CharacterRef>
       </Spawn>
@@ -913,9 +907,7 @@
   </SagaArc>
   <SagaArc RefName="Isoteien1_to_Tsurumarujō1_2" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.609335319339177" LongitudeX="130.56984972652597">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_2</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_2_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_2_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Iso-teien and Tsurumaru-jō (3)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_2_SECRET" DisplayName="Discovering Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="The hidden nature of Waypoint between Iso-teien and Tsurumaru-jō (3) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_2</CharacterRef>
       </Spawn>
@@ -923,9 +915,7 @@
   </SagaArc>
   <SagaArc RefName="Isoteien1_to_Tsurumarujō1_3" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.606555070490916" LongitudeX="130.56499656679762">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_3</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_3_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_3_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Iso-teien and Tsurumaru-jō (4)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_3_SECRET" DisplayName="Discovering Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="The hidden nature of Waypoint between Iso-teien and Tsurumaru-jō (4) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_3</CharacterRef>
       </Spawn>
@@ -933,13 +923,7 @@
   </SagaArc>
   <SagaArc RefName="Isoteien1_to_Tsurumarujō1_4" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.6043536090203" LongitudeX="130.56193870892704">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_4</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_4_SPOTTED" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5) Spotted" Description="Activity visible near Waypoint between Iso-teien and Tsurumaru-jō (5)" EnterRadius="70.0" Tags="exploration,merchant" />
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_4_GUARDS" DisplayName="Caravan Guards" Description="Guards protect the trading area at Waypoint between Iso-teien and Tsurumaru-jō (5)" EnterRadius="35.0" Tags="npc,guard,neutral">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_4_MERCHANT" DisplayName="Merchant at Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="A merchant offers wares at Waypoint between Iso-teien and Tsurumaru-jō (5)" EnterRadius="15.0" Tags="merchant,trade">
+    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_4" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_4</CharacterRef>
       </Spawn>
@@ -947,9 +931,7 @@
   </SagaArc>
   <SagaArc RefName="Isoteien1_to_Tsurumarujō1_5" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.601755032125666" LongitudeX="130.5574115900245">
     <SagaFeatureRef>Isoteien1_to_Tsurumarujō1_5</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_5_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_5_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Iso-teien and Tsurumaru-jō (6)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_5_SECRET" DisplayName="Discovering Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="The hidden nature of Waypoint between Iso-teien and Tsurumaru-jō (6) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_5</CharacterRef>
       </Spawn>
@@ -985,9 +967,7 @@
   </SagaArc>
   <SagaArc RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha" LatitudeZ="31.597237152076257" LongitudeX="130.55248367625808">
     <SagaFeatureRef>Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0_ORDINARY" DisplayName="Unremarkable Area" Description="This area seems ordinary at first glance" EnterRadius="50.0" Tags="exploration" />
-    <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0_CLUE" DisplayName="Something Catches Your Eye" Description="A subtle detail hints at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" EnterRadius="25.0" Tags="exploration,secret,clue" />
-    <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0_SECRET" DisplayName="Discovering Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="The hidden nature of Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) is revealed" EnterRadius="10.0" Tags="discovery,secret">
+    <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</CharacterRef>
       </Spawn>
