@@ -1,108 +1,280 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Faction RefName="CityGuard" DisplayName="School Security" Description="The school's security team and volunteer chaperones keeping students safe during the field trip. They patrol the grounds and respond to incidents." StartingReputation="0" Category="Military">
+    <Relationships>
+      <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.25" />
+      <Relationship FactionRef="TemplarOrder" RelationshipType="Allied" SpilloverPercent="0.15" />
+      <Relationship FactionRef="ThievesGuild" RelationshipType="Enemy" SpilloverPercent="0.4" />
+      <Relationship FactionRef="BanditClan" RelationshipType="Enemy" SpilloverPercent="0.5" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="IronSword" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="IronShield" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="SteelSword" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="ChainmailArmor" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="KnightsSword" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="KiteShield" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="KnightsArmor" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="MerchantsGuild" DisplayName="Local Shopkeepers" Description="The friendly merchants around Ise Grand Shrine who sell souvenirs, snacks, and traditional crafts. They know all the best deals." StartingReputation="0" Category="Merchant">
+    <Relationships>
+      <Relationship FactionRef="CityGuard" RelationshipType="Allied" SpilloverPercent="0.15" />
+      <Relationship FactionRef="ExplorersLeague" RelationshipType="Allied" SpilloverPercent="0.2" />
+      <Relationship FactionRef="ThievesGuild" RelationshipType="Enemy" SpilloverPercent="0.35" />
+      <Relationship FactionRef="BanditClan" RelationshipType="Enemy" SpilloverPercent="0.3" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Consumable ConsumableRef="BreadLoaf" Quantity="5" DiscountPercent="0.15" />
+        <Consumable ConsumableRef="MinorHealthPotion" Quantity="3" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="MerchantCloak" Quantity="1" DiscountPercent="0.2" />
+        <Consumable ConsumableRef="HealthPotion" Quantity="5" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="GoldRing" Quantity="1" DiscountPercent="0.25" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="AmuletOfHealth" Quantity="1" DiscountPercent="0.4" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="ExplorersLeague" DisplayName="Photography Club" Description="Students from the photography club who are documenting the trip. They know all the best spots and hidden locations around the shrine." StartingReputation="0" Category="Guild">
+    <Relationships>
+      <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.2" />
+      <Relationship FactionRef="NatureWardens" RelationshipType="Allied" SpilloverPercent="0.15" />
+      <Relationship FactionRef="MagesCircle" RelationshipType="Allied" SpilloverPercent="0.1" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="TravelCloak" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="LeatherBoots" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="RangerCloak" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="CompositeBow" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="RangerBoots" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="RangerLeather" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="HuntersBow" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="MagesCircle" DisplayName="Occult Research Club" Description="The school's occult research club, fascinated by the spiritual energy of Ise. They investigate supernatural phenomena and ancient mysteries." StartingReputation="0" Category="Guild">
+    <Relationships>
+      <Relationship FactionRef="ExplorersLeague" RelationshipType="Allied" SpilloverPercent="0.1" />
+      <Relationship FactionRef="TemplarOrder" RelationshipType="Rival" SpilloverPercent="0.1" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="ApprenticeWand" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="ScholarsRobe" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="MageStaff" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="WizardRobes" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="CrystalWand" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="MageCrown" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="ArchmageStaff" Quantity="1" DiscountPercent="0.3" />
+        <Equipment EquipmentRef="ArchmageRobes" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="CraftersGuild" DisplayName="Art Club" Description="Creative students who appreciate traditional craftsmanship. They're collecting inspiration from shrine architecture and local artisans." StartingReputation="0" Category="Guild">
+    <Relationships>
+      <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.25" />
+      <Relationship FactionRef="CityGuard" RelationshipType="Allied" SpilloverPercent="0.1" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="IronMace" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="IronShield" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="SteelSword" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="SteelShield" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="Greatsword" Quantity="1" DiscountPercent="0.25" />
+        <Equipment EquipmentRef="PlateArmor" Quantity="1" DiscountPercent="0.25" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="Zweihander" Quantity="1" DiscountPercent="0.35" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="TemplarOrder" DisplayName="Shrine Priests" Description="The kannushi priests and miko shrine maidens who tend to Ise Grand Shrine. They perform rituals and maintain the sacred grounds." StartingReputation="0" Category="Religious">
+    <Relationships>
+      <Relationship FactionRef="CityGuard" RelationshipType="Allied" SpilloverPercent="0.15" />
+      <Relationship FactionRef="MagesCircle" RelationshipType="Rival" SpilloverPercent="0.1" />
+      <Relationship FactionRef="ThievesGuild" RelationshipType="Enemy" SpilloverPercent="0.25" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="PrayerBeads" Quantity="1" DiscountPercent="0.1" />
+        <Consumable ConsumableRef="MinorHealthPotion" Quantity="5" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="HolySymbol" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="HolyMace" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="HolyShield" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="ClericVestments" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="HolyAmulet" Quantity="1" DiscountPercent="0.3" />
+        <Equipment EquipmentRef="HighPriestRobes" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="NatureWardens" DisplayName="Nature Guides" Description="Local guides and park rangers who protect the ancient forests around Ise. They know the trails and respect the sacred groves." StartingReputation="0" Category="Nature">
+    <Relationships>
+      <Relationship FactionRef="ExplorersLeague" RelationshipType="Allied" SpilloverPercent="0.15" />
+      <Relationship FactionRef="BanditClan" RelationshipType="Enemy" SpilloverPercent="0.2" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="WoodenStaff" Quantity="1" DiscountPercent="0.1" />
+        <Consumable ConsumableRef="HealingHerbs" Quantity="5" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="RangerHood" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="HuntersBow" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="RangerCloak" Quantity="1" DiscountPercent="0.2" />
+        <Consumable ConsumableRef="GreaterHealthPotion" Quantity="3" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="WindBow" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="ThievesGuild" DisplayName="Delinquent Students" Description="A group of troublemaking students who skip the official tour and cause mischief. They're not truly bad, just rebellious." StartingReputation="-3000" Category="Criminal">
+    <Relationships>
+      <Relationship FactionRef="CityGuard" RelationshipType="Enemy" SpilloverPercent="0.4" />
+      <Relationship FactionRef="MerchantsGuild" RelationshipType="Enemy" SpilloverPercent="0.35" />
+      <Relationship FactionRef="TemplarOrder" RelationshipType="Enemy" SpilloverPercent="0.25" />
+      <Relationship FactionRef="BanditClan" RelationshipType="Rival" SpilloverPercent="0.15" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Neutral">
+        <Equipment EquipmentRef="Dagger" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="HoodedCowl" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="ThiefGloves" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="ShadowDagger" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="ShadowLeather" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="ShadowBoots" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="ShadowCloak" Quantity="1" DiscountPercent="0.25" />
+        <Equipment EquipmentRef="VenomFang" Quantity="1" DiscountPercent="0.25" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="AssassinsBlade" Quantity="1" DiscountPercent="0.35" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="BanditClan" DisplayName="Local Troublemakers" Description="Young adults from the area who resent the tourist crowds. They sometimes harass visitors but usually back down from real confrontation." StartingReputation="-6000" Category="Criminal">
+    <Relationships>
+      <Relationship FactionRef="CityGuard" RelationshipType="Enemy" SpilloverPercent="0.5" />
+      <Relationship FactionRef="MerchantsGuild" RelationshipType="Enemy" SpilloverPercent="0.4" />
+      <Relationship FactionRef="NatureWardens" RelationshipType="Enemy" SpilloverPercent="0.2" />
+      <Relationship FactionRef="ThievesGuild" RelationshipType="Rival" SpilloverPercent="0.15" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Neutral">
+        <Equipment EquipmentRef="HandAxe" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="LeatherArmor" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="BattleAxe" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="StuddedLeather" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="BerserkerAxe" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="SpikedShield" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="Greataxe" Quantity="1" DiscountPercent="0.25" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="ExecutionerAxe" Quantity="1" DiscountPercent="0.35" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="BardsCollege" DisplayName="Light Music Club" Description="Students from the light music club who brought instruments on the trip. They entertain others and boost morale with their performances." StartingReputation="0" Category="Guild">
+    <Relationships>
+      <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.15" />
+      <Relationship FactionRef="ExplorersLeague" RelationshipType="Allied" SpilloverPercent="0.1" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="WoodenFlute" Quantity="1" DiscountPercent="0.1" />
+        <Equipment EquipmentRef="TravelCloak" Quantity="1" DiscountPercent="0.1" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="Lute" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="MerchantCloak" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="MasterworkLute" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="EnchantedLute" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="SirenHarp" Quantity="1" DiscountPercent="0.3" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
+  <Faction RefName="MercenaryCompany" DisplayName="Sports Teams" Description="Athletes from various sports clubs who stick together. Their competitive spirit and physical conditioning make them natural protectors." StartingReputation="0" Category="Military">
+    <Relationships>
+      <Relationship FactionRef="CityGuard" RelationshipType="Rival" SpilloverPercent="0.1" />
+      <Relationship FactionRef="CraftersGuild" RelationshipType="Allied" SpilloverPercent="0.15" />
+    </Relationships>
+    <ReputationRewards>
+      <Reward RequiredLevel="Friendly">
+        <Equipment EquipmentRef="IronSword" Quantity="1" DiscountPercent="0.15" />
+        <Equipment EquipmentRef="ChainShirt" Quantity="1" DiscountPercent="0.15" />
+      </Reward>
+      <Reward RequiredLevel="Honored">
+        <Equipment EquipmentRef="Halberd" Quantity="1" DiscountPercent="0.2" />
+        <Equipment EquipmentRef="ScaleMail" Quantity="1" DiscountPercent="0.2" />
+      </Reward>
+      <Reward RequiredLevel="Revered">
+        <Equipment EquipmentRef="Glaive" Quantity="1" DiscountPercent="0.25" />
+        <Equipment EquipmentRef="Brigandine" Quantity="1" DiscountPercent="0.25" />
+      </Reward>
+      <Reward RequiredLevel="Exalted">
+        <Equipment EquipmentRef="HerosCape" Quantity="1" DiscountPercent="0.35" />
+      </Reward>
+    </ReputationRewards>
+  </Faction>
   <Faction RefName="RivalGuild_PlayerGuild" DisplayName="The Guild" Description="Your adopted guild, ambitious and expanding its influence" StartingReputation="0" Category="Guild" />
   <Faction RefName="RivalGuild_OpposingGuild" DisplayName="The Rival Guild" Description="The opposing guild, ruthless competitors in the trade" StartingReputation="0" Category="Guild">
     <Relationships>
       <Relationship FactionRef="RivalGuild_PlayerGuild" RelationshipType="Enemy" SpilloverPercent="0.5" />
     </Relationships>
-  </Faction>
-  <Faction RefName="FACTION_THREAD_MAIN" DisplayName="Ise Field Trip Guard" Description="Protectors of civilization and urban order. Ise Field Trip Guard maintains peace in settled areas." StartingReputation="0" Category="City">
-    <ReputationRewards>
-      <Reward RequiredLevel="Friendly">
-        <Equipment EquipmentRef="THREAD_MAIN_REWARD_BASIC" Quantity="1" DiscountPercent="0.1" />
-      </Reward>
-      <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="THREAD_MAIN_REWARD_RARE" Quantity="1" DiscountPercent="0.2" />
-      </Reward>
-      <Reward RequiredLevel="Revered">
-        <Equipment EquipmentRef="THREAD_MAIN_REWARD_EPIC" Quantity="1" DiscountPercent="0.3" />
-      </Reward>
-      <Reward RequiredLevel="Exalted">
-        <Equipment EquipmentRef="THREAD_MAIN_REWARD_LEGENDARY" Quantity="1" DiscountPercent="0.5" />
-      </Reward>
-    </ReputationRewards>
-  </Faction>
-  <Faction RefName="CITY_GUARDS" DisplayName="Ise Field Trip Guard" Description="Protectors of civilization and urban order. Ise Field Trip Guard maintains peace in settled areas." StartingReputation="0" Category="Military">
-    <Relationships>
-      <Relationship FactionRef="MERCHANTS_GUILD" RelationshipType="Allied" SpilloverPercent="0.25" />
-      <Relationship FactionRef="BANDITS" RelationshipType="Enemy" SpilloverPercent="0.5" />
-    </Relationships>
-    <ReputationRewards>
-      <Reward RequiredLevel="Friendly">
-        <Equipment EquipmentRef="CITY_GUARDS_REWARD_BASIC" Quantity="1" DiscountPercent="0.1" />
-      </Reward>
-      <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="CITY_GUARDS_REWARD_RARE" Quantity="1" DiscountPercent="0.2" />
-      </Reward>
-      <Reward RequiredLevel="Revered">
-        <Equipment EquipmentRef="CITY_GUARDS_REWARD_EPIC" Quantity="1" DiscountPercent="0.3" />
-      </Reward>
-      <Reward RequiredLevel="Exalted">
-        <Equipment EquipmentRef="CITY_GUARDS_REWARD_LEGENDARY" Quantity="1" DiscountPercent="0.5" />
-      </Reward>
-    </ReputationRewards>
-  </Faction>
-  <Faction RefName="MERCHANTS_GUILD" DisplayName="Ise Field Trip Trade Guild" Description="Influential trading organization controlling commerce. Ise Field Trip Trade Guild values profit and fair dealing." StartingReputation="0" Category="Merchant">
-    <Relationships>
-      <Relationship FactionRef="CITY_GUARDS" RelationshipType="Allied" SpilloverPercent="0.15" />
-      <Relationship FactionRef="BANDITS" RelationshipType="Enemy" SpilloverPercent="0.3" />
-    </Relationships>
-    <ReputationRewards>
-      <Reward RequiredLevel="Friendly">
-        <Consumable ConsumableRef="MERCHANT_DISCOUNT_BASIC" Quantity="1" DiscountPercent="0.15" />
-      </Reward>
-      <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="MERCHANT_TRADE_GOODS" Quantity="1" DiscountPercent="0.25" />
-      </Reward>
-      <Reward RequiredLevel="Exalted">
-        <Equipment EquipmentRef="MERCHANT_EXCLUSIVE" Quantity="1" DiscountPercent="0.6" />
-      </Reward>
-    </ReputationRewards>
-  </Faction>
-  <Faction RefName="EXPLORERS_SOCIETY" DisplayName="Ise Field Trip Craftsmen" Description="Association of skilled craftsmen and professionals. Ise Field Trip Craftsmen upholds quality standards." StartingReputation="0" Category="Guild">
-    <Relationships>
-      <Relationship FactionRef="WILDERNESS_WARDENS" RelationshipType="Allied" SpilloverPercent="0.2" />
-    </Relationships>
-    <ReputationRewards>
-      <Reward RequiredLevel="Friendly">
-        <Equipment EquipmentRef="EXPLORER_MAP" Quantity="1" />
-      </Reward>
-      <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="EXPLORER_COMPASS" Quantity="1" />
-      </Reward>
-    </ReputationRewards>
-  </Faction>
-  <Faction RefName="BANDITS" DisplayName="Ise Field Trip Outlaws" Description="Outlaws operating outside the law. Ise Field Trip Outlaws takes what it needs by force." StartingReputation="-3000" Category="Criminal">
-    <Relationships>
-      <Relationship FactionRef="CITY_GUARDS" RelationshipType="Enemy" SpilloverPercent="0.5" />
-      <Relationship FactionRef="MERCHANTS_GUILD" RelationshipType="Enemy" SpilloverPercent="0.3" />
-    </Relationships>
-    <ReputationRewards>
-      <Reward RequiredLevel="Friendly">
-        <Equipment EquipmentRef="BANDITS_REWARD_BASIC" Quantity="1" DiscountPercent="0.1" />
-      </Reward>
-      <Reward RequiredLevel="Honored">
-        <Equipment EquipmentRef="BANDITS_REWARD_RARE" Quantity="1" DiscountPercent="0.2" />
-      </Reward>
-      <Reward RequiredLevel="Revered">
-        <Equipment EquipmentRef="BANDITS_REWARD_EPIC" Quantity="1" DiscountPercent="0.3" />
-      </Reward>
-      <Reward RequiredLevel="Exalted">
-        <Equipment EquipmentRef="BANDITS_REWARD_LEGENDARY" Quantity="1" DiscountPercent="0.5" />
-      </Reward>
-    </ReputationRewards>
-  </Faction>
-  <Faction RefName="WILDERNESS_WARDENS" DisplayName="Ise Field Trip Rangers" Description="Independent survivalists living off the land. Ise Field Trip Rangers respects nature's balance." StartingReputation="0" Category="Nature">
-    <Relationships>
-      <Relationship FactionRef="EXPLORERS_SOCIETY" RelationshipType="Allied" SpilloverPercent="0.2" />
-    </Relationships>
-    <ReputationRewards>
-      <Reward RequiredLevel="Friendly">
-        <Consumable ConsumableRef="NATURE_HERBS" Quantity="1" />
-      </Reward>
-      <Reward RequiredLevel="Revered">
-        <Equipment EquipmentRef="NATURE_STAFF" Quantity="1" />
-      </Reward>
-    </ReputationRewards>
   </Faction>
 </Factions>
