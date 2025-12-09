@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Defender of Kagoshima" Description="Stand as the ultimate protector of Kagoshima by finishing the main storyline.">
+  <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Legend of Kagoshima" Description="Write your name in the annals of Kagoshima's history by completing the main quest.">
     <Criteria Type="SagaArcsCompleted" Threshold="3" />
   </Achievement>
-  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_KAGOSHIMA" DisplayName="Champion" Description="Prove your combat mastery by defeating all the bosses in Kagoshima.">
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_KAGOSHIMA" DisplayName="Nemesis" Description="Become the bane of all boss creatures throughout Kagoshima.">
     <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="6" />
   </Achievement>
-  <Achievement RefName="ACH_EXPLORER_KAGOSHIMA" DisplayName="Trailblazer" Description="Be the first to set foot in all the locations of Kagoshima.">
+  <Achievement RefName="ACH_EXPLORER_KAGOSHIMA" DisplayName="Pathfinder" Description="Blaze trails to every destination in Kagoshima.">
     <Criteria Type="SagaArcsDiscovered" Threshold="3" />
   </Achievement>
-  <Achievement RefName="ACH_SOCIAL_KAGOSHIMA" DisplayName="Charmer" Description="Win the attention of every character in Kagoshima.">
+  <Achievement RefName="ACH_SOCIAL_KAGOSHIMA" DisplayName="People Person" Description="Introduce yourself to all the characters you encounter in Kagoshima.">
     <Criteria Type="UniqueCharactersMet" Threshold="101" />
   </Achievement>
-  <Achievement RefName="ACH_DIALOGUE_MASTER_KAGOSHIMA" DisplayName="Eloquent" Description="Leave no word unspoken in your travels through Kagoshima.">
+  <Achievement RefName="ACH_DIALOGUE_MASTER_KAGOSHIMA" DisplayName="Master Conversationalist" Description="Exhaust every dialogue option with the people of Kagoshima.">
     <Criteria Type="DialogueTreesCompleted" Threshold="101" />
   </Achievement>
-  <Achievement RefName="ACH_COLLECTOR_KAGOSHIMA" DisplayName="Completionist" Description="Collect every quest token available in Kagoshima.">
+  <Achievement RefName="ACH_COLLECTOR_KAGOSHIMA" DisplayName="Perfectionist" Description="Leave no token unclaimed in your journey through Kagoshima.">
     <Criteria Type="QuestTokensEarned" Threshold="3" />
   </Achievement>
-  <Achievement RefName="ACH_MERCHANT_KAGOSHIMA" DisplayName="Haggler" Description="Strike deals with all the traders throughout Kagoshima.">
+  <Achievement RefName="ACH_MERCHANT_KAGOSHIMA" DisplayName="Patron" Description="Support the commerce of Kagoshima by trading with every vendor.">
     <Criteria Type="ItemsTraded" Threshold="130" />
   </Achievement>
-  <Achievement RefName="ACH_DIPLOMAT_KAGOSHIMA" DisplayName="Friend to All" Description="Earn the trust and friendship of many throughout Kagoshima.">
+  <Achievement RefName="ACH_DIPLOMAT_KAGOSHIMA" DisplayName="Diplomat" Description="Forge friendships with the people of Kagoshima through kindness.">
     <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="50" />
   </Achievement>
 </Achievements>
