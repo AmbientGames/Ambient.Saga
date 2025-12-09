@@ -420,16 +420,6 @@ public class MapViewPanel
             ImGui.TextWrapped("No heightmap loaded. Select a world configuration to begin.");
         }
 
-        // Debug info showing counts
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Sagas: {viewModel.Sagas.Count} | Characters: {viewModel.Characters.Count}");
-
-        if (viewModel.Characters.Count == 0)
-        {
-            ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "No characters spawned. Move avatar into Saga zones to trigger spawns.");
-        }
-
         ImGui.EndChild();
 
         // Map controls at bottom
@@ -472,7 +462,19 @@ public class MapViewPanel
 
         MapLegend.Render();
 
-        // Mouse position info (moved from Journal)
+        // World stats
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Sagas: {viewModel.Sagas.Count}");
+        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Characters: {viewModel.Characters.Count}");
+
+        if (viewModel.Characters.Count == 0)
+        {
+            ImGui.Spacing();
+            ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "Move into Saga zones to spawn characters");
+        }
+
+        // Mouse position info (only visible when hovering over map)
         if (viewModel.HasMousePosition)
         {
             ImGui.Spacing();
