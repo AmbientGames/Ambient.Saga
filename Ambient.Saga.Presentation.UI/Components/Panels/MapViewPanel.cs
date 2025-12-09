@@ -20,12 +20,18 @@ public class MapViewPanel
 
     public void Render(MainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight, ModalManager modalManager)
     {
-        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "MAP VIEW");
-        ImGui.Separator();
+        var availableRegion = ImGui.GetContentRegionAvail();
+
+        // Two-column layout: Map on left, Legend on right
+        var legendWidth = 180f;
+        var mapWidth = availableRegion.X - legendWidth - 10; // 10px gap
+
+        // Left side: Map viewport
+        ImGui.BeginChild("MapContainer", new Vector2(mapWidth, availableRegion.Y), ImGuiChildFlags.None);
+        var mapRegion = ImGui.GetContentRegionAvail();
 
         // Map viewport with scrolling enabled for panning
-        var availableRegion = ImGui.GetContentRegionAvail();
-        ImGui.BeginChild("MapViewport", new Vector2(availableRegion.X, availableRegion.Y - 40),
+        ImGui.BeginChild("MapViewport", new Vector2(mapRegion.X, mapRegion.Y - 40),
             ImGuiChildFlags.Borders,
             ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
 
@@ -457,5 +463,26 @@ public class MapViewPanel
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"({heightMapWidth}x{heightMapHeight})");
         }
+
+        ImGui.EndChild(); // End MapContainer
+
+        // Right side: Legend panel
+        ImGui.SameLine();
+        ImGui.BeginChild("LegendPanel", new Vector2(legendWidth, availableRegion.Y), ImGuiChildFlags.Borders);
+
+        MapLegend.Render();
+
+        // Mouse position info (moved from Journal)
+        if (viewModel.HasMousePosition)
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Mouse:");
+            ImGui.Text($"Lat: {viewModel.MouseLatitude:F4}");
+            ImGui.Text($"Lon: {viewModel.MouseLongitude:F4}");
+            ImGui.Text($"Elev: {viewModel.MouseElevation}m");
+        }
+
+        ImGui.EndChild(); // End LegendPanel
     }
 }
