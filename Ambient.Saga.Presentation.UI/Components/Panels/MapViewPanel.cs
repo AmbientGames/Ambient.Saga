@@ -17,6 +17,13 @@ public class MapViewPanel
     private const float MinZoom = 0.1f;
     private const float MaxZoom = 100.0f;
     private const float ZoomSpeed = 0.3f; // Increased for more responsive zooming
+    private const int CenterViewCells = 50; // Number of cells to show when centering on avatar
+
+    // Track if we need to center on avatar (initial load or button press)
+    private bool _needsInitialCenter = true;
+    private float _pendingScrollX = -1;
+    private float _pendingScrollY = -1;
+    private double _pendingZoom = -1;
 
     public void Render(MainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight, ModalManager modalManager)
     {
@@ -56,6 +63,61 @@ public class MapViewPanel
             {
                 displayHeight = baseHeight;
                 displayWidth = displayHeight * aspectRatio;
+            }
+
+            // Handle center on avatar request (initial load or button press)
+            if ((_needsInitialCenter || viewModel.ShouldCenterOnAvatar) && viewModel.HasAvatarPosition)
+            {
+                // Calculate zoom to show CenterViewCells x CenterViewCells pixels
+                // We want the viewport to show ~100 heightmap pixels
+                var viewportWidth = mapRegion.X;
+                var viewportHeight = mapRegion.Y - 40;
+
+                // At zoom=1, displayWidth shows the full heightMapWidth
+                // We want to show CenterViewCells pixels, so zoom = viewportSize / (baseSizePerPixel * CenterViewCells)
+                var baseSizePerPixelX = displayWidth / heightMapWidth;
+                var baseSizePerPixelY = displayHeight / heightMapHeight;
+
+                // Calculate zoom needed to fit CenterViewCells in the viewport
+                var zoomForWidth = viewportWidth / (baseSizePerPixelX * CenterViewCells);
+                var zoomForHeight = viewportHeight / (baseSizePerPixelY * CenterViewCells);
+                var targetZoom = Math.Min(zoomForWidth, zoomForHeight);
+                targetZoom = Math.Clamp(targetZoom, MinZoom, MaxZoom);
+
+                // Set the zoom
+                viewModel.ZoomFactor = targetZoom;
+
+                // Calculate avatar position in display coordinates (after zoom)
+                var zoomedDisplayWidth = displayWidth * (float)targetZoom;
+                var zoomedDisplayHeight = displayHeight * (float)targetZoom;
+
+                // Get avatar pixel position
+                var avatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(viewModel.AvatarLongitude, viewModel.CurrentWorld!.HeightMapMetadata);
+                var avatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(viewModel.AvatarLatitude, viewModel.CurrentWorld!.HeightMapMetadata);
+
+                // Convert to display coordinates
+                var avatarDisplayX = (avatarPixelX / heightMapWidth) * zoomedDisplayWidth;
+                var avatarDisplayY = (avatarPixelY / heightMapHeight) * zoomedDisplayHeight;
+
+                // Calculate scroll to center avatar in viewport
+                _pendingScrollX = (float)(avatarDisplayX - viewportWidth / 2);
+                _pendingScrollY = (float)(avatarDisplayY - viewportHeight / 2);
+                _pendingZoom = targetZoom;
+
+                _needsInitialCenter = false;
+                viewModel.ShouldCenterOnAvatar = false;
+            }
+
+            // Apply pending scroll if set (must be done before Image call affects scroll)
+            if (_pendingScrollX >= 0)
+            {
+                ImGui.SetScrollX(_pendingScrollX);
+                _pendingScrollX = -1;
+            }
+            if (_pendingScrollY >= 0)
+            {
+                ImGui.SetScrollY(_pendingScrollY);
+                _pendingScrollY = -1;
             }
 
             // Apply zoom
@@ -442,9 +504,11 @@ public class MapViewPanel
             viewModel.ZoomFactor = Math.Min(MaxZoom, viewModel.ZoomFactor + 0.5);
         }
         ImGui.SameLine();
-        if (ImGui.Button("Reset"))
+        if (ImGui.Button("Show All"))
         {
             viewModel.ZoomFactor = 1.0;
+            ImGui.SetScrollX(0);
+            ImGui.SetScrollY(0);
         }
 
         // Map info
