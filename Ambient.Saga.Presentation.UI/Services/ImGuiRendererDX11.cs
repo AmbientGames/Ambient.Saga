@@ -41,6 +41,9 @@ public class ImGuiRendererDX11 : IDisposable
         io.DisplayFramebufferScale = new System.Numerics.Vector2(1, 1);
         io.DeltaTime = 1.0f / 60.0f;
 
+        // Apply the beautiful theme!
+        ImGuiTheme.ApplyTheme(ImGuiTheme.ThemePreset.DarkFantasy);
+
         CreateDeviceObjects();
         CreateFontsTexture();
     }
