@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CharacterArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Spawns a random boss character">
+  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Spawns a formidable boss from the region's most dangerous foes.">
     <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
     <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
     <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
@@ -9,12 +9,12 @@
     <CharacterRef>BOSS_Tsuchinomiya</CharacterRef>
     <CharacterRef>BOSS_Takanomiya</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="Spawns a random merchant">
+  <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="A shopkeeper carrying provisions for weary adventurers.">
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</CharacterRef>
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomNPC" DisplayName="Random NPC" Description="Spawns a random friendly NPC">
+  <CharacterArchetype RefName="RandomNPC" DisplayName="Random NPC" Description="A resident going about their daily business.">
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
@@ -22,28 +22,28 @@
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</CharacterRef>
     <CharacterRef>NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomGuard" DisplayName="Random Guard" Description="Spawns a random guard">
+  <CharacterArchetype RefName="RandomGuard" DisplayName="Random Guard" Description="A watchful protector alert to any signs of trouble.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomHostile" DisplayName="Random Hostile" Description="Spawns a random hostile creature">
+  <CharacterArchetype RefName="RandomHostile" DisplayName="Random Hostile" Description="A fearsome creature driven by primal instincts.">
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Scout" DisplayName="Scout" Description="Light enemy for outer perimeter patrols">
+  <CharacterArchetype RefName="Scout" DisplayName="Scout" Description="A light reconnaissance unit patrolling the outer perimeter.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="PatrolSoldier" DisplayName="Patrol Soldier" Description="Enemy soldier on patrol duty">
+  <CharacterArchetype RefName="PatrolSoldier" DisplayName="Patrol Soldier" Description="A trained combatant sweeping the area for hostile elements.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="EliteGuard" DisplayName="Elite Guard" Description="Strong guard protecting important areas">
+  <CharacterArchetype RefName="EliteGuard" DisplayName="Elite Guard" Description="A veteran combatant assigned to secure vital areas.">
     <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
     <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
     <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="HonorGuard" DisplayName="Honor Guard" Description="Elite warrior escorting bosses">
+  <CharacterArchetype RefName="HonorGuard" DisplayName="Honor Guard" Description="A loyal sentinel whose presence signals authority.">
     <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
     <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
     <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
@@ -52,18 +52,18 @@
     <CharacterRef>BOSS_Tsuchinomiya</CharacterRef>
     <CharacterRef>BOSS_Takanomiya</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="BossMinion" DisplayName="Boss Minion" Description="Enemies serving a boss">
+  <CharacterArchetype RefName="BossMinion" DisplayName="Boss Minion" Description="A fanatical supporter who would die for their commander.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="CaravanGuard" DisplayName="Caravan Guard" Description="Guards protecting merchants and travelers">
+  <CharacterArchetype RefName="CaravanGuard" DisplayName="Caravan Guard" Description="A hired protector escorting merchants and their goods.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="TownGuard" DisplayName="Town Guard" Description="Guards maintaining peace in settlements">
+  <CharacterArchetype RefName="TownGuard" DisplayName="Town Guard" Description="A local law enforcer maintaining peace in settled areas.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Traveler" DisplayName="Traveler" Description="Fellow travelers on the road">
+  <CharacterArchetype RefName="Traveler" DisplayName="Traveler" Description="A pilgrim traveling toward a distant destination.">
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
@@ -71,7 +71,7 @@
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</CharacterRef>
     <CharacterRef>NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Townsfolk" DisplayName="Townsfolk" Description="Local residents and villagers">
+  <CharacterArchetype RefName="Townsfolk" DisplayName="Townsfolk" Description="A familiar face among the town's regular population.">
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
@@ -82,11 +82,11 @@
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="HostileCreature" DisplayName="Hostile Creature" Description="Dangerous creature encounter">
+  <CharacterArchetype RefName="HostileCreature" DisplayName="Hostile Creature" Description="A dangerous beast that threatens unwary travelers.">
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="KeyWitness" DisplayName="Key Witness" Description="Important NPC with quest information">
+  <CharacterArchetype RefName="KeyWitness" DisplayName="Key Witness" Description="A knowledgeable individual with crucial details to share.">
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>

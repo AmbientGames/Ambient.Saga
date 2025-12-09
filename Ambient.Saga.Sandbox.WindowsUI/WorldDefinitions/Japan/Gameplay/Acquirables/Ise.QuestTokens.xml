@@ -61,11 +61,11 @@
   <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Trade Secret" Description="Insider knowledge about profitable trading routes" />
   <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Merchant's Bond" Description="A symbol of trust from the merchant" />
   <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Road Toll Paid" Description="Proof of toll payment at the checkpoint" />
-  <QuestToken RefName="TOKEN_Kazahinominomiya_COMPLETE" DisplayName="Completed Kazahinomi-no-Miya" Description="Proof of completing Kazahinomi-no-Miya" />
-  <QuestToken RefName="TOKEN_KōtaiJingūInnerShrine_COMPLETE" DisplayName="Completed Kōtai Jingū (Inner Shrine)" Description="Proof of completing Kōtai Jingū (Inner Shrine)" />
-  <QuestToken RefName="TOKEN_Aramatsurinomiya_COMPLETE" DisplayName="Completed Aramatsuri-no-Miya" Description="Proof of completing Aramatsuri-no-Miya" />
-  <QuestToken RefName="TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE" DisplayName="Completed Toyōke Daijingū (Outer Shrine)" Description="Proof of completing Toyōke Daijingū (Outer Shrine)" />
-  <QuestToken RefName="TOKEN_KazamiyaGekū_COMPLETE" DisplayName="Completed Kazamiya (Gekū)" Description="Proof of completing Kazamiya (Gekū)" />
-  <QuestToken RefName="TOKEN_Tsuchinomiya_COMPLETE" DisplayName="Completed Tsuchi-no-Miya" Description="Proof of completing Tsuchi-no-Miya" />
-  <QuestToken RefName="TOKEN_Takanomiya_COMPLETE" DisplayName="Completed Taka-no-Miya" Description="Proof of completing Taka-no-Miya" />
+  <QuestToken RefName="TOKEN_Kazahinominomiya_COMPLETE" DisplayName="Kazahinomi-no-Miya Seal" Description="Proof that you have overcome the trials of Kazahinomi-no-Miya." />
+  <QuestToken RefName="TOKEN_KōtaiJingūInnerShrine_COMPLETE" DisplayName="Kōtai Jingū (Inner Shrine) Crest" Description="Proof that you have overcome the trials of Kōtai Jingū (Inner Shrine)." />
+  <QuestToken RefName="TOKEN_Aramatsurinomiya_COMPLETE" DisplayName="Aramatsuri-no-Miya Token" Description="A weathered token proving mastery of Aramatsuri-no-Miya." />
+  <QuestToken RefName="TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE" DisplayName="Toyōke Daijingū (Outer Shrine) Emblem" Description="This seal bears the marks of Toyōke Daijingū (Outer Shrine), evidence of your triumph." />
+  <QuestToken RefName="TOKEN_KazamiyaGekū_COMPLETE" DisplayName="Emblem of Kazamiya (Gekū)" Description="Proof that you have overcome the trials of Kazamiya (Gekū)." />
+  <QuestToken RefName="TOKEN_Tsuchinomiya_COMPLETE" DisplayName="Tsuchi-no-Miya Mark" Description="A weathered token proving mastery of Tsuchi-no-Miya." />
+  <QuestToken RefName="TOKEN_Takanomiya_COMPLETE" DisplayName="Taka-no-Miya Badge" Description="Proof that you have overcome the trials of Taka-no-Miya." />
 </QuestTokens>

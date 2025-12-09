@@ -1,421 +1,421 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaFeatures xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaFeature RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Hub center at Tsurumaru-jō" Type="Structure">
+  <SagaFeature RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Built to last, this structure endures. Hub center at Tsurumaru-jō A strange calm pervades the area." Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke1Ring1" DisplayName="Tsurumaru-jō Spoke 1 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke1Ring1" DisplayName="Tsurumaru-jō Spoke 1 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke2Ring1" DisplayName="Tsurumaru-jō Spoke 2 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring1" DisplayName="Tsurumaru-jō Spoke 2 Ring 1" Description="A notable landmark marking this region. Star waypoint at 500m from Tsurumaru-jō Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke2Ring2" DisplayName="Tsurumaru-jō Spoke 2 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring2" DisplayName="Tsurumaru-jō Spoke 2 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Tsurumaru-jō Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke2Ring3" DisplayName="Tsurumaru-jō Spoke 2 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring3" DisplayName="Tsurumaru-jō Spoke 2 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke2Ring4" DisplayName="Tsurumaru-jō Spoke 2 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring4" DisplayName="Tsurumaru-jō Spoke 2 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō The view from here reveals the lay of the land. Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke2Ring5" DisplayName="Tsurumaru-jō Spoke 2 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke2Ring5" DisplayName="Tsurumaru-jō Spoke 2 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke3Ring1" DisplayName="Tsurumaru-jō Spoke 3 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring1" DisplayName="Tsurumaru-jō Spoke 3 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō The view from here reveals the lay of the land. You feel the weight of history around you." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke3Ring2" DisplayName="Tsurumaru-jō Spoke 3 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring2" DisplayName="Tsurumaru-jō Spoke 3 Ring 2" Description="A striking feature of the landscape. Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke3Ring3" DisplayName="Tsurumaru-jō Spoke 3 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring3" DisplayName="Tsurumaru-jō Spoke 3 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō Locals speak of this place with reverence. Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke3Ring4" DisplayName="Tsurumaru-jō Spoke 3 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring4" DisplayName="Tsurumaru-jō Spoke 3 Ring 4" Description="A memorable sight that stays with all who pass by. Star waypoint at 2000m from Tsurumaru-jō You feel the weight of history around you." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke3Ring5" DisplayName="Tsurumaru-jō Spoke 3 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke3Ring5" DisplayName="Tsurumaru-jō Spoke 3 Ring 5" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke4Ring1" DisplayName="Tsurumaru-jō Spoke 4 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring1" DisplayName="Tsurumaru-jō Spoke 4 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō The view from here reveals the lay of the land. The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke4Ring2" DisplayName="Tsurumaru-jō Spoke 4 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring2" DisplayName="Tsurumaru-jō Spoke 4 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō Locals speak of this place with reverence. Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke4Ring3" DisplayName="Tsurumaru-jō Spoke 4 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring3" DisplayName="Tsurumaru-jō Spoke 4 Ring 3" Description="A memorable sight that stays with all who pass by. Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke4Ring4" DisplayName="Tsurumaru-jō Spoke 4 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring4" DisplayName="Tsurumaru-jō Spoke 4 Ring 4" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke4Ring5" DisplayName="Tsurumaru-jō Spoke 4 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke4Ring5" DisplayName="Tsurumaru-jō Spoke 4 Ring 5" Description="This natural formation has drawn visitors for ages. Star waypoint at 2500m from Tsurumaru-jō A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke5Ring1" DisplayName="Tsurumaru-jō Spoke 5 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring1" DisplayName="Tsurumaru-jō Spoke 5 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke5Ring2" DisplayName="Tsurumaru-jō Spoke 5 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring2" DisplayName="Tsurumaru-jō Spoke 5 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō Locals speak of this place with reverence. The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke5Ring3" DisplayName="Tsurumaru-jō Spoke 5 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring3" DisplayName="Tsurumaru-jō Spoke 5 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō The view from here reveals the lay of the land. Something significant is about to happen." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke5Ring4" DisplayName="Tsurumaru-jō Spoke 5 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring4" DisplayName="Tsurumaru-jō Spoke 5 Ring 4" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2000m from Tsurumaru-jō A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke5Ring5" DisplayName="Tsurumaru-jō Spoke 5 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke5Ring5" DisplayName="Tsurumaru-jō Spoke 5 Ring 5" Description="Nature's artistry is on display here. Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke6Ring1" DisplayName="Tsurumaru-jō Spoke 6 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring1" DisplayName="Tsurumaru-jō Spoke 6 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke6Ring2" DisplayName="Tsurumaru-jō Spoke 6 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring2" DisplayName="Tsurumaru-jō Spoke 6 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Tsurumaru-jō The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke6Ring3" DisplayName="Tsurumaru-jō Spoke 6 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring3" DisplayName="Tsurumaru-jō Spoke 6 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō Locals speak of this place with reverence. A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke6Ring4" DisplayName="Tsurumaru-jō Spoke 6 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring4" DisplayName="Tsurumaru-jō Spoke 6 Ring 4" Description="A memorable sight that stays with all who pass by. Star waypoint at 2000m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TsurumarujōSpoke6Ring5" DisplayName="Tsurumaru-jō Spoke 6 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="TsurumarujōSpoke6Ring5" DisplayName="Tsurumaru-jō Spoke 6 Ring 5" Description="A memorable sight that stays with all who pass by. Star waypoint at 2500m from Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Isoteien" DisplayName="Iso-teien" Description="Hub center at Iso-teien" Type="Structure">
+  <SagaFeature RefName="Isoteien" DisplayName="Iso-teien" Description="An imposing structure stands here. Hub center at Iso-teien" Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke2Ring1" DisplayName="Iso-teien Spoke 2 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke2Ring1" DisplayName="Iso-teien Spoke 2 Ring 1" Description="Star waypoint at 500m from Iso-teien Locals speak of this place with reverence. The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke2Ring2" DisplayName="Iso-teien Spoke 2 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke2Ring2" DisplayName="Iso-teien Spoke 2 Ring 2" Description="Star waypoint at 1000m from Iso-teien The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke2Ring3" DisplayName="Iso-teien Spoke 2 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke2Ring3" DisplayName="Iso-teien Spoke 2 Ring 3" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1500m from Iso-teien" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke2Ring4" DisplayName="Iso-teien Spoke 2 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke2Ring4" DisplayName="Iso-teien Spoke 2 Ring 4" Description="Star waypoint at 2000m from Iso-teien Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke2Ring5" DisplayName="Iso-teien Spoke 2 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke2Ring5" DisplayName="Iso-teien Spoke 2 Ring 5" Description="Star waypoint at 2500m from Iso-teien Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke3Ring1" DisplayName="Iso-teien Spoke 3 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke3Ring1" DisplayName="Iso-teien Spoke 3 Ring 1" Description="Star waypoint at 500m from Iso-teien The view from here reveals the lay of the land. A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke3Ring2" DisplayName="Iso-teien Spoke 3 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke3Ring2" DisplayName="Iso-teien Spoke 3 Ring 2" Description="A memorable sight that stays with all who pass by. Star waypoint at 1000m from Iso-teien" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke3Ring3" DisplayName="Iso-teien Spoke 3 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke3Ring3" DisplayName="Iso-teien Spoke 3 Ring 3" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1500m from Iso-teien" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke3Ring4" DisplayName="Iso-teien Spoke 3 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke3Ring4" DisplayName="Iso-teien Spoke 3 Ring 4" Description="This natural formation has drawn visitors for ages. Star waypoint at 2000m from Iso-teien" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke3Ring5" DisplayName="Iso-teien Spoke 3 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke3Ring5" DisplayName="Iso-teien Spoke 3 Ring 5" Description="Star waypoint at 2500m from Iso-teien The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke4Ring1" DisplayName="Iso-teien Spoke 4 Ring 1" Description="Star waypoint at 500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke4Ring1" DisplayName="Iso-teien Spoke 4 Ring 1" Description="A striking feature of the landscape. Star waypoint at 500m from Iso-teien Something significant is about to happen." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke4Ring2" DisplayName="Iso-teien Spoke 4 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke4Ring2" DisplayName="Iso-teien Spoke 4 Ring 2" Description="Nature's artistry is on display here. Star waypoint at 1000m from Iso-teien There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke4Ring3" DisplayName="Iso-teien Spoke 4 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke4Ring3" DisplayName="Iso-teien Spoke 4 Ring 3" Description="A notable landmark marking this region. Star waypoint at 1500m from Iso-teien You feel the weight of history around you." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke4Ring4" DisplayName="Iso-teien Spoke 4 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke4Ring4" DisplayName="Iso-teien Spoke 4 Ring 4" Description="A striking feature of the landscape. Star waypoint at 2000m from Iso-teien" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke4Ring5" DisplayName="Iso-teien Spoke 4 Ring 5" Description="Star waypoint at 2500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke4Ring5" DisplayName="Iso-teien Spoke 4 Ring 5" Description="Star waypoint at 2500m from Iso-teien Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke5Ring2" DisplayName="Iso-teien Spoke 5 Ring 2" Description="Star waypoint at 1000m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke5Ring2" DisplayName="Iso-teien Spoke 5 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Iso-teien" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke5Ring3" DisplayName="Iso-teien Spoke 5 Ring 3" Description="Star waypoint at 1500m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke5Ring3" DisplayName="Iso-teien Spoke 5 Ring 3" Description="A striking feature of the landscape. Star waypoint at 1500m from Iso-teien" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="IsoteienSpoke5Ring4" DisplayName="Iso-teien Spoke 5 Ring 4" Description="Star waypoint at 2000m from Iso-teien" Type="Landmark">
+  <SagaFeature RefName="IsoteienSpoke5Ring4" DisplayName="Iso-teien Spoke 5 Ring 4" Description="This natural formation has drawn visitors for ages. Star waypoint at 2000m from Iso-teien" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinsha" DisplayName="Terukuni Daimyōjin-sha" Description="Hub center at Terukuni Daimyōjin-sha" Type="Structure">
+  <SagaFeature RefName="TerukuniDaimyōjinsha" DisplayName="Terukuni Daimyōjin-sha" Description="The ancient walls of this building bear witness to countless stories. Hub center at Terukuni Daimyōjin-sha" Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="This natural formation has drawn visitors for ages. Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="A striking feature of the landscape. Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 3" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 1" Description="A striking feature of the landscape. Star waypoint at 500m from Terukuni Daimyōjin-sha You feel the weight of history around you." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha The view from here reveals the lay of the land. There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 3" Description="A striking feature of the landscape. Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 4" Description="Nature's artistry is on display here. Star waypoint at 2000m from Terukuni Daimyōjin-sha The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="A notable landmark marking this region. Star waypoint at 2500m from Terukuni Daimyōjin-sha A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Terukuni Daimyōjin-sha There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 3" Description="This natural formation has drawn visitors for ages. Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="A striking feature of the landscape. Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha The view from here reveals the lay of the land. The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 3" Description="A notable landmark marking this region. Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 4" Description="A notable landmark marking this region. Star waypoint at 2000m from Terukuni Daimyōjin-sha The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha The view from here reveals the lay of the land. Something significant is about to happen." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 3" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1500m from Terukuni Daimyōjin-sha Something significant is about to happen." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 4" Description="This natural formation has drawn visitors for ages. Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5" Description="This natural formation has drawn visitors for ages. Star waypoint at 2500m from Terukuni Daimyōjin-sha Something significant is about to happen." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 1" Description="This natural formation has drawn visitors for ages. Star waypoint at 500m from Terukuni Daimyōjin-sha There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 2" Description="A memorable sight that stays with all who pass by. Star waypoint at 1000m from Terukuni Daimyōjin-sha The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 3" Description="Nature's artistry is on display here. Star waypoint at 1500m from Terukuni Daimyōjin-sha" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima" Type="Structure">
+  <SagaFeature RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima The architecture speaks of both purpose and permanence." Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="A notable landmark marking this region. Intermediate waypoint between Iso-teien and Tsurumaru-jō You feel the weight of history around you." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_2" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_2" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō Locals speak of this place with reverence. A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_3" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_3" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="A notable landmark marking this region. Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_4" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_4" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="A memorable sight that stays with all who pass by. Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_5" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" Type="Landmark">
+  <SagaFeature RefName="Isoteien1_to_Tsurumarujō1_5" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Iso-teien and Tsurumaru-jō Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" Type="Structure">
+  <SagaFeature RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="These halls echo with the footsteps of those who came before. Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha" Type="Landmark">
+  <SagaFeature RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha The view from here reveals the lay of the land. There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" Type="Structure">
+  <SagaFeature RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="A place of shelter and history. Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>

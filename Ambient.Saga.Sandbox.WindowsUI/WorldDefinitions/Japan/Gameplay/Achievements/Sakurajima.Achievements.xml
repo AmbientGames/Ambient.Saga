@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Achievement RefName="ACH_COMPLETE_SAKURAJIMA" DisplayName="Hero of Sakurajima" Description="Completed the main quest in Sakurajima">
+  <Achievement RefName="ACH_COMPLETE_SAKURAJIMA" DisplayName="Champion of Sakurajima" Description="See the main quest through to its triumphant conclusion in Sakurajima.">
     <Criteria Type="SagaArcsCompleted" Threshold="5" />
   </Achievement>
-  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_SAKURAJIMA" DisplayName="Champion" Description="Defeated all bosses in Sakurajima">
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_SAKURAJIMA" DisplayName="Nemesis" Description="Become the bane of all boss creatures throughout Sakurajima.">
     <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="6" />
   </Achievement>
-  <Achievement RefName="ACH_EXPLORER_SAKURAJIMA" DisplayName="Explorer" Description="Discovered all locations in Sakurajima">
+  <Achievement RefName="ACH_EXPLORER_SAKURAJIMA" DisplayName="Explorer" Description="Leave no corner of Sakurajima undiscovered in your quest for knowledge.">
     <Criteria Type="SagaArcsDiscovered" Threshold="5" />
   </Achievement>
-  <Achievement RefName="ACH_SOCIAL_SAKURAJIMA" DisplayName="Social Butterfly" Description="Met all characters in Sakurajima">
+  <Achievement RefName="ACH_SOCIAL_SAKURAJIMA" DisplayName="People Person" Description="Introduce yourself to all the characters you encounter in Sakurajima.">
     <Criteria Type="UniqueCharactersMet" Threshold="137" />
   </Achievement>
-  <Achievement RefName="ACH_DIALOGUE_MASTER_SAKURAJIMA" DisplayName="Master Conversationalist" Description="Completed all dialogue trees in Sakurajima">
+  <Achievement RefName="ACH_DIALOGUE_MASTER_SAKURAJIMA" DisplayName="Story Seeker" Description="Listen to every tale the inhabitants of Sakurajima have to tell.">
     <Criteria Type="DialogueTreesCompleted" Threshold="137" />
   </Achievement>
-  <Achievement RefName="ACH_COLLECTOR_SAKURAJIMA" DisplayName="Completionist" Description="Earned all quest tokens in Sakurajima">
+  <Achievement RefName="ACH_COLLECTOR_SAKURAJIMA" DisplayName="Trophy Hunter" Description="Claim every token as proof of your exploits in Sakurajima.">
     <Criteria Type="QuestTokensEarned" Threshold="5" />
   </Achievement>
-  <Achievement RefName="ACH_MERCHANT_SAKURAJIMA" DisplayName="Master Trader" Description="Traded with all merchants in Sakurajima">
+  <Achievement RefName="ACH_MERCHANT_SAKURAJIMA" DisplayName="Bargain Hunter" Description="Seek out every merchant and their wares in Sakurajima.">
     <Criteria Type="ItemsTraded" Threshold="180" />
   </Achievement>
-  <Achievement RefName="ACH_DIPLOMAT_SAKURAJIMA" DisplayName="Diplomat" Description="Made friends throughout Sakurajima">
+  <Achievement RefName="ACH_DIPLOMAT_SAKURAJIMA" DisplayName="Friend to All" Description="Earn the trust and friendship of many throughout Sakurajima.">
     <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="68" />
   </Achievement>
 </Achievements>

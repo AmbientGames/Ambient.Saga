@@ -61,7 +61,7 @@
   <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Trade Secret" Description="Insider knowledge about profitable trading routes" />
   <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Merchant's Bond" Description="A symbol of trust from the merchant" />
   <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Road Toll Paid" Description="Proof of toll payment at the checkpoint" />
-  <QuestToken RefName="TOKEN_Isoteien1_COMPLETE" DisplayName="Completed Iso-teien" Description="Proof of completing Iso-teien" />
-  <QuestToken RefName="TOKEN_Tsurumarujō1_COMPLETE" DisplayName="Completed Tsurumaru-jō" Description="Proof of completing Tsurumaru-jō" />
-  <QuestToken RefName="TOKEN_TerukuniDaimyōjinsha1_COMPLETE" DisplayName="Completed Terukuni Daimyōjin-sha" Description="Proof of completing Terukuni Daimyōjin-sha" />
+  <QuestToken RefName="TOKEN_Isoteien1_COMPLETE" DisplayName="Emblem of Iso-teien" Description="A weathered token proving mastery of Iso-teien." />
+  <QuestToken RefName="TOKEN_Tsurumarujō1_COMPLETE" DisplayName="Seal of Tsurumaru-jō" Description="An ancient mark bestowed upon worthy adventurers at Tsurumaru-jō." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinsha1_COMPLETE" DisplayName="Seal of Terukuni Daimyōjin-sha" Description="A weathered token proving mastery of Terukuni Daimyōjin-sha." />
 </QuestTokens>

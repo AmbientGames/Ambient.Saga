@@ -61,9 +61,9 @@
   <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Trade Secret" Description="Insider knowledge about profitable trading routes" />
   <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Merchant's Bond" Description="A symbol of trust from the merchant" />
   <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Road Toll Paid" Description="Proof of toll payment at the checkpoint" />
-  <QuestToken RefName="TOKEN_ArimuraYōganTenbōjo1_COMPLETE" DisplayName="Completed Arimura Yōgan Tenbōjo" Description="Proof of completing Arimura Yōgan Tenbōjo" />
-  <QuestToken RefName="TOKEN_YunohiraTenbōsho1_COMPLETE" DisplayName="Completed Yunohira Tenbōsho" Description="Proof of completing Yunohira Tenbōsho" />
-  <QuestToken RefName="TOKEN_SakurajimaKōFerryba1_COMPLETE" DisplayName="Completed Sakurajima Kō Ferry-ba" Description="Proof of completing Sakurajima Kō Ferry-ba" />
-  <QuestToken RefName="TOKEN_SakurajimaKasanHakubutsukan1_COMPLETE" DisplayName="Completed Sakurajima Kasan Hakubutsukan" Description="Proof of completing Sakurajima Kasan Hakubutsukan" />
-  <QuestToken RefName="TOKEN_YōganNagisaKōenAshiyu1_COMPLETE" DisplayName="Completed Yōgan Nagisa Kōen Ashiyu" Description="Proof of completing Yōgan Nagisa Kōen Ashiyu" />
+  <QuestToken RefName="TOKEN_ArimuraYōganTenbōjo1_COMPLETE" DisplayName="Arimura Yōgan Tenbōjo Crest" Description="A reminder of the wonders witnessed at Arimura Yōgan Tenbōjo." />
+  <QuestToken RefName="TOKEN_YunohiraTenbōsho1_COMPLETE" DisplayName="Yunohira Tenbōsho Seal" Description="A keepsake proving you visited the renowned Yunohira Tenbōsho." />
+  <QuestToken RefName="TOKEN_SakurajimaKōFerryba1_COMPLETE" DisplayName="Sakurajima Kō Ferry-ba Sigil" Description="This artifact commemorates your discovery of Sakurajima Kō Ferry-ba." />
+  <QuestToken RefName="TOKEN_SakurajimaKasanHakubutsukan1_COMPLETE" DisplayName="Sakurajima Kasan Hakubutsukan Token" Description="Proof that you have overcome the trials of Sakurajima Kasan Hakubutsukan." />
+  <QuestToken RefName="TOKEN_YōganNagisaKōenAshiyu1_COMPLETE" DisplayName="Yōgan Nagisa Kōen Ashiyu Emblem" Description="A memento from your journey through Yōgan Nagisa Kōen Ashiyu." />
 </QuestTokens>

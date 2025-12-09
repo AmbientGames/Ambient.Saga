@@ -34,12 +34,12 @@
     </Relationships>
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
-        <Consumable ConsumableRef="BreadLoaf" Quantity="5" DiscountPercent="0.15" />
-        <Consumable ConsumableRef="MinorHealthPotion" Quantity="3" DiscountPercent="0.1" />
+        <Consumable ConsumableRef="Bread" Quantity="5" DiscountPercent="0.15" />
+        <Consumable ConsumableRef="MinorHealingPotion" Quantity="3" DiscountPercent="0.1" />
       </Reward>
       <Reward RequiredLevel="Honored">
         <Equipment EquipmentRef="MerchantCloak" Quantity="1" DiscountPercent="0.2" />
-        <Consumable ConsumableRef="HealthPotion" Quantity="5" DiscountPercent="0.2" />
+        <Consumable ConsumableRef="HealingPotion" Quantity="5" DiscountPercent="0.2" />
       </Reward>
       <Reward RequiredLevel="Revered">
         <Equipment EquipmentRef="GoldRing" Quantity="1" DiscountPercent="0.25" />
@@ -129,7 +129,7 @@
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
         <Equipment EquipmentRef="PrayerBeads" Quantity="1" DiscountPercent="0.1" />
-        <Consumable ConsumableRef="MinorHealthPotion" Quantity="5" DiscountPercent="0.15" />
+        <Consumable ConsumableRef="MinorHealingPotion" Quantity="5" DiscountPercent="0.15" />
       </Reward>
       <Reward RequiredLevel="Honored">
         <Equipment EquipmentRef="HolySymbol" Quantity="1" DiscountPercent="0.15" />
@@ -153,7 +153,7 @@
     <ReputationRewards>
       <Reward RequiredLevel="Friendly">
         <Equipment EquipmentRef="WoodenStaff" Quantity="1" DiscountPercent="0.1" />
-        <Consumable ConsumableRef="HealingHerbs" Quantity="5" DiscountPercent="0.1" />
+        <Consumable ConsumableRef="HerbBundle" Quantity="5" DiscountPercent="0.1" />
       </Reward>
       <Reward RequiredLevel="Honored">
         <Equipment EquipmentRef="RangerHood" Quantity="1" DiscountPercent="0.15" />
@@ -161,7 +161,7 @@
       </Reward>
       <Reward RequiredLevel="Revered">
         <Equipment EquipmentRef="RangerCloak" Quantity="1" DiscountPercent="0.2" />
-        <Consumable ConsumableRef="GreaterHealthPotion" Quantity="3" DiscountPercent="0.2" />
+        <Consumable ConsumableRef="GreaterHealingPotion" Quantity="3" DiscountPercent="0.2" />
       </Reward>
       <Reward RequiredLevel="Exalted">
         <Equipment EquipmentRef="WindBow" Quantity="1" DiscountPercent="0.3" />
