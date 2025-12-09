@@ -1,45 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Tools xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Tool RefName="Multitool" DisplayName="Multitool" TextureRef="Multitool" WholesalePrice="10">
+  <Tool RefName="Multitool" DisplayName="Higonokami" WholesalePrice="10" Description="A traditional folding pocket knife" TextureRef="Multitool">
     <EffectiveSubstances>
-      <Substance SubstanceRef="Stone" EffectivenessMultiplier=".5" />
-      <Substance SubstanceRef="Plant" EffectivenessMultiplier=".5" />
-      <Substance SubstanceRef="Wood" EffectivenessMultiplier=".5" />
-      <Substance SubstanceRef="Aggregate" EffectivenessMultiplier=".5" />
-      <Substance SubstanceRef="Carbon" EffectivenessMultiplier=".5" />
+      <Substance SubstanceRef="Stone" EffectivenessMultiplier="0.5" />
+      <Substance SubstanceRef="Plant" EffectivenessMultiplier="0.5" />
+      <Substance SubstanceRef="Wood" EffectivenessMultiplier="0.5" />
+      <Substance SubstanceRef="Aggregate" EffectivenessMultiplier="0.5" />
+      <Substance SubstanceRef="Carbon" EffectivenessMultiplier="0.5" />
     </EffectiveSubstances>
   </Tool>
-  <Tool RefName="Pickaxe" DisplayName="Pickaxe" TextureRef="Pickaxe" WholesalePrice="5">
+  <Tool RefName="Pickaxe" DisplayName="Tsuruhashi" WholesalePrice="5" Description="A miner's pickaxe for breaking stone" TextureRef="Pickaxe">
     <EffectiveSubstances>
       <Substance SubstanceRef="Stone" />
     </EffectiveSubstances>
   </Tool>
-  <Tool RefName="Axe" DisplayName="Axe" TextureRef="Axe" WholesalePrice="5">
+  <Tool RefName="Axe" DisplayName="Nata" WholesalePrice="5" Description="A woodsman's hatchet for splitting wood" TextureRef="Axe">
     <EffectiveSubstances>
       <Substance SubstanceRef="Plant" />
       <Substance SubstanceRef="Wood" />
     </EffectiveSubstances>
   </Tool>
-  <Tool RefName="Spade" DisplayName="Spade" TextureRef="Spade" WholesalePrice="5">
+  <Tool RefName="Spade" DisplayName="Kuwa" WholesalePrice="5" Description="A farmer's hoe for digging earth" TextureRef="Spade">
     <EffectiveSubstances>
       <Substance SubstanceRef="Aggregate" />
       <Substance SubstanceRef="Carbon" />
     </EffectiveSubstances>
   </Tool>
-  <Tool RefName="SteelPickaxe" DisplayName="Steel Pickaxe" TextureRef="Pickaxe" WholesalePrice="15">
+  <Tool RefName="SteelPickaxe" DisplayName="Hagane Tsuruhashi" WholesalePrice="15" Description="A superior steel pickaxe" TextureRef="Pickaxe">
     <EffectiveSubstances>
       <Substance SubstanceRef="Stone" EffectivenessMultiplier="3.0" />
       <Substance SubstanceRef="Aggregate" EffectivenessMultiplier="2.5" />
       <Substance SubstanceRef="Metal" EffectivenessMultiplier="1.5" />
     </EffectiveSubstances>
   </Tool>
-  <Tool RefName="SteelAxe" DisplayName="Steel Axe" TextureRef="Axe" WholesalePrice="15">
+  <Tool RefName="SteelAxe" DisplayName="Hagane Ono" WholesalePrice="15" Description="A master craftsman's steel axe" TextureRef="Axe">
     <EffectiveSubstances>
       <Substance SubstanceRef="Plant" EffectivenessMultiplier="2.5" />
       <Substance SubstanceRef="Wood" EffectivenessMultiplier="3.0" />
     </EffectiveSubstances>
   </Tool>
-  <Tool RefName="SteelSpade" DisplayName="Steel Spade" TextureRef="Spade" WholesalePrice="15">
+  <Tool RefName="SteelSpade" DisplayName="Hagane Kuwa" WholesalePrice="15" Description="A reinforced steel hoe" TextureRef="Spade">
     <EffectiveSubstances>
       <Substance SubstanceRef="Aggregate" EffectivenessMultiplier="2.5" />
       <Substance SubstanceRef="Carbon" EffectivenessMultiplier="3.0" />
