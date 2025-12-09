@@ -18,9 +18,9 @@
     </WorldConfiguration>
     <WorldConfiguration
         RefName="Kagoshima"
-        DisplayName="Kagoshima, Japan"
-        Description="Warning: Extremely experimental"
-        Template="Japan"
+        DisplayName="Kagoshima Castle Town (Satsuma)"
+        Description="Kagoshima: Castle town of the Satsuma Domain—home of the Shimazu clan. A bustling southern port where samurai streets meet Ryukyu-bound trade, forever living in the shadow of Sakurajima across Kinko Bay."
+         Template="Japan"
         SpawnLatitude="31.591838"
         SpawnLongitude="130.567026">
         <HeightMapSettings
@@ -31,8 +31,8 @@
     </WorldConfiguration>
     <WorldConfiguration
         RefName="Sakurajima"
-        DisplayName="Sakurajima Volcano, Japan"
-        Description="Warning: Extremely experimental"
+        DisplayName="Sakurajima, Fire Mountain of Kinko Bay"
+        Description="Sakurajima: The fire mountain of Kinko Bay. In feudal times an island shrine of ash and thunder—fisher boats and ferry crossings beneath its smoking peaks, with villages and fields thriving on perilously fertile volcanic soil."
         Template="Japan"
         SpawnLatitude="31.59371"
         SpawnLongitude="130.62466">
