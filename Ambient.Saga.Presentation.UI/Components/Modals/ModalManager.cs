@@ -87,6 +87,12 @@ public class ModalManager
         ShowLoot ||
         ShowFactionReputation;
 
+    /// <summary>
+    /// Check if any modal dialog is currently active (alias for IsAnyModalOpen).
+    /// Used to suppress hotkey handling when modals are open.
+    /// </summary>
+    public bool HasActiveModal() => IsAnyModalOpen;
+
     public void Update(float deltaTime)
     {
         if (ShowBossBattle)

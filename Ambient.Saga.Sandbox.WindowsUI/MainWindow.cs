@@ -204,12 +204,16 @@ public partial class MainWindow : Form
         Keys.Space => ImGuiKey.Space,
         Keys.Enter => ImGuiKey.Enter,
         Keys.Escape => ImGuiKey.Escape,
+        // Text editing keys
         Keys.A => ImGuiKey.A,
         Keys.C => ImGuiKey.C,
         Keys.V => ImGuiKey.V,
         Keys.X => ImGuiKey.X,
         Keys.Y => ImGuiKey.Y,
         Keys.Z => ImGuiKey.Z,
+        // Panel hotkeys (M=Map, J=Journal)
+        Keys.M => ImGuiKey.M,
+        Keys.J => ImGuiKey.J,
         _ => ImGuiKey.None
     };
 }
