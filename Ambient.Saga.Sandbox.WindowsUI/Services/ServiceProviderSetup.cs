@@ -8,7 +8,6 @@ using Ambient.Saga.Engine.Infrastructure.Persistence;
 using Ambient.Saga.Presentation.UI.Components.Modals;
 using Ambient.Saga.Presentation.UI.Services;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -65,7 +64,7 @@ namespace Ambient.Saga.Sandbox.WindowsUI.Services
                 (sp, key) => sp.GetRequiredService<ImGuiArchetypeSelector>());
 
             // World content generator (mock implementation)
-            services.AddSingleton<IWorldContentGenerator, MockWorldContentGenerator>();
+            services.AddSingleton<IWorldContentGenerator, WorldForge.WorldContentGenerator>();
 
             // Modal manager for ImGui archetype selector (with circular dependency resolution)
             services.AddSingleton(sp =>

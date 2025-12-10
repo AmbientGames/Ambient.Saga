@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CharacterArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Conjures a mighty antagonist known for their legendary combat prowess.">
+  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Brings forth a fearsome champion who guards these lands.">
     <CharacterRef>BOSS_YunohiraTenbōsho</CharacterRef>
     <CharacterRef>BOSS_ArimuraYōganTenbōjo</CharacterRef>
     <CharacterRef>BOSS_SakurajimaKōFerryba</CharacterRef>
@@ -46,7 +46,7 @@
     <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2</CharacterRef>
     <CharacterRef>MERCHANT_SakurajimaKōFerryba1</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomNPC" DisplayName="Random NPC" Description="Someone with stories and rumors about the area.">
+  <CharacterArchetype RefName="RandomNPC" DisplayName="Random NPC" Description="An inhabitant familiar with local customs and secrets.">
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring2</CharacterRef>
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring3</CharacterRef>
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring5</CharacterRef>
@@ -120,10 +120,10 @@
     <CharacterRef>NPC_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0</CharacterRef>
     <CharacterRef>NPC_YōganNagisaKōenAshiyu1</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomGuard" DisplayName="Random Guard" Description="An armed defender standing watch against intruders.">
+  <CharacterArchetype RefName="RandomGuard" DisplayName="Random Guard" Description="A disciplined warrior sworn to defend their territory.">
     <CharacterRef>GUARD_YunohiraTenbōsho_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomHostile" DisplayName="Random Hostile" Description="A dangerous creature prowling these territories.">
+  <CharacterArchetype RefName="RandomHostile" DisplayName="Random Hostile" Description="A fearsome creature driven by primal instincts.">
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke1Ring1_1</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke2Ring1_2</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke3Ring1_3</CharacterRef>
@@ -147,17 +147,17 @@
     <CharacterRef>HOSTILE_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0_21</CharacterRef>
     <CharacterRef>HOSTILE_SakurajimaKōFerryba1_22</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Scout" DisplayName="Scout" Description="A mobile lookout tasked with early warning detection.">
+  <CharacterArchetype RefName="Scout" DisplayName="Scout" Description="A light reconnaissance unit patrolling the outer perimeter.">
     <CharacterRef>GUARD_YunohiraTenbōsho_0</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke1Ring1_1</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke2Ring1_2</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke3Ring1_3</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke4Ring1_4</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="PatrolSoldier" DisplayName="Patrol Soldier" Description="A seasoned warrior walking predetermined watch patterns.">
+  <CharacterArchetype RefName="PatrolSoldier" DisplayName="Patrol Soldier" Description="An armed patrol enforcing control over the region.">
     <CharacterRef>GUARD_YunohiraTenbōsho_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="EliteGuard" DisplayName="Elite Guard" Description="A skilled fighter defending the most important sites.">
+  <CharacterArchetype RefName="EliteGuard" DisplayName="Elite Guard" Description="A battle-hardened protector of high-value targets.">
     <CharacterRef>BOSS_YunohiraTenbōsho</CharacterRef>
     <CharacterRef>BOSS_ArimuraYōganTenbōjo</CharacterRef>
     <CharacterRef>BOSS_SakurajimaKōFerryba</CharacterRef>
@@ -171,7 +171,7 @@
     <CharacterRef>BOSS_YōganNagisaKōenAshiyu</CharacterRef>
     <CharacterRef>BOSS_SakurajimaKasanHakubutsukan1</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="BossMinion" DisplayName="Boss Minion" Description="A devoted follower carrying out their leader's will.">
+  <CharacterArchetype RefName="BossMinion" DisplayName="Boss Minion" Description="A fanatical supporter who would die for their commander.">
     <CharacterRef>GUARD_YunohiraTenbōsho_0</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke1Ring1_1</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke2Ring1_2</CharacterRef>
@@ -196,13 +196,13 @@
     <CharacterRef>HOSTILE_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0_21</CharacterRef>
     <CharacterRef>HOSTILE_SakurajimaKōFerryba1_22</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="CaravanGuard" DisplayName="Caravan Guard" Description="A traveling defender familiar with ambush tactics.">
+  <CharacterArchetype RefName="CaravanGuard" DisplayName="Caravan Guard" Description="A road warrior experienced in defending supply lines.">
     <CharacterRef>GUARD_YunohiraTenbōsho_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="TownGuard" DisplayName="Town Guard" Description="A municipal watchman keeping order in populated zones.">
+  <CharacterArchetype RefName="TownGuard" DisplayName="Town Guard" Description="A settlement protector trusted by the local community.">
     <CharacterRef>GUARD_YunohiraTenbōsho_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Traveler" DisplayName="Traveler" Description="A fellow journeyer traversing these roads.">
+  <CharacterArchetype RefName="Traveler" DisplayName="Traveler" Description="A wanderer seeking adventure or fortune.">
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring2</CharacterRef>
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring3</CharacterRef>
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring5</CharacterRef>
@@ -276,7 +276,7 @@
     <CharacterRef>NPC_SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0</CharacterRef>
     <CharacterRef>NPC_YōganNagisaKōenAshiyu1</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Townsfolk" DisplayName="Townsfolk" Description="An ordinary resident going about daily life.">
+  <CharacterArchetype RefName="Townsfolk" DisplayName="Townsfolk" Description="A common citizen contributing to the settlement's vitality.">
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring2</CharacterRef>
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring3</CharacterRef>
     <CharacterRef>NPC_YunohiraTenbōshoSpoke1Ring5</CharacterRef>
@@ -386,7 +386,7 @@
     <CharacterRef>MERCHANT_YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2</CharacterRef>
     <CharacterRef>MERCHANT_SakurajimaKōFerryba1</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="HostileCreature" DisplayName="Hostile Creature" Description="An aggressive animal that attacks on sight.">
+  <CharacterArchetype RefName="HostileCreature" DisplayName="Hostile Creature" Description="A menacing beast with a taste for combat.">
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke1Ring1_1</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke2Ring1_2</CharacterRef>
     <CharacterRef>HOSTILE_YunohiraTenbōshoSpoke3Ring1_3</CharacterRef>

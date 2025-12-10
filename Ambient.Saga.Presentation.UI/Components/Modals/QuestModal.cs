@@ -77,10 +77,18 @@ public class QuestModal
     {
         if (!isOpen || _currentQuest == null) return;
 
-        ImGui.SetNextWindowSize(new Vector2(700, 600), ImGuiCond.FirstUseEver);
-        ImGui.SetNextWindowPos(ImGui.GetMainViewport().GetCenter(), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+        // Center the window
+        var io = ImGui.GetIO();
+        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+        ImGui.SetNextWindowSize(new Vector2(650, 550), ImGuiCond.FirstUseEver);
 
-        if (ImGui.Begin($"Quest: {_currentQuest.DisplayName ?? _currentQuest.RefName}", ref isOpen))
+        // Style the window
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+
+        var windowFlags = ImGuiWindowFlags.NoCollapse;
+
+        if (ImGui.Begin($"Quest###QuestModal", ref isOpen, windowFlags))
         {
             // Quest header with icon/difficulty
             RenderQuestHeader();
@@ -89,22 +97,37 @@ public class QuestModal
             ImGui.Separator();
             ImGui.Spacing();
 
-            // Quest description
+            // Quest description in styled area
             if (!string.IsNullOrEmpty(_currentQuest.Description))
             {
-                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.9f, 1), "Description:");
+                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1), "Description:");
+                ImGui.Spacing();
+
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+                ImGui.BeginChild("QuestDescription", new Vector2(0, 100), ImGuiChildFlags.Borders);
                 ImGui.Indent(10);
+                ImGui.Spacing();
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.9f, 0.9f, 0.85f, 1));
                 ImGui.TextWrapped(_currentQuest.Description);
+                ImGui.PopStyleColor();
                 ImGui.Unindent(10);
+                ImGui.EndChild();
+                ImGui.PopStyleColor();
                 ImGui.Spacing();
             }
 
             // Quest objectives
-            ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Objectives:");
+            ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), "Objectives:");
+            ImGui.Spacing();
+
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.08f, 0.05f, 0.9f));
+            ImGui.BeginChild("QuestObjectives", new Vector2(0, 80), ImGuiChildFlags.Borders);
             ImGui.Indent(10);
+            ImGui.Spacing();
             ImGui.BulletText("See quest log for detailed objectives and progress");
-            // TODO: Display actual quest stages and objectives from multi-stage system
             ImGui.Unindent(10);
+            ImGui.EndChild();
+            ImGui.PopStyleColor();
             ImGui.Spacing();
 
             ImGui.Separator();
@@ -119,42 +142,59 @@ public class QuestModal
 
             // Action buttons
             RenderActionButtons(viewModel, ref isOpen);
-
-            ImGui.End();
         }
+        ImGui.End();
+
+        ImGui.PopStyleVar(2);
     }
 
     private void RenderQuestHeader()
     {
-        // Difficulty badge
-        if (_currentSignpost != null)
+        // Quest name with larger text
+        ImGui.SetWindowFontScale(1.2f);
+        ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), _currentQuest!.DisplayName ?? _currentQuest.RefName);
+        ImGui.SetWindowFontScale(1.0f);
+
+        // Status and difficulty badges on same line
+        if (_currentSignpost != null || _isAlreadyCompleted || _isAlreadyActive)
         {
-            var difficultyColor = _currentSignpost.Difficulty switch
+            // Difficulty badge
+            if (_currentSignpost != null)
             {
-                QuestDifficulty.Easy => new Vector4(0, 1, 0, 1),      // Green
-                QuestDifficulty.Normal => new Vector4(1, 1, 0, 1),    // Yellow
-                QuestDifficulty.Hard => new Vector4(1, 0.5f, 0, 1),   // Orange
-                QuestDifficulty.Epic => new Vector4(1, 0, 0, 1),      // Red
-                _ => new Vector4(1, 1, 1, 1)
-            };
+                var (difficultyColor, difficultyBgColor) = _currentSignpost.Difficulty switch
+                {
+                    QuestDifficulty.Easy => (new Vector4(0.2f, 0.8f, 0.2f, 1), new Vector4(0.1f, 0.3f, 0.1f, 0.8f)),
+                    QuestDifficulty.Normal => (new Vector4(0.9f, 0.9f, 0.2f, 1), new Vector4(0.3f, 0.3f, 0.1f, 0.8f)),
+                    QuestDifficulty.Hard => (new Vector4(1, 0.5f, 0.1f, 1), new Vector4(0.35f, 0.2f, 0.05f, 0.8f)),
+                    QuestDifficulty.Epic => (new Vector4(1, 0.2f, 0.2f, 1), new Vector4(0.35f, 0.1f, 0.1f, 0.8f)),
+                    _ => (new Vector4(0.8f, 0.8f, 0.8f, 1), new Vector4(0.25f, 0.25f, 0.25f, 0.8f))
+                };
 
-            ImGui.TextColored(difficultyColor, $"[{_currentSignpost.Difficulty}]");
-            ImGui.SameLine();
-        }
+                ImGui.TextColored(difficultyColor, $"Difficulty: {_currentSignpost.Difficulty}");
+            }
 
-        // Quest name
-        ImGui.TextColored(new Vector4(1, 1, 0.7f, 1), _currentQuest!.DisplayName ?? _currentQuest.RefName);
-
-        // Status badge
-        if (_isAlreadyCompleted)
-        {
-            ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "[COMPLETED]");
-        }
-        else if (_isAlreadyActive)
-        {
-            ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0, 1, 1, 1), "[ACTIVE]");
+            // Status badge
+            if (_isAlreadyCompleted)
+            {
+                if (_currentSignpost != null) ImGui.SameLine(0, 30);
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1), "COMPLETED");
+            }
+            else if (_isAlreadyActive)
+            {
+                if (_currentSignpost != null) ImGui.SameLine(0, 30);
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.3f, 0.9f, 0.9f, 1), "ACTIVE");
+            }
+            else
+            {
+                if (_currentSignpost != null) ImGui.SameLine(0, 30);
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.5f, 1), "AVAILABLE");
+            }
         }
     }
 
@@ -181,13 +221,21 @@ public class QuestModal
 
     private void RenderActionButtons(MainViewModel viewModel, ref bool isOpen)
     {
+        var buttonWidth = 140f;
+        var buttonHeight = 38f;
+
         if (_isAlreadyCompleted)
         {
             // Quest already completed
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "You have already completed this quest.");
+            var completedText = "You have already completed this quest.";
+            var textSize = ImGui.CalcTextSize(completedText);
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+            ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1), completedText);
+            ImGui.Spacing();
             ImGui.Spacing();
 
-            if (ImGui.Button("Close", new Vector2(150, 35)))
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
+            if (ImGui.Button("Close", new Vector2(buttonWidth, buttonHeight)))
             {
                 isOpen = false;
             }
@@ -195,17 +243,27 @@ public class QuestModal
         else if (_isAlreadyActive)
         {
             // Quest already active
-            ImGui.TextColored(new Vector4(0, 1, 1, 1), "This quest is already in your quest log.");
+            var activeText = "This quest is already in your quest log.";
+            var textSize = ImGui.CalcTextSize(activeText);
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+            ImGui.TextColored(new Vector4(0.3f, 0.9f, 0.9f, 1), activeText);
+            ImGui.Spacing();
             ImGui.Spacing();
 
-            if (ImGui.Button("View Quest Log", new Vector2(150, 35)))
+            var totalWidth = buttonWidth * 2 + 20;
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) * 0.5f);
+
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.35f, 0.4f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.25f, 0.45f, 0.55f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.3f, 0.55f, 0.7f, 1));
+            if (ImGui.Button("View Quest Log", new Vector2(buttonWidth, buttonHeight)))
             {
-                // Future: Open quest log modal
                 isOpen = false;
             }
+            ImGui.PopStyleColor(3);
 
             ImGui.SameLine();
-            if (ImGui.Button("Close", new Vector2(100, 35)))
+            if (ImGui.Button("Close", new Vector2(buttonWidth, buttonHeight)))
             {
                 isOpen = false;
             }
@@ -213,28 +271,38 @@ public class QuestModal
         else
         {
             // Quest available - show accept/decline buttons
+            var totalWidth = buttonWidth * 2 + 20;
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) * 0.5f);
+
             if (_isAccepting)
             {
                 ImGui.BeginDisabled();
             }
 
-            if (ImGui.Button("Accept Quest", new Vector2(150, 35)))
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
+            if (ImGui.Button(_isAccepting ? "Accepting..." : "Accept Quest", new Vector2(buttonWidth, buttonHeight)))
             {
                 AcceptQuest(viewModel);
             }
+            ImGui.PopStyleColor(3);
 
             if (_isAccepting)
             {
                 ImGui.EndDisabled();
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(1, 1, 0, 1), "Accepting...");
             }
 
             ImGui.SameLine();
-            if (ImGui.Button("Decline", new Vector2(100, 35)))
+
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.25f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.3f, 0.3f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.35f, 0.35f, 1));
+            if (ImGui.Button("Decline", new Vector2(buttonWidth, buttonHeight)))
             {
                 isOpen = false;
             }
+            ImGui.PopStyleColor(3);
         }
     }
 

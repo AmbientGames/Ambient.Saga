@@ -1172,7 +1172,13 @@ public static class WorldValidationService
                                 break;
 
                             case DialogueActionType.GiveQuestToken:
-                                ValidateCharacterHasQuestToken(character, action.RefName, nodeContext, errors);
+                                // Quest tokens are abstract progress markers, not physical items
+                                // They don't need to be in a character's loot pool - they're created by dialogue
+                                // Only validate that the quest token exists in world definitions
+                                if (!string.IsNullOrEmpty(action.RefName) && !world.QuestTokensLookup.ContainsKey(action.RefName))
+                                {
+                                    errors.Add($"{nodeContext}: Dialogue gives QuestToken '{action.RefName}' which does not exist in QuestTokens definitions");
+                                }
                                 break;
 
                             case DialogueActionType.TransferCurrency:
@@ -1264,17 +1270,6 @@ public static class WorldValidationService
         if (!hasSpell)
         {
             errors.Add($"{context}: Dialogue promises '{spellRef}' but character loot pool (Interactable.Loot.Spells) does not contain it");
-        }
-    }
-
-    private static void ValidateCharacterHasQuestToken(Character character, string questTokenRef, string context, List<string> errors)
-    {
-        if (string.IsNullOrEmpty(questTokenRef)) return;
-
-        var hasQuestToken = character.Interactable?.Loot?.QuestTokens?.Any(q => q.QuestTokenRef == questTokenRef) == true;
-        if (!hasQuestToken)
-        {
-            errors.Add($"{context}: Dialogue promises '{questTokenRef}' but character loot pool (Interactable.Loot.QuestTokens) does not contain it");
         }
     }
 
@@ -1545,6 +1540,10 @@ public static class WorldValidationService
 
     private static void ValidateGameplayHeuristics(World world, List<string> errors)
     {
+        // Validate that characters spawned in Sagas have dialogue configured
+        // (unless they have the Ambient or BossFight trait - ambient NPCs and pure boss enemies may not need dialogue)
+        ValidateSagaCharactersHaveDialogue(world, errors);
+
         // Track where quest tokens are granted (for duplicate grant detection)
         var tokenGrants = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
 
@@ -1756,6 +1755,106 @@ public static class WorldValidationService
             if (entry.Condition < 0 || entry.Condition > 1)
             {
                 errors.Add($"{context} Equipment '{entry.EquipmentRef}': Condition {entry.Condition} is outside expected range [0, 1]");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Validates that characters spawned in Sagas have dialogue configured.
+    /// Characters without dialogue cannot be interacted with properly.
+    ///
+    /// Exceptions:
+    /// - Characters with BossFight trait AND Hostile trait (pure combat enemies - but should have BattleDialogue)
+    /// - Characters with Friendly trait set to 0 (unfriendly background NPCs)
+    /// </summary>
+    private static void ValidateSagaCharactersHaveDialogue(World world, List<string> errors)
+    {
+        if (world.Gameplay.SagaArcs == null) return;
+
+        // Collect all CharacterRefs spawned in any Saga
+        var spawnedCharacterRefs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var saga in world.Gameplay.SagaArcs)
+        {
+            if (saga.Items == null) continue;
+
+            foreach (var item in saga.Items)
+            {
+                switch (item)
+                {
+                    case SagaTrigger inlineTrigger:
+                        CollectSpawnedCharacters(inlineTrigger, spawnedCharacterRefs);
+                        break;
+
+                    case string patternRef:
+                        var pattern = world.Gameplay?.SagaTriggerPatterns?
+                            .FirstOrDefault(tp => tp.RefName == patternRef);
+                        if (pattern?.SagaTrigger != null)
+                        {
+                            foreach (var trigger in pattern.SagaTrigger)
+                            {
+                                CollectSpawnedCharacters(trigger, spawnedCharacterRefs);
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        // Validate each spawned character has dialogue (unless exempt)
+        foreach (var charRef in spawnedCharacterRefs)
+        {
+            if (!world.CharactersLookup.TryGetValue(charRef, out var character))
+                continue; // Already validated in ValidateCharacterSpawn
+
+            var context = $"Character '{charRef}' (spawned in Saga)";
+
+            // Check for exemptions
+            var isBossFight = character.Traits?.Any(t => t.Name == CharacterTraitType.BossFight && t.Value == 1) == true;
+            var isHostile = character.Traits?.Any(t => t.Name == CharacterTraitType.Hostile && t.Value == 1) == true;
+
+            // Pure combat enemies (BossFight + Hostile with no dialogue) are allowed
+            // BUT they should have BattleDialogue for mid-battle interactions
+            if (isBossFight && isHostile)
+            {
+                // For boss fights, check if they have either regular dialogue OR battle dialogue
+                var hasDialogue = !string.IsNullOrEmpty(character.Interactable?.DialogueTreeRef);
+                var hasBattleDialogue = character.BattleDialogue?.Length > 0;
+
+                if (!hasDialogue && !hasBattleDialogue)
+                {
+                    errors.Add($"{context}: BossFight character has no dialogue. Add either DialogueTreeRef (for pre-battle talk) or BattleDialogue (for mid-battle taunts).");
+                }
+                continue;
+            }
+
+            // Hostile-only characters (regular enemies) don't need dialogue - they just attack
+            if (isHostile)
+                continue;
+
+            // Regular characters must have dialogue
+            if (character.Interactable == null)
+            {
+                errors.Add($"{context}: No Interactable section. Add <Interactable><DialogueTreeRef>...</DialogueTreeRef></Interactable> to allow player interaction.");
+            }
+            else if (string.IsNullOrEmpty(character.Interactable.DialogueTreeRef))
+            {
+                errors.Add($"{context}: No DialogueTreeRef. Add <DialogueTreeRef>your_dialogue_tree</DialogueTreeRef> to allow conversation.");
+            }
+        }
+    }
+
+    private static void CollectSpawnedCharacters(SagaTrigger trigger, HashSet<string> characterRefs)
+    {
+        if (trigger.Spawn == null) return;
+
+        foreach (var spawn in trigger.Spawn)
+        {
+            // Only collect direct CharacterRef spawns, not archetypes
+            // Archetypes generate random characters that may or may not have dialogue
+            if (spawn.ItemElementName == ItemChoiceType.CharacterRef && !string.IsNullOrEmpty(spawn.Item))
+            {
+                characterRefs.Add(spawn.Item);
             }
         }
     }

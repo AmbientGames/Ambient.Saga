@@ -63,9 +63,23 @@ internal sealed class StartDialogueHandler : IRequestHandler<StartDialogueComman
             }
 
             // Check if character has dialogue
-            if (string.IsNullOrEmpty(characterTemplate.Interactable?.DialogueTreeRef))
+            if (characterTemplate.Interactable == null)
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Character has no dialogue tree");
+                return SagaCommandResult.Failure(instance.InstanceId,
+                    $"Character '{characterTemplate.RefName}' has no Interactable section defined. Add <Interactable><DialogueTreeRef>...</DialogueTreeRef></Interactable> to the character definition.");
+            }
+
+            if (string.IsNullOrEmpty(characterTemplate.Interactable.DialogueTreeRef))
+            {
+                return SagaCommandResult.Failure(instance.InstanceId,
+                    $"Character '{characterTemplate.RefName}' has no DialogueTreeRef. Add <DialogueTreeRef>your_dialogue_tree</DialogueTreeRef> to the character's Interactable section.");
+            }
+
+            // Validate the dialogue tree exists
+            if (!_world.DialogueTreesLookup.ContainsKey(characterTemplate.Interactable.DialogueTreeRef))
+            {
+                return SagaCommandResult.Failure(instance.InstanceId,
+                    $"Character '{characterTemplate.RefName}' references DialogueTree '{characterTemplate.Interactable.DialogueTreeRef}' which does not exist.");
             }
 
             // Create DialogueStarted transaction

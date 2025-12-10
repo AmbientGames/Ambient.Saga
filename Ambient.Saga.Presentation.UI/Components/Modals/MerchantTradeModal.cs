@@ -36,28 +36,95 @@ public class MerchantTradeModal
             return;
         }
 
-        ImGui.SetNextWindowSize(new Vector2(900, 700), ImGuiCond.FirstUseEver);
-        if (ImGui.Begin($"Trade with {character.DisplayName}", ref isOpen))
+        // Center the window
+        var io = ImGui.GetIO();
+        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+        ImGui.SetNextWindowSize(new Vector2(800, 650), ImGuiCond.FirstUseEver);
+
+        // Style the window
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+
+        var windowFlags = ImGuiWindowFlags.NoCollapse;
+
+        if (ImGui.Begin($"Trade###MerchantTradeModal", ref isOpen, windowFlags))
         {
-            ImGui.TextColored(new Vector4(1, 0.84f, 0, 1), $"Merchant: {character.DisplayName}");
+            // Merchant header
+            ImGui.SetWindowFontScale(1.2f);
+            ImGui.TextColored(new Vector4(1, 0.85f, 0.3f, 1), character.DisplayName);
+            ImGui.SetWindowFontScale(1.0f);
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "- Merchant");
+
             ImGui.Separator();
             ImGui.Spacing();
 
-            // Buy/Sell mode toggle
+            // Player money display at top
+            if (_tradeViewModel.IsMerchant && _tradeViewModel.PlayerAvatar?.Stats != null)
+            {
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.12f, 0.08f, 0.9f));
+                ImGui.BeginChild("PlayerMoney", new Vector2(0, 45), ImGuiChildFlags.Borders);
+                ImGui.Spacing();
+                ImGui.Indent(10);
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1), "Your Funds:");
+                ImGui.SameLine();
+                ImGui.SetWindowFontScale(1.1f);
+                ImGui.TextColored(new Vector4(1, 0.85f, 0.2f, 1),
+                    $"{_tradeViewModel.PlayerAvatar.Stats.Credits:N0} {_tradeViewModel.PluralCurrencyName}");
+                ImGui.SetWindowFontScale(1.0f);
+                ImGui.Unindent(10);
+                ImGui.EndChild();
+                ImGui.PopStyleColor();
+                ImGui.Spacing();
+            }
+
+            // Buy/Sell mode toggle as styled buttons
             if (_tradeViewModel.ShowBuySellToggle)
             {
                 var isBuyMode = _tradeViewModel.TradeMode == "Buy";
                 var isSellMode = _tradeViewModel.TradeMode == "Sell";
+                var buttonWidth = 120f;
 
-                if (ImGui.RadioButton("Buy", isBuyMode))
+                // Buy button
+                if (isBuyMode)
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.25f, 0.5f, 0.25f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.3f, 0.6f, 0.3f, 1));
+                }
+                else
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.25f, 0.25f, 0.25f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.35f, 0.35f, 0.35f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.4f, 0.4f, 1));
+                }
+                if (ImGui.Button("Buy from Merchant", new Vector2(buttonWidth + 40, 30)))
                 {
                     _tradeViewModel.TradeMode = "Buy";
                 }
+                ImGui.PopStyleColor(3);
+
                 ImGui.SameLine();
-                if (ImGui.RadioButton("Sell", isSellMode))
+
+                // Sell button
+                if (isSellMode)
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.3f, 0.2f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.4f, 0.25f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.5f, 0.3f, 1));
+                }
+                else
+                {
+                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.25f, 0.25f, 0.25f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.35f, 0.35f, 0.35f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.4f, 0.4f, 1));
+                }
+                if (ImGui.Button("Sell your Items", new Vector2(buttonWidth + 30, 30)))
                 {
                     _tradeViewModel.TradeMode = "Sell";
                 }
+                ImGui.PopStyleColor(3);
+
                 ImGui.Spacing();
             }
 
@@ -68,30 +135,38 @@ public class MerchantTradeModal
                 var currentIndex = categories.IndexOf(_tradeViewModel.SelectedTradeCategory);
                 if (currentIndex < 0) currentIndex = 0;
 
-                if (ImGui.Combo("Category", ref currentIndex, categories.ToArray(), categories.Count))
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1), "Category:");
+                ImGui.SameLine();
+                ImGui.SetNextItemWidth(200);
+                if (ImGui.Combo("##Category", ref currentIndex, categories.ToArray(), categories.Count))
                 {
                     _tradeViewModel.SelectedTradeCategory = categories[currentIndex];
                 }
                 ImGui.Spacing();
             }
 
-            // Player money display
-            if (_tradeViewModel.IsMerchant && _tradeViewModel.PlayerAvatar?.Stats != null)
-            {
-                ImGui.TextColored(new Vector4(1, 1, 0, 1),
-                    $"Your {_tradeViewModel.PluralCurrencyName}: {_tradeViewModel.PlayerAvatar.Stats.Credits:N0}");
-                ImGui.Spacing();
-                ImGui.Separator();
-                ImGui.Spacing();
-            }
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            // Trade inventory list header
+            var headerText = _tradeViewModel.TradeMode == "Buy" ? "Available Items" : "Your Items";
+            ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1), headerText);
+            ImGui.Spacing();
 
             // Trade inventory list
-            ImGui.BeginChild("TradeInventory", new Vector2(0, -40), ImGuiChildFlags.Borders);
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+            ImGui.BeginChild("TradeInventory", new Vector2(0, -50), ImGuiChildFlags.Borders);
 
             if (_tradeViewModel.TradeInventory.Count == 0)
             {
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1),
-                    _tradeViewModel.TradeMode == "Buy" ? "Merchant has no items in this category" : "You have no items in this category");
+                ImGui.Spacing();
+                ImGui.Spacing();
+                var emptyText = _tradeViewModel.TradeMode == "Buy"
+                    ? "Merchant has no items in this category"
+                    : "You have no items to sell in this category";
+                var textSize = ImGui.CalcTextSize(emptyText);
+                ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), emptyText);
             }
             else
             {
@@ -99,51 +174,71 @@ public class MerchantTradeModal
                 {
                     ImGui.PushID(tradeItem.GetHashCode());
 
-                    // Item name and price
-                    ImGui.Text(tradeItem.Item.DisplayName);
-                    ImGui.SameLine();
-                    ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"({tradeItem.Price} {_tradeViewModel.CurrencyName})");
+                    // Item row with styled background
+                    ImGui.BeginGroup();
+
+                    // Item name
+                    ImGui.TextColored(new Vector4(0.95f, 0.95f, 0.9f, 1), tradeItem.Item.DisplayName);
 
                     // Quantity if > 1
                     if (tradeItem.Quantity > 1)
                     {
                         ImGui.SameLine();
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"x{tradeItem.Quantity}");
+                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"x{tradeItem.Quantity}");
                     }
 
-                    // Buy/Sell button
+                    // Price
+                    ImGui.SameLine(ImGui.GetWindowWidth() - 220);
+                    ImGui.TextColored(new Vector4(1, 0.85f, 0.2f, 1), $"{tradeItem.Price:N0}");
                     ImGui.SameLine();
+                    ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _tradeViewModel.CurrencyName);
+
+                    // Buy/Sell button
+                    ImGui.SameLine(ImGui.GetWindowWidth() - 80);
                     if (_tradeViewModel.TradeMode == "Buy")
                     {
-                        if (ImGui.Button("Buy"))
+                        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.35f, 0.2f, 1));
+                        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.5f, 0.3f, 1));
+                        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.65f, 0.4f, 1));
+                        if (ImGui.Button("Buy", new Vector2(60, 25)))
                         {
                             _tradeViewModel.BuyItemCommand.Execute(tradeItem);
                         }
+                        ImGui.PopStyleColor(3);
                     }
                     else
                     {
-                        if (ImGui.Button("Sell"))
+                        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.25f, 0.15f, 1));
+                        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.35f, 0.2f, 1));
+                        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.45f, 0.25f, 1));
+                        if (ImGui.Button("Sell", new Vector2(60, 25)))
                         {
                             _tradeViewModel.SellItemCommand.Execute(tradeItem);
                         }
+                        ImGui.PopStyleColor(3);
                     }
 
+                    ImGui.EndGroup();
                     ImGui.Separator();
                     ImGui.PopID();
                 }
             }
 
             ImGui.EndChild();
+            ImGui.PopStyleColor();
 
-            // Close button
+            // Close button centered
             ImGui.Spacing();
-            if (ImGui.Button("Close", new Vector2(120, 0)))
+            var closeWidth = 130f;
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - closeWidth) * 0.5f);
+            if (ImGui.Button("Leave Shop", new Vector2(closeWidth, 35)))
             {
                 isOpen = false;
             }
-
-            ImGui.End();
         }
+        ImGui.End();
+
+        ImGui.PopStyleVar(2);
 
         // Clean up when window closes
         if (!isOpen)

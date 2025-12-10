@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Achievement RefName="ACH_COMPLETE_ISE" DisplayName="Savior of Ise" Description="Fulfill your destiny and bring peace to the lands of Ise.">
+  <Achievement RefName="ACH_COMPLETE_ISE" DisplayName="Champion of Ise" Description="See the main quest through to its triumphant conclusion in Ise.">
     <Criteria Type="SagaArcsCompleted" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_ISE" DisplayName="Champion" Description="Prove your combat mastery by defeating all the bosses in Ise.">
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_ISE" DisplayName="Conqueror" Description="Triumph over all the formidable adversaries lurking in Ise.">
     <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_EXPLORER_ISE" DisplayName="Pathfinder" Description="Blaze trails to every destination in Ise.">
+  <Achievement RefName="ACH_EXPLORER_ISE" DisplayName="Wanderer" Description="Let your curiosity guide you to every hidden place in Ise.">
     <Criteria Type="SagaArcsDiscovered" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_SOCIAL_ISE" DisplayName="People Person" Description="Introduce yourself to all the characters you encounter in Ise.">
+  <Achievement RefName="ACH_SOCIAL_ISE" DisplayName="Networker" Description="Build connections with everyone you meet throughout Ise.">
     <Criteria Type="UniqueCharactersMet" Threshold="19" />
   </Achievement>
   <Achievement RefName="ACH_DIALOGUE_MASTER_ISE" DisplayName="Silver Tongue" Description="Uncover every conversation thread in Ise.">
@@ -18,10 +18,10 @@
   <Achievement RefName="ACH_COLLECTOR_ISE" DisplayName="Achiever" Description="Earn recognition for completing every challenge in Ise.">
     <Criteria Type="QuestTokensEarned" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_MERCHANT_ISE" DisplayName="Haggler" Description="Strike deals with all the traders throughout Ise.">
+  <Achievement RefName="ACH_MERCHANT_ISE" DisplayName="Bargain Hunter" Description="Seek out every merchant and their wares in Ise.">
     <Criteria Type="ItemsTraded" Threshold="15" />
   </Achievement>
-  <Achievement RefName="ACH_DIPLOMAT_ISE" DisplayName="Ambassador" Description="Represent the best of humanity in your dealings throughout Ise.">
+  <Achievement RefName="ACH_DIPLOMAT_ISE" DisplayName="Friend to All" Description="Earn the trust and friendship of many throughout Ise.">
     <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="9" />
   </Achievement>
 </Achievements>

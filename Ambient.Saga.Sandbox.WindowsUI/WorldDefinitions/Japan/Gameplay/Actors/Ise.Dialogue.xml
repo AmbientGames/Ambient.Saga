@@ -569,26 +569,25 @@
       <Text>Then we finish this!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="HiddenCache_MapStart" DisplayName="The Eccentric's Offer" StartNodeId="browse_hub">
-    <Node NodeId="browse_hub">
+  <DialogueTree RefName="HiddenCache_MapStart" DisplayName="The Eccentric's Offer" StartNodeId="browse_completed_check">
+    <Node NodeId="browse_completed_check" NextNodeId="browse_active_check">
+      <Condition Type="QuestCompleted" RefName="HiddenCache_Quest" />
       <Text>*The eccentric collector notices you*</Text>
-      <Choice Text="Approach the collector." NextNodeId="browse_not_started" />
-      <Choice Text="Approach the collector." NextNodeId="browse_active" />
-      <Choice Text="Approach the collector." NextNodeId="browse_completed" />
+      <Text>So? What did you find? Don't leave me in suspense!</Text>
+      <Choice Text="That's my secret." NextNodeId="leave_end" />
+    </Node>
+    <Node NodeId="browse_active_check" NextNodeId="browse_not_started">
+      <Condition Type="QuestActive" RefName="HiddenCache_Quest" />
+      <Text>*The eccentric collector notices you*</Text>
+      <Text>Any luck with that map? I'm curious what it leads to...</Text>
+      <Choice Text="Still working on it." NextNodeId="leave_end" />
     </Node>
     <Node NodeId="browse_not_started">
+      <Text>*The eccentric collector notices you*</Text>
       <Text>Ah, a customer! Looking for something special? I have curiosities from all over.</Text>
       <Text>Wait... you have that look. The look of an adventurer.</Text>
       <Choice Text="What do you mean?" NextNodeId="hook" />
       <Choice Text="Just browsing." NextNodeId="leave_end" />
-    </Node>
-    <Node NodeId="browse_active">
-      <Text>Any luck with that map? I'm curious what it leads to...</Text>
-      <Choice Text="Still working on it." NextNodeId="leave_end" />
-    </Node>
-    <Node NodeId="browse_completed">
-      <Text>So? What did you find? Don't leave me in suspense!</Text>
-      <Choice Text="That's my secret." NextNodeId="leave_end" />
     </Node>
     <Node NodeId="hook">
       <Text>I acquired something... unusual. A map. Very old.</Text>
@@ -2967,57 +2966,84 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya Dialogue" Description="Dialogue tree for Guard at Kazahinomi-no-Miya" StartNodeId="greeting">
+    <Node NodeId="leave_peaceful_end">
+      <Text>Wise choice. Now get out of my sight before I change my mind!</Text>
+    </Node>
+    <Node NodeId="attempt_calm" NextNodeId="calm_failed">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="20" />
+      <Text>*Guard at Kazahinomi-no-Miya considers* You seem capable. Perhaps fighting isn't the wisest choice.</Text>
+      <Choice Text="Thank you. I'll be on my way." NextNodeId="leave_peaceful_end" />
+      <Choice Text="Actually, I'll fight you anyway!" NextNodeId="fight" />
+    </Node>
+    <Node NodeId="calm_failed">
+      <Text>Prepare yourself - I won't hold back!</Text>
+      <Choice Text="Fine, I'll leave!" NextNodeId="leave_peaceful_end" />
+      <Choice Text="Then let's fight!" NextNodeId="fight" />
+    </Node>
+    <Node NodeId="fight">
+      <Text>Then prepare to die!</Text>
+      <Action Type="SetCharacterState" CharacterRef="GUARD_Kazahinominomiya_0" RefName="Hostile" />
+      <Action Type="StartCombat" CharacterRef="GUARD_Kazahinominomiya_0" />
+    </Node>
     <Node NodeId="greeting">
-      <Text>Halt! This area is under protection. State your business or face the consequences!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Kazahinomi-no-Miya! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>*Guard at Kazahinomi-no-Miya eyes you suspiciously* State your business, stranger!</Text>
+      <Choice Text="I mean no harm. I'll leave." NextNodeId="leave_peaceful_end" />
+      <Choice Text="Try to calm them down" NextNodeId="attempt_calm" />
+      <Choice Text="Fight!" NextNodeId="fight" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
+    <Node NodeId="leave_peaceful_end">
+      <Text>Wise choice. Now get out of my sight before I change my mind!</Text>
+    </Node>
+    <Node NodeId="attempt_calm" NextNodeId="calm_failed">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="20" />
+      <Text>*Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) considers* You seem capable. Perhaps fighting isn't the wisest choice.</Text>
+      <Choice Text="Thank you. I'll be on my way." NextNodeId="leave_peaceful_end" />
+      <Choice Text="Actually, I'll fight you anyway!" NextNodeId="fight" />
+    </Node>
+    <Node NodeId="calm_failed">
+      <Text>You think you can best me? Ha! Many have tried.</Text>
+      <Choice Text="Fine, I'll leave!" NextNodeId="leave_peaceful_end" />
+      <Choice Text="Then let's fight!" NextNodeId="fight" />
+    </Node>
+    <Node NodeId="fight">
+      <Text>Your funeral! Have at you!</Text>
+      <Action Type="SetCharacterState" CharacterRef="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" RefName="Hostile" />
+      <Action Type="StartCombat" CharacterRef="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" />
+    </Node>
     <Node NodeId="greeting">
-      <Text>*blocks your path aggressively*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) is known far and wide. Its reputation draws many curious souls.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>*Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) notices you and takes an aggressive stance* Who goes there?!</Text>
+      <Choice Text="I mean no harm. I'll leave." NextNodeId="leave_peaceful_end" />
+      <Choice Text="Try to calm them down" NextNodeId="attempt_calm" />
+      <Choice Text="Fight!" NextNodeId="fight" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" StartNodeId="greeting">
+    <Node NodeId="leave_peaceful_end">
+      <Text>Wise choice. Now get out of my sight before I change my mind!</Text>
+    </Node>
+    <Node NodeId="attempt_calm" NextNodeId="calm_failed">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="20" />
+      <Text>*Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) looks uncertain* I suppose I could let this slide... for a price.</Text>
+      <Choice Text="Thank you. I'll be on my way." NextNodeId="leave_peaceful_end" />
+      <Choice Text="Actually, I'll fight you anyway!" NextNodeId="fight" />
+    </Node>
+    <Node NodeId="calm_failed">
+      <Text>You think you can best me? Ha! Many have tried.</Text>
+      <Choice Text="Fine, I'll leave!" NextNodeId="leave_peaceful_end" />
+      <Choice Text="Then let's fight!" NextNodeId="fight" />
+    </Node>
+    <Node NodeId="fight">
+      <Text>No more talking - let's finish this!</Text>
+      <Action Type="SetCharacterState" CharacterRef="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" RefName="Hostile" />
+      <Action Type="StartCombat" CharacterRef="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" />
+    </Node>
     <Node NodeId="greeting">
-      <Text>*blocks your path aggressively*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>A pleasure! These lands are full of wonders worth exploring.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>*Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) eyes you suspiciously* State your business, stranger!</Text>
+      <Choice Text="I mean no harm. I'll leave." NextNodeId="leave_peaceful_end" />
+      <Choice Text="Try to calm them down" NextNodeId="attempt_calm" />
+      <Choice Text="Fight!" NextNodeId="fight" />
     </Node>
   </DialogueTree>
 </DialogueTrees>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CharacterArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Conjures a mighty antagonist known for their legendary combat prowess.">
+  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Summons one of the area's powerful adversaries to challenge the player.">
     <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
     <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
     <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
@@ -9,12 +9,12 @@
     <CharacterRef>BOSS_Tsuchinomiya</CharacterRef>
     <CharacterRef>BOSS_Takanomiya</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="A traveling vendor offering rare goods and supplies.">
+  <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="A savvy merchant with connections to exotic markets.">
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</CharacterRef>
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomNPC" DisplayName="Random NPC" Description="Someone with stories and rumors about the area.">
+  <CharacterArchetype RefName="RandomNPC" DisplayName="Random NPC" Description="A passerby who might have useful knowledge.">
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
@@ -22,7 +22,7 @@
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</CharacterRef>
     <CharacterRef>NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomGuard" DisplayName="Random Guard" Description="An armed defender standing watch against intruders.">
+  <CharacterArchetype RefName="RandomGuard" DisplayName="Random Guard" Description="A disciplined warrior sworn to defend their territory.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
   <CharacterArchetype RefName="RandomHostile" DisplayName="Random Hostile" Description="An aggressive beast that attacks without warning.">
@@ -34,16 +34,16 @@
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="PatrolSoldier" DisplayName="Patrol Soldier" Description="A trained combatant sweeping the area for hostile elements.">
+  <CharacterArchetype RefName="PatrolSoldier" DisplayName="Patrol Soldier" Description="An armed patrol enforcing control over the region.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="EliteGuard" DisplayName="Elite Guard" Description="An experienced soldier guarding strategic positions.">
+  <CharacterArchetype RefName="EliteGuard" DisplayName="Elite Guard" Description="A skilled fighter defending the most important sites.">
     <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
     <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
     <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="HonorGuard" DisplayName="Honor Guard" Description="A trusted protector accompanying important figures.">
+  <CharacterArchetype RefName="HonorGuard" DisplayName="Honor Guard" Description="A prestigious warrior serving as personal escort to commanders.">
     <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
     <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
     <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
@@ -52,18 +52,18 @@
     <CharacterRef>BOSS_Tsuchinomiya</CharacterRef>
     <CharacterRef>BOSS_Takanomiya</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="BossMinion" DisplayName="Boss Minion" Description="A devoted follower carrying out their leader's will.">
+  <CharacterArchetype RefName="BossMinion" DisplayName="Boss Minion" Description="A fanatical supporter who would die for their commander.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="CaravanGuard" DisplayName="Caravan Guard" Description="A professional guard safeguarding traveling traders.">
+  <CharacterArchetype RefName="CaravanGuard" DisplayName="Caravan Guard" Description="A traveling defender familiar with ambush tactics.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="TownGuard" DisplayName="Town Guard" Description="A local law enforcer maintaining peace in settled areas.">
+  <CharacterArchetype RefName="TownGuard" DisplayName="Town Guard" Description="An appointed guardian upholding law and safety.">
     <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Traveler" DisplayName="Traveler" Description="A pilgrim traveling toward a distant destination.">
+  <CharacterArchetype RefName="Traveler" DisplayName="Traveler" Description="A nomad familiar with the ways of the road.">
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
@@ -71,7 +71,7 @@
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</CharacterRef>
     <CharacterRef>NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Townsfolk" DisplayName="Townsfolk" Description="A common citizen contributing to the settlement's vitality.">
+  <CharacterArchetype RefName="Townsfolk" DisplayName="Townsfolk" Description="An ordinary resident going about daily life.">
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
@@ -82,11 +82,11 @@
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
     <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="HostileCreature" DisplayName="Hostile Creature" Description="An aggressive animal that attacks on sight.">
+  <CharacterArchetype RefName="HostileCreature" DisplayName="Hostile Creature" Description="A dangerous beast that threatens unwary travelers.">
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1</CharacterRef>
     <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="KeyWitness" DisplayName="Key Witness" Description="Someone whose testimony could change everything.">
+  <CharacterArchetype RefName="KeyWitness" DisplayName="Key Witness" Description="A pivotal character holding answers to pressing questions.">
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
     <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>

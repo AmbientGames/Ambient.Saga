@@ -80,12 +80,22 @@ public class BattleModal
             _ = InitializeBattleAsync(viewModel, character);
         }
 
-        ImGui.SetNextWindowSize(new Vector2(1200, 800), ImGuiCond.FirstUseEver);
-        if (ImGui.Begin($"Battle: {character.DisplayName}", ref isOpen))
+        // Center the window
+        var io = ImGui.GetIO();
+        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+        ImGui.SetNextWindowSize(new Vector2(1100, 750), ImGuiCond.FirstUseEver);
+
+        // Style the window
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(16, 16));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+
+        var windowFlags = ImGuiWindowFlags.NoCollapse;
+
+        if (ImGui.Begin($"Battle: {character.DisplayName}###BattleModal", ref isOpen, windowFlags))
         {
             if (_currentState == null)
             {
-                ImGui.Text("Initializing battle...");
+                RenderLoading();
             }
             else if (_currentState.HasEnded)
             {
@@ -95,12 +105,23 @@ public class BattleModal
             {
                 RenderActiveBattle(viewModel, character);
             }
-
-            ImGui.End();
         }
+        ImGui.End();
+
+        ImGui.PopStyleVar(2);
 
         // Render selection modals (as separate windows)
         RenderSelectionModals(viewModel);
+    }
+
+    private void RenderLoading()
+    {
+        ImGui.Spacing();
+        ImGui.Spacing();
+        var loadingText = "Preparing for battle...";
+        var textSize = ImGui.CalcTextSize(loadingText);
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+        ImGui.TextColored(new Vector4(1.0f, 0.8f, 0.3f, 1.0f), loadingText);
     }
 
     private void RenderActiveBattle(MainViewModel viewModel, CharacterViewModel character)
@@ -147,77 +168,154 @@ public class BattleModal
 
         var isPlayerTurn = _currentState.BattleState == BattleState.PlayerTurn && !_waitingForEnemyTurn;
 
+        // Header showing whose turn it is
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.15f, 0.8f));
+        ImGui.BeginChild("TurnHeader", new Vector2(0, 90), ImGuiChildFlags.Borders);
+
         if (!isPlayerTurn)
         {
-            if (_waitingForEnemyTurn)
+            ImGui.Spacing();
+            var turnText = _waitingForEnemyTurn ? "Enemy is thinking..." : "Enemy's turn...";
+            var textSize = ImGui.CalcTextSize(turnText);
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+            ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 25);
+            ImGui.TextColored(new Vector4(1.0f, 0.4f, 0.4f, 1.0f), turnText);
+        }
+        else
+        {
+            ImGui.Spacing();
+            ImGui.SetWindowFontScale(1.1f);
+            var turnText = "YOUR TURN - Choose an Action";
+            var textSize = ImGui.CalcTextSize(turnText);
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+            ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.4f, 1.0f), turnText);
+            ImGui.SetWindowFontScale(1.0f);
+            ImGui.Spacing();
+
+            // Center the action buttons
+            var buttonWidth = 110f;
+            var buttonSpacing = 8f;
+            var totalWidth = buttonWidth * 7 + buttonSpacing * 6 + 20; // 7 buttons + extra for loadout
+            var startX = (ImGui.GetWindowWidth() - totalWidth) * 0.5f;
+            ImGui.SetCursorPosX(startX);
+
+            // Core combat actions with styled buttons
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.15f, 0.15f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.3f, 0.3f, 1.0f));
+            if (ImGui.Button("Attack", new Vector2(buttonWidth, 35)))
             {
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1.0f), "Enemy is thinking...");
+                _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Attack });
             }
-            else
+            ImGui.PopStyleColor(3);
+
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.25f, 0.35f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.35f, 0.5f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.45f, 0.65f, 1.0f));
+            if (ImGui.Button("Defend", new Vector2(buttonWidth, 35)))
             {
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1.0f), "Enemy's turn...");
+                _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Defend });
             }
-            return;
+            ImGui.PopStyleColor(3);
+
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.2f, 0.5f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.45f, 0.3f, 0.65f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.55f, 0.4f, 0.8f, 1.0f));
+            if (ImGui.Button("Cast Spell", new Vector2(buttonWidth, 35)))
+            {
+                OpenSpellSelectionModal(viewModel);
+            }
+            ImGui.PopStyleColor(3);
+
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.35f, 0.2f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.5f, 0.3f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.65f, 0.4f, 1.0f));
+            if (ImGui.Button("Use Item", new Vector2(buttonWidth, 35)))
+            {
+                OpenItemSelectionModal(viewModel);
+            }
+            ImGui.PopStyleColor(3);
+
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.35f, 0.2f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.5f, 0.3f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.65f, 0.4f, 1.0f));
+            if (ImGui.Button("Talk", new Vector2(buttonWidth, 35)))
+            {
+                OpenMidBattleDialogue(viewModel, character);
+            }
+            ImGui.PopStyleColor(3);
+
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.3f, 0.3f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.4f, 0.4f, 0.4f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.5f, 0.5f, 0.5f, 1.0f));
+            if (ImGui.Button("Loadout", new Vector2(buttonWidth, 35)))
+            {
+                OpenEquipmentChangeModal(viewModel);
+            }
+            ImGui.PopStyleColor(3);
+
+            ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.3f, 0.15f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.4f, 0.2f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.5f, 0.25f, 1.0f));
+            if (ImGui.Button("Flee", new Vector2(buttonWidth, 35)))
+            {
+                _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Flee });
+            }
+            ImGui.PopStyleColor(3);
         }
 
-        ImGui.TextColored(new Vector4(1.0f, 0.8f, 0.3f, 1.0f), "COMBAT ACTIONS - Your Turn!");
-        ImGui.Spacing();
-
-        // Core combat actions
-        if (ImGui.Button("⚔️ Attack", new Vector2(120, 40)))
-        {
-            _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Attack });
-        }
-        ImGui.SameLine();
-        if (ImGui.Button("🛡️ Defend", new Vector2(120, 40)))
-        {
-            _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Defend });
-        }
-        ImGui.SameLine();
-        if (ImGui.Button("🏃 Flee", new Vector2(120, 40)))
-        {
-            _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Flee });
-        }
-        ImGui.SameLine();
-        if (ImGui.Button("💬 Talk", new Vector2(120, 40)))
-        {
-            OpenMidBattleDialogue(viewModel, character);
-        }
-
-        ImGui.Spacing();
-
-        // Advanced combat actions - fully functional
-        if (ImGui.Button("✨ Cast Spell", new Vector2(120, 40)))
-        {
-            OpenSpellSelectionModal(viewModel);
-        }
-        ImGui.SameLine();
-        if (ImGui.Button("💊 Use Item", new Vector2(120, 40)))
-        {
-            OpenItemSelectionModal(viewModel);
-        }
-        ImGui.SameLine();
-        if (ImGui.Button("⚙️ Change Loadout", new Vector2(140, 40)))
-        {
-            OpenEquipmentChangeModal(viewModel);
-        }
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
     }
 
     private void RenderCombatantPanel(Combatant combatant, string title)
     {
-        ImGui.TextColored(new Vector4(1.0f, 0.8f, 0.3f, 1.0f), $"{title}: {combatant.DisplayName}");
-        ImGui.Separator();
+        var isPlayer = title == "Player";
+        var titleColor = isPlayer ? new Vector4(0.4f, 0.9f, 0.4f, 1.0f) : new Vector4(1.0f, 0.4f, 0.4f, 1.0f);
 
-        // Stats with progress bars
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.08f, 0.08f, 0.1f, 0.9f));
+        ImGui.BeginChild($"{title}Panel", new Vector2(0, 0), ImGuiChildFlags.Borders);
+
+        // Combatant name header
+        ImGui.Spacing();
+        ImGui.SetWindowFontScale(1.1f);
+        ImGui.TextColored(titleColor, combatant.DisplayName);
+        ImGui.SetWindowFontScale(1.0f);
+
+        // Show affinity if available
+        if (!string.IsNullOrEmpty(combatant.AffinityRef))
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.6f, 0.7f, 1.0f, 1.0f), $"({combatant.AffinityRef})");
+        }
+
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // Vital stats with colored progress bars
+        ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1.0f), "Vitals:");
         RenderStatBar("Health", combatant.Health, Combatant.MAX_STAT, new Vector4(0.8f, 0.2f, 0.2f, 1.0f));
         RenderStatBar("Energy", combatant.Energy, Combatant.MAX_STAT, new Vector4(0.2f, 0.5f, 0.8f, 1.0f));
-        RenderStatBar("Strength", combatant.Strength, Combatant.MAX_STAT, new Vector4(0.6f, 0.6f, 0.6f, 1.0f));
-        RenderStatBar("Defense", combatant.Defense, Combatant.MAX_STAT, new Vector4(0.6f, 0.6f, 0.6f, 1.0f));
-        RenderStatBar("Speed", combatant.Speed, Combatant.MAX_STAT, new Vector4(0.6f, 0.6f, 0.6f, 1.0f));
-        RenderStatBar("Magic", combatant.Magic, Combatant.MAX_STAT, new Vector4(0.6f, 0.6f, 0.6f, 1.0f));
 
         ImGui.Spacing();
-        ImGui.Text($"Affinity: {combatant.AffinityRef ?? "None"}");
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // Combat stats
+        ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1.0f), "Combat Stats:");
+        RenderStatBar("Strength", combatant.Strength, Combatant.MAX_STAT, new Vector4(0.8f, 0.5f, 0.3f, 1.0f));
+        RenderStatBar("Defense", combatant.Defense, Combatant.MAX_STAT, new Vector4(0.4f, 0.6f, 0.8f, 1.0f));
+        RenderStatBar("Speed", combatant.Speed, Combatant.MAX_STAT, new Vector4(0.3f, 0.8f, 0.5f, 1.0f));
+        RenderStatBar("Magic", combatant.Magic, Combatant.MAX_STAT, new Vector4(0.6f, 0.3f, 0.8f, 1.0f));
+
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
     }
 
     private void RenderStatBar(string name, float value, float maxValue, Vector4 color)
@@ -233,75 +331,174 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        ImGui.TextColored(new Vector4(1.0f, 0.8f, 0.3f, 1.0f), "Battle Log");
-        ImGui.Separator();
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.BeginChild("BattleLogContainer", new Vector2(0, 0), ImGuiChildFlags.Borders);
 
-        ImGui.BeginChild("BattleLogScroll", new Vector2(0, 0), ImGuiChildFlags.Borders);
+        // Header
+        ImGui.Spacing();
+        var headerText = "Battle Log";
+        var headerSize = ImGui.CalcTextSize(headerText);
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - headerSize.X) * 0.5f);
+        ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.5f, 1.0f), headerText);
+
+        // Turn counter
+        var turnText = $"Turn {_currentState.TurnNumber}";
+        var turnSize = ImGui.CalcTextSize(turnText);
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - turnSize.X) * 0.5f);
+        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1.0f), turnText);
+
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // Log entries
+        ImGui.BeginChild("BattleLogScroll", new Vector2(0, 0), ImGuiChildFlags.None);
+
         foreach (var line in _currentState.BattleLog)
         {
+            // Color-code log entries based on content
+            var color = new Vector4(0.85f, 0.85f, 0.85f, 1.0f);
+            if (line.Contains("damage") || line.Contains("hit"))
+            {
+                color = new Vector4(1.0f, 0.6f, 0.4f, 1.0f);
+            }
+            else if (line.Contains("healed") || line.Contains("restored"))
+            {
+                color = new Vector4(0.4f, 1.0f, 0.6f, 1.0f);
+            }
+            else if (line.Contains("defended") || line.Contains("blocked"))
+            {
+                color = new Vector4(0.4f, 0.7f, 1.0f, 1.0f);
+            }
+            else if (line.Contains("fled") || line.Contains("escaped"))
+            {
+                color = new Vector4(1.0f, 0.9f, 0.4f, 1.0f);
+            }
+            else if (line.Contains("defeated") || line.Contains("victory") || line.Contains("Victory"))
+            {
+                color = new Vector4(0.3f, 1.0f, 0.3f, 1.0f);
+            }
+
+            ImGui.PushStyleColor(ImGuiCol.Text, color);
             ImGui.TextWrapped(line);
+            ImGui.PopStyleColor();
+            ImGui.Spacing();
         }
 
         // Auto-scroll to bottom
-        if (ImGui.GetScrollY() >= ImGui.GetScrollMaxY())
+        if (ImGui.GetScrollY() >= ImGui.GetScrollMaxY() - 10)
             ImGui.SetScrollHereY(1.0f);
 
         ImGui.EndChild();
+        ImGui.EndChild();
+        ImGui.PopStyleColor();
     }
 
     private void RenderBattleEnded(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
         if (_currentState == null) return;
 
+        // Large centered victory/defeat message
+        ImGui.Spacing();
         ImGui.Spacing();
         ImGui.Spacing();
 
         if (_currentState.PlayerVictory == true)
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.2f, 1.0f, 0.2f, 1.0f));
-            var text = "=== VICTORY! ===";
+            ImGui.SetWindowFontScale(1.5f);
+            var text = "VICTORY!";
             var textSize = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-            ImGui.Text(text);
-            ImGui.PopStyleColor();
+            ImGui.TextColored(new Vector4(0.3f, 1.0f, 0.3f, 1.0f), text);
+            ImGui.SetWindowFontScale(1.0f);
+
+            ImGui.Spacing();
+            var subText = "You have defeated your opponent!";
+            var subSize = ImGui.CalcTextSize(subText);
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - subSize.X) * 0.5f);
+            ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1.0f), subText);
         }
         else if (_currentState.PlayerVictory == false)
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1.0f, 0.2f, 0.2f, 1.0f));
-            var text = "=== DEFEAT ===";
+            ImGui.SetWindowFontScale(1.5f);
+            var text = "DEFEAT";
             var textSize = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-            ImGui.Text(text);
-            ImGui.PopStyleColor();
+            ImGui.TextColored(new Vector4(1.0f, 0.3f, 0.3f, 1.0f), text);
+            ImGui.SetWindowFontScale(1.0f);
+
+            ImGui.Spacing();
+            var subText = "You have been defeated...";
+            var subSize = ImGui.CalcTextSize(subText);
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - subSize.X) * 0.5f);
+            ImGui.TextColored(new Vector4(0.9f, 0.7f, 0.7f, 1.0f), subText);
         }
 
+        ImGui.Spacing();
         ImGui.Spacing();
         ImGui.Separator();
         ImGui.Spacing();
 
-        // Show battle log
-        ImGui.BeginChild("FinalBattleLog", new Vector2(0, 400), ImGuiChildFlags.Borders);
+        // Battle log header
+        var logHeader = "Battle Summary";
+        var logHeaderSize = ImGui.CalcTextSize(logHeader);
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - logHeaderSize.X) * 0.5f);
+        ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.5f, 1.0f), logHeader);
+        ImGui.Spacing();
+
+        // Show battle log with styled background
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.BeginChild("FinalBattleLog", new Vector2(0, -60), ImGuiChildFlags.Borders);
+
         foreach (var line in _currentState.BattleLog)
         {
+            // Color-code log entries
+            var color = new Vector4(0.85f, 0.85f, 0.85f, 1.0f);
+            if (line.Contains("damage") || line.Contains("hit"))
+            {
+                color = new Vector4(1.0f, 0.6f, 0.4f, 1.0f);
+            }
+            else if (line.Contains("healed") || line.Contains("restored"))
+            {
+                color = new Vector4(0.4f, 1.0f, 0.6f, 1.0f);
+            }
+            else if (line.Contains("defeated") || line.Contains("victory") || line.Contains("Victory"))
+            {
+                color = new Vector4(0.3f, 1.0f, 0.3f, 1.0f);
+            }
+
+            ImGui.PushStyleColor(ImGuiCol.Text, color);
             ImGui.TextWrapped(line);
+            ImGui.PopStyleColor();
+            ImGui.Spacing();
         }
+
         ImGui.EndChild();
+        ImGui.PopStyleColor();
 
         ImGui.Spacing();
+
+        // Center the action buttons
+        var buttonWidth = 150f;
+        var totalButtonWidth = _currentState.PlayerVictory == true ? buttonWidth * 2 + 20 : buttonWidth;
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalButtonWidth) * 0.5f);
 
         // Show loot button if player won
         if (_currentState.PlayerVictory == true)
         {
-            if (ImGui.Button("Collect Loot", new Vector2(200, 40)))
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1.0f));
+            if (ImGui.Button("Collect Loot", new Vector2(buttonWidth, 40)))
             {
                 // Transition to loot modal
                 modalManager.ShowBossBattle = false;
                 modalManager.ShowLoot = true;
             }
+            ImGui.PopStyleColor(3);
+            ImGui.SameLine();
         }
 
-        ImGui.SameLine();
-        if (ImGui.Button("Close", new Vector2(120, 40)))
+        if (ImGui.Button("Close", new Vector2(buttonWidth, 40)))
         {
             modalManager.ShowBossBattle = false;
         }

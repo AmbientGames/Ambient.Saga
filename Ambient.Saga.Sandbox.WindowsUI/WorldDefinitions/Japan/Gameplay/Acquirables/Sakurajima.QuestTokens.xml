@@ -61,9 +61,9 @@
   <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Trade Secret" Description="Insider knowledge about profitable trading routes" />
   <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Merchant's Bond" Description="A symbol of trust from the merchant" />
   <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Road Toll Paid" Description="Proof of toll payment at the checkpoint" />
-  <QuestToken RefName="TOKEN_ArimuraYōganTenbōjo1_COMPLETE" DisplayName="Arimura Yōgan Tenbōjo Badge" Description="Evidence of your exploration of the legendary Arimura Yōgan Tenbōjo." />
-  <QuestToken RefName="TOKEN_YunohiraTenbōsho1_COMPLETE" DisplayName="Yunohira Tenbōsho Badge" Description="A keepsake proving you visited the renowned Yunohira Tenbōsho." />
-  <QuestToken RefName="TOKEN_SakurajimaKōFerryba1_COMPLETE" DisplayName="Sakurajima Kō Ferry-ba Seal" Description="A symbol of the mysteries uncovered at Sakurajima Kō Ferry-ba." />
-  <QuestToken RefName="TOKEN_SakurajimaKasanHakubutsukan1_COMPLETE" DisplayName="Emblem of Sakurajima Kasan Hakubutsukan" Description="Proof that you have overcome the trials of Sakurajima Kasan Hakubutsukan." />
-  <QuestToken RefName="TOKEN_YōganNagisaKōenAshiyu1_COMPLETE" DisplayName="Mark of Yōgan Nagisa Kōen Ashiyu" Description="A keepsake proving you visited the renowned Yōgan Nagisa Kōen Ashiyu." />
+  <QuestToken RefName="TOKEN_ArimuraYōganTenbōjo1_COMPLETE" DisplayName="Mark of Arimura Yōgan Tenbōjo" Description="This artifact commemorates your discovery of Arimura Yōgan Tenbōjo." />
+  <QuestToken RefName="TOKEN_YunohiraTenbōsho1_COMPLETE" DisplayName="Emblem of Yunohira Tenbōsho" Description="This artifact commemorates your discovery of Yunohira Tenbōsho." />
+  <QuestToken RefName="TOKEN_SakurajimaKōFerryba1_COMPLETE" DisplayName="Mark of Sakurajima Kō Ferry-ba" Description="A memento from your journey through Sakurajima Kō Ferry-ba." />
+  <QuestToken RefName="TOKEN_SakurajimaKasanHakubutsukan1_COMPLETE" DisplayName="Mark of Sakurajima Kasan Hakubutsukan" Description="This badge commemorates your accomplishments at Sakurajima Kasan Hakubutsukan." />
+  <QuestToken RefName="TOKEN_YōganNagisaKōenAshiyu1_COMPLETE" DisplayName="Yōgan Nagisa Kōen Ashiyu Token" Description="A symbol of the mysteries uncovered at Yōgan Nagisa Kōen Ashiyu." />
 </QuestTokens>

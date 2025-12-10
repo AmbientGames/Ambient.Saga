@@ -20,7 +20,7 @@
         RefName="Kagoshima"
         DisplayName="Kagoshima Castle Town (Satsuma)"
         Description="Kagoshima: Castle town of the Satsuma Domain—home of the Shimazu clan. A bustling southern port where samurai streets meet Ryukyu-bound trade, forever living in the shadow of Sakurajima across Kinko Bay."
-         Template="Japan"
+        Template="Japan"
         SpawnLatitude="31.591838"
         SpawnLongitude="130.567026">
         <HeightMapSettings

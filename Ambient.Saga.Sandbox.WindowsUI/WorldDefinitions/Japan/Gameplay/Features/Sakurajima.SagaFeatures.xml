@@ -1,336 +1,336 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaFeatures xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaFeature RefName="YunohiraTenbōsho" DisplayName="Yunohira Tenbōsho" Description="These halls echo with the footsteps of those who came before. Hub center at Yunohira Tenbōsho" Type="Structure">
+  <SagaFeature RefName="YunohiraTenbōsho" DisplayName="Yunohira Tenbōsho" Description="Hub center at Yunohira Tenbōsho Its foundation has weathered many storms." Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring1" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Yunohira Tenbōsho The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring1" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring2" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho The view from here reveals the lay of the land." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring2" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho The view from here reveals the lay of the land. Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring3" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho The view from here reveals the lay of the land." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring3" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 3" Description="A memorable sight that stays with all who pass by. Star waypoint at 1500m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring4" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 4" Description="This natural formation has drawn visitors for ages. Star waypoint at 2000m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring4" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring5" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 5" Description="Nature's artistry is on display here. Star waypoint at 2500m from Yunohira Tenbōsho The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke1Ring5" DisplayName="Yunohira Tenbōsho Spoke 1 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho The view from here reveals the lay of the land. The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring1" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring1" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring2" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 2" Description="A memorable sight that stays with all who pass by. Star waypoint at 1000m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring2" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 2" Description="A striking feature of the landscape. Star waypoint at 1000m from Yunohira Tenbōsho A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring3" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 3" Description="Nature's artistry is on display here. Star waypoint at 1500m from Yunohira Tenbōsho Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring3" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 3" Description="A notable landmark marking this region. Star waypoint at 1500m from Yunohira Tenbōsho There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring4" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho The view from here reveals the lay of the land. The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring4" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 4" Description="A notable landmark marking this region. Star waypoint at 2000m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring5" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 5" Description="A memorable sight that stays with all who pass by. Star waypoint at 2500m from Yunohira Tenbōsho The atmosphere is charged with possibility." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke2Ring5" DisplayName="Yunohira Tenbōsho Spoke 2 Ring 5" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2500m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring1" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 1" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 500m from Yunohira Tenbōsho A strange calm pervades the area." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring1" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 1" Description="This natural formation has drawn visitors for ages. Star waypoint at 500m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring2" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 2" Description="Star waypoint at 1000m from Yunohira Tenbōsho The view from here reveals the lay of the land." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring2" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 2" Description="This natural formation has drawn visitors for ages. Star waypoint at 1000m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring3" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 3" Description="Nature's artistry is on display here. Star waypoint at 1500m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring3" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 3" Description="A notable landmark marking this region. Star waypoint at 1500m from Yunohira Tenbōsho Something significant is about to happen." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring4" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho Locals speak of this place with reverence. The atmosphere is charged with possibility." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring4" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 4" Description="Star waypoint at 2000m from Yunohira Tenbōsho The view from here reveals the lay of the land. There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring5" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 5" Description="Nature's artistry is on display here. Star waypoint at 2500m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke3Ring5" DisplayName="Yunohira Tenbōsho Spoke 3 Ring 5" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2500m from Yunohira Tenbōsho A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring1" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 1" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 500m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring1" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring2" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 2" Description="A memorable sight that stays with all who pass by. Star waypoint at 1000m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring2" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 2" Description="This natural formation has drawn visitors for ages. Star waypoint at 1000m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring3" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 3" Description="A striking feature of the landscape. Star waypoint at 1500m from Yunohira Tenbōsho Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring3" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 3" Description="Star waypoint at 1500m from Yunohira Tenbōsho The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring4" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 4" Description="Nature's artistry is on display here. Star waypoint at 2000m from Yunohira Tenbōsho You feel the weight of history around you." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring4" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 4" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2000m from Yunohira Tenbōsho A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring5" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho Locals speak of this place with reverence." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke4Ring5" DisplayName="Yunohira Tenbōsho Spoke 4 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring1" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring1" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Yunohira Tenbōsho The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring2" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 2" Description="This natural formation has drawn visitors for ages. Star waypoint at 1000m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring2" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 2" Description="This natural formation has drawn visitors for ages. Star waypoint at 1000m from Yunohira Tenbōsho Something significant is about to happen." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring3" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 3" Description="A memorable sight that stays with all who pass by. Star waypoint at 1500m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring3" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 3" Description="Nature's artistry is on display here. Star waypoint at 1500m from Yunohira Tenbōsho There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring4" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 4" Description="A striking feature of the landscape. Star waypoint at 2000m from Yunohira Tenbōsho A strange calm pervades the area." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring4" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 4" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2000m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring5" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 5" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2500m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke5Ring5" DisplayName="Yunohira Tenbōsho Spoke 5 Ring 5" Description="This natural formation has drawn visitors for ages. Star waypoint at 2500m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring1" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring1" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 1" Description="Star waypoint at 500m from Yunohira Tenbōsho The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring2" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 2" Description="Nature's artistry is on display here. Star waypoint at 1000m from Yunohira Tenbōsho You feel the weight of history around you." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring2" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 2" Description="A striking feature of the landscape. Star waypoint at 1000m from Yunohira Tenbōsho The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring3" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 3" Description="This natural formation has drawn visitors for ages. Star waypoint at 1500m from Yunohira Tenbōsho There's an undeniable energy here." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring3" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 3" Description="A striking feature of the landscape. Star waypoint at 1500m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring4" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 4" Description="A memorable sight that stays with all who pass by. Star waypoint at 2000m from Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring4" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 4" Description="This natural formation has drawn visitors for ages. Star waypoint at 2000m from Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring5" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 5" Description="Star waypoint at 2500m from Yunohira Tenbōsho Locals speak of this place with reverence. Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōshoSpoke6Ring5" DisplayName="Yunohira Tenbōsho Spoke 6 Ring 5" Description="A striking feature of the landscape. Star waypoint at 2500m from Yunohira Tenbōsho There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo" DisplayName="Arimura Yōgan Tenbōjo" Description="These halls echo with the footsteps of those who came before. Hub center at Arimura Yōgan Tenbōjo The atmosphere is charged with possibility." Type="Structure">
+  <SagaFeature RefName="ArimuraYōganTenbōjo" DisplayName="Arimura Yōgan Tenbōjo" Description="Hub center at Arimura Yōgan Tenbōjo Its foundation has weathered many storms." Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo The view from here reveals the lay of the land." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 1" Description="This natural formation has drawn visitors for ages. Star waypoint at 500m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo The view from here reveals the lay of the land. A quiet determination fills this place." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 2" Description="A notable landmark marking this region. Star waypoint at 1000m from Arimura Yōgan Tenbōjo A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 3" Description="This natural formation has drawn visitors for ages. Star waypoint at 1500m from Arimura Yōgan Tenbōjo" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 3" Description="Star waypoint at 1500m from Arimura Yōgan Tenbōjo Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 4" Description="A notable landmark marking this region. Star waypoint at 2000m from Arimura Yōgan Tenbōjo There's an undeniable energy here." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 4" Description="This natural formation has drawn visitors for ages. Star waypoint at 2000m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 5" Description="This natural formation has drawn visitors for ages. Star waypoint at 2500m from Arimura Yōgan Tenbōjo" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke1Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 1 Ring 5" Description="A notable landmark marking this region. Star waypoint at 2500m from Arimura Yōgan Tenbōjo The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Arimura Yōgan Tenbōjo A quiet determination fills this place." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo Locals speak of this place with reverence. The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 3" Description="A striking feature of the landscape. Star waypoint at 1500m from Arimura Yōgan Tenbōjo" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 3" Description="Nature's artistry is on display here. Star waypoint at 1500m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 4" Description="A memorable sight that stays with all who pass by. Star waypoint at 2000m from Arimura Yōgan Tenbōjo Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 4" Description="Nature's artistry is on display here. Star waypoint at 2000m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 5" Description="This natural formation has drawn visitors for ages. Star waypoint at 2500m from Arimura Yōgan Tenbōjo Time seems to move differently here." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke2Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 2 Ring 5" Description="A memorable sight that stays with all who pass by. Star waypoint at 2500m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Arimura Yōgan Tenbōjo" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 1" Description="A notable landmark marking this region. Star waypoint at 500m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Description="Star waypoint at 1000m from Arimura Yōgan Tenbōjo Locals speak of this place with reverence. You feel the weight of history around you." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 2" Description="Nature's artistry is on display here. Star waypoint at 1000m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Description="A memorable sight that stays with all who pass by. Star waypoint at 1500m from Arimura Yōgan Tenbōjo" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 3" Description="A notable landmark marking this region. Star waypoint at 1500m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo Locals speak of this place with reverence." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 4" Description="A notable landmark marking this region. Star waypoint at 2000m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Description="A memorable sight that stays with all who pass by. Star waypoint at 2500m from Arimura Yōgan Tenbōjo A strange calm pervades the area." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke3Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 3 Ring 5" Description="A notable landmark marking this region. Star waypoint at 2500m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo The view from here reveals the lay of the land. The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 1" Description="A striking feature of the landscape. Star waypoint at 500m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 2" Description="A striking feature of the landscape. Star waypoint at 1000m from Arimura Yōgan Tenbōjo Time seems to move differently here." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 3" Description="A memorable sight that stays with all who pass by. Star waypoint at 1500m from Arimura Yōgan Tenbōjo Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring3" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 3" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1500m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 4" Description="Star waypoint at 2000m from Arimura Yōgan Tenbōjo Locals speak of this place with reverence. The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring4" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 4" Description="Nature's artistry is on display here. Star waypoint at 2000m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 5" Description="This natural formation has drawn visitors for ages. Star waypoint at 2500m from Arimura Yōgan Tenbōjo A quiet determination fills this place." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke4Ring5" DisplayName="Arimura Yōgan Tenbōjo Spoke 4 Ring 5" Description="This natural formation has drawn visitors for ages. Star waypoint at 2500m from Arimura Yōgan Tenbōjo A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke5Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 5 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Arimura Yōgan Tenbōjo" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke5Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 5 Ring 1" Description="A striking feature of the landscape. Star waypoint at 500m from Arimura Yōgan Tenbōjo The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Arimura Yōgan Tenbōjo" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring1" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 1" Description="Star waypoint at 500m from Arimura Yōgan Tenbōjo The view from here reveals the lay of the land." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 2" Description="This natural formation has drawn visitors for ages. Star waypoint at 1000m from Arimura Yōgan Tenbōjo The atmosphere is charged with possibility." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjoSpoke6Ring2" DisplayName="Arimura Yōgan Tenbōjo Spoke 6 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Arimura Yōgan Tenbōjo" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerryba" DisplayName="Sakurajima Kō Ferry-ba" Description="A place of shelter and history. Hub center at Sakurajima Kō Ferry-ba There's an undeniable energy here." Type="Structure">
+  <SagaFeature RefName="SakurajimaKōFerryba" DisplayName="Sakurajima Kō Ferry-ba" Description="Built to last, this structure endures. Hub center at Sakurajima Kō Ferry-ba Time seems to move differently here." Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Sakurajima Kō Ferry-ba There's an undeniable energy here." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 1" Description="A notable landmark marking this region. Star waypoint at 500m from Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Description="A notable landmark marking this region. Star waypoint at 1000m from Sakurajima Kō Ferry-ba Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 2" Description="A striking feature of the landscape. Star waypoint at 1000m from Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="This natural formation has drawn visitors for ages. Star waypoint at 1500m from Sakurajima Kō Ferry-ba" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 3" Description="A notable landmark marking this region. Star waypoint at 1500m from Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 2000m from Sakurajima Kō Ferry-ba A quiet determination fills this place." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring4" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 4" Description="This natural formation has drawn visitors for ages. Star waypoint at 2000m from Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Description="A striking feature of the landscape. Star waypoint at 2500m from Sakurajima Kō Ferry-ba" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke1Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 1 Ring 5" Description="A memorable sight that stays with all who pass by. Star waypoint at 2500m from Sakurajima Kō Ferry-ba A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke2Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 2 Ring 1" Description="A notable landmark marking this region. Star waypoint at 500m from Sakurajima Kō Ferry-ba" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke2Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 2 Ring 1" Description="A notable landmark marking this region. Star waypoint at 500m from Sakurajima Kō Ferry-ba The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 1" Description="A striking feature of the landscape. Star waypoint at 500m from Sakurajima Kō Ferry-ba" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 1" Description="A notable landmark marking this region. Star waypoint at 500m from Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1500m from Sakurajima Kō Ferry-ba A quiet determination fills this place." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke5Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 5 Ring 3" Description="Nature's artistry is on display here. Star waypoint at 1500m from Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke6Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba Locals speak of this place with reverence." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke6Ring1" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 1" Description="Star waypoint at 500m from Sakurajima Kō Ferry-ba The view from here reveals the lay of the land. A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke6Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 2" Description="Nature's artistry is on display here. Star waypoint at 1000m from Sakurajima Kō Ferry-ba" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke6Ring2" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 2" Description="A striking feature of the landscape. Star waypoint at 1000m from Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke6Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 3" Description="This natural formation has drawn visitors for ages. Star waypoint at 1500m from Sakurajima Kō Ferry-ba The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke6Ring3" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 3" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1500m from Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -340,47 +340,47 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerrybaSpoke6Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Description="Nature's artistry is on display here. Star waypoint at 2500m from Sakurajima Kō Ferry-ba A strange calm pervades the area." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerrybaSpoke6Ring5" DisplayName="Sakurajima Kō Ferry-ba Spoke 6 Ring 5" Description="A notable landmark marking this region. Star waypoint at 2500m from Sakurajima Kō Ferry-ba There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukan" DisplayName="Sakurajima Kasan Hakubutsukan" Description="Hub center at Sakurajima Kasan Hakubutsukan The architecture speaks of both purpose and permanence. The air carries a sense of anticipation." Type="Structure">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukan" DisplayName="Sakurajima Kasan Hakubutsukan" Description="This weathered edifice has stood for generations. Hub center at Sakurajima Kasan Hakubutsukan" Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 1" Description="This natural formation has drawn visitors for ages. Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Sakurajima Kasan Hakubutsukan There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring2" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 2" Description="A memorable sight that stays with all who pass by. Star waypoint at 1000m from Sakurajima Kasan Hakubutsukan" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 3" Description="A memorable sight that stays with all who pass by. Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 3" Description="A notable landmark marking this region. Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 4" Description="A memorable sight that stays with all who pass by. Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring4" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 4" Description="This natural formation has drawn visitors for ages. Star waypoint at 2000m from Sakurajima Kasan Hakubutsukan" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="A notable landmark marking this region. Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan The atmosphere is charged with possibility." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke1Ring5" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 1 Ring 5" Description="This natural formation has drawn visitors for ages. Star waypoint at 2500m from Sakurajima Kasan Hakubutsukan The atmosphere is charged with possibility." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke5Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 1" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke5Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 5 Ring 1" Description="A striking feature of the landscape. Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke6Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Sakurajima Kasan Hakubutsukan Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke6Ring1" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 1" Description="A memorable sight that stays with all who pass by. Star waypoint at 500m from Sakurajima Kasan Hakubutsukan" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -390,7 +390,7 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke6Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 3" Description="A notable landmark marking this region. Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan" Type="Landmark">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukanSpoke6Ring3" DisplayName="Sakurajima Kasan Hakubutsukan Spoke 6 Ring 3" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1500m from Sakurajima Kasan Hakubutsukan Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -400,117 +400,117 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyu" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="An imposing structure stands here. Hub center at Yōgan Nagisa Kōen Ashiyu Something significant is about to happen." Type="Structure">
+  <SagaFeature RefName="YōganNagisaKōenAshiyu" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="The ancient walls of this building bear witness to countless stories. Hub center at Yōgan Nagisa Kōen Ashiyu A strange calm pervades the area." Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu Locals speak of this place with reverence." Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 1" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 2" Description="Travelers use this distinctive feature to navigate the area. Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu A strange calm pervades the area." Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 2" Description="This natural formation has drawn visitors for ages. Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 3" Description="This natural formation has drawn visitors for ages. Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 3" Description="A memorable sight that stays with all who pass by. Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 4" Description="Nature's artistry is on display here. Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 4" Description="A notable landmark marking this region. Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Nature's artistry is on display here. Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke1Ring5" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 1 Ring 5" Description="Star waypoint at 2500m from Yōgan Nagisa Kōen Ashiyu Locals speak of this place with reverence. A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke5Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 1" Description="Nature's artistry is on display here. Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke5Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 5 Ring 1" Description="A striking feature of the landscape. Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 1" Description="Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu Locals speak of this place with reverence." Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring1" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 1" Description="A notable landmark marking this region. Star waypoint at 500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 2" Description="A memorable sight that stays with all who pass by. Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu Time seems to move differently here." Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring2" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 2" Description="A notable landmark marking this region. Star waypoint at 1000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 3" Description="Nature's artistry is on display here. Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring3" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 3" Description="Star waypoint at 1500m from Yōgan Nagisa Kōen Ashiyu The view from here reveals the lay of the land. The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="A memorable sight that stays with all who pass by. Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu You feel the weight of history around you." Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyuSpoke6Ring4" DisplayName="Yōgan Nagisa Kōen Ashiyu Spoke 6 Ring 4" Description="Nature's artistry is on display here. Star waypoint at 2000m from Yōgan Nagisa Kōen Ashiyu" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1" DisplayName="Arimura Yōgan Tenbōjo" Description="A striking feature of the landscape. Observation deck on Taishō-era lava fields near Minamidake" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1" DisplayName="Arimura Yōgan Tenbōjo" Description="Travelers use this distinctive feature to navigate the area. Observation deck on Taishō-era lava fields near Minamidake" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="Nature's artistry is on display here. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho Something significant is about to happen." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_0" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (1)" Description="A notable landmark marking this region. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="A notable landmark marking this region. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho A quiet determination fills this place." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_1" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (2)" Description="This natural formation has drawn visitors for ages. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_2" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (3)" Description="Nature's artistry is on display here. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Nature's artistry is on display here. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_3" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (4)" Description="Nature's artistry is on display here. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho Locals speak of this place with reverence." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_4" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (5)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho Locals speak of this place with reverence. There's an undeniable energy here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho The atmosphere is charged with possibility." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_5" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (6)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho The view from here reveals the lay of the land. The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho The view from here reveals the lay of the land. The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_6" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (7)" Description="A striking feature of the landscape. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="This natural formation has drawn visitors for ages. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_7" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (8)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="A memorable sight that stays with all who pass by. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho A quiet determination fills this place." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_8" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (9)" Description="This natural formation has drawn visitors for ages. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho A strange calm pervades the area." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_9" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (10)" Description="A striking feature of the landscape. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="Nature's artistry is on display here. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho Time seems to move differently here." Type="Landmark">
+  <SagaFeature RefName="ArimuraYōganTenbōjo1_to_YunohiraTenbōsho1_10" DisplayName="Waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho (11)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Arimura Yōgan Tenbōjo and Yunohira Tenbōsho" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
@@ -520,52 +520,52 @@
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōsho1" DisplayName="Yunohira Tenbōsho" Description="Nature's artistry is on display here. Highest public viewpoint on Sakurajima’s north peak (Kitadake) You feel the weight of history around you." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōsho1" DisplayName="Yunohira Tenbōsho" Description="Nature's artistry is on display here. Highest public viewpoint on Sakurajima’s north peak (Kitadake) Time seems to move differently here." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_0" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (1)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba Locals speak of this place with reverence. The air carries a sense of anticipation." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="A memorable sight that stays with all who pass by. Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba Time seems to move differently here." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_1" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (2)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_2" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (3)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba The view from here reveals the lay of the land. A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="A striking feature of the landscape. Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_3" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (4)" Description="This natural formation has drawn visitors for ages. Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba A quiet determination fills this place." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba Locals speak of this place with reverence." Type="Landmark">
+  <SagaFeature RefName="YunohiraTenbōsho1_to_SakurajimaKōFerryba1_4" DisplayName="Waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba (5)" Description="Nature's artistry is on display here. Intermediate waypoint between Yunohira Tenbōsho and Sakurajima Kō Ferry-ba" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerryba1" DisplayName="Sakurajima Kō Ferry-ba" Description="Historic landing point linking Satsuma capital to Sakurajima Locals speak of this place with reverence. The air carries a sense of anticipation." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerryba1" DisplayName="Sakurajima Kō Ferry-ba" Description="A notable landmark marking this region. Historic landing point linking Satsuma capital to Sakurajima Something significant is about to happen." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="Intermediate waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan The view from here reveals the lay of the land." Type="Landmark">
+  <SagaFeature RefName="SakurajimaKōFerryba1_to_SakurajimaKasanHakubutsukan1_0" DisplayName="Waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan (1)" Description="This natural formation has drawn visitors for ages. Intermediate waypoint between Sakurajima Kō Ferry-ba and Sakurajima Kasan Hakubutsukan" Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="SakurajimaKasanHakubutsukan1" DisplayName="Sakurajima Kasan Hakubutsukan" Description="An imposing structure stands here. Volcano island museum and interpretation hall by the port" Type="Structure">
+  <SagaFeature RefName="SakurajimaKasanHakubutsukan1" DisplayName="Sakurajima Kasan Hakubutsukan" Description="Volcano island museum and interpretation hall by the port Its foundation has weathered many storms. There's an undeniable energy here." Type="Structure">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
   </SagaFeature>
-  <SagaFeature RefName="YōganNagisaKōenAshiyu1" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="A notable landmark marking this region. Coastal lava-shore park with long ashiyu foot-bath beside the visitor center" Type="Landmark">
+  <SagaFeature RefName="YōganNagisaKōenAshiyu1" DisplayName="Yōgan Nagisa Kōen Ashiyu" Description="Coastal lava-shore park with long ashiyu foot-bath beside the visitor center Locals speak of this place with reverence." Type="Landmark">
     <Interactable>
       <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
     </Interactable>
