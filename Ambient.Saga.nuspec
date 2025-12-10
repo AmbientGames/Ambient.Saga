@@ -24,9 +24,6 @@
         <file src="Ambient.Infrastructure\bin\$configuration$\net8.0\Ambient.Infrastructure.dll" target="lib\net8.0" />
         <file src="Ambient.Saga.Engine\bin\$configuration$\net8.0\Ambient.Saga.Engine.dll" target="lib\net8.0" />
 
-        <!-- Copy all WorldDefinitions files recursively -->
-        <file src="Ambient.Domain\bin\$configuration$\net8.0\WorldDefinitions\**\*.*" target="contentFiles\any\Assets\WorldDefinitions" />
-
         <!-- Copy all Schema files recursively -->
         <file src="Ambient.Domain\bin\$configuration$\net8.0\DefinitionXsd\**\*.*" target="contentFiles\any\Assets\DefinitionXsd" />
 
