@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2BA74E7B-A001-404D-8C73-DE1CCABBCA93}"
 	ProjectSection(SolutionItems) = preProject
 		ARCHITECTURE.md = ARCHITECTURE.md
+		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
 		nuget.config = nuget.config
 		OPEN_SOURCE_READINESS.md = OPEN_SOURCE_READINESS.md

@@ -1,0 +1,52 @@
+name: Release to NuGet
+
+on:
+  release:
+    types: [published]
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          $tag = "${{ github.event.release.tag_name }}"
+          $version = $tag -replace '^v', ''
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          echo "Extracted version: $version"
+        shell: pwsh
+
+      - name: Restore dependencies
+        run: dotnet restore Ambient.Saga.sln
+
+      - name: Build
+        run: dotnet build Ambient.Saga.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test Ambient.Saga.sln --configuration Release --no-build --verbosity normal
+
+      - name: Pack NuGet packages
+        run: |
+          dotnet pack Ambient.Domain/Ambient.Domain.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
+          dotnet pack Ambient.Application/Ambient.Application.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
+          dotnet pack Ambient.Infrastructure/Ambient.Infrastructure.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
+          dotnet pack Ambient.Saga.Engine/Ambient.Saga.Engine.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
+
+      - name: Push to NuGet
+        run: dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
