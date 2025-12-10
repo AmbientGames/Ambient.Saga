@@ -72,6 +72,21 @@ public class StartDialogueCommandTests : IDisposable
             LongitudeX = 139.0
         };
 
+        var dialogueTree = new DialogueTree
+        {
+            RefName = "MerchantDialogue",
+            StartNodeId = "greeting",
+            Node = new[]
+            {
+                new DialogueNode
+                {
+                    NodeId = "greeting",
+                    Text = new[] { "Welcome to my shop!" },
+                    Choice = Array.Empty<DialogueChoice>()
+                }
+            }
+        };
+
         var world = new World
         {
             WorldTemplate = new WorldTemplate
@@ -79,7 +94,8 @@ public class StartDialogueCommandTests : IDisposable
                 Gameplay = new GameplayComponents
                 {
                     SagaArcs = new[] { sagaArc },
-                    Characters = new[] { merchant }
+                    Characters = new[] { merchant },
+                    DialogueTrees = new[] { dialogueTree }
                 }
             }
         };
@@ -87,6 +103,7 @@ public class StartDialogueCommandTests : IDisposable
         world.SagaArcLookup[sagaArc.RefName] = sagaArc;
         world.CharactersLookup[merchant.RefName] = merchant;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger>();
+        world.DialogueTreesLookup[dialogueTree.RefName] = dialogueTree;
 
         return world;
     }

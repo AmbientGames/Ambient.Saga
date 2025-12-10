@@ -122,6 +122,37 @@ public class SagaE2EStoryTests : IDisposable
             }
         };
 
+        // Create dialogue trees for the characters
+        var merchantDialogue = new DialogueTree
+        {
+            RefName = "MerchantGreeting",
+            StartNodeId = "greeting",
+            Node = new[]
+            {
+                new DialogueNode
+                {
+                    NodeId = "greeting",
+                    Text = new[] { "Welcome to Kagoshima Castle! What brings you here?" },
+                    Choice = Array.Empty<DialogueChoice>()
+                }
+            }
+        };
+
+        var bossDialogue = new DialogueTree
+        {
+            RefName = "BossChallenge",
+            StartNodeId = "challenge",
+            Node = new[]
+            {
+                new DialogueNode
+                {
+                    NodeId = "challenge",
+                    Text = new[] { "You have entered my domain. Prepare to face Lord Yamamoto!" },
+                    Choice = Array.Empty<DialogueChoice>()
+                }
+            }
+        };
+
         var world = new World
         {
             WorldConfiguration = new WorldConfiguration
@@ -145,7 +176,7 @@ public class SagaE2EStoryTests : IDisposable
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),
-                    DialogueTrees = Array.Empty<DialogueTree>()
+                    DialogueTrees = new[] { merchantDialogue, bossDialogue }
                 },
                 //Simulation = new SimulationComponents(),
                 //Presentation = new PresentationComponents()
@@ -157,6 +188,8 @@ public class SagaE2EStoryTests : IDisposable
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger> { merchantTrigger, bossTrigger };
         world.CharactersLookup[merchant.RefName] = merchant;
         world.CharactersLookup[boss.RefName] = boss;
+        world.DialogueTreesLookup[merchantDialogue.RefName] = merchantDialogue;
+        world.DialogueTreesLookup[bossDialogue.RefName] = bossDialogue;
 
         return world;
     }
