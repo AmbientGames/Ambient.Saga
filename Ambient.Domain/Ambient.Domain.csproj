@@ -5,6 +5,12 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+
+        <!-- NuGet Package -->
+        <PackageId>Ambient.Domain</PackageId>
+        <Description>Domain layer for Ambient.Saga - RPG/narrative game engine. Contains entities, value objects, and core business logic.</Description>
+        <PackageTags>rpg;game;narrative;dialogue;domain;ddd</PackageTags>
+        <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
