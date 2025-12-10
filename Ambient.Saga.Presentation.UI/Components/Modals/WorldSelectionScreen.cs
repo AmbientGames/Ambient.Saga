@@ -37,7 +37,7 @@ public class WorldSelectionScreen
         // Center the selection window
         var viewport = ImGui.GetMainViewport();
         ImGui.SetNextWindowPos(new Vector2(viewport.Size.X * 0.5f, viewport.Size.Y * 0.5f), ImGuiCond.Always, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(600, 400), ImGuiCond.FirstUseEver);
+        ImGui.SetNextWindowSize(new Vector2(600, 410), ImGuiCond.Always);
 
         if (!ImGui.Begin("World Selection", ref isOpen, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
         {
