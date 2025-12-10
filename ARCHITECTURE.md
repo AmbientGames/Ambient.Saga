@@ -481,8 +481,38 @@ Ambient.Saga/
 | UI | ImGui.NET 1.91.6.1 + SharpDX 4.2.0 |
 | Steam | Steamworks.NET 2024.8.0 |
 | MVVM | CommunityToolkit.Mvvm 8.4.0 |
-| Testing | xUnit + coverlet |
+| Testing | xUnit + coverlet (1,024 tests) |
 | Images | SixLabors.ImageSharp, SkiaSharp |
+| CI/CD | GitHub Actions |
+| Package | NuGet (Ambient.Saga) |
+
+---
+
+## CI/CD & Publishing
+
+### Continuous Integration
+
+All pull requests and pushes to `master` trigger the CI pipeline:
+
+1. Build solution (Release configuration)
+2. Run all 1,024 tests
+3. Upload test results as artifacts
+
+### NuGet Publishing
+
+Create a GitHub Release with a tag (e.g., `v1.2.0`) to automatically publish to NuGet.org:
+
+```bash
+# Install the package
+dotnet add package Ambient.Saga
+```
+
+The `Ambient.Saga` package includes:
+- `Ambient.Domain.dll` - Core entities and business logic
+- `Ambient.Application.dll` - Use cases and contracts
+- `Ambient.Infrastructure.dll` - Persistence and integrations
+- `Ambient.Saga.Engine.dll` - Game engine with CQRS handlers
+- `DefinitionXsd/` - XML schema files for world definitions
 
 ---
 

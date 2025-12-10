@@ -75,9 +75,8 @@ Uses official NuGet source only (see `nuget.config`).
 
 ## Key Documentation
 
-- `Ambient.Saga.Presentation.UI/Services/DIALOGUE_SYSTEM.md` - Dialogue tree implementation
-- `Ambient.Saga.Engine/Application/Commands/Saga/README.md` - Available saga commands
-- `Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs/README.md` - CQRS test patterns
+- `ARCHITECTURE.md` - Comprehensive feature documentation and usage examples
+- `OPEN_SOURCE_READINESS.md` - CI/CD, publishing, and project status
 
 ## Tech Stack
 
