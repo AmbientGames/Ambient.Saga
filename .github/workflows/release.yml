@@ -42,7 +42,7 @@ jobs:
         run: dotnet test Ambient.Saga.sln --configuration Release --no-build --verbosity normal
 
       - name: Pack NuGet package
-        run: dotnet pack Ambient.Saga.Engine/Ambient.Saga.Engine.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
+        run: nuget pack Ambient.Saga.nuspec -Version ${{ steps.version.outputs.VERSION }} -Properties configuration=Release -OutputDirectory ./nupkgs
 
       - name: Push to NuGet
         run: dotnet nuget push ./nupkgs/Ambient.Saga.${{ steps.version.outputs.VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

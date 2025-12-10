@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Ambient.Saga</id>
+        <version>$version$</version>
+        <authors>Ambient Games</authors>
+        <description>A C# RPG/narrative game engine featuring CQRS command/query handling, dialogue systems, combat AI, quest tracking, and procedural world generation.</description>
+        <license type="expression">MIT</license>
+        <readme>docs\README.md</readme>
+        <projectUrl>https://github.com/AmbientGames/Ambient.Saga</projectUrl>
+        <repository type="git" url="https://github.com/AmbientGames/Ambient.Saga" />
+        <tags>rpg game narrative dialogue engine cqrs mediatr</tags>
+        <dependencies>
+            <group targetFramework="net8.0"/>
+        </dependencies>
+        <contentFiles>
+            <files include="**/*.*" buildAction="None" copyToOutput="true" flatten="true"/>
+        </contentFiles>
+    </metadata>
+    <files>
+        <!-- Library DLLs -->
+        <file src="Ambient.Domain\bin\$configuration$\net8.0\Ambient.Domain.dll" target="lib\net8.0" />
+        <file src="Ambient.Application\bin\$configuration$\net8.0\Ambient.Application.dll" target="lib\net8.0" />
+        <file src="Ambient.Infrastructure\bin\$configuration$\net8.0\Ambient.Infrastructure.dll" target="lib\net8.0" />
+        <file src="Ambient.Saga.Engine\bin\$configuration$\net8.0\Ambient.Saga.Engine.dll" target="lib\net8.0" />
+
+        <!-- Copy all WorldDefinitions files recursively -->
+        <file src="Ambient.Domain\bin\$configuration$\net8.0\WorldDefinitions\**\*.*" target="contentFiles\any\Assets\WorldDefinitions" />
+
+        <!-- Copy all Schema files recursively -->
+        <file src="Ambient.Domain\bin\$configuration$\net8.0\DefinitionXsd\**\*.*" target="contentFiles\any\Assets\DefinitionXsd" />
+
+        <!-- Documentation -->
+        <file src="README.md" target="docs\" />
+    </files>
+</package>

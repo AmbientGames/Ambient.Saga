@@ -5,11 +5,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 
-    <!-- NuGet Package -->
-    <PackageId>Ambient.Saga</PackageId>
-    <Description>A C# RPG/narrative game engine featuring CQRS command/query handling, dialogue systems, combat AI, quest tracking, and procedural world generation.</Description>
-    <PackageTags>rpg;game;narrative;dialogue;engine;cqrs;mediatr</PackageTags>
-    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
