@@ -5,11 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
-        <!-- NuGet Package -->
-        <PackageId>Ambient.Infrastructure</PackageId>
-        <Description>Infrastructure layer for Ambient.Saga - RPG/narrative game engine. Contains persistence, external integrations, and cross-cutting concerns.</Description>
-        <PackageTags>rpg;game;narrative;dialogue;infrastructure;persistence</PackageTags>
-        <IsPackable>true</IsPackable>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>

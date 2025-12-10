@@ -41,16 +41,8 @@ jobs:
       - name: Test
         run: dotnet test Ambient.Saga.sln --configuration Release --no-build --verbosity normal
 
-      - name: Pack NuGet packages
-        run: |
-          dotnet pack Ambient.Domain/Ambient.Domain.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
-          dotnet pack Ambient.Application/Ambient.Application.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
-          dotnet pack Ambient.Infrastructure/Ambient.Infrastructure.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
-          dotnet pack Ambient.Saga.Engine/Ambient.Saga.Engine.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
+      - name: Pack NuGet package
+        run: dotnet pack Ambient.Saga.Engine/Ambient.Saga.Engine.csproj --configuration Release --no-build -p:PackageVersion=${{ steps.version.outputs.VERSION }} --output ./nupkgs
 
       - name: Push to NuGet
-        run: |
-          foreach ($pkg in Get-ChildItem ./nupkgs/*.nupkg) {
-            dotnet nuget push $pkg.FullName --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
-          }
-        shell: pwsh
+        run: dotnet nuget push ./nupkgs/Ambient.Saga.${{ steps.version.outputs.VERSION }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate

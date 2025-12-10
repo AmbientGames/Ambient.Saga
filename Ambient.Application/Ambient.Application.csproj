@@ -5,11 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
-        <!-- NuGet Package -->
-        <PackageId>Ambient.Application</PackageId>
-        <Description>Application layer for Ambient.Saga - RPG/narrative game engine. Contains use cases, contracts, and orchestration logic.</Description>
-        <PackageTags>rpg;game;narrative;dialogue;application;cqrs</PackageTags>
-        <IsPackable>true</IsPackable>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
