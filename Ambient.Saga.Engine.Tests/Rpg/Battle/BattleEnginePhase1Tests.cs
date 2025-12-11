@@ -16,7 +16,7 @@ namespace Ambient.Saga.Engine.Tests.Rpg.Battle;
 /// </summary>
 public class BattleEnginePhase1Tests
 {
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public BattleEnginePhase1Tests()
     {

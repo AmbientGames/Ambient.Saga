@@ -56,7 +56,7 @@ public partial class CharacterLocationViewModel : ObservableObject
         Character characterTemplate,
         SagaArc sagaArc,
         IHeightMapMetadata metadata,
-        World world)
+        IWorld world)
     {
         // Use Saga location as character spawn location
         var latitude = sagaArc.LatitudeZ;
@@ -93,7 +93,7 @@ public partial class CharacterLocationViewModel : ObservableObject
         CharacterState instance,
         Character character,
         IHeightMapMetadata metadata,
-        World world)
+        IWorld world)
     {
         var vm = new CharacterLocationViewModel
         {

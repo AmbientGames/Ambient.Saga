@@ -43,7 +43,7 @@ public static class EffectApplier
         string? attackerAffinity,
         string? defenderAffinity,
         bool isOffensive,
-        World world,
+        IWorld world,
         string itemTypeName)
     {
         var results = new List<EffectResult>();
@@ -147,7 +147,7 @@ public static class EffectApplier
     /// EXACT COPY of BattleUI.cs CalculateAffinityMultiplier method (lines 963-991).
     /// Returns 1.5 for strong matchup, 0.5 for weak matchup, NeutralMultiplier for neutral
     /// </summary>
-    public static float CalculateAffinityMultiplier(string? attackerAffinity, string? defenderAffinity, World world)
+    public static float CalculateAffinityMultiplier(string? attackerAffinity, string? defenderAffinity, IWorld world)
     {
         // No bonus if either affinity is null
         if (string.IsNullOrEmpty(attackerAffinity) || string.IsNullOrEmpty(defenderAffinity))
@@ -185,7 +185,7 @@ public static class EffectApplier
     /// Get display name for affinity (for logging/UI).
     /// EXACT COPY of BattleUI.cs GetAffinityDisplayName method (lines 996-1008).
     /// </summary>
-    public static string GetAffinityDisplayName(string? affinityRef, World world)
+    public static string GetAffinityDisplayName(string? affinityRef, IWorld world)
     {
         if (string.IsNullOrEmpty(affinityRef))
             return "None";

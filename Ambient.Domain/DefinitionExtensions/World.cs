@@ -1,7 +1,5 @@
 ﻿using Ambient.Domain.Contracts;
-using Ambient.Domain.Enums;
 using Ambient.Domain.ValueObjects;
-using System.Diagnostics;
 using System.Xml.Serialization;
 
 namespace Ambient.Domain.DefinitionExtensions;
@@ -28,38 +26,39 @@ public partial class World : IWorld
 
     [XmlIgnore] public WorldConfiguration WorldConfiguration { get; set; }
     [XmlIgnore] public WorldConfiguration[] AvailableWorldConfigurations;
-    [XmlIgnore] public WorldTemplate WorldTemplate;
-    [XmlIgnore] public bool IsProcedural = true;
+    [XmlIgnore] public WorldTemplate WorldTemplate { get; set; }
+    [XmlIgnore] public bool IsProcedural { get; set; } = true;
     [XmlIgnore] public GameplayComponents Gameplay => WorldTemplate.Gameplay;
-    [XmlIgnore] public Dictionary<string, Tool> ToolsLookup = new Dictionary<string, Tool>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, BuildingMaterial> BuildingMaterialsLookup = new Dictionary<string, BuildingMaterial>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, Consumable> ConsumablesLookup = new Dictionary<string, Consumable>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, Spell> SpellsLookup = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, Character> CharactersLookup = new Dictionary<string, Character>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, Equipment> EquipmentLookup = new Dictionary<string, Equipment>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, QuestToken> QuestTokensLookup = new Dictionary<string, QuestToken>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, Achievement> AchievementsLookup = new Dictionary<string, Achievement>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, Quest> QuestsLookup = new Dictionary<string, Quest>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, AvatarArchetype> AvatarArchetypesLookup = new Dictionary<string, AvatarArchetype>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, DialogueTree> DialogueTreesLookup = new Dictionary<string, DialogueTree>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, CharacterArchetype> CharacterArchetypesLookup = new Dictionary<string, CharacterArchetype>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup = new Dictionary<string, CharacterAffinity>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, CombatStance> CombatStancesLookup = new Dictionary<string, CombatStance>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, LoadoutSlot> LoadoutSlotsLookup = new Dictionary<string, LoadoutSlot>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, SagaTriggerPattern> SagaTriggerPatternsLookup = new Dictionary<string, SagaTriggerPattern>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, SagaFeature> SagaFeaturesLookup = new Dictionary<string, SagaFeature>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, SagaArc> SagaArcLookup = new Dictionary<string, SagaArc>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, List<SagaTrigger>> SagaTriggersLookup = new Dictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, Faction> FactionsLookup = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, StatusEffect> StatusEffectsLookup = new Dictionary<string, StatusEffect>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public int BlocksBeneathSeaLevel = 64; // this is a todo... coordinate converter requires this - we probably need an interface to do this right.
-    [XmlIgnore] public double VerticalScale;
-    [XmlIgnore] public double VerticalShift;
-    [XmlIgnore] public GeoTiffMetadata HeightMapMetadata;
-    [XmlIgnore] public int HeightMapSpawnPixelX;
-    [XmlIgnore] public int HeightMapSpawnPixelY;
-    [XmlIgnore] public double HeightMapLatitudeScale;
-    [XmlIgnore] public double HeightMapLongitudeScale;
+
+    [XmlIgnore] public Dictionary<string, Tool> ToolsLookup { get; set; } = new Dictionary<string, Tool>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, BuildingMaterial> BuildingMaterialsLookup { get; set; } = new Dictionary<string, BuildingMaterial>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, Consumable> ConsumablesLookup { get; set; } = new Dictionary<string, Consumable>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, Spell> SpellsLookup { get; set; } = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, Character> CharactersLookup { get; set; } = new Dictionary<string, Character>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, Equipment> EquipmentLookup { get; set; } = new Dictionary<string, Equipment>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, QuestToken> QuestTokensLookup { get; set; } = new Dictionary<string, QuestToken>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, Achievement> AchievementsLookup { get; set; } = new Dictionary<string, Achievement>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, Quest> QuestsLookup { get; set; } = new Dictionary<string, Quest>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, AvatarArchetype> AvatarArchetypesLookup { get; set; } = new Dictionary<string, AvatarArchetype>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, DialogueTree> DialogueTreesLookup { get; set; } = new Dictionary<string, DialogueTree>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, CharacterArchetype> CharacterArchetypesLookup { get; set; } = new Dictionary<string, CharacterArchetype>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; } = new Dictionary<string, CharacterAffinity>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, CombatStance> CombatStancesLookup { get; set; } = new Dictionary<string, CombatStance>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; } = new Dictionary<string, LoadoutSlot>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, SagaTriggerPattern> SagaTriggerPatternsLookup { get; set; } = new Dictionary<string, SagaTriggerPattern>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, SagaFeature> SagaFeaturesLookup { get; set; } = new Dictionary<string, SagaFeature>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, SagaArc> SagaArcLookup { get; set; } = new Dictionary<string, SagaArc>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; } = new Dictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, Faction> FactionsLookup { get; set; } = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, StatusEffect> StatusEffectsLookup { get; set; } = new Dictionary<string, StatusEffect>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public int BlocksBeneathSeaLevel { get; set; } = 64; // this is a todo... coordinate converter requires this - we probably need an interface to do this right.
+    [XmlIgnore] public double VerticalScale { get; set; }
+    [XmlIgnore] public double VerticalShift { get; set; }
+    [XmlIgnore] public GeoTiffMetadata HeightMapMetadata { get; set; }
+    [XmlIgnore] public int HeightMapSpawnPixelX { get; set; }
+    [XmlIgnore] public int HeightMapSpawnPixelY { get; set; }
+    [XmlIgnore] public double HeightMapLatitudeScale { get; set; }
+    [XmlIgnore] public double HeightMapLongitudeScale { get; set; }
 
     public World()
     {

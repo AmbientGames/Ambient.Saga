@@ -11,7 +11,7 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
 /// </summary>
 public class SagaInteractionContext
 {
-    public World? World { get; set; }
+    public IWorld World { get; set; }
     public AvatarEntity? AvatarEntity { get; set; }
     public Guid AvatarId { get; set; }
     public Character? ActiveCharacter { get; set; }

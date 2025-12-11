@@ -13,7 +13,7 @@ namespace Ambient.Saga.Presentation.UI.Components.Modals;
 public class ItemSelectionModal
 {
     private readonly Combatant _player;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     // Event fired when user selects an item
     public event Action<string>? ItemSelected;
@@ -21,7 +21,7 @@ public class ItemSelectionModal
     // Event fired when user cancels
     public event Action? Cancelled;
 
-    public ItemSelectionModal(Combatant player, World world)
+    public ItemSelectionModal(Combatant player, IWorld world)
     {
         _player = player;
         _world = world;

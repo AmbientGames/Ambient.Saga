@@ -19,7 +19,7 @@ public static class QuestProgressEvaluator
         QuestStage stage,
         QuestObjective objective,
         List<SagaTransaction> transactions,
-        World world)
+        IWorld world)
     {
         var relevantTransactions = transactions
             .Where(t => t.Status == TransactionStatus.Committed)
@@ -63,7 +63,7 @@ public static class QuestProgressEvaluator
         QuestStage stage,
         QuestObjective objective,
         List<SagaTransaction> transactions,
-        World world)
+        IWorld world)
     {
         var currentValue = EvaluateObjectiveProgress(quest, stage, objective, transactions, world);
         return currentValue >= objective.Threshold;
@@ -76,7 +76,7 @@ public static class QuestProgressEvaluator
         Quest quest,
         QuestStage stage,
         List<SagaTransaction> transactions,
-        World world)
+        IWorld world)
     {
         // If stage has branches, check if a branch was chosen
         if (stage.Branches != null)

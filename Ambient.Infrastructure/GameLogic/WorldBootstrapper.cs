@@ -17,14 +17,14 @@ public static class WorldBootstrapper
     /// Loads textures and applies all world settings using current world properties.
     /// </summary>
     /// <param name="world">The world instance to initialize</param>
-    public static void Initialize(World world)
+    public static void Initialize(IWorld world)
     {
         WorldRuntimeSetup.LoadWorld(world);
 
         InitializeWorldSettings(world);
     }
 
-    public static void Initialize(World world, WorldConfiguration worldConfiguration)
+    public static void Initialize(IWorld world, WorldConfiguration worldConfiguration)
     {
         WorldRuntimeSetup.LoadWorld(world);
 
@@ -34,7 +34,7 @@ public static class WorldBootstrapper
     }
 
 
-    private static void InitializeWorldSettings(World world)
+    private static void InitializeWorldSettings(IWorld world)
     {
         // Apply world configuration processing (serialization fix, scale, timing)
         WorldConfigurationService.InitializeWorldTiming(world);

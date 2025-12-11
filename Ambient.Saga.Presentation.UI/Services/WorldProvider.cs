@@ -9,19 +9,19 @@ namespace Ambient.Saga.Presentation.UI.Services;
 /// </summary>
 public class WorldProvider
 {
-    private World? _world;
+    private IWorld _world;
 
     /// <summary>
     /// Gets the current World instance.
     /// Returns null if not yet initialized (world not loaded).
     /// Handlers should check for null and handle appropriately.
     /// </summary>
-    public World? World => _world;
+    public IWorld World => _world;
 
     /// <summary>
     /// Sets the World instance (called by MainViewModel when world loads).
     /// </summary>
-    public void SetWorld(World world)
+    public void SetWorld(IWorld world)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
     }

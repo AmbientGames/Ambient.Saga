@@ -37,7 +37,7 @@ public class BattleEngine
     private readonly ICombatAI? _enemyMind;  // Tactical AI for enemy
     private readonly ICombatAI? _companionMind;  // AI for companion turns
     private readonly Random _random;
-    private readonly World? _world;  // Needed for affinity lookups and item resolution
+    private readonly IWorld _world;  // Needed for affinity lookups and item resolution
 
     private int _turnNumber;
     private int _currentCompanionIndex;  // Which companion's turn it is
@@ -70,7 +70,7 @@ public class BattleEngine
     /// <param name="randomSeed">Optional seed for deterministic behavior in tests</param>
     /// <param name="companions">Optional party companions who fight alongside the player</param>
     /// <param name="companionMind">AI brain for companion tactical decisions (uses enemyMind if not provided)</param>
-    public BattleEngine(Combatant player, Combatant enemy, ICombatAI? enemyMind = null, World? world = null, int? randomSeed = null,
+    public BattleEngine(Combatant player, Combatant enemy, ICombatAI? enemyMind = null, IWorld world = null, int? randomSeed = null,
         List<Combatant>? companions = null, ICombatAI? companionMind = null)
     {
         _player = player ?? throw new ArgumentNullException(nameof(player));
@@ -1558,7 +1558,7 @@ public class BattleEngine
     /// <summary>
     /// Get the world data (for equipment/spell/consumable lookups).
     /// </summary>
-    public World? GetWorld() => _world;
+    public IWorld GetWorld() => _world;
 
     /// <summary>
     /// Get the current turn number.

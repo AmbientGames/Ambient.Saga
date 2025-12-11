@@ -128,7 +128,7 @@ public class StubMediator : IMediator
 /// </summary>
 public class MerchantTradeViewModelTests
 {
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly AvatarEntity _player;
     private readonly Character _merchant;
     private readonly SagaInteractionContext _context;
@@ -155,7 +155,7 @@ public class MerchantTradeViewModelTests
         };
     }
 
-    private World CreateTestWorld()
+    private IWorld CreateTestWorld()
     {
         var world = new World
         {

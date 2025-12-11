@@ -24,7 +24,7 @@ public static class AchievementProgressEvaluator
     public static float EvaluateProgress(
         Achievement achievement,
         IEnumerable<SagaInstance> allSagaInstances,
-        World world,
+        IWorld world,
         string avatarId)
     {
         if (achievement.Criteria == null)
@@ -44,7 +44,7 @@ public static class AchievementProgressEvaluator
     private static float GetCurrentValue(
         AchievementCriteria criteria,
         IEnumerable<SagaInstance> allSagaInstances,
-        World world,
+        IWorld world,
         string avatarId)
     {
         // Flatten all transactions from all Saga instances for this avatar
@@ -113,7 +113,7 @@ public static class AchievementProgressEvaluator
         return transactions.Count(t => t.Type == SagaTransactionType.CharacterDefeated);
     }
 
-    private static float CountCharacterDefeatsByType(List<SagaTransaction> transactions, string? characterType, World world)
+    private static float CountCharacterDefeatsByType(List<SagaTransaction> transactions, string? characterType, IWorld world)
     {
         if (string.IsNullOrEmpty(characterType))
             return CountCharacterDefeats(transactions);
@@ -136,7 +136,7 @@ public static class AchievementProgressEvaluator
             });
     }
 
-    private static float CountCharacterDefeatsByTag(List<SagaTransaction> transactions, string? tag, World world)
+    private static float CountCharacterDefeatsByTag(List<SagaTransaction> transactions, string? tag, IWorld world)
     {
         if (string.IsNullOrEmpty(tag))
             return CountCharacterDefeats(transactions);
@@ -261,7 +261,7 @@ public static class AchievementProgressEvaluator
             .Count(t => t.GetData<string>("TraitType") == traitType);
     }
 
-    private static float CountTraitsAssignedToCharacterType(List<SagaTransaction> transactions, string? characterType, World world)
+    private static float CountTraitsAssignedToCharacterType(List<SagaTransaction> transactions, string? characterType, IWorld world)
     {
         if (string.IsNullOrEmpty(characterType))
             return CountTraitsAssigned(transactions);
@@ -437,7 +437,7 @@ public static class AchievementProgressEvaluator
     public static List<AchievementInstance> EvaluateAllAchievements(
         IEnumerable<Achievement> allAchievements,
         IEnumerable<SagaInstance> allSagaInstances,
-        World world,
+        IWorld world,
         string avatarId)
     {
         var results = new List<AchievementInstance>();
@@ -470,7 +470,7 @@ public static class AchievementProgressEvaluator
         IEnumerable<Achievement> allAchievements,
         IEnumerable<AchievementInstance> previousInstances,
         IEnumerable<SagaInstance> allSagaInstances,
-        World world,
+        IWorld world,
         string avatarId)
     {
         var newlyUnlocked = new List<Achievement>();

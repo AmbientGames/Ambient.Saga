@@ -20,13 +20,13 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IAvatarUpdateService _avatarUpdateService;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public CompleteQuestHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
         IAvatarUpdateService avatarUpdateService,
-        World world)
+        IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;

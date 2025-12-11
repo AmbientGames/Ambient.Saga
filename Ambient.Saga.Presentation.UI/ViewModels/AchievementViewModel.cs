@@ -51,7 +51,7 @@ public class AchievementDisplayItem
 public partial class AchievementViewModel : ObservableObject
 {
     private SagaInteractionContext _context;
-    private IWorldStateRepository? _worldRepository; // WorldStateRepository from Schema.Sandbox (optional, for persistence)
+    private IWorldStateRepository _worldRepository; // WorldStateRepository from Schema.Sandbox (optional, for persistence)
     private ISteamAchievementService? _steamService; // SteamAchievementService from Schema.Sandbox (optional, for Steam sync)
 
     [ObservableProperty]

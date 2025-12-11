@@ -9,7 +9,7 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 /// </summary>
 public class BattleSetup
 {
-    public World? LoadedWorld { get; private set; }
+    public IWorld LoadedWorld { get; private set; }
 
     // Avatar configuration
     public AvatarArchetype? SelectedAvatarArchetype { get; set; }
@@ -27,7 +27,7 @@ public class BattleSetup
     // Party companions (characters who fight alongside player)
     public List<Character> CompanionCharacters { get; set; } = new List<Character>();
 
-    public void SetupFromWorld(World world)
+    public void SetupFromWorld(IWorld world)
     {
         LoadedWorld = world;
         System.Diagnostics.Debug.WriteLine("Battle setup initialized with world data");
@@ -162,7 +162,7 @@ public class BattleSetup
     /// <summary>
     /// Initialize EquippedItems dictionary from Capabilities.Equipment.
     /// </summary>
-    private void InitializeEquippedSlots(Combatant combatant, World world)
+    private void InitializeEquippedSlots(Combatant combatant, IWorld world)
     {
         if (combatant.Capabilities?.Equipment == null || combatant.Capabilities.Equipment.Length == 0)
             return;

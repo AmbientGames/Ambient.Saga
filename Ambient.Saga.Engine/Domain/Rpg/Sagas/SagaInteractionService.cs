@@ -19,13 +19,13 @@ public class SagaInteractionService
 {
     private readonly SagaArc _template;
     private readonly List<SagaTrigger> _expandedSagaTriggers;
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly SagaStateMachine _stateMachine;
 
     public SagaInteractionService(
         SagaArc template,
         List<SagaTrigger> expandedSagaTriggers,
-        World world)
+        IWorld world)
     {
         _template = template ?? throw new ArgumentNullException(nameof(template));
         _expandedSagaTriggers = expandedSagaTriggers ?? throw new ArgumentNullException(nameof(expandedSagaTriggers));

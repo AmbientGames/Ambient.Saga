@@ -114,7 +114,7 @@ public partial class MainViewModel : ObservableObject
     private ObservableCollection<AvatarArchetype> _availableArchetypes = new();
 
     [ObservableProperty]
-    private World? _currentWorld;
+    private World _currentWorld;
 
     [ObservableProperty]
     private ProximityTriggerViewModel? _selectedTrigger;
@@ -149,7 +149,7 @@ public partial class MainViewModel : ObservableObject
 
     private ProximityTriggerViewModel? _previousTrigger;
     private IDisposable? _worldDatabase;
-    private IWorldStateRepository? _worldRepository;
+    private IWorldStateRepository _worldRepository;
     private ISteamAchievementService? _steamAchievementService;
     private HeightMapProcessor.ProcessedHeightMap? _processedHeightMap;
 
@@ -886,7 +886,7 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    private async Task LoadHeightMapImageAsync(World world)
+    private async Task LoadHeightMapImageAsync(IWorld world)
     {
         // Clear previous image
         HeightMapImage = null;
@@ -1091,7 +1091,7 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    private void InitializeWorldDatabase(World world)
+    private void InitializeWorldDatabase(IWorld world)
     {
         try
         {
@@ -1147,7 +1147,7 @@ public partial class MainViewModel : ObservableObject
     // Sandbox now focuses on triggers only
     // Character rendering will be implemented properly when needed using CQRS queries
 
-    private void InitializeAvatarPosition(World world)
+    private void InitializeAvatarPosition(IWorld world)
     {
         // Clear previous position
         HasAvatarPosition = false;
@@ -1873,7 +1873,7 @@ public partial class MainViewModel : ObservableObject
         return _processedHeightMap.ElevationData[pixelX, pixelY];
     }
 
-    private async Task LoadOrCreateAvatarAsync(World world)
+    private async Task LoadOrCreateAvatarAsync(IWorld world)
     {
         if (_worldRepository == null)
             return;
@@ -1944,7 +1944,7 @@ public partial class MainViewModel : ObservableObject
         return await selector.SelectArchetypeAsync(AvailableArchetypes, currencyName);
     }
 
-    private AvatarEntity CreateAvatarFromArchetype(AvatarArchetype archetype, World world)
+    private AvatarEntity CreateAvatarFromArchetype(AvatarArchetype archetype, IWorld world)
     {
         var avatar = new AvatarEntity
         {

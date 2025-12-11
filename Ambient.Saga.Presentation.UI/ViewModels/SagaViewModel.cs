@@ -66,7 +66,7 @@ public partial class SagaViewModel : ObservableObject
         SagaArc sagaArc,
         List<SagaTrigger> expandedSagaTriggers,
         IHeightMapMetadata metadata,
-        World world)
+        IWorld world)
     {
         // Get quest tokens from the focus entity (unified SagaFeature)
         string[]? requiresQuestTokens = null;
@@ -164,9 +164,9 @@ public partial class SagaViewModel : ObservableObject
     /// Returns both Saga ViewModels and flattened trigger list for XAML binding.
     /// </summary>
     public static (List<SagaViewModel> Sagas, List<ProximityTriggerViewModel> AllSagaTriggers) LoadFromWorld(
-        World world,
+        IWorld world,
         AvatarBase? avatar = null,
-        IWorldStateRepository? worldRepository = null)
+        IWorldStateRepository worldRepository = null)
     {
         var sagas = new List<SagaViewModel>();
         var allSagaTriggers = new List<ProximityTriggerViewModel>();
@@ -216,8 +216,8 @@ public partial class SagaViewModel : ObservableObject
         SagaViewModel sagaVM,
         SagaArc sagaArc,
         AvatarBase? avatar,
-        World world,
-        IWorldStateRepository? worldRepository)
+        IWorld world,
+        IWorldStateRepository worldRepository)
     {
         // Convert Saga GPS to model coordinates for query
         var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
@@ -246,8 +246,8 @@ public partial class SagaViewModel : ObservableObject
         ProximityTriggerViewModel triggerVM,
         SagaArc sagaArc,
         AvatarBase? avatar,
-        World world,
-        IWorldStateRepository? worldRepository)
+        IWorld world,
+        IWorldStateRepository worldRepository)
     {
         // Convert Saga GPS to model coordinates for query
         var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);

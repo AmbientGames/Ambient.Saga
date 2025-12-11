@@ -26,7 +26,7 @@ public static class CharacterLocationService
         double centerLongitude,
         double radiusMeters,
         int count,
-        World world)
+        IWorld world)
     {
         var positions = new List<(double, double)>();
 
@@ -78,7 +78,7 @@ public static class CharacterLocationService
         double longitude1,
         double latitude2,
         double longitude2,
-        World world)
+        IWorld world)
     {
         // Convert both positions to model coordinates
         var modelX1 = CoordinateConverter.LongitudeToModelX(longitude1, world);
@@ -111,7 +111,7 @@ public static class CharacterLocationService
         double centerLatitude,
         double centerLongitude,
         double radiusMeters,
-        World world,
+        IWorld world,
         IEnumerable<CharacterState> spawnedCharacters)
     {
         foreach (var spawned in spawnedCharacters)
@@ -144,7 +144,7 @@ public static class CharacterLocationService
         CharacterState character,
         double targetLatitude,
         double targetLongitude,
-        World world)
+        IWorld world)
     {
         return GetDistanceBetweenPositions(
             character.CurrentLatitudeZ,
@@ -171,7 +171,7 @@ public static class CharacterLocationService
         double pointModelX,
         double pointModelZ,
         double radiusMeters,
-        World world)
+        IWorld world)
     {
         // Get horizontal scale for proper radius scaling
         var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;

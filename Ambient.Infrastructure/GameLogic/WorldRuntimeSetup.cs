@@ -6,14 +6,14 @@ namespace Ambient.Infrastructure.GameLogic;
 
 public static class WorldRuntimeSetup
 {
-    public static void LoadWorld(World world)
+    public static void LoadWorld(IWorld world)
     {
         LoadGenerationDetails(world);
 
         LoadTools(world);
     }
 
-    private static void LoadGenerationDetails(World world)
+    private static void LoadGenerationDetails(IWorld world)
     {
         if (world.WorldConfiguration.StartDate > DateTime.UtcNow)
         {
@@ -22,7 +22,7 @@ public static class WorldRuntimeSetup
         }
     }
 
-    private static void LoadTools(World world)
+    private static void LoadTools(IWorld world)
     {
         foreach (var tool in world.Gameplay.Tools)
         {

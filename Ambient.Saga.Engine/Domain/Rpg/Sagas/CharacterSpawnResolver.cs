@@ -10,10 +10,10 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
 /// </summary>
 public class CharacterSpawnResolver
 {
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly Random _random;
 
-    public CharacterSpawnResolver(World world, int? randomSeed = null)
+    public CharacterSpawnResolver(IWorld world, int? randomSeed = null)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();

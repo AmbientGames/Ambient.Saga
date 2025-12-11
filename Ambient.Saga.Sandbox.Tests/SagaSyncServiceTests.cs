@@ -18,7 +18,7 @@ public class SagaSyncServiceTests : IDisposable
 {
     private readonly ILiteDatabase _database;
     private readonly ISagaInstanceRepository _repository;
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly SagaArc _sagaTemplate;
     private readonly SagaStateMachine _stateMachine;
     private readonly SagaSyncService _syncService;

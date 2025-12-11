@@ -127,7 +127,7 @@ public static class BattleTransactionHelper
         float targetHealthAfter,
         float actorEnergyAfter,
         Combatant actorAfterAction,
-        World? world,
+        IWorld world,
         Guid sagaInstanceId)
     {
         var transaction = new SagaTransaction

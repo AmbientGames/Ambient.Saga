@@ -16,7 +16,7 @@ public static class DialogueTreeAnalyzer
     /// <param name="character">Character to analyze</param>
     /// <param name="world">World containing dialogue trees</param>
     /// <returns>Dialogue interaction type</returns>
-    public static DialogueInteractionType GetInteractionType(Character character, World world)
+    public static DialogueInteractionType GetInteractionType(Character character, IWorld world)
     {
         if (character == null || string.IsNullOrEmpty(character.Interactable?.DialogueTreeRef))
             return DialogueInteractionType.Encounter;

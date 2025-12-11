@@ -102,7 +102,7 @@ public static class WorldAssetLoader
         return world;
     }
 
-    private static async Task LoadGamePlayAsync(string dataDirectory, string definitionDirectory, World world)
+    private static async Task LoadGamePlayAsync(string dataDirectory, string definitionDirectory, IWorld world)
     {
         await GameplayComponentLoader.LoadAsync(dataDirectory, definitionDirectory, world);
     }
@@ -113,7 +113,7 @@ public static class WorldAssetLoader
         return await XmlLoader.LoadFromXmlAsync<TemplateMetadata>(Path.Combine(dataDirectory, "TemplateMetadata.xml"), xsdFilePath);
     }
 
-    private static async Task LoadHeightMapMetadata(string dataDirectory, World world)
+    private static async Task LoadHeightMapMetadata(string dataDirectory, IWorld world)
     {
         var relativePath = Path.Combine(dataDirectory, world.WorldConfiguration.HeightMapSettings.RelativePath);
 

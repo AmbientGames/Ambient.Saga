@@ -10,9 +10,9 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Trade;
 /// </summary>
 public class TradeEngine
 {
-    private readonly World _world;
+    private readonly IWorld _world;
 
-    public TradeEngine(World world)
+    public TradeEngine(IWorld world)
     {
         _world = world;
     }

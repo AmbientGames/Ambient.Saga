@@ -7,7 +7,7 @@ namespace Ambient.Saga.Engine.Tests;
 
 public class GameplayTests : IAsyncLifetime
 {
-    private World? _world;
+    private World _world;
 
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;

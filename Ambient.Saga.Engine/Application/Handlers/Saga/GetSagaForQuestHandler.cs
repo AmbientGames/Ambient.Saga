@@ -12,9 +12,9 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 internal sealed class GetSagaForQuestHandler : IRequestHandler<GetSagaForQuestQuery, string?>
 {
     private readonly IMediator _mediator;
-    private readonly World _world;
+    private readonly IWorld _world;
 
-    public GetSagaForQuestHandler(IMediator mediator, World world)
+    public GetSagaForQuestHandler(IMediator mediator, IWorld world)
     {
         _mediator = mediator;
         _world = world;

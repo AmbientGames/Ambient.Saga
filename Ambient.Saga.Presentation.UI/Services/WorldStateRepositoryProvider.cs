@@ -8,12 +8,12 @@ namespace Ambient.Saga.Presentation.UI.Services;
 /// </summary>
 public class WorldStateRepositoryProvider
 {
-    private IWorldStateRepository? _repository;
+    private IWorldStateRepository _repository;
 
     /// <summary>
     /// Gets the current WorldStateRepository (null if no world loaded).
     /// </summary>
-    public IWorldStateRepository? Repository => _repository;
+    public IWorldStateRepository Repository => _repository;
 
     /// <summary>
     /// Sets the WorldStateRepository instance (called by MainViewModel after world loads).

@@ -16,12 +16,12 @@ internal sealed class GetSpawnedCharactersHandler : IRequestHandler<GetSpawnedCh
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public GetSpawnedCharactersHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
-        World world)
+        IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;

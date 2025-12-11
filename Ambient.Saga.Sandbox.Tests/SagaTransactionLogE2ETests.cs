@@ -35,7 +35,7 @@ public class SagaTransactionLogE2ETests : IDisposable
 {
     private readonly ITestOutputHelper _output;
     private readonly LiteDatabase _database;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public SagaTransactionLogE2ETests(ITestOutputHelper output)
     {

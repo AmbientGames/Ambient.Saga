@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ambient.Domain\Ambient.Domain.csproj" />
     <ProjectReference Include="..\Ambient.Saga.Engine\Ambient.Saga.Engine.csproj" />
   </ItemGroup>
 

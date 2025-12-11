@@ -13,12 +13,12 @@ namespace Ambient.Saga.Engine;
 public class CombatAI : ICombatAI
 {
     private readonly Random _random;
-    private readonly World _world;
+    private readonly IWorld _world;
     private const float LOW_HEALTH_THRESHOLD = 0.3f;  // 30% health
     private const float LOW_ENERGY_THRESHOLD = 0.2f;  // 20% energy
     private int _turnCount = 0;  // Track turns for equipment change demo
 
-    public CombatAI(World world, int? randomSeed = null)
+    public CombatAI(IWorld world, int? randomSeed = null)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();

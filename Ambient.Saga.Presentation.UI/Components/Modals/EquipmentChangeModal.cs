@@ -15,7 +15,7 @@ namespace Ambient.Saga.Presentation.UI.Components.Modals;
 public class EquipmentChangeModal
 {
     private readonly Combatant _player;
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly List<string> _playerAffinityRefs;
     private readonly Dictionary<string, int> _slotSelections = new();
     private readonly Dictionary<string, List<string>> _slotOptions = new();
@@ -30,7 +30,7 @@ public class EquipmentChangeModal
     // Event fired when user cancels
     public event Action? Cancelled;
 
-    public EquipmentChangeModal(Combatant player, World world, List<string> playerAffinityRefs)
+    public EquipmentChangeModal(Combatant player, IWorld world, List<string> playerAffinityRefs)
     {
         _player = player;
         _world = world;

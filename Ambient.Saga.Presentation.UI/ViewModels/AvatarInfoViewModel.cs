@@ -7,7 +7,7 @@ namespace Ambient.Saga.Presentation.UI.ViewModels;
 public partial class AvatarInfoViewModel : ObservableObject
 {
     [ObservableProperty]
-    private World? _currentWorld;
+    private World _currentWorld;
 
     [ObservableProperty]
     private AvatarBase? _playerAvatar;

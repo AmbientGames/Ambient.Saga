@@ -17,13 +17,13 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IMediator _mediator;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public ChooseQuestBranchHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
         IMediator mediator,
-        World world)
+        IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;

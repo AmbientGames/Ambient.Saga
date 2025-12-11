@@ -11,7 +11,7 @@ public static class WorldConfigurationService
     /// This should be called after height map metadata is loaded.
     /// </summary>
     /// <param name="world">World to calculate anchor points for</param>
-    public static void CalculateSpawnAnchorPoints(World world)
+    public static void CalculateSpawnAnchorPoints(IWorld world)
     {
         // Only calculate for height map worlds with metadata loaded
         if (world.IsProcedural)
@@ -37,7 +37,7 @@ public static class WorldConfigurationService
         return scaleFactor;
     }
 
-    public static void InitializeWorldTiming(World world)
+    public static void InitializeWorldTiming(IWorld world)
     {
         world.UtcStartTick = DateTime.UtcNow.Ticks - 10 * world.WorldConfiguration.SecondsInHour * TimeSpan.TicksPerSecond;
     }

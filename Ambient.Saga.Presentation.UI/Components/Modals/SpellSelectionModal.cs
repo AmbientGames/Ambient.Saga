@@ -13,7 +13,7 @@ namespace Ambient.Saga.Presentation.UI.Components.Modals;
 public class SpellSelectionModal
 {
     private readonly Combatant _player;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     // Event fired when user selects a spell
     public event Action<string>? SpellSelected;
@@ -21,7 +21,7 @@ public class SpellSelectionModal
     // Event fired when user cancels
     public event Action? Cancelled;
 
-    public SpellSelectionModal(Combatant player, World world)
+    public SpellSelectionModal(Combatant player, IWorld world)
     {
         _player = player;
         _world = world;
