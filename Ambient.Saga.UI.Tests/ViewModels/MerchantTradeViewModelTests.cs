@@ -9,7 +9,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
 
-namespace Ambient.Saga.Sandbox.Tests.ViewModels;
+namespace Ambient.Saga.UI.Tests.ViewModels;
 
 /// <summary>
 /// Stub mediator for testing MerchantTradeViewModel CQRS operations.

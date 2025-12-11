@@ -7,7 +7,7 @@ using Ambient.Saga.Engine.Infrastructure.Persistence;
 using LiteDB;
 using Xunit.Abstractions;
 
-namespace Ambient.Saga.Sandbox.Tests;
+namespace Ambient.Saga.UI.Tests;
 
 /// <summary>
 /// End-to-end tests for Saga transaction log system focusing on:

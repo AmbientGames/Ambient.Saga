@@ -6,7 +6,7 @@ using Ambient.Saga.Engine.Infrastructure.Persistence;
 using Ambient.Saga.UI.Services;
 using LiteDB;
 
-namespace Ambient.Saga.Sandbox.Tests;
+namespace Ambient.Saga.UI.Tests;
 
 /// <summary>
 /// Integration tests for SagaSyncService.

@@ -3,7 +3,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using LiteDB;
 
-namespace Ambient.Saga.Sandbox.Tests;
+namespace Ambient.Saga.UI.Tests;
 
 /// <summary>
 /// Integration tests for SagaInstanceRepository.

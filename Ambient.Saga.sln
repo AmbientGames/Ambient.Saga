@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambient.Saga.Sandbox.Tests", "Ambient.Saga.Sandbox.Tests\Ambient.Saga.Sandbox.Tests.csproj", "{EFBAB3B9-ED81-4E69-AFA9-C4AA3857CDD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambient.Saga.UI.Tests", "Ambient.Saga.UI.Tests\Ambient.Saga.UI.Tests.csproj", "{EFBAB3B9-ED81-4E69-AFA9-C4AA3857CDD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ambient.Saga.Engine", "Ambient.Saga.Engine\Ambient.Saga.Engine.csproj", "{FAEC24D7-3952-47F6-823A-675C12C51893}"
 EndProject
