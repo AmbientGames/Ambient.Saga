@@ -1,5 +1,6 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
+using Ambient.Infrastructure;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.Sampling;
 using Ambient.Infrastructure.Utilities;
@@ -10,6 +11,12 @@ namespace Ambient.Saga.Engine.Infrastructure.Loading;
 public static class WorldAssetLoader
 {
     /// <summary>
+    /// The factory used to create world instances. Defaults to WorldFactory.
+    /// Can be replaced by game-specific projects to create extended World types.
+    /// </summary>
+    public static IWorldFactory Factory { get; set; } = new WorldFactory();
+
+    /// <summary>
     /// Loads a world by finding the WorldConfiguration with the specified RefName.
     /// This is a convenience method that combines LoadAvailableWorldConfigurationsAsync and LoadWorldAsync.
     /// </summary>
@@ -18,7 +25,7 @@ public static class WorldAssetLoader
     /// <param name="configurationRefName">The RefName of the WorldConfiguration to load (e.g., "Lat0Height256", "Kagoshima")</param>
     /// <returns>A fully loaded World with the specified configuration</returns>
     /// <exception cref="InvalidOperationException">Thrown if the configuration RefName is not found</exception>
-    public static async Task<World> LoadWorldByConfigurationAsync(string dataDirectory, string definitionDirectory, string configurationRefName)
+    public static async Task<IWorld> LoadWorldByConfigurationAsync(string dataDirectory, string definitionDirectory, string configurationRefName)
     {
         // Load available configurations
         var configurations = await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory);
@@ -34,12 +41,10 @@ public static class WorldAssetLoader
         return await LoadWorldAsync(dataDirectory, definitionDirectory, worldConfiguration);
     }
 
-    private static async Task<World> LoadWorldAsync(string dataDirectory, string definitionDirectory, WorldConfiguration worldConfiguration)
+    private static async Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, WorldConfiguration worldConfiguration)
     {
-        var world = new World
-        {
-            WorldConfiguration = worldConfiguration
-        };
+        var world = Factory.CreateWorld();
+        world.WorldConfiguration = worldConfiguration;
 
         // Determine the template directory from WorldConfiguration.Template
         var templateDirectory = Path.Combine(dataDirectory, worldConfiguration.Template);

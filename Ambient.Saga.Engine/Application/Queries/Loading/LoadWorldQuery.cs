@@ -1,5 +1,4 @@
-﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.DefinitionExtensions;
 using MediatR;
 
 namespace Ambient.Saga.Engine.Application.Queries.Loading;
@@ -19,7 +18,7 @@ namespace Ambient.Saga.Engine.Application.Queries.Loading;
 /// - Game startup: Load selected world
 /// - World switching: Unload current, load new
 /// </summary>
-public record LoadWorldQuery : IRequest<World>
+public record LoadWorldQuery : IRequest<IWorld>
 {
     /// <summary>
     /// Base data directory containing world templates

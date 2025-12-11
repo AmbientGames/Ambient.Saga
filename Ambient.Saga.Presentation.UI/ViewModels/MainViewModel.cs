@@ -114,7 +114,7 @@ public partial class MainViewModel : ObservableObject
     private ObservableCollection<AvatarArchetype> _availableArchetypes = new();
 
     [ObservableProperty]
-    private World _currentWorld;
+    private IWorld _currentWorld;
 
     [ObservableProperty]
     private ProximityTriggerViewModel? _selectedTrigger;

@@ -6,7 +6,7 @@ namespace Ambient.Saga.Engine.Tests.Simulation;
 
 public class BlocksTests : IAsyncLifetime
 {
-    private World _world;
+    private IWorld _world;
 
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;

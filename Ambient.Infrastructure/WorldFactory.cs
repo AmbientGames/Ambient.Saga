@@ -4,10 +4,16 @@ using Ambient.Domain.DefinitionExtensions;
 namespace Ambient.Infrastructure;
 
 /// <summary>
-/// Factory for creating test World instances.
+/// Factory for creating World instances.
+/// Implements IWorldFactory to allow Engine to create worlds without knowing the concrete type.
 /// </summary>
-public class WorldFactory
+public class WorldFactory : IWorldFactory
 {
+    /// <summary>
+    /// Creates a new world instance.
+    /// </summary>
+    public IWorld CreateWorld() => new World();
+
     /// <summary>
     /// Creates a minimal valid world for testing.
     /// Note: World.Simulation/Presentation/Gameplay are read-only properties that delegate to WorldTemplate.

@@ -59,7 +59,7 @@ public class AchievementEvaluationBehavior<TRequest, TResponse> : IPipelineBehav
     private async Task EvaluateAchievementsAsync(Guid avatarId, CancellationToken cancellationToken)
     {
         // Resolve dependencies at runtime (after world is loaded)
-        var world = _serviceProvider.GetRequiredService<World>();
+        var world = _serviceProvider.GetRequiredService<IWorld>();
         var sagaRepository = _serviceProvider.GetRequiredService<ISagaInstanceRepository>();
         var avatarUpdateService = _serviceProvider.GetRequiredService<IAvatarUpdateService>();
 

@@ -9,6 +9,11 @@ namespace Ambient.Domain.DefinitionExtensions;
 /// </summary>
 public interface IWorld
 {
+    /// <summary>
+    /// Array of available world configurations for this world.
+    /// </summary>
+    WorldConfiguration[] AvailableWorldConfigurations { get; set; }
+
     WorldConfiguration WorldConfiguration { get; set; }
 
     /// <summary>

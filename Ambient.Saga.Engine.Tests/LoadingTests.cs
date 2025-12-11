@@ -8,7 +8,7 @@ public class LoadingTests : IAsyncLifetime
 {
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
-    private World _world;
+    private IWorld _world;
 
     public LoadingTests()
     {

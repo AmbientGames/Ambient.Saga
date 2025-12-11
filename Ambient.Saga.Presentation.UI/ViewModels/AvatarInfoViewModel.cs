@@ -7,7 +7,7 @@ namespace Ambient.Saga.Presentation.UI.ViewModels;
 public partial class AvatarInfoViewModel : ObservableObject
 {
     [ObservableProperty]
-    private World _currentWorld;
+    private IWorld _currentWorld;
 
     [ObservableProperty]
     private AvatarBase? _playerAvatar;
@@ -29,7 +29,7 @@ public partial class AvatarInfoViewModel : ObservableObject
 
     public string CurrencyName => CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Coin";
 
-    public void UpdateWorld(World? world)
+    public void UpdateWorld(IWorld? world)
     {
         CurrentWorld = world;
         OnPropertyChanged(nameof(CurrencyName));

@@ -1,5 +1,4 @@
-﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using Ambient.Saga.Engine.Infrastructure.Loading;
 using MediatR;
@@ -21,9 +20,9 @@ namespace Ambient.Saga.Engine.Application.Handlers.Loading;
 /// ensuring consistent logging, error handling, and future enhancements
 /// (caching, lazy loading, background loading, etc).
 /// </summary>
-internal sealed class LoadWorldHandler : IRequestHandler<LoadWorldQuery, World>
+internal sealed class LoadWorldHandler : IRequestHandler<LoadWorldQuery, IWorld>
 {
-    public async Task<World> Handle(LoadWorldQuery query, CancellationToken ct)
+    public async Task<IWorld> Handle(LoadWorldQuery query, CancellationToken ct)
     {
         // Delegate to existing infrastructure loader
         return await WorldAssetLoader.LoadWorldByConfigurationAsync(
