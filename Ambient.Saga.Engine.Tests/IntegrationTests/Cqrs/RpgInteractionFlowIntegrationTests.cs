@@ -32,7 +32,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
     private readonly ITestOutputHelper _output;
     private readonly ServiceProvider _serviceProvider;
     private readonly IMediator _mediator;
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly LiteDatabase _database;
     private readonly ISagaInstanceRepository _repository;
     private readonly Guid _testAvatarId = Guid.NewGuid();

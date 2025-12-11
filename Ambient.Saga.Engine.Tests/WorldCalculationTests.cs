@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Engine.Infrastructure.Loading;
+﻿using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Infrastructure.Loading;
 
 namespace Ambient.Saga.Engine.Tests;
 
@@ -8,6 +9,7 @@ namespace Ambient.Saga.Engine.Tests;
 /// </summary>
 public class WorldCalculationTests
 {
+    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
 
@@ -16,23 +18,22 @@ public class WorldCalculationTests
         // DefinitionXsd is copied to output directory by Ambient.Domain
         _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
 
-        // WorldDefinitions still lives in Sandbox source directory
-        var sandboxDirectory = FindSandboxDirectory();
-        _dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
+        // WorldDefinitions is at solution root (shared by all Sandboxes)
+        _dataDirectory = FindWorldDefinitionsDirectory();
     }
 
-    private static string FindSandboxDirectory()
+    private static string FindWorldDefinitionsDirectory()
     {
         var directory = AppDomain.CurrentDomain.BaseDirectory;
         while (directory != null)
         {
-            var domainPath = Path.Combine(directory, "Ambient.Saga.Sandbox.WindowsUI");
-            if (Directory.Exists(domainPath))
-                return domainPath;
+            var worldDefPath = Path.Combine(directory, "WorldDefinitions");
+            if (Directory.Exists(worldDefPath))
+                return worldDefPath;
             directory = Directory.GetParent(directory)?.FullName;
         }
 
-        throw new InvalidOperationException("Could not find Sandbox directory");
+        throw new InvalidOperationException("Could not find WorldDefinitions directory");
     }
 
     //[Fact]
@@ -207,7 +208,7 @@ public class WorldCalculationTests
     {
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-            () => WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "NonExistentConfig"));
+            () => WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "NonExistentConfig"));
         
         Assert.Contains("WorldConfiguration with RefName 'NonExistentConfig' not found", exception.Message);
     }

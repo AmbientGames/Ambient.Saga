@@ -21,14 +21,14 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IMediator _mediator;
     private readonly IAvatarUpdateService _avatarUpdateService;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public AdvanceQuestStageHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
         IMediator mediator,
         IAvatarUpdateService avatarUpdateService,
-        World world)
+        IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;

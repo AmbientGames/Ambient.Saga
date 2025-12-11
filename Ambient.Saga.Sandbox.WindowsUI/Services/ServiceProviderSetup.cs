@@ -1,14 +1,15 @@
-﻿using Ambient.Saga.Engine.Application.Behaviors;
+﻿using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
-using Ambient.Saga.Presentation.UI.Components.Modals;
-using Ambient.Saga.Presentation.UI.Services;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;
+using Ambient.Saga.UI.Components.Modals;
+using Ambient.Saga.UI.Services;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -94,6 +95,9 @@ namespace Ambient.Saga.Sandbox.WindowsUI.Services
 
         private static void ConfigureGameplayServices(IServiceCollection services)
         {
+            // World factory - creates World instances for loading
+            services.AddSingleton<IWorldFactory, WorldFactory>();
+
             // MediatR for CQRS
             services.AddMediatR(cfg =>
             {

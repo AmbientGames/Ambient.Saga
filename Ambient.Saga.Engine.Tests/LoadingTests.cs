@@ -1,23 +1,25 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Infrastructure.Loading;
+using Ambient.Saga.Engine.Tests;
 
 namespace Ambient.SagaEngine.Tests;
 
 public class LoadingTests : IAsyncLifetime
 {
+    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
-    private World? _world;
+    private IWorld _world;
 
     public LoadingTests()
     {
         // DefinitionXsd is copied to output directory by Ambient.Domain
         _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
 
-        // WorldDefinitions still lives in Sandbox source directory
+        // WorldDefinitions is at solution root (shared by all Sandboxes)
         var solutionRoot = FindSolutionRoot();
-        _dataDirectory = Path.Combine(solutionRoot, "Ambient.Saga.Sandbox.WindowsUI", "WorldDefinitions");
+        _dataDirectory = Path.Combine(solutionRoot, "WorldDefinitions");
     }
 
     private static string FindSolutionRoot()
@@ -36,7 +38,7 @@ public class LoadingTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Ise");
+        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Ise");
     }
 
     public Task DisposeAsync()
@@ -115,7 +117,7 @@ public class LoadingTests : IAsyncLifetime
     public async Task HeightMapConfiguration_ShouldCastCorrectly()
     {
         // Act - Load Kagoshima world which uses HeightMapSettings
-        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Kagoshima");
 
         // Assert
         Assert.NotNull(kagoshimaWorld.WorldConfiguration);
@@ -130,7 +132,7 @@ public class LoadingTests : IAsyncLifetime
     public async Task ConfigurationSwitchPattern_ShouldWorkForHeightMap()
     {
         // Load a HeightMap configuration to test switch pattern
-        var heightMapWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+        var heightMapWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Kagoshima");
         Assert.NotNull(heightMapWorld.WorldConfiguration);
         Assert.IsType<HeightMapSettings>(heightMapWorld.WorldConfiguration.Item);
     }
@@ -191,7 +193,7 @@ public class LoadingTests : IAsyncLifetime
     public async Task HeightMapMetadata_ShouldBeLoadedForHeightMapConfigurations()
     {
         // Act - Load Kagoshima world which uses HeightMapSettings
-        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Kagoshima");
 
         // Assert
         Assert.NotNull(kagoshimaWorld.HeightMapMetadata);
@@ -205,7 +207,7 @@ public class LoadingTests : IAsyncLifetime
     public async Task HeightMapBounds_ShouldBeLoadedForHeightMapConfigurations()
     {
         // Act - Load Kagoshima world which uses HeightMapSettings
-        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Kagoshima");
 
         // Assert
         Assert.NotNull(kagoshimaWorld.HeightMapMetadata);
@@ -228,7 +230,7 @@ public class LoadingTests : IAsyncLifetime
     public async Task HeightMapMetadata_ShouldContainGeoTiffInformation()
     {
         // Act - Load Kagoshima world which uses HeightMapSettings  
-        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Kagoshima");
 
         // Assert - Check for GeoTIFF-specific metadata
         Assert.NotNull(kagoshimaWorld.HeightMapMetadata);
@@ -250,7 +252,7 @@ public class LoadingTests : IAsyncLifetime
     public async Task HeightMapMetadata_ShouldSupportMathOperations()
     {
         // Act - Load Kagoshima world which uses HeightMapSettings
-        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Kagoshima");
+        var kagoshimaWorld = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Kagoshima");
 
         // Assert
         Assert.NotNull(kagoshimaWorld.HeightMapMetadata);

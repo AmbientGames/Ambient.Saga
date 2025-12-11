@@ -20,14 +20,14 @@ internal class WorldStateRepository : IWorldStateRepository
     private readonly IGameAvatarRepository _avatarRepository;
     private readonly IRepository<AchievementInstance> _achievementRepository;
     private readonly IPlayerDiscoveryRepository _discoveryRepository;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public WorldStateRepository(
         ISagaInstanceRepository sagaRepository,
         IGameAvatarRepository avatarRepository,
         IRepository<AchievementInstance> achievementRepository,
         IPlayerDiscoveryRepository discoveryRepository,
-        World world)
+        IWorld world)
     {
         _sagaRepository = sagaRepository ?? throw new ArgumentNullException(nameof(sagaRepository));
         _avatarRepository = avatarRepository ?? throw new ArgumentNullException(nameof(avatarRepository));

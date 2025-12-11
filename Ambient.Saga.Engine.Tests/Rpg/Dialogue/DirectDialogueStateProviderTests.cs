@@ -6,7 +6,7 @@ namespace Ambient.Saga.Engine.Tests.Rpg.Dialogue;
 
 public class DirectDialogueStateProviderTests
 {
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly AvatarBase _avatar;
     private readonly DirectDialogueStateProvider _provider;
 

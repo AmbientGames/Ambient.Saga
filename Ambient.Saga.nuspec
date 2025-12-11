@@ -18,14 +18,20 @@
         </contentFiles>
     </metadata>
     <files>
-        <!-- Library DLLs -->
+        <!-- Library DLLs (net8.0) -->
         <file src="Ambient.Domain\bin\$configuration$\net8.0\Ambient.Domain.dll" target="lib\net8.0" />
         <file src="Ambient.Application\bin\$configuration$\net8.0\Ambient.Application.dll" target="lib\net8.0" />
         <file src="Ambient.Infrastructure\bin\$configuration$\net8.0\Ambient.Infrastructure.dll" target="lib\net8.0" />
         <file src="Ambient.Saga.Engine\bin\$configuration$\net8.0\Ambient.Saga.Engine.dll" target="lib\net8.0" />
 
+        <!-- UI Library (net10.0, OS-agnostic) -->
+        <file src="Ambient.Saga.UI\bin\$configuration$\net10.0\Ambient.Saga.UI.dll" target="lib\net10.0" />
+
         <!-- Copy all Schema files recursively -->
         <file src="Ambient.Domain\bin\$configuration$\net8.0\DefinitionXsd\**\*.*" target="contentFiles\any\Assets\DefinitionXsd" />
+
+        <!-- World definition content (XML game data) -->
+        <file src="WorldDefinitions\**\*.*" target="contentFiles\any\Assets\WorldDefinitions" />
 
         <!-- Documentation -->
         <file src="README.md" target="docs\" />

@@ -16,7 +16,7 @@ public static class QuestRewardDistributor
     /// Distribute a single quest reward to the avatar.
     /// Updates avatar's inventory, stats, and capabilities based on reward type.
     /// </summary>
-    public static void DistributeReward(QuestReward reward, AvatarEntity avatar, World world)
+    public static void DistributeReward(QuestReward reward, AvatarEntity avatar, IWorld world)
     {
         // Initialize Capabilities if needed
         if (avatar.Capabilities == null)
@@ -109,7 +109,7 @@ public static class QuestRewardDistributor
         QuestReward[]? rewards,
         QuestRewardCondition condition,
         AvatarEntity avatar,
-        World world,
+        IWorld world,
         string? branchRef = null,
         string? objectiveRef = null)
     {
@@ -154,7 +154,7 @@ public static class QuestRewardDistributor
     public static (bool canAccept, string? reason) CheckPrerequisites(
         Quest quest,
         AvatarEntity avatar,
-        World world,
+        IWorld world,
         HashSet<string> completedQuests,
         Dictionary<string, int>? factionReputation = null,
         HashSet<string>? unlockedAchievements = null)

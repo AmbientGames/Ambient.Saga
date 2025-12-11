@@ -12,7 +12,7 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 /// </summary>
 public class DirectDialogueStateProvider : IDialogueStateProvider
 {
-    private readonly World _w;
+    private readonly IWorld _w;
     private readonly AvatarBase _a;
     private readonly Dictionary<string, HashSet<string>> _visited = new();
     private readonly Dictionary<string, int?> _traits = new();
@@ -21,7 +21,7 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     private string? _currentCharacterRef;
 
     public DirectDialogueStateProvider(
-        World w,
+        IWorld w,
         AvatarBase a,
         Func<string, SagaState?>? getSagaStateFunc = null,
         string? avatarId = null,

@@ -5,7 +5,7 @@ namespace Ambient.Infrastructure.GameLogic.Services;
 
 public static class WorldValidationService
 {
-    public static void ValidateReferentialIntegrity(World world)
+    public static void ValidateReferentialIntegrity(IWorld world)
     {
         var errors = new List<string>();
 
@@ -30,7 +30,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateAvatarArchetypeReferences(World world, List<string> errors)
+    private static void ValidateAvatarArchetypeReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.AvatarArchetypes == null) return;
 
@@ -56,7 +56,7 @@ public static class WorldValidationService
     /// Validates all item references in an ItemCollection (inventory).
     /// Checks Equipment, Consumables, Tools, Spells, Blocks, BuildingMaterials, and QuestTokens.
     /// </summary>
-    private static void ValidateItemCollection(World world, List<string> errors, string context, ItemCollection itemCollection, string collectionName)
+    private static void ValidateItemCollection(IWorld world, List<string> errors, string context, ItemCollection itemCollection, string collectionName)
     {
         if (itemCollection == null) return;
 
@@ -154,7 +154,7 @@ public static class WorldValidationService
         return string.Equals(refValue, "@self", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static void ValidateQuestItemReferences(World world, List<string> errors)
+    private static void ValidateQuestItemReferences(IWorld world, List<string> errors)
     {
         // Build a map of quest keys to entities that provide them
         // Quest tokens are on: Characters and SagaFeatures
@@ -326,7 +326,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateQuestTokenRef(World world, List<string> errors, string context,
+    private static void ValidateQuestTokenRef(IWorld world, List<string> errors, string context,
         string? QuestTokenRef, Dictionary<string, List<string>> QuestTokenProviders)
     {
         if (string.IsNullOrEmpty(QuestTokenRef))
@@ -346,7 +346,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateSagaTriggerQuestTokens(World world, List<string> errors, string context, SagaTrigger trigger)
+    private static void ValidateSagaTriggerQuestTokens(IWorld world, List<string> errors, string context, SagaTrigger trigger)
     {
         if (trigger == null) return;
 
@@ -375,7 +375,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateCharacterSpawn(World world, List<string> errors, string context, CharacterSpawn spawn)
+    private static void ValidateCharacterSpawn(IWorld world, List<string> errors, string context, CharacterSpawn spawn)
     {
         if (spawn == null) return;
 
@@ -401,7 +401,7 @@ public static class WorldValidationService
         // Quest tokens are now handled at the Trigger level (RequiresQuestTokenRef/GivesQuestTokenRef)
     }
 
-    private static void ValidateCharacterReferences(World world, List<string> errors)
+    private static void ValidateCharacterReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.Characters == null) return;
 
@@ -429,7 +429,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateCharacterAffinityReferences(World world, List<string> errors)
+    private static void ValidateCharacterAffinityReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.CharacterAffinities == null) return;
 
@@ -451,7 +451,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateCombatStanceReferences(World world, List<string> errors)
+    private static void ValidateCombatStanceReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.CombatStances == null) return;
 
@@ -485,7 +485,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateDialogueReferences(World world, List<string> errors)
+    private static void ValidateDialogueReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.DialogueTrees == null) return;
 
@@ -592,7 +592,7 @@ public static class WorldValidationService
     /// Boss characters have BattleDialogue that references specific nodes as entry points
     /// at different health thresholds (e.g., battle_opening, battle_berserk, battle_defeated).
     /// </summary>
-    private static HashSet<string> GetBattleDialogueEntryPoints(World world, string dialogueTreeRef)
+    private static HashSet<string> GetBattleDialogueEntryPoints(IWorld world, string dialogueTreeRef)
     {
         var entryPoints = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -727,7 +727,7 @@ public static class WorldValidationService
             or DialogueActionType.CompleteQuest or DialogueActionType.OpenMerchantTrade;
     }
 
-    private static void ValidateDialogueCondition(World world, List<string> errors, string context, DialogueCondition condition, string dialogueTreeRef, HashSet<string> validNodeIds)
+    private static void ValidateDialogueCondition(IWorld world, List<string> errors, string context, DialogueCondition condition, string dialogueTreeRef, HashSet<string> validNodeIds)
     {
         if (condition == null) return;
 
@@ -853,7 +853,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateDialogueAction(World world, List<string> errors, string context, DialogueAction action)
+    private static void ValidateDialogueAction(IWorld world, List<string> errors, string context, DialogueAction action)
     {
         if (action == null) return;
 
@@ -1117,7 +1117,7 @@ public static class WorldValidationService
     /// - GiveQuestToken: Character.Interactable.Loot.QuestTokens contains QuestTokenRef
     /// - TransferCurrency (positive): Character.Stats.Credits >= Amount
     /// </summary>
-    private static void ValidateDialogueInventoryReferences(World world, List<string> errors)
+    private static void ValidateDialogueInventoryReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.Characters == null) return;
 
@@ -1282,7 +1282,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateAchievementReferences(World world, List<string> errors)
+    private static void ValidateAchievementReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.Achievements == null)
             return;
@@ -1336,7 +1336,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateQuestReferences(World world, List<string> errors)
+    private static void ValidateQuestReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.Quests == null) return;
 
@@ -1505,7 +1505,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateAvatarQuestReferences(World world, List<string> errors)
+    private static void ValidateAvatarQuestReferences(IWorld world, List<string> errors)
     {
         // Note: Quests are on AvatarBase, not in WorldDefinitions XML
         // This validates that QuestRefs in quest progress data (if present) reference valid quests
@@ -1515,7 +1515,7 @@ public static class WorldValidationService
         // For now, this is a no-op but provides the extension point
     }
 
-    private static void ValidateFactionReferences(World world, List<string> errors)
+    private static void ValidateFactionReferences(IWorld world, List<string> errors)
     {
         if (world.Gameplay.Factions == null) return;
 
@@ -1538,7 +1538,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateGameplayHeuristics(World world, List<string> errors)
+    private static void ValidateGameplayHeuristics(IWorld world, List<string> errors)
     {
         // Validate that characters spawned in Sagas have dialogue configured
         // (unless they have the Ambient or BossFight trait - ambient NPCs and pure boss enemies may not need dialogue)
@@ -1673,7 +1673,7 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateDataQuality(World world, List<string> errors)
+    private static void ValidateDataQuality(IWorld world, List<string> errors)
     {
         // Validate character stats are in reasonable ranges
         if (world.Gameplay.Characters != null)
@@ -1767,7 +1767,7 @@ public static class WorldValidationService
     /// - Characters with BossFight trait AND Hostile trait (pure combat enemies - but should have BattleDialogue)
     /// - Characters with Friendly trait set to 0 (unfriendly background NPCs)
     /// </summary>
-    private static void ValidateSagaCharactersHaveDialogue(World world, List<string> errors)
+    private static void ValidateSagaCharactersHaveDialogue(IWorld world, List<string> errors)
     {
         if (world.Gameplay.SagaArcs == null) return;
 

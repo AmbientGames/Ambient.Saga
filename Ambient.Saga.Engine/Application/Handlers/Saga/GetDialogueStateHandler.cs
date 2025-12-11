@@ -15,11 +15,11 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueStateQuery, DialogueStateResult>
 {
     private readonly ISagaInstanceRepository _instanceRepository;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public GetDialogueStateHandler(
         ISagaInstanceRepository instanceRepository,
-        World world)
+        IWorld world)
     {
         _instanceRepository = instanceRepository;
         _world = world;

@@ -1,4 +1,5 @@
 ﻿using Ambient.Domain;
+using Ambient.Domain.DefinitionExtensions;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Saga.Engine.Infrastructure.Loading;
 
@@ -11,6 +12,7 @@ namespace Ambient.Saga.Engine.Tests;
 /// </summary>
 public class WorldValidationServiceIntegrationTests
 {
+    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
     private const string TestWorldConfiguration = "Ise";
@@ -20,30 +22,29 @@ public class WorldValidationServiceIntegrationTests
         // DefinitionXsd is copied to output directory by Ambient.Domain
         _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
 
-        // WorldDefinitions still lives in Sandbox source directory
-        var sandboxDirectory = FindSandboxDirectory();
-        _dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
+        // WorldDefinitions is at solution root (shared by all Sandboxes)
+        _dataDirectory = FindWorldDefinitionsDirectory();
     }
 
-    private static string FindSandboxDirectory()
+    private static string FindWorldDefinitionsDirectory()
     {
         var directory = AppDomain.CurrentDomain.BaseDirectory;
         while (directory != null)
         {
-            var domainPath = Path.Combine(directory, "Ambient.Saga.Sandbox.WindowsUI");
-            if (Directory.Exists(domainPath))
-                return domainPath;
+            var worldDefPath = Path.Combine(directory, "WorldDefinitions");
+            if (Directory.Exists(worldDefPath))
+                return worldDefPath;
             directory = Directory.GetParent(directory)?.FullName;
         }
 
-        throw new InvalidOperationException("Could not find Sandbox directory");
+        throw new InvalidOperationException("Could not find WorldDefinitions directory");
     }
 
     [Fact]
     public async Task ValidateReferentialIntegrity_DefaultWorld_PassesAllValidation()
     {
         // Arrange - Load the actual world configuration
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, TestWorldConfiguration);
+        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, TestWorldConfiguration);
 
         // Act & Assert - Should not throw any validation errors
         // This ensures the world configuration has:
@@ -58,7 +59,7 @@ public class WorldValidationServiceIntegrationTests
     public async Task ValidateReferentialIntegrity_DefaultWorld_CharactersWithDialogueHavePromisedItems()
     {
         // Arrange - Load the actual world configuration
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, TestWorldConfiguration);
+        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, TestWorldConfiguration);
 
         // Act - Validate and capture any errors
         var validationPassed = true;
@@ -87,7 +88,7 @@ public class WorldValidationServiceIntegrationTests
     public async Task ValidateReferentialIntegrity_DefaultWorld_BlockRewardsInDialogueAreValid()
     {
         // Arrange - Load the actual world configuration
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, TestWorldConfiguration);
+        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, TestWorldConfiguration);
 
         // Act - Run validation
         WorldValidationService.ValidateReferentialIntegrity(world);
@@ -130,7 +131,7 @@ public class WorldValidationServiceIntegrationTests
     public async Task ValidateReferentialIntegrity_AllWorldConfigurations_PassValidation(string configurationRefName)
     {
         // Arrange & Act - Load world configuration (validation happens automatically during load)
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, configurationRefName);
+        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, configurationRefName);
 
         // Assert - If we got here without exception, validation passed
         Assert.NotNull(world);
@@ -147,9 +148,8 @@ public class WorldValidationServiceIntegrationTests
         // DefinitionXsd is copied to output directory by Ambient.Domain
         var definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
 
-        // WorldDefinitions still lives in Sandbox source directory
-        var sandboxDirectory = FindSandboxDirectory();
-        var dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
+        // WorldDefinitions is at solution root (shared by all Sandboxes)
+        var dataDirectory = FindWorldDefinitionsDirectory();
 
         var configurations = WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory).GetAwaiter().GetResult();
 

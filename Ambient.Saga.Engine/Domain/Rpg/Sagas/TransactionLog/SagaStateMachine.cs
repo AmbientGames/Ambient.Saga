@@ -18,9 +18,9 @@ public class SagaStateMachine
 {
     private readonly SagaArc _template;
     private readonly List<SagaTrigger> _expandedSagaTriggers;
-    private readonly World _world;
+    private readonly IWorld _world;
 
-    public SagaStateMachine(SagaArc template, List<SagaTrigger> expandedSagaTriggers, World world)
+    public SagaStateMachine(SagaArc template, List<SagaTrigger> expandedSagaTriggers, IWorld world)
     {
         _template = template ?? throw new ArgumentNullException(nameof(template));
         _expandedSagaTriggers = expandedSagaTriggers ?? throw new ArgumentNullException(nameof(expandedSagaTriggers));

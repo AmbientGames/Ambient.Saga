@@ -16,7 +16,7 @@ public static class TriggerExpander
     /// Otherwise, returns the inline triggers.
     /// Additionally generates an implicit central feature trigger if the SagaArc has a Landmark/Structure/QuestSignpost.
     /// </summary>
-    public static List<SagaTrigger> ExpandTriggersForSaga(SagaArc sagaArc, World world)
+    public static List<SagaTrigger> ExpandTriggersForSaga(SagaArc sagaArc, IWorld world)
     {
         var result = new List<SagaTrigger>();
 
@@ -74,7 +74,7 @@ public static class TriggerExpander
     /// This allows features to be "triggered" when the avatar enters their ApproachRadius,
     /// providing a consistent interaction model for triggers, characters, and features.
     /// </summary>
-    private static SagaTrigger? GenerateFeatureTrigger(SagaArc sagaArc, World world)
+    private static SagaTrigger? GenerateFeatureTrigger(SagaArc sagaArc, IWorld world)
     {
         if (string.IsNullOrEmpty(sagaArc.SagaFeatureRef))
             return null;

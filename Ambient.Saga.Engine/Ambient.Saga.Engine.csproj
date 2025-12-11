@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Ambient.Saga.Engine.Tests" />
-    <InternalsVisibleTo Include="Ambient.Saga.Sandbox.Tests" />
+    <InternalsVisibleTo Include="Ambient.Saga.UI.Tests" />
   </ItemGroup>
 
   <ItemGroup>

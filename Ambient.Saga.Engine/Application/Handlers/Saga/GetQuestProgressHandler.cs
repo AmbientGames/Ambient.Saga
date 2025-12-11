@@ -15,11 +15,11 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 internal sealed class GetQuestProgressHandler : IRequestHandler<GetQuestProgressQuery, QuestProgressSnapshot?>
 {
     private readonly ISagaInstanceRepository _instanceRepository;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public GetQuestProgressHandler(
         ISagaInstanceRepository instanceRepository,
-        World world)
+        IWorld world)
     {
         _instanceRepository = instanceRepository;
         _world = world;
@@ -185,12 +185,12 @@ internal sealed class GetActiveQuestsHandler : IRequestHandler<GetActiveQuestsQu
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly IMediator _mediator;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public GetActiveQuestsHandler(
         ISagaInstanceRepository instanceRepository,
         IMediator mediator,
-        World _world)
+        IWorld _world)
     {
         _instanceRepository = instanceRepository;
         _mediator = mediator;

@@ -23,7 +23,7 @@ public class UpdateAvatarPositionCommandTests : IDisposable
 {
     private readonly ServiceProvider _serviceProvider;
     private readonly IMediator _mediator;
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly LiteDatabase _database;
     private readonly ISagaInstanceRepository _repository;
 

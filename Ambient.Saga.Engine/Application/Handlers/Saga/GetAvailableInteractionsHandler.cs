@@ -23,12 +23,12 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public GetAvailableInteractionsHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
-        World world)
+        IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
@@ -421,7 +421,7 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
                loot.Spells != null && loot.Spells.Length > 0;
     }
 
-    private static (double x, double z) ConvertToSagaRelative(double latitude, double longitude, SagaArc sagaArc, World world)
+    private static (double x, double z) ConvertToSagaRelative(double latitude, double longitude, SagaArc sagaArc, IWorld world)
     {
         var x = CoordinateConverter.LongitudeToSagaRelativeX(longitude, sagaArc.LongitudeX, world);
         var z = CoordinateConverter.LatitudeToSagaRelativeZ(latitude, sagaArc.LatitudeZ, world);

@@ -12,9 +12,9 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitiatedInteractionQuery, InitiatedInteractionResult>
 {
     private readonly IMediator _mediator;
-    private readonly World _world;
+    private readonly IWorld _world;
 
-    public GetInitiatedInteractionHandler(IMediator mediator, World world)
+    public GetInitiatedInteractionHandler(IMediator mediator, IWorld world)
     {
         _mediator = mediator;
         _world = world;

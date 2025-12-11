@@ -7,7 +7,7 @@ namespace Ambient.Saga.Engine.Infrastructure.Loading;
 
 internal static class GameplayComponentLoader
 {
-    public static async Task LoadAsync(string dataDirectory, string definitionDirectory, World world)
+    public static async Task LoadAsync(string dataDirectory, string definitionDirectory, IWorld world)
     {
         var xsdFilePath = Path.Combine(definitionDirectory, "Gameplay", "Gameplay.xsd");
         world.WorldTemplate.Gameplay = new GameplayComponents();
@@ -16,7 +16,7 @@ internal static class GameplayComponentLoader
         BuildGameplayLookups(world);
     }
 
-    private static async Task LoadGameplayData(string dataDirectory, string xsdFilePath, World world)
+    private static async Task LoadGameplayData(string dataDirectory, string xsdFilePath, IWorld world)
     {
         var config = world.WorldConfiguration;
 
@@ -74,7 +74,7 @@ internal static class GameplayComponentLoader
         ApplySagaSpawnOffsets(world);
     }
 
-    private static void ApplySagaSpawnOffsets(World world)
+    private static void ApplySagaSpawnOffsets(IWorld world)
     {
         if (world.WorldConfiguration?.Item is ProceduralSettings)
         {
@@ -89,7 +89,7 @@ internal static class GameplayComponentLoader
         }
     }
 
-    private static void BuildGameplayLookups(World world)
+    private static void BuildGameplayLookups(IWorld world)
     {
         BuildLookup(world.Gameplay.Consumables, world.ConsumablesLookup);
         BuildLookup(world.Gameplay.Spells, world.SpellsLookup);
@@ -145,7 +145,7 @@ internal static class GameplayComponentLoader
         }
     }
 
-    private static void BuildSagaTriggersLookup(World world)
+    private static void BuildSagaTriggersLookup(IWorld world)
     {
         world.SagaTriggersLookup.Clear();
 

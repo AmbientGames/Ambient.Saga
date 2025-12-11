@@ -126,7 +126,7 @@ public static class CoordinateConverter
     /// Model space has spawn at origin (0,0,0).
     /// Works for both procedural and height map worlds.
     /// </summary>
-    public static double ModelXToLongitude(double modelX, World world)
+    public static double ModelXToLongitude(double modelX, IWorld world)
     {
         if (world.IsProcedural)
         {
@@ -147,7 +147,7 @@ public static class CoordinateConverter
     /// Model space has spawn at origin (0,0,0).
     /// Works for both procedural and height map worlds.
     /// </summary>
-    public static double LongitudeToModelX(double longitude, World world)
+    public static double LongitudeToModelX(double longitude, IWorld world)
     {
         if (world.IsProcedural)
         {
@@ -168,7 +168,7 @@ public static class CoordinateConverter
     /// Model space has spawn at origin (0,0,0). Positive Z goes north.
     /// Works for both procedural and height map worlds.
     /// </summary>
-    public static double ModelZToLatitude(double modelZ, World world)
+    public static double ModelZToLatitude(double modelZ, IWorld world)
     {
         if (world.IsProcedural)
         {
@@ -189,7 +189,7 @@ public static class CoordinateConverter
     /// Model space has spawn at origin (0,0,0). Positive Z goes north.
     /// Works for both procedural and height map worlds.
     /// </summary>
-    public static double LatitudeToModelZ(double latitude, World world)
+    public static double LatitudeToModelZ(double latitude, IWorld world)
     {
         if (world.IsProcedural)
         {
@@ -205,7 +205,7 @@ public static class CoordinateConverter
         }
     }
 
-    public static double GetAltitude(World world, int altitudeInt)
+    public static double GetAltitude(IWorld world, int altitudeInt)
     {
         return GetAltitude(world.BlocksBeneathSeaLevel, world.VerticalScale, world.VerticalShift, altitudeInt);
     }
@@ -226,7 +226,7 @@ public static class CoordinateConverter
     /// Converts Saga-relative X coordinate (meters from Saga center) to world longitude.
     /// Uses proper model coordinate conversion for accuracy across all world types.
     /// </summary>
-    public static double SagaRelativeXToLongitude(double sagaRelativeX, double sagaCenterLongitude, World world)
+    public static double SagaRelativeXToLongitude(double sagaRelativeX, double sagaCenterLongitude, IWorld world)
     {
         // Convert Saga center to model coordinates
         var sagaCenterModelX = LongitudeToModelX(sagaCenterLongitude, world);
@@ -242,7 +242,7 @@ public static class CoordinateConverter
     /// Converts Saga-relative Z coordinate (meters from Saga center) to world latitude.
     /// Uses proper model coordinate conversion for accuracy across all world types.
     /// </summary>
-    public static double SagaRelativeZToLatitude(double sagaRelativeZ, double sagaCenterLatitude, World world)
+    public static double SagaRelativeZToLatitude(double sagaRelativeZ, double sagaCenterLatitude, IWorld world)
     {
         // Convert Saga center to model coordinates
         var sagaCenterModelZ = LatitudeToModelZ(sagaCenterLatitude, world);
@@ -258,7 +258,7 @@ public static class CoordinateConverter
     /// Converts world longitude to Saga-relative X coordinate (meters from Saga center).
     /// Uses proper model coordinate conversion for accuracy across all world types.
     /// </summary>
-    public static double LongitudeToSagaRelativeX(double longitude, double sagaCenterLongitude, World world)
+    public static double LongitudeToSagaRelativeX(double longitude, double sagaCenterLongitude, IWorld world)
     {
         // Convert both to model coordinates (meters)
         var pointModelX = LongitudeToModelX(longitude, world);
@@ -272,7 +272,7 @@ public static class CoordinateConverter
     /// Converts world latitude to Saga-relative Z coordinate (meters from Saga center).
     /// Uses proper model coordinate conversion for accuracy across all world types.
     /// </summary>
-    public static double LatitudeToSagaRelativeZ(double latitude, double sagaCenterLatitude, World world)
+    public static double LatitudeToSagaRelativeZ(double latitude, double sagaCenterLatitude, IWorld world)
     {
         // Convert both to model coordinates (meters)
         var pointModelZ = LatitudeToModelZ(latitude, world);

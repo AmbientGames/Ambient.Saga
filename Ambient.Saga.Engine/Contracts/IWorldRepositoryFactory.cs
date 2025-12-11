@@ -20,7 +20,7 @@ public interface IWorldRepositoryFactory
     /// <param name="world">Loaded world instance</param>
     /// <param name="isSteamAvailable">Whether Steam is available for achievement sync</param>
     /// <returns>Repository instances and database</returns>
-    WorldRepositories CreateRepositories(string gameName, string worldRefName, World world, bool isSteamAvailable);
+    WorldRepositories CreateRepositories(string gameName, string worldRefName, IWorld world, bool isSteamAvailable);
 }
 
 /// <summary>

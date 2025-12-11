@@ -6,7 +6,7 @@ namespace Ambient.Saga.Engine.Tests.Rpg.Trade;
 
 public class TradeEngineTests
 {
-    private readonly World _world;
+    private readonly IWorld _world;
     private readonly TradeEngine _engine;
 
     public TradeEngineTests()

@@ -7,7 +7,8 @@ namespace Ambient.Saga.Engine.Tests.Presentation;
 
 public partial class TexturesTests : IAsyncLifetime
 {
-    private World? _world;
+    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
+    private IWorld _world;
 
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
@@ -17,28 +18,27 @@ public partial class TexturesTests : IAsyncLifetime
         // DefinitionXsd is copied to output directory by Ambient.Domain
         _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
 
-        // WorldDefinitions still lives in Sandbox source directory
-        var sandboxDirectory = FindSandboxDirectory();
-        _dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
+        // WorldDefinitions is at solution root (shared by all Sandboxes)
+        _dataDirectory = FindWorldDefinitionsDirectory();
     }
 
-    private static string FindSandboxDirectory()
+    private static string FindWorldDefinitionsDirectory()
     {
         var directory = AppDomain.CurrentDomain.BaseDirectory;
         while (directory != null)
         {
-            var domainPath = Path.Combine(directory, "Ambient.Saga.Sandbox.WindowsUI");
-            if (Directory.Exists(domainPath))
-                return domainPath;
+            var worldDefPath = Path.Combine(directory, "WorldDefinitions");
+            if (Directory.Exists(worldDefPath))
+                return worldDefPath;
             directory = Directory.GetParent(directory)?.FullName;
         }
 
-        throw new InvalidOperationException("Could not find Sandbox directory");
+        throw new InvalidOperationException("Could not find WorldDefinitions directory");
     }
 
     public async Task InitializeAsync()
     {
-        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Ise");
+        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Ise");
 
         //_world.AvailableWorldConfigurations = await WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
 

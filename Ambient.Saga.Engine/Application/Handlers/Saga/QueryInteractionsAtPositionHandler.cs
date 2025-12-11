@@ -15,12 +15,12 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 /// </summary>
 internal sealed class QueryInteractionsAtPositionHandler : IRequestHandler<QueryInteractionsAtPositionQuery, List<SagaInteraction>>
 {
-    private readonly World? _world;
-    private readonly IWorldStateRepository? _worldRepository;
+    private readonly IWorld _world;
+    private readonly IWorldStateRepository _worldRepository;
 
     public QueryInteractionsAtPositionHandler(
-        World? world,
-        IWorldStateRepository? worldRepository)
+        IWorld world,
+        IWorldStateRepository worldRepository)
     {
         _world = world;
         _worldRepository = worldRepository;

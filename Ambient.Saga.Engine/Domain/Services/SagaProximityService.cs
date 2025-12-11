@@ -24,7 +24,7 @@ public static class SagaProximityService
     public static List<ActiveSaga> GetActiveSagasNearPosition(
         double latitude,
         double longitude,
-        World world)
+        IWorld world)
     {
         if (world.Gameplay.SagaArcs == null)
             return new List<ActiveSaga>();
@@ -131,7 +131,7 @@ public static class SagaProximityService
     public static ActivatedSagaTriggerResult? FindInnermostSagaTriggerAtModelPosition(
         double modelX,
         double modelZ,
-        World world)
+        IWorld world)
     {
         if (world.Gameplay.SagaArcs == null)
             return null;
@@ -198,8 +198,8 @@ public static class SagaProximityService
         double modelX,
         double modelZ,
         AvatarBase? avatar,
-        World world,
-        IWorldStateRepository? worldRepository = null)
+        IWorld world,
+        IWorldStateRepository worldRepository = null)
     {
         var interactions = new List<SagaInteraction>();
 
@@ -297,8 +297,8 @@ public static class SagaProximityService
     private static InteractionStatus DetermineFeatureStatus(
         SagaArc sagaArc,
         AvatarBase? avatar,
-        World world,
-        IWorldStateRepository? worldRepository)
+        IWorld world,
+        IWorldStateRepository worldRepository)
     {
         // Check for completion first (if feature has been interacted with)
         if (worldRepository != null && avatar != null)

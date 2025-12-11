@@ -18,12 +18,12 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
-    private readonly World _world;
+    private readonly IWorld _world;
 
     public UpdateAvatarPositionHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
-        World world)
+        IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;

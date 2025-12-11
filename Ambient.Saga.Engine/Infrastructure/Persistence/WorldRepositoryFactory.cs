@@ -13,7 +13,7 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
     /// <summary>
     /// Creates all repository instances for the specified world.
     /// </summary>
-    public WorldRepositories CreateRepositories(string gameName, string worldRefName, World world, bool isSteamAvailable)
+    public WorldRepositories CreateRepositories(string gameName, string worldRefName, IWorld world, bool isSteamAvailable)
     {
         // Create database for this world (uses world config RefName as database name)
         var database = new WorldStateDatabase(gameName, worldRefName);

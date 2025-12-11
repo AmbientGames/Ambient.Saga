@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Engine.Application.Handlers.Loading;
+﻿using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Application.Handlers.Loading;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,29 +21,29 @@ public class WorldLoadingQueryTests : IDisposable
         // DefinitionXsd is copied to output directory by Ambient.Domain
         _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
 
-        // WorldDefinitions still lives in Sandbox source directory
-        var sandboxDirectory = FindSandboxDirectory();
-        _dataDirectory = Path.Combine(sandboxDirectory, "WorldDefinitions");
+        // WorldDefinitions is at solution root (shared by all Sandboxes)
+        _dataDirectory = FindWorldDefinitionsDirectory();
 
         // Setup MediatR with world loading handlers
         var services = new ServiceCollection();
+        services.AddSingleton<IWorldFactory, TestWorldFactory>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoadWorldHandler).Assembly));
         var serviceProvider = services.BuildServiceProvider();
         _mediator = serviceProvider.GetRequiredService<IMediator>();
     }
 
-    private static string FindSandboxDirectory()
+    private static string FindWorldDefinitionsDirectory()
     {
         var directory = AppDomain.CurrentDomain.BaseDirectory;
         while (directory != null)
         {
-            var domainPath = Path.Combine(directory, "Ambient.Saga.Sandbox.WindowsUI");
-            if (Directory.Exists(domainPath))
-                return domainPath;
+            var worldDefPath = Path.Combine(directory, "WorldDefinitions");
+            if (Directory.Exists(worldDefPath))
+                return worldDefPath;
             directory = Directory.GetParent(directory)?.FullName;
         }
 
-        throw new InvalidOperationException("Could not find Sandbox directory");
+        throw new InvalidOperationException("Could not find WorldDefinitions directory");
     }
 
     [Fact]
