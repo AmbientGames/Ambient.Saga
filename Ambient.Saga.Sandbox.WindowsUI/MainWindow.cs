@@ -99,7 +99,8 @@ public partial class MainWindow : Form
         };
 
         // Initialize World Map UI (without loading a world - WorldSelectionScreen will appear first)
-        _worldMapUI?.Initialize(_viewModel, _renderer.Device);
+        var textureProvider = new D3D11TextureProvider(_renderer.Device);
+        _worldMapUI?.Initialize(_viewModel, textureProvider);
 
         // Start render loop
         _isRendering = true;

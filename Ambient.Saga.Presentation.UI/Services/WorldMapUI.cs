@@ -28,8 +28,8 @@ public class WorldMapUI
     // Modal system (injected via DI for ImGuiArchetypeSelector)
     private readonly ModalManager _modalManager;
 
-    // DirectX11 device for texture creation
-    private SharpDX.Direct3D11.Device? _device;
+    // Platform-agnostic texture provider (DirectX11, OpenGL, etc.)
+    private ITextureProvider? _textureProvider;
 
     // Heightmap texture resources
     private nint _heightMapTexturePtr = nint.Zero;
@@ -42,10 +42,10 @@ public class WorldMapUI
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
     }
 
-    public void Initialize(MainViewModel viewModel, SharpDX.Direct3D11.Device device)
+    public void Initialize(MainViewModel viewModel, ITextureProvider textureProvider)
     {
         _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
-        _device = device ?? throw new ArgumentNullException(nameof(device));
+        _textureProvider = textureProvider ?? throw new ArgumentNullException(nameof(textureProvider));
 
         // Initialize components
         _gameplayOverlay = new GameplayOverlay(_modalManager);
@@ -81,17 +81,17 @@ public class WorldMapUI
         // Dispose old texture
         if (_heightMapResources != null)
         {
-            TextureHelper.DisposeTexture(_heightMapResources);
+            _textureProvider?.DisposeTexture(_heightMapResources);
             _heightMapTexturePtr = nint.Zero;
             _heightMapResources = null;
         }
 
         // Create new texture from HeightMapImageData
-        if (_viewModel?.HeightMapImage != null && _device != null)
+        if (_viewModel?.HeightMapImage != null && _textureProvider != null)
         {
             try
             {
-                var (texturePtr, width, height, resources) = TextureHelper.CreateTextureFromImageData(_device, _viewModel.HeightMapImage);
+                var (texturePtr, width, height, resources) = _textureProvider.CreateTextureFromImageData(_viewModel.HeightMapImage);
                 _heightMapTexturePtr = texturePtr;
                 _heightMapWidth = width;
                 _heightMapHeight = height;
@@ -110,7 +110,7 @@ public class WorldMapUI
     {
         if (_heightMapResources != null)
         {
-            TextureHelper.DisposeTexture(_heightMapResources);
+            _textureProvider?.DisposeTexture(_heightMapResources);
             _heightMapTexturePtr = nint.Zero;
             _heightMapResources = null;
         }

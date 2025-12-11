@@ -1,21 +1,28 @@
-﻿using Ambient.Saga.Presentation.UI.Models;
+using Ambient.Saga.Presentation.UI.Models;
+using Ambient.Saga.Presentation.UI.Services;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.Sandbox.WindowsUI;
 
 /// <summary>
-/// Helper for converting platform-agnostic image data to DirectX11 textures for ImGui rendering
+/// DirectX11 implementation of ITextureProvider.
+/// Converts platform-agnostic HeightMapImageData to DirectX11 textures for ImGui rendering.
 /// </summary>
-public static class TextureHelper
+public class D3D11TextureProvider : ITextureProvider
 {
+    private readonly SharpDX.Direct3D11.Device _device;
+
+    public D3D11TextureProvider(SharpDX.Direct3D11.Device device)
+    {
+        _device = device ?? throw new ArgumentNullException(nameof(device));
+    }
+
     /// <summary>
-    /// Converts HeightMapImageData to a DirectX11 Texture2D with ShaderResourceView
+    /// Creates a DirectX11 Texture2D with ShaderResourceView from HeightMapImageData.
     /// Returns the SRV pointer for use with ImGui.Image()
     /// </summary>
-    public static (nint texturePtr, int width, int height, IDisposable[] resources) CreateTextureFromImageData(
-        SharpDX.Direct3D11.Device device,
-        HeightMapImageData imageData)
+    public (nint texturePtr, int width, int height, IDisposable[] resources) CreateTextureFromImageData(HeightMapImageData imageData)
     {
         if (imageData == null)
             throw new ArgumentNullException(nameof(imageData));
@@ -44,7 +51,7 @@ public static class TextureHelper
         var dataPointer = System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement(pixels, 0);
         var dataBox = new SharpDX.DataBox(dataPointer, stride, 0);
 
-        var texture = new Texture2D(device, textureDesc, new[] { dataBox });
+        var texture = new Texture2D(_device, textureDesc, new[] { dataBox });
 
         // Create ShaderResourceView
         var srvDesc = new ShaderResourceViewDescription
@@ -58,16 +65,16 @@ public static class TextureHelper
             }
         };
 
-        var srv = new ShaderResourceView(device, texture, srvDesc);
+        var srv = new ShaderResourceView(_device, texture, srvDesc);
 
         // Return SRV pointer and resources to dispose later
         return (srv.NativePointer, width, height, new IDisposable[] { texture, srv });
     }
 
     /// <summary>
-    /// Disposes texture resources created by CreateTextureFromBitmap
+    /// Disposes texture resources created by CreateTextureFromImageData
     /// </summary>
-    public static void DisposeTexture(IDisposable[] resources)
+    public void DisposeTexture(IDisposable[]? resources)
     {
         if (resources != null)
         {
