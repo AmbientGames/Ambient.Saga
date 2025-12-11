@@ -6,6 +6,7 @@ namespace Ambient.Saga.Engine.Tests.Simulation;
 
 public class BlocksTests : IAsyncLifetime
 {
+    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
     private IWorld _world;
 
     private readonly string _dataDirectory;
@@ -37,7 +38,7 @@ public class BlocksTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Ise");
+        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Ise");
 
         //_world.AvailableWorldConfigurations = await WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
 

@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Engine.Application.Behaviors;
+﻿using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
@@ -94,6 +95,9 @@ namespace Ambient.Saga.Sandbox.WindowsUI.Services
 
         private static void ConfigureGameplayServices(IServiceCollection services)
         {
+            // World factory - creates World instances for loading
+            services.AddSingleton<IWorldFactory, WorldFactory>();
+
             // MediatR for CQRS
             services.AddMediatR(cfg =>
             {

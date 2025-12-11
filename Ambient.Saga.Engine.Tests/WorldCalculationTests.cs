@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Engine.Infrastructure.Loading;
+﻿using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Infrastructure.Loading;
 
 namespace Ambient.Saga.Engine.Tests;
 
@@ -8,6 +9,7 @@ namespace Ambient.Saga.Engine.Tests;
 /// </summary>
 public class WorldCalculationTests
 {
+    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
 
@@ -207,7 +209,7 @@ public class WorldCalculationTests
     {
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-            () => WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "NonExistentConfig"));
+            () => WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "NonExistentConfig"));
         
         Assert.Contains("WorldConfiguration with RefName 'NonExistentConfig' not found", exception.Message);
     }

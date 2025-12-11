@@ -22,10 +22,18 @@ namespace Ambient.Saga.Engine.Application.Handlers.Loading;
 /// </summary>
 internal sealed class LoadWorldHandler : IRequestHandler<LoadWorldQuery, IWorld>
 {
+    private readonly IWorldFactory _worldFactory;
+
+    public LoadWorldHandler(IWorldFactory worldFactory)
+    {
+        _worldFactory = worldFactory;
+    }
+
     public async Task<IWorld> Handle(LoadWorldQuery query, CancellationToken ct)
     {
         // Delegate to existing infrastructure loader
         return await WorldAssetLoader.LoadWorldByConfigurationAsync(
+            _worldFactory,
             query.DataDirectory,
             query.DefinitionDirectory,
             query.ConfigurationRefName);

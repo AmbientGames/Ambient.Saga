@@ -1,24 +1,21 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
 
-namespace Ambient.Infrastructure;
+namespace Ambient.Saga.Engine.Tests;
 
 /// <summary>
-/// Factory for creating World instances.
-/// Implements IWorldFactory to allow Engine to create worlds without knowing the concrete type.
+/// IWorldFactory implementation for tests that load worlds via WorldAssetLoader.
+/// Also provides helper methods for creating minimal test World instances.
 /// </summary>
-public class WorldFactory : IWorldFactory
+public class TestWorldFactory : IWorldFactory
 {
-    /// <summary>
-    /// Creates a new world instance.
-    /// </summary>
     public IWorld CreateWorld() => new World();
 
     /// <summary>
     /// Creates a minimal valid world for testing.
     /// Note: World.Simulation/Presentation/Gameplay are read-only properties that delegate to WorldTemplate.
     /// </summary>
-    public World CreateMinimalWorld()
+    public static World CreateMinimalWorld()
     {
         var world = new World
         {
@@ -60,7 +57,7 @@ public class WorldFactory : IWorldFactory
     /// <summary>
     /// Creates a test avatar with default empty inventory and specified credits.
     /// </summary>
-    public AvatarBase CreateTestAvatar(float credits = 1000f)
+    public static AvatarBase CreateTestAvatar(float credits = 1000f)
     {
         var avatar = new AvatarBase();
         avatar.Stats = new CharacterStats();

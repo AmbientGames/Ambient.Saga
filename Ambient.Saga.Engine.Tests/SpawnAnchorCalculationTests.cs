@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Engine.Infrastructure.Loading;
+﻿using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Infrastructure.Loading;
 using Xunit.Abstractions;
 
 namespace Ambient.Saga.Engine.Tests;
@@ -9,6 +10,7 @@ namespace Ambient.Saga.Engine.Tests;
 /// </summary>
 public class SpawnAnchorCalculationTests
 {
+    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
     private readonly ITestOutputHelper _output;
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
@@ -45,7 +47,7 @@ public class SpawnAnchorCalculationTests
         try
         {
             // Arrange & Act
-            var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, configRefName);
+            var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, configRefName);
             
             // Assert
             var tolerance = 2.0; // Allow small rounding differences

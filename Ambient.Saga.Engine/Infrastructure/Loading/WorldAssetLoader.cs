@@ -1,6 +1,5 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
-using Ambient.Infrastructure;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.Sampling;
 using Ambient.Infrastructure.Utilities;
@@ -11,25 +10,20 @@ namespace Ambient.Saga.Engine.Infrastructure.Loading;
 public static class WorldAssetLoader
 {
     /// <summary>
-    /// The factory used to create world instances. Defaults to WorldFactory.
-    /// Can be replaced by game-specific projects to create extended World types.
-    /// </summary>
-    public static IWorldFactory Factory { get; set; } = new WorldFactory();
-
-    /// <summary>
     /// Loads a world by finding the WorldConfiguration with the specified RefName.
     /// This is a convenience method that combines LoadAvailableWorldConfigurationsAsync and LoadWorldAsync.
     /// </summary>
+    /// <param name="worldFactory">Factory to create world instances</param>
     /// <param name="dataDirectory">Base data directory</param>
     /// <param name="definitionDirectory">Definition directory for validation</param>
     /// <param name="configurationRefName">The RefName of the WorldConfiguration to load (e.g., "Lat0Height256", "Kagoshima")</param>
     /// <returns>A fully loaded World with the specified configuration</returns>
     /// <exception cref="InvalidOperationException">Thrown if the configuration RefName is not found</exception>
-    public static async Task<IWorld> LoadWorldByConfigurationAsync(string dataDirectory, string definitionDirectory, string configurationRefName)
+    public static async Task<IWorld> LoadWorldByConfigurationAsync(IWorldFactory worldFactory, string dataDirectory, string definitionDirectory, string configurationRefName)
     {
         // Load available configurations
         var configurations = await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory);
-        
+
         // Find the requested configuration
         var worldConfiguration = configurations.FirstOrDefault(c => c.RefName == configurationRefName);
         if (worldConfiguration == null)
@@ -38,12 +32,12 @@ public static class WorldAssetLoader
         }
 
         // Load the world using the found configuration
-        return await LoadWorldAsync(dataDirectory, definitionDirectory, worldConfiguration);
+        return await LoadWorldAsync(worldFactory, dataDirectory, definitionDirectory, worldConfiguration);
     }
 
-    private static async Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, WorldConfiguration worldConfiguration)
+    private static async Task<IWorld> LoadWorldAsync(IWorldFactory worldFactory, string dataDirectory, string definitionDirectory, WorldConfiguration worldConfiguration)
     {
-        var world = Factory.CreateWorld();
+        var world = worldFactory.CreateWorld();
         world.WorldConfiguration = worldConfiguration;
 
         // Determine the template directory from WorldConfiguration.Template

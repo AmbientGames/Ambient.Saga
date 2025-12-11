@@ -1,6 +1,5 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
-using Ambient.Infrastructure;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Evaluation;
 using Ambient.Saga.Engine.Domain.Rpg.Reputation;
@@ -14,12 +13,10 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// </summary>
 public class FactionReputationIntegrationTests : IDisposable
 {
-    private readonly WorldFactory _worldFactory;
     private World _world = null!;
 
     public FactionReputationIntegrationTests()
     {
-        _worldFactory = new WorldFactory();
     }
 
     public void Dispose()
@@ -30,7 +27,7 @@ public class FactionReputationIntegrationTests : IDisposable
     public void ReputationChanged_Transaction_UpdatesFactionReputation()
     {
         // Arrange
-        _world = _worldFactory.CreateMinimalWorld();
+        _world = TestWorldFactory.CreateMinimalWorld();
 
         // Add faction to world
         var faction = new Faction
@@ -89,7 +86,7 @@ public class FactionReputationIntegrationTests : IDisposable
     public void ReputationSpillover_AlliedFactions_ReceivesBonusReputation()
     {
         // Arrange
-        _world = _worldFactory.CreateMinimalWorld();
+        _world = TestWorldFactory.CreateMinimalWorld();
 
         var knightsFaction = new Faction
         {
@@ -160,8 +157,8 @@ public class FactionReputationIntegrationTests : IDisposable
     public void DialogueCondition_ReputationLevel_FiltersChoicesCorrectly()
     {
         // Arrange
-        _world = _worldFactory.CreateMinimalWorld();
-        var avatarEntity = _worldFactory.CreateTestAvatar();
+        _world = TestWorldFactory.CreateMinimalWorld();
+        var avatarEntity = TestWorldFactory.CreateTestAvatar();
 
         var faction = new Faction
         {
@@ -216,8 +213,8 @@ public class FactionReputationIntegrationTests : IDisposable
     public void DialogueCondition_ReputationValue_ComparesNumericReputation()
     {
         // Arrange
-        _world = _worldFactory.CreateMinimalWorld();
-        var avatarEntity = _worldFactory.CreateTestAvatar();
+        _world = TestWorldFactory.CreateMinimalWorld();
+        var avatarEntity = TestWorldFactory.CreateTestAvatar();
 
         var faction = new Faction
         {
@@ -328,7 +325,7 @@ public class FactionReputationIntegrationTests : IDisposable
     public void MultipleReputationChanges_Accumulate_CorrectlyInState()
     {
         // Arrange
-        _world = _worldFactory.CreateMinimalWorld();
+        _world = TestWorldFactory.CreateMinimalWorld();
 
         var faction = new Faction
         {
@@ -428,8 +425,8 @@ public class FactionReputationIntegrationTests : IDisposable
     public void StartingReputation_NonZero_InitializesCorrectly()
     {
         // Arrange
-        _world = _worldFactory.CreateMinimalWorld();
-        var avatarEntity = _worldFactory.CreateTestAvatar();
+        _world = TestWorldFactory.CreateMinimalWorld();
+        var avatarEntity = TestWorldFactory.CreateTestAvatar();
 
         var faction = new Faction
         {

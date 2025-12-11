@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Engine.Application.Handlers.Loading;
+﻿using Ambient.Domain.DefinitionExtensions;
+using Ambient.Saga.Engine.Application.Handlers.Loading;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,7 @@ public class WorldLoadingQueryTests : IDisposable
 
         // Setup MediatR with world loading handlers
         var services = new ServiceCollection();
+        services.AddSingleton<IWorldFactory, TestWorldFactory>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoadWorldHandler).Assembly));
         var serviceProvider = services.BuildServiceProvider();
         _mediator = serviceProvider.GetRequiredService<IMediator>();
