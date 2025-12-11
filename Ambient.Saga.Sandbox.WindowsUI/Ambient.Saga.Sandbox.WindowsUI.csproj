@@ -31,7 +31,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Ambient.Domain\Ambient.Domain.csproj" />
-		<ProjectReference Include="..\Ambient.Saga.Presentation.UI\Ambient.Saga.Presentation.UI.csproj" />
+		<ProjectReference Include="..\Ambient.Saga.UI\Ambient.Saga.UI.csproj" />
 	</ItemGroup>
 
   <ItemGroup>
