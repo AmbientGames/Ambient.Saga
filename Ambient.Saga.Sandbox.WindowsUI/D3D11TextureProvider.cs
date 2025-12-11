@@ -1,5 +1,5 @@
-using Ambient.Saga.Presentation.UI.Models;
-using Ambient.Saga.Presentation.UI.Services;
+using Ambient.Saga.UI.Models;
+using Ambient.Saga.UI.Services;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 

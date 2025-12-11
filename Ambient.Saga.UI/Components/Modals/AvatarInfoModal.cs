@@ -1,10 +1,10 @@
 ﻿using Ambient.Domain;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.UI.Components.Utilities;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal showing avatar stats, inventory, career statistics, party, and summons

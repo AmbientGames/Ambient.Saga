@@ -1,7 +1,7 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Analyzes dialogue trees to determine character interaction types.

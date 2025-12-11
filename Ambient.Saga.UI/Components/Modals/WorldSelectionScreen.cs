@@ -1,11 +1,10 @@
 using Ambient.Saga.Engine.Contracts;
-using Ambient.Saga.Presentation.UI.Services;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// World selection screen for choosing which world to load.

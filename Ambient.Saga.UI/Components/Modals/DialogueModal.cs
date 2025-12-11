@@ -5,7 +5,7 @@ using Ambient.Saga.Engine.Application.Results.Saga;
 using ImGuiNET;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for character dialogue using CQRS pattern.

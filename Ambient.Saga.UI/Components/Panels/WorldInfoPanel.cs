@@ -1,9 +1,9 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
-using Ambient.Saga.Presentation.UI.Components.Utilities;
+using Ambient.Saga.UI.Components.Utilities;
 
-namespace Ambient.Saga.Presentation.UI.Components.Panels;
+namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
 /// Left panel showing map controls, feature legend, and world catalog.

@@ -1,7 +1,7 @@
 ﻿using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Service for synchronizing Saga instances between local database and server.

@@ -1,10 +1,10 @@
 ﻿using Ambient.Domain;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Services;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.UI.Services;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for selecting character archetype

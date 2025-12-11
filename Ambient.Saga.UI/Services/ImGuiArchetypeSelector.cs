@@ -1,7 +1,7 @@
 ﻿using Ambient.Domain;
-using Ambient.Saga.Presentation.UI.Components.Modals;
+using Ambient.Saga.UI.Components.Modals;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// ImGui implementation of archetype selection using modal dialogs

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for changing complete loadout (equipment, affinity, stance).

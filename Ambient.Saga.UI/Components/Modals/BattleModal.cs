@@ -9,7 +9,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using ImGuiNET;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for interactive turn-by-turn battles using CQRS pattern.

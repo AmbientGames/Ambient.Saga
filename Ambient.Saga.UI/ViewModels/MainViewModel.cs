@@ -7,9 +7,6 @@ using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Infrastructure.GameLogic;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
-using Ambient.Saga.Presentation.UI.Models;
-using Ambient.Saga.Presentation.UI.Services;
-using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using Ambient.Saga.Engine.Application.Queries.Saga;
@@ -21,6 +18,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SixLabors.ImageSharp.PixelFormats;
 using System.Collections.ObjectModel;
+using Ambient.Saga.UI.Models;
+using Ambient.Saga.UI.Services;
+using Ambient.Saga.UI.ViewModels;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 

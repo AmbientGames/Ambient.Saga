@@ -3,7 +3,7 @@ using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using ImGuiNET;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Quest log modal showing all active and completed quests.

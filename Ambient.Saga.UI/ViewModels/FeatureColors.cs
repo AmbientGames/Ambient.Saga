@@ -1,7 +1,7 @@
 ﻿using Ambient.Saga.Engine.Domain.Services;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.ViewModels;
+namespace Ambient.Saga.UI.ViewModels;
 
 /// <summary>
 /// Pre-calculated colors for feature dots based on type and interaction status.

@@ -1,12 +1,12 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Components.Modals;
-using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.UI.ViewModels;
+using Ambient.Saga.UI.Components.Modals;
 
-namespace Ambient.Saga.Presentation.UI.Components.Panels;
+namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
 /// Center panel showing the map view with sagas and characters
@@ -96,8 +96,8 @@ public class MapViewPanel
                 var avatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(viewModel.AvatarLatitude, viewModel.CurrentWorld!.HeightMapMetadata);
 
                 // Convert to display coordinates
-                var avatarDisplayX = (avatarPixelX / heightMapWidth) * zoomedDisplayWidth;
-                var avatarDisplayY = (avatarPixelY / heightMapHeight) * zoomedDisplayHeight;
+                var avatarDisplayX = avatarPixelX / heightMapWidth * zoomedDisplayWidth;
+                var avatarDisplayY = avatarPixelY / heightMapHeight * zoomedDisplayHeight;
 
                 // Calculate scroll to center avatar in viewport
                 _pendingScrollX = (float)(avatarDisplayX - viewportWidth / 2);

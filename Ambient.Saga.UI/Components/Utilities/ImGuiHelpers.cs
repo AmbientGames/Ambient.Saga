@@ -2,7 +2,7 @@
 using System.Numerics;
 using Ambient.Domain;
 
-namespace Ambient.Saga.Presentation.UI.Components.Utilities;
+namespace Ambient.Saga.UI.Components.Utilities;
 
 /// <summary>
 /// Helper methods for rendering common UI components in ImGui

@@ -2,7 +2,7 @@
 using SixLabors.ImageSharp.PixelFormats;
 using Ambient.Domain.Sampling;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 public class HeightMapProcessor
 {

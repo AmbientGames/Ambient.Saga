@@ -1,4 +1,4 @@
-﻿namespace Ambient.Saga.Presentation.UI.ViewModels;
+﻿namespace Ambient.Saga.UI.ViewModels;
 
 /// <summary>
 /// Feature type for Saga center dots on the map.

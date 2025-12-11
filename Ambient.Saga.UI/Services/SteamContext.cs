@@ -1,4 +1,4 @@
-﻿namespace Ambient.Saga.Presentation.UI.Services;
+﻿namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Provides Steam availability status for the Schema.Sandbox library.

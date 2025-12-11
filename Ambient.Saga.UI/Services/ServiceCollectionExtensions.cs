@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Extension methods for registering Schema Sandbox services

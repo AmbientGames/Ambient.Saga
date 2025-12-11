@@ -1,10 +1,10 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Components.Modals;
-using Ambient.Saga.Presentation.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.UI.Components.Utilities;
+using Ambient.Saga.UI.Components.Modals;
 
-namespace Ambient.Saga.Presentation.UI.Components.Panels;
+namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
 /// Right panel showing avatar info, quests, and achievements in tabs

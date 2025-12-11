@@ -1,7 +1,7 @@
 using ImGuiNET;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.Components.Panels;
+namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
 /// Renders the map legend (Features, Trigger Rings, Spawned Characters).

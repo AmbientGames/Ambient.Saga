@@ -3,12 +3,12 @@ using Ambient.Domain.Contracts;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
-using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Domain.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Numerics;
+using Ambient.Saga.UI.ViewModels;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 

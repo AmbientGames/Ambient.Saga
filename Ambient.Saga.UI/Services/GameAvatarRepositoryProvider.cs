@@ -1,6 +1,6 @@
 ﻿using Ambient.Application.Contracts;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Provides access to the current IGameAvatarRepository.

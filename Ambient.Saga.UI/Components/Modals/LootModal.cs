@@ -3,7 +3,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using ImGuiNET;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for looting defeated characters using CQRS pattern

@@ -1,10 +1,10 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Components;
-using Ambient.Saga.Presentation.UI.Components.Modals;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.UI.Components;
+using Ambient.Saga.UI.Components.Modals;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Main ImGui-based World Map UI - coordinates Sandbox-specific and game-reusable components.

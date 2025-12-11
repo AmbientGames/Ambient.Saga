@@ -1,6 +1,6 @@
-using Ambient.Saga.Presentation.UI.Models;
+using Ambient.Saga.UI.Models;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Platform-agnostic interface for creating textures from image data.

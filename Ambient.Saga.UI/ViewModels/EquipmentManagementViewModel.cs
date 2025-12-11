@@ -1,6 +1,6 @@
 ﻿using Ambient.Domain;
 
-namespace Ambient.Saga.Presentation.UI.ViewModels;
+namespace Ambient.Saga.UI.ViewModels;
 
 public class EquipmentChangedEventArgs : EventArgs
 {

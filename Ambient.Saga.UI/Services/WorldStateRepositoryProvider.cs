@@ -1,6 +1,6 @@
 ﻿using Ambient.Saga.Engine.Contracts;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Provides access to the WorldStateRepository instance for the currently loaded world.

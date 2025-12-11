@@ -1,10 +1,10 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Components.Modals;
-using Ambient.Saga.Presentation.UI.Components.Panels;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.UI.Components.Panels;
+using Ambient.Saga.UI.Components.Modals;
 
-namespace Ambient.Saga.Presentation.UI.Components;
+namespace Ambient.Saga.UI.Components;
 
 /// <summary>
 /// Which panel is currently active in game mode.

@@ -7,7 +7,7 @@ using ImGuiNET;
 using MediatR;
 using System.Numerics;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Comprehensive quest detail modal showing multi-stage progress, objectives, branches, and rewards.

@@ -1,4 +1,4 @@
-﻿namespace Ambient.Saga.Presentation.UI.Models;
+﻿namespace Ambient.Saga.UI.Models;
 
 /// <summary>
 /// Platform-agnostic heightmap image data.

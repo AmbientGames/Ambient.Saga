@@ -1,10 +1,10 @@
 ﻿using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Services;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using MediatR;
+using Ambient.Saga.UI.Services;
 
-namespace Ambient.Saga.Presentation.UI.Components.Modals;
+namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Manages which modal dialog is currently open

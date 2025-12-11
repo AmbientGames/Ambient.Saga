@@ -1,6 +1,6 @@
 ﻿using Ambient.Domain.DefinitionExtensions;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Provides access to the current World instance.

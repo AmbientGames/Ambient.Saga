@@ -1,6 +1,6 @@
 ﻿using Ambient.Domain;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.UI.Services;
 
 /// <summary>
 /// Abstraction for selecting an avatar archetype
