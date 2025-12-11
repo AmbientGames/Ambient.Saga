@@ -35,7 +35,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <None Include="WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
+    <None Include="..\WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
   </ItemGroup>
 
 	<ItemGroup>

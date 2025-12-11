@@ -30,6 +30,9 @@
         <!-- Copy all Schema files recursively -->
         <file src="Ambient.Domain\bin\$configuration$\net8.0\DefinitionXsd\**\*.*" target="contentFiles\any\Assets\DefinitionXsd" />
 
+        <!-- World definition content (XML game data) -->
+        <file src="WorldDefinitions\**\*.*" target="contentFiles\any\Assets\WorldDefinitions" />
+
         <!-- Documentation -->
         <file src="README.md" target="docs\" />
     </files>

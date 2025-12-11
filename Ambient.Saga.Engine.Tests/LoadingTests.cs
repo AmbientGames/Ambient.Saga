@@ -17,9 +17,9 @@ public class LoadingTests : IAsyncLifetime
         // DefinitionXsd is copied to output directory by Ambient.Domain
         _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
 
-        // WorldDefinitions still lives in Sandbox source directory
+        // WorldDefinitions is at solution root (shared by all Sandboxes)
         var solutionRoot = FindSolutionRoot();
-        _dataDirectory = Path.Combine(solutionRoot, "Ambient.Saga.Sandbox.WindowsUI", "WorldDefinitions");
+        _dataDirectory = Path.Combine(solutionRoot, "WorldDefinitions");
     }
 
     private static string FindSolutionRoot()
