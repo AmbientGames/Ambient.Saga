@@ -1,6 +1,6 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
-using Ambient.Saga.Engine.Infrastructure.Loading;
+using Ambient.Infrastructure.GameLogic.Loading;
 using Ambient.Saga.Engine.Tests;
 
 namespace Ambient.SagaEngine.Tests;

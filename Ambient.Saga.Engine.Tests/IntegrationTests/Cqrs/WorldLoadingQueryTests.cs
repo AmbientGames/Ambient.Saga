@@ -1,7 +1,7 @@
 ﻿using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Application.Handlers.Loading;
 using Ambient.Saga.Engine.Application.Queries.Loading;
-using Ambient.Saga.Engine.Infrastructure.Loading;
+using Ambient.Infrastructure.GameLogic.Loading;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

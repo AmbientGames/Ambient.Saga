@@ -1,5 +1,5 @@
 ﻿using Ambient.Domain.DefinitionExtensions;
-using Ambient.Saga.Engine.Infrastructure.Loading;
+using Ambient.Infrastructure.GameLogic.Loading;
 using Xunit.Abstractions;
 
 namespace Ambient.Saga.Engine.Tests;

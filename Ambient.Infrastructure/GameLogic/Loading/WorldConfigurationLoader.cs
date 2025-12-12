@@ -2,7 +2,7 @@ using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Infrastructure.Utilities;
 
-namespace Ambient.Saga.Engine.Infrastructure.Loading;
+namespace Ambient.Infrastructure.GameLogic.Loading;
 
 /// <summary>
 /// Loads world configurations from XML files.

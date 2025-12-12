@@ -5,7 +5,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Services;
-using Ambient.Saga.Engine.Infrastructure.Loading;
+using Ambient.Infrastructure.GameLogic.Loading;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;

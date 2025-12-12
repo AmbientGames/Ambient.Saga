@@ -4,7 +4,7 @@ using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.Sampling;
 using Ambient.Infrastructure.Utilities;
 
-namespace Ambient.Saga.Engine.Infrastructure.Loading;
+namespace Ambient.Infrastructure.GameLogic.Loading;
 
 /// <summary>
 /// Loads world assets including configuration, metadata, and gameplay data.
