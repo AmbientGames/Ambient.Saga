@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
 
 namespace Ambient.Saga.Engine;

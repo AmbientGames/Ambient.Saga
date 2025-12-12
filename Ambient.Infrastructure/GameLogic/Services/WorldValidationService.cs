@@ -1,5 +1,5 @@
 ﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Contracts;
 
 namespace Ambient.Infrastructure.GameLogic.Services;
 

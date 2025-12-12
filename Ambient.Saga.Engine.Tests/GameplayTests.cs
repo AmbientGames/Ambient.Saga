@@ -1,5 +1,5 @@
 ﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Loading;
 

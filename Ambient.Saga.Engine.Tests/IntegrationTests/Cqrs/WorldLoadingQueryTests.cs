@@ -1,9 +1,9 @@
-﻿using Ambient.Domain.DefinitionExtensions;
-using Ambient.Saga.Engine.Application.Handlers.Loading;
+﻿using Ambient.Saga.Engine.Application.Handlers.Loading;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using Ambient.Infrastructure.GameLogic.Loading;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 

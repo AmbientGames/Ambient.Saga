@@ -3,7 +3,7 @@ using Ambient.Saga.UI.Services;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 
-namespace Ambient.Saga.Sandbox.WindowsUI;
+namespace Ambient.Saga.Sandbox.DirectX;
 
 /// <summary>
 /// DirectX11 implementation of ITextureProvider.

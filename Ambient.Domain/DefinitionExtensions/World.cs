@@ -24,8 +24,8 @@ public partial class World : IWorld
     /// </summary>
     public long UtcStartTick { get; set; }
 
-    [XmlIgnore] public WorldConfiguration WorldConfiguration { get; set; }
-    [XmlIgnore] public WorldConfiguration[] AvailableWorldConfigurations { get; set; }
+    [XmlIgnore] public IWorldConfiguration WorldConfiguration { get; set; }
+    [XmlIgnore] public IWorldConfiguration[] AvailableWorldConfigurations { get; set; }
     [XmlIgnore] public WorldTemplate WorldTemplate { get; set; }
     [XmlIgnore] public bool IsProcedural { get; set; } = true;
     [XmlIgnore] public GameplayComponents Gameplay => WorldTemplate.Gameplay;

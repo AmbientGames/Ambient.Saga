@@ -1,4 +1,4 @@
-using Ambient.Domain;
+using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Contracts;
 
@@ -26,5 +26,5 @@ public interface IWorldContentGenerator
     /// <param name="worldConfig">The world configuration to generate content for</param>
     /// <param name="outputDirectory">Base output directory (e.g., WorldDefinitions)</param>
     /// <returns>List of generated file paths, or empty list if generation failed/unavailable</returns>
-    List<string> GenerateWorldContent(WorldConfiguration worldConfig, string outputDirectory);
+    List<string> GenerateWorldContent(IWorldConfiguration worldConfig, string outputDirectory);
 }

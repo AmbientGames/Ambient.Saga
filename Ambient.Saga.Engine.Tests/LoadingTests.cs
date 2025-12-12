@@ -1,9 +1,8 @@
 ﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic.Loading;
-using Ambient.Saga.Engine.Tests;
 
-namespace Ambient.SagaEngine.Tests;
+namespace Ambient.Saga.Engine.Tests;
 
 public class LoadingTests : IAsyncLifetime
 {

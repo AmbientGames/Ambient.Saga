@@ -1,8 +1,7 @@
-﻿using Ambient.Domain.Contracts;
-using Ambient.Domain.ValueObjects;
+﻿using Ambient.Domain.ValueObjects;
 using System.Xml.Serialization;
 
-namespace Ambient.Domain.DefinitionExtensions;
+namespace Ambient.Domain.Contracts;
 
 /// <summary>
 /// Defines the contract for world properties.
@@ -12,9 +11,9 @@ public interface IWorld
     /// <summary>
     /// Array of available world configurations for this world.
     /// </summary>
-    WorldConfiguration[] AvailableWorldConfigurations { get; set; }
+    IWorldConfiguration[] AvailableWorldConfigurations { get; set; }
 
-    WorldConfiguration WorldConfiguration { get; set; }
+    IWorldConfiguration WorldConfiguration { get; set; }
 
     /// <summary>
     /// Optional block provider for games that include block/voxel systems.

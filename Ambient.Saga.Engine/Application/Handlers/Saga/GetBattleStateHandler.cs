@@ -1,10 +1,10 @@
-﻿using Ambient.Domain.DefinitionExtensions;
-using MediatR;
+﻿using MediatR;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Application.Queries.Saga;
+using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 

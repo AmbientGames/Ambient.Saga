@@ -1,5 +1,5 @@
 using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.Sampling;
 using Ambient.Infrastructure.Utilities;
@@ -35,7 +35,7 @@ public class WorldAssetLoader : IWorldLoader
     }
 
     /// <inheritdoc />
-    public async Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, WorldConfiguration worldConfiguration)
+    public async Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, IWorldConfiguration worldConfiguration)
     {
         var world = _worldFactory.CreateWorld();
         world.WorldConfiguration = worldConfiguration;

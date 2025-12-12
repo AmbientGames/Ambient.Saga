@@ -1,4 +1,4 @@
-namespace Ambient.Domain.DefinitionExtensions;
+namespace Ambient.Domain.Contracts;
 
 /// <summary>
 /// Interface for loading world assets including configuration, metadata, and gameplay data.
@@ -22,5 +22,5 @@ public interface IWorldLoader
     /// <param name="definitionDirectory">Definition directory containing XSD schemas</param>
     /// <param name="worldConfiguration">The WorldConfiguration to use</param>
     /// <returns>A fully loaded World instance</returns>
-    Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, WorldConfiguration worldConfiguration);
+    Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, IWorldConfiguration worldConfiguration);
 }

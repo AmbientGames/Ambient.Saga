@@ -1,5 +1,5 @@
 using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.Utilities;
 
 namespace Ambient.Infrastructure.GameLogic.Loading;
@@ -9,7 +9,7 @@ namespace Ambient.Infrastructure.GameLogic.Loading;
 /// </summary>
 public class WorldConfigurationLoader : IWorldConfigurationLoader
 {
-    public async Task<WorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string definitionDirectory)
+    public async Task<IWorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string definitionDirectory)
     {
         var xsdFilePath = Path.Combine(definitionDirectory, "WorldConfiguration.xsd");
         var configs = (await XmlLoader.LoadFromXmlAsync<WorldConfigurations>(Path.Combine(dataDirectory, "WorldConfigurations.xml"), xsdFilePath)).WorldConfiguration;

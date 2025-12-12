@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 

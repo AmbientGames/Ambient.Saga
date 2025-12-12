@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic.Loading;
 
 namespace Ambient.Saga.Engine.Tests;

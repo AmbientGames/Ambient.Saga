@@ -1,7 +1,6 @@
 ﻿using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Domain.DefinitionExtensions;
 using Ambient.Domain.Entities;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
@@ -30,10 +29,10 @@ public partial class MainViewModel : ObservableObject
     private readonly string _schemaDirectory;
 
     [ObservableProperty]
-    private ObservableCollection<WorldConfiguration> _availableConfigurations = new();
+    private ObservableCollection<IWorldConfiguration> _availableConfigurations = new();
 
     [ObservableProperty]
-    private WorldConfiguration? _selectedConfiguration;
+    private IWorldConfiguration? _selectedConfiguration;
 
     [ObservableProperty]
     private string _statusMessage = "Ready";

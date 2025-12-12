@@ -10,7 +10,7 @@ using SharpDX.Mathematics.Interop;
 using Device = SharpDX.Direct3D11.Device;
 using Buffer = SharpDX.Direct3D11.Buffer;
 
-namespace Ambient.Saga.Presentation.UI.Services
+namespace Ambient.Saga.Sandbox.DirectX
 {
     /// <summary>
     /// Direct3D 11 renderer - renders a spinning colored triangle.

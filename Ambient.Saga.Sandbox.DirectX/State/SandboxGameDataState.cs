@@ -1,6 +1,6 @@
 ﻿// REMOVED: using Ambient.Game.Gameplay.Rpg.Instances - no longer using mutable instances
 
-namespace Ambient.Saga.Sandbox.WindowsUI.State;
+namespace Ambient.Saga.Sandbox.DirectX.State;
 
 /// <summary>
 /// Simplified game data state for the Schema Sandbox.
