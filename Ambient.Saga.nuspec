@@ -14,7 +14,8 @@
             <group targetFramework="net8.0"/>
         </dependencies>
         <contentFiles>
-            <files include="**/*.*" buildAction="None" copyToOutput="true" flatten="true"/>
+            <files include="any/any/DefinitionXsd/**/*" buildAction="Content" copyToOutput="true" flatten="false"/>
+            <files include="any/any/WorldDefinitions/**/*" buildAction="Content" copyToOutput="true" flatten="false"/>
         </contentFiles>
     </metadata>
     <files>
@@ -27,11 +28,11 @@
         <!-- UI Library (net8.0, OS-agnostic) -->
         <file src="Ambient.Saga.UI\bin\$configuration$\net8.0\Ambient.Saga.UI.dll" target="lib\net8.0" />
 
-        <!-- Copy all Schema files recursively -->
-        <file src="DefinitionXsd\**\*.*" target="contentFiles\any\Assets\DefinitionXsd" />
+        <!-- Copy all Schema files recursively (contentFiles\any\any for all languages and frameworks) -->
+        <file src="DefinitionXsd\**\*.*" target="contentFiles\any\any\DefinitionXsd" />
 
         <!-- World definition content (XML game data) -->
-        <file src="WorldDefinitions\**\*.*" target="contentFiles\any\Assets\WorldDefinitions" />
+        <file src="WorldDefinitions\**\*.*" target="contentFiles\any\any\WorldDefinitions" />
 
         <!-- Documentation -->
         <file src="README.md" target="docs\" />
