@@ -29,4 +29,12 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\DefinitionXsd\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="DefinitionXsd" />
+  </ItemGroup>
+
 </Project>

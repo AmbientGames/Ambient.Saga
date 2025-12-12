@@ -41,15 +41,21 @@ When referencing entities from other entities, use string-based reference attrib
 The schema generation process has been automated with PowerShell scripts.
 The workflow generates individual class files organized into domain-specific folders instead of one large WorldDefinition.cs file.
 
-To regenerate the schema files: 
-                  
-1) Open a powershell prompt via Tools -> Command Line -> Developer PowerShell
-2) cd Ambient.Domain\DefinitionXsd
+### Directory Structure
+
+- `DefinitionXsd/` - XSD schemas (at solution root, shared across projects)
+- `Ambient.Domain/CodeGeneration/` - Generation scripts (this folder)
+- `Ambient.Domain/DefinitionGenerated/` - Output folder for generated C# classes
+
+### To regenerate the schema files:
+
+1) Open a PowerShell prompt via Tools -> Command Line -> Developer PowerShell
+2) cd Ambient.Domain\CodeGeneration
 3) .\BuildDefinitions.ps1
 
 This runs the complete process:
-1. Deletes and recreates the 'DefinitionGenerated` folder
-2. Generates C# classes from `WorldDefinition.xsd` using XSD.exe
+1. Deletes and recreates the `DefinitionGenerated` folder
+2. Generates C# classes from `DefinitionXsd\WorldDefinition.xsd` using XSD.exe
 3. Splits the large WorldDefinition.cs into individual class files
 4. Organizes classes into domain folders (Gameplay, Simulation, Presentation, Core, Enums)
 

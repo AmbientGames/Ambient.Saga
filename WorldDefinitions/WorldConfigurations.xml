@@ -2,7 +2,7 @@
 <WorldConfigurations
     xmlns="Ambient.Domain"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="Ambient.Domain ..\..\Ambient.Domain\DefinitionXsd\WorldConfiguration.xsd">
+    xsi:schemaLocation="Ambient.Domain ..\DefinitionXsd\WorldConfiguration.xsd">
     <WorldConfiguration
         RefName="Ise"
         DisplayName="Ise, Japan"

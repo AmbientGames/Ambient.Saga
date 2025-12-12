@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<AvatarArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<AvatarArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <AvatarArchetype RefName="Warrior" DisplayName="Samurai" Description="A disciplined warrior bound by bushido, the way of the warrior. Masters of the katana and defenders of their lord's honor, samurai are the backbone of any army." AffinityRef="Iron">
     <SpawnStats Health="1.05" Stamina="0.95" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.105" Defense="0.105" Speed="0.095" Magic="0.095" />
     <SpawnCapabilities>

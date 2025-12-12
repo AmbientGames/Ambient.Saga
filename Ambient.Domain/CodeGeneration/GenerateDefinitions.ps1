@@ -1,5 +1,7 @@
 ﻿# Step 1: Delete and recreate DefinitionGenerated folder
 $schemaGeneratedDir = "..\DefinitionGenerated"
+$xsdDir = "..\..\DefinitionXsd"
+
 if (Test-Path $schemaGeneratedDir) {
     Write-Host "Deleting existing DefinitionGenerated folder..." -ForegroundColor Yellow
     Remove-Item $schemaGeneratedDir -Recurse -Force
@@ -9,7 +11,7 @@ New-Item -ItemType Directory -Path $schemaGeneratedDir -Force | Out-Null
 
 # Step 2: Run XSD to generate the big file
 Write-Host "Generating C# classes from WorldDefinition.xsd..." -ForegroundColor Green
-$result = & xsd "WorldDefinition.xsd" /classes /namespace:Ambient.Domain /out:$schemaGeneratedDir
+$result = & xsd "$xsdDir\WorldDefinition.xsd" /classes /namespace:Ambient.Domain /out:$schemaGeneratedDir
 if ($LASTEXITCODE -ne 0) {
     Write-Host "XSD generation failed" -ForegroundColor Red
     exit

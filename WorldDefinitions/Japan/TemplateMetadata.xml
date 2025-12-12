@@ -2,7 +2,7 @@
 
 <TemplateMetadata xmlns="Ambient.Domain"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="Ambient.Domain ..\..\..\Ambient.Domain\DefinitionXsd\WorldTemplateMetadata.xsd">
+       xsi:schemaLocation="Ambient.Domain ..\..\DefinitionXsd\WorldTemplateMetadata.xsd">
     <Name>XML World</Name>
     <Description>An XML World</Description>
     <Version>1.0</Version>

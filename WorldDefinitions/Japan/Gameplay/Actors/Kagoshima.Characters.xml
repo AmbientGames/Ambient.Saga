@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Character RefName="BanditChief_QuestGiver" DisplayName="Village Headman" Description="The desperate leader of a village plagued by bandits">
     <Stats Health="0.80" Stamina="0.7" Mana="0.2" Strength="0.12" Defense="0.15" Speed="0.10" Magic="0.05" Credits="80" />
     <Capabilities>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Spells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Spells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Spell RefName="PowerStrike" DisplayName="Kirikaeshi" Description="A powerful overhead strike" WholesalePrice="80" Category="Combat" AffinityRef="Iron" UseType="Offensive">
     <Effects Health="-0.2" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
   </Spell>
