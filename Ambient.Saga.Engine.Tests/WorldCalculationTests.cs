@@ -10,6 +10,8 @@ namespace Ambient.Saga.Engine.Tests;
 public class WorldCalculationTests
 {
     private readonly IWorldFactory _worldFactory = new TestWorldFactory();
+    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
+    private readonly IWorldLoader _worldLoader;
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
 
@@ -20,6 +22,8 @@ public class WorldCalculationTests
 
         // WorldDefinitions is at solution root (shared by all Sandboxes)
         _dataDirectory = FindWorldDefinitionsDirectory();
+
+        _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
     }
 
     private static string FindWorldDefinitionsDirectory()
@@ -208,8 +212,8 @@ public class WorldCalculationTests
     {
         // Act & Assert
         var exception = await Assert.ThrowsAsync<InvalidOperationException>(
-            () => WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "NonExistentConfig"));
-        
+            () => _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "NonExistentConfig"));
+
         Assert.Contains("WorldConfiguration with RefName 'NonExistentConfig' not found", exception.Message);
     }
 }

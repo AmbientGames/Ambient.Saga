@@ -5,6 +5,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Saga.Engine.Infrastructure.Loading;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;
@@ -97,6 +98,10 @@ namespace Ambient.Saga.Sandbox.WindowsUI.Services
         {
             // World factory - creates World instances for loading
             services.AddSingleton<IWorldFactory, WorldFactory>();
+
+            // World configuration and asset loaders
+            services.AddSingleton<IWorldConfigurationLoader, WorldConfigurationLoader>();
+            services.AddSingleton<IWorldLoader, WorldAssetLoader>();
 
             // MediatR for CQRS
             services.AddMediatR(cfg =>

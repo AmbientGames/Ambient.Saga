@@ -13,6 +13,8 @@ namespace Ambient.Saga.Engine.Tests;
 public class WorldValidationServiceIntegrationTests
 {
     private readonly IWorldFactory _worldFactory = new TestWorldFactory();
+    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
+    private readonly IWorldLoader _worldLoader;
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
     private const string TestWorldConfiguration = "Ise";
@@ -24,6 +26,8 @@ public class WorldValidationServiceIntegrationTests
 
         // WorldDefinitions is at solution root (shared by all Sandboxes)
         _dataDirectory = FindWorldDefinitionsDirectory();
+
+        _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
     }
 
     private static string FindWorldDefinitionsDirectory()
@@ -44,7 +48,7 @@ public class WorldValidationServiceIntegrationTests
     public async Task ValidateReferentialIntegrity_DefaultWorld_PassesAllValidation()
     {
         // Arrange - Load the actual world configuration
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, TestWorldConfiguration);
+        var world = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, TestWorldConfiguration);
 
         // Act & Assert - Should not throw any validation errors
         // This ensures the world configuration has:
@@ -59,7 +63,7 @@ public class WorldValidationServiceIntegrationTests
     public async Task ValidateReferentialIntegrity_DefaultWorld_CharactersWithDialogueHavePromisedItems()
     {
         // Arrange - Load the actual world configuration
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, TestWorldConfiguration);
+        var world = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, TestWorldConfiguration);
 
         // Act - Validate and capture any errors
         var validationPassed = true;
@@ -88,7 +92,7 @@ public class WorldValidationServiceIntegrationTests
     public async Task ValidateReferentialIntegrity_DefaultWorld_BlockRewardsInDialogueAreValid()
     {
         // Arrange - Load the actual world configuration
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, TestWorldConfiguration);
+        var world = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, TestWorldConfiguration);
 
         // Act - Run validation
         WorldValidationService.ValidateReferentialIntegrity(world);
@@ -131,7 +135,7 @@ public class WorldValidationServiceIntegrationTests
     public async Task ValidateReferentialIntegrity_AllWorldConfigurations_PassValidation(string configurationRefName)
     {
         // Arrange & Act - Load world configuration (validation happens automatically during load)
-        var world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, configurationRefName);
+        var world = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, configurationRefName);
 
         // Assert - If we got here without exception, validation passed
         Assert.NotNull(world);
@@ -151,7 +155,8 @@ public class WorldValidationServiceIntegrationTests
         // WorldDefinitions is at solution root (shared by all Sandboxes)
         var dataDirectory = FindWorldDefinitionsDirectory();
 
-        var configurations = WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory).GetAwaiter().GetResult();
+        var configurationLoader = new WorldConfigurationLoader();
+        var configurations = configurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory).GetAwaiter().GetResult();
 
         foreach (var config in configurations)
         {

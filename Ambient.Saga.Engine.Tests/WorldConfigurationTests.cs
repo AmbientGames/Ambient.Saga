@@ -1,10 +1,12 @@
 ﻿using Ambient.Domain;
+using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Infrastructure.Loading;
 
 namespace Ambient.Saga.Engine.Tests;
 
 public class WorldConfigurationTests
 {
+    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
 
@@ -216,7 +218,7 @@ public class WorldConfigurationTests
     public async Task WorldConfiguration_ItemProperty_HeightMapType_ShouldHaveCorrectProperties()
     {
         // Test HeightMapSettings through Item property without casting or delegation
-        var configurations = await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
+        var configurations = await _configurationLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
         var heightMapConfig = configurations.FirstOrDefault(c => c.Item?.GetType() == typeof(HeightMapSettings));
 
         Assert.NotNull(heightMapConfig);
@@ -260,7 +262,7 @@ public class WorldConfigurationTests
     public async Task WorldConfiguration_ItemProperty_ShouldBeAccessibleWithoutCasting()
     {
         // Test accessing Item properties using GetType() and reflection instead of casting
-        var configurations = await WorldConfigurationLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
+        var configurations = await _configurationLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
 
         foreach (var config in configurations)
         {
