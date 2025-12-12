@@ -26,7 +26,7 @@ public partial class World : IWorld
 
     [XmlIgnore] public IWorldConfiguration WorldConfiguration { get; set; }
     [XmlIgnore] public IWorldConfiguration[] AvailableWorldConfigurations { get; set; }
-    [XmlIgnore] public WorldTemplate WorldTemplate { get; set; }
+    [XmlIgnore] public IWorldTemplate WorldTemplate { get; set; }
     [XmlIgnore] public bool IsProcedural { get; set; } = true;
     [XmlIgnore] public GameplayComponents Gameplay => WorldTemplate.Gameplay;
 
