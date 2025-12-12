@@ -30,10 +30,10 @@ public partial class MainViewModel : ObservableObject
     private readonly string _schemaDirectory;
 
     [ObservableProperty]
-    private ObservableCollection<WorldConfiguration> _availableConfigurations = new();
+    private ObservableCollection<IWorldConfiguration> _availableConfigurations = new();
 
     [ObservableProperty]
-    private WorldConfiguration? _selectedConfiguration;
+    private IWorldConfiguration? _selectedConfiguration;
 
     [ObservableProperty]
     private string _statusMessage = "Ready";

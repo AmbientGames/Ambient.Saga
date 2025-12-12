@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+﻿using Ambient.Domain.Contracts;
 using MediatR;
 
 namespace Ambient.Saga.Engine.Application.Queries.Loading;
@@ -11,7 +11,7 @@ namespace Ambient.Saga.Engine.Application.Queries.Loading;
 /// - Game startup: Show list of available worlds to load
 /// - Configuration UI: Display world selection dropdown
 /// </summary>
-public record LoadAvailableWorldConfigurationsQuery : IRequest<WorldConfiguration[]>
+public record LoadAvailableWorldConfigurationsQuery : IRequest<IWorldConfiguration[]>
 {
     /// <summary>
     /// Base data directory containing WorldConfigurations.xml

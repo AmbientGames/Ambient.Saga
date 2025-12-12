@@ -1,4 +1,4 @@
-using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Contracts;
 
 namespace Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;
@@ -15,7 +15,7 @@ public class MockWorldContentGenerator : IWorldContentGenerator
     public string StatusMessage => "World content generation mock for future world content generator.";
 
     /// <inheritdoc />
-    public List<string> GenerateWorldContent(WorldConfiguration worldConfig, string outputDirectory)
+    public List<string> GenerateWorldContent(IWorldConfiguration worldConfig, string outputDirectory)
     {
         // Return empty list - generation not available
         return new List<string>();

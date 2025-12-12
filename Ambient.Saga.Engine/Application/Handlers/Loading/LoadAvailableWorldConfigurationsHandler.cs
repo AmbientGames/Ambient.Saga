@@ -1,4 +1,5 @@
 ﻿using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using MediatR;
@@ -12,7 +13,7 @@ namespace Ambient.Saga.Engine.Application.Handlers.Loading;
 /// This allows views to load world configurations through the MediatR pipeline,
 /// ensuring consistent logging, error handling, and future enhancements (caching, etc).
 /// </summary>
-internal sealed class LoadAvailableWorldConfigurationsHandler : IRequestHandler<LoadAvailableWorldConfigurationsQuery, WorldConfiguration[]>
+internal sealed class LoadAvailableWorldConfigurationsHandler : IRequestHandler<LoadAvailableWorldConfigurationsQuery, IWorldConfiguration[]>
 {
     private readonly IWorldConfigurationLoader _configurationLoader;
 
@@ -21,7 +22,7 @@ internal sealed class LoadAvailableWorldConfigurationsHandler : IRequestHandler<
         _configurationLoader = configurationLoader;
     }
 
-    public async Task<WorldConfiguration[]> Handle(LoadAvailableWorldConfigurationsQuery query, CancellationToken ct)
+    public async Task<IWorldConfiguration[]> Handle(LoadAvailableWorldConfigurationsQuery query, CancellationToken ct)
     {
         // Delegate to injected configuration loader
         return await _configurationLoader.LoadAvailableWorldConfigurationsAsync(

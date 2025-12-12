@@ -1,3 +1,5 @@
+using Ambient.Domain.Contracts;
+
 namespace Ambient.Domain.DefinitionExtensions;
 
 /// <summary>
@@ -22,5 +24,5 @@ public interface IWorldLoader
     /// <param name="definitionDirectory">Definition directory containing XSD schemas</param>
     /// <param name="worldConfiguration">The WorldConfiguration to use</param>
     /// <returns>A fully loaded World instance</returns>
-    Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, WorldConfiguration worldConfiguration);
+    Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, IWorldConfiguration worldConfiguration);
 }
