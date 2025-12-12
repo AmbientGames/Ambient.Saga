@@ -54,7 +54,7 @@ public interface IWorld
     Dictionary<string, StatusEffect> StatusEffectsLookup { get; set; }
     GameplayComponents Gameplay { get; }
     long UtcStartTick { get; set; }
-    WorldTemplate WorldTemplate { get; set; }
+    IWorldTemplate WorldTemplate { get; set; }
 
     // remove these - the usage is an abomination:
     public Tool GetToolByRefName(string toolRefName);
