@@ -24,8 +24,8 @@
         <file src="Ambient.Infrastructure\bin\$configuration$\net8.0\Ambient.Infrastructure.dll" target="lib\net8.0" />
         <file src="Ambient.Saga.Engine\bin\$configuration$\net8.0\Ambient.Saga.Engine.dll" target="lib\net8.0" />
 
-        <!-- UI Library (net10.0, OS-agnostic) -->
-        <file src="Ambient.Saga.UI\bin\$configuration$\net10.0\Ambient.Saga.UI.dll" target="lib\net10.0" />
+        <!-- UI Library (net8.0, OS-agnostic) -->
+        <file src="Ambient.Saga.UI\bin\$configuration$\net8.0\Ambient.Saga.UI.dll" target="lib\net8.0" />
 
         <!-- Copy all Schema files recursively -->
         <file src="DefinitionXsd\**\*.*" target="contentFiles\any\Assets\DefinitionXsd" />
