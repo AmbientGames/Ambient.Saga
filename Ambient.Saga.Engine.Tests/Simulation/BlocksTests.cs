@@ -1,12 +1,14 @@
 ﻿using Ambient.Domain.DefinitionExtensions;
 using Ambient.Infrastructure.GameLogic;
-using Ambient.Saga.Engine.Infrastructure.Loading;
+using Ambient.Infrastructure.GameLogic.Loading;
 
 namespace Ambient.Saga.Engine.Tests.Simulation;
 
 public class BlocksTests : IAsyncLifetime
 {
     private readonly IWorldFactory _worldFactory = new TestWorldFactory();
+    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
+    private readonly IWorldLoader _worldLoader;
     private IWorld _world;
 
     private readonly string _dataDirectory;
@@ -19,6 +21,8 @@ public class BlocksTests : IAsyncLifetime
 
         // WorldDefinitions is at solution root (shared by all Sandboxes)
         _dataDirectory = FindWorldDefinitionsDirectory();
+
+        _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
     }
 
     private static string FindWorldDefinitionsDirectory()
@@ -37,7 +41,7 @@ public class BlocksTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        _world = await WorldAssetLoader.LoadWorldByConfigurationAsync(_worldFactory, _dataDirectory, _definitionDirectory, "Ise");
+        _world = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, "Ise");
 
         //_world.AvailableWorldConfigurations = await WorldAssetLoader.LoadAvailableWorldConfigurationsAsync(_dataDirectory, _definitionDirectory);
 

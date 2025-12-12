@@ -1,7 +1,7 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
 
-namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
+namespace Ambient.Infrastructure.GameLogic.Loading;
 
 /// <summary>
 /// Expands TriggerPattern references into concrete Trigger sets with progression chains.

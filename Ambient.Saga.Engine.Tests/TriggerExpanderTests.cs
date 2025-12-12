@@ -1,6 +1,6 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
-using Ambient.Saga.Engine.Domain.Rpg.Sagas;
+using Ambient.Infrastructure.GameLogic.Loading;
 
 namespace Ambient.Saga.Engine.Tests;
 

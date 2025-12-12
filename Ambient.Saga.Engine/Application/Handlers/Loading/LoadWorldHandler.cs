@@ -1,13 +1,12 @@
 ﻿using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Application.Queries.Loading;
-using Ambient.Saga.Engine.Infrastructure.Loading;
 using MediatR;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Loading;
 
 /// <summary>
 /// Handler for LoadWorldQuery.
-/// Wraps WorldAssetLoader.LoadWorldByConfigurationAsync in CQRS pattern.
+/// Wraps IWorldLoader.LoadWorldByConfigurationAsync in CQRS pattern.
 ///
 /// This is a HEAVY operation that loads:
 /// - World configuration and template
@@ -22,18 +21,17 @@ namespace Ambient.Saga.Engine.Application.Handlers.Loading;
 /// </summary>
 internal sealed class LoadWorldHandler : IRequestHandler<LoadWorldQuery, IWorld>
 {
-    private readonly IWorldFactory _worldFactory;
+    private readonly IWorldLoader _worldLoader;
 
-    public LoadWorldHandler(IWorldFactory worldFactory)
+    public LoadWorldHandler(IWorldLoader worldLoader)
     {
-        _worldFactory = worldFactory;
+        _worldLoader = worldLoader;
     }
 
     public async Task<IWorld> Handle(LoadWorldQuery query, CancellationToken ct)
     {
-        // Delegate to existing infrastructure loader
-        return await WorldAssetLoader.LoadWorldByConfigurationAsync(
-            _worldFactory,
+        // Delegate to injected world loader
+        return await _worldLoader.LoadWorldByConfigurationAsync(
             query.DataDirectory,
             query.DefinitionDirectory,
             query.ConfigurationRefName);

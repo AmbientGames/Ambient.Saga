@@ -1,9 +1,8 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Infrastructure.Utilities;
-using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 
-namespace Ambient.Saga.Engine.Infrastructure.Loading;
+namespace Ambient.Infrastructure.GameLogic.Loading;
 
 internal static class GameplayComponentLoader
 {
@@ -11,7 +10,7 @@ internal static class GameplayComponentLoader
     {
         var xsdFilePath = Path.Combine(definitionDirectory, "Gameplay", "Gameplay.xsd");
         world.WorldTemplate.Gameplay = new GameplayComponents();
-        
+
         await LoadGameplayData(dataDirectory, xsdFilePath, world);
         BuildGameplayLookups(world);
     }
