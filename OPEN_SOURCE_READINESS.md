@@ -200,11 +200,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 - Ambient.Application
 - Ambient.Infrastructure
 - Ambient.Saga.Engine
-
-**Cross-Platform Compatible (net10.0):**
 - Ambient.Saga.UI (ImGui - platform-agnostic)
 
-**Windows-Only (net10.0-windows):**
+**Windows-Only (net8.0-windows):**
 - Ambient.Saga.Sandbox.DirectX (WinForms/DirectX host application)
 - Ambient.Saga.UI.Tests
 
@@ -256,7 +254,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 - `Ambient.Application.dll` - Use cases and contracts (net8.0)
 - `Ambient.Infrastructure.dll` - Persistence and integrations (net8.0)
 - `Ambient.Saga.Engine.dll` - Game engine with CQRS handlers (net8.0)
-- `Ambient.Saga.UI.dll` - ImGui-based game UI library (net10.0)
+- `Ambient.Saga.UI.dll` - ImGui-based game UI library (net8.0)
 - `DefinitionXsd/` - XML schema files for world definitions
 - `WorldDefinitions/` - Sample world definition XML files
 
