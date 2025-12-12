@@ -5,8 +5,8 @@ public interface IWorldConfiguration
     string RefName { get; set; }
     double SpawnLatitude { get; set; }
     double SpawnLongitude { get; set; }
-    ProceduralSettings ProceduralSettings { get; set; }
-    HeightMapSettings HeightMapSettings { get; set; }
+    IProceduralSettings ProceduralSettings { get; set; }
+    IHeightMapSettings HeightMapSettings { get; set; }
     string CurrencyName { get; set; }
     DateTime StartDate { get; set; }
     int SecondsInHour { get; set; }
