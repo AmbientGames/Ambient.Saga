@@ -32,5 +32,8 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="..\WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
+    </ItemGroup>
 
 </Project>

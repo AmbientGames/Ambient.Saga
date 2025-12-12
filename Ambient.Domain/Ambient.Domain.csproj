@@ -19,17 +19,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="DefinitionXsd\**\*.*">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+        <None Include="..\DefinitionXsd\**\*" LinkBase="DefinitionXsd" />
     </ItemGroup>
 
     <ItemGroup>
-        <WorldDefinitionFiles Include="$(ProjectDir)WorldDefinitions\**\*.*" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <DefinitionXsdFiles Include="$(ProjectDir)DefinitionXsd\**\*.*" />
+        <None Include="..\WorldDefinitions\**\*" LinkBase="WorldDefinitions" />
     </ItemGroup>
 
 </Project>
