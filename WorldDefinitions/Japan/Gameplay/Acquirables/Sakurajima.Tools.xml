@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Tools xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Tools xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Tool RefName="Multitool" DisplayName="Higonokami" WholesalePrice="10" Description="A traditional folding pocket knife" TextureRef="Multitool">
     <EffectiveSubstances>
       <Substance SubstanceRef="Stone" EffectivenessMultiplier="0.5" />

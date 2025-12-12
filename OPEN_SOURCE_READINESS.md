@@ -1,8 +1,8 @@
 # Open Source Readiness Assessment
 
 **Project:** Ambient.Saga
-**Assessment Date:** December 2024
-**Last Updated:** December 2024
+**Assessment Date:** December 2025
+**Last Updated:** December 2025
 **Overall Status:** Published and Production-Ready
 
 ---
@@ -19,7 +19,7 @@ Ambient.Saga is **published on NuGet.org** and fully ready for open source use. 
 - Full CI/CD pipeline with GitHub Actions
 - Automated NuGet publishing on release
 
-### Readiness Score: 92/100
+### Readiness Score: 93/100
 
 | Category | Score | Status |
 |----------|-------|--------|
@@ -30,7 +30,7 @@ Ambient.Saga is **published on NuGet.org** and fully ready for open source use. 
 | Test Coverage | 9/10 | Excellent |
 | Documentation | 8/10 | Good |
 | CI/CD | 10/10 | Excellent |
-| Build Portability | 7/10 | Good (core) / Limited (UI) |
+| Build Portability | 8/10 | Good (all libraries cross-platform) |
 
 ---
 
@@ -96,8 +96,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 ```
 
 **Package Currency:**
-- Most packages are recent (2024 releases)
-- SharpDX 4.2.0 is stable but last updated 2020 (acceptable for DirectX wrapper)
+- Most packages are recent (2024-2025 releases)
+- SharpDX 4.2.0 is stable but last updated 2020 (acceptable for DirectX wrapper, only used in Sandbox)
 
 ---
 
@@ -134,7 +134,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 | Ambient.Application.Tests | 35 | Unit |
 | Ambient.Infrastructure.Tests | 16 | Unit |
 | Ambient.Saga.Engine.Tests | 833 | Unit/Integration/E2E |
-| Ambient.Saga.Sandbox.Tests | 87 | Integration |
+| Ambient.Saga.UI.Tests | 87 | Integration |
 | **Total** | **1,024** | Mixed |
 
 **Strengths:**
@@ -186,35 +186,34 @@ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 
 **NuGet Publishing:**
 - Package: `Ambient.Saga` on nuget.org
-- Includes all 4 libraries (Domain, Application, Infrastructure, Engine)
-- Includes XSD schema files as content
+- Includes 5 libraries (Domain, Application, Infrastructure, Engine, UI)
+- Includes XSD schema files and WorldDefinitions as content
 
 ---
 
 ### 8. Build Portability
 
-**Status: MIXED**
+**Status: GOOD**
 
 **Cross-Platform Compatible (net8.0):**
 - Ambient.Domain
 - Ambient.Application
 - Ambient.Infrastructure
 - Ambient.Saga.Engine
-- All test projects (except Sandbox.Tests)
+
+**Cross-Platform Compatible (net10.0):**
+- Ambient.Saga.UI (ImGui - platform-agnostic)
 
 **Windows-Only (net10.0-windows):**
-- Ambient.Saga.Presentation.UI (DirectX/ImGui)
-- Ambient.Saga.Sandbox.WindowsUI (WinForms)
-- Ambient.Saga.Sandbox.Tests
+- Ambient.Saga.Sandbox.DirectX (WinForms/DirectX host application)
+- Ambient.Saga.UI.Tests
 
 **Dependencies by Platform:**
 | Dependency | Platform | Notes |
 |------------|----------|-------|
-| SharpDX | Windows | DirectX rendering |
-| ImGui.NET | Windows* | Requires DirectX backend |
-| WinForms | Windows | UI framework |
-
-*ImGui.NET can work cross-platform with different backends
+| SharpDX | Windows | DirectX rendering (Sandbox.DirectX only) |
+| ImGui.NET | Cross-platform | UI library (backend-agnostic in Ambient.Saga.UI) |
+| WinForms | Windows | Host application framework (Sandbox.DirectX only) |
 
 **Schema Generation:** Requires Windows (xsd.exe from .NET Framework)
 
@@ -253,11 +252,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 **License:** MIT
 
 **Package Contents:**
-- `Ambient.Domain.dll` - Core entities and business logic
-- `Ambient.Application.dll` - Use cases and contracts
-- `Ambient.Infrastructure.dll` - Persistence and integrations
-- `Ambient.Saga.Engine.dll` - Game engine with CQRS handlers
+- `Ambient.Domain.dll` - Core entities and business logic (net8.0)
+- `Ambient.Application.dll` - Use cases and contracts (net8.0)
+- `Ambient.Infrastructure.dll` - Persistence and integrations (net8.0)
+- `Ambient.Saga.Engine.dll` - Game engine with CQRS handlers (net8.0)
+- `Ambient.Saga.UI.dll` - ImGui-based game UI library (net10.0)
 - `DefinitionXsd/` - XML schema files for world definitions
+- `WorldDefinitions/` - Sample world definition XML files
 
 **Installation:**
 ```bash

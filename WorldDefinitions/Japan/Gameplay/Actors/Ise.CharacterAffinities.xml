@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<CharacterAffinities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<CharacterAffinities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Affinity RefName="Iron" DisplayName="Steel Resolve" Description="The unwavering spirit of determination">
     <Matchup TargetAffinityRef="Storm" Multiplier="1.25" />
     <Matchup TargetAffinityRef="Arcane" Multiplier="0.75" />

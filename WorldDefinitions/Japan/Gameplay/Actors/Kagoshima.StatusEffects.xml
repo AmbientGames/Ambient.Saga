@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<StatusEffects xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<StatusEffects xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <StatusEffect RefName="Poison" DisplayName="Doku" Description="Venom from ninja poison slowly drains life" Type="DamageOverTime" Category="Debuff" DamagePerTurn="5" />
   <StatusEffect RefName="Bleed" DisplayName="Shukketsu" Description="Grievous wounds cause continuous blood loss" Type="DamageOverTime" Category="Debuff" DurationTurns="2" DamagePerTurn="8" MaxStacks="3" />
   <StatusEffect RefName="Burn" DisplayName="Yakedo" Description="Sacred flames sear the flesh" Type="DamageOverTime" Category="Debuff" DamagePerTurn="10" DefenseModifier="-0.1" />

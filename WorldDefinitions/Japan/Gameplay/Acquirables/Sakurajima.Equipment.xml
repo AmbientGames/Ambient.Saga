@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Ambient.Domain\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\DefinitionXsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Equipment RefName="RustySword" DisplayName="Worn Wakizashi" Description="A short sword showing years of neglect" SlotRef="RightHand" Category="OneHanded" WholesalePrice="15" ModelRef="Wakizashi" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.05" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
