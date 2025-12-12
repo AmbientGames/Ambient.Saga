@@ -25,7 +25,7 @@ public partial class MainWindow : Form
         InitializeComponent();
 
         // Set window properties
-        this.Text = "Ambient Game Sandbox";
+        this.Text = "Ambient Saga Sandbox";
         this.ClientSize = new System.Drawing.Size(1400, 900);
         this.StartPosition = FormStartPosition.CenterScreen;
 
