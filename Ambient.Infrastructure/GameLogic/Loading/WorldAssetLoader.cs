@@ -1,6 +1,5 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Domain.DefinitionExtensions;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.Sampling;
 using Ambient.Infrastructure.Utilities;

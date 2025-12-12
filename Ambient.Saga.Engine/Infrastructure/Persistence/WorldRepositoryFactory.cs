@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Domain.Achievements;
 

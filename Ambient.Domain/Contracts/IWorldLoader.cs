@@ -1,6 +1,4 @@
-using Ambient.Domain.Contracts;
-
-namespace Ambient.Domain.DefinitionExtensions;
+namespace Ambient.Domain.Contracts;
 
 /// <summary>
 /// Interface for loading world assets including configuration, metadata, and gameplay data.

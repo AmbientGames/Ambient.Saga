@@ -1,7 +1,7 @@
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Contracts;
 
-namespace Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;
+namespace Ambient.Saga.Sandbox.DirectX.WorldContentGenerators;
 
 /// <summary>
 /// Returns IsAvailable = false and provides an appropriate message.

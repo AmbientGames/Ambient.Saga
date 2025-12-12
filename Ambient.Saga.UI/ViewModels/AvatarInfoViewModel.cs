@@ -1,5 +1,5 @@
 ﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Contracts;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;

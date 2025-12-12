@@ -1,5 +1,5 @@
 ﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Domain.Extensions;
 using Ambient.Saga.Engine.Domain.Rpg.Reputation;

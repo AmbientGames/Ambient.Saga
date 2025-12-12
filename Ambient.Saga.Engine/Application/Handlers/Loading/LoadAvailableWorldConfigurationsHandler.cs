@@ -1,6 +1,5 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using MediatR;
 

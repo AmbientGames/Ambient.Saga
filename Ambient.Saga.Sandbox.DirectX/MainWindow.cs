@@ -1,9 +1,9 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Presentation.UI.Services;
-using Ambient.Saga.Sandbox.WindowsUI.Services;
 using ImGuiNET;
 using Steamworks;
 using Ambient.Saga.UI.Services;
+using Ambient.Saga.Sandbox.DirectX.Services;
+using Ambient.Saga.Sandbox.DirectX;
 
 namespace Ambient.Saga.Sandbox.WindowsUI;
 

@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using System.Diagnostics;
 

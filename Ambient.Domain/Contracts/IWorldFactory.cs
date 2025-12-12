@@ -1,4 +1,4 @@
-namespace Ambient.Domain.DefinitionExtensions;
+namespace Ambient.Domain.Contracts;
 
 /// <summary>
 /// Factory interface for creating world instances.

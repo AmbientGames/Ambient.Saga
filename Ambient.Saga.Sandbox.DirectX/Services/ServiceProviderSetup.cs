@@ -1,5 +1,4 @@
-﻿using Ambient.Domain.DefinitionExtensions;
-using Ambient.Saga.Engine.Application.Behaviors;
+﻿using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
@@ -8,15 +7,18 @@ using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Infrastructure.GameLogic.Loading;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.Sandbox.WindowsUI.WorldContentGenerators;
 using Ambient.Saga.UI.Components.Modals;
 using Ambient.Saga.UI.Services;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Steamworks;
+using Ambient.Domain.Contracts;
+using Ambient.Saga.Sandbox.DirectX;
+using Ambient.Saga.Sandbox.DirectX.WorldContentGenerators;
+using Ambient.Saga.Sandbox.WindowsUI;
 
-namespace Ambient.Saga.Sandbox.WindowsUI.Services
+namespace Ambient.Saga.Sandbox.DirectX.Services
 {
     /// <summary>
     /// Configures dependency injection for the Sandbox application.

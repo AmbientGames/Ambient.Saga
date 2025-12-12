@@ -1,6 +1,5 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Domain.DefinitionExtensions;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Engine.Contracts;

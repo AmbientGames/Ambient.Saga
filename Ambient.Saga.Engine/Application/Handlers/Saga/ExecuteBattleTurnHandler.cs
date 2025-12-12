@@ -1,5 +1,4 @@
-﻿using Ambient.Domain.DefinitionExtensions;
-using Ambient.Domain.Entities;
+﻿using Ambient.Domain.Entities;
 using MediatR;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -9,6 +8,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Domain;
+using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 

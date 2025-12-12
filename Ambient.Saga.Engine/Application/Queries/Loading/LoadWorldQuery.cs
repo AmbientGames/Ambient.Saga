@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.DefinitionExtensions;
+﻿using Ambient.Domain.Contracts;
 using MediatR;
 
 namespace Ambient.Saga.Engine.Application.Queries.Loading;

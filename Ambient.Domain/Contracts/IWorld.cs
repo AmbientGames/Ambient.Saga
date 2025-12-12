@@ -1,8 +1,7 @@
-﻿using Ambient.Domain.Contracts;
-using Ambient.Domain.ValueObjects;
+﻿using Ambient.Domain.ValueObjects;
 using System.Xml.Serialization;
 
-namespace Ambient.Domain.DefinitionExtensions;
+namespace Ambient.Domain.Contracts;
 
 /// <summary>
 /// Defines the contract for world properties.

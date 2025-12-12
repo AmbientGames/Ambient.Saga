@@ -1,8 +1,8 @@
 ﻿using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.GameLogic;
-using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Contracts;
 

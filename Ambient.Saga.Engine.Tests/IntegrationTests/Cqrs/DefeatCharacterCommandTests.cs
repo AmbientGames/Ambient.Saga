@@ -1,4 +1,5 @@
 ﻿using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;

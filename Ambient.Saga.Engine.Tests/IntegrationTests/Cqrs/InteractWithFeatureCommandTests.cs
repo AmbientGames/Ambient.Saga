@@ -1,4 +1,5 @@
 using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.DefinitionExtensions;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Engine.Application.Behaviors;

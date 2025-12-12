@@ -1,6 +1,5 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Domain.DefinitionExtensions;
 using Ambient.Infrastructure.Utilities;
 
 namespace Ambient.Infrastructure.GameLogic.Loading;

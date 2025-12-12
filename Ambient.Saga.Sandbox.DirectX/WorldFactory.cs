@@ -1,7 +1,8 @@
 using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.DefinitionExtensions;
 
-namespace Ambient.Saga.Sandbox.WindowsUI;
+namespace Ambient.Saga.Sandbox.DirectX;
 
 /// <summary>
 /// Factory for creating World instances.

@@ -1,7 +1,7 @@
 ﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.GameLogic.Loading;
+using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Tests;
 

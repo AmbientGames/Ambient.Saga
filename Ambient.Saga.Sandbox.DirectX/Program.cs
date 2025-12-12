@@ -1,8 +1,9 @@
-﻿using Ambient.Saga.Sandbox.WindowsUI.Services;
+﻿using Ambient.Saga.Sandbox.DirectX.Services;
+using Ambient.Saga.Sandbox.WindowsUI;
 using Ambient.Saga.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ambient.Saga.Sandbox.WindowsUI
+namespace Ambient.Saga.Sandbox.DirectX
 {
     internal static class Program
     {

@@ -8,7 +8,7 @@ using SharpDX.DXGI;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace Ambient.Saga.Presentation.UI.Services;
+namespace Ambient.Saga.Sandbox.DirectX;
 
 public class ImGuiRendererDX11 : IDisposable
 {

@@ -1,6 +1,5 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Domain.DefinitionExtensions;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Trade;
 
