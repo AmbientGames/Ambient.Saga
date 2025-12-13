@@ -21,27 +21,27 @@ public class WorldValidationServiceIntegrationTests
 
     public WorldValidationServiceIntegrationTests()
     {
-        // DefinitionXsd is copied to output directory by Ambient.Domain
-        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
+        // Content/Schemas is copied to output directory by Ambient.Domain
+        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Schemas");
 
-        // WorldDefinitions is at solution root (shared by all Sandboxes)
-        _dataDirectory = FindWorldDefinitionsDirectory();
+        // Content/Worlds is at solution root (shared by all Sandboxes)
+        _dataDirectory = FindWorldsDirectory();
 
         _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
     }
 
-    private static string FindWorldDefinitionsDirectory()
+    private static string FindWorldsDirectory()
     {
         var directory = AppDomain.CurrentDomain.BaseDirectory;
         while (directory != null)
         {
-            var worldDefPath = Path.Combine(directory, "WorldDefinitions");
+            var worldDefPath = Path.Combine(directory, "Content", "Worlds");
             if (Directory.Exists(worldDefPath))
                 return worldDefPath;
             directory = Directory.GetParent(directory)?.FullName;
         }
 
-        throw new InvalidOperationException("Could not find WorldDefinitions directory");
+        throw new InvalidOperationException("Could not find Content/Worlds directory");
     }
 
     [Fact]
@@ -149,11 +149,11 @@ public class WorldValidationServiceIntegrationTests
     public static IEnumerable<object[]> GetAllWorldConfigurations()
     {
         // Note: This runs before test execution to discover test cases
-        // DefinitionXsd is copied to output directory by Ambient.Domain
-        var definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
+        // Content/Schemas is copied to output directory by Ambient.Domain
+        var definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Schemas");
 
-        // WorldDefinitions is at solution root (shared by all Sandboxes)
-        var dataDirectory = FindWorldDefinitionsDirectory();
+        // Content/Worlds is at solution root (shared by all Sandboxes)
+        var dataDirectory = FindWorldsDirectory();
 
         var configurationLoader = new WorldConfigurationLoader();
         var configurations = configurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory).GetAwaiter().GetResult();

@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Tools xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Tool RefName="Multitool" DisplayName="Swiss Army Knife" WholesalePrice="10" Description="A pocket knife with multiple useful attachments" TextureRef="Multitool">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Stone" EffectivenessMultiplier="0.5" />
+      <Substance SubstanceRef="Plant" EffectivenessMultiplier="0.5" />
+      <Substance SubstanceRef="Wood" EffectivenessMultiplier="0.5" />
+      <Substance SubstanceRef="Aggregate" EffectivenessMultiplier="0.5" />
+      <Substance SubstanceRef="Carbon" EffectivenessMultiplier="0.5" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="Pickaxe" DisplayName="Rock Hammer" WholesalePrice="5" Description="A geology hammer borrowed from the science club" TextureRef="Pickaxe">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Stone" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="Axe" DisplayName="Hatchet" WholesalePrice="5" Description="A small camping hatchet" TextureRef="Axe">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Plant" />
+      <Substance SubstanceRef="Wood" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="Spade" DisplayName="Folding Shovel" WholesalePrice="5" Description="A compact folding shovel for camping" TextureRef="Spade">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Aggregate" />
+      <Substance SubstanceRef="Carbon" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="SteelPickaxe" DisplayName="Mining Pick" WholesalePrice="15" Description="A professional-grade mining tool" TextureRef="Pickaxe">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Stone" EffectivenessMultiplier="3.0" />
+      <Substance SubstanceRef="Aggregate" EffectivenessMultiplier="2.5" />
+      <Substance SubstanceRef="Metal" EffectivenessMultiplier="1.5" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="SteelAxe" DisplayName="Fire Axe" WholesalePrice="15" Description="An emergency fire axe from the hotel" TextureRef="Axe">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Plant" EffectivenessMultiplier="2.5" />
+      <Substance SubstanceRef="Wood" EffectivenessMultiplier="3.0" />
+    </EffectiveSubstances>
+  </Tool>
+  <Tool RefName="SteelSpade" DisplayName="Entrenching Tool" WholesalePrice="15" Description="A military-style digging tool" TextureRef="Spade">
+    <EffectiveSubstances>
+      <Substance SubstanceRef="Aggregate" EffectivenessMultiplier="2.5" />
+      <Substance SubstanceRef="Carbon" EffectivenessMultiplier="3.0" />
+    </EffectiveSubstances>
+  </Tool>
+</Tools>

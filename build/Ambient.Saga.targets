@@ -4,14 +4,19 @@
     <AmbientSagaPackagePath>$(MSBuildThisFileDirectory)..\tools\</AmbientSagaPackagePath>
   </PropertyGroup>
 
-  <!-- Copy NuGet XSDs during build -->
-  <Target Name="CopyAmbientSagaDefinitionXsd" AfterTargets="Build">
-    <MakeDir Directories="$(OutputPath)DefinitionXsd" />
+  <!-- Copy NuGet Content (Schemas and Worlds) during build -->
+  <Target Name="CopyAmbientSagaContent" AfterTargets="Build">
+    <MakeDir Directories="$(OutputPath)Content\Schemas" />
+    <MakeDir Directories="$(OutputPath)Content\Worlds" />
     <ItemGroup>
-      <AmbientSagaXsdFiles Include="$(AmbientSagaPackagePath)DefinitionXsd\**\*.*" />
+      <AmbientSagaSchemaFiles Include="$(AmbientSagaPackagePath)Content\Schemas\**\*.*" />
+      <AmbientSagaWorldFiles Include="$(AmbientSagaPackagePath)Content\Worlds\**\*.*" />
     </ItemGroup>
-    <Copy SourceFiles="@(AmbientSagaXsdFiles)"
-          DestinationFiles="@(AmbientSagaXsdFiles->'$(OutputPath)DefinitionXsd\%(RecursiveDir)%(Filename)%(Extension)')"
+    <Copy SourceFiles="@(AmbientSagaSchemaFiles)"
+          DestinationFiles="@(AmbientSagaSchemaFiles->'$(OutputPath)Content\Schemas\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(AmbientSagaWorldFiles)"
+          DestinationFiles="@(AmbientSagaWorldFiles->'$(OutputPath)Content\Worlds\%(RecursiveDir)%(Filename)%(Extension)')"
           SkipUnchangedFiles="true" />
   </Target>
 </Project>

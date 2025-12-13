@@ -1507,9 +1507,9 @@ public static class WorldValidationService
 
     private static void ValidateAvatarQuestReferences(IWorld world, List<string> errors)
     {
-        // Note: Quests are on AvatarBase, not in WorldDefinitions XML
+        // Note: Quests are on AvatarBase, not in Content/Worlds XML
         // This validates that QuestRefs in quest progress data (if present) reference valid quests
-        // Currently no avatars in WorldDefinitions, so this is a placeholder for runtime validation
+        // Currently no avatars in Content/Worlds, so this is a placeholder for runtime validation
 
         // If we later add avatars to world templates, validate them here
         // For now, this is a no-op but provides the extension point

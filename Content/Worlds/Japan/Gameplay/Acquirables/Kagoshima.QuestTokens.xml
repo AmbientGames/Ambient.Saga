@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <QuestToken RefName="BanditChief_HideoutMap" DisplayName="Hideout Map" Description="A crude map showing the bandit hideout location" />
+  <QuestToken RefName="BanditChief_ChiefsBadge" DisplayName="Chief's Badge" Description="The bandit chief's symbol of authority - proof of their defeat" />
+  <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Recovered Goods" Description="Goods stolen from travelers and merchants" />
+  <QuestToken RefName="BanditChief_Bounty" DisplayName="Bounty Notice" Description="Official bounty for the bandit chief" />
+  <QuestToken RefName="BanditChief_RescueStarted" DisplayName="Rescue Attempt" Description="You've begun rescuing the captured merchant" />
+  <QuestToken RefName="ElementalSage_TrialToken" DisplayName="Spirit's Mark" Description="A glowing mark showing the volcano spirit has chosen you for trial" />
+  <QuestToken RefName="ElementalSage_TrialComplete" DisplayName="Guardian's Essence" Description="The spiritual essence proving victory over the flame guardian" />
+  <QuestToken RefName="ElementalSage_AffinityGranted" DisplayName="Hi no Kizuna" Description="The sacred bond connecting you to the fire spirit's power" />
+  <QuestToken RefName="FalseProphet_Rumor" DisplayName="Troubling Rumors" Description="Whispers about strange happenings around the prophet" />
+  <QuestToken RefName="FalseProphet_FollowerAccount" DisplayName="Follower's Testimony" Description="An ex-follower's account of what really happens" />
+  <QuestToken RefName="FalseProphet_FakeRelic" DisplayName="Fake Holy Relic" Description="A prop used to fake miracles" />
+  <QuestToken RefName="FalseProphet_FinancialRecords" DisplayName="Hidden Ledger" Description="Records showing the prophet's true wealth" />
+  <QuestToken RefName="FalseProphet_DarkSecret" DisplayName="Dark Secret" Description="The terrible truth behind the prophet's power" />
+  <QuestToken RefName="FalseProphet_Exposed" DisplayName="Prophet Exposed" Description="The truth has been revealed to the people" />
+  <QuestToken RefName="FalseProphet_Redeemed" DisplayName="Prophet Redeemed" Description="The prophet has chosen to reform" />
+  <QuestToken RefName="HiddenCache_OldMap" DisplayName="Faded Map" Description="An old map with cryptic markings pointing to a hidden location" />
+  <QuestToken RefName="HiddenCache_FirstClue" DisplayName="First Clue" Description="A riddle pointing to the next location" />
+  <QuestToken RefName="HiddenCache_SecondClue" DisplayName="Second Clue" Description="Another piece of the puzzle" />
+  <QuestToken RefName="HiddenCache_ThirdClue" DisplayName="Third Clue" Description="The final piece of the trail" />
+  <QuestToken RefName="HiddenCache_AncientKey" DisplayName="Ancient Key" Description="An ornate key that unlocks the cache" />
+  <QuestToken RefName="HiddenCache_TreasureFound" DisplayName="Treasure Discovered" Description="You found the hidden cache" />
+  <QuestToken RefName="HiddenCache_TrapDisarmed" DisplayName="Trap Mechanism Disabled" Description="The protective traps have been neutralized" />
+  <QuestToken RefName="HiddenCache_SecretRevealed" DisplayName="Secret Knowledge" Description="Ancient writings reveal the cache's true purpose" />
+  <QuestToken RefName="LostTechnique_Rumor" DisplayName="Legend of the Lost Art" Description="Rumors of a legendary technique whose master still lives" />
+  <QuestToken RefName="LostTechnique_MasterLocation" DisplayName="Master's Location" Description="You know where the last master resides" />
+  <QuestToken RefName="LostTechnique_Accepted" DisplayName="Accepted as Student" Description="The master has agreed to teach you" />
+  <QuestToken RefName="LostTechnique_TrialOne" DisplayName="First Trial Complete" Description="You've passed the trial of the body" />
+  <QuestToken RefName="LostTechnique_TrialTwo" DisplayName="Second Trial Complete" Description="You've passed the trial of the mind" />
+  <QuestToken RefName="LostTechnique_TrialThree" DisplayName="Third Trial Complete" Description="You've passed the trial of the spirit" />
+  <QuestToken RefName="LostTechnique_Mastery" DisplayName="Technique Mastered" Description="You have learned the legendary technique" />
+  <QuestToken RefName="LostTechnique_LineageToken" DisplayName="Lineage Token" Description="Symbol of your place in the technique's lineage" />
+  <QuestToken RefName="MissingHeirloom_Evidence_Footprints" DisplayName="Muddy Sandal Prints" Description="Tracks from someone fleeing in haste" />
+  <QuestToken RefName="MissingHeirloom_Evidence_TornCloth" DisplayName="Torn Kimono Fragment" Description="A scrap of fabric caught on a splinter" />
+  <QuestToken RefName="MissingHeirloom_Evidence_WitnessAccount" DisplayName="Witness Statement" Description="A neighbor saw someone suspicious lurking about" />
+  <QuestToken RefName="MissingHeirloom_ThiefIdentified" DisplayName="Thief Identified" Description="You know who took the heirloom" />
+  <QuestToken RefName="MissingHeirloom_ThiefLocation" DisplayName="Thief's Hideout" Description="You know where the thief is hiding" />
+  <QuestToken RefName="MissingHeirloom_Heirloom" DisplayName="Ancestral Wakizashi" Description="The family's treasured short sword, passed down for generations" />
+  <QuestToken RefName="MissingHeirloom_ThiefConfession" DisplayName="Thief's Confession" Description="The thief admitted to the crime" />
+  <QuestToken RefName="RefugeeEscort_GroupAssembled" DisplayName="Refugees Gathered" Description="The refugee group is ready to depart" />
+  <QuestToken RefName="RefugeeEscort_SuppliesGathered" DisplayName="Travel Supplies" Description="Food and medicine for the journey" />
+  <QuestToken RefName="RefugeeEscort_SafePassage" DisplayName="Safe Passage Secured" Description="A route has been found through the danger zone" />
+  <QuestToken RefName="RefugeeEscort_FirstWaypoint" DisplayName="First Waypoint Reached" Description="The group has made it to the first rest stop" />
+  <QuestToken RefName="RefugeeEscort_ChildRescued" DisplayName="Lost Child Found" Description="The missing child has been recovered" />
+  <QuestToken RefName="RefugeeEscort_BetrayerExposed" DisplayName="Traitor Exposed" Description="Someone in the group was working against you" />
+  <QuestToken RefName="RefugeeEscort_JourneyComplete" DisplayName="Safe Haven Reached" Description="The refugees have reached safety" />
+  <QuestToken RefName="RefugeeEscort_AllSurvived" DisplayName="No One Left Behind" Description="Every refugee survived the journey" />
+  <QuestToken RefName="RivalGuild_GuildCharter" DisplayName="Guild Membership" Description="Proof of your affiliation with the guild" />
+  <QuestToken RefName="RivalGuild_IntelGathered" DisplayName="Rival Intelligence" Description="Information about the rival guild's operations" />
+  <QuestToken RefName="RivalGuild_SabotageComplete" DisplayName="Operation Success" Description="Evidence of successful sabotage" />
+  <QuestToken RefName="RivalGuild_RivalCharter" DisplayName="Rival's Charter" Description="The rival guild's founding document" />
+  <QuestToken RefName="RivalGuild_LeaderDefeated" DisplayName="Leadership Broken" Description="The rival guild's leader has been defeated" />
+  <QuestToken RefName="RivalGuild_PeaceTreaty" DisplayName="Peace Treaty" Description="A negotiated settlement between the guilds" />
+  <QuestToken RefName="RivalGuild_Dominance" DisplayName="Guild Dominance" Description="Your guild now controls the territory" />
+  <QuestToken RefName="RivalGuild_DoubleAgent" DisplayName="Double Agent Status" Description="You're working both sides" />
+  <QuestToken RefName="WanderingMerchant_TradeGoods" DisplayName="Trade Goods" Description="Valuable merchandise bound for market" />
+  <QuestToken RefName="WanderingMerchant_FirstDelivery" DisplayName="First Delivery Complete" Description="Successfully delivered goods to the first destination" />
+  <QuestToken RefName="WanderingMerchant_SecondDelivery" DisplayName="Second Delivery Complete" Description="Successfully delivered goods to the second destination" />
+  <QuestToken RefName="WanderingMerchant_JourneyComplete" DisplayName="Journey Complete" Description="All deliveries made safely" />
+  <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Trade Secret" Description="Insider knowledge about profitable trading routes" />
+  <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Merchant's Bond" Description="A symbol of trust from the merchant" />
+  <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Road Toll Paid" Description="Proof of toll payment at the checkpoint" />
+  <QuestToken RefName="TOKEN_Isoteien1_COMPLETE" DisplayName="Iso-teien Token" Description="This seal bears the marks of Iso-teien, evidence of your triumph." />
+  <QuestToken RefName="TOKEN_Tsurumarujō1_COMPLETE" DisplayName="Tsurumaru-jō Badge" Description="This crest signifies your victory within Tsurumaru-jō." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinsha1_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Seal" Description="This crest signifies your victory within Terukuni Daimyōjin-sha." />
+</QuestTokens>

@@ -187,7 +187,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 **NuGet Publishing:**
 - Package: `Ambient.Saga` on nuget.org
 - Includes 5 libraries (Domain, Application, Infrastructure, Engine, UI)
-- Includes XSD schema files and WorldDefinitions as content
+- Includes Content folder (Schemas and Worlds) as content
 
 ---
 
@@ -255,8 +255,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
 - `Ambient.Infrastructure.dll` - Persistence and integrations (net8.0)
 - `Ambient.Saga.Engine.dll` - Game engine with CQRS handlers (net8.0)
 - `Ambient.Saga.UI.dll` - ImGui-based game UI library (net8.0)
-- `DefinitionXsd/` - XML schema files for world definitions
-- `WorldDefinitions/` - Sample world definition XML files
+- `Content/Schemas/` - XML schema files for world definitions
+- `Content/Worlds/` - Sample world definition XML files
 
 **Installation:**
 ```bash

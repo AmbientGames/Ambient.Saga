@@ -1,6 +1,6 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Partials;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 
 namespace Ambient.Saga.Engine.Tests.Rpg.Dialogue;

@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Equipment RefName="RustySword" DisplayName="Worn Wakizashi" Description="A short sword showing years of neglect" SlotRef="RightHand" Category="OneHanded" WholesalePrice="15" ModelRef="Wakizashi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.05" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="IronSword" DisplayName="Wakizashi" Description="A traditional short sword worn as a sidearm" SlotRef="RightHand" Category="OneHanded" WholesalePrice="50" ModelRef="Wakizashi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.1" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SteelSword" DisplayName="Katana" Description="The soul of the samurai, a curved single-edged blade" SlotRef="RightHand" Category="OneHanded" WholesalePrice="120" ModelRef="Katana" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.14" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="KnightsSword" DisplayName="Uchigatana" Description="A finely crafted sword for drawing and cutting in one motion" SlotRef="RightHand" Category="OneHanded" WholesalePrice="250" ModelRef="Uchigatana" UseType="Offensive">
+    <Effects Health="1" Defense="0.05" Strength="0.18" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RuneSword" DisplayName="Tachi" Description="An ancient curved sword inscribed with prayers" SlotRef="RightHand" Category="OneHanded" WholesalePrice="400" ModelRef="Tachi" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.2" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Flamebrand" DisplayName="Hi no Tsurugi" Description="A legendary blade that burns with sacred fire" SlotRef="RightHand" Category="OneHanded" WholesalePrice="600" ModelRef="FireKatana" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.24" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HandAxe" DisplayName="Ono" Description="A woodsman's axe adapted for combat" SlotRef="RightHand" Category="OneHanded" WholesalePrice="20" ModelRef="Ono" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.06" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="BattleAxe" DisplayName="Masakari" Description="A heavy battle axe favored by warrior monks" SlotRef="RightHand" Category="OneHanded" WholesalePrice="80" ModelRef="Masakari" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.12" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="BerserkerAxe" DisplayName="Oni-Kiri" Description="A demon-slaying axe pulsing with fury" SlotRef="RightHand" Category="OneHanded" WholesalePrice="200" ModelRef="OniKiri" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="1" Defense="-0.05" Strength="0.18" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WoodenClub" DisplayName="Konsaibo" Description="A wooden club studded with iron" SlotRef="RightHand" Category="OneHanded" WholesalePrice="10" ModelRef="Konsaibo" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.04" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="IronMace" DisplayName="Tetsubo" Description="An iron club capable of crushing armor" SlotRef="RightHand" Category="OneHanded" WholesalePrice="60" ModelRef="Tetsubo" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.11" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WarHammer" DisplayName="Otsuchi" Description="A massive war hammer for siege work" SlotRef="RightHand" Category="OneHanded" WholesalePrice="150" ModelRef="Otsuchi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.15" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HolyMace" DisplayName="Nyoi" Description="A priest's sacred scepter of divine authority" SlotRef="RightHand" Category="OneHanded" WholesalePrice="280" ModelRef="Nyoi" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.14" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Knife" DisplayName="Kozuka" Description="A utility knife carried in the sword scabbard" SlotRef="RightHand" Category="OneHanded" WholesalePrice="8" ModelRef="Kozuka" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.03" Speed="0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Dagger" DisplayName="Tanto" Description="A short blade for close combat" SlotRef="RightHand" Category="OneHanded" WholesalePrice="25" ModelRef="Tanto" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.05" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Stiletto" DisplayName="Yoroi-doshi" Description="An armor-piercing dagger for finishing foes" SlotRef="RightHand" Category="OneHanded" WholesalePrice="70" ModelRef="YoroiDoshi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.07" Speed="0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ShadowDagger" DisplayName="Shinobi-gatana" Description="A ninja's concealed blade" SlotRef="RightHand" Category="OneHanded" WholesalePrice="180" ModelRef="ShinobiGatana" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.1" Speed="0.12" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="VenomFang" DisplayName="Dokubari" Description="A needle coated in deadly poison" SlotRef="RightHand" Category="OneHanded" WholesalePrice="300" ModelRef="Dokubari" AffinityRef="Wild" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.12" Speed="0.1" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="AssassinsBlade" DisplayName="Kage no Ha" Description="A shadow blade that drinks the light" SlotRef="RightHand" Category="OneHanded" WholesalePrice="500" ModelRef="KageNoHa" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.15" Speed="0.15" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LargeSword" DisplayName="Nodachi" Description="A field sword too long for indoor combat" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="80" ModelRef="Nodachi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.15" Speed="-0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Greatsword" DisplayName="Odachi" Description="A massive sword requiring great strength" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="200" ModelRef="Odachi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.22" Speed="-0.06" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Claymore" DisplayName="Zanbato" Description="A horse-slaying blade of immense size" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="350" ModelRef="Zanbato" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.26" Speed="-0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Zweihander" DisplayName="Seiken" Description="A holy blade blessed by the kami themselves" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="550" ModelRef="Seiken" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.32" Speed="-0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Greataxe" DisplayName="Masaki-Ono" Description="A two-handed battle axe of devastating power" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="180" ModelRef="MasakiOno" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.24" Speed="-0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ExecutionerAxe" DisplayName="Kubikiri" Description="The headsman's axe for carrying out justice" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="400" ModelRef="Kubikiri" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.3" Speed="-0.1" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Spear" DisplayName="Yari" Description="A straight-bladed spear standard to ashigaru" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="40" ModelRef="Yari" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.1" Speed="0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Halberd" DisplayName="Naginata" Description="A curved-blade polearm favored by warrior monks" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="150" ModelRef="Naginata" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.18" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Glaive" DisplayName="Nagamaki" Description="A long-hilted blade between sword and polearm" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="220" ModelRef="Nagamaki" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.2" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Maul" DisplayName="Kanabo" Description="A spiked iron club for crushing enemies" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="160" ModelRef="Kanabo" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.2" Speed="-0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="TitanHammer" DisplayName="Oni no Kanabo" Description="A demon's club of legendary destructive power" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="500" ModelRef="OniKanabo" AffinityRef="Stone" UseType="Offensive">
+    <Effects Health="1" Defense="0.05" Strength="0.35" Speed="-0.12" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ShortBow" DisplayName="Hankyu" Description="A half-bow for mounted archery" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="30" ModelRef="Hankyu" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.06" Speed="0.04" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Longbow" DisplayName="Yumi" Description="The traditional asymmetric longbow of Japan" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="100" ModelRef="Yumi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.12" Speed="0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="CompositeBow" DisplayName="Daikyu" Description="A great bow requiring years of training" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="200" ModelRef="Daikyu" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.16" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HuntersBow" DisplayName="Matagi Yumi" Description="A hunter's bow blessed by mountain spirits" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="300" ModelRef="MatagiYumi" AffinityRef="Wild" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.18" Speed="0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WindBow" DisplayName="Fujin no Yumi" Description="A bow blessed by the wind god himself" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="450" ModelRef="FujinYumi" AffinityRef="Storm" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.2" Speed="0.08" Magic="0.05" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LightCrossbow" DisplayName="Teppo" Description="An arquebus firearm from foreign traders" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="80" ModelRef="Teppo" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.14" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HeavyCrossbow" DisplayName="Ozutsu" Description="A heavy hand cannon of tremendous power" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="200" ModelRef="Ozutsu" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.22" Speed="-0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WalkingStick" DisplayName="Shakujo" Description="A pilgrim's ringed staff" SlotRef="BothHands" Category="Staff" WholesalePrice="5" ModelRef="Shakujo" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.02" Speed="0" Magic="0.02" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WoodenStaff" DisplayName="Bo" Description="A simple wooden staff for martial arts" SlotRef="BothHands" Category="Staff" WholesalePrice="30" ModelRef="Bo" UseType="Offensive">
+    <Effects Health="1" Defense="0.02" Strength="0.03" Speed="0" Magic="0.06" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="OakStaff" DisplayName="Jo" Description="A short staff used in defensive arts" SlotRef="BothHands" Category="Staff" WholesalePrice="70" ModelRef="Jo" UseType="Offensive">
+    <Effects Health="1" Defense="0.03" Strength="0.04" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MageStaff" DisplayName="Onmyo no Tsue" Description="An onmyoji's staff of divination" SlotRef="BothHands" Category="Staff" WholesalePrice="150" ModelRef="OnmyoTsue" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.16" Mana="0.08" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="FireStaff" DisplayName="Kagutsuchi no Tsue" Description="A staff burning with the fire kami's essence" SlotRef="BothHands" Category="Staff" WholesalePrice="250" ModelRef="KagutsuchiTsue" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.05" Speed="0" Magic="0.18" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="FrostStaff" DisplayName="Yukionna no Tsue" Description="A staff radiating the chill of the snow woman" SlotRef="BothHands" Category="Staff" WholesalePrice="250" ModelRef="YukionnaTsue" AffinityRef="Water" UseType="Offensive">
+    <Effects Health="1" Defense="0.05" Strength="0" Speed="0" Magic="0.18" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="StormStaff" DisplayName="Raijin no Tsue" Description="A staff crackling with Raijin's thunder" SlotRef="BothHands" Category="Staff" WholesalePrice="250" ModelRef="RaijinTsue" AffinityRef="Storm" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.05" Magic="0.18" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HolyStaff" DisplayName="Amaterasu no Tsue" Description="A radiant staff blessed by the sun goddess" SlotRef="BothHands" Category="Staff" WholesalePrice="280" ModelRef="AmaterasuTsue" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="0.05" Defense="0" Strength="0" Speed="0" Magic="0.15" Mana="0.08" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="NecromancerStaff" DisplayName="Enma no Tsue" Description="A staff touched by the judge of the dead" SlotRef="BothHands" Category="Staff" WholesalePrice="300" ModelRef="EnmaTsue" AffinityRef="Umbral" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.2" Mana="0.1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ArchmageStaff" DisplayName="Takamagahara no Tsue" Description="A legendary staff connecting to the high plain of heaven" SlotRef="BothHands" Category="Staff" WholesalePrice="600" ModelRef="TakamagaharaTsue" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.28" Mana="0.15" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ApprenticeWand" DisplayName="Haraigushi" Description="A simple purification wand of paper streamers" SlotRef="RightHand" Category="Wand" WholesalePrice="30" ModelRef="Haraigushi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="OakWand" DisplayName="Gohei" Description="A wooden wand with sacred paper zigzags" SlotRef="RightHand" Category="Wand" WholesalePrice="60" ModelRef="Gohei" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="CrystalWand" DisplayName="Suisho Gohei" Description="A crystal-tipped ritual wand" SlotRef="RightHand" Category="Wand" WholesalePrice="150" ModelRef="SuishoGohei" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.16" Mana="0.06" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="FireWand" DisplayName="Hi no Gohei" Description="A wand burning with sacred flame" SlotRef="RightHand" Category="Wand" WholesalePrice="180" ModelRef="HiGohei" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.18" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="FrostWand" DisplayName="Kori no Gohei" Description="A wand frosted with spiritual cold" SlotRef="RightHand" Category="Wand" WholesalePrice="180" ModelRef="KoriGohei" AffinityRef="Water" UseType="Offensive">
+    <Effects Health="1" Defense="0.04" Strength="0" Speed="0" Magic="0.16" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="VoidWand" DisplayName="Mu no Gohei" Description="A wand resonating with the void" SlotRef="RightHand" Category="Wand" WholesalePrice="350" ModelRef="MuGohei" AffinityRef="Void" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.22" Mana="0.1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="PrayerBeads" DisplayName="Juzu" Description="Buddhist prayer beads for meditation and focus" SlotRef="RightHand" Category="Focus" WholesalePrice="40" ModelRef="Juzu" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="0.04" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SummonerOrb" DisplayName="Magatama" Description="A curved jewel for binding spirits" SlotRef="RightHand" Category="Focus" WholesalePrice="100" ModelRef="Magatama" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="0.05" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HolySymbol" DisplayName="Shimenawa" Description="A sacred rope marking divine presence" SlotRef="RightHand" Category="Focus" WholesalePrice="120" ModelRef="Shimenawa" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="0.03" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="CrystalBall" DisplayName="Suiban" Description="A water basin for scrying the future" SlotRef="RightHand" Category="Focus" WholesalePrice="200" ModelRef="Suiban" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.16" Mana="0.08" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SoulLantern" DisplayName="Chochin" Description="A paper lantern that reveals spirits" SlotRef="RightHand" Category="Focus" WholesalePrice="350" ModelRef="Chochin" AffinityRef="Void" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.2" Mana="0.1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ReliquaryHeart" DisplayName="Yata no Kagami" Description="A replica of the sacred mirror of Amaterasu" SlotRef="RightHand" Category="Focus" WholesalePrice="500" ModelRef="YataKagami" AffinityRef="Holy" UseType="Offensive">
+    <Effects Health="0.08" Defense="0" Strength="0" Speed="0" Magic="0.22" Mana="0.08" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="TinWhistle" DisplayName="Shakuhachi" Description="A bamboo flute of haunting tones" SlotRef="BothHands" Category="Instrument" WholesalePrice="15" ModelRef="Shakuhachi" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.02" Magic="0.04" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WoodenFlute" DisplayName="Fue" Description="A traditional transverse flute" SlotRef="BothHands" Category="Instrument" WholesalePrice="40" ModelRef="Fue" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.03" Magic="0.08" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Lute" DisplayName="Biwa" Description="A pear-shaped lute of storytellers" SlotRef="BothHands" Category="Instrument" WholesalePrice="60" ModelRef="Biwa" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.03" Magic="0.1" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Harp" DisplayName="Koto" Description="A thirteen-stringed zither of noble courts" SlotRef="BothHands" Category="Instrument" WholesalePrice="120" ModelRef="Koto" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.04" Magic="0.12" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MasterworkLute" DisplayName="Heike Biwa" Description="A masterwork biwa from a legendary musician" SlotRef="BothHands" Category="Instrument" WholesalePrice="200" ModelRef="HeikeBiwa" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.06" Magic="0.16" Mana="0.05" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="EnchantedLute" DisplayName="Rei no Biwa" Description="A spirit biwa that plays melodies from beyond" SlotRef="BothHands" Category="Instrument" WholesalePrice="300" ModelRef="ReiBiwa" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.06" Magic="0.18" Mana="0.08" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SirenHarp" DisplayName="Tennyo no Koto" Description="A celestial koto played by heavenly maidens" SlotRef="BothHands" Category="Instrument" WholesalePrice="500" ModelRef="TennyoKoto" AffinityRef="Spirit" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.08" Magic="0.24" Mana="0.1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Buckler" DisplayName="Tedate" Description="A small hand shield for deflecting blows" SlotRef="LeftHand" Category="Shield" WholesalePrice="20" ModelRef="Tedate">
+    <Effects Health="1" Defense="0.06" Strength="0" Speed="0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WoodenShield" DisplayName="Mochitate" Description="A wooden shield for ashigaru troops" SlotRef="LeftHand" Category="Shield" WholesalePrice="35" ModelRef="Mochitate">
+    <Effects Health="0.03" Defense="0.1" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="IronShield" DisplayName="Tate" Description="A standing shield for battlefield defense" SlotRef="LeftHand" Category="Shield" WholesalePrice="80" ModelRef="Tate">
+    <Effects Health="0.05" Defense="0.14" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SteelShield" DisplayName="Tetsutate" Description="An iron-reinforced battle shield" SlotRef="LeftHand" Category="Shield" WholesalePrice="150" ModelRef="Tetsutate">
+    <Effects Health="0.08" Defense="0.18" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="TowerShield" DisplayName="Odate" Description="A massive siege shield for arrow protection" SlotRef="LeftHand" Category="Shield" WholesalePrice="250" ModelRef="Odate">
+    <Effects Health="0.1" Defense="0.25" Strength="0" Speed="-0.1" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="KiteShield" DisplayName="Sashimono" Description="A banner shield displaying clan heraldry" SlotRef="LeftHand" Category="Shield" WholesalePrice="200" ModelRef="Sashimono">
+    <Effects Health="0.08" Defense="0.2" Strength="0" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SpikedShield" DisplayName="Toge Tate" Description="A shield with protruding spikes" SlotRef="LeftHand" Category="Shield" WholesalePrice="180" ModelRef="TogeTate">
+    <Effects Health="1" Defense="0.15" Strength="0.05" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HolyShield" DisplayName="Shinsei Tate" Description="A sacred shield blessed by the kami" SlotRef="LeftHand" Category="Shield" WholesalePrice="350" ModelRef="ShinseiTate" AffinityRef="Holy">
+    <Effects Health="0.08" Defense="0.2" Strength="0" Speed="0" Magic="0.05" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="DragonShield" DisplayName="Ryu no Tate" Description="A shield bearing a dragon's protection" SlotRef="LeftHand" Category="Shield" WholesalePrice="500" ModelRef="RyuTate" AffinityRef="Fire">
+    <Effects Health="0.12" Defense="0.28" Strength="0" Speed="-0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ClothCap" DisplayName="Zukin" Description="A simple cloth hood" SlotRef="Head" Category="ArmorLight" WholesalePrice="10" ModelRef="Zukin">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LeatherCap" DisplayName="Jingasa" Description="A conical hat worn by ashigaru" SlotRef="Head" Category="ArmorLight" WholesalePrice="25" ModelRef="Jingasa">
+    <Effects Health="1" Defense="0.04" Strength="0" Speed="0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HoodedCowl" DisplayName="Amigasa" Description="A woven hat concealing the face" SlotRef="Head" Category="ArmorLight" WholesalePrice="40" ModelRef="Amigasa">
+    <Effects Health="1" Defense="0.03" Strength="0" Speed="0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RangerHood" DisplayName="Matagi Zukin" Description="A hunter's hood of mountain fur" SlotRef="Head" Category="ArmorLight" WholesalePrice="80" ModelRef="MatagiZukin" AffinityRef="Wild">
+    <Effects Health="1" Defense="0.05" Strength="0" Speed="0.04" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ChainCoif" DisplayName="Hachi" Description="A simple iron bowl helmet" SlotRef="Head" Category="ArmorMedium" WholesalePrice="60" ModelRef="Hachi">
+    <Effects Health="1" Defense="0.08" Strength="0" Speed="-0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SteelHelm" DisplayName="Kabuto" Description="A traditional samurai helmet" SlotRef="Head" Category="ArmorMedium" WholesalePrice="100" ModelRef="Kabuto">
+    <Effects Health="0.03" Defense="0.1" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="GreatHelm" DisplayName="Kawari Kabuto" Description="An elaborate helmet with distinctive crest" SlotRef="Head" Category="ArmorHeavy" WholesalePrice="180" ModelRef="KawariKabuto">
+    <Effects Health="0.05" Defense="0.15" Strength="0" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="KnightsHelm" DisplayName="O-Kabuto" Description="A great helmet of a renowned general" SlotRef="Head" Category="ArmorHeavy" WholesalePrice="280" ModelRef="OKabuto">
+    <Effects Health="0.06" Defense="0.18" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WizardHat" DisplayName="Tokin" Description="A yamabushi's small black cap" SlotRef="Head" Category="ArmorRobes" WholesalePrice="50" ModelRef="Tokin">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0" Magic="0.06" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MageCrown" DisplayName="Kanmuri" Description="A nobleman's formal court cap" SlotRef="Head" Category="ArmorRobes" WholesalePrice="150" ModelRef="Kanmuri" AffinityRef="Arcane">
+    <Effects Health="1" Defense="0.03" Strength="0" Speed="0" Magic="0.12" Mana="0.05" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HolyMitre" DisplayName="Eboshi" Description="A tall lacquered cap of Shinto priests" SlotRef="Head" Category="ArmorRobes" WholesalePrice="180" ModelRef="Eboshi" AffinityRef="Holy">
+    <Effects Health="0.04" Defense="0.04" Strength="0" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ClothTunic" DisplayName="Kosode" Description="A simple short-sleeved kimono" SlotRef="Chest" Category="ArmorLight" WholesalePrice="15" ModelRef="Kosode">
+    <Effects Health="1" Defense="0.03" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LeatherVest" DisplayName="Kawa Do" Description="A leather cuirass for light protection" SlotRef="Chest" Category="ArmorLight" WholesalePrice="35" ModelRef="KawaDo">
+    <Effects Health="1" Defense="0.06" Strength="0" Speed="0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LeatherArmor" DisplayName="Kusari Katabira" Description="A hidden chain shirt under cloth" SlotRef="Chest" Category="ArmorLight" WholesalePrice="60" ModelRef="KusariKatabira">
+    <Effects Health="0.03" Defense="0.1" Strength="0" Speed="0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="StuddedLeather" DisplayName="Kikko" Description="Armor of hexagonal plates sewn to cloth" SlotRef="Chest" Category="ArmorLight" WholesalePrice="100" ModelRef="Kikko">
+    <Effects Health="0.05" Defense="0.12" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RangerLeather" DisplayName="Matagi Do" Description="A hunter's practical leather armor" SlotRef="Chest" Category="ArmorLight" WholesalePrice="150" ModelRef="MatagiDo" AffinityRef="Wild">
+    <Effects Health="0.05" Defense="0.12" Strength="0" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ShadowLeather" DisplayName="Shinobi Shozoku" Description="A ninja's dark infiltration suit" SlotRef="Chest" Category="ArmorLight" WholesalePrice="250" ModelRef="ShinobiShozoku" AffinityRef="Umbral">
+    <Effects Health="1" Defense="0.12" Strength="0" Speed="0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ChainShirt" DisplayName="Kusari Do" Description="A coat of chain mail" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="80" ModelRef="KusariDo">
+    <Effects Health="0.06" Defense="0.12" Strength="0" Speed="-0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ChainmailArmor" DisplayName="Tatami Do" Description="Folding armor for traveling samurai" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="140" ModelRef="TatamiDo">
+    <Effects Health="0.1" Defense="0.16" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ScaleMail" DisplayName="Karuta Do" Description="Armor of small iron plates laced together" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="200" ModelRef="KarutaDo">
+    <Effects Health="0.12" Defense="0.18" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Brigandine" DisplayName="Okegawa Do" Description="A cuirass of horizontal plates" SlotRef="Chest" Category="ArmorMedium" WholesalePrice="250" ModelRef="OkegawaDo">
+    <Effects Health="0.12" Defense="0.2" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="BreastPlate" DisplayName="Do" Description="A solid breastplate of lacquered iron" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="200" ModelRef="Do">
+    <Effects Health="0.12" Defense="0.2" Strength="0" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HalfPlate" DisplayName="Mogami Do" Description="A five-plate cuirass of fine craftsmanship" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="300" ModelRef="MogamiDo">
+    <Effects Health="0.15" Defense="0.24" Strength="0" Speed="-0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="PlateArmor" DisplayName="Tosei-gusoku" Description="A full suit of modern armor" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="450" ModelRef="ToseiGusoku">
+    <Effects Health="0.18" Defense="0.28" Strength="0.03" Speed="-0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="KnightsArmor" DisplayName="O-Yoroi" Description="The great armor of mounted samurai" SlotRef="Chest" Category="ArmorHeavy" WholesalePrice="600" ModelRef="OYoroi">
+    <Effects Health="0.2" Defense="0.32" Strength="0.05" Speed="-0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SimpleRobe" DisplayName="Samue" Description="A simple work robe of monks" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="20" ModelRef="Samue">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0" Magic="0.04" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ScholarsRobe" DisplayName="Kariginu" Description="A formal hunting robe of nobles" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="50" ModelRef="Kariginu">
+    <Effects Health="1" Defense="0.03" Strength="0" Speed="0" Magic="0.08" Mana="0.04" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ElderRobes" DisplayName="Sokutai" Description="Elaborate court robes of high rank" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="100" ModelRef="Sokutai" AffinityRef="Spirit">
+    <Effects Health="1" Defense="0.04" Strength="0" Speed="0" Magic="0.12" Mana="0.06" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WizardRobes" DisplayName="Yamabushi Koromo" Description="The robes of a mountain ascetic" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="180" ModelRef="YamabushiKoromo" AffinityRef="Arcane">
+    <Effects Health="1" Defense="0.05" Strength="0" Speed="0" Magic="0.18" Mana="0.1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ArchmageRobes" DisplayName="Onmyo no Koromo" Description="Robes of a master onmyoji" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="400" ModelRef="OnmyoKoromo" AffinityRef="Arcane">
+    <Effects Health="1" Defense="0.06" Strength="0" Speed="0" Magic="0.25" Mana="0.15" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ClericVestments" DisplayName="Kannushi Koromo" Description="The white robes of a Shinto priest" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="150" ModelRef="KannushiKoromo" AffinityRef="Holy">
+    <Effects Health="0.08" Defense="0.06" Strength="0" Speed="0" Magic="0.12" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HighPriestRobes" DisplayName="Joue" Description="The sacred vestments of a high priest" SlotRef="Chest" Category="ArmorRobes" WholesalePrice="350" ModelRef="Joue" AffinityRef="Holy">
+    <Effects Health="0.12" Defense="0.08" Strength="0" Speed="0" Magic="0.18" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ClothPants" DisplayName="Hakama" Description="Traditional wide-legged trousers" SlotRef="Legs" Category="ArmorLight" WholesalePrice="10" ModelRef="Hakama">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LeatherLeggings" DisplayName="Kawa Haidate" Description="Leather thigh guards" SlotRef="Legs" Category="ArmorLight" WholesalePrice="30" ModelRef="KawaHaidate">
+    <Effects Health="1" Defense="0.05" Strength="0" Speed="0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ChainLeggings" DisplayName="Kusari Haidate" Description="Chain mail thigh protection" SlotRef="Legs" Category="ArmorMedium" WholesalePrice="70" ModelRef="KusariHaidate">
+    <Effects Health="0.03" Defense="0.1" Strength="0" Speed="-0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="PlateLeggings" DisplayName="Haidate" Description="Armored thigh guards of iron plates" SlotRef="Legs" Category="ArmorHeavy" WholesalePrice="180" ModelRef="Haidate">
+    <Effects Health="0.06" Defense="0.16" Strength="0" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MageLeggings" DisplayName="Sashinuki" Description="Bloused trousers of court nobles" SlotRef="Legs" Category="ArmorRobes" WholesalePrice="80" ModelRef="Sashinuki">
+    <Effects Health="1" Defense="0.03" Strength="0" Speed="0" Magic="0.06" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="Sandals" DisplayName="Waraji" Description="Straw sandals for common travel" SlotRef="Feet" Category="ArmorLight" WholesalePrice="5" ModelRef="Waraji">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LeatherBoots" DisplayName="Tabi" Description="Split-toe socks worn with sandals" SlotRef="Feet" Category="ArmorLight" WholesalePrice="25" ModelRef="Tabi">
+    <Effects Health="1" Defense="0.03" Strength="0" Speed="0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RangerBoots" DisplayName="Kyahan" Description="Leggings for mountain travel" SlotRef="Feet" Category="ArmorLight" WholesalePrice="80" ModelRef="Kyahan" AffinityRef="Wild">
+    <Effects Health="1" Defense="0.04" Strength="0" Speed="0.06" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ChainBoots" DisplayName="Kusari Suneate" Description="Chain mail shin guards" SlotRef="Feet" Category="ArmorMedium" WholesalePrice="60" ModelRef="KusariSuneate">
+    <Effects Health="1" Defense="0.08" Strength="0" Speed="-0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="PlateBoots" DisplayName="Suneate" Description="Armored shin guards of iron splints" SlotRef="Feet" Category="ArmorHeavy" WholesalePrice="150" ModelRef="Suneate">
+    <Effects Health="0.03" Defense="0.12" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ShadowBoots" DisplayName="Shinobi Tabi" Description="Soft split-toe boots for silent movement" SlotRef="Feet" Category="ArmorLight" WholesalePrice="200" ModelRef="ShinobiTabi" AffinityRef="Umbral">
+    <Effects Health="1" Defense="0.04" Strength="0" Speed="0.1" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MageSlippers" DisplayName="Geta" Description="Wooden platform sandals" SlotRef="Feet" Category="ArmorRobes" WholesalePrice="70" ModelRef="Geta">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0.02" Magic="0.04" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ClothGloves" DisplayName="Tekko" Description="Simple hand covers" SlotRef="Hands" Category="ArmorLight" WholesalePrice="8" ModelRef="Tekko">
+    <Effects Health="1" Defense="0.01" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="LeatherGloves" DisplayName="Kawa Kote" Description="Leather arm guards" SlotRef="Hands" Category="ArmorLight" WholesalePrice="20" ModelRef="KawaKote">
+    <Effects Health="1" Defense="0.03" Strength="0.02" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ThiefGloves" DisplayName="Shinobi Tekko" Description="Ninja hand guards with metal studs" SlotRef="Hands" Category="ArmorLight" WholesalePrice="60" ModelRef="ShinobiTekko">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ChainGloves" DisplayName="Kusari Kote" Description="Chain mail arm and hand protection" SlotRef="Hands" Category="ArmorMedium" WholesalePrice="50" ModelRef="KusariKote">
+    <Effects Health="1" Defense="0.06" Strength="0" Speed="-0.01" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="PlateGauntlets" DisplayName="Kote" Description="Armored sleeves protecting arms and hands" SlotRef="Hands" Category="ArmorHeavy" WholesalePrice="120" ModelRef="Kote">
+    <Effects Health="1" Defense="0.1" Strength="0.04" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MageGloves" DisplayName="Shiro Tekko" Description="White ritual gloves" SlotRef="Hands" Category="ArmorRobes" WholesalePrice="60" ModelRef="ShiroTekko">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0" Magic="0.06" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="TravelCloak" DisplayName="Mino" Description="A straw raincoat for travel" SlotRef="Back" Category="Accessory" WholesalePrice="15" ModelRef="Mino">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MerchantCloak" DisplayName="Haori" Description="A hip-length jacket over kimono" SlotRef="Back" Category="Accessory" WholesalePrice="40" ModelRef="Haori">
+    <Effects Health="1" Defense="0.03" Strength="0" Speed="0.02" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RangerCloak" DisplayName="Kappa" Description="A rainproof traveling cape" SlotRef="Back" Category="Accessory" WholesalePrice="80" ModelRef="Kappa" AffinityRef="Wild">
+    <Effects Health="1" Defense="0.04" Strength="0" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="ShadowCloak" DisplayName="Shinobi Manto" Description="A dark cloak for concealment" SlotRef="Back" Category="Accessory" WholesalePrice="200" ModelRef="ShinobiManto" AffinityRef="Umbral">
+    <Effects Health="1" Defense="0.05" Strength="0" Speed="0.08" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="MageCloak" DisplayName="Onmyo no Haori" Description="An onmyoji's ritual overcoat" SlotRef="Back" Category="Accessory" WholesalePrice="120" ModelRef="OnmyoHaori" AffinityRef="Arcane">
+    <Effects Health="1" Defense="0.03" Strength="0" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="CloakOfProtection" DisplayName="Mamori Haori" Description="A haori inscribed with protective wards" SlotRef="Back" Category="Accessory" WholesalePrice="250" ModelRef="MamoriHaori">
+    <Effects Health="0.05" Defense="0.1" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HerosCape" DisplayName="Jinbaori" Description="A surcoat worn over armor displaying clan colors" SlotRef="Back" Category="Accessory" WholesalePrice="400" ModelRef="Jinbaori">
+    <Effects Health="1" Defense="0.08" Strength="0.05" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="CopperRing" DisplayName="Do Yubiwa" Description="A simple copper ring" SlotRef="Ring" Category="Accessory" WholesalePrice="10" ModelRef="DoYubiwa">
+    <Effects Health="0.02" Defense="0" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SilverRing" DisplayName="Gin Yubiwa" Description="A silver ring of modest value" SlotRef="Ring" Category="Accessory" WholesalePrice="30" ModelRef="GinYubiwa">
+    <Effects Health="0.03" Defense="0" Strength="0" Speed="0" Magic="0" Mana="0.03" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="GoldRing" DisplayName="Kin Yubiwa" Description="A gold ring of considerable worth" SlotRef="Ring" Category="Accessory" WholesalePrice="80" ModelRef="KinYubiwa">
+    <Effects Health="0.04" Defense="0" Strength="0" Speed="0" Magic="0.04" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RingOfStrength" DisplayName="Chikara no Yubiwa" Description="A ring granting mighty strength" SlotRef="Ring" Category="Accessory" WholesalePrice="150" ModelRef="ChikaraYubiwa" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.1" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RingOfProtection" DisplayName="Mamori no Yubiwa" Description="A ring of divine protection" SlotRef="Ring" Category="Accessory" WholesalePrice="150" ModelRef="MamoriYubiwa">
+    <Effects Health="1" Defense="0.1" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RingOfSwiftness" DisplayName="Hayasa no Yubiwa" Description="A ring of swift movement" SlotRef="Ring" Category="Accessory" WholesalePrice="150" ModelRef="HayasaYubiwa">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0.1" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RingOfSorcery" DisplayName="Majutsu no Yubiwa" Description="A ring enhancing magical power" SlotRef="Ring" Category="Accessory" WholesalePrice="180" ModelRef="MajutsuYubiwa" AffinityRef="Arcane" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RingOfRegeneration" DisplayName="Kaifuku no Yubiwa" Description="A ring of healing restoration" SlotRef="Ring" Category="Accessory" WholesalePrice="250" ModelRef="KaifukuYubiwa">
+    <Effects Health="0.1" Defense="0" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="0.05" />
+  </Equipment>
+  <Equipment RefName="LeatherCord" DisplayName="Himo" Description="A simple cord for hanging charms" SlotRef="Amulet" Category="Accessory" WholesalePrice="5" ModelRef="Himo">
+    <Effects Health="0.01" Defense="0" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="SilverPendant" DisplayName="Omamori" Description="A protective shrine amulet" SlotRef="Amulet" Category="Accessory" WholesalePrice="40" ModelRef="Omamori">
+    <Effects Health="0.04" Defense="0.02" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="AmuletOfHealth" DisplayName="Kenko Omamori" Description="An amulet for good health" SlotRef="Amulet" Category="Accessory" WholesalePrice="120" ModelRef="KenkoOmamori">
+    <Effects Health="0.12" Defense="0" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="AmuletOfMana" DisplayName="Gakugyo Omamori" Description="An amulet for wisdom and learning" SlotRef="Amulet" Category="Accessory" WholesalePrice="140" ModelRef="GakugyoOmamori" AffinityRef="Arcane">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0" Mana="0.15" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="HolyAmulet" DisplayName="Shinto Omamori" Description="A powerful amulet from a grand shrine" SlotRef="Amulet" Category="Accessory" WholesalePrice="180" ModelRef="ShintoOmamori" AffinityRef="Holy">
+    <Effects Health="0.08" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="WardingAmulet" DisplayName="Yakuyoke Omamori" Description="An amulet warding against evil" SlotRef="Amulet" Category="Accessory" WholesalePrice="200" ModelRef="YakuyokeOmamori">
+    <Effects Health="0.06" Defense="0.1" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="DragonTooth" DisplayName="Ryu no Kiba" Description="A fang from a defeated dragon" SlotRef="Amulet" Category="Accessory" WholesalePrice="400" ModelRef="RyuKiba" AffinityRef="Fire" UseType="Offensive">
+    <Effects Health="1" Defense="0" Strength="0.1" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="RopeBelt" DisplayName="Nawa Obi" Description="A simple rope belt" SlotRef="Belt" Category="Accessory" WholesalePrice="5" ModelRef="NawaObi">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="0.02" />
+  </Equipment>
+  <Equipment RefName="LeatherBelt" DisplayName="Kawa Obi" Description="A leather belt for sword carrying" SlotRef="Belt" Category="Accessory" WholesalePrice="20" ModelRef="KawaObi">
+    <Effects Health="1" Defense="0.02" Strength="0" Speed="0" Magic="0" Mana="1" Stamina="0.04" />
+  </Equipment>
+  <Equipment RefName="WarriorBelt" DisplayName="Uwa-Obi" Description="A warrior's belt worn over armor" SlotRef="Belt" Category="Accessory" WholesalePrice="80" ModelRef="UwaObi">
+    <Effects Health="1" Defense="0" Strength="0.05" Speed="0" Magic="0" Mana="1" Stamina="0.05" />
+  </Equipment>
+  <Equipment RefName="MageBelt" DisplayName="Jumon Obi" Description="A sash inscribed with spell words" SlotRef="Belt" Category="Accessory" WholesalePrice="100" ModelRef="JumonObi">
+    <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.05" Mana="0.06" Stamina="1" />
+  </Equipment>
+  <Equipment RefName="BeltOfGiants" DisplayName="Oni no Obi" Description="A demon's belt of tremendous strength" SlotRef="Belt" Category="Accessory" WholesalePrice="300" ModelRef="OniObi" AffinityRef="Stone" UseType="Offensive">
+    <Effects Health="0.05" Defense="0" Strength="0.15" Speed="0" Magic="0" Mana="1" Stamina="1" />
+  </Equipment>
+</Equipment>

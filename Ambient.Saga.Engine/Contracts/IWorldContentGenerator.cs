@@ -24,7 +24,7 @@ public interface IWorldContentGenerator
     /// Generates world content (characters, dialogue, quests, equipment, etc.) for a world configuration.
     /// </summary>
     /// <param name="worldConfig">The world configuration to generate content for</param>
-    /// <param name="outputDirectory">Base output directory (e.g., WorldDefinitions)</param>
+    /// <param name="outputDirectory">Base output directory (e.g., Content/Worlds)</param>
     /// <returns>List of generated file paths, or empty list if generation failed/unavailable</returns>
     List<string> GenerateWorldContent(IWorldConfiguration worldConfig, string outputDirectory);
 }

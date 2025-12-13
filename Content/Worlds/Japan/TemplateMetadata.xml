@@ -1,0 +1,10 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+
+<TemplateMetadata xmlns="Ambient.Domain"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="Ambient.Domain ..\..\Schemas\WorldTemplateMetadata.xsd">
+    <Name>XML World</Name>
+    <Description>An XML World</Description>
+    <Version>1.0</Version>
+    <Author>Ambient Games</Author>
+</TemplateMetadata>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BuildingMaterials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <BuildingMaterial RefName="Nails" DisplayName="Nails" Description="Basic construction nails from the hardware store" WholesalePrice="2" TextureRef="Nails">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Mortar" DisplayName="Quick-Set Cement" Description="Fast-drying cement mix" WholesalePrice="3" TextureRef="Mortar">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Aggregate" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Clay" DisplayName="Modeling Clay" Description="Moldable clay from the art supplies" WholesalePrice="2" TextureRef="Mortar">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Aggregate" />
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Carbon" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="WoodGlue" DisplayName="Carpenter's Glue" Description="Strong wood adhesive" WholesalePrice="4" TextureRef="WoodGlue">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Cement" DisplayName="Construction Cement" Description="Professional-grade cement mix" WholesalePrice="5" TextureRef="Cement">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Aggregate" />
+      <Substance SubstanceRef="SteelReinforcedConcrete" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Screws" DisplayName="Wood Screws" Description="Self-tapping screws for assembly" WholesalePrice="3" TextureRef="Screws">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Steel" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Bolts" DisplayName="Machine Bolts" Description="Heavy-duty bolts with nuts" WholesalePrice="4" TextureRef="Bolts">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Metal" />
+      <Substance SubstanceRef="Steel" />
+      <Substance SubstanceRef="Wood" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Epoxy" DisplayName="Two-Part Epoxy" Description="Industrial-strength bonding compound" WholesalePrice="12" TextureRef="Epoxy">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Metal" />
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+</BuildingMaterials>

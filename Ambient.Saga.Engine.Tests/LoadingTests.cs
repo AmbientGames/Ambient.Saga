@@ -15,12 +15,12 @@ public class LoadingTests : IAsyncLifetime
 
     public LoadingTests()
     {
-        // DefinitionXsd is copied to output directory by Ambient.Domain
-        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
+        // Content/Schemas is copied to output directory by Ambient.Domain
+        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Schemas");
 
-        // WorldDefinitions is at solution root (shared by all Sandboxes)
+        // Content/Worlds is at solution root (shared by all Sandboxes)
         var solutionRoot = FindSolutionRoot();
-        _dataDirectory = Path.Combine(solutionRoot, "WorldDefinitions");
+        _dataDirectory = Path.Combine(solutionRoot, "Content", "Worlds");
 
         _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
     }

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Legend of Kagoshima" Description="Write your name in the annals of Kagoshima's history by completing the main quest.">
+    <Criteria Type="SagaArcsCompleted" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_KAGOSHIMA" DisplayName="Champion" Description="Prove your combat mastery by defeating all the bosses in Kagoshima.">
+    <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="6" />
+  </Achievement>
+  <Achievement RefName="ACH_EXPLORER_KAGOSHIMA" DisplayName="Pathfinder" Description="Blaze trails to every destination in Kagoshima.">
+    <Criteria Type="SagaArcsDiscovered" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_SOCIAL_KAGOSHIMA" DisplayName="Networker" Description="Build connections with everyone you meet throughout Kagoshima.">
+    <Criteria Type="UniqueCharactersMet" Threshold="101" />
+  </Achievement>
+  <Achievement RefName="ACH_DIALOGUE_MASTER_KAGOSHIMA" DisplayName="Master Conversationalist" Description="Exhaust every dialogue option with the people of Kagoshima.">
+    <Criteria Type="DialogueTreesCompleted" Threshold="101" />
+  </Achievement>
+  <Achievement RefName="ACH_COLLECTOR_KAGOSHIMA" DisplayName="Trophy Hunter" Description="Claim every token as proof of your exploits in Kagoshima.">
+    <Criteria Type="QuestTokensEarned" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_MERCHANT_KAGOSHIMA" DisplayName="Master Trader" Description="Conduct business with every merchant in Kagoshima.">
+    <Criteria Type="ItemsTraded" Threshold="130" />
+  </Achievement>
+  <Achievement RefName="ACH_DIPLOMAT_KAGOSHIMA" DisplayName="Peacemaker" Description="Spread goodwill wherever you travel in Kagoshima.">
+    <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="50" />
+  </Achievement>
+</Achievements>

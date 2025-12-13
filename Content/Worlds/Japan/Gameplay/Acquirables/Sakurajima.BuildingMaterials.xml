@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BuildingMaterials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <BuildingMaterial RefName="Nails" DisplayName="Kugi" Description="Iron nails forged by blacksmiths" WholesalePrice="2" TextureRef="Nails">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Mortar" DisplayName="Shikkui" Description="Traditional lime plaster for walls" WholesalePrice="3" TextureRef="Mortar">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Aggregate" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Clay" DisplayName="Nendo" Description="Clay for pottery and construction" WholesalePrice="2" TextureRef="Mortar">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Aggregate" />
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Carbon" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="WoodGlue" DisplayName="Nikawa" Description="Animal hide glue used by craftsmen" WholesalePrice="4" TextureRef="WoodGlue">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Cement" DisplayName="Tataki" Description="Rammed earth mixed with lime" WholesalePrice="5" TextureRef="Cement">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Aggregate" />
+      <Substance SubstanceRef="SteelReinforcedConcrete" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Screws" DisplayName="Neji Kugi" Description="Threaded iron fasteners" WholesalePrice="3" TextureRef="Screws">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Steel" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Bolts" DisplayName="Kasugai" Description="Iron staples for joining heavy timbers" WholesalePrice="4" TextureRef="Bolts">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Metal" />
+      <Substance SubstanceRef="Steel" />
+      <Substance SubstanceRef="Wood" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+  <BuildingMaterial RefName="Epoxy" DisplayName="Urushi" Description="Lacquer resin for waterproofing and binding" WholesalePrice="12" TextureRef="Epoxy">
+    <CompatibleSubstances>
+      <Substance SubstanceRef="Wood" />
+      <Substance SubstanceRef="Metal" />
+      <Substance SubstanceRef="Stone" />
+      <Substance SubstanceRef="Plant" />
+    </CompatibleSubstances>
+  </BuildingMaterial>
+</BuildingMaterials>

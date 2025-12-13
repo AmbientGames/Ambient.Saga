@@ -57,10 +57,11 @@ Located in `Ambient.Saga.Engine/Domain/Rpg/`:
 ### Definition System
 
 World data is defined via XSD schemas:
-- Schemas: `Ambient.Domain/DefinitionXsd/`
-- Generated C# classes: `Ambient.Domain/DefinitionGenerated/`
-- World definitions (XML): Various `WorldDefinitions/` folders
-- Build targets auto-copy definitions to output
+- Schemas: `Content/Schemas/`
+- Generated C# classes: `Ambient.Domain/Generated/`
+- Partial class extensions: `Ambient.Domain/Partials/`
+- World definitions (XML): `Content/Worlds/`
+- Build targets auto-copy Content folder to output
 
 ## NuGet Configuration
 

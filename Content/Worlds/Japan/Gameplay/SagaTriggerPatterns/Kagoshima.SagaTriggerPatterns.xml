@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SagaTriggerPatterns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <SagaTriggerPattern RefName="PeacefulLandmark" DisplayName="Peaceful Landmark" Description="Pure exploration - scenic discovery with no encounters" EnforceProgression="false">
+    <SagaTrigger RefName="distant_view" DisplayName="Distant View" Description="Distant View" EnterRadius="80.0" Tags="exploration,scenic" />
+    <SagaTrigger RefName="approach" DisplayName="Approaching" Description="Approaching" EnterRadius="50.0" Tags="exploration" />
+    <SagaTrigger RefName="close_view" DisplayName="Close View" Description="Close View" EnterRadius="25.0" Tags="exploration,detail" />
+    <SagaTrigger RefName="discovery" DisplayName="Landmark Discovered" Description="Landmark Discovered" EnterRadius="10.0" Tags="exploration,discovery,achievement" />
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="MysteriousLandmark" DisplayName="Mysterious Landmark" Description="Strange location with cryptic guide who may reveal secrets" EnforceProgression="true">
+    <SagaTrigger RefName="strange_feeling" DisplayName="Strange Sensation" Description="Strange Sensation" EnterRadius="100.0" Tags="exploration,mystery" />
+    <SagaTrigger RefName="cryptic_warning" DisplayName="Cryptic Warning" Description="Cryptic Warning" EnterRadius="60.0" Tags="dialogue,mystery,npc">
+      <Spawn>
+        <CharacterArchetypeRef>RandomNPC</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="eerie_approach" DisplayName="Eerie Silence" Description="Eerie Silence" EnterRadius="30.0" Tags="exploration,mystery,tension" />
+    <SagaTrigger RefName="revelation" DisplayName="Mystery Revealed" Description="Mystery Revealed" EnterRadius="10.0" Tags="discovery,mystery,secret" />
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="GuardedLandmark" DisplayName="Guarded Landmark" Description="Important location with outer scouts and inner guards" EnforceProgression="true">
+    <SagaTrigger RefName="scout_patrol" DisplayName="Scout Patrol" Description="Scout Patrol" EnterRadius="100.0" Tags="combat,patrol,warning">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="checkpoint" DisplayName="Guard Checkpoint" Description="Guard Checkpoint" EnterRadius="50.0" Tags="combat,guard,checkpoint">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>RandomGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="elite_guard" DisplayName="Elite Guard" Description="Elite Guard" EnterRadius="25.0" Tags="combat,elite,guard">
+      <Spawn>
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="arrival" DisplayName="Landmark Reached" Description="Landmark Reached" EnterRadius="10.0" Tags="discovery,achievement" />
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="HauntedLandmark" DisplayName="Haunted Landmark" Description="Cursed location with spirits that grow stronger toward the center" EnforceProgression="true">
+    <SagaTrigger RefName="whispers" DisplayName="Faint Whispers" Description="Faint Whispers" EnterRadius="80.0" Tags="exploration,haunted,atmosphere" />
+    <SagaTrigger RefName="restless_spirits" DisplayName="Restless Spirits" Description="Restless Spirits" EnterRadius="50.0" Tags="combat,undead,spirit">
+      <Spawn Count="3">
+        <CharacterArchetypeRef>RandomHostile</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="wraith_encounter" DisplayName="Wraith Manifestation" Description="Wraith Manifestation" EnterRadius="30.0" Tags="combat,undead,wraith">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>RandomHostile</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="spectre_lord" DisplayName="Spectral Guardian" Description="Spectral Guardian" EnterRadius="15.0" Tags="combat,boss,undead,spectre">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="PeacefulStructure" DisplayName="Peaceful Structure" Description="Friendly building - exploration and discovery" EnforceProgression="false">
+    <SagaTrigger RefName="distant_view" DisplayName="Structure Spotted" Description="Structure Spotted" EnterRadius="60.0" Tags="exploration" />
+    <SagaTrigger RefName="approach" DisplayName="Approaching Structure" Description="Approaching Structure" EnterRadius="35.0" Tags="exploration" />
+    <SagaTrigger RefName="entrance" DisplayName="At the Entrance" Description="At the Entrance" EnterRadius="15.0" Tags="exploration,arrival" />
+    <SagaTrigger RefName="discovery" DisplayName="Structure Discovered" Description="Structure Discovered" EnterRadius="8.0" Tags="discovery,achievement" />
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="FortifiedStructure" DisplayName="Fortified Structure" Description="Heavily defended structure with layered defenses" EnforceProgression="true">
+    <SagaTrigger RefName="outer_sentries" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
+      <Spawn Count="3">
+        <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="wall_guards" DisplayName="Wall Defenders" Description="Wall Defenders" EnterRadius="60.0" Tags="combat,guard,defense">
+      <Spawn Count="4">
+        <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="gate_captain" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
+      <Spawn>
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>RandomGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="commander" DisplayName="Fortress Commander" Description="Fortress Commander" EnterRadius="15.0" Tags="combat,boss,commander">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="AbandonedStructure" DisplayName="Abandoned Structure" Description="Seemingly empty structure with lurking dangers" EnforceProgression="true">
+    <SagaTrigger RefName="eerie_quiet" DisplayName="Eerie Silence" Description="Eerie Silence" EnterRadius="50.0" Tags="exploration,abandoned,tension" />
+    <SagaTrigger RefName="scavengers" DisplayName="Scavenger Den" Description="Scavenger Den" EnterRadius="35.0" Tags="combat,scavenger,creature">
+      <Spawn Count="3">
+        <CharacterArchetypeRef>RandomHostile</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="lurking_beast" DisplayName="The Lurking Horror" Description="The Lurking Horror" EnterRadius="15.0" Tags="combat,boss,beast,horror">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="hidden_cache" DisplayName="Hidden Cache" Description="Hidden Cache" EnterRadius="5.0" Tags="discovery,treasure,secret" />
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="BustlingSettlement" DisplayName="Bustling Settlement" Description="Active town with merchants, guards, and quest givers" EnforceProgression="true">
+    <SagaTrigger RefName="fellow_travelers" DisplayName="Fellow Travelers" Description="Fellow Travelers" EnterRadius="100.0" Tags="npc,traveler,social">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>Traveler</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="town_gate" DisplayName="Town Gate" Description="Town Gate" EnterRadius="60.0" Tags="npc,guard,checkpoint">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>TownGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="market_square" DisplayName="Market Square" Description="Market Square" EnterRadius="30.0" Tags="merchant,social,trade">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>RandomMerchant</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="3">
+        <CharacterArchetypeRef>Townsfolk</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="town_center" DisplayName="Town Center" Description="Town Center" EnterRadius="15.0" Tags="quest,npc,important">
+      <Spawn>
+        <CharacterArchetypeRef>RandomNPC</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn>
+        <CharacterArchetypeRef>RandomQuestGiver</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="BossEncounter" DisplayName="Boss Encounter" Description="Classic boss encounter with minions and the boss" EnforceProgression="true">
+    <SagaTrigger RefName="minions" DisplayName="Boss Minions" Description="Boss Minions" EnterRadius="50.0" Tags="combat,minion,warning">
+      <Spawn Count="4">
+        <CharacterArchetypeRef>BossMinion</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="boss" DisplayName="Boss Battle" Description="Boss Battle" EnterRadius="25.0" Tags="combat,boss">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="LayeredBoss" DisplayName="Layered Boss Encounter" Description="Multi-phase boss with lieutenants at each layer" EnforceProgression="true">
+    <SagaTrigger RefName="patrol_squad" DisplayName="Enemy Patrol" Description="Enemy Patrol" EnterRadius="120.0" Tags="combat,patrol,warning">
+      <Spawn Count="4">
+        <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="elite_guard" DisplayName="Elite Guard" Description="Elite Guard" EnterRadius="80.0" Tags="combat,elite">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="lieutenant" DisplayName="Boss Lieutenant" Description="Boss Lieutenant" EnterRadius="50.0" Tags="combat,lieutenant,miniboss">
+      <Spawn>
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="boss_chamber" DisplayName="Boss Chamber" Description="Boss Chamber" EnterRadius="25.0" Tags="combat,boss,final">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="Ambush" DisplayName="Ambush Encounter" Description="Hidden enemies that spring an ambush" EnforceProgression="true">
+    <SagaTrigger RefName="warning_signs" DisplayName="Something Feels Wrong" Description="Something Feels Wrong" EnterRadius="60.0" Tags="exploration,tension,warning" />
+    <SagaTrigger RefName="bait" DisplayName="Seemingly Safe Area" Description="Seemingly Safe Area" EnterRadius="30.0" Tags="trap,deception">
+      <Spawn>
+        <CharacterArchetypeRef>RandomNPC</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="ambush_spring" DisplayName="Ambush!" Description="Ambush!" EnterRadius="20.0" Tags="combat,ambush,surprise">
+      <Spawn Count="4">
+        <CharacterArchetypeRef>BossMinion</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn>
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="PatrolEncounter" DisplayName="Patrol Encounter" Description="Roaming patrols with a command post" EnforceProgression="true">
+    <SagaTrigger RefName="outer_patrol" DisplayName="Outer Patrol" Description="Outer Patrol" EnterRadius="100.0" Tags="combat,patrol">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="inner_patrol" DisplayName="Inner Patrol" Description="Inner Patrol" EnterRadius="60.0" Tags="combat,patrol">
+      <Spawn Count="3">
+        <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="command_post" DisplayName="Command Post" Description="Command Post" EnterRadius="30.0" Tags="combat,command">
+      <Spawn>
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="WaveDefense" DisplayName="Wave Defense" Description="Progressive waves of enemies converging on a point" EnforceProgression="true">
+    <SagaTrigger RefName="wave_1_scouts" DisplayName="Scout Wave" Description="Scout Wave" EnterRadius="100.0" Tags="combat,wave,scouts">
+      <Spawn Count="4">
+        <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="wave_2_soldiers" DisplayName="Soldier Wave" Description="Soldier Wave" EnterRadius="70.0" Tags="combat,wave,soldiers">
+      <Spawn Count="5">
+        <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="wave_3_elites" DisplayName="Elite Wave" Description="Elite Wave" EnterRadius="40.0" Tags="combat,wave,elite">
+      <Spawn Count="3">
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="wave_final" DisplayName="Commander Assault" Description="Commander Assault" EnterRadius="20.0" Tags="combat,wave,boss,final">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="MerchantShop" DisplayName="Merchant Shop" Description="Established shop with guards and a merchant" EnforceProgression="false">
+    <SagaTrigger RefName="shop_sign" DisplayName="Shop Sign Visible" Description="Shop Sign Visible" EnterRadius="40.0" Tags="exploration,merchant" />
+    <SagaTrigger RefName="shop_guards" DisplayName="Shop Guards" Description="Shop Guards" EnterRadius="25.0" Tags="npc,guard,merchant">
+      <Spawn>
+        <CharacterArchetypeRef>TownGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="merchant" DisplayName="Merchant Available" Description="Merchant Available" EnterRadius="12.0" Tags="merchant,trade,npc">
+      <Spawn>
+        <CharacterArchetypeRef>RandomMerchant</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="TravelingMerchant" DisplayName="Traveling Merchant" Description="Wandering trader with caravan guards" EnforceProgression="false">
+    <SagaTrigger RefName="caravan_spotted" DisplayName="Caravan Spotted" Description="Caravan Spotted" EnterRadius="80.0" Tags="exploration,merchant,caravan" />
+    <SagaTrigger RefName="caravan_guards" DisplayName="Caravan Guards" Description="Caravan Guards" EnterRadius="40.0" Tags="npc,guard,neutral">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>CaravanGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="traveling_merchant" DisplayName="Traveling Merchant" Description="Traveling Merchant" EnterRadius="20.0" Tags="merchant,trade,rare">
+      <Spawn>
+        <CharacterArchetypeRef>RandomMerchant</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn>
+        <CharacterArchetypeRef>Traveler</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="BlackMarket" DisplayName="Black Market" Description="Shady dealers with lookouts and enforcers" EnforceProgression="true">
+    <SagaTrigger RefName="lookouts" DisplayName="Suspicious Eyes" Description="Suspicious Eyes" EnterRadius="60.0" Tags="npc,lookout,shady">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="enforcers" DisplayName="Market Enforcers" Description="Market Enforcers" EnterRadius="30.0" Tags="npc,enforcer,shady">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>RandomGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="black_market_dealer" DisplayName="Shadowy Dealer" Description="Shadowy Dealer" EnterRadius="12.0" Tags="merchant,shady,rare,illegal">
+      <Spawn>
+        <CharacterArchetypeRef>RandomMerchant</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="QuestHub" DisplayName="Quest Hub" Description="Central quest location with multiple NPCs" EnforceProgression="false">
+    <SagaTrigger RefName="rumors" DisplayName="Local Rumors" Description="Local Rumors" EnterRadius="50.0" Tags="npc,social,rumor">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>Townsfolk</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="quest_board" DisplayName="Quest Board" Description="Quest Board" EnterRadius="30.0" Tags="quest,information" />
+    <SagaTrigger RefName="quest_giver" DisplayName="Quest Giver" Description="Quest Giver" EnterRadius="15.0" Tags="quest,npc,important">
+      <Spawn>
+        <CharacterArchetypeRef>RandomQuestGiver</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="LayeredQuest" DisplayName="Layered Quest Location" Description="Quest location with informants leading to the main NPC" EnforceProgression="true">
+    <SagaTrigger RefName="first_informant" DisplayName="Nervous Villager" Description="Nervous Villager" EnterRadius="80.0" Tags="npc,informant,quest">
+      <Spawn>
+        <CharacterArchetypeRef>Townsfolk</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="second_informant" DisplayName="Worried Merchant" Description="Worried Merchant" EnterRadius="50.0" Tags="npc,informant,quest">
+      <Spawn>
+        <CharacterArchetypeRef>RandomMerchant</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="witness" DisplayName="Key Witness" Description="Key Witness" EnterRadius="30.0" Tags="npc,witness,quest">
+      <Spawn>
+        <CharacterArchetypeRef>KeyWitness</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="main_quest_giver" DisplayName="Quest Giver" Description="Quest Giver" EnterRadius="12.0" Tags="quest,npc,main">
+      <Spawn>
+        <CharacterArchetypeRef>RandomQuestGiver</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="SecretQuest" DisplayName="Secret Quest" Description="Hidden quest revealed only by exploring deeply" EnforceProgression="true">
+    <SagaTrigger RefName="ordinary_area" DisplayName="Unremarkable Area" Description="Unremarkable Area" EnterRadius="50.0" Tags="exploration" />
+    <SagaTrigger RefName="subtle_clue" DisplayName="Something Catches Your Eye" Description="Something Catches Your Eye" EnterRadius="30.0" Tags="exploration,secret,clue" />
+    <SagaTrigger RefName="hidden_entrance" DisplayName="Hidden Path" Description="Hidden Path" EnterRadius="15.0" Tags="exploration,secret,hidden" />
+    <SagaTrigger RefName="secret_quest" DisplayName="Hidden Quest Giver" Description="Hidden Quest Giver" EnterRadius="8.0" Tags="quest,secret,hidden,rare">
+      <Spawn>
+        <CharacterArchetypeRef>RandomNPC</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="HiddenCache" DisplayName="Hidden Cache" Description="Secret treasure location with traps and guardians" EnforceProgression="true">
+    <SagaTrigger RefName="map_marker" DisplayName="Ancient Marker" Description="Ancient Marker" EnterRadius="60.0" Tags="exploration,treasure,clue" />
+    <SagaTrigger RefName="trap_signs" DisplayName="Warning Signs" Description="Warning Signs" EnterRadius="35.0" Tags="exploration,trap,warning" />
+    <SagaTrigger RefName="cache_guardian" DisplayName="Cache Guardian" Description="Cache Guardian" EnterRadius="20.0" Tags="combat,guardian,treasure">
+      <Spawn>
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="treasure_cache" DisplayName="Hidden Treasure" Description="Hidden Treasure" EnterRadius="8.0" Tags="discovery,treasure,reward" />
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="SacredGround" DisplayName="Sacred Ground" Description="Holy or mystical location with spiritual guardians" EnforceProgression="true">
+    <SagaTrigger RefName="reverence" DisplayName="Sacred Presence" Description="Sacred Presence" EnterRadius="80.0" Tags="exploration,sacred,atmosphere" />
+    <SagaTrigger RefName="spirit_test" DisplayName="Spirit Guardian's Test" Description="Spirit Guardian's Test" EnterRadius="45.0" Tags="dialogue,spirit,test">
+      <Spawn>
+        <CharacterArchetypeRef>RandomNPC</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="sanctum_guardians" DisplayName="Sanctum Keepers" Description="Sanctum Keepers" EnterRadius="25.0" Tags="npc,guardian,sacred">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>TownGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="sacred_heart" DisplayName="Heart of the Sacred" Description="Heart of the Sacred" EnterRadius="10.0" Tags="sacred,discovery,blessing">
+      <Spawn>
+        <CharacterArchetypeRef>RandomQuestGiver</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+  </SagaTriggerPattern>
+  <SagaTriggerPattern RefName="ResourceNode" DisplayName="Resource Node" Description="Valuable resource location with competition" EnforceProgression="true">
+    <SagaTrigger RefName="resource_scouts" DisplayName="Rival Scouts" Description="Rival Scouts" EnterRadius="70.0" Tags="combat,scout,resource">
+      <Spawn Count="2">
+        <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="resource_workers" DisplayName="Rival Workers" Description="Rival Workers" EnterRadius="40.0" Tags="npc,worker,neutral">
+      <Spawn Count="3">
+        <CharacterArchetypeRef>Townsfolk</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="foreman" DisplayName="Resource Foreman" Description="Resource Foreman" EnterRadius="20.0" Tags="npc,foreman,dialogue">
+      <Spawn>
+        <CharacterArchetypeRef>RandomNPC</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="resource_node" DisplayName="Rich Resource Vein" Description="Rich Resource Vein" EnterRadius="8.0" Tags="resource,gathering,valuable" />
+  </SagaTriggerPattern>
+</SagaTriggerPatterns>
