@@ -1,4 +1,5 @@
 ﻿using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -15,7 +16,7 @@ public class WorldCatalogModal
     private int _selectedCategory = 0;
     private readonly string[] _categories = new[]
     {
-        "Equipment", "Consumables", "Spells", "Tools", "Building Materials",
+        "Equipment", "Consumables", "Spells", "Tools", "Building Materials", "Blocks",
         "Characters", "Character Archetypes", "Quests", "Factions",
         "Dialogue Trees", "Status Effects", "Combat Stances", "Affinities"
     };
@@ -63,14 +64,15 @@ public class WorldCatalogModal
                 case 2: RenderSpellsCatalog(gameplay); break;
                 case 3: RenderToolsCatalog(gameplay); break;
                 case 4: RenderBuildingMaterialsCatalog(gameplay); break;
-                case 5: RenderCharactersCatalog(gameplay); break;
-                case 6: RenderCharacterArchetypesCatalog(gameplay); break;
-                case 7: RenderQuestsCatalog(gameplay); break;
-                case 8: RenderFactionsCatalog(gameplay); break;
-                case 9: RenderDialogueTreesCatalog(gameplay); break;
-                case 10: RenderStatusEffectsCatalog(gameplay); break;
-                case 11: RenderCombatStancesCatalog(gameplay); break;
-                case 12: RenderAffinitiesCatalog(gameplay); break;
+                case 5: RenderBlocksCatalog(viewModel.CurrentWorld); break;
+                case 6: RenderCharactersCatalog(gameplay); break;
+                case 7: RenderCharacterArchetypesCatalog(gameplay); break;
+                case 8: RenderQuestsCatalog(gameplay); break;
+                case 9: RenderFactionsCatalog(gameplay); break;
+                case 10: RenderDialogueTreesCatalog(gameplay); break;
+                case 11: RenderStatusEffectsCatalog(gameplay); break;
+                case 12: RenderCombatStancesCatalog(gameplay); break;
+                case 13: RenderAffinitiesCatalog(gameplay); break;
             }
 
             ImGui.EndChild();
@@ -248,6 +250,55 @@ public class WorldCatalogModal
                 ImGui.Text($"Rarity: {item.Rarity}");
                 ImGui.Text($"Price: {item.WholesalePrice} (x{item.MerchantMarkupMultiplier} markup)");
                 ImGui.Unindent();
+            }
+        }
+    }
+
+    private void RenderBlocksCatalog(IWorld world)
+    {
+        if (world.BlockProvider == null)
+        {
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No block provider available");
+            return;
+        }
+
+        var blocks = world.BlockProvider.GetAllBlocks().ToList();
+        if (blocks.Count == 0)
+        {
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No blocks defined");
+            return;
+        }
+
+        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Blocks ({blocks.Count} types)");
+        ImGui.Spacing();
+
+        // Group blocks by substance for better organization
+        var blocksBySubstance = blocks
+            .GroupBy(b => b.SubstanceRef ?? "Other")
+            .OrderBy(g => g.Key);
+
+        foreach (var group in blocksBySubstance)
+        {
+            if (ImGui.TreeNode($"{group.Key} ({group.Count()})"))
+            {
+                foreach (var block in group)
+                {
+                    if (!MatchesFilter(block.DisplayName) && !MatchesFilter(block.RefName)) continue;
+
+                    if (ImGui.CollapsingHeader($"{block.DisplayName}##{block.RefName}"))
+                    {
+                        ImGui.Indent();
+                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), block.Description ?? "No description");
+                        ImGui.Text($"Substance: {block.SubstanceRef ?? "None"}");
+                        ImGui.Text($"Price: {block.WholesalePrice} (x{block.MerchantMarkupMultiplier} markup)");
+                        if (!string.IsNullOrEmpty(block.TextureRef))
+                        {
+                            ImGui.Text($"Texture: {block.TextureRef}");
+                        }
+                        ImGui.Unindent();
+                    }
+                }
+                ImGui.TreePop();
             }
         }
     }

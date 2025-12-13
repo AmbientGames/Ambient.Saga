@@ -35,21 +35,45 @@ public class WorldInfoPanel
             // Gameplay Elements
             ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Gameplay Elements");
 
-            //// Blocks (collapsible with basic list)
-            //var blocks = viewModel.CurrentWorld.Simulation?.Blocks?.BlockList;
-            //if (blocks != null && ImGui.CollapsingHeader($"Blocks ({blocks.Length})"))
-            //{
-            //    ImGui.Indent(10);
-            //    foreach (var block in blocks.Take(10)) // Show first 10
-            //    {
-            //        ImGui.BulletText(block.DisplayName ?? block.RefName);
-            //    }
-            //    if (blocks.Length > 10)
-            //    {
-            //        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"... and {blocks.Length - 10} more");
-            //    }
-            //    ImGui.Unindent(10);
-            //}
+            // Blocks (collapsible with detailed expandable items)
+            var blocks = viewModel.CurrentWorld.BlockProvider?.GetAllBlocks().ToList();
+            if (blocks != null && blocks.Count > 0 && ImGui.CollapsingHeader($"Blocks ({blocks.Count})"))
+            {
+                ImGui.Indent(10);
+                // Group blocks by substance for better organization
+                var blocksBySubstance = blocks
+                    .GroupBy(b => b.SubstanceRef ?? "Other")
+                    .OrderBy(g => g.Key);
+
+                foreach (var group in blocksBySubstance)
+                {
+                    if (ImGui.TreeNode($"{group.Key} ({group.Count()})"))
+                    {
+                        foreach (var block in group)
+                        {
+                            var treeNodeOpen = ImGui.TreeNode($"{block.DisplayName}##{block.RefName}");
+                            if (treeNodeOpen)
+                            {
+                                if (!string.IsNullOrEmpty(block.Description))
+                                {
+                                    ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), block.Description);
+                                    ImGui.Spacing();
+                                }
+                                ImGui.Text($"Substance: {block.SubstanceRef ?? "None"}");
+                                ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Price: {block.WholesalePrice}");
+                                ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {block.MerchantMarkupMultiplier}x");
+                                if (!string.IsNullOrEmpty(block.TextureRef))
+                                {
+                                    ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Texture: {block.TextureRef}");
+                                }
+                                ImGui.TreePop();
+                            }
+                        }
+                        ImGui.TreePop();
+                    }
+                }
+                ImGui.Unindent(10);
+            }
 
             // Tools (collapsible with basic list)
             var tools = viewModel.CurrentWorld.Gameplay?.Tools;
