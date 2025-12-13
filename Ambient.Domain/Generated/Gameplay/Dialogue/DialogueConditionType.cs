@@ -57,6 +57,12 @@ namespace Ambient.Domain {
         LacksSpell,
         
         /// <remarks/>
+        HasBlock,
+        
+        /// <remarks/>
+        LacksBlock,
+        
+        /// <remarks/>
         HasAchievement,
         
         /// <remarks/>

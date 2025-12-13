@@ -17,9 +17,9 @@ public interface IWorld
 
     /// <summary>
     /// Optional block provider for games that include block/voxel systems.
-    /// Returns null by default - implemented by game-specific domain projects.
+    /// Set by the application to provide block lookup functionality.
     /// </summary>
-    IBlockProvider? BlockProvider => null;
+    IBlockProvider? BlockProvider { get; set; }
 
     bool IsProcedural { get; set; }
     double VerticalShift { get; set; }

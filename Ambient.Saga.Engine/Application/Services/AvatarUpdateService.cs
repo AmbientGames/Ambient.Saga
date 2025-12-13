@@ -545,6 +545,111 @@ public class AvatarUpdateService : IAvatarUpdateService
     }
 
     /// <inheritdoc/>
+    public async Task<AvatarEntity> UpdateAvatarForMiningAsync(
+        AvatarEntity avatar,
+        Dictionary<string, int> blocksMined,
+        CancellationToken ct = default)
+    {
+        // Initialize Capabilities if needed
+        if (avatar.Capabilities == null)
+        {
+            avatar.Capabilities = new ItemCollection();
+        }
+
+        // Add mined blocks to inventory
+        foreach (var kvp in blocksMined)
+        {
+            var blockRef = kvp.Key;
+            var quantity = kvp.Value;
+
+            var block = avatar.Capabilities.GetOrAddBlock(blockRef);
+            block.Quantity += quantity;
+        }
+
+        return avatar;
+    }
+
+    /// <inheritdoc/>
+    public async Task<AvatarEntity> UpdateAvatarForBuildingAsync(
+        AvatarEntity avatar,
+        Dictionary<string, int> materialsConsumed,
+        CancellationToken ct = default)
+    {
+        // Initialize Capabilities if needed
+        if (avatar.Capabilities == null)
+        {
+            avatar.Capabilities = new ItemCollection();
+        }
+
+        // Remove consumed materials from inventory
+        foreach (var kvp in materialsConsumed)
+        {
+            var materialRef = kvp.Key;
+            var quantity = kvp.Value;
+
+            // Try blocks first
+            var existingBlock = avatar.Capabilities.Blocks?.FirstOrDefault(b => b.BlockRef == materialRef);
+            if (existingBlock != null)
+            {
+                existingBlock.Quantity -= quantity;
+                if (existingBlock.Quantity <= 0)
+                {
+                    var blocks = avatar.Capabilities.Blocks?.ToList() ?? new List<BlockEntry>();
+                    blocks.RemoveAll(b => b.BlockRef == materialRef);
+                    avatar.Capabilities.Blocks = blocks.ToArray();
+                }
+                continue;
+            }
+
+            // Try building materials
+            var existingMaterial = avatar.Capabilities.BuildingMaterials?.FirstOrDefault(m => m.BuildingMaterialRef == materialRef);
+            if (existingMaterial != null)
+            {
+                existingMaterial.Quantity -= quantity;
+                if (existingMaterial.Quantity <= 0)
+                {
+                    var materials = avatar.Capabilities.BuildingMaterials?.ToList() ?? new List<BuildingMaterialEntry>();
+                    materials.RemoveAll(m => m.BuildingMaterialRef == materialRef);
+                    avatar.Capabilities.BuildingMaterials = materials.ToArray();
+                }
+            }
+        }
+
+        return avatar;
+    }
+
+    /// <inheritdoc/>
+    public async Task<AvatarEntity> UpdateAvatarForToolWearAsync(
+        AvatarEntity avatar,
+        string toolRef,
+        float newCondition,
+        CancellationToken ct = default)
+    {
+        // Initialize Capabilities if needed
+        if (avatar.Capabilities == null)
+        {
+            avatar.Capabilities = new ItemCollection();
+        }
+
+        // Find and update tool condition
+        var tool = avatar.Capabilities.Tools?.FirstOrDefault(t => t.ToolRef == toolRef);
+        if (tool != null)
+        {
+            tool.Condition = Math.Max(0f, Math.Min(1f, newCondition)); // Clamp to 0-1
+
+            // Remove tool if condition is 0 (broken)
+            if (tool.Condition <= 0f)
+            {
+                var tools = avatar.Capabilities.Tools?.ToList() ?? new List<ToolEntry>();
+                tools.RemoveAll(t => t.ToolRef == toolRef);
+                avatar.Capabilities.Tools = tools.ToArray();
+            }
+        }
+
+        return avatar;
+    }
+
+    /// <inheritdoc/>
     public async Task PersistAvatarAsync(AvatarEntity avatar, CancellationToken ct = default)
     {
         await _avatarRepository.SaveAvatarAsync(avatar);

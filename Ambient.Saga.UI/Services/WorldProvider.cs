@@ -10,6 +10,22 @@ namespace Ambient.Saga.UI.Services;
 public class WorldProvider
 {
     private IWorld _world;
+    private readonly IBlockProvider? _blockProvider;
+
+    /// <summary>
+    /// Creates a WorldProvider without a block provider (blocks disabled).
+    /// </summary>
+    public WorldProvider()
+    {
+    }
+
+    /// <summary>
+    /// Creates a WorldProvider with a block provider (blocks enabled).
+    /// </summary>
+    public WorldProvider(IBlockProvider blockProvider)
+    {
+        _blockProvider = blockProvider;
+    }
 
     /// <summary>
     /// Gets the current World instance.
@@ -20,10 +36,17 @@ public class WorldProvider
 
     /// <summary>
     /// Sets the World instance (called by MainViewModel when world loads).
+    /// Automatically injects the BlockProvider if one was configured.
     /// </summary>
     public void SetWorld(IWorld world)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
+
+        // Inject block provider if configured
+        if (_blockProvider != null)
+        {
+            _world.BlockProvider = _blockProvider;
+        }
     }
 
     /// <summary>

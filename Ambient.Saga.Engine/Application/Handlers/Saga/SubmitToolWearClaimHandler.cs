@@ -2,7 +2,9 @@
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain.Rpg.Voxel;
 using MediatR;
@@ -18,15 +20,21 @@ public class SubmitToolWearClaimHandler : IRequestHandler<SubmitToolWearClaimCom
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IWorld _world;
+    private readonly IAvatarUpdateService _avatarUpdateService;
+    private readonly IWorldStateRepository _worldStateRepository;
 
     public SubmitToolWearClaimHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
-        IWorld world)
+        IWorld world,
+        IAvatarUpdateService avatarUpdateService,
+        IWorldStateRepository worldStateRepository)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
         _world = world;
+        _avatarUpdateService = avatarUpdateService;
+        _worldStateRepository = worldStateRepository;
     }
 
     public async Task<SagaCommandResult> Handle(SubmitToolWearClaimCommand command, CancellationToken ct)
@@ -73,6 +81,19 @@ public class SubmitToolWearClaimHandler : IRequestHandler<SubmitToolWearClaimCom
 
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+
+            // Update avatar tool condition
+            var avatar = await _worldStateRepository.LoadAvatarAsync();
+            if (avatar != null && !string.IsNullOrEmpty(command.Claim.ToolRef))
+            {
+                await _avatarUpdateService.UpdateAvatarForToolWearAsync(
+                    avatar,
+                    command.Claim.ToolRef,
+                    command.Claim.ConditionAfter,
+                    ct);
+
+                await _avatarUpdateService.PersistAvatarAsync(avatar, ct);
+            }
 
             System.Diagnostics.Debug.WriteLine($"[SubmitToolWearClaim] Tool wear claim accepted (sequence: {sequenceNumbers.First()})");
 

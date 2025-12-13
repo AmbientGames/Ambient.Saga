@@ -2,7 +2,9 @@
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain.Rpg.Voxel;
 using MediatR;
@@ -18,15 +20,21 @@ public class SubmitBuildingClaimHandler : IRequestHandler<SubmitBuildingClaimCom
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IWorld _world;
+    private readonly IAvatarUpdateService _avatarUpdateService;
+    private readonly IWorldStateRepository _worldStateRepository;
 
     public SubmitBuildingClaimHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
-        IWorld world)
+        IWorld world,
+        IAvatarUpdateService avatarUpdateService,
+        IWorldStateRepository worldStateRepository)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
         _world = world;
+        _avatarUpdateService = avatarUpdateService;
+        _worldStateRepository = worldStateRepository;
     }
 
     public async Task<SagaCommandResult> Handle(SubmitBuildingClaimCommand command, CancellationToken ct)
@@ -73,6 +81,18 @@ public class SubmitBuildingClaimHandler : IRequestHandler<SubmitBuildingClaimCom
 
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+
+            // Update avatar inventory - remove consumed materials
+            var avatar = await _worldStateRepository.LoadAvatarAsync();
+            if (avatar != null && command.Claim.MaterialsConsumed.Count > 0)
+            {
+                await _avatarUpdateService.UpdateAvatarForBuildingAsync(
+                    avatar,
+                    command.Claim.MaterialsConsumed,
+                    ct);
+
+                await _avatarUpdateService.PersistAvatarAsync(avatar, ct);
+            }
 
             System.Diagnostics.Debug.WriteLine($"[SubmitBuildingClaim] Building claim accepted (sequence: {sequenceNumbers.First()})");
 

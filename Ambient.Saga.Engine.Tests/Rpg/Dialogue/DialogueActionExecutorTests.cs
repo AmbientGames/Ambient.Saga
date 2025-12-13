@@ -127,7 +127,7 @@ public class DialogueActionExecutorTests
 
         _executor.Execute(action, "test_tree", "node1", "test_character", true);
 
-        Assert.Equal(64, _state.GetMaterialQuantity("stone_block"));
+        Assert.Equal(64, _state.GetBlockQuantity("stone_block"));
     }
 
     [Fact]
@@ -144,7 +144,7 @@ public class DialogueActionExecutorTests
 
         _executor.Execute(action, "test_tree", "node1", "test_character", true);
 
-        Assert.Equal(75, _state.GetMaterialQuantity("stone_block"));
+        Assert.Equal(75, _state.GetBlockQuantity("stone_block"));
     }
 
     #endregion

@@ -11,10 +11,10 @@ public partial class World : IWorld
 {
     /// <summary>
     /// Optional block provider for games that include block/voxel systems.
-    /// Override in derived World classes to provide block lookup functionality.
+    /// Set by the application to provide block lookup functionality.
     /// </summary>
     [XmlIgnore]
-    public virtual IBlockProvider? BlockProvider => null;
+    public IBlockProvider? BlockProvider { get; set; }
     /// <summary>
     /// World identifier property.
     /// </summary>

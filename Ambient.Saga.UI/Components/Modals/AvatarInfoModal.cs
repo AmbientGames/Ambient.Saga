@@ -261,7 +261,20 @@ public class AvatarInfoModal
             {
                 foreach (var block in caps.Blocks)
                 {
-                    ImGui.BulletText($"{block.BlockRef} x{block.Quantity}");
+                    var blockInfo = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRef(block.BlockRef);
+                    var name = blockInfo?.DisplayName ?? block.BlockRef;
+                    ImGui.BulletText($"{name} x{block.Quantity}");
+
+                    if (blockInfo != null && ImGui.IsItemHovered())
+                    {
+                        ImGui.BeginTooltip();
+                        if (!string.IsNullOrEmpty(blockInfo.Description))
+                            ImGui.Text(blockInfo.Description);
+                        if (!string.IsNullOrEmpty(blockInfo.SubstanceRef))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Substance: {blockInfo.SubstanceRef}");
+                        ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Value: {blockInfo.WholesalePrice}");
+                        ImGui.EndTooltip();
+                    }
                 }
             }
         }
