@@ -1,0 +1,15 @@
+<Project>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)..\contentFiles\any\any\DefinitionXsd\**\*.*">
+      <Link>DefinitionXsd\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <Visible>true</Visible>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+
+    <Content Include="$(MSBuildThisFileDirectory)..\contentFiles\any\any\WorldDefinitions\**\*.*">
+      <Link>WorldDefinitions\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <Visible>true</Visible>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

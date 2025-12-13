@@ -1,40 +1,39 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <metadata>
-        <id>Ambient.Saga</id>
-        <version>$version$</version>
-        <authors>Ambient Games</authors>
-        <description>A C# RPG/narrative game engine featuring CQRS command/query handling, dialogue systems, combat AI, quest tracking, and procedural world generation.</description>
-        <license type="expression">MIT</license>
-        <readme>docs\README.md</readme>
-        <projectUrl>https://github.com/AmbientGames/Ambient.Saga</projectUrl>
-        <repository type="git" url="https://github.com/AmbientGames/Ambient.Saga" />
-        <tags>rpg game narrative dialogue engine cqrs mediatr</tags>
-        <dependencies>
-            <group targetFramework="net8.0"/>
-        </dependencies>
-        <contentFiles>
-            <files include="any/any/DefinitionXsd/**/*" buildAction="Content" copyToOutput="true" flatten="false"/>
-            <files include="any/any/WorldDefinitions/**/*" buildAction="Content" copyToOutput="true" flatten="false"/>
-        </contentFiles>
-    </metadata>
-    <files>
-        <!-- Library DLLs (net8.0) -->
-        <file src="Ambient.Domain\bin\$configuration$\net8.0\Ambient.Domain.dll" target="lib\net8.0" />
-        <file src="Ambient.Application\bin\$configuration$\net8.0\Ambient.Application.dll" target="lib\net8.0" />
-        <file src="Ambient.Infrastructure\bin\$configuration$\net8.0\Ambient.Infrastructure.dll" target="lib\net8.0" />
-        <file src="Ambient.Saga.Engine\bin\$configuration$\net8.0\Ambient.Saga.Engine.dll" target="lib\net8.0" />
+	<metadata>
+		<id>Ambient.Saga</id>
+		<version>$version$</version>
+		<authors>Ambient Games</authors>
+		<description>A C# RPG/narrative game engine featuring CQRS command/query handling, dialogue systems, combat AI, quest tracking, and procedural world generation.</description>
+		<license type="expression">MIT</license>
+		<readme>docs\README.md</readme>
+		<projectUrl>https://github.com/AmbientGames/Ambient.Saga</projectUrl>
+		<repository type="git" url="https://github.com/AmbientGames/Ambient.Saga" />
+		<tags>rpg game narrative dialogue engine cqrs mediatr</tags>
+		<dependencies>
+			<group targetFramework="net8.0"/>
+		</dependencies>
+	</metadata>
+	<files>
+		<!-- Library DLLs (net8.0) -->
+		<file src="Ambient.Domain\bin\$configuration$\net8.0\Ambient.Domain.dll" target="lib\net8.0" />
+		<file src="Ambient.Application\bin\$configuration$\net8.0\Ambient.Application.dll" target="lib\net8.0" />
+		<file src="Ambient.Infrastructure\bin\$configuration$\net8.0\Ambient.Infrastructure.dll" target="lib\net8.0" />
+		<file src="Ambient.Saga.Engine\bin\$configuration$\net8.0\Ambient.Saga.Engine.dll" target="lib\net8.0" />
 
-        <!-- UI Library (net8.0, OS-agnostic) -->
-        <file src="Ambient.Saga.UI\bin\$configuration$\net8.0\Ambient.Saga.UI.dll" target="lib\net8.0" />
+		<!-- UI Library (net8.0, OS-agnostic) -->
+		<file src="Ambient.Saga.UI\bin\$configuration$\net8.0\Ambient.Saga.UI.dll" target="lib\net8.0" />
 
-        <!-- Copy all Schema files recursively (contentFiles\any\any for all languages and frameworks) -->
-        <file src="DefinitionXsd\**\*.*" target="contentFiles\any\any\DefinitionXsd" />
+		<!-- Copy all Schema files recursively (contentFiles\any\any for all languages and frameworks) -->
+		<file src="DefinitionXsd\**\*.*" target="contentFiles\any\any\DefinitionXsd" />
 
-        <!-- World definition content (XML game data) -->
-        <file src="WorldDefinitions\**\*.*" target="contentFiles\any\any\WorldDefinitions" />
+		<!-- World definition content (XML game data) -->
+		<file src="WorldDefinitions\**\*.*" target="contentFiles\any\any\WorldDefinitions" />
 
-        <!-- Documentation -->
-        <file src="README.md" target="docs\" />
-    </files>
+		<!-- Design-time: make content appear in consuming project tree -->
+		<file src="build\Ambient.Saga.targets" target="build\Ambient.Saga.targets" />
+
+		<!-- Documentation -->
+		<file src="README.md" target="docs\" />
+	</files>
 </package>
