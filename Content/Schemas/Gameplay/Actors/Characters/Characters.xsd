@@ -4,6 +4,7 @@
     <xs:include schemaLocation="Dialogue.xsd" />
     <xs:include schemaLocation="../../Acquirables/QuestToken.xsd" />
     <xs:include schemaLocation="../../Interactable.xsd" />
+    <xs:include schemaLocation="../../Combat/CombatTells.xsd" />
 
     <xs:simpleType name="BattleTriggerCondition">
         <xs:restriction base="xs:string">
@@ -100,6 +101,16 @@
                                         </xs:attribute>
                                     </xs:complexType>
                                 </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="AttackTells" minOccurs="0" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>Attack tells this character can use in combat (narrative telegraphs for player reactions)</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="AttackTellRef" type="AttackTellRef" minOccurs="1" maxOccurs="unbounded" />
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>

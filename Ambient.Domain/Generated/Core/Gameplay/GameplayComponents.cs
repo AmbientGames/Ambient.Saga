@@ -45,6 +45,8 @@ namespace Ambient.Domain {
         
         private StatusEffect[] statusEffectsField;
         
+        private AttackTell[] attackTellsField;
+        
         private Tool[] toolsField;
         
         private BuildingMaterial[] buildingMaterialsField;
@@ -181,6 +183,17 @@ namespace Ambient.Domain {
             }
             set {
                 this.statusEffectsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public AttackTell[] AttackTells {
+            get {
+                return this.attackTellsField;
+            }
+            set {
+                this.attackTellsField = value;
             }
         }
         

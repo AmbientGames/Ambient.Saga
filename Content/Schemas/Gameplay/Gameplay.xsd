@@ -11,6 +11,7 @@
     <xs:include schemaLocation="Actors/Characters/Catalogs/CharacterAffinities.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/CombatStances.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/StatusEffects.xsd" />
+    <xs:include schemaLocation="Combat/CombatTells.xsd" />
     <xs:include schemaLocation="LoadoutSlots.xsd" />
     <xs:include schemaLocation="Actors/Avatar/AvatarBase.xsd" />
     <xs:include schemaLocation="Actors/Avatar/AvatarArchetype.xsd" />
@@ -87,6 +88,12 @@
             <xs:field xpath="@RefName" />
         </xs:key>
     </xs:element>
+    <xs:element name="AttackTells" type="AttackTells">
+        <xs:key name="UniqueAttackTellRefName">
+            <xs:selector xpath="AttackTell" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
     <xs:element name="Tools" type="ToolCatalog">
         <xs:key name="UniqueToolRefName">
             <xs:selector xpath="Tool" />
@@ -154,6 +161,7 @@
             <xs:element ref="CombatStances" />
             <xs:element ref="LoadoutSlots" />
             <xs:element ref="StatusEffects" />
+            <xs:element ref="AttackTells" minOccurs="0" />
             <xs:element ref="Tools" />
             <xs:element ref="BuildingMaterials" />
             <xs:element ref="Achievements" />

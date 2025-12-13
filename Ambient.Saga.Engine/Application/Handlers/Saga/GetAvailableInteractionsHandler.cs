@@ -225,9 +225,19 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         var hasHostile = characterState.Traits.ContainsKey("Hostile");
         var hasFriendly = characterState.Traits.ContainsKey("Friendly");
         var hasBossFight = characterState.Traits.ContainsKey("BossFight");
+        var hasDisengaged = characterState.Traits.ContainsKey("Disengaged");
+        var hasSpared = characterState.Traits.ContainsKey("Spared");
 
+        // Disengaged/Spared characters won't fight - player fled or showed mercy
+        // This overrides Hostile trait temporarily
+        if (hasDisengaged || hasSpared)
+        {
+            options.CanAttack = false;  // Truce in effect
+            options.CanTrade = false;   // Still wary, no trade
+            options.CanDialogue = true; // May have new dialogue options
+        }
         // Hostile characters can be attacked, but not traded with
-        if (hasHostile)
+        else if (hasHostile)
         {
             options.CanAttack = true;
             options.CanTrade = false;

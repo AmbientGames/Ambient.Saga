@@ -52,6 +52,7 @@ public interface IWorld
     Dictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; }
     Dictionary<string, Faction> FactionsLookup { get; set; }
     Dictionary<string, StatusEffect> StatusEffectsLookup { get; set; }
+    Dictionary<string, AttackTell> AttackTellsLookup { get; set; }
     GameplayComponents Gameplay { get; }
     long UtcStartTick { get; set; }
     IWorldTemplate WorldTemplate { get; set; }
@@ -108,4 +109,7 @@ public interface IWorld
 
     public StatusEffect GetStatusEffectByRefName(string statusEffectRefName);
     public StatusEffect? TryGetStatusEffectByRefName(string statusEffectRefName);
+
+    public AttackTell GetAttackTellByRefName(string attackTellRefName);
+    public AttackTell? TryGetAttackTellByRefName(string attackTellRefName);
 }

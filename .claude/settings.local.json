@@ -59,7 +59,8 @@
       "Bash(\"/mnt/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga/Ambient.Domain/DefinitionGenerated/Enums/WorldLifeMode.cs\")",
       "Bash(python3:*)",
       "Bash(xargs:*)",
-      "Bash(dotnet restore:*)"
+      "Bash(dotnet restore:*)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []

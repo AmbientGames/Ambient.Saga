@@ -67,4 +67,26 @@ public class BattleStateResult
     /// Error message if query failed
     /// </summary>
     public string? ErrorMessage { get; set; }
+
+    // Reaction phase fields (Expedition 33-inspired active defense)
+
+    /// <summary>
+    /// Whether battle is awaiting player reaction to an incoming attack
+    /// </summary>
+    public bool IsAwaitingReaction { get; set; }
+
+    /// <summary>
+    /// The narrative "tell" text for the pending attack (e.g., "The goblin lunges forward...")
+    /// </summary>
+    public string? PendingTellText { get; set; }
+
+    /// <summary>
+    /// Time remaining in milliseconds for player to react
+    /// </summary>
+    public int PendingReactionWindowMs { get; set; }
+
+    /// <summary>
+    /// The attack tell reference name (for looking up optimal defense)
+    /// </summary>
+    public string? PendingTellRef { get; set; }
 }

@@ -35,4 +35,5 @@ public interface IWorldConfiguration
     string SagaArcsRef { get; set; }
     string FactionsRef { get; set; }
     string StatusEffectsRef { get; set; }
+    string AttackTellsRef { get; set; }
 }

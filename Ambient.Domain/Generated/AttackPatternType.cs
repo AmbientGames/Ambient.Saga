@@ -18,69 +18,60 @@ namespace Ambient.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
-    public enum CharacterTraitType {
+    public enum AttackPatternType {
         
         /// <remarks/>
-        Hostile,
+        Slash,
         
         /// <remarks/>
-        Friendly,
+        Thrust,
         
         /// <remarks/>
-        WillTrade,
+        Overhead,
         
         /// <remarks/>
-        BossFight,
+        Sweep,
         
         /// <remarks/>
-        Aggression,
+        Flurry,
         
         /// <remarks/>
-        Morale,
+        Projectile,
         
         /// <remarks/>
-        FleeThreshold,
+        Charge,
         
         /// <remarks/>
-        GrantsAffinity,
+        Bite,
         
         /// <remarks/>
-        DefenseBonus,
+        Claw,
         
         /// <remarks/>
-        TradeDiscount,
+        Tail,
         
         /// <remarks/>
-        WillingToBargain,
+        Breath,
         
         /// <remarks/>
-        BargainSkill,
+        Spit,
         
         /// <remarks/>
-        NegotiatedDiscount,
+        Bolt,
         
         /// <remarks/>
-        BerserkThreshold,
+        Wave,
         
         /// <remarks/>
-        TacticalRetreat,
+        Burst,
         
         /// <remarks/>
-        LastStand,
+        Drain,
         
         /// <remarks/>
-        Merciful,
+        Grapple,
         
         /// <remarks/>
-        Ruthless,
-        
-        /// <remarks/>
-        Disengaged,
-        
-        /// <remarks/>
-        Victorious,
-        
-        /// <remarks/>
-        Spared,
+        Feint,
     }
 }
