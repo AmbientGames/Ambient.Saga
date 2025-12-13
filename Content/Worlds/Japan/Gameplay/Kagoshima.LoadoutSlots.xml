@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LoadoutSlots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <LoadoutSlot RefName="Head" DisplayName="Kabuto" Description="Helmet and head protection" />
+  <LoadoutSlot RefName="Chest" DisplayName="Do" Description="Chest armor and body protection" />
+  <LoadoutSlot RefName="Legs" DisplayName="Haidate" Description="Thigh armor and leg protection" />
+  <LoadoutSlot RefName="Feet" DisplayName="Suneate" Description="Shin guards and footwear" />
+  <LoadoutSlot RefName="Hands" DisplayName="Kote" Description="Armored sleeves and gauntlets" />
+  <LoadoutSlot RefName="Shoulders" DisplayName="Sode" Description="Shoulder guards and pauldrons" />
+  <LoadoutSlot RefName="MainHand" DisplayName="Katana" Description="Primary weapon in dominant hand" />
+  <LoadoutSlot RefName="OffHand" DisplayName="Wakizashi" Description="Secondary weapon, shield, or focus" />
+  <LoadoutSlot RefName="Ring" DisplayName="Yubiwa" Description="Rings with magical properties" />
+  <LoadoutSlot RefName="Amulet" DisplayName="Omamori" Description="Shrine amulets and protective charms" />
+  <LoadoutSlot RefName="Belt" DisplayName="Obi" Description="Sash for carrying items and weapons" />
+  <LoadoutSlot RefName="Back" DisplayName="Sashimono" Description="Back-worn items and banner holders" />
+  <LoadoutSlot RefName="Affinity" DisplayName="Genso" Description="Your elemental affinity with the kami" />
+  <LoadoutSlot RefName="Stance" DisplayName="Kamae" Description="Your current martial arts stance" />
+</LoadoutSlots>

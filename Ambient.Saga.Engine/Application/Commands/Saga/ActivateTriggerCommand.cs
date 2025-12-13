@@ -1,5 +1,5 @@
 ﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Partials;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using MediatR;
 

@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SagaFeatures xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <SagaFeature RefName="Kazahinominomiya" DisplayName="Kazahinomi-no-Miya" Description="This weathered edifice has stood for generations. Wind shrine within Naikū complex" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="KōtaiJingūInnerShrine" DisplayName="Kōtai Jingū (Inner Shrine)" Description="Inner Shrine of Ise Jingū, dedicated to Amaterasu Ōmikami The architecture speaks of both purpose and permanence." Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya" DisplayName="Aramatsuri-no-Miya" Description="This weathered edifice has stood for generations. Auxiliary shrine within Naikū complex" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) The view from here reveals the lay of the land." Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Travelers use this distinctive feature to navigate the area. Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) Locals speak of this place with reverence." Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) The view from here reveals the lay of the land. A quiet determination fills this place." Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) Locals speak of this place with reverence." Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="A notable landmark marking this region. Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) The view from here reveals the lay of the land. There's an undeniable energy here." Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) The view from here reveals the lay of the land." Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="ToyōkeDaijingūOuterShrine" DisplayName="Toyōke Daijingū (Outer Shrine)" Description="An imposing structure stands here. Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="This natural formation has drawn visitors for ages. Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) You feel the weight of history around you." Type="Landmark">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="KazamiyaGekū" DisplayName="Kazamiya (Gekū)" Description="This weathered edifice has stood for generations. Wind shrine at Gekū complex You feel the weight of history around you." Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Tsuchinomiya" DisplayName="Tsuchi-no-Miya" Description="The ancient walls of this building bear witness to countless stories. Earth shrine within Gekū complex A strange calm pervades the area." Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+  <SagaFeature RefName="Takanomiya" DisplayName="Taka-no-Miya" Description="Auxiliary shrine within Gekū complex Its foundation has weathered many storms." Type="Structure">
+    <Interactable>
+      <Effects Health="0" Stamina="0" Mana="0" Temperature="0" />
+    </Interactable>
+  </SagaFeature>
+</SagaFeatures>

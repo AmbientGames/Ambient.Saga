@@ -28,10 +28,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
+        <None Include="..\Content\Worlds\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Worlds" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\DefinitionXsd\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="DefinitionXsd" />
+        <None Include="..\Content\Schemas\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Schemas" />
     </ItemGroup>
 </Project>

@@ -104,7 +104,7 @@ public class WorldSelectionScreen
                     try
                     {
                         var solutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
-                        var outputDirectory = Path.Combine(solutionDir, "Ambient.Saga.Sandbox.WindowsUI", "WorldDefinitions");
+                        var outputDirectory = Path.Combine(solutionDir, "Content", "Worlds");
 
                         Debug.WriteLine($"Generating world content to: {outputDirectory}");
                         var generatedFiles = _worldContentGenerator.GenerateWorldContent(viewModel.SelectedConfiguration, outputDirectory);
@@ -117,10 +117,10 @@ public class WorldSelectionScreen
 
                         // Copy generated files to exe directory for game loading
                         var exeDirectory = AppContext.BaseDirectory;
-                        var exeWorldDefinitions = Path.Combine(exeDirectory, "WorldDefinitions");
+                        var exeWorldsDirectory = Path.Combine(exeDirectory, "Content", "Worlds");
 
-                        Debug.WriteLine($"Copying generated files to exe directory: {exeWorldDefinitions}");
-                        CopyGeneratedFilesToExeDirectory(outputDirectory, exeWorldDefinitions, generatedFiles);
+                        Debug.WriteLine($"Copying generated files to exe directory: {exeWorldsDirectory}");
+                        CopyGeneratedFilesToExeDirectory(outputDirectory, exeWorldsDirectory, generatedFiles);
 
                         _lastGenerationMessage = $"Generated {generatedFiles.Count} files successfully!";
                         _showGenerationMessage = true;

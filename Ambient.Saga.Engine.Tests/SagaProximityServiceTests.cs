@@ -1,5 +1,5 @@
 ﻿using Ambient.Domain;
-using Ambient.Domain.DefinitionExtensions;
+using Ambient.Domain.Partials;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Saga.Engine.Domain.Services;
 

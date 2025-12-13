@@ -343,19 +343,19 @@ Apply buffs and debuffs during combat:
 
 ### Definition System
 
-Game content is defined via XSD schemas in `Ambient.Domain/DefinitionXsd/`. The schemas generate C# classes automatically.
+Game content is defined via XSD schemas in `Content/Schemas/`. The schemas generate C# classes automatically.
 
 **To regenerate definitions after schema changes:**
 
 ```powershell
-cd Ambient.Domain\DefinitionXsd
+cd Ambient.Domain\Scripts
 .\BuildDefinitions.ps1
 ```
 
 ### World Structure
 
 ```
-WorldDefinitions/
+Content/Worlds/
 ├── MyWorld/
 │   ├── WorldConfiguration.xml    # World settings
 │   ├── Gameplay/
@@ -433,10 +433,14 @@ All entities follow this pattern:
 
 ```
 Ambient.Saga/
+├── Content/                     # Game content (schemas and world data)
+│   ├── Schemas/                 # XML Schema definitions
+│   └── Worlds/                  # World definition XML files
+│
 ├── Ambient.Domain/              # Pure domain logic, no dependencies
-│   ├── DefinitionGenerated/     # Auto-generated from XSD
-│   ├── DefinitionExtensions/    # Extension methods for definitions
-│   ├── DefinitionXsd/           # XML Schema definitions
+│   ├── Generated/               # Auto-generated from XSD schemas
+│   ├── Partials/                # Partial classes extending generated types
+│   ├── Scripts/                 # PowerShell generation scripts
 │   └── GameLogic/               # Core algorithms
 │
 ├── Ambient.Application/         # Contracts and interfaces
@@ -512,7 +516,8 @@ The `Ambient.Saga` package includes:
 - `Ambient.Application.dll` - Use cases and contracts
 - `Ambient.Infrastructure.dll` - Persistence and integrations
 - `Ambient.Saga.Engine.dll` - Game engine with CQRS handlers
-- `DefinitionXsd/` - XML schema files for world definitions
+- `Content/Schemas/` - XML schema files for world definitions
+- `Content/Worlds/` - Sample world definition XML files
 
 ---
 

@@ -12,25 +12,25 @@ public class WorldConfigurationTests
 
     public WorldConfigurationTests()
     {
-        // DefinitionXsd is copied to output directory by Ambient.Domain
-        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefinitionXsd");
+        // Content/Schemas is copied to output directory by Ambient.Domain
+        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Schemas");
 
-        // WorldDefinitions is at solution root (shared by all Sandboxes)
-        _dataDirectory = FindWorldDefinitionsDirectory();
+        // Content/Worlds is at solution root (shared by all Sandboxes)
+        _dataDirectory = FindWorldsDirectory();
     }
 
-    private static string FindWorldDefinitionsDirectory()
+    private static string FindWorldsDirectory()
     {
         var directory = AppDomain.CurrentDomain.BaseDirectory;
         while (directory != null)
         {
-            var worldDefPath = Path.Combine(directory, "WorldDefinitions");
+            var worldDefPath = Path.Combine(directory, "Content", "Worlds");
             if (Directory.Exists(worldDefPath))
                 return worldDefPath;
             directory = Directory.GetParent(directory)?.FullName;
         }
 
-        throw new InvalidOperationException("Could not find WorldDefinitions directory");
+        throw new InvalidOperationException("Could not find Content/Worlds directory");
     }
 
     // OBSOLETE: These tests depend on configurations (Lat0Height256, Kagoshima, VallesMarineris)

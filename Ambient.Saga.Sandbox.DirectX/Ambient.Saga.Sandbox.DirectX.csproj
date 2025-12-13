@@ -35,8 +35,8 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <None Include="..\DefinitionXsd\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="DefinitionXsd" />
-    <None Include="..\WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
+    <None Include="..\Content\Schemas\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Schemas" />
+    <None Include="..\Content\Worlds\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Worlds" />
   </ItemGroup>
 
 	<ItemGroup>

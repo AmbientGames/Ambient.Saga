@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<StatusEffects xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <StatusEffect RefName="Poison" DisplayName="Doku" Description="Venom from ninja poison slowly drains life" Type="DamageOverTime" Category="Debuff" DamagePerTurn="5" />
+  <StatusEffect RefName="Bleed" DisplayName="Shukketsu" Description="Grievous wounds cause continuous blood loss" Type="DamageOverTime" Category="Debuff" DurationTurns="2" DamagePerTurn="8" MaxStacks="3" />
+  <StatusEffect RefName="Burn" DisplayName="Yakedo" Description="Sacred flames sear the flesh" Type="DamageOverTime" Category="Debuff" DamagePerTurn="10" DefenseModifier="-0.1" />
+  <StatusEffect RefName="Stun" DisplayName="Kizetsu" Description="A heavy blow leaves you dazed" Type="Stun" Category="Debuff" DurationTurns="1" MaxStacks="0" />
+  <StatusEffect RefName="Slow" DisplayName="Chidori" Description="Exhaustion slows your movements" Type="Slow" Category="Debuff" DurationTurns="2" SpeedModifier="-0.3" />
+  <StatusEffect RefName="Root" DisplayName="Shibari" Description="Spiritual chains bind you in place" Type="Root" Category="Debuff" DurationTurns="2" />
+  <StatusEffect RefName="Silence" DisplayName="Fuin" Description="Your spiritual power is sealed" Type="Silence" Category="Debuff" DurationTurns="2" />
+  <StatusEffect RefName="Weaken" DisplayName="Suijaku" Description="Your strength has been sapped" Type="Weaken" Category="Debuff" StrengthModifier="-0.25" />
+  <StatusEffect RefName="Vulnerable" DisplayName="Muko" Description="Your defenses have been broken" Type="Vulnerable" Category="Debuff" DurationTurns="2" DefenseModifier="-0.3" />
+  <StatusEffect RefName="Blind" DisplayName="Mokushi" Description="Darkness clouds your vision" Type="Blind" Category="Debuff" DurationTurns="2" AccuracyModifier="-0.4" />
+  <StatusEffect RefName="StrengthBoost" DisplayName="Chikara" Description="Your strength swells with warrior spirit" Type="StatBoost" Category="Buff" StrengthModifier="0.3" />
+  <StatusEffect RefName="DefenseBoost" DisplayName="Mamori" Description="Your defenses are bolstered" Type="StatBoost" Category="Buff" DefenseModifier="0.4" />
+  <StatusEffect RefName="SpeedBoost" DisplayName="Shinsoku" Description="You move with divine swiftness" Type="StatBoost" Category="Buff" SpeedModifier="0.3" />
+  <StatusEffect RefName="MagicBoost" DisplayName="Reiki" Description="Spiritual energy surges through you" Type="StatBoost" Category="Buff" MagicModifier="0.35" />
+  <StatusEffect RefName="AccuracyBoost" DisplayName="Seigan" Description="Your focus sharpens to a deadly point" Type="StatBoost" Category="Buff" AccuracyModifier="0.25" />
+</StatusEffects>

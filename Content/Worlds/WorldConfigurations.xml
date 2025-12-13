@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorldConfigurations
+    xmlns="Ambient.Domain"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="Ambient.Domain ..\Schemas\WorldConfiguration.xsd">
+    <WorldConfiguration
+        RefName="Ise"
+        DisplayName="Ise, Japan"
+        Description="Ise: Japan's Sacred City - High school student field trip"
+        Template="Japan"
+        SpawnLatitude="34.492"
+        SpawnLongitude="136.702">
+        <HeightMapSettings
+            RelativePath="GeographicData/Ise_Compressed.tif"
+            HorizontalScale="1.0"
+            VerticalScale="1.0"
+            VerticalShift="0" />
+    </WorldConfiguration>
+    <WorldConfiguration
+        RefName="Kagoshima"
+        DisplayName="Kagoshima Castle Town (Satsuma)"
+        Description="Kagoshima: Castle town of the Satsuma Domain—home of the Shimazu clan. A bustling southern port where samurai streets meet Ryukyu-bound trade, forever living in the shadow of Sakurajima across Kinko Bay."
+        Template="Japan"
+        SpawnLatitude="31.591838"
+        SpawnLongitude="130.567026">
+        <HeightMapSettings
+            RelativePath="GeographicData/Kagoshima_Compressed.tif"
+            HorizontalScale="0.3333333333"
+            VerticalScale="0.3333333333"
+            VerticalShift="0" />
+    </WorldConfiguration>
+    <WorldConfiguration
+        RefName="Sakurajima"
+        DisplayName="Sakurajima, Fire Mountain of Kinko Bay"
+        Description="Sakurajima: The fire mountain of Kinko Bay. In feudal times an island shrine of ash and thunder—fisher boats and ferry crossings beneath its smoking peaks, with villages and fields thriving on perilously fertile volcanic soil."
+        Template="Japan"
+        SpawnLatitude="31.59371"
+        SpawnLongitude="130.62466">
+        <HeightMapSettings
+            RelativePath="GeographicData/Kagoshima_Compressed.tif"
+            HorizontalScale="0.3333333333"
+            VerticalScale="0.3333333333"
+            VerticalShift="0" />
+    </WorldConfiguration>
+</WorldConfigurations>

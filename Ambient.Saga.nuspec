@@ -25,15 +25,15 @@
         <file src="Ambient.Saga.UI\bin\$configuration$\net8.0\Ambient.Saga.UI.dll" target="lib\net8.0" />
 
         <!-- Schema files (in tools\ so NuGet doesn't auto-link them) -->
-        <file src="DefinitionXsd\**\*.*" target="tools\DefinitionXsd" />
+        <file src="Content\Schemas\**\*.*" target="tools\Content\Schemas" />
 
         <!-- World definition content (XML game data) -->
-        <file src="WorldDefinitions\**\*.*" target="tools\WorldDefinitions" />
+        <file src="Content\Worlds\**\*.*" target="tools\Content\Worlds" />
 
         <!-- Documentation -->
         <file src="README.md" target="docs\" />
 
-        <!-- Build targets (auto-copies DefinitionXsd to output) -->
+        <!-- Build targets (auto-copies Content to output) -->
         <file src="build\Ambient.Saga.targets" target="build\" />
     </files>
 </package>
