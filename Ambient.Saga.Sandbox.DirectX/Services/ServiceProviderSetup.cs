@@ -71,6 +71,9 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             // World content generator (mock implementation)
             services.AddSingleton<IWorldContentGenerator, MockWorldContentGenerator>();
 
+            // Block provider (mock implementation with sample blocks for UI demonstration)
+            services.AddSingleton<IBlockProvider, MockBlockProvider>();
+
             // Modal manager for ImGui archetype selector (with circular dependency resolution)
             services.AddSingleton(sp =>
             {
@@ -127,9 +130,10 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             services.AddSingleton(sp =>
                 sp.GetRequiredService<SagaInstanceRepositoryProvider>().Repository);
 
-            // World factory - will be configured by MainViewModel when world loads
+            // World provider - will be configured by MainViewModel when world loads
             // Returns null until world is loaded - handlers must check for null
-            services.AddSingleton<WorldProvider>();
+            // Inject BlockProvider to enable block trading and catalog features
+            services.AddSingleton(sp => new WorldProvider(sp.GetRequiredService<IBlockProvider>()));
             services.AddSingleton(sp => sp.GetRequiredService<WorldProvider>().World);
 
             // IGameAvatarRepository factory - will be configured by MainViewModel when world loads

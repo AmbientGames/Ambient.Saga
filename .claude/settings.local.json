@@ -58,7 +58,8 @@
       "Bash(\"/mnt/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga/Ambient.Domain/DefinitionGenerated/Enums/WorldGameMode.cs\" )",
       "Bash(\"/mnt/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga/Ambient.Domain/DefinitionGenerated/Enums/WorldLifeMode.cs\")",
       "Bash(python3:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(dotnet restore:*)"
     ],
     "deny": [],
     "ask": []
