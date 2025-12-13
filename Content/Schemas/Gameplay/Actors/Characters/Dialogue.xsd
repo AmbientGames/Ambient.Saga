@@ -34,6 +34,8 @@
             <xs:enumeration value="LacksTool" />
             <xs:enumeration value="HasSpell" />
             <xs:enumeration value="LacksSpell" />
+            <xs:enumeration value="HasBlock" />
+            <xs:enumeration value="LacksBlock" />
             <xs:enumeration value="HasAchievement" />
             <xs:enumeration value="QuestActive" />
             <xs:enumeration value="QuestCompleted" />
