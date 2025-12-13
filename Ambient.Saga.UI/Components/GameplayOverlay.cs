@@ -18,22 +18,22 @@ public enum ActivePanel
     Map,
     /// <summary>Character panel (press C) - shows avatar stats, inventory, quests</summary>
     Character,
-    /// <summary>Journal panel (press J) - shows world info, catalog, legends</summary>
-    Journal
+    /// <summary>World Info panel (press I) - shows world catalog, debug info</summary>
+    WorldInfo
 }
 
 /// <summary>
 /// GAME-REUSABLE: Main ImGui gameplay overlay for the 3D world.
 ///
 /// This component displays the tactical world view including:
-/// - Toggle-based panel system (M=Map, C=Character, J=Journal)
+/// - Toggle-based panel system (M=Map, C=Character, I=World Info)
 /// - Status bar with hotkey hints
 /// - All interactive modals (Dialogue, Battle, Trade, Loot, Quest, etc.)
 ///
 /// KEYBOARD CONTROLS:
-/// - M: Toggle Map panel (full-screen map with click-to-teleport)
+/// - M: Toggle Map panel (quarter-screen map with click-to-teleport)
 /// - C: Toggle Character panel (avatar stats, inventory, quests, achievements)
-/// - J: Toggle Journal panel (world info, legends, catalog)
+/// - I: Toggle World Info panel (world catalog, debug info)
 /// - ESC: Close current panel
 ///
 /// ARCHITECTURE:
@@ -72,7 +72,7 @@ public class GameplayOverlay
     // Track key states to detect press (not hold)
     private bool _mKeyWasPressed = false;
     private bool _cKeyWasPressed = false;
-    private bool _jKeyWasPressed = false;
+    private bool _iKeyWasPressed = false;
     private bool _escKeyWasPressed = false;
 
     /// <summary>
@@ -137,8 +137,8 @@ public class GameplayOverlay
             case ActivePanel.Character:
                 RenderCharacterPanel(viewModel);
                 break;
-            case ActivePanel.Journal:
-                RenderJournalPanel(viewModel);
+            case ActivePanel.WorldInfo:
+                RenderWorldInfoPanel(viewModel);
                 break;
             case ActivePanel.None:
             default:
@@ -172,13 +172,13 @@ public class GameplayOverlay
         }
         _cKeyWasPressed = cKeyDown;
 
-        // J key - Journal
-        bool jKeyDown = ImGui.IsKeyDown(ImGuiKey.J);
-        if (jKeyDown && !_jKeyWasPressed)
+        // I key - World Info
+        bool iKeyDown = ImGui.IsKeyDown(ImGuiKey.I);
+        if (iKeyDown && !_iKeyWasPressed)
         {
-            TogglePanel(ActivePanel.Journal);
+            TogglePanel(ActivePanel.WorldInfo);
         }
-        _jKeyWasPressed = jKeyDown;
+        _iKeyWasPressed = iKeyDown;
 
         // ESC key - Close current panel
         bool escKeyDown = ImGui.IsKeyDown(ImGuiKey.Escape);
@@ -224,7 +224,7 @@ public class GameplayOverlay
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
             ImGui.SameLine();
-            RenderHotkeyHint("J", "Journal", _activePanel == ActivePanel.Journal);
+            RenderHotkeyHint("I", "World Info", _activePanel == ActivePanel.WorldInfo);
 
             // Center: Status message
             if (!string.IsNullOrEmpty(viewModel.StatusMessage))
@@ -283,18 +283,20 @@ public class GameplayOverlay
     }
 
     /// <summary>
-    /// Render the Map panel (full screen overlay).
+    /// Render the Map panel (full screen with consistent margins).
     /// </summary>
     private void RenderMapPanel(MainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight)
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
 
-        // Large centered window for map
-        var panelWidth = displaySize.X * 0.85f;
-        var panelHeight = displaySize.Y * 0.85f - 40; // Leave room for HUD bar
-        var panelX = (displaySize.X - panelWidth) / 2;
-        var panelY = (displaySize.Y - 40 - panelHeight) / 2;
+        // Full screen with consistent 10px margins (leaving room for HUD bar at bottom)
+        var margin = 10f;
+        var hudHeight = 40f;
+        var panelX = margin;
+        var panelY = margin;
+        var panelWidth = displaySize.X - (margin * 2);
+        var panelHeight = displaySize.Y - hudHeight - (margin * 3); // top margin + bottom margin + margin above HUD
 
         ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
         ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
@@ -313,18 +315,18 @@ public class GameplayOverlay
     }
 
     /// <summary>
-    /// Render the Character panel (slide from right).
+    /// Render the Character panel (top-left, full height).
     /// </summary>
     private void RenderCharacterPanel(MainViewModel viewModel)
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
 
-        // Panel on right side
+        // Panel top-left, full height
         var panelWidth = 350f;
         var panelHeight = displaySize.Y - 60; // Leave room for HUD bar + margin
-        var panelX = displaySize.X - panelWidth - 10;
-        var panelY = 10;
+        var panelX = 10f;
+        var panelY = 10f;
 
         ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
         ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
@@ -343,18 +345,18 @@ public class GameplayOverlay
     }
 
     /// <summary>
-    /// Render the Journal panel (slide from left).
+    /// Render the World Info panel (top-left, full height).
     /// </summary>
-    private void RenderJournalPanel(MainViewModel viewModel)
+    private void RenderWorldInfoPanel(MainViewModel viewModel)
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
 
-        // Panel on left side
+        // Panel top-left, full height
         var panelWidth = 350f;
         var panelHeight = displaySize.Y - 60; // Leave room for HUD bar + margin
-        var panelX = 10;
-        var panelY = 10;
+        var panelX = 10f;
+        var panelY = 10f;
 
         ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
         ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
@@ -363,7 +365,7 @@ public class GameplayOverlay
 
         ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
 
-        if (ImGui.Begin("Journal [J]", windowFlags))
+        if (ImGui.Begin("World Info [I]", windowFlags))
         {
             _worldInfoPanel.Render(viewModel);
         }
