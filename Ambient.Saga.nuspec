@@ -32,5 +32,8 @@
 
         <!-- Documentation -->
         <file src="README.md" target="docs\" />
+
+        <!-- Build targets (auto-copies DefinitionXsd to output) -->
+        <file src="build\Ambient.Saga.targets" target="build\" />
     </files>
 </package>

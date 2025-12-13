@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <AmbientSagaPackagePath>$(MSBuildThisFileDirectory)..\tools\</AmbientSagaPackagePath>
+  </PropertyGroup>
+
+  <!-- Copy NuGet XSDs during build -->
+  <Target Name="CopyAmbientSagaDefinitionXsd" AfterTargets="Build">
+    <MakeDir Directories="$(OutputPath)DefinitionXsd" />
+    <ItemGroup>
+      <AmbientSagaXsdFiles Include="$(AmbientSagaPackagePath)DefinitionXsd\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(AmbientSagaXsdFiles)"
+          DestinationFiles="@(AmbientSagaXsdFiles->'$(OutputPath)DefinitionXsd\%(RecursiveDir)%(Filename)%(Extension)')"
+          SkipUnchangedFiles="true" />
+  </Target>
+</Project>
