@@ -11,6 +11,7 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     private readonly HashSet<string> _questTokens = new();
     private readonly Dictionary<string, int> _consumables = new();
     private readonly Dictionary<string, int> _materials = new();
+    private readonly Dictionary<string, int> _blocks = new();
     private readonly HashSet<string> _equipment = new();
     private readonly HashSet<string> _tools = new();
     private readonly HashSet<string> _spells = new();
@@ -37,9 +38,10 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public void AddMaterial(string materialRef, int amount) => _materials[materialRef] = GetMaterialQuantity(materialRef) + amount;
     public void RemoveMaterial(string materialRef, int amount) => _materials[materialRef] = Math.Max(0, GetMaterialQuantity(materialRef) - amount);
 
-    // Blocks (same as materials in mock)
-    public void AddBlock(string blockRef, int amount) => _materials[blockRef] = GetMaterialQuantity(blockRef) + amount;
-    public void RemoveBlock(string blockRef, int amount) => _materials[blockRef] = Math.Max(0, GetMaterialQuantity(blockRef) - amount);
+    // Blocks
+    public int GetBlockQuantity(string blockRef) => _blocks.GetValueOrDefault(blockRef, 0);
+    public void AddBlock(string blockRef, int amount) => _blocks[blockRef] = GetBlockQuantity(blockRef) + amount;
+    public void RemoveBlock(string blockRef, int amount) => _blocks[blockRef] = Math.Max(0, GetBlockQuantity(blockRef) - amount);
 
     // Degradable items
     public bool HasEquipment(string equipmentRef) => _equipment.Contains(equipmentRef);

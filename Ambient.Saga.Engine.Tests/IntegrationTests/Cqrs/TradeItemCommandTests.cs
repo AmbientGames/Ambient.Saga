@@ -47,6 +47,21 @@ public class StubAvatarUpdateService : IAvatarUpdateService
         return Task.FromResult(avatar);
     }
 
+    public Task<AvatarEntity> UpdateAvatarForMiningAsync(AvatarEntity avatar, Dictionary<string, int> blocksMined, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task<AvatarEntity> UpdateAvatarForBuildingAsync(AvatarEntity avatar, Dictionary<string, int> materialsConsumed, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
+    public Task<AvatarEntity> UpdateAvatarForToolWearAsync(AvatarEntity avatar, string toolRef, float newCondition, CancellationToken ct = default)
+    {
+        return Task.FromResult(avatar);
+    }
+
     public Task PersistAvatarAsync(AvatarEntity avatar, CancellationToken ct = default)
     {
         return Task.CompletedTask;

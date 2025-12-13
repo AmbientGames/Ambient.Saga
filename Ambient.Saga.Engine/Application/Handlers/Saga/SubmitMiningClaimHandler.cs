@@ -2,7 +2,9 @@
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain.Rpg.Voxel;
 using MediatR;
@@ -19,15 +21,21 @@ public class SubmitMiningClaimHandler : IRequestHandler<SubmitMiningClaimCommand
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IWorld _world;
+    private readonly IAvatarUpdateService _avatarUpdateService;
+    private readonly IWorldStateRepository _worldStateRepository;
 
     public SubmitMiningClaimHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
-        IWorld world)
+        IWorld world,
+        IAvatarUpdateService avatarUpdateService,
+        IWorldStateRepository worldStateRepository)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
         _world = world;
+        _avatarUpdateService = avatarUpdateService;
+        _worldStateRepository = worldStateRepository;
     }
 
     public async Task<SagaCommandResult> Handle(SubmitMiningClaimCommand command, CancellationToken ct)
@@ -74,6 +82,30 @@ public class SubmitMiningClaimHandler : IRequestHandler<SubmitMiningClaimCommand
 
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+
+            // Update avatar inventory with mined blocks
+            var avatar = await _worldStateRepository.LoadAvatarAsync();
+            if (avatar != null)
+            {
+                // Aggregate blocks mined by type
+                var blocksMined = command.Claim.BlocksMined
+                    .GroupBy(b => b.BlockType)
+                    .ToDictionary(g => g.Key, g => g.Count());
+
+                await _avatarUpdateService.UpdateAvatarForMiningAsync(avatar, blocksMined, ct);
+
+                // Update tool wear
+                if (!string.IsNullOrEmpty(command.Claim.ToolRef))
+                {
+                    await _avatarUpdateService.UpdateAvatarForToolWearAsync(
+                        avatar,
+                        command.Claim.ToolRef,
+                        command.Claim.ToolConditionAfter,
+                        ct);
+                }
+
+                await _avatarUpdateService.PersistAvatarAsync(avatar, ct);
+            }
 
             System.Diagnostics.Debug.WriteLine($"[SubmitMiningClaim] Mining claim accepted (sequence: {sequenceNumbers.First()})");
 
