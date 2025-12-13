@@ -35,6 +35,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <None Include="..\DefinitionXsd\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="DefinitionXsd" />
     <None Include="..\WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
   </ItemGroup>
 

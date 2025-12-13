@@ -19,11 +19,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\DefinitionXsd\**\*" LinkBase="DefinitionXsd" />
+        <None Include="..\DefinitionXsd\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="DefinitionXsd" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\WorldDefinitions\**\*" LinkBase="WorldDefinitions" />
+        <None Include="..\WorldDefinitions\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="WorldDefinitions" />
     </ItemGroup>
 
 </Project>
