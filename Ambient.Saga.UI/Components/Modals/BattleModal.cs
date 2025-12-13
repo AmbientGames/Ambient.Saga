@@ -25,6 +25,15 @@ public class BattleModal
     private const float ENEMY_TURN_DELAY_TIME = 0.5f;  // Half second delay for enemy turn
     private bool _waitingForEnemyTurn = false;
 
+    // Reaction phase state (Expedition 33-inspired defense mechanics)
+    private bool _inReactionPhase = false;
+    private string? _currentTellText = null;
+    private float _reactionTimeRemaining = 0f;
+    private float _reactionTimeTotal = 0f;  // Total window time (from tell or default)
+    private const float DEFAULT_REACTION_WINDOW_SECONDS = 5.0f;  // Fallback if tell doesn't specify
+    private PlayerDefenseType? _selectedReaction = null;
+    private bool _reactionResolved = false;
+
     // Selection modal instances
     private SpellSelectionModal? _spellSelectionModal;
     private ItemSelectionModal? _itemSelectionModal;
@@ -42,6 +51,20 @@ public class BattleModal
 
     public void Update(float deltaTime)
     {
+        // Handle reaction phase countdown
+        if (_inReactionPhase && !_reactionResolved)
+        {
+            _reactionTimeRemaining -= deltaTime;
+            if (_reactionTimeRemaining <= 0f)
+            {
+                // Time expired - auto-select None (no reaction)
+                _reactionTimeRemaining = 0f;
+                _selectedReaction = PlayerDefenseType.None;
+                _reactionResolved = true;
+                System.Diagnostics.Debug.WriteLine("[BattleModal] Reaction window expired - no defense");
+            }
+        }
+
         // Handle enemy turn delay
         if (_waitingForEnemyTurn)
         {
@@ -64,6 +87,7 @@ public class BattleModal
             _showSpellSelection = false;
             _showItemSelection = false;
             _showEquipmentChange = false;
+            EndReactionPhase();  // Reset reaction state
             return;
         }
 
@@ -166,13 +190,21 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        var isPlayerTurn = _currentState.BattleState == BattleState.PlayerTurn && !_waitingForEnemyTurn;
+        var isPlayerTurn = _currentState.BattleState == BattleState.PlayerTurn && !_waitingForEnemyTurn && !_inReactionPhase;
 
         // Header showing whose turn it is
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.15f, 0.8f));
-        ImGui.BeginChild("TurnHeader", new Vector2(0, 90), ImGuiChildFlags.Borders);
 
-        if (!isPlayerTurn)
+        // Increase height for reaction phase to fit tell text + timer + buttons
+        var headerHeight = _inReactionPhase ? 160f : 90f;
+        ImGui.BeginChild("TurnHeader", new Vector2(0, headerHeight), ImGuiChildFlags.Borders);
+
+        // Reaction phase - show tell text, countdown, and reaction buttons
+        if (_inReactionPhase)
+        {
+            RenderReactionPanel(viewModel, character);
+        }
+        else if (!isPlayerTurn)
         {
             ImGui.Spacing();
             var turnText = _waitingForEnemyTurn ? "Enemy is thinking..." : "Enemy's turn...";
@@ -272,6 +304,208 @@ public class BattleModal
 
         ImGui.EndChild();
         ImGui.PopStyleColor();
+    }
+
+    /// <summary>
+    /// Renders the reaction panel during enemy attack phase.
+    /// Shows the tell text, countdown timer, and reaction buttons.
+    /// Inspired by Expedition 33's active defense mechanics.
+    /// </summary>
+    private void RenderReactionPanel(MainViewModel viewModel, CharacterViewModel character)
+    {
+        // Tell text - narrative preview of incoming attack
+        ImGui.Spacing();
+        ImGui.SetWindowFontScale(1.1f);
+        var tellText = _currentTellText ?? "The enemy prepares to strike...";
+        var tellSize = ImGui.CalcTextSize(tellText);
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - tellSize.X) * 0.5f);
+        ImGui.TextColored(new Vector4(1.0f, 0.7f, 0.3f, 1.0f), tellText);
+        ImGui.SetWindowFontScale(1.0f);
+        ImGui.Spacing();
+
+        // Countdown timer bar
+        var timeRatio = _reactionTimeTotal > 0 ? _reactionTimeRemaining / _reactionTimeTotal : 0f;
+        var timerColor = timeRatio > 0.5f ? new Vector4(0.3f, 0.8f, 0.3f, 1.0f) :
+                         timeRatio > 0.25f ? new Vector4(0.9f, 0.8f, 0.2f, 1.0f) :
+                         new Vector4(0.9f, 0.3f, 0.2f, 1.0f);
+
+        ImGui.PushStyleColor(ImGuiCol.PlotHistogram, timerColor);
+        ImGui.PushStyleColor(ImGuiCol.FrameBg, new Vector4(0.15f, 0.15f, 0.2f, 1.0f));
+
+        var timerText = $"REACT! {_reactionTimeRemaining:F1}s";
+        var barWidth = ImGui.GetWindowWidth() * 0.6f;
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - barWidth) * 0.5f);
+        ImGui.ProgressBar(timeRatio, new Vector2(barWidth, 24), timerText);
+
+        ImGui.PopStyleColor(2);
+        ImGui.Spacing();
+
+        // Reaction buttons - Dodge, Block, Parry, Brace
+        var buttonWidth = 120f;
+        var buttonSpacing = 15f;
+        var totalWidth = buttonWidth * 4 + buttonSpacing * 3;
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) * 0.5f);
+
+        // Dodge button (cyan/teal - evasion)
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.1f, 0.4f, 0.4f, 1.0f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.15f, 0.55f, 0.55f, 1.0f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.2f, 0.7f, 0.7f, 1.0f));
+        if (ImGui.Button("Dodge", new Vector2(buttonWidth, 40)))
+        {
+            SelectReaction(PlayerDefenseType.Dodge, viewModel, character);
+        }
+        ImGui.PopStyleColor(3);
+
+        ImGui.SameLine();
+
+        // Block button (blue - defense)
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.25f, 0.45f, 1.0f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.35f, 0.6f, 1.0f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.45f, 0.75f, 1.0f));
+        if (ImGui.Button("Block", new Vector2(buttonWidth, 40)))
+        {
+            SelectReaction(PlayerDefenseType.Block, viewModel, character);
+        }
+        ImGui.PopStyleColor(3);
+
+        ImGui.SameLine();
+
+        // Parry button (gold - counter)
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.45f, 0.35f, 0.1f, 1.0f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.6f, 0.5f, 0.15f, 1.0f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.75f, 0.65f, 0.2f, 1.0f));
+        if (ImGui.Button("Parry", new Vector2(buttonWidth, 40)))
+        {
+            SelectReaction(PlayerDefenseType.Parry, viewModel, character);
+        }
+        ImGui.PopStyleColor(3);
+
+        ImGui.SameLine();
+
+        // Brace button (purple - tank)
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.2f, 0.45f, 1.0f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.3f, 0.6f, 1.0f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.4f, 0.75f, 1.0f));
+        if (ImGui.Button("Brace", new Vector2(buttonWidth, 40)))
+        {
+            SelectReaction(PlayerDefenseType.Brace, viewModel, character);
+        }
+        ImGui.PopStyleColor(3);
+
+        // Process resolved reaction
+        if (_reactionResolved && _selectedReaction.HasValue)
+        {
+            _ = ResolveReactionAsync(viewModel, character, _selectedReaction.Value);
+            _reactionResolved = false;  // Prevent multiple calls
+        }
+    }
+
+    private void SelectReaction(PlayerDefenseType reaction, MainViewModel viewModel, CharacterViewModel character)
+    {
+        _selectedReaction = reaction;
+        _reactionResolved = true;
+        System.Diagnostics.Debug.WriteLine($"[BattleModal] Player selected reaction: {reaction}");
+    }
+
+    /// <summary>
+    /// Starts the reaction phase with a given tell text and timing.
+    /// Call this when enemy attack is telegraphed.
+    /// </summary>
+    public void StartReactionPhase(string tellText, int reactionWindowMs = 0)
+    {
+        _inReactionPhase = true;
+        _currentTellText = tellText;
+        _reactionTimeTotal = reactionWindowMs > 0 ? reactionWindowMs / 1000f : DEFAULT_REACTION_WINDOW_SECONDS;
+        _reactionTimeRemaining = _reactionTimeTotal;
+        _selectedReaction = null;
+        _reactionResolved = false;
+        System.Diagnostics.Debug.WriteLine($"[BattleModal] Starting reaction phase: '{tellText}' ({_reactionTimeTotal}s)");
+    }
+
+    /// <summary>
+    /// Ends the reaction phase and resets state.
+    /// </summary>
+    private void EndReactionPhase()
+    {
+        _inReactionPhase = false;
+        _currentTellText = null;
+        _reactionTimeRemaining = 0f;
+        _reactionTimeTotal = 0f;
+        _selectedReaction = null;
+        _reactionResolved = false;
+    }
+
+    // Default tells for when enemy doesn't have specific tells defined
+    private static readonly string[] DefaultTellTemplates = new[]
+    {
+        "{0} lunges forward with weapon raised!",
+        "{0} draws back for a powerful strike!",
+        "{0} crouches low, preparing to spring!",
+        "{0} snarls and raises a claw!",
+        "{0} takes a deep breath, energy gathering!",
+        "{0} shifts stance and locks eyes with you!",
+        "{0} winds up for a sweeping attack!",
+        "{0} feints left, then commits to an attack!",
+        "{0} lets out a battle cry and charges!",
+        "{0} coils back, muscles tensing!"
+    };
+
+    private static readonly Random _tellRandom = new();
+
+    /// <summary>
+    /// Generates a random default tell narrative for an enemy.
+    /// Used when character doesn't have specific AttackTells defined.
+    /// </summary>
+    private static string GetRandomDefaultTell(string enemyName)
+    {
+        var template = DefaultTellTemplates[_tellRandom.Next(DefaultTellTemplates.Length)];
+        return string.Format(template, enemyName);
+    }
+
+    private async Task ResolveReactionAsync(MainViewModel viewModel, CharacterViewModel character, PlayerDefenseType reaction)
+    {
+        if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
+            return;
+
+        System.Diagnostics.Debug.WriteLine($"[BattleModal] Resolving reaction: {reaction}");
+
+        try
+        {
+            // Send reaction to backend via command
+            var command = new SubmitReactionCommand
+            {
+                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                SagaArcRef = character.SagaRef,
+                BattleInstanceId = _battleInstanceId,
+                Reaction = reaction,
+                Avatar = viewModel.PlayerAvatar
+            };
+
+            var result = await viewModel.Mediator.Send(command);
+
+            if (result.Successful)
+            {
+                System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction {reaction} submitted successfully");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[BattleModal] Failed to submit reaction: {result.ErrorMessage}");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[BattleModal] Error submitting reaction: {ex.Message}");
+        }
+
+        // End reaction phase regardless of result
+        EndReactionPhase();
+
+        // Resume normal enemy turn flow
+        _waitingForEnemyTurn = true;
+        _enemyTurnDelay = 0f;
+
+        // Refresh battle state to get updated results
+        await RefreshBattleStateAsync(viewModel, character);
     }
 
     private void RenderCombatantPanel(Combatant combatant, string title)
@@ -600,11 +834,23 @@ public class BattleModal
                 // Refresh battle state
                 await RefreshBattleStateAsync(viewModel, character);
 
-                // If battle is still ongoing and it's now enemy turn, trigger short delay
+                // If battle is still ongoing and it's now enemy turn, trigger reaction phase
+                // NOTE: Currently the backend executes enemy turn immediately, so this is UI-only simulation
+                // For full integration, the backend would need to pause before enemy turn
                 if (_currentState != null && !_currentState.HasEnded && _currentState.BattleState == BattleState.EnemyTurn)
                 {
-                    _waitingForEnemyTurn = true;
-                    _enemyTurnDelay = 0f;
+                    // Check if backend provided a tell (from IsAwaitingReaction state)
+                    if (_currentState.IsAwaitingReaction && !string.IsNullOrEmpty(_currentState.PendingTellText))
+                    {
+                        StartReactionPhase(_currentState.PendingTellText, _currentState.PendingReactionWindowMs);
+                    }
+                    else
+                    {
+                        // Generate a default tell for the enemy based on their character
+                        var enemyName = _currentState.EnemyCombatant?.DisplayName ?? "The enemy";
+                        var defaultTell = GetRandomDefaultTell(enemyName);
+                        StartReactionPhase(defaultTell, 5000);  // 5 second default
+                    }
                 }
 
                 // Update avatar from result if battle ended
@@ -642,7 +888,13 @@ public class BattleModal
 
             _currentState = await viewModel.Mediator.Send(query);
 
-            System.Diagnostics.Debug.WriteLine($"[BattleModal] Battle state: {_currentState.BattleState}, Turn: {_currentState.TurnNumber}");
+            System.Diagnostics.Debug.WriteLine($"[BattleModal] Battle state: {_currentState.BattleState}, Turn: {_currentState.TurnNumber}, AwaitingReaction: {_currentState.IsAwaitingReaction}");
+
+            // Check if we need to enter reaction phase
+            if (_currentState.IsAwaitingReaction && !_inReactionPhase && !string.IsNullOrEmpty(_currentState.PendingTellText))
+            {
+                StartReactionPhase(_currentState.PendingTellText, _currentState.PendingReactionWindowMs);
+            }
         }
         catch (Exception ex)
         {

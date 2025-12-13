@@ -46,6 +46,7 @@
                 <xs:attribute name="SagaArcsRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="FactionsRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="SagaTriggerPatternsRef" type="xs:string" use="optional" default="Default" />
+                <xs:attribute name="AttackTellsRef" type="xs:string" use="optional" default="Default" />
                 <xs:attribute name="CurrencyName" type="xs:string" default="Credit" />
                 <xs:attribute name="StartDate" type="xs:date" default="0001-05-01" />
                 <xs:attribute name="SpawnLatitude" type="xs:double" use="required" />

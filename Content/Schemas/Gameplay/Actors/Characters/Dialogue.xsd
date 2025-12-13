@@ -230,6 +230,22 @@
 					<xs:documentation>Player is ruthless in battle (finishes defeated enemies)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
+			<!-- Combat state traits -->
+			<xs:enumeration value="Disengaged">
+				<xs:annotation>
+					<xs:documentation>Player fled from combat with this character - prevents immediate re-aggro</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Victorious">
+				<xs:annotation>
+					<xs:documentation>This character won the battle (player fled or was defeated)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Spared">
+				<xs:annotation>
+					<xs:documentation>Player defeated but spared this character</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="DialogueCondition">

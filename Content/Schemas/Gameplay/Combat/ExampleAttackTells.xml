@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    EXAMPLE: Attack Tells for Combat Reaction System
+    =================================================
+
+    This shows how different creatures/enemies would have tells defined.
+    Each tell has narrative preview text and defines outcomes for each defense reaction.
+
+    The player sees: "The goblin crouches low, muscles tensing..."
+    They choose: [DODGE] [BLOCK] [PARRY] [BRACE]
+    Result varies based on choice vs optimal defense.
+-->
+
+<AttackTells xmlns="Ambient.Domain">
+
+    <!-- GOBLIN TELLS -->
+    <AttackTell RefName="goblin_lunge" Pattern="Thrust" OptimalDefense="Dodge" SecondaryDefense="Parry"
+                TellText="The goblin crouches low, muscles tensing..."
+                ReactionWindowMs="3000">
+        <Outcome Reaction="Dodge" DamageMultiplier="0.0" BonusAP="2"
+                 ResponseText="You sidestep the clumsy lunge!" />
+        <Outcome Reaction="Parry" DamageMultiplier="0.25" EnablesCounter="true" CounterMultiplier="0.75"
+                 ResponseText="You deflect the thrust and riposte!" />
+        <Outcome Reaction="Block" DamageMultiplier="0.6"
+                 ResponseText="You catch the blow on your guard, but the impact staggers you." />
+        <Outcome Reaction="Brace" DamageMultiplier="0.8"
+                 ResponseText="You brace but the thrust finds a gap." />
+        <Outcome Reaction="None" DamageMultiplier="1.0"
+                 ResponseText="The goblin's dagger finds its mark!" />
+    </AttackTell>
+
+    <AttackTell RefName="goblin_slash" Pattern="Slash" OptimalDefense="Block" SecondaryDefense="Parry"
+                TellText="The goblin raises its rusty blade high..."
+                ReactionWindowMs="2500">
+        <Outcome Reaction="Block" DamageMultiplier="0.2" BonusAP="1"
+                 ResponseText="Your guard absorbs the weak swing!" />
+        <Outcome Reaction="Parry" DamageMultiplier="0.3" EnablesCounter="true" CounterMultiplier="0.5"
+                 ResponseText="You parry and see an opening!" />
+        <Outcome Reaction="Dodge" DamageMultiplier="0.5"
+                 ResponseText="You pull back but the blade grazes you." />
+        <Outcome Reaction="Brace" DamageMultiplier="0.7"
+                 ResponseText="Bracing does little against the slashing arc." />
+        <Outcome Reaction="None" DamageMultiplier="1.0"
+                 ResponseText="The blade cuts deep!" />
+    </AttackTell>
+
+    <!-- DRAGON TELLS -->
+    <AttackTell RefName="dragon_breath" Pattern="Breath" OptimalDefense="Brace" SecondaryDefense="Dodge"
+                TellText="The dragon's chest swells with an ominous glow, heat waves distorting the air..."
+                ReactionWindowMs="4000">
+        <Outcome Reaction="Brace" DamageMultiplier="0.4" PreventsStatusEffect="true" BonusAP="3"
+                 ResponseText="You shield yourself from the worst of the inferno!" />
+        <Outcome Reaction="Dodge" DamageMultiplier="0.6"
+                 ResponseText="You dive aside but flames lick at your flank." />
+        <Outcome Reaction="Block" DamageMultiplier="0.9"
+                 ResponseText="Your shield grows red hot, the flames curl around it." />
+        <Outcome Reaction="Parry" DamageMultiplier="1.0"
+                 ResponseText="You cannot parry fire!" />
+        <Outcome Reaction="None" DamageMultiplier="1.2"
+                 ResponseText="The flames engulf you completely!" />
+    </AttackTell>
+
+    <AttackTell RefName="dragon_tail" Pattern="Tail" OptimalDefense="Dodge" SecondaryDefense="Block"
+                TellText="The dragon's massive tail sweeps low across the ground..."
+                ReactionWindowMs="2000">
+        <Outcome Reaction="Dodge" DamageMultiplier="0.0" BonusAP="2"
+                 ResponseText="You leap over the sweeping tail!" />
+        <Outcome Reaction="Block" DamageMultiplier="0.5"
+                 ResponseText="You brace your shield but are knocked back." />
+        <Outcome Reaction="Parry" DamageMultiplier="0.8"
+                 ResponseText="The tail is too massive to deflect!" />
+        <Outcome Reaction="Brace" DamageMultiplier="0.7"
+                 ResponseText="You hunker down but the impact sends you sprawling." />
+        <Outcome Reaction="None" DamageMultiplier="1.0"
+                 ResponseText="The tail slams into you with devastating force!" />
+    </AttackTell>
+
+    <!-- MAGE TELLS -->
+    <AttackTell RefName="mage_bolt" Pattern="Bolt" OptimalDefense="Dodge" SecondaryDefense="Brace"
+                TellText="Crackling energy gathers at the mage's fingertips, a bolt forming..."
+                ReactionWindowMs="2500">
+        <Outcome Reaction="Dodge" DamageMultiplier="0.0" BonusAP="2"
+                 ResponseText="The bolt streaks past you harmlessly!" />
+        <Outcome Reaction="Brace" DamageMultiplier="0.5" PreventsStatusEffect="true"
+                 ResponseText="You ground yourself and absorb the magical impact." />
+        <Outcome Reaction="Block" DamageMultiplier="0.7"
+                 ResponseText="The bolt splashes against your guard, numbing your arm." />
+        <Outcome Reaction="Parry" DamageMultiplier="0.9"
+                 ResponseText="You cannot deflect pure energy!" />
+        <Outcome Reaction="None" DamageMultiplier="1.0"
+                 ResponseText="The bolt strikes true!" />
+    </AttackTell>
+
+    <!-- BEAST TELLS -->
+    <AttackTell RefName="beast_bite" Pattern="Bite" OptimalDefense="Parry" SecondaryDefense="Block"
+                TellText="The beast's jaws snap open, lunging for your throat..."
+                ReactionWindowMs="2000">
+        <Outcome Reaction="Parry" DamageMultiplier="0.1" EnablesCounter="true" CounterMultiplier="1.0" BonusAP="3"
+                 ResponseText="You jam your weapon into its maw and strike back!" />
+        <Outcome Reaction="Block" DamageMultiplier="0.4"
+                 ResponseText="Fangs scrape against your guard." />
+        <Outcome Reaction="Dodge" DamageMultiplier="0.5"
+                 ResponseText="You twist away but teeth graze your shoulder." />
+        <Outcome Reaction="Brace" DamageMultiplier="0.8"
+                 ResponseText="You tense up but the jaws find purchase." />
+        <Outcome Reaction="None" DamageMultiplier="1.0"
+                 ResponseText="Fangs sink deep into flesh!" />
+    </AttackTell>
+
+</AttackTells>

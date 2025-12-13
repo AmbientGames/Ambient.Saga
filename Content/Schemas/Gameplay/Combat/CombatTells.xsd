@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../EntityBase.xsd" />
+
+    <!--
+    Combat Tell/Reaction System
+    ============================
+    Inspired by Expedition 33's active defense mechanics.
+
+    When an enemy attacks, they telegraph their intent with narrative "tells".
+    The player has a brief window to choose a defensive reaction.
+    Choosing the optimal defense yields bonuses; wrong choices take full damage.
+
+    This creates agency during enemy turns without requiring real-time reflexes.
+    -->
+
+    <!-- Defense reaction types available to players -->
+    <xs:simpleType name="DefenseReactionType">
+        <xs:restriction base="xs:string">
+            <!-- Active dodging - best against lunges, charges, targeted attacks -->
+            <xs:enumeration value="Dodge" />
+            <!-- Shield/arm block - best against physical strikes, projectiles -->
+            <xs:enumeration value="Block" />
+            <!-- Timed deflection - best against weapon attacks, enables counter -->
+            <xs:enumeration value="Parry" />
+            <!-- Hunker down - best against AoE, breath attacks, magic -->
+            <xs:enumeration value="Brace" />
+            <!-- No reaction (ran out of time or chose not to react) -->
+            <xs:enumeration value="None" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Attack pattern categories that determine tells and optimal defenses -->
+    <xs:simpleType name="AttackPatternType">
+        <xs:restriction base="xs:string">
+            <!-- Physical melee -->
+            <xs:enumeration value="Slash" />      <!-- Horizontal/diagonal weapon swing -->
+            <xs:enumeration value="Thrust" />     <!-- Forward stab/lunge -->
+            <xs:enumeration value="Overhead" />   <!-- Vertical downward strike -->
+            <xs:enumeration value="Sweep" />      <!-- Low attack at legs -->
+            <xs:enumeration value="Flurry" />     <!-- Rapid multi-hit combo -->
+            <!-- Physical ranged -->
+            <xs:enumeration value="Projectile" /> <!-- Arrow, thrown weapon -->
+            <xs:enumeration value="Charge" />     <!-- Rush/tackle attack -->
+            <!-- Creature attacks -->
+            <xs:enumeration value="Bite" />       <!-- Jaw attack -->
+            <xs:enumeration value="Claw" />       <!-- Slashing appendage -->
+            <xs:enumeration value="Tail" />       <!-- Tail whip/slam -->
+            <xs:enumeration value="Breath" />     <!-- Breath weapon (fire, frost, etc.) -->
+            <xs:enumeration value="Spit" />       <!-- Ranged creature attack -->
+            <!-- Magic -->
+            <xs:enumeration value="Bolt" />       <!-- Direct targeted spell -->
+            <xs:enumeration value="Wave" />       <!-- Cone/area spell -->
+            <xs:enumeration value="Burst" />      <!-- AoE centered spell -->
+            <xs:enumeration value="Drain" />      <!-- Life/mana drain -->
+            <!-- Special -->
+            <xs:enumeration value="Grapple" />    <!-- Grab/hold attack -->
+            <xs:enumeration value="Feint" />      <!-- Deceptive attack -->
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- Outcome modifiers based on defense choice -->
+    <xs:complexType name="DefenseOutcome">
+        <xs:attribute name="Reaction" type="DefenseReactionType" use="required" />
+        <!-- Damage multiplier (0.0 = no damage, 1.0 = full damage, 0.5 = half) -->
+        <xs:attribute name="DamageMultiplier" type="xs:float" use="optional" default="1.0" />
+        <!-- Bonus AP/mana granted for successful defense -->
+        <xs:attribute name="BonusAP" type="xs:int" use="optional" default="0" />
+        <!-- Counter-attack enabled -->
+        <xs:attribute name="EnablesCounter" type="xs:boolean" use="optional" default="false" />
+        <!-- Counter damage multiplier (if EnablesCounter is true) -->
+        <xs:attribute name="CounterMultiplier" type="xs:float" use="optional" default="0.5" />
+        <!-- Status effect immunity (avoid poison, stun, etc.) -->
+        <xs:attribute name="PreventsStatusEffect" type="xs:boolean" use="optional" default="false" />
+        <!-- Narrative response text -->
+        <xs:attribute name="ResponseText" type="xs:string" use="optional" />
+    </xs:complexType>
+
+    <!-- An attack tell - the narrative preview and defense matrix -->
+    <xs:complexType name="AttackTell">
+        <xs:sequence>
+            <!-- Defense outcomes for each reaction type -->
+            <xs:element name="Outcome" type="DefenseOutcome" minOccurs="1" maxOccurs="5" />
+        </xs:sequence>
+        <!-- Reference name for this tell pattern -->
+        <xs:attribute name="RefName" type="xs:string" use="required" />
+        <!-- The attack pattern type -->
+        <xs:attribute name="Pattern" type="AttackPatternType" use="required" />
+        <!-- Narrative text shown to player (the "tell") -->
+        <xs:attribute name="TellText" type="xs:string" use="required" />
+        <!-- Time window in milliseconds for player to react (0 = no time limit) -->
+        <xs:attribute name="ReactionWindowMs" type="xs:int" use="optional" default="3000" />
+        <!-- The optimal defense reaction for this attack -->
+        <xs:attribute name="OptimalDefense" type="DefenseReactionType" use="required" />
+        <!-- Secondary good defense (partial success) -->
+        <xs:attribute name="SecondaryDefense" type="DefenseReactionType" use="optional" />
+    </xs:complexType>
+
+    <!-- Catalog of attack tells for a character/creature type -->
+    <xs:complexType name="AttackTells">
+        <xs:sequence>
+            <xs:element name="AttackTell" type="AttackTell" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- Reference type for attack tells -->
+    <xs:simpleType name="AttackTellRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

@@ -39,4 +39,10 @@ public class CombatEvent
     public string? EquipmentChanged { get; init; }  // For ChangeLoadout actions
     public string? AffinityChanged { get; init; }    // For affinity switches
     public string? StatusEffectApplied { get; init; }  // Status effect applied during this action
+
+    // Trait assignment from combat outcomes (flee, spare, etc.)
+    /// <summary>Trait to assign as result of this action (e.g., Disengaged on successful flee)</summary>
+    public string? TraitToAssign { get; init; }
+    /// <summary>Character ref that receives the trait (enemy when player flees)</summary>
+    public string? TraitTargetCharacterRef { get; init; }
 }

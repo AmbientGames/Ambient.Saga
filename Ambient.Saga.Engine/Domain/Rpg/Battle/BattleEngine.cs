@@ -13,6 +13,11 @@ public enum BattleState
     PlayerTurn,
     CompanionTurn,
     EnemyTurn,
+    /// <summary>
+    /// Waiting for player to choose a defensive reaction.
+    /// Enemy has telegraphed their attack; player has a time window to respond.
+    /// </summary>
+    AwaitingReaction,
     Victory,
     Defeat,
     Fled
@@ -47,6 +52,16 @@ public class BattleEngine
     public List<string> CombatLog { get; } = new();
     public List<string> PlayerAffinityRefs { get; private set; } = new();
     public IReadOnlyList<CombatEvent> ActionHistory => _actionHistory.AsReadOnly();
+
+    /// <summary>
+    /// The pending attack awaiting player reaction (only valid when State == AwaitingReaction).
+    /// </summary>
+    public PendingAttack? PendingAttack { get; private set; }
+
+    /// <summary>
+    /// Attack tells available for this battle (loaded from enemy/character data).
+    /// </summary>
+    private readonly Dictionary<string, AttackTell> _attackTells = new();
 
     /// <summary>
     /// All party members (player + companions) for UI display.
@@ -1456,14 +1471,19 @@ public class BattleEngine
         if (_random.NextDouble() < fleeChance)
         {
             CombatLog.Add($"{fleer.DisplayName} successfully fled from battle!");
+            CombatLog.Add($"💨 {_enemy.DisplayName} is now disengaged and won't immediately pursue.");
             State = BattleState.Fled;
 
+            // Set traits: enemy gets Disengaged (won't re-aggro immediately) and Victorious
             return new CombatEvent
             {
                 ActionType = BattleActionType.Flee,
                 ActorName = fleer.DisplayName,
+                TargetName = _enemy.DisplayName,
                 Success = true,
-                Message = "Fled successfully!"
+                Message = "Fled successfully!",
+                TraitToAssign = "Disengaged",
+                TraitTargetCharacterRef = _enemy.RefName
             };
         }
         else
@@ -1976,4 +1996,180 @@ public class BattleEngine
         CombatLog.Add($"  → {slot} set to {equipment?.DisplayName ?? equipmentRef}");
         return true;
     }
+
+    #region Combat Reaction System (Expedition 33-inspired)
+
+    /// <summary>
+    /// Register an attack tell for use in this battle.
+    /// Typically loaded from enemy/character definitions.
+    /// </summary>
+    public void RegisterAttackTell(AttackTell tell)
+    {
+        _attackTells[tell.RefName] = tell;
+    }
+
+    /// <summary>
+    /// Begin an attack with a telegraph, entering the reaction phase.
+    /// Call this instead of directly executing an attack to enable player reactions.
+    /// </summary>
+    /// <param name="attacker">The attacking combatant</param>
+    /// <param name="target">The target of the attack</param>
+    /// <param name="tellRefName">Reference name of the attack tell to use</param>
+    /// <param name="baseDamage">The base damage before reaction modifiers</param>
+    /// <returns>True if reaction phase started, false if tell not found or invalid state</returns>
+    public bool BeginAttackWithTell(Combatant attacker, Combatant target, string tellRefName, int baseDamage)
+    {
+        if (!_attackTells.TryGetValue(tellRefName, out var tell))
+        {
+            CombatLog.Add($"Warning: Attack tell '{tellRefName}' not found, executing without reaction phase.");
+            return false;
+        }
+
+        PendingAttack = new PendingAttack
+        {
+            Attacker = attacker,
+            Target = target,
+            Tell = tell,
+            BaseDamage = baseDamage,
+            TellShownAt = DateTime.UtcNow
+        };
+
+        State = BattleState.AwaitingReaction;
+        CombatLog.Add($"⚔️ {tell.TellText}");
+        CombatLog.Add($"   [DODGE] [BLOCK] [PARRY] [BRACE] - {tell.ReactionWindowMs / 1000.0:F1}s to react!");
+
+        return true;
+    }
+
+    /// <summary>
+    /// Resolve the pending attack with the player's chosen defense reaction.
+    /// </summary>
+    /// <param name="reaction">The defense reaction chosen by the player</param>
+    /// <returns>The result of the reaction, or null if no pending attack</returns>
+    public ReactionResult? ResolveReaction(PlayerDefenseType reaction)
+    {
+        if (State != BattleState.AwaitingReaction || PendingAttack == null)
+        {
+            return null;
+        }
+
+        var pending = PendingAttack;
+        var timedOut = pending.IsExpired;
+
+        // If timed out, force None reaction
+        if (timedOut)
+        {
+            reaction = PlayerDefenseType.None;
+            CombatLog.Add("⏱️ Time's up!");
+        }
+
+        var outcome = pending.Tell.GetOutcome(reaction);
+        var finalDamage = (int)(pending.BaseDamage * outcome.DamageMultiplier);
+
+        // Apply damage
+        pending.Target.Health -= finalDamage;
+
+        // Build narrative
+        var narrativeText = outcome.ResponseText;
+        if (string.IsNullOrEmpty(narrativeText))
+        {
+            narrativeText = reaction switch
+            {
+                PlayerDefenseType.Dodge => finalDamage == 0 ? "You evade the attack!" : $"You dodge but take {finalDamage} damage.",
+                PlayerDefenseType.Block => $"You block, taking {finalDamage} damage.",
+                PlayerDefenseType.Parry => outcome.EnablesCounter ? "You parry and prepare to counter!" : $"You deflect, taking {finalDamage} damage.",
+                PlayerDefenseType.Brace => $"You brace for impact, taking {finalDamage} damage.",
+                _ => $"You take {finalDamage} damage!"
+            };
+        }
+
+        CombatLog.Add($"🛡️ {narrativeText}");
+
+        // Handle counter-attack
+        int? counterDamage = null;
+        if (outcome.EnablesCounter && pending.Target.IsAlive)
+        {
+            counterDamage = (int)(pending.BaseDamage * outcome.CounterMultiplier);
+            pending.Attacker.Health -= counterDamage.Value;
+            CombatLog.Add($"⚡ Counter-attack hits {pending.Attacker.DisplayName} for {counterDamage} damage!");
+        }
+
+        // Award bonus AP (future: integrate with resource system)
+        if (outcome.BonusAP > 0)
+        {
+            CombatLog.Add($"✨ +{outcome.BonusAP} AP from skilled defense!");
+            // TODO: Add to player's action points when AP system is implemented
+        }
+
+        var result = new ReactionResult
+        {
+            ChosenReaction = reaction,
+            Outcome = outcome,
+            FinalDamage = finalDamage,
+            NarrativeText = narrativeText,
+            CounterDamage = counterDamage,
+            WasOptimal = reaction == pending.Tell.OptimalDefense,
+            WasSecondary = reaction == pending.Tell.SecondaryDefense,
+            TimedOut = timedOut
+        };
+
+        // Record in action history
+        _actionHistory.Add(new CombatEvent
+        {
+            ActionType = BattleActionType.Attack,
+            ActorName = pending.Attacker.DisplayName,
+            TargetName = pending.Target.DisplayName,
+            Damage = finalDamage,
+            Success = true,
+            Message = narrativeText
+        });
+
+        // Clear pending attack and check battle end
+        PendingAttack = null;
+        CheckBattleEnd();
+
+        // If battle didn't end, move to appropriate next state
+        if (State == BattleState.AwaitingReaction)
+        {
+            // Move to player turn after enemy attack resolves
+            State = BattleState.PlayerTurn;
+            _turnNumber++;
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Check if the reaction window has expired and auto-resolve if so.
+    /// Call this periodically during the reaction phase.
+    /// </summary>
+    /// <returns>The result if auto-resolved due to timeout, null otherwise</returns>
+    public ReactionResult? CheckReactionTimeout()
+    {
+        if (State != BattleState.AwaitingReaction || PendingAttack == null)
+            return null;
+
+        if (PendingAttack.IsExpired)
+        {
+            return ResolveReaction(PlayerDefenseType.None);
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Get a random attack tell for an enemy based on their available patterns.
+    /// </summary>
+    public AttackTell? GetRandomTellForEnemy(Combatant enemy)
+    {
+        // For now, return a random registered tell
+        // Future: Filter by enemy type, current state, etc.
+        if (_attackTells.Count == 0)
+            return null;
+
+        var tells = _attackTells.Values.ToList();
+        return tells[_random.Next(tells.Count)];
+    }
+
+    #endregion
 }

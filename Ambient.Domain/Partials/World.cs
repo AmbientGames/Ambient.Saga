@@ -51,6 +51,7 @@ public partial class World : IWorld
     [XmlIgnore] public Dictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; } = new Dictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Faction> FactionsLookup { get; set; } = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, StatusEffect> StatusEffectsLookup { get; set; } = new Dictionary<string, StatusEffect>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, AttackTell> AttackTellsLookup { get; set; } = new Dictionary<string, AttackTell>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public int BlocksBeneathSeaLevel { get; set; } = 64; // this is a todo... coordinate converter requires this - we probably need an interface to do this right.
     [XmlIgnore] public double VerticalScale { get; set; }
     [XmlIgnore] public double VerticalShift { get; set; }
@@ -539,6 +540,33 @@ public partial class World : IWorld
     {
         StatusEffectsLookup.TryGetValue(statusEffectRefName, out var statusEffect);
         return statusEffect;
+    }
+
+    /// <summary>
+    /// Looks up an AttackTell object by its RefName.
+    /// </summary>
+    /// <param name="attackTellRefName">The RefName of the attack tell to find</param>
+    /// <returns>The AttackTell object with the specified RefName</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the attack tell is not found</exception>
+    public AttackTell GetAttackTellByRefName(string attackTellRefName)
+    {
+        if (AttackTellsLookup.TryGetValue(attackTellRefName, out var attackTell))
+        {
+            return attackTell;
+        }
+
+        throw new InvalidOperationException($"AttackTell with RefName '{attackTellRefName}' not found in AttackTells catalog");
+    }
+
+    /// <summary>
+    /// Tries to look up an AttackTell object by its RefName. Returns null if not found.
+    /// </summary>
+    /// <param name="attackTellRefName">The RefName of the attack tell to find</param>
+    /// <returns>The AttackTell object with the specified RefName, or null if not found</returns>
+    public AttackTell? TryGetAttackTellByRefName(string attackTellRefName)
+    {
+        AttackTellsLookup.TryGetValue(attackTellRefName, out var attackTell);
+        return attackTell;
     }
 
 }

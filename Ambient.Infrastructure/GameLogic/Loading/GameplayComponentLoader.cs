@@ -42,6 +42,7 @@ public static class GameplayComponentLoader
         var sagasRef = ResolveRef(config.SagaArcsRef, defaultRef);
         var factionsRef = ResolveRef(config.FactionsRef, defaultRef);
         var statusEffectsRef = ResolveRef(config.StatusEffectsRef, defaultRef);
+        var attackTellsRef = ResolveRef(config.AttackTellsRef, defaultRef);
 
         world.Gameplay.Consumables = (await XmlLoader.LoadFromXmlAsync<ConsumableCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{consumableItemsRef}.Consumable.xml"), xsdFilePath)).Consumable ?? [];
         world.Gameplay.Spells = (await XmlLoader.LoadFromXmlAsync<SpellCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{spellsRef}.Spells.xml"), xsdFilePath)).Spell ?? [];
@@ -68,6 +69,13 @@ public static class GameplayComponentLoader
         if (File.Exists(statusEffectsPath))
         {
             world.Gameplay.StatusEffects = (await XmlLoader.LoadFromXmlAsync<StatusEffects>(statusEffectsPath, xsdFilePath)).StatusEffect ?? [];
+        }
+
+        // Load AttackTells if the file exists (optional component)
+        var attackTellsPath = Path.Combine(dataDirectory, "Gameplay", "Combat", $"{attackTellsRef}.AttackTells.xml");
+        if (File.Exists(attackTellsPath))
+        {
+            world.Gameplay.AttackTells = (await XmlLoader.LoadFromXmlAsync<AttackTells>(attackTellsPath, xsdFilePath)).AttackTell ?? [];
         }
 
         ApplySagaSpawnOffsets(world);
@@ -112,6 +120,10 @@ public static class GameplayComponentLoader
         if (world.Gameplay.StatusEffects != null)
         {
             BuildLookup(world.Gameplay.StatusEffects, world.StatusEffectsLookup);
+        }
+        if (world.Gameplay.AttackTells != null)
+        {
+            BuildLookup(world.Gameplay.AttackTells, world.AttackTellsLookup);
         }
 
         // Expand all Saga triggers (TriggerPatternRef -> List<SagaTrigger>)

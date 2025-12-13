@@ -4,6 +4,7 @@ using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
@@ -167,6 +168,22 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             newTransactions.Add(playerTurnTx);
 
             System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Player turn: {command.PlayerAction.ActionType}, dealt {playerEvent.Damage:F2} damage");
+
+            // Handle trait assignment from combat event (e.g., Disengaged trait on successful flee)
+            if (!string.IsNullOrEmpty(playerEvent.TraitToAssign) && !string.IsNullOrEmpty(playerEvent.TraitTargetCharacterRef))
+            {
+                var traitTx = DialogueTransactionHelper.CreateTraitAssignedTransaction(
+                    command.AvatarId.ToString(),
+                    playerEvent.TraitTargetCharacterRef,
+                    playerEvent.TraitToAssign,
+                    null, // No value for Disengaged trait
+                    instance.InstanceId);
+
+                instance.AddTransaction(traitTx);
+                newTransactions.Add(traitTx);
+
+                System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Assigned trait '{playerEvent.TraitToAssign}' to '{playerEvent.TraitTargetCharacterRef}'");
+            }
 
             // Check if battle ended after player's turn
             if (battleEngine.State == BattleState.Victory ||

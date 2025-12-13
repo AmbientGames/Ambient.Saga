@@ -67,6 +67,8 @@ namespace Ambient.Domain {
         
         private string sagaTriggerPatternsRefField;
         
+        private string attackTellsRefField;
+        
         private string currencyNameField;
         
         private System.DateTime startDateField;
@@ -98,6 +100,7 @@ namespace Ambient.Domain {
             this.sagaArcsRefField = "Default";
             this.factionsRefField = "Default";
             this.sagaTriggerPatternsRefField = "Default";
+            this.attackTellsRefField = "Default";
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
             this.secondsInHourField = 60;
@@ -363,6 +366,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.sagaTriggerPatternsRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute("Default")]
+        public string AttackTellsRef {
+            get {
+                return this.attackTellsRefField;
+            }
+            set {
+                this.attackTellsRefField = value;
             }
         }
         
