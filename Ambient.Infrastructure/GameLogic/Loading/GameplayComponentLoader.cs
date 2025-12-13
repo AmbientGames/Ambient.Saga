@@ -4,7 +4,7 @@ using Ambient.Infrastructure.Utilities;
 
 namespace Ambient.Infrastructure.GameLogic.Loading;
 
-internal static class GameplayComponentLoader
+public static class GameplayComponentLoader
 {
     public static async Task LoadAsync(string dataDirectory, string definitionDirectory, IWorld world)
     {
