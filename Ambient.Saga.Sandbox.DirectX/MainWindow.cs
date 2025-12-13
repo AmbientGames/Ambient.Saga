@@ -213,9 +213,9 @@ public partial class MainWindow : Form
         Keys.X => ImGuiKey.X,
         Keys.Y => ImGuiKey.Y,
         Keys.Z => ImGuiKey.Z,
-        // Panel hotkeys (M=Map, J=Journal)
+        // Panel hotkeys (M=Map, C=Character, I=World Info)
         Keys.M => ImGuiKey.M,
-        Keys.J => ImGuiKey.J,
+        Keys.I => ImGuiKey.I,
         _ => ImGuiKey.None
     };
 }
