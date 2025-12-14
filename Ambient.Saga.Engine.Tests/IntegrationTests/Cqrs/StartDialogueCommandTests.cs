@@ -199,7 +199,7 @@ public class StartDialogueCommandTests : IDisposable
         {
             ArchetypeRef = "Merchant",
             DisplayName = name,
-            BlockOwnership = new Dictionary<string, int>()
+            BlockOwnership = new Dictionary<string, float>()
         };
 
         AvatarSpawner.SpawnFromModelAvatar(

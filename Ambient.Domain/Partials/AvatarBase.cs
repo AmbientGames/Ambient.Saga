@@ -26,6 +26,45 @@ public partial class AvatarBase : IAvatarBase
     /// </summary>
     public static float StandardEyeHeight = 1.6f;
 
+    #region Runtime/Session Fields (moved from XSD - not part of formal schema contract)
+
+    /// <summary>
+    /// The currently active affinity reference (session state).
+    /// </summary>
+    public string? ActiveAffinityRef { get; set; }
+
+    /// <summary>
+    /// The currently selected tool reference (session state).
+    /// </summary>
+    public string? CurrentToolRef { get; set; }
+
+    /// <summary>
+    /// The currently selected building material reference (session state).
+    /// </summary>
+    public string? CurrentBuildingMaterialRef { get; set; }
+
+    /// <summary>
+    /// Total play time in hours (runtime metric).
+    /// </summary>
+    public float PlayTimeHours { get; set; }
+
+    /// <summary>
+    /// Total blocks placed during gameplay (runtime metric).
+    /// </summary>
+    public long BlocksPlaced { get; set; }
+
+    /// <summary>
+    /// Total blocks destroyed during gameplay (runtime metric).
+    /// </summary>
+    public long BlocksDestroyed { get; set; }
+
+    /// <summary>
+    /// Total distance traveled during gameplay (runtime metric).
+    /// </summary>
+    public float DistanceTraveled { get; set; }
+
+    #endregion
+
     /// <summary>
     /// The standard walking speed for avatars in game units per second.
     /// </summary>
@@ -85,7 +124,7 @@ public partial class AvatarBase : IAvatarBase
     ///// </summary>
     //public int[] BlockOwnershipSaturation { get; set; } = new int[WorldMaximums.MaxBlocks];
     [XmlIgnore]
-    public Dictionary<string, int> BlockOwnership { get; set; } = new Dictionary<string, int>();
+    public Dictionary<string, float> BlockOwnership { get; set; } = new Dictionary<string, float>();
 
     /// <summary>
     /// Usage statistics for blocks by the avatar.

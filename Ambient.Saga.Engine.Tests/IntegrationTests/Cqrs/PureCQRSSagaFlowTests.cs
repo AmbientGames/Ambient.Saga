@@ -270,7 +270,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         {
             ArchetypeRef = "Samurai",
             DisplayName = name,
-            BlockOwnership = new Dictionary<string, int>()
+            BlockOwnership = new Dictionary<string, float>()
         };
 
         AvatarSpawner.SpawnFromModelAvatar(

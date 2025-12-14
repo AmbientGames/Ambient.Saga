@@ -24,7 +24,7 @@ namespace Ambient.Domain {
         
         private string blockRefField;
         
-        private int quantityField;
+        private float quantityField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
@@ -39,7 +39,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public int Quantity {
+        public float Quantity {
             get {
                 return this.quantityField;
             }

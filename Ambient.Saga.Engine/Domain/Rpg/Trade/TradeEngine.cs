@@ -112,7 +112,7 @@ public class TradeEngine
                         if (block != null)
                         {
                             var price = isBuying ? CalculateBuyPrice(block, true, characterTraits) : CalculateSellPrice(block);
-                            items.Add(new TradeItemInfo(block, price, quantity: entry.Quantity, condition: null));
+                            items.Add(new TradeItemInfo(block, price, quantity: (int)entry.Quantity, condition: null));
                         }
                     }
                 }

@@ -502,7 +502,7 @@ public class RegressionTests : IDisposable
         {
             ArchetypeRef = "TestWarrior",
             DisplayName = "Test Hero",
-            BlockOwnership = new Dictionary<string, int>()
+            BlockOwnership = new Dictionary<string, float>()
         };
 
         AvatarSpawner.SpawnFromModelAvatar(avatar, archetype);

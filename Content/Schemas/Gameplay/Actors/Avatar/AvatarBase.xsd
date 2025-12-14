@@ -19,13 +19,7 @@
 					<xs:element name="Party" type="PartyInventory" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="ArchetypeRef" type="ArchetypeRef" use="optional" />
-                <xs:attribute name="ActiveAffinityRef" type="CharacterAffinityRef" use="optional" />
-                <xs:attribute name="CurrentToolRef" type="ToolRef" use="optional" />
-                <xs:attribute name="CurrentBuildingMaterialRef" type="BuildingMaterialRef" use="optional" />
-                <xs:attribute name="PlayTimeHours" type="xs:float" default="0" />
-                <xs:attribute name="BlocksPlaced" type="xs:long" default="0" />
-                <xs:attribute name="BlocksDestroyed" type="xs:long" default="0" />
-                <xs:attribute name="DistanceTraveled" type="xs:float" default="0" />
+                <!-- Runtime/session fields moved to partial class: ActiveAffinityRef, CurrentToolRef, CurrentBuildingMaterialRef, PlayTimeHours, BlocksPlaced, BlocksDestroyed, DistanceTraveled -->
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

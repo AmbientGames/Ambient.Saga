@@ -60,7 +60,9 @@
       "Bash(python3:*)",
       "Bash(xargs:*)",
       "Bash(dotnet restore:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(rm:*)",
+      "Bash(rmdir:*)"
     ],
     "deny": [],
     "ask": []

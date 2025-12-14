@@ -12,7 +12,7 @@ public interface IDialogueStateProvider
     // ===== STACKABLE ITEMS (quantity matters) =====
     int GetConsumableQuantity(string consumableRef);
     int GetMaterialQuantity(string materialRef);
-    int GetBlockQuantity(string blockRef);
+    float GetBlockQuantity(string blockRef);
 
     // ===== DEGRADABLE ITEMS (existence matters) =====
     bool HasEquipment(string equipmentRef);
