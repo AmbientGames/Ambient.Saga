@@ -107,7 +107,7 @@ public class WorldSelectionScreen
                         var outputDirectory = Path.Combine(solutionDir, "Content", "Worlds");
 
                         Debug.WriteLine($"Generating world content to: {outputDirectory}");
-                        var generatedFiles = _worldContentGenerator.GenerateWorldContent(viewModel.SelectedConfiguration, outputDirectory);
+                        var generatedFiles = _worldContentGenerator.GenerateWorldContentAsync(viewModel.SelectedConfiguration, outputDirectory).GetAwaiter().GetResult();
 
                         Debug.WriteLine($"Generated {generatedFiles.Count} files:");
                         foreach (var file in generatedFiles)

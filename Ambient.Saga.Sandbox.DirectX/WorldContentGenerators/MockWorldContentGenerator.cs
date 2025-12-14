@@ -15,9 +15,10 @@ public class MockWorldContentGenerator : IWorldContentGenerator
     public string StatusMessage => "World content generation mock for future world content generator.";
 
     /// <inheritdoc />
-    public List<string> GenerateWorldContent(IWorldConfiguration worldConfig, string outputDirectory)
+    public async Task<List<string>> GenerateWorldContentAsync(IWorldConfiguration worldConfig, string outputDirectory)
     {
-        // Return empty list - generation not available
+        await Task.CompletedTask;
+
         return new List<string>();
     }
 }

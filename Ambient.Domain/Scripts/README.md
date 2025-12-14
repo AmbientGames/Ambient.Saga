@@ -59,14 +59,12 @@ This runs the complete process:
 1. Deletes and recreates the `Generated` folder
 2. Generates C# classes from `Content\Schemas\WorldDefinition.xsd` using XSD.exe
 3. Splits the large WorldDefinition.cs into individual class files
-4. Organizes classes into domain folders (Gameplay, Simulation, Presentation, Core, Enums)
+4. Organizes classes into domain folders (Gameplay, Simulation, Presentation)
 
 ### Output Structure
 
-Generated classes are organized as:
-- `Generated/Gameplay/` - RPG features (Achievement, Quest, Skill, Equipment, etc.)
-- `Generated/Simulation/` - Engine features (Block, Climate, Living, Material, etc.)
+Generated classes are organized into 3 flat folders:
+- `Generated/Gameplay/` - RPG features (default - Achievement, Quest, Character, Equipment, World, etc.)
+- `Generated/Simulation/` - Engine features (Block, Climate, Material, etc.)
 - `Generated/Presentation/` - Graphics (Asset, Model)
-- `Generated/Core/` - Core schema types (World, Schema)
-- `Generated/Enums/` - Enumeration types
 
