@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../EntityBase.xsd" />
+    <xs:include schemaLocation="../Usability.xsd" />
+    <xs:include schemaLocation="../Acquirables/CharacterEffects.xsd" />
 
     <!--
     Combat Tell/Reaction System
@@ -61,11 +63,14 @@
 
     <!-- Outcome modifiers based on defense choice -->
     <xs:complexType name="DefenseOutcome">
+        <xs:sequence>
+            <!-- Stat effects applied on this defense (uses standard StatBlock pattern) -->
+            <!-- Example: <Effects Stamina="0.1"/> grants 10% stamina for skilled defense -->
+            <xs:element name="Effects" type="CharacterEffects" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
         <xs:attribute name="Reaction" type="DefenseReactionType" use="required" />
         <!-- Damage multiplier (0.0 = no damage, 1.0 = full damage, 0.5 = half) -->
         <xs:attribute name="DamageMultiplier" type="xs:float" use="optional" default="1.0" />
-        <!-- Bonus AP/mana granted for successful defense -->
-        <xs:attribute name="BonusAP" type="xs:int" use="optional" default="0" />
         <!-- Counter-attack enabled -->
         <xs:attribute name="EnablesCounter" type="xs:boolean" use="optional" default="false" />
         <!-- Counter damage multiplier (if EnablesCounter is true) -->
@@ -94,6 +99,9 @@
         <xs:attribute name="OptimalDefense" type="DefenseReactionType" use="required" />
         <!-- Secondary good defense (partial success) -->
         <xs:attribute name="SecondaryDefense" type="DefenseReactionType" use="optional" />
+        <!-- Space-separated list of weapon categories that can use this attack (e.g., "OneHanded TwoHanded") -->
+        <!-- If empty/not specified, available to all weapon types -->
+        <xs:attribute name="WeaponCategories" type="xs:string" use="optional" />
     </xs:complexType>
 
     <!-- Catalog of attack tells for a character/creature type -->

@@ -30,8 +30,6 @@ namespace Ambient.Domain {
         
         private CharacterTrigger[] battleDialogueField;
         
-        private string[] attackTellsField;
-        
         private int respawnIntervalSecondsField;
         
         public Character() {
@@ -78,17 +76,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.battleDialogueField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("AttackTellRef", IsNullable=false)]
-        public string[] AttackTells {
-            get {
-                return this.attackTellsField;
-            }
-            set {
-                this.attackTellsField = value;
             }
         }
         

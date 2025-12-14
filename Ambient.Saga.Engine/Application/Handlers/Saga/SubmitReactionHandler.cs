@@ -59,7 +59,10 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
                 return SagaCommandResult.Failure(instance.InstanceId, "Battle has already ended");
             }
 
-            // Create transaction for the reaction
+            // Get the turn number
+            var turnNumber = GetNextTurnNumber(instance, command.BattleInstanceId);
+
+            // Create transaction for the reaction with full combat data
             var reactionTx = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
@@ -71,9 +74,26 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
                 {
                     ["BattleTransactionId"] = command.BattleInstanceId.ToString(),
                     ["ActionType"] = "Reaction",
+                    ["DecisionType"] = ActionType.Defend.ToString(), // Reactions are defensive actions
                     ["ReactionType"] = command.Reaction.ToString(),
                     ["IsPlayerTurn"] = "true",
-                    ["TurnNumber"] = GetNextTurnNumber(instance, command.BattleInstanceId).ToString()
+                    ["TurnNumber"] = turnNumber.ToString(),
+
+                    // Reaction-specific data
+                    ["TellRefName"] = command.TellRefName ?? "",
+                    ["BaseDamage"] = command.BaseDamage.ToString(),
+                    ["DamageDealt"] = command.FinalDamage.ToString("F3"), // Damage TO player
+                    ["HealingDone"] = "0",
+                    ["CounterDamage"] = (command.CounterDamage ?? 0).ToString("F3"),
+                    ["StaminaGained"] = command.StaminaGained.ToString("F3"),
+                    ["WasOptimal"] = command.WasOptimal.ToString(),
+                    ["TimedOut"] = command.TimedOut.ToString(),
+
+                    // State after reaction
+                    ["Target"] = command.Avatar.ArchetypeRef ?? "Player", // Player was target of enemy attack
+                    ["TargetHealthAfter"] = command.PlayerHealthAfter.ToString("F3"),
+                    ["ActorEnergyAfter"] = command.PlayerEnergyAfter.ToString("F3"),
+                    ["EnemyHealthAfter"] = command.EnemyHealthAfter.ToString("F3")
                 }
             };
 

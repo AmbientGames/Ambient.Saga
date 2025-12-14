@@ -35,4 +35,58 @@ public class SubmitReactionCommand : IRequest<SagaCommandResult>
     /// Avatar entity for updates
     /// </summary>
     public required AvatarBase Avatar { get; init; }
+
+    #region Reaction Results (populated by client after BattleEngine.ResolveReaction())
+
+    /// <summary>
+    /// The attack tell reference that was defended against
+    /// </summary>
+    public string? TellRefName { get; init; }
+
+    /// <summary>
+    /// Base damage from the attack before reaction modifiers
+    /// </summary>
+    public int BaseDamage { get; init; }
+
+    /// <summary>
+    /// Final damage taken after reaction modifier applied
+    /// </summary>
+    public int FinalDamage { get; init; }
+
+    /// <summary>
+    /// Counter damage dealt to attacker (if reaction enabled counter)
+    /// </summary>
+    public int? CounterDamage { get; init; }
+
+    /// <summary>
+    /// Stamina gained from skilled defense (0-1 normalized)
+    /// </summary>
+    public float StaminaGained { get; init; }
+
+    /// <summary>
+    /// Whether this was the optimal defense for the attack
+    /// </summary>
+    public bool WasOptimal { get; init; }
+
+    /// <summary>
+    /// Whether the reaction timed out (forced to None)
+    /// </summary>
+    public bool TimedOut { get; init; }
+
+    /// <summary>
+    /// Player health after damage applied
+    /// </summary>
+    public float PlayerHealthAfter { get; init; }
+
+    /// <summary>
+    /// Player energy after stamina effects applied
+    /// </summary>
+    public float PlayerEnergyAfter { get; init; }
+
+    /// <summary>
+    /// Enemy health after counter damage (if any)
+    /// </summary>
+    public float EnemyHealthAfter { get; init; }
+
+    #endregion
 }

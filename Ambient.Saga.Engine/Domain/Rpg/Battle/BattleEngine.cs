@@ -2064,7 +2064,7 @@ public class BattleEngine
         }
 
         var outcome = pending.Tell.GetOutcome(reaction);
-        var finalDamage = (int)(pending.BaseDamage * outcome.DamageMultiplier);
+        var finalDamage = (int)Math.Round(pending.BaseDamage * outcome.DamageMultiplier);
 
         // Apply damage
         pending.Target.Health -= finalDamage;
@@ -2089,16 +2089,28 @@ public class BattleEngine
         int? counterDamage = null;
         if (outcome.EnablesCounter && pending.Target.IsAlive)
         {
-            counterDamage = (int)(pending.BaseDamage * outcome.CounterMultiplier);
+            counterDamage = (int)Math.Round(pending.BaseDamage * outcome.CounterMultiplier);
             pending.Attacker.Health -= counterDamage.Value;
             CombatLog.Add($"⚡ Counter-attack hits {pending.Attacker.DisplayName} for {counterDamage} damage!");
         }
 
-        // Award bonus AP (future: integrate with resource system)
-        if (outcome.BonusAP > 0)
+        // Apply defense effects (e.g., stamina recovery from skilled defense)
+        float staminaGained = 0f;
+        if (outcome.Effects != null && outcome.Effects.Stamina > 0)
         {
-            CombatLog.Add($"✨ +{outcome.BonusAP} AP from skilled defense!");
-            // TODO: Add to player's action points when AP system is implemented
+            var staminaGain = outcome.Effects.Stamina;
+            var previousEnergy = pending.Target.Energy;
+            pending.Target.Energy = Math.Min(Combatant.MAX_STAT, pending.Target.Energy + staminaGain);
+            staminaGained = pending.Target.Energy - previousEnergy;
+
+            if (staminaGained > 0)
+            {
+                CombatLog.Add($"✨ Skilled defense! (+{staminaGained * 100:F0}% stamina)");
+            }
+            else
+            {
+                CombatLog.Add($"✨ Skilled defense! (stamina already full)");
+            }
         }
 
         var result = new ReactionResult
@@ -2108,6 +2120,8 @@ public class BattleEngine
             FinalDamage = finalDamage,
             NarrativeText = narrativeText,
             CounterDamage = counterDamage,
+            EffectsApplied = outcome.Effects,
+            StaminaGained = staminaGained,
             WasOptimal = reaction == pending.Tell.OptimalDefense,
             WasSecondary = reaction == pending.Tell.SecondaryDefense,
             TimedOut = timedOut
@@ -2158,17 +2172,67 @@ public class BattleEngine
     }
 
     /// <summary>
-    /// Get a random attack tell for an enemy based on their available patterns.
+    /// Get a random attack tell for an enemy based on their equipped weapon.
+    /// Filters tells by weapon category to ensure thematic consistency.
     /// </summary>
     public AttackTell? GetRandomTellForEnemy(Combatant enemy)
     {
-        // For now, return a random registered tell
-        // Future: Filter by enemy type, current state, etc.
         if (_attackTells.Count == 0)
             return null;
 
-        var tells = _attackTells.Values.ToList();
-        return tells[_random.Next(tells.Count)];
+        // Determine enemy's weapon category from their equipped weapon
+        string? weaponCategory = GetEquippedWeaponCategory(enemy);
+
+        // Filter tells by weapon category
+        var compatibleTells = _attackTells.Values
+            .Where(t => t.IsCompatibleWithWeapon(weaponCategory))
+            .ToList();
+
+        // If no compatible tells found, fall back to universal tells only
+        if (compatibleTells.Count == 0)
+        {
+            compatibleTells = _attackTells.Values
+                .Where(t => string.IsNullOrWhiteSpace(t.WeaponCategories))
+                .ToList();
+        }
+
+        // If still no tells, return any tell as last resort
+        if (compatibleTells.Count == 0)
+        {
+            var allTells = _attackTells.Values.ToList();
+            return allTells[_random.Next(allTells.Count)];
+        }
+
+        return compatibleTells[_random.Next(compatibleTells.Count)];
+    }
+
+    /// <summary>
+    /// Get the weapon category for a combatant's equipped weapon.
+    /// Checks common weapon slots (RightHand, LeftHand, MainHand).
+    /// </summary>
+    private string? GetEquippedWeaponCategory(Combatant combatant)
+    {
+        if (_world == null || combatant.CombatProfile == null)
+            return null;
+
+        // Check common weapon slot names in priority order
+        var weaponSlots = new[] { "RightHand", "MainHand", "LeftHand", "Weapon" };
+
+        foreach (var slot in weaponSlots)
+        {
+            if (combatant.CombatProfile.TryGetValue(slot, out var equipmentRef) &&
+                !string.IsNullOrEmpty(equipmentRef))
+            {
+                var equipment = _world.TryGetEquipmentByRefName(equipmentRef);
+                if (equipment != null)
+                {
+                    return equipment.Category.ToString();
+                }
+            }
+        }
+
+        // No weapon equipped - treat as Unarmed
+        return "Unarmed";
     }
 
     #endregion

@@ -105,23 +105,61 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             foreach (var turnTx in turnTransactions)
             {
                 var isPlayerTurn = bool.Parse(turnTx.Data["IsPlayerTurn"]);
-                var actor = isPlayerTurn ? playerCombatant.DisplayName : enemyCombatant.DisplayName;
-                var target = isPlayerTurn ? enemyCombatant.DisplayName : playerCombatant.DisplayName;
-                var actionType = Enum.Parse<ActionType>(turnTx.Data["DecisionType"]);
-                var damage = float.Parse(turnTx.Data["DamageDealt"]);
-                var healing = float.Parse(turnTx.Data["HealingDone"]);
 
-                if (damage > 0)
+                // Check if this is a reaction transaction
+                var isReaction = turnTx.Data.TryGetValue("ActionType", out var actionTypeStr) && actionTypeStr == "Reaction";
+
+                if (isReaction)
                 {
-                    battleLog.Add($"{actor} used {actionType} - dealt {damage:F1} damage to {target}");
-                }
-                else if (healing > 0)
-                {
-                    battleLog.Add($"{actor} used {actionType} - healed {healing:F1}");
+                    // Reaction log entry
+                    var reactionType = turnTx.Data["ReactionType"];
+                    var damage = float.Parse(turnTx.Data["DamageDealt"]);
+                    var counterDamage = turnTx.Data.TryGetValue("CounterDamage", out var counterStr)
+                        ? float.Parse(counterStr)
+                        : 0f;
+                    var wasOptimal = turnTx.Data.TryGetValue("WasOptimal", out var optStr) && bool.Parse(optStr);
+                    var timedOut = turnTx.Data.TryGetValue("TimedOut", out var timeStr) && bool.Parse(timeStr);
+
+                    if (timedOut)
+                    {
+                        battleLog.Add($"⏱️ {playerCombatant.DisplayName} failed to react - took {damage:F1} damage");
+                    }
+                    else if (damage == 0)
+                    {
+                        battleLog.Add($"🛡️ {playerCombatant.DisplayName} {reactionType}d - avoided all damage!");
+                    }
+                    else
+                    {
+                        var optimalTag = wasOptimal ? " (optimal!)" : "";
+                        battleLog.Add($"🛡️ {playerCombatant.DisplayName} {reactionType}d - took {damage:F1} damage{optimalTag}");
+                    }
+
+                    if (counterDamage > 0)
+                    {
+                        battleLog.Add($"⚡ Counter-attack dealt {counterDamage:F1} damage to {enemyCombatant.DisplayName}!");
+                    }
                 }
                 else
                 {
-                    battleLog.Add($"{actor} used {actionType}");
+                    // Normal turn log entry
+                    var actor = isPlayerTurn ? playerCombatant.DisplayName : enemyCombatant.DisplayName;
+                    var target = isPlayerTurn ? enemyCombatant.DisplayName : playerCombatant.DisplayName;
+                    var actionType = Enum.Parse<ActionType>(turnTx.Data["DecisionType"]);
+                    var damage = float.Parse(turnTx.Data["DamageDealt"]);
+                    var healing = float.Parse(turnTx.Data["HealingDone"]);
+
+                    if (damage > 0)
+                    {
+                        battleLog.Add($"{actor} used {actionType} - dealt {damage:F1} damage to {target}");
+                    }
+                    else if (healing > 0)
+                    {
+                        battleLog.Add($"{actor} used {actionType} - healed {healing:F1}");
+                    }
+                    else
+                    {
+                        battleLog.Add($"{actor} used {actionType}");
+                    }
                 }
             }
 
@@ -231,33 +269,57 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
         foreach (var turnTx in turnTransactions)
         {
             var isPlayerTurn = bool.Parse(turnTx.Data["IsPlayerTurn"]);
-            var combatant = isPlayerTurn ? playerCombatant : enemyCombatant;
-            var target = isPlayerTurn ? enemyCombatant : playerCombatant;
 
-            // Update health/energy from turn results
-            var targetHealthAfter = float.Parse(turnTx.Data["TargetHealthAfter"]);
-            var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
+            // Check if this is a reaction transaction (special handling)
+            var isReaction = turnTx.Data.TryGetValue("ActionType", out var actionType) && actionType == "Reaction";
 
-            combatant.Energy = actorEnergyAfter;
-            target.Health = targetHealthAfter;
-
-            // Update equipment/affinity from snapshots
-            if (turnTx.Data.TryGetValue("LoadoutSlotSnapshot", out var loadoutSnapshot))
+            if (isReaction)
             {
-                combatant.CombatProfile.Clear();
-                foreach (var slot in loadoutSnapshot.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                // Reaction: player defends against enemy attack
+                // DamageDealt is damage TO player, CounterDamage is damage TO enemy
+                var targetHealthAfter = float.Parse(turnTx.Data["TargetHealthAfter"]);
+                var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
+
+                playerCombatant.Health = targetHealthAfter;
+                playerCombatant.Energy = actorEnergyAfter;
+
+                // Apply counter damage to enemy if present
+                if (turnTx.Data.TryGetValue("EnemyHealthAfter", out var enemyHealthStr))
                 {
-                    var parts = slot.Split(':');
-                    if (parts.Length >= 2)
-                    {
-                        combatant.CombatProfile[parts[0]] = parts[1];
-                    }
+                    enemyCombatant.Health = float.Parse(enemyHealthStr);
                 }
             }
-
-            if (turnTx.Data.TryGetValue("AffinitySnapshot", out var affinity))
+            else
             {
-                combatant.AffinityRef = affinity;
+                // Normal turn: actor attacks target
+                var combatant = isPlayerTurn ? playerCombatant : enemyCombatant;
+                var target = isPlayerTurn ? enemyCombatant : playerCombatant;
+
+                // Update health/energy from turn results
+                var targetHealthAfter = float.Parse(turnTx.Data["TargetHealthAfter"]);
+                var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
+
+                combatant.Energy = actorEnergyAfter;
+                target.Health = targetHealthAfter;
+
+                // Update equipment/affinity from snapshots
+                if (turnTx.Data.TryGetValue("LoadoutSlotSnapshot", out var loadoutSnapshot))
+                {
+                    combatant.CombatProfile.Clear();
+                    foreach (var slot in loadoutSnapshot.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        var parts = slot.Split(':');
+                        if (parts.Length >= 2)
+                        {
+                            combatant.CombatProfile[parts[0]] = parts[1];
+                        }
+                    }
+                }
+
+                if (turnTx.Data.TryGetValue("AffinitySnapshot", out var affinity))
+                {
+                    combatant.AffinityRef = affinity;
+                }
             }
         }
 
