@@ -271,7 +271,7 @@ public class InteractWithFeatureCommandTests : IDisposable
         {
             ArchetypeRef = "TestWarrior",
             DisplayName = name,
-            BlockOwnership = new Dictionary<string, int>()
+            BlockOwnership = new Dictionary<string, float>()
         };
 
         AvatarSpawner.SpawnFromModelAvatar(avatar, archetype);

@@ -32,7 +32,7 @@ public class DialogueConditionEvaluator
             DialogueConditionType.LacksConsumable => _stateProvider.GetConsumableQuantity(condition.RefName) == 0,
             DialogueConditionType.HasMaterial => EvaluateQuantity(_stateProvider.GetMaterialQuantity(condition.RefName), condition),
             DialogueConditionType.LacksMaterial => _stateProvider.GetMaterialQuantity(condition.RefName) == 0,
-            DialogueConditionType.HasBlock => EvaluateQuantity(_stateProvider.GetBlockQuantity(condition.RefName), condition),
+            DialogueConditionType.HasBlock => EvaluateQuantity((int)_stateProvider.GetBlockQuantity(condition.RefName), condition),
             DialogueConditionType.LacksBlock => _stateProvider.GetBlockQuantity(condition.RefName) == 0,
 
             // Degradable items

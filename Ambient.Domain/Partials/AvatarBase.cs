@@ -124,7 +124,7 @@ public partial class AvatarBase : IAvatarBase
     ///// </summary>
     //public int[] BlockOwnershipSaturation { get; set; } = new int[WorldMaximums.MaxBlocks];
     [XmlIgnore]
-    public Dictionary<string, int> BlockOwnership { get; set; } = new Dictionary<string, int>();
+    public Dictionary<string, float> BlockOwnership { get; set; } = new Dictionary<string, float>();
 
     /// <summary>
     /// Usage statistics for blocks by the avatar.

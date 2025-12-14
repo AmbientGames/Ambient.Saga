@@ -198,7 +198,7 @@ public class UpdateAvatarPositionCommandTests : IDisposable
         {
             ArchetypeRef = archetypeRef,
             DisplayName = "Test Hero",
-            BlockOwnership = new Dictionary<string, int>()
+            BlockOwnership = new Dictionary<string, float>()
         };
 
         // Use AvatarSpawner to properly initialize from archetype

@@ -39,9 +39,9 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public void RemoveMaterial(string materialRef, int amount) => _materials[materialRef] = Math.Max(0, GetMaterialQuantity(materialRef) - amount);
 
     // Blocks
-    public int GetBlockQuantity(string blockRef) => _blocks.GetValueOrDefault(blockRef, 0);
-    public void AddBlock(string blockRef, int amount) => _blocks[blockRef] = GetBlockQuantity(blockRef) + amount;
-    public void RemoveBlock(string blockRef, int amount) => _blocks[blockRef] = Math.Max(0, GetBlockQuantity(blockRef) - amount);
+    public float GetBlockQuantity(string blockRef) => _blocks.GetValueOrDefault(blockRef, 0);
+    public void AddBlock(string blockRef, int amount) => _blocks[blockRef] = (int)GetBlockQuantity(blockRef) + amount;
+    public void RemoveBlock(string blockRef, int amount) => _blocks[blockRef] = Math.Max(0, (int)GetBlockQuantity(blockRef) - amount);
 
     // Degradable items
     public bool HasEquipment(string equipmentRef) => _equipment.Contains(equipmentRef);

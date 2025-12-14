@@ -59,7 +59,7 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     public void RemoveMaterial(string r, int amt) { if (_a.Capabilities?.BuildingMaterials != null && amt > 0) { var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.BuildingMaterials = _a.Capabilities.BuildingMaterials.Where(x => x.BuildingMaterialRef != r).ToArray(); } } }
 
     // Blocks (stackable voxel blocks)
-    public int GetBlockQuantity(string r) => _a.Capabilities?.Blocks?.FirstOrDefault(e => e.BlockRef == r)?.Quantity ?? 0;
+    public float GetBlockQuantity(string r) => _a.Capabilities?.Blocks?.FirstOrDefault(e => e.BlockRef == r)?.Quantity ?? 0;
     public void AddBlock(string r, int amt) { if (_a.Capabilities != null && amt > 0) { _a.Capabilities.Blocks ??= Array.Empty<BlockEntry>(); var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Blocks.ToList(); list.Add(new BlockEntry { BlockRef = r, Quantity = amt }); _a.Capabilities.Blocks = list.ToArray(); } } }
     public void RemoveBlock(string r, int amt) { if (_a.Capabilities?.Blocks != null && amt > 0) { var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Blocks = _a.Capabilities.Blocks.Where(x => x.BlockRef != r).ToArray(); } } }
 
