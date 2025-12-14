@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../EntityBase.xsd" />
+    <xs:include schemaLocation="../Usability.xsd" />
 
     <!--
     Combat Tell/Reaction System
@@ -94,6 +95,9 @@
         <xs:attribute name="OptimalDefense" type="DefenseReactionType" use="required" />
         <!-- Secondary good defense (partial success) -->
         <xs:attribute name="SecondaryDefense" type="DefenseReactionType" use="optional" />
+        <!-- Space-separated list of weapon categories that can use this attack (e.g., "OneHanded TwoHanded") -->
+        <!-- If empty/not specified, available to all weapon types -->
+        <xs:attribute name="WeaponCategories" type="xs:string" use="optional" />
     </xs:complexType>
 
     <!-- Catalog of attack tells for a character/creature type -->

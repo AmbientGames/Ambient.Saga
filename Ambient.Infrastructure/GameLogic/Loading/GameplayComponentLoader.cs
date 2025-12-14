@@ -63,20 +63,8 @@ public static class GameplayComponentLoader
         world.Gameplay.SagaTriggerPatterns = (await XmlLoader.LoadFromXmlAsync<SagaTriggerPatterns>(Path.Combine(dataDirectory, "Gameplay", "SagaTriggerPatterns", $"{sagaTriggerPatternsRef}.SagaTriggerPatterns.xml"), xsdFilePath)).SagaTriggerPattern ?? [];
         world.Gameplay.SagaArcs = (await XmlLoader.LoadFromXmlAsync<SagaArcs>(Path.Combine(dataDirectory, "Gameplay", $"{sagasRef}.Sagas.xml"), xsdFilePath)).SagaArc ?? [];
         world.Gameplay.Factions = (await XmlLoader.LoadFromXmlAsync<Factions>(Path.Combine(dataDirectory, "Gameplay", "Factions", $"{factionsRef}.Factions.xml"), xsdFilePath)).Faction ?? [];
-
-        // Load StatusEffects if the file exists (optional component)
-        var statusEffectsPath = Path.Combine(dataDirectory, "Gameplay", "Actors", $"{statusEffectsRef}.StatusEffects.xml");
-        if (File.Exists(statusEffectsPath))
-        {
-            world.Gameplay.StatusEffects = (await XmlLoader.LoadFromXmlAsync<StatusEffects>(statusEffectsPath, xsdFilePath)).StatusEffect ?? [];
-        }
-
-        // Load AttackTells if the file exists (optional component)
-        var attackTellsPath = Path.Combine(dataDirectory, "Gameplay", "Combat", $"{attackTellsRef}.AttackTells.xml");
-        if (File.Exists(attackTellsPath))
-        {
-            world.Gameplay.AttackTells = (await XmlLoader.LoadFromXmlAsync<AttackTells>(attackTellsPath, xsdFilePath)).AttackTell ?? [];
-        }
+        world.Gameplay.StatusEffects = (await XmlLoader.LoadFromXmlAsync<StatusEffects>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{statusEffectsRef}.StatusEffects.xml"), xsdFilePath)).StatusEffect ?? [];
+        world.Gameplay.AttackTells = (await XmlLoader.LoadFromXmlAsync<AttackTells>(Path.Combine(dataDirectory, "Gameplay", "Combat", $"{attackTellsRef}.AttackTells.xml"), xsdFilePath)).AttackTell ?? [];
 
         ApplySagaSpawnOffsets(world);
     }
@@ -117,14 +105,8 @@ public static class GameplayComponentLoader
         BuildLookup(world.Gameplay.SagaTriggerPatterns, world.SagaTriggerPatternsLookup);
         BuildLookup(world.Gameplay.SagaArcs, world.SagaArcLookup);
         BuildLookup(world.Gameplay.Factions, world.FactionsLookup);
-        if (world.Gameplay.StatusEffects != null)
-        {
-            BuildLookup(world.Gameplay.StatusEffects, world.StatusEffectsLookup);
-        }
-        if (world.Gameplay.AttackTells != null)
-        {
-            BuildLookup(world.Gameplay.AttackTells, world.AttackTellsLookup);
-        }
+        BuildLookup(world.Gameplay.StatusEffects, world.StatusEffectsLookup);
+        BuildLookup(world.Gameplay.AttackTells, world.AttackTellsLookup);
 
         // Expand all Saga triggers (TriggerPatternRef -> List<SagaTrigger>)
         BuildSagaTriggersLookup(world);

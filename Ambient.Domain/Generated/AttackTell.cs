@@ -38,6 +38,8 @@ namespace Ambient.Domain {
         
         private bool secondaryDefenseFieldSpecified;
         
+        private string weaponCategoriesField;
+        
         public AttackTell() {
             this.reactionWindowMsField = 3000;
         }
@@ -128,6 +130,17 @@ namespace Ambient.Domain {
             }
             set {
                 this.secondaryDefenseFieldSpecified = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string WeaponCategories {
+            get {
+                return this.weaponCategoriesField;
+            }
+            set {
+                this.weaponCategoriesField = value;
             }
         }
     }
