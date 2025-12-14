@@ -1,3 +1,5 @@
+using Ambient.Domain;
+
 namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 
 /// <summary>
@@ -61,8 +63,8 @@ public class DefenseOutcome
     public PlayerDefenseType Reaction { get; init; }
     /// <summary>Damage multiplier (0.0 = no damage, 1.0 = full damage)</summary>
     public float DamageMultiplier { get; init; } = 1.0f;
-    /// <summary>Bonus AP/mana granted for successful defense</summary>
-    public int BonusAP { get; init; }
+    /// <summary>Stat effects applied for successful defense (e.g., Stamina recovery)</summary>
+    public CharacterEffects? Effects { get; init; }
     /// <summary>Counter-attack enabled</summary>
     public bool EnablesCounter { get; init; }
     /// <summary>Counter damage multiplier (if EnablesCounter is true)</summary>
@@ -89,6 +91,8 @@ public class AttackTell
     public required PlayerDefenseType OptimalDefense { get; init; }
     /// <summary>Secondary good defense (partial success)</summary>
     public PlayerDefenseType? SecondaryDefense { get; init; }
+    /// <summary>Weapon categories this tell applies to (space-separated, e.g., "OneHanded TwoHanded")</summary>
+    public string? WeaponCategories { get; init; }
     /// <summary>Outcomes for each defense reaction type</summary>
     public required Dictionary<PlayerDefenseType, DefenseOutcome> Outcomes { get; init; }
 
@@ -111,6 +115,25 @@ public class AttackTell
             DamageMultiplier = 1.0f,
             ResponseText = "You fail to react in time!"
         };
+    }
+
+    /// <summary>
+    /// Check if this tell is compatible with the given weapon category.
+    /// Returns true if WeaponCategories is null/empty (universal) or contains the category.
+    /// </summary>
+    public bool IsCompatibleWithWeapon(string? weaponCategory)
+    {
+        // No restriction means compatible with all weapons
+        if (string.IsNullOrWhiteSpace(WeaponCategories))
+            return true;
+
+        // No weapon means only universal tells are compatible
+        if (string.IsNullOrWhiteSpace(weaponCategory))
+            return false;
+
+        // Check if any of the weapon categories match
+        var categories = WeaponCategories.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        return categories.Any(c => c.Equals(weaponCategory, StringComparison.OrdinalIgnoreCase));
     }
 }
 
@@ -150,6 +173,10 @@ public class ReactionResult
     public required int FinalDamage { get; init; }
     public required string NarrativeText { get; init; }
     public int? CounterDamage { get; init; }
+    /// <summary>Effects applied from skilled defense (if any)</summary>
+    public CharacterEffects? EffectsApplied { get; init; }
+    /// <summary>Actual stamina gained from defense effects (may be less if already full)</summary>
+    public float StaminaGained { get; init; }
     public bool WasOptimal { get; init; }
     public bool WasSecondary { get; init; }
     public bool TimedOut { get; init; }

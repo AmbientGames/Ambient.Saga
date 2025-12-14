@@ -118,7 +118,7 @@ public class CombatReactionTests
 
         // Assert
         Assert.Equal(1.0f, outcome.DamageMultiplier);
-        Assert.Equal(0, outcome.BonusAP);
+        Assert.Null(outcome.Effects);
         Assert.False(outcome.EnablesCounter);
         Assert.Equal(0.5f, outcome.CounterMultiplier);
         Assert.False(outcome.PreventsStatusEffect);
@@ -137,7 +137,8 @@ public class CombatReactionTests
         // Assert
         Assert.Equal(0.0f, outcome.DamageMultiplier); // No damage
         Assert.True(outcome.EnablesCounter);          // Counter enabled
-        Assert.True(outcome.BonusAP > 0);             // Bonus AP granted
+        Assert.NotNull(outcome.Effects);              // Effects granted
+        Assert.True(outcome.Effects!.Stamina > 0);    // Stamina recovery
     }
 
     #endregion
@@ -330,7 +331,7 @@ public class CombatReactionTests
                 {
                     Reaction = PlayerDefenseType.Parry,
                     DamageMultiplier = 0.0f,
-                    BonusAP = 10,
+                    Effects = new Ambient.Domain.CharacterEffects { Stamina = 0.1f },
                     EnablesCounter = true,
                     CounterMultiplier = 0.5f,
                     ResponseText = "Perfect parry! You deflect the blade and counter!"
@@ -339,7 +340,7 @@ public class CombatReactionTests
                 {
                     Reaction = PlayerDefenseType.Dodge,
                     DamageMultiplier = 0.25f,
-                    BonusAP = 5,
+                    Effects = new Ambient.Domain.CharacterEffects { Stamina = 0.05f },
                     EnablesCounter = false,
                     ResponseText = "You roll aside, but the blade grazes you."
                 },
@@ -347,7 +348,6 @@ public class CombatReactionTests
                 {
                     Reaction = PlayerDefenseType.Block,
                     DamageMultiplier = 0.5f,
-                    BonusAP = 0,
                     EnablesCounter = false,
                     ResponseText = "You raise your guard, absorbing part of the blow."
                 },
@@ -355,7 +355,6 @@ public class CombatReactionTests
                 {
                     Reaction = PlayerDefenseType.Brace,
                     DamageMultiplier = 0.75f,
-                    BonusAP = 0,
                     EnablesCounter = false,
                     ResponseText = "You brace, but the horizontal slash finds its mark."
                 },
@@ -363,7 +362,6 @@ public class CombatReactionTests
                 {
                     Reaction = PlayerDefenseType.None,
                     DamageMultiplier = 1.0f,
-                    BonusAP = 0,
                     EnablesCounter = false,
                     ResponseText = "The slash connects fully!"
                 }

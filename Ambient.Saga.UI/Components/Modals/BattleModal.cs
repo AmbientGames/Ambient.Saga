@@ -28,11 +28,19 @@ public class BattleModal
     // Reaction phase state (Expedition 33-inspired defense mechanics)
     private bool _inReactionPhase = false;
     private string? _currentTellText = null;
+    private string? _currentTellRefName = null;  // Reference name of the attack tell
+    private int _currentBaseDamage = 0;  // Base damage from the pending attack
     private float _reactionTimeRemaining = 0f;
     private float _reactionTimeTotal = 0f;  // Total window time (from tell or default)
     private const float DEFAULT_REACTION_WINDOW_SECONDS = 5.0f;  // Fallback if tell doesn't specify
     private PlayerDefenseType? _selectedReaction = null;
     private bool _reactionResolved = false;
+
+    // Last reaction result for command population
+    private ReactionResult? _lastReactionResult = null;
+
+    // BattleEngine instance for reaction resolution
+    private BattleEngine? _battleEngine = null;
 
     // Selection modal instances
     private SpellSelectionModal? _spellSelectionModal;
@@ -411,15 +419,32 @@ public class BattleModal
     /// Starts the reaction phase with a given tell text and timing.
     /// Call this when enemy attack is telegraphed.
     /// </summary>
-    public void StartReactionPhase(string tellText, int reactionWindowMs = 0)
+    /// <param name="tellText">The narrative text to display</param>
+    /// <param name="tellRefName">Reference name of the attack tell (for transaction tracking)</param>
+    /// <param name="baseDamage">Base damage of the attack (before defense modifiers)</param>
+    /// <param name="reactionWindowMs">Time window in milliseconds (0 = use default)</param>
+    /// <param name="battleEngine">BattleEngine instance for resolving the reaction</param>
+    public void StartReactionPhase(string tellText, string? tellRefName, int baseDamage, int reactionWindowMs = 0, BattleEngine? battleEngine = null)
     {
         _inReactionPhase = true;
         _currentTellText = tellText;
+        _currentTellRefName = tellRefName;
+        _currentBaseDamage = baseDamage;
+        _battleEngine = battleEngine;
         _reactionTimeTotal = reactionWindowMs > 0 ? reactionWindowMs / 1000f : DEFAULT_REACTION_WINDOW_SECONDS;
         _reactionTimeRemaining = _reactionTimeTotal;
         _selectedReaction = null;
         _reactionResolved = false;
-        System.Diagnostics.Debug.WriteLine($"[BattleModal] Starting reaction phase: '{tellText}' ({_reactionTimeTotal}s)");
+        _lastReactionResult = null;
+        System.Diagnostics.Debug.WriteLine($"[BattleModal] Starting reaction phase: '{tellText}' ({_reactionTimeTotal}s, damage={baseDamage})");
+    }
+
+    /// <summary>
+    /// Overload for backward compatibility - uses default values for new parameters.
+    /// </summary>
+    public void StartReactionPhase(string tellText, int reactionWindowMs = 0)
+    {
+        StartReactionPhase(tellText, null, 0, reactionWindowMs, null);
     }
 
     /// <summary>
@@ -429,10 +454,13 @@ public class BattleModal
     {
         _inReactionPhase = false;
         _currentTellText = null;
+        _currentTellRefName = null;
+        _currentBaseDamage = 0;
         _reactionTimeRemaining = 0f;
         _reactionTimeTotal = 0f;
         _selectedReaction = null;
         _reactionResolved = false;
+        _battleEngine = null;
     }
 
     // Default tells for when enemy doesn't have specific tells defined
@@ -469,23 +497,69 @@ public class BattleModal
 
         System.Diagnostics.Debug.WriteLine($"[BattleModal] Resolving reaction: {reaction}");
 
+        // Default values if BattleEngine not available
+        int finalDamage = _currentBaseDamage;
+        int? counterDamage = null;
+        float staminaGained = 0f;
+        bool wasOptimal = false;
+        bool timedOut = reaction == PlayerDefenseType.None && _reactionTimeRemaining <= 0;
+        float playerHealthAfter = _currentState?.PlayerCombatant?.Health ?? 1.0f;
+        float playerEnergyAfter = _currentState?.PlayerCombatant?.Energy ?? 1.0f;
+        float enemyHealthAfter = _currentState?.EnemyCombatant?.Health ?? 1.0f;
+
+        // If we have a BattleEngine, resolve the reaction properly
+        if (_battleEngine != null && _battleEngine.PendingAttack != null)
+        {
+            var reactionResult = _battleEngine.ResolveReaction(reaction);
+            if (reactionResult != null)
+            {
+                _lastReactionResult = reactionResult;
+                finalDamage = reactionResult.FinalDamage;
+                counterDamage = reactionResult.CounterDamage;
+                staminaGained = reactionResult.StaminaGained;
+                wasOptimal = reactionResult.WasOptimal;
+                timedOut = reactionResult.TimedOut;
+
+                // Get updated combatant states from engine
+                var player = _battleEngine.GetPlayer();
+                var enemy = _battleEngine.GetEnemy();
+                playerHealthAfter = player.Health;
+                playerEnergyAfter = player.Energy;
+                enemyHealthAfter = enemy.Health;
+
+                System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction resolved: damage={finalDamage}, counter={counterDamage}, optimal={wasOptimal}");
+            }
+        }
+
         try
         {
-            // Send reaction to backend via command
+            // Send reaction to backend via command with full combat data
             var command = new SubmitReactionCommand
             {
                 AvatarId = viewModel.PlayerAvatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 BattleInstanceId = _battleInstanceId,
                 Reaction = reaction,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.PlayerAvatar,
+
+                // Populate reaction results
+                TellRefName = _currentTellRefName,
+                BaseDamage = _currentBaseDamage,
+                FinalDamage = finalDamage,
+                CounterDamage = counterDamage,
+                StaminaGained = staminaGained,
+                WasOptimal = wasOptimal,
+                TimedOut = timedOut,
+                PlayerHealthAfter = playerHealthAfter,
+                PlayerEnergyAfter = playerEnergyAfter,
+                EnemyHealthAfter = enemyHealthAfter
             };
 
             var result = await viewModel.Mediator.Send(command);
 
             if (result.Successful)
             {
-                System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction {reaction} submitted successfully");
+                System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction {reaction} submitted successfully (damage={finalDamage})");
             }
             else
             {

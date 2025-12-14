@@ -22,11 +22,11 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class DefenseOutcome {
         
+        private CharacterEffects effectsField;
+        
         private DefenseReactionType reactionField;
         
         private float damageMultiplierField;
-        
-        private int bonusAPField;
         
         private bool enablesCounterField;
         
@@ -38,10 +38,19 @@ namespace Ambient.Domain {
         
         public DefenseOutcome() {
             this.damageMultiplierField = ((float)(1F));
-            this.bonusAPField = 0;
             this.enablesCounterField = false;
             this.counterMultiplierField = ((float)(0.5F));
             this.preventsStatusEffectField = false;
+        }
+        
+        /// <remarks/>
+        public CharacterEffects Effects {
+            get {
+                return this.effectsField;
+            }
+            set {
+                this.effectsField = value;
+            }
         }
         
         /// <remarks/>
@@ -64,18 +73,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.damageMultiplierField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(0)]
-        public int BonusAP {
-            get {
-                return this.bonusAPField;
-            }
-            set {
-                this.bonusAPField = value;
             }
         }
         

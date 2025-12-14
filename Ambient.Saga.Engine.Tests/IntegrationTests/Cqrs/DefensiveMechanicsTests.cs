@@ -1,4 +1,10 @@
-﻿namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
+using Ambient.Domain;
+using Ambient.Domain.Partials;
+using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Xunit;
+using Xunit.Abstractions;
+
+namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
 /// <summary>
 /// Comprehensive tests for defensive mechanics in battle system:
@@ -19,9 +25,8 @@
 /// - Defensive state + affinity bonuses
 /// - Consumable use clears defensive state
 ///
-/// COMMENTED OUT: BattleEngine API has changed - these tests need to be rewritten for new battle system
+/// RE-ENABLED: Tests verified compatible with current BattleEngine API
 /// </summary>
-/*
 public class DefensiveMechanicsTests
 {
     private readonly ITestOutputHelper _output;
@@ -495,4 +500,3 @@ public class DefensiveMechanicsTests
 
     #endregion
 }
-*/
