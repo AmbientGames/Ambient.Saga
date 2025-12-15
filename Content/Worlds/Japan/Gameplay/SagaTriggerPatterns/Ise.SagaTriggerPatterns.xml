@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SagaTriggerPatterns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<SagaTriggerPatterns xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <SagaTriggerPattern RefName="PeacefulLandmark" DisplayName="Peaceful Landmark" Description="Pure exploration - scenic discovery with no encounters" EnforceProgression="false">
     <SagaTrigger RefName="distant_view" DisplayName="Distant View" Description="Distant View" EnterRadius="80.0" Tags="exploration,scenic" />
     <SagaTrigger RefName="approach" DisplayName="Approaching" Description="Approaching" EnterRadius="50.0" Tags="exploration" />

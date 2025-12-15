@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<LoadoutSlots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<LoadoutSlots xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <LoadoutSlot RefName="Head" DisplayName="Kabuto" Description="Helmet and head protection" />
   <LoadoutSlot RefName="Chest" DisplayName="Do" Description="Chest armor and body protection" />
   <LoadoutSlot RefName="Legs" DisplayName="Haidate" Description="Thigh armor and leg protection" />

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <SagaArc RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Hub center at Tsurumaru-jō" LatitudeZ="31.59880236355378" LongitudeX="130.5538416944655">
     <SagaFeatureRef>Tsurumarujō</SagaFeatureRef>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō_WARNING" DisplayName="Danger at Tsurumaru-jō" Description="Signs of danger surround Tsurumaru-jō" EnterRadius="60.0" Tags="exploration,warning,tension" />

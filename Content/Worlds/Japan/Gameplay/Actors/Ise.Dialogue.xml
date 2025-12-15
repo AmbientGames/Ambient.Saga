@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<DialogueTrees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <DialogueTree RefName="BanditChief_QuestStart" DisplayName="Captain's Request" StartNodeId="greeting_hub">
+<DialogueTrees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <DialogueTree RefName="BanditChief_QuestStart" DisplayName="Class Rep's Request" StartNodeId="greeting_hub" Description="The class rep asks for help dealing with troublemakers">
     <Node NodeId="greeting_hub">
       <Text>*The captain looks at you expectantly*</Text>
       <Choice Text="[Quest not started]" NextNodeId="greeting_not_started" />
@@ -64,7 +64,7 @@
       <Text>Please hurry. Another caravan was attacked just yesterday.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="BanditChief_ScoutEncounter" DisplayName="Bandit Scout" StartNodeId="ambush">
+  <DialogueTree RefName="BanditChief_ScoutEncounter" DisplayName="Rival Lookout" StartNodeId="ambush" Description="Confronting the rival school's lookout">
     <Node NodeId="ambush">
       <Text>Hold it right there! Empty your pockets and you might live.</Text>
       <Choice Text="You picked the wrong traveler." NextNodeId="fight" />
@@ -90,7 +90,7 @@
       <Action Type="StartCombat" CharacterRef="BanditChief_Scout" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="BanditChief_BossBattle" DisplayName="Boss Battle" StartNodeId="battle_opening">
+  <DialogueTree RefName="BanditChief_BossBattle" DisplayName="Showdown" StartNodeId="battle_opening" Description="Facing the rival school leader">
     <Node NodeId="battle_opening">
       <Text>So, you're the one who's been causing trouble for my people.</Text>
       <Text>I've killed a dozen like you. You'll be just another notch on my blade.</Text>
@@ -124,7 +124,7 @@
       <Action Type="AssignTrait" Trait="Aggression" TraitValue="150" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="BanditChief_PrisonerRescue" DisplayName="Prisoner Rescue" StartNodeId="rescue_start">
+  <DialogueTree RefName="BanditChief_PrisonerRescue" DisplayName="Helping the First-Year" StartNodeId="rescue_start" Description="Rescuing the bullied underclassman">
     <Node NodeId="rescue_start">
       <Text>*You approach the captive*</Text>
       <Choice Text="[First rescue]" NextNodeId="rescue_hub" />
@@ -152,7 +152,7 @@
       <Choice Text="Follow me - stay close." NextNodeId="grateful_end" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="BanditChief_TurnIn" DisplayName="Victory Report" StartNodeId="victory">
+  <DialogueTree RefName="BanditChief_TurnIn" DisplayName="Problem Solved" StartNodeId="victory" Description="Reporting back to the class rep">
     <Node NodeId="victory">
       <Condition Type="HasQuestToken" RefName="BanditChief_ChiefsBadge" />
       <Text>Is that... the Chief's badge? You actually did it!</Text>
@@ -167,7 +167,7 @@
       <Action Type="CompleteQuest" RefName="BanditChief_Quest" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="ElementalSage_Introduction" DisplayName="Meeting the Sage" StartNodeId="introduction_hub">
+  <DialogueTree RefName="ElementalSage_Introduction" DisplayName="The Hidden Keeper" StartNodeId="introduction_hub" Description="Meeting the mysterious shrine caretaker">
     <Node NodeId="introduction_hub">
       <Text>*Flames dance around an ancient figure*</Text>
       <Choice Text="[First meeting]" NextNodeId="first_meeting" />
@@ -231,7 +231,7 @@
       <Text>Use your gift wisely. The world needs more who understand true passion.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="ElementalSage_GuardianEncounter" DisplayName="Guardian Trial" StartNodeId="guardian_challenge">
+  <DialogueTree RefName="ElementalSage_GuardianEncounter" DisplayName="The Fox's Test" StartNodeId="guardian_challenge" Description="Facing the kitsune guardian's challenge">
     <Node NodeId="guardian_challenge">
       <Condition Type="HasQuestToken" RefName="ElementalSage_TrialToken" />
       <Text>*A construct of living flame rises before you*</Text>
@@ -248,7 +248,7 @@
       <Text>RETURN WHEN YOUR SPIRIT BURNS BRIGHTER.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="FalseProphet_Start" DisplayName="A Concerned Plea" StartNodeId="worry_hub">
+  <DialogueTree RefName="FalseProphet_Start" DisplayName="Worried Teacher" StartNodeId="worry_hub" Description="A chaperone asks you to stop the scary rumors">
     <Node NodeId="worry_hub">
       <Text>*A worried elder approaches you*</Text>
       <Choice Text="[Quest not started]" NextNodeId="worry_not_started" />
@@ -296,7 +296,7 @@
       <Text>Please don't wait too long. Every day, more fall under their spell.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="FalseProphet_ScholarMeet" DisplayName="The Skeptic's Research" StartNodeId="meet">
+  <DialogueTree RefName="FalseProphet_ScholarMeet" DisplayName="The Investigator" StartNodeId="meet" Description="Meeting the student detective on the case">
     <Node NodeId="meet">
       <Condition Type="HasQuestToken" RefName="FalseProphet_Rumor" />
       <Text>Ah, another skeptic? Good. I was beginning to feel like the only sane person left.</Text>
@@ -330,7 +330,7 @@
       <Text>They'll only speak to someone they trust. Tell them I sent you.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="FalseProphet_FormerTalk" DisplayName="The Former Believer" StartNodeId="hiding">
+  <DialogueTree RefName="FalseProphet_FormerTalk" DisplayName="The Skeptic" StartNodeId="hiding" Description="Talking to someone who stopped believing">
     <Node NodeId="hiding">
       <Condition Type="HasQuestToken" RefName="FalseProphet_FollowerAccount" />
       <Text>*startles* Who- oh. The scholar sent you?</Text>
@@ -365,7 +365,7 @@
       <Text>But be careful. The temple guardians are devoted. They'll fight for their prophet.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="FalseProphet_FirstMeet" DisplayName="Meeting the Prophet" StartNodeId="audience">
+  <DialogueTree RefName="FalseProphet_FirstMeet" DisplayName="The Storyteller" StartNodeId="audience" Description="Meeting the mysterious student spreading ghost stories">
     <Node NodeId="audience">
       <Condition Type="QuestActive" RefName="FalseProphet_Quest" />
       <Text>*the prophet regards you with piercing eyes*</Text>
@@ -440,7 +440,7 @@
       <Text>Then satisfy your curiosity and go. We have work to do.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="FalseProphet_Search" DisplayName="Searching for Truth" StartNodeId="sneak">
+  <DialogueTree RefName="FalseProphet_Search" DisplayName="Finding the Truth" StartNodeId="sneak" Description="Investigating the origin of the rumors">
     <Node NodeId="sneak">
       <Text>*You slip into the prophet's private quarters*</Text>
       <Text>*The room is lavishly decorated - hardly the 'simple life' they preach*</Text>
@@ -476,7 +476,7 @@
       <Action Type="StartCombat" CharacterRef="FalseProphet_Guard" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="FalseProphet_Finale" DisplayName="The Final Revelation" StartNodeId="finale_hub">
+  <DialogueTree RefName="FalseProphet_Finale" DisplayName="The Real Story" StartNodeId="finale_hub" Description="Discovering what's really behind the legends">
     <Node NodeId="finale_hub">
       <Text>*You gather the followers and the prophet for the final reckoning*</Text>
       <Text>*The crowd watches expectantly. What evidence will you present?*</Text>
@@ -548,7 +548,7 @@
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="FalseProphet_Battle" DisplayName="Prophet Combat" StartNodeId="battle_disbelief">
+  <DialogueTree RefName="FalseProphet_Battle" DisplayName="Confrontation" StartNodeId="battle_disbelief" Description="Challenging the storyteller directly">
     <Node NodeId="battle_disbelief">
       <Text>You would raise a weapon against the divine? Blasphemy!</Text>
       <Text>The faithful will avenge me!</Text>
@@ -569,25 +569,26 @@
       <Text>Then we finish this!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="HiddenCache_MapStart" DisplayName="The Eccentric's Offer" StartNodeId="browse_completed_check">
-    <Node NodeId="browse_completed_check" NextNodeId="browse_active_check">
-      <Condition Type="QuestCompleted" RefName="HiddenCache_Quest" />
+  <DialogueTree RefName="HiddenCache_MapStart" DisplayName="The Old Map" StartNodeId="browse_hub" Description="Acquiring a mysterious map from the antique shop">
+    <Node NodeId="browse_hub">
       <Text>*The eccentric collector notices you*</Text>
-      <Text>So? What did you find? Don't leave me in suspense!</Text>
-      <Choice Text="That's my secret." NextNodeId="leave_end" />
-    </Node>
-    <Node NodeId="browse_active_check" NextNodeId="browse_not_started">
-      <Condition Type="QuestActive" RefName="HiddenCache_Quest" />
-      <Text>*The eccentric collector notices you*</Text>
-      <Text>Any luck with that map? I'm curious what it leads to...</Text>
-      <Choice Text="Still working on it." NextNodeId="leave_end" />
+      <Choice Text="Approach the collector." NextNodeId="browse_not_started" />
+      <Choice Text="Approach the collector." NextNodeId="browse_active" />
+      <Choice Text="Approach the collector." NextNodeId="browse_completed" />
     </Node>
     <Node NodeId="browse_not_started">
-      <Text>*The eccentric collector notices you*</Text>
       <Text>Ah, a customer! Looking for something special? I have curiosities from all over.</Text>
       <Text>Wait... you have that look. The look of an adventurer.</Text>
       <Choice Text="What do you mean?" NextNodeId="hook" />
       <Choice Text="Just browsing." NextNodeId="leave_end" />
+    </Node>
+    <Node NodeId="browse_active">
+      <Text>Any luck with that map? I'm curious what it leads to...</Text>
+      <Choice Text="Still working on it." NextNodeId="leave_end" />
+    </Node>
+    <Node NodeId="browse_completed">
+      <Text>So? What did you find? Don't leave me in suspense!</Text>
+      <Choice Text="That's my secret." NextNodeId="leave_end" />
     </Node>
     <Node NodeId="hook">
       <Text>I acquired something... unusual. A map. Very old.</Text>
@@ -649,7 +650,7 @@
       <Text>As you wish. Come back if you change your mind.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="HiddenCache_ScholarHelp" DisplayName="Scholar's Knowledge" StartNodeId="consult">
+  <DialogueTree RefName="HiddenCache_ScholarHelp" DisplayName="History Club Help" StartNodeId="consult" Description="Getting information from the history enthusiast">
     <Node NodeId="consult">
       <Condition Type="HasQuestToken" RefName="HiddenCache_OldMap" />
       <Text>May I help you with something?</Text>
@@ -676,7 +677,7 @@
       <Text>Safe travels, friend.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="HiddenCache_HermitMeet" DisplayName="The Hermit's Warning" StartNodeId="encounter">
+  <DialogueTree RefName="HiddenCache_HermitMeet" DisplayName="The Old Priest" StartNodeId="encounter" Description="Meeting the retired shrine keeper">
     <Node NodeId="encounter">
       <Condition Type="HasQuestToken" RefName="HiddenCache_FirstClue" />
       <Text>*A weathered figure blocks your path*</Text>
@@ -704,7 +705,7 @@
       <Text>Hmph. Pride goeth before destruction. Find your own way, then.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="HiddenCache_RivalMeet" DisplayName="Rival Encounter" StartNodeId="confrontation">
+  <DialogueTree RefName="HiddenCache_RivalMeet" DisplayName="Another Seeker" StartNodeId="confrontation" Description="Encountering another student on the same trail">
     <Node NodeId="confrontation">
       <Condition Type="HasQuestToken" RefName="HiddenCache_SecondClue" />
       <Text>Well, well. Looks like I'm not the only one following that map's trail.</Text>
@@ -736,7 +737,7 @@
       <Action Type="StartCombat" CharacterRef="HiddenCache_Rival" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="HiddenCache_GuardianBattle" DisplayName="Guardian Awakens" StartNodeId="battle_activation">
+  <DialogueTree RefName="HiddenCache_GuardianBattle" DisplayName="Shrine Guardian" StartNodeId="battle_activation" Description="Facing the test to enter the hidden shrine">
     <Node NodeId="battle_activation">
       <Text>*ANCIENT MECHANISM ACTIVATES*</Text>
       <Text>*INTRUDER DETECTED. INITIATING DEFENSE PROTOCOL.*</Text>
@@ -746,7 +747,7 @@
       <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="HiddenCache_Discovery" DisplayName="The Hidden Cache" StartNodeId="arrival">
+  <DialogueTree RefName="HiddenCache_Discovery" DisplayName="The Secret Shrine" StartNodeId="arrival" Description="Discovering the hidden sacred site">
     <Node NodeId="arrival">
       <Condition Type="HasQuestToken" RefName="HiddenCache_AncientKey" />
       <Text>*The ancient door responds to the key, grinding open for the first time in centuries*</Text>
@@ -776,7 +777,7 @@
       <Action Type="CompleteQuest" RefName="HiddenCache_Quest" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="HiddenCache_TrapRoom" DisplayName="The Trap Room" StartNodeId="trap_trigger">
+  <DialogueTree RefName="HiddenCache_TrapRoom" DisplayName="Ancient Puzzle" StartNodeId="trap_trigger" Description="Solving the shrine's protective mechanisms">
     <Node NodeId="trap_trigger">
       <Text>*Click* The floor shifts beneath your feet. Ancient mechanisms whir to life.</Text>
       <Choice Text="[Quick reflexes] Dive for cover!" NextNodeId="dodge_attempt_hub" />
@@ -803,7 +804,7 @@
       <Action Type="GiveQuestToken" RefName="HiddenCache_TrapDisarmed" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_Story" DisplayName="The Legend" StartNodeId="tale">
+  <DialogueTree RefName="LostTechnique_Story" DisplayName="The Artisan's Tale" StartNodeId="tale" Description="Hearing about the legendary craftsman">
     <Node NodeId="tale">
       <Condition Type="QuestNotStarted" RefName="LostTechnique_Quest" />
       <Text>*the bard strums their instrument* You look like someone seeking more than coin.</Text>
@@ -837,7 +838,7 @@
       <Text>As you wish. But some stories seek those who need to hear them.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_FailedMeet" DisplayName="The Bitter One" StartNodeId="encounter">
+  <DialogueTree RefName="LostTechnique_FailedMeet" DisplayName="The Frustrated One" StartNodeId="encounter" Description="Meeting someone who gave up on learning">
     <Node NodeId="encounter">
       <Condition Type="HasQuestToken" RefName="LostTechnique_Rumor" />
       <Text>*a scarred figure blocks your path*</Text>
@@ -883,7 +884,7 @@
       <Text>Good luck. You'll need it.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_ElderMeet" DisplayName="The Elder's Guidance" StartNodeId="village">
+  <DialogueTree RefName="LostTechnique_ElderMeet" DisplayName="Grandmother's Wisdom" StartNodeId="village" Description="The village elder shares memories of old traditions">
     <Node NodeId="village">
       <Condition Type="HasQuestToken" RefName="LostTechnique_Rumor" />
       <Text>You seek the master on the mountain. *nods slowly* We see your kind, from time to time.</Text>
@@ -910,7 +911,7 @@
       <Text>May the mountain judge you worthy.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_RivalMeet" DisplayName="The Rival Seeker" StartNodeId="cross_paths">
+  <DialogueTree RefName="LostTechnique_RivalMeet" DisplayName="Fellow Student" StartNodeId="cross_paths" Description="Meeting another eager learner">
     <Node NodeId="cross_paths">
       <Condition Type="HasQuestToken" RefName="LostTechnique_MasterLocation" />
       <Text>*another traveler approaches from the opposite direction*</Text>
@@ -955,7 +956,7 @@
       <Action Type="StartCombat" CharacterRef="LostTechnique_Rival" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_MasterMeet" DisplayName="The Master's Test" StartNodeId="arrival">
+  <DialogueTree RefName="LostTechnique_MasterMeet" DisplayName="Meeting the Master" StartNodeId="arrival" Description="Finally meeting the legendary artisan">
     <Node NodeId="arrival">
       <Condition Type="HasQuestToken" RefName="LostTechnique_MasterLocation" />
       <Text>*an elderly figure sits in meditation, seemingly unaware of your approach*</Text>
@@ -1015,7 +1016,7 @@
       <Action Type="StartCombat" CharacterRef="LostTechnique_Master" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_TrialBody" DisplayName="Trial of the Body" StartNodeId="begin_trial">
+  <DialogueTree RefName="LostTechnique_TrialBody" DisplayName="Hands-On Test" StartNodeId="begin_trial" Description="Proving your physical dexterity">
     <Node NodeId="begin_trial">
       <Condition Type="HasQuestToken" RefName="LostTechnique_Accepted" />
       <Text>The first trial tests your body. You will spar with me.</Text>
@@ -1034,7 +1035,7 @@
       <Action Type="StartCombat" CharacterRef="LostTechnique_Master" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_SparBattle" DisplayName="Training Spar" StartNodeId="begin_end">
+  <DialogueTree RefName="LostTechnique_SparBattle" DisplayName="Skill Challenge" StartNodeId="begin_end" Description="A friendly competition of technique">
     <Node NodeId="begin_end">
       <Text>Good stance. But stance is just the beginning.</Text>
     </Node>
@@ -1061,7 +1062,7 @@
       <Action Type="SetCharacterState" RefName="Friendly" CharacterRef="LostTechnique_Master" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_TrialMind" DisplayName="Trial of the Mind" StartNodeId="begin_mind">
+  <DialogueTree RefName="LostTechnique_TrialMind" DisplayName="Knowledge Test" StartNodeId="begin_mind" Description="Demonstrating understanding of the craft">
     <Node NodeId="begin_mind">
       <Condition Type="HasQuestToken" RefName="LostTechnique_TrialOne" />
       <Text>The second trial tests your mind. You will sit in meditation until I release you.</Text>
@@ -1106,7 +1107,7 @@
       <Choice Text="*Focus on your breathing*" NextNodeId="focus" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_TrialSpirit" DisplayName="Trial of the Spirit" StartNodeId="begin_spirit">
+  <DialogueTree RefName="LostTechnique_TrialSpirit" DisplayName="Heart Test" StartNodeId="begin_spirit" Description="Showing true appreciation for the tradition">
     <Node NodeId="begin_spirit">
       <Condition Type="HasQuestToken" RefName="LostTechnique_TrialTwo" />
       <Text>The final trial tests your spirit. This is the hardest trial of all.</Text>
@@ -1140,7 +1141,7 @@
       <Action Type="GiveQuestToken" RefName="LostTechnique_TrialThree" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="LostTechnique_Learning" DisplayName="The Teaching" StartNodeId="begin_teaching">
+  <DialogueTree RefName="LostTechnique_Learning" DisplayName="The Lesson" StartNodeId="begin_teaching" Description="Receiving instruction from the master">
     <Node NodeId="begin_teaching">
       <Condition Type="HasQuestToken" RefName="LostTechnique_TrialThree" />
       <Text>You have passed all three trials. You are worthy.</Text>
@@ -1173,7 +1174,7 @@
       <Action Type="CompleteQuest" RefName="LostTechnique_Quest" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="MissingHeirloom_Victim_Start" DisplayName="The Victim's Plea" StartNodeId="greeting_hub">
+  <DialogueTree RefName="MissingHeirloom_Victim_Start" DisplayName="Lost Charm" StartNodeId="greeting_hub" Description="A classmate realizes their omamori is missing">
     <Node NodeId="greeting_hub">
       <Text>*The elder looks at you expectantly*</Text>
       <Choice Text="[Quest Not Started]" NextNodeId="greeting_not_started" />
@@ -1241,7 +1242,7 @@
       <Text>Any evidence is helpful. Keep looking - you're on the right track.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="MissingHeirloom_Witness_Dialogue" DisplayName="Witness Testimony" StartNodeId="greeting_hub">
+  <DialogueTree RefName="MissingHeirloom_Witness_Dialogue" DisplayName="What They Saw" StartNodeId="greeting_hub" Description="The observant student shares what they noticed">
     <Node NodeId="greeting_hub">
       <Text>*The neighbor notices you*</Text>
       <Choice Text="[Quest Active]" NextNodeId="greeting_quest_active" />
@@ -1283,7 +1284,7 @@
       <Text>Good luck. I hope you catch whoever did this.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="MissingHeirloom_Thief_Confront" DisplayName="Confronting the Thief" StartNodeId="confront_hub">
+  <DialogueTree RefName="MissingHeirloom_Thief_Confront" DisplayName="Caught Red-Handed" StartNodeId="confront_hub" Description="Confronting the mischievous student">
     <Node NodeId="confront_hub">
       <Text>*You approach the thief*</Text>
       <Choice Text="[Thief Identified]" NextNodeId="confront_identified" />
@@ -1357,7 +1358,7 @@
       <Action Type="StartCombat" CharacterRef="MissingHeirloom_Thief" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="MissingHeirloom_Thief_Battle" DisplayName="Thief Battle" StartNodeId="battle_start">
+  <DialogueTree RefName="MissingHeirloom_Thief_Battle" DisplayName="Making Amends" StartNodeId="battle_start" Description="The prankster tries to make it right">
     <Node NodeId="battle_start">
       <Text>You'll regret this!</Text>
     </Node>
@@ -1378,7 +1379,7 @@
       <Text>No... no!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="MissingHeirloom_Fence_Dialogue" DisplayName="Dealing with the Fence" StartNodeId="approach_hub">
+  <DialogueTree RefName="MissingHeirloom_Fence_Dialogue" DisplayName="Shop Owner's Story" StartNodeId="approach_hub" Description="The souvenir shop owner explains how they got the charm">
     <Node NodeId="approach_hub">
       <Text>*The dealer looks you over*</Text>
       <Choice Text="[With Confession]" NextNodeId="approach_with_confession" />
@@ -1435,7 +1436,7 @@
       <Action Type="StartCombat" CharacterRef="MissingHeirloom_Fence" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="MissingHeirloom_Return" DisplayName="Returning the Heirloom" StartNodeId="return">
+  <DialogueTree RefName="MissingHeirloom_Return" DisplayName="Charm Returned" StartNodeId="return" Description="Giving the precious omamori back to its owner">
     <Node NodeId="return">
       <Condition Type="HasQuestToken" RefName="MissingHeirloom_Heirloom" />
       <Text>Is that... could it be? You found it!</Text>
@@ -1462,7 +1463,7 @@
       <Action Type="CompleteQuest" RefName="MissingHeirloom_Quest" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RefugeeEscort_Start" DisplayName="Refugees' Plea" StartNodeId="entry">
+  <DialogueTree RefName="RefugeeEscort_Start" DisplayName="Missing Students" StartNodeId="entry" Description="The senpai asks for help finding lost classmates">
     <Node NodeId="entry">
       <Choice Text="[Quest not started]" NextNodeId="start_hub" />
       <Choice Text="[Quest active]" NextNodeId="start_active" />
@@ -1528,7 +1529,7 @@
       <Action Type="GiveQuestToken" RefName="RefugeeEscort_SuppliesGathered" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RefugeeEscort_FighterJoin" DisplayName="Volunteer Fighter" StartNodeId="volunteer_hub">
+  <DialogueTree RefName="RefugeeEscort_FighterJoin" DisplayName="Kohai Volunteers" StartNodeId="volunteer_hub" Description="A brave underclassman offers to help search">
     <Node NodeId="volunteer_hub">
       <Text>I want to fight alongside you. I'm tired of feeling helpless.</Text>
       <Text>My family... they didn't make it. Let me protect the others.</Text>
@@ -1550,7 +1551,7 @@
       <Text>I understand. I'll protect them from within the group, then.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RefugeeEscort_LostChild" DisplayName="Lost Child" StartNodeId="panic">
+  <DialogueTree RefName="RefugeeEscort_LostChild" DisplayName="First-Year Missing" StartNodeId="panic" Description="Realizing one of the group has wandered off">
     <Node NodeId="panic">
       <Text>The child! Where is the child?! They were right here!</Text>
       <Text>Oh gods, they must have wandered off when we stopped to rest.</Text>
@@ -1570,7 +1571,7 @@
       <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RefugeeEscort_FindChild" DisplayName="Finding the Child" StartNodeId="found">
+  <DialogueTree RefName="RefugeeEscort_FindChild" DisplayName="Found Them!" StartNodeId="found" Description="Locating the lost first-year student">
     <Node NodeId="found">
       <Text>*The child is huddled behind a rock, crying softly*</Text>
       <Choice Text="It's okay. I'm here to take you back to the others." NextNodeId="comfort_end" />
@@ -1587,7 +1588,7 @@
       <Action Type="GiveQuestToken" RefName="RefugeeEscort_ChildRescued" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RefugeeEscort_StrangerReveal" DisplayName="The Stranger's Truth" StartNodeId="confrontation">
+  <DialogueTree RefName="RefugeeEscort_StrangerReveal" DisplayName="Transfer's Secret" StartNodeId="confrontation" Description="The mysterious transfer student opens up">
     <Node NodeId="confrontation">
       <Text>*You notice the stranger slipping away from the group at night*</Text>
       <Choice Text="[Follow quietly] See where they're going." NextNodeId="follow" />
@@ -1653,7 +1654,7 @@
       <Action Type="StartCombat" CharacterRef="RefugeeEscort_Stranger" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RefugeeEscort_CaptainBattle" DisplayName="Captain Battle" StartNodeId="battle_opening">
+  <DialogueTree RefName="RefugeeEscort_CaptainBattle" DisplayName="Vice Principal Arrives" StartNodeId="battle_opening" Description="Dealing with the stern administrator">
     <Node NodeId="battle_opening">
       <Text>So, you're the one protecting these traitors. It ends here.</Text>
       <Text>Hand them over and I might let you walk away.</Text>
@@ -1664,7 +1665,7 @@
       <Action Type="SetCharacterState" RefName="Fleeing" CharacterRef="RefugeeEscort_Captain" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RefugeeEscort_Border" DisplayName="Border Crossing" StartNodeId="checkpoint">
+  <DialogueTree RefName="RefugeeEscort_Border" DisplayName="Meeting Point" StartNodeId="checkpoint" Description="Reaching the bus pickup location">
     <Node NodeId="checkpoint">
       <Text>Halt. State your business.</Text>
       <Choice Text="These people are refugees seeking asylum." NextNodeId="asylum_hub" />
@@ -1692,7 +1693,7 @@
       <Action Type="GiveQuestToken" RefName="RefugeeEscort_JourneyComplete" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RefugeeEscort_Complete" DisplayName="Journey's End" StartNodeId="gratitude">
+  <DialogueTree RefName="RefugeeEscort_Complete" DisplayName="Everyone Accounted For" StartNodeId="gratitude" Description="All students safely reunited">
     <Node NodeId="gratitude">
       <Condition Type="HasQuestToken" RefName="RefugeeEscort_JourneyComplete" />
       <Text>We... we made it. We're actually safe.</Text>
@@ -1725,7 +1726,7 @@
       <Action Type="CompleteQuest" RefName="RefugeeEscort_Quest" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RivalGuild_Recruitment" DisplayName="Guild Offer" StartNodeId="approach_hub">
+  <DialogueTree RefName="RivalGuild_Recruitment" DisplayName="Join the Club!" StartNodeId="approach_hub" Description="The photo club captain recruits you for the contest">
     <Node NodeId="approach_hub">
       <Text>*The guild recruiter notices you*</Text>
       <Choice Text="[Quest not started]" NextNodeId="approach_not_started" />
@@ -1779,7 +1780,7 @@
       <Text>Your loss. But don't interfere with our business - that would be... unwise.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RivalGuild_SpyInfo" DisplayName="Buying Intel" StartNodeId="meeting_hub">
+  <DialogueTree RefName="RivalGuild_SpyInfo" DisplayName="Photography Tips" StartNodeId="meeting_hub" Description="Exchanging techniques with the enthusiast">
     <Node NodeId="meeting_hub">
       <Text>*A shadowy figure waits in the alley*</Text>
       <Choice Text="[With guild charter]" NextNodeId="meeting_with_charter" />
@@ -1828,7 +1829,7 @@
       <Text>Your choice. But don't blame me when you walk into a trap.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RivalGuild_Sabotage" DisplayName="Sabotage Operation" StartNodeId="arrive">
+  <DialogueTree RefName="RivalGuild_Sabotage" DisplayName="Clever Strategy" StartNodeId="arrive" Description="Planning to outmaneuver the rival club">
     <Node NodeId="arrive">
       <Condition Type="HasQuestToken" RefName="RivalGuild_IntelGathered" />
       <Text>*You approach the rival's warehouse under cover of darkness*</Text>
@@ -1896,7 +1897,7 @@
       <Text>*Behind you, angry shouts echo*</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RivalGuild_RivalBattle" DisplayName="Guild War Climax" StartNodeId="battle_opening">
+  <DialogueTree RefName="RivalGuild_RivalBattle" DisplayName="Photo Face-Off" StartNodeId="battle_opening" Description="The intense competition heats up">
     <Node NodeId="battle_opening">
       <Text>So, you're the one who's been destroying my operations.</Text>
       <Text>I should have known your guild would resort to thuggery.</Text>
@@ -1925,7 +1926,7 @@
       <Action Type="SetCharacterState" RefName="Friendly" CharacterRef="RivalGuild_RivalLeader" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RivalGuild_Confrontation" DisplayName="Guild War Finale" StartNodeId="confront">
+  <DialogueTree RefName="RivalGuild_Confrontation" DisplayName="Final Round" StartNodeId="confront" Description="The decisive moment of the contest">
     <Node NodeId="confront">
       <Condition Type="HasQuestToken" RefName="RivalGuild_SabotageComplete" />
       <Text>*The rival guild leader stands before you, sword drawn*</Text>
@@ -1972,7 +1973,7 @@
       <Action Type="GiveQuestToken" RefName="RivalGuild_PeaceTreaty" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="RivalGuild_Report" DisplayName="Report to Guild Master" StartNodeId="report_hub">
+  <DialogueTree RefName="RivalGuild_Report" DisplayName="Victory Celebration" StartNodeId="report_hub" Description="Reporting the results to your club captain">
     <Node NodeId="report_hub">
       <Text>*The guild master awaits your report*</Text>
       <Choice Text="[Report combat victory]" NextNodeId="report_combat" />
@@ -2004,7 +2005,7 @@
       <Action Type="CompleteQuest" RefName="RivalGuild_Quest" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="WanderingMerchant_Introduction" DisplayName="Meeting the Merchant" StartNodeId="check_quest_state">
+  <DialogueTree RefName="WanderingMerchant_Introduction" DisplayName="Lost Guide" StartNodeId="check_quest_state" Description="Finding the separated tour guide">
     <Node NodeId="check_quest_state">
       <Text>*The merchant approaches*</Text>
       <Choice Text="[Quest not started]" NextNodeId="greeting_hub" />
@@ -2082,7 +2083,7 @@
       <Text>Of course. I'll check the goods while you prepare. Don't take too long!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="WanderingMerchant_Toll" DisplayName="Toll Checkpoint" StartNodeId="checkpoint">
+  <DialogueTree RefName="WanderingMerchant_Toll" DisplayName="Ticket Check" StartNodeId="checkpoint" Description="Getting past the admission booth">
     <Node NodeId="checkpoint">
       <Text>Halt! This is an official toll road. 50 credits for merchant carts.</Text>
       <Choice Text="[Pay 50] Here's the toll." NextNodeId="pay_toll_end" />
@@ -2128,7 +2129,7 @@
       <Action Type="GiveQuestToken" RefName="WanderingMerchant_RoadToll" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="WanderingMerchant_Ambush" DisplayName="Road Ambush" StartNodeId="ambush">
+  <DialogueTree RefName="WanderingMerchant_Ambush" DisplayName="Pushy Vendors" StartNodeId="ambush" Description="Navigating past aggressive souvenir sellers">
     <Node NodeId="ambush">
       <Text>Well well, what do we have here? A merchant with goods and a guard?</Text>
       <Text>Hand over the merchandise and nobody gets hurt.</Text>
@@ -2157,7 +2158,7 @@
       <Text>Smart move. This is enough for today. Get out of here before I change my mind.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="WanderingMerchant_DeliveryOne" DisplayName="First Delivery" StartNodeId="arrival">
+  <DialogueTree RefName="WanderingMerchant_DeliveryOne" DisplayName="Helping Tourists" StartNodeId="arrival" Description="Assisting lost visitors along the way">
     <Node NodeId="arrival">
       <Condition Type="HasQuestToken" RefName="WanderingMerchant_TradeGoods" />
       <Text>Ah, fresh goods from the capital! Let me see what you've brought.</Text>
@@ -2200,7 +2201,7 @@
       <Action Type="GiveQuestToken" RefName="WanderingMerchant_FirstDelivery" Amount="1" />
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="WanderingMerchant_Innkeeper" DisplayName="Roadside Inn" StartNodeId="welcome">
+  <DialogueTree RefName="WanderingMerchant_Innkeeper" DisplayName="At the Ryokan" StartNodeId="welcome" Description="Stopping at the traditional inn">
     <Node NodeId="welcome">
       <Text>Welcome, travelers! Rest your feet and warm your bellies!</Text>
       <Choice Text="What's the word on the roads ahead?" NextNodeId="road_info" />
@@ -2216,7 +2217,7 @@
       <Text>Safe travels! May your purse grow heavy.</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="WanderingMerchant_DeliveryTwo" DisplayName="Final Delivery" StartNodeId="guild_arrival">
+  <DialogueTree RefName="WanderingMerchant_DeliveryTwo" DisplayName="Tour Reunited" StartNodeId="guild_arrival" Description="Returning the guide to their group">
     <Node NodeId="guild_arrival">
       <Condition Type="HasQuestToken" RefName="WanderingMerchant_FirstDelivery" />
       <Text>The traveling merchant and escort, I presume? We've been expecting you.</Text>
@@ -2966,84 +2967,57 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya Dialogue" Description="Dialogue tree for Guard at Kazahinomi-no-Miya" StartNodeId="greeting">
-    <Node NodeId="leave_peaceful_end">
-      <Text>Wise choice. Now get out of my sight before I change my mind!</Text>
-    </Node>
-    <Node NodeId="attempt_calm" NextNodeId="calm_failed">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="20" />
-      <Text>*Guard at Kazahinomi-no-Miya considers* You seem capable. Perhaps fighting isn't the wisest choice.</Text>
-      <Choice Text="Thank you. I'll be on my way." NextNodeId="leave_peaceful_end" />
-      <Choice Text="Actually, I'll fight you anyway!" NextNodeId="fight" />
-    </Node>
-    <Node NodeId="calm_failed">
-      <Text>Prepare yourself - I won't hold back!</Text>
-      <Choice Text="Fine, I'll leave!" NextNodeId="leave_peaceful_end" />
-      <Choice Text="Then let's fight!" NextNodeId="fight" />
-    </Node>
-    <Node NodeId="fight">
-      <Text>Then prepare to die!</Text>
-      <Action Type="SetCharacterState" CharacterRef="GUARD_Kazahinominomiya_0" RefName="Hostile" />
-      <Action Type="StartCombat" CharacterRef="GUARD_Kazahinominomiya_0" />
-    </Node>
     <Node NodeId="greeting">
-      <Text>*Guard at Kazahinomi-no-Miya eyes you suspiciously* State your business, stranger!</Text>
-      <Choice Text="I mean no harm. I'll leave." NextNodeId="leave_peaceful_end" />
-      <Choice Text="Try to calm them down" NextNodeId="attempt_calm" />
-      <Choice Text="Fight!" NextNodeId="fight" />
+      <Text>Halt! This area is under protection. State your business or face the consequences!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Kazahinomi-no-Miya! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
-    <Node NodeId="leave_peaceful_end">
-      <Text>Wise choice. Now get out of my sight before I change my mind!</Text>
-    </Node>
-    <Node NodeId="attempt_calm" NextNodeId="calm_failed">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="20" />
-      <Text>*Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) considers* You seem capable. Perhaps fighting isn't the wisest choice.</Text>
-      <Choice Text="Thank you. I'll be on my way." NextNodeId="leave_peaceful_end" />
-      <Choice Text="Actually, I'll fight you anyway!" NextNodeId="fight" />
-    </Node>
-    <Node NodeId="calm_failed">
-      <Text>You think you can best me? Ha! Many have tried.</Text>
-      <Choice Text="Fine, I'll leave!" NextNodeId="leave_peaceful_end" />
-      <Choice Text="Then let's fight!" NextNodeId="fight" />
-    </Node>
-    <Node NodeId="fight">
-      <Text>Your funeral! Have at you!</Text>
-      <Action Type="SetCharacterState" CharacterRef="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" RefName="Hostile" />
-      <Action Type="StartCombat" CharacterRef="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" />
-    </Node>
     <Node NodeId="greeting">
-      <Text>*Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) notices you and takes an aggressive stance* Who goes there?!</Text>
-      <Choice Text="I mean no harm. I'll leave." NextNodeId="leave_peaceful_end" />
-      <Choice Text="Try to calm them down" NextNodeId="attempt_calm" />
-      <Choice Text="Fight!" NextNodeId="fight" />
+      <Text>*blocks your path aggressively*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" StartNodeId="greeting">
-    <Node NodeId="leave_peaceful_end">
-      <Text>Wise choice. Now get out of my sight before I change my mind!</Text>
-    </Node>
-    <Node NodeId="attempt_calm" NextNodeId="calm_failed">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="20" />
-      <Text>*Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) looks uncertain* I suppose I could let this slide... for a price.</Text>
-      <Choice Text="Thank you. I'll be on my way." NextNodeId="leave_peaceful_end" />
-      <Choice Text="Actually, I'll fight you anyway!" NextNodeId="fight" />
-    </Node>
-    <Node NodeId="calm_failed">
-      <Text>You think you can best me? Ha! Many have tried.</Text>
-      <Choice Text="Fine, I'll leave!" NextNodeId="leave_peaceful_end" />
-      <Choice Text="Then let's fight!" NextNodeId="fight" />
-    </Node>
-    <Node NodeId="fight">
-      <Text>No more talking - let's finish this!</Text>
-      <Action Type="SetCharacterState" CharacterRef="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" RefName="Hostile" />
-      <Action Type="StartCombat" CharacterRef="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" />
-    </Node>
     <Node NodeId="greeting">
-      <Text>*Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) eyes you suspiciously* State your business, stranger!</Text>
-      <Choice Text="I mean no harm. I'll leave." NextNodeId="leave_peaceful_end" />
-      <Choice Text="Try to calm them down" NextNodeId="attempt_calm" />
-      <Choice Text="Fight!" NextNodeId="fight" />
+      <Text>*blocks your path aggressively*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>A pleasure! These lands are full of wonders worth exploring.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
 </DialogueTrees>

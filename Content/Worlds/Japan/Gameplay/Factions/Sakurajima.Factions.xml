@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Factions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Faction RefName="CityGuard" DisplayName="Satsuma Bushi" Description="The samurai warriors sworn to protect the Shimazu domain. They maintain order in castle towns and patrol the roads against bandits and ronin." StartingReputation="0" Category="Military">
     <Relationships>
       <Relationship FactionRef="MerchantsGuild" RelationshipType="Allied" SpilloverPercent="0.25" />

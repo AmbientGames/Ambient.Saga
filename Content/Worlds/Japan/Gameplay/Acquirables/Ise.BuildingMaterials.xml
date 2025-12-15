@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<BuildingMaterials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<BuildingMaterials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <BuildingMaterial RefName="Nails" DisplayName="Nails" Description="Basic construction nails from the hardware store" WholesalePrice="2" TextureRef="Nails">
     <CompatibleSubstances>
       <Substance SubstanceRef="Wood" />

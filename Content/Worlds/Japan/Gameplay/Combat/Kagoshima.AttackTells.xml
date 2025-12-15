@@ -1,249 +1,318 @@
-<?xml version="1.0" encoding="utf-8"?>
-<AttackTells xmlns="Ambient.Domain"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd">
-
-    <!-- Attack patterns organized by weapon category. At runtime, the BattleEngine
-         filters tells based on the attacker's equipped weapon's Category attribute. -->
-
-    <!-- MELEE WEAPON ATTACKS - OneHanded and TwoHanded weapons -->
-
-    <AttackTell RefName="MeleeSlash" Pattern="Slash"
-                TellText="The attacker shifts their weight, blade drawing back for a measured horizontal cut."
-                OptimalDefense="Parry" SecondaryDefense="Block" ReactionWindowMs="3000"
-                WeaponCategories="OneHanded TwoHanded">
-        <Outcome Reaction="Parry" DamageMultiplier="0.0" EnablesCounter="true" CounterMultiplier="0.5"
-                 ResponseText="You deflect the blade with practiced precision, creating an opening!">
-            <Effects Stamina="0.05"/>
-        </Outcome>
-        <Outcome Reaction="Block" DamageMultiplier="0.3"
-                 ResponseText="Your guard absorbs the disciplined strike." />
-        <Outcome Reaction="Dodge" DamageMultiplier="0.5"
-                 ResponseText="You evade most of the arc but it clips you." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.7"
-                 ResponseText="Bracing does little against the focused cut." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The blade connects with trained precision." />
-    </AttackTell>
-
-    <AttackTell RefName="MeleeThrust" Pattern="Thrust"
-                TellText="Dropping into a forward stance, the attacker levels their weapon for a lunging thrust."
-                OptimalDefense="Dodge" SecondaryDefense="Parry" ReactionWindowMs="2500"
-                WeaponCategories="OneHanded TwoHanded">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.0"
-                 ResponseText="You sidestep cleanly as the thrust extends past you.">
-            <Effects Stamina="0.05"/>
-        </Outcome>
-        <Outcome Reaction="Parry" DamageMultiplier="0.2" EnablesCounter="true" CounterMultiplier="0.3"
-                 ResponseText="You redirect the thrust, though the force grazes you." />
-        <Outcome Reaction="Block" DamageMultiplier="0.6"
-                 ResponseText="The piercing attack partially bypasses your guard." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.8"
-                 ResponseText="Bracing offers no protection against the precise thrust." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The blade finds its mark with surgical accuracy." />
-    </AttackTell>
-
-    <AttackTell RefName="MeleeOverhead" Pattern="Overhead"
-                TellText="The attacker raises their weapon high, muscles coiling for a powerful downward strike."
-                OptimalDefense="Block" SecondaryDefense="Dodge" ReactionWindowMs="3500"
-                WeaponCategories="OneHanded TwoHanded">
-        <Outcome Reaction="Block" DamageMultiplier="0.2"
-                 ResponseText="You catch the overhead strike solidly, the force dispersing through your guard.">
-            <Effects Stamina="0.05"/>
-        </Outcome>
-        <Outcome Reaction="Dodge" DamageMultiplier="0.3"
-                 ResponseText="You roll aside as the weapon crashes down." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.5"
-                 ResponseText="The weight behind the blow is too much to redirect fully." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.6"
-                 ResponseText="You absorb some impact but still stagger." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The crushing blow lands with devastating force." />
-    </AttackTell>
-
-    <AttackTell RefName="MeleeSweep" Pattern="Sweep"
-                TellText="The attacker drops low, blade sweeping toward your ankles."
-                OptimalDefense="Dodge" SecondaryDefense="Block" ReactionWindowMs="2500"
-                WeaponCategories="OneHanded TwoHanded">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.0"
-                 ResponseText="You hop over the low sweep with perfect timing.">
-            <Effects Stamina="0.05"/>
-        </Outcome>
-        <Outcome Reaction="Block" DamageMultiplier="0.3"
-                 ResponseText="You deflect the sweep downward." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.5"
-                 ResponseText="The angle makes a clean parry difficult." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.7"
-                 ResponseText="Bracing low helps but you still take the hit." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The sweep takes your legs out from under you." />
-    </AttackTell>
-
-    <!-- TWO-HANDED HEAVY ATTACKS -->
-
-    <AttackTell RefName="HeavyCleave" Pattern="Slash"
-                TellText="With a primal roar, the attacker swings their massive weapon in a devastating arc."
-                OptimalDefense="Dodge" SecondaryDefense="Block" ReactionWindowMs="3000"
-                WeaponCategories="TwoHanded">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.1"
-                 ResponseText="You throw yourself clear of the brutal swing.">
-            <Effects Stamina="0.05"/>
-        </Outcome>
-        <Outcome Reaction="Block" DamageMultiplier="0.4"
-                 ResponseText="Your guard holds but your arms go numb from the impact." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.6"
-                 ResponseText="The sheer force behind the swing overwhelms your parry." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.7"
-                 ResponseText="You hunker down but still get knocked aside." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The savage blow sends you reeling." />
-    </AttackTell>
-
-    <!-- SHIELD ATTACKS -->
-
-    <AttackTell RefName="ShieldBash" Pattern="Charge"
-                TellText="The attacker tucks behind their shield, driving forward with their full weight."
-                OptimalDefense="Dodge" SecondaryDefense="Brace" ReactionWindowMs="2500"
-                WeaponCategories="Shield">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.0" EnablesCounter="true" CounterMultiplier="0.5"
-                 ResponseText="You pivot aside, leaving them stumbling past!">
-            <Effects Stamina="0.1"/>
-        </Outcome>
-        <Outcome Reaction="Brace" DamageMultiplier="0.4"
-                 ResponseText="You plant your feet and absorb the impact, barely." />
-        <Outcome Reaction="Block" DamageMultiplier="0.5"
-                 ResponseText="Shield meets guard in a jarring collision." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.8"
-                 ResponseText="There's no blade to parry, only momentum." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The shield slam knocks you back hard." />
-    </AttackTell>
-
-    <!-- UNARMED/CREATURE ATTACKS -->
-
-    <AttackTell RefName="UnarmedGrab" Pattern="Grapple"
-                TellText="The attacker spreads their arms wide, lunging to grab you."
-                OptimalDefense="Dodge" SecondaryDefense="Parry" ReactionWindowMs="2000"
-                WeaponCategories="Unarmed">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.0" EnablesCounter="true" CounterMultiplier="0.5"
-                 ResponseText="You slip past the grasping hands!">
-            <Effects Stamina="0.1"/>
-        </Outcome>
-        <Outcome Reaction="Parry" DamageMultiplier="0.2"
-                 ResponseText="You knock their arms aside." />
-        <Outcome Reaction="Block" DamageMultiplier="0.4"
-                 ResponseText="Your guard creates distance." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.7"
-                 ResponseText="Bracing makes you easier to grab." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="Meaty hands seize you in a crushing grip." />
-    </AttackTell>
-
-    <AttackTell RefName="UnarmedCharge" Pattern="Charge"
-                TellText="The attacker lowers their shoulder and charges like a rampaging bull."
-                OptimalDefense="Dodge" SecondaryDefense="Brace" ReactionWindowMs="2500"
-                WeaponCategories="Unarmed">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.0" EnablesCounter="true" CounterMultiplier="0.6"
-                 ResponseText="You sidestep the charge, leaving them overextended!">
-            <Effects Stamina="0.1"/>
-        </Outcome>
-        <Outcome Reaction="Brace" DamageMultiplier="0.5"
-                 ResponseText="You plant your feet and barely hold your ground." />
-        <Outcome Reaction="Block" DamageMultiplier="0.6"
-                 ResponseText="Your guard buckles under the momentum." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.9"
-                 ResponseText="There's nothing to parry - only raw force." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The charge tramples you completely." />
-    </AttackTell>
-
-    <!-- MAGIC ATTACKS -->
-
-    <AttackTell RefName="MagicFirebolt" Pattern="Bolt"
-                TellText="Flames coalesce between the caster's hands, forming a searing projectile."
-                OptimalDefense="Dodge" SecondaryDefense="Block" ReactionWindowMs="2000"
-                WeaponCategories="Staff Wand Tome Focus">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.0"
-                 ResponseText="You weave aside as the firebolt scorches past.">
-            <Effects Stamina="0.05"/>
-        </Outcome>
-        <Outcome Reaction="Block" DamageMultiplier="0.4"
-                 ResponseText="Your guard disperses some of the flames." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.6"
-                 ResponseText="You endure the searing heat." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.8"
-                 ResponseText="You can't parry fire." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The firebolt explodes against you." />
-    </AttackTell>
-
-    <AttackTell RefName="MagicIceShard" Pattern="Bolt"
-                TellText="Crystalline ice forms in the air, sharpening into deadly shards."
-                OptimalDefense="Dodge" SecondaryDefense="Block" ReactionWindowMs="2000"
-                WeaponCategories="Staff Wand Tome Focus">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.0"
-                 ResponseText="You duck as ice shards shatter against the wall behind you.">
-            <Effects Stamina="0.05"/>
-        </Outcome>
-        <Outcome Reaction="Block" DamageMultiplier="0.3"
-                 ResponseText="Your guard deflects the frozen projectiles." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.6"
-                 ResponseText="The cold bites deep even through your resistance." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.7"
-                 ResponseText="You shatter some shards but others find their mark." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="Ice shards pierce and freeze your flesh." />
-    </AttackTell>
-
-    <AttackTell RefName="MagicLightningArc" Pattern="Bolt"
-                TellText="Static electricity crackles as the caster raises a finger toward you."
-                OptimalDefense="Dodge" SecondaryDefense="Brace" ReactionWindowMs="1500"
-                WeaponCategories="Staff Wand Tome Focus">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.1"
-                 ResponseText="You move but lightning is faster - it still arcs to you." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.4" PreventsStatusEffect="true"
-                 ResponseText="You ground yourself, reducing the shock." />
-        <Outcome Reaction="Block" DamageMultiplier="0.5"
-                 ResponseText="Your guard conducts the electricity painfully." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.8"
-                 ResponseText="Your weapon becomes a lightning rod." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="Lightning courses through your body." />
-    </AttackTell>
-
-    <AttackTell RefName="MagicArcaneMissile" Pattern="Bolt"
-                TellText="Motes of purple energy spiral around the caster before streaking toward you."
-                OptimalDefense="Dodge" SecondaryDefense="Block" ReactionWindowMs="2000"
-                WeaponCategories="Staff Wand Tome Focus">
-        <Outcome Reaction="Dodge" DamageMultiplier="0.2"
-                 ResponseText="The missiles track you - you evade most but not all." />
-        <Outcome Reaction="Block" DamageMultiplier="0.4"
-                 ResponseText="Your guard absorbs the arcane impacts." />
-        <Outcome Reaction="Brace" DamageMultiplier="0.6"
-                 ResponseText="You steel yourself against the magical barrage." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.7"
-                 ResponseText="You deflect some missiles but they reform and strike." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The arcane missiles pummel you relentlessly." />
-    </AttackTell>
-
-    <!-- INSTRUMENT ATTACKS -->
-
-    <AttackTell RefName="InstrumentDiscordantNote" Pattern="Wave"
-                TellText="The performer's fingers find a jarring chord, building to an ear-splitting crescendo."
-                OptimalDefense="Brace" SecondaryDefense="Block" ReactionWindowMs="2500"
-                WeaponCategories="Instrument">
-        <Outcome Reaction="Brace" DamageMultiplier="0.3" PreventsStatusEffect="true"
-                 ResponseText="You cover your ears and steel your mind." />
-        <Outcome Reaction="Block" DamageMultiplier="0.5"
-                 ResponseText="Your guard does little against sound waves." />
-        <Outcome Reaction="Dodge" DamageMultiplier="0.6"
-                 ResponseText="You can't dodge sound." />
-        <Outcome Reaction="Parry" DamageMultiplier="0.8"
-                 ResponseText="You can't parry a sound wave." />
-        <Outcome Reaction="None" DamageMultiplier="1.0"
-                 ResponseText="The discordant note pierces your mind." />
-    </AttackTell>
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AttackTells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <AttackTell RefName="MeleeSlash" Pattern="Slash" TellText="The bushi shifts into seigan stance, katana poised for a measured kesa-giri cut." OptimalDefense="Parry" SecondaryDefense="Block">
+    <Outcome Reaction="Parry" DamageMultiplier="0" EnablesCounter="true" ResponseText="You deflect the blade with a textbook parry, steel ringing!">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.3" ResponseText="Your guard absorbs the disciplined diagonal cut." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.5" ResponseText="You evade most of the arc but it grazes your haori." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="Bracing does little against the focused cut." />
+    <Outcome Reaction="None" ResponseText="The katana connects with trained precision." />
+  </AttackTell>
+  <AttackTell RefName="MeleeThrust" Pattern="Thrust" TellText="The bushi drops into chudan, katana tip aligned for a swift tsuki thrust." OptimalDefense="Dodge" ReactionWindowMs="2500" SecondaryDefense="Parry">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You pivot aside as the thrust extends past you.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Parry" DamageMultiplier="0.2" EnablesCounter="true" CounterMultiplier="0.3" ResponseText="You redirect the thrust, steel scraping steel." />
+    <Outcome Reaction="Block" DamageMultiplier="0.6" ResponseText="The piercing attack partially bypasses your guard." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.8" ResponseText="Bracing offers no protection against the precise thrust." />
+    <Outcome Reaction="None" ResponseText="The blade finds its mark with surgical precision." />
+  </AttackTell>
+  <AttackTell RefName="MeleeOverhead" Pattern="Overhead" TellText="The bushi raises their katana high in jodan, preparing a devastating men strike." OptimalDefense="Block" ReactionWindowMs="3500" SecondaryDefense="Dodge">
+    <Outcome Reaction="Block" DamageMultiplier="0.2" ResponseText="You catch the overhead strike solidly, absorbing the blow.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Dodge" DamageMultiplier="0.3" ResponseText="You roll aside as the blade whistles down." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.5" ResponseText="The weight behind the blow is too much to redirect fully." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.6" ResponseText="You absorb some impact but still stagger." />
+    <Outcome Reaction="None" ResponseText="The crushing blow lands with devastating force." />
+  </AttackTell>
+  <AttackTell RefName="MeleeSweep" Pattern="Sweep" TellText="The bushi drops low, katana sweeping in a swift do cut toward your legs." OptimalDefense="Dodge" ReactionWindowMs="2500" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You leap over the sweeping blade perfectly.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.3" ResponseText="You deflect the sweep downward." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.5" ResponseText="The angle makes a clean parry difficult." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="Bracing low helps but you still take the hit." />
+    <Outcome Reaction="None" ResponseText="The blade cuts across your legs." />
+  </AttackTell>
+  <AttackTell RefName="MeleePommelStrike" Pattern="Thrust" TellText="The bushi reverses their grip, tsuka rising for a swift kashira strike." OptimalDefense="Block" ReactionWindowMs="2000" SecondaryDefense="Dodge">
+    <Outcome Reaction="Block" DamageMultiplier="0.1" ResponseText="You deflect the pommel away from your face.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Dodge" DamageMultiplier="0.2" ResponseText="You lean back just in time." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.4" ResponseText="You knock the arm aside but the strike still grazes you." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="Bracing does nothing against a blow to the head." />
+    <Outcome Reaction="None" ResponseText="Stars explode in your vision as the kashira connects." />
+  </AttackTell>
+  <AttackTell RefName="MeleeFeint" Pattern="Feint" TellText="The shinobi's blade weaves in deceptive patterns, impossible to read." OptimalDefense="Brace" ReactionWindowMs="3500" SecondaryDefense="Block">
+    <Outcome Reaction="Brace" DamageMultiplier="0.4" ResponseText="You hold steady, ready for anything." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard catches the real attack, barely." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.7" ResponseText="You dodge the wrong way - the real strike finds you." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You parry air as the true strike comes from elsewhere." />
+    <Outcome Reaction="None" ResponseText="The deceptive strike finds its mark." />
+  </AttackTell>
+  <AttackTell RefName="MeleeFlurry" Pattern="Flurry" TellText="The sohei's eyes blaze with righteous fury as they unleash a storm of strikes." OptimalDefense="Block" ReactionWindowMs="2000" SecondaryDefense="Brace">
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="You weather the onslaught behind your guard." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.5" ResponseText="You endure the battering, blow after blow." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.6" ResponseText="You evade some strikes but others find their mark." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.7" ResponseText="The speed and fury make parrying impossible." />
+    <Outcome Reaction="None" ResponseText="The barrage of strikes beats you mercilessly." />
+  </AttackTell>
+  <AttackTell RefName="HeavyCleave" Pattern="Slash" TellText="With a battle sutra on their lips, the sohei swings their naginata in a devastating arc." OptimalDefense="Dodge" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0.1" ResponseText="You throw yourself clear of the sweeping polearm!">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="Your guard holds but your arms go numb from impact." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.6" ResponseText="The sheer force behind the swing overwhelms your parry." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="You hunker down but still get knocked aside." />
+    <Outcome Reaction="None" ResponseText="The naginata sends you reeling." />
+  </AttackTell>
+  <AttackTell RefName="HeavyOverhead" Pattern="Overhead" TellText="The sohei raises their tetsubo overhead, roaring a sacred invocation." OptimalDefense="Dodge" ReactionWindowMs="3500" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" EnablesCounter="true" CounterMultiplier="0.6" ResponseText="You dive clear as the iron club craters the earth!">
+      <Effects Stamina="0.1" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard buckles under the tremendous force." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.6" ResponseText="Even braced, the impact drives you to your knees." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="Attempting to parry that is nearly suicidal." />
+    <Outcome Reaction="None" ResponseText="The crushing tetsubo flattens you." />
+  </AttackTell>
+  <AttackTell RefName="ShieldBash" Pattern="Charge" TellText="The bushi tucks behind their tate shield, driving forward with armored weight." OptimalDefense="Dodge" ReactionWindowMs="2500" SecondaryDefense="Brace">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" EnablesCounter="true" ResponseText="You pivot aside, leaving them stumbling past!">
+      <Effects Stamina="0.1" />
+    </Outcome>
+    <Outcome Reaction="Brace" DamageMultiplier="0.4" ResponseText="You plant your feet and absorb the impact." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Shield meets guard in a jarring collision." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="There's no blade to parry, only momentum." />
+    <Outcome Reaction="None" ResponseText="The shield slam knocks you back hard." />
+  </AttackTell>
+  <AttackTell RefName="ShieldSlam" Pattern="Overhead" TellText="The ashigaru raises their tate high and brings it down edge-first." OptimalDefense="Dodge" ReactionWindowMs="2500" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You step back as the shield crashes down.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="You catch the rim on your guard." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.6" ResponseText="You knock the shield aside but the impact still rattles you." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="The shield edge crashes into you despite bracing." />
+    <Outcome Reaction="None" ResponseText="The shield edge cracks into you." />
+  </AttackTell>
+  <AttackTell RefName="UnarmedGrab" Pattern="Grapple" TellText="The sumo-sized bandit spreads meaty arms wide, lunging to grab you." OptimalDefense="Dodge" ReactionWindowMs="2000" SecondaryDefense="Parry">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" EnablesCounter="true" ResponseText="You slip past the grasping hands!">
+      <Effects Stamina="0.1" />
+    </Outcome>
+    <Outcome Reaction="Parry" DamageMultiplier="0.2" ResponseText="You knock their arms aside." />
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="Your guard creates distance." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="Bracing makes you easier to grab." />
+    <Outcome Reaction="None" ResponseText="Massive hands seize you in a crushing grip." />
+  </AttackTell>
+  <AttackTell RefName="UnarmedCharge" Pattern="Charge" TellText="The sohei charges forward, naginata leveled like a mounted lance." OptimalDefense="Dodge" ReactionWindowMs="2500" SecondaryDefense="Brace">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" EnablesCounter="true" CounterMultiplier="0.6" ResponseText="You sidestep the reckless charge!">
+      <Effects Stamina="0.1" />
+    </Outcome>
+    <Outcome Reaction="Brace" DamageMultiplier="0.5" ResponseText="You plant your feet and barely hold ground." />
+    <Outcome Reaction="Block" DamageMultiplier="0.6" ResponseText="Your guard buckles under the momentum." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.9" ResponseText="There's nothing to parry - only raw force." />
+    <Outcome Reaction="None" ResponseText="The charge tramples you completely." />
+  </AttackTell>
+  <AttackTell RefName="UnarmedRoar" Pattern="Wave" TellText="The sohei's voice rises in a powerful kiai that seems to shake the air itself." OptimalDefense="Brace" SecondaryDefense="Block">
+    <Outcome Reaction="Brace" DamageMultiplier="0.3" PreventsStatusEffect="true" ResponseText="You steel your mind against the spirit-shaking shout." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard provides some physical protection but the fear seeps through." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.6" ResponseText="You can't dodge sound - the roar washes over you." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You can't parry a battle cry." />
+    <Outcome Reaction="None" ResponseText="The thunderous kiai shakes you to your core." />
+  </AttackTell>
+  <AttackTell RefName="RangedQuickShot" Pattern="Projectile" TellText="The yumitori nocks and draws their yumi in one fluid kyudo motion." OptimalDefense="Dodge" ReactionWindowMs="1500" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You twist aside as the ya whistles past.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.3" ResponseText="Your guard catches the arrow." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.6" ResponseText="Bracing does little against a piercing arrow." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="Parrying an arrow is nearly impossible." />
+    <Outcome Reaction="None" ResponseText="The arrow strikes true." />
+  </AttackTell>
+  <AttackTell RefName="RangedAimedShot" Pattern="Projectile" TellText="The yumitori holds at full draw, sighting with preternatural patience." OptimalDefense="Dodge" ReactionWindowMs="3500" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0.2" ResponseText="You move but the archer tracks you - it still clips you." />
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="The powerful shot punches into your guard." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="Bracing makes you an easier target." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.9" ResponseText="The arrow is too fast and precise to parry." />
+    <Outcome Reaction="None" ResponseText="The perfectly aimed arrow finds its mark." />
+  </AttackTell>
+  <AttackTell RefName="RangedMultiShot" Pattern="Projectile" TellText="The yumitori draws three arrows at once, fanning them between fingers." OptimalDefense="Block" ReactionWindowMs="2500" SecondaryDefense="Brace">
+    <Outcome Reaction="Block" DamageMultiplier="0.3" ResponseText="Your guard intercepts most of the volley." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.4" ResponseText="You hunker down as arrows rain around you." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.5" ResponseText="You dodge some arrows but not all." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You can only parry one arrow at a time." />
+    <Outcome Reaction="None" ResponseText="Multiple arrows pepper your body." />
+  </AttackTell>
+  <AttackTell RefName="RangedKnifeThrow" Pattern="Projectile" TellText="The shinobi's hand blurs as they draw and hurl shuriken." OptimalDefense="Dodge" ReactionWindowMs="1500" SecondaryDefense="Parry">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You lean aside as the shuriken spins past your ear.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Parry" DamageMultiplier="0.2" ResponseText="You knock the spinning blade aside." />
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="The knife thuds into your guard." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="Bracing doesn't help against thrown weapons." />
+    <Outcome Reaction="None" ResponseText="The shuriken buries itself in your flesh." />
+  </AttackTell>
+  <AttackTell RefName="RangedTrapTrigger" Pattern="Burst" TellText="The yumitori signals - you hear bamboo creak beneath your feet." OptimalDefense="Dodge" ReactionWindowMs="1500" SecondaryDefense="Brace">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You leap away just as the snare springs!">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Brace" DamageMultiplier="0.5" ResponseText="You minimize damage but still trigger the trap." />
+    <Outcome Reaction="Block" DamageMultiplier="0.7" ResponseText="Your guard doesn't help against a floor trap." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.9" ResponseText="You can't parry a trap." />
+    <Outcome Reaction="None" ResponseText="The trap catches you completely off guard." />
+  </AttackTell>
+  <AttackTell RefName="MagicFirebolt" Pattern="Bolt" TellText="The onmyoji traces fire kanji in the air, an ofuda igniting with kitsune-bi." OptimalDefense="Dodge" ReactionWindowMs="2000" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You weave aside as the fox-fire scorches past.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="Your guard disperses some of the spirit flames." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.6" ResponseText="You endure the searing heat." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You can't parry fire." />
+    <Outcome Reaction="None" ResponseText="The kitsune-bi explodes against you." />
+  </AttackTell>
+  <AttackTell RefName="MagicIceShard" Pattern="Bolt" TellText="Frost forms as the onmyoji invokes the yuki-onna, ice crystallizing." OptimalDefense="Dodge" ReactionWindowMs="2000" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You duck as ice shards shatter behind you.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.3" ResponseText="Your guard deflects the frozen projectiles." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.6" ResponseText="The cold bites deep even through your resistance." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.7" ResponseText="You shatter some shards but others find their mark." />
+    <Outcome Reaction="None" ResponseText="Ice shards pierce and freeze your flesh." />
+  </AttackTell>
+  <AttackTell RefName="MagicLightningArc" Pattern="Bolt" TellText="The onmyoji raises their shakujo, calling down raijin's fury." OptimalDefense="Dodge" ReactionWindowMs="1500" SecondaryDefense="Brace">
+    <Outcome Reaction="Dodge" DamageMultiplier="0.1" ResponseText="You move but lightning follows the staff's aim!" />
+    <Outcome Reaction="Brace" DamageMultiplier="0.4" PreventsStatusEffect="true" ResponseText="You ground yourself, reducing the shock." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard conducts the electricity painfully." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="Your weapon becomes a lightning rod." />
+    <Outcome Reaction="None" ResponseText="Lightning courses through your body." />
+  </AttackTell>
+  <AttackTell RefName="MagicFireWave" Pattern="Wave" TellText="The onmyoji sweeps their arms wide, releasing a wave of purifying flame." OptimalDefense="Brace" ReactionWindowMs="2500" SecondaryDefense="Dodge">
+    <Outcome Reaction="Brace" DamageMultiplier="0.4" PreventsStatusEffect="true" ResponseText="You shield yourself against the searing wave." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.5" ResponseText="You dive aside but flames still lick at you." />
+    <Outcome Reaction="Block" DamageMultiplier="0.6" ResponseText="Your guard provides some protection from the inferno." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.9" ResponseText="You can't parry a wave of fire." />
+    <Outcome Reaction="None" ResponseText="The flames wash over you completely." />
+  </AttackTell>
+  <AttackTell RefName="MagicFireball" Pattern="Burst" TellText="The onmyoji compresses multiple ofuda, spirit fire building to critical mass." OptimalDefense="Dodge" SecondaryDefense="Brace">
+    <Outcome Reaction="Dodge" DamageMultiplier="0.3" ResponseText="You dive away but the explosion still catches you." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.5" PreventsStatusEffect="true" ResponseText="You hunker down against the explosive force." />
+    <Outcome Reaction="Block" DamageMultiplier="0.6" ResponseText="Your guard helps but the explosion is omnidirectional." />
+    <Outcome Reaction="Parry" ResponseText="There is nothing to parry against an explosion." />
+    <Outcome Reaction="None" ResponseText="The fireball detonates with devastating force." />
+  </AttackTell>
+  <AttackTell RefName="MagicArcaneMissile" Pattern="Bolt" TellText="Ghostly hitodama spiral around the yamabushi before streaking forward." OptimalDefense="Dodge" ReactionWindowMs="2000" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0.2" ResponseText="The spirit lights track you - you evade most but not all." />
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="Your guard absorbs the ghostly impacts." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.6" ResponseText="You steel yourself against the magical barrage." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.7" ResponseText="You deflect some missiles but they reform and strike." />
+    <Outcome Reaction="None" ResponseText="The hitodama pummel you relentlessly." />
+  </AttackTell>
+  <AttackTell RefName="MagicMindBlast" Pattern="Wave" TellText="The yamabushi's eyes glow as they channel mountain spirit power." OptimalDefense="Brace" ReactionWindowMs="2500" SecondaryDefense="Block">
+    <Outcome Reaction="Brace" DamageMultiplier="0.3" PreventsStatusEffect="true" ResponseText="You fortify your mind against the psychic assault." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Physical defense offers limited protection against mental attack." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.6" ResponseText="You can't dodge a mental attack." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="There's nothing physical to parry." />
+    <Outcome Reaction="None" ResponseText="The mental blast tears through your thoughts." />
+  </AttackTell>
+  <AttackTell RefName="MagicManaDrain" Pattern="Drain" TellText="Dark tendrils reach from the yamabushi's tokin cap, seeking your ki." OptimalDefense="Block" ReactionWindowMs="2500" SecondaryDefense="Brace">
+    <Outcome Reaction="Block" DamageMultiplier="0.2" PreventsStatusEffect="true" ResponseText="Your guard severs the dark connection." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.4" ResponseText="You resist the draining through sheer will." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.5" ResponseText="You pull away but tendrils still latch on briefly." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.7" ResponseText="You can't parry intangible magic." />
+    <Outcome Reaction="None" ResponseText="The drain pulls at your very life force." />
+  </AttackTell>
+  <AttackTell RefName="MagicCurse" Pattern="Drain" TellText="The yamabushi traces forbidden mudra while chanting an ancient noroi." OptimalDefense="Brace" SecondaryDefense="Dodge">
+    <Outcome Reaction="Brace" DamageMultiplier="0.3" PreventsStatusEffect="true" ResponseText="You strengthen your will and resist the curse." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.5" ResponseText="You break line of sight but the curse partially lands." />
+    <Outcome Reaction="Block" DamageMultiplier="0.6" ResponseText="Physical barriers mean little to curses." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You can't parry spoken words of power." />
+    <Outcome Reaction="None" ResponseText="The curse settles into your bones." />
+  </AttackTell>
+  <AttackTell RefName="MagicHolySmite" Pattern="Bolt" TellText="Divine light gathers around the miko's gohei as she invokes Amaterasu." OptimalDefense="Dodge" ReactionWindowMs="2500" SecondaryDefense="Block">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You evade the beam of sacred sunlight.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.4" ResponseText="Your guard absorbs some of the divine radiance." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.6" ResponseText="You endure the searing holy power." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.7" ResponseText="You can't parry divine wrath." />
+    <Outcome Reaction="None" ResponseText="Holy sunfire burns your very soul." />
+  </AttackTell>
+  <AttackTell RefName="MagicDivineJudgment" Pattern="Burst" TellText="The miko performs kagura, calling down the judgment of the kami." OptimalDefense="Brace" ReactionWindowMs="3500" SecondaryDefense="Dodge">
+    <Outcome Reaction="Brace" DamageMultiplier="0.4" PreventsStatusEffect="true" ResponseText="You steel your spirit against divine reckoning." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.5" ResponseText="You try to escape but the kami see all." />
+    <Outcome Reaction="Block" DamageMultiplier="0.6" ResponseText="Your guard means nothing against divine will." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.9" ResponseText="You cannot parry the heavens themselves." />
+    <Outcome Reaction="None" ResponseText="Divine light sears you with holy judgment." />
+  </AttackTell>
+  <AttackTell RefName="MagicSacredFlame" Pattern="Wave" TellText="Pure white flames dance along the miko's hakama as she prepares to cast." OptimalDefense="Brace" ReactionWindowMs="2500" SecondaryDefense="Dodge">
+    <Outcome Reaction="Brace" DamageMultiplier="0.3" PreventsStatusEffect="true" ResponseText="You resist the purifying flames through willpower." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.4" ResponseText="You roll aside, sacred fire singeing your clothes." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard catches some of the holy fire." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You can't parry consecrated flames." />
+    <Outcome Reaction="None" ResponseText="Sacred fire engulfs you." />
+  </AttackTell>
+  <AttackTell RefName="MagicVoidTendril" Pattern="Grapple" TellText="The shikigami-tsukai opens a yomi portal beneath your feet." OptimalDefense="Dodge" ReactionWindowMs="2000" SecondaryDefense="Parry">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" EnablesCounter="true" CounterMultiplier="0.4" ResponseText="You leap clear as underworld tendrils grasp at air!">
+      <Effects Stamina="0.1" />
+    </Outcome>
+    <Outcome Reaction="Parry" DamageMultiplier="0.3" ResponseText="You slash at the tendrils, severing some." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard prevents the worst of the grasping." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="Bracing makes you easier to grab." />
+    <Outcome Reaction="None" ResponseText="Yomi tendrils wrap around you, squeezing." />
+  </AttackTell>
+  <AttackTell RefName="MagicBanishment" Pattern="Drain" TellText="The shikigami-tsukai opens a swirling torii to the spirit realm." OptimalDefense="Brace" SecondaryDefense="Block">
+    <Outcome Reaction="Brace" DamageMultiplier="0.3" PreventsStatusEffect="true" ResponseText="You anchor yourself to this realm through will." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard provides focus against the pull." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.6" ResponseText="You stumble away but the void's pull is relentless." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You can't parry dimensional magic." />
+    <Outcome Reaction="None" ResponseText="The gateway tears at your essence." />
+  </AttackTell>
+  <AttackTell RefName="InstrumentDiscordantNote" Pattern="Wave" TellText="The biwa hoshi's fingers find a jarring chord that resonates with dark spirits." OptimalDefense="Brace" ReactionWindowMs="2500" SecondaryDefense="Block">
+    <Outcome Reaction="Brace" DamageMultiplier="0.3" PreventsStatusEffect="true" ResponseText="You cover your ears and steel your mind." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard does nothing against the sound wave." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.6" ResponseText="You can't dodge sound." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You can't parry a sound wave." />
+    <Outcome Reaction="None" ResponseText="The discordant note pierces your mind." />
+  </AttackTell>
+  <AttackTell RefName="InstrumentMockingBlow" Pattern="Slash" TellText="The biwa hoshi swings their heavy biwa lute like an improvised weapon." OptimalDefense="Parry" ReactionWindowMs="2500" SecondaryDefense="Dodge">
+    <Outcome Reaction="Parry" DamageMultiplier="0" EnablesCounter="true" ResponseText="You easily deflect the clumsy swing!">
+      <Effects Stamina="0.1" />
+    </Outcome>
+    <Outcome Reaction="Dodge" DamageMultiplier="0.1" ResponseText="You sidestep the unwieldy attack.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Block" DamageMultiplier="0.3" ResponseText="Your guard catches the unconventional weapon." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.5" ResponseText="You take the hit - it hurts more than expected." />
+    <Outcome Reaction="None" ResponseText="The biwa cracks against you - heavier than expected!" />
+  </AttackTell>
+  <AttackTell RefName="InstrumentHypnoticPattern" Pattern="Burst" TellText="The biwa hoshi begins the Heike Monogatari, ghosts of the Taira manifesting." OptimalDefense="Brace" SecondaryDefense="Dodge">
+    <Outcome Reaction="Brace" DamageMultiplier="0.2" PreventsStatusEffect="true" ResponseText="You focus your mind and resist the phantom memories." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.4" ResponseText="You avert your eyes but still catch glimpses of the past." />
+    <Outcome Reaction="Block" DamageMultiplier="0.6" ResponseText="Physical defense doesn't help against enchantment." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.8" ResponseText="You can't parry a hallucination." />
+    <Outcome Reaction="None" ResponseText="The ghostly tale consumes your attention completely." />
+  </AttackTell>
+  <AttackTell RefName="InstrumentViciousMockery" Pattern="Drain" TellText="The biwa hoshi's song shifts to a cutting satire about your failings." OptimalDefense="Brace" ReactionWindowMs="2500" SecondaryDefense="Block">
+    <Outcome Reaction="Brace" DamageMultiplier="0.2" PreventsStatusEffect="true" ResponseText="You steel your ego against the verbal assault." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Words cut deeper than swords sometimes." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.6" ResponseText="You can't dodge an insult." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.7" ResponseText="You can't parry words." />
+    <Outcome Reaction="None" ResponseText="The mockery wounds your pride and focus." />
+  </AttackTell>
+  <AttackTell RefName="SummonMinionSwarm" Pattern="Flurry" TellText="The shikigami-tsukai throws paper dolls that unfold into a swarm of spirits." OptimalDefense="Block" ReactionWindowMs="2500" SecondaryDefense="Brace">
+    <Outcome Reaction="Block" DamageMultiplier="0.3" ResponseText="Your guard fends off the paper spirit swarm." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.4" ResponseText="You hunker down against the tide of shikigami." />
+    <Outcome Reaction="Dodge" DamageMultiplier="0.6" ResponseText="You evade some but they're everywhere." />
+    <Outcome Reaction="Parry" DamageMultiplier="0.7" ResponseText="You can only parry one at a time." />
+    <Outcome Reaction="None" ResponseText="The paper spirits overwhelm you." />
+  </AttackTell>
+  <AttackTell RefName="SummonSpiritLash" Pattern="Slash" TellText="A ghostly arm materializes from an ofuda, coiling back like a whip." OptimalDefense="Dodge" ReactionWindowMs="2000" SecondaryDefense="Parry">
+    <Outcome Reaction="Dodge" DamageMultiplier="0" ResponseText="You duck under the spectral lash.">
+      <Effects Stamina="0.05" />
+    </Outcome>
+    <Outcome Reaction="Parry" DamageMultiplier="0.3" ResponseText="Your weapon disrupts the spirit arm." />
+    <Outcome Reaction="Block" DamageMultiplier="0.5" ResponseText="Your guard catches the semi-corporeal strike." />
+    <Outcome Reaction="Brace" DamageMultiplier="0.7" ResponseText="The spirit lash phases partially through your defense." />
+    <Outcome Reaction="None" ResponseText="The ghostly tendril lashes through you." />
+  </AttackTell>
 </AttackTells>

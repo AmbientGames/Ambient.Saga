@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<CharacterAffinities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<CharacterAffinities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Affinity RefName="Iron" DisplayName="Tetsu" Description="The spirit of forged steel - katana, armor, and unwavering resolve">
     <Matchup TargetAffinityRef="Storm" Multiplier="1.25" />
     <Matchup TargetAffinityRef="Arcane" Multiplier="0.75" />

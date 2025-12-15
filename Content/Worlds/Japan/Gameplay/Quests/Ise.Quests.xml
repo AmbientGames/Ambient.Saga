@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Quest RefName="BanditChief_Quest" DisplayName="The Rival School" Description="Stand up to bullies from a rival school causing trouble on the trip.">
     <Stages StartStage="clear_scouts">
       <Stage RefName="clear_scouts" DisplayName="Clear the Roads" NextStage="assault">

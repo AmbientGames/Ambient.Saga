@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Spells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<Spells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Spell RefName="PowerStrike" DisplayName="Mighty Swing" Description="Channel your resolve into a powerful strike" WholesalePrice="80" Category="Combat" AffinityRef="Iron" UseType="Offensive">
     <Effects Health="-0.2" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0" Magic="0" />
   </Spell>
@@ -24,7 +24,7 @@
   <Spell RefName="Charge" DisplayName="Bull Rush" Description="Charge forward with unstoppable momentum" WholesalePrice="110" Category="Combat" AffinityRef="Iron" UseType="Offensive">
     <Effects Health="-0.15" Stamina="0" Mana="0" Strength="0" Defense="0" Speed="0.2" Magic="0" />
   </Spell>
-  <Spell RefName="PerfectStrike" DisplayName="Perfect Strike" Description="A flawless technique that channels inner focus into a devastating attack" WholesalePrice="300" Category="Combat" AffinityRef="Iron" UseType="Offensive">
+  <Spell RefName="PerfectStrike" DisplayName="Zan'ei" Description="A flawless technique channeling inner focus into a devastating blow" WholesalePrice="300" Category="Combat" AffinityRef="Iron" UseType="Offensive">
     <Effects Health="-0.4" Stamina="0" Mana="0" Strength="0.15" Defense="0" Speed="0.1" Magic="0" />
   </Spell>
   <Spell RefName="WarCry" DisplayName="Rally Shout" Description="A rallying cry that intimidates enemies and steels allies" WholesalePrice="95" Category="Combat" AffinityRef="Iron" UseType="Offensive">
@@ -375,10 +375,10 @@
   <Spell RefName="MassIllusion" DisplayName="Grand Illusion" Description="Deceive all who behold it" WholesalePrice="220" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="0" Stamina="0" Mana="0" Strength="-0.15" Defense="-0.25" Speed="-0.15" Magic="0" />
   </Spell>
-  <Spell RefName="Illusion" DisplayName="Illusion" Description="Create a convincing false image to deceive and misdirect" WholesalePrice="100" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
+  <Spell RefName="Illusion" DisplayName="Kitsune no Maboroshi" Description="Create a convincing fox-fire illusion to deceive and misdirect" WholesalePrice="100" Category="Illusion" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="0" Stamina="0" Mana="0" Strength="0" Defense="-0.1" Speed="-0.1" Magic="0" />
   </Spell>
-  <Spell RefName="ShadowStrike" DisplayName="Shadow Strike" Description="Strike from the shadows with deadly precision, dealing devastating damage" WholesalePrice="250" Category="Stealth" AffinityRef="Umbral" UseType="Offensive">
+  <Spell RefName="ShadowStrike" DisplayName="Kage no Ichigeki" Description="Strike from the shadows with deadly kitsune precision" WholesalePrice="250" Category="Stealth" AffinityRef="Umbral" UseType="Offensive">
     <Effects Health="-0.35" Stamina="0" Mana="0" Strength="0.1" Defense="0" Speed="0.15" Magic="0" />
   </Spell>
   <Spell RefName="SummonSpirit" DisplayName="Call Shikigami" Description="Summon a paper spirit servant" WholesalePrice="150" Category="Summoning" AffinityRef="Spirit" UseType="Offensive">

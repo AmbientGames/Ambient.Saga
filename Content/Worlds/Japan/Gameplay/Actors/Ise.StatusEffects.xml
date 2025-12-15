@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<StatusEffects xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<StatusEffects xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <StatusEffect RefName="Poison" DisplayName="Poison" Description="Toxins slowly drain your life force" Type="DamageOverTime" Category="Debuff" DamagePerTurn="5" />
   <StatusEffect RefName="Bleed" DisplayName="Bleed" Description="Open wounds cause continuous damage" Type="DamageOverTime" Category="Debuff" DurationTurns="2" DamagePerTurn="8" MaxStacks="3" />
   <StatusEffect RefName="Burn" DisplayName="Burn" Description="Flames sear your flesh each moment" Type="DamageOverTime" Category="Debuff" DamagePerTurn="10" DefenseModifier="-0.1" />

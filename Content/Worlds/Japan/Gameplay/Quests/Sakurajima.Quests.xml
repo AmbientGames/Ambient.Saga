@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Quest RefName="BanditChief_Quest" DisplayName="The Lava Tube Raiders" Description="Hunt down criminals using the volcano's caves as their hideout.">
+<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Quest RefName="BanditChief_Quest" DisplayName="The Mountain Bandits" Description="Hunt down the bandit leader terrorizing the mountain roads.">
     <Stages StartStage="clear_scouts">
       <Stage RefName="clear_scouts" DisplayName="Clear the Roads" NextStage="assault">
         <Objectives>
@@ -81,7 +81,7 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="FalseProphet_Quest" DisplayName="The Eruption Prophet" Description="Investigate someone claiming they can predict the volcano's eruptions.">
+  <Quest RefName="FalseProphet_Quest" DisplayName="The Wandering Priest" Description="Investigate a charismatic religious figure whose followers are suspiciously devoted.">
     <Stages StartStage="investigate">
       <Stage RefName="investigate" DisplayName="Gather Information" NextStage="evidence">
         <Objectives>
@@ -109,7 +109,7 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="HiddenCache_Quest" DisplayName="The Buried Observatory" Description="Find the ruins of an old volcanic monitoring station and its secrets.">
+  <Quest RefName="HiddenCache_Quest" DisplayName="The Buried Treasure" Description="Follow ancient clues to discover a hidden cache of treasure.">
     <Stages StartStage="acquire_map">
       <Stage RefName="acquire_map" DisplayName="Acquire the Map" NextStage="decipher">
         <Objectives>
@@ -153,7 +153,7 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="LostTechnique_Quest" DisplayName="The Forge Master" Description="Seek out a smith who forges weapons using volcanic heat.">
+  <Quest RefName="LostTechnique_Quest" DisplayName="The Mountain Master" Description="Seek out the last master of a legendary sword technique.">
     <Stages StartStage="hear_legend">
       <Stage RefName="hear_legend" DisplayName="Learn the Legend" NextStage="find_path">
         <Objectives>
@@ -211,7 +211,7 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="MissingHeirloom_Quest" DisplayName="The Stolen Relic" Description="Help recover a family's volcanic stone relic stolen during an ash storm.">
+  <Quest RefName="MissingHeirloom_Quest" DisplayName="The Stolen Heirloom" Description="Help recover a family's stolen ancestral treasure and restore their honor.">
     <Stages StartStage="investigate">
       <Stage RefName="investigate" DisplayName="Investigate the Theft" NextStage="find_thief">
         <Objectives>
@@ -243,7 +243,7 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="RefugeeEscort_Quest" DisplayName="Evacuation Route" Description="Guide villagers to safety as volcanic activity increases.">
+  <Quest RefName="RefugeeEscort_Quest" DisplayName="Flight from the Mountain" Description="Guide villagers fleeing volcanic danger to safety.">
     <Stages StartStage="gather">
       <Stage RefName="gather" DisplayName="Prepare for Departure" NextStage="first_leg">
         <Objectives>
@@ -285,7 +285,7 @@
       <FailCondition Type="CharacterDied" CharacterRef="RefugeeEscort_Leader" />
     </FailConditions>
   </Quest>
-  <Quest RefName="RivalGuild_Quest" DisplayName="The Hot Spring War" Description="Help your onsen owner compete against rival hot spring establishments.">
+  <Quest RefName="RivalGuild_Quest" DisplayName="The Merchant War" Description="Help your merchant guild overcome their rivals.">
     <Stages StartStage="recruit">
       <Stage RefName="recruit" DisplayName="Join the Guild" NextStage="intel">
         <Objectives>
@@ -326,7 +326,7 @@
       <Reward Condition="OnBranch" />
     </Rewards>
   </Quest>
-  <Quest RefName="WanderingMerchant_Quest" DisplayName="The Supply Runner" Description="Escort a merchant delivering vital supplies across dangerous terrain.">
+  <Quest RefName="WanderingMerchant_Quest" DisplayName="The Traveling Peddler" Description="Escort a traveling merchant safely through dangerous territory.">
     <Stages StartStage="departure">
       <Stage RefName="departure" DisplayName="Begin the Journey" NextStage="first_leg">
         <Objectives>
