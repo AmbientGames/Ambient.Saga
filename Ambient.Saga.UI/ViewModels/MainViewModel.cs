@@ -885,7 +885,23 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Public method to load heightmap for externally-provided world data.
+    /// Use this when the world is loaded outside of MainViewModel (e.g., game client).
+    /// </summary>
+    /// <param name="world">The world containing WorldConfiguration with HeightMapSettings</param>
+    /// <param name="dataDirectory">The base directory containing world definition files</param>
+    public async Task LoadHeightMapForWorldAsync(IWorld world, string dataDirectory)
+    {
+        await LoadHeightMapImageInternalAsync(world, dataDirectory);
+    }
+
     private async Task LoadHeightMapImageAsync(IWorld world)
+    {
+        await LoadHeightMapImageInternalAsync(world, _dataDirectory);
+    }
+
+    private async Task LoadHeightMapImageInternalAsync(IWorld world, string dataDirectory)
     {
         // Clear previous image
         HeightMapImage = null;
@@ -902,7 +918,7 @@ public partial class MainViewModel : ObservableObject
 
         try
         {
-            var heightMapPath = Path.Combine(_dataDirectory, world.WorldConfiguration.HeightMapSettings.RelativePath);
+            var heightMapPath = Path.Combine(dataDirectory, world.WorldConfiguration.HeightMapSettings.RelativePath);
             
             if (!File.Exists(heightMapPath))
             {
