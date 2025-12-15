@@ -15,7 +15,7 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 /// Note: We store transactions in a separate collection with manual InstanceId linking,
 /// since the domain SagaTransaction model doesn't have InstanceId as a property.
 /// </summary>
-internal class SagaInstanceRepository : ISagaInstanceRepository
+public class SagaInstanceRepository : ISagaInstanceRepository
 {
     private readonly ILiteDatabase _database;
     private readonly ILiteCollection<SagaInstance> _instances;
