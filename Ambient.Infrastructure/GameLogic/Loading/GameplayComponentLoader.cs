@@ -158,7 +158,7 @@ public static class GameplayComponentLoader
     private static string ResolveRef(string? refValue, string defaultRef)
     {
         // "Default" or null/empty means use the WorldConfiguration's RefName
-        if (string.IsNullOrEmpty(refValue) || refValue == "Default")
+        if (string.IsNullOrEmpty(refValue))
             return defaultRef;
         return refValue;
     }
