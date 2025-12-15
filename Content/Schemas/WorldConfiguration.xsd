@@ -26,27 +26,27 @@
                     </xs:choice>
                 </xs:sequence>
                 <xs:attribute name="Template" type="xs:string" use="required" />
-                <xs:attribute name="ConsumableItemsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="SpellsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="EquipmentRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="QuestTokensRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="CharactersRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="CharacterArchetypesRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="CharacterAffinitiesRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="StatusEffectsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="CombatStancesRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="LoadoutSlotsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="ToolsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="BuildingMaterialsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="DialogueTreesRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="AvatarArchetypesRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="SagaFeaturesRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="AchievementsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="QuestsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="SagaArcsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="FactionsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="SagaTriggerPatternsRef" type="xs:string" use="optional" default="Default" />
-                <xs:attribute name="AttackTellsRef" type="xs:string" use="optional" default="Default" />
+                <xs:attribute name="ConsumableItemsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="SpellsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="EquipmentRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="QuestTokensRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="CharactersRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="CharacterArchetypesRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="CharacterAffinitiesRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="StatusEffectsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="CombatStancesRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="LoadoutSlotsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="ToolsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="BuildingMaterialsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="DialogueTreesRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="AvatarArchetypesRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="SagaFeaturesRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="AchievementsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="QuestsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="SagaArcsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="FactionsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="SagaTriggerPatternsRef" type="xs:string" use="optional" default="Standard" />
+                <xs:attribute name="AttackTellsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="CurrencyName" type="xs:string" default="Credit" />
                 <xs:attribute name="StartDate" type="xs:date" default="0001-05-01" />
                 <xs:attribute name="SpawnLatitude" type="xs:double" use="required" />
