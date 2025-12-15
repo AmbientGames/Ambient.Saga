@@ -80,27 +80,27 @@ namespace Ambient.Domain {
         private int secondsInHourField;
         
         public WorldConfiguration() {
-            this.consumableItemsRefField = "Default";
-            this.spellsRefField = "Default";
-            this.equipmentRefField = "Default";
-            this.questTokensRefField = "Default";
-            this.charactersRefField = "Default";
-            this.characterArchetypesRefField = "Default";
-            this.characterAffinitiesRefField = "Default";
-            this.statusEffectsRefField = "Default";
-            this.combatStancesRefField = "Default";
-            this.loadoutSlotsRefField = "Default";
-            this.toolsRefField = "Default";
-            this.buildingMaterialsRefField = "Default";
-            this.dialogueTreesRefField = "Default";
-            this.avatarArchetypesRefField = "Default";
-            this.sagaFeaturesRefField = "Default";
-            this.achievementsRefField = "Default";
-            this.questsRefField = "Default";
-            this.sagaArcsRefField = "Default";
-            this.factionsRefField = "Default";
-            this.sagaTriggerPatternsRefField = "Default";
-            this.attackTellsRefField = "Default";
+            this.consumableItemsRefField = "Standard";
+            this.spellsRefField = "Standard";
+            this.equipmentRefField = "Standard";
+            this.questTokensRefField = "Standard";
+            this.charactersRefField = "Standard";
+            this.characterArchetypesRefField = "Standard";
+            this.characterAffinitiesRefField = "Standard";
+            this.statusEffectsRefField = "Standard";
+            this.combatStancesRefField = "Standard";
+            this.loadoutSlotsRefField = "Standard";
+            this.toolsRefField = "Standard";
+            this.buildingMaterialsRefField = "Standard";
+            this.dialogueTreesRefField = "Standard";
+            this.avatarArchetypesRefField = "Standard";
+            this.sagaFeaturesRefField = "Standard";
+            this.achievementsRefField = "Standard";
+            this.questsRefField = "Standard";
+            this.sagaArcsRefField = "Standard";
+            this.factionsRefField = "Standard";
+            this.sagaTriggerPatternsRefField = "Standard";
+            this.attackTellsRefField = "Standard";
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
             this.secondsInHourField = 60;
@@ -131,7 +131,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string ConsumableItemsRef {
             get {
                 return this.consumableItemsRefField;
@@ -143,7 +143,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string SpellsRef {
             get {
                 return this.spellsRefField;
@@ -155,7 +155,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string EquipmentRef {
             get {
                 return this.equipmentRefField;
@@ -167,7 +167,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string QuestTokensRef {
             get {
                 return this.questTokensRefField;
@@ -179,7 +179,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string CharactersRef {
             get {
                 return this.charactersRefField;
@@ -191,7 +191,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string CharacterArchetypesRef {
             get {
                 return this.characterArchetypesRefField;
@@ -203,7 +203,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string CharacterAffinitiesRef {
             get {
                 return this.characterAffinitiesRefField;
@@ -215,7 +215,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string StatusEffectsRef {
             get {
                 return this.statusEffectsRefField;
@@ -227,7 +227,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string CombatStancesRef {
             get {
                 return this.combatStancesRefField;
@@ -239,7 +239,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string LoadoutSlotsRef {
             get {
                 return this.loadoutSlotsRefField;
@@ -251,7 +251,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string ToolsRef {
             get {
                 return this.toolsRefField;
@@ -263,7 +263,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string BuildingMaterialsRef {
             get {
                 return this.buildingMaterialsRefField;
@@ -275,7 +275,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string DialogueTreesRef {
             get {
                 return this.dialogueTreesRefField;
@@ -287,7 +287,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string AvatarArchetypesRef {
             get {
                 return this.avatarArchetypesRefField;
@@ -299,7 +299,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string SagaFeaturesRef {
             get {
                 return this.sagaFeaturesRefField;
@@ -311,7 +311,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string AchievementsRef {
             get {
                 return this.achievementsRefField;
@@ -323,7 +323,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string QuestsRef {
             get {
                 return this.questsRefField;
@@ -335,7 +335,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string SagaArcsRef {
             get {
                 return this.sagaArcsRefField;
@@ -347,7 +347,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string FactionsRef {
             get {
                 return this.factionsRefField;
@@ -359,7 +359,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string SagaTriggerPatternsRef {
             get {
                 return this.sagaTriggerPatternsRefField;
@@ -371,7 +371,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Default")]
+        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string AttackTellsRef {
             get {
                 return this.attackTellsRefField;

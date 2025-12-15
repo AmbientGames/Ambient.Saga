@@ -19,30 +19,29 @@ public static class GameplayComponentLoader
     {
         var config = world.WorldConfiguration;
 
-        // Resolve refs - "Default" means use the WorldConfiguration's RefName
-        var defaultRef = config.RefName;
+        var worldRef = config.RefName;
 
-        var consumableItemsRef = ResolveRef(config.ConsumableItemsRef, defaultRef);
-        var spellsRef = ResolveRef(config.SpellsRef, defaultRef);
-        var equipmentRef = ResolveRef(config.EquipmentRef, defaultRef);
-        var questTokensRef = ResolveRef(config.QuestTokensRef, defaultRef);
-        var charactersRef = ResolveRef(config.CharactersRef, defaultRef);
-        var characterArchetypesRef = ResolveRef(config.CharacterArchetypesRef, defaultRef);
-        var characterAffinitiesRef = ResolveRef(config.CharacterAffinitiesRef, defaultRef);
-        var combatStancesRef = ResolveRef(config.CombatStancesRef, defaultRef);
-        var loadoutSlotsRef = ResolveRef(config.LoadoutSlotsRef, defaultRef);
-        var toolsRef = ResolveRef(config.ToolsRef, defaultRef);
-        var materialsRef = ResolveRef(config.BuildingMaterialsRef, defaultRef);
-        var dialogueTreesRef = ResolveRef(config.DialogueTreesRef, defaultRef);
-        var avatarArchetypesRef = ResolveRef(config.AvatarArchetypesRef, defaultRef);
-        var sagaFeaturesRef = ResolveRef(config.SagaFeaturesRef, defaultRef);
-        var achievementsRef = ResolveRef(config.AchievementsRef, defaultRef);
-        var questsRef = ResolveRef(config.QuestsRef, defaultRef);
-        var sagaTriggerPatternsRef = ResolveRef(config.SagaTriggerPatternsRef, defaultRef);
-        var sagasRef = ResolveRef(config.SagaArcsRef, defaultRef);
-        var factionsRef = ResolveRef(config.FactionsRef, defaultRef);
-        var statusEffectsRef = ResolveRef(config.StatusEffectsRef, defaultRef);
-        var attackTellsRef = ResolveRef(config.AttackTellsRef, defaultRef);
+        var consumableItemsRef = ResolveRef(config.ConsumableItemsRef, worldRef);
+        var spellsRef = ResolveRef(config.SpellsRef, worldRef);
+        var equipmentRef = ResolveRef(config.EquipmentRef, worldRef);
+        var questTokensRef = ResolveRef(config.QuestTokensRef, worldRef);
+        var charactersRef = ResolveRef(config.CharactersRef, worldRef);
+        var characterArchetypesRef = ResolveRef(config.CharacterArchetypesRef, worldRef);
+        var characterAffinitiesRef = ResolveRef(config.CharacterAffinitiesRef, worldRef);
+        var combatStancesRef = ResolveRef(config.CombatStancesRef, worldRef);
+        var loadoutSlotsRef = ResolveRef(config.LoadoutSlotsRef, worldRef);
+        var toolsRef = ResolveRef(config.ToolsRef, worldRef);
+        var materialsRef = ResolveRef(config.BuildingMaterialsRef, worldRef);
+        var dialogueTreesRef = ResolveRef(config.DialogueTreesRef, worldRef);
+        var avatarArchetypesRef = ResolveRef(config.AvatarArchetypesRef, worldRef);
+        var sagaFeaturesRef = ResolveRef(config.SagaFeaturesRef, worldRef);
+        var achievementsRef = ResolveRef(config.AchievementsRef, worldRef);
+        var questsRef = ResolveRef(config.QuestsRef, worldRef);
+        var sagaTriggerPatternsRef = ResolveRef(config.SagaTriggerPatternsRef, worldRef);
+        var sagasRef = ResolveRef(config.SagaArcsRef, worldRef);
+        var factionsRef = ResolveRef(config.FactionsRef, worldRef);
+        var statusEffectsRef = ResolveRef(config.StatusEffectsRef, worldRef);
+        var attackTellsRef = ResolveRef(config.AttackTellsRef, worldRef);
 
         world.Gameplay.Consumables = (await XmlLoader.LoadFromXmlAsync<ConsumableCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{consumableItemsRef}.Consumable.xml"), xsdFilePath)).Consumable ?? [];
         world.Gameplay.Spells = (await XmlLoader.LoadFromXmlAsync<SpellCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{spellsRef}.Spells.xml"), xsdFilePath)).Spell ?? [];
@@ -155,11 +154,11 @@ public static class GameplayComponentLoader
         }
     }
 
-    private static string ResolveRef(string? refValue, string defaultRef)
+    private static string ResolveRef(string? refValue, string worldRef)
     {
         // "Default" or null/empty means use the WorldConfiguration's RefName
-        if (string.IsNullOrEmpty(refValue))
-            return defaultRef;
+        if (string.IsNullOrEmpty(refValue) || refValue == "Standard")
+            return worldRef;
         return refValue;
     }
 }
