@@ -34,11 +34,19 @@
 		<ProjectReference Include="..\Ambient.Saga.UI\Ambient.Saga.UI.csproj" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\Content\Schemas\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Schemas" />
-    <None Include="..\Content\Worlds\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Worlds" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<Content Include="..\Content\Schemas\**\*">
+			<Link>Content\Schemas\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<TargetPath>Content\Schemas\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\Content\Worlds\**\*">
+			<Link>Content\Worlds\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<TargetPath>Content\Worlds\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	
 	<ItemGroup>
 		<None Update="steam_api64.dll">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
