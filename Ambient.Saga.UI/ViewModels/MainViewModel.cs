@@ -842,42 +842,17 @@ public partial class MainViewModel : ObservableObject
                 ConfigurationRefName = SelectedConfiguration.RefName
             });
 
-            // Initialize world bootstrapper (required)
+            // Initialize world bootstrapper (required when loading via mediator)
             WorldBootstrapper.Initialize(world);
 
-            CurrentWorld = world;
-
-            // Update AvatarInfo with world data
-            AvatarInfo.UpdateWorld(world);
-
-            // Initialize LiteDB persistence for this world
-            InitializeWorldDatabase(world);
-
-            // Load or create avatar
-            await LoadOrCreateAvatarAsync(world);
-
-            // Load and display height map if available
-            await LoadHeightMapImageAsync(world);
-
-            // Load Sagas and triggers from world with feature status
-            var (sagas, triggers) = SagaViewModel.LoadFromWorld(world, PlayerAvatar, _worldRepository);
-            Sagas.Clear();
-            AllTriggers.Clear();
-            foreach (var saga in sagas) Sagas.Add(saga);
-            foreach (var trigger in triggers) AllTriggers.Add(trigger);
-            StatusMessage = $"Initialized {sagas.Count} Sagas with {triggers.Count} triggers";
-
-            // Initialize avatar position at spawn if available
-            InitializeAvatarPosition(world);
-
-            // NOTE: Character spawning/display removed - triggers only
+            // Complete initialization with shared logic
+            await InitializeWorldCoreAsync(world, _dataDirectory);
 
             StatusMessage = $"Loaded: {SelectedConfiguration.RefName}";
         }
         catch (Exception ex)
         {
             StatusMessage = $"Error loading configuration: {ex.Message}";
-            // MessageBox removed - UI layer should display StatusMessage
         }
         finally
         {
@@ -885,20 +860,70 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    /// <summary>
-    /// Public method to load heightmap for externally-provided world data.
-    /// Use this when the world is loaded outside of MainViewModel (e.g., game client).
+        /// <summary>
+    /// Shared initialization logic for both LoadSelectedConfigurationAsync and InitializeWithExternalWorldAsync.
+    /// Sets up world, database, avatar, height map, Sagas, and triggers.
     /// </summary>
-    /// <param name="world">The world containing WorldConfiguration with HeightMapSettings</param>
-    /// <param name="dataDirectory">The base directory containing world definition files</param>
-    public async Task LoadHeightMapForWorldAsync(IWorld world, string dataDirectory)
+    private async Task InitializeWorldCoreAsync(IWorld world, string dataDirectory)
     {
+        // Set the world
+        CurrentWorld = world;
+
+        // Update AvatarInfo with world data
+        AvatarInfo.UpdateWorld(world);
+
+        // Initialize LiteDB persistence and CQRS providers for this world
+        InitializeWorldDatabase(world);
+
+        // Load or create avatar (shows archetype selection dialog for new worlds)
+        await LoadOrCreateAvatarAsync(world);
+
+        // Load and display height map if available
         await LoadHeightMapImageInternalAsync(world, dataDirectory);
+
+        // Load Sagas and triggers from world with feature status
+        var (sagas, triggers) = SagaViewModel.LoadFromWorld(world, PlayerAvatar, _worldRepository);
+        Sagas.Clear();
+        AllTriggers.Clear();
+        foreach (var saga in sagas) Sagas.Add(saga);
+        foreach (var trigger in triggers) AllTriggers.Add(trigger);
+
+        // Initialize avatar position at spawn if available
+        InitializeAvatarPosition(world);
     }
 
-    private async Task LoadHeightMapImageAsync(IWorld world)
+    /// <summary>
+    /// Initializes MainViewModel with an externally-loaded world.
+    /// Use this when the world has already been loaded by the game (e.g., via WorldRepository)
+    /// instead of through LoadSelectedConfigurationAsync.
+    /// Avatar is loaded from database or created via archetype selection dialog.
+    /// </summary>
+    /// <param name="world">The already-loaded world instance (WorldBootstrapper.Initialize should already have been called)</param>
+    /// <param name="dataDirectory">Base directory containing world definition files (for height map loading)</param>
+    public async Task InitializeWithExternalWorldAsync(IWorld world, string dataDirectory)
     {
-        await LoadHeightMapImageInternalAsync(world, _dataDirectory);
+        if (world == null)
+            throw new ArgumentNullException(nameof(world));
+
+        try
+        {
+            IsLoading = true;
+            StatusMessage = $"Initializing world: {world.WorldConfiguration?.RefName ?? "Unknown"}...";
+
+            // Complete initialization with shared logic
+            await InitializeWorldCoreAsync(world, dataDirectory);
+
+            StatusMessage = $"Initialized: {world.WorldConfiguration?.RefName ?? "World"}";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error initializing world: {ex.Message}";
+            System.Diagnostics.Debug.WriteLine($"[MainViewModel] InitializeWithExternalWorldAsync error: {ex}");
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     private async Task LoadHeightMapImageInternalAsync(IWorld world, string dataDirectory)
