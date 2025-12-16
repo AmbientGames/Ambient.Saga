@@ -27,11 +27,16 @@
         <Using Include="Xunit" />
     </ItemGroup>
 
-    <ItemGroup>
-        <None Include="..\Content\Worlds\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Worlds" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\Content\Schemas\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Schemas" />
-    </ItemGroup>
+	<ItemGroup>
+		<Content Include="..\Content\Worlds\**\*">
+			<Link>Content\Worlds\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<TargetPath>Content\Worlds\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="..\Content\Schemas\**\*">
+			<Link>Content\Schemas\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<TargetPath>Content\Schemas\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 </Project>
