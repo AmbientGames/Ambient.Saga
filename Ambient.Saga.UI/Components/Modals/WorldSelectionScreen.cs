@@ -103,7 +103,10 @@ public class WorldSelectionScreen
 
                     try
                     {
-                        var solutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", ".."));
+                        var solutionDir = FindSolutionRootFrom(AppContext.BaseDirectory);
+                        if (solutionDir == null)
+                            throw new DirectoryNotFoundException($"Could not locate solution root from: {AppContext.BaseDirectory}");
+
                         var outputDirectory = Path.Combine(solutionDir, "Content", "Worlds");
 
                         Debug.WriteLine($"Generating world content to: {outputDirectory}");
@@ -184,6 +187,22 @@ public class WorldSelectionScreen
         }
 
         ImGui.End();
+    }
+
+    static string? FindSolutionRootFrom(string startDirectory)
+    {
+        var dir = new DirectoryInfo(startDirectory);
+
+        while (dir != null)
+        {
+            // Any .sln in this directory?
+            if (dir.EnumerateFiles("*.sln", SearchOption.TopDirectoryOnly).Any())
+                return dir.FullName;
+
+            dir = dir.Parent;
+        }
+
+        return null;
     }
 
     /// <summary>
