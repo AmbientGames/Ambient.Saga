@@ -38,11 +38,6 @@ public record UpdateAvatarPositionCommand : IRequest<SagaCommandResult>
     public required double Longitude { get; init; }
 
     /// <summary>
-    /// Avatar's elevation/height
-    /// </summary>
-    public required double Y { get; init; }
-
-    /// <summary>
     /// Avatar data (for quest token checks, etc.)
     /// </summary>
     public required AvatarBase Avatar { get; init; }

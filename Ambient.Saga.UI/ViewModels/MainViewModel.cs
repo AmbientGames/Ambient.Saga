@@ -1295,7 +1295,6 @@ public partial class MainViewModel : ObservableObject
                 SagaArcRef = trigger.SagaRefName,
                 Latitude = AvatarLatitude,
                 Longitude = AvatarLongitude,
-                Y = AvatarElevation,
                 Avatar = PlayerAvatar
             };
 

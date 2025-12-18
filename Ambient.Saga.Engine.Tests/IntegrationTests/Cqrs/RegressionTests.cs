@@ -85,7 +85,6 @@ public class RegressionTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -103,7 +102,6 @@ public class RegressionTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0001, // Slightly different but still in 100m radius
             Longitude = 139.0001,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -122,7 +120,6 @@ public class RegressionTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0002,
             Longitude = 139.0002,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -204,7 +201,6 @@ public class RegressionTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -222,7 +218,6 @@ public class RegressionTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 40.0, // Very far from trigger center
             Longitude = 145.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -233,7 +228,6 @@ public class RegressionTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -267,7 +261,6 @@ public class RegressionTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -315,7 +308,6 @@ public class RegressionTests : IDisposable
                 SagaArcRef = sagaRef,
                 Latitude = 35.0 + (i * 0.0001),
                 Longitude = 139.0 + (i * 0.0001),
-                Y = 50.0,
                 Avatar = avatar
             });
 

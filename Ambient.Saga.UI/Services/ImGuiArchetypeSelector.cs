@@ -51,10 +51,15 @@ public class ImGuiArchetypeSelector : IArchetypeSelector
     }
 
     /// <summary>
-    /// Called by ArchetypeSelectionModal when user cancels
+    /// Called by ArchetypeSelectionModal when user clicks "Quit Game".
+    /// Triggers application quit since archetype selection is mandatory.
     /// </summary>
     public void CancelSelection()
     {
+        // Request quit through modal manager
+        _modalManager?.RequestQuit();
+        
+        // Complete the task with null (though app should be quitting)
         CompleteSelection(null);
     }
 

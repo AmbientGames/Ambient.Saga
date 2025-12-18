@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
 using Ambient.Domain.Entities;
@@ -27,7 +27,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 ///   - ExecuteBattleTurnCommand: Executes one player + one enemy turn
 ///
 /// TESTS:
-/// 1. StartBattle_CreatesValidTransactions - Verifies battle initialization ✅ UPDATED
+/// 1. StartBattle_CreatesValidTransactions - Verifies battle initialization ? UPDATED
 /// 2. Battle replay determinism - Same seed = same outcome (TODO: update for turn-based)
 /// 3. Equipment degradation during battle (TODO: update for turn-based)
 /// 4. Affinity switching mid-battle (TODO: update for turn-based)
@@ -93,7 +93,6 @@ public class BattleCommandTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -152,7 +151,7 @@ public class BattleCommandTests : IDisposable
         Assert.True(battleStarted.Data.ContainsKey("PlayerHealth"));
         Assert.True(battleStarted.Data.ContainsKey("EnemyHealth"));
 
-        _output.WriteLine($"✓ Battle started with {turnTransactions.Count} turn(s) executed");
+        _output.WriteLine($"? Battle started with {turnTransactions.Count} turn(s) executed");
         _output.WriteLine($"  Random Seed: {battleStarted.Data["RandomSeed"]}");
         _output.WriteLine($"  Player HP: {battleStarted.Data["PlayerHealth"]}");
         _output.WriteLine($"  Enemy HP: {battleStarted.Data["EnemyHealth"]}");
@@ -181,7 +180,6 @@ public class BattleCommandTests : IDisposable
             SagaRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar1
         });
 
@@ -191,7 +189,6 @@ public class BattleCommandTests : IDisposable
             SagaRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar2
         });
 
@@ -256,7 +253,6 @@ public class BattleCommandTests : IDisposable
             SagaRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -275,7 +271,6 @@ public class BattleCommandTests : IDisposable
             SagaRef = sagaRef,
             Latitude = 35.002, // Far away
             Longitude = 139.002,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -310,7 +305,6 @@ public class BattleCommandTests : IDisposable
             SagaRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -338,7 +332,6 @@ public class BattleCommandTests : IDisposable
             SagaRef = sagaRef,
             Latitude = 35.002,
             Longitude = 139.002,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -352,7 +345,7 @@ public class BattleCommandTests : IDisposable
         Assert.Contains(finalInstance.GetCommittedTransactions(), t => t.Type == SagaTransactionType.PlayerExited);
         Assert.DoesNotContain(despawns, d => d.Data["CharacterInstanceId"] == bossInstanceId.ToString());
 
-        _output.WriteLine("✓ Corpse remains for looting after zone exit");
+        _output.WriteLine("? Corpse remains for looting after zone exit");
     }
 
     [Fact]
@@ -370,7 +363,6 @@ public class BattleCommandTests : IDisposable
             SagaRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -442,7 +434,6 @@ public class BattleCommandTests : IDisposable
             SagaRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 

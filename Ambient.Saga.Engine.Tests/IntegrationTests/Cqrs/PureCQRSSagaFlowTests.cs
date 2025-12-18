@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
@@ -298,7 +298,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         // STEP 1: COMMAND - Move avatar (Saga decides what happens)
         // ================================================================
         _output.WriteLine("--- STEP 1: COMMAND (Write) ---");
-        _output.WriteLine("Action: UpdateAvatarPosition → Saga center");
+        _output.WriteLine("Action: UpdateAvatarPosition ? Saga center");
         _output.WriteLine("");
 
         var moveResult = await _mediator.Send(new UpdateAvatarPositionCommand
@@ -307,13 +307,12 @@ public class PureCQRSSagaFlowTests : IDisposable
             SagaArcRef = "TownSquare",
             Latitude = 35.6762,  // Saga center - both triggers will activate
             Longitude = 139.6503,
-            Y = 50.0,
             Avatar = avatar
         });
 
         // Command only tells us success/failure + transaction info
         Assert.True(moveResult.Successful, $"Move failed: {moveResult.ErrorMessage}");
-        _output.WriteLine($"✓ Command succeeded");
+        _output.WriteLine($"? Command succeeded");
         _output.WriteLine($"  Transactions created: {moveResult.TransactionIds.Count}");
         _output.WriteLine($"  Sequence number: {moveResult.NewSequenceNumber}");
         _output.WriteLine("");
@@ -322,7 +321,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         // STEP 2: QUERY - Ask Saga "what can I do?"
         // ================================================================
         _output.WriteLine("--- STEP 2: QUERY (Read) ---");
-        _output.WriteLine("Query: GetAvailableInteractions → What's available?");
+        _output.WriteLine("Query: GetAvailableInteractions ? What's available?");
         _output.WriteLine("");
 
         var interactions = await _mediator.Send(new GetAvailableInteractionsQuery
@@ -382,7 +381,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         });
 
         Assert.True(dialogueResult.Successful, $"Dialogue failed: {dialogueResult.ErrorMessage}");
-        _output.WriteLine($"✓ Dialogue started");
+        _output.WriteLine($"? Dialogue started");
         _output.WriteLine($"  Transactions created: {dialogueResult.TransactionIds.Count}");
         _output.WriteLine("");
 
@@ -390,7 +389,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         // STEP 4: QUERY - Check available interactions again
         // ================================================================
         _output.WriteLine("--- STEP 4: QUERY (Read) ---");
-        _output.WriteLine("Query: GetAvailableInteractions → State after dialogue");
+        _output.WriteLine("Query: GetAvailableInteractions ? State after dialogue");
         _output.WriteLine("");
 
         var interactions2 = await _mediator.Send(new GetAvailableInteractionsQuery
@@ -404,7 +403,7 @@ public class PureCQRSSagaFlowTests : IDisposable
 
         // Characters should still be there
         Assert.Equal(2, interactions2.NearbyCharacters.Count);
-        _output.WriteLine($"✓ Characters still available: {interactions2.NearbyCharacters.Count}");
+        _output.WriteLine($"? Characters still available: {interactions2.NearbyCharacters.Count}");
         _output.WriteLine("");
 
         // ================================================================
@@ -412,10 +411,10 @@ public class PureCQRSSagaFlowTests : IDisposable
         // ================================================================
         _output.WriteLine("=== CQRS PATTERN DEMONSTRATED ===");
         _output.WriteLine("");
-        _output.WriteLine("✓ Commands create transactions (write-only)");
-        _output.WriteLine("✓ Queries read state from transaction log (read-only)");
-        _output.WriteLine("✓ Client decides WHEN to interact (player agency)");
-        _output.WriteLine("✓ Saga decides WHAT is available (server authoritative)");
+        _output.WriteLine("? Commands create transactions (write-only)");
+        _output.WriteLine("? Queries read state from transaction log (read-only)");
+        _output.WriteLine("? Client decides WHEN to interact (player agency)");
+        _output.WriteLine("? Saga decides WHAT is available (server authoritative)");
         _output.WriteLine("");
         _output.WriteLine("This is the stable pattern. Put Sagas away and never think about them again.");
     }

@@ -3,6 +3,7 @@ using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using MediatR;
 using Ambient.Saga.UI.Services;
+using Ambient.Saga.UI.Components.Panels;
 
 namespace Ambient.Saga.UI.Components.Modals;
 
@@ -27,18 +28,55 @@ public class ModalManager
     private LootModal _lootModal = new();
     private BattleModal _battleModal = new();
     private FactionReputationModal _factionReputationModal = new();
+    private PauseMenuModal _pauseMenuModal = new();
+    private ISettingsPanel _settingsPanel;
+
+    // Modal stack for proper hierarchical handling
+    private readonly ModalStack _modalStack = new();
 
     // Reference to ImGui archetype selector for callbacks
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
     private readonly IMediator _mediator;
 
-    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator)
+    // Event for quit request (so host application can handle it)
+    public event Action? QuitRequested;
+
+    /// <summary>
+    /// Requests the application to quit.
+    /// Called when the user needs to exit (e.g., cancels mandatory archetype selection).
+    /// </summary>
+    public void RequestQuit()
+    {
+        QuitRequested?.Invoke();
+    }
+
+    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, ISettingsPanel? settingsPanel = null)
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
         _worldSelectionScreen = new WorldSelectionScreen(worldContentGenerator);
+        _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
+        
+        // Wire up pause menu events
+        _pauseMenuModal.ResumeRequested += () => ShowPauseMenu = false;
+        _pauseMenuModal.SettingsRequested += OnSettingsRequested;
+        _pauseMenuModal.QuitRequested += OnQuitRequested;
+    }
+    
+    private void OnSettingsRequested()
+    {
+        // Open settings panel
+        ShowSettings = true;
+        System.Diagnostics.Debug.WriteLine("Settings opened");
+    }
+    
+    private void OnQuitRequested()
+    {
+        // Raise event for host application to handle
+        System.Diagnostics.Debug.WriteLine("Quit requested");
+        QuitRequested?.Invoke();
     }
 
     // Modal state flags
@@ -56,6 +94,8 @@ public class ModalManager
     public bool ShowDialogue { get; set; }
     public bool ShowLoot { get; set; }
     public bool ShowFactionReputation { get; set; }
+    public bool ShowPauseMenu { get; set; }
+    public bool ShowSettings { get; set; }
 
     // Selected character for interactions
     public CharacterViewModel? SelectedCharacter { get; set; }
@@ -85,7 +125,9 @@ public class ModalManager
         ShowQuestDetail ||
         ShowDialogue ||
         ShowLoot ||
-        ShowFactionReputation;
+        ShowFactionReputation ||
+        ShowPauseMenu ||
+        ShowSettings;
 
     /// <summary>
     /// Check if any modal dialog is currently active (alias for IsAnyModalOpen).
@@ -206,6 +248,46 @@ public class ModalManager
             _factionReputationModal.Render(viewModel, ref isOpen);
             ShowFactionReputation = isOpen;
         }
+        
+        if (ShowPauseMenu)
+        {
+            var isOpen = ShowPauseMenu;
+            
+            // Manage modal stack
+            if (isOpen && !_modalStack.IsTopModal("PauseMenu"))
+            {
+                _modalStack.Push("PauseMenu");
+            }
+            
+            _pauseMenuModal.Render(ref isOpen, _modalStack);
+            
+            if (!isOpen && _modalStack.IsTopModal("PauseMenu"))
+            {
+                _modalStack.Pop("PauseMenu");
+            }
+            
+            ShowPauseMenu = isOpen;
+        }
+
+        if (ShowSettings)
+        {
+            var isOpen = ShowSettings;
+            
+            // Manage modal stack
+            if (isOpen && !_modalStack.IsTopModal("Settings"))
+            {
+                _modalStack.Push("Settings");
+            }
+            
+            _settingsPanel.Render(ref isOpen);
+            
+            if (!isOpen && _modalStack.IsTopModal("Settings"))
+            {
+                _modalStack.Pop("Settings");
+            }
+            
+            ShowSettings = isOpen;
+        }
     }
 
     public void OpenCharacterInteraction(CharacterViewModel character)
@@ -300,6 +382,8 @@ public class ModalManager
         ShowDialogue = false;
         ShowLoot = false;
         ShowFactionReputation = false;
+        ShowPauseMenu = false;
+        ShowSettings = false;
         SelectedCharacter = null;
         _questViewModel = null;
     }

@@ -1,4 +1,4 @@
-﻿using Ambient.Application.Contracts;
+using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
@@ -31,7 +31,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// - Compensating transactions
 ///
 /// SCENARIOS:
-/// 1. Full RPG Loop: Enter zone → spawn characters → dialogue → trade → battle → loot → exit zone
+/// 1. Full RPG Loop: Enter zone ? spawn characters ? dialogue ? trade ? battle ? loot ? exit zone
 /// 2. Zone Lifecycle: Enter/exit with character despawn
 /// 3. Trade Validation: All edge cases (negative price, insufficient credits, dead merchant)
 /// 4. Geographic Accuracy: Distance calculations at various latitudes
@@ -93,7 +93,6 @@ public class FullSagaFlowE2ETests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -112,7 +111,6 @@ public class FullSagaFlowE2ETests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.002, // Far away
             Longitude = 139.002,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -132,7 +130,7 @@ public class FullSagaFlowE2ETests : IDisposable
             _output.WriteLine($"Despawned: {despawnTx.Data["CharacterRef"]}");
         }
 
-        _output.WriteLine("✓ Zone exit detection working correctly!");
+        _output.WriteLine("? Zone exit detection working correctly!");
     }
 
     [Fact]
@@ -152,7 +150,6 @@ public class FullSagaFlowE2ETests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -197,7 +194,6 @@ public class FullSagaFlowE2ETests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 

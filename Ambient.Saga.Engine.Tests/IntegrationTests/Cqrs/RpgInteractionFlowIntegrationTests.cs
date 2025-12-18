@@ -1,4 +1,4 @@
-﻿using Ambient.Application.Contracts;
+using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
@@ -23,8 +23,8 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
 /// <summary>
 /// Integration tests for the complete RPG interaction flow:
-/// - Dialogue → Trait Assignment → Trade Discounts
-/// - Mid-Battle Dialogue → Surrender/Befriend
+/// - Dialogue ? Trait Assignment ? Trade Discounts
+/// - Mid-Battle Dialogue ? Surrender/Befriend
 /// - Health-Based Dialogue Branching
 /// </summary>
 [Collection("Sequential CQRS Tests")]
@@ -65,7 +65,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
         _repository = _serviceProvider.GetRequiredService<ISagaInstanceRepository>();
     }
 
-    #region Test 1: Dialogue Assigns Friendly Trait → 10% Trade Discount
+    #region Test 1: Dialogue Assigns Friendly Trait ? 10% Trade Discount
 
     [Fact]
     public async Task DialogueAssignsFriendlyTrait_TradePricesShowDiscount()
@@ -80,7 +80,6 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -126,7 +125,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
         Assert.True(sagaState.CharacterTraits.ContainsKey("FriendlyMerchant"));
         Assert.Contains("Friendly", sagaState.CharacterTraits["FriendlyMerchant"]);
 
-        _output.WriteLine($"✓ Friendly trait assigned to merchant");
+        _output.WriteLine($"? Friendly trait assigned to merchant");
 
         // Verify trade prices show 10% discount
         var tradeEngine = new TradeEngine(_world);
@@ -149,7 +148,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
 
     #endregion
 
-    #region Test 2: Dialogue Assigns TradeDiscount Trait → 20% Discount
+    #region Test 2: Dialogue Assigns TradeDiscount Trait ? 20% Discount
 
     [Fact]
     public async Task DialogueAssignsTradeDiscountTrait_TradePricesShow20PercentDiscount()
@@ -164,7 +163,6 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -224,7 +222,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
 
     #endregion
 
-    #region Test 3: Both Traits Stack → 28% Discount
+    #region Test 3: Both Traits Stack ? 28% Discount
 
     [Fact]
     public async Task BothTraitsAssigned_PricesShowStackedDiscount()
@@ -239,7 +237,6 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 

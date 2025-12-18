@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
 using Ambient.Domain.Entities;
@@ -296,14 +296,13 @@ public class SagaE2EStoryTests : IDisposable
             SagaArcRef = "KagoshimaCastle",
             Latitude = 31.5955,  // Saga center - will activate both triggers
             Longitude = 130.5569,
-            Y = 50.0,
             Avatar = avatar
         });
 
         Assert.True(positionResult.Successful, $"Position update failed: {positionResult.ErrorMessage}");
 
-        _logger.LogEvent("✓ Position update command succeeded");
-        _logger.LogEvent($"✓ Transactions created: {positionResult.TransactionIds.Count}");
+        _logger.LogEvent("? Position update command succeeded");
+        _logger.LogEvent($"? Transactions created: {positionResult.TransactionIds.Count}");
         _logger.LogSeparator();
 
         // Query state to see what happened (pure CQRS pattern)
@@ -341,8 +340,8 @@ public class SagaE2EStoryTests : IDisposable
 
         Assert.True(dialogueResult.Successful, $"Dialogue failed: {dialogueResult.ErrorMessage}");
 
-        _logger.LogEvent($"✓ Started conversation with {merchantTemplate.DisplayName}");
-        _logger.LogEvent($"✓ Dialogue: MerchantGreeting");
+        _logger.LogEvent($"? Started conversation with {merchantTemplate.DisplayName}");
+        _logger.LogEvent($"? Dialogue: MerchantGreeting");
         _logger.LogSeparator();
 
         // ACT 3: Trade with merchant
@@ -366,9 +365,9 @@ public class SagaE2EStoryTests : IDisposable
 
         Assert.True(tradeResult.Successful, $"Trade failed: {tradeResult.ErrorMessage}");
 
-        _logger.LogEvent($"✓ Purchased {itemQuantity}x Health Potion");
-        _logger.LogEvent($"✓ Total cost: {itemCost * itemQuantity} credits");
-        _logger.LogEvent($"✓ Credits: {initialCredits} → {initialCredits - itemCost * itemQuantity}");
+        _logger.LogEvent($"? Purchased {itemQuantity}x Health Potion");
+        _logger.LogEvent($"? Total cost: {itemCost * itemQuantity} credits");
+        _logger.LogEvent($"? Credits: {initialCredits} ? {initialCredits - itemCost * itemQuantity}");
         _logger.LogSeparator();
 
         // ACT 4: Defeat the boss
@@ -387,7 +386,7 @@ public class SagaE2EStoryTests : IDisposable
 
         Assert.True(defeatResult.Successful, $"Defeat failed: {defeatResult.ErrorMessage}");
 
-        _logger.LogEvent($"✓ {bossTemplate.DisplayName} defeated!");
+        _logger.LogEvent($"? {bossTemplate.DisplayName} defeated!");
         _logger.LogSeparator();
 
         // FINAL STATE VERIFICATION
@@ -403,12 +402,12 @@ public class SagaE2EStoryTests : IDisposable
         Assert.False(finalBossState.IsAlive);
         Assert.Equal(0.0f, finalBossState.CurrentHealth);
 
-        _logger.LogEvent($"✓ Boss status: Dead (Health: {finalBossState.CurrentHealth})");
+        _logger.LogEvent($"? Boss status: Dead (Health: {finalBossState.CurrentHealth})");
 
         // Verify transaction log
         var allTransactions = instance.GetCommittedTransactions().OrderBy(t => t.SequenceNumber).ToList();
 
-        _logger.LogEvent($"✓ Total transactions recorded: {allTransactions.Count}");
+        _logger.LogEvent($"? Total transactions recorded: {allTransactions.Count}");
         _logger.LogEvent($"  - TriggerActivated: {allTransactions.Count(t => t.Type == SagaTransactionType.TriggerActivated)}");
         _logger.LogEvent($"  - CharacterSpawned: {allTransactions.Count(t => t.Type == SagaTransactionType.CharacterSpawned)}");
         _logger.LogEvent($"  - DialogueStarted: {allTransactions.Count(t => t.Type == SagaTransactionType.DialogueStarted)}");
@@ -417,16 +416,16 @@ public class SagaE2EStoryTests : IDisposable
 
         // Verify all transactions are committed
         Assert.All(allTransactions, tx => Assert.Equal(TransactionStatus.Committed, tx.Status));
-        _logger.LogEvent($"✓ All transactions committed");
+        _logger.LogEvent($"? All transactions committed");
 
         // Verify sequence numbers are ordered
         var sequenceNumbers = allTransactions.Select(t => t.SequenceNumber).ToList();
         var sortedSequenceNumbers = sequenceNumbers.OrderBy(s => s).ToList();
         Assert.Equal(sortedSequenceNumbers, sequenceNumbers);
-        _logger.LogEvent($"✓ Transaction sequence numbers properly ordered");
+        _logger.LogEvent($"? Transaction sequence numbers properly ordered");
 
         _logger.LogSeparator();
-        _logger.LogEvent("STORY COMPLETE ✓");
+        _logger.LogEvent("STORY COMPLETE ?");
 
         // Output the complete log
         _output.WriteLine(_logger.GetLog());
@@ -453,27 +452,27 @@ public class SagaE2EStoryTests : IDisposable
         _logger.LogEvent($"Run 1 transactions: {result1.TransactionCount}");
         _logger.LogEvent($"Run 2 transactions: {result2.TransactionCount}");
         Assert.Equal(result1.TransactionCount, result2.TransactionCount);
-        _logger.LogEvent("✓ Transaction counts match");
+        _logger.LogEvent("? Transaction counts match");
 
         // Compare transaction types
         _logger.LogEvent($"Run 1 transaction breakdown: {string.Join(", ", result1.TransactionsByType)}");
         _logger.LogEvent($"Run 2 transaction breakdown: {string.Join(", ", result2.TransactionsByType)}");
         Assert.Equal(result1.TransactionsByType, result2.TransactionsByType);
-        _logger.LogEvent("✓ Transaction type breakdown matches");
+        _logger.LogEvent("? Transaction type breakdown matches");
 
         // Compare final states
         _logger.LogEvent($"Run 1 boss defeated: {result1.BossDefeated}");
         _logger.LogEvent($"Run 2 boss defeated: {result2.BossDefeated}");
         Assert.Equal(result1.BossDefeated, result2.BossDefeated);
-        _logger.LogEvent("✓ Boss defeat status matches");
+        _logger.LogEvent("? Boss defeat status matches");
 
         _logger.LogEvent($"Run 1 characters spawned: {result1.CharactersSpawned}");
         _logger.LogEvent($"Run 2 characters spawned: {result2.CharactersSpawned}");
         Assert.Equal(result1.CharactersSpawned, result2.CharactersSpawned);
-        _logger.LogEvent("✓ Character spawn count matches");
+        _logger.LogEvent("? Character spawn count matches");
 
         _logger.LogSeparator();
-        _logger.LogEvent("DETERMINISM VERIFIED ✓");
+        _logger.LogEvent("DETERMINISM VERIFIED ?");
         _logger.LogEvent("Same inputs produced identical outputs");
 
         _output.WriteLine(_logger.GetLog());
@@ -491,7 +490,6 @@ public class SagaE2EStoryTests : IDisposable
             SagaArcRef = "KagoshimaCastle",
             Latitude = 31.5955,
             Longitude = 130.5569,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -563,7 +561,7 @@ public class SagaE2EStoryTests : IDisposable
         _logger.LogSeparator();
 
         // PART 1: Execute the story and log what happens
-        _logger.LogHeader("PART 1: ORIGINAL EXECUTION (Commands → Transactions)");
+        _logger.LogHeader("PART 1: ORIGINAL EXECUTION (Commands ? Transactions)");
 
         var avatarId = Guid.NewGuid();
         var avatar = CreateAvatar("Kenji");
@@ -581,7 +579,6 @@ public class SagaE2EStoryTests : IDisposable
             SagaArcRef = "KagoshimaCastle",
             Latitude = 31.5955,
             Longitude = 130.5569,
-            Y = 50.0,
             Avatar = avatar
         });
         Assert.True(positionResult.Successful);
@@ -593,8 +590,8 @@ public class SagaE2EStoryTests : IDisposable
         var stateMachine = new SagaStateMachine(saga, triggers, _world);
         var state = stateMachine.ReplayToNow(instance);
 
-        _logger.LogEvent($"  → Entered castle zone");
-        _logger.LogEvent($"  → {state.Characters.Count} characters spawned");
+        _logger.LogEvent($"  ? Entered castle zone");
+        _logger.LogEvent($"  ? {state.Characters.Count} characters spawned");
         _logger.LogSeparator();
 
         var merchantInstance = state.Characters.Values.First(c => c.CharacterRef == "VillageMerchant");
@@ -610,7 +607,7 @@ public class SagaE2EStoryTests : IDisposable
             Avatar = avatar
         });
         Assert.True(dialogueResult.Successful);
-        _logger.LogEvent($"  → Dialogue tree: MerchantGreeting");
+        _logger.LogEvent($"  ? Dialogue tree: MerchantGreeting");
         _logger.LogSeparator();
 
         // Execute: Trade
@@ -627,7 +624,7 @@ public class SagaE2EStoryTests : IDisposable
             Avatar = avatar
         });
         Assert.True(tradeResult.Successful);
-        _logger.LogEvent($"  → Bought 3x HealthPotion for 150 credits");
+        _logger.LogEvent($"  ? Bought 3x HealthPotion for 150 credits");
         _logger.LogSeparator();
 
         // Execute: Boss defeat
@@ -639,11 +636,11 @@ public class SagaE2EStoryTests : IDisposable
             CharacterInstanceId = bossInstance.CharacterInstanceId
         });
         Assert.True(defeatResult.Successful);
-        _logger.LogEvent($"  → Boss defeated!");
+        _logger.LogEvent($"  ? Boss defeated!");
         _logger.LogSeparator();
 
         // PART 2: Get final state from first replay
-        _logger.LogHeader("PART 2: FIRST REPLAY (Transactions → State A)");
+        _logger.LogHeader("PART 2: FIRST REPLAY (Transactions ? State A)");
 
         instance = await _repository.GetOrCreateInstanceAsync(avatarId, "KagoshimaCastle");
         var transactions = instance.GetCommittedTransactions().OrderBy(t => t.SequenceNumber).ToList();
@@ -686,7 +683,7 @@ public class SagaE2EStoryTests : IDisposable
         _logger.LogSeparator();
 
         // PART 3: Create fresh state machine and replay again
-        _logger.LogHeader("PART 3: SECOND REPLAY (Same Transactions → State B)");
+        _logger.LogHeader("PART 3: SECOND REPLAY (Same Transactions ? State B)");
         _logger.LogEvent("Creating fresh state machine and replaying same transaction log...");
         _logger.LogSeparator();
 
@@ -710,19 +707,19 @@ public class SagaE2EStoryTests : IDisposable
         _logger.LogEvent("Comparing State A vs State B:");
 
         Assert.Equal(stateA.Characters.Count, stateB.Characters.Count);
-        _logger.LogEvent($"✓ Character count matches: {stateA.Characters.Count}");
+        _logger.LogEvent($"? Character count matches: {stateA.Characters.Count}");
 
         Assert.Equal(stateA.Triggers.Count, stateB.Triggers.Count);
-        _logger.LogEvent($"✓ Trigger count matches: {stateA.Triggers.Count}");
+        _logger.LogEvent($"? Trigger count matches: {stateA.Triggers.Count}");
 
         Assert.Equal(bossA.IsAlive, bossB.IsAlive);
-        _logger.LogEvent($"✓ Boss alive status matches: {bossA.IsAlive}");
+        _logger.LogEvent($"? Boss alive status matches: {bossA.IsAlive}");
 
         Assert.Equal(bossA.CurrentHealth, bossB.CurrentHealth);
-        _logger.LogEvent($"✓ Boss health matches: {bossA.CurrentHealth}");
+        _logger.LogEvent($"? Boss health matches: {bossA.CurrentHealth}");
 
         Assert.Equal(bossA.HasBeenLooted, bossB.HasBeenLooted);
-        _logger.LogEvent($"✓ Boss looted status matches: {bossA.HasBeenLooted}");
+        _logger.LogEvent($"? Boss looted status matches: {bossA.HasBeenLooted}");
 
         // Compare all characters
         foreach (var charA in stateA.Characters.Values)
@@ -732,10 +729,10 @@ public class SagaE2EStoryTests : IDisposable
             Assert.Equal(charA.IsAlive, charB.IsAlive);
             Assert.Equal(charA.CurrentHealth, charB.CurrentHealth);
         }
-        _logger.LogEvent($"✓ All character states match");
+        _logger.LogEvent($"? All character states match");
 
         _logger.LogSeparator();
-        _logger.LogEvent("REPLAY VERIFIED ✓");
+        _logger.LogEvent("REPLAY VERIFIED ?");
         _logger.LogEvent("Transaction log successfully reconstructed identical state");
 
         _output.WriteLine(_logger.GetLog());

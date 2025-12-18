@@ -3,6 +3,8 @@ using ImGuiNET;
 using System.Numerics;
 using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Components.Modals;
+using Ambient.Saga.UI.Components.Input;
+using Ambient.Saga.UI.Components.Rendering;
 
 namespace Ambient.Saga.UI.Components;
 
@@ -24,13 +26,18 @@ public enum ActivePanel
 
 /// <summary>
 /// GAME-REUSABLE: Main ImGui gameplay overlay for the 3D world.
-///
+//>
 /// This component displays the tactical world view including:
 /// - Toggle-based panel system (M=Map, C=Character, I=World Info)
 /// - Status bar with hotkey hints
 /// - All interactive modals (Dialogue, Battle, Trade, Loot, Quest, etc.)
 ///
-/// KEYBOARD CONTROLS:
+/// EXTENSIBILITY:
+/// The overlay now supports custom input handling and HUD rendering through:
+/// - IInputHandler: Customize keyboard/mouse controls (default: M/C/I/ESC)
+/// - IHudRenderer: Customize the always-visible HUD bar (default: bottom bar with hotkeys)
+///
+/// KEYBOARD CONTROLS (Default):
 /// - M: Toggle Map panel (quarter-screen map with click-to-teleport)
 /// - C: Toggle Character panel (avatar stats, inventory, quests, achievements)
 /// - I: Toggle World Info panel (world catalog, debug info)
@@ -41,14 +48,18 @@ public enum ActivePanel
 /// It provides view/interaction layer over the world, but is NOT the world itself.
 ///
 /// INTEGRATION PATTERN:
-/// 1. Create GameplayOverlay instance
-/// 2. Initialize with ViewModel and DirectX device
-/// 3. Call Render() in your game's ImGui frame
+/// 1. Create GameplayOverlay instance with optional custom handlers
+/// 2. Call Render() in your game's ImGui frame
 ///
 /// Example:
 /// <code>
+/// // Use default handlers
 /// var gameplayOverlay = new GameplayOverlay(modalManager);
-/// gameplayOverlay.Initialize(viewModel, device);
+///
+/// // Or inject custom handlers
+/// var customInput = new MyCustomInputHandler();
+/// var customHud = new MyCustomHudRenderer();
+/// var gameplayOverlay = new GameplayOverlay(modalManager, customInput, customHud);
 ///
 /// // In render loop:
 /// imguiRenderer.NewFrame(deltaTime, width, height);
@@ -66,14 +77,12 @@ public class GameplayOverlay
     // Modal system
     private readonly ModalManager _modalManager;
 
+    // Extensibility components
+    private readonly IInputHandler _inputHandler;
+    private readonly IHudRenderer _hudRenderer;
+
     // Panel state - which panel is currently shown (game mode: one at a time)
     private ActivePanel _activePanel = ActivePanel.None;
-
-    // Track key states to detect press (not hold)
-    private bool _mKeyWasPressed = false;
-    private bool _cKeyWasPressed = false;
-    private bool _iKeyWasPressed = false;
-    private bool _escKeyWasPressed = false;
 
     /// <summary>
     /// Gets or sets which panel is currently active.
@@ -85,9 +94,35 @@ public class GameplayOverlay
         set => _activePanel = value;
     }
 
+    /// <summary>
+    /// Gets the input handler used by this overlay.
+    /// Use this to subscribe to events like PauseMenuRequested or check WasPauseMenuRequested.
+    /// </summary>
+    public IInputHandler InputHandler => _inputHandler;
+
+    /// <summary>
+    /// Create a GameplayOverlay with default input and HUD rendering.
+    /// </summary>
     public GameplayOverlay(ModalManager modalManager)
+        : this(modalManager, new DefaultInputHandler(), new DefaultHudRenderer())
+    {
+    }
+
+    /// <summary>
+    /// Create a GameplayOverlay with custom input and HUD rendering.
+    /// This constructor enables full extensibility of the overlay's behavior.
+    /// </summary>
+    /// <param name="modalManager">Modal manager for handling dialogs</param>
+    /// <param name="inputHandler">Custom input handler (null = use default)</param>
+    /// <param name="hudRenderer">Custom HUD renderer (null = use default)</param>
+    public GameplayOverlay(
+        ModalManager modalManager,
+        IInputHandler? inputHandler = null,
+        IHudRenderer? hudRenderer = null)
     {
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
+        _inputHandler = inputHandler ?? new DefaultInputHandler();
+        _hudRenderer = hudRenderer ?? new DefaultHudRenderer();
 
         // Initialize panels
         _worldInfoPanel = new WorldInfoPanel();
@@ -107,6 +142,14 @@ public class GameplayOverlay
     }
 
     /// <summary>
+    /// Close all panels.
+    /// </summary>
+    public void CloseAllPanels()
+    {
+        _activePanel = ActivePanel.None;
+    }
+
+    /// <summary>
     /// Render the gameplay overlay.
     /// Call this during your ImGui frame (between NewFrame and Render).
     /// </summary>
@@ -119,14 +162,20 @@ public class GameplayOverlay
         if (viewModel == null)
             return;
 
-        // Handle keyboard input for panel toggles (only when no modal is active and no text input focused)
-        if (!_modalManager.HasActiveModal() && !ImGui.GetIO().WantTextInput)
+        // Process input through the injected handler
+        var inputContext = new InputContext
         {
-            HandlePanelHotkeys();
-        }
+            IsModalActive = _modalManager.HasActiveModal(),
+            IsTextInputActive = ImGui.GetIO().WantTextInput,
+            ActivePanel = _activePanel,
+            TogglePanelAction = TogglePanel,
+            CloseAllPanelsAction = CloseAllPanels
+        };
+        _inputHandler.ProcessInput(inputContext);
 
-        // Always render the HUD bar at the bottom of the screen
-        RenderHudBar(viewModel);
+        // Render the HUD through the injected renderer
+        var io = ImGui.GetIO();
+        _hudRenderer.Render(viewModel, _activePanel, io.DisplaySize);
 
         // Render the active panel (if any)
         switch (_activePanel)
@@ -148,138 +197,6 @@ public class GameplayOverlay
 
         // Render all modals (always on top)
         _modalManager.Render(viewModel);
-    }
-
-    /// <summary>
-    /// Handle keyboard hotkeys for panel toggling.
-    /// Uses edge detection (press, not hold) to prevent rapid toggling.
-    /// </summary>
-    private void HandlePanelHotkeys()
-    {
-        // M key - Map
-        bool mKeyDown = ImGui.IsKeyDown(ImGuiKey.M);
-        if (mKeyDown && !_mKeyWasPressed)
-        {
-            TogglePanel(ActivePanel.Map);
-        }
-        _mKeyWasPressed = mKeyDown;
-
-        // C key - Character
-        bool cKeyDown = ImGui.IsKeyDown(ImGuiKey.C);
-        if (cKeyDown && !_cKeyWasPressed)
-        {
-            TogglePanel(ActivePanel.Character);
-        }
-        _cKeyWasPressed = cKeyDown;
-
-        // I key - World Info
-        bool iKeyDown = ImGui.IsKeyDown(ImGuiKey.I);
-        if (iKeyDown && !_iKeyWasPressed)
-        {
-            TogglePanel(ActivePanel.WorldInfo);
-        }
-        _iKeyWasPressed = iKeyDown;
-
-        // ESC key - Close current panel
-        bool escKeyDown = ImGui.IsKeyDown(ImGuiKey.Escape);
-        if (escKeyDown && !_escKeyWasPressed && _activePanel != ActivePanel.None)
-        {
-            _activePanel = ActivePanel.None;
-        }
-        _escKeyWasPressed = escKeyDown;
-    }
-
-    /// <summary>
-    /// Render the always-visible HUD bar at the bottom of the screen.
-    /// Shows hotkey hints and basic status info.
-    /// </summary>
-    private void RenderHudBar(MainViewModel viewModel)
-    {
-        var io = ImGui.GetIO();
-        var displaySize = io.DisplaySize;
-
-        // Position at bottom of screen
-        var hudHeight = 40f;
-        ImGui.SetNextWindowPos(new Vector2(0, displaySize.Y - hudHeight));
-        ImGui.SetNextWindowSize(new Vector2(displaySize.X, hudHeight));
-
-        var windowFlags = ImGuiWindowFlags.NoTitleBar |
-                          ImGuiWindowFlags.NoResize |
-                          ImGuiWindowFlags.NoMove |
-                          ImGuiWindowFlags.NoScrollbar |
-                          ImGuiWindowFlags.NoCollapse |
-                          ImGuiWindowFlags.NoBringToFrontOnFocus;
-
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 8));
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.1f, 0.1f, 0.15f, 0.9f));
-
-        if (ImGui.Begin("##HudBar", windowFlags))
-        {
-            // Left side: Hotkey hints
-            RenderHotkeyHint("M", "Map", _activePanel == ActivePanel.Map);
-            ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
-            ImGui.SameLine();
-            RenderHotkeyHint("C", "Character", _activePanel == ActivePanel.Character);
-            ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
-            ImGui.SameLine();
-            RenderHotkeyHint("I", "World Info", _activePanel == ActivePanel.WorldInfo);
-
-            // Center: Status message
-            if (!string.IsNullOrEmpty(viewModel.StatusMessage))
-            {
-                ImGui.SameLine(displaySize.X / 2 - 100);
-                ImGui.Text(viewModel.StatusMessage);
-            }
-
-            // Right side: Avatar position (if available)
-            if (viewModel.HasAvatarPosition)
-            {
-                var posText = $"({viewModel.AvatarLatitude:F2}, {viewModel.AvatarLongitude:F2})";
-                var textWidth = ImGui.CalcTextSize(posText).X;
-                ImGui.SameLine(displaySize.X - textWidth - 20);
-                ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1), posText);
-            }
-
-            if (viewModel.IsLoading)
-            {
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(1, 1, 0, 1), "Loading...");
-            }
-        }
-        ImGui.End();
-
-        ImGui.PopStyleColor();
-        ImGui.PopStyleVar();
-    }
-
-    /// <summary>
-    /// Render a hotkey hint in the HUD bar.
-    /// </summary>
-    private void RenderHotkeyHint(string key, string label, bool isActive)
-    {
-        // Key box
-        var keyColor = isActive
-            ? new Vector4(0.3f, 0.7f, 0.3f, 1f)  // Green when active
-            : new Vector4(0.3f, 0.3f, 0.3f, 1f); // Gray when inactive
-
-        var textColor = isActive
-            ? new Vector4(1f, 1f, 1f, 1f)        // White when active
-            : new Vector4(0.7f, 0.7f, 0.7f, 1f); // Light gray when inactive
-
-        ImGui.PushStyleColor(ImGuiCol.Button, keyColor);
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, keyColor);
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, keyColor);
-        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(4, 2));
-
-        ImGui.Button(key, new Vector2(22, 22));
-
-        ImGui.PopStyleVar();
-        ImGui.PopStyleColor(3);
-
-        ImGui.SameLine();
-        ImGui.TextColored(textColor, label);
     }
 
     /// <summary>
