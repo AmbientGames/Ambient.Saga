@@ -13,14 +13,26 @@ public class PauseMenuModal
     public event Action? SettingsRequested;
     public event Action? QuitRequested;
 
+    private bool _justOpened = false;
+
     public void Render(ref bool isOpen)
     {
-        if (!isOpen) return;
+        if (!isOpen)
+        {
+            _justOpened = false;
+            return;
+        }
+
+        // Mark as just opened on first frame
+        if (!_justOpened)
+        {
+            _justOpened = true;
+        }
 
         // Center the window
         var io = ImGui.GetIO();
         ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Always, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(300, 250), ImGuiCond.Always);
+        ImGui.SetNextWindowSize(new Vector2(300, 300), ImGuiCond.Always);
 
         // Style the window
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
@@ -32,6 +44,22 @@ public class PauseMenuModal
 
         if (ImGui.Begin("PauseMenu", ref isOpen, windowFlags))
         {
+            // Check for ESC key to close pause menu, but only after first frame
+            // (Skip first frame to avoid immediately closing from the ESC that opened it)
+            if (_justOpened)
+            {
+                // Check if ESC key is NOT pressed anymore (released)
+                if (!ImGui.IsKeyDown(ImGuiKey.Escape))
+                {
+                    _justOpened = false;
+                }
+            }
+            else if (ImGui.IsKeyPressed(ImGuiKey.Escape))
+            {
+                isOpen = false;
+                ResumeRequested?.Invoke();
+            }
+
             // Title
             ImGui.Spacing();
             ImGui.SetWindowFontScale(1.3f);
