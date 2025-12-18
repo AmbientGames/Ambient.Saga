@@ -38,6 +38,15 @@ public class ModalManager
     // Event for quit request (so host application can handle it)
     public event Action? QuitRequested;
 
+    /// <summary>
+    /// Requests the application to quit.
+    /// Called when the user needs to exit (e.g., cancels mandatory archetype selection).
+    /// </summary>
+    public void RequestQuit()
+    {
+        QuitRequested?.Invoke();
+    }
+
     public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, ISettingsPanel? settingsPanel = null)
     {
         _archetypeSelector = archetypeSelector;

@@ -30,11 +30,17 @@ public class ArchetypeSelectionModal
         ImGui.SetNextWindowSize(new Vector2(900, 600), ImGuiCond.FirstUseEver);
         ImGui.SetNextWindowPos(ImGui.GetMainViewport().GetCenter(), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
 
-        if (ImGui.BeginPopupModal("Choose Your Character", ref isOpen, ImGuiWindowFlags.NoResize))
+        // NoClose flag prevents the X button - archetype selection is mandatory
+        // Note: ImGui doesn't have NoClose flag, so we pass a dummy bool that we ignore
+        bool dummyOpen = true;
+        
+        if (ImGui.BeginPopupModal("Choose Your Character", ref dummyOpen, ImGuiWindowFlags.NoResize))
         {
             // Header
             ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Choose Your Character Archetype");
             ImGui.Text("This choice determines your starting equipment and stats");
+            ImGui.Spacing();
+            ImGui.TextColored(new Vector4(1, 0.7f, 0.3f, 1), "⚠ You must select an archetype to continue");
             ImGui.Separator();
             ImGui.Spacing();
 
@@ -150,19 +156,28 @@ public class ArchetypeSelectionModal
             var totalWidth = buttonWidth * 2 + spacing;
             ImGui.SetCursorPosX(ImGui.GetWindowWidth() - totalWidth - 20);
 
-            if (ImGui.Button("Cancel", new Vector2(buttonWidth, 30)))
+            // Quit Game button (red) - this is the only way out if you don't want to play
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
+            if (ImGui.Button("Quit Game", new Vector2(buttonWidth, 30)))
             {
                 selector?.CancelSelection();
                 isOpen = false;
                 _selectedArchetype = null;
                 _selectedIndex = -1;
             }
+            ImGui.PopStyleColor(3);
 
             ImGui.SameLine();
 
+            // Enter World button (green) - only enabled when archetype selected
             var canEnter = _selectedArchetype != null;
             if (!canEnter) ImGui.BeginDisabled();
 
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
             if (ImGui.Button("Enter World", new Vector2(buttonWidth, 30)))
             {
                 selector?.CompleteSelection(_selectedArchetype);
@@ -170,19 +185,15 @@ public class ArchetypeSelectionModal
                 _selectedArchetype = null;
                 _selectedIndex = -1;
             }
+            ImGui.PopStyleColor(3);
 
             if (!canEnter) ImGui.EndDisabled();
 
             ImGui.EndPopup();
         }
 
-        // If modal was closed without selection (e.g., ESC key), treat as cancel
-        if (!isOpen && _selectedArchetype != null)
-        {
-            selector?.CancelSelection();
-            _selectedArchetype = null;
-            _selectedIndex = -1;
-        }
+        // Note: Modal cannot be closed without selecting an archetype (NoClose flag)
+        // Clicking "Quit Game" will call CancelSelection and quit the application
     }
 
     private void RenderArchetypeDetails(AvatarArchetype archetype, string currencyName)
