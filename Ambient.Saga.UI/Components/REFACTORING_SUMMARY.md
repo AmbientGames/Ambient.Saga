@@ -32,8 +32,15 @@ The `GameplayOverlay` class has been refactored to provide extensibility through
    - `CompositeInputHandler` - Combine multiple input handlers
    - `GameplayOverlayExamples.cs` - Complete usage examples
 
-5. **Documentation**
+5. **Settings Panel Support**
+   - `ISettingsPanel` - Interface for custom settings UI
+   - `DefaultSettingsPanel` - Template with common game settings
+   - Accessible from pause menu Settings button
+
+6. **Documentation**
    - `EXTENSIBILITY.md` - Comprehensive guide with examples
+   - `PAUSE_MENU.md` - Pause menu integration
+   - `SETTINGS.md` - Settings panel customization guide
 
 ## Files Created
 
@@ -47,12 +54,16 @@ Ambient.Saga.UI/Components/
 ??? Rendering/
 ?   ??? IHudRenderer.cs                  [NEW - Interface]
 ?   ??? DefaultHudRenderer.cs            [NEW - Default implementation]
+??? Panels/
+?   ??? ISettingsPanel.cs                [NEW - Interface]
+?   ??? DefaultSettingsPanel.cs          [NEW - Default template]
 ??? Modals/
 ?   ??? PauseMenuModal.cs                [NEW - Pause menu UI]
 ??? Examples/
 ?   ??? GameplayOverlayExamples.cs       [NEW - Usage examples]
 ??? EXTENSIBILITY.md                     [NEW - Documentation]
 ??? PAUSE_MENU.md                        [NEW - Pause menu guide]
+??? SETTINGS.md                          [NEW - Settings guide]
 ```
 
 ## Files Modified

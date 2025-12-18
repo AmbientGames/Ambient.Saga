@@ -3,6 +3,7 @@ using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using MediatR;
 using Ambient.Saga.UI.Services;
+using Ambient.Saga.UI.Components.Panels;
 
 namespace Ambient.Saga.UI.Components.Modals;
 
@@ -28,6 +29,7 @@ public class ModalManager
     private BattleModal _battleModal = new();
     private FactionReputationModal _factionReputationModal = new();
     private PauseMenuModal _pauseMenuModal = new();
+    private ISettingsPanel _settingsPanel;
 
     // Reference to ImGui archetype selector for callbacks
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
@@ -36,13 +38,14 @@ public class ModalManager
     // Event for quit request (so host application can handle it)
     public event Action? QuitRequested;
 
-    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator)
+    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, ISettingsPanel? settingsPanel = null)
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
         _worldSelectionScreen = new WorldSelectionScreen(worldContentGenerator);
+        _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
         
         // Wire up pause menu events
         _pauseMenuModal.ResumeRequested += () => ShowPauseMenu = false;
@@ -52,8 +55,9 @@ public class ModalManager
     
     private void OnSettingsRequested()
     {
-        // TODO: Open settings modal
-        System.Diagnostics.Debug.WriteLine("Settings requested (not implemented yet)");
+        // Open settings panel
+        ShowSettings = true;
+        System.Diagnostics.Debug.WriteLine("Settings opened");
     }
     
     private void OnQuitRequested()
@@ -79,6 +83,7 @@ public class ModalManager
     public bool ShowLoot { get; set; }
     public bool ShowFactionReputation { get; set; }
     public bool ShowPauseMenu { get; set; }
+    public bool ShowSettings { get; set; }
 
     // Selected character for interactions
     public CharacterViewModel? SelectedCharacter { get; set; }
@@ -109,7 +114,8 @@ public class ModalManager
         ShowDialogue ||
         ShowLoot ||
         ShowFactionReputation ||
-        ShowPauseMenu;
+        ShowPauseMenu ||
+        ShowSettings;
 
     /// <summary>
     /// Check if any modal dialog is currently active (alias for IsAnyModalOpen).
@@ -237,6 +243,13 @@ public class ModalManager
             _pauseMenuModal.Render(ref isOpen);
             ShowPauseMenu = isOpen;
         }
+
+        if (ShowSettings)
+        {
+            var isOpen = ShowSettings;
+            _settingsPanel.Render(ref isOpen);
+            ShowSettings = isOpen;
+        }
     }
 
     public void OpenCharacterInteraction(CharacterViewModel character)
@@ -332,6 +345,7 @@ public class ModalManager
         ShowLoot = false;
         ShowFactionReputation = false;
         ShowPauseMenu = false;
+        ShowSettings = false;
         SelectedCharacter = null;
         _questViewModel = null;
     }
