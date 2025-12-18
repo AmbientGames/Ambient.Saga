@@ -36,15 +36,19 @@ public class WorldSelectionScreen
         // Center the selection window
         var viewport = ImGui.GetMainViewport();
         ImGui.SetNextWindowPos(new Vector2(viewport.Size.X * 0.5f, viewport.Size.Y * 0.5f), ImGuiCond.Always, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(600, 410), ImGuiCond.Always);
+        ImGui.SetNextWindowSize(new Vector2(600, 461), ImGuiCond.Always);
 
-        if (!ImGui.Begin("World Selection", ref isOpen, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
+        // NoTitleBar removes the close box - world selection is mandatory in sandbox
+        var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoTitleBar;
+        
+        if (!ImGui.Begin("World Selection", windowFlags))
         {
             ImGui.End();
             return;
         }
 
         ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Select a World to Load");
+        ImGui.TextColored(new Vector4(1, 0.7f, 0.3f, 1), "? You must select and load a world to continue");
         ImGui.Separator();
         ImGui.Spacing();
 
@@ -168,6 +172,9 @@ public class WorldSelectionScreen
                 ImGui.BeginDisabled();
             }
 
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
             if (ImGui.Button("Load World", new Vector2(-1, 40)))
             {
                 if (viewModel.LoadSelectedConfigurationCommand.CanExecute(null))
@@ -175,15 +182,44 @@ public class WorldSelectionScreen
                     viewModel.LoadSelectedConfigurationCommand.Execute(null);
                 }
             }
+            ImGui.PopStyleColor(3);
 
             if (!canLoad)
             {
                 ImGui.EndDisabled();
             }
+            
+            ImGui.Spacing();
+            
+            // Quit button
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
+            if (ImGui.Button("Quit Game", new Vector2(-1, 30)))
+            {
+                // Request quit through parent's quit mechanism
+                isOpen = false;
+                viewModel.RaiseRequestQuit();
+            }
+            ImGui.PopStyleColor(3);
         }
         else
         {
             ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "Please select a world configuration to continue.");
+            
+            ImGui.Spacing();
+            ImGui.Spacing();
+            
+            // Quit button when no world selected
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
+            if (ImGui.Button("Quit Game", new Vector2(-1, 40)))
+            {
+                isOpen = false;
+                viewModel.RaiseRequestQuit();
+            }
+            ImGui.PopStyleColor(3);
         }
 
         ImGui.End();
