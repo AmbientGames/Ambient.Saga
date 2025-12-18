@@ -52,6 +52,9 @@ public class WorldMapUI
         
         // Subscribe to pause menu request from input handler
         _gameplayOverlay.InputHandler.PauseMenuRequested += OnPauseMenuRequested;
+        
+        // Subscribe to quit request from viewModel (raised by WorldSelectionScreen)
+        _viewModel.RequestQuit += OnQuitRequestedFromViewModel;
 
         // Show world selection at startup (Sandbox-specific flow)
         _modalManager.ShowWorldSelection = true;
@@ -68,6 +71,13 @@ public class WorldMapUI
         // ESC pressed with no panels open - show pause menu
         _modalManager.ShowPauseMenu = true;
         System.Diagnostics.Debug.WriteLine("Pause menu requested");
+    }
+    
+    private void OnQuitRequestedFromViewModel()
+    {
+        // Forward quit request from ViewModel to ModalManager
+        _modalManager.RequestQuit();
+        System.Diagnostics.Debug.WriteLine("Quit requested from world selection");
     }
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -128,6 +138,7 @@ public class WorldMapUI
         if (_viewModel != null)
         {
             _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+            _viewModel.RequestQuit -= OnQuitRequestedFromViewModel;
         }
         
         if (_gameplayOverlay != null)

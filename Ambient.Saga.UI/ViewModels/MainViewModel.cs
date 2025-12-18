@@ -145,6 +145,18 @@ public partial class MainViewModel : ObservableObject
 
     // Event for when character changes so dialogue can be loaded
     public event EventHandler? CharacterChanged;
+    
+    // Event for when quit is requested (e.g., from world selection screen)
+    public event Action? RequestQuit;
+    
+    /// <summary>
+    /// Requests the application to quit.
+    /// Called by modals/screens when user wants to exit without completing mandatory actions.
+    /// </summary>
+    public void RaiseRequestQuit()
+    {
+        RequestQuit?.Invoke();
+    }
 
     private ProximityTriggerViewModel? _previousTrigger;
     private IDisposable? _worldDatabase;
