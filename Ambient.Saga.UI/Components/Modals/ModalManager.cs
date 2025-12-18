@@ -31,6 +31,9 @@ public class ModalManager
     private PauseMenuModal _pauseMenuModal = new();
     private ISettingsPanel _settingsPanel;
 
+    // Modal stack for proper hierarchical handling
+    private readonly ModalStack _modalStack = new();
+
     // Reference to ImGui archetype selector for callbacks
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
     private readonly IMediator _mediator;
@@ -249,14 +252,40 @@ public class ModalManager
         if (ShowPauseMenu)
         {
             var isOpen = ShowPauseMenu;
-            _pauseMenuModal.Render(ref isOpen);
+            
+            // Manage modal stack
+            if (isOpen && !_modalStack.IsTopModal("PauseMenu"))
+            {
+                _modalStack.Push("PauseMenu");
+            }
+            
+            _pauseMenuModal.Render(ref isOpen, _modalStack);
+            
+            if (!isOpen && _modalStack.IsTopModal("PauseMenu"))
+            {
+                _modalStack.Pop("PauseMenu");
+            }
+            
             ShowPauseMenu = isOpen;
         }
 
         if (ShowSettings)
         {
             var isOpen = ShowSettings;
+            
+            // Manage modal stack
+            if (isOpen && !_modalStack.IsTopModal("Settings"))
+            {
+                _modalStack.Push("Settings");
+            }
+            
             _settingsPanel.Render(ref isOpen);
+            
+            if (!isOpen && _modalStack.IsTopModal("Settings"))
+            {
+                _modalStack.Pop("Settings");
+            }
+            
             ShowSettings = isOpen;
         }
     }

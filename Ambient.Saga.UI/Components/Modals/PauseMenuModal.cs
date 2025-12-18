@@ -13,20 +13,11 @@ public class PauseMenuModal
     public event Action? SettingsRequested;
     public event Action? QuitRequested;
 
-    private bool _justOpened = false;
-
-    public void Render(ref bool isOpen)
+    public void Render(ref bool isOpen, ModalStack modalStack)
     {
         if (!isOpen)
         {
-            _justOpened = false;
             return;
-        }
-
-        // Mark as just opened on first frame
-        if (!_justOpened)
-        {
-            _justOpened = true;
         }
 
         // Center the window
@@ -44,17 +35,10 @@ public class PauseMenuModal
 
         if (ImGui.Begin("PauseMenu", ref isOpen, windowFlags))
         {
-            // Check for ESC key to close pause menu, but only after first frame
-            // (Skip first frame to avoid immediately closing from the ESC that opened it)
-            if (_justOpened)
-            {
-                // Check if ESC key is NOT pressed anymore (released)
-                if (!ImGui.IsKeyDown(ImGuiKey.Escape))
-                {
-                    _justOpened = false;
-                }
-            }
-            else if (ImGui.IsKeyPressed(ImGuiKey.Escape))
+            // Check for ESC key to close pause menu using modal stack coordination
+            // Only respond if we're the top modal and ESC was just pressed
+            bool escKeyDown = ImGui.IsKeyDown(ImGuiKey.Escape);
+            if (modalStack.IsTopModal("PauseMenu") && modalStack.WasEscJustPressed(escKeyDown))
             {
                 isOpen = false;
                 ResumeRequested?.Invoke();
