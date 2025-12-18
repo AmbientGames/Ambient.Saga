@@ -1,4 +1,4 @@
-﻿using Ambient.Application.Contracts;
+using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
@@ -595,9 +595,9 @@ public class QuestPrerequisitesTests : IDisposable
         // GIVEN: Quest requires Quest A + Level 5 + Guild Token
         var avatar = CreateTestAvatar(level: 5);
 
-        // Has level 5 ✓
-        // Missing Quest A completion ✗
-        // Missing Guild Token ✗
+        // Has level 5 ?
+        // Missing Quest A completion ?
+        // Missing Guild Token ?
 
         // WHEN: Try to accept Epic Quest
         var result = await _mediator.Send(new AcceptQuestCommand

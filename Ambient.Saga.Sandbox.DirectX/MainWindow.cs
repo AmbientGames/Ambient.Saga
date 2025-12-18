@@ -4,6 +4,7 @@ using Steamworks;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.Sandbox.DirectX.Services;
 using Ambient.Saga.Sandbox.DirectX;
+using Ambient.Saga.UI.Components.Modals;
 
 namespace Ambient.Saga.Sandbox.WindowsUI;
 
@@ -16,11 +17,13 @@ public partial class MainWindow : Form
     private DateTime _lastFrameTime = DateTime.Now;
     private MainViewModel _viewModel;
     private Panel _mainPanel;
+    private ModalManager _modalManager;
 
-    public MainWindow(MainViewModel viewModel, WorldMapUI worldMapUI)
+    public MainWindow(MainViewModel viewModel, WorldMapUI worldMapUI, ModalManager modalManager)
     {
         _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         _worldMapUI = worldMapUI ?? throw new ArgumentNullException(nameof(worldMapUI));
+        _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
 
         InitializeComponent();
 
@@ -103,12 +106,21 @@ public partial class MainWindow : Form
         var textureProvider = new D3D11TextureProvider(_renderer.Device);
         _worldMapUI?.Initialize(_viewModel, textureProvider);
 
+        // Subscribe to quit request from pause menu
+        _modalManager.QuitRequested += OnQuitRequested;
+
         // Start render loop
         _isRendering = true;
         System.Windows.Forms.Application.Idle += OnApplicationIdle;
 
         // Clean up on close
         this.FormClosing += OnFormClosing;
+    }
+    
+    private void OnQuitRequested()
+    {
+        // Close the form - this triggers FormClosing cleanup
+        this.Close();
     }
 
     private void OnApplicationIdle(object? sender, EventArgs e)

@@ -73,7 +73,6 @@ public class SubmitReactionCommandTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -157,7 +156,6 @@ public class SubmitReactionCommandTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -257,7 +255,6 @@ public class SubmitReactionCommandTests : IDisposable
             SagaArcRef = sagaRef,
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 

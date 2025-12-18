@@ -49,6 +49,9 @@ public class WorldMapUI
 
         // Initialize components
         _gameplayOverlay = new GameplayOverlay(_modalManager);
+        
+        // Subscribe to pause menu request from input handler
+        _gameplayOverlay.InputHandler.PauseMenuRequested += OnPauseMenuRequested;
 
         // Show world selection at startup (Sandbox-specific flow)
         _modalManager.ShowWorldSelection = true;
@@ -58,6 +61,13 @@ public class WorldMapUI
 
         // Convert initial heightmap if available
         UpdateHeightMapTexture();
+    }
+    
+    private void OnPauseMenuRequested()
+    {
+        // ESC pressed with no panels open - show pause menu
+        _modalManager.ShowPauseMenu = true;
+        System.Diagnostics.Debug.WriteLine("Pause menu requested");
     }
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -118,6 +128,11 @@ public class WorldMapUI
         if (_viewModel != null)
         {
             _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
+        }
+        
+        if (_gameplayOverlay != null)
+        {
+            _gameplayOverlay.InputHandler.PauseMenuRequested -= OnPauseMenuRequested;
         }
     }
 

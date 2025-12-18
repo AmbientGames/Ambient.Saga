@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Partials;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Evaluation;
@@ -408,7 +408,7 @@ public class FactionReputationIntegrationTests : IDisposable
     public void ReputationLevel_CrossingThreshold_ReturnsNewLevel()
     {
         // Arrange & Act & Assert
-        // Start at Neutral (0), gain 3000 reputation → should be Friendly
+        // Start at Neutral (0), gain 3000 reputation ? should be Friendly
         Assert.Equal(ReputationLevel.Neutral, ReputationManager.GetReputationLevel(0));
         Assert.Equal(ReputationLevel.Neutral, ReputationManager.GetReputationLevel(2999));
         Assert.Equal(ReputationLevel.Friendly, ReputationManager.GetReputationLevel(3000));

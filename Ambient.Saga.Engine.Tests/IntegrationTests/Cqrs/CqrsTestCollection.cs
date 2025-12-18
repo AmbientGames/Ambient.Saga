@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 
 namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 

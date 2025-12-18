@@ -1,0 +1,95 @@
+using Ambient.Saga.Presentation.UI.ViewModels;
+using ImGuiNET;
+using System.Numerics;
+
+namespace Ambient.Saga.UI.Components.Rendering;
+
+/// <summary>
+/// Default HUD renderer showing hotkey hints and status information.
+/// Renders a bar at the bottom of the screen.
+/// </summary>
+public class DefaultHudRenderer : IHudRenderer
+{
+    public void Render(MainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    {
+        // Position at bottom of screen
+        var hudHeight = 40f;
+        ImGui.SetNextWindowPos(new Vector2(0, displaySize.Y - hudHeight));
+        ImGui.SetNextWindowSize(new Vector2(displaySize.X, hudHeight));
+
+        var windowFlags = ImGuiWindowFlags.NoTitleBar |
+                          ImGuiWindowFlags.NoResize |
+                          ImGuiWindowFlags.NoMove |
+                          ImGuiWindowFlags.NoScrollbar |
+                          ImGuiWindowFlags.NoCollapse |
+                          ImGuiWindowFlags.NoBringToFrontOnFocus;
+
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 8));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.1f, 0.1f, 0.15f, 0.9f));
+
+        if (ImGui.Begin("##HudBar", windowFlags))
+        {
+            // Left side: Hotkey hints
+            RenderHotkeyHint("M", "Map", activePanel == ActivePanel.Map);
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
+            ImGui.SameLine();
+            RenderHotkeyHint("C", "Character", activePanel == ActivePanel.Character);
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
+            ImGui.SameLine();
+            RenderHotkeyHint("I", "World Info", activePanel == ActivePanel.WorldInfo);
+
+            // Center: Status message
+            if (!string.IsNullOrEmpty(viewModel.StatusMessage))
+            {
+                ImGui.SameLine(displaySize.X / 2 - 100);
+                ImGui.Text(viewModel.StatusMessage);
+            }
+
+            // Right side: Avatar position (if available)
+            if (viewModel.HasAvatarPosition)
+            {
+                var posText = $"({viewModel.AvatarLatitude:F2}, {viewModel.AvatarLongitude:F2})";
+                var textWidth = ImGui.CalcTextSize(posText).X;
+                ImGui.SameLine(displaySize.X - textWidth - 20);
+                ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1), posText);
+            }
+
+            if (viewModel.IsLoading)
+            {
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(1, 1, 0, 1), "Loading...");
+            }
+        }
+        ImGui.End();
+
+        ImGui.PopStyleColor();
+        ImGui.PopStyleVar();
+    }
+
+    private void RenderHotkeyHint(string key, string label, bool isActive)
+    {
+        // Key box
+        var keyColor = isActive
+            ? new Vector4(0.3f, 0.7f, 0.3f, 1f)  // Green when active
+            : new Vector4(0.3f, 0.3f, 0.3f, 1f); // Gray when inactive
+
+        var textColor = isActive
+            ? new Vector4(1f, 1f, 1f, 1f)        // White when active
+            : new Vector4(0.7f, 0.7f, 0.7f, 1f); // Light gray when inactive
+
+        ImGui.PushStyleColor(ImGuiCol.Button, keyColor);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, keyColor);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, keyColor);
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(4, 2));
+
+        ImGui.Button(key, new Vector2(22, 22));
+
+        ImGui.PopStyleVar();
+        ImGui.PopStyleColor(3);
+
+        ImGui.SameLine();
+        ImGui.TextColored(textColor, label);
+    }
+}

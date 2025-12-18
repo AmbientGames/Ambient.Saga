@@ -1,4 +1,4 @@
-﻿using Ambient.Application.Contracts;
+using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;

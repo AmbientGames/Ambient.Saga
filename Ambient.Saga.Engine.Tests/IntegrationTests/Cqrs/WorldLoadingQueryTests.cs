@@ -1,4 +1,4 @@
-﻿using Ambient.Saga.Engine.Application.Handlers.Loading;
+using Ambient.Saga.Engine.Application.Handlers.Loading;
 using Ambient.Saga.Engine.Application.Queries.Loading;
 using Ambient.Infrastructure.GameLogic.Loading;
 using MediatR;

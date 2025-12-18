@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
@@ -17,7 +17,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
 /// <summary>
 /// Integration tests for UpdateAvatarPositionCommand via CQRS pipeline.
-/// Tests the full pipeline: MediatR → Behaviors → Handler → Repository
+/// Tests the full pipeline: MediatR ? Behaviors ? Handler ? Repository
 /// </summary>
 [Collection("Sequential CQRS Tests")]
 public class UpdateAvatarPositionCommandTests : IDisposable
@@ -224,7 +224,6 @@ public class UpdateAvatarPositionCommandTests : IDisposable
             SagaArcRef = "TestSaga",
             Latitude = 35.0,  // Saga center - within 100m trigger radius
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         };
 
@@ -262,7 +261,6 @@ public class UpdateAvatarPositionCommandTests : IDisposable
             SagaArcRef = "TestSaga",
             Latitude = 35.0, // Close to Saga center (within trigger radius)
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         };
 
@@ -298,7 +296,6 @@ public class UpdateAvatarPositionCommandTests : IDisposable
             SagaArcRef = "TestSaga",
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         };
 
@@ -333,7 +330,6 @@ public class UpdateAvatarPositionCommandTests : IDisposable
             SagaArcRef = "NonExistentSaga",
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         };
 
@@ -361,7 +357,6 @@ public class UpdateAvatarPositionCommandTests : IDisposable
             SagaArcRef = "TestSaga",
             Latitude = 35.0,
             Longitude = 139.0,
-            Y = 50.0,
             Avatar = avatar
         });
 
@@ -372,7 +367,6 @@ public class UpdateAvatarPositionCommandTests : IDisposable
             SagaArcRef = "TestSaga",
             Latitude = 35.001, // Slightly different position
             Longitude = 139.001,
-            Y = 50.0,
             Avatar = avatar
         });
 
