@@ -19,6 +19,7 @@ public class ModalStack
     {
         _modalStack.Push(modalName);
         System.Diagnostics.Debug.WriteLine($"[ModalStack] Pushed: {modalName} (Stack depth: {_modalStack.Count})");
+        ModalPushed?.Invoke(modalName);
     }
 
     /// <summary>
@@ -30,6 +31,7 @@ public class ModalStack
         {
             _modalStack.Pop();
             System.Diagnostics.Debug.WriteLine($"[ModalStack] Popped: {modalName} (Stack depth: {_modalStack.Count})");
+            ModalPopped?.Invoke(modalName);
         }
         else
         {
@@ -42,6 +44,7 @@ public class ModalStack
                     _modalStack.Push(modal);
             }
             System.Diagnostics.Debug.WriteLine($"[ModalStack] Removed: {modalName} (out of order, Stack depth: {_modalStack.Count})");
+            ModalPopped?.Invoke(modalName);
         }
     }
 
@@ -62,6 +65,31 @@ public class ModalStack
     /// Get the top modal name (null if none).
     /// </summary>
     public string? TopModal => _modalStack.Count > 0 ? _modalStack.Peek() : null;
+
+    /// <summary>
+    /// Get the current stack depth.
+    /// </summary>
+    public int Depth => _modalStack.Count;
+
+    /// <summary>
+    /// Check if a specific modal is currently in the stack (at any level).
+    /// </summary>
+    public bool Contains(string modalName) => _modalStack.Contains(modalName);
+
+    /// <summary>
+    /// Get all modal names currently in the stack (top to bottom).
+    /// </summary>
+    public IEnumerable<string> GetStack() => _modalStack.ToArray();
+
+    /// <summary>
+    /// Event fired when a modal is pushed onto the stack.
+    /// </summary>
+    public event Action<string>? ModalPushed;
+
+    /// <summary>
+    /// Event fired when a modal is popped from the stack.
+    /// </summary>
+    public event Action<string>? ModalPopped;
 
     /// <summary>
     /// Check if ESC key was just pressed (transition from up to down).

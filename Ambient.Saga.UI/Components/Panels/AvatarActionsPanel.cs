@@ -65,22 +65,22 @@ public class AvatarActionsPanel
 
         if (ImGui.Button("Quest Log", new Vector2(-1, 25)))
         {
-            modalManager.ShowQuestLog = true;
+            modalManager.OpenQuestLog();
         }
 
         if (ImGui.Button("View Characters", new Vector2(-1, 25)))
         {
-            modalManager.ShowCharacters = true;
+            modalManager.OpenCharacters();
         }
 
         if (ImGui.Button("View World Catalog", new Vector2(-1, 25)))
         {
-            modalManager.ShowWorldCatalog = true;
+            modalManager.OpenWorldCatalog();
         }
 
         if (ImGui.Button("Faction Reputation", new Vector2(-1, 25)))
         {
-            modalManager.ShowFactionReputation = true;
+            modalManager.OpenFactionReputation();
         }
     }
 

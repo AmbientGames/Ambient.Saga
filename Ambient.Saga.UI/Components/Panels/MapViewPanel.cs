@@ -446,7 +446,7 @@ public class MapViewPanel
                     {
                         // Always start with dialogue - dialogue determines next steps (battle, trade, etc.)
                         modalManager.SelectedCharacter = character;
-                        modalManager.ShowDialogue = true;
+                        modalManager.OpenModal("Dialogue");
                     }
                 }
             }
