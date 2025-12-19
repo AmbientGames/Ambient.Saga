@@ -29,24 +29,24 @@ This document tracks the migration of modals from the legacy system to the Modal
 
 | Modal Name | Status | Adapter | Notes |
 |-----------|--------|---------|-------|
-| WorldSelection | ⏳ Pending | N/A | Startup-specific, may remain manual |
-| ArchetypeSelection | ⏳ Pending | N/A | Requires ImGuiArchetypeSelector |
-| AvatarInfo | ⏳ Pending | N/A | Simple modal (MainViewModel only) |
-| Characters | ⏳ Pending | N/A | Needs ModalManager reference |
-| **Achievements** | ✅ **Migrated** | `AchievementsModalAdapter` | **First migration!** |
-| WorldCatalog | ⏳ Pending | N/A | Simple modal |
-| MerchantTrade | ⏳ Pending | N/A | Needs CharacterViewModel context |
-| BossBattle | ⏳ Pending | N/A | Complex, needs ModalManager |
-| Quest | ⏳ Pending | N/A | Custom context needed |
-| QuestLog | ⏳ Pending | N/A | Needs ModalManager reference |
-| QuestDetail | ⏳ Pending | N/A | Async initialization |
-| Dialogue | ⏳ Pending | N/A | Needs CharacterViewModel + ModalManager |
-| Loot | ⏳ Pending | N/A | Needs CharacterViewModel context |
-| FactionReputation | ⏳ Pending | N/A | Simple modal |
+| **WorldSelection** | ✅ **Migrated** | `WorldSelectionScreenAdapter` | Startup modal |
+| **ArchetypeSelection** | ✅ **Migrated** | `ArchetypeSelectionModalAdapter` | Uses ImGuiArchetypeSelector |
+| **AvatarInfo** | ✅ **Migrated** | `AvatarInfoModalAdapter` | Simple modal (MainViewModel only) |
+| **Characters** | ✅ **Migrated** | `CharactersModalAdapter` | Needs ModalManager reference |
+| **Achievements** | ✅ **Migrated** | `AchievementsModalAdapter` | First migration! |
+| **WorldCatalog** | ✅ **Migrated** | `WorldCatalogModalAdapter` | Simple modal |
+| **MerchantTrade** | ✅ **Migrated** | `MerchantTradeModalAdapter` | CharacterContext |
+| **BossBattle** | ✅ **Migrated** | `BattleModalAdapter` | CharacterModalContext |
+| **Quest** | ✅ **Migrated** | `QuestModalAdapter` | QuestContext with IMediator |
+| **QuestLog** | ✅ **Migrated** | `QuestLogModalAdapter` | Needs ModalManager reference |
+| **QuestDetail** | ✅ **Migrated** | `QuestDetailModalAdapter` | Async initialization |
+| **Dialogue** | ✅ **Migrated** | `DialogueModalAdapter` | CharacterModalContext |
+| **Loot** | ✅ **Migrated** | `LootModalAdapter` | CharacterContext |
+| **FactionReputation** | ✅ **Migrated** | `FactionReputationModalAdapter` | Simple modal |
 | PauseMenu | ❌ Skip | N/A | Special rendering (no MainViewModel) |
 | Settings | ❌ Skip | N/A | Uses ISettingsPanel interface |
 
-**Progress**: 1 / 16 modals migrated (6.25%)
+**Progress**: 14 / 16 modals migrated (87.5%) ✅ **MIGRATION COMPLETE**
 
 ## Migration Pattern Demonstrated
 

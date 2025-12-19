@@ -46,7 +46,7 @@ public class CharactersModal
                         // Make character name clickable
                         if (ImGui.Selectable(character.DisplayName))
                         {
-                            modalManager.OpenCharacterInteraction(character);
+                            modalManager.OpenCharacterInteraction(character, viewModel);
                             isOpen = false; // Close characters list when selecting
                         }
 

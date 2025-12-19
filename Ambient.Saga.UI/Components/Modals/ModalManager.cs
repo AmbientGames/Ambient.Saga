@@ -40,6 +40,7 @@ public class ModalManager
     // Reference to ImGui archetype selector for callbacks
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
     private readonly IMediator _mediator;
+    private readonly IWorldContentGenerator _worldContentGenerator;
 
     // Event for quit request (so host application can handle it)
     public event Action? QuitRequested;
@@ -57,9 +58,10 @@ public class ModalManager
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
-        _worldSelectionScreen = new WorldSelectionScreen(worldContentGenerator);
+        _worldSelectionScreen = new WorldSelectionScreen(_worldContentGenerator);
         _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
 
         // Initialize modal registry
@@ -76,16 +78,35 @@ public class ModalManager
 
     /// <summary>
     /// Register modal adapters with the modal registry.
-    /// This demonstrates the migration pattern - gradually moving modals to the registry system.
+    /// All modals are now managed through the registry pattern.
     /// </summary>
     private void RegisterModalAdapters()
     {
-        // Register Achievements modal (demonstration of adapter pattern)
+        // Simple modals (MainViewModel only)
         _modalRegistry.Register(new Adapters.AchievementsModalAdapter());
+        _modalRegistry.Register(new Adapters.AvatarInfoModalAdapter());
+        _modalRegistry.Register(new Adapters.WorldCatalogModalAdapter());
+        _modalRegistry.Register(new Adapters.FactionReputationModalAdapter());
 
-        // TODO: Register other modals as they are migrated
-        // _modalRegistry.Register(new Adapters.WorldCatalogModalAdapter());
-        // _modalRegistry.Register(new Adapters.FactionReputationModalAdapter());
+        // Character context modals
+        _modalRegistry.Register(new Adapters.LootModalAdapter());
+        _modalRegistry.Register(new Adapters.MerchantTradeModalAdapter());
+
+        // Complex modals (need ModalManager reference)
+        _modalRegistry.Register(new Adapters.CharactersModalAdapter(this));
+        _modalRegistry.Register(new Adapters.DialogueModalAdapter(this));
+        _modalRegistry.Register(new Adapters.BattleModalAdapter(this));
+        _modalRegistry.Register(new Adapters.QuestLogModalAdapter(this));
+
+        // Quest modals (need IMediator)
+        _modalRegistry.Register(new Adapters.QuestModalAdapter(_mediator));
+        _modalRegistry.Register(new Adapters.QuestDetailModalAdapter(_mediator));
+
+        // Special modals
+        _modalRegistry.Register(new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator));
+        _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
+
+        // Note: PauseMenu and Settings are not migrated as they have special rendering requirements
     }
 
     private void OnSettingsRequested()
@@ -199,111 +220,20 @@ public class ModalManager
 
     public void Render(MainViewModel viewModel)
     {
-        // Use local variables since properties can't be passed as ref
-        // Render each modal if its flag is set
+        // ====================================================================
+        // ALL MODALS NOW RENDERED VIA MODAL REGISTRY (see RegisterModalAdapters)
+        // ====================================================================
+        // The following modals have been migrated to the registry pattern:
+        // - WorldSelection, ArchetypeSelection, AvatarInfo, Characters
+        // - Achievements, WorldCatalog, MerchantTrade, BossBattle
+        // - Quest, QuestLog, QuestDetail, Dialogue, Loot, FactionReputation
+        //
+        // Only PauseMenu and Settings remain with manual rendering due to
+        // special requirements (PauseMenu uses ModalStack directly, Settings
+        // uses ISettingsPanel interface).
+        // ====================================================================
 
-        // World selection (optional - typically used at startup or for "Load World" feature)
-        if (ShowWorldSelection)
-        {
-            var isOpen = true;
-            _worldSelectionScreen.Render(viewModel, ref isOpen);
-            if (!isOpen) CloseModal("WorldSelection");
-        }
-
-        if (ShowArchetypeSelection)
-        {
-            var isOpen = true;
-            _archetypeSelectionModal.Render(viewModel, _archetypeSelector, ref isOpen);
-            if (!isOpen) CloseModal("ArchetypeSelection");
-        }
-
-        if (ShowAvatarInfo)
-        {
-            var isOpen = true;
-            _avatarInfoModal.Render(viewModel, ref isOpen);
-            if (!isOpen) CloseModal("AvatarInfo");
-        }
-
-        if (ShowCharacters)
-        {
-            var isOpen = true;
-            _charactersModal.Render(viewModel, ref isOpen, this);
-            if (!isOpen) CloseModal("Characters");
-        }
-
-        // NOTE: Achievements modal is now rendered via ModalRegistry (see RegisterModalAdapters)
-        // This demonstrates the migration pattern - remove manual rendering once modal is registered
-        //if (ShowAchievements)
-        //{
-        //    var isOpen = true;
-        //    _achievementsModal.Render(viewModel, ref isOpen);
-        //    if (!isOpen) CloseModal("Achievements");
-        //}
-
-        if (ShowWorldCatalog)
-        {
-            var isOpen = true;
-            _worldCatalogModal.Render(viewModel, ref isOpen);
-            if (!isOpen) CloseModal("WorldCatalog");
-        }
-
-        // Character interaction modals
-        if (ShowMerchantTrade && SelectedCharacter != null)
-        {
-            var isOpen = true;
-            _merchantTradeModal.Render(viewModel, SelectedCharacter, ref isOpen);
-            if (!isOpen) CloseModal("MerchantTrade");
-        }
-
-        if (ShowBossBattle && SelectedCharacter != null)
-        {
-            var isOpen = true;
-            _battleModal.Render(viewModel, SelectedCharacter, this, ref isOpen);
-            if (!isOpen) CloseModal("BossBattle");
-        }
-
-        if (ShowQuest && _questViewModel != null)
-        {
-            var isOpen = true;
-            _questModal.Render(_questViewModel, ref isOpen);
-            if (!isOpen) CloseModal("Quest");
-        }
-
-        if (ShowQuestLog)
-        {
-            var isOpen = true;
-            _questLogModal.Render(viewModel, this, ref isOpen);
-            if (!isOpen) CloseModal("QuestLog");
-        }
-
-        if (ShowQuestDetail && _questDetailRef != null && _questDetailSagaRef != null)
-        {
-            var isOpen = true;
-            _questDetailModal.Render(viewModel, ref isOpen);
-            if (!isOpen) CloseModal("QuestDetail");
-        }
-
-        if (ShowDialogue && SelectedCharacter != null)
-        {
-            var isOpen = true;
-            _dialogueModal.Render(viewModel, SelectedCharacter, this, ref isOpen);
-            if (!isOpen) CloseModal("Dialogue");
-        }
-
-        if (ShowLoot && SelectedCharacter != null)
-        {
-            var isOpen = true;
-            _lootModal.Render(viewModel, SelectedCharacter, ref isOpen);
-            if (!isOpen) CloseModal("Loot");
-        }
-
-        if (ShowFactionReputation)
-        {
-            var isOpen = true;
-            _factionReputationModal.Render(viewModel, ref isOpen);
-            if (!isOpen) CloseModal("FactionReputation");
-        }
-
+        // PauseMenu - special rendering (passes ModalStack directly)
         if (ShowPauseMenu)
         {
             var isOpen = true;
@@ -311,6 +241,7 @@ public class ModalManager
             if (!isOpen) CloseModal("PauseMenu");
         }
 
+        // Settings - special rendering (uses ISettingsPanel interface)
         if (ShowSettings)
         {
             var isOpen = true;
@@ -318,40 +249,43 @@ public class ModalManager
             if (!isOpen) CloseModal("Settings");
         }
 
-        // Render any modals registered with the registry system
+        // Render all registered modals automatically
         // Pass viewModel as fallback context for modals opened via OpenModal() (legacy path)
         _modalRegistry.RenderRegistered(fallbackContext: viewModel);
     }
 
-    public void OpenCharacterInteraction(CharacterViewModel character)
+    public void OpenCharacterInteraction(CharacterViewModel character, MainViewModel viewModel)
     {
         SelectedCharacter = character;
+
+        // Create character context for registry-based modals
+        var context = new CharacterContext(viewModel, character);
 
         // Open appropriate modal based on available interactions (determined by character traits and state)
         if (character.CanLoot)
         {
             // Defeated character - show loot
-            OpenModal("Loot");
+            OpenRegisteredModal("Loot", context);
         }
         else if (character.CanDialogue)
         {
             // Living character with dialogue - start conversation
-            OpenModal("Dialogue");
+            OpenRegisteredModal("Dialogue", context);
         }
         else if (character.CanAttack && character.IsAlive)
         {
             // Hostile character with no dialogue - go straight to battle
-            OpenModal("BossBattle");
+            OpenRegisteredModal("BossBattle", context);
         }
         else if (character.CanTrade)
         {
             // Friendly character with no dialogue - go straight to trade
-            OpenModal("MerchantTrade");
+            OpenRegisteredModal("MerchantTrade", context);
         }
         else
         {
             // No interactions available (shouldn't happen, but fallback to dialogue)
-            OpenModal("Dialogue");
+            OpenRegisteredModal("Dialogue", context);
         }
     }
 
@@ -363,8 +297,9 @@ public class ModalManager
         _questSignpostRef = signpostRef;
         _questViewModel = viewModel;
 
-        _questModal.Open(questRef, sagaRef, signpostRef, viewModel);
-        OpenModal("Quest");
+        // Create quest context and open via registry
+        var context = new QuestContext(questRef, sagaRef, signpostRef, viewModel);
+        OpenRegisteredModal("Quest", context);
     }
 
     public void OpenQuestDetail(string questRef)
@@ -390,8 +325,9 @@ public class ModalManager
             _questDetailRef = questRef;
             _questDetailSagaRef = sagaRef;
 
-            await _questDetailModal.OpenAsync(questRef, sagaRef, _questViewModel);
-            OpenModal("QuestDetail");
+            // Create quest detail context and open via registry
+            var context = new QuestDetailContext(questRef, sagaRef, _questViewModel);
+            OpenRegisteredModal("QuestDetail", context);
         }
         catch (Exception ex)
         {
