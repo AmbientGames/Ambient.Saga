@@ -334,12 +334,18 @@ public partial class MainViewModel : ObservableObject
 
                     //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Converted to world GPS: ({worldLon:F6}, {worldLat:F6})");
 
+                    // Convert GPS to pixel coordinates (for map display)
                     var pixelX = CoordinateConverter.HeightMapLongitudeToPixelX(
                         worldLon,
                         CurrentWorld.HeightMapMetadata);
                     var pixelY = CoordinateConverter.HeightMapLatitudeToPixelY(
                         worldLat,
                         CurrentWorld.HeightMapMetadata);
+
+                    // Convert GPS to model/world coordinates (for 3D game engines)
+                    var modelX = CoordinateConverter.LongitudeToModelX(worldLon, CurrentWorld);
+                    var modelZ = CoordinateConverter.LatitudeToModelZ(worldLat, CurrentWorld);
+                    var modelY = characterState.CurrentY; // Y elevation from character state
 
                     //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Character '{characterTemplate.DisplayName}' pixel coords: ({pixelX:F0}, {pixelY:F0})");
 
@@ -349,8 +355,18 @@ public partial class MainViewModel : ObservableObject
                         CharacterRef = characterState.CharacterRef,
                         DisplayName = characterTemplate.DisplayName,
                         CharacterType = "Character", // Could determine from context
+                        // Map display coordinates
                         PixelX = pixelX,
                         PixelY = pixelY,
+                        // GPS world coordinates
+                        Latitude = worldLat,
+                        Longitude = worldLon,
+                        Elevation = characterState.CurrentY,
+                        // 3D model coordinates
+                        ModelX = modelX,
+                        ModelY = modelY,
+                        ModelZ = modelZ,
+                        // Character state
                         IsAlive = characterState.IsAlive,
                         CanDialogue = true, // Sandbox - assume all interactions available
                         CanTrade = true,
