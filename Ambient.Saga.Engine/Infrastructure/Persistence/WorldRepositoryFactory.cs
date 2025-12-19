@@ -1,6 +1,7 @@
 ﻿using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Domain.Achievements;
+using LiteDB;
 
 namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 
@@ -10,19 +11,51 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 /// </summary>
 public class WorldRepositoryFactory : IWorldRepositoryFactory
 {
+    private readonly LiteDatabase? _sharedDatabase;
+
+    /// <summary>
+    /// Default constructor - creates its own database (for Sandbox/standalone usage).
+    /// </summary>
+    public WorldRepositoryFactory()
+    {
+        _sharedDatabase = null;
+    }
+
+    /// <summary>
+    /// Constructor with shared database injection (for Carbon/integrated usage).
+    /// </summary>
+    public WorldRepositoryFactory(LiteDatabase sharedDatabase)
+    {
+        _sharedDatabase = sharedDatabase;
+    }
+
     /// <summary>
     /// Creates all repository instances for the specified world.
+    /// Uses shared database if provided via constructor, otherwise creates its own.
     /// </summary>
     public WorldRepositories CreateRepositories(string gameName, string worldRefName, IWorld world, bool isSteamAvailable)
     {
-        // Create database for this world (uses world config RefName as database name)
-        var database = new WorldStateDatabase(gameName, worldRefName);
+        // Use shared database if provided (Carbon), otherwise create new one (Sandbox)
+        WorldStateDatabase? ownedDatabase = null;
+        LiteDatabase database;
+
+        if (_sharedDatabase != null)
+        {
+            // Carbon path: use the shared consolidated database
+            database = _sharedDatabase;
+        }
+        else
+        {
+            // Sandbox path: create own database
+            ownedDatabase = new WorldStateDatabase(gameName, worldRefName);
+            database = ownedDatabase.Database;
+        }
 
         // Create repository implementations
-        var sagaRepository = new SagaInstanceRepository(database.Database);
-        var avatarRepository = new GameAvatarRepository(database.Database);
-        var achievementRepository = new LiteDbRepository<AchievementInstance>(database.Database, "Achievements");
-        var discoveryRepository = new PlayerDiscoveryRepository(database.Database);
+        var sagaRepository = new SagaInstanceRepository(database);
+        var avatarRepository = new GameAvatarRepository(database);
+        var achievementRepository = new LiteDbRepository<AchievementInstance>(database, "Achievements");
+        var discoveryRepository = new PlayerDiscoveryRepository(database);
 
         // Create WorldStateRepository with injected dependencies
         var worldStateRepository = new WorldStateRepository(
@@ -32,8 +65,8 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
             discoveryRepository,
             world);
 
-        // Create Steam achievement service
-        var steamAchievementService = new SteamAchievementService(database, isSteamAvailable);
+        // Create Steam achievement service (use owned database if we created one, otherwise null)
+        var steamAchievementService = new SteamAchievementService(ownedDatabase, isSteamAvailable);
 
         return new WorldRepositories
         {
@@ -41,7 +74,7 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
             AvatarRepository = avatarRepository,
             WorldStateRepository = worldStateRepository,
             SteamAchievementService = steamAchievementService,
-            Database = database
+            Database = ownedDatabase // Will be null for Carbon (using shared), non-null for Sandbox
         };
     }
 }
