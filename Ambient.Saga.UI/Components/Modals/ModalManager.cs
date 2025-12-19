@@ -34,6 +34,9 @@ public class ModalManager
     // Modal stack for proper hierarchical handling
     private readonly ModalStack _modalStack = new();
 
+    // Modal registry for extensible modal management
+    private readonly ModalRegistry _modalRegistry;
+
     // Reference to ImGui archetype selector for callbacks
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
     private readonly IMediator _mediator;
@@ -58,11 +61,31 @@ public class ModalManager
         _questDetailModal = new QuestDetailModal(_mediator);
         _worldSelectionScreen = new WorldSelectionScreen(worldContentGenerator);
         _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
-        
+
+        // Initialize modal registry
+        _modalRegistry = new ModalRegistry(_modalStack);
+
+        // Register modals with the registry (demonstration of migration pattern)
+        RegisterModalAdapters();
+
         // Wire up pause menu events
         _pauseMenuModal.ResumeRequested += () => CloseModal("PauseMenu");
         _pauseMenuModal.SettingsRequested += OnSettingsRequested;
         _pauseMenuModal.QuitRequested += OnQuitRequested;
+    }
+
+    /// <summary>
+    /// Register modal adapters with the modal registry.
+    /// This demonstrates the migration pattern - gradually moving modals to the registry system.
+    /// </summary>
+    private void RegisterModalAdapters()
+    {
+        // Register Achievements modal (demonstration of adapter pattern)
+        _modalRegistry.Register(new Adapters.AchievementsModalAdapter());
+
+        // TODO: Register other modals as they are migrated
+        // _modalRegistry.Register(new Adapters.WorldCatalogModalAdapter());
+        // _modalRegistry.Register(new Adapters.FactionReputationModalAdapter());
     }
 
     private void OnSettingsRequested()
@@ -111,23 +134,7 @@ public class ModalManager
     private string? _questDetailSagaRef;
 
     // Check if any modal is currently open
-    public bool IsAnyModalOpen =>
-        ShowWorldSelection ||
-        ShowArchetypeSelection ||
-        ShowAvatarInfo ||
-        ShowCharacters ||
-        ShowAchievements ||
-        ShowWorldCatalog ||
-        ShowMerchantTrade ||
-        ShowBossBattle ||
-        ShowQuest ||
-        ShowQuestLog ||
-        ShowQuestDetail ||
-        ShowDialogue ||
-        ShowLoot ||
-        ShowFactionReputation ||
-        ShowPauseMenu ||
-        ShowSettings;
+    public bool IsAnyModalOpen => _modalStack.HasModals;
 
     /// <summary>
     /// Check if any modal dialog is currently active (alias for IsAnyModalOpen).
@@ -150,6 +157,25 @@ public class ModalManager
         {
             _modalStack.Pop(modalName);
         }
+    }
+
+    // Modal registry methods for extensible modal management
+    /// <summary>
+    /// Register a modal with the modal registry system.
+    /// This allows modals to be managed automatically with lifecycle hooks.
+    /// </summary>
+    public void RegisterModal(IModal modal)
+    {
+        _modalRegistry.Register(modal);
+    }
+
+    /// <summary>
+    /// Open a registered modal with optional context.
+    /// For non-registered modals, falls back to OpenModal().
+    /// </summary>
+    public void OpenRegisteredModal(string name, object? context = null)
+    {
+        _modalRegistry.Open(name, context);
     }
 
     public void OpenWorldSelection() => OpenModal("WorldSelection");
@@ -205,12 +231,14 @@ public class ModalManager
             if (!isOpen) CloseModal("Characters");
         }
 
-        if (ShowAchievements)
-        {
-            var isOpen = true;
-            _achievementsModal.Render(viewModel, ref isOpen);
-            if (!isOpen) CloseModal("Achievements");
-        }
+        // NOTE: Achievements modal is now rendered via ModalRegistry (see RegisterModalAdapters)
+        // This demonstrates the migration pattern - remove manual rendering once modal is registered
+        //if (ShowAchievements)
+        //{
+        //    var isOpen = true;
+        //    _achievementsModal.Render(viewModel, ref isOpen);
+        //    if (!isOpen) CloseModal("Achievements");
+        //}
 
         if (ShowWorldCatalog)
         {
@@ -289,6 +317,10 @@ public class ModalManager
             _settingsPanel.Render(ref isOpen);
             if (!isOpen) CloseModal("Settings");
         }
+
+        // Render any modals registered with the registry system
+        // Pass viewModel as fallback context for modals opened via OpenModal() (legacy path)
+        _modalRegistry.RenderRegistered(fallbackContext: viewModel);
     }
 
     public void OpenCharacterInteraction(CharacterViewModel character)
