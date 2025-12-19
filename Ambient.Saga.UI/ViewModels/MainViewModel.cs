@@ -145,9 +145,12 @@ public partial class MainViewModel : ObservableObject
 
     // Event for when character changes so dialogue can be loaded
     public event EventHandler? CharacterChanged;
-    
+
     // Event for when quit is requested (e.g., from world selection screen)
     public event Action? RequestQuit;
+
+    // Event for when dialogue should be displayed (for character interactions)
+    public event Action<CharacterViewModel>? DialogueRequested;
     
     /// <summary>
     /// Requests the application to quit.
@@ -625,17 +628,19 @@ public partial class MainViewModel : ObservableObject
                 System.Diagnostics.Debug.WriteLine($"      [{availability}] {choice.Text} -> {choice.ChoiceId}");
             }
 
-            // Create DialogueViewModel
-            var dialogueVM = new DialogueViewModel(
-                onChoiceSelected: async (choice) => await OnDialogueChoiceSelectedAsync(choice),
-                onContinue: async () => await OnDialogueContinueAsync()
-            );
-            dialogueVM.UpdateState(state);
+            // Find the matching CharacterViewModel from Characters collection
+            var characterVM = Characters.FirstOrDefault(c =>
+                c.CharacterInstanceId == characterInstanceId && c.SagaRef == sagaRef);
 
-            // WPF WINDOW CODE - TO BE DELETED WITH XAML
-            // Show interaction window with dialogue
-            // In ImGui mode, DialogueModal handles display
-            //ShowDialogueWindow(dialogueVM);
+            if (characterVM != null)
+            {
+                // Raise event for UI layer to open the dialogue modal
+                DialogueRequested?.Invoke(characterVM);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"*** WARNING: CharacterViewModel not found for {characterInstanceId} in Saga {sagaRef}");
+            }
         }
         catch (Exception ex)
         {
