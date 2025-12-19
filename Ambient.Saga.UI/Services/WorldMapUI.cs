@@ -147,6 +147,13 @@ public class WorldMapUI
         }
     }
 
+    // TODO: move this somewhere sensible
+    /// <summary>
+    /// Check if any gameplay panel is currently open (Map, Character, WorldInfo).
+    /// Used by host applications to detect when UI is active and adjust game state accordingly.
+    /// </summary>
+    public bool IsAnyPanelOpen => _gameplayOverlay?.ActivePanel != ActivePanel.None;
+
     public void Update(float deltaTime)
     {
         _modalManager.Update(deltaTime);
