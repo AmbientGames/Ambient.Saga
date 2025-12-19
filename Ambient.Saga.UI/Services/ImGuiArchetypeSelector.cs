@@ -34,7 +34,7 @@ public class ImGuiArchetypeSelector : IArchetypeSelector
         _selectionTask = new TaskCompletionSource<AvatarArchetype?>();
 
         // Show the modal
-        _modalManager.ShowArchetypeSelection = true;
+        _modalManager.OpenArchetypeSelection();
 
         return _selectionTask.Task;
     }

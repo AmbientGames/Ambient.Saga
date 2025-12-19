@@ -145,9 +145,12 @@ public partial class MainViewModel : ObservableObject
 
     // Event for when character changes so dialogue can be loaded
     public event EventHandler? CharacterChanged;
-    
+
     // Event for when quit is requested (e.g., from world selection screen)
     public event Action? RequestQuit;
+
+    // Event for when dialogue should be displayed (for character interactions)
+    public event Action<CharacterViewModel>? DialogueRequested;
     
     /// <summary>
     /// Requests the application to quit.
@@ -334,12 +337,18 @@ public partial class MainViewModel : ObservableObject
 
                     //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Converted to world GPS: ({worldLon:F6}, {worldLat:F6})");
 
+                    // Convert GPS to pixel coordinates (for map display)
                     var pixelX = CoordinateConverter.HeightMapLongitudeToPixelX(
                         worldLon,
                         CurrentWorld.HeightMapMetadata);
                     var pixelY = CoordinateConverter.HeightMapLatitudeToPixelY(
                         worldLat,
                         CurrentWorld.HeightMapMetadata);
+
+                    // Convert GPS to model/world coordinates (for 3D game engines)
+                    var modelX = CoordinateConverter.LongitudeToModelX(worldLon, CurrentWorld);
+                    var modelZ = CoordinateConverter.LatitudeToModelZ(worldLat, CurrentWorld);
+                    var modelY = characterState.CurrentY; // Y elevation from character state
 
                     //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Character '{characterTemplate.DisplayName}' pixel coords: ({pixelX:F0}, {pixelY:F0})");
 
@@ -349,8 +358,18 @@ public partial class MainViewModel : ObservableObject
                         CharacterRef = characterState.CharacterRef,
                         DisplayName = characterTemplate.DisplayName,
                         CharacterType = "Character", // Could determine from context
+                        // Map display coordinates
                         PixelX = pixelX,
                         PixelY = pixelY,
+                        // GPS world coordinates
+                        Latitude = worldLat,
+                        Longitude = worldLon,
+                        Elevation = characterState.CurrentY,
+                        // 3D model coordinates
+                        ModelX = modelX,
+                        ModelY = modelY,
+                        ModelZ = modelZ,
+                        // Character state
                         IsAlive = characterState.IsAlive,
                         CanDialogue = true, // Sandbox - assume all interactions available
                         CanTrade = true,
@@ -609,17 +628,19 @@ public partial class MainViewModel : ObservableObject
                 System.Diagnostics.Debug.WriteLine($"      [{availability}] {choice.Text} -> {choice.ChoiceId}");
             }
 
-            // Create DialogueViewModel
-            var dialogueVM = new DialogueViewModel(
-                onChoiceSelected: async (choice) => await OnDialogueChoiceSelectedAsync(choice),
-                onContinue: async () => await OnDialogueContinueAsync()
-            );
-            dialogueVM.UpdateState(state);
+            // Find the matching CharacterViewModel from Characters collection
+            var characterVM = Characters.FirstOrDefault(c =>
+                c.CharacterInstanceId == characterInstanceId && c.SagaRef == sagaRef);
 
-            // WPF WINDOW CODE - TO BE DELETED WITH XAML
-            // Show interaction window with dialogue
-            // In ImGui mode, DialogueModal handles display
-            //ShowDialogueWindow(dialogueVM);
+            if (characterVM != null)
+            {
+                // Raise event for UI layer to open the dialogue modal
+                DialogueRequested?.Invoke(characterVM);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"*** WARNING: CharacterViewModel not found for {characterInstanceId} in Saga {sagaRef}");
+            }
         }
         catch (Exception ex)
         {

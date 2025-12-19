@@ -799,8 +799,8 @@ public class BattleModal
             if (ImGui.Button("Collect Loot", new Vector2(buttonWidth, 40)))
             {
                 // Transition to loot modal
-                modalManager.ShowBossBattle = false;
-                modalManager.ShowLoot = true;
+                modalManager.CloseModal("BossBattle");
+                modalManager.OpenModal("Loot");
             }
             ImGui.PopStyleColor(3);
             ImGui.SameLine();
@@ -808,7 +808,7 @@ public class BattleModal
 
         if (ImGui.Button("Close", new Vector2(buttonWidth, 40)))
         {
-            modalManager.ShowBossBattle = false;
+            modalManager.CloseModal("BossBattle");
         }
     }
 
@@ -1056,7 +1056,7 @@ public class BattleModal
 
         // Open dialogue modal while keeping battle active
         // Battle stays in background, dialogue appears on top
-        _cachedModalManager.ShowDialogue = true;
+        _cachedModalManager.OpenModal("Dialogue");
         _cachedModalManager.SelectedCharacter = character;
 
         System.Diagnostics.Debug.WriteLine($"[BattleModal] Opening mid-battle dialogue with {character.DisplayName}");

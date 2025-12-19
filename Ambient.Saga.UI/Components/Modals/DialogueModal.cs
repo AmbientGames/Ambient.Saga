@@ -505,15 +505,15 @@ public class DialogueModal
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Event type: {eventType}");
 
                 // Close dialogue and open appropriate modal
-                modalManager.ShowDialogue = false;
+                modalManager.CloseModal("Dialogue");
 
                 if (eventType.Contains("OpenMerchantTrade"))
                 {
-                    modalManager.ShowMerchantTrade = true;
+                    modalManager.OpenModal("MerchantTrade");
                 }
                 else if (eventType.Contains("StartBossBattle") || eventType.Contains("StartCombat"))
                 {
-                    modalManager.ShowBossBattle = true;
+                    modalManager.OpenModal("BossBattle");
                 }
 
                 return; // Don't refresh dialogue state - we've transitioned to a different modal
@@ -563,15 +563,15 @@ public class DialogueModal
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Event type: {eventType}");
 
                 // Close dialogue and open appropriate modal
-                modalManager.ShowDialogue = false;
+                modalManager.CloseModal("Dialogue");
 
                 if (eventType.Contains("OpenMerchantTrade"))
                 {
-                    modalManager.ShowMerchantTrade = true;
+                    modalManager.OpenModal("MerchantTrade");
                 }
                 else if (eventType.Contains("StartBossBattle") || eventType.Contains("StartCombat"))
                 {
-                    modalManager.ShowBossBattle = true;
+                    modalManager.OpenModal("BossBattle");
                 }
 
                 return;

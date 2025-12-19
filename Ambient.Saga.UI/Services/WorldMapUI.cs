@@ -57,7 +57,7 @@ public class WorldMapUI
         _viewModel.RequestQuit += OnQuitRequestedFromViewModel;
 
         // Show world selection at startup (Sandbox-specific flow)
-        _modalManager.ShowWorldSelection = true;
+        _modalManager.OpenWorldSelection();
 
         // Subscribe to heightmap changes
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;
@@ -69,7 +69,7 @@ public class WorldMapUI
     private void OnPauseMenuRequested()
     {
         // ESC pressed with no panels open - show pause menu
-        _modalManager.ShowPauseMenu = true;
+        _modalManager.OpenPauseMenu();
         System.Diagnostics.Debug.WriteLine("Pause menu requested");
     }
     
@@ -91,7 +91,7 @@ public class WorldMapUI
             // World loaded - hide selection screen and show main UI
             if (_viewModel.CurrentWorld != null)
             {
-                _modalManager.ShowWorldSelection = false;
+                _modalManager.CloseModal("WorldSelection");
             }
         }
     }
@@ -146,6 +146,13 @@ public class WorldMapUI
             _gameplayOverlay.InputHandler.PauseMenuRequested -= OnPauseMenuRequested;
         }
     }
+
+    // TODO: move this somewhere sensible
+    /// <summary>
+    /// Check if any gameplay panel is currently open (Map, Character, WorldInfo).
+    /// Used by host applications to detect when UI is active and adjust game state accordingly.
+    /// </summary>
+    public bool IsAnyPanelOpen => _gameplayOverlay?.ActivePanel != ActivePanel.None;
 
     public void Update(float deltaTime)
     {

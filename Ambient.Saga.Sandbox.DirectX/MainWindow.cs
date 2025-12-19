@@ -1,4 +1,5 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI.ViewModels;
 using ImGuiNET;
 using Steamworks;
 using Ambient.Saga.UI.Services;
@@ -109,6 +110,9 @@ public partial class MainWindow : Form
         // Subscribe to quit request from pause menu
         _modalManager.QuitRequested += OnQuitRequested;
 
+        // Subscribe to dialogue requests from MainViewModel
+        _viewModel.DialogueRequested += OnDialogueRequested;
+
         // Start render loop
         _isRendering = true;
         System.Windows.Forms.Application.Idle += OnApplicationIdle;
@@ -121,6 +125,12 @@ public partial class MainWindow : Form
     {
         // Close the form - this triggers FormClosing cleanup
         this.Close();
+    }
+
+    private void OnDialogueRequested(CharacterViewModel character)
+    {
+        // Open the dialogue modal for this character
+        _modalManager.OpenCharacterInteraction(character, _viewModel);
     }
 
     private void OnApplicationIdle(object? sender, EventArgs e)
