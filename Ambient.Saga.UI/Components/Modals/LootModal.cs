@@ -251,6 +251,8 @@ public class LootModal
                 // Update avatar from result if available
                 if (result.UpdatedAvatar != null)
                 {
+                    throw new NotImplementedException();
+                    // todo: this is wrong
                     viewModel.PlayerAvatar = result.UpdatedAvatar;
                 }
             }

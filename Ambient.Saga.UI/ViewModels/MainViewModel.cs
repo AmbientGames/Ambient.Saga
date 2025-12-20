@@ -151,6 +151,9 @@ public partial class MainViewModel : ObservableObject
 
     // Event for when dialogue should be displayed (for character interactions)
     public event Action<CharacterViewModel>? DialogueRequested;
+
+    // Event for when avatar is loaded or created (for external state synchronization)
+    public event Action<AvatarEntity>? AvatarLoaded;
     
     /// <summary>
     /// Requests the application to quit.
@@ -1957,6 +1960,7 @@ public partial class MainViewModel : ObservableObject
         {
             // Avatar exists, load it
             PlayerAvatar = existingAvatar;
+            AvatarLoaded?.Invoke(existingAvatar);
 
             // Debug output to verify what was loaded
             var toolCount = PlayerAvatar.Capabilities?.Tools?.Length ?? 0;
@@ -1999,6 +2003,7 @@ public partial class MainViewModel : ObservableObject
 
         // Create new avatar from archetype
         PlayerAvatar = CreateAvatarFromArchetype(selectedArchetype, world);
+        AvatarLoaded?.Invoke(PlayerAvatar);
         AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
 
         // Save to database
