@@ -896,7 +896,40 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-        /// <summary>
+    public async Task LoadConfigurationAsync(string configurationRefName)
+    {
+        try
+        {
+            IsLoading = true;
+            StatusMessage = $"Loading world configuration: {configurationRefName}...";
+
+            var world = await _mediator.Send(new LoadWorldQuery
+            {
+                DataDirectory = _dataDirectory,
+                DefinitionDirectory = _schemaDirectory,
+                ConfigurationRefName = configurationRefName
+            });
+
+            // Initialize world bootstrapper (required when loading via mediator)
+            WorldBootstrapper.Initialize(world);
+
+            // Complete initialization with shared logic
+            await InitializeWorldCoreAsync(world, _dataDirectory);
+
+            StatusMessage = $"Loaded: {configurationRefName}";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error loading configuration: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+
+    /// <summary>
     /// Shared initialization logic for both LoadSelectedConfigurationAsync and InitializeWithExternalWorldAsync.
     /// Sets up world, database, avatar, height map, Sagas, and triggers.
     /// </summary>
@@ -928,39 +961,40 @@ public partial class MainViewModel : ObservableObject
         InitializeAvatarPosition(world);
     }
 
-    /// <summary>
-    /// Initializes MainViewModel with an externally-loaded world.
-    /// Use this when the world has already been loaded by the game (e.g., via WorldRepository)
-    /// instead of through LoadSelectedConfigurationAsync.
-    /// Avatar is loaded from database or created via archetype selection dialog.
-    /// </summary>
-    /// <param name="world">The already-loaded world instance (WorldBootstrapper.Initialize should already have been called)</param>
-    /// <param name="dataDirectory">Base directory containing world definition files (for height map loading)</param>
-    public async Task InitializeWithExternalWorldAsync(IWorld world, string dataDirectory)
-    {
-        if (world == null)
-            throw new ArgumentNullException(nameof(world));
+    ///// <summary>
+    ///// Initializes MainViewModel with an externally-loaded world.
+    ///// Use this when the world has already been loaded by the game (e.g., via WorldRepository)
+    ///// instead of through LoadSelectedConfigurationAsync.
+    ///// Avatar is loaded from database or created via archetype selection dialog.
+    ///// </summary>
+    ///// <param name="world">The already-loaded world instance (WorldBootstrapper.Initialize should already have been called)</param>
+    ///// <param name="dataDirectory">Base directory containing world definition files (for height map loading)</param>
+    //public async Task InitializeWithExternalWorldAsync(IWorld world, string dataDirectory)
+    //{
+    //    return;
+    //    if (world == null)
+    //        throw new ArgumentNullException(nameof(world));
 
-        try
-        {
-            IsLoading = true;
-            StatusMessage = $"Initializing world: {world.WorldConfiguration?.RefName ?? "Unknown"}...";
+    //    try
+    //    {
+    //        IsLoading = true;
+    //        StatusMessage = $"Initializing world: {world.WorldConfiguration?.RefName ?? "Unknown"}...";
 
-            // Complete initialization with shared logic
-            await InitializeWorldCoreAsync(world, dataDirectory);
+    //        // Complete initialization with shared logic
+    //        await InitializeWorldCoreAsync(world, dataDirectory);
 
-            StatusMessage = $"Initialized: {world.WorldConfiguration?.RefName ?? "World"}";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error initializing world: {ex.Message}";
-            System.Diagnostics.Debug.WriteLine($"[MainViewModel] InitializeWithExternalWorldAsync error: {ex}");
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
+    //        StatusMessage = $"Initialized: {world.WorldConfiguration?.RefName ?? "World"}";
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        StatusMessage = $"Error initializing world: {ex.Message}";
+    //        System.Diagnostics.Debug.WriteLine($"[MainViewModel] InitializeWithExternalWorldAsync error: {ex}");
+    //    }
+    //    finally
+    //    {
+    //        IsLoading = false;
+    //    }
+    //}
 
     private async Task LoadHeightMapImageInternalAsync(IWorld world, string dataDirectory)
     {
