@@ -154,7 +154,10 @@ public partial class MainViewModel : ObservableObject
 
     // Event for when avatar is loaded or created (for external state synchronization)
     public event Action<AvatarEntity>? AvatarLoaded;
-    
+
+    // Event for when world definition is loaded (before avatar selection)
+    public event Action<IWorld>? WorldLoaded;
+
     /// <summary>
     /// Requests the application to quit.
     /// Called by modals/screens when user wants to exit without completing mandatory actions.
@@ -943,6 +946,9 @@ public partial class MainViewModel : ObservableObject
 
         // Initialize LiteDB persistence and CQRS providers for this world
         InitializeWorldDatabase(world);
+
+        // Signal that world definition is loaded (before avatar selection)
+        WorldLoaded?.Invoke(world);
 
         // Load or create avatar (shows archetype selection dialog for new worlds)
         await LoadOrCreateAvatarAsync(world);
