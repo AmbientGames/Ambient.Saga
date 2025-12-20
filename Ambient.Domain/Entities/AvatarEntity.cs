@@ -33,4 +33,10 @@ public class AvatarEntity : AvatarBase, IBaseEntity
     /// The timestamp of the avatar's last activity.
     /// </summary>
     public DateTime LastActivity = DateTime.UtcNow;
+
+    /// <summary>
+    /// Opaque client data for game-specific state (e.g., Yaw, Pitch, camera settings).
+    /// Format is determined by the game client - Saga just persists it.
+    /// </summary>
+    public string? ClientData { get; set; }
 }
