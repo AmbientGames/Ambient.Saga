@@ -1,6 +1,8 @@
 ﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
@@ -41,12 +43,24 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
             // Add all nearby characters as candidates
             foreach (var character in result.NearbyCharacters)
             {
+                // Convert character's Saga-relative position to world GPS coordinates
+                var characterWorldLat = CoordinateConverter.SagaRelativeZToLatitude(
+                    character.State.CurrentLatitudeZ,
+                    sagaKvp.Value.LatitudeZ,
+                    _world);
+
+                var characterWorldLon = CoordinateConverter.SagaRelativeXToLongitude(
+                    character.State.CurrentLongitudeX,
+                    sagaKvp.Value.LongitudeX,
+                    _world);
+
                 // Calculate distance (character coordinates are already in world GPS from GetAvailableInteractionsHandler)
-                var distance = CalculateDistance(
+                var distance = CoordinateConverter.CalculateDistance(
                     request.Latitude,
                     request.Longitude,
-                    character.State.CurrentLatitudeZ,
-                    character.State.CurrentLongitudeX);
+                    characterWorldLat,
+                    characterWorldLon,
+                    _world);
 
                 candidates.Add(new InteractionCandidate
                 {
@@ -60,11 +74,12 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
             foreach (var feature in result.NearbyFeatures)
             {
                 // Calculate distance (feature is at Saga center)
-                var distance = CalculateDistance(
+                var distance = CoordinateConverter.CalculateDistance(
                     request.Latitude,
                     request.Longitude,
                     sagaKvp.Value.LatitudeZ,
-                    sagaKvp.Value.LongitudeX);
+                    sagaKvp.Value.LongitudeX,
+                    _world);
 
                 candidates.Add(new InteractionCandidate
                 {
@@ -131,21 +146,6 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
         priority += (int)Math.Min(100, 100.0 / (candidate.Distance + 1.0));
 
         return priority;
-    }
-
-    private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
-    {
-        // Simple Euclidean distance in meters
-        var deltaLat = lat2 - lat1;
-        var deltaLon = lon2 - lon1;
-
-        const double metersPerDegreeLat = 110540.0;
-        const double metersPerDegreeLon = 111320.0;
-
-        var deltaY = deltaLat * metersPerDegreeLat;
-        var deltaX = deltaLon * metersPerDegreeLon;
-
-        return Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
     private class InteractionCandidate
