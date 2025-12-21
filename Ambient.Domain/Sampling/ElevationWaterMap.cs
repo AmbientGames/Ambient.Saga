@@ -4,6 +4,15 @@ using SixLabors.ImageSharp.PixelFormats;
 namespace Ambient.Domain.Sampling;
 
 /// <summary>
+/// Represents a location on the heightmap to be flattened with an elevation offset and radius.
+/// </summary>
+/// <param name="X">X pixel coordinate</param>
+/// <param name="Y">Y pixel coordinate</param>
+/// <param name="ElevationOffset">Elevation offset to add after averaging</param>
+/// <param name="Radius">Radius of the circular area to flatten (averaging samples from Radius + 1)</param>
+public readonly record struct FlattenLocation(int X, int Y, int ElevationOffset, int Radius);
+
+/// <summary>
 /// Memory-efficient storage for elevation data with derived water detection using bit-packed ushort array.
 /// Bits 0-14: Elevation data (0-32767)
 /// Bit 15: Water flag (1 = water, 0 = land)
@@ -35,8 +44,20 @@ public class ElevationWaterMap
     /// </summary>
     public static ElevationWaterMap FromHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation)
     {
+        return FromHeightMap(image, minWaterAreaSize, adjustMinWaterAreaSizeByElevation, null);
+    }
+
+    /// <summary>
+    /// Creates an ElevationWaterMap from a height map image with water detection and optional terrain flattening.
+    /// </summary>
+    /// <param name="image">The height map image</param>
+    /// <param name="minWaterAreaSize">Minimum area size to be considered water</param>
+    /// <param name="adjustMinWaterAreaSizeByElevation">Whether to adjust water detection by elevation</param>
+    /// <param name="flattenLocations">Optional list of locations to flatten with their elevation offsets</param>
+    public static ElevationWaterMap FromHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation, IEnumerable<FlattenLocation>? flattenLocations)
+    {
         var map = new ElevationWaterMap(image.Width, image.Height);
-        
+
         // Extract elevation data and find min/max
         var elevationData = new ushort[image.Width, image.Height];
         image.ProcessPixelRows(accessor =>
@@ -54,6 +75,12 @@ public class ElevationWaterMap
             }
         });
 
+        // Flatten terrain at specified locations before water detection
+        if (flattenLocations != null)
+        {
+            FlattenLocations(elevationData, image.Width, image.Height, flattenLocations);
+        }
+
         map.SeaLevel = map.MinElevation;
 
         // Detect water using flood fill algorithm
@@ -66,13 +93,82 @@ public class ElevationWaterMap
             {
                 var elevation = elevationData[x, y];
                 var isWater = waterMask[x, y];
-                
+
                 // Pack: elevation in bits 0-14, water flag in bit 15
                 map._data[x, y] = (ushort)(elevation | (isWater ? WaterBitMask : 0));
             }
         }
 
         return map;
+    }
+
+    /// <summary>
+    /// Flattens terrain at specified locations by averaging a circular neighborhood.
+    /// Creates natural plateaus with configurable elevation offsets and radii.
+    /// </summary>
+    private static void FlattenLocations(ushort[,] elevationData, int width, int height, IEnumerable<FlattenLocation> locations)
+    {
+        foreach (var location in locations)
+        {
+            var cx = location.X;
+            var cy = location.Y;
+            var radius = location.Radius;
+            var sampleRadius = radius + 1;
+
+            // Skip if center is too close to bounds
+            if (cx < sampleRadius || cx >= width - sampleRadius || cy < sampleRadius || cy >= height - sampleRadius)
+                continue;
+
+            // Calculate average from circular area of sampleRadius
+            long sum = 0;
+            int count = 0;
+            var sampleRadiusSquared = sampleRadius * sampleRadius;
+
+            for (var dy = -sampleRadius; dy <= sampleRadius; dy++)
+            {
+                for (var dx = -sampleRadius; dx <= sampleRadius; dx++)
+                {
+                    // Check if within circular area
+                    if (dx * dx + dy * dy > sampleRadiusSquared)
+                        continue;
+
+                    var nx = cx + dx;
+                    var ny = cy + dy;
+
+                    if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+                    {
+                        sum += elevationData[nx, ny];
+                        count++;
+                    }
+                }
+            }
+
+            if (count == 0)
+                continue;
+
+            var averageElevation = (ushort)(sum / count + location.ElevationOffset);
+
+            // Apply average to circular area of radius
+            var radiusSquared = radius * radius;
+
+            for (var dy = -radius; dy <= radius; dy++)
+            {
+                for (var dx = -radius; dx <= radius; dx++)
+                {
+                    // Check if within circular area
+                    if (dx * dx + dy * dy > radiusSquared)
+                        continue;
+
+                    var nx = cx + dx;
+                    var ny = cy + dy;
+
+                    if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+                    {
+                        elevationData[nx, ny] = averageElevation;
+                    }
+                }
+            }
+        }
     }
 
     /// <summary>
