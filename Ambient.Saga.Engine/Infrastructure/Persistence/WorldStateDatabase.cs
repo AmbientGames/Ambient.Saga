@@ -2,6 +2,7 @@
 using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using LiteDB;
+using SharpDX;
 using System.IO;
 
 namespace Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -34,6 +35,23 @@ internal class WorldStateDatabase : IDisposable
 
         // Configure AvatarEntity to use Id as document ID
         mapper.Entity<AvatarEntity>().Id(x => x.Id);
+
+        // SharpDX Vector3 needs custom serialization
+        mapper.RegisterType<Vector3>(
+            serialize: v => new BsonDocument
+            {
+                ["X"] = v.X,
+                ["Y"] = v.Y,
+                ["Z"] = v.Z
+            },
+            deserialize: bson =>
+            {
+                // LiteDB stores numeric values as Double; read as double then cast to float
+                var x = (float)bson["X"].AsDouble;
+                var y = (float)bson["Y"].AsDouble;
+                var z = (float)bson["Z"].AsDouble;
+                return new Vector3(x, y, z);
+            });
 
         // Ensure nested objects are serialized (LiteDB should handle this by default, but being explicit)
         mapper.IncludeNonPublic = false; // Only serialize public properties
