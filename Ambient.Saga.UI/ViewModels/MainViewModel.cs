@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using Ambient.Saga.UI.Models;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.UI.ViewModels;
+using SharpDX;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 
@@ -2081,7 +2082,27 @@ public partial class MainViewModel : ObservableObject
             avatar,
             archetype);
 
+        SetAvatarDefaults(world, avatar);
+
         return avatar;
+    }
+
+    private static void SetAvatarDefaults(IWorld world, AvatarEntity avatar)
+    {
+        if (world.IsProcedural)
+        {
+            var modelZ = CoordinateConverter.LatitudeToModelZ(world.WorldConfiguration.SpawnLatitude, world);
+            avatar.HomeLocation = new Vector3(0, 0, (float)modelZ);
+        }
+        else
+        {
+            var modelX = CoordinateConverter.LongitudeToModelX(world.WorldConfiguration.SpawnLongitude, world);
+            var modelZ = CoordinateConverter.LatitudeToModelZ(world.WorldConfiguration.SpawnLatitude, world);
+            avatar.HomeLocation = new Vector3((float)modelX, 0, (float)modelZ);
+        }
+
+        avatar.Position = avatar.HomeLocation;
+        avatar.IsInvulnerable = true;
     }
 
     /// <summary>
