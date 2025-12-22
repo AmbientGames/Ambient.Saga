@@ -14,6 +14,108 @@ namespace Ambient.Saga.Engine.Domain.Services;
 public static class SagaProximityService
 {
     /// <summary>
+    /// Default maximum distance in meters to consider a Saga for interaction queries.
+    /// SagaArcs beyond this distance are skipped entirely for performance.
+    /// </summary>
+    public const double DefaultMaxInteractionDistance = 200.0;
+
+    /// <summary>
+    /// Filters SagaArcs to only those within interaction range of the given position.
+    /// Uses model coordinates and applies proper scale conversion.
+    /// </summary>
+    /// <param name="modelX">Position X in model coordinates</param>
+    /// <param name="modelZ">Position Z in model coordinates</param>
+    /// <param name="world">World containing Saga data</param>
+    /// <param name="maxDistanceMeters">Maximum distance in meters (default: 200m)</param>
+    /// <returns>Enumerable of SagaArcs within range, with their model coordinates and distance</returns>
+    public static IEnumerable<(SagaArc SagaArc, double SagaModelX, double SagaModelZ, double DistanceMeters)>
+        FilterSagaArcsByProximity(
+            double modelX,
+            double modelZ,
+            IWorld world,
+            double maxDistanceMeters = DefaultMaxInteractionDistance)
+    {
+        if (world.Gameplay.SagaArcs == null)
+            yield break;
+
+        // Get proper scale factors for model-to-meters conversion
+        var scaleX = world.IsProcedural ? 1.0 : world.HeightMapLongitudeScale;
+        var scaleZ = world.IsProcedural ? 1.0 : world.HeightMapLatitudeScale;
+
+        foreach (var sagaArc in world.Gameplay.SagaArcs)
+        {
+            // Convert Saga GPS to model coordinates
+            var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
+            var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
+
+            // Calculate distance in meters (must convert X and Z separately due to latitude correction)
+            var deltaModelX = modelX - sagaModelX;
+            var deltaModelZ = modelZ - sagaModelZ;
+            var deltaMetersX = deltaModelX / scaleX;
+            var deltaMetersZ = deltaModelZ / scaleZ;
+            var distanceMeters = Math.Sqrt(deltaMetersX * deltaMetersX + deltaMetersZ * deltaMetersZ);
+
+            // Quick reject: if beyond max distance, skip entirely
+            if (distanceMeters > maxDistanceMeters)
+                continue;
+
+            yield return (sagaArc, sagaModelX, sagaModelZ, distanceMeters);
+        }
+    }
+
+    /// <summary>
+    /// Filters SagaArcs to only those within their trigger preview range.
+    /// Uses 150% of outermost trigger radius as preview distance.
+    /// </summary>
+    /// <param name="modelX">Position X in model coordinates</param>
+    /// <param name="modelZ">Position Z in model coordinates</param>
+    /// <param name="world">World containing Saga data</param>
+    /// <returns>Enumerable of SagaArcs within their preview range</returns>
+    public static IEnumerable<(SagaArc SagaArc, double SagaModelX, double SagaModelZ, double DistanceMeters, List<SagaTrigger> Triggers)>
+        FilterSagaArcsByTriggerProximity(
+            double modelX,
+            double modelZ,
+            IWorld world)
+    {
+        if (world.Gameplay.SagaArcs == null)
+            yield break;
+
+        // Get proper scale factors for model-to-meters conversion
+        var scaleX = world.IsProcedural ? 1.0 : world.HeightMapLongitudeScale;
+        var scaleZ = world.IsProcedural ? 1.0 : world.HeightMapLatitudeScale;
+
+        foreach (var sagaArc in world.Gameplay.SagaArcs)
+        {
+            // Get pre-expanded triggers from world lookup
+            if (!world.SagaTriggersLookup.TryGetValue(sagaArc.RefName, out var triggers) || !triggers.Any())
+                continue;
+
+            // Find outermost trigger (largest enter radius)
+            var outermostRadius = triggers.Max(t => t.EnterRadius);
+
+            // Preview distance: 150% of outermost trigger
+            var previewDistance = outermostRadius * 1.5;
+
+            // Convert Saga GPS to model coordinates
+            var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
+            var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
+
+            // Calculate distance in meters
+            var deltaModelX = modelX - sagaModelX;
+            var deltaModelZ = modelZ - sagaModelZ;
+            var deltaMetersX = deltaModelX / scaleX;
+            var deltaMetersZ = deltaModelZ / scaleZ;
+            var distanceMeters = Math.Sqrt(deltaMetersX * deltaMetersX + deltaMetersZ * deltaMetersZ);
+
+            // Only include if within preview distance
+            if (distanceMeters <= previewDistance)
+            {
+                yield return (sagaArc, sagaModelX, sagaModelZ, distanceMeters, triggers);
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets all Sagas that should be active (visible/interactable) near the given position.
     /// Uses 150% of outermost trigger radius as the "preview distance" for early discovery.
     /// </summary>
@@ -206,30 +308,14 @@ public static class SagaProximityService
         if (world.Gameplay.SagaArcs == null)
             return interactions;
 
-        // Get proper scale factors for model-to-meters conversion (X and Z have different scales due to latitude correction)
-        var scaleX = world.IsProcedural ? 1.0 : world.HeightMapLongitudeScale;
-        var scaleZ = world.IsProcedural ? 1.0 : world.HeightMapLatitudeScale;
         var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
 
         const double FEATURE_RADIUS_METERS = 5.0; // Hardcoded proximity for features
         const double CHARACTER_RADIUS_METERS = 5.0; // Hardcoded proximity for spawned characters
 
-        foreach (var saga in world.Gameplay.SagaArcs)
+        // Pre-filter to only nearby SagaArcs (major performance optimization)
+        foreach (var (saga, sagaModelX, sagaModelZ, distanceToCenter) in FilterSagaArcsByProximity(modelX, modelZ, world))
         {
-            // Convert Saga GPS to model coordinates
-            var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.LongitudeX, world);
-            var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
-
-            // Calculate distance from position to saga center
-            // CRITICAL: Must convert X and Z separately due to latitude correction factor
-            var deltaModelX = modelX - sagaModelX;
-            var deltaModelZ = modelZ - sagaModelZ;
-            var deltaMetersX = deltaModelX / scaleX;  // Convert model X to meters using longitude scale
-            var deltaMetersZ = deltaModelZ / scaleZ;  // Convert model Z to meters using latitude scale
-            var distanceToCenter = Math.Sqrt(
-                Math.Pow(deltaMetersX, 2) +
-                Math.Pow(deltaMetersZ, 2)); // Euclidean distance in meters
-
             // 1. CHECK FEATURE (at saga center, 5m radius)
             if (distanceToCenter <= FEATURE_RADIUS_METERS)
             {

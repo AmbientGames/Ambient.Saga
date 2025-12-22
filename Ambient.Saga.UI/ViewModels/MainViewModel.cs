@@ -350,10 +350,20 @@ public partial class MainViewModel : ObservableObject
             // Clear previous character list
             Characters.Clear();
 
-            //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Querying {_sagas.Count} Sagas for spawned characters...");
+            // Get avatar model coordinates for proximity filtering
+            var avatarModelX = CoordinateConverter.LongitudeToModelX(AvatarLongitude, CurrentWorld);
+            var avatarModelZ = CoordinateConverter.LatitudeToModelZ(AvatarLatitude, CurrentWorld);
 
-            // Query ALL spawned characters for each Saga (not just nearby ones - this is Sandbox)
-            foreach (var sagaVm in _sagas)
+            // Get nearby SagaArc RefNames for efficient filtering
+            var nearbySagaRefs = SagaProximityService.FilterSagaArcsByProximity(
+                avatarModelX, avatarModelZ, CurrentWorld)
+                .Select(s => s.SagaArc.RefName)
+                .ToHashSet();
+
+            //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Found {nearbySagaRefs.Count} nearby Sagas (of {_sagas.Count} total)");
+
+            // Query spawned characters only for nearby Sagas (major performance optimization)
+            foreach (var sagaVm in _sagas.Where(s => nearbySagaRefs.Contains(s.RefName)))
             {
                 // Get Saga template for center coordinates
                 if (!CurrentWorld.SagaArcLookup.TryGetValue(sagaVm.RefName, out var sagaTemplate))
