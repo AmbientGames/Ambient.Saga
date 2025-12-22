@@ -174,6 +174,11 @@ public partial class MainViewModel : ObservableObject
     private ISteamAchievementService? _steamAchievementService;
     private HeightMapProcessor.ProcessedHeightMap? _processedHeightMap;
 
+    // Background processing for interaction checks (runs off the UI thread)
+    private CancellationTokenSource? _backgroundProcessingCts;
+    private Task? _backgroundProcessingTask;
+    private const int InteractionCheckIntervalMs = 5000;
+
     // Track current entity being looted (for recording triggers)
     private string? _currentEntityRef;
     private FeatureType? _currentEntityType;
@@ -244,6 +249,7 @@ public partial class MainViewModel : ObservableObject
 
     /// <summary>
     /// Called every frame by the game loop to update game logic.
+    /// Note: Heavy processing like interaction checks run on background thread.
     /// </summary>
     /// <param name="deltaTime">Time elapsed since last frame in seconds.</param>
     public void Update(double deltaTime)
@@ -265,17 +271,61 @@ public partial class MainViewModel : ObservableObject
             CheckEntityRespawns();
         }
 
-        // Check for available interactions (throttle to twice per second)
-        _interactionCheckAccumulator += deltaTime;
-        if (_interactionCheckAccumulator >= 5.0)
-        {
-            _interactionCheckAccumulator = 0;
-            _ = CheckAvailableInteractionsAsync();
-        }
+        // Note: Interaction checks moved to background thread - see StartBackgroundProcessing()
     }
 
     private double _respawnCheckAccumulator = 0;
-    private double _interactionCheckAccumulator = 0;
+
+    /// <summary>
+    /// Starts background processing for interaction checks.
+    /// Call this after world is loaded.
+    /// </summary>
+    public void StartBackgroundProcessing()
+    {
+        StopBackgroundProcessing();
+
+        _backgroundProcessingCts = new CancellationTokenSource();
+        _backgroundProcessingTask = Task.Run(async () => await BackgroundProcessingLoopAsync(_backgroundProcessingCts.Token));
+    }
+
+    /// <summary>
+    /// Stops background processing.
+    /// Call this when world is unloaded or application is closing.
+    /// </summary>
+    public void StopBackgroundProcessing()
+    {
+        if (_backgroundProcessingCts != null)
+        {
+            _backgroundProcessingCts.Cancel();
+            _backgroundProcessingCts.Dispose();
+            _backgroundProcessingCts = null;
+        }
+        _backgroundProcessingTask = null;
+    }
+
+    private async Task BackgroundProcessingLoopAsync(CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            try
+            {
+                await CheckAvailableInteractionsAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[BackgroundProcessing] Error: {ex.Message}");
+            }
+
+            try
+            {
+                await Task.Delay(InteractionCheckIntervalMs, ct);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+        }
+    }
 
     private void CheckEntityRespawns()
     {
@@ -967,6 +1017,9 @@ public partial class MainViewModel : ObservableObject
 
         // Initialize avatar position at spawn if available
         InitializeAvatarPosition(world);
+
+        // Start background processing for interaction checks (runs off UI thread)
+        StartBackgroundProcessing();
     }
 
     ///// <summary>
@@ -1213,6 +1266,9 @@ public partial class MainViewModel : ObservableObject
     {
         try
         {
+            // Stop background processing if running (before disposing database)
+            StopBackgroundProcessing();
+
             // Dispose existing database if any
             _worldDatabase?.Dispose();
 
