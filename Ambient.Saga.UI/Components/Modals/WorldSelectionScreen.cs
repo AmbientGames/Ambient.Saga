@@ -23,6 +23,8 @@ public class WorldSelectionScreen
     private readonly IWorldContentGenerator _worldContentGenerator;
     private string? _lastGenerationMessage;
     private bool _showGenerationMessage;
+    private Task? _generationTask;
+    private bool _isGenerating;
 
     public WorldSelectionScreen(IWorldContentGenerator worldContentGenerator)
     {
@@ -101,45 +103,64 @@ public class WorldSelectionScreen
 
             if (_worldContentGenerator.IsAvailable)
             {
-                if (ImGui.Button("Generate World Content", new Vector2(-1, 30)))
+                // Check if generation task completed
+                if (_isGenerating && _generationTask != null && _generationTask.IsCompleted)
+                {
+                    _isGenerating = false;
+                    _generationTask = null;
+                }
+
+                // Show generating indicator or button
+                if (_isGenerating)
+                {
+                    ImGui.BeginDisabled();
+                    ImGui.Button("Generating...", new Vector2(-1, 30));
+                    ImGui.EndDisabled();
+                }
+                else if (ImGui.Button("Generate World Content", new Vector2(-1, 30)))
                 {
                     Debug.WriteLine($"Generate button clicked for: {viewModel.SelectedConfiguration.RefName}");
 
-                    try
+                    var selectedConfig = viewModel.SelectedConfiguration;
+                    _isGenerating = true;
+                    _generationTask = Task.Run(async () =>
                     {
-                        var solutionDir = FindSolutionRootFrom(AppContext.BaseDirectory);
-                        if (solutionDir == null)
-                            throw new DirectoryNotFoundException($"Could not locate solution root from: {AppContext.BaseDirectory}");
-
-                        var outputDirectory = Path.Combine(solutionDir, "Content", "Worlds");
-
-                        Debug.WriteLine($"Generating world content to: {outputDirectory}");
-                        var generatedFiles = _worldContentGenerator.GenerateWorldContentAsync(viewModel.SelectedConfiguration, outputDirectory).GetAwaiter().GetResult();
-
-                        Debug.WriteLine($"Generated {generatedFiles.Count} files:");
-                        foreach (var file in generatedFiles)
+                        try
                         {
-                            Debug.WriteLine($"  - {file}");
+                            var solutionDir = FindSolutionRootFrom(AppContext.BaseDirectory);
+                            if (solutionDir == null)
+                                throw new DirectoryNotFoundException($"Could not locate solution root from: {AppContext.BaseDirectory}");
+
+                            var outputDirectory = Path.Combine(solutionDir, "Content", "Worlds");
+
+                            Debug.WriteLine($"Generating world content to: {outputDirectory}");
+                            var generatedFiles = await _worldContentGenerator.GenerateWorldContentAsync(selectedConfig, outputDirectory);
+
+                            Debug.WriteLine($"Generated {generatedFiles.Count} files:");
+                            foreach (var file in generatedFiles)
+                            {
+                                Debug.WriteLine($"  - {file}");
+                            }
+
+                            // Copy generated files to exe directory for game loading
+                            var exeDirectory = AppContext.BaseDirectory;
+                            var exeWorldsDirectory = Path.Combine(exeDirectory, "Content", "Worlds");
+
+                            Debug.WriteLine($"Copying generated files to exe directory: {exeWorldsDirectory}");
+                            CopyGeneratedFilesToExeDirectory(outputDirectory, exeWorldsDirectory, generatedFiles);
+
+                            _lastGenerationMessage = $"Generated {generatedFiles.Count} files successfully!";
+                            _showGenerationMessage = true;
+                            Debug.WriteLine("World content generation and deployment complete!");
                         }
-
-                        // Copy generated files to exe directory for game loading
-                        var exeDirectory = AppContext.BaseDirectory;
-                        var exeWorldsDirectory = Path.Combine(exeDirectory, "Content", "Worlds");
-
-                        Debug.WriteLine($"Copying generated files to exe directory: {exeWorldsDirectory}");
-                        CopyGeneratedFilesToExeDirectory(outputDirectory, exeWorldsDirectory, generatedFiles);
-
-                        _lastGenerationMessage = $"Generated {generatedFiles.Count} files successfully!";
-                        _showGenerationMessage = true;
-                        Debug.WriteLine("World content generation and deployment complete!");
-                    }
-                    catch (Exception ex)
-                    {
-                        _lastGenerationMessage = $"Error: {ex.Message}";
-                        _showGenerationMessage = true;
-                        Debug.WriteLine($"Error generating world content: {ex.Message}");
-                        Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-                    }
+                        catch (Exception ex)
+                        {
+                            _lastGenerationMessage = $"Error: {ex.Message}";
+                            _showGenerationMessage = true;
+                            Debug.WriteLine($"Error generating world content: {ex.Message}");
+                            Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                        }
+                    });
                 }
             }
             else

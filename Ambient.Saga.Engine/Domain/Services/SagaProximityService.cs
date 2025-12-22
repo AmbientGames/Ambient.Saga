@@ -194,7 +194,7 @@ public static class SagaProximityService
     /// <param name="world">World data</param>
     /// <param name="worldRepository">Repository for checking character/feature state (optional)</param>
     /// <returns>All interactions at this position, sorted by priority and distance</returns>
-    public static List<SagaInteraction> QueryAllInteractionsAtPosition(
+    public static async Task<List<SagaInteraction>> QueryAllInteractionsAtPositionAsync(
         double modelX,
         double modelZ,
         AvatarBase? avatar,
@@ -236,7 +236,7 @@ public static class SagaProximityService
                 // Check if saga has a feature
                 if (!string.IsNullOrEmpty(saga.SagaFeatureRef))
                 {
-                    var featureStatus = DetermineFeatureStatus(saga, avatar, world, worldRepository);
+                    var featureStatus = await DetermineFeatureStatusAsync(saga, avatar, world, worldRepository);
                     interactions.Add(new SagaInteraction
                     {
                         Type = SagaInteractionType.Feature,
@@ -294,7 +294,7 @@ public static class SagaProximityService
     /// <summary>
     /// Determines the status of a feature (available, locked, complete).
     /// </summary>
-    private static InteractionStatus DetermineFeatureStatus(
+    private static async Task<InteractionStatus> DetermineFeatureStatusAsync(
         SagaArc sagaArc,
         AvatarBase? avatar,
         IWorld world,
@@ -306,7 +306,7 @@ public static class SagaProximityService
             try
             {
                 var avatarId = avatar.AvatarId.ToString();
-                var sagaInstance = worldRepository.GetSagaInstanceAsync(avatarId, sagaArc.RefName).GetAwaiter().GetResult();
+                var sagaInstance = await worldRepository.GetSagaInstanceAsync(avatarId, sagaArc.RefName);
 
                 if (sagaInstance != null && sagaInstance.Transactions != null)
                 {

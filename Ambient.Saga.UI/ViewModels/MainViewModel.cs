@@ -288,6 +288,7 @@ public partial class MainViewModel : ObservableObject
 
     private async Task CheckAvailableInteractionsAsync()
     {
+        //return;
         if (PlayerAvatar == null || CurrentWorld == null || !HasAvatarPosition)
             return;
 
@@ -958,7 +959,7 @@ public partial class MainViewModel : ObservableObject
         await LoadHeightMapImageInternalAsync(world, dataDirectory);
 
         // Load Sagas and triggers from world with feature status
-        var (sagas, triggers) = SagaViewModel.LoadFromWorld(world, PlayerAvatar, _worldRepository);
+        var (sagas, triggers) = await SagaViewModel.LoadFromWorldAsync(world, PlayerAvatar, _worldRepository);
         Sagas.Clear();
         AllTriggers.Clear();
         foreach (var saga in sagas) Sagas.Add(saga);

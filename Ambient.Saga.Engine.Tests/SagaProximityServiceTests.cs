@@ -11,7 +11,7 @@ namespace Ambient.Saga.Engine.Tests;
 public class SagaProximityServiceTests
 {
     [Fact]
-    public void QueryAllInteractionsAtPosition_FindsProximityTrigger()
+    public async Task QueryAllInteractionsAtPosition_FindsProximityTrigger()
     {
         // Arrange
         var world = CreateTestWorld();
@@ -26,7 +26,7 @@ public class SagaProximityServiceTests
         var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
 
         // Act
-        var results = SagaProximityService.QueryAllInteractionsAtPosition(
+        var results = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
             sagaModelX, sagaModelZ, null, world);
 
         // Assert
@@ -95,7 +95,7 @@ public class SagaProximityServiceTests
     //}
 
     [Fact]
-    public void QueryAllInteractionsAtPosition_LockedTrigger_WhenMissingQuestToken()
+    public async Task QueryAllInteractionsAtPosition_LockedTrigger_WhenMissingQuestToken()
     {
         // Arrange
         var world = CreateTestWorld();
@@ -118,7 +118,7 @@ public class SagaProximityServiceTests
         var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
 
         // Act
-        var results = SagaProximityService.QueryAllInteractionsAtPosition(
+        var results = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
             sagaModelX, sagaModelZ, avatar, world);
 
         // Assert
@@ -128,7 +128,7 @@ public class SagaProximityServiceTests
     }
 
     [Fact]
-    public void QueryAllInteractionsAtPosition_AvailableTrigger_WithQuestToken()
+    public async Task QueryAllInteractionsAtPosition_AvailableTrigger_WithQuestToken()
     {
         // Arrange
         var world = CreateTestWorld();
@@ -151,7 +151,7 @@ public class SagaProximityServiceTests
         var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
 
         // Act
-        var results = SagaProximityService.QueryAllInteractionsAtPosition(
+        var results = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
             sagaModelX, sagaModelZ, avatar, world);
 
         // Assert

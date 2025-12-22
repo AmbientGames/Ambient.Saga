@@ -162,7 +162,7 @@ public partial class SagaViewModel : ObservableObject
     /// Loads all Sagas from World and creates ViewModels.
     /// Returns both Saga ViewModels and flattened trigger list for XAML binding.
     /// </summary>
-    public static (List<SagaViewModel> Sagas, List<ProximityTriggerViewModel> AllSagaTriggers) LoadFromWorld(
+    public static async Task<(List<SagaViewModel> Sagas, List<ProximityTriggerViewModel> AllSagaTriggers)> LoadFromWorldAsync(
         IWorld world,
         AvatarBase? avatar = null,
         IWorldStateRepository worldRepository = null)
@@ -186,7 +186,7 @@ public partial class SagaViewModel : ObservableObject
                     world);
 
                 // Set feature dot visual properties based on interaction status
-                SetFeatureStatus(sagaVM, sagaArc, avatar, world, worldRepository);
+                await SetFeatureStatusAsync(sagaVM, sagaArc, avatar, world, worldRepository);
 
                 sagas.Add(sagaVM);
 
@@ -198,7 +198,7 @@ public partial class SagaViewModel : ObservableObject
                     triggerVM.IsHovered = false;
 
                     // Query trigger status and set color
-                    SetTriggerStatus(triggerVM, sagaArc, avatar, world, worldRepository);
+                    await SetTriggerStatusAsync(triggerVM, sagaArc, avatar, world, worldRepository);
 
                     allSagaTriggers.Add(triggerVM);
                 }
@@ -211,7 +211,7 @@ public partial class SagaViewModel : ObservableObject
     /// <summary>
     /// Sets the feature dot color and opacity based on interaction status.
     /// </summary>
-    private static void SetFeatureStatus(
+    private static async Task SetFeatureStatusAsync(
         SagaViewModel sagaVM,
         SagaArc sagaArc,
         AvatarBase? avatar,
@@ -223,7 +223,7 @@ public partial class SagaViewModel : ObservableObject
         var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
 
         // Query application service for feature status at Saga center
-        var interactions = SagaProximityService.QueryAllInteractionsAtPosition(
+        var interactions = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
             sagaModelX, sagaModelZ, avatar, world, worldRepository);
 
         var featureInteraction = interactions.FirstOrDefault(i =>
@@ -241,7 +241,7 @@ public partial class SagaViewModel : ObservableObject
     /// <summary>
     /// Sets the trigger ring color based on interaction status.
     /// </summary>
-    private static void SetTriggerStatus(
+    private static async Task SetTriggerStatusAsync(
         ProximityTriggerViewModel triggerVM,
         SagaArc sagaArc,
         AvatarBase? avatar,
@@ -253,7 +253,7 @@ public partial class SagaViewModel : ObservableObject
         var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
 
         // Query application service for trigger status at Saga center
-        var interactions = SagaProximityService.QueryAllInteractionsAtPosition(
+        var interactions = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
             sagaModelX, sagaModelZ, avatar, world, worldRepository);
 
         var triggerInteraction = interactions.FirstOrDefault(i =>
