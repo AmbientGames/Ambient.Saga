@@ -159,6 +159,9 @@ public partial class MainViewModel : ObservableObject
     // Event for when world definition is loaded (before avatar selection)
     public event Action<IWorld>? WorldLoaded;
 
+    // Event for when avatar teleport is requested (e.g., map click)
+    public event Action<double, double>? AvatarTeleportRequested;
+
     /// <summary>
     /// Requests the application to quit.
     /// Called by modals/screens when user wants to exit without completing mandatory actions.
@@ -1927,6 +1930,10 @@ public partial class MainViewModel : ObservableObject
 
             // Move avatar to clicked position
             SetAvatarPosition(clickLatitude, clickLongitude, CurrentWorld.HeightMapMetadata);
+
+            // Notify external consumers (e.g., game) to teleport the 3D avatar
+            AvatarTeleportRequested?.Invoke(clickLatitude, clickLongitude);
+
             StatusMessage = $"Avatar moved to {clickLatitude:F6}°, {clickLongitude:F6}°";
         }
         catch (Exception ex)
