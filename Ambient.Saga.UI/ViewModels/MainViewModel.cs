@@ -20,6 +20,7 @@ using System.Collections.ObjectModel;
 using Ambient.Saga.UI.Models;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.UI.ViewModels;
+using SharpDX;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 
@@ -151,7 +152,16 @@ public partial class MainViewModel : ObservableObject
 
     // Event for when dialogue should be displayed (for character interactions)
     public event Action<CharacterViewModel>? DialogueRequested;
-    
+
+    // Event for when avatar is loaded or created (for external state synchronization)
+    public event Action<AvatarEntity>? AvatarLoaded;
+
+    // Event for when world definition is loaded (before avatar selection)
+    public event Action<IWorld>? WorldLoaded;
+
+    // Event for when avatar teleport is requested (e.g., map click)
+    public event Action<double, double>? AvatarTeleportRequested;
+
     /// <summary>
     /// Requests the application to quit.
     /// Called by modals/screens when user wants to exit without completing mandatory actions.
@@ -166,6 +176,11 @@ public partial class MainViewModel : ObservableObject
     private IWorldStateRepository _worldRepository;
     private ISteamAchievementService? _steamAchievementService;
     private HeightMapProcessor.ProcessedHeightMap? _processedHeightMap;
+
+    // Background processing for interaction checks (runs off the UI thread)
+    private CancellationTokenSource? _backgroundProcessingCts;
+    private Task? _backgroundProcessingTask;
+    private const int InteractionCheckIntervalMs = 5000;
 
     // Track current entity being looted (for recording triggers)
     private string? _currentEntityRef;
@@ -237,6 +252,7 @@ public partial class MainViewModel : ObservableObject
 
     /// <summary>
     /// Called every frame by the game loop to update game logic.
+    /// Note: Heavy processing like interaction checks run on background thread.
     /// </summary>
     /// <param name="deltaTime">Time elapsed since last frame in seconds.</param>
     public void Update(double deltaTime)
@@ -258,17 +274,61 @@ public partial class MainViewModel : ObservableObject
             CheckEntityRespawns();
         }
 
-        // Check for available interactions (throttle to twice per second)
-        _interactionCheckAccumulator += deltaTime;
-        if (_interactionCheckAccumulator >= 5.0)
-        {
-            _interactionCheckAccumulator = 0;
-            _ = CheckAvailableInteractionsAsync();
-        }
+        // Note: Interaction checks moved to background thread - see StartBackgroundProcessing()
     }
 
     private double _respawnCheckAccumulator = 0;
-    private double _interactionCheckAccumulator = 0;
+
+    /// <summary>
+    /// Starts background processing for interaction checks.
+    /// Call this after world is loaded.
+    /// </summary>
+    public void StartBackgroundProcessing()
+    {
+        StopBackgroundProcessing();
+
+        _backgroundProcessingCts = new CancellationTokenSource();
+        _backgroundProcessingTask = Task.Run(async () => await BackgroundProcessingLoopAsync(_backgroundProcessingCts.Token));
+    }
+
+    /// <summary>
+    /// Stops background processing.
+    /// Call this when world is unloaded or application is closing.
+    /// </summary>
+    public void StopBackgroundProcessing()
+    {
+        if (_backgroundProcessingCts != null)
+        {
+            _backgroundProcessingCts.Cancel();
+            _backgroundProcessingCts.Dispose();
+            _backgroundProcessingCts = null;
+        }
+        _backgroundProcessingTask = null;
+    }
+
+    private async Task BackgroundProcessingLoopAsync(CancellationToken ct)
+    {
+        while (!ct.IsCancellationRequested)
+        {
+            try
+            {
+                await CheckAvailableInteractionsAsync();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[BackgroundProcessing] Error: {ex.Message}");
+            }
+
+            try
+            {
+                await Task.Delay(InteractionCheckIntervalMs, ct);
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
+        }
+    }
 
     private void CheckEntityRespawns()
     {
@@ -281,6 +341,7 @@ public partial class MainViewModel : ObservableObject
 
     private async Task CheckAvailableInteractionsAsync()
     {
+        //return;
         if (PlayerAvatar == null || CurrentWorld == null || !HasAvatarPosition)
             return;
 
@@ -292,10 +353,20 @@ public partial class MainViewModel : ObservableObject
             // Clear previous character list
             Characters.Clear();
 
-            //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Querying {_sagas.Count} Sagas for spawned characters...");
+            // Get avatar model coordinates for proximity filtering
+            var avatarModelX = CoordinateConverter.LongitudeToModelX(AvatarLongitude, CurrentWorld);
+            var avatarModelZ = CoordinateConverter.LatitudeToModelZ(AvatarLatitude, CurrentWorld);
 
-            // Query ALL spawned characters for each Saga (not just nearby ones - this is Sandbox)
-            foreach (var sagaVm in _sagas)
+            // Get nearby SagaArc RefNames for efficient filtering
+            var nearbySagaRefs = SagaProximityService.FilterSagaArcsByProximity(
+                avatarModelX, avatarModelZ, CurrentWorld)
+                .Select(s => s.SagaArc.RefName)
+                .ToHashSet();
+
+            //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Found {nearbySagaRefs.Count} nearby Sagas (of {_sagas.Count} total)");
+
+            // Query spawned characters only for nearby Sagas (major performance optimization)
+            foreach (var sagaVm in _sagas.Where(s => nearbySagaRefs.Contains(s.RefName)))
             {
                 // Get Saga template for center coordinates
                 if (!CurrentWorld.SagaArcLookup.TryGetValue(sagaVm.RefName, out var sagaTemplate))
@@ -893,7 +964,40 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-        /// <summary>
+    public async Task LoadConfigurationAsync(string configurationRefName)
+    {
+        try
+        {
+            IsLoading = true;
+            StatusMessage = $"Loading world configuration: {configurationRefName}...";
+
+            var world = await _mediator.Send(new LoadWorldQuery
+            {
+                DataDirectory = _dataDirectory,
+                DefinitionDirectory = _schemaDirectory,
+                ConfigurationRefName = configurationRefName
+            });
+
+            // Initialize world bootstrapper (required when loading via mediator)
+            WorldBootstrapper.Initialize(world);
+
+            // Complete initialization with shared logic
+            await InitializeWorldCoreAsync(world, _dataDirectory);
+
+            StatusMessage = $"Loaded: {configurationRefName}";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Error loading configuration: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+
+    /// <summary>
     /// Shared initialization logic for both LoadSelectedConfigurationAsync and InitializeWithExternalWorldAsync.
     /// Sets up world, database, avatar, height map, Sagas, and triggers.
     /// </summary>
@@ -908,6 +1012,9 @@ public partial class MainViewModel : ObservableObject
         // Initialize LiteDB persistence and CQRS providers for this world
         InitializeWorldDatabase(world);
 
+        // Signal that world definition is loaded (before avatar selection)
+        WorldLoaded?.Invoke(world);
+
         // Load or create avatar (shows archetype selection dialog for new worlds)
         await LoadOrCreateAvatarAsync(world);
 
@@ -915,7 +1022,7 @@ public partial class MainViewModel : ObservableObject
         await LoadHeightMapImageInternalAsync(world, dataDirectory);
 
         // Load Sagas and triggers from world with feature status
-        var (sagas, triggers) = SagaViewModel.LoadFromWorld(world, PlayerAvatar, _worldRepository);
+        var (sagas, triggers) = await SagaViewModel.LoadFromWorldAsync(world, PlayerAvatar, _worldRepository);
         Sagas.Clear();
         AllTriggers.Clear();
         foreach (var saga in sagas) Sagas.Add(saga);
@@ -923,41 +1030,45 @@ public partial class MainViewModel : ObservableObject
 
         // Initialize avatar position at spawn if available
         InitializeAvatarPosition(world);
+
+        // Start background processing for interaction checks (runs off UI thread)
+        StartBackgroundProcessing();
     }
 
-    /// <summary>
-    /// Initializes MainViewModel with an externally-loaded world.
-    /// Use this when the world has already been loaded by the game (e.g., via WorldRepository)
-    /// instead of through LoadSelectedConfigurationAsync.
-    /// Avatar is loaded from database or created via archetype selection dialog.
-    /// </summary>
-    /// <param name="world">The already-loaded world instance (WorldBootstrapper.Initialize should already have been called)</param>
-    /// <param name="dataDirectory">Base directory containing world definition files (for height map loading)</param>
-    public async Task InitializeWithExternalWorldAsync(IWorld world, string dataDirectory)
-    {
-        if (world == null)
-            throw new ArgumentNullException(nameof(world));
+    ///// <summary>
+    ///// Initializes MainViewModel with an externally-loaded world.
+    ///// Use this when the world has already been loaded by the game (e.g., via WorldRepository)
+    ///// instead of through LoadSelectedConfigurationAsync.
+    ///// Avatar is loaded from database or created via archetype selection dialog.
+    ///// </summary>
+    ///// <param name="world">The already-loaded world instance (WorldBootstrapper.Initialize should already have been called)</param>
+    ///// <param name="dataDirectory">Base directory containing world definition files (for height map loading)</param>
+    //public async Task InitializeWithExternalWorldAsync(IWorld world, string dataDirectory)
+    //{
+    //    return;
+    //    if (world == null)
+    //        throw new ArgumentNullException(nameof(world));
 
-        try
-        {
-            IsLoading = true;
-            StatusMessage = $"Initializing world: {world.WorldConfiguration?.RefName ?? "Unknown"}...";
+    //    try
+    //    {
+    //        IsLoading = true;
+    //        StatusMessage = $"Initializing world: {world.WorldConfiguration?.RefName ?? "Unknown"}...";
 
-            // Complete initialization with shared logic
-            await InitializeWorldCoreAsync(world, dataDirectory);
+    //        // Complete initialization with shared logic
+    //        await InitializeWorldCoreAsync(world, dataDirectory);
 
-            StatusMessage = $"Initialized: {world.WorldConfiguration?.RefName ?? "World"}";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error initializing world: {ex.Message}";
-            System.Diagnostics.Debug.WriteLine($"[MainViewModel] InitializeWithExternalWorldAsync error: {ex}");
-        }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
+    //        StatusMessage = $"Initialized: {world.WorldConfiguration?.RefName ?? "World"}";
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        StatusMessage = $"Error initializing world: {ex.Message}";
+    //        System.Diagnostics.Debug.WriteLine($"[MainViewModel] InitializeWithExternalWorldAsync error: {ex}");
+    //    }
+    //    finally
+    //    {
+    //        IsLoading = false;
+    //    }
+    //}
 
     private async Task LoadHeightMapImageInternalAsync(IWorld world, string dataDirectory)
     {
@@ -1168,6 +1279,9 @@ public partial class MainViewModel : ObservableObject
     {
         try
         {
+            // Stop background processing if running (before disposing database)
+            StopBackgroundProcessing();
+
             // Dispose existing database if any
             _worldDatabase?.Dispose();
 
@@ -1816,6 +1930,10 @@ public partial class MainViewModel : ObservableObject
 
             // Move avatar to clicked position
             SetAvatarPosition(clickLatitude, clickLongitude, CurrentWorld.HeightMapMetadata);
+
+            // Notify external consumers (e.g., game) to teleport the 3D avatar
+            AvatarTeleportRequested?.Invoke(clickLatitude, clickLongitude);
+
             StatusMessage = $"Avatar moved to {clickLatitude:F6}°, {clickLongitude:F6}°";
         }
         catch (Exception ex)
@@ -1957,6 +2075,7 @@ public partial class MainViewModel : ObservableObject
         {
             // Avatar exists, load it
             PlayerAvatar = existingAvatar;
+            AvatarLoaded?.Invoke(existingAvatar);
 
             // Debug output to verify what was loaded
             var toolCount = PlayerAvatar.Capabilities?.Tools?.Length ?? 0;
@@ -1999,6 +2118,7 @@ public partial class MainViewModel : ObservableObject
 
         // Create new avatar from archetype
         PlayerAvatar = CreateAvatarFromArchetype(selectedArchetype, world);
+        AvatarLoaded?.Invoke(PlayerAvatar);
         AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
 
         // Save to database
@@ -2036,7 +2156,27 @@ public partial class MainViewModel : ObservableObject
             avatar,
             archetype);
 
+        SetAvatarDefaults(world, avatar);
+
         return avatar;
+    }
+
+    private static void SetAvatarDefaults(IWorld world, AvatarEntity avatar)
+    {
+        if (world.IsProcedural)
+        {
+            var modelZ = CoordinateConverter.LatitudeToModelZ(world.WorldConfiguration.SpawnLatitude, world);
+            avatar.HomeLocation = new Vector3(0, 0, (float)modelZ);
+        }
+        else
+        {
+            var modelX = CoordinateConverter.LongitudeToModelX(world.WorldConfiguration.SpawnLongitude, world);
+            var modelZ = CoordinateConverter.LatitudeToModelZ(world.WorldConfiguration.SpawnLatitude, world);
+            avatar.HomeLocation = new Vector3((float)modelX, 0, (float)modelZ);
+        }
+
+        avatar.Position = avatar.HomeLocation;
+        avatar.IsInvulnerable = true;
     }
 
     /// <summary>

@@ -281,4 +281,49 @@ public static class CoordinateConverter
         return pointModelZ - sagaCenterModelZ;
     }
 
+    // ============================================================================
+    // Distance Calculations
+    // ============================================================================
+
+    /// <summary>
+    /// Calculates distance between two lat/lon points using model coordinates.
+    /// This is accurate for the world's coordinate system, unlike approximate degree-to-meter conversions.
+    /// </summary>
+    /// <param name="lat1">Latitude of first point</param>
+    /// <param name="lon1">Longitude of first point</param>
+    /// <param name="lat2">Latitude of second point</param>
+    /// <param name="lon2">Longitude of second point</param>
+    /// <param name="world">World for coordinate conversion</param>
+    /// <returns>Distance in model units (typically meters)</returns>
+    public static double CalculateDistance(double lat1, double lon1, double lat2, double lon2, IWorld world)
+    {
+        // Convert both points to model coordinates
+        var modelX1 = LongitudeToModelX(lon1, world);
+        var modelZ1 = LatitudeToModelZ(lat1, world);
+        var modelX2 = LongitudeToModelX(lon2, world);
+        var modelZ2 = LatitudeToModelZ(lat2, world);
+
+        // Euclidean distance in model space
+        var deltaX = modelX2 - modelX1;
+        var deltaZ = modelZ2 - modelZ1;
+
+        return Math.Sqrt(deltaX * deltaX + deltaZ * deltaZ);
+    }
+
+    /// <summary>
+    /// Calculates distance between two model coordinate points.
+    /// Simple Euclidean distance.
+    /// </summary>
+    /// <param name="modelX1">X coordinate of first point</param>
+    /// <param name="modelZ1">Z coordinate of first point</param>
+    /// <param name="modelX2">X coordinate of second point</param>
+    /// <param name="modelZ2">Z coordinate of second point</param>
+    /// <returns>Distance in model units</returns>
+    public static double CalculateModelDistance(double modelX1, double modelZ1, double modelX2, double modelZ2)
+    {
+        var deltaX = modelX2 - modelX1;
+        var deltaZ = modelZ2 - modelZ1;
+        return Math.Sqrt(deltaX * deltaX + deltaZ * deltaZ);
+    }
+
 }

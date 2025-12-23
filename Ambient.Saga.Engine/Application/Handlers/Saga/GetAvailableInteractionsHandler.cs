@@ -148,7 +148,9 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
             var approachRadius = characterTemplate.Interactable?.ApproachRadius ?? 50.0;
             if (approachRadius > 0) // -1 means player must initiate, 0 means contact required
             {
-                var distance = CalculateDistance(avatarLat, avatarLon, characterWorldLat, characterWorldLon);
+                var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, characterWorldLat, characterWorldLon, _world);
+                System.Diagnostics.Debug.WriteLine("*** distance: " + distance);
+
                 if (distance > approachRadius)
                 {
                     continue;
@@ -173,21 +175,6 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         }
 
         return result;
-    }
-
-    private static double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
-    {
-        // Simple Euclidean distance in meters (good enough for short distances)
-        var deltaLat = lat2 - lat1;
-        var deltaLon = lon2 - lon1;
-
-        const double metersPerDegreeLat = 110540.0;
-        const double metersPerDegreeLon = 111320.0;
-
-        var deltaY = deltaLat * metersPerDegreeLat;
-        var deltaX = deltaLon * metersPerDegreeLon;
-
-        return Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
     private CharacterInteractionOptions BuildInteractionOptions(
@@ -318,10 +305,11 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
             return result; // Feature not approachable
 
         // Calculate distance from avatar to Saga center
-        var distance = CalculateDistance(avatarLat, avatarLon, sagaTemplate.LatitudeZ, sagaTemplate.LongitudeX);
-
+        var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, sagaTemplate.LatitudeZ, sagaTemplate.LongitudeX, _world);
         if (distance <= approachRadius)
         {
+            System.Diagnostics.Debug.WriteLine("*** distance: " + distance);
+
             // Feature is within range - check if it has anything to offer
             var hasLoot = feature.Interactable.Loot != null && HasAnyItems(feature.Interactable.Loot);
             var hasTokens = feature.Interactable.GivesQuestTokenRef != null && feature.Interactable.GivesQuestTokenRef.Length > 0;

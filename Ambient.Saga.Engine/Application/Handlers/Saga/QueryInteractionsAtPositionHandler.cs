@@ -8,7 +8,7 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
 /// <summary>
 /// Handler for QueryInteractionsAtPositionQuery.
-/// Wraps SagaProximityService.QueryAllInteractionsAtPosition in CQRS pattern.
+/// Wraps SagaProximityService.QueryAllInteractionsAtPositionAsync in CQRS pattern.
 ///
 /// This allows views to query interactions at arbitrary positions (map clicks, hover, etc.)
 /// through the MediatR pipeline instead of calling domain services directly.
@@ -26,21 +26,21 @@ internal sealed class QueryInteractionsAtPositionHandler : IRequestHandler<Query
         _worldRepository = worldRepository;
     }
 
-    public Task<List<SagaInteraction>> Handle(QueryInteractionsAtPositionQuery query, CancellationToken ct)
+    public async Task<List<SagaInteraction>> Handle(QueryInteractionsAtPositionQuery query, CancellationToken ct)
     {
         if (_world == null)
         {
-            return Task.FromResult(new List<SagaInteraction>());
+            return new List<SagaInteraction>();
         }
 
         // Delegate to domain service
-        var interactions = SagaProximityService.QueryAllInteractionsAtPosition(
+        var interactions = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
             query.ModelX,
             query.ModelZ,
             query.Avatar,
             _world,
             _worldRepository);
 
-        return Task.FromResult(interactions);
+        return interactions;
     }
 }
