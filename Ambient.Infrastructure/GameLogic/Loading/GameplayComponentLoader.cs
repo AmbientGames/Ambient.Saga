@@ -64,23 +64,6 @@ public static class GameplayComponentLoader
         world.Gameplay.Factions = (await XmlLoader.LoadFromXmlAsync<Factions>(Path.Combine(dataDirectory, "Gameplay", "Factions", $"{factionsRef}.Factions.xml"), xsdFilePath)).Faction ?? [];
         world.Gameplay.StatusEffects = (await XmlLoader.LoadFromXmlAsync<StatusEffects>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{statusEffectsRef}.StatusEffects.xml"), xsdFilePath)).StatusEffect ?? [];
         world.Gameplay.AttackTells = (await XmlLoader.LoadFromXmlAsync<AttackTells>(Path.Combine(dataDirectory, "Gameplay", "Combat", $"{attackTellsRef}.AttackTells.xml"), xsdFilePath)).AttackTell ?? [];
-
-        ApplySagaSpawnOffsets(world);
-    }
-
-    private static void ApplySagaSpawnOffsets(IWorld world)
-    {
-        if (world.WorldConfiguration?.Item is ProceduralSettings)
-        {
-            var spawnLat = world.WorldConfiguration.SpawnLatitude;
-            var spawnLon = world.WorldConfiguration.SpawnLongitude;
-
-            foreach (var saga in world.Gameplay.SagaArcs)
-            {
-                saga.LatitudeZ += spawnLat;
-                saga.LongitudeX += spawnLon;
-            }
-        }
     }
 
     private static void BuildGameplayLookups(IWorld world)
