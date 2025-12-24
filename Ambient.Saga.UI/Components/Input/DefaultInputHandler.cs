@@ -60,9 +60,9 @@ public class DefaultInputHandler : IInputHandler
         if (context.IsModalActive || context.IsTextInputActive)
             return;
 
-        // M key - Map
+        // M key - Map (only if world has a height map)
         bool mKeyDown = ImGui.IsKeyDown(ImGuiKey.M);
-        if (mKeyDown && !_mKeyWasPressed)
+        if (mKeyDown && !_mKeyWasPressed && context.HasMap)
         {
             context.TogglePanelAction(ActivePanel.Map);
         }

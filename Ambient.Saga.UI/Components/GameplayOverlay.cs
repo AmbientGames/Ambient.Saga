@@ -168,6 +168,7 @@ public class GameplayOverlay
             IsModalActive = _modalManager.HasActiveModal(),
             IsTextInputActive = ImGui.GetIO().WantTextInput,
             ActivePanel = _activePanel,
+            HasMap = viewModel.HeightMapImage != null,
             TogglePanelAction = TogglePanel,
             CloseAllPanelsAction = CloseAllPanels
         };

@@ -30,10 +30,14 @@ public class DefaultHudRenderer : IHudRenderer
         if (ImGui.Begin("##HudBar", windowFlags))
         {
             // Left side: Hotkey hints
-            RenderHotkeyHint("M", "Map", activePanel == ActivePanel.Map);
-            ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
-            ImGui.SameLine();
+            // Only show Map hint if world has a height map (procedural/generated worlds don't)
+            if (viewModel.HeightMapImage != null)
+            {
+                RenderHotkeyHint("M", "Map", activePanel == ActivePanel.Map);
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
+                ImGui.SameLine();
+            }
             RenderHotkeyHint("C", "Character", activePanel == ActivePanel.Character);
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
