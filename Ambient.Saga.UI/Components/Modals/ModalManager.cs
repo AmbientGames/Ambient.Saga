@@ -104,6 +104,7 @@ public class ModalManager
 
         // Special modals
         _modalRegistry.Register(new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator));
+        _modalRegistry.Register(new Adapters.WorldSelectionTilesAdapter()); // User-friendly tile version
         _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
 
         // Note: PauseMenu and Settings are not migrated as they have special rendering requirements
@@ -125,6 +126,7 @@ public class ModalManager
 
     // Modal state - derived from stack (read-only)
     public bool ShowWorldSelection => _modalStack.Contains("WorldSelection");
+    public bool ShowWorldSelectionTiles => _modalStack.Contains("WorldSelectionTiles");
     public bool ShowArchetypeSelection => _modalStack.Contains("ArchetypeSelection");
     public bool ShowAvatarInfo => _modalStack.Contains("AvatarInfo");
     public bool ShowCharacters => _modalStack.Contains("Characters");
@@ -200,6 +202,7 @@ public class ModalManager
     }
 
     public void OpenWorldSelection() => OpenModal("WorldSelection");
+    public void OpenWorldSelectionTiles() => OpenModal("WorldSelectionTiles");
     public void OpenArchetypeSelection() => OpenModal("ArchetypeSelection");
     public void OpenAvatarInfo() => OpenModal("AvatarInfo");
     public void OpenCharacters() => OpenModal("Characters");
