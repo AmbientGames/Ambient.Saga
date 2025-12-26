@@ -1243,7 +1243,7 @@ public partial class MainViewModel : ObservableObject
 
             // Use factory to create all repositories (eliminates Infrastructure imports)
             var repositories = _repositoryFactory.CreateRepositories(
-                "Carbon",
+                "Saga",
                 world.WorldConfiguration.RefName,
                 world,
                 SteamContext.IsSteamInitialized);
