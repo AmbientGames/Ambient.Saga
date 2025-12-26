@@ -110,9 +110,12 @@ public class DefaultHudRenderer : IHudRenderer
         ImGui.PushStyleColor(ImGuiCol.Button, keyColor);
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, keyColor);
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, keyColor);
-        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(4, 2));
+        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(6, 4));
 
-        ImGui.Button(key, new Vector2(22, 22));
+        // Size button to fit text with minimum width
+        var textSize = ImGui.CalcTextSize(key);
+        var buttonWidth = Math.Max(28, textSize.X + 14);
+        ImGui.Button(key, new Vector2(buttonWidth, 26));
 
         ImGui.PopStyleVar();
         ImGui.PopStyleColor(3);
