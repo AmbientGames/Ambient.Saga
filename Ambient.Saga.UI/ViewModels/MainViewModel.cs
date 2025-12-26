@@ -776,54 +776,8 @@ public partial class MainViewModel : ObservableObject
                 foreach (var evt in eventsList)
                 {
                     if (evt == null) continue;
-
                     System.Diagnostics.Debug.WriteLine($"*** Processing dialogue event: {evt.GetType().Name}");
-
-                    // WPF WINDOW CODE - TO BE DELETED WITH XAML
-                    /*if (evt is Game.Gameplay.SagaEngine.Domain.Rpg.Dialogue.Events.OpenMerchantTradeEvent merchantEvent)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"*** Opening merchant trade for {merchantEvent.CharacterRef}");
-
-                        // Switch from dialogue to trade in the same window
-                        _currentDialogueViewModel = null;
-                        _isInDialogue = false;
-
-                        // Close current interaction window if open (WPF only)
-                        if (!_useImGuiMode && _interactionWindow != null)
-                        {
-                            _interactionWindow.Close();
-                            _interactionWindow = null;
-                        }
-
-                        // Show merchant trade (WPF only - ImGui handles via modals)
-                        if (!_useImGuiMode)
-                        {
-                            await ShowMerchantTradeAsync(_currentDialogueSagaRef!, _currentDialogueCharacterInstanceId);
-                        }
-                        return; // Don't refresh dialogue state, we've switched to trade
-                    }
-                    else if (evt is Game.Gameplay.SagaEngine.Domain.Rpg.Dialogue.Events.StartBossBattleEvent bossEvent)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"*** Starting boss battle with {bossEvent.CharacterRef}");
-
-                        // Switch from dialogue to battle in the same window
-                        _currentDialogueViewModel = null;
-                        _isInDialogue = false;
-
-                        // Close current interaction window if open (WPF only)
-                        if (!_useImGuiMode && _interactionWindow != null)
-                        {
-                            _interactionWindow.Close();
-                            _interactionWindow = null;
-                        }
-
-                        // Show boss battle (WPF only - ImGui handles via modals)
-                        if (!_useImGuiMode)
-                        {
-                            await ShowBossBattleAsync(_currentDialogueSagaRef!, _currentDialogueCharacterInstanceId);
-                        }
-                        return; // Don't refresh dialogue state, we've switched to battle
-                    }*/
+                    // Note: ImGui mode handles dialogue events in DialogueModal.cs
                 }
             }
             else
