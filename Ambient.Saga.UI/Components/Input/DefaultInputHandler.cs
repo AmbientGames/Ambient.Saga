@@ -1,15 +1,17 @@
+using System.Diagnostics;
 using ImGuiNET;
 
 namespace Ambient.Saga.UI.Components.Input;
 
 /// <summary>
-/// Default input handler for GameplayOverlay using M/C/I/ESC keys.
+/// Default input handler for GameplayOverlay using M/C/I/Insert/ESC keys.
 /// This is the standard keyboard mapping but can be replaced with custom implementations.
-/// 
+///
 /// Key Bindings:
 /// - M: Toggle Map panel
 /// - C: Toggle Character panel
 /// - I: Toggle World Info panel
+/// - Insert: Toggle Dev Tools panel (only when debugger attached)
 /// - ESC: Close panels OR open pause menu (hierarchical behavior)
 /// 
 /// ESC Key Behavior (Hierarchical "Go Back"):
@@ -27,6 +29,7 @@ public class DefaultInputHandler : IInputHandler
     private bool _mKeyWasPressed = false;
     private bool _cKeyWasPressed = false;
     private bool _iKeyWasPressed = false;
+    private bool _insertKeyWasPressed = false;
     private bool _escKeyWasPressed = false;
     private bool _pauseMenuRequestedThisFrame = false;
 
@@ -83,6 +86,14 @@ public class DefaultInputHandler : IInputHandler
             context.TogglePanelAction(ActivePanel.WorldInfo);
         }
         _iKeyWasPressed = iKeyDown;
+
+        // Insert key - Dev Tools (only when debugger attached)
+        bool insertKeyDown = ImGui.IsKeyDown(ImGuiKey.Insert);
+        if (insertKeyDown && !_insertKeyWasPressed && Debugger.IsAttached)
+        {
+            context.TogglePanelAction(ActivePanel.DevTools);
+        }
+        _insertKeyWasPressed = insertKeyDown;
 
         // ESC key - Hierarchical behavior
         // 1. If panel open ? Close panel

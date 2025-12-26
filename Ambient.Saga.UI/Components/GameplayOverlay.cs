@@ -20,8 +20,10 @@ public enum ActivePanel
     Map,
     /// <summary>Character panel (press C) - shows avatar stats, inventory, quests</summary>
     Character,
-    /// <summary>World Info panel (press I) - shows world catalog, debug info</summary>
-    WorldInfo
+    /// <summary>World Info panel (press I) - shows world catalog</summary>
+    WorldInfo,
+    /// <summary>Dev Tools panel (press Insert) - only available when debugger attached</summary>
+    DevTools
 }
 
 /// <summary>
@@ -73,6 +75,7 @@ public class GameplayOverlay
     private readonly WorldInfoPanel _worldInfoPanel;
     private readonly MapViewPanel _mapViewPanel;
     private readonly AvatarActionsPanel _avatarActionsPanel;
+    private readonly DevToolsPanel _devToolsPanel;
 
     // Modal system
     private readonly ModalManager _modalManager;
@@ -128,6 +131,7 @@ public class GameplayOverlay
         _worldInfoPanel = new WorldInfoPanel();
         _mapViewPanel = new MapViewPanel();
         _avatarActionsPanel = new AvatarActionsPanel();
+        _devToolsPanel = new DevToolsPanel();
     }
 
     /// <summary>
@@ -189,6 +193,9 @@ public class GameplayOverlay
                 break;
             case ActivePanel.WorldInfo:
                 RenderWorldInfoPanel(viewModel);
+                break;
+            case ActivePanel.DevTools:
+                RenderDevToolsPanel(viewModel);
                 break;
             case ActivePanel.None:
             default:
@@ -286,6 +293,45 @@ public class GameplayOverlay
         if (ImGui.Begin("World Info [I]", windowFlags))
         {
             _worldInfoPanel.Render(viewModel);
+        }
+        ImGui.End();
+
+        ImGui.PopStyleColor();
+    }
+
+    /// <summary>
+    /// Render the Dev Tools panel (top-left, full height).
+    /// Only available when debugger is attached.
+    /// </summary>
+    private void RenderDevToolsPanel(MainViewModel viewModel)
+    {
+        // Double-check debugger is attached (safety check)
+        if (!DevToolsPanel.IsAvailable)
+        {
+            _activePanel = ActivePanel.None;
+            return;
+        }
+
+        var io = ImGui.GetIO();
+        var displaySize = io.DisplaySize;
+
+        // Panel top-left, full height
+        var panelWidth = 350f;
+        var panelHeight = displaySize.Y - 60; // Leave room for HUD bar + margin
+        var panelX = 10f;
+        var panelY = 10f;
+
+        ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
+        ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
+
+        var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
+
+        // Dev tools has a distinct orange-tinted background
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.12f, 0.08f, 0.06f, 0.95f));
+
+        if (ImGui.Begin("Dev Tools [Ins]", windowFlags))
+        {
+            _devToolsPanel.Render(viewModel);
         }
         ImGui.End();
 

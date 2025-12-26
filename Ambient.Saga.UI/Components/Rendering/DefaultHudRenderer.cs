@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -44,6 +45,15 @@ public class DefaultHudRenderer : IHudRenderer
             ImGui.SameLine();
             RenderHotkeyHint("I", "World Info", activePanel == ActivePanel.WorldInfo);
 
+            // Dev Tools hint (only when debugger attached)
+            if (Debugger.IsAttached)
+            {
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
+                ImGui.SameLine();
+                RenderHotkeyHint("Ins", "Dev Tools", activePanel == ActivePanel.DevTools, isDevTool: true);
+            }
+
             // Center: Status message
             if (!string.IsNullOrEmpty(viewModel.StatusMessage))
             {
@@ -72,16 +82,30 @@ public class DefaultHudRenderer : IHudRenderer
         ImGui.PopStyleVar();
     }
 
-    private void RenderHotkeyHint(string key, string label, bool isActive)
+    private void RenderHotkeyHint(string key, string label, bool isActive, bool isDevTool = false)
     {
-        // Key box
-        var keyColor = isActive
-            ? new Vector4(0.3f, 0.7f, 0.3f, 1f)  // Green when active
-            : new Vector4(0.3f, 0.3f, 0.3f, 1f); // Gray when inactive
+        // Key box - dev tools get orange styling
+        Vector4 keyColor;
+        Vector4 textColor;
 
-        var textColor = isActive
-            ? new Vector4(1f, 1f, 1f, 1f)        // White when active
-            : new Vector4(0.7f, 0.7f, 0.7f, 1f); // Light gray when inactive
+        if (isDevTool)
+        {
+            keyColor = isActive
+                ? new Vector4(0.8f, 0.5f, 0.2f, 1f)  // Orange when active
+                : new Vector4(0.4f, 0.25f, 0.1f, 1f); // Dark orange when inactive
+            textColor = isActive
+                ? new Vector4(1f, 0.8f, 0.5f, 1f)    // Light orange when active
+                : new Vector4(0.7f, 0.5f, 0.3f, 1f); // Dim orange when inactive
+        }
+        else
+        {
+            keyColor = isActive
+                ? new Vector4(0.3f, 0.7f, 0.3f, 1f)  // Green when active
+                : new Vector4(0.3f, 0.3f, 0.3f, 1f); // Gray when inactive
+            textColor = isActive
+                ? new Vector4(1f, 1f, 1f, 1f)        // White when active
+                : new Vector4(0.7f, 0.7f, 0.7f, 1f); // Light gray when inactive
+        }
 
         ImGui.PushStyleColor(ImGuiCol.Button, keyColor);
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, keyColor);
