@@ -2,6 +2,7 @@
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
+using System.Diagnostics;
 using System.Numerics;
 using Ambient.Saga.UI.ViewModels;
 using Ambient.Saga.UI.Components.Modals;
@@ -380,8 +381,26 @@ public class MapViewPanel
                 var distance = MathF.Sqrt(MathF.Pow(mousePos.X - center.X, 2) + MathF.Pow(mousePos.Y - center.Y, 2));
                 if (distance <= dotRadius + 3) // 3px tolerance for easier hovering
                 {
-                    // Draw tooltip with display name
-                    ImGui.SetTooltip(saga.DisplayName);
+                    // Draw tooltip - enhanced for developers
+                    if (Debugger.IsAttached)
+                    {
+                        var tooltip = $"{saga.DisplayName}\n" +
+                                      $"Status: {saga.InteractionStatus}\n" +
+                                      $"Type: {saga.FeatureType}\n" +
+                                      $"Ref: {saga.RefName}";
+
+                        if (saga.RequiresQuestTokens?.Length > 0)
+                            tooltip += $"\nRequires: {string.Join(", ", saga.RequiresQuestTokens)}";
+
+                        if (saga.GivesQuestTokens?.Length > 0)
+                            tooltip += $"\nGives: {string.Join(", ", saga.GivesQuestTokens)}";
+
+                        ImGui.SetTooltip(tooltip);
+                    }
+                    else
+                    {
+                        ImGui.SetTooltip(saga.DisplayName);
+                    }
 
                     // Handle click to interact with quest signpost
                     if (ImGui.IsMouseClicked(ImGuiMouseButton.Left) && saga.FeatureType == FeatureType.QuestSignpost)
@@ -438,8 +457,34 @@ public class MapViewPanel
                 var distance = MathF.Sqrt(MathF.Pow(mousePos.X - pos.X, 2) + MathF.Pow(mousePos.Y - pos.Y, 2));
                 if (distance <= radius + 3) // 3px tolerance for easier hovering
                 {
-                    // Draw tooltip with display name
-                    ImGui.SetTooltip(character.DisplayName);
+                    // Draw tooltip - enhanced for developers
+                    if (Debugger.IsAttached)
+                    {
+                        var status = character.IsAlive ? "Alive" : "Dead";
+                        var tooltip = $"{character.DisplayName}\n" +
+                                      $"Status: {status}\n" +
+                                      $"Ref: {character.CharacterRef}\n" +
+                                      $"Saga: {character.SagaRef}\n" +
+                                      $"Type: {character.CharacterType}";
+
+                        // Show interaction capabilities
+                        var capabilities = new List<string>();
+                        if (character.CanDialogue) capabilities.Add("Dialogue");
+                        if (character.CanTrade) capabilities.Add("Trade");
+                        if (character.CanAttack) capabilities.Add("Attack");
+                        if (character.CanLoot) capabilities.Add("Loot");
+                        if (capabilities.Count > 0)
+                            tooltip += $"\nCan: {string.Join(", ", capabilities)}";
+
+                        if (character.HasBeenLooted)
+                            tooltip += "\n(Looted)";
+
+                        ImGui.SetTooltip(tooltip);
+                    }
+                    else
+                    {
+                        ImGui.SetTooltip(character.DisplayName);
+                    }
 
                     // Handle click to interact with character
                     if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
@@ -458,13 +503,13 @@ public class MapViewPanel
 
                 if (avatarPos.X > -100 && avatarPos.Y > -100)
                 {
-                    // Draw avatar as lime green circle (matching WPF)
-                    var avatarColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 1, 0, 1)); // Lime
-                    var outlineColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0.5f, 0, 1)); // DarkGreen
+                    // Draw avatar as cyan circle (distinct from green "Available" locations)
+                    var avatarColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 1, 1, 1)); // Cyan
+                    var outlineColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0.5f, 0.5f, 1)); // DarkCyan
                     var radius = 6f;
 
                     drawList.AddCircleFilled(avatarPos, radius, avatarColor, 12);
-                    drawList.AddCircle(avatarPos, radius, outlineColor, 12, 2.0f); // DarkGreen outline
+                    drawList.AddCircle(avatarPos, radius, outlineColor, 12, 2.0f); // DarkCyan outline
 
                     // Check if mouse is hovering over avatar
                     var mousePos = ImGui.GetMousePos();

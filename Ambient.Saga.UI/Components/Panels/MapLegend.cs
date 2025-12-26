@@ -1,11 +1,13 @@
+using Ambient.Saga.UI.ViewModels;
 using ImGuiNET;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
-/// Renders the map legend (Features, Trigger Rings, Spawned Characters).
-/// Used by MapViewPanel to show legend alongside the map.
+/// Renders the map legend showing what map markers mean.
+/// Simple for players, with extra detail when debugger is attached.
 /// </summary>
 public static class MapLegend
 {
@@ -18,91 +20,95 @@ public static class MapLegend
         {
             ImGui.Indent(5);
 
-            RenderFeaturesLegend();
+            RenderLocationsLegend();
             ImGui.Spacing();
 
-            RenderTriggerRingsLegend();
+            RenderTriggersLegend();
             ImGui.Spacing();
 
-            RenderSpawnedCharactersLegend();
+            RenderCharactersLegend();
+
+            // Developer section - only when debugger attached
+            if (Debugger.IsAttached)
+            {
+                ImGui.Spacing();
+                RenderDevLegend();
+            }
 
             ImGui.Unindent(5);
         }
     }
 
     /// <summary>
-    /// Render just the features legend section.
+    /// Render locations (saga feature dots) - status-based coloring.
     /// </summary>
-    public static void RenderFeaturesLegend()
+    private static void RenderLocationsLegend()
     {
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Features:");
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Locations:");
         ImGui.Spacing();
+        ImGui.Indent(10);
 
-        // Structure (Blue shades)
-        RenderFeatureLegend("Structure",
-            new Vector4(0.118f, 0.565f, 1.0f, 1.0f),    // #1E90FF - Available
-            new Vector4(0.275f, 0.510f, 0.706f, 1.0f),  // #4682B4 - Locked
-            new Vector4(0.502f, 0.502f, 0.502f, 1.0f)); // #808080 - Complete
+        // Status-based colors - matches FeatureColors
+        RenderLegendCircle(FeatureColors.Available, "Available", filled: true);
+        RenderLegendCircle(FeatureColors.Locked, "Locked", filled: true);
+        RenderLegendCircle(FeatureColors.Complete, "Complete", filled: true);
 
-        // Landmark (Red shades)
-        RenderFeatureLegend("Landmark",
-            new Vector4(1.0f, 0.271f, 0.0f, 1.0f),      // #FF4500 - Available
-            new Vector4(0.698f, 0.133f, 0.133f, 1.0f),  // #B22222 - Locked
-            new Vector4(0.502f, 0.502f, 0.502f, 1.0f)); // #808080 - Complete
-
-        // Quest Signpost (Green shades)
-        RenderFeatureLegend("Quest Signpost",
-            new Vector4(0.196f, 0.804f, 0.196f, 1.0f),  // #32CD32 - Available
-            new Vector4(0.420f, 0.557f, 0.137f, 1.0f),  // #6B8E23 - Locked
-            new Vector4(0.502f, 0.502f, 0.502f, 1.0f)); // #808080 - Complete
-
-        // Hint text about hovering
-        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "Hover to see triggers");
+        ImGui.Unindent(10);
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Hover for details");
     }
 
     /// <summary>
-    /// Render just the trigger rings legend section.
+    /// Render trigger rings legend - matches TriggerColors.
     /// </summary>
-    public static void RenderTriggerRingsLegend()
+    private static void RenderTriggersLegend()
     {
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Trigger Rings:");
         ImGui.Spacing();
         ImGui.Indent(10);
-        RenderLegendCircle(new Vector4(0.196f, 0.804f, 0.196f, 1.0f), "Available", filled: false); // #32CD32
-        RenderLegendCircle(new Vector4(1, 0, 0, 1), "Locked", filled: false);
-        RenderLegendCircle(new Vector4(0.502f, 0.502f, 0.502f, 1.0f), "Complete", filled: false); // #808080
+
+        // Status-based colors - matches TriggerColors
+        RenderLegendCircle(TriggerColors.AvailableColor, "Available", filled: false);
+        RenderLegendCircle(TriggerColors.LockedColor, "Locked", filled: false);
+        RenderLegendCircle(TriggerColors.CompleteColor, "Complete", filled: false);
+
         ImGui.Unindent(10);
     }
 
     /// <summary>
-    /// Render just the spawned characters legend section.
+    /// Render characters legend - simple alive/dead/you.
     /// </summary>
-    public static void RenderSpawnedCharactersLegend()
+    private static void RenderCharactersLegend()
     {
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Characters:");
         ImGui.Spacing();
         ImGui.Indent(10);
-        RenderLegendCircle(new Vector4(1, 0, 0, 1), "Boss", filled: true); // Red
-        RenderLegendCircle(new Vector4(1, 0.843f, 0, 1), "Merchant", filled: true); // Gold
-        RenderLegendCircle(new Vector4(0, 0, 1, 1), "NPC", filled: true); // Blue
-        RenderLegendCircle(new Vector4(0, 1, 1, 1), "Player", filled: true); // Cyan
-        RenderLegendCircle(new Vector4(0, 1, 0, 1), "You", filled: true); // Lime
+
+        // Matches MainViewModel character coloring
+        RenderLegendCircle(new Vector4(1f, 0.65f, 0f, 1f), "Alive", filled: true);    // Orange
+        RenderLegendCircle(new Vector4(0.5f, 0.5f, 0.5f, 1f), "Dead", filled: true);  // Gray
+        RenderLegendCircle(new Vector4(0f, 1f, 1f, 1f), "You", filled: true);         // Cyan
+
         ImGui.Unindent(10);
     }
 
-    private static void RenderFeatureLegend(string label, Vector4 availableColor, Vector4 lockedColor, Vector4 completeColor)
+    /// <summary>
+    /// Developer-only legend section with additional context.
+    /// Only shown when debugger is attached.
+    /// </summary>
+    private static void RenderDevLegend()
     {
-        // Feature type name
-        ImGui.Text(label);
+        ImGui.Separator();
+        ImGui.TextColored(new Vector4(1f, 0.5f, 0f, 1f), "Dev Info:");
+        ImGui.Spacing();
         ImGui.Indent(10);
 
-        // Three-dot status legend - draw circles instead of Unicode
-        RenderLegendCircle(availableColor, "Available", filled: true);
-        RenderLegendCircle(lockedColor, "Locked", filled: true);
-        RenderLegendCircle(completeColor, "Complete", filled: true);
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Hover shows:");
+        ImGui.BulletText("Feature type");
+        ImGui.BulletText("Saga/Character ref");
+        ImGui.BulletText("Interaction status");
+        ImGui.BulletText("Quest tokens");
 
         ImGui.Unindent(10);
-        ImGui.Spacing();
     }
 
     private static void RenderLegendCircle(Vector4 color, string label, bool filled)

@@ -53,6 +53,9 @@ public partial class SagaViewModel : ObservableObject
     [ObservableProperty]
     private double _featureDotOpacity = 1.0;
 
+    [ObservableProperty]
+    private InteractionStatus _interactionStatus = InteractionStatus.Available;
+
     /// <summary>
     /// True if any trigger in this Saga is currently hovered (for showing label).
     /// </summary>
@@ -232,6 +235,9 @@ public partial class SagaViewModel : ObservableObject
 
         if (featureInteraction != null)
         {
+            // Store status for developer tooltip display
+            sagaVM.InteractionStatus = featureInteraction.Status;
+
             // Use pre-calculated solid colors (no opacity)
             sagaVM.FeatureDotColor = FeatureColors.GetColor(sagaVM.FeatureType, featureInteraction.Status);
             sagaVM.FeatureDotOpacity = 1.0; // Always solid - colors handle the visual difference
