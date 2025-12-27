@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaArc RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Hub center at Tsurumaru-jō" LatitudeZ="31.599169110761945" LongitudeX="130.5555615221017" Category="Structure" ModelRef="Shrine.20037">
+  <SagaArc RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Hub center at Tsurumaru-jō" LatitudeZ="31.597709643470242" LongitudeX="130.55449960419486" Category="Structure" ModelRef="Shrine.20037">
     <SagaTrigger RefName="TRIGGER_Tsurumarujō_MINIONS" DisplayName="Boss Minions" Description="Boss Minions" EnterRadius="50.0" Tags="combat,minion,warning">
       <Spawn Count="4">
-        <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
+        <CharacterRef>HOSTILE_TerukuniDaimyōjinshaSpoke4Ring2_12</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō_BOSS" DisplayName="Boss of Tsurumaru-jō" Description="Boss of Tsurumaru-jō" EnterRadius="25.0" Tags="combat,boss">
       <Spawn>
-        <CharacterRef>BOSS_Isoteien1</CharacterRef>
+        <CharacterRef>BOSS_Isoteien</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke1Ring1" DisplayName="Tsurumaru-jō Spoke 1 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.598944539480026" LongitudeX="130.56033178198356" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke1Ring1" DisplayName="Tsurumaru-jō Spoke 1 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.5978727285389" LongitudeX="130.55942831636364" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke1Ring1" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TsurumarujōSpoke1Ring1</CharacterRef>
@@ -23,35 +23,35 @@
       <GivesQuestTokenRef>TOKEN_TsurumarujōSpoke1Ring1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring1" DisplayName="Tsurumaru-jō Spoke 2 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.602139083791155" LongitudeX="130.5576721274147" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke2Ring1" DisplayName="Tsurumaru-jō Spoke 2 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.601611260922734" LongitudeX="130.55688051122107" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke2Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring2" DisplayName="Tsurumaru-jō Spoke 2 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.606715083089224" LongitudeX="130.55966296580962" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke2Ring2" DisplayName="Tsurumaru-jō Spoke 2 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.605476745268408" LongitudeX="130.55892719741342" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke2Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring3" DisplayName="Tsurumaru-jō Spoke 2 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.609307199158074" LongitudeX="130.5615977367705" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke2Ring3" DisplayName="Tsurumaru-jō Spoke 2 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.610547552428603" LongitudeX="130.5630141959954" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring3" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TsurumarujōSpoke2Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring4" DisplayName="Tsurumaru-jō Spoke 2 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.613500159940042" LongitudeX="130.56584398142184" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke2Ring4" DisplayName="Tsurumaru-jō Spoke 2 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.614058110469973" LongitudeX="130.5659551744502" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke2Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke2Ring5" DisplayName="Tsurumaru-jō Spoke 2 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.617255589829863" LongitudeX="130.5674552057794" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke2Ring5" DisplayName="Tsurumaru-jō Spoke 2 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.618245466142852" LongitudeX="130.56846162424446" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke2Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke2Ring5</CharacterRef>
@@ -60,35 +60,35 @@
       <GivesQuestTokenRef>TOKEN_TsurumarujōSpoke2Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring1" DisplayName="Tsurumaru-jō Spoke 3 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.60268903028528" LongitudeX="130.55125303610143" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke3Ring1" DisplayName="Tsurumaru-jō Spoke 3 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.602702534129804" LongitudeX="130.55164914803487" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring1" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TsurumarujōSpoke3Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring2" DisplayName="Tsurumaru-jō Spoke 3 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.606015507795124" LongitudeX="130.54967083903026" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke3Ring2" DisplayName="Tsurumaru-jō Spoke 3 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.60633686513612" LongitudeX="130.55004463462703" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke3Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring3" DisplayName="Tsurumaru-jō Spoke 3 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.609928295912088" LongitudeX="130.54576616285632" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke3Ring3" DisplayName="Tsurumaru-jō Spoke 3 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.610926469856974" LongitudeX="130.5466580900319" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke3Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring4" DisplayName="Tsurumaru-jō Spoke 3 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.61335109455898" LongitudeX="130.54463325785065" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke3Ring4" DisplayName="Tsurumaru-jō Spoke 3 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.614704847355032" LongitudeX="130.5448715196221" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring4" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TsurumarujōSpoke3Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke3Ring5" DisplayName="Tsurumaru-jō Spoke 3 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.618380438167183" LongitudeX="130.5403688528121" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke3Ring5" DisplayName="Tsurumaru-jō Spoke 3 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.618084368437223" LongitudeX="130.54246573146733" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke3Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke3Ring5</CharacterRef>
@@ -97,35 +97,35 @@
       <GivesQuestTokenRef>TOKEN_TsurumarujōSpoke3Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring1" DisplayName="Tsurumaru-jō Spoke 4 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.598663294227542" LongitudeX="130.54970618585352" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke4Ring1" DisplayName="Tsurumaru-jō Spoke 4 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.59855957792455" LongitudeX="130.54921950195725" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke4Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring2" DisplayName="Tsurumaru-jō Spoke 4 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.59861367630553" LongitudeX="130.5449237448707" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke4Ring2" DisplayName="Tsurumaru-jō Spoke 4 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.598613637174793" LongitudeX="130.5440117599811" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring2" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TsurumarujōSpoke4Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring3" DisplayName="Tsurumaru-jō Spoke 4 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.59833755459949" LongitudeX="130.5384586973613" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke4Ring3" DisplayName="Tsurumaru-jō Spoke 4 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.59889157055173" LongitudeX="130.53888993968874" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke4Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring4" DisplayName="Tsurumaru-jō Spoke 4 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.59841938442895" LongitudeX="130.53413852566433" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke4Ring4" DisplayName="Tsurumaru-jō Spoke 4 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.598848136842673" LongitudeX="130.533298794214" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke4Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke4Ring5" DisplayName="Tsurumaru-jō Spoke 4 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.59896286680728" LongitudeX="130.52785730031903" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke4Ring5" DisplayName="Tsurumaru-jō Spoke 4 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.598130998562144" LongitudeX="130.52761124615066" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke4Ring5" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TsurumarujōSpoke4Ring5</CharacterRef>
@@ -134,35 +134,35 @@
       <GivesQuestTokenRef>TOKEN_TsurumarujōSpoke4Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring1" DisplayName="Tsurumaru-jō Spoke 5 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.593711206294678" LongitudeX="130.5521812476545" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke5Ring1" DisplayName="Tsurumaru-jō Spoke 5 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.595073270216528" LongitudeX="130.5514451785039" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke5Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring2" DisplayName="Tsurumaru-jō Spoke 5 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.589913025346192" LongitudeX="130.54990345574274" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke5Ring2" DisplayName="Tsurumaru-jō Spoke 5 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.590155433256633" LongitudeX="130.549293452534" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke5Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring3" DisplayName="Tsurumaru-jō Spoke 5 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.58759912705397" LongitudeX="130.54646607231416" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke5Ring3" DisplayName="Tsurumaru-jō Spoke 5 Ring 3" Description="Star waypoint at 1500m from Tsurumaru-jō" LatitudeZ="31.586404977063985" LongitudeX="130.54694206713876" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring3" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TsurumarujōSpoke5Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring4" DisplayName="Tsurumaru-jō Spoke 5 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.58365041399949" LongitudeX="130.54509763817117" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke5Ring4" DisplayName="Tsurumaru-jō Spoke 5 Ring 4" Description="Star waypoint at 2000m from Tsurumaru-jō" LatitudeZ="31.58216807242612" LongitudeX="130.5433063159135" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke5Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke5Ring5" DisplayName="Tsurumaru-jō Spoke 5 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.579784479097587" LongitudeX="130.54170326818016" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke5Ring5" DisplayName="Tsurumaru-jō Spoke 5 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.57987194553504" LongitudeX="130.54077190274947" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke5Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke5Ring5</CharacterRef>
@@ -171,21 +171,21 @@
       <GivesQuestTokenRef>TOKEN_TsurumarujōSpoke5Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke6Ring1" DisplayName="Tsurumaru-jō Spoke 6 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.594356133787002" LongitudeX="130.5567737602606" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke6Ring1" DisplayName="Tsurumaru-jō Spoke 6 Ring 1" Description="Star waypoint at 500m from Tsurumaru-jō" LatitudeZ="31.59378166877078" LongitudeX="130.5564659092022" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring1" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TsurumarujōSpoke6Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke6Ring2" DisplayName="Tsurumaru-jō Spoke 6 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.590326980385832" LongitudeX="130.56008115490653" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke6Ring2" DisplayName="Tsurumaru-jō Spoke 6 Ring 2" Description="Star waypoint at 1000m from Tsurumaru-jō" LatitudeZ="31.590765297160807" LongitudeX="130.56085793076548" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke6Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TsurumarujōSpoke6Ring5" DisplayName="Tsurumaru-jō Spoke 6 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.57954385086498" LongitudeX="130.56789171983687" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TsurumarujōSpoke6Ring5" DisplayName="Tsurumaru-jō Spoke 6 Ring 5" Description="Star waypoint at 2500m from Tsurumaru-jō" LatitudeZ="31.57905099254886" LongitudeX="130.5677834610266" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TsurumarujōSpoke6Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TsurumarujōSpoke6Ring5</CharacterRef>
@@ -194,10 +194,10 @@
       <GivesQuestTokenRef>TOKEN_TsurumarujōSpoke6Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien" DisplayName="Iso-teien" Description="Hub center at Iso-teien" LatitudeZ="31.61893728004013" LongitudeX="130.57935606192325" Category="Structure" ModelRef="Shrine.20037">
+  <SagaArc RefName="Isoteien" DisplayName="Iso-teien" Description="Hub center at Iso-teien" LatitudeZ="31.61861" LongitudeX="130.57987" Category="Structure" ModelRef="Shrine.20037">
     <SagaTrigger RefName="TRIGGER_Isoteien_MINIONS" DisplayName="Boss Minions" Description="Boss Minions" EnterRadius="50.0" Tags="combat,minion,warning">
       <Spawn Count="4">
-        <CharacterRef>HOSTILE_TerukuniDaimyōjinshaSpoke2Ring2_10</CharacterRef>
+        <CharacterRef>HOSTILE_Isoteien1_to_Tsurumarujō1_2_15</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Isoteien_BOSS" DisplayName="Boss of Iso-teien" Description="Boss of Iso-teien" EnterRadius="25.0" Tags="combat,boss">
@@ -209,35 +209,35 @@
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring1" DisplayName="Iso-teien Spoke 2 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.62315393368906" LongitudeX="130.58199126154543" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke2Ring1" DisplayName="Iso-teien Spoke 2 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.622388874199153" LongitudeX="130.58164125963785" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring1" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_IsoteienSpoke2Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring2" DisplayName="Iso-teien Spoke 2 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.62682228386984" LongitudeX="130.584491067594" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke2Ring2" DisplayName="Iso-teien Spoke 2 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.62599281043147" LongitudeX="130.58432272989174" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke2Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring3" DisplayName="Iso-teien Spoke 2 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.629688396621418" LongitudeX="130.58751894117015" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke2Ring3" DisplayName="Iso-teien Spoke 2 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.630518266148744" LongitudeX="130.5876799506005" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke2Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring4" DisplayName="Iso-teien Spoke 2 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.633684997822655" LongitudeX="130.59108911093202" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke2Ring4" DisplayName="Iso-teien Spoke 2 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.63419158627527" LongitudeX="130.58961507857583" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring4" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_IsoteienSpoke2Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke2Ring5" DisplayName="Iso-teien Spoke 2 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.63767366820996" LongitudeX="130.59400809065568" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke2Ring5" DisplayName="Iso-teien Spoke 2 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.63865230803308" LongitudeX="130.59386213476938" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke2Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke2Ring5</CharacterRef>
@@ -245,35 +245,35 @@
       <GivesQuestTokenRef>TOKEN_IsoteienSpoke2Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring1" DisplayName="Iso-teien Spoke 3 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.62325086253009" LongitudeX="130.57739890075752" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke3Ring1" DisplayName="Iso-teien Spoke 3 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.622201441527288" LongitudeX="130.5763659997984" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke3Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring2" DisplayName="Iso-teien Spoke 3 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.626771118676565" LongitudeX="130.57449773225102" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke3Ring2" DisplayName="Iso-teien Spoke 3 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.62613322949079" LongitudeX="130.5753793358403" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring2" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_IsoteienSpoke3Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring3" DisplayName="Iso-teien Spoke 3 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.63031275130049" LongitudeX="130.57252169956897" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke3Ring3" DisplayName="Iso-teien Spoke 3 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.629859738099018" LongitudeX="130.5723646405301" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke3Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring4" DisplayName="Iso-teien Spoke 3 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.634571481127725" LongitudeX="130.5703336518509" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke3Ring4" DisplayName="Iso-teien Spoke 3 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.633700239957054" LongitudeX="130.56872862113366" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke3Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke3Ring5" DisplayName="Iso-teien Spoke 3 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.63725309415645" LongitudeX="130.5658282053517" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke3Ring5" DisplayName="Iso-teien Spoke 3 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.637434855724642" LongitudeX="130.56752619336163" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke3Ring5" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_IsoteienSpoke3Ring5</CharacterRef>
@@ -282,35 +282,35 @@
       <GivesQuestTokenRef>TOKEN_IsoteienSpoke3Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring1" DisplayName="Iso-teien Spoke 4 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.6186396850466" LongitudeX="130.57359288125554" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke4Ring1" DisplayName="Iso-teien Spoke 4 Ring 1" Description="Star waypoint at 500m from Iso-teien" LatitudeZ="31.618660589230664" LongitudeX="130.5749019799209" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke4Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring2" DisplayName="Iso-teien Spoke 4 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.618602792673723" LongitudeX="130.5686670199087" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke4Ring2" DisplayName="Iso-teien Spoke 4 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.619115662676162" LongitudeX="130.5682879386134" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke4Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring3" DisplayName="Iso-teien Spoke 4 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.618405044619475" LongitudeX="130.564897678834" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke4Ring3" DisplayName="Iso-teien Spoke 4 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.61864629203983" LongitudeX="130.56418798383373" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring3" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_IsoteienSpoke4Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring4" DisplayName="Iso-teien Spoke 4 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.61866338909162" LongitudeX="130.55867543644808" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke4Ring4" DisplayName="Iso-teien Spoke 4 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.61787825281239" LongitudeX="130.55883894741044" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke4Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke4Ring5" DisplayName="Iso-teien Spoke 4 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.61877552639971" LongitudeX="130.55420126836302" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke4Ring5" DisplayName="Iso-teien Spoke 4 Ring 5" Description="Star waypoint at 2500m from Iso-teien" LatitudeZ="31.61905178382876" LongitudeX="130.55292606557418" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke4Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke4Ring5</CharacterRef>
@@ -319,21 +319,21 @@
       <GivesQuestTokenRef>TOKEN_IsoteienSpoke4Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke5Ring2" DisplayName="Iso-teien Spoke 5 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.610830397019544" LongitudeX="130.57459547641477" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke5Ring2" DisplayName="Iso-teien Spoke 5 Ring 2" Description="Star waypoint at 1000m from Iso-teien" LatitudeZ="31.611183848820094" LongitudeX="130.57481431535268" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring2" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_IsoteienSpoke5Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke5Ring3" DisplayName="Iso-teien Spoke 5 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.607628766863304" LongitudeX="130.57198944800842" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke5Ring3" DisplayName="Iso-teien Spoke 5 Ring 3" Description="Star waypoint at 1500m from Iso-teien" LatitudeZ="31.607136379864393" LongitudeX="130.5709161809301" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke5Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="IsoteienSpoke5Ring4" DisplayName="Iso-teien Spoke 5 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.603509078577975" LongitudeX="130.56848389458276" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="IsoteienSpoke5Ring4" DisplayName="Iso-teien Spoke 5 Ring 4" Description="Star waypoint at 2000m from Iso-teien" LatitudeZ="31.602502016955466" LongitudeX="130.5691977067237" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_IsoteienSpoke5Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_IsoteienSpoke5Ring4</CharacterRef>
@@ -342,10 +342,10 @@
       <GivesQuestTokenRef>TOKEN_IsoteienSpoke5Ring4_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinsha" DisplayName="Terukuni Daimyōjin-sha" Description="Hub center at Terukuni Daimyōjin-sha" LatitudeZ="31.59514639283992" LongitudeX="130.55027299366748" Category="Structure" ModelRef="Shrine.20037">
+  <SagaArc RefName="TerukuniDaimyōjinsha" DisplayName="Terukuni Daimyōjin-sha" Description="Hub center at Terukuni Daimyōjin-sha" LatitudeZ="31.594035780337247" LongitudeX="130.54990664595812" Category="Structure" ModelRef="Shrine.20037">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha_SENTRIES" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
       <Spawn Count="3">
-        <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
+        <CharacterRef>HOSTILE_TsurumarujōSpoke4Ring5_4</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha_WALLS" DisplayName="Wall Defenders" Description="Wall Defenders" EnterRadius="60.0" Tags="combat,guard,defense">
@@ -355,7 +355,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
       <Spawn>
-        <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
+        <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
       </Spawn>
       <Spawn Count="2">
         <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
@@ -363,21 +363,21 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha_COMMANDER" DisplayName="Commander of Terukuni Daimyōjin-sha" Description="Commander of Terukuni Daimyōjin-sha" EnterRadius="15.0" Tags="combat,boss,commander">
       <Spawn>
-        <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
+        <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594209221997843" LongitudeX="130.5554921826849" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594699325872547" LongitudeX="130.55594486471955" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.595128946880514" LongitudeX="130.56085530298003" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.59455780613822" LongitudeX="130.56209547267642" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke1Ring2</CharacterRef>
@@ -385,35 +385,35 @@
       <GivesQuestTokenRef>TOKEN_TerukuniDaimyōjinshaSpoke1Ring2_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.598961667488286" LongitudeX="130.55224375969422" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59916021297278" LongitudeX="130.5532628101936" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke2Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.60269952821636" LongitudeX="130.55647447290778" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.60242433678321" LongitudeX="130.556751265843" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.607171647340603" LongitudeX="130.55769298955005" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.605984437950106" LongitudeX="130.55759451320867" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke2Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.610942907686866" LongitudeX="130.56011564678445" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.610096444044885" LongitudeX="130.56085983081942" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke2Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.613360123363847" LongitudeX="130.56357734253285" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.614261640044376" LongitudeX="130.56429167228234" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke2Ring5</CharacterRef>
@@ -422,35 +422,35 @@
       <GivesQuestTokenRef>TOKEN_TerukuniDaimyōjinshaSpoke2Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.598638180483906" LongitudeX="130.54746899621188" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59919923042006" LongitudeX="130.5482053924253" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke3Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.603142079664565" LongitudeX="130.54454354116845" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.601850255076478" LongitudeX="130.5447952157946" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke3Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.606894401356318" LongitudeX="130.54195077088212" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.60688363842957" LongitudeX="130.5428650242432" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.61085768752607" LongitudeX="130.54006607759482" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.61021157426447" LongitudeX="130.54101277277275" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke3Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.61375595300322" LongitudeX="130.5378451230822" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.61324708389887" LongitudeX="130.53643405846665" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke3Ring5</CharacterRef>
@@ -459,35 +459,35 @@
       <GivesQuestTokenRef>TOKEN_TerukuniDaimyōjinshaSpoke3Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.593918649055528" LongitudeX="130.5456905206572" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594145700525768" LongitudeX="130.54623740901013" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.593839277608552" LongitudeX="130.53913167630094" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.594702731433205" LongitudeX="130.53941397731782" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke4Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.595473227125122" LongitudeX="130.53462772642882" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594051189989216" LongitudeX="130.5352412144616" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke4Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.59536159490837" LongitudeX="130.52881648731824" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.59402365771298" LongitudeX="130.52999865616155" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke4Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59445764333301" LongitudeX="130.52435132090423" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.594874867675102" LongitudeX="130.52515218558275" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke4Ring5</CharacterRef>
@@ -496,35 +496,35 @@
       <GivesQuestTokenRef>TOKEN_TerukuniDaimyōjinshaSpoke4Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59022522611422" LongitudeX="130.54711140991915" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.59070946816313" LongitudeX="130.54748906644772" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke5Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.587634065487734" LongitudeX="130.54574964029487" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.58760802487976" LongitudeX="130.5456663553533" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.583748623442666" LongitudeX="130.54347180736823" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.583206341904642" LongitudeX="130.54220642302403" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke5Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.57831694068446" LongitudeX="130.54092956677852" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.578957871211873" LongitudeX="130.53906397192844" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke5Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.574755705542906" LongitudeX="130.53802835019044" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.57452537369769" LongitudeX="130.53846372792043" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5</CharacterRef>
@@ -533,35 +533,35 @@
       <GivesQuestTokenRef>TOKEN_TerukuniDaimyōjinshaSpoke5Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.590773024155176" LongitudeX="130.55358404799034" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 1" Description="Star waypoint at 500m from Terukuni Daimyōjin-sha" LatitudeZ="31.590649771543557" LongitudeX="130.55278769807956" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke6Ring1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.587101501940968" LongitudeX="130.5565372863869" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 2" Description="Star waypoint at 1000m from Terukuni Daimyōjin-sha" LatitudeZ="31.586481557700132" LongitudeX="130.55527706641746" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke6Ring2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.582423867047996" LongitudeX="130.55753838780385" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 3" Description="Star waypoint at 1500m from Terukuni Daimyōjin-sha" LatitudeZ="31.583466506713897" LongitudeX="130.55758306865496" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_TerukuniDaimyōjinshaSpoke6Ring3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.578714875785963" LongitudeX="130.56135112835014" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 4" Description="Star waypoint at 2000m from Terukuni Daimyōjin-sha" LatitudeZ="31.578950734934427" LongitudeX="130.56156763245966" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke6Ring4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.575679568139684" LongitudeX="130.56272834591863" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5" Description="Star waypoint at 2500m from Terukuni Daimyōjin-sha" LatitudeZ="31.574353055109256" LongitudeX="130.56278247161507" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_TerukuniDaimyōjinshaSpoke6Ring5</CharacterRef>
@@ -570,7 +570,7 @@
       <GivesQuestTokenRef>TOKEN_TerukuniDaimyōjinshaSpoke6Ring5_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima" LatitudeZ="31.61861" LongitudeX="130.57987" Category="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsurumaruj\u014D1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+  <SagaArc RefName="Isoteien1" DisplayName="Iso-teien" Description="Shimazu clan seaside villa and borrowed-scenery garden facing Sakurajima" LatitudeZ="31.618573304687473" LongitudeX="130.57921243330475" Category="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsurumaruj\u014D1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaTrigger RefName="TRIGGER_Isoteien1_SENTRIES" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
       <Spawn Count="3">
         <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
@@ -583,7 +583,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Isoteien1_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
       <Spawn>
-        <CharacterRef>BOSS_Isoteien</CharacterRef>
+        <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
       </Spawn>
       <Spawn Count="2">
         <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
@@ -591,7 +591,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Isoteien1_COMMANDER" DisplayName="Commander of Iso-teien" Description="Commander of Iso-teien" EnterRadius="15.0" Tags="combat,boss,commander">
       <Spawn>
-        <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
+        <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Isoteien1</CharacterRef>
@@ -599,45 +599,45 @@
       <GivesQuestTokenRef>TOKEN_Isoteien1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.611969311452484" LongitudeX="130.57205595643202" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_1" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (2)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.612637240371207" LongitudeX="130.57221131926036" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_1" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_2" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.610534736206994" LongitudeX="130.56870128301648" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_2" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (3)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.61027987888711" LongitudeX="130.5680807531082" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_3" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.60648636798741" LongitudeX="130.56642841094342" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_3" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (4)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.606517516885695" LongitudeX="130.56472623434257" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_3" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_4" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.604494134501483" LongitudeX="130.56222378029668" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_4" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (5)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.604645767226366" LongitudeX="130.56143438829957" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_4" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_5" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.601387747176457" LongitudeX="130.557740538381" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="Isoteien1_to_Tsurumarujō1_5" DisplayName="Waypoint between Iso-teien and Tsurumaru-jō (6)" Description="Intermediate waypoint between Iso-teien and Tsurumaru-jō" LatitudeZ="31.60127438762844" LongitudeX="130.5573344268371" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Isoteien1_to_Tsurumarujō1_5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" LatitudeZ="31.59893336772589" LongitudeX="130.55519295605873" Category="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Isoteien1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;TerukuniDaimy\u014Djinsha1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+  <SagaArc RefName="Tsurumarujō1" DisplayName="Tsurumaru-jō" Description="Edo-period seat of the Shimazu lords of Satsuma, also called Tsurumaru Castle" LatitudeZ="31.598890397161565" LongitudeX="130.5536681051535" Category="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Isoteien1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;TerukuniDaimy\u014Djinsha1&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_SENTRIES" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
       <Spawn Count="3">
-        <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
+        <CharacterRef>HOSTILE_TsurumarujōSpoke1Ring1_1</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_WALLS" DisplayName="Wall Defenders" Description="Wall Defenders" EnterRadius="60.0" Tags="combat,guard,defense">
@@ -647,7 +647,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
       <Spawn>
-        <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
+        <CharacterRef>BOSS_Isoteien</CharacterRef>
       </Spawn>
       <Spawn Count="2">
         <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
@@ -655,7 +655,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_COMMANDER" DisplayName="Commander of Tsurumaru-jō" Description="Commander of Tsurumaru-jō" EnterRadius="15.0" Tags="combat,boss,commander">
       <Spawn>
-        <CharacterRef>BOSS_Isoteien</CharacterRef>
+        <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Tsurumarujō1</CharacterRef>
@@ -664,17 +664,17 @@
       <GivesQuestTokenRef>TOKEN_Tsurumarujō1_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha" LatitudeZ="31.595942130716608" LongitudeX="130.55338063213162" Category="Landmark" ModelRef="Torii">
+  <SagaArc RefName="Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" Description="Intermediate waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha" LatitudeZ="31.596726362209015" LongitudeX="130.55206092470416" Category="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" LatitudeZ="31.59386510284589" LongitudeX="130.5505751544686" Category="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsurumaruj\u014D1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
+  <SagaArc RefName="TerukuniDaimyōjinsha1" DisplayName="Terukuni Daimyōjin-sha" Description="Shrine honoring Shimazu Nariakira, famed daimyo of Satsuma" LatitudeZ="31.59545309409123" LongitudeX="130.55132335055754" Category="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsurumaruj\u014D1&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha1_SENTRIES" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
       <Spawn Count="3">
-        <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
+        <CharacterRef>HOSTILE_TsurumarujōSpoke4Ring5_4</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha1_WALLS" DisplayName="Wall Defenders" Description="Wall Defenders" EnterRadius="60.0" Tags="combat,guard,defense">
@@ -684,7 +684,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_TerukuniDaimyōjinsha1_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
       <Spawn>
-        <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
+        <CharacterRef>BOSS_Isoteien</CharacterRef>
       </Spawn>
       <Spawn Count="2">
         <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
