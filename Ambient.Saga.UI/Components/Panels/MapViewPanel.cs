@@ -1,5 +1,6 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
+using Ambient.Saga.Engine.Domain.Services;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Diagnostics;
@@ -16,8 +17,8 @@ namespace Ambient.Saga.UI.Components.Panels;
 public class MapViewPanel
 {
     private const float MinZoom = 0.1f;
-    private const float MaxZoom = 100.0f;
-    private const float ZoomSpeed = 0.3f; // Increased for more responsive zooming
+    private const float MaxZoom = 200.0f;
+    private const float ZoomSpeed = 0.5f; // Increased for more responsive zooming
     private const int CenterViewCells = 50; // Number of cells to show when centering on avatar
 
     // Track if we need to center on avatar (initial load or button press)
@@ -325,7 +326,7 @@ public class MapViewPanel
             {
                 foreach (var trigger in saga.Triggers)
                 {
-                    // Only show triggers when visible (mouse hover)
+                    // Only show triggers when visible (controlled by MainViewModel based on query)
                     if (!trigger.IsVisible)
                         continue;
 
@@ -337,17 +338,23 @@ public class MapViewPanel
 
                     var enterRadius = RadiusPixelsToScreen(trigger.EnterRadiusPixels);
 
-                    // Use ring color from ViewModel (ImGui Vector4 color)
+                    // Use ring color from ViewModel
                     var color = trigger.RingColor;
-                    var opacity = (float)trigger.RingOpacity;
-                    var circleColor = ImGui.ColorConvertFloat4ToU32(new Vector4(
-                        color.X,
-                        color.Y,
-                        color.Z,
-                        opacity));
+                    var circleColor = ImGui.ColorConvertFloat4ToU32(new Vector4(color.X, color.Y, color.Z, 0.3f));
 
                     // Draw trigger ring
                     drawList.AddCircleFilled(center, enterRadius, circleColor, 32);
+
+                    // Debug tooltip when hovering over trigger ring
+                    if (Debugger.IsAttached && !string.IsNullOrEmpty(trigger.DebugQueryInfo))
+                    {
+                        var mousePos = ImGui.GetMousePos();
+                        var distToCenter = MathF.Sqrt(MathF.Pow(mousePos.X - center.X, 2) + MathF.Pow(mousePos.Y - center.Y, 2));
+                        if (distToCenter <= enterRadius)
+                        {
+                            ImGui.SetTooltip($"{trigger.RefName}\n{trigger.DebugQueryInfo}");
+                        }
+                    }
                 }
             }
 
@@ -407,19 +414,14 @@ public class MapViewPanel
                     {
                         // Get quest signpost details from world
                         var sagaArc = viewModel.CurrentWorld?.Gameplay?.SagaArcs?.FirstOrDefault(s => s.RefName == saga.RefName);
-                        if (sagaArc != null && !string.IsNullOrEmpty(sagaArc.SagaFeatureRef))
+                        if (sagaArc != null && sagaArc.Type == SagaArcType.Quest && !string.IsNullOrEmpty(sagaArc.QuestRef))
                         {
-                            // Find quest feature
-                            var questFeature = viewModel.CurrentWorld?.TryGetSagaFeatureByRefName(sagaArc.SagaFeatureRef);
-                            if (questFeature != null && questFeature.Type == SagaFeatureType.Quest)
-                            {
-                                // Open quest modal with quest details
-                                modalManager.OpenQuestSignpost(
-                                    questFeature.QuestRef,
-                                    saga.RefName,
-                                    sagaArc.SagaFeatureRef,
-                                    viewModel);
-                            }
+                            // Open quest modal with quest details
+                            modalManager.OpenQuestSignpost(
+                                sagaArc.QuestRef,
+                                saga.RefName,
+                                sagaArc.RefName,
+                                viewModel);
                         }
                     }
                 }

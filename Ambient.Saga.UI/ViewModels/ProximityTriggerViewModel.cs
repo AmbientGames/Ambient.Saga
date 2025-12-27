@@ -1,6 +1,7 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
+using Ambient.Saga.Engine.Domain.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Numerics;
 
@@ -54,6 +55,15 @@ public partial class ProximityTriggerViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _isVisible = false; // Hidden by default, shown when Saga is hovered
+
+    [ObservableProperty]
+    private InteractionStatus _status = InteractionStatus.Available;
+
+    /// <summary>
+    /// Debug info from query result (only populated when Debugger.IsAttached)
+    /// </summary>
+    [ObservableProperty]
+    private string _debugQueryInfo = string.Empty;
 
     /// <summary>
     /// Creates ViewModel from domain trigger entity.

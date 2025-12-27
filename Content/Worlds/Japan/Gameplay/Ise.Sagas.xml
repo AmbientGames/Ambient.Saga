@@ -1,57 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <SagaArc RefName="Kazahinominomiya" DisplayName="Kazahinomi-no-Miya" Description="Wind shrine within Naikū complex" LatitudeZ="34.45502236355378" LongitudeX="136.72513671068958" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
-    <SagaFeatureRef>Kazahinominomiya</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Kazahinominomiya_WARNING" DisplayName="Danger at Kazahinomi-no-Miya" Description="Signs of danger surround Kazahinomi-no-Miya" EnterRadius="60.0" Tags="exploration,warning,tension" />
-    <SagaTrigger RefName="TRIGGER_Kazahinominomiya_MINIONS" DisplayName="Minions of Kazahinomi-no-Miya" Description="Creatures loyal to the guardian of Kazahinomi-no-Miya attack" EnterRadius="35.0" Tags="combat,minion">
-      <Spawn Count="2">
+  <SagaArc RefName="Kazahinominomiya" DisplayName="Kazahinomi-no-Miya" Description="Wind shrine within Naikū complex" LatitudeZ="34.45450403664572" LongitudeX="136.72546657717007" Type="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;Introduction&quot;,&quot;narrativeSequence&quot;:0,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+    <SagaTrigger RefName="TRIGGER_Kazahinominomiya_MINIONS" DisplayName="Boss Minions" Description="Boss Minions" EnterRadius="50.0" Tags="combat,minion,warning">
+      <Spawn Count="4">
         <CharacterArchetypeRef>BossMinion</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Kazahinominomiya_BOSS" DisplayName="Guardian of Kazahinomi-no-Miya" Description="The guardian of Kazahinomi-no-Miya confronts intruders" EnterRadius="15.0" Tags="combat,boss">
+    <SagaTrigger RefName="TRIGGER_Kazahinominomiya_BOSS" DisplayName="Boss of Kazahinomi-no-Miya" Description="Boss of Kazahinomi-no-Miya" EnterRadius="25.0" Tags="combat,boss">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
       </Spawn>
       <GivesQuestTokenRef>TOKEN_Kazahinominomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="KōtaiJingūInnerShrine" DisplayName="Kōtai Jingū (Inner Shrine)" Description="Inner Shrine of Ise Jingū, dedicated to Amaterasu Ōmikami" LatitudeZ="34.45506094481054" LongitudeX="136.72509675260522" Metadata="{&quot;narrativeRole&quot;:&quot;IncitingIncident&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Kazahinominomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
-    <SagaFeatureRef>KōtaiJingūInnerShrine</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_OUTER" DisplayName="Approaching Kōtai Jingū (Inner Shrine)" Description="The silhouette of Kōtai Jingū (Inner Shrine) looms in the distance" EnterRadius="120.0" Tags="exploration,warning,approach">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_PATROL" DisplayName="Patrol near Kōtai Jingū (Inner Shrine)" Description="Enemy patrols guard the approaches to Kōtai Jingū (Inner Shrine)" EnterRadius="80.0" Tags="combat,patrol">
-      <Spawn Count="3">
+  <SagaArc RefName="KōtaiJingūInnerShrine" DisplayName="Kōtai Jingū (Inner Shrine)" Description="Inner Shrine of Ise Jingū, dedicated to Amaterasu Ōmikami" LatitudeZ="34.454952247054585" LongitudeX="136.72477766945897" Type="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;IncitingIncident&quot;,&quot;narrativeSequence&quot;:1,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;beginning,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Kazahinominomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+    <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_PATROL" DisplayName="Enemy Patrol" Description="Enemy Patrol" EnterRadius="120.0" Tags="combat,patrol,warning">
+      <Spawn Count="4">
         <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_ELITE" DisplayName="Elite Guards of Kōtai Jingū (Inner Shrine)" Description="Elite warriors bar the way to Kōtai Jingū (Inner Shrine)" EnterRadius="45.0" Tags="combat,elite,guard">
+    <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_ELITE" DisplayName="Elite Guard" Description="Elite Guard" EnterRadius="80.0" Tags="combat,elite">
       <Spawn Count="2">
         <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_BOSS" DisplayName="Guardian of Kōtai Jingū (Inner Shrine)" Description="The guardian of Kōtai Jingū (Inner Shrine) awaits challengers" EnterRadius="20.0" Tags="combat,boss,final">
-      <Spawn Count="1">
-        <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
+    <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_LIEUTENANT" DisplayName="Boss Lieutenant" Description="Boss Lieutenant" EnterRadius="50.0" Tags="combat,lieutenant,miniboss">
+      <Spawn>
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
       </Spawn>
       <Spawn Count="2">
         <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_BOSS" DisplayName="Heart of Kōtai Jingū (Inner Shrine)" Description="Heart of Kōtai Jingū (Inner Shrine)" EnterRadius="25.0" Tags="combat,boss,final">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="1">
+        <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
       </Spawn>
       <RequiresQuestTokenRef>TOKEN_Kazahinominomiya_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_KōtaiJingūInnerShrine_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya" DisplayName="Aramatsuri-no-Miya" Description="Auxiliary shrine within Naikū complex" LatitudeZ="34.45566298892697" LongitudeX="136.7264195102471" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
-    <SagaFeatureRef>Aramatsurinomiya</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_WARNING" DisplayName="Danger at Aramatsuri-no-Miya" Description="Signs of danger surround Aramatsuri-no-Miya" EnterRadius="60.0" Tags="exploration,warning,tension" />
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_MINIONS" DisplayName="Minions of Aramatsuri-no-Miya" Description="Creatures loyal to the guardian of Aramatsuri-no-Miya attack" EnterRadius="35.0" Tags="combat,minion">
-      <Spawn Count="3">
+  <SagaArc RefName="Aramatsurinomiya" DisplayName="Aramatsuri-no-Miya" Description="Auxiliary shrine within Naikū complex" LatitudeZ="34.45695116829624" LongitudeX="136.72656394643636" Type="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:2,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_MINIONS" DisplayName="Boss Minions" Description="Boss Minions" EnterRadius="50.0" Tags="combat,minion,warning">
+      <Spawn Count="4">
         <CharacterArchetypeRef>BossMinion</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_BOSS" DisplayName="Guardian of Aramatsuri-no-Miya" Description="The guardian of Aramatsuri-no-Miya confronts intruders" EnterRadius="15.0" Tags="combat,boss">
+    <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_BOSS" DisplayName="Boss of Aramatsuri-no-Miya" Description="Boss of Aramatsuri-no-Miya" EnterRadius="25.0" Tags="combat,boss">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
       </Spawn>
@@ -59,185 +66,187 @@
       <GivesQuestTokenRef>TOKEN_Aramatsurinomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.45892634822652" LongitudeX="136.72396323218257">
-    <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</SagaFeatureRef>
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.45864942524416" LongitudeX="136.72403879119935" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46245928599887" LongitudeX="136.720327259465">
-    <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</SagaFeatureRef>
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.463264399201975" LongitudeX="136.7210182695751" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46637007877755" LongitudeX="136.71792781977732">
-    <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</SagaFeatureRef>
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.465895154547844" LongitudeX="136.71915477889854" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46956924013666" LongitudeX="136.71526026031657">
-    <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</SagaFeatureRef>
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.469939505413876" LongitudeX="136.71675011032093" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47323805496891" LongitudeX="136.7122328325917">
-    <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</SagaFeatureRef>
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47319423551809" LongitudeX="136.7138978818675" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47719502105861" LongitudeX="136.71087843378837">
-    <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</SagaFeatureRef>
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.477161029641685" LongitudeX="136.71070435836867" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47986891936934" LongitudeX="136.70741443141142">
-    <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</SagaFeatureRef>
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.480721357270134" LongitudeX="136.70919437113653" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48273942549556" LongitudeX="136.70608431944754">
-    <SagaFeatureRef>Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</SagaFeatureRef>
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48264225582463" LongitudeX="136.7065298610435" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine" DisplayName="Toyōke Daijingū (Outer Shrine)" Description="Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" LatitudeZ="34.48746869851757" LongitudeX="136.70318722150049" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:3,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
-    <SagaFeatureRef>ToyōkeDaijingūOuterShrine</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_OUTER" DisplayName="Approaching Toyōke Daijingū (Outer Shrine)" Description="The silhouette of Toyōke Daijingū (Outer Shrine) looms in the distance" EnterRadius="120.0" Tags="exploration,warning,approach">
-      <Spawn Count="2">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine" DisplayName="Toyōke Daijingū (Outer Shrine)" Description="Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" LatitudeZ="34.48689794418289" LongitudeX="136.70341132190114" Type="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:3,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_SENTRIES" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
+      <Spawn Count="3">
         <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_PATROL" DisplayName="Patrol near Toyōke Daijingū (Outer Shrine)" Description="Enemy patrols guard the approaches to Toyōke Daijingū (Outer Shrine)" EnterRadius="80.0" Tags="combat,patrol">
-      <Spawn Count="3">
+    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_WALLS" DisplayName="Wall Defenders" Description="Wall Defenders" EnterRadius="60.0" Tags="combat,guard,defense">
+      <Spawn Count="4">
         <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_ELITE" DisplayName="Elite Guards of Toyōke Daijingū (Outer Shrine)" Description="Elite warriors bar the way to Toyōke Daijingū (Outer Shrine)" EnterRadius="45.0" Tags="combat,elite,guard">
-      <Spawn Count="2">
+    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
+      <Spawn>
         <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
       </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>RandomGuard</CharacterArchetypeRef>
+      </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_BOSS" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine)" Description="The guardian of Toyōke Daijingū (Outer Shrine) awaits challengers" EnterRadius="20.0" Tags="combat,boss,final">
+    <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_COMMANDER" DisplayName="Commander of Toyōke Daijingū (Outer Shrine)" Description="Commander of Toyōke Daijingū (Outer Shrine)" EnterRadius="15.0" Tags="combat,boss,commander">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_ToyōkeDaijingūOuterShrine</CharacterRef>
-      </Spawn>
-      <Spawn Count="2">
-        <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
       </Spawn>
       <RequiresQuestTokenRef>TOKEN_Aramatsurinomiya_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū)" LatitudeZ="34.48864008334423" LongitudeX="136.7030907835183">
-    <SagaFeatureRef>ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</SagaFeatureRef>
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū)" LatitudeZ="34.489548904713445" LongitudeX="136.7031499624134" Type="Landmark" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="KazamiyaGekū" DisplayName="Kazamiya (Gekū)" Description="Wind shrine at Gekū complex" LatitudeZ="34.49138644819265" LongitudeX="136.70304646849056" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:4,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
-    <SagaFeatureRef>KazamiyaGekū</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_KazamiyaGekū_OUTER" DisplayName="Approaching Kazamiya (Gekū)" Description="The silhouette of Kazamiya (Gekū) looms in the distance" EnterRadius="120.0" Tags="exploration,warning,approach">
-      <Spawn Count="2">
+  <SagaArc RefName="KazamiyaGekū" DisplayName="Kazamiya (Gekū)" Description="Wind shrine at Gekū complex" LatitudeZ="34.49156628784129" LongitudeX="136.70209952906532" Type="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:4,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+    <SagaTrigger RefName="TRIGGER_KazamiyaGekū_SENTRIES" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
+      <Spawn Count="3">
         <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_KazamiyaGekū_PATROL" DisplayName="Patrol near Kazamiya (Gekū)" Description="Enemy patrols guard the approaches to Kazamiya (Gekū)" EnterRadius="80.0" Tags="combat,patrol">
-      <Spawn Count="3">
+    <SagaTrigger RefName="TRIGGER_KazamiyaGekū_WALLS" DisplayName="Wall Defenders" Description="Wall Defenders" EnterRadius="60.0" Tags="combat,guard,defense">
+      <Spawn Count="4">
         <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_KazamiyaGekū_ELITE" DisplayName="Elite Guards of Kazamiya (Gekū)" Description="Elite warriors bar the way to Kazamiya (Gekū)" EnterRadius="45.0" Tags="combat,elite,guard">
-      <Spawn Count="2">
+    <SagaTrigger RefName="TRIGGER_KazamiyaGekū_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
+      <Spawn>
         <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
       </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>RandomGuard</CharacterArchetypeRef>
+      </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_KazamiyaGekū_BOSS" DisplayName="Guardian of Kazamiya (Gekū)" Description="The guardian of Kazamiya (Gekū) awaits challengers" EnterRadius="20.0" Tags="combat,boss,final">
+    <SagaTrigger RefName="TRIGGER_KazamiyaGekū_COMMANDER" DisplayName="Commander of Kazamiya (Gekū)" Description="Commander of Kazamiya (Gekū)" EnterRadius="15.0" Tags="combat,boss,commander">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_KazamiyaGekū</CharacterRef>
-      </Spawn>
-      <Spawn Count="2">
-        <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
       </Spawn>
       <RequiresQuestTokenRef>TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_KazamiyaGekū_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Tsuchinomiya" DisplayName="Tsuchi-no-Miya" Description="Earth shrine within Gekū complex" LatitudeZ="34.49254640019775" LongitudeX="136.70209581933696" Metadata="{&quot;narrativeRole&quot;:&quot;Climax&quot;,&quot;narrativeSequence&quot;:5,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Takanomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
-    <SagaFeatureRef>Tsuchinomiya</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Tsuchinomiya_OUTER" DisplayName="Approaching Tsuchi-no-Miya" Description="The silhouette of Tsuchi-no-Miya looms in the distance" EnterRadius="120.0" Tags="exploration,warning,approach">
-      <Spawn Count="2">
-        <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
-      </Spawn>
-    </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Tsuchinomiya_PATROL" DisplayName="Patrol near Tsuchi-no-Miya" Description="Enemy patrols guard the approaches to Tsuchi-no-Miya" EnterRadius="80.0" Tags="combat,patrol">
-      <Spawn Count="3">
+  <SagaArc RefName="Tsuchinomiya" DisplayName="Tsuchi-no-Miya" Description="Earth shrine within Gekū complex" LatitudeZ="34.49282225705774" LongitudeX="136.70176118436075" Type="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;Climax&quot;,&quot;narrativeSequence&quot;:5,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;Takanomiya&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
+    <SagaTrigger RefName="TRIGGER_Tsuchinomiya_PATROL" DisplayName="Enemy Patrol" Description="Enemy Patrol" EnterRadius="120.0" Tags="combat,patrol,warning">
+      <Spawn Count="4">
         <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Tsuchinomiya_ELITE" DisplayName="Elite Guards of Tsuchi-no-Miya" Description="Elite warriors bar the way to Tsuchi-no-Miya" EnterRadius="45.0" Tags="combat,elite,guard">
+    <SagaTrigger RefName="TRIGGER_Tsuchinomiya_ELITE" DisplayName="Elite Guard" Description="Elite Guard" EnterRadius="80.0" Tags="combat,elite">
       <Spawn Count="2">
         <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Tsuchinomiya_BOSS" DisplayName="Guardian of Tsuchi-no-Miya" Description="The guardian of Tsuchi-no-Miya awaits challengers" EnterRadius="20.0" Tags="combat,boss,final">
-      <Spawn Count="1">
-        <CharacterRef>BOSS_Tsuchinomiya</CharacterRef>
+    <SagaTrigger RefName="TRIGGER_Tsuchinomiya_LIEUTENANT" DisplayName="Boss Lieutenant" Description="Boss Lieutenant" EnterRadius="50.0" Tags="combat,lieutenant,miniboss">
+      <Spawn>
+        <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
       </Spawn>
       <Spawn Count="2">
         <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
+      </Spawn>
+    </SagaTrigger>
+    <SagaTrigger RefName="TRIGGER_Tsuchinomiya_BOSS" DisplayName="Heart of Tsuchi-no-Miya" Description="Heart of Tsuchi-no-Miya" EnterRadius="25.0" Tags="combat,boss,final">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
+      </Spawn>
+      <Spawn Count="1">
+        <CharacterRef>BOSS_Tsuchinomiya</CharacterRef>
       </Spawn>
       <RequiresQuestTokenRef>TOKEN_KazamiyaGekū_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_Tsuchinomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Takanomiya" DisplayName="Taka-no-Miya" Description="Auxiliary shrine within Gekū complex" LatitudeZ="34.4926859067393" LongitudeX="136.70123943329335" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:6,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
-    <SagaFeatureRef>Takanomiya</SagaFeatureRef>
-    <SagaTrigger RefName="TRIGGER_Takanomiya_OUTER" DisplayName="Approaching Taka-no-Miya" Description="The silhouette of Taka-no-Miya looms in the distance" EnterRadius="120.0" Tags="exploration,warning,approach">
-      <Spawn Count="2">
+  <SagaArc RefName="Takanomiya" DisplayName="Taka-no-Miya" Description="Auxiliary shrine within Gekū complex" LatitudeZ="34.49246479316778" LongitudeX="136.7011602579083" Type="Structure" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;Resolution&quot;,&quot;narrativeSequence&quot;:6,&quot;tone&quot;:&quot;climactic&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;endgame,combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Tsuchinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;}]}">
+    <SagaTrigger RefName="TRIGGER_Takanomiya_SENTRIES" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
+      <Spawn Count="3">
         <CharacterArchetypeRef>Scout</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Takanomiya_PATROL" DisplayName="Patrol near Taka-no-Miya" Description="Enemy patrols guard the approaches to Taka-no-Miya" EnterRadius="80.0" Tags="combat,patrol">
-      <Spawn Count="3">
+    <SagaTrigger RefName="TRIGGER_Takanomiya_WALLS" DisplayName="Wall Defenders" Description="Wall Defenders" EnterRadius="60.0" Tags="combat,guard,defense">
+      <Spawn Count="4">
         <CharacterArchetypeRef>PatrolSoldier</CharacterArchetypeRef>
       </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Takanomiya_ELITE" DisplayName="Elite Guards of Taka-no-Miya" Description="Elite warriors bar the way to Taka-no-Miya" EnterRadius="45.0" Tags="combat,elite,guard">
-      <Spawn Count="2">
+    <SagaTrigger RefName="TRIGGER_Takanomiya_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
+      <Spawn>
         <CharacterArchetypeRef>EliteGuard</CharacterArchetypeRef>
       </Spawn>
+      <Spawn Count="2">
+        <CharacterArchetypeRef>RandomGuard</CharacterArchetypeRef>
+      </Spawn>
     </SagaTrigger>
-    <SagaTrigger RefName="TRIGGER_Takanomiya_BOSS" DisplayName="Guardian of Taka-no-Miya" Description="The guardian of Taka-no-Miya awaits challengers" EnterRadius="20.0" Tags="combat,boss,final">
+    <SagaTrigger RefName="TRIGGER_Takanomiya_COMMANDER" DisplayName="Commander of Taka-no-Miya" Description="Commander of Taka-no-Miya" EnterRadius="15.0" Tags="combat,boss,commander">
+      <Spawn>
+        <CharacterArchetypeRef>RandomBoss</CharacterArchetypeRef>
+      </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Takanomiya</CharacterRef>
-      </Spawn>
-      <Spawn Count="2">
-        <CharacterArchetypeRef>HonorGuard</CharacterArchetypeRef>
       </Spawn>
       <RequiresQuestTokenRef>TOKEN_Tsuchinomiya_COMPLETE</RequiresQuestTokenRef>
       <GivesQuestTokenRef>TOKEN_Takanomiya_COMPLETE</GivesQuestTokenRef>

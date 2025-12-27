@@ -348,39 +348,30 @@ public class SagaInteractionServiceTests
     [Fact]
     public void UpdateWithAvatarPosition_TriggerAlreadyCompleted_DoesNotActivateAgain()
     {
-        // Arrange
+        // Arrange - Use trigger WITH spawns so TriggerCompleted is created by production code
         var world = CreateWorldWithCharacters();
         var template = CreateSagaTemplate();
-        var trigger = CreateSagaTrigger(refName: "TestTrigger", enterRadius: 10.0f);
+        var spawn = CreateCharacterSpawn("Guard", count: 1);
+        var trigger = CreateSagaTrigger(refName: "TestTrigger", enterRadius: 10.0f, spawns: new[] { spawn });
         var triggers = new List<SagaTrigger> { trigger };
         var service = new SagaInteractionService(template, triggers, world);
         var instance = CreateSagaInstance();
         var avatar = CreateAvatar();
 
-        // First activation
+        // First activation - spawns character and marks trigger complete
         service.UpdateWithAvatarPosition(instance, 5.0, 5.0, avatar);
-        Assert.Equal(2, instance.Transactions.Count); // PlayerEntered + TriggerActivated
+        // PlayerEntered + TriggerActivated + CharacterSpawned + TriggerCompleted
+        Assert.Equal(4, instance.Transactions.Count);
+        Assert.True(instance.Transactions.Any(tx => tx.Type == SagaTransactionType.TriggerCompleted));
 
-        // Commit the transactions (so they're included in replay)
-        instance.Transactions[0].Status = TransactionStatus.Committed;
-        instance.Transactions[1].Status = TransactionStatus.Committed;
-
-        // Complete the trigger by adding completion transaction
-        var completionTx = new SagaTransaction
-        {
-            Type = SagaTransactionType.TriggerCompleted,
-            Status = TransactionStatus.Committed,
-            Data = new Dictionary<string, string>
-            {
-                ["SagaTriggerRef"] = "TestTrigger"
-            }
-        };
-        instance.AddTransaction(completionTx);
+        // Commit all transactions (so they're included in replay)
+        foreach (var tx in instance.Transactions)
+            tx.Status = TransactionStatus.Committed;
 
         // Act - Try to activate again
         service.UpdateWithAvatarPosition(instance, 5.0, 5.0, avatar);
 
-        // Assert - No new SagaTriggerActivated transaction (only the original + completion)
+        // Assert - No new SagaTriggerActivated transaction
         var triggerActivatedCount = instance.Transactions
             .Count(tx => tx.Type == SagaTransactionType.TriggerActivated);
         Assert.Equal(1, triggerActivatedCount);
@@ -468,8 +459,8 @@ public class SagaInteractionServiceTests
         // Act
         service.UpdateWithAvatarPosition(instance, 5.0, 5.0, avatar);
 
-        // Assert - PlayerEntered + TriggerActivated + CharacterSpawned
-        Assert.Equal(3, instance.Transactions.Count);
+        // Assert - PlayerEntered + TriggerActivated + CharacterSpawned + TriggerCompleted
+        Assert.Equal(4, instance.Transactions.Count);
 
         Assert.Equal(SagaTransactionType.PlayerEntered, instance.Transactions[0].Type);
 
@@ -480,6 +471,8 @@ public class SagaInteractionServiceTests
         Assert.Equal(SagaTransactionType.CharacterSpawned, spawnTx.Type);
         Assert.Equal("Guard", spawnTx.Data["CharacterRef"]);
         Assert.Equal("TestTrigger", spawnTx.Data["SagaTriggerRef"]);
+
+        Assert.Equal(SagaTransactionType.TriggerCompleted, instance.Transactions[3].Type);
     }
 
     [Fact]
@@ -498,8 +491,8 @@ public class SagaInteractionServiceTests
         // Act
         service.UpdateWithAvatarPosition(instance, 5.0, 5.0, avatar);
 
-        // Assert - PlayerEntered + TriggerActivated + 3 CharacterSpawned
-        Assert.Equal(5, instance.Transactions.Count);
+        // Assert - PlayerEntered + TriggerActivated + 3 CharacterSpawned + TriggerCompleted
+        Assert.Equal(6, instance.Transactions.Count);
 
         var spawnTransactions = instance.Transactions
             .Where(tx => tx.Type == SagaTransactionType.CharacterSpawned)
@@ -512,6 +505,9 @@ public class SagaInteractionServiceTests
             Assert.Equal("Guard", tx.Data["CharacterRef"]);
             Assert.Equal("TestTrigger", tx.Data["SagaTriggerRef"]);
         });
+
+        // TriggerCompleted should be last
+        Assert.Equal(SagaTransactionType.TriggerCompleted, instance.Transactions.Last().Type);
     }
 
     [Fact]
@@ -1192,26 +1188,22 @@ public class SagaInteractionServiceTests
     [Fact]
     public void CanActivateTrigger_AlreadyCompleted_ReturnsFalseWithReason()
     {
-        // Arrange
+        // Arrange - Use trigger WITH spawns so TriggerCompleted is created by production code
         var world = CreateWorldWithCharacters();
         var template = CreateSagaTemplate();
-        var trigger = CreateSagaTrigger(refName: "TestTrigger", enterRadius: 15.0f);
+        var spawn = CreateCharacterSpawn("Guard", count: 1);
+        var trigger = CreateSagaTrigger(refName: "TestTrigger", enterRadius: 15.0f, spawns: new[] { spawn });
         var triggers = new List<SagaTrigger> { trigger };
         var service = new SagaInteractionService(template, triggers, world);
         var instance = CreateSagaInstance();
         var avatar = CreateAvatar();
 
-        // Complete the trigger first
-        var completionTx = new SagaTransaction
-        {
-            Type = SagaTransactionType.TriggerCompleted,
-            Status = TransactionStatus.Committed,
-            Data = new Dictionary<string, string>
-            {
-                ["SagaTriggerRef"] = "TestTrigger"
-            }
-        };
-        instance.AddTransaction(completionTx);
+        // Activate the trigger (production code creates TriggerCompleted)
+        service.UpdateWithAvatarPosition(instance, 10.0, 5.0, avatar);
+
+        // Commit transactions so they're visible to replay
+        foreach (var tx in instance.Transactions)
+            tx.Status = TransactionStatus.Committed;
 
         // Act - Try to check if it can activate again
         var result = service.CanActivateSagaTrigger(instance, trigger, 10.0, 5.0, avatar);
@@ -1285,15 +1277,16 @@ public class SagaInteractionServiceTests
         var state = stateMachine.ReplayToNow(instance);
 
         // Assert - State matches what we expect
-        Assert.Equal(SagaTriggerStatus.Active, state.Triggers["TestTrigger"].Status);
+        // Trigger is now Completed because characters were spawned
+        Assert.Equal(SagaTriggerStatus.Completed, state.Triggers["TestTrigger"].Status);
         Assert.Equal(1, state.Triggers["TestTrigger"].ActivationCount);
 
         // Should have 2 spawned characters
         Assert.Equal(2, state.Characters.Count);
 
-        // Transactions: 1 PlayerEntered + 1 TriggerActivated + 1 QuestTokenAwarded + 2 CharacterSpawned = 5
-        Assert.Equal(5, instance.Transactions.Count);
-        Assert.Equal(5, state.TransactionCount);
+        // Transactions: 1 PlayerEntered + 1 TriggerActivated + 1 QuestTokenAwarded + 2 CharacterSpawned + 1 TriggerCompleted = 6
+        Assert.Equal(6, instance.Transactions.Count);
+        Assert.Equal(6, state.TransactionCount);
     }
 
     [Fact]

@@ -45,8 +45,6 @@ public partial class World : IWorld
     [XmlIgnore] public Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; } = new Dictionary<string, CharacterAffinity>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, CombatStance> CombatStancesLookup { get; set; } = new Dictionary<string, CombatStance>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; } = new Dictionary<string, LoadoutSlot>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, SagaTriggerPattern> SagaTriggerPatternsLookup { get; set; } = new Dictionary<string, SagaTriggerPattern>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, SagaFeature> SagaFeaturesLookup { get; set; } = new Dictionary<string, SagaFeature>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, SagaArc> SagaArcLookup { get; set; } = new Dictionary<string, SagaArc>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; } = new Dictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Faction> FactionsLookup { get; set; } = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
@@ -312,48 +310,6 @@ public partial class World : IWorld
     }
 
     /// <summary>
-    /// Looks up a SagaFeature object by its RefName using the unified SagaFeaturesLookup dictionary.
-    /// This is the primary method for retrieving all feature types (Landmark, Structure, Quest, ResourceNode, etc.)
-    /// </summary>
-    /// <param name="featureRefName">The RefName of the feature to find</param>
-    /// <returns>The SagaFeature object with the specified RefName</returns>
-    /// <exception cref="InvalidOperationException">Thrown if the feature is not found</exception>
-    public SagaFeature GetSagaFeatureByRefName(string featureRefName)
-    {
-        if (SagaFeaturesLookup.TryGetValue(featureRefName, out var feature))
-        {
-            return feature;
-        }
-
-        throw new InvalidOperationException($"SagaFeature with RefName '{featureRefName}' not found in SagaFeatures catalog");
-    }
-
-    /// <summary>
-    /// Tries to look up a SagaFeature object by its RefName. Returns null if not found.
-    /// This is the primary method for retrieving all feature types (Landmark, Structure, Quest, ResourceNode, etc.)
-    /// </summary>
-    /// <param name="featureRefName">The RefName of the feature to find</param>
-    /// <returns>The SagaFeature object with the specified RefName, or null if not found</returns>
-    public SagaFeature? TryGetSagaFeatureByRefName(string featureRefName)
-    {
-        SagaFeaturesLookup.TryGetValue(featureRefName, out var feature);
-        return feature;
-    }
-
-    /// <summary>
-    /// Looks up a SagaFeature by RefName and filters by Type.
-    /// Useful for type-specific lookups (e.g., only get Landmarks).
-    /// </summary>
-    public SagaFeature? TryGetSagaFeatureByRefNameAndType(string featureRefName, SagaFeatureType type)
-    {
-        if (SagaFeaturesLookup.TryGetValue(featureRefName, out var feature) && feature.Type == type)
-        {
-            return feature;
-        }
-        return null;
-    }
-
-    /// <summary>
     /// Looks up a Quest object by its RefName.
     /// </summary>
     /// <param name="questRefName">The RefName of the quest to find</param>
@@ -378,33 +334,6 @@ public partial class World : IWorld
     {
         QuestsLookup.TryGetValue(questRefName, out var quest);
         return quest;
-    }
-
-    /// <summary>
-    /// Looks up a TriggerPattern object by its RefName.
-    /// </summary>
-    /// <param name="sagaTriggerPatternRefName">The RefName of the trigger pattern to find</param>
-    /// <returns>The TriggerPattern object with the specified RefName</returns>
-    /// <exception cref="InvalidOperationException">Thrown if the trigger pattern is not found</exception>
-    public SagaTriggerPattern GetTriggerPatternByRefName(string sagaTriggerPatternRefName)
-    {
-        if (SagaTriggerPatternsLookup.TryGetValue(sagaTriggerPatternRefName, out var triggerPattern))
-        {
-            return triggerPattern;
-        }
-
-        throw new InvalidOperationException($"SagaTriggerPattern with RefName '{sagaTriggerPatternRefName}' not found in TriggerPatterns catalog");
-    }
-
-    /// <summary>
-    /// Tries to look up a TriggerPattern object by its RefName. Returns null if not found.
-    /// </summary>
-    /// <param name="sagaTriggerPatternRefName">The RefName of the trigger pattern to find</param>
-    /// <returns>The TriggerPattern object with the specified RefName, or null if not found</returns>
-    public SagaTriggerPattern? TryGetTriggerPatternByRefName(string sagaTriggerPatternRefName)
-    {
-        SagaTriggerPatternsLookup.TryGetValue(sagaTriggerPatternRefName, out var triggerPattern);
-        return triggerPattern;
     }
 
     /// <summary>

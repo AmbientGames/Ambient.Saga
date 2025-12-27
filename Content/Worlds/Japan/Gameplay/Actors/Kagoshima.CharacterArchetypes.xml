@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CharacterArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Summons one of the area's powerful adversaries to challenge the player.">
+  <CharacterArchetype RefName="RandomBoss" DisplayName="Random Boss" Description="Conjures a mighty antagonist known for their legendary combat prowess.">
     <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
     <CharacterRef>BOSS_Isoteien</CharacterRef>
     <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
@@ -8,7 +8,7 @@
     <CharacterRef>BOSS_Tsurumarujō1</CharacterRef>
     <CharacterRef>BOSS_TerukuniDaimyōjinsha1</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="A shopkeeper carrying provisions for weary adventurers.">
+  <CharacterArchetype RefName="RandomMerchant" DisplayName="Random Merchant" Description="A traveling vendor offering rare goods and supplies.">
     <CharacterRef>MERCHANT_TsurumarujōSpoke1Ring1</CharacterRef>
     <CharacterRef>MERCHANT_TsurumarujōSpoke2Ring3</CharacterRef>
     <CharacterRef>MERCHANT_TsurumarujōSpoke3Ring1</CharacterRef>
@@ -36,7 +36,7 @@
     <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_1</CharacterRef>
     <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_4</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomNPC" DisplayName="Random NPC" Description="A friendly local who may share valuable information.">
+  <CharacterArchetype RefName="RandomNPC" DisplayName="Random NPC" Description="Someone with stories and rumors about the area.">
     <CharacterRef>NPC_TsurumarujōSpoke2Ring1</CharacterRef>
     <CharacterRef>NPC_TsurumarujōSpoke2Ring2</CharacterRef>
     <CharacterRef>NPC_TsurumarujōSpoke2Ring4</CharacterRef>
@@ -93,7 +93,7 @@
   <CharacterArchetype RefName="RandomGuard" DisplayName="Random Guard" Description="A vigilant sentry tasked with protecting this area.">
     <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="RandomHostile" DisplayName="Random Hostile" Description="An untamed beast that sees all strangers as threats.">
+  <CharacterArchetype RefName="RandomHostile" DisplayName="Random Hostile" Description="A wild predator hunting for prey in this region.">
     <CharacterRef>HOSTILE_TsurumarujōSpoke1Ring1_1</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke2Ring5_2</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke3Ring5_3</CharacterRef>
@@ -111,23 +111,23 @@
     <CharacterRef>HOSTILE_TerukuniDaimyōjinshaSpoke6Ring4_15</CharacterRef>
     <CharacterRef>HOSTILE_Isoteien1_to_Tsurumarujō1_4_16</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Scout" DisplayName="Scout" Description="A quick-footed patrol watching the frontier.">
+  <CharacterArchetype RefName="Scout" DisplayName="Scout" Description="A swift sentry scanning the area for intruders.">
     <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke1Ring1_1</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke2Ring5_2</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke3Ring5_3</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke4Ring5_4</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="PatrolSoldier" DisplayName="Patrol Soldier" Description="A seasoned warrior walking predetermined watch patterns.">
+  <CharacterArchetype RefName="PatrolSoldier" DisplayName="Patrol Soldier" Description="An armed patrol enforcing control over the region.">
     <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="EliteGuard" DisplayName="Elite Guard" Description="A highly trained warrior protecting critical locations.">
+  <CharacterArchetype RefName="EliteGuard" DisplayName="Elite Guard" Description="A battle-hardened protector of high-value targets.">
     <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
     <CharacterRef>BOSS_Isoteien</CharacterRef>
     <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
     <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="HonorGuard" DisplayName="Honor Guard" Description="A loyal sentinel whose presence signals authority.">
+  <CharacterArchetype RefName="HonorGuard" DisplayName="Honor Guard" Description="A trusted protector accompanying important figures.">
     <CharacterRef>BOSS_Tsurumarujō</CharacterRef>
     <CharacterRef>BOSS_Isoteien</CharacterRef>
     <CharacterRef>BOSS_TerukuniDaimyōjinsha</CharacterRef>
@@ -135,7 +135,7 @@
     <CharacterRef>BOSS_Tsurumarujō1</CharacterRef>
     <CharacterRef>BOSS_TerukuniDaimyōjinsha1</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="BossMinion" DisplayName="Boss Minion" Description="A fanatical supporter who would die for their commander.">
+  <CharacterArchetype RefName="BossMinion" DisplayName="Boss Minion" Description="A devoted follower carrying out their leader's will.">
     <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke1Ring1_1</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke2Ring5_2</CharacterRef>
@@ -154,13 +154,13 @@
     <CharacterRef>HOSTILE_TerukuniDaimyōjinshaSpoke6Ring4_15</CharacterRef>
     <CharacterRef>HOSTILE_Isoteien1_to_Tsurumarujō1_4_16</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="CaravanGuard" DisplayName="Caravan Guard" Description="A mercenary tasked with ensuring cargo reaches its destination.">
+  <CharacterArchetype RefName="CaravanGuard" DisplayName="Caravan Guard" Description="A traveling defender familiar with ambush tactics.">
     <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="TownGuard" DisplayName="Town Guard" Description="A local law enforcer maintaining peace in settled areas.">
+  <CharacterArchetype RefName="TownGuard" DisplayName="Town Guard" Description="A civic defender protecting residents from harm.">
     <CharacterRef>GUARD_Tsurumarujō_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Traveler" DisplayName="Traveler" Description="A nomad familiar with the ways of the road.">
+  <CharacterArchetype RefName="Traveler" DisplayName="Traveler" Description="A wayfarer with tales of distant lands.">
     <CharacterRef>NPC_TsurumarujōSpoke2Ring1</CharacterRef>
     <CharacterRef>NPC_TsurumarujōSpoke2Ring2</CharacterRef>
     <CharacterRef>NPC_TsurumarujōSpoke2Ring4</CharacterRef>
@@ -214,7 +214,7 @@
     <CharacterRef>NPC_Isoteien1_to_Tsurumarujō1_5</CharacterRef>
     <CharacterRef>NPC_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="Townsfolk" DisplayName="Townsfolk" Description="A local inhabitant with roots in this community.">
+  <CharacterArchetype RefName="Townsfolk" DisplayName="Townsfolk" Description="A familiar face among the town's regular population.">
     <CharacterRef>NPC_TsurumarujōSpoke2Ring1</CharacterRef>
     <CharacterRef>NPC_TsurumarujōSpoke2Ring2</CharacterRef>
     <CharacterRef>NPC_TsurumarujōSpoke2Ring4</CharacterRef>
@@ -294,7 +294,7 @@
     <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_1</CharacterRef>
     <CharacterRef>MERCHANT_Isoteien1_to_Tsurumarujō1_4</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="HostileCreature" DisplayName="Hostile Creature" Description="A menacing beast with a taste for combat.">
+  <CharacterArchetype RefName="HostileCreature" DisplayName="Hostile Creature" Description="A feral creature defending its hunting grounds.">
     <CharacterRef>HOSTILE_TsurumarujōSpoke1Ring1_1</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke2Ring5_2</CharacterRef>
     <CharacterRef>HOSTILE_TsurumarujōSpoke3Ring5_3</CharacterRef>
@@ -312,7 +312,7 @@
     <CharacterRef>HOSTILE_TerukuniDaimyōjinshaSpoke6Ring4_15</CharacterRef>
     <CharacterRef>HOSTILE_Isoteien1_to_Tsurumarujō1_4_16</CharacterRef>
   </CharacterArchetype>
-  <CharacterArchetype RefName="KeyWitness" DisplayName="Key Witness" Description="A pivotal character holding answers to pressing questions.">
+  <CharacterArchetype RefName="KeyWitness" DisplayName="Key Witness" Description="A knowledgeable individual with crucial details to share.">
     <CharacterRef>NPC_TsurumarujōSpoke2Ring1</CharacterRef>
     <CharacterRef>NPC_TsurumarujōSpoke2Ring2</CharacterRef>
     <CharacterRef>NPC_TsurumarujōSpoke2Ring4</CharacterRef>

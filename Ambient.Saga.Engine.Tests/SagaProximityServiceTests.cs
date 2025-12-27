@@ -185,8 +185,7 @@ public class SagaProximityServiceTests
                     SagaArcs = Array.Empty<SagaArc>()
                 }
             },
-            SagaTriggersLookup = new Dictionary<string, List<SagaTrigger>>(),
-            SagaFeaturesLookup = new Dictionary<string, SagaFeature>(),
+            SagaTriggersLookup = new Dictionary<string, List<SagaTrigger>>()
         };
 
         return world;
@@ -200,19 +199,6 @@ public class SagaProximityServiceTests
             DisplayName = $"Test {refName}",
             LatitudeZ = latitude,
             LongitudeX = longitude
-            // ItemElementName not set = no feature
-        };
-    }
-
-    private SagaArc CreateTestSagaWithFeature(string refName, double latitude, double longitude, string featureRef)
-    {
-        return new SagaArc
-        {
-            RefName = refName,
-            DisplayName = $"Test {refName}",
-            LatitudeZ = latitude,
-            LongitudeX = longitude,
-            SagaFeatureRef = featureRef
         };
     }
 

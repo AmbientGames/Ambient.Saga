@@ -20,8 +20,6 @@
     <xs:include schemaLocation="Factions/Faction.xsd" />
     <xs:include schemaLocation="Quests/Quest.xsd" />
     <xs:include schemaLocation="SagaEngine/SagaArcs.xsd" />
-    <xs:include schemaLocation="SagaEngine/SagaTriggerPatterns.xsd" />
-    <xs:include schemaLocation="SagaEngine/SagaFeatures.xsd" />
     <xs:element name="Consumables" type="ConsumableCatalog">
         <xs:key name="UniqueConsumableRefName">
             <xs:selector xpath="Consumable" />
@@ -130,18 +128,6 @@
             <xs:field xpath="@RefName" />
         </xs:key>
     </xs:element>
-    <xs:element name="SagaFeatures" type="SagaFeatures">
-        <xs:key name="UniqueSagaFeatureRefName">
-            <xs:selector xpath="SagaFeature" />
-            <xs:field xpath="@RefName" />
-        </xs:key>
-    </xs:element>
-    <xs:element name="SagaTriggerPatterns" type="SagaTriggerPatterns">
-        <xs:key name="UniqueSagaTriggerPatternRefName">
-            <xs:selector xpath="SagaTriggerPattern" />
-            <xs:field xpath="@RefName" />
-        </xs:key>
-    </xs:element>
     <xs:element name="SagaArcs" type="SagaArcs">
         <xs:key name="UniqueSagaArcRefName">
             <xs:selector xpath="SagaArc" />
@@ -168,8 +154,6 @@
             <xs:element ref="Factions" />
             <xs:element ref="QuestTokens" />
             <xs:element ref="Quests" />
-            <xs:element ref="SagaFeatures" />
-            <xs:element ref="SagaTriggerPatterns" />
             <xs:element ref="SagaArcs" />
         </xs:sequence>
     </xs:complexType>

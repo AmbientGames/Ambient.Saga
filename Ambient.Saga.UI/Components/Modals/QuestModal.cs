@@ -17,9 +17,8 @@ public class QuestModal
     private readonly IMediator _mediator;
     private string? _currentQuestRef;
     private string? _currentSagaRef;
-    private string? _currentSignpostRef;
+    private string? _currentQuestGiverRef;
     private Quest? _currentQuest;
-    private SagaFeature? _currentSignpost;
     private bool _isAlreadyActive;
     private bool _isAlreadyCompleted;
     private bool _isAccepting;
@@ -29,31 +28,17 @@ public class QuestModal
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    public void Open(string questRef, string sagaRef, string signpostRef, MainViewModel viewModel)
+    public void Open(string questRef, string sagaRef, string questGiverRef, MainViewModel viewModel)
     {
         _currentQuestRef = questRef;
         _currentSagaRef = sagaRef;
-        _currentSignpostRef = signpostRef;
+        _currentQuestGiverRef = questGiverRef;
         _isAccepting = false;
         _isAlreadyActive = false;
         _isAlreadyCompleted = false;
 
         // Look up quest template from world
         _currentQuest = viewModel.CurrentWorld?.Gameplay?.Quests?.FirstOrDefault(q => q.RefName == questRef);
-
-        // Look up quest feature for difficulty/duration metadata
-        foreach (var saga in viewModel.CurrentWorld?.Gameplay?.SagaArcs ?? Array.Empty<SagaArc>())
-        {
-            if (!string.IsNullOrEmpty(saga.SagaFeatureRef))
-            {
-                var feature = viewModel.CurrentWorld?.TryGetSagaFeatureByRefName(saga.SagaFeatureRef);
-                if (feature != null && feature.Type == SagaFeatureType.Quest && feature.QuestRef == questRef)
-                {
-                    _currentSignpost = feature;
-                    break;
-                }
-            }
-        }
 
         // Check if quest is already active or completed (event-sourced from transaction log)
         // Fire-and-forget but capture errors
@@ -155,46 +140,24 @@ public class QuestModal
         ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), _currentQuest!.DisplayName ?? _currentQuest.RefName);
         ImGui.SetWindowFontScale(1.0f);
 
-        // Status and difficulty badges on same line
-        if (_currentSignpost != null || _isAlreadyCompleted || _isAlreadyActive)
+        // Status badge
+        if (_isAlreadyCompleted)
         {
-            // Difficulty badge
-            if (_currentSignpost != null)
-            {
-                var (difficultyColor, difficultyBgColor) = _currentSignpost.Difficulty switch
-                {
-                    QuestDifficulty.Easy => (new Vector4(0.2f, 0.8f, 0.2f, 1), new Vector4(0.1f, 0.3f, 0.1f, 0.8f)),
-                    QuestDifficulty.Normal => (new Vector4(0.9f, 0.9f, 0.2f, 1), new Vector4(0.3f, 0.3f, 0.1f, 0.8f)),
-                    QuestDifficulty.Hard => (new Vector4(1, 0.5f, 0.1f, 1), new Vector4(0.35f, 0.2f, 0.05f, 0.8f)),
-                    QuestDifficulty.Epic => (new Vector4(1, 0.2f, 0.2f, 1), new Vector4(0.35f, 0.1f, 0.1f, 0.8f)),
-                    _ => (new Vector4(0.8f, 0.8f, 0.8f, 1), new Vector4(0.25f, 0.25f, 0.25f, 0.8f))
-                };
-
-                ImGui.TextColored(difficultyColor, $"Difficulty: {_currentSignpost.Difficulty}");
-            }
-
-            // Status badge
-            if (_isAlreadyCompleted)
-            {
-                if (_currentSignpost != null) ImGui.SameLine(0, 30);
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1), "COMPLETED");
-            }
-            else if (_isAlreadyActive)
-            {
-                if (_currentSignpost != null) ImGui.SameLine(0, 30);
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(0.3f, 0.9f, 0.9f, 1), "ACTIVE");
-            }
-            else
-            {
-                if (_currentSignpost != null) ImGui.SameLine(0, 30);
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.5f, 1), "AVAILABLE");
-            }
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1), "COMPLETED");
+        }
+        else if (_isAlreadyActive)
+        {
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.3f, 0.9f, 0.9f, 1), "ACTIVE");
+        }
+        else
+        {
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Status:");
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.5f, 1), "AVAILABLE");
         }
     }
 
@@ -203,17 +166,6 @@ public class QuestModal
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Quest Details:");
         ImGui.Indent(10);
 
-        if (_currentSignpost != null)
-        {
-            ImGui.Text($"Difficulty: {_currentSignpost.Difficulty}");
-
-            if (_currentSignpost.EstimatedDurationMinutesSpecified && _currentSignpost.EstimatedDurationMinutes > 0)
-            {
-                ImGui.Text($"Estimated Duration: {_currentSignpost.EstimatedDurationMinutes} minutes");
-            }
-        }
-
-        // TODO: Display quest stage/objective metadata for multi-stage quests
         ImGui.Text($"Quest ID: {_currentQuest!.RefName}");
 
         ImGui.Unindent(10);
@@ -323,7 +275,7 @@ public class QuestModal
                 AvatarId = viewModel.PlayerAvatar!.Id,
                 QuestRef = _currentQuestRef!,
                 SagaArcRef = _currentSagaRef!,
-                QuestGiverRef = _currentSignpostRef!,
+                QuestGiverRef = _currentQuestGiverRef!,
                 Avatar = viewModel.PlayerAvatar
             };
 

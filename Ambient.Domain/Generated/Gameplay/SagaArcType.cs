@@ -18,7 +18,7 @@ namespace Ambient.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
-    public enum SagaFeatureType {
+    public enum SagaArcType {
         
         /// <remarks/>
         Landmark,
@@ -33,12 +33,6 @@ namespace Ambient.Domain {
         ResourceNode,
         
         /// <remarks/>
-        Teleporter,
-        
-        /// <remarks/>
         Vendor,
-        
-        /// <remarks/>
-        CraftingStation,
     }
 }

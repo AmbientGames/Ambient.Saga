@@ -205,110 +205,6 @@ public class SagaInteractionService
         return result;
     }
 
-    /// <summary>
-    /// Checks if an avatar can interact with a Saga feature (loot chest, landmark, quest marker).
-    /// This is a comprehensive check including quest tokens, max interactions, and cooldowns.
-    /// </summary>
-    /// <param name="instance">Saga instance to check state</param>
-    /// <param name="feature">The feature to check</param>
-    /// <param name="avatar">Avatar attempting to interact</param>
-    /// <returns>Result indicating whether interaction is allowed and why/why not</returns>
-    public FeatureInteractionCheck CanInteractWithFeature(
-        SagaInstance instance,
-        SagaFeature feature,
-        AvatarBase avatar)
-    {
-        if (instance == null)
-            throw new ArgumentNullException(nameof(instance));
-
-        if (feature == null)
-            throw new ArgumentNullException(nameof(feature));
-
-        if (avatar == null)
-            throw new ArgumentNullException(nameof(avatar));
-
-        var result = new FeatureInteractionCheck
-        {
-            Feature = feature,
-            CanInteract = false
-        };
-
-        // If no interactable defined, feature cannot be interacted with
-        if (feature.Interactable == null)
-        {
-            result.BlockedReason = "Feature has no Interactable defined";
-            return result;
-        }
-
-        var interactable = feature.Interactable;
-
-        // Get current state by replaying transactions
-        var currentState = _stateMachine.ReplayToNow(instance);
-
-        // Get feature interaction state (if any)
-        var featureState = currentState.FeatureInteractions.TryGetValue(feature.RefName, out var state)
-            ? state
-            : null;
-
-        var avatarState = featureState?.AvatarInteractions.TryGetValue(avatar.AvatarId.ToString(), out var aState) == true
-            ? aState
-            : null;
-
-        // Check quest token requirements
-        if (interactable.RequiresQuestTokenRef != null && interactable.RequiresQuestTokenRef.Length > 0)
-        {
-            var hasAllTokens = true;
-            var missingTokens = new List<string>();
-
-            foreach (var requiredTokenRef in interactable.RequiresQuestTokenRef)
-            {
-                var hasToken = avatar.Capabilities?.QuestTokens != null &&
-                    Array.Exists(avatar.Capabilities.QuestTokens, qt => qt.QuestTokenRef == requiredTokenRef);
-
-                if (!hasToken)
-                {
-                    hasAllTokens = false;
-                    missingTokens.Add(requiredTokenRef);
-                }
-            }
-
-            result.HasRequiredQuestTokens = hasAllTokens;
-            result.MissingQuestTokens = missingTokens.ToArray();
-
-            if (!hasAllTokens)
-            {
-                result.BlockedReason = $"Missing quest tokens: {string.Join(", ", missingTokens)}";
-                return result;
-            }
-        }
-        else
-        {
-            result.HasRequiredQuestTokens = true;
-        }
-
-        // Check MaxInteractions limit (if set)
-        if (interactable.MaxInteractions > 0)
-        {
-            var currentCount = avatarState?.InteractionCount ?? 0;
-            result.CurrentInteractionCount = currentCount;
-            result.MaxInteractionsReached = currentCount >= interactable.MaxInteractions;
-
-            if (result.MaxInteractionsReached)
-            {
-                result.BlockedReason = $"Max interactions reached ({currentCount}/{interactable.MaxInteractions})";
-                return result;
-            }
-        }
-
-        // Note: Cooldown checking removed from domain service
-        // Cooldowns are a game concern - game should check LastInteractedAt from state
-        // Domain just records interactions and enforces quest tokens + max interactions
-
-        // All checks passed
-        result.CanInteract = true;
-        return result;
-    }
-
     #endregion
 
     #region Command Methods (Mutating)
@@ -443,119 +339,6 @@ public class SagaInteractionService
     }
 
     /// <summary>
-    /// Interacts with a Saga feature (loot chest, landmark, quest marker).
-    /// Creates transactions for the interaction, loot awards, and quest tokens.
-    ///
-    /// IMPORTANT: This method validates interaction requirements before creating transactions.
-    /// If validation fails, throws InvalidOperationException with the reason.
-    /// Callers should use CanInteractWithFeature() first to check eligibility.
-    /// </summary>
-    /// <param name="instance">Saga instance</param>
-    /// <param name="feature">The feature to interact with</param>
-    /// <param name="avatar">Avatar performing the interaction</param>
-    /// <exception cref="InvalidOperationException">Thrown when interaction is not allowed</exception>
-    public void InteractWithFeature(
-        SagaInstance instance,
-        SagaFeature feature,
-        AvatarBase avatar)
-    {
-        if (instance == null)
-            throw new ArgumentNullException(nameof(instance));
-
-        if (feature == null)
-            throw new ArgumentNullException(nameof(feature));
-
-        if (avatar == null)
-            throw new ArgumentNullException(nameof(avatar));
-
-        var avatarId = avatar.AvatarId.ToString();
-        var interactable = feature.Interactable;
-
-        if (interactable == null)
-            throw new InvalidOperationException("Feature has no Interactable defined");
-
-        // Validate interaction is allowed
-        var check = CanInteractWithFeature(instance, feature, avatar);
-        if (!check.CanInteract)
-        {
-            throw new InvalidOperationException($"Cannot interact with feature '{feature.RefName}': {check.BlockedReason}");
-        }
-
-        // Create EntityInteracted transaction
-        var interactionTx = new SagaTransaction
-        {
-            TransactionId = Guid.NewGuid(),
-            Type = SagaTransactionType.EntityInteracted,
-            AvatarId = avatarId,
-            Status = TransactionStatus.Pending,
-            LocalTimestamp = DateTime.UtcNow,
-            Data = new Dictionary<string, string>
-            {
-                ["FeatureRef"] = feature.RefName,
-                ["FeatureType"] = feature.GetType().Name // Structure, Landmark, QuestSignpost
-            }
-        };
-
-        instance.AddTransaction(interactionTx);
-
-        // Award loot if feature has any
-        if (interactable.Loot != null)
-        {
-            var lootTx = new SagaTransaction
-            {
-                TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.LootAwarded,
-                AvatarId = avatarId,
-                Status = TransactionStatus.Pending,
-                LocalTimestamp = DateTime.UtcNow,
-                Data = new Dictionary<string, string>
-                {
-                    ["FeatureRef"] = feature.RefName,
-                    ["LootSource"] = $"Feature '{feature.RefName}' interaction"
-                }
-            };
-
-            instance.AddTransaction(lootTx);
-
-            // Apply loot to avatar immediately (for sandbox/single-player)
-            ApplyLootToAvatar(avatar, interactable.Loot);
-        }
-
-        // Apply stat effects if feature has any
-        if (interactable.Effects != null)
-        {
-            ApplyEffectsToAvatar(avatar, interactable.Effects);
-        }
-
-        // Award quest tokens if feature gives any
-        if (interactable.GivesQuestTokenRef != null && interactable.GivesQuestTokenRef.Length > 0)
-        {
-            foreach (var questTokenRef in interactable.GivesQuestTokenRef)
-            {
-                var questTokenTx = new SagaTransaction
-                {
-                    TransactionId = Guid.NewGuid(),
-                    Type = SagaTransactionType.QuestTokenAwarded,
-                    AvatarId = avatarId,
-                    Status = TransactionStatus.Pending,
-                    LocalTimestamp = DateTime.UtcNow,
-                    Data = new Dictionary<string, string>
-                    {
-                        ["QuestTokenRef"] = questTokenRef,
-                        ["FeatureRef"] = feature.RefName,
-                        ["Reason"] = $"Feature '{feature.RefName}' interaction"
-                    }
-                };
-
-                instance.AddTransaction(questTokenTx);
-
-                // Apply quest token to avatar immediately (for sandbox/single-player)
-                ApplyQuestTokenToAvatar(avatar, questTokenRef);
-            }
-        }
-    }
-
-    /// <summary>
     /// Activates a trigger and spawns associated characters.
     /// </summary>
     private void ActivateSagaTrigger(
@@ -614,7 +397,29 @@ public class SagaInteractionService
         // Spawn characters if trigger has spawns
         if (sagaTrigger.Spawn != null && sagaTrigger.Spawn.Length > 0)
         {
+            var spawnCountBefore = instance.Transactions.Count(tx => tx.Type == SagaTransactionType.CharacterSpawned);
             SpawnCharacters(instance, sagaTrigger, avatarX, avatarZ, seed, avatarId);
+            var spawnCountAfter = instance.Transactions.Count(tx => tx.Type == SagaTransactionType.CharacterSpawned);
+
+            // Only mark trigger as completed if characters were actually spawned
+            // Per design: "The instant the characters are triggered and instantiated that trigger is 'done'"
+            if (spawnCountAfter > spawnCountBefore)
+            {
+                var completedTx = new SagaTransaction
+                {
+                    TransactionId = Guid.NewGuid(),
+                    Type = SagaTransactionType.TriggerCompleted,
+                    AvatarId = avatarId,
+                    Status = TransactionStatus.Pending,
+                    LocalTimestamp = DateTime.UtcNow,
+                    Data = new Dictionary<string, string>
+                    {
+                        ["SagaTriggerRef"] = sagaTrigger.RefName,
+                        ["Reason"] = "Characters spawned"
+                    }
+                };
+                instance.AddTransaction(completedTx);
+            }
         }
     }
 
@@ -1097,33 +902,3 @@ public class SagaTriggerActivationCheck
     public string? BlockedReason { get; set; }
 }
 
-/// <summary>
-/// Result of checking whether a feature can be interacted with.
-/// Provides detailed information about interaction limits and requirements.
-///
-/// Note: Cooldown checking is NOT included here - that's a game concern.
-/// Game should check LastInteractedAt from FeatureInteractionState if needed.
-/// </summary>
-public class FeatureInteractionCheck
-{
-    /// <summary>The feature being checked</summary>
-    public required SagaFeature Feature { get; init; }
-
-    /// <summary>Whether the feature can be interacted with</summary>
-    public bool CanInteract { get; set; }
-
-    /// <summary>Whether avatar has all required quest tokens</summary>
-    public bool HasRequiredQuestTokens { get; set; }
-
-    /// <summary>Quest tokens the avatar is missing (if any)</summary>
-    public string[] MissingQuestTokens { get; set; } = Array.Empty<string>();
-
-    /// <summary>Current interaction count for this avatar</summary>
-    public int CurrentInteractionCount { get; set; }
-
-    /// <summary>Whether max interactions limit has been reached</summary>
-    public bool MaxInteractionsReached { get; set; }
-
-    /// <summary>Human-readable reason why interaction is blocked (if blocked)</summary>
-    public string? BlockedReason { get; set; }
-}

@@ -71,9 +71,6 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
             // Get active triggers
             result.ActiveTriggers = BuildActiveTriggers(state, avatarX, avatarZ, expandedTriggers);
 
-            // Get nearby features (Landmark/Structure/QuestSignpost at Saga center)
-            result.NearbyFeatures = BuildNearbyFeatures(sagaTemplate, query.Avatar, query.Latitude, query.Longitude, instance);
-
             return result;
         }
         catch (Exception)
@@ -167,8 +164,13 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
                 Options = BuildInteractionOptions(characterState, characterTemplate, avatar)
             };
 
-            // Character type is not stored in Interactable - would need to infer from context
-            // For now, leave as null
+            // Get CharacterType from AffinityRef (if available)
+            if (!string.IsNullOrEmpty(characterTemplate.AffinityRef))
+            {
+                var affinity = _world.Gameplay?.CharacterAffinities?
+                    .FirstOrDefault(a => a.RefName == characterTemplate.AffinityRef);
+                interactable.CharacterType = affinity?.DisplayName ?? characterTemplate.AffinityRef;
+            }
 
             result.Add(interactable);
             System.Diagnostics.Debug.WriteLine($"[BuildInteractableCharacters] Added '{characterTemplate.DisplayName}' to nearby list");
@@ -277,119 +279,6 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         return result;
     }
 
-    private List<InteractableFeature> BuildNearbyFeatures(
-        SagaArc sagaTemplate,
-        AvatarBase avatar,
-        double avatarLat,
-        double avatarLon,
-        SagaInstance instance)
-    {
-        var result = new List<InteractableFeature>();
-
-        // Check if SagaArc has a feature
-        // Features are stateless, fixed-location interactables that give loot/tokens
-        // For dynamic interactions (dialogue, combat), spawn a Character instead
-        if (string.IsNullOrEmpty(sagaTemplate.SagaFeatureRef))
-            return result;
-
-        // Retrieve feature using unified lookup
-        var feature = _world.TryGetSagaFeatureByRefName(sagaTemplate.SagaFeatureRef);
-        var featureType = feature?.Type.ToString() ?? "SagaFeature";
-
-        if (feature?.Interactable == null)
-            return result;
-
-        // Check proximity - feature is at Saga center
-        var approachRadius = feature.Interactable.ApproachRadius;
-        if (approachRadius <= 0)
-            return result; // Feature not approachable
-
-        // Calculate distance from avatar to Saga center
-        var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, sagaTemplate.LatitudeZ, sagaTemplate.LongitudeX, _world);
-        if (distance <= approachRadius)
-        {
-            System.Diagnostics.Debug.WriteLine("*** distance: " + distance);
-
-            // Feature is within range - check if it has anything to offer
-            var hasLoot = feature.Interactable.Loot != null && HasAnyItems(feature.Interactable.Loot);
-            var hasTokens = feature.Interactable.GivesQuestTokenRef != null && feature.Interactable.GivesQuestTokenRef.Length > 0;
-
-            if (!hasLoot && !hasTokens)
-                return result; // Nothing to interact with
-
-            // Count how many times this avatar has interacted with this feature
-            var interactionCount = instance.GetCommittedTransactions()
-                .Count(t => t.Type == SagaTransactionType.EntityInteracted &&
-                           t.Data.TryGetValue("FeatureRef", out var featureRef) &&
-                           featureRef == sagaTemplate.SagaFeatureRef);
-
-            var interactableFeature = new InteractableFeature
-            {
-                FeatureRef = sagaTemplate.SagaFeatureRef,
-                DisplayName = feature.DisplayName ?? $"{featureType}",
-                FeatureType = featureType,
-                MaxInteractions = feature.Interactable.MaxInteractions,
-                InteractionCount = interactionCount
-            };
-
-            // Check if max interactions reached
-            if (feature.Interactable.MaxInteractions > 0 && interactionCount >= feature.Interactable.MaxInteractions)
-            {
-                interactableFeature.BlockedReason = $"Maximum interactions ({feature.Interactable.MaxInteractions}) reached";
-                interactableFeature.CanInteract = false;
-            }
-            // Check cooldown (ReinteractIntervalSeconds)
-            else if (feature.Interactable.ReinteractIntervalSeconds > 0 && interactionCount > 0)
-            {
-                // Find the most recent interaction
-                var lastInteraction = instance.GetCommittedTransactions()
-                    .Where(t => t.Type == SagaTransactionType.EntityInteracted &&
-                               t.Data.TryGetValue("FeatureRef", out var featureRef) &&
-                               featureRef == sagaTemplate.SagaFeatureRef)
-                    .OrderByDescending(t => t.GetCanonicalTimestamp())
-                    .FirstOrDefault();
-
-                if (lastInteraction != null)
-                {
-                    var elapsedSeconds = (DateTime.UtcNow - lastInteraction.GetCanonicalTimestamp()).TotalSeconds;
-                    if (elapsedSeconds < feature.Interactable.ReinteractIntervalSeconds)
-                    {
-                        var remainingSeconds = (int)(feature.Interactable.ReinteractIntervalSeconds - elapsedSeconds);
-                        var minutes = remainingSeconds / 60;
-                        var seconds = remainingSeconds % 60;
-                        interactableFeature.BlockedReason = $"On cooldown. Wait {remainingSeconds} seconds ({minutes}m {seconds}s)";
-                        interactableFeature.CanInteract = false;
-                    }
-                    else
-                    {
-                        interactableFeature.CanInteract = true;
-                    }
-                }
-            }
-            // Check quest token requirements
-            else if (feature.Interactable.RequiresQuestTokenRef != null && feature.Interactable.RequiresQuestTokenRef.Length > 0)
-            {
-                if (!HasAllQuestTokens(feature.Interactable.RequiresQuestTokenRef, avatar))
-                {
-                    interactableFeature.BlockedReason = $"Missing required quest tokens";
-                    interactableFeature.CanInteract = false;
-                }
-                else
-                {
-                    interactableFeature.CanInteract = true;
-                }
-            }
-            else
-            {
-                interactableFeature.CanInteract = true;
-            }
-
-            result.Add(interactableFeature);
-        }
-
-        return result;
-    }
-
     private static bool HasAllQuestTokens(string[] requiredTokens, AvatarBase avatar)
     {
         if (requiredTokens == null || requiredTokens.Length == 0)
@@ -405,18 +294,6 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         }
 
         return true;
-    }
-
-    private static bool HasAnyItems(ItemCollection loot)
-    {
-        if (loot == null) return false;
-
-        return loot.Consumables != null && loot.Consumables.Length > 0 ||
-               loot.BuildingMaterials != null && loot.BuildingMaterials.Length > 0 ||
-               loot.Blocks != null && loot.Blocks.Length > 0 ||
-               loot.Equipment != null && loot.Equipment.Length > 0 ||
-               loot.Tools != null && loot.Tools.Length > 0 ||
-               loot.Spells != null && loot.Spells.Length > 0;
     }
 
     private static (double x, double z) ConvertToSagaRelative(double latitude, double longitude, SagaArc sagaArc, IWorld world)

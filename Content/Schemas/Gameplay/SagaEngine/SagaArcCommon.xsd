@@ -27,7 +27,7 @@
         <xs:complexContent>
             <xs:extension base="EntityBase">
                 <xs:sequence>
-                    <xs:element name="Spawn" type="CharacterSpawn" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:element name="Spawn" type="CharacterSpawn" minOccurs="1" maxOccurs="unbounded" />
                     <xs:element name="RequiresQuestTokenRef" type="QuestTokenRef" minOccurs="0" maxOccurs="unbounded" />
                     <xs:element name="GivesQuestTokenRef" type="QuestTokenRef" minOccurs="0" maxOccurs="unbounded" />
                 </xs:sequence>
@@ -44,29 +44,4 @@
             <xs:enumeration value="Epic" />
         </xs:restriction>
     </xs:simpleType>
-    <xs:simpleType name="SagaFeatureType">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Landmark" />
-            <xs:enumeration value="Structure" />
-            <xs:enumeration value="Quest" />
-            <xs:enumeration value="ResourceNode" />
-            <xs:enumeration value="Teleporter" />
-            <xs:enumeration value="Vendor" />
-            <xs:enumeration value="CraftingStation" />
-        </xs:restriction>
-    </xs:simpleType>
-    <xs:complexType name="SagaFeature">
-        <xs:complexContent>
-            <xs:extension base="EntityBase">
-                <xs:sequence>
-                    <xs:element name="Interactable" type="Interactable" minOccurs="0"></xs:element>
-                </xs:sequence>
-                <xs:attribute name="Type" type="SagaFeatureType" use="required" />
-                <!-- Quest-specific attributes (only used when Type="Quest") -->
-                <xs:attribute name="QuestRef" type="QuestRef" use="optional" />
-                <xs:attribute name="Difficulty" type="QuestDifficulty" use="optional" default="Normal" />
-                <xs:attribute name="EstimatedDurationMinutes" type="xs:int" use="optional" />
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
 </xs:schema>

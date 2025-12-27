@@ -69,25 +69,6 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
                     Distance = distance
                 });
             }
-
-            // Add nearby features as candidates
-            foreach (var feature in result.NearbyFeatures)
-            {
-                // Calculate distance (feature is at Saga center)
-                var distance = CoordinateConverter.CalculateDistance(
-                    request.Latitude,
-                    request.Longitude,
-                    sagaKvp.Value.LatitudeZ,
-                    sagaKvp.Value.LongitudeX,
-                    _world);
-
-                candidates.Add(new InteractionCandidate
-                {
-                    SagaRef = sagaKvp.Key,
-                    Feature = feature,
-                    Distance = distance
-                });
-            }
         }
 
         // No interactions available
@@ -104,7 +85,6 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
             HasInteraction = true,
             SagaRef = winner.SagaRef,
             Character = winner.Character,
-            Feature = winner.Feature,
             Distance = winner.Distance,
             Priority = winner.Priority
         };
@@ -129,17 +109,30 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
     {
         var priority = 0;
 
-        // TODO: SpawnAndInitiate gets highest priority when we track trigger type
-        // if (candidate.IsInitiating) priority += 1000;
-
-        // Characters get higher priority than features
         if (candidate.Character != null)
         {
+            // Base priority for characters
             priority += 100;
-        }
-        else if (candidate.Feature != null)
-        {
-            priority += 50; // Features have lower priority than characters
+
+            // Recently spawned characters get priority boost (within last 30 seconds)
+            var secondsSinceSpawn = (DateTime.UtcNow - candidate.Character.State.SpawnedAt).TotalSeconds;
+            if (secondsSinceSpawn < 30)
+            {
+                // Priority decays from 200 to 0 over 30 seconds
+                priority += (int)(200 * (1.0 - secondsSinceSpawn / 30.0));
+            }
+
+            // Hostile characters get priority (they're threats)
+            if (candidate.Character.State.Traits.ContainsKey("Hostile"))
+            {
+                priority += 50;
+            }
+
+            // Characters with dialogue get slight priority boost
+            if (candidate.Character.Options.CanDialogue)
+            {
+                priority += 25;
+            }
         }
 
         // Closer is better (inverse distance, capped)
@@ -152,7 +145,6 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
     {
         public string SagaRef { get; set; } = string.Empty;
         public InteractableCharacter? Character { get; set; }
-        public InteractableFeature? Feature { get; set; }
         public double Distance { get; set; }
         public int Priority { get; set; }
     }

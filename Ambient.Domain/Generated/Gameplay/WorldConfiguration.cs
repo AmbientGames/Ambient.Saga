@@ -55,8 +55,6 @@ namespace Ambient.Domain {
         
         private string avatarArchetypesRefField;
         
-        private string sagaFeaturesRefField;
-        
         private string achievementsRefField;
         
         private string questsRefField;
@@ -64,8 +62,6 @@ namespace Ambient.Domain {
         private string sagaArcsRefField;
         
         private string factionsRefField;
-        
-        private string sagaTriggerPatternsRefField;
         
         private string attackTellsRefField;
         
@@ -94,12 +90,10 @@ namespace Ambient.Domain {
             this.buildingMaterialsRefField = "Standard";
             this.dialogueTreesRefField = "Standard";
             this.avatarArchetypesRefField = "Standard";
-            this.sagaFeaturesRefField = "Standard";
             this.achievementsRefField = "Standard";
             this.questsRefField = "Standard";
             this.sagaArcsRefField = "Standard";
             this.factionsRefField = "Standard";
-            this.sagaTriggerPatternsRefField = "Standard";
             this.attackTellsRefField = "Standard";
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
@@ -300,18 +294,6 @@ namespace Ambient.Domain {
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string SagaFeaturesRef {
-            get {
-                return this.sagaFeaturesRefField;
-            }
-            set {
-                this.sagaFeaturesRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
         public string AchievementsRef {
             get {
                 return this.achievementsRefField;
@@ -354,18 +336,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.factionsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string SagaTriggerPatternsRef {
-            get {
-                return this.sagaTriggerPatternsRefField;
-            }
-            set {
-                this.sagaTriggerPatternsRefField = value;
             }
         }
         

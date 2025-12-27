@@ -2319,15 +2319,15 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to KōtaiJingūInnerShrine or Aramatsurinomiya.</Text>
+      <Text>Good to meet you! There's much to see around here, especially KōtaiJingūInnerShrine or Aramatsurinomiya.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Kazahinomi-no-Miya has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Ah, Kazahinomi-no-Miya! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine) Dialogue" Description="Dialogue tree for Guardian of Kōtai Jingū (Inner Shrine)" StartNodeId="greeting">
@@ -2377,7 +2377,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! Kazahinominomiya or Aramatsurinomiya is worth a visit if you have time.</Text>
+      <Text>Good to meet you! There's much to see around here, especially Kazahinominomiya or Aramatsurinomiya.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2385,7 +2385,7 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya Dialogue" Description="Dialogue tree for Guardian of Aramatsuri-no-Miya" StartNodeId="greeting">
@@ -2435,7 +2435,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to KōtaiJingūInnerShrine or Kazahinominomiya.</Text>
+      <Text>It's good to meet a friendly face! Have you visited KōtaiJingūInnerShrine or Kazahinominomiya yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2447,102 +2447,6 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>You've got a good eye! Let me show you what I have in stock.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Browse to your heart's content! Let me know if anything catches your eye.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Looking to trade? You've come to the right place at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). What catches your eye?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1 or Aramatsurinomiya.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1), holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0, I recommend it.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2), holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) is beautiful this time of year, isn't it?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4) Dialogue" Description="Dialogue tree for Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>Looking to buy or sell? Either way, you've come to the right place!</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -2560,6 +2464,102 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>Looking to trade? You've come to the right place at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). What catches your eye?</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1 or Aramatsurinomiya.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1), holds many secrets. Those who listen carefully learn much.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)? It's quite a sight to behold.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>You want to know about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)? Settle in - there's much to tell.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) is beautiful this time of year, isn't it?</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4) Dialogue" Description="Dialogue tree for Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" />
     </Node>
     <Node NodeId="bargain_hard_fail">
@@ -2581,7 +2581,7 @@
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>My wares are spread before you. See anything you fancy?</Text>
+      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" />
     </Node>
     <Node NodeId="greeting">
@@ -2591,15 +2591,15 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2, I recommend it.</Text>
+      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" StartNodeId="greeting">
@@ -2609,15 +2609,15 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3 is worth a visit if you have time.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" StartNodeId="greeting">
@@ -2627,20 +2627,20 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 yet?</Text>
+      <Text>Nice to see a fellow traveler! Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)? Settle in - there's much to tell.</Text>
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7) Dialogue" Description="Dialogue tree for Trader at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
-      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
+      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
       <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
       <Choice Text="I'll come back later" NextNodeId="end" />
@@ -2677,7 +2677,7 @@
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
+      <Text>Everything you see is for sale. Just say the word!</Text>
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" />
     </Node>
     <Node NodeId="greeting">
@@ -2687,7 +2687,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5 is worth a visit if you have time.</Text>
+      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2695,7 +2695,7 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" StartNodeId="greeting">
@@ -2705,15 +2705,15 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially ToyōkeDaijingūOuterShrine or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to ToyōkeDaijingūOuterShrine or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Take care out there!</Text>
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine) Dialogue" Description="Dialogue tree for Guardian of Toyōke Daijingū (Outer Shrine)" StartNodeId="greeting">
@@ -2763,15 +2763,15 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7.</Text>
+      <Text>It's good to meet a friendly face! Have you visited ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Toyōke Daijingū (Outer Shrine) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Toyōke Daijingū (Outer Shrine) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" StartNodeId="greeting">
@@ -2781,15 +2781,15 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited KazamiyaGekū or ToyōkeDaijingūOuterShrine yet?</Text>
+      <Text>A pleasure to meet you! If you haven't been to KazamiyaGekū or ToyōkeDaijingūOuterShrine, I recommend it.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1) is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū) Dialogue" Description="Dialogue tree for Guardian of Kazamiya (Gekū)" StartNodeId="greeting">
@@ -2901,7 +2901,7 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Tsuchi-no-Miya is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Tsuchi-no-Miya has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -2955,7 +2955,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to Tsuchinomiya or KazamiyaGekū.</Text>
+      <Text>It's good to meet a friendly face! Have you visited Tsuchinomiya or KazamiyaGekū yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2963,7 +2963,7 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya Dialogue" Description="Dialogue tree for Guard at Kazahinomi-no-Miya" StartNodeId="greeting">
@@ -2973,7 +2973,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Text>A pleasure! These lands are full of wonders worth exploring.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2981,7 +2981,7 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0_1" DisplayName="Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) Dialogue" Description="Dialogue tree for Wild Beast near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" StartNodeId="greeting">
@@ -2991,15 +2991,15 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
+      <Text>A pleasure! These lands are full of wonders worth exploring.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1), holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5_2" DisplayName="Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" StartNodeId="greeting">
@@ -3013,11 +3013,11 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6) is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
 </DialogueTrees>

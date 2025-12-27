@@ -19,11 +19,6 @@ public class AvailableInteractionsResult
     public List<InteractableCharacter> NearbyCharacters { get; set; } = new();
 
     /// <summary>
-    /// Features (loot chests, landmarks, etc.) that the avatar can interact with
-    /// </summary>
-    public List<InteractableFeature> NearbyFeatures { get; set; } = new();
-
-    /// <summary>
     /// Triggers currently active at this position
     /// </summary>
     public List<ActiveTriggerInfo> ActiveTriggers { get; set; } = new();
@@ -109,47 +104,6 @@ public class CharacterInteractionOptions
     /// Why interactions are blocked (if any are false)
     /// </summary>
     public string? BlockedReason { get; set; }
-}
-
-/// <summary>
-/// A feature the avatar can interact with (loot chest, landmark, etc.)
-/// </summary>
-public class InteractableFeature
-{
-    /// <summary>
-    /// Reference to feature in the template
-    /// </summary>
-    public string FeatureRef { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Display name
-    /// </summary>
-    public string DisplayName { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Feature type (Structure, Landmark, QuestSignpost)
-    /// </summary>
-    public string FeatureType { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Can interact with this feature right now
-    /// </summary>
-    public bool CanInteract { get; set; }
-
-    /// <summary>
-    /// Why interaction is blocked (if CanInteract is false)
-    /// </summary>
-    public string? BlockedReason { get; set; }
-
-    /// <summary>
-    /// How many times this avatar has interacted with this feature
-    /// </summary>
-    public int InteractionCount { get; set; }
-
-    /// <summary>
-    /// Maximum interactions allowed (0 = unlimited)
-    /// </summary>
-    public int MaxInteractions { get; set; }
 }
 
 /// <summary>

@@ -28,10 +28,8 @@ public interface IWorldConfiguration
     string BuildingMaterialsRef { get; set; }
     string DialogueTreesRef { get; set; }
     string AvatarArchetypesRef { get; set; }
-    string SagaFeaturesRef { get; set; }
     string AchievementsRef { get; set; }
     string QuestsRef { get; set; }
-    string SagaTriggerPatternsRef { get; set; }
     string SagaArcsRef { get; set; }
     string FactionsRef { get; set; }
     string StatusEffectsRef { get; set; }

@@ -59,6 +59,7 @@ public static class MapLegend
 
     /// <summary>
     /// Render trigger rings legend - matches TriggerColors.
+    /// Completed triggers are hidden, so not shown in legend.
     /// </summary>
     private static void RenderTriggersLegend()
     {
@@ -66,10 +67,9 @@ public static class MapLegend
         ImGui.Spacing();
         ImGui.Indent(10);
 
-        // Status-based colors - matches TriggerColors
+        // Status-based colors - matches TriggerColors (Complete hidden, not shown)
         RenderLegendCircle(TriggerColors.AvailableColor, "Available", filled: false);
         RenderLegendCircle(TriggerColors.LockedColor, "Locked", filled: false);
-        RenderLegendCircle(TriggerColors.CompleteColor, "Complete", filled: false);
 
         ImGui.Unindent(10);
     }

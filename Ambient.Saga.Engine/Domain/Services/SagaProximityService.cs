@@ -286,8 +286,8 @@ public static class SagaProximityService
     }
 
     /// <summary>
-    /// Queries ALL possible interactions at a position: proximity triggers, features, and spawned characters.
-    /// Returns results sorted by priority: Character > Feature > Trigger.
+    /// Queries ALL possible interactions at a position: proximity triggers and spawned characters.
+    /// Returns results sorted by priority: Character > Trigger.
     /// This is the comprehensive query the UI should use for "what would happen if I clicked here?"
     /// </summary>
     /// <param name="modelX">Position X in model coordinates</param>
@@ -310,32 +310,10 @@ public static class SagaProximityService
 
         var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
 
-        const double FEATURE_RADIUS_METERS = 5.0; // Hardcoded proximity for features
-        const double CHARACTER_RADIUS_METERS = 5.0; // Hardcoded proximity for spawned characters
-
         // Pre-filter to only nearby SagaArcs (major performance optimization)
         foreach (var (saga, sagaModelX, sagaModelZ, distanceToCenter) in FilterSagaArcsByProximity(modelX, modelZ, world))
         {
-            // 1. CHECK FEATURE (at saga center, 5m radius)
-            if (distanceToCenter <= FEATURE_RADIUS_METERS)
-            {
-                // Check if saga has a feature
-                if (!string.IsNullOrEmpty(saga.SagaFeatureRef))
-                {
-                    var featureStatus = await DetermineFeatureStatusAsync(saga, avatar, world, worldRepository);
-                    interactions.Add(new SagaInteraction
-                    {
-                        Type = SagaInteractionType.Feature,
-                        SagaRef = saga.RefName,
-                        EntityRef = saga.SagaFeatureRef,
-                        DistanceMeters = distanceToCenter,
-                        Status = featureStatus,
-                        Priority = 2 // Feature = medium priority
-                    });
-                }
-            }
-
-            // 2. CHECK PROXIMITY TRIGGERS
+            // CHECK PROXIMITY TRIGGERS
             if (!world.SagaTriggersLookup.TryGetValue(saga.RefName, out var triggers))
                 continue;
 
@@ -350,22 +328,18 @@ public static class SagaProximityService
 
                 if (isWithin)
                 {
-                    var triggerStatus = DetermineSagaTriggerStatus(trigger, avatar);
+                    var triggerStatus = await DetermineTriggerStatusAsync(saga, trigger, avatar, world, worldRepository);
                     interactions.Add(new SagaInteraction
                     {
                         Type = SagaInteractionType.SagaTrigger,
                         SagaRef = saga.RefName,
                         EntityRef = trigger.RefName,
-                        DistanceMeters = distanceToCenter, // Use saga center distance for now
+                        DistanceMeters = distanceToCenter,
                         Status = triggerStatus,
                         SagaTriggerRef = trigger.RefName,
-                        Priority = 3 // Trigger = lowest priority
+                        SpawnCount = trigger.Spawn.Sum(s => s.Count),
+                        Priority = 2 // Character = 1, Trigger = 2
                     });
-
-                    // 3. CHECK SPAWNED CHARACTERS (at trigger, 5m radius)
-                    // TODO: Query worldRepository for spawned characters at this trigger
-                    // For now, we don't have character position data, so skip
-                    // When character positions are available, add CHARACTER interactions here
                 }
             }
         }
@@ -378,71 +352,64 @@ public static class SagaProximityService
     }
 
     /// <summary>
-    /// Determines the status of a feature (available, locked, complete).
+    /// Determines the status of a trigger (available, locked, complete).
+    /// Uses replayed SagaState from the state machine - no duplicated logic.
     /// </summary>
-    private static async Task<InteractionStatus> DetermineFeatureStatusAsync(
+    private static async Task<InteractionStatus> DetermineTriggerStatusAsync(
         SagaArc sagaArc,
+        SagaTrigger sagaTrigger,
         AvatarBase? avatar,
         IWorld world,
-        IWorldStateRepository worldRepository)
-    {
-        // Check for completion first (if feature has been interacted with)
-        if (worldRepository != null && avatar != null)
-        {
-            try
-            {
-                var avatarId = avatar.AvatarId.ToString();
-                var sagaInstance = await worldRepository.GetSagaInstanceAsync(avatarId, sagaArc.RefName);
-
-                if (sagaInstance != null && sagaInstance.Transactions != null)
-                {
-                    // Check transaction log for EntityInteracted or LandmarkDiscovered
-                    foreach (var transaction in sagaInstance.Transactions)
-                    {
-                        if ((transaction.Type == SagaTransactionType.EntityInteracted ||
-                             transaction.Type == SagaTransactionType.LandmarkDiscovered) &&
-                            transaction.Data != null &&
-                            transaction.Data.ContainsKey("EntityRef") &&
-                            transaction.Data["EntityRef"] == sagaArc.SagaFeatureRef)
-                        {
-                            return InteractionStatus.Complete;
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                // If repository access fails, continue with other checks
-            }
-        }
-
-        // Check if saga requires quest tokens (locked if missing)
-        if (!string.IsNullOrEmpty(sagaArc.SagaFeatureRef))
-        {
-            var feature = world.TryGetSagaFeatureByRefName(sagaArc.SagaFeatureRef);
-            if (feature?.Interactable?.RequiresQuestTokenRef != null)
-            {
-                if (avatar == null || !HasAllQuestTokens(feature.Interactable.RequiresQuestTokenRef, avatar))
-                    return InteractionStatus.Locked;
-            }
-        }
-
-        return InteractionStatus.Available;
-    }
-
-    /// <summary>
-    /// Determines the status of a proximity trigger.
-    /// </summary>
-    private static InteractionStatus DetermineSagaTriggerStatus(SagaTrigger sagaTrigger, AvatarBase? avatar)
+        IWorldStateRepository? worldRepository)
     {
         if (avatar == null)
-            return InteractionStatus.Available; // No avatar = show as available
+            return InteractionStatus.Available;
 
-        // Check quest token requirements
+        // Check quest token requirements first
         if (!TriggerAvailabilityChecker.CanActivate(sagaTrigger, avatar))
             return InteractionStatus.Locked;
 
-        // TODO: Check if all spawned characters are defeated = Complete status
+        // Use replayed state from state machine to check completion
+        if (worldRepository == null)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] worldRepository is null for trigger '{sagaTrigger.RefName}'");
+            return InteractionStatus.Available;
+        }
+
+        var avatarId = avatar.AvatarId.ToString();
+        var sagaInstance = await worldRepository.GetSagaInstanceAsync(avatarId, sagaArc.RefName);
+
+        if (sagaInstance == null)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] No saga instance for avatar '{avatarId}', saga '{sagaArc.RefName}'");
+            return InteractionStatus.Available;
+        }
+
+        if (!world.SagaTriggersLookup.TryGetValue(sagaArc.RefName, out var triggers))
+        {
+            System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] No triggers in lookup for saga '{sagaArc.RefName}'");
+            return InteractionStatus.Available;
+        }
+
+        // Replay state using the state machine (single source of truth)
+        var stateMachine = new SagaStateMachine(sagaArc, triggers, world);
+        var state = stateMachine.ReplayToNow(sagaInstance);
+
+        // Debug: Log transaction count and trigger states
+        var triggerCompletedCount = sagaInstance.Transactions?.Count(tx => tx.Type == SagaTransactionType.TriggerCompleted) ?? 0;
+        System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] Saga '{sagaArc.RefName}' has {sagaInstance.Transactions?.Count ?? 0} transactions, {triggerCompletedCount} TriggerCompleted");
+
+        // Check trigger status from replayed state
+        if (state.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState))
+        {
+            System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] Trigger '{sagaTrigger.RefName}' status = {triggerState.Status}");
+            if (triggerState.Status == SagaTriggerStatus.Completed)
+                return InteractionStatus.Complete;
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] Trigger '{sagaTrigger.RefName}' NOT FOUND in state.Triggers (has {state.Triggers.Count} triggers)");
+        }
 
         return InteractionStatus.Available;
     }
@@ -475,9 +442,6 @@ public enum SagaInteractionType
 {
     /// <summary>Proximity trigger that spawns characters or activates content</summary>
     SagaTrigger,
-
-    /// <summary>Feature at saga center (Landmark/Structure/QuestSignpost)</summary>
-    Feature,
 
     /// <summary>Spawned character (future: when character positions are tracked)</summary>
     Character
@@ -519,11 +483,14 @@ public class SagaInteraction
     /// <summary>Availability status (Available/Locked/Complete)</summary>
     public required InteractionStatus Status { get; init; }
 
-    /// <summary>Priority for sorting (1=highest, Character > Feature > Trigger)</summary>
+    /// <summary>Priority for sorting (1=highest, Character > Trigger)</summary>
     public required int Priority { get; init; }
 
     /// <summary>Trigger RefName (if this is a Trigger interaction)</summary>
     public string? SagaTriggerRef { get; init; }
+
+    /// <summary>Number of characters that would spawn from this trigger</summary>
+    public int SpawnCount { get; init; }
 
     /// <summary>Character RefName (if this is a Character interaction)</summary>
     public string? CharacterRef { get; init; }

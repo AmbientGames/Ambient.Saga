@@ -70,41 +70,16 @@ public partial class SagaViewModel : ObservableObject
         IHeightMapMetadata metadata,
         IWorld world)
     {
-        // Get quest tokens from the focus entity (unified SagaFeature)
-        string[]? requiresQuestTokens = null;
-        string[]? givesQuestTokens = null;
-
-        if (!string.IsNullOrEmpty(sagaArc.SagaFeatureRef))
+        // Determine feature type from the SagaArc.Type (for coloring the center dot)
+        FeatureType featureType = sagaArc.Type switch
         {
-            var feature = world.TryGetSagaFeatureByRefName(sagaArc.SagaFeatureRef);
-            if (feature != null)
-            {
-                requiresQuestTokens = feature.Interactable?.RequiresQuestTokenRef;
-                givesQuestTokens = feature.Interactable?.GivesQuestTokenRef;
-            }
-        }
-
-        // Determine feature type from the focus entity (for coloring the center dot)
-        FeatureType featureType = FeatureType.Structure; // Default
-        if (!string.IsNullOrEmpty(sagaArc.SagaFeatureRef))
-        {
-            var feature = world.TryGetSagaFeatureByRefName(sagaArc.SagaFeatureRef);
-            if (feature != null)
-            {
-                // Map SagaFeatureType to UI FeatureType enum
-                featureType = feature.Type switch
-                {
-                    SagaFeatureType.Landmark => FeatureType.Landmark,
-                    SagaFeatureType.Structure => FeatureType.Structure,
-                    SagaFeatureType.Quest => FeatureType.QuestSignpost,
-                    SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
-                    SagaFeatureType.Teleporter => FeatureType.Teleporter,
-                    SagaFeatureType.Vendor => FeatureType.Vendor,
-                    SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
-                    _ => FeatureType.Structure // Default for unknown types
-                };
-            }
-        }
+            SagaArcType.Landmark => FeatureType.Landmark,
+            SagaArcType.Structure => FeatureType.Structure,
+            SagaArcType.Quest => FeatureType.QuestSignpost,
+            SagaArcType.ResourceNode => FeatureType.ResourceNode,
+            SagaArcType.Vendor => FeatureType.Vendor,
+            _ => FeatureType.Structure // Default for unknown types
+        };
 
         var vm = new SagaViewModel
         {
@@ -112,8 +87,6 @@ public partial class SagaViewModel : ObservableObject
             DisplayName = sagaArc.DisplayName,
             LatitudeZ = sagaArc.LatitudeZ,
             LongitudeX = sagaArc.LongitudeX,
-            RequiresQuestTokens = requiresQuestTokens,
-            GivesQuestTokens = givesQuestTokens,
             FeatureType = featureType
         };
 
@@ -225,23 +198,11 @@ public partial class SagaViewModel : ObservableObject
         var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
         var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
 
-        // Query application service for feature status at Saga center
-        var interactions = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
-            sagaModelX, sagaModelZ, avatar, world, worldRepository);
-
-        var featureInteraction = interactions.FirstOrDefault(i =>
-            i.Type == SagaInteractionType.Feature &&
-            i.SagaRef == sagaArc.RefName);
-
-        if (featureInteraction != null)
-        {
-            // Store status for developer tooltip display
-            sagaVM.InteractionStatus = featureInteraction.Status;
-
-            // Use pre-calculated solid colors (no opacity)
-            sagaVM.FeatureDotColor = FeatureColors.GetColor(sagaVM.FeatureType, featureInteraction.Status);
-            sagaVM.FeatureDotOpacity = 1.0; // Always solid - colors handle the visual difference
-        }
+        // Set default status based on SagaArc type
+        // Characters spawned by triggers determine actual interaction availability
+        sagaVM.InteractionStatus = InteractionStatus.Available;
+        sagaVM.FeatureDotColor = FeatureColors.GetColor(sagaVM.FeatureType, InteractionStatus.Available);
+        sagaVM.FeatureDotOpacity = 1.0;
     }
 
     /// <summary>
@@ -269,6 +230,9 @@ public partial class SagaViewModel : ObservableObject
 
         if (triggerInteraction != null)
         {
+            // Store status for filtering completed triggers
+            triggerVM.Status = triggerInteraction.Status;
+
             // Use pre-calculated solid colors based on status
             triggerVM.RingColor = TriggerColors.GetColor(triggerInteraction.Status);
             triggerVM.RingOpacity = 0.15; // Base opacity when not hovered

@@ -48,7 +48,6 @@ public class TestWorldFactory : IWorldFactory
         world.QuestsLookup = new Dictionary<string, Quest>();
         world.CharacterAffinitiesLookup = new Dictionary<string, CharacterAffinity>();
         world.CharacterArchetypesLookup = new Dictionary<string, CharacterArchetype>();
-        world.SagaFeaturesLookup = new Dictionary<string, SagaFeature>();
         world.SagaArcLookup = new Dictionary<string, SagaArc>();
         world.FactionsLookup = new Dictionary<string, Faction>();
 

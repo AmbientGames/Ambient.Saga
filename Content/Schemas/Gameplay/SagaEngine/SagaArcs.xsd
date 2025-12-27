@@ -1,25 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
-    <xs:include schemaLocation="../../EntityBase.xsd" />
-    <xs:include schemaLocation="SagaFeatures.xsd" />
-    <xs:include schemaLocation="SagaArcCommon.xsd" />
-    <xs:include schemaLocation="SagaTriggerPatterns.xsd" />
+	<xs:include schemaLocation="../../EntityBase.xsd" />
+	<xs:include schemaLocation="SagaArcCommon.xsd" />
+
+	<xs:simpleType name="SagaArcType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Landmark" />
+            <xs:enumeration value="Structure" />
+            <xs:enumeration value="Quest" />
+            <xs:enumeration value="ResourceNode" />
+            <xs:enumeration value="Vendor" />
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="SagaArc">
         <xs:complexContent>
             <xs:extension base="EntityBase">
                 <xs:sequence>
-                    <xs:element name="SagaFeatureRef" type="SagaFeatureRef" minOccurs="0" maxOccurs="1" />
-                    <xs:choice minOccurs="1" maxOccurs="1">
-                        <xs:element name="SagaTriggerPatternRef" type="SagaTriggerPatternRef" />
-                        <xs:element name="SagaTrigger" type="SagaTrigger" maxOccurs="unbounded" />
-                    </xs:choice>
+                    <!-- Triggers spawn characters when entered -->
+                    <xs:element name="SagaTrigger" type="SagaTrigger" minOccurs="1" maxOccurs="unbounded" />
                 </xs:sequence>
+                <!-- Location -->
                 <xs:attribute name="LatitudeZ" type="xs:double" use="required" />
                 <xs:attribute name="LongitudeX" type="xs:double" use="required" />
-			</xs:extension>
+                <!-- Feature properties -->
+                <xs:attribute name="Type" type="SagaArcType" use="required" />
+                <!-- Quest-specific (optional) -->
+                <xs:attribute name="QuestRef" type="QuestRef" use="optional" />
+                <xs:attribute name="Difficulty" type="QuestDifficulty" use="optional" default="Normal" />
+            </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+
     <xs:complexType name="SagaArcs">
         <xs:sequence>
             <xs:element name="SagaArc" type="SagaArc" maxOccurs="unbounded">

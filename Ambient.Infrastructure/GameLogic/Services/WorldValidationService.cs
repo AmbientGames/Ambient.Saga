@@ -157,8 +157,8 @@ public static class WorldValidationService
     private static void ValidateQuestItemReferences(IWorld world, List<string> errors)
     {
         // Build a map of quest keys to entities that provide them
-        // Quest tokens are on: Characters and SagaFeatures
-        // (Sagas are just spatial organizers and don't provide quest tokens)
+        // Quest tokens are on: Characters and SagaTriggers
+        // (Sagas are spatial organizers containing triggers)
         var QuestTokenProviders = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
 
         // Scan all characters to see what quest keys they have or give
@@ -211,53 +211,6 @@ public static class WorldValidationService
             }
         }
 
-        // Scan all saga features to see what keys they provide
-        if (world.Gameplay.SagaFeatures != null)
-        {
-            foreach (var feature in world.Gameplay.SagaFeatures)
-            {
-                var featureContext = $"SagaFeature '{feature.RefName}' (Type: {feature.Type})";
-
-                // Validate RequiresQuestTokenRef (now in Interactable)
-                if (feature.Interactable?.RequiresQuestTokenRef != null)
-                {
-                    foreach (var questTokenRef in feature.Interactable.RequiresQuestTokenRef)
-                    {
-                        if (!string.IsNullOrEmpty(questTokenRef))
-                        {
-                            if (!world.QuestTokensLookup.ContainsKey(questTokenRef))
-                            {
-                                errors.Add($"{featureContext}: RequiresQuestTokenRef '{questTokenRef}' not found in QuestTokens catalog");
-                            }
-                        }
-                    }
-                }
-
-                // Validate GivesQuestTokenRef (now in Interactable)
-                if (feature.Interactable?.GivesQuestTokenRef != null)
-                {
-                    foreach (var questTokenRef in feature.Interactable.GivesQuestTokenRef)
-                    {
-                        if (!string.IsNullOrEmpty(questTokenRef))
-                        {
-                            if (world.QuestTokensLookup.ContainsKey(questTokenRef))
-                            {
-                                if (!QuestTokenProviders.ContainsKey(questTokenRef))
-                                {
-                                    QuestTokenProviders[questTokenRef] = new List<string>();
-                                }
-                                QuestTokenProviders[questTokenRef].Add(featureContext);
-                            }
-                            else
-                            {
-                                errors.Add($"{featureContext}: GivesQuestTokenRef '{questTokenRef}' not found in QuestTokens catalog");
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         // Validate Saga character associations and structure
         if (world.Gameplay.SagaArcs != null)
         {
@@ -265,62 +218,23 @@ public static class WorldValidationService
             {
                 var sagaContext = $"Saga '{saga.RefName}'";
 
-                if (saga.Items != null)
+                // Validate inline triggers
+                if (saga.SagaTrigger != null)
                 {
-                    foreach (var item in saga.Items)
+                    foreach (var sagaTrigger in saga.SagaTrigger)
                     {
-                        switch (item)
+                        var triggerContext = $"{sagaContext} Trigger '{sagaTrigger.RefName}'";
+
+                        ValidateSagaTriggerQuestTokens(world, errors, triggerContext, sagaTrigger);
+
+                        if (sagaTrigger.Spawn != null)
                         {
-                            case SagaTrigger sagaTrigger:
-                                // Inline trigger - validate directly
-                                var inlineSagaTriggerContext = $"{sagaContext} Trigger '{sagaTrigger.RefName}'";
-
-                                ValidateSagaTriggerQuestTokens(world, errors, inlineSagaTriggerContext, sagaTrigger);
-
-                                if (sagaTrigger.Spawn != null)
-                                {
-                                    foreach (var spawn in sagaTrigger.Spawn)
-                                    {
-                                        ValidateCharacterSpawn(world, errors, inlineSagaTriggerContext, spawn);
-                                    }
-                                }
-                                break;
-
-                            case string patternRef:
-                                // TriggerPatternRef - validate pattern triggers
-                                var pattern = world.Gameplay?.SagaTriggerPatterns?
-                                    .FirstOrDefault(tp => tp.RefName == patternRef);
-
-                                if (pattern == null)
-                                {
-                                    errors.Add($"{sagaContext}: TriggerPattern '{patternRef}' not found");
-                                }
-                                else if (pattern.SagaTrigger != null)
-                                {
-                                    foreach (var patternTrigger in pattern.SagaTrigger)
-                                    {
-                                        var patternTriggerContext = $"{sagaContext} TriggerPattern '{patternRef}' Trigger '{patternTrigger.RefName}'";
-
-                                        ValidateSagaTriggerQuestTokens(world, errors, patternTriggerContext, patternTrigger);
-
-                                        if (patternTrigger.Spawn != null)
-                                        {
-                                            foreach (var spawn in patternTrigger.Spawn)
-                                            {
-                                                ValidateCharacterSpawn(world, errors, patternTriggerContext, spawn);
-                                            }
-                                        }
-                                    }
-                                }
-                                break;
+                            foreach (var spawn in sagaTrigger.Spawn)
+                            {
+                                ValidateCharacterSpawn(world, errors, triggerContext, spawn);
+                            }
                         }
                     }
-                }
-
-                // Validate SagaFeatureRef (now a simple property, not discriminated union)
-                if (!string.IsNullOrEmpty(saga.SagaFeatureRef))
-                {
-                    ValidateReference(world.SagaFeaturesLookup, saga.SagaFeatureRef, sagaContext, "SagaFeatureRef", "SagaFeatures", errors);
                 }
             }
         }
@@ -1640,26 +1554,6 @@ public static class WorldValidationService
             }
         }
 
-        // Check saga features for token grants
-        if (world.Gameplay.SagaFeatures != null)
-        {
-            foreach (var feature in world.Gameplay.SagaFeatures)
-            {
-                if (feature.Interactable?.GivesQuestTokenRef != null)
-                {
-                    foreach (var tokenRef in feature.Interactable.GivesQuestTokenRef)
-                    {
-                        if (!string.IsNullOrEmpty(tokenRef))
-                        {
-                            if (!tokenGrants.ContainsKey(tokenRef))
-                                tokenGrants[tokenRef] = new List<string>();
-                            tokenGrants[tokenRef].Add($"SagaFeature '{feature.RefName}'");
-                        }
-                    }
-                }
-            }
-        }
-
         // Report tokens granted in multiple places (informational, not error)
         // This is useful to know but may be intentional (multiple ways to get a token)
         foreach (var (token, sources) in tokenGrants)
@@ -1776,28 +1670,11 @@ public static class WorldValidationService
 
         foreach (var saga in world.Gameplay.SagaArcs)
         {
-            if (saga.Items == null) continue;
+            if (saga.SagaTrigger == null) continue;
 
-            foreach (var item in saga.Items)
+            foreach (var trigger in saga.SagaTrigger)
             {
-                switch (item)
-                {
-                    case SagaTrigger inlineTrigger:
-                        CollectSpawnedCharacters(inlineTrigger, spawnedCharacterRefs);
-                        break;
-
-                    case string patternRef:
-                        var pattern = world.Gameplay?.SagaTriggerPatterns?
-                            .FirstOrDefault(tp => tp.RefName == patternRef);
-                        if (pattern?.SagaTrigger != null)
-                        {
-                            foreach (var trigger in pattern.SagaTrigger)
-                            {
-                                CollectSpawnedCharacters(trigger, spawnedCharacterRefs);
-                            }
-                        }
-                        break;
-                }
+                CollectSpawnedCharacters(trigger, spawnedCharacterRefs);
             }
         }
 

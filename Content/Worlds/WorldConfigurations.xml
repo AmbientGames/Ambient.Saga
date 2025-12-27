@@ -11,7 +11,7 @@
         SpawnLatitude="34.492"
         SpawnLongitude="136.702">
         <HeightMapSettings
-            RelativePath="GeographicData/Ise_Compressed.tif"
+            RelativePath="GeographicData/Ise.tif"
             HorizontalScale="1.0"
             VerticalScale="1.0"
             VerticalShift="0" />
@@ -24,20 +24,7 @@
         SpawnLatitude="31.591838"
         SpawnLongitude="130.567026">
         <HeightMapSettings
-            RelativePath="GeographicData/Kagoshima_Compressed.tif"
-            HorizontalScale="0.3333333333"
-            VerticalScale="0.3333333333"
-            VerticalShift="0" />
-    </WorldConfiguration>
-    <WorldConfiguration
-        RefName="Sakurajima"
-        DisplayName="Sakurajima, Fire Mountain of Kinko Bay"
-        Description="Sakurajima: The fire mountain of Kinko Bay. In feudal times an island shrine of ash and thunder—fisher boats and ferry crossings beneath its smoking peaks, with villages and fields thriving on perilously fertile volcanic soil."
-        Template="Japan"
-        SpawnLatitude="31.59371"
-        SpawnLongitude="130.62466">
-        <HeightMapSettings
-            RelativePath="GeographicData/Kagoshima_Compressed.tif"
+            RelativePath="GeographicData/Kagoshima.tif"
             HorizontalScale="0.3333333333"
             VerticalScale="0.3333333333"
             VerticalShift="0" />

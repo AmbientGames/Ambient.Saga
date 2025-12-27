@@ -503,22 +503,6 @@ public partial class MainViewModel : ObservableObject
                         await StartDialogueWithCharacterAsync(result.SagaRef, result.Character.CharacterInstanceId);
                     }
                 }
-                else if (result.Feature != null)
-                {
-                    // WPF WINDOW CODE - TO BE DELETED WITH XAML
-                    // Don't auto-interact if an interaction window is already open (WPF only)
-                    // In ImGui mode, modals handle this differently
-                    //if (_isInteractionWindowOpen)
-                    //{
-                    //    System.Diagnostics.Debug.WriteLine($"*** Feature '{result.Feature.DisplayName}' nearby but interaction window already open - skipping");
-                    //    return;
-                    //}
-
-                    System.Diagnostics.Debug.WriteLine($"*** Feature '{result.Feature.DisplayName}' ({result.Feature.FeatureType}) nearby - auto-interacting");
-                    // Features are simple: immediate loot/token rewards (no dialogue)
-                    // For "Spirit in Temple" scenarios, spawn a Character via trigger instead
-                    await InteractWithFeatureAsync(result.SagaRef, result.Feature.FeatureRef);
-                }
             }
         }
         catch (Exception ex)
@@ -530,106 +514,6 @@ public partial class MainViewModel : ObservableObject
     private string? _currentDialogueSagaRef;
     private Guid _currentDialogueCharacterInstanceId;
     private bool _isInDialogue;
-
-    /// <summary>
-    /// Interacts with a feature (shrine, chest, signpost) to receive loot/tokens.
-    /// Features are stateless and give immediate rewards.
-    /// </summary>
-    private async Task InteractWithFeatureAsync(string sagaRef, string featureRef)
-    {
-        if (PlayerAvatar == null || CurrentWorld == null)
-            return;
-
-        try
-        {
-            var command = new InteractWithFeatureCommand
-            {
-                AvatarId = PlayerAvatar.AvatarId,
-                SagaArcRef = sagaRef,
-                FeatureRef = featureRef,
-                Avatar = PlayerAvatar
-            };
-
-            var result = await _mediator.Send(command);
-
-            if (result.Successful)
-            {
-                System.Diagnostics.Debug.WriteLine($"[FeatureInteraction] Interacted with feature '{featureRef}' - Transactions: {result.TransactionIds.Count}");
-                ActivityLog?.Insert(0, $"📦 Interacted with {featureRef}");
-
-                // Show interaction results (loot, effects, quest tokens)
-                await ShowFeatureInteractionResultAsync(sagaRef, featureRef);
-
-                // Save avatar (inventory/stats may have changed)
-                await SavePlayerAvatarAsync();
-                NotifyPlayerAvatarChanged();
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"[FeatureInteraction] ERROR: {result.ErrorMessage}");
-            }
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[FeatureInteraction] EXCEPTION: {ex.Message}");
-        }
-    }
-
-    private async Task ShowFeatureInteractionResultAsync(string sagaRef, string featureRef)
-    {
-        if (CurrentWorld == null)
-            return;
-
-        // Find the feature
-        var feature = CurrentWorld.TryGetSagaFeatureByRefName(featureRef);
-
-        string title = string.Empty;
-        Interactable? interactable = null;
-
-        if (feature != null)
-        {
-            title = feature.DisplayName;
-            interactable = feature.Interactable;
-        }
-
-        // WPF WINDOW CODE - TO BE DELETED WITH XAML
-        /*if (interactable != null)
-        {
-            // Create result view model
-            UpdateSagaInteractionContext();
-
-            var resultVM = new FeatureInteractionResultViewModel();
-            resultVM.LoadResults(title, interactable);
-
-            var locationViewModel = new SagaInteractionWindowViewModel(_sagaInteractionContext)
-            {
-                ActivityLog = ActivityLog,
-                FeatureInteractionResultViewModel = resultVM
-            };
-
-            // Mark window as open
-            _isInteractionWindowOpen = true;
-
-            // Show in window
-            _interactionWindow = new SagaInteractionWindow
-            {
-                DataContext = locationViewModel,
-                Owner = System.Windows.Application.Current.MainWindow
-            };
-
-            // Handle window closed
-            _interactionWindow.Closed += (s, e) =>
-            {
-                _isInteractionWindowOpen = false;
-            };
-
-            _interactionWindow.ShowDialog();
-            _interactionWindow = null;
-            _isInteractionWindowOpen = false;
-        }*/
-
-        await Task.CompletedTask;
-    }
 
     /// <summary>
     /// Starts dialogue with a character using CQRS commands.
@@ -1405,6 +1289,9 @@ public partial class MainViewModel : ObservableObject
             {
                 // Pure CQRS: Command succeeded, no state data returned
                 ActivityLog.Insert(0, $"Entered {trigger.DisplayName}");
+
+                // Refresh trigger status so completed triggers disappear
+                await UpdateSagaFeatureStatus(trigger.SagaRefName);
             }
             else
             {
@@ -1441,154 +1328,42 @@ public partial class MainViewModel : ObservableObject
             return;
         }
 
-        // saga.SagaFeatureRef contains the entity ref (e.g., "BAMBOO_GROVE", "KINKAKUJI_TEMPLE_HISTORY")
-        var entityRef = saga.SagaFeatureRef;
-
-        // Look up the feature to determine type
-        var sagaFeature = CurrentWorld.TryGetSagaFeatureByRefName(entityRef);
-
-        // Determine feature type from saga
-        FeatureType? featureType = null;
-        if (sagaFeature != null)
+        // Determine feature type from SagaArc.Type
+        var featureType = saga.Type switch
         {
-            featureType = sagaFeature.Type switch
-            {
-                SagaFeatureType.Landmark => FeatureType.Landmark,
-                SagaFeatureType.Structure => FeatureType.Structure,
-                SagaFeatureType.Quest => FeatureType.QuestSignpost,
-                SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
-                SagaFeatureType.Teleporter => FeatureType.Teleporter,
-                SagaFeatureType.Vendor => FeatureType.Vendor,
-                SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
-                _ => FeatureType.Structure
-            };
-        }
+            SagaArcType.Landmark => FeatureType.Landmark,
+            SagaArcType.Structure => FeatureType.Structure,
+            SagaArcType.Quest => FeatureType.QuestSignpost,
+            SagaArcType.ResourceNode => FeatureType.ResourceNode,
+            SagaArcType.Vendor => FeatureType.Vendor,
+            _ => FeatureType.Structure
+        };
 
         // Check cooldown/availability before showing loot
-        if (featureType != null && !CheckEntityAvailability(featureType.Value, entityRef, ref actionMessage))
+        if (!CheckEntityAvailability(featureType, saga.RefName, ref actionMessage))
         {
             return; // On cooldown - message already set
         }
 
-        // Create a fake "loot container" character to hold the loot
+        // Create a placeholder character to hold info
+        // Note: Loot/rewards now come from Characters spawned by triggers, not from features
         var lootCharacter = new Character
         {
-            RefName = entityRef,
+            RefName = saga.RefName,
             DisplayName = triggerViewModel.DisplayName,
-            Description = $"Available items from {triggerViewModel.DisplayName}"
+            Description = $"Location: {triggerViewModel.DisplayName}"
         };
 
-        ItemCollection? loot = null;
-        RewardEffects? effects = null;
-
-        // TODO: This method needs refactoring - proximity triggers don't have types
-        // Features (Landmark/Structure) should be handled separately
-        // For now, determine feature type from saga
-        var saga2 = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault(s => s.RefName == triggerViewModel.SagaRefName);
-        if (saga2 != null && !string.IsNullOrEmpty(saga2.SagaFeatureRef))
-        {
-            var feature = CurrentWorld.TryGetSagaFeatureByRefName(saga2.SagaFeatureRef);
-            if (feature != null)
-            {
-                switch (feature.Type)
-                {
-                    case SagaFeatureType.Landmark:
-                        // Show lore content
-                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
-                        {
-                            lootCharacter.Description = feature.Interactable.Content;
-                            ActivityLog.Insert(0, $"📜 {feature.Interactable.Content}");
-                        }
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    case SagaFeatureType.Structure:
-                    case SagaFeatureType.ResourceNode:
-                        // Structures and resource nodes can have loot
-                        loot = feature.Interactable?.Loot;
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    case SagaFeatureType.Vendor:
-                        // Vendors have items to trade
-                        loot = feature.Interactable?.Loot;
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    case SagaFeatureType.CraftingStation:
-                        // Crafting stations show available recipes
-                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
-                        {
-                            lootCharacter.Description = feature.Interactable.Content;
-                        }
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    case SagaFeatureType.Teleporter:
-                        // Teleporters show destination info
-                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
-                        {
-                            lootCharacter.Description = feature.Interactable.Content;
-                        }
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    default:
-                        // Default: treat like structure
-                        loot = feature.Interactable?.Loot;
-                        effects = feature.Interactable?.Effects;
-                        break;
-                }
-            }
-            else
-            {
-                actionMessage += $" - Error: Feature '{entityRef}' not found";
-                return;
-            }
-        }
-
-        // Populate the character with loot
-        if (loot != null)
-        {
-            lootCharacter.Capabilities = loot;
-        }
-
-        // Apply effects immediately (auto-grant on trigger)
-        if (effects != null)
-        {
-            var effectsList = new List<string>();
-            ApplyRewardEffects(effects, effectsList);
-            if (effectsList.Count > 0)
-            {
-                actionMessage += $" - Effects: {string.Join(", ", effectsList)}";
-            }
-        }
-
         // Track current entity for trigger recording
-        _currentEntityRef = entityRef;
-        // Set _currentEntityType based on saga feature type
-        if (sagaFeature != null)
-        {
-            _currentEntityType = sagaFeature.Type switch
-            {
-                SagaFeatureType.Landmark => FeatureType.Landmark,
-                SagaFeatureType.Structure => FeatureType.Structure,
-                SagaFeatureType.Quest => FeatureType.QuestSignpost,
-                SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
-                SagaFeatureType.Teleporter => FeatureType.Teleporter,
-                SagaFeatureType.Vendor => FeatureType.Vendor,
-                SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
-                _ => FeatureType.Structure
-            };
-        }
+        _currentEntityRef = saga.RefName;
+        _currentEntityType = featureType;
 
         // Set the character and show trade UI
         TriggeredCharacter = lootCharacter;
-        // Loot containers are not merchants (only player can sell)
         MerchantTrade.RefreshCategories();
         OnCharacterChanged();
 
-        actionMessage += " - Items available";
+        actionMessage += " - Trigger activated";
     }
 
     private bool CheckEntityAvailability(FeatureType featureType, string entityRef, ref string actionMessage)
@@ -1612,47 +1387,8 @@ public partial class MainViewModel : ObservableObject
         return true;
     }
 
-    private async void RecordEntityTrigger()
-    {
-        if (CurrentWorld == null || PlayerAvatar == null) return;
-        if (_currentEntityRef == null || _currentEntityType == null || SelectedTrigger == null) return;
-
-        try
-        {
-            var command = new InteractWithFeatureCommand
-            {
-                AvatarId = PlayerAvatar.AvatarId,
-                SagaArcRef = SelectedTrigger.SagaRefName,
-                FeatureRef = _currentEntityRef,
-                Avatar = PlayerAvatar
-            };
-
-            var result = await _mediator.Send(command);
-
-            if (result.Successful)
-            {
-                ActivityLog.Insert(0, $"✨ Feature interaction recorded: {_currentEntityRef} [CQRS]");
-
-                // Update the SagaViewModel to reflect completion
-                await UpdateSagaFeatureStatus(SelectedTrigger.SagaRefName);
-            }
-            else
-            {
-                ActivityLog.Insert(0, $"⚠️ Feature interaction failed: {result.ErrorMessage}");
-            }
-        }
-        catch (Exception ex)
-        {
-            ActivityLog.Insert(0, $"Error recording feature interaction: {ex.Message}");
-        }
-
-        // Clear current entity
-        _currentEntityRef = null;
-        _currentEntityType = null;
-    }
-
     /// <summary>
-    /// Updates a SagaViewModel's feature status after recording a transaction.
+    /// Updates a SagaViewModel's trigger status after recording a transaction.
     /// </summary>
     private async Task UpdateSagaFeatureStatus(string sagaRef)
     {
@@ -1674,16 +1410,19 @@ public partial class MainViewModel : ObservableObject
                     Avatar = PlayerAvatar
                 });
 
-                var featureInteraction = interactions.FirstOrDefault(i =>
-                    i.Type == SagaInteractionType.Feature &&
-                    i.SagaRef == sagaRef);
-
-                if (featureInteraction != null)
+                // Update trigger statuses (so completed triggers disappear)
+                foreach (var triggerVM in sagaVM.Triggers)
                 {
-                    // Update to pre-calculated color based on new status
-                    sagaVM.FeatureDotColor = FeatureColors.GetColor(
-                        sagaVM.FeatureType, featureInteraction.Status);
-                    sagaVM.FeatureDotOpacity = 1.0;
+                    var triggerInteraction = interactions.FirstOrDefault(i =>
+                        i.Type == SagaInteractionType.SagaTrigger &&
+                        i.SagaRef == sagaRef &&
+                        i.SagaTriggerRef == triggerVM.RefName);
+
+                    if (triggerInteraction != null)
+                    {
+                        triggerVM.Status = triggerInteraction.Status;
+                        triggerVM.RingColor = TriggerColors.GetColor(triggerInteraction.Status);
+                    }
                 }
             }
         }
@@ -1940,35 +1679,46 @@ public partial class MainViewModel : ObservableObject
             {
                 triggeredViewModel = innermost.ViewModel;
                 hoveredSagaRef = triggeredViewModel.SagaRefName;
-                triggeredViewModel.IsHovered = true;
-                triggeredViewModel.RingOpacity = 0.3; // Hovered opacity (brighter)
             }
         }
 
-        // Update visibility for all triggers based on which Saga is hovered
+        // Step 1: Hide ALL triggers on ALL sagas
         foreach (var saga in Sagas)
         {
             foreach (var trigger in saga.Triggers)
             {
-                if (saga.RefName == hoveredSagaRef)
-                {
-                    // Show all triggers for the hovered Saga
-                    trigger.IsVisible = true;
+                trigger.IsVisible = false;
+            }
+        }
 
-                    if (trigger != triggeredViewModel)
-                    {
-                        // Not the innermost, so dimmer
-                        trigger.IsHovered = false;
-                        trigger.RingOpacity = 0.15;
-                    }
-                }
-                else
-                {
-                    // Hide triggers for all other Sagas
-                    trigger.IsVisible = false;
-                    trigger.IsHovered = false;
-                    trigger.RingOpacity = 0.15;
-                }
+        // Get character interactions at this position for debug info
+        var characterInteractions = interactions
+            .Where(i => i.Type == SagaInteractionType.Character)
+            .ToList();
+
+        // Step 2: Enable only triggers that are in the query results (mouse is inside them)
+        foreach (var ti in triggerInteractions)
+        {
+            var trigger = Sagas
+                .SelectMany(s => s.Triggers)
+                .FirstOrDefault(t => t.RefName == ti.SagaTriggerRef && t.SagaRefName == ti.SagaRef);
+
+            if (trigger == null)
+                throw new InvalidOperationException($"Trigger '{ti.SagaTriggerRef}' in saga '{ti.SagaRef}' not found in ViewModels");
+
+            // Show if Available or Locked, keep hidden if Complete
+            trigger.IsVisible = ti.Status == InteractionStatus.Available ||
+                                ti.Status == InteractionStatus.Locked;
+            trigger.Status = ti.Status;
+            trigger.RingColor = TriggerColors.GetColor(ti.Status);
+
+            // Debug info
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                var charsForThisSaga = characterInteractions.Where(c => c.SagaRef == ti.SagaRef).ToList();
+                trigger.DebugQueryInfo = $"Status: {ti.Status}\n" +
+                                         $"Characters at position: {charsForThisSaga.Count}\n" +
+                                         string.Join("\n", charsForThisSaga.Select(c => $"  - {c.CharacterRef} ({c.Status})"));
             }
         }
 

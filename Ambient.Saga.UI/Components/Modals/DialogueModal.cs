@@ -89,7 +89,7 @@ public class DialogueModal
         // Dialogue ended
         if (_currentState.HasEnded)
         {
-            RenderDialogueEnded(ref isOpen);
+            RenderDialogueEnded(character, modalManager, ref isOpen);
             return;
         }
 
@@ -184,7 +184,7 @@ public class DialogueModal
         }
     }
 
-    private void RenderDialogueEnded(ref bool isOpen)
+    private void RenderDialogueEnded(CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         ImGui.Spacing();
         ImGui.Spacing();
@@ -197,6 +197,33 @@ public class DialogueModal
         ImGui.Spacing();
         ImGui.Spacing();
         ImGui.Spacing();
+
+        // Check if character is lootable (defeated and has loot)
+        if (character.CanLoot && !character.IsAlive)
+        {
+            // Show loot option for defeated characters
+            var lootButtonWidth = 150f;
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - lootButtonWidth) * 0.5f);
+
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.6f, 0.5f, 0.2f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.7f, 0.6f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.8f, 0.7f, 0.3f, 1));
+
+            if (ImGui.Button("Collect Loot", new Vector2(lootButtonWidth, 35)))
+            {
+                // Close dialogue and open loot modal
+                modalManager.CloseModal("Dialogue");
+                modalManager.SelectedCharacter = character;
+                modalManager.OpenModal("Loot");
+                CloseAndReset(ref isOpen);
+                return;
+            }
+
+            ImGui.PopStyleColor(3);
+
+            ImGui.Spacing();
+            ImGui.Spacing();
+        }
 
         // Center the close button
         var buttonWidth = 150f;

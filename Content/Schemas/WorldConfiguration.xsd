@@ -40,12 +40,10 @@
                 <xs:attribute name="BuildingMaterialsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="DialogueTreesRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="AvatarArchetypesRef" type="xs:string" use="optional" default="Standard" />
-                <xs:attribute name="SagaFeaturesRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="AchievementsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="QuestsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="SagaArcsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="FactionsRef" type="xs:string" use="optional" default="Standard" />
-                <xs:attribute name="SagaTriggerPatternsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="AttackTellsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="CurrencyName" type="xs:string" default="Credit" />
                 <xs:attribute name="StartDate" type="xs:date" default="0001-05-01" />

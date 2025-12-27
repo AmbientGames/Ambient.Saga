@@ -34,10 +34,8 @@ public static class GameplayComponentLoader
         var materialsRef = ResolveRef(config.BuildingMaterialsRef, worldRef);
         var dialogueTreesRef = ResolveRef(config.DialogueTreesRef, worldRef);
         var avatarArchetypesRef = ResolveRef(config.AvatarArchetypesRef, worldRef);
-        var sagaFeaturesRef = ResolveRef(config.SagaFeaturesRef, worldRef);
         var achievementsRef = ResolveRef(config.AchievementsRef, worldRef);
         var questsRef = ResolveRef(config.QuestsRef, worldRef);
-        var sagaTriggerPatternsRef = ResolveRef(config.SagaTriggerPatternsRef, worldRef);
         var sagasRef = ResolveRef(config.SagaArcsRef, worldRef);
         var factionsRef = ResolveRef(config.FactionsRef, worldRef);
         var statusEffectsRef = ResolveRef(config.StatusEffectsRef, worldRef);
@@ -56,10 +54,8 @@ public static class GameplayComponentLoader
         world.Gameplay.BuildingMaterials = (await XmlLoader.LoadFromXmlAsync<BuildingMaterialCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{materialsRef}.BuildingMaterials.xml"), xsdFilePath)).BuildingMaterial ?? [];
         world.Gameplay.DialogueTrees = (await XmlLoader.LoadFromXmlAsync<DialogueTrees>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{dialogueTreesRef}.Dialogue.xml"), xsdFilePath)).DialogueTree ?? [];
         world.Gameplay.AvatarArchetypes = (await XmlLoader.LoadFromXmlAsync<AvatarArchetypes>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{avatarArchetypesRef}.AvatarArchetypes.xml"), xsdFilePath)).AvatarArchetype ?? [];
-        world.Gameplay.SagaFeatures = (await XmlLoader.LoadFromXmlAsync<SagaFeatures>(Path.Combine(dataDirectory, "Gameplay", "Features", $"{sagaFeaturesRef}.SagaFeatures.xml"), xsdFilePath)).SagaFeature ?? [];
         world.Gameplay.Achievements = (await XmlLoader.LoadFromXmlAsync<Achievements>(Path.Combine(dataDirectory, "Gameplay", "Achievements", $"{achievementsRef}.Achievements.xml"), xsdFilePath)).Achievement ?? [];
         world.Gameplay.Quests = (await XmlLoader.LoadFromXmlAsync<Quests>(Path.Combine(dataDirectory, "Gameplay", "Quests", $"{questsRef}.Quests.xml"), xsdFilePath)).Quest ?? [];
-        world.Gameplay.SagaTriggerPatterns = (await XmlLoader.LoadFromXmlAsync<SagaTriggerPatterns>(Path.Combine(dataDirectory, "Gameplay", "SagaTriggerPatterns", $"{sagaTriggerPatternsRef}.SagaTriggerPatterns.xml"), xsdFilePath)).SagaTriggerPattern ?? [];
         world.Gameplay.SagaArcs = (await XmlLoader.LoadFromXmlAsync<SagaArcs>(Path.Combine(dataDirectory, "Gameplay", $"{sagasRef}.Sagas.xml"), xsdFilePath)).SagaArc ?? [];
         world.Gameplay.Factions = (await XmlLoader.LoadFromXmlAsync<Factions>(Path.Combine(dataDirectory, "Gameplay", "Factions", $"{factionsRef}.Factions.xml"), xsdFilePath)).Faction ?? [];
         world.Gameplay.StatusEffects = (await XmlLoader.LoadFromXmlAsync<StatusEffects>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{statusEffectsRef}.StatusEffects.xml"), xsdFilePath)).StatusEffect ?? [];
@@ -81,10 +77,8 @@ public static class GameplayComponentLoader
         BuildLookup(world.Gameplay.QuestTokens, world.QuestTokensLookup);
         BuildLookup(world.Gameplay.AvatarArchetypes, world.AvatarArchetypesLookup);
         BuildLookup(world.Gameplay.DialogueTrees, world.DialogueTreesLookup);
-        BuildLookup(world.Gameplay.SagaFeatures, world.SagaFeaturesLookup);
         BuildLookup(world.Gameplay.Achievements, world.AchievementsLookup);
         BuildLookup(world.Gameplay.Quests, world.QuestsLookup);
-        BuildLookup(world.Gameplay.SagaTriggerPatterns, world.SagaTriggerPatternsLookup);
         BuildLookup(world.Gameplay.SagaArcs, world.SagaArcLookup);
         BuildLookup(world.Gameplay.Factions, world.FactionsLookup);
         BuildLookup(world.Gameplay.StatusEffects, world.StatusEffectsLookup);
@@ -131,8 +125,20 @@ public static class GameplayComponentLoader
         {
             if (!string.IsNullOrEmpty(saga.RefName))
             {
-                var expandedTriggers = TriggerExpander.ExpandTriggersForSaga(saga, world);
-                world.SagaTriggersLookup[saga.RefName] = expandedTriggers;
+                // Triggers are now defined directly on SagaArc, no expansion needed
+                var triggers = saga.SagaTrigger?.ToList() ?? new List<SagaTrigger>();
+
+                // Validate that every trigger has at least one Spawn
+                foreach (var trigger in triggers)
+                {
+                    if (trigger.Spawn == null || trigger.Spawn.Length == 0)
+                    {
+                        throw new InvalidOperationException(
+                            $"SagaTrigger '{trigger.RefName}' in SagaArc '{saga.RefName}' has no Spawn elements. Every trigger must have at least one character spawn.");
+                    }
+                }
+
+                world.SagaTriggersLookup[saga.RefName] = triggers;
             }
         }
     }
