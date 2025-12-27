@@ -1691,11 +1691,6 @@ public partial class MainViewModel : ObservableObject
             }
         }
 
-        // Get character interactions at this position for debug info
-        var characterInteractions = interactions
-            .Where(i => i.Type == SagaInteractionType.Character)
-            .ToList();
-
         // Step 2: Enable only triggers that are in the query results (mouse is inside them)
         foreach (var ti in triggerInteractions)
         {
@@ -1712,13 +1707,17 @@ public partial class MainViewModel : ObservableObject
             trigger.Status = ti.Status;
             trigger.RingColor = TriggerColors.GetColor(ti.Status);
 
-            // Debug info
-            if (System.Diagnostics.Debugger.IsAttached)
+            // Debug info - show expected spawn count from trigger definition
+            if (System.Diagnostics.Debugger.IsAttached && CurrentWorld != null)
             {
-                var charsForThisSaga = characterInteractions.Where(c => c.SagaRef == ti.SagaRef).ToList();
+                var saga = CurrentWorld.TryGetSagaArcByRefName(ti.SagaRef);
+                var actualTrigger = saga?.SagaTrigger?.FirstOrDefault(t => t.RefName == ti.SagaTriggerRef);
+                var expectedSpawnCount = actualTrigger?.Spawn?.Sum(s => s.Count) ?? 0;
+                var spawnDetails = actualTrigger?.Spawn?.Select(s => $"  - {s.CharacterRef} (x{s.Count})") ?? Array.Empty<string>();
+
                 trigger.DebugQueryInfo = $"Status: {ti.Status}\n" +
-                                         $"Characters at position: {charsForThisSaga.Count}\n" +
-                                         string.Join("\n", charsForThisSaga.Select(c => $"  - {c.CharacterRef} ({c.Status})"));
+                                         $"Expected spawns: {expectedSpawnCount}\n" +
+                                         string.Join("\n", spawnDetails);
             }
         }
 
