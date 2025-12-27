@@ -1700,8 +1700,43 @@ public partial class MainViewModel : ObservableObject
                 .SelectMany(s => s.Triggers)
                 .FirstOrDefault(t => t.RefName == ti.SagaTriggerRef && t.SagaRefName == ti.SagaRef);
 
+            // If trigger not found, the saga may be hidden - discover it now
+            if (trigger == null && CurrentWorld != null)
+            {
+                // Try to load the hidden saga and add it to ViewModels (discovery!)
+                if (CurrentWorld.SagaArcLookup.TryGetValue(ti.SagaRef, out var sagaArc) &&
+                    CurrentWorld.SagaTriggersLookup.TryGetValue(ti.SagaRef, out var sagaTriggers) &&
+                    CurrentWorld.HeightMapMetadata != null)
+                {
+                    var newSagaVM = SagaViewModel.FromDomain(
+                        sagaArc,
+                        sagaTriggers.OrderByDescending(t => t.EnterRadius).ToList(),
+                        CurrentWorld.HeightMapMetadata,
+                        CurrentWorld);
+
+                    // Set feature dot color based on category (newly discovered = available)
+                    newSagaVM.InteractionStatus = InteractionStatus.Available;
+                    newSagaVM.FeatureDotColor = SagaColors.GetColor(newSagaVM.Category, InteractionStatus.Available);
+                    newSagaVM.FeatureDotOpacity = 1.0;
+
+                    Sagas.Add(newSagaVM);
+
+                    // Add triggers to AllTriggers for rendering
+                    foreach (var triggerVM in newSagaVM.Triggers)
+                    {
+                        triggerVM.SagaRefName = newSagaVM.RefName;
+                        AllTriggers.Add(triggerVM);
+                    }
+
+                    // Now find the trigger again
+                    trigger = newSagaVM.Triggers.FirstOrDefault(t => t.RefName == ti.SagaTriggerRef);
+
+                    System.Diagnostics.Debug.WriteLine($"[Discovery] Saga '{ti.SagaRef}' discovered and added to ViewModels");
+                }
+            }
+
             if (trigger == null)
-                throw new InvalidOperationException($"Trigger '{ti.SagaTriggerRef}' in saga '{ti.SagaRef}' not found in ViewModels");
+                continue; // Still not found - skip
 
             // Show if Available or Locked, keep hidden if Complete
             trigger.IsVisible = ti.Status == InteractionStatus.Available ||

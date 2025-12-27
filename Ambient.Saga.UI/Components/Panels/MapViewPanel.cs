@@ -359,6 +359,7 @@ public class MapViewPanel
                 foreach (var trigger in saga.Triggers)
                 {
                     // Only show triggers when visible (controlled by MainViewModel based on query)
+                    // Completed triggers have IsVisible=false and are skipped
                     if (!trigger.IsVisible)
                         continue;
 

@@ -61,23 +61,23 @@
   <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Merchant's Wisdom" Description="Knowledge of hidden shortcuts and profitable market opportunities" />
   <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Peddler's Seal of Trust" Description="A merchant's seal marking you as a trusted trade partner" />
   <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Sekisho Transit Permit" Description="Official documentation proving toll payment at the checkpoint" />
-  <QuestToken RefName="TOKEN_Isoteien1_COMPLETE" DisplayName="Emblem of Iso-teien" Description="This crest signifies your victory within Iso-teien." />
-  <QuestToken RefName="TOKEN_Tsurumarujō1_COMPLETE" DisplayName="Tsurumaru-jō Emblem" Description="An emblem awarded to those who conquered the challenges of Tsurumaru-jō." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyōjinsha1_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Badge" Description="Proof that you have overcome the trials of Terukuni Daimyōjin-sha." />
-  <QuestToken RefName="TOKEN_TsurumarujōSpoke1Ring1_COMPLETE" DisplayName="Tsurumaru-jō Spoke 1 Ring 1 Sigil" Description="A memento from Tsurumaru-jō Spoke 1 Ring 1." />
-  <QuestToken RefName="TOKEN_TsurumarujōSpoke2Ring5_COMPLETE" DisplayName="Tsurumaru-jō Spoke 2 Ring 5 Crest" Description="Proof of completing Tsurumaru-jō Spoke 2 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujōSpoke3Ring5_COMPLETE" DisplayName="Tsurumaru-jō Spoke 3 Ring 5 Emblem" Description="A memento from Tsurumaru-jō Spoke 3 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujōSpoke4Ring5_COMPLETE" DisplayName="Seal of Tsurumaru-jō Spoke 4 Ring 5" Description="A memento from Tsurumaru-jō Spoke 4 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujōSpoke5Ring5_COMPLETE" DisplayName="Tsurumaru-jō Spoke 5 Ring 5 Seal" Description="A memento from Tsurumaru-jō Spoke 5 Ring 5." />
-  <QuestToken RefName="TOKEN_TsurumarujōSpoke6Ring5_COMPLETE" DisplayName="Tsurumaru-jō Spoke 6 Ring 5 Sigil" Description="A symbol of triumph at Tsurumaru-jō Spoke 6 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke2Ring5_COMPLETE" DisplayName="Iso-teien Spoke 2 Ring 5 Seal" Description="Proof of completing Iso-teien Spoke 2 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke3Ring5_COMPLETE" DisplayName="Iso-teien Spoke 3 Ring 5 Sigil" Description="A token earned at Iso-teien Spoke 3 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke4Ring5_COMPLETE" DisplayName="Iso-teien Spoke 4 Ring 5 Mark" Description="Commemorating your achievements at Iso-teien Spoke 4 Ring 5." />
-  <QuestToken RefName="TOKEN_IsoteienSpoke5Ring4_COMPLETE" DisplayName="Mark of Iso-teien Spoke 5 Ring 4" Description="Evidence of your success at Iso-teien Spoke 5 Ring 4." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke1Ring2_COMPLETE" DisplayName="Emblem of Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="A symbol of triumph at Terukuni Daimyōjin-sha Spoke 1 Ring 2." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke2Ring5_COMPLETE" DisplayName="Seal of Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="Commemorating your achievements at Terukuni Daimyōjin-sha Spoke 2 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke3Ring5_COMPLETE" DisplayName="Mark of Terukuni Daimyōjin-sha Spoke 3 Ring 5" Description="A symbol of triumph at Terukuni Daimyōjin-sha Spoke 3 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke4Ring5_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5 Emblem" Description="A symbol of triumph at Terukuni Daimyōjin-sha Spoke 4 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke5Ring5_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5 Mark" Description="Recognition of your efforts at Terukuni Daimyōjin-sha Spoke 5 Ring 5." />
-  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke6Ring5_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5 Seal" Description="A memento from Terukuni Daimyōjin-sha Spoke 6 Ring 5." />
+  <QuestToken RefName="TOKEN_Isoteien1_COMPLETE" DisplayName="Iso-teien Mark" Description="Proof that you have overcome the trials of Iso-teien." />
+  <QuestToken RefName="TOKEN_Tsurumarujō1_COMPLETE" DisplayName="Tsurumaru-jō Token" Description="An emblem awarded to those who conquered the challenges of Tsurumaru-jō." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinsha1_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Seal" Description="This badge commemorates your accomplishments at Terukuni Daimyōjin-sha." />
+  <QuestToken RefName="TOKEN_TsurumarujōSpoke1Ring1_COMPLETE" DisplayName="Tsurumaru-jō Spoke 1 Ring 1 Seal" Description="A token earned at Tsurumaru-jō Spoke 1 Ring 1." />
+  <QuestToken RefName="TOKEN_TsurumarujōSpoke2Ring5_COMPLETE" DisplayName="Tsurumaru-jō Spoke 2 Ring 5 Sigil" Description="Proof of completing Tsurumaru-jō Spoke 2 Ring 5." />
+  <QuestToken RefName="TOKEN_TsurumarujōSpoke3Ring5_COMPLETE" DisplayName="Tsurumaru-jō Spoke 3 Ring 5 Mark" Description="Evidence of your success at Tsurumaru-jō Spoke 3 Ring 5." />
+  <QuestToken RefName="TOKEN_TsurumarujōSpoke4Ring5_COMPLETE" DisplayName="Emblem of Tsurumaru-jō Spoke 4 Ring 5" Description="This mark represents your accomplishments at Tsurumaru-jō Spoke 4 Ring 5." />
+  <QuestToken RefName="TOKEN_TsurumarujōSpoke5Ring5_COMPLETE" DisplayName="Mark of Tsurumaru-jō Spoke 5 Ring 5" Description="Evidence of your success at Tsurumaru-jō Spoke 5 Ring 5." />
+  <QuestToken RefName="TOKEN_TsurumarujōSpoke6Ring5_COMPLETE" DisplayName="Emblem of Tsurumaru-jō Spoke 6 Ring 5" Description="Proof of completing Tsurumaru-jō Spoke 6 Ring 5." />
+  <QuestToken RefName="TOKEN_IsoteienSpoke2Ring5_COMPLETE" DisplayName="Iso-teien Spoke 2 Ring 5 Token" Description="A token earned at Iso-teien Spoke 2 Ring 5." />
+  <QuestToken RefName="TOKEN_IsoteienSpoke3Ring5_COMPLETE" DisplayName="Seal of Iso-teien Spoke 3 Ring 5" Description="Recognition of your efforts at Iso-teien Spoke 3 Ring 5." />
+  <QuestToken RefName="TOKEN_IsoteienSpoke4Ring5_COMPLETE" DisplayName="Iso-teien Spoke 4 Ring 5 Seal" Description="This mark represents your accomplishments at Iso-teien Spoke 4 Ring 5." />
+  <QuestToken RefName="TOKEN_IsoteienSpoke5Ring4_COMPLETE" DisplayName="Mark of Iso-teien Spoke 5 Ring 4" Description="A symbol of triumph at Iso-teien Spoke 5 Ring 4." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke1Ring2_COMPLETE" DisplayName="Mark of Terukuni Daimyōjin-sha Spoke 1 Ring 2" Description="A symbol of triumph at Terukuni Daimyōjin-sha Spoke 1 Ring 2." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke2Ring5_COMPLETE" DisplayName="Emblem of Terukuni Daimyōjin-sha Spoke 2 Ring 5" Description="A symbol of triumph at Terukuni Daimyōjin-sha Spoke 2 Ring 5." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke3Ring5_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Spoke 3 Ring 5 Crest" Description="Proof of completing Terukuni Daimyōjin-sha Spoke 3 Ring 5." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke4Ring5_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Spoke 4 Ring 5 Emblem" Description="Evidence of your success at Terukuni Daimyōjin-sha Spoke 4 Ring 5." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke5Ring5_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Spoke 5 Ring 5 Sigil" Description="Recognition of your efforts at Terukuni Daimyōjin-sha Spoke 5 Ring 5." />
+  <QuestToken RefName="TOKEN_TerukuniDaimyōjinshaSpoke6Ring5_COMPLETE" DisplayName="Terukuni Daimyōjin-sha Spoke 6 Ring 5 Sigil" Description="Evidence of your success at Terukuni Daimyōjin-sha Spoke 6 Ring 5." />
 </QuestTokens>

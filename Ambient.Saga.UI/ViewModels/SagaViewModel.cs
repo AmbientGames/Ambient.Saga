@@ -226,22 +226,21 @@ public partial class SagaViewModel : ObservableObject
     /// <summary>
     /// Sets the feature dot color and opacity based on interaction status.
     /// </summary>
-    private static async Task SetFeatureStatusAsync(
+    private static Task SetFeatureStatusAsync(
         SagaViewModel sagaVM,
         SagaArc sagaArc,
         AvatarBase? avatar,
         IWorld world,
         IWorldStateRepository worldRepository)
     {
-        // Convert Saga GPS to model coordinates for query
-        var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
-        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
-
         // Set default status based on SagaArc type
         // Characters spawned by triggers determine actual interaction availability
         sagaVM.InteractionStatus = InteractionStatus.Available;
-        sagaVM.FeatureDotColor = SagaColors.GetColor(sagaVM.Category, InteractionStatus.Available);
+        var color = SagaColors.GetColor(sagaVM.Category, InteractionStatus.Available);
+        sagaVM.FeatureDotColor = color;
         sagaVM.FeatureDotOpacity = 1.0;
+
+        return Task.CompletedTask;
     }
 
     /// <summary>

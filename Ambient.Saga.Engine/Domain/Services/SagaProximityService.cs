@@ -391,20 +391,11 @@ public static class SagaProximityService
         var stateMachine = new SagaStateMachine(sagaArc, triggers, world);
         var state = stateMachine.ReplayToNow(sagaInstance);
 
-        // Debug: Log transaction count and trigger states
-        var triggerCompletedCount = sagaInstance.Transactions?.Count(tx => tx.Type == SagaTransactionType.TriggerCompleted) ?? 0;
-        System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] Saga '{sagaArc.RefName}' has {sagaInstance.Transactions?.Count ?? 0} transactions, {triggerCompletedCount} TriggerCompleted");
-
         // Check trigger status from replayed state
         if (state.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState))
         {
-            System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] Trigger '{sagaTrigger.RefName}' status = {triggerState.Status}");
             if (triggerState.Status == SagaTriggerStatus.Completed)
                 return InteractionStatus.Complete;
-        }
-        else
-        {
-            System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] Trigger '{sagaTrigger.RefName}' NOT FOUND in state.Triggers (has {state.Triggers.Count} triggers)");
         }
 
         return InteractionStatus.Available;

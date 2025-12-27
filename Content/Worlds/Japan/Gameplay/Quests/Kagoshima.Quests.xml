@@ -528,43 +528,9 @@
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_Isoteien1" DisplayName="Bounty: Guardian of Iso-teien" Description="Defeat Guardian of Iso-teien and claim the bounty.">
-    <Stages StartStage="DEFEAT">
-      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
-        <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Iso-teien" CharacterRef="BOSS_Isoteien1" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="500" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Knife" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="BOUNTY_Tsurumarujō1" DisplayName="Bounty: Guardian of Tsurumaru-jō" Description="Defeat Guardian of Tsurumaru-jō and claim the bounty.">
-    <Stages StartStage="DEFEAT">
-      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
-        <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jō" CharacterRef="BOSS_Tsurumarujō1" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="500" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenClub" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
   <Quest RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Secret: The Forgotten Shrine" Description="An ancient shrine marked on a mysterious map. What secrets does it hold?">
     <Prerequisites>
-      <Prerequisite MinimumLevel="20" RequiredItemRef="ChainBoots" />
+      <Prerequisite MinimumLevel="20" RequiredItemRef="HoodedCowl" />
     </Prerequisites>
     <Stages StartStage="FIND_SHRINE">
       <Stage RefName="FIND_SHRINE" DisplayName="Locate the Hidden Shrine" NextStage="UNLOCK_SHRINE">
@@ -585,7 +551,7 @@
             <Experience Amount="5000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="LightCrossbow" Quantity="1" />
+            <Equipment EquipmentRef="Halberd" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -603,8 +569,8 @@
       </Stage>
       <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Craft the Ultimate Masterpiece">
         <Objectives>
-          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="LeatherCap" />
-          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="OakWand" />
+          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="LightCrossbow" />
+          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="OakStaff" />
           <Objective RefName="BONUS_FLAWLESS_CRAFT" Type="Custom" Threshold="1" DisplayName="Achieve 100% quality on first try" Optional="true" />
         </Objectives>
         <Rewards>
@@ -615,7 +581,7 @@
             <Experience Amount="8000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="SoulLantern" Quantity="2" />
+            <Equipment EquipmentRef="LeatherCap" Quantity="2" />
           </Reward>
         </Rewards>
       </Stage>
@@ -646,7 +612,7 @@
             <Experience Amount="7000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="RangerHood" Quantity="1" />
+            <Equipment EquipmentRef="SoulLantern" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
