@@ -14,26 +14,21 @@ namespace Ambient.Saga.Engine.Domain.Services;
 public static class SagaProximityService
 {
     /// <summary>
-    /// Default maximum distance in meters to consider a Saga for interaction queries.
-    /// SagaArcs beyond this distance are skipped entirely for performance.
-    /// </summary>
-    public const double DefaultMaxInteractionDistance = 200.0;
-
-    /// <summary>
-    /// Filters SagaArcs to only those within interaction range of the given position.
+    /// Filters SagaArcs to only those within their DiscoverRadius of the given position.
     /// Uses model coordinates and applies proper scale conversion.
+    /// Each SagaArc defines its own DiscoverRadius (default 100m in XSD).
     /// </summary>
     /// <param name="modelX">Position X in model coordinates</param>
     /// <param name="modelZ">Position Z in model coordinates</param>
     /// <param name="world">World containing Saga data</param>
-    /// <param name="maxDistanceMeters">Maximum distance in meters (default: 200m)</param>
+    /// <param name="radiusMultiplier">Multiplier for DiscoverRadius (default 1.0, use higher for preview)</param>
     /// <returns>Enumerable of SagaArcs within range, with their model coordinates and distance</returns>
     public static IEnumerable<(SagaArc SagaArc, double SagaModelX, double SagaModelZ, double DistanceMeters)>
         FilterSagaArcsByProximity(
             double modelX,
             double modelZ,
             IWorld world,
-            double maxDistanceMeters = DefaultMaxInteractionDistance)
+            double radiusMultiplier = 1.0)
     {
         if (world.Gameplay.SagaArcs == null)
             yield break;
@@ -55,8 +50,9 @@ public static class SagaProximityService
             var deltaMetersZ = deltaModelZ / scaleZ;
             var distanceMeters = Math.Sqrt(deltaMetersX * deltaMetersX + deltaMetersZ * deltaMetersZ);
 
-            // Quick reject: if beyond max distance, skip entirely
-            if (distanceMeters > maxDistanceMeters)
+            // Quick reject: if beyond saga's DiscoverRadius (with multiplier), skip entirely
+            var effectiveRadius = sagaArc.DiscoverRadius * radiusMultiplier;
+            if (distanceMeters > effectiveRadius)
                 continue;
 
             yield return (sagaArc, sagaModelX, sagaModelZ, distanceMeters);

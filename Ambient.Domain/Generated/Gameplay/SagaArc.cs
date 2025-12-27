@@ -28,14 +28,15 @@ namespace Ambient.Domain {
         
         private double longitudeXField;
         
-        private SagaArcType typeField;
+        private SagaArcCategory categoryField;
         
-        private string questRefField;
+        private double discoverRadiusField;
         
-        private QuestDifficulty difficultyField;
+        private SagaArcRevealMode revealModeField;
         
         public SagaArc() {
-            this.difficultyField = QuestDifficulty.Normal;
+            this.discoverRadiusField = 200D;
+            this.revealModeField = SagaArcRevealMode.Hidden;
         }
         
         /// <remarks/>
@@ -73,35 +74,36 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public SagaArcType Type {
+        public SagaArcCategory Category {
             get {
-                return this.typeField;
+                return this.categoryField;
             }
             set {
-                this.typeField = value;
+                this.categoryField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string QuestRef {
+        [System.ComponentModel.DefaultValueAttribute(200D)]
+        public double DiscoverRadius {
             get {
-                return this.questRefField;
+                return this.discoverRadiusField;
             }
             set {
-                this.questRefField = value;
+                this.discoverRadiusField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(QuestDifficulty.Normal)]
-        public QuestDifficulty Difficulty {
+        [System.ComponentModel.DefaultValueAttribute(SagaArcRevealMode.Hidden)]
+        public SagaArcRevealMode RevealMode {
             get {
-                return this.difficultyField;
+                return this.revealModeField;
             }
             set {
-                this.difficultyField = value;
+                this.revealModeField = value;
             }
         }
     }

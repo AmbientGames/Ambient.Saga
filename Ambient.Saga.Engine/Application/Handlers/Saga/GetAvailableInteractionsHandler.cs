@@ -279,22 +279,22 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         return result;
     }
 
-    private static bool HasAllQuestTokens(string[] requiredTokens, AvatarBase avatar)
-    {
-        if (requiredTokens == null || requiredTokens.Length == 0)
-            return true;
+    //private static bool HasAllQuestTokens(string[] requiredTokens, AvatarBase avatar)
+    //{
+    //    if (requiredTokens == null || requiredTokens.Length == 0)
+    //        return true;
 
-        if (avatar.Capabilities?.QuestTokens == null)
-            return false;
+    //    if (avatar.Capabilities?.QuestTokens == null)
+    //        return false;
 
-        foreach (var required in requiredTokens)
-        {
-            if (!Array.Exists(avatar.Capabilities.QuestTokens, qt => qt.QuestTokenRef == required))
-                return false;
-        }
+    //    foreach (var required in requiredTokens)
+    //    {
+    //        if (!Array.Exists(avatar.Capabilities.QuestTokens, qt => qt.QuestTokenRef == required))
+    //            return false;
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
 
     private static (double x, double z) ConvertToSagaRelative(double latitude, double longitude, SagaArc sagaArc, IWorld world)
     {

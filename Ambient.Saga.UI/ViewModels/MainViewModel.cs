@@ -184,7 +184,7 @@ public partial class MainViewModel : ObservableObject
 
     // Track current entity being looted (for recording triggers)
     private string? _currentEntityRef;
-    private FeatureType? _currentEntityType;
+    private SagaArcCategory? _currentEntityCategory;
 
     // Track current saga/character context for CQRS commands
     private string? _currentSagaRef;
@@ -619,98 +619,98 @@ public partial class MainViewModel : ObservableObject
         return await _mediator.Send(stateQuery);
     }
 
-    private async Task OnDialogueChoiceSelectedAsync(DialogueChoiceOption choice)
-    {
-        if (PlayerAvatar == null || _currentDialogueSagaRef == null)
-            return;
+    //private async Task OnDialogueChoiceSelectedAsync(DialogueChoiceOption choice)
+    //{
+    //    if (PlayerAvatar == null || _currentDialogueSagaRef == null)
+    //        return;
 
-        System.Diagnostics.Debug.WriteLine($"*** Player selected choice: {choice.Text} -> {choice.ChoiceId}");
+    //    System.Diagnostics.Debug.WriteLine($"*** Player selected choice: {choice.Text} -> {choice.ChoiceId}");
 
-        // Send SelectDialogueChoiceCommand
-        var selectCommand = new SelectDialogueChoiceCommand
-        {
-            AvatarId = PlayerAvatar.AvatarId,
-            SagaArcRef = _currentDialogueSagaRef,
-            CharacterInstanceId = _currentDialogueCharacterInstanceId,
-            ChoiceId = choice.ChoiceId,
-            Avatar = PlayerAvatar
-        };
+    //    // Send SelectDialogueChoiceCommand
+    //    var selectCommand = new SelectDialogueChoiceCommand
+    //    {
+    //        AvatarId = PlayerAvatar.AvatarId,
+    //        SagaArcRef = _currentDialogueSagaRef,
+    //        CharacterInstanceId = _currentDialogueCharacterInstanceId,
+    //        ChoiceId = choice.ChoiceId,
+    //        Avatar = PlayerAvatar
+    //    };
 
-        var result = await _mediator.Send(selectCommand);
+    //    var result = await _mediator.Send(selectCommand);
 
-        if (!result.Successful)
-        {
-            System.Diagnostics.Debug.WriteLine($"*** ERROR selecting choice: {result.ErrorMessage}");
-            return;
-        }
+    //    if (!result.Successful)
+    //    {
+    //        System.Diagnostics.Debug.WriteLine($"*** ERROR selecting choice: {result.ErrorMessage}");
+    //        return;
+    //    }
 
-        System.Diagnostics.Debug.WriteLine($"*** Choice selected successfully. Transactions: {string.Join(", ", result.TransactionIds)}");
+    //    System.Diagnostics.Debug.WriteLine($"*** Choice selected successfully. Transactions: {string.Join(", ", result.TransactionIds)}");
 
-        // Check for pending system events (OpenMerchantTrade, StartBossBattle, etc.)
-        System.Diagnostics.Debug.WriteLine($"*** Checking result.Data for events. Keys: {string.Join(", ", result.Data.Keys)}");
+    //    // Check for pending system events (OpenMerchantTrade, StartBossBattle, etc.)
+    //    System.Diagnostics.Debug.WriteLine($"*** Checking result.Data for events. Keys: {string.Join(", ", result.Data.Keys)}");
 
-        if (result.Data.TryGetValue("PendingEvents", out var eventsObj))
-        {
-            System.Diagnostics.Debug.WriteLine($"*** Found PendingEvents. Type: {eventsObj?.GetType().Name ?? "null"}");
+    //    if (result.Data.TryGetValue("PendingEvents", out var eventsObj))
+    //    {
+    //        System.Diagnostics.Debug.WriteLine($"*** Found PendingEvents. Type: {eventsObj?.GetType().Name ?? "null"}");
 
-            // Try to cast to IList or IEnumerable to handle different list types
-            if (eventsObj is System.Collections.IList eventsList)
-            {
-                System.Diagnostics.Debug.WriteLine($"*** Processing {eventsList.Count} events");
-                foreach (var evt in eventsList)
-                {
-                    if (evt == null) continue;
-                    System.Diagnostics.Debug.WriteLine($"*** Processing dialogue event: {evt.GetType().Name}");
-                    // Note: ImGui mode handles dialogue events in DialogueModal.cs
-                }
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"*** PendingEvents is not IList, cannot process");
-            }
-        }
-        else
-        {
-            System.Diagnostics.Debug.WriteLine($"*** No PendingEvents in result.Data");
-        }
+    //        // Try to cast to IList or IEnumerable to handle different list types
+    //        if (eventsObj is System.Collections.IList eventsList)
+    //        {
+    //            System.Diagnostics.Debug.WriteLine($"*** Processing {eventsList.Count} events");
+    //            foreach (var evt in eventsList)
+    //            {
+    //                if (evt == null) continue;
+    //                System.Diagnostics.Debug.WriteLine($"*** Processing dialogue event: {evt.GetType().Name}");
+    //                // Note: ImGui mode handles dialogue events in DialogueModal.cs
+    //            }
+    //        }
+    //        else
+    //        {
+    //            System.Diagnostics.Debug.WriteLine($"*** PendingEvents is not IList, cannot process");
+    //        }
+    //    }
+    //    else
+    //    {
+    //        System.Diagnostics.Debug.WriteLine($"*** No PendingEvents in result.Data");
+    //    }
 
-        // Refresh dialogue state
-        await RefreshDialogueStateAsync();
-    }
+    //    // Refresh dialogue state
+    //    await RefreshDialogueStateAsync();
+    //}
 
-    private async Task OnDialogueContinueAsync()
-    {
-        System.Diagnostics.Debug.WriteLine($"*** Player clicked Continue");
-        // For auto-advance nodes, we could call an AdvanceDialogueCommand here
-        // For now, just refresh to see if dialogue has ended
-        await RefreshDialogueStateAsync();
-    }
+    //private async Task OnDialogueContinueAsync()
+    //{
+    //    System.Diagnostics.Debug.WriteLine($"*** Player clicked Continue");
+    //    // For auto-advance nodes, we could call an AdvanceDialogueCommand here
+    //    // For now, just refresh to see if dialogue has ended
+    //    await RefreshDialogueStateAsync();
+    //}
 
 
 
-    private async Task RefreshDialogueStateAsync()
-    {
-        if (_currentDialogueSagaRef == null || _currentDialogueViewModel == null)
-            return;
+    //private async Task RefreshDialogueStateAsync()
+    //{
+    //    if (_currentDialogueSagaRef == null || _currentDialogueViewModel == null)
+    //        return;
 
-        var state = await GetDialogueStateAsync(_currentDialogueSagaRef, _currentDialogueCharacterInstanceId);
+    //    var state = await GetDialogueStateAsync(_currentDialogueSagaRef, _currentDialogueCharacterInstanceId);
 
-        if (state == null || !state.IsActive)
-        {
-            System.Diagnostics.Debug.WriteLine($"*** Dialogue ended, transitioning based on character state");
-            _currentDialogueViewModel = null;
-            _isInDialogue = false;
+    //    if (state == null || !state.IsActive)
+    //    {
+    //        System.Diagnostics.Debug.WriteLine($"*** Dialogue ended, transitioning based on character state");
+    //        _currentDialogueViewModel = null;
+    //        _isInDialogue = false;
 
-            // WPF WINDOW CODE - TO BE DELETED WITH XAML
-            // Query character state from transaction log to determine next interaction
-            // In ImGui mode, DialogueModal handles transitions itself
-            //await TransitionAfterDialogueAsync();
-            return;
-        }
+    //        // WPF WINDOW CODE - TO BE DELETED WITH XAML
+    //        // Query character state from transaction log to determine next interaction
+    //        // In ImGui mode, DialogueModal handles transitions itself
+    //        //await TransitionAfterDialogueAsync();
+    //        return;
+    //    }
 
-        // Update ViewModel
-        _currentDialogueViewModel.UpdateState(state);
-    }
+    //    // Update ViewModel
+    //    _currentDialogueViewModel.UpdateState(state);
+    //}
 
  
 
@@ -987,43 +987,43 @@ public partial class MainViewModel : ObservableObject
     }
 
 
-    // OLD METHOD REMOVED: SpawnCharactersFromTrigger
-    // Character spawning now handled by CQRS UpdateAvatarPositionCommand via ProcessAvatarMovementAsync
+    //// OLD METHOD REMOVED: SpawnCharactersFromTrigger
+    //// Character spawning now handled by CQRS UpdateAvatarPositionCommand via ProcessAvatarMovementAsync
 
-    private static async Task<HeightMapImageData> CreatePlaceholderHeightMapAsync(int width, int height)
-    {
-        var stride = width * 4; // 4 bytes per pixel for BGRA32
+    //private static async Task<HeightMapImageData> CreatePlaceholderHeightMapAsync(int width, int height)
+    //{
+    //    var stride = width * 4; // 4 bytes per pixel for BGRA32
 
-        // Create simple gradient background on background thread
-        var pixelData = await Task.Run(() =>
-        {
-            var data = new byte[height * stride];
+    //    // Create simple gradient background on background thread
+    //    var pixelData = await Task.Run(() =>
+    //    {
+    //        var data = new byte[height * stride];
 
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    // Create subtle radial gradient from center (lighter) to edges (darker)
-                    var centerX = width / 2.0;
-                    var centerY = height / 2.0;
-                    var maxDist = Math.Sqrt(centerX * centerX + centerY * centerY);
-                    var dist = Math.Sqrt(Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2));
-                    var brightness = (byte)(200 - (dist / maxDist * 50)); // 200 at center, 150 at edges
+    //        for (int y = 0; y < height; y++)
+    //        {
+    //            for (int x = 0; x < width; x++)
+    //            {
+    //                // Create subtle radial gradient from center (lighter) to edges (darker)
+    //                var centerX = width / 2.0;
+    //                var centerY = height / 2.0;
+    //                var maxDist = Math.Sqrt(centerX * centerX + centerY * centerY);
+    //                var dist = Math.Sqrt(Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2));
+    //                var brightness = (byte)(200 - (dist / maxDist * 50)); // 200 at center, 150 at edges
 
-                    var index = y * stride + x * 4;
-                    data[index] = brightness;     // Blue
-                    data[index + 1] = brightness; // Green
-                    data[index + 2] = brightness; // Red
-                    data[index + 3] = 255;        // Alpha (fully opaque)
-                }
-            }
+    //                var index = y * stride + x * 4;
+    //                data[index] = brightness;     // Blue
+    //                data[index + 1] = brightness; // Green
+    //                data[index + 2] = brightness; // Red
+    //                data[index + 3] = 255;        // Alpha (fully opaque)
+    //            }
+    //        }
 
-            return data;
-        });
+    //        return data;
+    //    });
 
-        // Create platform-agnostic image data
-        return new HeightMapImageData(pixelData, width, height, stride);
-    }
+    //    // Create platform-agnostic image data
+    //    return new HeightMapImageData(pixelData, width, height, stride);
+    //}
 
     private static async Task<HeightMapImageData> ConvertProcessedMapToImageDataAsync(HeightMapProcessor.ProcessedHeightMap processedMap)
     {
@@ -1312,80 +1312,80 @@ public partial class MainViewModel : ObservableObject
         Task.Delay(100).ContinueWith(_ => ShouldCenterOnAvatar = false);
     }
 
-    private void ShowLootForTrigger(ProximityTriggerViewModel triggerViewModel, ref string actionMessage)
-    {
-        if (CurrentWorld == null || PlayerAvatar == null || _worldRepository == null)
-        {
-            actionMessage += " - Error: No world or avatar";
-            return;
-        }
+    //private void ShowLootForTrigger(ProximityTriggerViewModel triggerViewModel, ref string actionMessage)
+    //{
+    //    if (CurrentWorld == null || PlayerAvatar == null || _worldRepository == null)
+    //    {
+    //        actionMessage += " - Error: No world or avatar";
+    //        return;
+    //    }
 
-        // Look up Saga to get the entity reference
-        var saga = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault(p => p.RefName == triggerViewModel.SagaRefName);
-        if (saga == null)
-        {
-            actionMessage += $" - Error: Saga '{triggerViewModel.SagaRefName}' not found";
-            return;
-        }
+    //    // Look up Saga to get the entity reference
+    //    var saga = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault(p => p.RefName == triggerViewModel.SagaRefName);
+    //    if (saga == null)
+    //    {
+    //        actionMessage += $" - Error: Saga '{triggerViewModel.SagaRefName}' not found";
+    //        return;
+    //    }
 
-        // Determine feature type from SagaArc.Type
-        var featureType = saga.Type switch
-        {
-            SagaArcType.Landmark => FeatureType.Landmark,
-            SagaArcType.Structure => FeatureType.Structure,
-            SagaArcType.Quest => FeatureType.QuestSignpost,
-            SagaArcType.ResourceNode => FeatureType.ResourceNode,
-            SagaArcType.Vendor => FeatureType.Vendor,
-            _ => FeatureType.Structure
-        };
+    //    // Determine feature type from SagaArc.Type
+    //    var featureType = saga.Type switch
+    //    {
+    //        SagaArcType.Landmark => FeatureType.Landmark,
+    //        SagaArcType.Structure => FeatureType.Structure,
+    //        SagaArcType.Quest => FeatureType.QuestSignpost,
+    //        SagaArcType.ResourceNode => FeatureType.ResourceNode,
+    //        SagaArcType.Vendor => FeatureType.Vendor,
+    //        _ => FeatureType.Structure
+    //    };
 
-        // Check cooldown/availability before showing loot
-        if (!CheckEntityAvailability(featureType, saga.RefName, ref actionMessage))
-        {
-            return; // On cooldown - message already set
-        }
+    //    // Check cooldown/availability before showing loot
+    //    if (!CheckEntityAvailability(featureType, saga.RefName, ref actionMessage))
+    //    {
+    //        return; // On cooldown - message already set
+    //    }
 
-        // Create a placeholder character to hold info
-        // Note: Loot/rewards now come from Characters spawned by triggers, not from features
-        var lootCharacter = new Character
-        {
-            RefName = saga.RefName,
-            DisplayName = triggerViewModel.DisplayName,
-            Description = $"Location: {triggerViewModel.DisplayName}"
-        };
+    //    // Create a placeholder character to hold info
+    //    // Note: Loot/rewards now come from Characters spawned by triggers, not from features
+    //    var lootCharacter = new Character
+    //    {
+    //        RefName = saga.RefName,
+    //        DisplayName = triggerViewModel.DisplayName,
+    //        Description = $"Location: {triggerViewModel.DisplayName}"
+    //    };
 
-        // Track current entity for trigger recording
-        _currentEntityRef = saga.RefName;
-        _currentEntityType = featureType;
+    //    // Track current entity for trigger recording
+    //    _currentEntityRef = saga.RefName;
+    //    _currentEntityType = featureType;
 
-        // Set the character and show trade UI
-        TriggeredCharacter = lootCharacter;
-        MerchantTrade.RefreshCategories();
-        OnCharacterChanged();
+    //    // Set the character and show trade UI
+    //    TriggeredCharacter = lootCharacter;
+    //    MerchantTrade.RefreshCategories();
+    //    OnCharacterChanged();
 
-        actionMessage += " - Trigger activated";
-    }
+    //    actionMessage += " - Trigger activated";
+    //}
 
-    private bool CheckEntityAvailability(FeatureType featureType, string entityRef, ref string actionMessage)
-    {
-        if (_worldRepository == null) return false;
+    //private bool CheckEntityAvailability(FeatureType featureType, string entityRef, ref string actionMessage)
+    //{
+    //    if (_worldRepository == null) return false;
 
-        switch (featureType)
-        {
-            case FeatureType.Landmark:
-                // TODO: Check landmark state from SagaState (event-sourced)
-                // For now, landmarks are always available
-                break;
+    //    switch (featureType)
+    //    {
+    //        case FeatureType.Landmark:
+    //            // TODO: Check landmark state from SagaState (event-sourced)
+    //            // For now, landmarks are always available
+    //            break;
 
-            case FeatureType.Structure:
-                // TODO: Check structure state from SagaState (event-sourced)
-                // Need to query SagaState.Structures to check IsDestroyed
-                // For now, structures are always available
-                break;
-        }
+    //        case FeatureType.Structure:
+    //            // TODO: Check structure state from SagaState (event-sourced)
+    //            // Need to query SagaState.Structures to check IsDestroyed
+    //            // For now, structures are always available
+    //            break;
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
 
     /// <summary>
     /// Updates a SagaViewModel's trigger status after recording a transaction.
@@ -1428,138 +1428,138 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    private bool PlayerHasItem(string itemRef)
-    {
-        if (PlayerAvatar == null || PlayerAvatar.Capabilities == null) return false;
+    //private bool PlayerHasItem(string itemRef)
+    //{
+    //    if (PlayerAvatar == null || PlayerAvatar.Capabilities == null) return false;
 
-        // Check consumables
-        if (PlayerAvatar.Capabilities.Consumables != null)
-        {
-            foreach (var entry in PlayerAvatar.Capabilities.Consumables)
-            {
-                if (entry.ConsumableRef == itemRef && entry.Quantity > 0)
-                    return true;
-            }
-        }
+    //    // Check consumables
+    //    if (PlayerAvatar.Capabilities.Consumables != null)
+    //    {
+    //        foreach (var entry in PlayerAvatar.Capabilities.Consumables)
+    //        {
+    //            if (entry.ConsumableRef == itemRef && entry.Quantity > 0)
+    //                return true;
+    //        }
+    //    }
 
-        // Check equipment
-        if (PlayerAvatar.Capabilities.Equipment != null)
-        {
-            foreach (var entry in PlayerAvatar.Capabilities.Equipment)
-            {
-                if (entry.EquipmentRef == itemRef)
-                    return true;
-            }
-        }
+    //    // Check equipment
+    //    if (PlayerAvatar.Capabilities.Equipment != null)
+    //    {
+    //        foreach (var entry in PlayerAvatar.Capabilities.Equipment)
+    //        {
+    //            if (entry.EquipmentRef == itemRef)
+    //                return true;
+    //        }
+    //    }
 
-        // Check tools
-        if (PlayerAvatar.Capabilities.Tools != null)
-        {
-            foreach (var entry in PlayerAvatar.Capabilities.Tools)
-            {
-                if (entry.ToolRef == itemRef)
-                    return true;
-            }
-        }
+    //    // Check tools
+    //    if (PlayerAvatar.Capabilities.Tools != null)
+    //    {
+    //        foreach (var entry in PlayerAvatar.Capabilities.Tools)
+    //        {
+    //            if (entry.ToolRef == itemRef)
+    //                return true;
+    //        }
+    //    }
 
-        return false;
-    }
+    //    return false;
+    //}
 
-    private async Task RemoveItemFromInventoryAsync(string itemRef)
-    {
-        if (PlayerAvatar == null || PlayerAvatar.Capabilities == null) return;
+    //private async Task RemoveItemFromInventoryAsync(string itemRef)
+    //{
+    //    if (PlayerAvatar == null || PlayerAvatar.Capabilities == null) return;
 
-        // Remove from consumables
-        if (PlayerAvatar.Capabilities.Consumables != null)
-        {
-            for (int i = PlayerAvatar.Capabilities.Consumables.Length - 1; i >= 0; i--)
-            {
-                var entry = PlayerAvatar.Capabilities.Consumables[i];
-                if (entry.ConsumableRef == itemRef)
-                {
-                    entry.Quantity--;
-                    if (entry.Quantity <= 0)
-                    {
-                        // Remove empty entry
-                        var list = PlayerAvatar.Capabilities.Consumables.ToList();
-                        list.RemoveAt(i);
-                        PlayerAvatar.Capabilities.Consumables = list.ToArray();
-                    }
-                    await SavePlayerAvatarAsync();
-                    return;
-                }
-            }
-        }
+    //    // Remove from consumables
+    //    if (PlayerAvatar.Capabilities.Consumables != null)
+    //    {
+    //        for (int i = PlayerAvatar.Capabilities.Consumables.Length - 1; i >= 0; i--)
+    //        {
+    //            var entry = PlayerAvatar.Capabilities.Consumables[i];
+    //            if (entry.ConsumableRef == itemRef)
+    //            {
+    //                entry.Quantity--;
+    //                if (entry.Quantity <= 0)
+    //                {
+    //                    // Remove empty entry
+    //                    var list = PlayerAvatar.Capabilities.Consumables.ToList();
+    //                    list.RemoveAt(i);
+    //                    PlayerAvatar.Capabilities.Consumables = list.ToArray();
+    //                }
+    //                await SavePlayerAvatarAsync();
+    //                return;
+    //            }
+    //        }
+    //    }
 
-        // Remove from equipment
-        if (PlayerAvatar.Capabilities.Equipment != null)
-        {
-            for (int i = PlayerAvatar.Capabilities.Equipment.Length - 1; i >= 0; i--)
-            {
-                var entry = PlayerAvatar.Capabilities.Equipment[i];
-                if (entry.EquipmentRef == itemRef)
-                {
-                    var list = PlayerAvatar.Capabilities.Equipment.ToList();
-                    list.RemoveAt(i);
-                    PlayerAvatar.Capabilities.Equipment = list.ToArray();
-                    await SavePlayerAvatarAsync();
-                    return;
-                }
-            }
-        }
+    //    // Remove from equipment
+    //    if (PlayerAvatar.Capabilities.Equipment != null)
+    //    {
+    //        for (int i = PlayerAvatar.Capabilities.Equipment.Length - 1; i >= 0; i--)
+    //        {
+    //            var entry = PlayerAvatar.Capabilities.Equipment[i];
+    //            if (entry.EquipmentRef == itemRef)
+    //            {
+    //                var list = PlayerAvatar.Capabilities.Equipment.ToList();
+    //                list.RemoveAt(i);
+    //                PlayerAvatar.Capabilities.Equipment = list.ToArray();
+    //                await SavePlayerAvatarAsync();
+    //                return;
+    //            }
+    //        }
+    //    }
 
-        // Remove from tools
-        if (PlayerAvatar.Capabilities.Tools != null)
-        {
-            for (int i = PlayerAvatar.Capabilities.Tools.Length - 1; i >= 0; i--)
-            {
-                var entry = PlayerAvatar.Capabilities.Tools[i];
-                if (entry.ToolRef == itemRef)
-                {
-                    var list = PlayerAvatar.Capabilities.Tools.ToList();
-                    list.RemoveAt(i);
-                    PlayerAvatar.Capabilities.Tools = list.ToArray();
-                    await SavePlayerAvatarAsync();
-                    return;
-                }
-            }
-        }
-    }
+    //    // Remove from tools
+    //    if (PlayerAvatar.Capabilities.Tools != null)
+    //    {
+    //        for (int i = PlayerAvatar.Capabilities.Tools.Length - 1; i >= 0; i--)
+    //        {
+    //            var entry = PlayerAvatar.Capabilities.Tools[i];
+    //            if (entry.ToolRef == itemRef)
+    //            {
+    //                var list = PlayerAvatar.Capabilities.Tools.ToList();
+    //                list.RemoveAt(i);
+    //                PlayerAvatar.Capabilities.Tools = list.ToArray();
+    //                await SavePlayerAvatarAsync();
+    //                return;
+    //            }
+    //        }
+    //    }
+    //}
 
-    private void ApplyRewardEffects(RewardEffects effects, List<string> rewards)
-    {
-        if (PlayerAvatar == null) return;
+    //private void ApplyRewardEffects(RewardEffects effects, List<string> rewards)
+    //{
+    //    if (PlayerAvatar == null) return;
 
-        if (effects.Health != 0)
-        {
-            PlayerAvatar.Stats.Health += effects.Health;
-            rewards.Add($"{effects.Health:+0;-0} Health");
-        }
+    //    if (effects.Health != 0)
+    //    {
+    //        PlayerAvatar.Stats.Health += effects.Health;
+    //        rewards.Add($"{effects.Health:+0;-0} Health");
+    //    }
 
-        if (effects.Stamina != 0)
-        {
-            PlayerAvatar.Stats.Stamina += effects.Stamina;
-            rewards.Add($"{effects.Stamina:+0;-0} Stamina");
-        }
+    //    if (effects.Stamina != 0)
+    //    {
+    //        PlayerAvatar.Stats.Stamina += effects.Stamina;
+    //        rewards.Add($"{effects.Stamina:+0;-0} Stamina");
+    //    }
 
-        if (effects.Mana != 0)
-        {
-            PlayerAvatar.Stats.Mana += effects.Mana;
-            rewards.Add($"{effects.Mana:+0;-0} Mana");
-        }
+    //    if (effects.Mana != 0)
+    //    {
+    //        PlayerAvatar.Stats.Mana += effects.Mana;
+    //        rewards.Add($"{effects.Mana:+0;-0} Mana");
+    //    }
 
-        if (effects.Experience != 0)
-        {
-            PlayerAvatar.Stats.Experience += effects.Experience;
-            rewards.Add($"{effects.Experience:+0;-0} XP");
-        }
+    //    if (effects.Experience != 0)
+    //    {
+    //        PlayerAvatar.Stats.Experience += effects.Experience;
+    //        rewards.Add($"{effects.Experience:+0;-0} XP");
+    //    }
 
-        if (effects.Credits != 0)
-        {
-            PlayerAvatar.Stats.Credits += effects.Credits;
-            rewards.Add($"{effects.Credits:+0;-0} {CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits"}");
-        }
-    }
+    //    if (effects.Credits != 0)
+    //    {
+    //        PlayerAvatar.Stats.Credits += effects.Credits;
+    //        rewards.Add($"{effects.Credits:+0;-0} {CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits"}");
+    //    }
+    //}
 
 
     /// <summary>
@@ -1682,12 +1682,13 @@ public partial class MainViewModel : ObservableObject
             }
         }
 
-        // Step 1: Hide ALL triggers on ALL sagas
+        // Step 1: Reset ALL triggers on ALL sagas
         foreach (var saga in Sagas)
         {
             foreach (var trigger in saga.Triggers)
             {
                 trigger.IsVisible = false;
+                trigger.IsHovered = false;
             }
         }
 
@@ -1704,6 +1705,7 @@ public partial class MainViewModel : ObservableObject
             // Show if Available or Locked, keep hidden if Complete
             trigger.IsVisible = ti.Status == InteractionStatus.Available ||
                                 ti.Status == InteractionStatus.Locked;
+            trigger.IsHovered = true; // Mouse is inside this trigger (from CQRS query)
             trigger.Status = ti.Status;
             trigger.RingColor = TriggerColors.GetColor(ti.Status);
 

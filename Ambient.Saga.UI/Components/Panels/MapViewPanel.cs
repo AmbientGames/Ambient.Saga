@@ -323,6 +323,36 @@ public class MapViewPanel
                 return (float)(radiusPixels * pixelsPerHeightMapPixel);
             }
 
+            // Helper to convert screen mouse position to world lat/lon (same logic as click)
+            (double latitude, double longitude)? ScreenToWorld(Vector2 mousePos)
+            {
+                if (viewModel.CurrentWorld?.HeightMapMetadata == null)
+                    return null;
+
+                var currentScrollX = ImGui.GetScrollX();
+                var currentScrollY = ImGui.GetScrollY();
+
+                var relativeX = mousePos.X - windowPos.X + currentScrollX;
+                var relativeY = mousePos.Y - windowPos.Y + currentScrollY;
+
+                if (relativeX < 0 || relativeX > displayWidth || relativeY < 0 || relativeY > displayHeight)
+                    return null;
+
+                var normalizedX = relativeX / displayWidth;
+                var normalizedY = relativeY / displayHeight;
+
+                var pixelX = normalizedX * heightMapWidth;
+                var pixelY = normalizedY * heightMapHeight;
+
+                var latitude = CoordinateConverter.HeightMapPixelYToLatitude(pixelY, viewModel.CurrentWorld.HeightMapMetadata);
+                var longitude = CoordinateConverter.HeightMapPixelXToLongitude(pixelX, viewModel.CurrentWorld.HeightMapMetadata);
+
+                return (latitude, longitude);
+            }
+
+            // Hover state is set by MainViewModel.FindTriggerAtPoint via CQRS query
+            // (called from UpdateMousePosition - same logic as trigger activation)
+
             // Draw Saga zones (proximity trigger rings)
             foreach (var saga in viewModel.Sagas)
             {
@@ -340,22 +370,24 @@ public class MapViewPanel
 
                     var enterRadius = RadiusPixelsToScreen(trigger.EnterRadiusPixels);
 
-                    // Use ring color from ViewModel
+                    // Highlight if this trigger is hovered (set by ViewModel via CQRS query)
+                    var isHovered = trigger.IsHovered;
+
+                    // Use ring color from ViewModel, brighten if hovered
                     var color = trigger.RingColor;
-                    var circleColor = ImGui.ColorConvertFloat4ToU32(new Vector4(color.X, color.Y, color.Z, 0.3f));
+                    var opacity = isHovered ? 0.6f : 0.3f;
+                    var circleColor = ImGui.ColorConvertFloat4ToU32(new Vector4(color.X, color.Y, color.Z, opacity));
 
                     // Draw trigger ring
                     drawList.AddCircleFilled(center, enterRadius, circleColor, 32);
 
-                    // Debug tooltip when hovering over trigger ring
-                    if (Debugger.IsAttached && !string.IsNullOrEmpty(trigger.DebugQueryInfo))
+                    // Debug tooltip when hovering (now using world coordinate intersection)
+                    if (Debugger.IsAttached && isHovered)
                     {
-                        var mousePos = ImGui.GetMousePos();
-                        var distToCenter = MathF.Sqrt(MathF.Pow(mousePos.X - center.X, 2) + MathF.Pow(mousePos.Y - center.Y, 2));
-                        if (distToCenter <= enterRadius)
-                        {
-                            ImGui.SetTooltip($"{trigger.RefName}\n{trigger.DebugQueryInfo}");
-                        }
+                        var tooltipText = $"{trigger.RefName}";
+                        if (!string.IsNullOrEmpty(trigger.DebugQueryInfo))
+                            tooltipText += $"\n{trigger.DebugQueryInfo}";
+                        ImGui.SetTooltip(tooltipText);
                     }
                 }
             }
@@ -395,7 +427,7 @@ public class MapViewPanel
                     {
                         var tooltip = $"{saga.DisplayName}\n" +
                                       $"Status: {saga.InteractionStatus}\n" +
-                                      $"Type: {saga.FeatureType}\n" +
+                                      $"Category: {saga.Category}\n" +
                                       $"Ref: {saga.RefName}";
 
                         if (saga.RequiresQuestTokens?.Length > 0)
@@ -411,21 +443,8 @@ public class MapViewPanel
                         ImGui.SetTooltip(saga.DisplayName);
                     }
 
-                    // Handle click to interact with quest signpost
-                    if (ImGui.IsMouseClicked(ImGuiMouseButton.Left) && saga.FeatureType == FeatureType.QuestSignpost)
-                    {
-                        // Get quest signpost details from world
-                        var sagaArc = viewModel.CurrentWorld?.Gameplay?.SagaArcs?.FirstOrDefault(s => s.RefName == saga.RefName);
-                        if (sagaArc != null && sagaArc.Type == SagaArcType.Quest && !string.IsNullOrEmpty(sagaArc.QuestRef))
-                        {
-                            // Open quest modal with quest details
-                            modalManager.OpenQuestSignpost(
-                                sagaArc.QuestRef,
-                                saga.RefName,
-                                sagaArc.RefName,
-                                viewModel);
-                        }
-                    }
+                    // Handle click - quests are now handled via character dialogue, not direct signpost interaction
+                    // Category is just a visual hint; actual interaction happens through SagaTrigger spawned characters
                 }
             }
 
@@ -440,10 +459,9 @@ public class MapViewPanel
                 var pos = PixelToScreen(character.PixelX, character.PixelY);
                 //System.Diagnostics.Debug.WriteLine($"[MapViewPanel] Character '{character.DisplayName}' at pixel ({character.PixelX:F1}, {character.PixelY:F1}) -> screen ({pos.X:F1}, {pos.Y:F1})");
 
-                // Skip if way off-screen (allow some buffer for partial visibility)
+                // Skip if way off-screen (allow some buffer for partial visibility) - is this right? what about really bit x and y?
                 if (pos.X < -100 || pos.Y < -100)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[MapViewPanel]   -> SKIPPED (off-screen)");
                     continue;
                 }
 

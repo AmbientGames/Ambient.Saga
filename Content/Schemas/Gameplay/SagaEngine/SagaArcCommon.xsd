@@ -32,12 +32,4 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    <xs:simpleType name="QuestDifficulty">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="Easy" />
-            <xs:enumeration value="Normal" />
-            <xs:enumeration value="Hard" />
-            <xs:enumeration value="Epic" />
-        </xs:restriction>
-    </xs:simpleType>
 </xs:schema>

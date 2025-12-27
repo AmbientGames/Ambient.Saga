@@ -18,18 +18,15 @@ namespace Ambient.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
-    public enum QuestDifficulty {
+    public enum SagaArcRevealMode {
         
         /// <remarks/>
-        Easy,
+        Hidden,
         
         /// <remarks/>
-        Normal,
+        OnDiscover,
         
         /// <remarks/>
-        Hard,
-        
-        /// <remarks/>
-        Epic,
+        Always,
     }
 }

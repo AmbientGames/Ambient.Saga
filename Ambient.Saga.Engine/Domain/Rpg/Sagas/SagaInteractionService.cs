@@ -232,8 +232,39 @@ public class SagaInteractionService
         // Get current state by replaying transactions
         var currentState = _stateMachine.ReplayToNow(instance);
 
-        // Calculate distance from Saga center (used for both enter and exit checks)
+        // Calculate distance from Saga center (used for discovery, enter, and exit checks)
         var distanceFromCenter = Math.Sqrt(avatarX * avatarX + avatarZ * avatarZ);
+
+        // PHASE 0: Check for SagaArc discovery
+        // If avatar is within DiscoverRadius and hasn't discovered this saga yet, log discovery
+        var avatarId = avatar.AvatarId.ToString();
+        if (distanceFromCenter <= _template.DiscoverRadius &&
+            !currentState.DiscoveredByAvatars.Contains(avatarId))
+        {
+            var discoveryTx = new SagaTransaction
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.SagaDiscovered,
+                AvatarId = avatarId,
+                Status = TransactionStatus.Pending,
+                LocalTimestamp = DateTime.UtcNow,
+                Data = new Dictionary<string, string>
+                {
+                    ["SagaArcRef"] = _template.RefName,
+                    ["DistanceMeters"] = distanceFromCenter.ToString("F2"),
+                    ["DiscoverRadius"] = _template.DiscoverRadius.ToString("F2")
+                }
+            };
+            instance.AddTransaction(discoveryTx);
+
+            // Update state so subsequent checks in this call see the saga as discovered
+            currentState.DiscoveredByAvatars.Add(avatarId);
+            if (currentState.Status == SagaStatus.Undiscovered)
+            {
+                currentState.Status = SagaStatus.Active;
+                currentState.FirstDiscoveredAt = discoveryTx.LocalTimestamp;
+            }
+        }
 
         // PHASE 1: Check for trigger exits (process before enters to avoid state conflicts)
         foreach (var sagaTrigger in _expandedSagaTriggers)

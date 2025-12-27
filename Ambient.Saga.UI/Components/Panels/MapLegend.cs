@@ -48,10 +48,10 @@ public static class MapLegend
         ImGui.Spacing();
         ImGui.Indent(10);
 
-        // Status-based colors - matches FeatureColors
-        RenderLegendCircle(FeatureColors.Available, "Available", filled: true);
-        RenderLegendCircle(FeatureColors.Locked, "Locked", filled: true);
-        RenderLegendCircle(FeatureColors.Complete, "Complete", filled: true);
+        // Status-based colors - matches SagaColors
+        RenderLegendCircle(SagaColors.Available, "Available", filled: true);
+        RenderLegendCircle(SagaColors.Locked, "Locked", filled: true);
+        RenderLegendCircle(SagaColors.Complete, "Complete", filled: true);
 
         ImGui.Unindent(10);
         ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Hover for details");

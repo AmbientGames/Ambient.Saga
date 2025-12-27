@@ -1,14 +1,15 @@
-﻿using Ambient.Saga.Engine.Domain.Services;
+﻿using Ambient.Domain;
+using Ambient.Saga.Engine.Domain.Services;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.ViewModels;
 
 /// <summary>
-/// Simple status-based colors for feature dots.
-/// Players care about "can I interact?" not the feature type.
-/// Feature type is shown in tooltip on hover.
+/// Simple status-based colors for saga dots on the map.
+/// Players care about "can I interact?" not the category.
+/// Category is shown in tooltip on hover.
 /// </summary>
-public static class FeatureColors
+public static class SagaColors
 {
     // Status-based colors - simple and actionable for players
     public static readonly Vector4 Available = new Vector4(50f / 255f, 205f / 255f, 50f / 255f, 1f);   // Lime Green - "go here"
@@ -17,9 +18,9 @@ public static class FeatureColors
 
     /// <summary>
     /// Gets the color for a feature based on its interaction status.
-    /// Status is what players care about - type is shown in tooltip.
+    /// Status is what players care about - category is shown in tooltip.
     /// </summary>
-    public static Vector4 GetColor(FeatureType featureType, InteractionStatus status)
+    public static Vector4 GetColor(SagaArcCategory category, InteractionStatus status)
     {
         return status switch
         {
