@@ -1,9 +1,25 @@
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI.Components.Modals;
 using ImGuiNET;
 using System.Diagnostics;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Panels;
+
+/// <summary>
+/// Types of dev test characters that can be spawned for interaction testing.
+/// </summary>
+public enum DevCharacterType
+{
+    /// <summary>Friendly NPC for dialogue testing</summary>
+    NPC,
+    /// <summary>Merchant for trade window testing</summary>
+    Merchant,
+    /// <summary>Boss enemy for combat testing</summary>
+    Boss,
+    /// <summary>Regular hostile for combat testing</summary>
+    Hostile
+}
 
 /// <summary>
 /// Developer tools panel - only visible when debugger is attached.
@@ -16,7 +32,7 @@ public class DevToolsPanel
     /// </summary>
     public static bool IsAvailable => Debugger.IsAttached;
 
-    public void Render(MainViewModel viewModel)
+    public void Render(MainViewModel viewModel, ModalManager modalManager)
     {
         if (!IsAvailable)
             return;
@@ -47,13 +63,65 @@ public class DevToolsPanel
             ImGui.Unindent(10);
         }
 
-        // Character Spawning Section
+        // Interaction Testing Section
         ImGui.Spacing();
-        if (ImGui.CollapsingHeader("Character Spawning", ImGuiTreeNodeFlags.DefaultOpen))
+        if (ImGui.CollapsingHeader("Interaction Testing", ImGuiTreeNodeFlags.DefaultOpen))
         {
             ImGui.Indent(10);
 
-            if (ImGui.Button("Spawn Character", new Vector2(-10, 25)))
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "Spawn & interact with test characters:");
+            ImGui.Spacing();
+
+            // NPC Dialogue Test
+            if (ImGui.Button("Test NPC Dialogue", new Vector2(-10, 25)))
+            {
+                _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.NPC, "Dialogue");
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Spawn a friendly NPC and start dialogue");
+            }
+
+            // Merchant Trade Test
+            if (ImGui.Button("Test Merchant Trade", new Vector2(-10, 25)))
+            {
+                _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Merchant, "MerchantTrade");
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Spawn a merchant and open trade window");
+            }
+
+            // Boss Combat Test
+            if (ImGui.Button("Test Boss Combat", new Vector2(-10, 25)))
+            {
+                _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Boss, "BossBattle");
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Spawn a hostile boss and initiate combat");
+            }
+
+            // Hostile Combat Test
+            if (ImGui.Button("Test Hostile Combat", new Vector2(-10, 25)))
+            {
+                _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Hostile, "BossBattle");
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Spawn a hostile enemy and initiate combat");
+            }
+
+            ImGui.Unindent(10);
+        }
+
+        // Character Spawning Section (legacy - view characters)
+        ImGui.Spacing();
+        if (ImGui.CollapsingHeader("Character Browser"))
+        {
+            ImGui.Indent(10);
+
+            if (ImGui.Button("View All Characters", new Vector2(-10, 25)))
             {
                 if (viewModel.ViewCharactersCommand.CanExecute(null))
                 {
@@ -63,7 +131,7 @@ public class DevToolsPanel
 
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("Open character selection to spawn NPCs for testing");
+                ImGui.SetTooltip("Open character list to browse defined characters");
             }
 
             ImGui.Unindent(10);
@@ -123,6 +191,31 @@ public class DevToolsPanel
             }
 
             ImGui.Unindent(10);
+        }
+    }
+
+    /// <summary>
+    /// Helper to spawn a dev character and open the appropriate modal.
+    /// </summary>
+    private static async Task SpawnAndOpenModalAsync(
+        MainViewModel viewModel,
+        ModalManager modalManager,
+        DevCharacterType characterType,
+        string modalName)
+    {
+        try
+        {
+            var character = await viewModel.SpawnDevCharacterAsync(characterType);
+            if (character != null)
+            {
+                var context = new CharacterContext(viewModel, character);
+                modalManager.OpenRegisteredModal(modalName, context);
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Error in SpawnAndOpenModalAsync: {ex.Message}");
+            viewModel.StatusMessage = $"Error: {ex.Message}";
         }
     }
 }

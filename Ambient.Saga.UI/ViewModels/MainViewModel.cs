@@ -8,6 +8,7 @@ using Ambient.Infrastructure.GameLogic;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Loading;
+using SpawnDevCharacterCommand = Ambient.Saga.Engine.Application.Commands.Saga.SpawnDevCharacterCommand;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts;
@@ -20,6 +21,7 @@ using System.Collections.ObjectModel;
 using Ambient.Saga.UI.Models;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.UI.ViewModels;
+using Ambient.Saga.UI.Components.Panels;
 using SharpDX;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
@@ -2169,5 +2171,178 @@ public partial class MainViewModel : ObservableObject
         CharacterChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    #region Dev Tools - Interaction Testing
+
+    /// <summary>
+    /// Spawns a test character for dev testing using CQRS command.
+    /// Creates proper saga transactions so dialogue/trade/combat work correctly.
+    /// </summary>
+    public async Task<CharacterViewModel?> SpawnDevCharacterAsync(DevCharacterType characterType)
+    {
+        if (CurrentWorld == null || PlayerAvatar == null)
+        {
+            System.Diagnostics.Debug.WriteLine("[DevTools] Cannot spawn - no world or avatar loaded");
+            StatusMessage = "Load a world first";
+            return null;
+        }
+
+        try
+        {
+            // Find a suitable test character from the world based on type
+            var testCharacter = FindTestCharacter(characterType);
+            if (testCharacter == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DevTools] No suitable {characterType} character found in world");
+                StatusMessage = $"No {characterType} character found in world data";
+                return null;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Found test character: {testCharacter.DisplayName} ({testCharacter.RefName})");
+
+            // Find a real saga to use
+            var sagaRef = FindSagaWithCharacter(testCharacter.RefName)
+                ?? CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName
+                ?? "";
+
+            // Use CQRS command to spawn with proper transaction history
+            var spawnCommand = new SpawnDevCharacterCommand
+            {
+                AvatarId = PlayerAvatar.AvatarId,
+                CharacterRef = testCharacter.RefName,
+                SagaArcRef = sagaRef,
+                Avatar = PlayerAvatar
+            };
+
+            var result = await _mediator.Send(spawnCommand);
+
+            if (!result.Successful)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DevTools] Spawn failed: {result.ErrorMessage}");
+                StatusMessage = $"Spawn failed: {result.ErrorMessage}";
+                return null;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Spawn succeeded, InstanceId: {result.CharacterInstanceId}");
+
+            // Position near avatar (2m away for immediate interaction)
+            var spawnX = PlayerAvatar.X + 2.0;
+            var spawnZ = PlayerAvatar.Z;
+
+            // Create character ViewModel and add to collection
+            var canDialogue = testCharacter.Interactable?.DialogueTreeRef != null;
+            var canTrade = testCharacter.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false;
+            var isHostile = testCharacter.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false;
+            var isBoss = testCharacter.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false;
+
+            var characterVm = new CharacterViewModel
+            {
+                CharacterInstanceId = result.CharacterInstanceId,
+                CharacterRef = testCharacter.RefName,
+                DisplayName = testCharacter.DisplayName,
+                SagaRef = result.SagaRef ?? sagaRef,
+                CharacterType = characterType.ToString(),
+                ModelX = spawnX,
+                ModelZ = spawnZ,
+                PixelX = 0,
+                PixelY = 0,
+                IsAlive = true,
+                CanDialogue = canDialogue,
+                CanTrade = canTrade,
+                CanAttack = isHostile || isBoss,
+                MarkerColor = GetDevCharacterColor(characterType)
+            };
+
+            Characters.Add(characterVm);
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Spawned {testCharacter.DisplayName} at ({spawnX:F2}, {spawnZ:F2})");
+            StatusMessage = $"Spawned {testCharacter.DisplayName}";
+
+            return characterVm;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Error spawning character: {ex.Message}");
+            StatusMessage = $"Error: {ex.Message}";
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Finds a suitable test character from world data based on type.
+    /// </summary>
+    private Character? FindTestCharacter(DevCharacterType characterType)
+    {
+        var characters = CurrentWorld?.Gameplay?.Characters;
+        if (characters == null || characters.Length == 0)
+            return null;
+
+        return characterType switch
+        {
+            DevCharacterType.NPC => characters.FirstOrDefault(c =>
+                c.Interactable?.DialogueTreeRef != null &&
+                !(c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false)),
+
+            DevCharacterType.Merchant => characters.FirstOrDefault(c =>
+                c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false),
+
+            DevCharacterType.Boss => characters.FirstOrDefault(c =>
+                c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false),
+
+            DevCharacterType.Hostile => characters.FirstOrDefault(c =>
+                c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false),
+
+            _ => characters.FirstOrDefault()
+        };
+    }
+
+    /// <summary>
+    /// Finds a saga that spawns the given character (for dev testing with real saga refs).
+    /// </summary>
+    private string? FindSagaWithCharacter(string characterRef)
+    {
+        var sagas = CurrentWorld?.Gameplay?.SagaArcs;
+        if (sagas == null)
+            return null;
+
+        foreach (var saga in sagas)
+        {
+            // Check if this saga has triggers that spawn the character
+            if (CurrentWorld!.SagaTriggersLookup.TryGetValue(saga.RefName, out var triggers))
+            {
+                foreach (var trigger in triggers)
+                {
+                    if (trigger.Spawn != null)
+                    {
+                        foreach (var spawn in trigger.Spawn)
+                        {
+                            if (spawn.CharacterRef == characterRef)
+                            {
+                                return saga.RefName;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fallback: just return first saga (dialogue needs a saga context)
+        return sagas.FirstOrDefault()?.RefName;
+    }
+
+    /// <summary>
+    /// Gets a color for the dev character dot based on type.
+    /// </summary>
+    private System.Numerics.Vector4 GetDevCharacterColor(DevCharacterType characterType)
+    {
+        return characterType switch
+        {
+            DevCharacterType.NPC => new System.Numerics.Vector4(0.3f, 0.8f, 0.3f, 1f),      // Green
+            DevCharacterType.Merchant => new System.Numerics.Vector4(1f, 0.84f, 0f, 1f),    // Gold
+            DevCharacterType.Boss => new System.Numerics.Vector4(0.8f, 0.2f, 0.8f, 1f),     // Purple
+            DevCharacterType.Hostile => new System.Numerics.Vector4(0.9f, 0.2f, 0.2f, 1f),  // Red
+            _ => new System.Numerics.Vector4(1f, 1f, 1f, 1f)                                 // White
+        };
+    }
+
+    #endregion
 
 }

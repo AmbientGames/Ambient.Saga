@@ -331,7 +331,7 @@ public class GameplayOverlay
 
         if (ImGui.Begin("Dev Tools [Ins]", windowFlags))
         {
-            _devToolsPanel.Render(viewModel);
+            _devToolsPanel.Render(viewModel, _modalManager);
         }
         ImGui.End();
 
