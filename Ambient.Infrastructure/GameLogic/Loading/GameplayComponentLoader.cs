@@ -26,7 +26,6 @@ public static class GameplayComponentLoader
         var equipmentRef = ResolveRef(config.EquipmentRef, worldRef);
         var questTokensRef = ResolveRef(config.QuestTokensRef, worldRef);
         var charactersRef = ResolveRef(config.CharactersRef, worldRef);
-        var characterArchetypesRef = ResolveRef(config.CharacterArchetypesRef, worldRef);
         var characterAffinitiesRef = ResolveRef(config.CharacterAffinitiesRef, worldRef);
         var combatStancesRef = ResolveRef(config.CombatStancesRef, worldRef);
         var loadoutSlotsRef = ResolveRef(config.LoadoutSlotsRef, worldRef);
@@ -46,7 +45,6 @@ public static class GameplayComponentLoader
         world.Gameplay.Equipment = (await XmlLoader.LoadFromXmlAsync<EquipmentCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{equipmentRef}.Equipment.xml"), xsdFilePath)).Equipment ?? [];
         world.Gameplay.QuestTokens = (await XmlLoader.LoadFromXmlAsync<QuestTokens>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{questTokensRef}.QuestTokens.xml"), xsdFilePath)).QuestToken ?? [];
         world.Gameplay.Characters = (await XmlLoader.LoadFromXmlAsync<Characters>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{charactersRef}.Characters.xml"), xsdFilePath)).Character ?? [];
-        world.Gameplay.CharacterArchetypes = (await XmlLoader.LoadFromXmlAsync<CharacterArchetypes>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{characterArchetypesRef}.CharacterArchetypes.xml"), xsdFilePath)).CharacterArchetype ?? [];
         world.Gameplay.CharacterAffinities = (await XmlLoader.LoadFromXmlAsync<CharacterAffinities>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{characterAffinitiesRef}.CharacterAffinities.xml"), xsdFilePath)).Affinity ?? [];
         world.Gameplay.CombatStances = (await XmlLoader.LoadFromXmlAsync<CombatStances>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{combatStancesRef}.CombatStances.xml"), xsdFilePath)).CombatStance ?? [];
         world.Gameplay.LoadoutSlots = (await XmlLoader.LoadFromXmlAsync<LoadoutSlots>(Path.Combine(dataDirectory, "Gameplay", $"{loadoutSlotsRef}.LoadoutSlots.xml"), xsdFilePath)).LoadoutSlot ?? [];
@@ -69,7 +67,6 @@ public static class GameplayComponentLoader
         BuildLookup(world.Gameplay.Tools, world.ToolsLookup);
         BuildLookup(world.Gameplay.BuildingMaterials, world.BuildingMaterialsLookup);
         BuildLookup(world.Gameplay.Characters, world.CharactersLookup);
-        BuildLookup(world.Gameplay.CharacterArchetypes, world.CharacterArchetypesLookup);
         BuildLookup(world.Gameplay.CharacterAffinities, world.CharacterAffinitiesLookup);
         BuildLookup(world.Gameplay.CombatStances, world.CombatStancesLookup);
         BuildLookup(world.Gameplay.LoadoutSlots, world.LoadoutSlotsLookup);

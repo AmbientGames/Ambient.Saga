@@ -376,8 +376,7 @@ public class RegressionTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "Guard"
+                    CharacterRef = "Guard"
                 }
             }
         };
@@ -409,7 +408,6 @@ public class RegressionTests : IDisposable
                 {
                     SagaArcs = new[] { duplicationSaga, raceSaga },
                     Characters = new[] { guard },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),

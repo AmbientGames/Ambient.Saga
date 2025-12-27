@@ -35,8 +35,6 @@ namespace Ambient.Domain {
         
         private Character[] charactersField;
         
-        private CharacterArchetype[] characterArchetypesField;
-        
         private CharacterAffinity[] characterAffinitiesField;
         
         private CombatStance[] combatStancesField;
@@ -124,17 +122,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.charactersField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public CharacterArchetype[] CharacterArchetypes {
-            get {
-                return this.characterArchetypesField;
-            }
-            set {
-                this.characterArchetypesField = value;
             }
         }
         

@@ -7,7 +7,6 @@
     <xs:include schemaLocation="Acquirables/BuildingMaterial.xsd" />
     <xs:include schemaLocation="Acquirables/QuestToken.xsd" />
     <xs:include schemaLocation="Actors/Characters/Characters.xsd" />
-    <xs:include schemaLocation="Actors/Characters/CharacterArchetype.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/CharacterAffinities.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/CombatStances.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/StatusEffects.xsd" />
@@ -53,12 +52,6 @@
     <xs:element name="Characters" type="Characters">
         <xs:key name="UniqueCharacterRefName">
             <xs:selector xpath="Character" />
-            <xs:field xpath="@RefName" />
-        </xs:key>
-    </xs:element>
-    <xs:element name="CharacterArchetypes" type="CharacterArchetypes">
-        <xs:key name="UniqueCharacterArchetypeRefName">
-            <xs:selector xpath="CharacterArchetype" />
             <xs:field xpath="@RefName" />
         </xs:key>
     </xs:element>
@@ -142,7 +135,6 @@
             <xs:element ref="AvatarArchetypes" />
             <xs:element ref="Equipment" />
             <xs:element ref="Characters" />
-            <xs:element ref="CharacterArchetypes" />
             <xs:element ref="CharacterAffinities" />
             <xs:element ref="CombatStances" />
             <xs:element ref="LoadoutSlots" />

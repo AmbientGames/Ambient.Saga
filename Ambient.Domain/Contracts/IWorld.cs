@@ -42,7 +42,6 @@ public interface IWorld
     Dictionary<string, Quest> QuestsLookup { get; set; }
     Dictionary<string, AvatarArchetype> AvatarArchetypesLookup { get; set; }
     Dictionary<string, DialogueTree> DialogueTreesLookup { get; set; }
-    Dictionary<string, CharacterArchetype> CharacterArchetypesLookup { get; set; }
     Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; }
     Dictionary<string, CombatStance> CombatStancesLookup { get; set; }
     Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; }

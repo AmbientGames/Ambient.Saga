@@ -103,8 +103,7 @@ public class SagaE2EStoryTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "VillageMerchant"
+                    CharacterRef = "VillageMerchant"
                 }
             }
         };
@@ -117,8 +116,7 @@ public class SagaE2EStoryTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "CastleLord"
+                    CharacterRef = "CastleLord"
                 }
             }
         };
@@ -173,7 +171,6 @@ public class SagaE2EStoryTests : IDisposable
                 {
                     SagaArcs = new[] { sagaArc },
                     Characters = new[] { merchant, boss },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),

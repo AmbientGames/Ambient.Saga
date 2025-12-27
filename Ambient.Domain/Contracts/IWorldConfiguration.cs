@@ -20,7 +20,6 @@ public interface IWorldConfiguration
     string EquipmentRef { get; set; }
     string QuestTokensRef { get; set; }
     string CharactersRef { get; set; }
-    string CharacterArchetypesRef { get; set; }
     string CharacterAffinitiesRef { get; set; }
     string CombatStancesRef { get; set; }
     string LoadoutSlotsRef { get; set; }

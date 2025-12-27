@@ -78,8 +78,7 @@ public class UpdateAvatarPositionCommandTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "Guard"
+                    CharacterRef = "Guard"
                 }
             }
         };
@@ -109,7 +108,6 @@ public class UpdateAvatarPositionCommandTests : IDisposable
                 {
                     SagaArcs = new[] { sagaArc },
                     Characters = new[] { character },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),

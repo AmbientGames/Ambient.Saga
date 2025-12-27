@@ -365,8 +365,7 @@ public class SubmitReactionCommandTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "TestEnemy"
+                    CharacterRef = "TestEnemy"
                 }
             }
         };
@@ -433,7 +432,6 @@ public class SubmitReactionCommandTests : IDisposable
                     SagaArcs = new[] { saga },
                     Characters = new[] { enemy },
                     Equipment = Array.Empty<Equipment>(),
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = new[] { archetype },
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = new[] { affinity },

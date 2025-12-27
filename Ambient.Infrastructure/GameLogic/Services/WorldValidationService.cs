@@ -293,22 +293,14 @@ public static class WorldValidationService
     {
         if (spawn == null) return;
 
-        // CharacterSpawn uses discriminated union: Item contains the RefName, ItemElementName tells us which type
-        if (!string.IsNullOrEmpty(spawn.Item))
+        // CharacterSpawn now directly contains CharacterRef
+        if (!string.IsNullOrEmpty(spawn.CharacterRef))
         {
-            switch (spawn.ItemElementName)
-            {
-                case ItemChoiceType.CharacterRef:
-                    ValidateReference(world.CharactersLookup, spawn.Item, context, "Spawn.CharacterRef", "Characters", errors);
-                    break;
-                case ItemChoiceType.CharacterArchetypeRef:
-                    ValidateReference(world.CharacterArchetypesLookup, spawn.Item, context, "Spawn.CharacterArchetypeRef", "CharacterArchetypes", errors);
-                    break;
-            }
+            ValidateReference(world.CharactersLookup, spawn.CharacterRef, context, "Spawn.CharacterRef", "Characters", errors);
         }
         else
         {
-            errors.Add($"{context}: Spawn must have either CharacterRef or CharacterArchetypeRef");
+            errors.Add($"{context}: Spawn must have CharacterRef");
         }
 
         // Note: CharacterSpawn no longer has quest token conditions
@@ -845,25 +837,14 @@ public static class WorldValidationService
                 break;
 
             case DialogueActionType.SpawnCharacters:
-                // Either CharacterRef or CharacterArchetypeRef required (not both)
-                var hasCharacterRef = !string.IsNullOrEmpty(action.CharacterRef);
-                var hasArchetypeRef = !string.IsNullOrEmpty(action.CharacterArchetypeRef);
-
-                if (!hasCharacterRef && !hasArchetypeRef)
+                // CharacterRef required
+                if (string.IsNullOrEmpty(action.CharacterRef))
                 {
-                    errors.Add($"{actionContext}: Either CharacterRef or CharacterArchetypeRef is required");
+                    errors.Add($"{actionContext}: CharacterRef is required");
                 }
-                else if (hasCharacterRef && hasArchetypeRef)
-                {
-                    errors.Add($"{actionContext}: Cannot specify both CharacterRef and CharacterArchetypeRef (use one or the other)");
-                }
-                else if (hasCharacterRef)
+                else
                 {
                     ValidateReference(world.CharactersLookup, action.CharacterRef, actionContext, "CharacterRef", "Characters", errors);
-                }
-                else if (hasArchetypeRef)
-                {
-                    ValidateReference(world.CharacterArchetypesLookup, action.CharacterArchetypeRef, actionContext, "CharacterArchetypeRef", "CharacterArchetypes", errors);
                 }
 
                 ValidateActionAmount(action.Amount, actionContext, errors, allowZero: false);
@@ -921,25 +902,14 @@ public static class WorldValidationService
                 break;
 
             case DialogueActionType.SummonAlly:
-                // Similar to SpawnCharacters - requires either CharacterRef or CharacterArchetypeRef
-                var hasSummonCharacterRef = !string.IsNullOrEmpty(action.CharacterRef);
-                var hasSummonArchetypeRef = !string.IsNullOrEmpty(action.CharacterArchetypeRef);
-
-                if (!hasSummonCharacterRef && !hasSummonArchetypeRef)
+                // CharacterRef required
+                if (string.IsNullOrEmpty(action.CharacterRef))
                 {
-                    errors.Add($"{actionContext}: Either CharacterRef or CharacterArchetypeRef is required");
+                    errors.Add($"{actionContext}: CharacterRef is required");
                 }
-                else if (hasSummonCharacterRef && hasSummonArchetypeRef)
-                {
-                    errors.Add($"{actionContext}: Cannot specify both CharacterRef and CharacterArchetypeRef (use one or the other)");
-                }
-                else if (hasSummonCharacterRef)
+                else
                 {
                     ValidateReference(world.CharactersLookup, action.CharacterRef, actionContext, "CharacterRef", "Characters", errors);
-                }
-                else if (hasSummonArchetypeRef)
-                {
-                    ValidateReference(world.CharacterArchetypesLookup, action.CharacterArchetypeRef, actionContext, "CharacterArchetypeRef", "CharacterArchetypes", errors);
                 }
                 break;
 
@@ -1727,11 +1697,10 @@ public static class WorldValidationService
 
         foreach (var spawn in trigger.Spawn)
         {
-            // Only collect direct CharacterRef spawns, not archetypes
-            // Archetypes generate random characters that may or may not have dialogue
-            if (spawn.ItemElementName == ItemChoiceType.CharacterRef && !string.IsNullOrEmpty(spawn.Item))
+            // CharacterSpawn now directly contains CharacterRef
+            if (!string.IsNullOrEmpty(spawn.CharacterRef))
             {
-                characterRefs.Add(spawn.Item);
+                characterRefs.Add(spawn.CharacterRef);
             }
         }
     }

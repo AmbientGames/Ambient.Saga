@@ -3080,100 +3080,22 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke6Ring3" DisplayName="Traveler at Tsurumaru-jō Spoke 6 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 6 Ring 3" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke6Ring5" DisplayName="Traveler at Tsurumaru-jō Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 6 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Hello there! Tsurumaru-jō Spoke 6 Ring 3 is beautiful this time of year, isn't it?</Text>
+      <Text>Hello there! Tsurumaru-jō Spoke 6 Ring 5 is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! TsurumarujōSpoke6Ring2 or TsurumarujōSpoke6Ring4 is worth a visit if you have time.</Text>
+      <Text>Nice to see a fellow traveler! TerukuniDaimyōjinshaSpoke6Ring5 or TerukuniDaimyōjinshaSpoke6Ring4 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Tsurumaru-jō Spoke 6 Ring 3 is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Tsurumaru-jō Spoke 6 Ring 5 is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TsurumarujōSpoke6Ring4" DisplayName="Trader at Tsurumaru-jō Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Trader at Tsurumaru-jō Spoke 6 Ring 4" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>You've got a good eye! Let me show you what I have in stock.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring4" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring4" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring4" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Everything you see is for sale. Just say the word!</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TsurumarujōSpoke6Ring4" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Ah, a customer at Tsurumaru-jō Spoke 6 Ring 4! Come, browse my collection - you won't find better prices anywhere!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! TsurumarujōSpoke6Ring3 or TsurumarujōSpoke6Ring5 is worth a visit if you have time.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Tsurumaru-jō Spoke 6 Ring 4, holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke6Ring5" DisplayName="Traveler at Tsurumaru-jō Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Tsurumaru-jō Spoke 6 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Tsurumaru-jō Spoke 6 Ring 5? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke6Ring4 or TerukuniDaimyōjinshaSpoke6Ring5 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Tsurumaru-jō Spoke 6 Ring 5? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_Isoteien" DisplayName="Guardian of Iso-teien Dialogue" Description="Dialogue tree for Guardian of Iso-teien" StartNodeId="greeting">
@@ -3217,234 +3139,24 @@
       <Text>I fall... but Iso-teien will remember my sacrifice...</Text>
     </Node>
     <Node NodeId="greeting">
-      <Text>Turn back now, traveler. Iso-teien is under my protection, and I will not yield!</Text>
+      <Text>You dare approach Iso-teien? I am its protector, and I do not suffer intruders lightly!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to Isoteien1 or IsoteienSpoke2Ring1, I recommend it.</Text>
+      <Text>Nice to see a fellow traveler! Isoteien1 or IsoteienSpoke2Ring1 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Iso-teien is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>This place, Iso-teien, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke2Ring1" DisplayName="Traveler at Iso-teien Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 2 Ring 1" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Iso-teien Spoke 2 Ring 1? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited IsoteienSpoke3Ring1 or IsoteienSpoke2Ring2 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Iso-teien Spoke 2 Ring 1! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke2Ring2" DisplayName="Trader at Iso-teien Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 2 Ring 2" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring2" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring2" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring2" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring2" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Looking to trade? You've come to the right place at Iso-teien Spoke 2 Ring 2. What catches your eye?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to IsoteienSpoke2Ring3 or IsoteienSpoke2Ring1.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Iso-teien Spoke 2 Ring 2 has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke2Ring3" DisplayName="Traveler at Iso-teien Spoke 2 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 2 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Hello there! Iso-teien Spoke 2 Ring 3 is beautiful this time of year, isn't it?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! IsoteienSpoke2Ring4 or IsoteienSpoke2Ring2 is worth a visit if you have time.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Iso-teien Spoke 2 Ring 3? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Until we meet again!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke2Ring4" DisplayName="Traveler at Iso-teien Spoke 2 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 2 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Hello there! Iso-teien Spoke 2 Ring 4 is beautiful this time of year, isn't it?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to IsoteienSpoke2Ring5 or IsoteienSpoke2Ring3.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Iso-teien Spoke 2 Ring 4 is known far and wide. Its reputation draws many curious souls.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke2Ring5" DisplayName="Trader at Iso-teien Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 2 Ring 5" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring5" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring5" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring5" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Browse to your heart's content! Let me know if anything catches your eye.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring5" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Iso-teien Spoke 2 Ring 5. I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! IsoteienSpoke2Ring4 or IsoteienSpoke2Ring3 is worth a visit if you have time.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Iso-teien Spoke 2 Ring 5? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Until we meet again!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke3Ring1" DisplayName="Traveler at Iso-teien Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 3 Ring 1" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Iso-teien Spoke 3 Ring 1? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially IsoteienSpoke2Ring1 or IsoteienSpoke3Ring2.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Iso-teien Spoke 3 Ring 1 has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke3Ring2" DisplayName="Traveler at Iso-teien Spoke 3 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 3 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Iso-teien Spoke 3 Ring 2? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to IsoteienSpoke3Ring3 or IsoteienSpoke3Ring1, I recommend it.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Iso-teien Spoke 3 Ring 2 has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke3Ring3" DisplayName="Trader at Iso-teien Spoke 3 Ring 3 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 3 Ring 3" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke2Ring1" DisplayName="Trader at Iso-teien Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 2 Ring 1" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>Step right up! Quality goods at fair prices - that's my promise.</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -3462,7 +3174,7 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring1" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
@@ -3475,72 +3187,72 @@
       <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring1" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring1" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring3" />
+      <Text>My wares are spread before you. See anything you fancy?</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring1" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Greetings, friend! The road to Iso-teien Spoke 3 Ring 3 is long, but worth it for my goods!</Text>
+      <Text>Welcome, traveler! You've reached Iso-teien Spoke 2 Ring 1. I have wares to offer - take a look!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! IsoteienSpoke3Ring4 or IsoteienSpoke3Ring2 is worth a visit if you have time.</Text>
+      <Text>Nice to see a fellow traveler! IsoteienSpoke3Ring1 or IsoteienSpoke2Ring2 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Iso-teien Spoke 3 Ring 3! There are tales of this place that would fill a library.</Text>
+      <Text>Iso-teien Spoke 2 Ring 1 is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke3Ring4" DisplayName="Traveler at Iso-teien Spoke 3 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 3 Ring 4" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke2Ring2" DisplayName="Traveler at Iso-teien Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 2 Ring 2" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Iso-teien Spoke 3 Ring 4. The journey has been long.</Text>
+      <Text>Welcome to Iso-teien Spoke 2 Ring 2. I don't see many visitors around these parts.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited IsoteienSpoke3Ring5 or IsoteienSpoke3Ring3 yet?</Text>
+      <Text>A pleasure to meet you! If you haven't been to IsoteienSpoke2Ring3 or IsoteienSpoke2Ring1, I recommend it.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>This place, Iso-teien Spoke 3 Ring 4, holds many secrets. Those who listen carefully learn much.</Text>
+      <Text>Iso-teien Spoke 2 Ring 2 is known far and wide. Its reputation draws many curious souls.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke2Ring3" DisplayName="Traveler at Iso-teien Spoke 2 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 2 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Greetings, friend. Are you also visiting Iso-teien Spoke 2 Ring 3? It's quite a sight to behold.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited IsoteienSpoke2Ring4 or IsoteienSpoke2Ring2 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Iso-teien Spoke 2 Ring 3! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke3Ring5" DisplayName="Traveler at Iso-teien Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 3 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Ah, another soul drawn to Iso-teien Spoke 3 Ring 5. There's something special about this place.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to IsoteienSpoke3Ring4 or IsoteienSpoke3Ring3.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Iso-teien Spoke 3 Ring 5? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke4Ring1" DisplayName="Trader at Iso-teien Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 4 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke2Ring4" DisplayName="Trader at Iso-teien Spoke 2 Ring 4 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 2 Ring 4" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -3558,7 +3270,7 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring4" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
@@ -3571,168 +3283,72 @@
       <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring4" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring4" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>My wares are spread before you. See anything you fancy?</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring1" />
+      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke2Ring4" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Iso-teien Spoke 4 Ring 1. I have wares to offer - take a look!</Text>
+      <Text>Looking to trade? You've come to the right place at Iso-teien Spoke 2 Ring 4. What catches your eye?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited IsoteienSpoke3Ring1 or Isoteien yet?</Text>
+      <Text>Welcome, friend! Many pass through here on their way to IsoteienSpoke2Ring5 or IsoteienSpoke2Ring3.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Iso-teien Spoke 4 Ring 1? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring2" DisplayName="Traveler at Iso-teien Spoke 4 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 4 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Welcome to Iso-teien Spoke 4 Ring 2. I don't see many visitors around these parts.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke2Ring5 or IsoteienSpoke4Ring3.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Iso-teien Spoke 4 Ring 2, holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring3" DisplayName="Traveler at Iso-teien Spoke 4 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 4 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Ah, another soul drawn to Iso-teien Spoke 4 Ring 3. There's something special about this place.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke2Ring5 or IsoteienSpoke4Ring2.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Iso-teien Spoke 4 Ring 3 is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Iso-teien Spoke 2 Ring 4 has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke4Ring4" DisplayName="Trader at Iso-teien Spoke 4 Ring 4 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 4 Ring 4" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring4" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring4" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring4" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>My wares are spread before you. See anything you fancy?</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring4" />
-    </Node>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke2Ring5" DisplayName="Traveler at Iso-teien Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 2 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Greetings, friend! The road to Iso-teien Spoke 4 Ring 4 is long, but worth it for my goods!</Text>
+      <Text>Hello there! Iso-teien Spoke 2 Ring 5 is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to IsoteienSpoke4Ring5 or IsoteienSpoke4Ring3, I recommend it.</Text>
+      <Text>Nice to see a fellow traveler! IsoteienSpoke2Ring4 or IsoteienSpoke2Ring3 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Iso-teien Spoke 4 Ring 4 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>You want to know about Iso-teien Spoke 2 Ring 5? Settle in - there's much to tell.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring5" DisplayName="Traveler at Iso-teien Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 4 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke3Ring1" DisplayName="Traveler at Iso-teien Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 3 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Welcome to Iso-teien Spoke 4 Ring 5. I don't see many visitors around these parts.</Text>
+      <Text>Hello there! Iso-teien Spoke 3 Ring 1 is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially IsoteienSpoke4Ring4 or IsoteienSpoke4Ring3.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to IsoteienSpoke2Ring1 or IsoteienSpoke3Ring2.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Iso-teien Spoke 4 Ring 5 is known far and wide. Its reputation draws many curious souls.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke5Ring2" DisplayName="Traveler at Iso-teien Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 5 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Hello there! Iso-teien Spoke 5 Ring 2 is beautiful this time of year, isn't it?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially Isoteien1_to_Tsurumarujō1_1 or IsoteienSpoke5Ring3.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Iso-teien Spoke 5 Ring 2 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Iso-teien Spoke 3 Ring 1 is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke5Ring3" DisplayName="Trader at Iso-teien Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 5 Ring 3" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke3Ring2" DisplayName="Trader at Iso-teien Spoke 3 Ring 2 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 3 Ring 2" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -3750,7 +3366,7 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring2" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
@@ -3763,51 +3379,357 @@
       <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring2" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring3" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring2" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring3" />
+      <Text>Browse to your heart's content! Let me know if anything catches your eye.</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring2" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Greetings, friend! The road to Iso-teien Spoke 5 Ring 3 is long, but worth it for my goods!</Text>
+      <Text>Welcome, traveler! You've reached Iso-teien Spoke 3 Ring 2. I have wares to offer - take a look!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! Isoteien1_to_Tsurumarujō1_2 or IsoteienSpoke5Ring2 is worth a visit if you have time.</Text>
+      <Text>Nice to see a fellow traveler! IsoteienSpoke3Ring3 or IsoteienSpoke3Ring1 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Iso-teien Spoke 5 Ring 3! There are tales of this place that would fill a library.</Text>
+      <Text>You want to know about Iso-teien Spoke 3 Ring 2? Settle in - there's much to tell.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke5Ring4" DisplayName="Traveler at Iso-teien Spoke 5 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 5 Ring 4" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke3Ring3" DisplayName="Traveler at Iso-teien Spoke 3 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 3 Ring 3" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Iso-teien Spoke 5 Ring 4. The journey has been long.</Text>
+      <Text>Greetings, friend. Are you also visiting Iso-teien Spoke 3 Ring 3? It's quite a sight to behold.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to IsoteienSpoke5Ring3 or Isoteien1_to_Tsurumarujō1_3, I recommend it.</Text>
+      <Text>Good to meet you! There's much to see around here, especially IsoteienSpoke3Ring4 or IsoteienSpoke3Ring2.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Iso-teien Spoke 5 Ring 4? Settle in - there's much to tell.</Text>
+      <Text>Iso-teien Spoke 3 Ring 3 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke3Ring4" DisplayName="Traveler at Iso-teien Spoke 3 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 3 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Greetings, friend. Are you also visiting Iso-teien Spoke 3 Ring 4? It's quite a sight to behold.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>A pleasure to meet you! If you haven't been to IsoteienSpoke3Ring5 or IsoteienSpoke3Ring3, I recommend it.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Iso-teien Spoke 3 Ring 4 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke3Ring5" DisplayName="Trader at Iso-teien Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 3 Ring 5" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>Step right up! Quality goods at fair prices - that's my promise.</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring5" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring5" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring5" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>Here's what I have available. Take your time browsing.</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke3Ring5" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>Greetings, friend! The road to Iso-teien Spoke 3 Ring 5 is long, but worth it for my goods!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Nice to see a fellow traveler! IsoteienSpoke3Ring4 or IsoteienSpoke3Ring3 is worth a visit if you have time.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Iso-teien Spoke 3 Ring 5! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring1" DisplayName="Traveler at Iso-teien Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 4 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>A fellow traveler! I've been resting here at Iso-teien Spoke 4 Ring 1. The journey has been long.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited IsoteienSpoke3Ring1 or Isoteien yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Iso-teien Spoke 4 Ring 1, holds many secrets. Those who listen carefully learn much.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring2" DisplayName="Traveler at Iso-teien Spoke 4 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 4 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Ah, another soul drawn to Iso-teien Spoke 4 Ring 2. There's something special about this place.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke2Ring5 or IsoteienSpoke4Ring3.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>You want to know about Iso-teien Spoke 4 Ring 2? Settle in - there's much to tell.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke4Ring3" DisplayName="Trader at Iso-teien Spoke 4 Ring 3 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 4 Ring 3" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring3" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring3" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring3" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>My wares are spread before you. See anything you fancy?</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke4Ring3" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>Welcome, traveler! You've reached Iso-teien Spoke 4 Ring 3. I have wares to offer - take a look!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke2Ring5 or IsoteienSpoke4Ring2 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>You want to know about Iso-teien Spoke 4 Ring 3? Settle in - there's much to tell.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring4" DisplayName="Traveler at Iso-teien Spoke 4 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 4 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Welcome to Iso-teien Spoke 4 Ring 4. I don't see many visitors around these parts.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! There's much to see around here, especially IsoteienSpoke4Ring5 or IsoteienSpoke4Ring3.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Iso-teien Spoke 4 Ring 4, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Take care out there!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring5" DisplayName="Traveler at Iso-teien Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 4 Ring 5" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Ah, another soul drawn to Iso-teien Spoke 4 Ring 5. There's something special about this place.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! Many pass through here on their way to IsoteienSpoke4Ring4 or IsoteienSpoke4Ring3.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Iso-teien Spoke 4 Ring 5 is known far and wide. Its reputation draws many curious souls.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_IsoteienSpoke5Ring2" DisplayName="Trader at Iso-teien Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Trader at Iso-teien Spoke 5 Ring 2" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring2" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring2" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring2" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>My wares are spread before you. See anything you fancy?</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_IsoteienSpoke5Ring2" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>Greetings, friend! The road to Iso-teien Spoke 5 Ring 2 is long, but worth it for my goods!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>A pleasure to meet you! If you haven't been to Isoteien1_to_Tsurumarujō1_1 or IsoteienSpoke5Ring3, I recommend it.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Iso-teien Spoke 5 Ring 2 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke5Ring3" DisplayName="Traveler at Iso-teien Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 5 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Welcome to Iso-teien Spoke 5 Ring 3. I don't see many visitors around these parts.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! There's much to see around here, especially Isoteien1_to_Tsurumarujō1_2 or IsoteienSpoke5Ring2.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Iso-teien Spoke 5 Ring 3 is known far and wide. Its reputation draws many curious souls.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke5Ring4" DisplayName="Traveler at Iso-teien Spoke 5 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Iso-teien Spoke 5 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Hello there! Iso-teien Spoke 5 Ring 4 is beautiful this time of year, isn't it?</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! There's much to see around here, especially IsoteienSpoke5Ring3 or Isoteien1_to_Tsurumarujō1_3.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Iso-teien Spoke 5 Ring 4 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_TerukuniDaimyōjinsha" DisplayName="Guardian of Terukuni Daimyōjin-sha Dialogue" Description="Dialogue tree for Guardian of Terukuni Daimyōjin-sha" StartNodeId="greeting">
@@ -3851,234 +3773,24 @@
       <Text>You have... bested me... Terukuni Daimyōjin-sha... is yours... You've earned it...</Text>
     </Node>
     <Node NodeId="greeting">
-      <Text>You dare approach Terukuni Daimyōjin-sha? I am its protector, and I do not suffer intruders lightly!</Text>
+      <Text>Another challenger approaches Terukuni Daimyōjin-sha. Very well... show me what you're made of!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to TerukuniDaimyōjinsha1 or TsurumarujōSpoke5Ring1, I recommend it.</Text>
+      <Text>Nice to see a fellow traveler! TerukuniDaimyōjinsha1 or TsurumarujōSpoke5Ring1 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Terukuni Daimyōjin-sha? Settle in - there's much to tell.</Text>
+      <Text>Ah, Terukuni Daimyōjin-sha! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Take care out there!</Text>
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 1" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Terukuni Daimyōjin-sha Spoke 1 Ring 1. The journey has been long.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! TsurumarujōSpoke6Ring1 or TsurumarujōSpoke5Ring1 is worth a visit if you have time.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 1 Ring 1? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 2" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>My wares are spread before you. See anything you fancy?</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring2" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Terukuni Daimyōjin-sha Spoke 1 Ring 2. I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke6Ring1 or TsurumarujōSpoke6Ring2 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Terukuni Daimyōjin-sha Spoke 1 Ring 2 has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 1 Ring 3. There's something special about this place.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TerukuniDaimyōjinshaSpoke1Ring2 or TsurumarujōSpoke6Ring2.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 1 Ring 3! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 1" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Welcome to Terukuni Daimyōjin-sha Spoke 2 Ring 1. I don't see many visitors around these parts.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! Tsurumarujō or Tsurumarujō1 is worth a visit if you have time.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Terukuni Daimyōjin-sha Spoke 2 Ring 1 has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 2 Ring 2" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Terukuni Daimyōjin-sha Spoke 2 Ring 2. I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke2Ring1 or Isoteien1_to_Tsurumarujō1_5.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 2 Ring 2? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Hello there! Terukuni Daimyōjin-sha Spoke 2 Ring 3 is beautiful this time of year, isn't it?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke2Ring2 or Isoteien1_to_Tsurumarujō1_4.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 2 Ring 3? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Terukuni Daimyōjin-sha Spoke 2 Ring 4? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke2Ring3 or TsurumarujōSpoke2Ring2.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Terukuni Daimyōjin-sha Spoke 2 Ring 4, holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 2 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 1 Ring 1" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>Step right up! Quality goods at fair prices - that's my promise.</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -4096,6 +3808,198 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke1Ring1" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>Greetings, friend! The road to Terukuni Daimyōjin-sha Spoke 1 Ring 1 is long, but worth it for my goods!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke6Ring1 or TsurumarujōSpoke5Ring1 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Terukuni Daimyōjin-sha Spoke 1 Ring 1! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 1 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Hello there! Terukuni Daimyōjin-sha Spoke 1 Ring 2 is beautiful this time of year, isn't it?</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>A pleasure to meet you! If you haven't been to TsurumarujōSpoke6Ring1 or TsurumarujōSpoke6Ring2, I recommend it.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 1 Ring 2? Settle in - there's much to tell.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Take care out there!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 1" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>A fellow traveler! I've been resting here at Terukuni Daimyōjin-sha Spoke 2 Ring 1. The journey has been long.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Nice to see a fellow traveler! Tsurumarujō or Tsurumarujō1 is worth a visit if you have time.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 2 Ring 1? Settle in - there's much to tell.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 2 Ring 2" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>My wares are spread before you. See anything you fancy?</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring2" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>Welcome, traveler! You've reached Terukuni Daimyōjin-sha Spoke 2 Ring 2. I have wares to offer - take a look!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke2Ring1 or Isoteien1_to_Tsurumarujō1_5 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Terukuni Daimyōjin-sha Spoke 2 Ring 2 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 2 Ring 3. There's something special about this place.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke2Ring2 or Isoteien1_to_Tsurumarujō1_4.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Terukuni Daimyōjin-sha Spoke 2 Ring 3! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Take care out there!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 2 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Welcome to Terukuni Daimyōjin-sha Spoke 2 Ring 4. I don't see many visitors around these parts.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Nice to see a fellow traveler! TsurumarujōSpoke2Ring3 or TsurumarujōSpoke2Ring2 is worth a visit if you have time.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Terukuni Daimyōjin-sha Spoke 2 Ring 4 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 2 Ring 5" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring5" />
     </Node>
     <Node NodeId="bargain_hard_fail">
@@ -4117,17 +4021,17 @@
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring5" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>Everything you see is for sale. Just say the word!</Text>
+      <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring5" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Ah, a customer at Terukuni Daimyōjin-sha Spoke 2 Ring 5! Come, browse my collection - you won't find better prices anywhere!</Text>
+      <Text>Welcome, traveler! You've reached Terukuni Daimyōjin-sha Spoke 2 Ring 5. I have wares to offer - take a look!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! TsurumarujōSpoke2Ring4 or TsurumarujōSpoke2Ring3 is worth a visit if you have time.</Text>
+      <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke2Ring4 or TsurumarujōSpoke2Ring3.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4135,48 +4039,48 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Terukuni Daimyōjin-sha Spoke 3 Ring 1. The journey has been long.</Text>
+      <Text>Hello there! Terukuni Daimyōjin-sha Spoke 3 Ring 1 is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke4Ring1 or TsurumarujōSpoke4Ring2 yet?</Text>
+      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke4Ring1 or TsurumarujōSpoke4Ring2.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>This place, Terukuni Daimyōjin-sha Spoke 3 Ring 1, holds many secrets. Those who listen carefully learn much.</Text>
+      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 3 Ring 1? Settle in - there's much to tell.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Greetings, friend. Are you also visiting Terukuni Daimyōjin-sha Spoke 3 Ring 2? It's quite a sight to behold.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke4Ring2 or TerukuniDaimyōjinshaSpoke3Ring3.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Terukuni Daimyōjin-sha Spoke 3 Ring 2, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Welcome to Terukuni Daimyōjin-sha Spoke 3 Ring 2. I don't see many visitors around these parts.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke4Ring2 or TerukuniDaimyōjinshaSpoke3Ring3.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Terukuni Daimyōjin-sha Spoke 3 Ring 2 is known far and wide. Its reputation draws many curious souls.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
   <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 3 Ring 3 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 3 Ring 3" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
-      <Text>Looking to buy or sell? Either way, you've come to the right place!</Text>
+      <Text>Step right up! Quality goods at fair prices - that's my promise.</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
       <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
       <Choice Text="I'll come back later" NextNodeId="end" />
@@ -4213,11 +4117,11 @@
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>My wares are spread before you. See anything you fancy?</Text>
+      <Text>Everything you see is for sale. Just say the word!</Text>
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Looking to trade? You've come to the right place at Terukuni Daimyōjin-sha Spoke 3 Ring 3. What catches your eye?</Text>
+      <Text>Ah, a customer at Terukuni Daimyōjin-sha Spoke 3 Ring 3! Come, browse my collection - you won't find better prices anywhere!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
@@ -4231,7 +4135,7 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 4" StartNodeId="greeting">
@@ -4241,15 +4145,15 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially TerukuniDaimyōjinshaSpoke3Ring5 or TerukuniDaimyōjinshaSpoke3Ring3.</Text>
+      <Text>It's good to meet a friendly face! Have you visited TerukuniDaimyōjinshaSpoke3Ring5 or TerukuniDaimyōjinshaSpoke3Ring3 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 3 Ring 4! There are tales of this place that would fill a library.</Text>
+      <Text>This place, Terukuni Daimyōjin-sha Spoke 3 Ring 4, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 3 Ring 5" StartNodeId="greeting">
@@ -4263,11 +4167,11 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Terukuni Daimyōjin-sha Spoke 3 Ring 5 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Terukuni Daimyōjin-sha Spoke 3 Ring 5 is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Take care out there!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 4 Ring 1 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 4 Ring 1" StartNodeId="greeting">
@@ -4309,30 +4213,30 @@
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
+      <Text>My wares are spread before you. See anything you fancy?</Text>
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Ah, a customer at Terukuni Daimyōjin-sha Spoke 4 Ring 1! Come, browse my collection - you won't find better prices anywhere!</Text>
+      <Text>Looking to trade? You've come to the right place at Terukuni Daimyōjin-sha Spoke 4 Ring 1. What catches your eye?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to TsurumarujōSpoke4Ring2 or TerukuniDaimyōjinshaSpoke3Ring1, I recommend it.</Text>
+      <Text>Nice to see a fellow traveler! TsurumarujōSpoke4Ring2 or TerukuniDaimyōjinshaSpoke3Ring1 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Terukuni Daimyōjin-sha Spoke 4 Ring 1 is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 4 Ring 1? Settle in - there's much to tell.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Take care out there!</Text>
+      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 4 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 4 Ring 2" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Terukuni Daimyōjin-sha Spoke 4 Ring 2? It's quite a sight to behold.</Text>
+      <Text>A fellow traveler! I've been resting here at Terukuni Daimyōjin-sha Spoke 4 Ring 2. The journey has been long.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -4341,25 +4245,25 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>This place, Terukuni Daimyōjin-sha Spoke 4 Ring 2, holds many secrets. Those who listen carefully learn much.</Text>
+      <Text>Ah, Terukuni Daimyōjin-sha Spoke 4 Ring 2! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Take care out there!</Text>
+      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 4 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 4 Ring 3" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Hello there! Terukuni Daimyōjin-sha Spoke 4 Ring 3 is beautiful this time of year, isn't it?</Text>
+      <Text>Welcome to Terukuni Daimyōjin-sha Spoke 4 Ring 3. I don't see many visitors around these parts.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke4Ring4 or TerukuniDaimyōjinshaSpoke4Ring2.</Text>
+      <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke4Ring4 or TerukuniDaimyōjinshaSpoke4Ring2.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>This place, Terukuni Daimyōjin-sha Spoke 4 Ring 3, holds many secrets. Those who listen carefully learn much.</Text>
+      <Text>Terukuni Daimyōjin-sha Spoke 4 Ring 3 has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -4368,7 +4272,7 @@
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 4 Ring 4 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 4 Ring 4" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
-      <Text>Step right up! Quality goods at fair prices - that's my promise.</Text>
+      <Text>Looking to buy or sell? Either way, you've come to the right place!</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
       <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
       <Choice Text="I'll come back later" NextNodeId="end" />
@@ -4415,25 +4319,25 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke4Ring5 or TerukuniDaimyōjinshaSpoke4Ring5.</Text>
+      <Text>A pleasure to meet you! If you haven't been to TsurumarujōSpoke4Ring5 or TerukuniDaimyōjinshaSpoke4Ring5, I recommend it.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 4 Ring 4! There are tales of this place that would fill a library.</Text>
+      <Text>Terukuni Daimyōjin-sha Spoke 4 Ring 4 is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 4 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Terukuni Daimyōjin-sha Spoke 4 Ring 5. The journey has been long.</Text>
+      <Text>Greetings, friend. Are you also visiting Terukuni Daimyōjin-sha Spoke 4 Ring 5? It's quite a sight to behold.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited TerukuniDaimyōjinshaSpoke4Ring4 or TsurumarujōSpoke4Ring5 yet?</Text>
+      <Text>Good to meet you! There's much to see around here, especially TerukuniDaimyōjinshaSpoke4Ring4 or TsurumarujōSpoke4Ring5.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4441,17 +4345,17 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 5 Ring 1. There's something special about this place.</Text>
+      <Text>Hello there! Terukuni Daimyōjin-sha Spoke 5 Ring 1 is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke5Ring2 or TsurumarujōSpoke5Ring3 yet?</Text>
+      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke5Ring2 or TsurumarujōSpoke5Ring3.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4459,10 +4363,106 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 5 Ring 2" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>Step right up! Quality goods at fair prices - that's my promise.</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>Here's what I have available. Take your time browsing.</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>Ah, a customer at Terukuni Daimyōjin-sha Spoke 5 Ring 2! Come, browse my collection - you won't find better prices anywhere!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke5Ring3 or TsurumarujōSpoke5Ring4.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Terukuni Daimyōjin-sha Spoke 5 Ring 2! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>A fellow traveler! I've been resting here at Terukuni Daimyōjin-sha Spoke 5 Ring 3. The journey has been long.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke5Ring4 or TsurumarujōSpoke5Ring5 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Terukuni Daimyōjin-sha Spoke 5 Ring 3, holds many secrets. Those who listen carefully learn much.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 4" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 5 Ring 4. There's something special about this place.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke5Ring5 or TerukuniDaimyōjinshaSpoke5Ring3 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Terukuni Daimyōjin-sha Spoke 5 Ring 4, holds many secrets. Those who listen carefully learn much.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 5 Ring 5" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>You've got a good eye! Let me show you what I have in stock.</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -4480,7 +4480,7 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
@@ -4493,111 +4493,15 @@
       <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" />
     </Node>
     <Node NodeId="open_trade">
       <Text>Everything you see is for sale. Just say the word!</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring2" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Terukuni Daimyōjin-sha Spoke 5 Ring 2. I have wares to offer - take a look!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke5Ring3 or TsurumarujōSpoke5Ring4.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 5 Ring 2! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 3" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Hello there! Terukuni Daimyōjin-sha Spoke 5 Ring 3 is beautiful this time of year, isn't it?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke5Ring4 or TsurumarujōSpoke5Ring5.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 5 Ring 3? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 5 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 5 Ring 4. There's something special about this place.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke5Ring5 or TerukuniDaimyōjinshaSpoke5Ring3.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Terukuni Daimyōjin-sha Spoke 5 Ring 4, holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 5 Ring 5" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>My wares are spread before you. See anything you fancy?</Text>
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke5Ring5" />
     </Node>
     <Node NodeId="greeting">
@@ -4615,25 +4519,25 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 6 Ring 1 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 6 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 6 Ring 1. There's something special about this place.</Text>
+      <Text>Hello there! Terukuni Daimyōjin-sha Spoke 6 Ring 1 is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited TsurumarujōSpoke5Ring2 or TsurumarujōSpoke5Ring1 yet?</Text>
+      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke5Ring2 or TsurumarujōSpoke5Ring1.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 6 Ring 1! There are tales of this place that would fill a library.</Text>
+      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 6 Ring 1? Settle in - there's much to tell.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 6 Ring 2 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 6 Ring 2" StartNodeId="greeting">
@@ -4643,20 +4547,20 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to TerukuniDaimyōjinshaSpoke6Ring1 or TerukuniDaimyōjinshaSpoke6Ring3, I recommend it.</Text>
+      <Text>Good to meet you! There's much to see around here, especially TerukuniDaimyōjinshaSpoke6Ring1 or TerukuniDaimyōjinshaSpoke6Ring3.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 6 Ring 2? Settle in - there's much to tell.</Text>
+      <Text>This place, Terukuni Daimyōjin-sha Spoke 6 Ring 2, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Trader at Terukuni Daimyōjin-sha Spoke 6 Ring 3 Dialogue" Description="Dialogue tree for Trader at Terukuni Daimyōjin-sha Spoke 6 Ring 3" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
-      <Text>You've got a good eye! Let me show you what I have in stock.</Text>
+      <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
       <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
       <Choice Text="I'll come back later" NextNodeId="end" />
@@ -4693,11 +4597,11 @@
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke6Ring3" />
     </Node>
     <Node NodeId="open_trade">
-      <Text>Here's what I have available. Take your time browsing.</Text>
+      <Text>My wares are spread before you. See anything you fancy?</Text>
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_TerukuniDaimyōjinshaSpoke6Ring3" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Ah, a customer at Terukuni Daimyōjin-sha Spoke 6 Ring 3! Come, browse my collection - you won't find better prices anywhere!</Text>
+      <Text>Welcome, traveler! You've reached Terukuni Daimyōjin-sha Spoke 6 Ring 3. I have wares to offer - take a look!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
@@ -4707,21 +4611,21 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Terukuni Daimyōjin-sha Spoke 6 Ring 3 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Ah, Terukuni Daimyōjin-sha Spoke 6 Ring 3! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 6 Ring 4" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Welcome to Terukuni Daimyōjin-sha Spoke 6 Ring 4. I don't see many visitors around these parts.</Text>
+      <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 6 Ring 4. There's something special about this place.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially TerukuniDaimyōjinshaSpoke6Ring3 or TerukuniDaimyōjinshaSpoke6Ring5.</Text>
+      <Text>It's good to meet a friendly face! Have you visited TerukuniDaimyōjinshaSpoke6Ring3 or TerukuniDaimyōjinshaSpoke6Ring5 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4729,17 +4633,17 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Traveler at Terukuni Daimyōjin-sha Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Traveler at Terukuni Daimyōjin-sha Spoke 6 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Terukuni Daimyōjin-sha Spoke 6 Ring 5? It's quite a sight to behold.</Text>
+      <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 6 Ring 5. There's something special about this place.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TerukuniDaimyōjinshaSpoke6Ring4 or TsurumarujōSpoke6Ring5.</Text>
+      <Text>A pleasure to meet you! If you haven't been to TerukuniDaimyōjinshaSpoke6Ring4 or TsurumarujōSpoke6Ring5, I recommend it.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -4747,7 +4651,7 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Farewell, and good luck on your journey!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_Isoteien1" DisplayName="Guardian of Iso-teien Dialogue" Description="Dialogue tree for Guardian of Iso-teien" StartNodeId="greeting">
@@ -4791,7 +4695,7 @@
       <Text>The guardian falls... But remember... what I protected here...</Text>
     </Node>
     <Node NodeId="greeting">
-      <Text>Halt! I am the guardian of Iso-teien. None may pass without proving their worth!</Text>
+      <Text>You dare approach Iso-teien? I am its protector, and I do not suffer intruders lightly!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I challenge you!" NextNodeId="battle" />
@@ -4801,14 +4705,110 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Iso-teien is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Iso-teien has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Isoteien1_to_Tsurumarujō1_1" DisplayName="Trader at Waypoint between Iso-teien and Tsurumaru-jō (2) Dialogue" Description="Dialogue tree for Trader at Waypoint between Iso-teien and Tsurumaru-jō (2)" StartNodeId="greeting">
+    <Node NodeId="trade_greeting">
+      <Text>You've got a good eye! Let me show you what I have in stock.</Text>
+      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
+      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
+      <Choice Text="I'll come back later" NextNodeId="end" />
+    </Node>
+    <Node NodeId="attempt_bargain">
+      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
+      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
+      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
+      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
+    </Node>
+    <Node NodeId="bargain_hard_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
+      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
+    </Node>
+    <Node NodeId="bargain_hard_fail">
+      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
+      <Action Type="SetCharacterState" RefName="Unfriendly" />
+      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
+      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
+    </Node>
+    <Node NodeId="bargain_medium_check">
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
+      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
+      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
+    </Node>
+    <Node NodeId="bargain_medium_fail">
+      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
+      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
+    </Node>
+    <Node NodeId="open_trade">
+      <Text>Everything you see is for sale. Just say the word!</Text>
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
+    </Node>
+    <Node NodeId="greeting">
+      <Text>Looking to trade? You've come to the right place at Waypoint between Iso-teien and Tsurumaru-jō (2). What catches your eye?</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Nice to see a fellow traveler! IsoteienSpoke5Ring2 or Isoteien1_to_Tsurumarujō1_2 is worth a visit if you have time.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Waypoint between Iso-teien and Tsurumaru-jō (2) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_2" DisplayName="Traveler at Waypoint between Iso-teien and Tsurumaru-jō (3) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Iso-teien and Tsurumaru-jō (3)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Greetings, friend. Are you also visiting Waypoint between Iso-teien and Tsurumaru-jō (3)? It's quite a sight to behold.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! Many pass through here on their way to IsoteienSpoke5Ring3 or Isoteien1_to_Tsurumarujō1_1.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>You want to know about Waypoint between Iso-teien and Tsurumaru-jō (3)? Settle in - there's much to tell.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_3" DisplayName="Traveler at Waypoint between Iso-teien and Tsurumaru-jō (4) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Iso-teien and Tsurumaru-jō (4)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Greetings, friend. Are you also visiting Waypoint between Iso-teien and Tsurumaru-jō (4)? It's quite a sight to behold.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke2Ring3 or Isoteien1_to_Tsurumarujō1_2.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Waypoint between Iso-teien and Tsurumaru-jō (4) is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Isoteien1_to_Tsurumarujō1_1" DisplayName="Trader at Waypoint between Iso-teien and Tsurumaru-jō (2) Dialogue" Description="Dialogue tree for Trader at Waypoint between Iso-teien and Tsurumaru-jō (2)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Isoteien1_to_Tsurumarujō1_4" DisplayName="Trader at Waypoint between Iso-teien and Tsurumaru-jō (5) Dialogue" Description="Dialogue tree for Trader at Waypoint between Iso-teien and Tsurumaru-jō (5)" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>Looking to buy or sell? Either way, you've come to the right place!</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -4826,7 +4826,7 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
@@ -4839,115 +4839,19 @@
       <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
     </Node>
     <Node NodeId="open_trade">
       <Text>Take a look around. Quality isn't cheap, but it's worth every coin.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_1" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>Ah, a customer at Waypoint between Iso-teien and Tsurumaru-jō (2)! Come, browse my collection - you won't find better prices anywhere!</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to IsoteienSpoke5Ring2 or Isoteien1_to_Tsurumarujō1_2, I recommend it.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Iso-teien and Tsurumaru-jō (2) is known far and wide. Its reputation draws many curious souls.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_2" DisplayName="Traveler at Waypoint between Iso-teien and Tsurumaru-jō (3) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Iso-teien and Tsurumaru-jō (3)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Ah, another soul drawn to Waypoint between Iso-teien and Tsurumaru-jō (3). There's something special about this place.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to IsoteienSpoke5Ring3 or Isoteien1_to_Tsurumarujō1_1, I recommend it.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Waypoint between Iso-teien and Tsurumaru-jō (3), holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_3" DisplayName="Traveler at Waypoint between Iso-teien and Tsurumaru-jō (4) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Iso-teien and Tsurumaru-jō (4)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Iso-teien and Tsurumaru-jō (4)? It's quite a sight to behold.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke2Ring3 or Isoteien1_to_Tsurumarujō1_2.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Iso-teien and Tsurumaru-jō (4) is known far and wide. Its reputation draws many curious souls.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Until we meet again!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Isoteien1_to_Tsurumarujō1_4" DisplayName="Trader at Waypoint between Iso-teien and Tsurumaru-jō (5) Dialogue" Description="Dialogue tree for Trader at Waypoint between Iso-teien and Tsurumaru-jō (5)" StartNodeId="greeting">
-    <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
-      <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
-      <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
-      <Choice Text="I'll come back later" NextNodeId="end" />
-    </Node>
-    <Node NodeId="attempt_bargain">
-      <Text>Hmm, you want to negotiate? Let's see what you have in mind...</Text>
-      <Choice Text="Ask for a big discount (requires BargainSkill 30+)" NextNodeId="bargain_hard_check" />
-      <Choice Text="Ask for a modest discount (requires BargainSkill 15+)" NextNodeId="bargain_medium_check" />
-      <Choice Text="Just open the trade window" NextNodeId="open_trade" />
-    </Node>
-    <Node NodeId="bargain_hard_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
-      <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
-    </Node>
-    <Node NodeId="bargain_hard_fail">
-      <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
-      <Action Type="SetCharacterState" RefName="Unfriendly" />
-      <Choice Text="I apologize, can we try again?" NextNodeId="attempt_bargain" />
-      <Choice Text="Fine, I'm leaving" NextNodeId="end" />
-    </Node>
-    <Node NodeId="bargain_medium_check">
-      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
-      <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
-      <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
-    </Node>
-    <Node NodeId="bargain_medium_fail">
-      <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
-      <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
-    </Node>
-    <Node NodeId="open_trade">
-      <Text>My wares are spread before you. See anything you fancy?</Text>
       <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Isoteien1_to_Tsurumarujō1_4" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Iso-teien and Tsurumaru-jō (5). I have wares to offer - take a look!</Text>
+      <Text>Ah, a customer at Waypoint between Iso-teien and Tsurumaru-jō (5)! Come, browse my collection - you won't find better prices anywhere!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
@@ -4966,7 +4870,7 @@
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_5" DisplayName="Traveler at Waypoint between Iso-teien and Tsurumaru-jō (6) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Iso-teien and Tsurumaru-jō (6)" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Waypoint between Iso-teien and Tsurumaru-jō (6). The journey has been long.</Text>
+      <Text>Ah, another soul drawn to Waypoint between Iso-teien and Tsurumaru-jō (6). There's something special about this place.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -4975,7 +4879,7 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Waypoint between Iso-teien and Tsurumaru-jō (6)? Settle in - there's much to tell.</Text>
+      <Text>This place, Waypoint between Iso-teien and Tsurumaru-jō (6), holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -5023,39 +4927,39 @@
       <Text>At last... I can rest... Tsurumaru-jō... is in your hands now...</Text>
     </Node>
     <Node NodeId="greeting">
-      <Text>Turn back now, traveler. Tsurumaru-jō is under my protection, and I will not yield!</Text>
+      <Text>Halt! I am the guardian of Tsurumaru-jō. None may pass without proving their worth!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited Tsurumarujō or TerukuniDaimyōjinshaSpoke2Ring1 yet?</Text>
+      <Text>Welcome, friend! Many pass through here on their way to Tsurumarujō or TerukuniDaimyōjinshaSpoke2Ring1.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Tsurumaru-jō! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Traveler at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1). The journey has been long.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited TerukuniDaimyōjinshaSpoke2Ring1 or TsurumarujōSpoke5Ring1 yet?</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Tsurumaru-jō is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Until we meet again!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Traveler at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) Dialogue" Description="Dialogue tree for Traveler at Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Greetings, friend. Are you also visiting Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)? It's quite a sight to behold.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>A pleasure to meet you! If you haven't been to TerukuniDaimyōjinshaSpoke2Ring1 or TsurumarujōSpoke5Ring1, I recommend it.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_TerukuniDaimyōjinsha1" DisplayName="Guardian of Terukuni Daimyōjin-sha Dialogue" Description="Dialogue tree for Guardian of Terukuni Daimyōjin-sha" StartNodeId="greeting">
@@ -5099,7 +5003,7 @@
       <Text>You are... truly worthy... Take Terukuni Daimyōjin-sha... with my blessing...</Text>
     </Node>
     <Node NodeId="greeting">
-      <Text>So, you've made it to Terukuni Daimyōjin-sha. Few have come this far. Fewer still have left alive.</Text>
+      <Text>Another challenger approaches Terukuni Daimyōjin-sha. Very well... show me what you're made of!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I challenge you!" NextNodeId="battle" />
@@ -5113,66 +5017,48 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_GUARD_Tsurumarujō_0" DisplayName="Guard at Tsurumaru-jō Dialogue" Description="Dialogue tree for Guard at Tsurumaru-jō" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Stop right there! What brings you to these parts?</Text>
+      <Text>Who goes there? This territory is off limits to outsiders!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Text>Ah, a fellow wanderer! May your journey be filled with discovery.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Tsurumaru-jō has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>This place, Tsurumaru-jō, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring1_1" DisplayName="Wild Beast near Tsurumaru-jō Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Wild Beast near Tsurumaru-jō Spoke 1 Ring 1" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring1_1" DisplayName="Undead near Tsurumaru-jō Spoke 1 Ring 1 Dialogue" Description="Dialogue tree for Undead near Tsurumaru-jō Spoke 1 Ring 1" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*blocks your path aggressively*</Text>
+      <Text>*eyes you with predatory intent*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Tsurumaru-jō Spoke 1 Ring 1? Settle in - there's much to tell.</Text>
+      <Text>This place, Tsurumaru-jō Spoke 1 Ring 1, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring5_2" DisplayName="Elemental near Tsurumaru-jō Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Elemental near Tsurumaru-jō Spoke 2 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring5_2" DisplayName="Wild Beast near Tsurumaru-jō Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Tsurumaru-jō Spoke 2 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*snarls menacingly, ready to attack!*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Tsurumaru-jō Spoke 2 Ring 5! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring5_3" DisplayName="Bandit near Tsurumaru-jō Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Bandit near Tsurumaru-jō Spoke 3 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*snarls menacingly, ready to attack!*</Text>
+      <Text>*eyes you with predatory intent*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -5181,21 +5067,39 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Tsurumaru-jō Spoke 3 Ring 5 is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Tsurumaru-jō Spoke 2 Ring 5 is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Take care out there!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring5_4" DisplayName="Undead near Tsurumaru-jō Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Undead near Tsurumaru-jō Spoke 4 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring5_3" DisplayName="Wild Beast near Tsurumaru-jō Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Tsurumaru-jō Spoke 3 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
       <Text>*blocks your path aggressively*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
+      <Text>Ah, a fellow wanderer! May your journey be filled with discovery.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Tsurumaru-jō Spoke 3 Ring 5 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Until we meet again!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring5_4" DisplayName="Elemental near Tsurumaru-jō Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Elemental near Tsurumaru-jō Spoke 4 Ring 5" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>*snarls menacingly, ready to attack!*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -5203,48 +5107,12 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring5_5" DisplayName="Wild Beast near Tsurumaru-jō Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Tsurumaru-jō Spoke 5 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*snarls menacingly, ready to attack!*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Tsurumaru-jō Spoke 5 Ring 5? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
       <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring5_6" DisplayName="Elemental near Tsurumaru-jō Spoke 6 Ring 5 Dialogue" Description="Dialogue tree for Elemental near Tsurumaru-jō Spoke 6 Ring 5" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring5_5" DisplayName="Bandit near Tsurumaru-jō Spoke 5 Ring 5 Dialogue" Description="Dialogue tree for Bandit near Tsurumaru-jō Spoke 5 Ring 5" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*prepares to strike without warning*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>A pleasure! These lands are full of wonders worth exploring.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Tsurumaru-jō Spoke 6 Ring 5, holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke2Ring5_7" DisplayName="Wild Beast near Iso-teien Spoke 2 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Iso-teien Spoke 2 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*blocks your path aggressively*</Text>
+      <Text>*snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -5253,124 +5121,16 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Iso-teien Spoke 2 Ring 5 is known far and wide. Its reputation draws many curious souls.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke3Ring5_8" DisplayName="Elemental near Iso-teien Spoke 3 Ring 5 Dialogue" Description="Dialogue tree for Elemental near Iso-teien Spoke 3 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*prepares to strike without warning*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Iso-teien Spoke 3 Ring 5 is known far and wide. Its reputation draws many curious souls.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke4Ring5_9" DisplayName="Wild Beast near Iso-teien Spoke 4 Ring 5 Dialogue" Description="Dialogue tree for Wild Beast near Iso-teien Spoke 4 Ring 5" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*eyes you with predatory intent*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Ah, a fellow wanderer! May your journey be filled with discovery.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Iso-teien Spoke 4 Ring 5! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring2_10" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 1 Ring 2 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 1 Ring 2" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*eyes you with predatory intent*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 1 Ring 2! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke2Ring4_11" DisplayName="Undead near Terukuni Daimyōjin-sha Spoke 2 Ring 4 Dialogue" Description="Dialogue tree for Undead near Terukuni Daimyōjin-sha Spoke 2 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*snarls menacingly, ready to attack!*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 2 Ring 4! There are tales of this place that would fill a library.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke3Ring4_12" DisplayName="Bandit near Terukuni Daimyōjin-sha Spoke 3 Ring 4 Dialogue" Description="Dialogue tree for Bandit near Terukuni Daimyōjin-sha Spoke 3 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*prepares to strike without warning*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 3 Ring 4? Settle in - there's much to tell.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Take care out there!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke4Ring4_13" DisplayName="Bandit near Terukuni Daimyōjin-sha Spoke 4 Ring 4 Dialogue" Description="Dialogue tree for Bandit near Terukuni Daimyōjin-sha Spoke 4 Ring 4" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>*blocks your path aggressively*</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>A pleasure! These lands are full of wonders worth exploring.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 4 Ring 4! There are tales of this place that would fill a library.</Text>
+      <Text>This place, Tsurumaru-jō Spoke 5 Ring 5, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring4_14" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 4 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 5 Ring 4" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke2Ring2_6" DisplayName="Undead near Iso-teien Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Undead near Iso-teien Spoke 2 Ring 2" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*lets out a threatening growl*</Text>
+      <Text>*blocks your path aggressively*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -5379,16 +5139,16 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Terukuni Daimyōjin-sha Spoke 5 Ring 4 has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Ah, Iso-teien Spoke 2 Ring 2! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring4_15" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 6 Ring 4 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 6 Ring 4" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke3Ring2_7" DisplayName="Wild Beast near Iso-teien Spoke 3 Ring 2 Dialogue" Description="Dialogue tree for Wild Beast near Iso-teien Spoke 3 Ring 2" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*blocks your path aggressively*</Text>
+      <Text>*snarls menacingly, ready to attack!*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -5397,16 +5157,34 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Terukuni Daimyōjin-sha Spoke 6 Ring 4! There are tales of this place that would fill a library.</Text>
+      <Text>Ah, Iso-teien Spoke 3 Ring 2! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_4_16" DisplayName="Elemental near Waypoint between Iso-teien and Tsurumaru-jō (5) Dialogue" Description="Dialogue tree for Elemental near Waypoint between Iso-teien and Tsurumaru-jō (5)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke4Ring2_8" DisplayName="Elemental near Iso-teien Spoke 4 Ring 2 Dialogue" Description="Dialogue tree for Elemental near Iso-teien Spoke 4 Ring 2" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>*snarls menacingly, ready to attack!*</Text>
+      <Text>*prepares to strike without warning*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Iso-teien Spoke 4 Ring 2! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Until we meet again!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_IsoteienSpoke5Ring3_9" DisplayName="Wild Beast near Iso-teien Spoke 5 Ring 3 Dialogue" Description="Dialogue tree for Wild Beast near Iso-teien Spoke 5 Ring 3" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>*blocks your path aggressively*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
@@ -5415,11 +5193,119 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Waypoint between Iso-teien and Tsurumaru-jō (5)! There are tales of this place that would fill a library.</Text>
+      <Text>Iso-teien Spoke 5 Ring 3 is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke2Ring2_10" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 2 Ring 2 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 2 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>*prepares to strike without warning*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>A pleasure! These lands are full of wonders worth exploring.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Terukuni Daimyōjin-sha Spoke 2 Ring 2! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke3Ring2_11" DisplayName="Wild Beast near Terukuni Daimyōjin-sha Spoke 3 Ring 2 Dialogue" Description="Dialogue tree for Wild Beast near Terukuni Daimyōjin-sha Spoke 3 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>*eyes you with predatory intent*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Terukuni Daimyōjin-sha Spoke 3 Ring 2, holds many secrets. Those who listen carefully learn much.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Take care out there!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke4Ring2_12" DisplayName="Elemental near Terukuni Daimyōjin-sha Spoke 4 Ring 2 Dialogue" Description="Dialogue tree for Elemental near Terukuni Daimyōjin-sha Spoke 4 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>*eyes you with predatory intent*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Terukuni Daimyōjin-sha Spoke 4 Ring 2! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2_13" DisplayName="Undead near Terukuni Daimyōjin-sha Spoke 5 Ring 2 Dialogue" Description="Dialogue tree for Undead near Terukuni Daimyōjin-sha Spoke 5 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>*snarls menacingly, ready to attack!*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>You want to know about Terukuni Daimyōjin-sha Spoke 5 Ring 2? Settle in - there's much to tell.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2_14" DisplayName="Bandit near Terukuni Daimyōjin-sha Spoke 6 Ring 2 Dialogue" Description="Dialogue tree for Bandit near Terukuni Daimyōjin-sha Spoke 6 Ring 2" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>*prepares to strike without warning*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Terukuni Daimyōjin-sha Spoke 6 Ring 2! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_2_15" DisplayName="Bandit near Waypoint between Iso-teien and Tsurumaru-jō (3) Dialogue" Description="Dialogue tree for Bandit near Waypoint between Iso-teien and Tsurumaru-jō (3)" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>*blocks your path aggressively*</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Ah, Waypoint between Iso-teien and Tsurumaru-jō (3)! There are tales of this place that would fill a library.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
 </DialogueTrees>

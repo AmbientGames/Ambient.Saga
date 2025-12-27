@@ -96,8 +96,7 @@ public class SagaInteractionServiceTests
     {
         return new CharacterSpawn
         {
-            ItemElementName = ItemChoiceType.CharacterRef,
-            Item = characterRef,
+            CharacterRef = characterRef,
             Count = count
         };
     }

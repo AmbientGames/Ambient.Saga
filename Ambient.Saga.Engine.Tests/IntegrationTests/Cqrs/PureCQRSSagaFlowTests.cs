@@ -113,8 +113,7 @@ public class PureCQRSSagaFlowTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "TownMerchant"
+                    CharacterRef = "TownMerchant"
                 }
             }
         };
@@ -127,8 +126,7 @@ public class PureCQRSSagaFlowTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "SamuraiLord"
+                    CharacterRef = "SamuraiLord"
                 }
             }
         };
@@ -183,7 +181,6 @@ public class PureCQRSSagaFlowTests : IDisposable
                 {
                     SagaArcs = new[] { sagaArc },
                     Characters = new[] { merchant, boss },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),

@@ -506,8 +506,7 @@ public class BattleCommandTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "WeakBoss"
+                    CharacterRef = "WeakBoss"
                 }
             }
         };
@@ -518,9 +517,9 @@ public class BattleCommandTests : IDisposable
             EnterRadius = 100.0f,
             Spawn = new[]
             {
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Goblin" },
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Goblin" },
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Goblin" }
+                new CharacterSpawn { CharacterRef = "Goblin" },
+                new CharacterSpawn { CharacterRef = "Goblin" },
+                new CharacterSpawn { CharacterRef = "Goblin" }
             }
         };
 
@@ -615,7 +614,6 @@ public class BattleCommandTests : IDisposable
                     SagaArcs = new[] { weakBossSaga, multiEnemySaga },
                     Characters = new[] { weakBoss, goblin },
                     Equipment = new[] { goldCoin, ironSword },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = new[] { warriorArchetype },
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = new[] { CreatePhysicalAffinity() },

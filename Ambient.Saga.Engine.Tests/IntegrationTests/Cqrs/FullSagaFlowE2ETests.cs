@@ -284,8 +284,7 @@ public class FullSagaFlowE2ETests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "Merchant"
+                    CharacterRef = "Merchant"
                 }
             }
         };
@@ -296,9 +295,9 @@ public class FullSagaFlowE2ETests : IDisposable
             EnterRadius = 100.0f,
             Spawn = new[]
             {
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Guard" },
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Guard" },
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Guard" }
+                new CharacterSpawn { CharacterRef = "Guard" },
+                new CharacterSpawn { CharacterRef = "Guard" },
+                new CharacterSpawn { CharacterRef = "Guard" }
             }
         };
 
@@ -371,7 +370,6 @@ public class FullSagaFlowE2ETests : IDisposable
                     SagaArcs = new[] { merchantSaga, guardSaga },
                     Characters = new[] { merchant, guard },
                     Equipment = new[] { ironSword, goldPouch },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),

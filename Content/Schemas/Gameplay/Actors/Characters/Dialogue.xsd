@@ -129,7 +129,7 @@
             </xs:enumeration>
             <xs:enumeration value="SummonAlly">
                 <xs:annotation>
-                    <xs:documentation>Summon an ally character to join battle (uses CharacterRef or CharacterArchetypeRef)</xs:documentation>
+                    <xs:documentation>Summon an ally character to join battle (uses CharacterRef)</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="EndBattle">
@@ -265,7 +265,6 @@
         <xs:attribute name="Type" type="DialogueActionType" use="required" />
         <xs:attribute name="RefName" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="CharacterRef" type="xs:string" use="optional"></xs:attribute>
-        <xs:attribute name="CharacterArchetypeRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="Amount" type="xs:int" use="optional" default="1"></xs:attribute>
         <xs:attribute name="Trait" type="CharacterTraitType" use="optional"></xs:attribute>
         <xs:attribute name="TraitValue" type="xs:int" use="optional"></xs:attribute>

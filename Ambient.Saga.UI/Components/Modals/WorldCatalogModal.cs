@@ -17,7 +17,7 @@ public class WorldCatalogModal
     private readonly string[] _categories = new[]
     {
         "Equipment", "Consumables", "Spells", "Tools", "Building Materials", "Blocks",
-        "Characters", "Character Archetypes", "Quests", "Factions",
+        "Characters", "Quests", "Factions",
         "Dialogue Trees", "Status Effects", "Combat Stances", "Affinities"
     };
 
@@ -66,13 +66,12 @@ public class WorldCatalogModal
                 case 4: RenderBuildingMaterialsCatalog(gameplay); break;
                 case 5: RenderBlocksCatalog(viewModel.CurrentWorld); break;
                 case 6: RenderCharactersCatalog(gameplay); break;
-                case 7: RenderCharacterArchetypesCatalog(gameplay); break;
-                case 8: RenderQuestsCatalog(gameplay); break;
-                case 9: RenderFactionsCatalog(gameplay); break;
-                case 10: RenderDialogueTreesCatalog(gameplay); break;
-                case 11: RenderStatusEffectsCatalog(gameplay); break;
-                case 12: RenderCombatStancesCatalog(gameplay); break;
-                case 13: RenderAffinitiesCatalog(gameplay); break;
+                case 7: RenderQuestsCatalog(gameplay); break;
+                case 8: RenderFactionsCatalog(gameplay); break;
+                case 9: RenderDialogueTreesCatalog(gameplay); break;
+                case 10: RenderStatusEffectsCatalog(gameplay); break;
+                case 11: RenderCombatStancesCatalog(gameplay); break;
+                case 12: RenderAffinitiesCatalog(gameplay); break;
             }
 
             ImGui.EndChild();
@@ -343,34 +342,6 @@ public class WorldCatalogModal
                     ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Dialogue: {character.Interactable.DialogueTreeRef}");
                 }
 
-                ImGui.Unindent();
-            }
-        }
-    }
-
-    private void RenderCharacterArchetypesCatalog(GameplayComponents gameplay)
-    {
-        if (gameplay.CharacterArchetypes == null || gameplay.CharacterArchetypes.Length == 0)
-        {
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No character archetypes defined");
-            return;
-        }
-
-        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Character Archetypes ({gameplay.CharacterArchetypes.Length} types)");
-        ImGui.Spacing();
-
-        foreach (var archetype in gameplay.CharacterArchetypes)
-        {
-            if (!MatchesFilter(archetype.DisplayName) && !MatchesFilter(archetype.RefName)) continue;
-
-            if (ImGui.CollapsingHeader($"{archetype.DisplayName}##{archetype.RefName}"))
-            {
-                ImGui.Indent();
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), archetype.Description ?? "No description");
-                if (archetype.CharacterRef?.Length > 0)
-                {
-                    ImGui.Text($"Contains {archetype.CharacterRef.Length} character variants");
-                }
                 ImGui.Unindent();
             }
         }

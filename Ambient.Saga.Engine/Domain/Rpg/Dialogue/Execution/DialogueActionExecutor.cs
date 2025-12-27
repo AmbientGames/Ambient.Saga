@@ -164,7 +164,7 @@ public class DialogueActionExecutor
                 {
                     DialogueTreeRef = dialogueTreeRef,
                     NodeId = nodeId,
-                    CharacterArchetypeRef = action.CharacterArchetypeRef,
+                    CharacterRef = action.CharacterRef,
                     Amount = action.Amount
                 });
                 break;
@@ -423,8 +423,7 @@ public class DialogueActionExecutor
                 {
                     DialogueTreeRef = dialogueTreeRef,
                     NodeId = nodeId,
-                    CharacterRef = action.CharacterRef,
-                    CharacterArchetypeRef = action.CharacterArchetypeRef
+                    CharacterRef = action.CharacterRef
                 });
                 break;
 

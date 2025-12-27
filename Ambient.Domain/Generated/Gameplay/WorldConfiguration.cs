@@ -37,8 +37,6 @@ namespace Ambient.Domain {
         
         private string charactersRefField;
         
-        private string characterArchetypesRefField;
-        
         private string characterAffinitiesRefField;
         
         private string statusEffectsRefField;
@@ -81,7 +79,6 @@ namespace Ambient.Domain {
             this.equipmentRefField = "Standard";
             this.questTokensRefField = "Standard";
             this.charactersRefField = "Standard";
-            this.characterArchetypesRefField = "Standard";
             this.characterAffinitiesRefField = "Standard";
             this.statusEffectsRefField = "Standard";
             this.combatStancesRefField = "Standard";
@@ -180,18 +177,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.charactersRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string CharacterArchetypesRef {
-            get {
-                return this.characterArchetypesRefField;
-            }
-            set {
-                this.characterArchetypesRefField = value;
             }
         }
         

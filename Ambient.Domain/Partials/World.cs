@@ -41,7 +41,6 @@ public partial class World : IWorld
     [XmlIgnore] public Dictionary<string, Quest> QuestsLookup { get; set; } = new Dictionary<string, Quest>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, AvatarArchetype> AvatarArchetypesLookup { get; set; } = new Dictionary<string, AvatarArchetype>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, DialogueTree> DialogueTreesLookup { get; set; } = new Dictionary<string, DialogueTree>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, CharacterArchetype> CharacterArchetypesLookup { get; set; } = new Dictionary<string, CharacterArchetype>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; } = new Dictionary<string, CharacterAffinity>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, CombatStance> CombatStancesLookup { get; set; } = new Dictionary<string, CombatStance>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; } = new Dictionary<string, LoadoutSlot>(StringComparer.OrdinalIgnoreCase);

@@ -331,8 +331,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "FriendlyMerchant"
+                    CharacterRef = "FriendlyMerchant"
                 }
             }
         };
@@ -468,7 +467,6 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
                     Characters = new[] { merchant },
                     Equipment = new[] { ironSword, leatherArmor },
                     DialogueTrees = new[] { dialogueTree },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),
