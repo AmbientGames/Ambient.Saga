@@ -4,8 +4,7 @@
     <SpawnStats Health="1.05" Stamina="0.95" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.105" Defense="0.105" Speed="0.095" Magic="0.095" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="RingOfSwiftness" Condition="1" />
-        <Entry EquipmentRef="ExecutionerAxe" Condition="1" />
+        <Entry EquipmentRef="RingOfProtection" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -27,11 +26,12 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfTeleport" Quantity="4" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="7" />
+        <Entry ConsumableRef="ScrollOfStrength" Quantity="3" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="2" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
         <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
@@ -51,7 +51,6 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Disarm" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -94,7 +93,8 @@
     <RespawnStats Health="1.05" Stamina="0.95" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.084" Defense="0.084" Speed="0.076" Magic="0.076" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="SimpleRobe" Condition="1" />
+        <Entry EquipmentRef="KnightsHelm" Condition="1" />
+        <Entry EquipmentRef="SteelShield" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -106,6 +106,7 @@
         <Entry EquipmentRef="Buckler" Condition="1" />
         <Entry EquipmentRef="ClothCap" Condition="1" />
         <Entry EquipmentRef="ClothTunic" Condition="1" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1" />
         <Entry EquipmentRef="ClothPants" Condition="1" />
         <Entry EquipmentRef="Sandals" Condition="1" />
         <Entry EquipmentRef="ClothGloves" Condition="1" />
@@ -115,13 +116,13 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Antidote" Quantity="6" />
-        <Entry ConsumableRef="DragonBlood" Quantity="4" />
+        <Entry ConsumableRef="FireBomb" Quantity="4" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
         <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
@@ -139,8 +140,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BattleCry" Condition="1" />
-        <Entry SpellRef="Charge" Condition="1" />
+        <Entry SpellRef="CrushingBlow" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -185,7 +185,7 @@
     <SpawnStats Health="0.9" Stamina="1" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.11000001" Defense="0.089999996" Speed="0.1" Magic="0.095" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ScholarsRobe" Condition="1" />
+        <Entry EquipmentRef="Zweihander" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -207,7 +207,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Cheese" Quantity="6" />
+        <Entry ConsumableRef="SmokeBomb" Quantity="4" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -217,6 +217,7 @@
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
         <Entry ConsumableRef="CookedMeat" Quantity="3" />
         <Entry ConsumableRef="Water" Quantity="3" />
@@ -230,7 +231,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Bloodlust" Condition="1" />
+        <Entry SpellRef="PrimalRoar" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -273,8 +274,8 @@
     <RespawnStats Health="0.9" Stamina="1" Mana="0.95" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.08800001" Defense="0.072" Speed="0.080000006" Magic="0.076" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ApprenticeWand" Condition="1" />
-        <Entry EquipmentRef="RingOfSwiftness" Condition="1" />
+        <Entry EquipmentRef="IronMace" Condition="1" />
+        <Entry EquipmentRef="IronShield" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -296,8 +297,8 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThrowingStar" Quantity="2" />
-        <Entry ConsumableRef="DefenseElixir" Quantity="4" />
+        <Entry ConsumableRef="Ale" Quantity="3" />
+        <Entry ConsumableRef="HerbalTea" Quantity="3" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -321,8 +322,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1" />
-        <Entry SpellRef="RecklessAssault" Condition="1" />
+        <Entry SpellRef="WarStomp" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -367,10 +367,9 @@
     <SpawnStats Health="0.9" Stamina="1.1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.089999996" Speed="0.11000001" Magic="0.1" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="MageSlippers" Condition="1" />
+        <Entry EquipmentRef="WoodenClub" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
-        <Entry EquipmentRef="WoodenClub" Condition="1" />
         <Entry EquipmentRef="Knife" Condition="1" />
         <Entry EquipmentRef="Spear" Condition="1" />
         <Entry EquipmentRef="ShortBow" Condition="1" />
@@ -389,11 +388,10 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Ale" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="5" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
         <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
@@ -413,10 +411,11 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SmokeBomb" Condition="1" />
+        <Entry SpellRef="CloakOfNight" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
+        <Entry SpellRef="SmokeBomb" Condition="1" />
         <Entry SpellRef="VenomSpit" Condition="1" />
         <Entry SpellRef="NaturalRemedy" Condition="1" />
         <Entry SpellRef="HuntersMark" Condition="1" />
@@ -455,8 +454,7 @@
     <RespawnStats Health="0.9" Stamina="1.1" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.072" Speed="0.08800001" Magic="0.080000006" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="SimpleRobe" Condition="1" />
-        <Entry EquipmentRef="NecromancerStaff" Condition="1" />
+        <Entry EquipmentRef="RingOfProtection" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -468,6 +466,7 @@
         <Entry EquipmentRef="Buckler" Condition="1" />
         <Entry EquipmentRef="ClothCap" Condition="1" />
         <Entry EquipmentRef="ClothTunic" Condition="1" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1" />
         <Entry EquipmentRef="ClothPants" Condition="1" />
         <Entry EquipmentRef="Sandals" Condition="1" />
         <Entry EquipmentRef="ClothGloves" Condition="1" />
@@ -477,7 +476,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="1" />
+        <Entry ConsumableRef="Mead" Quantity="4" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -501,8 +500,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowMeld" Condition="1" />
-        <Entry SpellRef="ShadowStep" Condition="1" />
+        <Entry SpellRef="Vanish" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -547,8 +545,7 @@
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.1" Defense="0.095" Speed="0.105" Magic="0.1" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1" />
-        <Entry EquipmentRef="PlateLeggings" Condition="1" />
+        <Entry EquipmentRef="PlateArmor" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -570,8 +567,9 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Cheese" Quantity="7" />
-        <Entry ConsumableRef="Water" Quantity="5" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="4" />
+        <Entry ConsumableRef="Panacea" Quantity="1" />
+        <Entry ConsumableRef="Bandage" Quantity="6" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -581,25 +579,26 @@
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
         <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
         <Entry ConsumableRef="HealingSalve" Quantity="3" />
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="NaturalRemedy" Condition="1" />
-        <Entry SpellRef="WildRegeneration" Condition="1" />
+        <Entry SpellRef="EntanglingRoots" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
         <Entry SpellRef="SmokeBomb" Condition="1" />
         <Entry SpellRef="VenomSpit" Condition="1" />
+        <Entry SpellRef="NaturalRemedy" Condition="1" />
         <Entry SpellRef="HuntersMark" Condition="1" />
         <Entry SpellRef="EagleEye" Condition="1" />
         <Entry SpellRef="TrapSense" Condition="1" />
@@ -636,14 +635,15 @@
     <RespawnStats Health="0.95" Stamina="1.05" Mana="1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.080000006" Defense="0.076" Speed="0.084" Magic="0.080000006" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="WalkingStick" Condition="1" />
-        <Entry EquipmentRef="SteelShield" Condition="1" />
+        <Entry EquipmentRef="HeavyCrossbow" Condition="1" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
         <Entry EquipmentRef="Knife" Condition="1" />
         <Entry EquipmentRef="Spear" Condition="1" />
         <Entry EquipmentRef="ShortBow" Condition="1" />
+        <Entry EquipmentRef="WalkingStick" Condition="1" />
         <Entry EquipmentRef="TinWhistle" Condition="1" />
         <Entry EquipmentRef="Buckler" Condition="1" />
         <Entry EquipmentRef="ClothCap" Condition="1" />
@@ -658,8 +658,9 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SoulShard" Quantity="1" />
-        <Entry ConsumableRef="RoastChicken" Quantity="3" />
+        <Entry ConsumableRef="Wine" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfFireball" Quantity="1" />
+        <Entry ConsumableRef="FeastPlatter" Quantity="3" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -683,7 +684,8 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Barkskin" Condition="1" />
+        <Entry SpellRef="WildRegeneration" Condition="1" />
+        <Entry SpellRef="EntanglingRoots" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -728,8 +730,8 @@
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.089999996" Speed="0.1" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="KnightsSword" Condition="1" />
-        <Entry EquipmentRef="MageCloak" Condition="1" />
+        <Entry EquipmentRef="SteelSword" Condition="1" />
+        <Entry EquipmentRef="RingOfProtection" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -751,9 +753,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfLightning" Quantity="4" />
-        <Entry ConsumableRef="Cheese" Quantity="5" />
-        <Entry ConsumableRef="Juice" Quantity="6" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="1" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -763,10 +763,12 @@
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
         <Entry ConsumableRef="CookedMeat" Quantity="3" />
         <Entry ConsumableRef="Water" Quantity="3" />
         <Entry ConsumableRef="Milk" Quantity="3" />
+        <Entry ConsumableRef="Juice" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
         <Entry ConsumableRef="Torch" Quantity="3" />
@@ -776,6 +778,7 @@
       </Consumables>
       <Spells>
         <Entry SpellRef="Obliterate" Condition="1" />
+        <Entry SpellRef="ArcaneBlast" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -788,7 +791,6 @@
         <Entry SpellRef="NaturesCompass" Condition="1" />
         <Entry SpellRef="Gust" Condition="1" />
         <Entry SpellRef="WaterWhip" Condition="1" />
-        <Entry SpellRef="ArcaneBlast" Condition="1" />
         <Entry SpellRef="ArcaneMissile" Condition="1" />
         <Entry SpellRef="Agility" Condition="1" />
         <Entry SpellRef="Swiftness" Condition="1" />
@@ -818,7 +820,7 @@
     <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.072" Speed="0.080000006" Magic="0.08800001" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="WizardRobes" Condition="1" />
+        <Entry EquipmentRef="Greatsword" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -840,10 +842,12 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="2" />
-        <Entry ConsumableRef="MinorManaPotion" Quantity="5" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="1" />
+        <Entry ConsumableRef="PoisonedDart" Quantity="2" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
+        <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
         <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
         <Entry ConsumableRef="Antidote" Quantity="3" />
@@ -864,7 +868,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1" />
+        <Entry SpellRef="Disintegrate" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -877,6 +881,7 @@
         <Entry SpellRef="NaturesCompass" Condition="1" />
         <Entry SpellRef="Gust" Condition="1" />
         <Entry SpellRef="WaterWhip" Condition="1" />
+        <Entry SpellRef="ArcaneBlast" Condition="1" />
         <Entry SpellRef="ArcaneMissile" Condition="1" />
         <Entry SpellRef="Agility" Condition="1" />
         <Entry SpellRef="Swiftness" Condition="1" />
@@ -908,8 +913,8 @@
     <SpawnStats Health="0.95" Stamina="0.95" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.095" Speed="0.095" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1" />
-        <Entry EquipmentRef="CompositeBow" Condition="1" />
+        <Entry EquipmentRef="MageCloak" Condition="1" />
+        <Entry EquipmentRef="GoldRing" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -931,9 +936,8 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Pie" Quantity="1" />
-        <Entry ConsumableRef="ThunderBomb" Quantity="1" />
-        <Entry ConsumableRef="ScrollOfLightning" Quantity="4" />
+        <Entry ConsumableRef="Ale" Quantity="2" />
+        <Entry ConsumableRef="MedicKit" Quantity="3" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -957,8 +961,8 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Counterspell" Condition="1" />
-        <Entry SpellRef="MagicArmor" Condition="1" />
+        <Entry SpellRef="TimeWarp" Condition="1" />
+        <Entry SpellRef="Concentration" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1001,8 +1005,8 @@
     <RespawnStats Health="0.95" Stamina="0.95" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.076" Speed="0.076" Magic="0.08800001" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Dagger" Condition="1" />
-        <Entry EquipmentRef="GoldRing" Condition="1" />
+        <Entry EquipmentRef="GreatHelm" Condition="1" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1024,9 +1028,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="RangerTrailMix" Quantity="4" />
-        <Entry ConsumableRef="GreaterManaPotion" Quantity="4" />
-        <Entry ConsumableRef="EnduranceElixir" Quantity="4" />
+        <Entry ConsumableRef="ScrollOfLightning" Quantity="2" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1050,7 +1052,8 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="MagicArmor" Condition="1" />
+        <Entry SpellRef="MagicBreak" Condition="1" />
+        <Entry SpellRef="ArcaneIntellect" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1095,7 +1098,8 @@
     <SpawnStats Health="1.05" Stamina="0.95" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.105" Speed="0.095" Magic="0.105" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainBoots" Condition="1" />
+        <Entry EquipmentRef="LeatherCap" Condition="1" />
+        <Entry EquipmentRef="ClothTunic" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1106,7 +1110,6 @@
         <Entry EquipmentRef="TinWhistle" Condition="1" />
         <Entry EquipmentRef="Buckler" Condition="1" />
         <Entry EquipmentRef="ClothCap" Condition="1" />
-        <Entry EquipmentRef="ClothTunic" Condition="1" />
         <Entry EquipmentRef="SimpleRobe" Condition="1" />
         <Entry EquipmentRef="ClothPants" Condition="1" />
         <Entry EquipmentRef="Sandals" Condition="1" />
@@ -1117,9 +1120,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Torch" Quantity="6" />
-        <Entry ConsumableRef="Bread" Quantity="5" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="2" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="1" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1128,6 +1129,7 @@
         <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
+        <Entry ConsumableRef="Bread" Quantity="3" />
         <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
         <Entry ConsumableRef="CookedMeat" Quantity="3" />
@@ -1136,13 +1138,14 @@
         <Entry ConsumableRef="Juice" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
         <Entry ConsumableRef="Bandage" Quantity="3" />
         <Entry ConsumableRef="HealingSalve" Quantity="3" />
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="DivineShield" Condition="1" />
         <Entry SpellRef="Invulnerability" Condition="1" />
-        <Entry SpellRef="Consecrate" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1185,8 +1188,7 @@
     <RespawnStats Health="1.05" Stamina="0.95" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.084" Speed="0.076" Magic="0.084" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Buckler" Condition="1" />
-        <Entry EquipmentRef="LeatherVest" Condition="1" />
+        <Entry EquipmentRef="MageGloves" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1195,6 +1197,7 @@
         <Entry EquipmentRef="ShortBow" Condition="1" />
         <Entry EquipmentRef="WalkingStick" Condition="1" />
         <Entry EquipmentRef="TinWhistle" Condition="1" />
+        <Entry EquipmentRef="Buckler" Condition="1" />
         <Entry EquipmentRef="ClothCap" Condition="1" />
         <Entry EquipmentRef="ClothTunic" Condition="1" />
         <Entry EquipmentRef="SimpleRobe" Condition="1" />
@@ -1207,15 +1210,13 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="FrostResistPotion" Quantity="3" />
-        <Entry ConsumableRef="Torch" Quantity="4" />
+        <Entry ConsumableRef="Berries" Quantity="6" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
         <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
         <Entry ConsumableRef="Antidote" Quantity="3" />
-        <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
         <Entry ConsumableRef="Cheese" Quantity="3" />
@@ -1226,13 +1227,13 @@
         <Entry ConsumableRef="Juice" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
         <Entry ConsumableRef="Bandage" Quantity="3" />
         <Entry ConsumableRef="HealingSalve" Quantity="3" />
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="HolyFire" Condition="1" />
-        <Entry SpellRef="DivineShield" Condition="1" />
+        <Entry SpellRef="HolyArmor" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1277,8 +1278,7 @@
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.095" Defense="0.095" Speed="0.105" Magic="0.105" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Maul" Condition="1" />
-        <Entry EquipmentRef="ChainLeggings" Condition="1" />
+        <Entry EquipmentRef="WizardHat" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1300,12 +1300,12 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonResistPotion" Quantity="1" />
-        <Entry ConsumableRef="DefenseElixir" Quantity="3" />
+        <Entry ConsumableRef="RangerTrailMix" Quantity="2" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="4" />
+        <Entry ConsumableRef="Milk" Quantity="5" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="3" />
         <Entry ConsumableRef="StaminaPotion" Quantity="3" />
         <Entry ConsumableRef="Antidote" Quantity="3" />
         <Entry ConsumableRef="Berries" Quantity="3" />
@@ -1315,7 +1315,6 @@
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
         <Entry ConsumableRef="CookedMeat" Quantity="3" />
         <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="Milk" Quantity="3" />
         <Entry ConsumableRef="Juice" Quantity="3" />
         <Entry ConsumableRef="ThrowingRock" Quantity="3" />
         <Entry ConsumableRef="WeakPoison" Quantity="3" />
@@ -1325,7 +1324,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fortitude" Condition="1" />
+        <Entry SpellRef="SoothingSong" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1368,7 +1367,7 @@
     <RespawnStats Health="0.95" Stamina="1.05" Mana="1.05" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.076" Defense="0.076" Speed="0.084" Magic="0.084" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelShield" Condition="1" />
+        <Entry EquipmentRef="SirenHarp" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1390,8 +1389,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfLightning" Quantity="2" />
-        <Entry ConsumableRef="GiantStrengthPotion" Quantity="2" />
+        <Entry ConsumableRef="MagesBiscuit" Quantity="3" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1415,8 +1413,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fortitude" Condition="1" />
-        <Entry SpellRef="Heroism" Condition="1" />
+        <Entry SpellRef="SymphonyOfPower" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1461,7 +1458,7 @@
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="1000" Experience="0" Strength="0.089999996" Defense="0.089999996" Speed="0.1" Magic="0.11000001" />
     <SpawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="Halberd" Condition="1" />
+        <Entry EquipmentRef="SteelShield" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1483,7 +1480,7 @@
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfLightning" Quantity="1" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="3" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1507,7 +1504,7 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SummonDemon" Condition="1" />
+        <Entry SpellRef="ConjurePortal" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
@@ -1550,8 +1547,7 @@
     <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Hunger="0" Thirst="0" Temperature="37" Insulation="0" Credits="800" Experience="0" Strength="0.072" Defense="0.072" Speed="0.080000006" Magic="0.08800001" />
     <RespawnCapabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelHelm" Condition="1" />
-        <Entry EquipmentRef="LeatherCord" Condition="1" />
+        <Entry EquipmentRef="ChainGloves" Condition="1" />
         <Entry EquipmentRef="RustySword" Condition="1" />
         <Entry EquipmentRef="HandAxe" Condition="1" />
         <Entry EquipmentRef="WoodenClub" Condition="1" />
@@ -1569,10 +1565,13 @@
         <Entry EquipmentRef="ClothGloves" Condition="1" />
         <Entry EquipmentRef="TravelCloak" Condition="1" />
         <Entry EquipmentRef="CopperRing" Condition="1" />
+        <Entry EquipmentRef="LeatherCord" Condition="1" />
         <Entry EquipmentRef="RopeBelt" Condition="1" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ManaPotion" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfHealing" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="7" />
+        <Entry ConsumableRef="DefenseElixir" Quantity="1" />
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
         <Entry ConsumableRef="HealingPotion" Quantity="3" />
         <Entry ConsumableRef="MinorManaPotion" Quantity="3" />
@@ -1582,7 +1581,6 @@
         <Entry ConsumableRef="Berries" Quantity="3" />
         <Entry ConsumableRef="Apple" Quantity="3" />
         <Entry ConsumableRef="Bread" Quantity="3" />
-        <Entry ConsumableRef="Cheese" Quantity="3" />
         <Entry ConsumableRef="DriedMeat" Quantity="3" />
         <Entry ConsumableRef="CookedMeat" Quantity="3" />
         <Entry ConsumableRef="Water" Quantity="3" />
@@ -1596,8 +1594,8 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SummonDemon" Condition="1" />
         <Entry SpellRef="ConjurePortal" Condition="1" />
+        <Entry SpellRef="SummonDemon" Condition="1" />
         <Entry SpellRef="PowerStrike" Condition="1" />
         <Entry SpellRef="ShieldBash" Condition="1" />
         <Entry SpellRef="Taunt" Condition="1" />
