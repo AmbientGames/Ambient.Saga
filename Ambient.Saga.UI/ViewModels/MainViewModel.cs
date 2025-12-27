@@ -2277,18 +2277,31 @@ public partial class MainViewModel : ObservableObject
 
         return characterType switch
         {
+            // NPC: has dialogue, not hostile
             DevCharacterType.NPC => characters.FirstOrDefault(c =>
                 c.Interactable?.DialogueTreeRef != null &&
                 !(c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false)),
 
+            // Merchant: prefer one with BOTH dialogue AND WillTrade, fallback to just WillTrade
             DevCharacterType.Merchant => characters.FirstOrDefault(c =>
-                c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false),
+                c.Interactable?.DialogueTreeRef != null &&
+                (c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false))
+                ?? characters.FirstOrDefault(c =>
+                    c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false),
 
+            // Boss: prefer one with BOTH dialogue AND BossFight, fallback to just BossFight
             DevCharacterType.Boss => characters.FirstOrDefault(c =>
-                c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false),
+                c.Interactable?.DialogueTreeRef != null &&
+                (c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false))
+                ?? characters.FirstOrDefault(c =>
+                    c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false),
 
+            // Hostile: prefer one with BOTH dialogue AND Hostile, fallback to just Hostile
             DevCharacterType.Hostile => characters.FirstOrDefault(c =>
-                c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false),
+                c.Interactable?.DialogueTreeRef != null &&
+                (c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false))
+                ?? characters.FirstOrDefault(c =>
+                    c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false),
 
             _ => characters.FirstOrDefault()
         };

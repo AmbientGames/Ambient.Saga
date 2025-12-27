@@ -82,34 +82,57 @@ public class DevToolsPanel
                 ImGui.SetTooltip("Spawn a friendly NPC and start dialogue");
             }
 
-            // Merchant Trade Test
-            if (ImGui.Button("Test Merchant Trade", new Vector2(-10, 25)))
+            // Merchant Dialogue (can transition to trade)
+            if (ImGui.Button("Test Merchant Dialogue", new Vector2(-10, 25)))
+            {
+                _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Merchant, "Dialogue");
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Spawn a merchant with dialogue (test dialogue -> trade transition)");
+            }
+
+            // Boss Dialogue (can transition to combat)
+            if (ImGui.Button("Test Boss Dialogue", new Vector2(-10, 25)))
+            {
+                _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Boss, "Dialogue");
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Spawn a boss with dialogue (test dialogue -> combat transition)");
+            }
+
+            // Hostile Dialogue (can transition to combat)
+            if (ImGui.Button("Test Hostile Dialogue", new Vector2(-10, 25)))
+            {
+                _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Hostile, "Dialogue");
+            }
+            if (ImGui.IsItemHovered())
+            {
+                ImGui.SetTooltip("Spawn a hostile with dialogue (test dialogue -> combat transition)");
+            }
+
+            ImGui.Spacing();
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "Direct modal tests:");
+
+            // Direct Trade Modal
+            if (ImGui.Button("Direct Trade Modal", new Vector2(-10, 25)))
             {
                 _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Merchant, "MerchantTrade");
             }
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("Spawn a merchant and open trade window");
+                ImGui.SetTooltip("Open trade window directly (skip dialogue)");
             }
 
-            // Boss Combat Test
-            if (ImGui.Button("Test Boss Combat", new Vector2(-10, 25)))
+            // Direct Battle Modal
+            if (ImGui.Button("Direct Battle Modal", new Vector2(-10, 25)))
             {
                 _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Boss, "BossBattle");
             }
             if (ImGui.IsItemHovered())
             {
-                ImGui.SetTooltip("Spawn a hostile boss and initiate combat");
-            }
-
-            // Hostile Combat Test
-            if (ImGui.Button("Test Hostile Combat", new Vector2(-10, 25)))
-            {
-                _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Hostile, "BossBattle");
-            }
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip("Spawn a hostile enemy and initiate combat");
+                ImGui.SetTooltip("Open battle window directly (skip dialogue)");
             }
 
             ImGui.Unindent(10);

@@ -33,20 +33,26 @@ internal sealed class SpawnDevCharacterHandler : IRequestHandler<SpawnDevCharact
                 return SpawnDevCharacterResult.Failure($"Character template '{command.CharacterRef}' not found");
             }
 
-            // Use first saga if none specified, or verify the specified one exists
-            var sagaRef = command.SagaArcRef;
-            if (string.IsNullOrEmpty(sagaRef) || !_world.SagaArcLookup.ContainsKey(sagaRef))
+            // Use a real saga ref so the dialogue system can find the template
+            // Each dev spawn uses a unique saga ref suffix so they have independent state
+            var baseSagaRef = command.SagaArcRef;
+            if (string.IsNullOrEmpty(baseSagaRef) || !_world.SagaArcLookup.ContainsKey(baseSagaRef))
             {
                 var firstSaga = _world.Gameplay?.SagaArcs?.FirstOrDefault();
                 if (firstSaga == null)
                 {
                     return SpawnDevCharacterResult.Failure("No sagas found in world");
                 }
-                sagaRef = firstSaga.RefName;
+                baseSagaRef = firstSaga.RefName;
             }
 
-            // Get or create saga instance
-            var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, sagaRef, ct);
+            // Create unique saga instance per dev character (append unique suffix)
+            // The dialogue system will use this unique ref for state, but template lookups
+            // will be handled by stripping the DEV suffix
+            var uniqueSagaRef = $"{baseSagaRef}__DEV__{Guid.NewGuid():N}";
+
+            // Get or create unique saga instance for this dev character
+            var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, uniqueSagaRef, ct);
 
             // Create CharacterSpawned transaction
             var characterInstanceId = Guid.NewGuid();
@@ -88,9 +94,9 @@ internal sealed class SpawnDevCharacterHandler : IRequestHandler<SpawnDevCharact
                 return SpawnDevCharacterResult.Failure("Failed to commit spawn transaction");
             }
 
-            System.Diagnostics.Debug.WriteLine($"[DevSpawn] Created CharacterSpawned transaction for {command.CharacterRef} with InstanceId {characterInstanceId}");
+            System.Diagnostics.Debug.WriteLine($"[DevSpawn] Created CharacterSpawned transaction for {command.CharacterRef} with InstanceId {characterInstanceId} in saga {uniqueSagaRef}");
 
-            return SpawnDevCharacterResult.Success(characterInstanceId, sagaRef);
+            return SpawnDevCharacterResult.Success(characterInstanceId, uniqueSagaRef);
         }
         catch (Exception ex)
         {
