@@ -47,7 +47,7 @@ public static class GameplayComponentLoader
         world.Gameplay.Characters = (await XmlLoader.LoadFromXmlAsync<Characters>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{charactersRef}.Characters.xml"), xsdFilePath)).Character ?? [];
         world.Gameplay.CharacterAffinities = (await XmlLoader.LoadFromXmlAsync<CharacterAffinities>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{characterAffinitiesRef}.CharacterAffinities.xml"), xsdFilePath)).Affinity ?? [];
         world.Gameplay.CombatStances = (await XmlLoader.LoadFromXmlAsync<CombatStances>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{combatStancesRef}.CombatStances.xml"), xsdFilePath)).CombatStance ?? [];
-        world.Gameplay.LoadoutSlots = (await XmlLoader.LoadFromXmlAsync<LoadoutSlots>(Path.Combine(dataDirectory, "Gameplay", $"{loadoutSlotsRef}.LoadoutSlots.xml"), xsdFilePath)).LoadoutSlot ?? [];
+        world.Gameplay.LoadoutSlots = (await XmlLoader.LoadFromXmlAsync<LoadoutSlots>(Path.Combine(dataDirectory, "Gameplay", "Combat", $"{loadoutSlotsRef}.LoadoutSlots.xml"), xsdFilePath)).LoadoutSlot ?? [];
         world.Gameplay.Tools = (await XmlLoader.LoadFromXmlAsync<ToolCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{toolsRef}.Tools.xml"), xsdFilePath)).Tool ?? [];
         world.Gameplay.BuildingMaterials = (await XmlLoader.LoadFromXmlAsync<BuildingMaterialCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{materialsRef}.BuildingMaterials.xml"), xsdFilePath)).BuildingMaterial ?? [];
         world.Gameplay.DialogueTrees = (await XmlLoader.LoadFromXmlAsync<DialogueTrees>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{dialogueTreesRef}.Dialogue.xml"), xsdFilePath)).DialogueTree ?? [];

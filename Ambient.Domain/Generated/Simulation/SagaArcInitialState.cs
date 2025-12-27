@@ -18,15 +18,12 @@ namespace Ambient.Domain {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]
     [System.SerializableAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
-    public enum SagaArcRevealMode {
+    public enum SagaArcInitialState {
         
         /// <remarks/>
         Hidden,
         
         /// <remarks/>
-        OnDiscover,
-        
-        /// <remarks/>
-        Always,
+        Visible,
     }
 }

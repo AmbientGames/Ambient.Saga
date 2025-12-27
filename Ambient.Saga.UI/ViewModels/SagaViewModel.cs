@@ -125,7 +125,7 @@ public partial class SagaViewModel : ObservableObject
 
     /// <summary>
     /// Loads all Sagas from World and creates ViewModels.
-    /// Filters based on RevealMode and discovery status.
+    /// Filters based on InitialState and discovery status.
     /// Returns both Saga ViewModels and flattened trigger list for XAML binding.
     /// </summary>
     public static async Task<(List<SagaViewModel> Sagas, List<ProximityTriggerViewModel> AllSagaTriggers)> LoadFromWorldAsync(
@@ -141,7 +141,7 @@ public partial class SagaViewModel : ObservableObject
         {
             foreach (var sagaArc in world.Gameplay.SagaArcs)
             {
-                // Check visibility based on RevealMode
+                // Check visibility based on InitialState and discovery
                 var isVisible = await IsSagaVisibleAsync(sagaArc, avatar, worldRepository, isDebugMode);
                 if (!isVisible)
                     continue;
@@ -181,7 +181,7 @@ public partial class SagaViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Determines if a SagaArc should be visible on the map based on RevealMode.
+    /// Determines if a SagaArc should be visible on the map based on InitialState.
     /// </summary>
     private static async Task<bool> IsSagaVisibleAsync(
         SagaArc sagaArc,
@@ -189,21 +189,20 @@ public partial class SagaViewModel : ObservableObject
         IWorldStateRepository? worldRepository,
         bool isDebugMode)
     {
-        // Debug mode: show all sagas regardless of RevealMode
+        // Debug mode: show all sagas regardless of InitialState
         if (isDebugMode)
             return true;
 
-        return sagaArc.RevealMode switch
+        return sagaArc.InitialState switch
         {
-            SagaArcRevealMode.Always => true,
-            SagaArcRevealMode.Hidden => false,
-            SagaArcRevealMode.OnDiscover => await IsSagaDiscoveredAsync(sagaArc.RefName, avatar, worldRepository),
+            SagaArcInitialState.Visible => true,
+            SagaArcInitialState.Hidden => await IsSagaDiscoveredAsync(sagaArc.RefName, avatar, worldRepository),
             _ => true // Default to visible
         };
     }
 
     /// <summary>
-    /// Checks if the avatar has discovered a saga by querying the saga instance.
+    /// Checks if the avatar has discovered a saga.
     /// </summary>
     private static async Task<bool> IsSagaDiscoveredAsync(
         string sagaRef,
@@ -216,15 +215,7 @@ public partial class SagaViewModel : ObservableObject
         try
         {
             var avatarId = avatar.AvatarId.ToString();
-            var instance = await worldRepository.GetSagaInstanceAsync(avatarId, sagaRef);
-
-            if (instance == null)
-                return false;
-
-            // Check if SagaDiscovered transaction exists for this avatar
-            return instance.GetCommittedTransactions()
-                .Any(t => t.Type == Engine.Domain.Rpg.Sagas.TransactionLog.SagaTransactionType.SagaDiscovered &&
-                         t.AvatarId == avatarId);
+            return await worldRepository.HasDiscoveredAsync(avatarId, "Saga", sagaRef);
         }
         catch
         {

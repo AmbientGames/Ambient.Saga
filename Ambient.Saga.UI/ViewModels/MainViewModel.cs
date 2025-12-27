@@ -365,17 +365,18 @@ public partial class MainViewModel : ObservableObject
 
             //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Found {nearbySagaRefs.Count} nearby Sagas (of {_sagas.Count} total)");
 
-            // Query spawned characters only for nearby Sagas (major performance optimization)
-            foreach (var sagaVm in _sagas.Where(s => nearbySagaRefs.Contains(s.RefName)))
+            // Query spawned characters for ALL nearby Sagas (not just visible ones)
+            // Characters should always be visible regardless of saga visibility
+            foreach (var sagaRef in nearbySagaRefs)
             {
                 // Get Saga template for center coordinates
-                if (!CurrentWorld.SagaArcLookup.TryGetValue(sagaVm.RefName, out var sagaTemplate))
+                if (!CurrentWorld.SagaArcLookup.TryGetValue(sagaRef, out var sagaTemplate))
                     continue;
 
                 var query = new GetSpawnedCharactersQuery
                 {
                     AvatarId = PlayerAvatar.AvatarId,
-                    SagaRef = sagaVm.RefName,
+                    SagaRef = sagaRef,
                     SpawnedOnly = true,  // Only show spawned (not despawned)
                     AliveOnly = false    // Show both alive and dead
                 };
@@ -445,7 +446,7 @@ public partial class MainViewModel : ObservableObject
                         CanDialogue = true, // Sandbox - assume all interactions available
                         CanTrade = true,
                         CanAttack = characterState.IsAlive,
-                        SagaRef = sagaVm.RefName
+                        SagaRef = sagaRef
                     };
 
                     // Color based on alive/dead

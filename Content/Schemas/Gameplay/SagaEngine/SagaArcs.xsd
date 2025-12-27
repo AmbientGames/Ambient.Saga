@@ -13,11 +13,10 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="SagaArcRevealMode">
+	<xs:simpleType name="SagaArcInitialState">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Hidden" />
-			<xs:enumeration value="OnDiscover" />
-			<xs:enumeration value="Always" />
+			<xs:enumeration value="Visible" />
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -34,7 +33,7 @@
 
 				<!-- Deterministic POI interaction envelope -->
 				<xs:attribute name="DiscoverRadius" type="xs:double" use="optional" default="200"/>
-				<xs:attribute name="RevealMode" type="SagaArcRevealMode" use="optional" default="Hidden" />
+				<xs:attribute name="InitialState" type="SagaArcInitialState" use="optional" default="Hidden" />
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

@@ -32,11 +32,11 @@ namespace Ambient.Domain {
         
         private double discoverRadiusField;
         
-        private SagaArcRevealMode revealModeField;
+        private SagaArcInitialState initialStateField;
         
         public SagaArc() {
             this.discoverRadiusField = 200D;
-            this.revealModeField = SagaArcRevealMode.Hidden;
+            this.initialStateField = SagaArcInitialState.Hidden;
         }
         
         /// <remarks/>
@@ -97,13 +97,13 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(SagaArcRevealMode.Hidden)]
-        public SagaArcRevealMode RevealMode {
+        [System.ComponentModel.DefaultValueAttribute(SagaArcInitialState.Hidden)]
+        public SagaArcInitialState InitialState {
             get {
-                return this.revealModeField;
+                return this.initialStateField;
             }
             set {
-                this.revealModeField = value;
+                this.initialStateField = value;
             }
         }
     }
