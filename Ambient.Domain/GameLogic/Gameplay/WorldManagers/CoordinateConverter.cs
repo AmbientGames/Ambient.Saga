@@ -223,15 +223,18 @@ public static class CoordinateConverter
 
     /// <summary>
     /// Converts Saga-relative X coordinate (meters from Saga center) to world longitude.
-    /// Uses proper model coordinate conversion for accuracy across all world types.
     /// </summary>
     public static double SagaRelativeXToLongitude(double sagaRelativeX, double sagaCenterLongitude, IWorld world)
     {
         // Convert Saga center to model coordinates
         var sagaCenterModelX = LongitudeToModelX(sagaCenterLongitude, world);
 
-        // Add Saga-relative offset (already in meters) to get character position in model space
-        var characterModelX = sagaCenterModelX + sagaRelativeX;
+        // Convert meters to model units
+        var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
+        var offsetInModelUnits = sagaRelativeX * horizontalScale;
+
+        // Add offset in model space
+        var characterModelX = sagaCenterModelX + offsetInModelUnits;
 
         // Convert back to world longitude
         return ModelXToLongitude(characterModelX, world);
@@ -239,15 +242,18 @@ public static class CoordinateConverter
 
     /// <summary>
     /// Converts Saga-relative Z coordinate (meters from Saga center) to world latitude.
-    /// Uses proper model coordinate conversion for accuracy across all world types.
     /// </summary>
     public static double SagaRelativeZToLatitude(double sagaRelativeZ, double sagaCenterLatitude, IWorld world)
     {
         // Convert Saga center to model coordinates
         var sagaCenterModelZ = LatitudeToModelZ(sagaCenterLatitude, world);
 
-        // Add Saga-relative offset (already in meters) to get character position in model space
-        var characterModelZ = sagaCenterModelZ + sagaRelativeZ;
+        // Convert meters to model units
+        var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
+        var offsetInModelUnits = sagaRelativeZ * horizontalScale;
+
+        // Add offset in model space
+        var characterModelZ = sagaCenterModelZ + offsetInModelUnits;
 
         // Convert back to world latitude
         return ModelZToLatitude(characterModelZ, world);
@@ -255,30 +261,38 @@ public static class CoordinateConverter
 
     /// <summary>
     /// Converts world longitude to Saga-relative X coordinate (meters from Saga center).
-    /// Uses proper model coordinate conversion for accuracy across all world types.
+    /// Returns real meters, not model units.
     /// </summary>
     public static double LongitudeToSagaRelativeX(double longitude, double sagaCenterLongitude, IWorld world)
     {
-        // Convert both to model coordinates (meters)
+        // Convert both to model coordinates
         var pointModelX = LongitudeToModelX(longitude, world);
         var sagaCenterModelX = LongitudeToModelX(sagaCenterLongitude, world);
 
-        // Distance between them is the Saga-relative offset
-        return pointModelX - sagaCenterModelX;
+        // Model offset
+        var modelOffset = pointModelX - sagaCenterModelX;
+
+        // Convert from model units to meters
+        var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
+        return modelOffset / horizontalScale;
     }
 
     /// <summary>
     /// Converts world latitude to Saga-relative Z coordinate (meters from Saga center).
-    /// Uses proper model coordinate conversion for accuracy across all world types.
+    /// Returns real meters, not model units.
     /// </summary>
     public static double LatitudeToSagaRelativeZ(double latitude, double sagaCenterLatitude, IWorld world)
     {
-        // Convert both to model coordinates (meters)
+        // Convert both to model coordinates
         var pointModelZ = LatitudeToModelZ(latitude, world);
         var sagaCenterModelZ = LatitudeToModelZ(sagaCenterLatitude, world);
 
-        // Distance between them is the Saga-relative offset
-        return pointModelZ - sagaCenterModelZ;
+        // Model offset
+        var modelOffset = pointModelZ - sagaCenterModelZ;
+
+        // Convert from model units to meters
+        var horizontalScale = world.IsProcedural ? 1.0 : world.WorldConfiguration.HeightMapSettings.HorizontalScale;
+        return modelOffset / horizontalScale;
     }
 
     // ============================================================================
