@@ -921,8 +921,8 @@ public partial class MainViewModel : ObservableObject
         // Check if this world has height map settings
         if (world.IsProcedural)
         {
-            // Procedural worlds don't have height maps
-            HeightMapInfo = "This world uses procedural settings (no height map)";
+            // Generate synthetic map from saga arc locations
+            await LoadProceduralMapAsync(world);
             return;
         }
 
@@ -989,6 +989,51 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Generates a synthetic map for procedural worlds based on saga arc locations.
+    /// </summary>
+    private async Task LoadProceduralMapAsync(IWorld world)
+    {
+        try
+        {
+            StatusMessage = "Generating procedural map from saga arcs...";
+
+            var result = await Task.Run(() => ProceduralMapGenerator.GenerateFromSagaArcs(world));
+
+            if (result == null)
+            {
+                HeightMapInfo = "Procedural world has no saga arcs to generate map from";
+                return;
+            }
+
+            var (metadata, imageData) = result.Value;
+
+            // Set the metadata on the world so coordinate conversions work
+            world.HeightMapMetadata = metadata;
+
+            // Set the image for display
+            HeightMapImage = imageData;
+            AvatarInfo.UpdateHeightMapStatus(true);
+
+            // Update minimum zoom
+            UpdateMinimumZoom();
+
+            // Calculate saga arc count for info display
+            var sagaArcCount = world.SagaArcLookup.Count;
+
+            HeightMapInfo = $"Procedural Map: {ProceduralMapGenerator.MapSize} x {ProceduralMapGenerator.MapSize} pixels\n" +
+                           $"Bounds: {metadata.North:F4}°N to {metadata.South:F4}°S, " +
+                           $"{metadata.West:F4}°W to {metadata.East:F4}°E\n" +
+                           $"Coverage: {metadata.Width:F4}° x {metadata.Height:F4}°\n" +
+                           $"Saga Arcs: {sagaArcCount}";
+
+            StatusMessage = $"Procedural map generated ({sagaArcCount} saga arcs)";
+        }
+        catch (Exception ex)
+        {
+            HeightMapInfo = $"Error generating procedural map: {ex.Message}";
+        }
+    }
 
     //// OLD METHOD REMOVED: SpawnCharactersFromTrigger
     //// Character spawning now handled by CQRS UpdateAvatarPositionCommand via ProcessAvatarMovementAsync
