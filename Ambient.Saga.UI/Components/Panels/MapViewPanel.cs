@@ -17,9 +17,9 @@ namespace Ambient.Saga.UI.Components.Panels;
 public class MapViewPanel
 {
     private const float MinZoom = 0.1f;
-    private const float MaxZoom = 200.0f;
-    private const float ZoomSpeed = 0.5f; // Increased for more responsive zooming
-    private const int CenterViewCells = 50; // Number of cells to show when centering on avatar
+    private const float MaxZoom = 400.0f;
+    private const float ZoomMultiplier = 1.15f; // Exponential zoom: 15% change per scroll tick
+    private const int CenterViewCells = 10; // Number of cells to show when centering on avatar
 
     // Track if we need to center on avatar (initial load or button press)
     private bool _needsInitialCenter = true;
@@ -168,9 +168,11 @@ public class MapViewPanel
                         lonBefore = CoordinateConverter.HeightMapPixelXToLongitude(pixelXBefore, viewModel.CurrentWorld.HeightMapMetadata);
                     }
 
-                    // Apply zoom
+                    // Apply zoom (exponential for consistent feel at all zoom levels)
                     var oldZoom = viewModel.ZoomFactor;
-                    var newZoom = oldZoom + wheel * ZoomSpeed;
+                    var newZoom = wheel > 0
+                        ? oldZoom * Math.Pow(ZoomMultiplier, wheel)
+                        : oldZoom / Math.Pow(ZoomMultiplier, -wheel);
                     newZoom = Math.Clamp(newZoom, MinZoom, MaxZoom);
 
                     if (newZoom != oldZoom)
@@ -433,7 +435,7 @@ public class MapViewPanel
             //    System.Diagnostics.Debug.WriteLine($"[MapViewPanel] Rendering {viewModel.Characters.Count} characters");
             //}
 
-            foreach (var character in viewModel.Characters)
+            foreach (var character in viewModel.Characters.ToList())
             {
                 var pos = PixelToScreen(character.PixelX, character.PixelY);
                 //System.Diagnostics.Debug.WriteLine($"[MapViewPanel] Character '{character.DisplayName}' at pixel ({character.PixelX:F1}, {character.PixelY:F1}) -> screen ({pos.X:F1}, {pos.Y:F1})");
@@ -538,17 +540,17 @@ public class MapViewPanel
         }
         ImGui.SameLine();
 
-        // Zoom controls
+        // Zoom controls (exponential for consistent feel)
         if (ImGui.Button("-"))
         {
-            viewModel.ZoomFactor = Math.Max(MinZoom, viewModel.ZoomFactor - 0.5);
+            viewModel.ZoomFactor = Math.Max(MinZoom, viewModel.ZoomFactor / ZoomMultiplier);
         }
         ImGui.SameLine();
         ImGui.Text($"Zoom: {viewModel.ZoomFactor:F1}x");
         ImGui.SameLine();
         if (ImGui.Button("+"))
         {
-            viewModel.ZoomFactor = Math.Min(MaxZoom, viewModel.ZoomFactor + 0.5);
+            viewModel.ZoomFactor = Math.Min(MaxZoom, viewModel.ZoomFactor * ZoomMultiplier);
         }
         ImGui.SameLine();
         if (ImGui.Button("Show All"))
