@@ -98,6 +98,12 @@ public class GameplayOverlay
     }
 
     /// <summary>
+    /// Fired each frame when the map panel is being rendered.
+    /// Use this to update procedural map data when the map is visible.
+    /// </summary>
+    public event Action? MapPanelRendering;
+
+    /// <summary>
     /// Gets the input handler used by this overlay.
     /// Use this to subscribe to events like PauseMenuRequested or check WasPauseMenuRequested.
     /// </summary>
@@ -212,6 +218,9 @@ public class GameplayOverlay
     /// </summary>
     private void RenderMapPanel(MainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight)
     {
+        // Fire event for procedural map updates
+        MapPanelRendering?.Invoke();
+
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
 

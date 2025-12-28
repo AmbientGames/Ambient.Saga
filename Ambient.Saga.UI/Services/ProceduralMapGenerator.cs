@@ -5,107 +5,55 @@ using Ambient.Saga.UI.Models;
 
 namespace Ambient.Saga.UI.Services;
 
-/// <summary>
-/// Generates a synthetic map for procedural worlds based on saga arc locations.
-/// Creates a 1024x1024 placeholder at 3x the saga arc bounding box size,
-/// allowing room for procedural content to be filled in as the world generates.
-/// </summary>
 public static class ProceduralMapGenerator
 {
     public const int MapSize = 1024;
-    private const double PaddingMultiplier = 1.0; // 1.0 = add full range to each side, resulting in 3x total size
 
-    /// <summary>
-    /// Generates a procedural map from the world's saga arcs.
-    /// Returns null if there are no saga arcs to base the map on.
-    /// </summary>
-    public static (GeoTiffMetadata metadata, HeightMapImageData imageData)? GenerateFromSagaArcs(IWorld world)
+    public static (GeoTiffMetadata metadata, HeightMapImageData imageData)? CreateFromWorld(IWorld world, double latitudeDegreesToUnits = 250, double longitudeDegreesToUnits = 250, double unitsPerCell = 16)
     {
-        var sagaArcs = world.SagaArcLookup.Values.ToList();
-
-        if (sagaArcs.Count == 0)
-        {
-            return null;
-        }
-
-        // Calculate bounding box from saga arc positions
-        var bounds = CalculateBoundingBox(sagaArcs);
-
-        // Create metadata with the calculated bounds
-        var metadata = CreateMetadata(bounds);
-
-        // Create blank map image
-        var imageData = CreateBlankMapImage();
+        var imageData = CreateBlankBGRA32MapImage();
+        var metadata = CreateMetadata(world, 250, 250, 16);
 
         return (metadata, imageData);
     }
 
-    /// <summary>
-    /// Calculates the bounding box for all saga arcs with 10% padding.
-    /// </summary>
-    private static (double North, double South, double East, double West) CalculateBoundingBox(
-        IList<SagaArc> sagaArcs)
+    private static GeoTiffMetadata CreateMetadata(IWorld world, double latitudeDegreesToUnits, double longitudeDegreesToUnits, double unitsPerCell)
     {
-        // Find min/max coordinates
-        var minLat = sagaArcs.Min(s => s.LatitudeZ);
-        var maxLat = sagaArcs.Max(s => s.LatitudeZ);
-        var minLon = sagaArcs.Min(s => s.LongitudeX);
-        var maxLon = sagaArcs.Max(s => s.LongitudeX);
+        var spawnLat = world.WorldConfiguration.SpawnLatitude;
+        var spawnLon = 0.0;
 
-        // Calculate dimensions
-        var latRange = maxLat - minLat;
-        var lonRange = maxLon - minLon;
+        // degrees per pixel (cell)
+        var degreesPerPixelLon = unitsPerCell / longitudeDegreesToUnits;
+        var degreesPerPixelLat = unitsPerCell / latitudeDegreesToUnits;
 
-        // Handle edge case where all saga arcs are at same point
-        if (latRange < 0.001) latRange = 1.0;
-        if (lonRange < 0.001) lonRange = 1.0;
+        // total span in degrees
+        var totalLongitudeSpanDegrees = degreesPerPixelLon * MapSize;
+        var totalLatitudeSpanDegrees = degreesPerPixelLat * MapSize;
 
-        // Add full range to each side (3x total size) to allow for procedural expansion
-        var latPadding = latRange * PaddingMultiplier;
-        var lonPadding = lonRange * PaddingMultiplier;
-
-        return (
-            North: maxLat + latPadding,
-            South: minLat - latPadding,
-            East: maxLon + lonPadding,
-            West: minLon - lonPadding
-        );
-    }
-
-    /// <summary>
-    /// Creates GeoTiffMetadata for the procedural map.
-    /// </summary>
-    private static GeoTiffMetadata CreateMetadata((double North, double South, double East, double West) bounds)
-    {
-        var width = bounds.East - bounds.West;
-        var height = bounds.North - bounds.South;
-
-        // Calculate pixel scale (degrees per pixel)
-        var pixelScaleX = width / MapSize;
-        var pixelScaleY = height / MapSize;
+        // spawn is the center of the TIFF
+        var west = spawnLon - (totalLongitudeSpanDegrees / 2.0);
+        var east = spawnLon + (totalLongitudeSpanDegrees / 2.0);
+        var north = spawnLat + (totalLatitudeSpanDegrees / 2.0);
+        var south = spawnLat - (totalLatitudeSpanDegrees / 2.0);
 
         return new GeoTiffMetadata
         {
-            North = bounds.North,
-            South = bounds.South,
-            East = bounds.East,
-            West = bounds.West,
+            North = north,
+            South = south,
+            East = east,
+            West = west,
             ImageWidth = MapSize,
             ImageHeight = MapSize,
             BitsPerSample = 16,
             SamplesPerPixel = 1,
-            PixelScale = (pixelScaleX, pixelScaleY, 0),
-            // TiePoint: pixel (0,0) maps to (West, North) - top-left corner
-            TiePoint = (0, 0, 0, bounds.West, bounds.North, 0)
+            PixelScale = (degreesPerPixelLon, degreesPerPixelLat, 0),
+            TiePoint = (0, 0, 0, west, north, 0)
         };
     }
 
-    /// <summary>
-    /// Creates a blank 1024x1024 map image with a subtle gradient.
-    /// </summary>
-    private static HeightMapImageData CreateBlankMapImage()
+    private static HeightMapImageData CreateBlankBGRA32MapImage()
     {
-        var stride = MapSize * 4; // 4 bytes per pixel for BGRA32
+        var stride = MapSize * 4;
         var data = new byte[MapSize * stride];
 
         for (int y = 0; y < MapSize; y++)

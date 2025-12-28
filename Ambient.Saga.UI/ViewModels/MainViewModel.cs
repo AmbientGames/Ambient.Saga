@@ -23,6 +23,7 @@ using Ambient.Saga.UI.Services;
 using Ambient.Saga.UI.ViewModels;
 using Ambient.Saga.UI.Components.Panels;
 using SharpDX;
+using Ambient.Domain.ValueObjects;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 
@@ -45,6 +46,9 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     private HeightMapImageData? _heightMapImage;
+
+    [ObservableProperty]
+    private GeoTiffMetadata? _heightMapMetadata;
 
     [ObservableProperty]
     private string? _heightMapInfo;
@@ -622,101 +626,6 @@ public partial class MainViewModel : ObservableObject
         return await _mediator.Send(stateQuery);
     }
 
-    //private async Task OnDialogueChoiceSelectedAsync(DialogueChoiceOption choice)
-    //{
-    //    if (PlayerAvatar == null || _currentDialogueSagaRef == null)
-    //        return;
-
-    //    System.Diagnostics.Debug.WriteLine($"*** Player selected choice: {choice.Text} -> {choice.ChoiceId}");
-
-    //    // Send SelectDialogueChoiceCommand
-    //    var selectCommand = new SelectDialogueChoiceCommand
-    //    {
-    //        AvatarId = PlayerAvatar.AvatarId,
-    //        SagaArcRef = _currentDialogueSagaRef,
-    //        CharacterInstanceId = _currentDialogueCharacterInstanceId,
-    //        ChoiceId = choice.ChoiceId,
-    //        Avatar = PlayerAvatar
-    //    };
-
-    //    var result = await _mediator.Send(selectCommand);
-
-    //    if (!result.Successful)
-    //    {
-    //        System.Diagnostics.Debug.WriteLine($"*** ERROR selecting choice: {result.ErrorMessage}");
-    //        return;
-    //    }
-
-    //    System.Diagnostics.Debug.WriteLine($"*** Choice selected successfully. Transactions: {string.Join(", ", result.TransactionIds)}");
-
-    //    // Check for pending system events (OpenMerchantTrade, StartBossBattle, etc.)
-    //    System.Diagnostics.Debug.WriteLine($"*** Checking result.Data for events. Keys: {string.Join(", ", result.Data.Keys)}");
-
-    //    if (result.Data.TryGetValue("PendingEvents", out var eventsObj))
-    //    {
-    //        System.Diagnostics.Debug.WriteLine($"*** Found PendingEvents. Type: {eventsObj?.GetType().Name ?? "null"}");
-
-    //        // Try to cast to IList or IEnumerable to handle different list types
-    //        if (eventsObj is System.Collections.IList eventsList)
-    //        {
-    //            System.Diagnostics.Debug.WriteLine($"*** Processing {eventsList.Count} events");
-    //            foreach (var evt in eventsList)
-    //            {
-    //                if (evt == null) continue;
-    //                System.Diagnostics.Debug.WriteLine($"*** Processing dialogue event: {evt.GetType().Name}");
-    //                // Note: ImGui mode handles dialogue events in DialogueModal.cs
-    //            }
-    //        }
-    //        else
-    //        {
-    //            System.Diagnostics.Debug.WriteLine($"*** PendingEvents is not IList, cannot process");
-    //        }
-    //    }
-    //    else
-    //    {
-    //        System.Diagnostics.Debug.WriteLine($"*** No PendingEvents in result.Data");
-    //    }
-
-    //    // Refresh dialogue state
-    //    await RefreshDialogueStateAsync();
-    //}
-
-    //private async Task OnDialogueContinueAsync()
-    //{
-    //    System.Diagnostics.Debug.WriteLine($"*** Player clicked Continue");
-    //    // For auto-advance nodes, we could call an AdvanceDialogueCommand here
-    //    // For now, just refresh to see if dialogue has ended
-    //    await RefreshDialogueStateAsync();
-    //}
-
-
-
-    //private async Task RefreshDialogueStateAsync()
-    //{
-    //    if (_currentDialogueSagaRef == null || _currentDialogueViewModel == null)
-    //        return;
-
-    //    var state = await GetDialogueStateAsync(_currentDialogueSagaRef, _currentDialogueCharacterInstanceId);
-
-    //    if (state == null || !state.IsActive)
-    //    {
-    //        System.Diagnostics.Debug.WriteLine($"*** Dialogue ended, transitioning based on character state");
-    //        _currentDialogueViewModel = null;
-    //        _isInDialogue = false;
-
-    //        // WPF WINDOW CODE - TO BE DELETED WITH XAML
-    //        // Query character state from transaction log to determine next interaction
-    //        // In ImGui mode, DialogueModal handles transitions itself
-    //        //await TransitionAfterDialogueAsync();
-    //        return;
-    //    }
-
-    //    // Update ViewModel
-    //    _currentDialogueViewModel.UpdateState(state);
-    //}
-
- 
-
     private DialogueViewModel? _currentDialogueViewModel;
 
     
@@ -876,45 +785,11 @@ public partial class MainViewModel : ObservableObject
         StartBackgroundProcessing();
     }
 
-    ///// <summary>
-    ///// Initializes MainViewModel with an externally-loaded world.
-    ///// Use this when the world has already been loaded by the game (e.g., via WorldRepository)
-    ///// instead of through LoadSelectedConfigurationAsync.
-    ///// Avatar is loaded from database or created via archetype selection dialog.
-    ///// </summary>
-    ///// <param name="world">The already-loaded world instance (WorldBootstrapper.Initialize should already have been called)</param>
-    ///// <param name="dataDirectory">Base directory containing world definition files (for height map loading)</param>
-    //public async Task InitializeWithExternalWorldAsync(IWorld world, string dataDirectory)
-    //{
-    //    return;
-    //    if (world == null)
-    //        throw new ArgumentNullException(nameof(world));
-
-    //    try
-    //    {
-    //        IsLoading = true;
-    //        StatusMessage = $"Initializing world: {world.WorldConfiguration?.RefName ?? "Unknown"}...";
-
-    //        // Complete initialization with shared logic
-    //        await InitializeWorldCoreAsync(world, dataDirectory);
-
-    //        StatusMessage = $"Initialized: {world.WorldConfiguration?.RefName ?? "World"}";
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        StatusMessage = $"Error initializing world: {ex.Message}";
-    //        System.Diagnostics.Debug.WriteLine($"[MainViewModel] InitializeWithExternalWorldAsync error: {ex}");
-    //    }
-    //    finally
-    //    {
-    //        IsLoading = false;
-    //    }
-    //}
-
     private async Task LoadHeightMapImageInternalAsync(IWorld world, string dataDirectory)
     {
         // Clear previous image
         HeightMapImage = null;
+        HeightMapMetadata = null;
         HeightMapInfo = null;
         AvatarInfo.UpdateHeightMapStatus(false);
 
@@ -949,6 +824,7 @@ public partial class MainViewModel : ObservableObject
             // Convert to platform-agnostic image data for display with water-aware coloring
             var imageData = await ConvertProcessedMapToImageDataAsync(processedMap);
             HeightMapImage = imageData;
+            HeightMapMetadata = world.HeightMapMetadata;
             AvatarInfo.UpdateHeightMapStatus(true);
             
             // Update minimum zoom to ensure image always fills viewport
@@ -996,23 +872,17 @@ public partial class MainViewModel : ObservableObject
     {
         try
         {
-            StatusMessage = "Generating procedural map from saga arcs...";
-
-            var result = await Task.Run(() => ProceduralMapGenerator.GenerateFromSagaArcs(world));
-
-            if (result == null)
-            {
-                HeightMapInfo = "Procedural world has no saga arcs to generate map from";
-                return;
-            }
+            var result = await Task.Run(() => ProceduralMapGenerator.CreateFromWorld(world));
 
             var (metadata, imageData) = result.Value;
 
+            // todo: this doesn't actually 'stick'
             // Set the metadata on the world so coordinate conversions work
             world.HeightMapMetadata = metadata;
 
             // Set the image for display
             HeightMapImage = imageData;
+            HeightMapMetadata = metadata;
             AvatarInfo.UpdateHeightMapStatus(true);
 
             // Update minimum zoom
@@ -1235,7 +1105,11 @@ public partial class MainViewModel : ObservableObject
             var spawnLat = world.WorldConfiguration.SpawnLatitude;
             var spawnLong = world.WorldConfiguration.SpawnLongitude;
 
-            SetAvatarPosition(spawnLat, spawnLong, world.HeightMapMetadata, centerOnAvatar: true);
+            AvatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(spawnLong, world.HeightMapMetadata);
+            AvatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(spawnLat, world.HeightMapMetadata);
+            var avatarElevation = SampleElevation((int)AvatarPixelX, (int)AvatarPixelY);
+
+            SetAvatarPosition(spawnLat, spawnLong, avatarElevation, true);
         }
         catch (Exception ex)
         {
@@ -1243,15 +1117,10 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    public async void SetAvatarPosition(double latitude, double longitude, IHeightMapMetadata metadata, bool centerOnAvatar = false)
+    public async void SetAvatarPosition(double latitude, double longitude, double elevation, bool centerOnAvatar = false)
     {
         AvatarLatitude = latitude;
         AvatarLongitude = longitude;
-        AvatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(longitude, metadata);
-        AvatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(latitude, metadata);
-
-        // Sample elevation from height map
-        AvatarElevation = SampleElevation((int)AvatarPixelX, (int)AvatarPixelY);
 
         HasAvatarPosition = true;
 
@@ -1360,80 +1229,7 @@ public partial class MainViewModel : ObservableObject
         Task.Delay(100).ContinueWith(_ => ShouldCenterOnAvatar = false);
     }
 
-    //private void ShowLootForTrigger(ProximityTriggerViewModel triggerViewModel, ref string actionMessage)
-    //{
-    //    if (CurrentWorld == null || PlayerAvatar == null || _worldRepository == null)
-    //    {
-    //        actionMessage += " - Error: No world or avatar";
-    //        return;
-    //    }
-
-    //    // Look up Saga to get the entity reference
-    //    var saga = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault(p => p.RefName == triggerViewModel.SagaRefName);
-    //    if (saga == null)
-    //    {
-    //        actionMessage += $" - Error: Saga '{triggerViewModel.SagaRefName}' not found";
-    //        return;
-    //    }
-
-    //    // Determine feature type from SagaArc.Type
-    //    var featureType = saga.Type switch
-    //    {
-    //        SagaArcType.Landmark => FeatureType.Landmark,
-    //        SagaArcType.Structure => FeatureType.Structure,
-    //        SagaArcType.Quest => FeatureType.QuestSignpost,
-    //        SagaArcType.ResourceNode => FeatureType.ResourceNode,
-    //        SagaArcType.Vendor => FeatureType.Vendor,
-    //        _ => FeatureType.Structure
-    //    };
-
-    //    // Check cooldown/availability before showing loot
-    //    if (!CheckEntityAvailability(featureType, saga.RefName, ref actionMessage))
-    //    {
-    //        return; // On cooldown - message already set
-    //    }
-
-    //    // Create a placeholder character to hold info
-    //    // Note: Loot/rewards now come from Characters spawned by triggers, not from features
-    //    var lootCharacter = new Character
-    //    {
-    //        RefName = saga.RefName,
-    //        DisplayName = triggerViewModel.DisplayName,
-    //        Description = $"Location: {triggerViewModel.DisplayName}"
-    //    };
-
-    //    // Track current entity for trigger recording
-    //    _currentEntityRef = saga.RefName;
-    //    _currentEntityType = featureType;
-
-    //    // Set the character and show trade UI
-    //    TriggeredCharacter = lootCharacter;
-    //    MerchantTrade.RefreshCategories();
-    //    OnCharacterChanged();
-
-    //    actionMessage += " - Trigger activated";
-    //}
-
-    //private bool CheckEntityAvailability(FeatureType featureType, string entityRef, ref string actionMessage)
-    //{
-    //    if (_worldRepository == null) return false;
-
-    //    switch (featureType)
-    //    {
-    //        case FeatureType.Landmark:
-    //            // TODO: Check landmark state from SagaState (event-sourced)
-    //            // For now, landmarks are always available
-    //            break;
-
-    //        case FeatureType.Structure:
-    //            // TODO: Check structure state from SagaState (event-sourced)
-    //            // Need to query SagaState.Structures to check IsDestroyed
-    //            // For now, structures are always available
-    //            break;
-    //    }
-
-    //    return true;
-    //}
+ 
 
     /// <summary>
     /// Updates a SagaViewModel's trigger status after recording a transaction.
@@ -1476,138 +1272,6 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    //private bool PlayerHasItem(string itemRef)
-    //{
-    //    if (PlayerAvatar == null || PlayerAvatar.Capabilities == null) return false;
-
-    //    // Check consumables
-    //    if (PlayerAvatar.Capabilities.Consumables != null)
-    //    {
-    //        foreach (var entry in PlayerAvatar.Capabilities.Consumables)
-    //        {
-    //            if (entry.ConsumableRef == itemRef && entry.Quantity > 0)
-    //                return true;
-    //        }
-    //    }
-
-    //    // Check equipment
-    //    if (PlayerAvatar.Capabilities.Equipment != null)
-    //    {
-    //        foreach (var entry in PlayerAvatar.Capabilities.Equipment)
-    //        {
-    //            if (entry.EquipmentRef == itemRef)
-    //                return true;
-    //        }
-    //    }
-
-    //    // Check tools
-    //    if (PlayerAvatar.Capabilities.Tools != null)
-    //    {
-    //        foreach (var entry in PlayerAvatar.Capabilities.Tools)
-    //        {
-    //            if (entry.ToolRef == itemRef)
-    //                return true;
-    //        }
-    //    }
-
-    //    return false;
-    //}
-
-    //private async Task RemoveItemFromInventoryAsync(string itemRef)
-    //{
-    //    if (PlayerAvatar == null || PlayerAvatar.Capabilities == null) return;
-
-    //    // Remove from consumables
-    //    if (PlayerAvatar.Capabilities.Consumables != null)
-    //    {
-    //        for (int i = PlayerAvatar.Capabilities.Consumables.Length - 1; i >= 0; i--)
-    //        {
-    //            var entry = PlayerAvatar.Capabilities.Consumables[i];
-    //            if (entry.ConsumableRef == itemRef)
-    //            {
-    //                entry.Quantity--;
-    //                if (entry.Quantity <= 0)
-    //                {
-    //                    // Remove empty entry
-    //                    var list = PlayerAvatar.Capabilities.Consumables.ToList();
-    //                    list.RemoveAt(i);
-    //                    PlayerAvatar.Capabilities.Consumables = list.ToArray();
-    //                }
-    //                await SavePlayerAvatarAsync();
-    //                return;
-    //            }
-    //        }
-    //    }
-
-    //    // Remove from equipment
-    //    if (PlayerAvatar.Capabilities.Equipment != null)
-    //    {
-    //        for (int i = PlayerAvatar.Capabilities.Equipment.Length - 1; i >= 0; i--)
-    //        {
-    //            var entry = PlayerAvatar.Capabilities.Equipment[i];
-    //            if (entry.EquipmentRef == itemRef)
-    //            {
-    //                var list = PlayerAvatar.Capabilities.Equipment.ToList();
-    //                list.RemoveAt(i);
-    //                PlayerAvatar.Capabilities.Equipment = list.ToArray();
-    //                await SavePlayerAvatarAsync();
-    //                return;
-    //            }
-    //        }
-    //    }
-
-    //    // Remove from tools
-    //    if (PlayerAvatar.Capabilities.Tools != null)
-    //    {
-    //        for (int i = PlayerAvatar.Capabilities.Tools.Length - 1; i >= 0; i--)
-    //        {
-    //            var entry = PlayerAvatar.Capabilities.Tools[i];
-    //            if (entry.ToolRef == itemRef)
-    //            {
-    //                var list = PlayerAvatar.Capabilities.Tools.ToList();
-    //                list.RemoveAt(i);
-    //                PlayerAvatar.Capabilities.Tools = list.ToArray();
-    //                await SavePlayerAvatarAsync();
-    //                return;
-    //            }
-    //        }
-    //    }
-    //}
-
-    //private void ApplyRewardEffects(RewardEffects effects, List<string> rewards)
-    //{
-    //    if (PlayerAvatar == null) return;
-
-    //    if (effects.Health != 0)
-    //    {
-    //        PlayerAvatar.Stats.Health += effects.Health;
-    //        rewards.Add($"{effects.Health:+0;-0} Health");
-    //    }
-
-    //    if (effects.Stamina != 0)
-    //    {
-    //        PlayerAvatar.Stats.Stamina += effects.Stamina;
-    //        rewards.Add($"{effects.Stamina:+0;-0} Stamina");
-    //    }
-
-    //    if (effects.Mana != 0)
-    //    {
-    //        PlayerAvatar.Stats.Mana += effects.Mana;
-    //        rewards.Add($"{effects.Mana:+0;-0} Mana");
-    //    }
-
-    //    if (effects.Experience != 0)
-    //    {
-    //        PlayerAvatar.Stats.Experience += effects.Experience;
-    //        rewards.Add($"{effects.Experience:+0;-0} XP");
-    //    }
-
-    //    if (effects.Credits != 0)
-    //    {
-    //        PlayerAvatar.Stats.Credits += effects.Credits;
-    //        rewards.Add($"{effects.Credits:+0;-0} {CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits"}");
-    //    }
-    //}
 
 
     /// <summary>
@@ -1625,36 +1289,6 @@ public partial class MainViewModel : ObservableObject
         ActivityLog.Insert(0, "⚠️ Manual spawning not supported in event-sourced architecture");
     }
 
-    // WPF-specific method commented out for class library conversion
-    // UI layer should use SetAvatarPositionFromPixel instead
-    /*
-    [RelayCommand]
-    private void SetAvatarPositionFromClick(object? parameter)
-    {
-        if (CurrentWorld?.HeightMapMetadata == null || parameter is not System.Windows.Point clickPoint)
-            return;
-
-        try
-        {
-            // Convert click position to model coordinates immediately
-            var clickLatitude = CoordinateConverter.HeightMapPixelYToLatitude(clickPoint.Y, CurrentWorld.HeightMapMetadata);
-            var clickLongitude = CoordinateConverter.HeightMapPixelXToLongitude(clickPoint.X, CurrentWorld.HeightMapMetadata);
-            var clickModelX = CoordinateConverter.LongitudeToModelX(clickLongitude, CurrentWorld);
-            var clickModelZ = CoordinateConverter.LatitudeToModelZ(clickLatitude, CurrentWorld);
-
-            // NOTE: Character click handling removed - triggers only
-
-            // Move avatar to clicked position
-            SetAvatarPosition(clickLatitude, clickLongitude, CurrentWorld.HeightMapMetadata);
-            StatusMessage = $"Avatar moved to {clickLatitude:F6}°, {clickLongitude:F6}°";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error setting avatar position: {ex.Message}";
-        }
-    }
-    */
-
     /// <summary>
     /// Sets avatar position from pixel coordinates (for ImGui/non-WPF callers)
     /// </summary>
@@ -1669,8 +1303,12 @@ public partial class MainViewModel : ObservableObject
             var clickLatitude = CoordinateConverter.HeightMapPixelYToLatitude(pixelY, CurrentWorld.HeightMapMetadata);
             var clickLongitude = CoordinateConverter.HeightMapPixelXToLongitude(pixelX, CurrentWorld.HeightMapMetadata);
 
+            AvatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(clickLatitude, CurrentWorld.HeightMapMetadata);
+            AvatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(clickLongitude, CurrentWorld.HeightMapMetadata);
+            var avatarElevation = SampleElevation((int)AvatarPixelX, (int)AvatarPixelY);
+
             // Move avatar to clicked position
-            SetAvatarPosition(clickLatitude, clickLongitude, CurrentWorld.HeightMapMetadata);
+            SetAvatarPosition(clickLatitude, clickLongitude, avatarElevation);
 
             // Notify external consumers (e.g., game) to teleport the 3D avatar
             AvatarTeleportRequested?.Invoke(clickLatitude, clickLongitude);
@@ -1839,7 +1477,7 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    private int SampleElevation(int pixelX, int pixelY)
+    public int SampleElevation(int pixelX, int pixelY)
     {
         if (_processedHeightMap == null)
             return 0;

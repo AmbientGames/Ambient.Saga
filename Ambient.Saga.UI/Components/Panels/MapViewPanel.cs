@@ -92,10 +92,10 @@ public class MapViewPanel
                 // Calculate avatar position in display coordinates (after zoom)
                 var zoomedDisplayWidth = displayWidth * (float)targetZoom;
                 var zoomedDisplayHeight = displayHeight * (float)targetZoom;
-
+                
                 // Get avatar pixel position
-                var avatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(viewModel.AvatarLongitude, viewModel.CurrentWorld!.HeightMapMetadata);
-                var avatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(viewModel.AvatarLatitude, viewModel.CurrentWorld!.HeightMapMetadata);
+                var avatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(viewModel.AvatarLongitude, viewModel.HeightMapMetadata);
+                var avatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(viewModel.AvatarLatitude, viewModel.HeightMapMetadata);
 
                 // Convert to display coordinates
                 var avatarDisplayX = avatarPixelX / heightMapWidth * zoomedDisplayWidth;
