@@ -37,6 +37,9 @@ public class WorldMapUI
     private int _heightMapHeight;
     private IDisposable[]? _heightMapResources;
 
+    // Pending texture update (deferred to avoid disposing texture during render)
+    private bool _pendingTextureUpdate;
+
     public WorldMapUI(ModalManager modalManager)
     {
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
@@ -92,7 +95,8 @@ public class WorldMapUI
     {
         if (e.PropertyName == nameof(MainViewModel.HeightMapImage))
         {
-            UpdateHeightMapTexture();
+            // Defer texture update to avoid disposing texture during render frame
+            _pendingTextureUpdate = true;
         }
         else if (e.PropertyName == nameof(MainViewModel.CurrentWorld))
         {
@@ -178,6 +182,13 @@ public class WorldMapUI
     public void Render()
     {
         if (_viewModel == null || _gameplayOverlay == null) return;
+
+        // Process pending texture update at start of frame (safe to dispose old texture)
+        if (_pendingTextureUpdate)
+        {
+            _pendingTextureUpdate = false;
+            UpdateHeightMapTexture();
+        }
 
         // Show world selection screen if no world loaded yet (Sandbox-specific)
         // Note: WorldSelectionScreen is now managed by ModalManager
