@@ -36,10 +36,18 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
 
         try
         {
-            // Verify Saga template exists
-            if (!_world.SagaArcLookup.ContainsKey(command.SagaArcRef))
+            // Handle dev saga refs (format: "RealSagaRef__DEV__uniqueid")
+            var sagaRefForLookup = command.SagaArcRef;
+            var devSuffix = "__DEV__";
+            if (command.SagaArcRef.Contains(devSuffix))
             {
-                return SagaCommandResult.Failure(Guid.Empty, $"Saga '{command.SagaArcRef}' not found");
+                sagaRefForLookup = command.SagaArcRef.Substring(0, command.SagaArcRef.IndexOf(devSuffix));
+            }
+
+            // Verify Saga template exists (use stripped ref for lookup)
+            if (!_world.SagaArcLookup.ContainsKey(sagaRefForLookup))
+            {
+                return SagaCommandResult.Failure(Guid.Empty, $"Saga '{sagaRefForLookup}' not found");
             }
 
             // Get Saga instance
