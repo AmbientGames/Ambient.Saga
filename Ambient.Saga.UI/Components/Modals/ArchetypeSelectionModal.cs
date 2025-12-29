@@ -40,7 +40,7 @@ public class ArchetypeSelectionModal
             ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Choose Your Character Archetype");
             ImGui.Text("This choice determines your starting equipment and stats");
             ImGui.Spacing();
-            ImGui.TextColored(new Vector4(1, 0.7f, 0.3f, 1), "⚠ You must select an archetype to continue");
+            ImGui.TextColored(new Vector4(1, 0.7f, 0.3f, 1), "[!] You must select an archetype to continue");
             ImGui.Separator();
             ImGui.Spacing();
 

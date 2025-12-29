@@ -257,7 +257,34 @@ public class MerchantTradeModal
         {
             // Find character template
             var characterTemplate = viewModel.CurrentWorld.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == character.CharacterRef);
-            if (characterTemplate == null) return;
+            if (characterTemplate == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Character template not found for ref: {character.CharacterRef}");
+                return;
+            }
+
+            // Debug: Log trading state initialization
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] === TRADE STATE DEBUG ===");
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Character: {characterTemplate.DisplayName} ({characterTemplate.RefName})");
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Has Interactable: {characterTemplate.Interactable != null}");
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Has Loot: {characterTemplate.Interactable?.Loot != null}");
+
+            if (characterTemplate.Interactable?.Loot != null)
+            {
+                var loot = characterTemplate.Interactable.Loot;
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Loot Contents:");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Equipment: {loot.Equipment?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Consumables: {loot.Consumables?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Blocks: {loot.Blocks?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Tools: {loot.Tools?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Spells: {loot.Spells?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   QuestTokens: {loot.QuestTokens?.Length ?? 0} items (not tradeable)");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] WARNING: No loot defined for merchant!");
+            }
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] === END DEBUG ===");
 
             // Create SagaInteractionContext
             var context = new SagaInteractionContext

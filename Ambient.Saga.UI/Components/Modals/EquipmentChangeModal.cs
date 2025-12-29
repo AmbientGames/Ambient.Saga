@@ -119,7 +119,7 @@ public class EquipmentChangeModal
     /// </summary>
     public void Render()
     {
-        ImGui.TextColored(new Vector4(0.3f, 0.8f, 0.3f, 1.0f), "⚙️ CHANGE LOADOUT");
+        ImGui.TextColored(new Vector4(0.3f, 0.8f, 0.3f, 1.0f), "CHANGE LOADOUT");
         ImGui.Separator();
         ImGui.Spacing();
 
@@ -142,12 +142,12 @@ public class EquipmentChangeModal
         ImGui.Spacing();
 
         // Action buttons
-        if (ImGui.Button("✓ Accept", new Vector2(190, 50)))
+        if (ImGui.Button("Accept", new Vector2(190, 50)))
         {
             OnAcceptPressed();
         }
         ImGui.SameLine();
-        if (ImGui.Button("✗ Cancel", new Vector2(190, 50)))
+        if (ImGui.Button("Cancel", new Vector2(190, 50)))
         {
             Console.WriteLine("Equipment change cancelled");
             Cancelled?.Invoke();

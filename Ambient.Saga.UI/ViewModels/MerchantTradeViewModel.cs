@@ -96,6 +96,15 @@ public partial class MerchantTradeViewModel : ObservableObject
             _tradeEngine = new TradeEngine(_context.World);
         }
 
+        // Debug: Log category availability
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] RefreshCategories - Mode: {_tradeMode}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasEquipment: {HasEquipment}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasConsumables: {HasConsumables}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasBlocks: {HasBlocks}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasTools: {HasTools}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasSpells: {HasSpells}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasPotentialLoot: {HasPotentialLoot}");
+
         OnPropertyChanged(nameof(HasEquipment));
         OnPropertyChanged(nameof(HasConsumables));
         OnPropertyChanged(nameof(HasBlocks));
@@ -109,6 +118,8 @@ public partial class MerchantTradeViewModel : ObservableObject
 
         // Auto-select the first available category if current selection is invalid
         var available = AvailableCategories;
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   Available categories: {string.Join(", ", available)}");
+
         if (available.Count > 0)
         {
             if (!available.Contains(SelectedTradeCategory))
@@ -120,6 +131,10 @@ public partial class MerchantTradeViewModel : ObservableObject
                 // Force refresh of inventory even if category didn't change
                 OnPropertyChanged(nameof(TradeInventory));
             }
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   WARNING: No tradeable categories available!");
         }
     }
 

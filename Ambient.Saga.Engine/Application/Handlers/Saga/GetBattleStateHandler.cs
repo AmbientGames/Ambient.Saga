@@ -122,21 +122,21 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
 
                     if (timedOut)
                     {
-                        battleLog.Add($"⏱️ {playerCombatant.DisplayName} failed to react - took {damage:F1} damage");
+                        battleLog.Add($"{playerCombatant.DisplayName} failed to react - took {damage:F1} damage");
                     }
                     else if (damage == 0)
                     {
-                        battleLog.Add($"🛡️ {playerCombatant.DisplayName} {reactionType}d - avoided all damage!");
+                        battleLog.Add($"{playerCombatant.DisplayName} {reactionType}d - avoided all damage!");
                     }
                     else
                     {
                         var optimalTag = wasOptimal ? " (optimal!)" : "";
-                        battleLog.Add($"🛡️ {playerCombatant.DisplayName} {reactionType}d - took {damage:F1} damage{optimalTag}");
+                        battleLog.Add($"{playerCombatant.DisplayName} {reactionType}d - took {damage:F1} damage{optimalTag}");
                     }
 
                     if (counterDamage > 0)
                     {
-                        battleLog.Add($"⚡ Counter-attack dealt {counterDamage:F1} damage to {enemyCombatant.DisplayName}!");
+                        battleLog.Add($"Counter-attack dealt {counterDamage:F1} damage to {enemyCombatant.DisplayName}!");
                     }
                 }
                 else

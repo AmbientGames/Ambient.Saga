@@ -848,11 +848,11 @@ public class BattleEngine
 
         if (affinityMultiplier > 1.0f)
         {
-            CombatLog.Add($"⚡ Affinity advantage! ({affinityMultiplier:F1}x damage)");
+            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
         }
         else if (affinityMultiplier < 1.0f)
         {
-            CombatLog.Add($"🛡️ Affinity resistance! ({affinityMultiplier:F1}x damage)");
+            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
         }
 
         CombatLog.Add($"{attacker.DisplayName} attacks with {weapon.DisplayName} for {totalDamage * 100:F1}% damage!");
@@ -867,7 +867,7 @@ public class BattleEngine
                 equipped.Condition = Math.Max(0f, equipped.Condition - weapon.DurabilityLoss);
                 if (equipped.Condition < 0.3f)
                 {
-                    CombatLog.Add($"⚠️ {weapon.DisplayName} is badly damaged!");
+                    CombatLog.Add($"[!] {weapon.DisplayName} is badly damaged!");
                 }
             }
         }
@@ -1051,11 +1051,11 @@ public class BattleEngine
 
         if (affinityMultiplier > 1.0f)
         {
-            CombatLog.Add($"⚡ Affinity advantage! ({affinityMultiplier:F1}x damage)");
+            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
         }
         else if (affinityMultiplier < 1.0f)
         {
-            CombatLog.Add($"🛡️ Affinity resistance! ({affinityMultiplier:F1}x damage)");
+            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
         }
 
         CombatLog.Add($"{attacker.DisplayName} casts {spell.DisplayName} for {totalDamage * 100:F1}% damage!");
@@ -1074,7 +1074,7 @@ public class BattleEngine
                 known.Condition = Math.Max(0f, known.Condition - spell.DurabilityLoss);
                 if (known.Condition < 0.3f)
                 {
-                    CombatLog.Add($"⚠️ {spell.DisplayName} knowledge is fading!");
+                    CombatLog.Add($"[!] {spell.DisplayName} knowledge is fading!");
                 }
             }
         }
@@ -1445,7 +1445,7 @@ public class BattleEngine
                     if (result != null)
                     {
                         appliedStatusEffect = result;
-                        CombatLog.Add($"🛡️ {equipment.DisplayName} triggers {result} while defending!");
+                        CombatLog.Add($"{equipment.DisplayName} triggers {result} while defending!");
                     }
                 }
             }
@@ -2035,7 +2035,7 @@ public class BattleEngine
         };
 
         State = BattleState.AwaitingReaction;
-        CombatLog.Add($"⚔️ {tell.TellText}");
+        CombatLog.Add($"{tell.TellText}");
         CombatLog.Add($"   [DODGE] [BLOCK] [PARRY] [BRACE] - {tell.ReactionWindowMs / 1000.0:F1}s to react!");
 
         return true;
@@ -2060,7 +2060,7 @@ public class BattleEngine
         if (timedOut)
         {
             reaction = PlayerDefenseType.None;
-            CombatLog.Add("⏱️ Time's up!");
+            CombatLog.Add("Time's up!");
         }
 
         var outcome = pending.Tell.GetOutcome(reaction);
@@ -2083,7 +2083,7 @@ public class BattleEngine
             };
         }
 
-        CombatLog.Add($"🛡️ {narrativeText}");
+        CombatLog.Add($"{narrativeText}");
 
         // Handle counter-attack
         int? counterDamage = null;
@@ -2091,7 +2091,7 @@ public class BattleEngine
         {
             counterDamage = (int)Math.Round(pending.BaseDamage * outcome.CounterMultiplier);
             pending.Attacker.Health -= counterDamage.Value;
-            CombatLog.Add($"⚡ Counter-attack hits {pending.Attacker.DisplayName} for {counterDamage} damage!");
+            CombatLog.Add($"Counter-attack hits {pending.Attacker.DisplayName} for {counterDamage} damage!");
         }
 
         // Apply defense effects (e.g., stamina recovery from skilled defense)

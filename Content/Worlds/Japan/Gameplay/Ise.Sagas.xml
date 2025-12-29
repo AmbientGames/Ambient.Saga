@@ -24,17 +24,17 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_ELITE" DisplayName="Elite Guard" Description="Elite Guard" EnterRadius="80.0" Tags="combat,elite">
       <Spawn>
-        <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
+        <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_LIEUTENANT" DisplayName="Boss Lieutenant" Description="Boss Lieutenant" EnterRadius="50.0" Tags="combat,lieutenant,miniboss">
       <Spawn>
-        <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
+        <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_KōtaiJingūInnerShrine_BOSS" DisplayName="Heart of Kōtai Jingū (Inner Shrine)" Description="Heart of Kōtai Jingū (Inner Shrine)" EnterRadius="25.0" Tags="combat,boss,final">
       <Spawn>
-        <CharacterRef>BOSS_ToyōkeDaijingūOuterShrine</CharacterRef>
+        <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
@@ -51,7 +51,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_BOSS" DisplayName="Boss of Aramatsuri-no-Miya" Description="Boss of Aramatsuri-no-Miya" EnterRadius="25.0" Tags="combat,boss">
       <Spawn>
-        <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
+        <CharacterRef>BOSS_Takanomiya</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
@@ -60,49 +60,49 @@
       <GivesQuestTokenRef>TOKEN_Aramatsurinomiya_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.459198515157986" LongitudeX="136.7229727534545" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.45971326394404" LongitudeX="136.72301939489483" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.4629600172063" LongitudeX="136.7204256015132" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.463114880266225" LongitudeX="136.72117949494233" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46653193315448" LongitudeX="136.71892404912856" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.465598132379846" LongitudeX="136.71929287474074" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.470396733001245" LongitudeX="136.71616351966253" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.46941829946627" LongitudeX="136.71566099093664" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Danger on the Trail" Description="Movement in the brush near the trail" EnterRadius="30.0" Tags="combat,trail,encounter">
       <Spawn Count="1">
         <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47311567656653" LongitudeX="136.7122382447196" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47337087230026" LongitudeX="136.71335275143431" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.477112310999544" LongitudeX="136.7112121186226" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.47738349199901" LongitudeX="136.71052900754339" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveler on the Road" Description="A merchant travels the same path" EnterRadius="25.0" Tags="merchant,trail,travel">
       <Spawn Count="1">
         <CharacterRef>MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</CharacterRef>
       </Spawn>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48372775632632" LongitudeX="136.70490875034844" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
+  <SagaArc RefName="Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)" Description="Intermediate waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine)" LatitudeZ="34.48373688489247" LongitudeX="136.70648485000032" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</CharacterRef>
@@ -112,7 +112,7 @@
   <SagaArc RefName="ToyōkeDaijingūOuterShrine" DisplayName="Toyōke Daijingū (Outer Shrine)" Description="Outer Shrine of Ise Jingū, dedicated to Toyōke Ōmikami" LatitudeZ="34.4869" LongitudeX="136.7031" Category="Structure" InitialState="Visible" ModelRef="Shrine.20037" Metadata="{&quot;narrativeRole&quot;:&quot;RisingAction&quot;,&quot;narrativeSequence&quot;:3,&quot;tone&quot;:&quot;challenging&quot;,&quot;storyThreadRefs&quot;:[&quot;THREAD_MAIN&quot;],&quot;thematicTags&quot;:&quot;combat&quot;,&quot;narrativeConnections&quot;:[{&quot;targetRef&quot;:&quot;Aramatsurinomiya&quot;,&quot;relationship&quot;:&quot;caused-by&quot;,&quot;description&quot;:&quot;Previous location in quest chain&quot;},{&quot;targetRef&quot;:&quot;KazamiyaGek\u016B&quot;,&quot;relationship&quot;:&quot;leads-to&quot;,&quot;description&quot;:&quot;Next location in quest chain&quot;}]}">
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_SENTRIES" DisplayName="Outer Sentries" Description="Outer Sentries" EnterRadius="100.0" Tags="combat,ranged,sentry">
       <Spawn>
-        <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
+        <CharacterRef>HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_WALLS" DisplayName="Wall Defenders" Description="Wall Defenders" EnterRadius="60.0" Tags="combat,guard,defense">
@@ -127,7 +127,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_COMMANDER" DisplayName="Commander of Toyōke Daijingū (Outer Shrine)" Description="Commander of Toyōke Daijingū (Outer Shrine)" EnterRadius="15.0" Tags="combat,boss,commander">
       <Spawn>
-        <CharacterRef>BOSS_KazamiyaGekū</CharacterRef>
+        <CharacterRef>BOSS_ToyōkeDaijingūOuterShrine</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_ToyōkeDaijingūOuterShrine</CharacterRef>
@@ -136,7 +136,7 @@
       <GivesQuestTokenRef>TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE</GivesQuestTokenRef>
     </SagaTrigger>
   </SagaArc>
-  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū)" LatitudeZ="34.4899751343892" LongitudeX="136.70250964391525" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
+  <SagaArc RefName="ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)" Description="Intermediate waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū)" LatitudeZ="34.488732212109774" LongitudeX="136.70237775796926" Category="Waypoint" InitialState="Hidden" ModelRef="Torii">
     <SagaTrigger RefName="TRIGGER_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Fellow Traveler" Description="Another traveler rests along the path" EnterRadius="20.0" Tags="npc,trail,social">
       <Spawn Count="1">
         <CharacterRef>NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</CharacterRef>
@@ -156,12 +156,12 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_KazamiyaGekū_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
       <Spawn>
-        <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
+        <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_KazamiyaGekū_COMMANDER" DisplayName="Commander of Kazamiya (Gekū)" Description="Commander of Kazamiya (Gekū)" EnterRadius="15.0" Tags="combat,boss,commander">
       <Spawn>
-        <CharacterRef>BOSS_Takanomiya</CharacterRef>
+        <CharacterRef>BOSS_KazamiyaGekū</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_KazamiyaGekū</CharacterRef>
@@ -178,7 +178,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Tsuchinomiya_ELITE" DisplayName="Elite Guard" Description="Elite Guard" EnterRadius="80.0" Tags="combat,elite">
       <Spawn>
-        <CharacterRef>BOSS_KōtaiJingūInnerShrine</CharacterRef>
+        <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Tsuchinomiya_LIEUTENANT" DisplayName="Boss Lieutenant" Description="Boss Lieutenant" EnterRadius="50.0" Tags="combat,lieutenant,miniboss">
@@ -188,7 +188,7 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Tsuchinomiya_BOSS" DisplayName="Heart of Tsuchi-no-Miya" Description="Heart of Tsuchi-no-Miya" EnterRadius="25.0" Tags="combat,boss,final">
       <Spawn>
-        <CharacterRef>BOSS_ToyōkeDaijingūOuterShrine</CharacterRef>
+        <CharacterRef>BOSS_Kazahinominomiya</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Tsuchinomiya</CharacterRef>
@@ -210,12 +210,12 @@
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Takanomiya_GATE" DisplayName="Gate Captain" Description="Gate Captain" EnterRadius="30.0" Tags="combat,captain,elite">
       <Spawn>
-        <CharacterRef>BOSS_Aramatsurinomiya</CharacterRef>
+        <CharacterRef>GUARD_Kazahinominomiya_0</CharacterRef>
       </Spawn>
     </SagaTrigger>
     <SagaTrigger RefName="TRIGGER_Takanomiya_COMMANDER" DisplayName="Commander of Taka-no-Miya" Description="Commander of Taka-no-Miya" EnterRadius="15.0" Tags="combat,boss,commander">
       <Spawn>
-        <CharacterRef>BOSS_KazamiyaGekū</CharacterRef>
+        <CharacterRef>BOSS_Takanomiya</CharacterRef>
       </Spawn>
       <Spawn Count="1">
         <CharacterRef>BOSS_Takanomiya</CharacterRef>

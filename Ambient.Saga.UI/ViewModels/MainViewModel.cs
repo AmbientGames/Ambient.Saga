@@ -586,7 +586,7 @@ public partial class MainViewModel : ObservableObject
             System.Diagnostics.Debug.WriteLine($"    Choices: {state.Choices.Count}");
             foreach (var choice in state.Choices)
             {
-                var availability = choice.IsAvailable ? "✓" : "✗";
+                var availability = choice.IsAvailable ? "[x]" : "[ ]";
                 System.Diagnostics.Debug.WriteLine($"      [{availability}] {choice.Text} -> {choice.ChoiceId}");
             }
 
@@ -1293,7 +1293,7 @@ public partial class MainViewModel : ObservableObject
     private void SpawnCharacterAtAvatar(string characterRef)
     {
         StatusMessage = "Manual character spawning disabled - characters spawn via Saga triggers only";
-        ActivityLog.Insert(0, "⚠️ Manual spawning not supported in event-sourced architecture");
+        ActivityLog.Insert(0, "[!] Manual spawning not supported in event-sourced architecture");
     }
 
     /// <summary>
