@@ -46,11 +46,15 @@ public class BattleModal
     private SpellSelectionModal? _spellSelectionModal;
     private ItemSelectionModal? _itemSelectionModal;
     private EquipmentChangeModal? _equipmentChangeModal;
+    private AffinityChangeModal? _affinityChangeModal;
+    private StanceChangeModal? _stanceChangeModal;
 
     // Selection modal state
     private bool _showSpellSelection = false;
     private bool _showItemSelection = false;
     private bool _showEquipmentChange = false;
+    private bool _showAffinityChange = false;
+    private bool _showStanceChange = false;
 
     // Cached references for modal callbacks
     private MainViewModel? _cachedViewModel;
@@ -204,7 +208,8 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.15f, 0.8f));
 
         // Increase height for reaction phase to fit tell text + timer + buttons
-        var headerHeight = _inReactionPhase ? 160f : 90f;
+        // Non-reaction phase needs 130f for two rows of action buttons
+        var headerHeight = _inReactionPhase ? 160f : 130f;
         ImGui.BeginChild("TurnHeader", new Vector2(0, headerHeight), ImGuiChildFlags.Borders);
 
         // Reaction phase - show tell text, countdown, and reaction buttons
@@ -290,6 +295,19 @@ public class BattleModal
             ImGui.PopStyleColor(3);
 
             ImGui.SameLine();
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.3f, 0.15f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.4f, 0.2f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.5f, 0.25f, 1.0f));
+            if (ImGui.Button("Flee", new Vector2(buttonWidth, 35)))
+            {
+                _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Flee });
+            }
+            ImGui.PopStyleColor(3);
+
+            // Second row: Loadout/Setup actions (defensive actions that grant small health bonus)
+            ImGui.SetCursorPosX(startX + buttonWidth * 2 + buttonSpacing * 2);  // Indent to align with middle
+
+            // Loadout button (full equipment change)
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.3f, 0.3f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.4f, 0.4f, 0.4f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -300,12 +318,26 @@ public class BattleModal
             ImGui.PopStyleColor(3);
 
             ImGui.SameLine();
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.3f, 0.15f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.4f, 0.2f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.5f, 0.25f, 1.0f));
-            if (ImGui.Button("Flee", new Vector2(buttonWidth, 35)))
+
+            // Affinity button (quick change with health bonus)
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.35f, 0.35f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.5f, 0.5f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.65f, 0.65f, 1.0f));
+            if (ImGui.Button("Affinity", new Vector2(buttonWidth, 35)))
             {
-                _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Flee });
+                OpenAffinityChangeModal(viewModel);
+            }
+            ImGui.PopStyleColor(3);
+
+            ImGui.SameLine();
+
+            // Stance button (quick change with health bonus)
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.25f, 0.1f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.35f, 0.15f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.45f, 0.2f, 1.0f));
+            if (ImGui.Button("Stance", new Vector2(buttonWidth, 35)))
+            {
+                OpenStanceChangeModal(viewModel);
             }
             ImGui.PopStyleColor(3);
         }
@@ -1050,6 +1082,55 @@ public class BattleModal
         }
     }
 
+    private void CleanupAffinityChangeModal()
+    {
+        if (_affinityChangeModal != null)
+        {
+            _affinityChangeModal.AffinitySelected -= OnAffinitySelected;
+            _affinityChangeModal.Cancelled -= OnModalCancelled;
+            _affinityChangeModal = null;
+        }
+    }
+
+    private void CleanupStanceChangeModal()
+    {
+        if (_stanceChangeModal != null)
+        {
+            _stanceChangeModal.StanceSelected -= OnStanceSelected;
+            _stanceChangeModal.Cancelled -= OnModalCancelled;
+            _stanceChangeModal = null;
+        }
+    }
+
+    private void OpenAffinityChangeModal(MainViewModel viewModel)
+    {
+        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+
+        CleanupAffinityChangeModal();
+
+        // Get player's available affinities (from avatar capabilities or default world affinities)
+        var playerAffinities = _currentState.PlayerAffinityRefs ??
+            viewModel.CurrentWorld.Gameplay?.CharacterAffinities?.Select(a => a.RefName).ToList() ??
+            new List<string>();
+
+        _affinityChangeModal = new AffinityChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld, playerAffinities);
+        _affinityChangeModal.AffinitySelected += OnAffinitySelected;
+        _affinityChangeModal.Cancelled += OnModalCancelled;
+        _showAffinityChange = true;
+    }
+
+    private void OpenStanceChangeModal(MainViewModel viewModel)
+    {
+        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+
+        CleanupStanceChangeModal();
+
+        _stanceChangeModal = new StanceChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
+        _stanceChangeModal.StanceSelected += OnStanceSelected;
+        _stanceChangeModal.Cancelled += OnModalCancelled;
+        _showStanceChange = true;
+    }
+
     private void OpenMidBattleDialogue(MainViewModel viewModel, CharacterViewModel character)
     {
         if (_cachedModalManager == null) return;
@@ -1102,11 +1183,41 @@ public class BattleModal
         }
     }
 
+    private void OnAffinitySelected(string affinityRef)
+    {
+        _showAffinityChange = false;
+        if (_cachedViewModel != null && _cachedCharacter != null)
+        {
+            // Use AdjustLoadout for single change with defensive bonus (+5% health restore)
+            _ = ExecuteTurnAsync(_cachedViewModel, _cachedCharacter, new CombatAction
+            {
+                ActionType = ActionType.AdjustLoadout,
+                Parameter = $"Affinity:{affinityRef}"
+            });
+        }
+    }
+
+    private void OnStanceSelected(string stanceRef)
+    {
+        _showStanceChange = false;
+        if (_cachedViewModel != null && _cachedCharacter != null)
+        {
+            // Use AdjustLoadout for single change with defensive bonus (+5% health restore)
+            _ = ExecuteTurnAsync(_cachedViewModel, _cachedCharacter, new CombatAction
+            {
+                ActionType = ActionType.AdjustLoadout,
+                Parameter = $"Stance:{stanceRef}"
+            });
+        }
+    }
+
     private void OnModalCancelled()
     {
         _showSpellSelection = false;
         _showItemSelection = false;
         _showEquipmentChange = false;
+        _showAffinityChange = false;
+        _showStanceChange = false;
     }
 
     // Render selection modals
@@ -1157,6 +1268,28 @@ public class BattleModal
             if (!_showEquipmentChange)
             {
                 _equipmentChangeModal = null;
+            }
+        }
+
+        // Affinity change modal
+        if (_showAffinityChange && _affinityChangeModal != null)
+        {
+            _affinityChangeModal.Render(ref _showAffinityChange);
+
+            if (!_showAffinityChange)
+            {
+                _affinityChangeModal = null;
+            }
+        }
+
+        // Stance change modal
+        if (_showStanceChange && _stanceChangeModal != null)
+        {
+            _stanceChangeModal.Render(ref _showStanceChange);
+
+            if (!_showStanceChange)
+            {
+                _stanceChangeModal = null;
             }
         }
     }
