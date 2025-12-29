@@ -153,10 +153,10 @@ public class ImGuiRendererDX11 : IDisposable
         };
         _depthStencilState = new DepthStencilState(_device, depthStencilDesc);
 
-        // Sampler state
+        // Sampler state - using point filtering for crisp pixel rendering (maps)
         var samplerDesc = new SamplerStateDescription
         {
-            Filter = Filter.MinMagMipLinear,
+            Filter = Filter.MinMagMipPoint,
             AddressU = TextureAddressMode.Wrap,
             AddressV = TextureAddressMode.Wrap,
             AddressW = TextureAddressMode.Wrap,
