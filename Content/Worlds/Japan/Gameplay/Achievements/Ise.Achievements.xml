@@ -1,18 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Achievement RefName="ACH_COMPLETE_ISE" DisplayName="Hero of Ise" Description="Complete the main storyline and become a legend of Ise.">
+  <Achievement RefName="ACH_COMPLETE_ISE" DisplayName="Legend of Ise" Description="Write your name in the annals of Ise's history by completing the main quest.">
     <Criteria Type="SagaArcsCompleted" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_ISE" DisplayName="Conqueror" Description="Triumph over all the formidable adversaries lurking in Ise.">
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_ISE" DisplayName="Champion" Description="Prove your combat mastery by defeating all the bosses in Ise.">
     <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_EXPLORER_ISE" DisplayName="Wanderer" Description="Let your curiosity guide you to every hidden place in Ise.">
+  <Achievement RefName="ACH_EXPLORER_ISE" DisplayName="Trailblazer" Description="Be the first to set foot in all the locations of Ise.">
     <Criteria Type="SagaArcsDiscovered" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_SOCIAL_ISE" DisplayName="Networker" Description="Build connections with everyone you meet throughout Ise.">
+  <Achievement RefName="ACH_SOCIAL_ISE" DisplayName="Charmer" Description="Win the attention of every character in Ise.">
     <Criteria Type="UniqueCharactersMet" Threshold="16" />
   </Achievement>
-  <Achievement RefName="ACH_DIALOGUE_MASTER_ISE" DisplayName="Silver Tongue" Description="Uncover every conversation thread in Ise.">
+  <Achievement RefName="ACH_DIALOGUE_MASTER_ISE" DisplayName="Wordsmith" Description="Master the art of conversation with everyone in Ise.">
     <Criteria Type="DialogueTreesCompleted" Threshold="16" />
   </Achievement>
   <Achievement RefName="ACH_COLLECTOR_ISE" DisplayName="Completionist" Description="Collect every quest token available in Ise.">

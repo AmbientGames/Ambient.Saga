@@ -1959,6 +1959,8 @@ public partial class MainViewModel : ObservableObject
     /// <summary>
     /// Finds a suitable test character from world data based on type.
     /// </summary>
+    private static readonly Random _devRandom = new();
+
     private Character? FindTestCharacter(DevCharacterType characterType)
     {
         var characters = CurrentWorld?.Gameplay?.Characters;
@@ -1967,10 +1969,9 @@ public partial class MainViewModel : ObservableObject
 
         return characterType switch
         {
-            // NPC: has dialogue, not hostile
-            DevCharacterType.NPC => characters.FirstOrDefault(c =>
-                c.Interactable?.DialogueTreeRef != null &&
-                !(c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false)),
+            // NPC: Prioritize NPCs with loot (gift givers), exclude merchants/bosses/hostiles
+            // Use random selection for variety
+            DevCharacterType.NPC => FindRandomNpc(characters),
 
             // Merchant: prefer one with BOTH dialogue AND WillTrade, fallback to just WillTrade
             DevCharacterType.Merchant => characters.FirstOrDefault(c =>
@@ -1995,6 +1996,43 @@ public partial class MainViewModel : ObservableObject
 
             _ => characters.FirstOrDefault()
         };
+    }
+
+    /// <summary>
+    /// Finds a random NPC for dev testing, prioritizing those with loot (gift givers).
+    /// Excludes merchants, bosses, and hostiles.
+    /// </summary>
+    private static Character? FindRandomNpc(Character[] characters)
+    {
+        // Filter to friendly NPCs with dialogue (exclude merchants, bosses, hostiles)
+        var friendlyNpcs = characters.Where(c =>
+            c.Interactable?.DialogueTreeRef != null &&
+            !(c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false) &&
+            !(c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false) &&
+            !(c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false))
+            .ToList();
+
+        if (friendlyNpcs.Count == 0)
+            return null;
+
+        // Prioritize NPCs with loot (gift givers) - they have interesting dialogue paths
+        var npcsWithLoot = friendlyNpcs.Where(c => c.Interactable?.Loot != null &&
+            (c.Interactable.Loot.Equipment?.Length > 0 ||
+             c.Interactable.Loot.Consumables?.Length > 0 ||
+             c.Interactable.Loot.Spells?.Length > 0))
+            .ToList();
+
+        if (npcsWithLoot.Count > 0)
+        {
+            var selected = npcsWithLoot[_devRandom.Next(npcsWithLoot.Count)];
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Selected NPC with loot: {selected.DisplayName} ({selected.RefName})");
+            return selected;
+        }
+
+        // Fallback to any friendly NPC
+        var fallback = friendlyNpcs[_devRandom.Next(friendlyNpcs.Count)];
+        System.Diagnostics.Debug.WriteLine($"[DevTools] Selected random NPC: {fallback.DisplayName} ({fallback.RefName})");
+        return fallback;
     }
 
     /// <summary>

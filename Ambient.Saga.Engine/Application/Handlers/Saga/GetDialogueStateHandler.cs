@@ -179,7 +179,12 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
                 }
             }
 
-            System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Node has {dialogueText.Count} text lines and {choices.Count} choices");
+            // Determine dialogue state
+            var hasChoices = currentNode.Choice != null && currentNode.Choice.Length > 0;
+            var hasNextNode = !string.IsNullOrEmpty(currentNode.NextNodeId);
+            var isTerminalNode = !hasChoices && !hasNextNode;
+
+            System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Node has {dialogueText.Count} text lines and {choices.Count} choices, hasNextNode={hasNextNode}, isTerminal={isTerminalNode}");
 
             return new DialogueStateResult
             {
@@ -187,8 +192,8 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
                 CurrentNodeId = currentNode.NodeId ?? string.Empty,
                 DialogueText = dialogueText,
                 Choices = choices,
-                CanContinue = currentNode.Choice == null || currentNode.Choice.Length == 0,
-                HasEnded = false
+                CanContinue = !hasChoices && hasNextNode,  // Can only continue if there's somewhere to go
+                HasEnded = isTerminalNode                   // Terminal node = no choices and no next node
             };
         }
         catch (Exception ex)
