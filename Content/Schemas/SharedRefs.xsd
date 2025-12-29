@@ -20,4 +20,10 @@
             <xs:minLength value="1" />
         </xs:restriction>
     </xs:simpleType>
+	<xs:simpleType name="ClimateModel">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Earth" />
+			<xs:enumeration value="Mars" />
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

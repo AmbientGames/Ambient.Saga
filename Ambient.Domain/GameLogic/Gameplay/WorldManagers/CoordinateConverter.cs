@@ -206,7 +206,15 @@ public static class CoordinateConverter
 
     public static double GetAltitude(IWorld world, int altitudeInt)
     {
-        return GetAltitude(world.BlocksBeneathSeaLevel, world.VerticalScale, world.VerticalShift, altitudeInt);
+        var climateModel = world.WorldConfiguration.ClimateModel;
+
+        int verticalShift = 0;
+        if (climateModel == ClimateModel.Earth)
+        {
+            verticalShift = (int)world.VerticalShift;
+        }
+
+        return GetAltitude(world.BlocksBeneathSeaLevel, world.VerticalScale, verticalShift, altitudeInt);
     }
 
     public static double GetAltitude(int blocksBeneathSeaLevel_Wip, double worldScale, double verticalShift, int altitudeInt)

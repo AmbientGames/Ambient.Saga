@@ -818,7 +818,14 @@ public partial class MainViewModel : ObservableObject
             
             // Preprocess height map with water detection
             StatusMessage = "Processing height map for water detection...";
-            var processedMap = await Task.Run(() => HeightMapProcessor.ProcessHeightMap(image, 40, true));
+
+            var verticalShift = 0;
+            if (world.WorldConfiguration.ClimateModel == ClimateModel.Earth)
+            {
+                verticalShift = (int)world.WorldConfiguration.HeightMapSettings.VerticalShift;
+            }
+
+            var processedMap = await Task.Run(() => HeightMapProcessor.ProcessHeightMap(image, 40, true, verticalShift));
             _processedHeightMap = processedMap;
             
             // Convert to platform-agnostic image data for display with water-aware coloring

@@ -73,6 +73,8 @@ namespace Ambient.Domain {
         
         private int secondsInHourField;
         
+        private ClimateModel climateModelField;
+        
         public WorldConfiguration() {
             this.consumableItemsRefField = "Standard";
             this.spellsRefField = "Standard";
@@ -95,6 +97,7 @@ namespace Ambient.Domain {
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
             this.secondsInHourField = 60;
+            this.climateModelField = ClimateModel.Earth;
         }
         
         /// <remarks/>
@@ -391,6 +394,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.secondsInHourField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(ClimateModel.Earth)]
+        public ClimateModel ClimateModel {
+            get {
+                return this.climateModelField;
+            }
+            set {
+                this.climateModelField = value;
             }
         }
     }

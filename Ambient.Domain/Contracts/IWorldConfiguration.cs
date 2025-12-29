@@ -33,4 +33,5 @@ public interface IWorldConfiguration
     string FactionsRef { get; set; }
     string StatusEffectsRef { get; set; }
     string AttackTellsRef { get; set; }
+    ClimateModel ClimateModel { get; set; }
 }

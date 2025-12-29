@@ -49,7 +49,8 @@
                 <xs:attribute name="SpawnLatitude" type="xs:double" use="required" />
                 <xs:attribute name="SpawnLongitude" type="xs:double" use="required" />
                 <xs:attribute name="SecondsInHour" type="xs:int" default="60" />
-            </xs:extension>
+				<xs:attribute name="ClimateModel" type="ClimateModel" default="Earth" />
+			</xs:extension>
         </xs:complexContent>
     </xs:complexType>
     <xs:complexType name="WorldConfigurations">
