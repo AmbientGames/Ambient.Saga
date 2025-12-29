@@ -61,6 +61,13 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             var (playerCombatant, enemyCombatant, randomSeed, playerAffinityRefs, enemyCharacterInstanceId) =
                 ReconstructCombatants(battleStartedTx, instance);
 
+            // Attach player's current capabilities (for equipment change modal)
+            // This comes from the live avatar, not the transaction log
+            if (query.Avatar?.Capabilities != null)
+            {
+                playerCombatant.Capabilities = query.Avatar.Capabilities;
+            }
+
             // Get all turn transactions
             var turnTransactions = instance.Transactions
                 .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
