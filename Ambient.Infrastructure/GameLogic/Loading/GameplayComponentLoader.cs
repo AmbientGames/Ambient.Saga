@@ -7,16 +7,21 @@ namespace Ambient.Infrastructure.GameLogic.Loading;
 
 public static class GameplayComponentLoader
 {
-    public static async Task LoadAsync(string definitionDirectory, IWorld world)
+    public static async Task LoadAsync(string? definitionDirectory, IWorld world)
     {
-        var xsdFilePath = Path.Combine(definitionDirectory, "Gameplay", "Gameplay.xsd");
         world.WorldTemplate.Gameplay = new GameplayComponents();
 
-        await LoadGameplayData(xsdFilePath, world);
+        // Try to use schema validation if definition directory exists and contains schemas
+        var xsdFilePath = !string.IsNullOrEmpty(definitionDirectory)
+            ? Path.Combine(definitionDirectory, "Gameplay", "Gameplay.xsd")
+            : null;
+        var useValidation = xsdFilePath != null && File.Exists(xsdFilePath);
+
+        await LoadGameplayData(useValidation ? xsdFilePath : null, world);
         BuildGameplayLookups(world);
     }
 
-    private static async Task LoadGameplayData(string xsdFilePath, IWorld world)
+    private static async Task LoadGameplayData(string? xsdFilePath, IWorld world)
     {
         var config = world.WorldConfiguration;
         var worldRef = config.RefName;
@@ -43,14 +48,20 @@ public static class GameplayComponentLoader
         world.Gameplay.AttackTells = (await LoadXmlAsync<AttackTells>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Combat", "AttackTells.xml")).AttackTell ?? [];
     }
 
-    private static async Task<T> LoadXmlAsync<T>(string worldRef, string resourcePack, string ns, string xsdFilePath, params string[] relativePath)
+    private static async Task<T> LoadXmlAsync<T>(string worldRef, string resourcePack, string ns, string? xsdFilePath, params string[] relativePath)
     {
         var resolvedPath = ContentPathResolver.ResolveXmlPath(worldRef, resourcePack, ns, relativePath);
         if (resolvedPath == null)
         {
             throw new FileNotFoundException($"XML content not found: {string.Join("/", relativePath)}");
         }
-        return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath, xsdFilePath);
+
+        // Use validation if schema file is available, otherwise load without validation
+        if (!string.IsNullOrEmpty(xsdFilePath))
+        {
+            return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath, xsdFilePath);
+        }
+        return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath);
     }
 
     private static void BuildGameplayLookups(IWorld world)

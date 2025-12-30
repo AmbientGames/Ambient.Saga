@@ -22,7 +22,7 @@ public class WorldAssetLoader : IWorldLoader
     }
 
     /// <inheritdoc />
-    public async Task<IWorld> LoadWorldByConfigurationAsync(string dataDirectory, string definitionDirectory, string configurationRefName)
+    public async Task<IWorld> LoadWorldByConfigurationAsync(string dataDirectory, string? definitionDirectory, string configurationRefName)
     {
         var configurations = await _configurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory);
 
@@ -36,7 +36,7 @@ public class WorldAssetLoader : IWorldLoader
     }
 
     /// <inheritdoc />
-    public async Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, IWorldConfiguration worldConfiguration)
+    public async Task<IWorld> LoadWorldAsync(string dataDirectory, string? definitionDirectory, IWorldConfiguration worldConfiguration)
     {
         var world = _worldFactory.CreateWorld();
         world.WorldConfiguration = worldConfiguration;
@@ -79,7 +79,7 @@ public class WorldAssetLoader : IWorldLoader
         return world;
     }
 
-    private static async Task LoadGamePlayAsync(string definitionDirectory, IWorld world)
+    private static async Task LoadGamePlayAsync(string? definitionDirectory, IWorld world)
     {
         await GameplayComponentLoader.LoadAsync(definitionDirectory, world);
     }

@@ -41,23 +41,29 @@ public static class ContentPathResolver
 
     /// <summary>
     /// Resolves XML content path with world-specific override support.
-    /// Resolution order: world -> resourcepack -> default resourcepack
+    /// Resolution order: {worldRef}_generated -> world -> resourcepack -> default resourcepack
     /// </summary>
     public static string? ResolveXmlPath(string worldRef, string resourcePack, string ns, params string[] relativePath)
     {
         var xmlSubPath = new[] { "xml" }.Concat(relativePath).ToArray();
 
-        // 1. Check world-specific location first (highest priority)
+        // 1. Check generated world folder first (highest priority - procedurally generated content)
+        var generatedWorldRef = worldRef.ToLowerInvariant() + "_generated";
+        var generatedPath = ResolveWorldPath(generatedWorldRef, ns, xmlSubPath);
+        if (generatedPath != null)
+            return generatedPath;
+
+        // 2. Check world-specific location
         var worldPath = ResolveWorldPath(worldRef, ns, xmlSubPath);
         if (worldPath != null)
             return worldPath;
 
-        // 2. Check resourcepack location
+        // 3. Check resourcepack location
         var resourcePackPath = ResolvePath("resourcepacks", resourcePack, ns, xmlSubPath);
         if (resourcePackPath != null)
             return resourcePackPath;
 
-        // 3. Fall back to default resourcepack (if not already checked)
+        // 4. Fall back to default resourcepack (if not already checked)
         if (resourcePack != DefaultPack || ns != DefaultNamespace)
         {
             var defaultPath = ResolvePath("resourcepacks", DefaultPack, DefaultNamespace, xmlSubPath);

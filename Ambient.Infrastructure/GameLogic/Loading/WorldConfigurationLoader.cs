@@ -12,9 +12,14 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
 {
     private const string DefaultNamespace = "ambient_games";
 
-    public async Task<IWorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string definitionDirectory)
+    public async Task<IWorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string? definitionDirectory)
     {
-        var xsdFilePath = Path.Combine(definitionDirectory, "WorldDefinition.xsd");
+        // Try to use schema validation if definition directory exists and contains the schema
+        var xsdFilePath = !string.IsNullOrEmpty(definitionDirectory)
+            ? Path.Combine(definitionDirectory, "WorldDefinition.xsd")
+            : null;
+        var useValidation = xsdFilePath != null && File.Exists(xsdFilePath);
+
         var configs = new List<WorldConfiguration>();
 
         // Discover world directories from both appdata and install locations
@@ -27,7 +32,15 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
             {
                 try
                 {
-                    var config = await XmlLoader.LoadFromXmlAsync<WorldConfiguration>(configPath, xsdFilePath);
+                    WorldConfiguration config;
+                    if (useValidation)
+                    {
+                        config = await XmlLoader.LoadFromXmlAsync<WorldConfiguration>(configPath, xsdFilePath!);
+                    }
+                    else
+                    {
+                        config = await XmlLoader.LoadFromXmlAsync<WorldConfiguration>(configPath);
+                    }
                     LoadWorldConfigurationSettings(config);
                     configs.Add(config);
                 }

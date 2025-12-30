@@ -127,11 +127,14 @@ public class WorldSelectionScreen
                     {
                         try
                         {
-                            var solutionDir = FindSolutionRootFrom(AppContext.BaseDirectory);
-                            if (solutionDir == null)
-                                throw new DirectoryNotFoundException($"Could not locate solution root from: {AppContext.BaseDirectory}");
+                            var generatedWorldRef = selectedConfig.RefName.ToLowerInvariant() + "_generated";
+                            var outputDirectory = Path.Combine(
+                                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                                "AmbientGames", "Schema", "content", "worlds", generatedWorldRef,
+                                "assets", "ambient_games", "xml");
 
-                            var outputDirectory = Path.Combine(solutionDir, "Content", "Worlds");
+                            // Ensure directory exists
+                            Directory.CreateDirectory(outputDirectory);
 
                             Debug.WriteLine($"Generating world content to: {outputDirectory}");
                             var generatedFiles = await _worldContentGenerator.GenerateWorldContentAsync(selectedConfig, outputDirectory);
@@ -142,16 +145,9 @@ public class WorldSelectionScreen
                                 Debug.WriteLine($"  - {file}");
                             }
 
-                            // Copy generated files to exe directory for game loading
-                            var exeDirectory = AppContext.BaseDirectory;
-                            var exeWorldsDirectory = Path.Combine(exeDirectory, "Content", "Worlds");
-
-                            Debug.WriteLine($"Copying generated files to exe directory: {exeWorldsDirectory}");
-                            CopyGeneratedFilesToExeDirectory(outputDirectory, exeWorldsDirectory, generatedFiles);
-
                             _lastGenerationMessage = $"Generated {generatedFiles.Count} files successfully!";
                             _showGenerationMessage = true;
-                            Debug.WriteLine("World content generation and deployment complete!");
+                            Debug.WriteLine("World content generation complete!");
                         }
                         catch (Exception ex)
                         {
@@ -244,59 +240,5 @@ public class WorldSelectionScreen
         }
 
         ImGui.End();
-    }
-
-    static string? FindSolutionRootFrom(string startDirectory)
-    {
-        var dir = new DirectoryInfo(startDirectory);
-
-        while (dir != null)
-        {
-            // Any .sln in this directory?
-            if (dir.EnumerateFiles("*.sln", SearchOption.TopDirectoryOnly).Any())
-                return dir.FullName;
-
-            dir = dir.Parent;
-        }
-
-        return null;
-    }
-
-    /// <summary>
-    /// Copies generated story files from source directory to exe directory so the game can load them
-    /// </summary>
-    private void CopyGeneratedFilesToExeDirectory(string sourceBaseDir, string targetBaseDir, List<string> generatedFiles)
-    {
-        // Ensure target directory exists
-        Directory.CreateDirectory(targetBaseDir);
-
-        // Copy all generated files
-        foreach (var sourceFile in generatedFiles)
-        {
-            // Calculate relative path from source base directory
-            var relativePath = Path.GetRelativePath(sourceBaseDir, sourceFile);
-            var targetFile = Path.Combine(targetBaseDir, relativePath);
-
-            // Create target subdirectories if needed
-            var targetDir = Path.GetDirectoryName(targetFile);
-            if (!string.IsNullOrEmpty(targetDir))
-            {
-                Directory.CreateDirectory(targetDir);
-            }
-
-            // Copy file
-            File.Copy(sourceFile, targetFile, overwrite: true);
-            Debug.WriteLine($"  Copied: {relativePath}");
-        }
-
-        // Also copy WorldConfigurations.xml (critical for refs)
-        var sourceConfigFile = Path.Combine(sourceBaseDir, "WorldConfigurations.xml");
-        var targetConfigFile = Path.Combine(targetBaseDir, "WorldConfigurations.xml");
-
-        if (File.Exists(sourceConfigFile))
-        {
-            File.Copy(sourceConfigFile, targetConfigFile, overwrite: true);
-            Debug.WriteLine($"  Copied: WorldConfigurations.xml");
-        }
     }
 }
