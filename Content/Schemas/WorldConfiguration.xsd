@@ -56,10 +56,4 @@
 			</xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    <xs:complexType name="WorldConfigurations">
-        <xs:sequence>
-            <xs:element name="WorldConfiguration" type="WorldConfiguration" maxOccurs="unbounded" />
-        </xs:sequence>
-    </xs:complexType>
-    <xs:element name="WorldConfigurations" type="WorldConfigurations" />
 </xs:schema>

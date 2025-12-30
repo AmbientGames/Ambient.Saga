@@ -7,7 +7,7 @@ namespace Ambient.Infrastructure.GameLogic.Loading;
 
 public static class GameplayComponentLoader
 {
-    public static async Task LoadAsync(string dataDirectory, string definitionDirectory, IWorld world)
+    public static async Task LoadAsync(string definitionDirectory, IWorld world)
     {
         var xsdFilePath = Path.Combine(definitionDirectory, "Gameplay", "Gameplay.xsd");
         world.WorldTemplate.Gameplay = new GameplayComponents();
