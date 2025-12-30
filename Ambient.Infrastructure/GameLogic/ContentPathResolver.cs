@@ -20,6 +20,26 @@ public static class ContentPathResolver
     }
 
     /// <summary>
+    /// Resolves model file path with resource pack override support.
+    /// Resolution order: resourcepack -> default resourcepack
+    /// Supports .litematic, .schematic, and .xml model files.
+    /// </summary>
+    public static string? ResolveModelPath(string resourcePack, string ns, string modelName)
+    {
+        // Try each supported extension in order of preference
+        string[] extensions = [".litematic", ".schematic", ".xml"];
+
+        foreach (var ext in extensions)
+        {
+            var path = ResolvePath("resourcepacks", resourcePack, ns, "models", "block", modelName + ext);
+            if (path != null)
+                return path;
+        }
+
+        return null;
+    }
+
+    /// <summary>
     /// Resolves XML content path with world-specific override support.
     /// Resolution order: world -> resourcepack -> default resourcepack
     /// </summary>
