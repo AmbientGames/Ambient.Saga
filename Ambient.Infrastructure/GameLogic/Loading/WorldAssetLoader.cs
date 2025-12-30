@@ -43,7 +43,7 @@ public class WorldAssetLoader : IWorldLoader
 
         var templateDirectory = Path.Combine(dataDirectory, worldConfiguration.Template);
 
-        world.WorldTemplate.Metadata = await LoadMetadataAsync(templateDirectory, definitionDirectory);
+        world.WorldTemplate.Metadata = await LoadMetadataAsync(definitionDirectory, world);
         await LoadGamePlayAsync(templateDirectory, definitionDirectory, world);
 
         world.IsProcedural = world.WorldConfiguration.ProceduralSettings != null;
@@ -87,10 +87,17 @@ public class WorldAssetLoader : IWorldLoader
         await GameplayComponentLoader.LoadAsync(dataDirectory, definitionDirectory, world);
     }
 
-    public static async Task<TemplateMetadata> LoadMetadataAsync(string dataDirectory, string definitionDirectory)
+    public static async Task<TemplateMetadata> LoadMetadataAsync(string definitionDirectory, IWorld world)
     {
+        var config = world.WorldConfiguration;
         var xsdFilePath = Path.Combine(definitionDirectory, "WorldTemplateMetadata.xsd");
-        return await XmlLoader.LoadFromXmlAsync<TemplateMetadata>(Path.Combine(dataDirectory, "TemplateMetadata.xml"), xsdFilePath);
+        var resolvedPath = ContentPathResolver.ResolveXmlPath(config.RefName, config.ResourcePack, config.Namespace, "TemplateMetadata.xml");
+        if (resolvedPath == null)
+        {
+            // Return default metadata if not found
+            return new TemplateMetadata { Name = config.DisplayName, Description = config.Description, Version = "1.0", Author = "Ambient Games" };
+        }
+        return await XmlLoader.LoadFromXmlAsync<TemplateMetadata>(resolvedPath, xsdFilePath);
     }
 
     private static async Task LoadHeightMapMetadata(IWorld world)

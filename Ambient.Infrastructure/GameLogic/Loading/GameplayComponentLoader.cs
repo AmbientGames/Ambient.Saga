@@ -1,5 +1,6 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.Utilities;
 
 namespace Ambient.Infrastructure.GameLogic.Loading;
@@ -11,53 +12,45 @@ public static class GameplayComponentLoader
         var xsdFilePath = Path.Combine(definitionDirectory, "Gameplay", "Gameplay.xsd");
         world.WorldTemplate.Gameplay = new GameplayComponents();
 
-        await LoadGameplayData(dataDirectory, xsdFilePath, world);
+        await LoadGameplayData(xsdFilePath, world);
         BuildGameplayLookups(world);
     }
 
-    private static async Task LoadGameplayData(string dataDirectory, string xsdFilePath, IWorld world)
+    private static async Task LoadGameplayData(string xsdFilePath, IWorld world)
     {
         var config = world.WorldConfiguration;
-
         var worldRef = config.RefName;
+        var resourcePack = config.ResourcePack;
+        var ns = config.Namespace;
 
-        var consumableItemsRef = ResolveRef(config.ConsumableItemsRef, worldRef);
-        var spellsRef = ResolveRef(config.SpellsRef, worldRef);
-        var equipmentRef = ResolveRef(config.EquipmentRef, worldRef);
-        var questTokensRef = ResolveRef(config.QuestTokensRef, worldRef);
-        var charactersRef = ResolveRef(config.CharactersRef, worldRef);
-        var characterAffinitiesRef = ResolveRef(config.CharacterAffinitiesRef, worldRef);
-        var combatStancesRef = ResolveRef(config.CombatStancesRef, worldRef);
-        var loadoutSlotsRef = ResolveRef(config.LoadoutSlotsRef, worldRef);
-        var toolsRef = ResolveRef(config.ToolsRef, worldRef);
-        var materialsRef = ResolveRef(config.BuildingMaterialsRef, worldRef);
-        var dialogueTreesRef = ResolveRef(config.DialogueTreesRef, worldRef);
-        var avatarArchetypesRef = ResolveRef(config.AvatarArchetypesRef, worldRef);
-        var achievementsRef = ResolveRef(config.AchievementsRef, worldRef);
-        var questsRef = ResolveRef(config.QuestsRef, worldRef);
-        var sagasRef = ResolveRef(config.SagaArcsRef, worldRef);
-        var factionsRef = ResolveRef(config.FactionsRef, worldRef);
-        var statusEffectsRef = ResolveRef(config.StatusEffectsRef, worldRef);
-        var attackTellsRef = ResolveRef(config.AttackTellsRef, worldRef);
+        world.Gameplay.Consumables = (await LoadXmlAsync<ConsumableCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "Consumable.xml")).Consumable ?? [];
+        world.Gameplay.Spells = (await LoadXmlAsync<SpellCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "Spells.xml")).Spell ?? [];
+        world.Gameplay.Equipment = (await LoadXmlAsync<EquipmentCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "Equipment.xml")).Equipment ?? [];
+        world.Gameplay.QuestTokens = (await LoadXmlAsync<QuestTokens>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "QuestTokens.xml")).QuestToken ?? [];
+        world.Gameplay.Characters = (await LoadXmlAsync<Characters>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "Characters.xml")).Character ?? [];
+        world.Gameplay.CharacterAffinities = (await LoadXmlAsync<CharacterAffinities>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "CharacterAffinities.xml")).Affinity ?? [];
+        world.Gameplay.CombatStances = (await LoadXmlAsync<CombatStances>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "CombatStances.xml")).CombatStance ?? [];
+        world.Gameplay.LoadoutSlots = (await LoadXmlAsync<LoadoutSlots>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Combat", "LoadoutSlots.xml")).LoadoutSlot ?? [];
+        world.Gameplay.Tools = (await LoadXmlAsync<ToolCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "Tools.xml")).Tool ?? [];
+        world.Gameplay.BuildingMaterials = (await LoadXmlAsync<BuildingMaterialCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "BuildingMaterials.xml")).BuildingMaterial ?? [];
+        world.Gameplay.DialogueTrees = (await LoadXmlAsync<DialogueTrees>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "Dialogue.xml")).DialogueTree ?? [];
+        world.Gameplay.AvatarArchetypes = (await LoadXmlAsync<AvatarArchetypes>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "AvatarArchetypes.xml")).AvatarArchetype ?? [];
+        world.Gameplay.Achievements = (await LoadXmlAsync<Achievements>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Achievements", "Achievements.xml")).Achievement ?? [];
+        world.Gameplay.Quests = (await LoadXmlAsync<Quests>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Quests", "Quests.xml")).Quest ?? [];
+        world.Gameplay.SagaArcs = (await LoadXmlAsync<SagaArcs>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Sagas.xml")).SagaArc ?? [];
+        world.Gameplay.Factions = (await LoadXmlAsync<Factions>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Factions", "Factions.xml")).Faction ?? [];
+        world.Gameplay.StatusEffects = (await LoadXmlAsync<StatusEffects>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "StatusEffects.xml")).StatusEffect ?? [];
+        world.Gameplay.AttackTells = (await LoadXmlAsync<AttackTells>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Combat", "AttackTells.xml")).AttackTell ?? [];
+    }
 
-        world.Gameplay.Consumables = (await XmlLoader.LoadFromXmlAsync<ConsumableCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{consumableItemsRef}.Consumable.xml"), xsdFilePath)).Consumable ?? [];
-        world.Gameplay.Spells = (await XmlLoader.LoadFromXmlAsync<SpellCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{spellsRef}.Spells.xml"), xsdFilePath)).Spell ?? [];
-        world.Gameplay.Equipment = (await XmlLoader.LoadFromXmlAsync<EquipmentCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{equipmentRef}.Equipment.xml"), xsdFilePath)).Equipment ?? [];
-        world.Gameplay.QuestTokens = (await XmlLoader.LoadFromXmlAsync<QuestTokens>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{questTokensRef}.QuestTokens.xml"), xsdFilePath)).QuestToken ?? [];
-        world.Gameplay.Characters = (await XmlLoader.LoadFromXmlAsync<Characters>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{charactersRef}.Characters.xml"), xsdFilePath)).Character ?? [];
-        world.Gameplay.CharacterAffinities = (await XmlLoader.LoadFromXmlAsync<CharacterAffinities>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{characterAffinitiesRef}.CharacterAffinities.xml"), xsdFilePath)).Affinity ?? [];
-        world.Gameplay.CombatStances = (await XmlLoader.LoadFromXmlAsync<CombatStances>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{combatStancesRef}.CombatStances.xml"), xsdFilePath)).CombatStance ?? [];
-        world.Gameplay.LoadoutSlots = (await XmlLoader.LoadFromXmlAsync<LoadoutSlots>(Path.Combine(dataDirectory, "Gameplay", "Combat", $"{loadoutSlotsRef}.LoadoutSlots.xml"), xsdFilePath)).LoadoutSlot ?? [];
-        world.Gameplay.Tools = (await XmlLoader.LoadFromXmlAsync<ToolCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{toolsRef}.Tools.xml"), xsdFilePath)).Tool ?? [];
-        world.Gameplay.BuildingMaterials = (await XmlLoader.LoadFromXmlAsync<BuildingMaterialCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{materialsRef}.BuildingMaterials.xml"), xsdFilePath)).BuildingMaterial ?? [];
-        world.Gameplay.DialogueTrees = (await XmlLoader.LoadFromXmlAsync<DialogueTrees>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{dialogueTreesRef}.Dialogue.xml"), xsdFilePath)).DialogueTree ?? [];
-        world.Gameplay.AvatarArchetypes = (await XmlLoader.LoadFromXmlAsync<AvatarArchetypes>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{avatarArchetypesRef}.AvatarArchetypes.xml"), xsdFilePath)).AvatarArchetype ?? [];
-        world.Gameplay.Achievements = (await XmlLoader.LoadFromXmlAsync<Achievements>(Path.Combine(dataDirectory, "Gameplay", "Achievements", $"{achievementsRef}.Achievements.xml"), xsdFilePath)).Achievement ?? [];
-        world.Gameplay.Quests = (await XmlLoader.LoadFromXmlAsync<Quests>(Path.Combine(dataDirectory, "Gameplay", "Quests", $"{questsRef}.Quests.xml"), xsdFilePath)).Quest ?? [];
-        world.Gameplay.SagaArcs = (await XmlLoader.LoadFromXmlAsync<SagaArcs>(Path.Combine(dataDirectory, "Gameplay", $"{sagasRef}.Sagas.xml"), xsdFilePath)).SagaArc ?? [];
-        world.Gameplay.Factions = (await XmlLoader.LoadFromXmlAsync<Factions>(Path.Combine(dataDirectory, "Gameplay", "Factions", $"{factionsRef}.Factions.xml"), xsdFilePath)).Faction ?? [];
-        world.Gameplay.StatusEffects = (await XmlLoader.LoadFromXmlAsync<StatusEffects>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{statusEffectsRef}.StatusEffects.xml"), xsdFilePath)).StatusEffect ?? [];
-        world.Gameplay.AttackTells = (await XmlLoader.LoadFromXmlAsync<AttackTells>(Path.Combine(dataDirectory, "Gameplay", "Combat", $"{attackTellsRef}.AttackTells.xml"), xsdFilePath)).AttackTell ?? [];
+    private static async Task<T> LoadXmlAsync<T>(string worldRef, string resourcePack, string ns, string xsdFilePath, params string[] relativePath)
+    {
+        var resolvedPath = ContentPathResolver.ResolveXmlPath(worldRef, resourcePack, ns, relativePath);
+        if (resolvedPath == null)
+        {
+            throw new FileNotFoundException($"XML content not found: {string.Join("/", relativePath)}");
+        }
+        return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath, xsdFilePath);
     }
 
     private static void BuildGameplayLookups(IWorld world)
@@ -140,10 +133,4 @@ public static class GameplayComponentLoader
         }
     }
 
-    private static string ResolveRef(string? refValue, string worldRef)
-    {
-        if (string.IsNullOrEmpty(refValue) || refValue == "Standard")
-            return worldRef;
-        return refValue;
-    }
 }
