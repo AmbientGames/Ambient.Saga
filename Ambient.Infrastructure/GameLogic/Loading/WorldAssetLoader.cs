@@ -1,5 +1,6 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.Sampling;
 using Ambient.Infrastructure.Utilities;
@@ -49,7 +50,7 @@ public class WorldAssetLoader : IWorldLoader
 
         if (!world.IsProcedural)
         {
-            await LoadHeightMapMetadata(dataDirectory, world);
+            await LoadHeightMapMetadata(world);
         }
 
         if (!world.IsProcedural)
@@ -92,9 +93,16 @@ public class WorldAssetLoader : IWorldLoader
         return await XmlLoader.LoadFromXmlAsync<TemplateMetadata>(Path.Combine(dataDirectory, "TemplateMetadata.xml"), xsdFilePath);
     }
 
-    private static async Task LoadHeightMapMetadata(string dataDirectory, IWorld world)
+    private static async Task LoadHeightMapMetadata(IWorld world)
     {
-        var relativePath = Path.Combine(dataDirectory, world.WorldConfiguration.HeightMapSettings.RelativePath);
-        world.HeightMapMetadata = GeoTiffReader.ReadMetadata(relativePath);
+        var config = world.WorldConfiguration;
+        var resolvedPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPack, config.Namespace, config.HeightMapSettings.FileName);
+
+        if (resolvedPath == null)
+        {
+            throw new FileNotFoundException($"Geographic data not found: {config.HeightMapSettings.FileName}");
+        }
+
+        world.HeightMapMetadata = GeoTiffReader.ReadMetadata(resolvedPath);
     }
 }

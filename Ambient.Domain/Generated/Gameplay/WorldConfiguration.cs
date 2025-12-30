@@ -27,6 +27,12 @@ namespace Ambient.Domain {
         
         private string templateField;
         
+        private string resourcePackField;
+        
+        private string contentPackField;
+        
+        private string namespaceField;
+        
         private string consumableItemsRefField;
         
         private string spellsRefField;
@@ -120,6 +126,39 @@ namespace Ambient.Domain {
             }
             set {
                 this.templateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string ResourcePack {
+            get {
+                return this.resourcePackField;
+            }
+            set {
+                this.resourcePackField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string ContentPack {
+            get {
+                return this.contentPackField;
+            }
+            set {
+                this.contentPackField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Namespace {
+            get {
+                return this.namespaceField;
+            }
+            set {
+                this.namespaceField = value;
             }
         }
         

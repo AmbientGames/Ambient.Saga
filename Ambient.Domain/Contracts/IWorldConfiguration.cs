@@ -1,8 +1,14 @@
-﻿namespace Ambient.Domain.Contracts;
+﻿using System;
+
+namespace Ambient.Domain.Contracts;
 
 public interface IWorldConfiguration
 {
     string RefName { get; set; }
+    string ResourcePack {  get; set; }
+    string ContentPack {  get; set; }
+    string Namespace { get; set; }
+
     double SpawnLatitude { get; set; }
     double SpawnLongitude { get; set; }
     IProceduralSettings ProceduralSettings { get; set; }

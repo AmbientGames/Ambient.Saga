@@ -7,8 +7,8 @@
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="HeightMapSettings">
-        <xs:attribute name="RelativePath" type="xs:string" use="required" />
-        <xs:attribute name="HorizontalScale" type="xs:double" use="required" />
+		<xs:attribute name="FileName" type="xs:string" use="required" />
+		<xs:attribute name="HorizontalScale" type="xs:double" use="required" />
         <xs:attribute name="VerticalScale" type="xs:double" use="required" />
         <xs:attribute name="VerticalShift" type="xs:double" use="required" />
     </xs:complexType>
@@ -26,7 +26,10 @@
                     </xs:choice>
                 </xs:sequence>
                 <xs:attribute name="Template" type="xs:string" use="required" />
-                <xs:attribute name="ConsumableItemsRef" type="xs:string" use="optional" default="Standard" />
+				<xs:attribute name="ResourcePack" type="xs:string" use="required" />
+				<xs:attribute name="ContentPack" type="xs:string" use="required" />
+				<xs:attribute name="Namespace" type="xs:string" use="required" />
+				<xs:attribute name="ConsumableItemsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="SpellsRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="EquipmentRef" type="xs:string" use="optional" default="Standard" />
                 <xs:attribute name="QuestTokensRef" type="xs:string" use="optional" default="Standard" />

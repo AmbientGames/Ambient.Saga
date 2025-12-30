@@ -4,29 +4,35 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="Ambient.Domain ..\Schemas\WorldConfiguration.xsd">
 	<WorldConfiguration
-        RefName="Kagoshima"
-        DisplayName="Kagoshima Castle Town (Satsuma)"
-        Description="Kagoshima: Castle town of the Satsuma Domain—home of the Shimazu clan. A bustling southern port where samurai streets meet Ryukyu-bound trade, forever living in the shadow of Sakurajima across Kinko Bay."
-        Template="Japan"
+		RefName="Kagoshima"
+		DisplayName="Kagoshima, Japan"
+		Description="Seaside city with active volcano Sakurajima"
+		Template="Japan"
+		ResourcePack="feudal_japan"
+		ContentPack="japan"
+		Namespace="ambient_games"
         SpawnLatitude="31.591838"
         SpawnLongitude="130.567026">
-		<HeightMapSettings
-            RelativePath="GeographicData/Kagoshima.tif"
+		<HeightMapSettings 
+			FileName="Kagoshima.tif" 
             HorizontalScale="0.3333333333"
             VerticalScale="0.3333333333"
-            VerticalShift="0" />
+			VerticalShift="0" />
 	</WorldConfiguration>
 	<WorldConfiguration
-        RefName="Ise"
-        DisplayName="Ise, Japan"
-        Description="Ise: Japan's Sacred City - High school student field trip"
-        Template="Japan"
-        SpawnLatitude="34.492"
-        SpawnLongitude="136.702">
-        <HeightMapSettings
-            RelativePath="GeographicData/Ise.tif"
-            HorizontalScale="1.0"
-            VerticalScale="1.0"
-            VerticalShift="0" />
-    </WorldConfiguration>
+		RefName="Ise"
+		DisplayName="Ise, Japan"
+		Description="Ise: Japan's Sacred City - High school field trip"
+		Template="Japan"
+		ResourcePack="japan"
+		ContentPack="japan"
+		Namespace="ambient_games"
+		SpawnLatitude="34.492"
+		SpawnLongitude="136.702">
+		<HeightMapSettings 
+			FileName="Ise.tif" 			   
+			HorizontalScale="1.0" 
+			VerticalScale="1.0" 
+			VerticalShift="0"/>
+	</WorldConfiguration>
 </WorldConfigurations>

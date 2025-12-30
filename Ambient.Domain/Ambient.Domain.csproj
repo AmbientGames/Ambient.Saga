@@ -26,4 +26,8 @@
         <None Include="..\Content\Worlds\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Worlds" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="..\content\contentpacks\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="content\contentpacks" />
+    </ItemGroup>
+
 </Project>

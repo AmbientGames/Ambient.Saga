@@ -803,11 +803,12 @@ public partial class MainViewModel : ObservableObject
 
         try
         {
-            var heightMapPath = Path.Combine(dataDirectory, world.WorldConfiguration.HeightMapSettings.RelativePath);
-            
-            if (!File.Exists(heightMapPath))
+            var config = world.WorldConfiguration;
+            var heightMapPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPack, config.Namespace, config.HeightMapSettings.FileName);
+
+            if (heightMapPath == null)
             {
-                HeightMapInfo = $"Height map file not found: {heightMapPath}";
+                HeightMapInfo = $"Height map file not found: {config.HeightMapSettings.FileName}";
                 return;
             }
 
