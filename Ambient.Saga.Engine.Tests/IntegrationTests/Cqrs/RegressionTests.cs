@@ -7,8 +7,10 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using LiteDB;
@@ -58,6 +60,7 @@ public class RegressionTests : IDisposable
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
+        services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
         _serviceProvider = services.BuildServiceProvider();
         _mediator = _serviceProvider.GetRequiredService<IMediator>();

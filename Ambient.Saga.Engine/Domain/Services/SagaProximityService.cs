@@ -333,7 +333,7 @@ public static class SagaProximityService
                         DistanceMeters = distanceToCenter,
                         Status = triggerStatus,
                         SagaTriggerRef = trigger.RefName,
-                        SpawnCount = trigger.Spawn.Sum(s => s.Count),
+                        SpawnCount = trigger.Spawn?.Sum(s => s.Count) ?? 0,
                         Priority = 2 // Character = 1, Trigger = 2
                     });
                 }

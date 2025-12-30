@@ -6,8 +6,10 @@ using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using LiteDB;
 using MediatR;
@@ -64,6 +66,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
+        services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
         _serviceProvider = services.BuildServiceProvider();
         _mediator = _serviceProvider.GetRequiredService<IMediator>();
