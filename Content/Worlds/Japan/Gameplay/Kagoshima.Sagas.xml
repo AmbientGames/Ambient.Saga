@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<SagaArcs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\..\..\bin\net8.0-windows7.0\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <SagaArc RefName="Tsurumarujō" DisplayName="Tsurumaru-jō" Description="Hub center at Tsurumaru-jō" LatitudeZ="31.5985" LongitudeX="130.5546" Category="Structure" InitialState="Visible" ModelRef="Shrine.20037">
     <SagaTrigger RefName="TRIGGER_Tsurumarujō_MINIONS" DisplayName="Boss Minions" Description="Boss Minions" EnterRadius="50.0" Tags="combat,minion,warning">
       <Spawn>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\..\..\..\bin\net8.0-windows7.0\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <QuestToken RefName="BanditChief_HideoutMap" DisplayName="Meetup Location" Description="Information about where the rival students hang out" />
   <QuestToken RefName="BanditChief_ChiefsBadge" DisplayName="Rival's Apology" Description="The rival leader's written apology for causing trouble" />
   <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Returned Items" Description="Belongings taken from other students during the harassment" />

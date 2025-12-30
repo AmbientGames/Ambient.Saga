@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<AttackTells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<AttackTells xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\..\..\..\bin\net8.0-windows7.0\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <AttackTell RefName="MeleeSlash" Pattern="Slash" TellText="The bushi shifts into seigan stance, katana poised for a measured kesa-giri cut." OptimalDefense="Parry" SecondaryDefense="Block">
     <Outcome Reaction="Parry" DamageMultiplier="0" EnablesCounter="true" ResponseText="You deflect the blade with a textbook parry, steel ringing!">
       <Effects Stamina="0.05" />

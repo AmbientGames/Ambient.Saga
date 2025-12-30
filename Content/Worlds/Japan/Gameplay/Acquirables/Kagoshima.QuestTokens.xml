@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\..\..\..\bin\net8.0-windows7.0\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <QuestToken RefName="BanditChief_HideoutMap" DisplayName="Sanzoku Hideout Map" Description="A crude map scratched on cloth showing the mountain bandit stronghold" />
   <QuestToken RefName="BanditChief_ChiefsBadge" DisplayName="Oyabun's War Fan" Description="The bandit chief's prized iron war fan, proof of their defeat" />
   <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Recovered Merchant Goods" Description="Rice, silk, and other goods stolen from travelers on the mountain road" />
