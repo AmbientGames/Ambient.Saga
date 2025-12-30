@@ -22,7 +22,7 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
 
         foreach (var worldDir in worldDirs)
         {
-            var configPath = Path.Combine(worldDir, "assets", DefaultNamespace, "xml", "WorldDefinition.xml");
+            var configPath = Path.Combine(worldDir, "assets", DefaultNamespace, "xml", "WorldConfiguration.xml");
             if (File.Exists(configPath))
             {
                 try
