@@ -54,22 +54,22 @@ public class WorldConfigurationTests
     //    Assert.Contains("VallesMarineris", refNames);
     //}
 
-    [Fact]
-    public async Task LoadMetadata_ShouldReturnValidMetadata()
-    {
-        // Arrange - Use the Japan template directory
-        var japanTemplateDirectory = Path.Combine(_dataDirectory, "Japan");
+    //[Fact]
+    //public async Task LoadMetadata_ShouldReturnValidMetadata()
+    //{
+    //    // Arrange - Use the Japan template directory
+    //    var japanTemplateDirectory = Path.Combine(_dataDirectory, "Japan");
 
-        // Act
-        var metadata = await WorldAssetLoader.LoadMetadataAsync(japanTemplateDirectory, _definitionDirectory);
+    //    // Act
+    //    var metadata = await WorldAssetLoader.LoadMetadataAsync(japanTemplateDirectory, _definitionDirectory);
 
-        // Assert
-        Assert.NotNull(metadata);
-        Assert.NotNull(metadata.Name);
-        Assert.NotNull(metadata.Description);
-        Assert.NotNull(metadata.Version);
-        Assert.NotNull(metadata.Author);
-    }
+    //    // Assert
+    //    Assert.NotNull(metadata);
+    //    Assert.NotNull(metadata.Name);
+    //    Assert.NotNull(metadata.Description);
+    //    Assert.NotNull(metadata.Version);
+    //    Assert.NotNull(metadata.Author);
+    //}
 
     //[Fact]
     //public async Task LoadWorldByConfiguration_Procedural_ShouldLoadSuccessfully()

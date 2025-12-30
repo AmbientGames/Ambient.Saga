@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\..\..\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Hero of Kagoshima" Description="Complete the main storyline and become a legend of Kagoshima.">
+    <Criteria Type="SagaArcsCompleted" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_KAGOSHIMA" DisplayName="Slayer" Description="Bring low every mighty enemy that terrorizes the lands of Kagoshima.">
+    <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_EXPLORER_KAGOSHIMA" DisplayName="Explorer" Description="Leave no corner of Kagoshima undiscovered in your quest for knowledge.">
+    <Criteria Type="SagaArcsDiscovered" Threshold="3" />
+  </Achievement>
+  <Achievement RefName="ACH_SOCIAL_KAGOSHIMA" DisplayName="Networker" Description="Build connections with everyone you meet throughout Kagoshima.">
+    <Criteria Type="UniqueCharactersMet" Threshold="75" />
+  </Achievement>
+  <Achievement RefName="ACH_DIALOGUE_MASTER_KAGOSHIMA" DisplayName="Silver Tongue" Description="Uncover every conversation thread in Kagoshima.">
+    <Criteria Type="DialogueTreesCompleted" Threshold="75" />
+  </Achievement>
+  <Achievement RefName="ACH_COLLECTOR_KAGOSHIMA" DisplayName="Completionist" Description="Collect every quest token available in Kagoshima.">
+    <Criteria Type="QuestTokensEarned" Threshold="19" />
+  </Achievement>
+  <Achievement RefName="ACH_MERCHANT_KAGOSHIMA" DisplayName="Entrepreneur" Description="Master the markets and bazaars of Kagoshima.">
+    <Criteria Type="ItemsTraded" Threshold="115" />
+  </Achievement>
+  <Achievement RefName="ACH_DIPLOMAT_KAGOSHIMA" DisplayName="Beloved" Description="Become cherished by the inhabitants of Kagoshima.">
+    <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="37" />
+  </Achievement>
+</Achievements>

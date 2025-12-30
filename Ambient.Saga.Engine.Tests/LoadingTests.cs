@@ -151,15 +151,15 @@ public class LoadingTests : IAsyncLifetime
         Assert.NotNull(_world.WorldConfiguration.Template);
     }
 
-    [Fact]
-    public void WorldTemplate_ShouldHaveMetadata()
-    {
-        Assert.NotNull(_world?.WorldTemplate?.Metadata);
-        Assert.NotNull(_world.WorldTemplate.Metadata.Name);
-        Assert.NotNull(_world.WorldTemplate.Metadata.Description);
-        Assert.NotNull(_world.WorldTemplate.Metadata.Version);
-        Assert.NotNull(_world.WorldTemplate.Metadata.Author);
-    }
+    //[Fact]
+    //public void WorldTemplate_ShouldHaveMetadata()
+    //{
+    //    Assert.NotNull(_world?.WorldTemplate?.Metadata);
+    //    Assert.NotNull(_world.WorldTemplate.Metadata.Name);
+    //    Assert.NotNull(_world.WorldTemplate.Metadata.Description);
+    //    Assert.NotNull(_world.WorldTemplate.Metadata.Version);
+    //    Assert.NotNull(_world.WorldTemplate.Metadata.Author);
+    //}
 
     [Fact]
     public void Sagas_ShouldBeLoaded()

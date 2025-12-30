@@ -14,7 +14,7 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
 
     public async Task<IWorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string definitionDirectory)
     {
-        var xsdFilePath = Path.Combine(definitionDirectory, "WorldConfiguration.xsd");
+        var xsdFilePath = Path.Combine(definitionDirectory, "WorldDefinition.xsd");
         var configs = new List<WorldConfiguration>();
 
         // Discover world directories from both appdata and install locations
@@ -22,7 +22,7 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
 
         foreach (var worldDir in worldDirs)
         {
-            var configPath = Path.Combine(worldDir, "assets", DefaultNamespace, "xml", "WorldConfiguration.xml");
+            var configPath = Path.Combine(worldDir, "assets", DefaultNamespace, "xml", "WorldDefinition.xml");
             if (File.Exists(configPath))
             {
                 try

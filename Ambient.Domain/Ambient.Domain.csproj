@@ -18,16 +18,5 @@
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.11" />
     </ItemGroup>
 
-    <ItemGroup>
-        <None Include="..\Content\Schemas\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Schemas" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\Content\Worlds\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Worlds" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\content\contentpacks\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="content\contentpacks" />
-    </ItemGroup>
 
 </Project>
