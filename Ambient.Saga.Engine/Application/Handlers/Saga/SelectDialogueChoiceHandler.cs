@@ -35,19 +35,28 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
         try
         {
-            // Get Saga template
-            if (!_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var sagaTemplate))
+            // Handle dev saga refs (format: "RealSagaRef__DEV__uniqueid")
+            var sagaRefForLookup = command.SagaArcRef;
+            var devSuffix = "__DEV__";
+            if (command.SagaArcRef.Contains(devSuffix))
             {
-                return SagaCommandResult.Failure(Guid.Empty, $"Saga '{command.SagaArcRef}' not found");
+                sagaRefForLookup = command.SagaArcRef.Substring(0, command.SagaArcRef.IndexOf(devSuffix));
+                System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Dev saga detected, using template ref: {sagaRefForLookup}");
             }
 
-            // Get Saga instance
+            // Get Saga template (use stripped ref for lookup)
+            if (!_world.SagaArcLookup.TryGetValue(sagaRefForLookup, out var sagaTemplate))
+            {
+                return SagaCommandResult.Failure(Guid.Empty, $"Saga '{sagaRefForLookup}' not found");
+            }
+
+            // Get Saga instance (use full ref with DEV suffix for unique instance)
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
 
-            // Replay state to get current dialogue
-            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var expandedTriggers))
+            // Replay state to get current dialogue (use stripped ref for triggers)
+            if (!_world.SagaTriggersLookup.TryGetValue(sagaRefForLookup, out var expandedTriggers))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArcRef}'");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{sagaRefForLookup}'");
             }
 
             var stateMachine = new SagaStateMachine(sagaTemplate, expandedTriggers, _world);
@@ -90,8 +99,33 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             // Start dialogue if not already started (idempotent)
             engine.StartDialogue(dialogueTree);
 
-            // TODO: Need to navigate to current node based on replay state
-            // For now, just select the choice - engine will handle navigation
+            // Navigate to current node by replaying DialogueNodeVisited transactions
+            var visitedNodes = instance.Transactions
+                .Where(t => t.Type == SagaTransactionType.DialogueNodeVisited &&
+                           t.Data.TryGetValue("CharacterRef", out var charRef) &&
+                           charRef == characterState.CharacterRef)
+                .OrderBy(t => t.SequenceNumber)
+                .ToList();
+
+            System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Replaying {visitedNodes.Count} visited nodes to restore state");
+
+            foreach (var visitedTx in visitedNodes)
+            {
+                if (!visitedTx.Data.TryGetValue("DialogueNodeId", out var nodeId))
+                    continue;
+
+                System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Navigating to previously visited node: {nodeId}");
+
+                // Find the choice that led to this node
+                if (engine.CurrentNode != null)
+                {
+                    var navChoice = engine.CurrentNode.Choice?.FirstOrDefault(c => c.NextNodeId == nodeId);
+                    if (navChoice != null)
+                    {
+                        engine.SelectChoice(navChoice);
+                    }
+                }
+            }
 
             // Find the choice in the current node
             var currentNode = engine.CurrentNode;

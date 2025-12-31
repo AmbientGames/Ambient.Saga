@@ -4,8 +4,10 @@ using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
@@ -18,15 +20,18 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
+    private readonly IWorldStateRepository _worldStateRepository;
     private readonly IWorld _world;
 
     public UpdateAvatarPositionHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
+        IWorldStateRepository worldStateRepository,
         IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
+        _worldStateRepository = worldStateRepository;
         _world = world;
     }
 
@@ -91,6 +96,15 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
             if (!committed)
             {
                 return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
+            }
+
+            // Record saga discovery in PlayerDiscovery table for UI visibility
+            if (newTransactions.Any(t => t.Type == SagaTransactionType.SagaDiscovered))
+            {
+                await _worldStateRepository.RecordDiscoveryAsync(
+                    command.AvatarId.ToString(),
+                    "Saga",
+                    command.SagaArcRef);
             }
 
             // Invalidate read model cache (will be rebuilt on next query)

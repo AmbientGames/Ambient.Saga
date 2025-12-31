@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+	<xs:include schemaLocation="../../EntityBase.xsd" />
+	<xs:include schemaLocation="SagaArcCommon.xsd" />
+
+	<xs:simpleType name="SagaArcCategory">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Landmark" />
+			<xs:enumeration value="Structure" />
+			<xs:enumeration value="Waypoint" />
+			<xs:enumeration value="Quest" />
+			<xs:enumeration value="Vendor" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SagaArcInitialState">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Hidden" />
+			<xs:enumeration value="Visible" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="SagaArc">
+		<xs:complexContent>
+			<xs:extension base="EntityBase">
+				<xs:sequence>
+					<xs:element name="SagaTrigger" type="SagaTrigger" minOccurs="1" maxOccurs="unbounded" />
+				</xs:sequence>
+
+				<xs:attribute name="LatitudeZ" type="xs:double" use="required" />
+				<xs:attribute name="LongitudeX" type="xs:double" use="required" />
+				<xs:attribute name="Category" type="SagaArcCategory" use="required" />
+
+				<!-- Deterministic POI interaction envelope -->
+				<xs:attribute name="DiscoverRadius" type="xs:double" use="optional" default="200"/>
+				<xs:attribute name="InitialState" type="SagaArcInitialState" use="optional" default="Hidden" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SagaArcs">
+		<xs:sequence>
+			<xs:element name="SagaArc" type="SagaArc" maxOccurs="unbounded">
+				<xs:unique name="UniqueSagaTriggerRefPerSaga">
+					<xs:selector xpath="SagaTrigger" />
+					<xs:field xpath="@RefName" />
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

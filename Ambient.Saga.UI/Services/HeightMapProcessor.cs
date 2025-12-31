@@ -23,10 +23,10 @@ public class HeightMapProcessor
     /// <param name="image">Height map image</param>
     /// <param name="minWaterAreaSize">Minimum size of area to be considered water</param>
     /// <returns>Processed height map with water detection</returns>
-    public static ProcessedHeightMap ProcessHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation)
+    public static ProcessedHeightMap ProcessHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation, int verticalShift)
     {
         // Use the shared ElevationWaterMap logic
-        var elevationMap = ElevationWaterMap.FromHeightMap(image, minWaterAreaSize, adjustMinWaterAreaSizeByElevation);
+        var elevationMap = ElevationWaterMap.FromHeightMap(image, minWaterAreaSize, adjustMinWaterAreaSizeByElevation, null, verticalShift);
 
         // Convert back to the legacy format for compatibility
         var width = elevationMap.Width;

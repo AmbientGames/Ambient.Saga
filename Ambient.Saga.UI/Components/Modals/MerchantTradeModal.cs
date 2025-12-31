@@ -172,7 +172,8 @@ public class MerchantTradeModal
             {
                 foreach (var tradeItem in _tradeViewModel.TradeInventory)
                 {
-                    ImGui.PushID(tradeItem.GetHashCode());
+                    // Use stable ID based on item RefName, not object hash (which changes each frame)
+                    ImGui.PushID(tradeItem.Item.RefName);
 
                     // Item row with styled background
                     ImGui.BeginGroup();
@@ -200,8 +201,20 @@ public class MerchantTradeModal
                         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.35f, 0.2f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.5f, 0.3f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.65f, 0.4f, 1));
-                        if (ImGui.Button("Buy", new Vector2(60, 25)))
+
+                        var buttonClicked = ImGui.Button($"Buy##{tradeItem.Item.RefName}", new Vector2(60, 25));
+                        var isHovered = ImGui.IsItemHovered();
+                        var isActive = ImGui.IsItemActive();
+
+                        // Log when mouse is released over button
+                        if (isHovered && ImGui.IsMouseReleased(ImGuiMouseButton.Left))
                         {
+                            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Mouse released over Buy button for {tradeItem.Item.RefName}, buttonClicked={buttonClicked}");
+                        }
+
+                        if (buttonClicked)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Buy button clicked for {tradeItem.Item.RefName}");
                             _tradeViewModel.BuyItemCommand.Execute(tradeItem);
                         }
                         ImGui.PopStyleColor(3);
@@ -211,8 +224,9 @@ public class MerchantTradeModal
                         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.25f, 0.15f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.35f, 0.2f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.45f, 0.25f, 1));
-                        if (ImGui.Button("Sell", new Vector2(60, 25)))
+                        if (ImGui.Button($"Sell##{tradeItem.Item.RefName}", new Vector2(60, 25)))
                         {
+                            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Sell button clicked for {tradeItem.Item.RefName}");
                             _tradeViewModel.SellItemCommand.Execute(tradeItem);
                         }
                         ImGui.PopStyleColor(3);
@@ -257,14 +271,44 @@ public class MerchantTradeModal
         {
             // Find character template
             var characterTemplate = viewModel.CurrentWorld.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == character.CharacterRef);
-            if (characterTemplate == null) return;
+            if (characterTemplate == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Character template not found for ref: {character.CharacterRef}");
+                return;
+            }
+
+            // Debug: Log trading state initialization
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] === TRADE STATE DEBUG ===");
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Character: {characterTemplate.DisplayName} ({characterTemplate.RefName})");
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Has Interactable: {characterTemplate.Interactable != null}");
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Has Loot: {characterTemplate.Interactable?.Loot != null}");
+
+            if (characterTemplate.Interactable?.Loot != null)
+            {
+                var loot = characterTemplate.Interactable.Loot;
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Loot Contents:");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Equipment: {loot.Equipment?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Consumables: {loot.Consumables?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Blocks: {loot.Blocks?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Tools: {loot.Tools?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Spells: {loot.Spells?.Length ?? 0} items");
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   QuestTokens: {loot.QuestTokens?.Length ?? 0} items (not tradeable)");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] WARNING: No loot defined for merchant!");
+            }
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] === END DEBUG ===");
 
             // Create SagaInteractionContext
             var context = new SagaInteractionContext
             {
                 World = viewModel.CurrentWorld,
                 AvatarEntity = viewModel.PlayerAvatar,
-                ActiveCharacter = characterTemplate
+                AvatarId = viewModel.PlayerAvatar?.AvatarId ?? Guid.Empty,
+                ActiveCharacter = characterTemplate,
+                CurrentSagaRef = character.SagaRef,
+                CurrentCharacterInstanceId = character.CharacterInstanceId
             };
 
             // Create ViewModel

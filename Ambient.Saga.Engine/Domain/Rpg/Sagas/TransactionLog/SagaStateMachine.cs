@@ -339,19 +339,26 @@ public class SagaStateMachine
             CharacterStatsCopier.CopyCharacterStats(characterTemplate.Stats, copiedStats);
         }
 
-        // Copy inventory from template
+        // Deep clone inventory from template - each item is cloned to avoid shared state
         ItemCollection? copiedInventory = null;
         if (characterTemplate.Capabilities != null)
         {
             copiedInventory = new ItemCollection
             {
-                Blocks = characterTemplate.Capabilities.Blocks?.ToArray(),
-                Tools = characterTemplate.Capabilities.Tools?.ToArray(),
-                Equipment = characterTemplate.Capabilities.Equipment?.ToArray(),
-                Consumables = characterTemplate.Capabilities.Consumables?.ToArray(),
-                Spells = characterTemplate.Capabilities.Spells?.ToArray(),
-                BuildingMaterials = characterTemplate.Capabilities.BuildingMaterials?.ToArray(),
-                QuestTokens = characterTemplate.Capabilities.QuestTokens?.ToArray()
+                Blocks = characterTemplate.Capabilities.Blocks?.Select(b => new BlockEntry
+                    { BlockRef = b.BlockRef, Quantity = b.Quantity }).ToArray(),
+                Tools = characterTemplate.Capabilities.Tools?.Select(t => new ToolEntry
+                    { ToolRef = t.ToolRef, Condition = t.Condition }).ToArray(),
+                Equipment = characterTemplate.Capabilities.Equipment?.Select(e => new EquipmentEntry
+                    { EquipmentRef = e.EquipmentRef, Condition = e.Condition }).ToArray(),
+                Consumables = characterTemplate.Capabilities.Consumables?.Select(c => new ConsumableEntry
+                    { ConsumableRef = c.ConsumableRef, Quantity = c.Quantity }).ToArray(),
+                Spells = characterTemplate.Capabilities.Spells?.Select(s => new SpellEntry
+                    { SpellRef = s.SpellRef, Condition = s.Condition }).ToArray(),
+                BuildingMaterials = characterTemplate.Capabilities.BuildingMaterials?.Select(m => new BuildingMaterialEntry
+                    { BuildingMaterialRef = m.BuildingMaterialRef, Quantity = m.Quantity }).ToArray(),
+                QuestTokens = characterTemplate.Capabilities.QuestTokens?.Select(q => new QuestTokenEntry
+                    { QuestTokenRef = q.QuestTokenRef }).ToArray()
             };
         }
 

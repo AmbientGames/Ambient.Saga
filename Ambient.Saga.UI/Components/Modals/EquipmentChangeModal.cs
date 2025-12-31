@@ -41,9 +41,17 @@ public class EquipmentChangeModal
 
     private void InitializeDropdowns()
     {
-        // Initialize equipment slots
-        var slots = new[] { "Head", "Chest", "Legs", "Feet", "LeftHand", "RightHand" };
-        foreach (var slotName in slots)
+        // Initialize equipment slots from world definition
+        var loadoutSlots = _world.Gameplay?.LoadoutSlots ?? Array.Empty<LoadoutSlot>();
+        var slotNames = loadoutSlots.Select(s => s.RefName).ToList();
+
+        // Fallback to common slots if world doesn't define any
+        if (slotNames.Count == 0)
+        {
+            slotNames = new List<string> { "Head", "Chest", "Legs", "Feet", "LeftHand", "RightHand", "BothHands", "Hands", "Back", "Ring", "Amulet", "Belt" };
+        }
+
+        foreach (var slotName in slotNames)
         {
             var options = new List<string> { "-- None --" };
             var selectedIndex = 0;
@@ -119,7 +127,7 @@ public class EquipmentChangeModal
     /// </summary>
     public void Render()
     {
-        ImGui.TextColored(new Vector4(0.3f, 0.8f, 0.3f, 1.0f), "⚙️ CHANGE LOADOUT");
+        ImGui.TextColored(new Vector4(0.3f, 0.8f, 0.3f, 1.0f), "CHANGE LOADOUT");
         ImGui.Separator();
         ImGui.Spacing();
 
@@ -132,9 +140,8 @@ public class EquipmentChangeModal
         ImGui.Separator();
         ImGui.Spacing();
 
-        // Equipment slots
-        var slots = new[] { "Head", "Chest", "Legs", "Feet", "LeftHand", "RightHand" };
-        foreach (var slotName in slots)
+        // Equipment slots (render all slots that have options)
+        foreach (var slotName in _slotOptions.Keys)
         {
             RenderEquipmentSlotDropdown(slotName);
         }
@@ -142,12 +149,12 @@ public class EquipmentChangeModal
         ImGui.Spacing();
 
         // Action buttons
-        if (ImGui.Button("✓ Accept", new Vector2(190, 50)))
+        if (ImGui.Button("Accept", new Vector2(190, 50)))
         {
             OnAcceptPressed();
         }
         ImGui.SameLine();
-        if (ImGui.Button("✗ Cancel", new Vector2(190, 50)))
+        if (ImGui.Button("Cancel", new Vector2(190, 50)))
         {
             Console.WriteLine("Equipment change cancelled");
             Cancelled?.Invoke();

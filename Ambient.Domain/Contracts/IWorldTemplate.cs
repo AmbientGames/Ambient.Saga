@@ -2,6 +2,5 @@
 
 public interface IWorldTemplate
 {
-    TemplateMetadata Metadata { get; set; }
     GameplayComponents Gameplay { get; set; }
 }

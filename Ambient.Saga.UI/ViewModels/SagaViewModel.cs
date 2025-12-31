@@ -45,13 +45,16 @@ public partial class SagaViewModel : ObservableObject
     private string[]? _givesQuestTokens;
 
     [ObservableProperty]
-    private FeatureType _featureType;
+    private SagaArcCategory _category;
 
     [ObservableProperty]
     private Vector4 _featureDotColor = new Vector4(1f, 1f, 1f, 1f); // White
 
     [ObservableProperty]
     private double _featureDotOpacity = 1.0;
+
+    [ObservableProperty]
+    private InteractionStatus _interactionStatus = InteractionStatus.Available;
 
     /// <summary>
     /// True if any trigger in this Saga is currently hovered (for showing label).
@@ -67,51 +70,13 @@ public partial class SagaViewModel : ObservableObject
         IHeightMapMetadata metadata,
         IWorld world)
     {
-        // Get quest tokens from the focus entity (unified SagaFeature)
-        string[]? requiresQuestTokens = null;
-        string[]? givesQuestTokens = null;
-
-        if (!string.IsNullOrEmpty(sagaArc.SagaFeatureRef))
-        {
-            var feature = world.TryGetSagaFeatureByRefName(sagaArc.SagaFeatureRef);
-            if (feature != null)
-            {
-                requiresQuestTokens = feature.Interactable?.RequiresQuestTokenRef;
-                givesQuestTokens = feature.Interactable?.GivesQuestTokenRef;
-            }
-        }
-
-        // Determine feature type from the focus entity (for coloring the center dot)
-        FeatureType featureType = FeatureType.Structure; // Default
-        if (!string.IsNullOrEmpty(sagaArc.SagaFeatureRef))
-        {
-            var feature = world.TryGetSagaFeatureByRefName(sagaArc.SagaFeatureRef);
-            if (feature != null)
-            {
-                // Map SagaFeatureType to UI FeatureType enum
-                featureType = feature.Type switch
-                {
-                    SagaFeatureType.Landmark => FeatureType.Landmark,
-                    SagaFeatureType.Structure => FeatureType.Structure,
-                    SagaFeatureType.Quest => FeatureType.QuestSignpost,
-                    SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
-                    SagaFeatureType.Teleporter => FeatureType.Teleporter,
-                    SagaFeatureType.Vendor => FeatureType.Vendor,
-                    SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
-                    _ => FeatureType.Structure // Default for unknown types
-                };
-            }
-        }
-
         var vm = new SagaViewModel
         {
             RefName = sagaArc.RefName,
             DisplayName = sagaArc.DisplayName,
             LatitudeZ = sagaArc.LatitudeZ,
             LongitudeX = sagaArc.LongitudeX,
-            RequiresQuestTokens = requiresQuestTokens,
-            GivesQuestTokens = givesQuestTokens,
-            FeatureType = featureType
+            Category = sagaArc.Category
         };
 
         // Convert geographic coordinates to pixel coordinates for rendering
@@ -160,20 +125,27 @@ public partial class SagaViewModel : ObservableObject
 
     /// <summary>
     /// Loads all Sagas from World and creates ViewModels.
+    /// Filters based on InitialState and discovery status.
     /// Returns both Saga ViewModels and flattened trigger list for XAML binding.
     /// </summary>
     public static async Task<(List<SagaViewModel> Sagas, List<ProximityTriggerViewModel> AllSagaTriggers)> LoadFromWorldAsync(
         IWorld world,
         AvatarBase? avatar = null,
-        IWorldStateRepository worldRepository = null)
+        IWorldStateRepository? worldRepository = null)
     {
         var sagas = new List<SagaViewModel>();
         var allSagaTriggers = new List<ProximityTriggerViewModel>();
+        var isDebugMode = System.Diagnostics.Debugger.IsAttached;
 
         if (world.HeightMapMetadata != null && world.Gameplay.SagaArcs != null)
         {
             foreach (var sagaArc in world.Gameplay.SagaArcs)
             {
+                // Check visibility based on InitialState and discovery
+                var isVisible = await IsSagaVisibleAsync(sagaArc, avatar, worldRepository, isDebugMode);
+                if (!isVisible)
+                    continue;
+
                 // Get pre-expanded triggers from world lookup
                 if (!world.SagaTriggersLookup.TryGetValue(sagaArc.RefName, out var sagaTriggers))
                     continue;
@@ -209,33 +181,66 @@ public partial class SagaViewModel : ObservableObject
     }
 
     /// <summary>
+    /// Determines if a SagaArc should be visible on the map based on InitialState.
+    /// </summary>
+    private static async Task<bool> IsSagaVisibleAsync(
+        SagaArc sagaArc,
+        AvatarBase? avatar,
+        IWorldStateRepository? worldRepository,
+        bool isDebugMode)
+    {
+        // Debug mode: show all sagas regardless of InitialState
+        if (isDebugMode)
+            return true;
+
+        return sagaArc.InitialState switch
+        {
+            SagaArcInitialState.Visible => true,
+            SagaArcInitialState.Hidden => await IsSagaDiscoveredAsync(sagaArc.RefName, avatar, worldRepository),
+            _ => true // Default to visible
+        };
+    }
+
+    /// <summary>
+    /// Checks if the avatar has discovered a saga.
+    /// </summary>
+    private static async Task<bool> IsSagaDiscoveredAsync(
+        string sagaRef,
+        AvatarBase? avatar,
+        IWorldStateRepository? worldRepository)
+    {
+        if (avatar == null || worldRepository == null)
+            return false;
+
+        try
+        {
+            var avatarId = avatar.AvatarId.ToString();
+            return await worldRepository.HasDiscoveredAsync(avatarId, "Saga", sagaRef);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Sets the feature dot color and opacity based on interaction status.
     /// </summary>
-    private static async Task SetFeatureStatusAsync(
+    private static Task SetFeatureStatusAsync(
         SagaViewModel sagaVM,
         SagaArc sagaArc,
         AvatarBase? avatar,
         IWorld world,
         IWorldStateRepository worldRepository)
     {
-        // Convert Saga GPS to model coordinates for query
-        var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
-        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
+        // Set default status based on SagaArc type
+        // Characters spawned by triggers determine actual interaction availability
+        sagaVM.InteractionStatus = InteractionStatus.Available;
+        var color = SagaColors.GetColor(sagaVM.Category, InteractionStatus.Available);
+        sagaVM.FeatureDotColor = color;
+        sagaVM.FeatureDotOpacity = 1.0;
 
-        // Query application service for feature status at Saga center
-        var interactions = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
-            sagaModelX, sagaModelZ, avatar, world, worldRepository);
-
-        var featureInteraction = interactions.FirstOrDefault(i =>
-            i.Type == SagaInteractionType.Feature &&
-            i.SagaRef == sagaArc.RefName);
-
-        if (featureInteraction != null)
-        {
-            // Use pre-calculated solid colors (no opacity)
-            sagaVM.FeatureDotColor = FeatureColors.GetColor(sagaVM.FeatureType, featureInteraction.Status);
-            sagaVM.FeatureDotOpacity = 1.0; // Always solid - colors handle the visual difference
-        }
+        return Task.CompletedTask;
     }
 
     /// <summary>
@@ -263,6 +268,9 @@ public partial class SagaViewModel : ObservableObject
 
         if (triggerInteraction != null)
         {
+            // Store status for filtering completed triggers
+            triggerVM.Status = triggerInteraction.Status;
+
             // Use pre-calculated solid colors based on status
             triggerVM.RingColor = TriggerColors.GetColor(triggerInteraction.Status);
             triggerVM.RingOpacity = 0.15; // Base opacity when not hovered

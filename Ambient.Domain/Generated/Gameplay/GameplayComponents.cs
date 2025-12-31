@@ -35,8 +35,6 @@ namespace Ambient.Domain {
         
         private Character[] charactersField;
         
-        private CharacterArchetype[] characterArchetypesField;
-        
         private CharacterAffinity[] characterAffinitiesField;
         
         private CombatStance[] combatStancesField;
@@ -58,10 +56,6 @@ namespace Ambient.Domain {
         private QuestToken[] questTokensField;
         
         private Quest[] questsField;
-        
-        private SagaFeature[] sagaFeaturesField;
-        
-        private SagaTriggerPattern[] sagaTriggerPatternsField;
         
         private SagaArc[] sagaArcsField;
         
@@ -128,17 +122,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.charactersField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public CharacterArchetype[] CharacterArchetypes {
-            get {
-                return this.characterArchetypesField;
-            }
-            set {
-                this.characterArchetypesField = value;
             }
         }
         
@@ -260,28 +243,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.questsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public SagaFeature[] SagaFeatures {
-            get {
-                return this.sagaFeaturesField;
-            }
-            set {
-                this.sagaFeaturesField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public SagaTriggerPattern[] SagaTriggerPatterns {
-            get {
-                return this.sagaTriggerPatternsField;
-            }
-            set {
-                this.sagaTriggerPatternsField = value;
             }
         }
         

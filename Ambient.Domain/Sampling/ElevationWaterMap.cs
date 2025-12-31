@@ -40,26 +40,23 @@ public class ElevationWaterMap
     }
 
     /// <summary>
-    /// Creates an ElevationWaterMap from a height map image with water detection.
-    /// </summary>
-    public static ElevationWaterMap FromHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation)
-    {
-        return FromHeightMap(image, minWaterAreaSize, adjustMinWaterAreaSizeByElevation, null);
-    }
-
-    /// <summary>
-    /// Creates an ElevationWaterMap from a height map image with water detection and optional terrain flattening.
+    /// Creates an ElevationWaterMap from a height map image with water detection, optional terrain flattening, and vertical shift.
     /// </summary>
     /// <param name="image">The height map image</param>
-    /// <param name="minWaterAreaSize">Minimum area size to be considered water</param>
+    /// <param name="minWaterAreaSize">Minimum area size to be considered water (for freshwater lake detection)</param>
     /// <param name="adjustMinWaterAreaSizeByElevation">Whether to adjust water detection by elevation</param>
-    /// <param name="flattenLocations">Optional list of locations to flatten with their elevation offsets</param>
-    public static ElevationWaterMap FromHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation, IEnumerable<FlattenLocation>? flattenLocations)
+    /// <param name="flattenLocations">Optional list of locations to flatten with their elevation offsets (null if none)</param>
+    /// <param name="verticalShift">Vertical shift to apply to all elevations (negative shifts terrain down, creating sea at low elevations; use 0 for no shift)</param>
+    public static ElevationWaterMap FromHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation, IEnumerable<FlattenLocation>? flattenLocations, int verticalShift)
     {
+        const int SeaLevelThreshold = 1;
+        const int MinimumElevation = -5;
+
         var map = new ElevationWaterMap(image.Width, image.Height);
 
-        // Extract elevation data and find min/max
-        var elevationData = new ushort[image.Width, image.Height];
+        // Extract elevation data, apply vertical shift, and find min/max
+        // Use int array to handle negative values during processing
+        var elevationData = new int[image.Width, image.Height];
         image.ProcessPixelRows(accessor =>
         {
             for (var y = 0; y < image.Height; y++)
@@ -67,10 +64,16 @@ public class ElevationWaterMap
                 var row = accessor.GetRowSpan(y);
                 for (var x = 0; x < image.Width; x++)
                 {
-                    var elevation = row[x].PackedValue;
-                    elevationData[x, y] = elevation;
-                    map.MinElevation = Math.Min(map.MinElevation, elevation);
-                    map.MaxElevation = Math.Max(map.MaxElevation, elevation);
+                    // Apply vertical shift to raw elevation
+                    var shiftedElevation = row[x].PackedValue + verticalShift;
+
+                    // Truncate at minimum elevation (-5)
+                    if (shiftedElevation < MinimumElevation)
+                    {
+                        shiftedElevation = MinimumElevation;
+                    }
+
+                    elevationData[x, y] = shiftedElevation;
                 }
             }
         });
@@ -78,28 +81,134 @@ public class ElevationWaterMap
         // Flatten terrain at specified locations before water detection
         if (flattenLocations != null)
         {
-            FlattenLocations(elevationData, image.Width, image.Height, flattenLocations);
+            FlattenLocationsInt(elevationData, image.Width, image.Height, flattenLocations, MinimumElevation);
         }
 
-        map.SeaLevel = map.MinElevation;
+        // Find min/max after shift and flattening
+        var minElev = int.MaxValue;
+        var maxElev = int.MinValue;
+        for (var y = 0; y < image.Height; y++)
+        {
+            for (var x = 0; x < image.Width; x++)
+            {
+                var elev = elevationData[x, y];
+                if (elev < minElev) minElev = elev;
+                if (elev > maxElev) maxElev = elev;
+            }
+        }
 
-        // Detect water using flood fill algorithm
-        var waterMask = DetectWater(elevationData, image.Width, image.Height, map.SeaLevel, minWaterAreaSize, map.MinElevation, map.MaxElevation, adjustMinWaterAreaSizeByElevation);
+        // Store min/max as ushort (clamped to 0 for negative values)
+        map.MinElevation = (ushort)Math.Max(0, minElev);
+        map.MaxElevation = (ushort)Math.Max(0, maxElev);
+        map.SeaLevel = (ushort)SeaLevelThreshold;
+
+        // Detect freshwater lakes using flood fill algorithm (for flat areas above sea level)
+        // Convert to ushort for existing algorithm (clamp negatives to 0)
+        var elevationDataUshort = new ushort[image.Width, image.Height];
+        for (var y = 0; y < image.Height; y++)
+        {
+            for (var x = 0; x < image.Width; x++)
+            {
+                elevationDataUshort[x, y] = (ushort)Math.Max(0, elevationData[x, y]);
+            }
+        }
+
+        var waterMask = DetectWater(elevationDataUshort, image.Width, image.Height, map.SeaLevel, minWaterAreaSize, map.MinElevation, map.MaxElevation, adjustMinWaterAreaSizeByElevation);
 
         // Pack elevation and water data into bit-packed format
         for (var y = 0; y < image.Height; y++)
         {
             for (var x = 0; x < image.Width; x++)
             {
-                var elevation = elevationData[x, y];
-                var isWater = waterMask[x, y];
+                var shiftedElevation = elevationData[x, y];
+
+                // Determine if this is sea water (shifted elevation <= sea level threshold)
+                var isSeaWater = shiftedElevation <= SeaLevelThreshold;
+
+                // Combine sea water detection with freshwater lake detection
+                var isWater = isSeaWater || waterMask[x, y];
+
+                // For storage, clamp to 0 since we use unsigned
+                var storageElevation = (ushort)Math.Max(0, shiftedElevation);
 
                 // Pack: elevation in bits 0-14, water flag in bit 15
-                map._data[x, y] = (ushort)(elevation | (isWater ? WaterBitMask : 0));
+                map._data[x, y] = (ushort)(storageElevation | (isWater ? WaterBitMask : 0));
             }
         }
 
         return map;
+    }
+
+    /// <summary>
+    /// Flattens terrain at specified locations using int array (supports negative elevations).
+    /// </summary>
+    private static void FlattenLocationsInt(int[,] elevationData, int width, int height, IEnumerable<FlattenLocation> locations, int minimumElevation)
+    {
+        foreach (var location in locations)
+        {
+            var cx = location.X;
+            var cy = location.Y;
+            var radius = location.Radius;
+            var sampleRadius = radius + 1;
+
+            // Skip if center is too close to bounds
+            if (cx < sampleRadius || cx >= width - sampleRadius || cy < sampleRadius || cy >= height - sampleRadius)
+                continue;
+
+            // Calculate average from circular area of sampleRadius
+            long sum = 0;
+            int count = 0;
+            var sampleRadiusSquared = sampleRadius * sampleRadius;
+
+            for (var dy = -sampleRadius; dy <= sampleRadius; dy++)
+            {
+                for (var dx = -sampleRadius; dx <= sampleRadius; dx++)
+                {
+                    // Check if within circular area
+                    if (dx * dx + dy * dy > sampleRadiusSquared)
+                        continue;
+
+                    var nx = cx + dx;
+                    var ny = cy + dy;
+
+                    if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+                    {
+                        sum += elevationData[nx, ny];
+                        count++;
+                    }
+                }
+            }
+
+            if (count == 0)
+                continue;
+
+            var averageElevation = (int)(sum / count + location.ElevationOffset);
+
+            // Clamp to minimum elevation
+            if (averageElevation < minimumElevation)
+                averageElevation = minimumElevation;
+
+            // Apply average to circular area of radius
+            var radiusSquared = radius * radius;
+
+            for (var dy = -radius; dy <= radius; dy++)
+            {
+                for (var dx = -radius; dx <= radius; dx++)
+                {
+                    // Check if within circular area
+                    if (dx * dx + dy * dy > radiusSquared)
+                        continue;
+
+                    var nx = cx + dx;
+                    var ny = cy + dy;
+
+                    if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+                    {
+                        elevationData[nx, ny] = averageElevation;
+                    }
+                }
+            }
+        }
     }
 
     /// <summary>

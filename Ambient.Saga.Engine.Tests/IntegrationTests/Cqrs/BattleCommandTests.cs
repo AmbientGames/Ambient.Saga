@@ -6,8 +6,10 @@ using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -72,6 +74,7 @@ public class BattleCommandTests : IDisposable
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
+        services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
         _serviceProvider = services.BuildServiceProvider();
         _mediator = _serviceProvider.GetRequiredService<IMediator>();
@@ -506,8 +509,7 @@ public class BattleCommandTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "WeakBoss"
+                    CharacterRef = "WeakBoss"
                 }
             }
         };
@@ -518,9 +520,9 @@ public class BattleCommandTests : IDisposable
             EnterRadius = 100.0f,
             Spawn = new[]
             {
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Goblin" },
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Goblin" },
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Goblin" }
+                new CharacterSpawn { CharacterRef = "Goblin" },
+                new CharacterSpawn { CharacterRef = "Goblin" },
+                new CharacterSpawn { CharacterRef = "Goblin" }
             }
         };
 
@@ -615,7 +617,6 @@ public class BattleCommandTests : IDisposable
                     SagaArcs = new[] { weakBossSaga, multiEnemySaga },
                     Characters = new[] { weakBoss, goblin },
                     Equipment = new[] { goldCoin, ironSword },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = new[] { warriorArchetype },
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = new[] { CreatePhysicalAffinity() },

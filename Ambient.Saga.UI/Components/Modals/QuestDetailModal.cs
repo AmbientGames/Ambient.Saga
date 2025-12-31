@@ -271,11 +271,11 @@ public class QuestDetailModal
         // Checkbox or bullet
         if (isComplete)
         {
-            ImGui.TextColored(color, "✓");
+            ImGui.TextColored(color, "[x]");
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "○");
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "[ ]");
         }
 
         ImGui.SameLine();
@@ -361,13 +361,13 @@ public class QuestDetailModal
                 var stage = _questTemplate!.Stages?.Stage?.FirstOrDefault(s => s.RefName == stageRef);
                 var stageName = stage?.DisplayName ?? stageRef;
 
-                if (ImGui.TreeNode($"✓ {stageName}"))
+                if (ImGui.TreeNode($"[x] {stageName}"))
                 {
                     foreach (var objRef in completedObjs)
                     {
                         var objective = stage?.Objectives?.Objective?.FirstOrDefault(o => o.RefName == objRef);
                         var objName = objective?.DisplayName ?? objRef;
-                        ImGui.TextColored(new Vector4(0, 1, 0, 1), $"  ✓ {objName}");
+                        ImGui.TextColored(new Vector4(0, 1, 0, 1), $"  [x] {objName}");
                     }
                     ImGui.TreePop();
                 }

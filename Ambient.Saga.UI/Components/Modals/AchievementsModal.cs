@@ -124,7 +124,7 @@ public class AchievementsModal
         ImGui.BeginChild($"achievement_{achievement.RefName}", new Vector2(0, 100), ImGuiChildFlags.Borders);
 
         // Icon and title
-        var icon = isUnlocked ? "★" : "☆";
+        var icon = isUnlocked ? "*" : "-";
         var titleColor = isUnlocked ? new Vector4(1, 0.843f, 0, 1) : new Vector4(0.7f, 0.7f, 0.7f, 1);
         ImGui.TextColored(titleColor, $"{icon} {achievement.DisplayName}");
 

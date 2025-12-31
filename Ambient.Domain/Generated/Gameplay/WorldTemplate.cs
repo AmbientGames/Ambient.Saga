@@ -23,19 +23,7 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlRootAttribute(Namespace="Ambient.Domain", IsNullable=false)]
     public partial class WorldTemplate {
         
-        private TemplateMetadata metadataField;
-        
         private GameplayComponents gameplayField;
-        
-        /// <remarks/>
-        public TemplateMetadata Metadata {
-            get {
-                return this.metadataField;
-            }
-            set {
-                this.metadataField = value;
-            }
-        }
         
         /// <remarks/>
         public GameplayComponents Gameplay {

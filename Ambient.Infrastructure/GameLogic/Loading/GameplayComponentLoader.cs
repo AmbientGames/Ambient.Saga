@@ -1,86 +1,67 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.Utilities;
 
 namespace Ambient.Infrastructure.GameLogic.Loading;
 
 public static class GameplayComponentLoader
 {
-    public static async Task LoadAsync(string dataDirectory, string definitionDirectory, IWorld world)
+    public static async Task LoadAsync(string? definitionDirectory, IWorld world)
     {
-        var xsdFilePath = Path.Combine(definitionDirectory, "Gameplay", "Gameplay.xsd");
         world.WorldTemplate.Gameplay = new GameplayComponents();
 
-        await LoadGameplayData(dataDirectory, xsdFilePath, world);
+        // Try to use schema validation if definition directory exists and contains schemas
+        var xsdFilePath = !string.IsNullOrEmpty(definitionDirectory)
+            ? Path.Combine(definitionDirectory, "Gameplay", "Gameplay.xsd")
+            : null;
+        var useValidation = xsdFilePath != null && File.Exists(xsdFilePath);
+
+        await LoadGameplayData(useValidation ? xsdFilePath : null, world);
         BuildGameplayLookups(world);
     }
 
-    private static async Task LoadGameplayData(string dataDirectory, string xsdFilePath, IWorld world)
+    private static async Task LoadGameplayData(string? xsdFilePath, IWorld world)
     {
         var config = world.WorldConfiguration;
-
         var worldRef = config.RefName;
+        var resourcePack = config.ResourcePack;
+        var ns = config.Namespace;
 
-        var consumableItemsRef = ResolveRef(config.ConsumableItemsRef, worldRef);
-        var spellsRef = ResolveRef(config.SpellsRef, worldRef);
-        var equipmentRef = ResolveRef(config.EquipmentRef, worldRef);
-        var questTokensRef = ResolveRef(config.QuestTokensRef, worldRef);
-        var charactersRef = ResolveRef(config.CharactersRef, worldRef);
-        var characterArchetypesRef = ResolveRef(config.CharacterArchetypesRef, worldRef);
-        var characterAffinitiesRef = ResolveRef(config.CharacterAffinitiesRef, worldRef);
-        var combatStancesRef = ResolveRef(config.CombatStancesRef, worldRef);
-        var loadoutSlotsRef = ResolveRef(config.LoadoutSlotsRef, worldRef);
-        var toolsRef = ResolveRef(config.ToolsRef, worldRef);
-        var materialsRef = ResolveRef(config.BuildingMaterialsRef, worldRef);
-        var dialogueTreesRef = ResolveRef(config.DialogueTreesRef, worldRef);
-        var avatarArchetypesRef = ResolveRef(config.AvatarArchetypesRef, worldRef);
-        var sagaFeaturesRef = ResolveRef(config.SagaFeaturesRef, worldRef);
-        var achievementsRef = ResolveRef(config.AchievementsRef, worldRef);
-        var questsRef = ResolveRef(config.QuestsRef, worldRef);
-        var sagaTriggerPatternsRef = ResolveRef(config.SagaTriggerPatternsRef, worldRef);
-        var sagasRef = ResolveRef(config.SagaArcsRef, worldRef);
-        var factionsRef = ResolveRef(config.FactionsRef, worldRef);
-        var statusEffectsRef = ResolveRef(config.StatusEffectsRef, worldRef);
-        var attackTellsRef = ResolveRef(config.AttackTellsRef, worldRef);
-
-        world.Gameplay.Consumables = (await XmlLoader.LoadFromXmlAsync<ConsumableCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{consumableItemsRef}.Consumable.xml"), xsdFilePath)).Consumable ?? [];
-        world.Gameplay.Spells = (await XmlLoader.LoadFromXmlAsync<SpellCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{spellsRef}.Spells.xml"), xsdFilePath)).Spell ?? [];
-        world.Gameplay.Equipment = (await XmlLoader.LoadFromXmlAsync<EquipmentCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{equipmentRef}.Equipment.xml"), xsdFilePath)).Equipment ?? [];
-        world.Gameplay.QuestTokens = (await XmlLoader.LoadFromXmlAsync<QuestTokens>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{questTokensRef}.QuestTokens.xml"), xsdFilePath)).QuestToken ?? [];
-        world.Gameplay.Characters = (await XmlLoader.LoadFromXmlAsync<Characters>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{charactersRef}.Characters.xml"), xsdFilePath)).Character ?? [];
-        world.Gameplay.CharacterArchetypes = (await XmlLoader.LoadFromXmlAsync<CharacterArchetypes>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{characterArchetypesRef}.CharacterArchetypes.xml"), xsdFilePath)).CharacterArchetype ?? [];
-        world.Gameplay.CharacterAffinities = (await XmlLoader.LoadFromXmlAsync<CharacterAffinities>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{characterAffinitiesRef}.CharacterAffinities.xml"), xsdFilePath)).Affinity ?? [];
-        world.Gameplay.CombatStances = (await XmlLoader.LoadFromXmlAsync<CombatStances>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{combatStancesRef}.CombatStances.xml"), xsdFilePath)).CombatStance ?? [];
-        world.Gameplay.LoadoutSlots = (await XmlLoader.LoadFromXmlAsync<LoadoutSlots>(Path.Combine(dataDirectory, "Gameplay", $"{loadoutSlotsRef}.LoadoutSlots.xml"), xsdFilePath)).LoadoutSlot ?? [];
-        world.Gameplay.Tools = (await XmlLoader.LoadFromXmlAsync<ToolCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{toolsRef}.Tools.xml"), xsdFilePath)).Tool ?? [];
-        world.Gameplay.BuildingMaterials = (await XmlLoader.LoadFromXmlAsync<BuildingMaterialCatalog>(Path.Combine(dataDirectory, "Gameplay", "Acquirables", $"{materialsRef}.BuildingMaterials.xml"), xsdFilePath)).BuildingMaterial ?? [];
-        world.Gameplay.DialogueTrees = (await XmlLoader.LoadFromXmlAsync<DialogueTrees>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{dialogueTreesRef}.Dialogue.xml"), xsdFilePath)).DialogueTree ?? [];
-        world.Gameplay.AvatarArchetypes = (await XmlLoader.LoadFromXmlAsync<AvatarArchetypes>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{avatarArchetypesRef}.AvatarArchetypes.xml"), xsdFilePath)).AvatarArchetype ?? [];
-        world.Gameplay.SagaFeatures = (await XmlLoader.LoadFromXmlAsync<SagaFeatures>(Path.Combine(dataDirectory, "Gameplay", "Features", $"{sagaFeaturesRef}.SagaFeatures.xml"), xsdFilePath)).SagaFeature ?? [];
-        world.Gameplay.Achievements = (await XmlLoader.LoadFromXmlAsync<Achievements>(Path.Combine(dataDirectory, "Gameplay", "Achievements", $"{achievementsRef}.Achievements.xml"), xsdFilePath)).Achievement ?? [];
-        world.Gameplay.Quests = (await XmlLoader.LoadFromXmlAsync<Quests>(Path.Combine(dataDirectory, "Gameplay", "Quests", $"{questsRef}.Quests.xml"), xsdFilePath)).Quest ?? [];
-        world.Gameplay.SagaTriggerPatterns = (await XmlLoader.LoadFromXmlAsync<SagaTriggerPatterns>(Path.Combine(dataDirectory, "Gameplay", "SagaTriggerPatterns", $"{sagaTriggerPatternsRef}.SagaTriggerPatterns.xml"), xsdFilePath)).SagaTriggerPattern ?? [];
-        world.Gameplay.SagaArcs = (await XmlLoader.LoadFromXmlAsync<SagaArcs>(Path.Combine(dataDirectory, "Gameplay", $"{sagasRef}.Sagas.xml"), xsdFilePath)).SagaArc ?? [];
-        world.Gameplay.Factions = (await XmlLoader.LoadFromXmlAsync<Factions>(Path.Combine(dataDirectory, "Gameplay", "Factions", $"{factionsRef}.Factions.xml"), xsdFilePath)).Faction ?? [];
-        world.Gameplay.StatusEffects = (await XmlLoader.LoadFromXmlAsync<StatusEffects>(Path.Combine(dataDirectory, "Gameplay", "Actors", $"{statusEffectsRef}.StatusEffects.xml"), xsdFilePath)).StatusEffect ?? [];
-        world.Gameplay.AttackTells = (await XmlLoader.LoadFromXmlAsync<AttackTells>(Path.Combine(dataDirectory, "Gameplay", "Combat", $"{attackTellsRef}.AttackTells.xml"), xsdFilePath)).AttackTell ?? [];
-
-        ApplySagaSpawnOffsets(world);
+        world.Gameplay.Consumables = (await LoadXmlAsync<ConsumableCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "Consumable.xml")).Consumable ?? [];
+        world.Gameplay.Spells = (await LoadXmlAsync<SpellCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "Spells.xml")).Spell ?? [];
+        world.Gameplay.Equipment = (await LoadXmlAsync<EquipmentCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "Equipment.xml")).Equipment ?? [];
+        world.Gameplay.QuestTokens = (await LoadXmlAsync<QuestTokens>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "QuestTokens.xml")).QuestToken ?? [];
+        world.Gameplay.Characters = (await LoadXmlAsync<Characters>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "Characters.xml")).Character ?? [];
+        world.Gameplay.CharacterAffinities = (await LoadXmlAsync<CharacterAffinities>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "CharacterAffinities.xml")).Affinity ?? [];
+        world.Gameplay.CombatStances = (await LoadXmlAsync<CombatStances>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "CombatStances.xml")).CombatStance ?? [];
+        world.Gameplay.LoadoutSlots = (await LoadXmlAsync<LoadoutSlots>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Combat", "LoadoutSlots.xml")).LoadoutSlot ?? [];
+        world.Gameplay.Tools = (await LoadXmlAsync<ToolCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "Tools.xml")).Tool ?? [];
+        world.Gameplay.BuildingMaterials = (await LoadXmlAsync<BuildingMaterialCatalog>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Acquirables", "BuildingMaterials.xml")).BuildingMaterial ?? [];
+        world.Gameplay.DialogueTrees = (await LoadXmlAsync<DialogueTrees>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "Dialogue.xml")).DialogueTree ?? [];
+        world.Gameplay.AvatarArchetypes = (await LoadXmlAsync<AvatarArchetypes>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "AvatarArchetypes.xml")).AvatarArchetype ?? [];
+        world.Gameplay.Achievements = (await LoadXmlAsync<Achievements>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Achievements", "Achievements.xml")).Achievement ?? [];
+        world.Gameplay.Quests = (await LoadXmlAsync<Quests>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Quests", "Quests.xml")).Quest ?? [];
+        world.Gameplay.SagaArcs = (await LoadXmlAsync<SagaArcs>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Sagas.xml")).SagaArc ?? [];
+        world.Gameplay.Factions = (await LoadXmlAsync<Factions>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Factions", "Factions.xml")).Faction ?? [];
+        world.Gameplay.StatusEffects = (await LoadXmlAsync<StatusEffects>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Actors", "StatusEffects.xml")).StatusEffect ?? [];
+        world.Gameplay.AttackTells = (await LoadXmlAsync<AttackTells>(worldRef, resourcePack, ns, xsdFilePath, "Gameplay", "Combat", "AttackTells.xml")).AttackTell ?? [];
     }
 
-    private static void ApplySagaSpawnOffsets(IWorld world)
+    private static async Task<T> LoadXmlAsync<T>(string worldRef, string resourcePack, string ns, string? xsdFilePath, params string[] relativePath)
     {
-        if (world.WorldConfiguration?.Item is ProceduralSettings)
+        var resolvedPath = ContentPathResolver.ResolveXmlPath(worldRef, resourcePack, ns, relativePath);
+        if (resolvedPath == null)
         {
-            var spawnLat = world.WorldConfiguration.SpawnLatitude;
-            var spawnLon = world.WorldConfiguration.SpawnLongitude;
-
-            foreach (var saga in world.Gameplay.SagaArcs)
-            {
-                saga.LatitudeZ += spawnLat;
-                saga.LongitudeX += spawnLon;
-            }
+            throw new FileNotFoundException($"XML content not found: {string.Join("/", relativePath)}");
         }
+
+        // Use validation if schema file is available, otherwise load without validation
+        if (!string.IsNullOrEmpty(xsdFilePath))
+        {
+            return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath, xsdFilePath);
+        }
+        return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath);
     }
 
     private static void BuildGameplayLookups(IWorld world)
@@ -90,7 +71,6 @@ public static class GameplayComponentLoader
         BuildLookup(world.Gameplay.Tools, world.ToolsLookup);
         BuildLookup(world.Gameplay.BuildingMaterials, world.BuildingMaterialsLookup);
         BuildLookup(world.Gameplay.Characters, world.CharactersLookup);
-        BuildLookup(world.Gameplay.CharacterArchetypes, world.CharacterArchetypesLookup);
         BuildLookup(world.Gameplay.CharacterAffinities, world.CharacterAffinitiesLookup);
         BuildLookup(world.Gameplay.CombatStances, world.CombatStancesLookup);
         BuildLookup(world.Gameplay.LoadoutSlots, world.LoadoutSlotsLookup);
@@ -98,10 +78,8 @@ public static class GameplayComponentLoader
         BuildLookup(world.Gameplay.QuestTokens, world.QuestTokensLookup);
         BuildLookup(world.Gameplay.AvatarArchetypes, world.AvatarArchetypesLookup);
         BuildLookup(world.Gameplay.DialogueTrees, world.DialogueTreesLookup);
-        BuildLookup(world.Gameplay.SagaFeatures, world.SagaFeaturesLookup);
         BuildLookup(world.Gameplay.Achievements, world.AchievementsLookup);
         BuildLookup(world.Gameplay.Quests, world.QuestsLookup);
-        BuildLookup(world.Gameplay.SagaTriggerPatterns, world.SagaTriggerPatternsLookup);
         BuildLookup(world.Gameplay.SagaArcs, world.SagaArcLookup);
         BuildLookup(world.Gameplay.Factions, world.FactionsLookup);
         BuildLookup(world.Gameplay.StatusEffects, world.StatusEffectsLookup);
@@ -148,16 +126,22 @@ public static class GameplayComponentLoader
         {
             if (!string.IsNullOrEmpty(saga.RefName))
             {
-                var expandedTriggers = TriggerExpander.ExpandTriggersForSaga(saga, world);
-                world.SagaTriggersLookup[saga.RefName] = expandedTriggers;
+                // Triggers are now defined directly on SagaArc, no expansion needed
+                var triggers = saga.SagaTrigger?.ToList() ?? new List<SagaTrigger>();
+
+                // Validate that every trigger has at least one Spawn
+                foreach (var trigger in triggers)
+                {
+                    if (trigger.Spawn == null || trigger.Spawn.Length == 0)
+                    {
+                        throw new InvalidOperationException(
+                            $"SagaTrigger '{trigger.RefName}' in SagaArc '{saga.RefName}' has no Spawn elements. Every trigger must have at least one character spawn.");
+                    }
+                }
+
+                world.SagaTriggersLookup[saga.RefName] = triggers;
             }
         }
     }
 
-    private static string ResolveRef(string? refValue, string worldRef)
-    {
-        if (string.IsNullOrEmpty(refValue) || refValue == "Standard")
-            return worldRef;
-        return refValue;
-    }
 }

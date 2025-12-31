@@ -28,8 +28,6 @@ namespace Ambient.Domain {
         
         private string characterRefField;
         
-        private string characterArchetypeRefField;
-        
         private int amountField;
         
         private CharacterTraitType traitField;
@@ -76,17 +74,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.characterRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string CharacterArchetypeRef {
-            get {
-                return this.characterArchetypeRefField;
-            }
-            set {
-                this.characterArchetypeRefField = value;
             }
         }
         

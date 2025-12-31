@@ -9,7 +9,7 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 
 /// <summary>
 /// Manages LiteDB database connection for world state persistence.
-/// Database location: %LocalAppData%\AmbientGames\{GameName}\{WorldConfigRef}.db
+/// Database location: %APPDATA%\AmbientGames\{GameName}\saves\{WorldConfigRef}.db
 /// </summary>
 internal class WorldStateDatabase : IDisposable
 {
@@ -18,13 +18,13 @@ internal class WorldStateDatabase : IDisposable
 
     public WorldStateDatabase(string gameName, string worldConfigurationRef)
     {
-        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        var gameDirectory = Path.Combine(appDataPath, "AmbientGames", gameName);
+        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        var savesDirectory = Path.Combine(appDataPath, "AmbientGames", gameName, "saves");
 
         // Ensure directory exists
-        Directory.CreateDirectory(gameDirectory);
+        Directory.CreateDirectory(savesDirectory);
 
-        var dbPath = Path.Combine(gameDirectory, $"{worldConfigurationRef}.db");
+        var dbPath = Path.Combine(savesDirectory, $"{worldConfigurationRef}.db");
 
         // Configure BsonMapper to use InstanceId as the document ID
         var mapper = new BsonMapper();

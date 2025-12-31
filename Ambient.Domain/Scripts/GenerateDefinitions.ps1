@@ -1,6 +1,6 @@
 ﻿# Step 1: Delete and recreate Generated folder
 $schemaGeneratedDir = "..\Generated"
-$xsdDir = "..\..\Content\Schemas"
+$xsdDir = "..\Content\Schemas"
 
 if (Test-Path $schemaGeneratedDir) {
     Write-Host "Deleting existing Generated folder..." -ForegroundColor Yellow

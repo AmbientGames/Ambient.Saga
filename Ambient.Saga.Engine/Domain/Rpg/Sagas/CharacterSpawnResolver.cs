@@ -1,22 +1,19 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
 
 /// <summary>
 /// Resolves CharacterSpawn definitions into concrete character references.
-/// Handles archetype selection, conditionals, and counts.
-/// Server and client use this same logic to determine character spawns.
+/// Now simplified since CharacterSpawn only contains CharacterRef (no archetypes).
 /// </summary>
 public class CharacterSpawnResolver
 {
     private readonly IWorld _world;
-    private readonly Random _random;
 
     public CharacterSpawnResolver(IWorld world, int? randomSeed = null)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
-        _random = randomSeed.HasValue ? new Random(randomSeed.Value) : new Random();
     }
 
     /// <summary>
@@ -36,22 +33,12 @@ public class CharacterSpawnResolver
         if (spawn == null)
             return new List<ResolvedSpawn>();
 
-        // Determine which character to spawn
-        string characterRef;
+        // CharacterSpawn now directly contains CharacterRef
+        var characterRef = spawn.CharacterRef;
 
-        if (spawn.ItemElementName == ItemChoiceType.CharacterRef)
+        if (string.IsNullOrEmpty(characterRef))
         {
-            // Specific character
-            characterRef = spawn.Item;
-        }
-        else if (spawn.ItemElementName == ItemChoiceType.CharacterArchetypeRef)
-        {
-            // Random from archetype pool
-            characterRef = SelectFromArchetype(spawn.Item);
-        }
-        else
-        {
-            throw new InvalidOperationException("CharacterSpawn must specify either CharacterRef or CharacterArchetypeRef");
+            throw new InvalidOperationException("CharacterSpawn must have a CharacterRef");
         }
 
         // Create resolved spawn(s) based on Count attribute (default 1)
@@ -85,30 +72,5 @@ public class CharacterSpawnResolver
         }
 
         return results;
-    }
-
-    /// <summary>
-    /// Selects a random character from a CharacterArchetype pool.
-    /// </summary>
-    private string SelectFromArchetype(string archetypeRef)
-    {
-        var archetype = _world.Gameplay?.CharacterArchetypes?
-            .FirstOrDefault(ca => ca.RefName == archetypeRef);
-
-        if (archetype == null)
-        {
-            throw new InvalidOperationException(
-                $"CharacterArchetype '{archetypeRef}' not found in world");
-        }
-
-        if (archetype.CharacterRef == null || archetype.CharacterRef.Length == 0)
-        {
-            throw new InvalidOperationException(
-                $"CharacterArchetype '{archetypeRef}' has no character pool");
-        }
-
-        // Randomly select one from the pool
-        var index = _random.Next(archetype.CharacterRef.Length);
-        return archetype.CharacterRef[index];
     }
 }

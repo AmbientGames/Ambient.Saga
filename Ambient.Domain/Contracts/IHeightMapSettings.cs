@@ -2,7 +2,9 @@
 
 public interface IHeightMapSettings
 {
-    string RelativePath { get; set; }
+    string FileName { get; set; }
     double MapResolutionInMeters { get; set; }
     double HorizontalScale { get; set; }
+    double VerticalScale { get; set; }
+    double VerticalShift { get; set; }
 }

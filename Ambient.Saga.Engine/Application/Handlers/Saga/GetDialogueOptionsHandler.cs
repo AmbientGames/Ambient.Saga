@@ -32,18 +32,26 @@ internal sealed class GetDialogueOptionsHandler : IRequestHandler<GetDialogueOpt
     {
         try
         {
-            // Get Saga template and triggers
-            if (!_world.SagaArcLookup.TryGetValue(query.SagaRef, out var sagaTemplate))
+            // Handle dev saga refs (format: "RealSagaRef__DEV__uniqueid")
+            var sagaRefForLookup = query.SagaRef;
+            var devSuffix = "__DEV__";
+            if (query.SagaRef.Contains(devSuffix))
+            {
+                sagaRefForLookup = query.SagaRef.Substring(0, query.SagaRef.IndexOf(devSuffix));
+            }
+
+            // Get Saga template and triggers (use stripped ref for lookups)
+            if (!_world.SagaArcLookup.TryGetValue(sagaRefForLookup, out var sagaTemplate))
             {
                 return new List<DialogueOptionDto>();
             }
 
-            if (!_world.SagaTriggersLookup.TryGetValue(query.SagaRef, out var expandedTriggers))
+            if (!_world.SagaTriggersLookup.TryGetValue(sagaRefForLookup, out var expandedTriggers))
             {
                 return new List<DialogueOptionDto>();
             }
 
-            // Get Saga instance
+            // Get Saga instance (use full ref with DEV suffix for unique instance)
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(query.AvatarId, query.SagaRef, ct);
 
             // Try to get cached state

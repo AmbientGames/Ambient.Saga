@@ -19,11 +19,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Include="..\Content\Schemas\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Schemas" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <None Include="..\Content\Worlds\**\*" CopyToOutputDirectory="PreserveNewest" LinkBase="Content\Worlds" />
+        <Content Include="Content\Schemas\**\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

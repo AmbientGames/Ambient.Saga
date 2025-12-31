@@ -22,7 +22,7 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class HeightMapSettings {
         
-        private string relativePathField;
+        private string fileNameField;
         
         private double horizontalScaleField;
         
@@ -32,12 +32,12 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string RelativePath {
+        public string FileName {
             get {
-                return this.relativePathField;
+                return this.fileNameField;
             }
             set {
-                this.relativePathField = value;
+                this.fileNameField = value;
             }
         }
         

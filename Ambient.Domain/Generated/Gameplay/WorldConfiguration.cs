@@ -27,47 +27,11 @@ namespace Ambient.Domain {
         
         private string templateField;
         
-        private string consumableItemsRefField;
+        private string resourcePackField;
         
-        private string spellsRefField;
+        private string contentPackField;
         
-        private string equipmentRefField;
-        
-        private string questTokensRefField;
-        
-        private string charactersRefField;
-        
-        private string characterArchetypesRefField;
-        
-        private string characterAffinitiesRefField;
-        
-        private string statusEffectsRefField;
-        
-        private string combatStancesRefField;
-        
-        private string loadoutSlotsRefField;
-        
-        private string toolsRefField;
-        
-        private string buildingMaterialsRefField;
-        
-        private string dialogueTreesRefField;
-        
-        private string avatarArchetypesRefField;
-        
-        private string sagaFeaturesRefField;
-        
-        private string achievementsRefField;
-        
-        private string questsRefField;
-        
-        private string sagaArcsRefField;
-        
-        private string factionsRefField;
-        
-        private string sagaTriggerPatternsRefField;
-        
-        private string attackTellsRefField;
+        private string namespaceField;
         
         private string currencyNameField;
         
@@ -79,31 +43,13 @@ namespace Ambient.Domain {
         
         private int secondsInHourField;
         
+        private ClimateModel climateModelField;
+        
         public WorldConfiguration() {
-            this.consumableItemsRefField = "Standard";
-            this.spellsRefField = "Standard";
-            this.equipmentRefField = "Standard";
-            this.questTokensRefField = "Standard";
-            this.charactersRefField = "Standard";
-            this.characterArchetypesRefField = "Standard";
-            this.characterAffinitiesRefField = "Standard";
-            this.statusEffectsRefField = "Standard";
-            this.combatStancesRefField = "Standard";
-            this.loadoutSlotsRefField = "Standard";
-            this.toolsRefField = "Standard";
-            this.buildingMaterialsRefField = "Standard";
-            this.dialogueTreesRefField = "Standard";
-            this.avatarArchetypesRefField = "Standard";
-            this.sagaFeaturesRefField = "Standard";
-            this.achievementsRefField = "Standard";
-            this.questsRefField = "Standard";
-            this.sagaArcsRefField = "Standard";
-            this.factionsRefField = "Standard";
-            this.sagaTriggerPatternsRefField = "Standard";
-            this.attackTellsRefField = "Standard";
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
             this.secondsInHourField = 60;
+            this.climateModelField = ClimateModel.Earth;
         }
         
         /// <remarks/>
@@ -131,253 +77,34 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string ConsumableItemsRef {
+        public string ResourcePack {
             get {
-                return this.consumableItemsRefField;
+                return this.resourcePackField;
             }
             set {
-                this.consumableItemsRefField = value;
+                this.resourcePackField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string SpellsRef {
+        public string ContentPack {
             get {
-                return this.spellsRefField;
+                return this.contentPackField;
             }
             set {
-                this.spellsRefField = value;
+                this.contentPackField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string EquipmentRef {
+        public string Namespace {
             get {
-                return this.equipmentRefField;
+                return this.namespaceField;
             }
             set {
-                this.equipmentRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string QuestTokensRef {
-            get {
-                return this.questTokensRefField;
-            }
-            set {
-                this.questTokensRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string CharactersRef {
-            get {
-                return this.charactersRefField;
-            }
-            set {
-                this.charactersRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string CharacterArchetypesRef {
-            get {
-                return this.characterArchetypesRefField;
-            }
-            set {
-                this.characterArchetypesRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string CharacterAffinitiesRef {
-            get {
-                return this.characterAffinitiesRefField;
-            }
-            set {
-                this.characterAffinitiesRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string StatusEffectsRef {
-            get {
-                return this.statusEffectsRefField;
-            }
-            set {
-                this.statusEffectsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string CombatStancesRef {
-            get {
-                return this.combatStancesRefField;
-            }
-            set {
-                this.combatStancesRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string LoadoutSlotsRef {
-            get {
-                return this.loadoutSlotsRefField;
-            }
-            set {
-                this.loadoutSlotsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string ToolsRef {
-            get {
-                return this.toolsRefField;
-            }
-            set {
-                this.toolsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string BuildingMaterialsRef {
-            get {
-                return this.buildingMaterialsRefField;
-            }
-            set {
-                this.buildingMaterialsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string DialogueTreesRef {
-            get {
-                return this.dialogueTreesRefField;
-            }
-            set {
-                this.dialogueTreesRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string AvatarArchetypesRef {
-            get {
-                return this.avatarArchetypesRefField;
-            }
-            set {
-                this.avatarArchetypesRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string SagaFeaturesRef {
-            get {
-                return this.sagaFeaturesRefField;
-            }
-            set {
-                this.sagaFeaturesRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string AchievementsRef {
-            get {
-                return this.achievementsRefField;
-            }
-            set {
-                this.achievementsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string QuestsRef {
-            get {
-                return this.questsRefField;
-            }
-            set {
-                this.questsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string SagaArcsRef {
-            get {
-                return this.sagaArcsRefField;
-            }
-            set {
-                this.sagaArcsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string FactionsRef {
-            get {
-                return this.factionsRefField;
-            }
-            set {
-                this.factionsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string SagaTriggerPatternsRef {
-            get {
-                return this.sagaTriggerPatternsRefField;
-            }
-            set {
-                this.sagaTriggerPatternsRefField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute("Standard")]
-        public string AttackTellsRef {
-            get {
-                return this.attackTellsRefField;
-            }
-            set {
-                this.attackTellsRefField = value;
+                this.namespaceField = value;
             }
         }
         
@@ -436,6 +163,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.secondsInHourField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(ClimateModel.Earth)]
+        public ClimateModel ClimateModel {
+            get {
+                return this.climateModelField;
+            }
+            set {
+                this.climateModelField = value;
             }
         }
     }

@@ -51,6 +51,12 @@ public class InputContext
     public ActivePanel ActivePanel { get; init; }
 
     /// <summary>
+    /// Gets whether the world has a map (height map) available.
+    /// Procedural/generated worlds don't have maps.
+    /// </summary>
+    public bool HasMap { get; init; }
+
+    /// <summary>
     /// Action to request a panel toggle.
     /// </summary>
     public Action<ActivePanel> TogglePanelAction { get; init; } = null!;

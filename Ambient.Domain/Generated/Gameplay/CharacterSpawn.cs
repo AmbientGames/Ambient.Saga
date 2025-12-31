@@ -22,9 +22,7 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class CharacterSpawn {
         
-        private string itemField;
-        
-        private ItemChoiceType itemElementNameField;
+        private string characterRefField;
         
         private int countField;
         
@@ -33,26 +31,12 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("CharacterArchetypeRef", typeof(string))]
-        [System.Xml.Serialization.XmlElementAttribute("CharacterRef", typeof(string))]
-        [System.Xml.Serialization.XmlChoiceIdentifierAttribute("ItemElementName")]
-        public string Item {
+        public string CharacterRef {
             get {
-                return this.itemField;
+                return this.characterRefField;
             }
             set {
-                this.itemField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public ItemChoiceType ItemElementName {
-            get {
-                return this.itemElementNameField;
-            }
-            set {
-                this.itemElementNameField = value;
+                this.characterRefField = value;
             }
         }
         

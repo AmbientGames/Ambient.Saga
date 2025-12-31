@@ -37,6 +37,9 @@ public class WorldMapUI
     private int _heightMapHeight;
     private IDisposable[]? _heightMapResources;
 
+    // Pending texture update (deferred to avoid disposing texture during render)
+    private bool _pendingTextureUpdate;
+
     public WorldMapUI(ModalManager modalManager)
     {
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
@@ -52,7 +55,10 @@ public class WorldMapUI
         
         // Subscribe to pause menu request from input handler
         _gameplayOverlay.InputHandler.PauseMenuRequested += OnPauseMenuRequested;
-        
+
+        // Subscribe to map panel rendering for procedural map updates
+        _gameplayOverlay.MapPanelRendering += OnMapPanelRendering;
+
         // Subscribe to quit request from viewModel (raised by WorldSelectionScreen)
         _viewModel.RequestQuit += OnQuitRequestedFromViewModel;
 
@@ -72,6 +78,11 @@ public class WorldMapUI
         _modalManager.OpenPauseMenu();
         System.Diagnostics.Debug.WriteLine("Pause menu requested");
     }
+
+    private void OnMapPanelRendering()
+    {
+        MapPanelRendering?.Invoke();
+    }
     
     private void OnQuitRequestedFromViewModel()
     {
@@ -84,7 +95,8 @@ public class WorldMapUI
     {
         if (e.PropertyName == nameof(MainViewModel.HeightMapImage))
         {
-            UpdateHeightMapTexture();
+            // Defer texture update to avoid disposing texture during render frame
+            _pendingTextureUpdate = true;
         }
         else if (e.PropertyName == nameof(MainViewModel.CurrentWorld))
         {
@@ -92,6 +104,7 @@ public class WorldMapUI
             if (_viewModel.CurrentWorld != null)
             {
                 _modalManager.CloseModal("WorldSelection");
+                _modalManager.CloseModal("WorldSelectionTiles");
             }
         }
     }
@@ -144,6 +157,7 @@ public class WorldMapUI
         if (_gameplayOverlay != null)
         {
             _gameplayOverlay.InputHandler.PauseMenuRequested -= OnPauseMenuRequested;
+            _gameplayOverlay.MapPanelRendering -= OnMapPanelRendering;
         }
     }
 
@@ -154,6 +168,12 @@ public class WorldMapUI
     /// </summary>
     public bool IsAnyPanelOpen => _gameplayOverlay?.ActivePanel != ActivePanel.None;
 
+    /// <summary>
+    /// Fired each frame when the map panel is being rendered.
+    /// Use this to update procedural map data when the map is visible.
+    /// </summary>
+    public event Action? MapPanelRendering;
+
     public void Update(float deltaTime)
     {
         _modalManager.Update(deltaTime);
@@ -162,6 +182,13 @@ public class WorldMapUI
     public void Render()
     {
         if (_viewModel == null || _gameplayOverlay == null) return;
+
+        // Process pending texture update at start of frame (safe to dispose old texture)
+        if (_pendingTextureUpdate)
+        {
+            _pendingTextureUpdate = false;
+            UpdateHeightMapTexture();
+        }
 
         // Show world selection screen if no world loaded yet (Sandbox-specific)
         // Note: WorldSelectionScreen is now managed by ModalManager

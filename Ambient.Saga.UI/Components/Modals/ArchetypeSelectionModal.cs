@@ -40,7 +40,7 @@ public class ArchetypeSelectionModal
             ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Choose Your Character Archetype");
             ImGui.Text("This choice determines your starting equipment and stats");
             ImGui.Spacing();
-            ImGui.TextColored(new Vector4(1, 0.7f, 0.3f, 1), "⚠ You must select an archetype to continue");
+            ImGui.TextColored(new Vector4(1, 0.7f, 0.3f, 1), "[!] You must select an archetype to continue");
             ImGui.Separator();
             ImGui.Spacing();
 
@@ -163,6 +163,7 @@ public class ArchetypeSelectionModal
             if (ImGui.Button("Quit Game", new Vector2(buttonWidth, 30)))
             {
                 selector?.CancelSelection();
+                ImGui.CloseCurrentPopup(); // Explicitly close ImGui popup
                 isOpen = false;
                 _selectedArchetype = null;
                 _selectedIndex = -1;
@@ -181,6 +182,7 @@ public class ArchetypeSelectionModal
             if (ImGui.Button("Enter World", new Vector2(buttonWidth, 30)))
             {
                 selector?.CompleteSelection(_selectedArchetype);
+                ImGui.CloseCurrentPopup(); // Explicitly close ImGui popup to prevent lingering state
                 isOpen = false;
                 _selectedArchetype = null;
                 _selectedIndex = -1;

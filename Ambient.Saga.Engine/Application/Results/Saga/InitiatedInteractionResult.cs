@@ -9,7 +9,6 @@ public class InitiatedInteractionResult
     public bool HasInteraction { get; set; }
     public string SagaRef { get; set; } = string.Empty;
     public InteractableCharacter? Character { get; set; }
-    public InteractableFeature? Feature { get; set; }
     public double Distance { get; set; }
     public int Priority { get; set; }
 }

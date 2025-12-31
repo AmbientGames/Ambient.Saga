@@ -35,13 +35,12 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
     /// </summary>
     public WorldRepositories CreateRepositories(string gameName, string worldRefName, IWorld world, bool isSteamAvailable)
     {
-        // Use shared database if provided (Carbon), otherwise create new one (Sandbox)
+        // Use shared database if provided (Saga), otherwise create new one (Sandbox)
         WorldStateDatabase? ownedDatabase = null;
         LiteDatabase database;
 
         if (_sharedDatabase != null)
         {
-            // Carbon path: use the shared consolidated database
             database = _sharedDatabase;
         }
         else
@@ -74,7 +73,7 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
             AvatarRepository = avatarRepository,
             WorldStateRepository = worldStateRepository,
             SteamAchievementService = steamAchievementService,
-            Database = ownedDatabase // Will be null for Carbon (using shared), non-null for Sandbox
+            Database = ownedDatabase // Will be null for Saga (using shared), non-null for Sandbox
         };
     }
 }

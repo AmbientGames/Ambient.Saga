@@ -1,5 +1,6 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.Sampling;
 using Ambient.Infrastructure.Utilities;
@@ -21,7 +22,7 @@ public class WorldAssetLoader : IWorldLoader
     }
 
     /// <inheritdoc />
-    public async Task<IWorld> LoadWorldByConfigurationAsync(string dataDirectory, string definitionDirectory, string configurationRefName)
+    public async Task<IWorld> LoadWorldByConfigurationAsync(string dataDirectory, string? definitionDirectory, string configurationRefName)
     {
         var configurations = await _configurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory);
 
@@ -35,21 +36,18 @@ public class WorldAssetLoader : IWorldLoader
     }
 
     /// <inheritdoc />
-    public async Task<IWorld> LoadWorldAsync(string dataDirectory, string definitionDirectory, IWorldConfiguration worldConfiguration)
+    public async Task<IWorld> LoadWorldAsync(string dataDirectory, string? definitionDirectory, IWorldConfiguration worldConfiguration)
     {
         var world = _worldFactory.CreateWorld();
         world.WorldConfiguration = worldConfiguration;
 
-        var templateDirectory = Path.Combine(dataDirectory, worldConfiguration.Template);
-
-        world.WorldTemplate.Metadata = await LoadMetadataAsync(templateDirectory, definitionDirectory);
-        await LoadGamePlayAsync(templateDirectory, definitionDirectory, world);
+        await LoadGamePlayAsync(definitionDirectory, world);
 
         world.IsProcedural = world.WorldConfiguration.ProceduralSettings != null;
 
         if (!world.IsProcedural)
         {
-            await LoadHeightMapMetadata(dataDirectory, world);
+            await LoadHeightMapMetadata(world);
         }
 
         if (!world.IsProcedural)
@@ -81,20 +79,21 @@ public class WorldAssetLoader : IWorldLoader
         return world;
     }
 
-    private static async Task LoadGamePlayAsync(string dataDirectory, string definitionDirectory, IWorld world)
+    private static async Task LoadGamePlayAsync(string? definitionDirectory, IWorld world)
     {
-        await GameplayComponentLoader.LoadAsync(dataDirectory, definitionDirectory, world);
+        await GameplayComponentLoader.LoadAsync(definitionDirectory, world);
     }
 
-    public static async Task<TemplateMetadata> LoadMetadataAsync(string dataDirectory, string definitionDirectory)
+    private static async Task LoadHeightMapMetadata(IWorld world)
     {
-        var xsdFilePath = Path.Combine(definitionDirectory, "WorldTemplateMetadata.xsd");
-        return await XmlLoader.LoadFromXmlAsync<TemplateMetadata>(Path.Combine(dataDirectory, "TemplateMetadata.xml"), xsdFilePath);
-    }
+        var config = world.WorldConfiguration;
+        var resolvedPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPack, config.Namespace, config.HeightMapSettings.FileName);
 
-    private static async Task LoadHeightMapMetadata(string dataDirectory, IWorld world)
-    {
-        var relativePath = Path.Combine(dataDirectory, world.WorldConfiguration.HeightMapSettings.RelativePath);
-        world.HeightMapMetadata = GeoTiffReader.ReadMetadata(relativePath);
+        if (resolvedPath == null)
+        {
+            throw new FileNotFoundException($"Geographic data not found: {config.HeightMapSettings.FileName}");
+        }
+
+        world.HeightMapMetadata = GeoTiffReader.ReadMetadata(resolvedPath);
     }
 }

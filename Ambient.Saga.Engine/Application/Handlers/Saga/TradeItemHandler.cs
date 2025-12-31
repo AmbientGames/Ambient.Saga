@@ -37,10 +37,18 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
     {
         try
         {
-            // Validate Saga exists
-            if (!_world.SagaArcLookup.ContainsKey(command.SagaArcRef))
+            // Handle dev saga refs (format: "RealSagaRef__DEV__uniqueid")
+            var sagaRefForLookup = command.SagaArcRef;
+            var devSuffix = "__DEV__";
+            if (command.SagaArcRef.Contains(devSuffix))
             {
-                return SagaCommandResult.Failure(Guid.Empty, $"Saga '{command.SagaArcRef}' not found");
+                sagaRefForLookup = command.SagaArcRef.Substring(0, command.SagaArcRef.IndexOf(devSuffix));
+            }
+
+            // Validate Saga exists (use stripped ref for template lookup)
+            if (!_world.SagaArcLookup.ContainsKey(sagaRefForLookup))
+            {
+                return SagaCommandResult.Failure(Guid.Empty, $"Saga '{sagaRefForLookup}' not found");
             }
 
             // Validate quantity
@@ -55,18 +63,18 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 return SagaCommandResult.Failure(Guid.Empty, $"Invalid price: {command.PricePerItem} (must be non-negative)");
             }
 
-            // Get Saga instance
+            // Get Saga instance (use full ref with DEV suffix for unique instance)
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
 
-            // Get Saga template and expanded triggers for state replay
-            if (!_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var sagaTemplate))
+            // Get Saga template and expanded triggers for state replay (use stripped ref for template lookup)
+            if (!_world.SagaArcLookup.TryGetValue(sagaRefForLookup, out var sagaTemplate))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Saga template '{command.SagaArcRef}' not found");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Saga template '{sagaRefForLookup}' not found");
             }
 
-            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var expandedTriggers))
+            if (!_world.SagaTriggersLookup.TryGetValue(sagaRefForLookup, out var expandedTriggers))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArcRef}'");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{sagaRefForLookup}'");
             }
 
             // Replay to get current state (needed to check if character is alive)
@@ -196,6 +204,9 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
             {
                 return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transaction rolled back");
             }
+
+            // Update in-memory transaction status so GetCommittedTransactions() finds it
+            transaction.Status = TransactionStatus.Committed;
 
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);

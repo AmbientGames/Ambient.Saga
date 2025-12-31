@@ -6,10 +6,52 @@ using System.Xml.Serialization;
 namespace Ambient.Infrastructure.Utilities;
 
 /// <summary>
-/// Provides XML loading and deserialization capabilities with schema validation.
+/// Provides XML loading and deserialization capabilities with optional schema validation.
 /// </summary>
 public static class XmlLoader
 {
+    /// <summary>
+    /// Asynchronously loads and deserializes an XML file into a strongly-typed object without schema validation.
+    /// </summary>
+    /// <typeparam name="T">The type to deserialize the XML content into.</typeparam>
+    /// <param name="xmlFilePath">The path to the XML file to load.</param>
+    /// <param name="cancellationToken">Optional cancellation token to cancel the loading operation.</param>
+    /// <returns>A deserialized object of type T.</returns>
+    public static async Task<T> LoadFromXmlAsync<T>(string xmlFilePath, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(xmlFilePath))
+            throw new ArgumentException("XML file path cannot be null or empty.", nameof(xmlFilePath));
+
+        T result = default;
+
+        var settings = new XmlReaderSettings
+        {
+            Async = true
+        };
+
+        try
+        {
+            using Stream stream = File.OpenRead(xmlFilePath);
+            using var xmlReader = XmlReader.Create(stream, settings);
+            var serializer = new XmlSerializer(typeof(T));
+
+            Debug.WriteLine($"Loading: {xmlFilePath}");
+            result = (T)await Task.Run(() => serializer.Deserialize(xmlReader), cancellationToken);
+        }
+        catch (InvalidOperationException e)
+        {
+            Debug.WriteLine($"Deserialization failed: {e.Message}-{xmlFilePath}");
+            throw new Exception($"Deserialization failed: {e.Message}", e);
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine($"Unexpected error: {e.Message}-{xmlFilePath}");
+            throw;
+        }
+
+        return result;
+    }
+
     /// <summary>
     /// Asynchronously loads and deserializes an XML file into a strongly-typed object with schema validation.
     /// </summary>

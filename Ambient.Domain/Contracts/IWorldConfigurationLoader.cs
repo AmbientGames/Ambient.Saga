@@ -2,7 +2,7 @@ namespace Ambient.Domain.Contracts;
 
 /// <summary>
 /// Interface for loading world configurations from data files.
-/// Implementations handle XML deserialization and validation.
+/// Implementations handle XML deserialization and optional validation.
 /// </summary>
 public interface IWorldConfigurationLoader
 {
@@ -10,7 +10,7 @@ public interface IWorldConfigurationLoader
     /// Loads all available world configurations.
     /// </summary>
     /// <param name="dataDirectory">Base data directory containing WorldConfigurations.xml</param>
-    /// <param name="definitionDirectory">Definition directory containing XSD schemas</param>
+    /// <param name="definitionDirectory">Definition directory containing XSD schemas. If null or schemas not found, validation is skipped.</param>
     /// <returns>Array of loaded WorldConfiguration objects</returns>
-    Task<IWorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string definitionDirectory);
+    Task<IWorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string? definitionDirectory);
 }

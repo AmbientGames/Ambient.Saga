@@ -246,7 +246,7 @@ public class LootModal
             {
                 _hasLooted = true;
                 character.HasBeenLooted = true;
-                viewModel.ActivityLog?.Insert(0, $"💰 Looted {character.DisplayName}");
+                viewModel.ActivityLog?.Insert(0, $"Looted {character.DisplayName}");
 
                 // Update avatar from result if available
                 if (result.UpdatedAvatar != null)
@@ -258,13 +258,13 @@ public class LootModal
             }
             else
             {
-                viewModel.ActivityLog?.Insert(0, $"❌ Failed to loot: {result.ErrorMessage}");
+                viewModel.ActivityLog?.Insert(0, $"Failed to loot: {result.ErrorMessage}");
             }
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Error looting character: {ex.Message}");
-            viewModel.ActivityLog?.Insert(0, $"❌ Error looting: {ex.Message}");
+            viewModel.ActivityLog?.Insert(0, $"Error looting: {ex.Message}");
         }
         finally
         {

@@ -16,14 +16,11 @@ namespace Ambient.Domain {
     
     /// <remarks/>
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(SagaArc))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(SagaTriggerPattern))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(SagaFeature))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(SagaTrigger))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(AvatarArchetype))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Faction))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StatusEffect))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CombatStance))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(CharacterArchetype))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(DialogueTree))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Quest))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Achievement))]

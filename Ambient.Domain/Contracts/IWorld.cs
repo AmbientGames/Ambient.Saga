@@ -42,12 +42,9 @@ public interface IWorld
     Dictionary<string, Quest> QuestsLookup { get; set; }
     Dictionary<string, AvatarArchetype> AvatarArchetypesLookup { get; set; }
     Dictionary<string, DialogueTree> DialogueTreesLookup { get; set; }
-    Dictionary<string, CharacterArchetype> CharacterArchetypesLookup { get; set; }
     Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; }
     Dictionary<string, CombatStance> CombatStancesLookup { get; set; }
     Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; }
-    Dictionary<string, SagaTriggerPattern> SagaTriggerPatternsLookup { get; set; }
-    Dictionary<string, SagaFeature> SagaFeaturesLookup { get; set; }
     Dictionary<string, SagaArc> SagaArcLookup { get; set; }
     Dictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; }
     Dictionary<string, Faction> FactionsLookup { get; set; }
@@ -85,15 +82,8 @@ public interface IWorld
     public Achievement GetAchievementByRefName(string achievementRefName);
     public Achievement? TryGetAchievementByRefName(string achievementRefName);
 
-    public SagaFeature GetSagaFeatureByRefName(string featureRefName);
-    public SagaFeature? TryGetSagaFeatureByRefName(string featureRefName);
-    public SagaFeature? TryGetSagaFeatureByRefNameAndType(string featureRefName, SagaFeatureType type);
-
     public Quest GetQuestByRefName(string questRefName);
     public Quest? TryGetQuestByRefName(string questRefName);
-
-    public SagaTriggerPattern GetTriggerPatternByRefName(string sagaTriggerPatternRefName);
-    public SagaTriggerPattern? TryGetTriggerPatternByRefName(string sagaTriggerPatternRefName);
 
     public CharacterAffinity GetCharacterAffinityByRefName(string characterAffinityRefName);
     public CharacterAffinity? TryGetCharacterAffinityByRefName(string characterAffinityRefName);

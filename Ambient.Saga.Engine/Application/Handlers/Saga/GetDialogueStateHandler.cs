@@ -31,17 +31,26 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
 
         try
         {
-            // Get Saga template
-            if (!_world.SagaArcLookup.TryGetValue(query.SagaRef, out var sagaTemplate))
+            // Handle dev saga refs (format: "RealSagaRef__DEV__uniqueid")
+            var sagaRefForLookup = query.SagaRef;
+            var devSuffix = "__DEV__";
+            if (query.SagaRef.Contains(devSuffix))
+            {
+                sagaRefForLookup = query.SagaRef.Substring(0, query.SagaRef.IndexOf(devSuffix));
+                System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Dev saga detected, using template ref: {sagaRefForLookup}");
+            }
+
+            // Get Saga template (use stripped ref for lookup)
+            if (!_world.SagaArcLookup.TryGetValue(sagaRefForLookup, out var sagaTemplate))
             {
                 return new DialogueStateResult { IsActive = false, HasEnded = false };
             }
 
-            // Get Saga instance
+            // Get Saga instance (use full ref with DEV suffix for unique instance)
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(query.AvatarId, query.SagaRef, ct);
 
-            // Replay state to get character ref from instance ID
-            if (!_world.SagaTriggersLookup.TryGetValue(query.SagaRef, out var expandedTriggers))
+            // Replay state to get character ref from instance ID (use stripped ref for triggers)
+            if (!_world.SagaTriggersLookup.TryGetValue(sagaRefForLookup, out var expandedTriggers))
             {
                 return new DialogueStateResult { IsActive = false, HasEnded = false };
             }
@@ -170,7 +179,12 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
                 }
             }
 
-            System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Node has {dialogueText.Count} text lines and {choices.Count} choices");
+            // Determine dialogue state
+            var hasChoices = currentNode.Choice != null && currentNode.Choice.Length > 0;
+            var hasNextNode = !string.IsNullOrEmpty(currentNode.NextNodeId);
+            var isTerminalNode = !hasChoices && !hasNextNode;
+
+            System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Node has {dialogueText.Count} text lines and {choices.Count} choices, hasNextNode={hasNextNode}, isTerminal={isTerminalNode}");
 
             return new DialogueStateResult
             {
@@ -178,8 +192,8 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
                 CurrentNodeId = currentNode.NodeId ?? string.Empty,
                 DialogueText = dialogueText,
                 Choices = choices,
-                CanContinue = currentNode.Choice == null || currentNode.Choice.Length == 0,
-                HasEnded = false
+                CanContinue = !hasChoices && hasNextNode,  // Can only continue if there's somewhere to go
+                HasEnded = isTerminalNode                   // Terminal node = no choices and no next node
             };
         }
         catch (Exception ex)

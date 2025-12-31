@@ -96,6 +96,15 @@ public partial class MerchantTradeViewModel : ObservableObject
             _tradeEngine = new TradeEngine(_context.World);
         }
 
+        // Debug: Log category availability
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] RefreshCategories - Mode: {_tradeMode}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasEquipment: {HasEquipment}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasConsumables: {HasConsumables}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasBlocks: {HasBlocks}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasTools: {HasTools}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasSpells: {HasSpells}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   HasPotentialLoot: {HasPotentialLoot}");
+
         OnPropertyChanged(nameof(HasEquipment));
         OnPropertyChanged(nameof(HasConsumables));
         OnPropertyChanged(nameof(HasBlocks));
@@ -109,6 +118,8 @@ public partial class MerchantTradeViewModel : ObservableObject
 
         // Auto-select the first available category if current selection is invalid
         var available = AvailableCategories;
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   Available categories: {string.Join(", ", available)}");
+
         if (available.Count > 0)
         {
             if (!available.Contains(SelectedTradeCategory))
@@ -120,6 +131,10 @@ public partial class MerchantTradeViewModel : ObservableObject
                 // Force refresh of inventory even if category didn't change
                 OnPropertyChanged(nameof(TradeInventory));
             }
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM]   WARNING: No tradeable categories available!");
         }
     }
 
@@ -202,11 +217,20 @@ public partial class MerchantTradeViewModel : ObservableObject
     [RelayCommand]
     private async Task BuyItemAsync(TradeItem tradeItem)
     {
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] === BUY CLICKED ===");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Item: {tradeItem?.Item?.RefName ?? "null"}, Price: {tradeItem?.Price ?? 0}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] AvatarEntity: {(_context.AvatarEntity != null ? "present" : "NULL")}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] CurrentSagaRef: {_context.CurrentSagaRef ?? "NULL"}");
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] CurrentCharacterInstanceId: {_context.CurrentCharacterInstanceId?.ToString() ?? "NULL"}");
+
         if (_context.AvatarEntity == null || _context.CurrentSagaRef == null || _context.CurrentCharacterInstanceId == null)
         {
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] BUY ABORTED - missing context data");
             StatusMessageChanged?.Invoke(this, "Cannot complete trade - missing avatar or character data");
             return;
         }
+
+        System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Avatar credits before: {_context.AvatarEntity.Stats?.Credits ?? 0}");
 
         try
         {
@@ -223,7 +247,9 @@ public partial class MerchantTradeViewModel : ObservableObject
                 Avatar = _context.AvatarEntity
             };
 
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Sending TradeItemCommand...");
             var result = await _mediator.Send(command);
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Result: Successful={result.Successful}, Error={result.ErrorMessage}");
 
             if (!result.Successful)
             {
@@ -236,9 +262,15 @@ public partial class MerchantTradeViewModel : ObservableObject
             StatusMessageChanged?.Invoke(this, "Trade successful!");
 
             // Use the updated avatar returned by Saga Engine (self-contained)
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] UpdatedAvatar: {(result.UpdatedAvatar != null ? "present" : "NULL")}");
             if (result.UpdatedAvatar != null)
             {
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Avatar credits after: {result.UpdatedAvatar.Stats?.Credits ?? 0}");
                 _context.AvatarEntity = result.UpdatedAvatar;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] WARNING: No updated avatar returned!");
             }
 
             // Refresh UI to reflect updated inventory and credits
@@ -247,6 +279,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         }
         catch (Exception ex)
         {
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] EXCEPTION: {ex.Message}");
             StatusMessageChanged?.Invoke(this, $"Trade error: {ex.Message}");
         }
     }

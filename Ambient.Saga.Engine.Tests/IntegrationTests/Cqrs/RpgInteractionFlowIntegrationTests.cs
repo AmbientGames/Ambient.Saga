@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -59,6 +60,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository, FakeAvatarRepository>();
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
+        services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
         _serviceProvider = services.BuildServiceProvider();
         _mediator = _serviceProvider.GetRequiredService<IMediator>();
@@ -331,8 +333,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "FriendlyMerchant"
+                    CharacterRef = "FriendlyMerchant"
                 }
             }
         };
@@ -468,7 +469,6 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
                     Characters = new[] { merchant },
                     Equipment = new[] { ironSword, leatherArmor },
                     DialogueTrees = new[] { dialogueTree },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),

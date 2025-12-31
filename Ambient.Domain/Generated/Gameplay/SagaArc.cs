@@ -22,33 +22,31 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class SagaArc : EntityBase {
         
-        private string sagaFeatureRefField;
-        
-        private object[] itemsField;
+        private SagaTrigger[] sagaTriggerField;
         
         private double latitudeZField;
         
         private double longitudeXField;
         
-        /// <remarks/>
-        public string SagaFeatureRef {
-            get {
-                return this.sagaFeatureRefField;
-            }
-            set {
-                this.sagaFeatureRefField = value;
-            }
+        private SagaArcCategory categoryField;
+        
+        private double discoverRadiusField;
+        
+        private SagaArcInitialState initialStateField;
+        
+        public SagaArc() {
+            this.discoverRadiusField = 200D;
+            this.initialStateField = SagaArcInitialState.Hidden;
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("SagaTrigger", typeof(SagaTrigger))]
-        [System.Xml.Serialization.XmlElementAttribute("SagaTriggerPatternRef", typeof(string))]
-        public object[] Items {
+        [System.Xml.Serialization.XmlElementAttribute("SagaTrigger")]
+        public SagaTrigger[] SagaTrigger {
             get {
-                return this.itemsField;
+                return this.sagaTriggerField;
             }
             set {
-                this.itemsField = value;
+                this.sagaTriggerField = value;
             }
         }
         
@@ -71,6 +69,41 @@ namespace Ambient.Domain {
             }
             set {
                 this.longitudeXField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public SagaArcCategory Category {
+            get {
+                return this.categoryField;
+            }
+            set {
+                this.categoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(200D)]
+        public double DiscoverRadius {
+            get {
+                return this.discoverRadiusField;
+            }
+            set {
+                this.discoverRadiusField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(SagaArcInitialState.Hidden)]
+        public SagaArcInitialState InitialState {
+            get {
+                return this.initialStateField;
+            }
+            set {
+                this.initialStateField = value;
             }
         }
     }

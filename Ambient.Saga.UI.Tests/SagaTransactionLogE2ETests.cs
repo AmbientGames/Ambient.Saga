@@ -638,7 +638,6 @@ public class SagaTransactionLogE2ETests : IDisposable
                 {
                     SagaArcs = new[] { saga },
                     Characters = new[] { character },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),

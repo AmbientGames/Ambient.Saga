@@ -358,7 +358,7 @@ public class DialogueActionExecutorTests
         var action = new DialogueAction
         {
             Type = DialogueActionType.SpawnCharacters,
-            CharacterArchetypeRef = "bandit",
+            CharacterRef = "bandit",
             Amount = 3
         };
 
@@ -367,7 +367,7 @@ public class DialogueActionExecutorTests
         Assert.Single(_executor.RaisedEvents);
         var evt = _executor.RaisedEvents[0] as SpawnCharactersEvent;
         Assert.NotNull(evt);
-        Assert.Equal("bandit", evt.CharacterArchetypeRef);
+        Assert.Equal("bandit", evt.CharacterRef);
         Assert.Equal(3, evt.Amount);
     }
 
@@ -973,8 +973,7 @@ public class DialogueActionExecutorTests
         var action = new DialogueAction
         {
             Type = DialogueActionType.SummonAlly,
-            CharacterRef = "GUARDIAN_SPIRIT",
-            CharacterArchetypeRef = "SUMMON_ARCHETYPE"
+            CharacterRef = "GUARDIAN_SPIRIT"
         };
 
         _executor.Execute(action, "test_tree", "node1", "test_character", true);
@@ -983,7 +982,6 @@ public class DialogueActionExecutorTests
         var evt = _executor.RaisedEvents[0] as SummonAllyEvent;
         Assert.NotNull(evt);
         Assert.Equal("GUARDIAN_SPIRIT", evt.CharacterRef);
-        Assert.Equal("SUMMON_ARCHETYPE", evt.CharacterArchetypeRef);
     }
 
     [Fact]

@@ -40,7 +40,7 @@ public class StartCombatEvent : DialogueSystemEvent
 /// </summary>
 public class SpawnCharactersEvent : DialogueSystemEvent
 {
-    public string CharacterArchetypeRef { get; init; } = string.Empty;
+    public string CharacterRef { get; init; } = string.Empty;
     public int Amount { get; init; }
 }
 
@@ -133,7 +133,6 @@ public class CastSpellEvent : DialogueSystemEvent
 public class SummonAllyEvent : DialogueSystemEvent
 {
     public string CharacterRef { get; init; } = string.Empty;
-    public string CharacterArchetypeRef { get; init; } = string.Empty;
 }
 
 /// <summary>

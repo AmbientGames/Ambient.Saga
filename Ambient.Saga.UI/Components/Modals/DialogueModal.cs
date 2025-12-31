@@ -89,7 +89,7 @@ public class DialogueModal
         // Dialogue ended
         if (_currentState.HasEnded)
         {
-            RenderDialogueEnded(ref isOpen);
+            RenderDialogueEnded(character, modalManager, ref isOpen);
             return;
         }
 
@@ -184,7 +184,7 @@ public class DialogueModal
         }
     }
 
-    private void RenderDialogueEnded(ref bool isOpen)
+    private void RenderDialogueEnded(CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         ImGui.Spacing();
         ImGui.Spacing();
@@ -197,6 +197,33 @@ public class DialogueModal
         ImGui.Spacing();
         ImGui.Spacing();
         ImGui.Spacing();
+
+        // Check if character is lootable (defeated and has loot)
+        if (character.CanLoot && !character.IsAlive)
+        {
+            // Show loot option for defeated characters
+            var lootButtonWidth = 150f;
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - lootButtonWidth) * 0.5f);
+
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.6f, 0.5f, 0.2f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.7f, 0.6f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.8f, 0.7f, 0.3f, 1));
+
+            if (ImGui.Button("Collect Loot", new Vector2(lootButtonWidth, 35)))
+            {
+                // Close dialogue and open loot modal
+                modalManager.CloseModal("Dialogue");
+                modalManager.SelectedCharacter = character;
+                modalManager.OpenModal("Loot");
+                CloseAndReset(ref isOpen);
+                return;
+            }
+
+            ImGui.PopStyleColor(3);
+
+            ImGui.Spacing();
+            ImGui.Spacing();
+        }
 
         // Center the close button
         var buttonWidth = 150f;
@@ -243,10 +270,14 @@ public class DialogueModal
 
         ImGui.Spacing();
 
-        // Choices/Continue section
+        // Choices/Continue/Farewell section
         if (_currentState.Choices.Count > 0)
         {
             RenderChoices(viewModel, character, modalManager, choicesHeight);
+        }
+        else if (_currentState.HasEnded)
+        {
+            RenderFarewellButton(ref isOpen);
         }
         else if (_currentState.CanContinue)
         {
@@ -357,6 +388,27 @@ public class DialogueModal
         }
     }
 
+    private void RenderFarewellButton(ref bool isOpen)
+    {
+        ImGui.Spacing();
+        ImGui.Spacing();
+
+        // Center the farewell button
+        var buttonWidth = 200f;
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
+
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.3f, 1));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.25f, 0.5f, 0.4f, 1));
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.3f, 0.6f, 0.5f, 1));
+
+        if (ImGui.Button("Farewell", new Vector2(buttonWidth, 40)))
+        {
+            CloseAndReset(ref isOpen);
+        }
+
+        ImGui.PopStyleColor(3);
+    }
+
     private void RenderBottomBar(ref bool isOpen)
     {
         // End conversation button on the right
@@ -400,9 +452,18 @@ public class DialogueModal
 
     private async Task SelectChoiceAndSetLoadingAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, string choiceId)
     {
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] === CHOICE CLICKED ===");
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] ChoiceId: {choiceId}");
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] Character: {character.DisplayName} ({character.CharacterRef})");
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] SagaRef: {character.SagaRef}");
         try
         {
             await SelectChoiceAsync(viewModel, character, modalManager, choiceId);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] ERROR in SelectChoiceAsync: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Stack: {ex.StackTrace}");
         }
         finally
         {
@@ -412,9 +473,17 @@ public class DialogueModal
 
     private async Task AdvanceDialogueAndSetLoadingAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] === CONTINUE CLICKED ===");
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] Character: {character.DisplayName} ({character.CharacterRef})");
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] CurrentNode: {_currentState?.CurrentNodeId ?? "null"}");
         try
         {
             await AdvanceDialogueAsync(viewModel, character, modalManager);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] ERROR in AdvanceDialogueAsync: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Stack: {ex.StackTrace}");
         }
         finally
         {
@@ -491,15 +560,18 @@ public class DialogueModal
                 Avatar = viewModel.PlayerAvatar
             };
 
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Sending SelectDialogueChoiceCommand...");
             var result = await viewModel.Mediator.Send(command);
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Command result: Successful={result.Successful}, Error={result.ErrorMessage}");
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Result.Data keys: {string.Join(", ", result.Data.Keys)}");
 
             // Check for pending system events (battle, trade transitions)
-            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is List<object> events && events.Count > 0)
+            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {events.Count} pending events");
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events");
 
                 // Process the first event (dialogue choices should only have one transition event)
-                var firstEvent = events[0];
+                var firstEvent = eventsList[0]!;
                 var eventType = firstEvent.GetType().Name;
 
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Event type: {eventType}");
@@ -507,16 +579,25 @@ public class DialogueModal
                 // Close dialogue and open appropriate modal
                 modalManager.CloseModal("Dialogue");
 
+                // Create context for modal transition
+                var context = new CharacterContext(viewModel, character);
+
                 if (eventType.Contains("OpenMerchantTrade"))
                 {
-                    modalManager.OpenModal("MerchantTrade");
+                    System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening MerchantTrade modal for {character.DisplayName} ({character.CharacterRef})");
+                    modalManager.OpenRegisteredModal("MerchantTrade", context);
                 }
                 else if (eventType.Contains("StartBossBattle") || eventType.Contains("StartCombat"))
                 {
-                    modalManager.OpenModal("BossBattle");
+                    System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening BossBattle modal for {character.DisplayName} ({character.CharacterRef})");
+                    modalManager.OpenRegisteredModal("BossBattle", context);
                 }
 
                 return; // Don't refresh dialogue state - we've transitioned to a different modal
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] No pending events from choice, refreshing dialogue state");
             }
 
             // No transition events - refresh dialogue state normally
@@ -524,7 +605,7 @@ public class DialogueModal
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error selecting choice: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Error selecting choice: {ex.Message}");
             _errorMessage = ex.Message;
         }
     }
@@ -544,20 +625,24 @@ public class DialogueModal
                 Avatar = viewModel.PlayerAvatar
             };
 
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Sending AdvanceDialogueCommand...");
             var result = await viewModel.Mediator.Send(command);
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Advance result: Successful={result.Successful}, Error={result.ErrorMessage}");
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Advance Result.Data keys: {string.Join(", ", result.Data.Keys)}");
 
             if (!result.Successful)
             {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Advance FAILED: {result.ErrorMessage}");
                 _errorMessage = result.ErrorMessage;
                 return;
             }
 
             // Check for pending system events (battle, trade transitions)
-            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is List<object> events && events.Count > 0)
+            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {events.Count} pending events from advance");
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events from advance");
 
-                var firstEvent = events[0];
+                var firstEvent = eventsList[0]!;
                 var eventType = firstEvent.GetType().Name;
 
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Event type: {eventType}");
@@ -565,16 +650,25 @@ public class DialogueModal
                 // Close dialogue and open appropriate modal
                 modalManager.CloseModal("Dialogue");
 
+                // Create context for modal transition
+                var context = new CharacterContext(viewModel, character);
+
                 if (eventType.Contains("OpenMerchantTrade"))
                 {
-                    modalManager.OpenModal("MerchantTrade");
+                    System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening MerchantTrade modal for {character.DisplayName} ({character.CharacterRef})");
+                    modalManager.OpenRegisteredModal("MerchantTrade", context);
                 }
                 else if (eventType.Contains("StartBossBattle") || eventType.Contains("StartCombat"))
                 {
-                    modalManager.OpenModal("BossBattle");
+                    System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening BossBattle modal for {character.DisplayName} ({character.CharacterRef})");
+                    modalManager.OpenRegisteredModal("BossBattle", context);
                 }
 
                 return;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] No pending events from advance, refreshing dialogue state");
             }
 
             // Refresh dialogue state to show next node
@@ -582,7 +676,7 @@ public class DialogueModal
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error advancing dialogue: {ex.Message}");
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Error advancing dialogue: {ex.Message}");
             _errorMessage = ex.Message;
         }
     }

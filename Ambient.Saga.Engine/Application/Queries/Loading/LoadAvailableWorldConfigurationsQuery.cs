@@ -19,7 +19,7 @@ public record LoadAvailableWorldConfigurationsQuery : IRequest<IWorldConfigurati
     public required string DataDirectory { get; init; }
 
     /// <summary>
-    /// Definition directory for XSD validation
+    /// Definition directory for XSD validation. If null or schemas not found, validation is skipped.
     /// </summary>
-    public required string DefinitionDirectory { get; init; }
+    public string? DefinitionDirectory { get; init; }
 }

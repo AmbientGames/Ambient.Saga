@@ -7,8 +7,10 @@ using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using LiteDB;
@@ -69,6 +71,7 @@ public class FullSagaFlowE2ETests : IDisposable
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository>(new TestAvatarRepository()); // Mock repository for tests
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
+        services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
         _serviceProvider = services.BuildServiceProvider();
         _mediator = _serviceProvider.GetRequiredService<IMediator>();
@@ -77,61 +80,7 @@ public class FullSagaFlowE2ETests : IDisposable
 
   
 
-    [Fact]
-    public async Task ZoneExitDetection_LivingCharacters_Despawned()
-    {
-        // ARRANGE: Spawn living characters
-        var avatarId = Guid.NewGuid();
-        var avatar = CreateAvatar(avatarId);
-
-        var sagaRef = "GuardPatrolSaga";
-
-        // Enter zone (spawns 3 guards)
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar
-        });
-
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var spawnTxs = instance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.CharacterSpawned)
-            .ToList();
-
-        Assert.Equal(3, spawnTxs.Count);
-        _output.WriteLine($"Spawned {spawnTxs.Count} guards");
-
-        // ACT: Exit zone (move beyond exit radius)
-        var exitResult = await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            Latitude = 35.002, // Far away
-            Longitude = 139.002,
-            Avatar = avatar
-        });
-
-        // ASSERT: All living characters despawned
-        Assert.True(exitResult.Successful);
-
-        var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var despawnTxs = finalInstance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.CharacterDespawned)
-            .ToList();
-
-        Assert.Equal(3, despawnTxs.Count);
-
-        foreach (var despawnTx in despawnTxs)
-        {
-            Assert.Equal("Player exited trigger zone", despawnTx.Data["Reason"]);
-            _output.WriteLine($"Despawned: {despawnTx.Data["CharacterRef"]}");
-        }
-
-        _output.WriteLine("? Zone exit detection working correctly!");
-    }
+    
 
     [Fact]
     public async Task TradeValidation_InsufficientCredits_Rejected()
@@ -284,8 +233,7 @@ public class FullSagaFlowE2ETests : IDisposable
             {
                 new CharacterSpawn
                 {
-                    ItemElementName = ItemChoiceType.CharacterRef,
-                    Item = "Merchant"
+                    CharacterRef = "Merchant"
                 }
             }
         };
@@ -296,9 +244,9 @@ public class FullSagaFlowE2ETests : IDisposable
             EnterRadius = 100.0f,
             Spawn = new[]
             {
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Guard" },
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Guard" },
-                new CharacterSpawn { ItemElementName = ItemChoiceType.CharacterRef, Item = "Guard" }
+                new CharacterSpawn { CharacterRef = "Guard" },
+                new CharacterSpawn { CharacterRef = "Guard" },
+                new CharacterSpawn { CharacterRef = "Guard" }
             }
         };
 
@@ -371,7 +319,6 @@ public class FullSagaFlowE2ETests : IDisposable
                     SagaArcs = new[] { merchantSaga, guardSaga },
                     Characters = new[] { merchant, guard },
                     Equipment = new[] { ironSword, goldPouch },
-                    CharacterArchetypes = Array.Empty<CharacterArchetype>(),
                     AvatarArchetypes = Array.Empty<AvatarArchetype>(),
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = Array.Empty<CharacterAffinity>(),

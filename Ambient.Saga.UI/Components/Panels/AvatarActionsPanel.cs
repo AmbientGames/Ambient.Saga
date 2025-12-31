@@ -436,7 +436,7 @@ public class AvatarActionsPanel
 
                 ImGui.Indent();
 
-                var treeNodeOpen = ImGui.TreeNode($"{(isActive ? "★ " : "")}{name}##aff_{affinity.AffinityRef}");
+                var treeNodeOpen = ImGui.TreeNode($"{(isActive ? "* " : "")}{name}##aff_{affinity.AffinityRef}");
 
                 if (treeNodeOpen)
                 {
@@ -642,7 +642,7 @@ public class AvatarActionsPanel
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.0f, 0.2f, 0.0f, 0.2f));
                 ImGui.BeginChild($"quest_completed_{quest.RefName}", new Vector2(0, 60), ImGuiChildFlags.Borders);
 
-                ImGui.Text($"✓ {quest.DisplayName ?? quest.RefName}");
+                ImGui.Text($"[x] {quest.DisplayName ?? quest.RefName}");
                 if (!string.IsNullOrEmpty(quest.Description))
                 {
                     ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), quest.Description);
@@ -738,7 +738,7 @@ public class AvatarActionsPanel
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.1f, 0.2f));
                 ImGui.BeginChild($"ach_locked_{achievement.RefName}", new Vector2(0, 90), ImGuiChildFlags.Borders);
 
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"🔒 {achievement.DisplayName ?? achievement.RefName}");
+                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"[Locked] {achievement.DisplayName ?? achievement.RefName}");
                 if (!string.IsNullOrEmpty(achievement.Description))
                 {
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), achievement.Description);

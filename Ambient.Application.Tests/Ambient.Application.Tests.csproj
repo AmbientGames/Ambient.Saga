@@ -34,14 +34,9 @@
     </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\Content\Worlds\**\*">
-			<Link>Content\Worlds\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			<TargetPath>Content\Worlds\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="..\Content\Schemas\**\*">
-			<Link>Content\Schemas\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			<TargetPath>Content\Schemas\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+		<Content Include="..\Ambient.Saga.Sandbox.DirectX\Content\**\*">
+			<Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<TargetPath>Content\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>

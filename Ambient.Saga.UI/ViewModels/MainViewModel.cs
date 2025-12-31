@@ -8,6 +8,7 @@ using Ambient.Infrastructure.GameLogic;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Loading;
+using SpawnDevCharacterCommand = Ambient.Saga.Engine.Application.Commands.Saga.SpawnDevCharacterCommand;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts;
@@ -20,7 +21,9 @@ using System.Collections.ObjectModel;
 using Ambient.Saga.UI.Models;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.UI.ViewModels;
+using Ambient.Saga.UI.Components.Panels;
 using SharpDX;
+using Ambient.Domain.ValueObjects;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 
@@ -43,6 +46,9 @@ public partial class MainViewModel : ObservableObject
 
     [ObservableProperty]
     private HeightMapImageData? _heightMapImage;
+
+    [ObservableProperty]
+    private GeoTiffMetadata? _heightMapMetadata;
 
     [ObservableProperty]
     private string? _heightMapInfo;
@@ -184,7 +190,7 @@ public partial class MainViewModel : ObservableObject
 
     // Track current entity being looted (for recording triggers)
     private string? _currentEntityRef;
-    private FeatureType? _currentEntityType;
+    private SagaArcCategory? _currentEntityCategory;
 
     // Track current saga/character context for CQRS commands
     private string? _currentSagaRef;
@@ -365,17 +371,18 @@ public partial class MainViewModel : ObservableObject
 
             //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Found {nearbySagaRefs.Count} nearby Sagas (of {_sagas.Count} total)");
 
-            // Query spawned characters only for nearby Sagas (major performance optimization)
-            foreach (var sagaVm in _sagas.Where(s => nearbySagaRefs.Contains(s.RefName)))
+            // Query spawned characters for ALL nearby Sagas (not just visible ones)
+            // Characters should always be visible regardless of saga visibility
+            foreach (var sagaRef in nearbySagaRefs)
             {
                 // Get Saga template for center coordinates
-                if (!CurrentWorld.SagaArcLookup.TryGetValue(sagaVm.RefName, out var sagaTemplate))
+                if (!CurrentWorld.SagaArcLookup.TryGetValue(sagaRef, out var sagaTemplate))
                     continue;
 
                 var query = new GetSpawnedCharactersQuery
                 {
                     AvatarId = PlayerAvatar.AvatarId,
-                    SagaRef = sagaVm.RefName,
+                    SagaRef = sagaRef,
                     SpawnedOnly = true,  // Only show spawned (not despawned)
                     AliveOnly = false    // Show both alive and dead
                 };
@@ -445,7 +452,7 @@ public partial class MainViewModel : ObservableObject
                         CanDialogue = true, // Sandbox - assume all interactions available
                         CanTrade = true,
                         CanAttack = characterState.IsAlive,
-                        SagaRef = sagaVm.RefName
+                        SagaRef = sagaRef
                     };
 
                     // Color based on alive/dead
@@ -503,22 +510,6 @@ public partial class MainViewModel : ObservableObject
                         await StartDialogueWithCharacterAsync(result.SagaRef, result.Character.CharacterInstanceId);
                     }
                 }
-                else if (result.Feature != null)
-                {
-                    // WPF WINDOW CODE - TO BE DELETED WITH XAML
-                    // Don't auto-interact if an interaction window is already open (WPF only)
-                    // In ImGui mode, modals handle this differently
-                    //if (_isInteractionWindowOpen)
-                    //{
-                    //    System.Diagnostics.Debug.WriteLine($"*** Feature '{result.Feature.DisplayName}' nearby but interaction window already open - skipping");
-                    //    return;
-                    //}
-
-                    System.Diagnostics.Debug.WriteLine($"*** Feature '{result.Feature.DisplayName}' ({result.Feature.FeatureType}) nearby - auto-interacting");
-                    // Features are simple: immediate loot/token rewards (no dialogue)
-                    // For "Spirit in Temple" scenarios, spawn a Character via trigger instead
-                    await InteractWithFeatureAsync(result.SagaRef, result.Feature.FeatureRef);
-                }
             }
         }
         catch (Exception ex)
@@ -530,106 +521,6 @@ public partial class MainViewModel : ObservableObject
     private string? _currentDialogueSagaRef;
     private Guid _currentDialogueCharacterInstanceId;
     private bool _isInDialogue;
-
-    /// <summary>
-    /// Interacts with a feature (shrine, chest, signpost) to receive loot/tokens.
-    /// Features are stateless and give immediate rewards.
-    /// </summary>
-    private async Task InteractWithFeatureAsync(string sagaRef, string featureRef)
-    {
-        if (PlayerAvatar == null || CurrentWorld == null)
-            return;
-
-        try
-        {
-            var command = new InteractWithFeatureCommand
-            {
-                AvatarId = PlayerAvatar.AvatarId,
-                SagaArcRef = sagaRef,
-                FeatureRef = featureRef,
-                Avatar = PlayerAvatar
-            };
-
-            var result = await _mediator.Send(command);
-
-            if (result.Successful)
-            {
-                System.Diagnostics.Debug.WriteLine($"[FeatureInteraction] Interacted with feature '{featureRef}' - Transactions: {result.TransactionIds.Count}");
-                ActivityLog?.Insert(0, $"📦 Interacted with {featureRef}");
-
-                // Show interaction results (loot, effects, quest tokens)
-                await ShowFeatureInteractionResultAsync(sagaRef, featureRef);
-
-                // Save avatar (inventory/stats may have changed)
-                await SavePlayerAvatarAsync();
-                NotifyPlayerAvatarChanged();
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"[FeatureInteraction] ERROR: {result.ErrorMessage}");
-            }
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[FeatureInteraction] EXCEPTION: {ex.Message}");
-        }
-    }
-
-    private async Task ShowFeatureInteractionResultAsync(string sagaRef, string featureRef)
-    {
-        if (CurrentWorld == null)
-            return;
-
-        // Find the feature
-        var feature = CurrentWorld.TryGetSagaFeatureByRefName(featureRef);
-
-        string title = string.Empty;
-        Interactable? interactable = null;
-
-        if (feature != null)
-        {
-            title = feature.DisplayName;
-            interactable = feature.Interactable;
-        }
-
-        // WPF WINDOW CODE - TO BE DELETED WITH XAML
-        /*if (interactable != null)
-        {
-            // Create result view model
-            UpdateSagaInteractionContext();
-
-            var resultVM = new FeatureInteractionResultViewModel();
-            resultVM.LoadResults(title, interactable);
-
-            var locationViewModel = new SagaInteractionWindowViewModel(_sagaInteractionContext)
-            {
-                ActivityLog = ActivityLog,
-                FeatureInteractionResultViewModel = resultVM
-            };
-
-            // Mark window as open
-            _isInteractionWindowOpen = true;
-
-            // Show in window
-            _interactionWindow = new SagaInteractionWindow
-            {
-                DataContext = locationViewModel,
-                Owner = System.Windows.Application.Current.MainWindow
-            };
-
-            // Handle window closed
-            _interactionWindow.Closed += (s, e) =>
-            {
-                _isInteractionWindowOpen = false;
-            };
-
-            _interactionWindow.ShowDialog();
-            _interactionWindow = null;
-            _isInteractionWindowOpen = false;
-        }*/
-
-        await Task.CompletedTask;
-    }
 
     /// <summary>
     /// Starts dialogue with a character using CQRS commands.
@@ -695,7 +586,7 @@ public partial class MainViewModel : ObservableObject
             System.Diagnostics.Debug.WriteLine($"    Choices: {state.Choices.Count}");
             foreach (var choice in state.Choices)
             {
-                var availability = choice.IsAvailable ? "✓" : "✗";
+                var availability = choice.IsAvailable ? "[x]" : "[ ]";
                 System.Diagnostics.Debug.WriteLine($"      [{availability}] {choice.Text} -> {choice.ChoiceId}");
             }
 
@@ -734,147 +625,6 @@ public partial class MainViewModel : ObservableObject
 
         return await _mediator.Send(stateQuery);
     }
-
-    private async Task OnDialogueChoiceSelectedAsync(DialogueChoiceOption choice)
-    {
-        if (PlayerAvatar == null || _currentDialogueSagaRef == null)
-            return;
-
-        System.Diagnostics.Debug.WriteLine($"*** Player selected choice: {choice.Text} -> {choice.ChoiceId}");
-
-        // Send SelectDialogueChoiceCommand
-        var selectCommand = new SelectDialogueChoiceCommand
-        {
-            AvatarId = PlayerAvatar.AvatarId,
-            SagaArcRef = _currentDialogueSagaRef,
-            CharacterInstanceId = _currentDialogueCharacterInstanceId,
-            ChoiceId = choice.ChoiceId,
-            Avatar = PlayerAvatar
-        };
-
-        var result = await _mediator.Send(selectCommand);
-
-        if (!result.Successful)
-        {
-            System.Diagnostics.Debug.WriteLine($"*** ERROR selecting choice: {result.ErrorMessage}");
-            return;
-        }
-
-        System.Diagnostics.Debug.WriteLine($"*** Choice selected successfully. Transactions: {string.Join(", ", result.TransactionIds)}");
-
-        // Check for pending system events (OpenMerchantTrade, StartBossBattle, etc.)
-        System.Diagnostics.Debug.WriteLine($"*** Checking result.Data for events. Keys: {string.Join(", ", result.Data.Keys)}");
-
-        if (result.Data.TryGetValue("PendingEvents", out var eventsObj))
-        {
-            System.Diagnostics.Debug.WriteLine($"*** Found PendingEvents. Type: {eventsObj?.GetType().Name ?? "null"}");
-
-            // Try to cast to IList or IEnumerable to handle different list types
-            if (eventsObj is System.Collections.IList eventsList)
-            {
-                System.Diagnostics.Debug.WriteLine($"*** Processing {eventsList.Count} events");
-                foreach (var evt in eventsList)
-                {
-                    if (evt == null) continue;
-
-                    System.Diagnostics.Debug.WriteLine($"*** Processing dialogue event: {evt.GetType().Name}");
-
-                    // WPF WINDOW CODE - TO BE DELETED WITH XAML
-                    /*if (evt is Game.Gameplay.SagaEngine.Domain.Rpg.Dialogue.Events.OpenMerchantTradeEvent merchantEvent)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"*** Opening merchant trade for {merchantEvent.CharacterRef}");
-
-                        // Switch from dialogue to trade in the same window
-                        _currentDialogueViewModel = null;
-                        _isInDialogue = false;
-
-                        // Close current interaction window if open (WPF only)
-                        if (!_useImGuiMode && _interactionWindow != null)
-                        {
-                            _interactionWindow.Close();
-                            _interactionWindow = null;
-                        }
-
-                        // Show merchant trade (WPF only - ImGui handles via modals)
-                        if (!_useImGuiMode)
-                        {
-                            await ShowMerchantTradeAsync(_currentDialogueSagaRef!, _currentDialogueCharacterInstanceId);
-                        }
-                        return; // Don't refresh dialogue state, we've switched to trade
-                    }
-                    else if (evt is Game.Gameplay.SagaEngine.Domain.Rpg.Dialogue.Events.StartBossBattleEvent bossEvent)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"*** Starting boss battle with {bossEvent.CharacterRef}");
-
-                        // Switch from dialogue to battle in the same window
-                        _currentDialogueViewModel = null;
-                        _isInDialogue = false;
-
-                        // Close current interaction window if open (WPF only)
-                        if (!_useImGuiMode && _interactionWindow != null)
-                        {
-                            _interactionWindow.Close();
-                            _interactionWindow = null;
-                        }
-
-                        // Show boss battle (WPF only - ImGui handles via modals)
-                        if (!_useImGuiMode)
-                        {
-                            await ShowBossBattleAsync(_currentDialogueSagaRef!, _currentDialogueCharacterInstanceId);
-                        }
-                        return; // Don't refresh dialogue state, we've switched to battle
-                    }*/
-                }
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"*** PendingEvents is not IList, cannot process");
-            }
-        }
-        else
-        {
-            System.Diagnostics.Debug.WriteLine($"*** No PendingEvents in result.Data");
-        }
-
-        // Refresh dialogue state
-        await RefreshDialogueStateAsync();
-    }
-
-    private async Task OnDialogueContinueAsync()
-    {
-        System.Diagnostics.Debug.WriteLine($"*** Player clicked Continue");
-        // For auto-advance nodes, we could call an AdvanceDialogueCommand here
-        // For now, just refresh to see if dialogue has ended
-        await RefreshDialogueStateAsync();
-    }
-
-
-
-    private async Task RefreshDialogueStateAsync()
-    {
-        if (_currentDialogueSagaRef == null || _currentDialogueViewModel == null)
-            return;
-
-        var state = await GetDialogueStateAsync(_currentDialogueSagaRef, _currentDialogueCharacterInstanceId);
-
-        if (state == null || !state.IsActive)
-        {
-            System.Diagnostics.Debug.WriteLine($"*** Dialogue ended, transitioning based on character state");
-            _currentDialogueViewModel = null;
-            _isInDialogue = false;
-
-            // WPF WINDOW CODE - TO BE DELETED WITH XAML
-            // Query character state from transaction log to determine next interaction
-            // In ImGui mode, DialogueModal handles transitions itself
-            //await TransitionAfterDialogueAsync();
-            return;
-        }
-
-        // Update ViewModel
-        _currentDialogueViewModel.UpdateState(state);
-    }
-
- 
 
     private DialogueViewModel? _currentDialogueViewModel;
 
@@ -1035,63 +785,30 @@ public partial class MainViewModel : ObservableObject
         StartBackgroundProcessing();
     }
 
-    ///// <summary>
-    ///// Initializes MainViewModel with an externally-loaded world.
-    ///// Use this when the world has already been loaded by the game (e.g., via WorldRepository)
-    ///// instead of through LoadSelectedConfigurationAsync.
-    ///// Avatar is loaded from database or created via archetype selection dialog.
-    ///// </summary>
-    ///// <param name="world">The already-loaded world instance (WorldBootstrapper.Initialize should already have been called)</param>
-    ///// <param name="dataDirectory">Base directory containing world definition files (for height map loading)</param>
-    //public async Task InitializeWithExternalWorldAsync(IWorld world, string dataDirectory)
-    //{
-    //    return;
-    //    if (world == null)
-    //        throw new ArgumentNullException(nameof(world));
-
-    //    try
-    //    {
-    //        IsLoading = true;
-    //        StatusMessage = $"Initializing world: {world.WorldConfiguration?.RefName ?? "Unknown"}...";
-
-    //        // Complete initialization with shared logic
-    //        await InitializeWorldCoreAsync(world, dataDirectory);
-
-    //        StatusMessage = $"Initialized: {world.WorldConfiguration?.RefName ?? "World"}";
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        StatusMessage = $"Error initializing world: {ex.Message}";
-    //        System.Diagnostics.Debug.WriteLine($"[MainViewModel] InitializeWithExternalWorldAsync error: {ex}");
-    //    }
-    //    finally
-    //    {
-    //        IsLoading = false;
-    //    }
-    //}
-
     private async Task LoadHeightMapImageInternalAsync(IWorld world, string dataDirectory)
     {
         // Clear previous image
         HeightMapImage = null;
+        HeightMapMetadata = null;
         HeightMapInfo = null;
         AvatarInfo.UpdateHeightMapStatus(false);
 
         // Check if this world has height map settings
         if (world.IsProcedural)
         {
-            // Procedural worlds don't have height maps
-            HeightMapInfo = "This world uses procedural settings (no height map)";
+            // Generate synthetic map from saga arc locations
+            await LoadProceduralMapAsync(world);
             return;
         }
 
         try
         {
-            var heightMapPath = Path.Combine(dataDirectory, world.WorldConfiguration.HeightMapSettings.RelativePath);
-            
-            if (!File.Exists(heightMapPath))
+            var config = world.WorldConfiguration;
+            var heightMapPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPack, config.Namespace, config.HeightMapSettings.FileName);
+
+            if (heightMapPath == null)
             {
-                HeightMapInfo = $"Height map file not found: {heightMapPath}";
+                HeightMapInfo = $"Height map file not found: {config.HeightMapSettings.FileName}";
                 return;
             }
 
@@ -1102,12 +819,20 @@ public partial class MainViewModel : ObservableObject
             
             // Preprocess height map with water detection
             StatusMessage = "Processing height map for water detection...";
-            var processedMap = await Task.Run(() => HeightMapProcessor.ProcessHeightMap(image, 40, true));
+
+            var verticalShift = 0;
+            if (world.WorldConfiguration.ClimateModel == ClimateModel.Earth)
+            {
+                verticalShift = (int)world.WorldConfiguration.HeightMapSettings.VerticalShift;
+            }
+
+            var processedMap = await Task.Run(() => HeightMapProcessor.ProcessHeightMap(image, 40, true, verticalShift));
             _processedHeightMap = processedMap;
             
             // Convert to platform-agnostic image data for display with water-aware coloring
             var imageData = await ConvertProcessedMapToImageDataAsync(processedMap);
             HeightMapImage = imageData;
+            HeightMapMetadata = world.HeightMapMetadata;
             AvatarInfo.UpdateHeightMapStatus(true);
             
             // Update minimum zoom to ensure image always fills viewport
@@ -1148,44 +873,83 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-
-    // OLD METHOD REMOVED: SpawnCharactersFromTrigger
-    // Character spawning now handled by CQRS UpdateAvatarPositionCommand via ProcessAvatarMovementAsync
-
-    private static async Task<HeightMapImageData> CreatePlaceholderHeightMapAsync(int width, int height)
+    /// <summary>
+    /// Generates a synthetic map for procedural worlds based on saga arc locations.
+    /// </summary>
+    private async Task LoadProceduralMapAsync(IWorld world)
     {
-        var stride = width * 4; // 4 bytes per pixel for BGRA32
-
-        // Create simple gradient background on background thread
-        var pixelData = await Task.Run(() =>
+        try
         {
-            var data = new byte[height * stride];
+            var result = await Task.Run(() => ProceduralMapGenerator.CreateFromWorld(world));
 
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width; x++)
-                {
-                    // Create subtle radial gradient from center (lighter) to edges (darker)
-                    var centerX = width / 2.0;
-                    var centerY = height / 2.0;
-                    var maxDist = Math.Sqrt(centerX * centerX + centerY * centerY);
-                    var dist = Math.Sqrt(Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2));
-                    var brightness = (byte)(200 - (dist / maxDist * 50)); // 200 at center, 150 at edges
+            var (metadata, imageData) = result.Value;
 
-                    var index = y * stride + x * 4;
-                    data[index] = brightness;     // Blue
-                    data[index + 1] = brightness; // Green
-                    data[index + 2] = brightness; // Red
-                    data[index + 3] = 255;        // Alpha (fully opaque)
-                }
-            }
+            // todo: this doesn't actually 'stick'
+            // Set the metadata on the world so coordinate conversions work
+            world.HeightMapMetadata = metadata;
 
-            return data;
-        });
+            // Set the image for display
+            HeightMapImage = imageData;
+            HeightMapMetadata = metadata;
+            AvatarInfo.UpdateHeightMapStatus(true);
 
-        // Create platform-agnostic image data
-        return new HeightMapImageData(pixelData, width, height, stride);
+            // Update minimum zoom
+            UpdateMinimumZoom();
+
+            // Calculate saga arc count for info display
+            var sagaArcCount = world.SagaArcLookup.Count;
+
+            HeightMapInfo = $"Procedural Map: {ProceduralMapGenerator.MapSize} x {ProceduralMapGenerator.MapSize} pixels\n" +
+                           $"Bounds: {metadata.North:F4}°N to {metadata.South:F4}°S, " +
+                           $"{metadata.West:F4}°W to {metadata.East:F4}°E\n" +
+                           $"Coverage: {metadata.Width:F4}° x {metadata.Height:F4}°\n" +
+                           $"Saga Arcs: {sagaArcCount}";
+
+            StatusMessage = $"Procedural map generated ({sagaArcCount} saga arcs)";
+        }
+        catch (Exception ex)
+        {
+            HeightMapInfo = $"Error generating procedural map: {ex.Message}";
+        }
     }
+
+    //// OLD METHOD REMOVED: SpawnCharactersFromTrigger
+    //// Character spawning now handled by CQRS UpdateAvatarPositionCommand via ProcessAvatarMovementAsync
+
+    //private static async Task<HeightMapImageData> CreatePlaceholderHeightMapAsync(int width, int height)
+    //{
+    //    var stride = width * 4; // 4 bytes per pixel for BGRA32
+
+    //    // Create simple gradient background on background thread
+    //    var pixelData = await Task.Run(() =>
+    //    {
+    //        var data = new byte[height * stride];
+
+    //        for (int y = 0; y < height; y++)
+    //        {
+    //            for (int x = 0; x < width; x++)
+    //            {
+    //                // Create subtle radial gradient from center (lighter) to edges (darker)
+    //                var centerX = width / 2.0;
+    //                var centerY = height / 2.0;
+    //                var maxDist = Math.Sqrt(centerX * centerX + centerY * centerY);
+    //                var dist = Math.Sqrt(Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2));
+    //                var brightness = (byte)(200 - (dist / maxDist * 50)); // 200 at center, 150 at edges
+
+    //                var index = y * stride + x * 4;
+    //                data[index] = brightness;     // Blue
+    //                data[index + 1] = brightness; // Green
+    //                data[index + 2] = brightness; // Red
+    //                data[index + 3] = 255;        // Alpha (fully opaque)
+    //            }
+    //        }
+
+    //        return data;
+    //    });
+
+    //    // Create platform-agnostic image data
+    //    return new HeightMapImageData(pixelData, width, height, stride);
+    //}
 
     private static async Task<HeightMapImageData> ConvertProcessedMapToImageDataAsync(HeightMapProcessor.ProcessedHeightMap processedMap)
     {
@@ -1289,7 +1053,7 @@ public partial class MainViewModel : ObservableObject
 
             // Use factory to create all repositories (eliminates Infrastructure imports)
             var repositories = _repositoryFactory.CreateRepositories(
-                "Carbon",
+                "Saga",
                 world.WorldConfiguration.RefName,
                 world,
                 SteamContext.IsSteamInitialized);
@@ -1349,7 +1113,11 @@ public partial class MainViewModel : ObservableObject
             var spawnLat = world.WorldConfiguration.SpawnLatitude;
             var spawnLong = world.WorldConfiguration.SpawnLongitude;
 
-            SetAvatarPosition(spawnLat, spawnLong, world.HeightMapMetadata, centerOnAvatar: true);
+            AvatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(spawnLong, world.HeightMapMetadata);
+            AvatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(spawnLat, world.HeightMapMetadata);
+            var avatarElevation = SampleElevation((int)AvatarPixelX, (int)AvatarPixelY);
+
+            SetAvatarPosition(spawnLat, spawnLong, avatarElevation, true);
         }
         catch (Exception ex)
         {
@@ -1357,15 +1125,10 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    public async void SetAvatarPosition(double latitude, double longitude, IHeightMapMetadata metadata, bool centerOnAvatar = false)
+    public async void SetAvatarPosition(double latitude, double longitude, double elevation, bool centerOnAvatar = false)
     {
         AvatarLatitude = latitude;
         AvatarLongitude = longitude;
-        AvatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(longitude, metadata);
-        AvatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(latitude, metadata);
-
-        // Sample elevation from height map
-        AvatarElevation = SampleElevation((int)AvatarPixelX, (int)AvatarPixelY);
 
         HasAvatarPosition = true;
 
@@ -1451,6 +1214,9 @@ public partial class MainViewModel : ObservableObject
             {
                 // Pure CQRS: Command succeeded, no state data returned
                 ActivityLog.Insert(0, $"Entered {trigger.DisplayName}");
+
+                // Refresh trigger status so completed triggers disappear
+                await UpdateSagaFeatureStatus(trigger.SagaRefName);
             }
             else
             {
@@ -1471,234 +1237,10 @@ public partial class MainViewModel : ObservableObject
         Task.Delay(100).ContinueWith(_ => ShouldCenterOnAvatar = false);
     }
 
-    private void ShowLootForTrigger(ProximityTriggerViewModel triggerViewModel, ref string actionMessage)
-    {
-        if (CurrentWorld == null || PlayerAvatar == null || _worldRepository == null)
-        {
-            actionMessage += " - Error: No world or avatar";
-            return;
-        }
-
-        // Look up Saga to get the entity reference
-        var saga = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault(p => p.RefName == triggerViewModel.SagaRefName);
-        if (saga == null)
-        {
-            actionMessage += $" - Error: Saga '{triggerViewModel.SagaRefName}' not found";
-            return;
-        }
-
-        // saga.SagaFeatureRef contains the entity ref (e.g., "BAMBOO_GROVE", "KINKAKUJI_TEMPLE_HISTORY")
-        var entityRef = saga.SagaFeatureRef;
-
-        // Look up the feature to determine type
-        var sagaFeature = CurrentWorld.TryGetSagaFeatureByRefName(entityRef);
-
-        // Determine feature type from saga
-        FeatureType? featureType = null;
-        if (sagaFeature != null)
-        {
-            featureType = sagaFeature.Type switch
-            {
-                SagaFeatureType.Landmark => FeatureType.Landmark,
-                SagaFeatureType.Structure => FeatureType.Structure,
-                SagaFeatureType.Quest => FeatureType.QuestSignpost,
-                SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
-                SagaFeatureType.Teleporter => FeatureType.Teleporter,
-                SagaFeatureType.Vendor => FeatureType.Vendor,
-                SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
-                _ => FeatureType.Structure
-            };
-        }
-
-        // Check cooldown/availability before showing loot
-        if (featureType != null && !CheckEntityAvailability(featureType.Value, entityRef, ref actionMessage))
-        {
-            return; // On cooldown - message already set
-        }
-
-        // Create a fake "loot container" character to hold the loot
-        var lootCharacter = new Character
-        {
-            RefName = entityRef,
-            DisplayName = triggerViewModel.DisplayName,
-            Description = $"Available items from {triggerViewModel.DisplayName}"
-        };
-
-        ItemCollection? loot = null;
-        RewardEffects? effects = null;
-
-        // TODO: This method needs refactoring - proximity triggers don't have types
-        // Features (Landmark/Structure) should be handled separately
-        // For now, determine feature type from saga
-        var saga2 = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault(s => s.RefName == triggerViewModel.SagaRefName);
-        if (saga2 != null && !string.IsNullOrEmpty(saga2.SagaFeatureRef))
-        {
-            var feature = CurrentWorld.TryGetSagaFeatureByRefName(saga2.SagaFeatureRef);
-            if (feature != null)
-            {
-                switch (feature.Type)
-                {
-                    case SagaFeatureType.Landmark:
-                        // Show lore content
-                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
-                        {
-                            lootCharacter.Description = feature.Interactable.Content;
-                            ActivityLog.Insert(0, $"📜 {feature.Interactable.Content}");
-                        }
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    case SagaFeatureType.Structure:
-                    case SagaFeatureType.ResourceNode:
-                        // Structures and resource nodes can have loot
-                        loot = feature.Interactable?.Loot;
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    case SagaFeatureType.Vendor:
-                        // Vendors have items to trade
-                        loot = feature.Interactable?.Loot;
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    case SagaFeatureType.CraftingStation:
-                        // Crafting stations show available recipes
-                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
-                        {
-                            lootCharacter.Description = feature.Interactable.Content;
-                        }
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    case SagaFeatureType.Teleporter:
-                        // Teleporters show destination info
-                        if (!string.IsNullOrEmpty(feature.Interactable?.Content))
-                        {
-                            lootCharacter.Description = feature.Interactable.Content;
-                        }
-                        effects = feature.Interactable?.Effects;
-                        break;
-
-                    default:
-                        // Default: treat like structure
-                        loot = feature.Interactable?.Loot;
-                        effects = feature.Interactable?.Effects;
-                        break;
-                }
-            }
-            else
-            {
-                actionMessage += $" - Error: Feature '{entityRef}' not found";
-                return;
-            }
-        }
-
-        // Populate the character with loot
-        if (loot != null)
-        {
-            lootCharacter.Capabilities = loot;
-        }
-
-        // Apply effects immediately (auto-grant on trigger)
-        if (effects != null)
-        {
-            var effectsList = new List<string>();
-            ApplyRewardEffects(effects, effectsList);
-            if (effectsList.Count > 0)
-            {
-                actionMessage += $" - Effects: {string.Join(", ", effectsList)}";
-            }
-        }
-
-        // Track current entity for trigger recording
-        _currentEntityRef = entityRef;
-        // Set _currentEntityType based on saga feature type
-        if (sagaFeature != null)
-        {
-            _currentEntityType = sagaFeature.Type switch
-            {
-                SagaFeatureType.Landmark => FeatureType.Landmark,
-                SagaFeatureType.Structure => FeatureType.Structure,
-                SagaFeatureType.Quest => FeatureType.QuestSignpost,
-                SagaFeatureType.ResourceNode => FeatureType.ResourceNode,
-                SagaFeatureType.Teleporter => FeatureType.Teleporter,
-                SagaFeatureType.Vendor => FeatureType.Vendor,
-                SagaFeatureType.CraftingStation => FeatureType.CraftingStation,
-                _ => FeatureType.Structure
-            };
-        }
-
-        // Set the character and show trade UI
-        TriggeredCharacter = lootCharacter;
-        // Loot containers are not merchants (only player can sell)
-        MerchantTrade.RefreshCategories();
-        OnCharacterChanged();
-
-        actionMessage += " - Items available";
-    }
-
-    private bool CheckEntityAvailability(FeatureType featureType, string entityRef, ref string actionMessage)
-    {
-        if (_worldRepository == null) return false;
-
-        switch (featureType)
-        {
-            case FeatureType.Landmark:
-                // TODO: Check landmark state from SagaState (event-sourced)
-                // For now, landmarks are always available
-                break;
-
-            case FeatureType.Structure:
-                // TODO: Check structure state from SagaState (event-sourced)
-                // Need to query SagaState.Structures to check IsDestroyed
-                // For now, structures are always available
-                break;
-        }
-
-        return true;
-    }
-
-    private async void RecordEntityTrigger()
-    {
-        if (CurrentWorld == null || PlayerAvatar == null) return;
-        if (_currentEntityRef == null || _currentEntityType == null || SelectedTrigger == null) return;
-
-        try
-        {
-            var command = new InteractWithFeatureCommand
-            {
-                AvatarId = PlayerAvatar.AvatarId,
-                SagaArcRef = SelectedTrigger.SagaRefName,
-                FeatureRef = _currentEntityRef,
-                Avatar = PlayerAvatar
-            };
-
-            var result = await _mediator.Send(command);
-
-            if (result.Successful)
-            {
-                ActivityLog.Insert(0, $"✨ Feature interaction recorded: {_currentEntityRef} [CQRS]");
-
-                // Update the SagaViewModel to reflect completion
-                await UpdateSagaFeatureStatus(SelectedTrigger.SagaRefName);
-            }
-            else
-            {
-                ActivityLog.Insert(0, $"⚠️ Feature interaction failed: {result.ErrorMessage}");
-            }
-        }
-        catch (Exception ex)
-        {
-            ActivityLog.Insert(0, $"Error recording feature interaction: {ex.Message}");
-        }
-
-        // Clear current entity
-        _currentEntityRef = null;
-        _currentEntityType = null;
-    }
+ 
 
     /// <summary>
-    /// Updates a SagaViewModel's feature status after recording a transaction.
+    /// Updates a SagaViewModel's trigger status after recording a transaction.
     /// </summary>
     private async Task UpdateSagaFeatureStatus(string sagaRef)
     {
@@ -1720,153 +1262,24 @@ public partial class MainViewModel : ObservableObject
                     Avatar = PlayerAvatar
                 });
 
-                var featureInteraction = interactions.FirstOrDefault(i =>
-                    i.Type == SagaInteractionType.Feature &&
-                    i.SagaRef == sagaRef);
-
-                if (featureInteraction != null)
+                // Update trigger statuses (so completed triggers disappear)
+                foreach (var triggerVM in sagaVM.Triggers)
                 {
-                    // Update to pre-calculated color based on new status
-                    sagaVM.FeatureDotColor = FeatureColors.GetColor(
-                        sagaVM.FeatureType, featureInteraction.Status);
-                    sagaVM.FeatureDotOpacity = 1.0;
-                }
-            }
-        }
-    }
+                    var triggerInteraction = interactions.FirstOrDefault(i =>
+                        i.Type == SagaInteractionType.SagaTrigger &&
+                        i.SagaRef == sagaRef &&
+                        i.SagaTriggerRef == triggerVM.RefName);
 
-    private bool PlayerHasItem(string itemRef)
-    {
-        if (PlayerAvatar == null || PlayerAvatar.Capabilities == null) return false;
-
-        // Check consumables
-        if (PlayerAvatar.Capabilities.Consumables != null)
-        {
-            foreach (var entry in PlayerAvatar.Capabilities.Consumables)
-            {
-                if (entry.ConsumableRef == itemRef && entry.Quantity > 0)
-                    return true;
-            }
-        }
-
-        // Check equipment
-        if (PlayerAvatar.Capabilities.Equipment != null)
-        {
-            foreach (var entry in PlayerAvatar.Capabilities.Equipment)
-            {
-                if (entry.EquipmentRef == itemRef)
-                    return true;
-            }
-        }
-
-        // Check tools
-        if (PlayerAvatar.Capabilities.Tools != null)
-        {
-            foreach (var entry in PlayerAvatar.Capabilities.Tools)
-            {
-                if (entry.ToolRef == itemRef)
-                    return true;
-            }
-        }
-
-        return false;
-    }
-
-    private async Task RemoveItemFromInventoryAsync(string itemRef)
-    {
-        if (PlayerAvatar == null || PlayerAvatar.Capabilities == null) return;
-
-        // Remove from consumables
-        if (PlayerAvatar.Capabilities.Consumables != null)
-        {
-            for (int i = PlayerAvatar.Capabilities.Consumables.Length - 1; i >= 0; i--)
-            {
-                var entry = PlayerAvatar.Capabilities.Consumables[i];
-                if (entry.ConsumableRef == itemRef)
-                {
-                    entry.Quantity--;
-                    if (entry.Quantity <= 0)
+                    if (triggerInteraction != null)
                     {
-                        // Remove empty entry
-                        var list = PlayerAvatar.Capabilities.Consumables.ToList();
-                        list.RemoveAt(i);
-                        PlayerAvatar.Capabilities.Consumables = list.ToArray();
+                        triggerVM.Status = triggerInteraction.Status;
+                        triggerVM.RingColor = TriggerColors.GetColor(triggerInteraction.Status);
                     }
-                    await SavePlayerAvatarAsync();
-                    return;
-                }
-            }
-        }
-
-        // Remove from equipment
-        if (PlayerAvatar.Capabilities.Equipment != null)
-        {
-            for (int i = PlayerAvatar.Capabilities.Equipment.Length - 1; i >= 0; i--)
-            {
-                var entry = PlayerAvatar.Capabilities.Equipment[i];
-                if (entry.EquipmentRef == itemRef)
-                {
-                    var list = PlayerAvatar.Capabilities.Equipment.ToList();
-                    list.RemoveAt(i);
-                    PlayerAvatar.Capabilities.Equipment = list.ToArray();
-                    await SavePlayerAvatarAsync();
-                    return;
-                }
-            }
-        }
-
-        // Remove from tools
-        if (PlayerAvatar.Capabilities.Tools != null)
-        {
-            for (int i = PlayerAvatar.Capabilities.Tools.Length - 1; i >= 0; i--)
-            {
-                var entry = PlayerAvatar.Capabilities.Tools[i];
-                if (entry.ToolRef == itemRef)
-                {
-                    var list = PlayerAvatar.Capabilities.Tools.ToList();
-                    list.RemoveAt(i);
-                    PlayerAvatar.Capabilities.Tools = list.ToArray();
-                    await SavePlayerAvatarAsync();
-                    return;
                 }
             }
         }
     }
 
-    private void ApplyRewardEffects(RewardEffects effects, List<string> rewards)
-    {
-        if (PlayerAvatar == null) return;
-
-        if (effects.Health != 0)
-        {
-            PlayerAvatar.Stats.Health += effects.Health;
-            rewards.Add($"{effects.Health:+0;-0} Health");
-        }
-
-        if (effects.Stamina != 0)
-        {
-            PlayerAvatar.Stats.Stamina += effects.Stamina;
-            rewards.Add($"{effects.Stamina:+0;-0} Stamina");
-        }
-
-        if (effects.Mana != 0)
-        {
-            PlayerAvatar.Stats.Mana += effects.Mana;
-            rewards.Add($"{effects.Mana:+0;-0} Mana");
-        }
-
-        if (effects.Experience != 0)
-        {
-            PlayerAvatar.Stats.Experience += effects.Experience;
-            rewards.Add($"{effects.Experience:+0;-0} XP");
-        }
-
-        if (effects.Credits != 0)
-        {
-            PlayerAvatar.Stats.Credits += effects.Credits;
-            rewards.Add($"{effects.Credits:+0;-0} {CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits"}");
-        }
-    }
 
 
     /// <summary>
@@ -1881,38 +1294,8 @@ public partial class MainViewModel : ObservableObject
     private void SpawnCharacterAtAvatar(string characterRef)
     {
         StatusMessage = "Manual character spawning disabled - characters spawn via Saga triggers only";
-        ActivityLog.Insert(0, "⚠️ Manual spawning not supported in event-sourced architecture");
+        ActivityLog.Insert(0, "[!] Manual spawning not supported in event-sourced architecture");
     }
-
-    // WPF-specific method commented out for class library conversion
-    // UI layer should use SetAvatarPositionFromPixel instead
-    /*
-    [RelayCommand]
-    private void SetAvatarPositionFromClick(object? parameter)
-    {
-        if (CurrentWorld?.HeightMapMetadata == null || parameter is not System.Windows.Point clickPoint)
-            return;
-
-        try
-        {
-            // Convert click position to model coordinates immediately
-            var clickLatitude = CoordinateConverter.HeightMapPixelYToLatitude(clickPoint.Y, CurrentWorld.HeightMapMetadata);
-            var clickLongitude = CoordinateConverter.HeightMapPixelXToLongitude(clickPoint.X, CurrentWorld.HeightMapMetadata);
-            var clickModelX = CoordinateConverter.LongitudeToModelX(clickLongitude, CurrentWorld);
-            var clickModelZ = CoordinateConverter.LatitudeToModelZ(clickLatitude, CurrentWorld);
-
-            // NOTE: Character click handling removed - triggers only
-
-            // Move avatar to clicked position
-            SetAvatarPosition(clickLatitude, clickLongitude, CurrentWorld.HeightMapMetadata);
-            StatusMessage = $"Avatar moved to {clickLatitude:F6}°, {clickLongitude:F6}°";
-        }
-        catch (Exception ex)
-        {
-            StatusMessage = $"Error setting avatar position: {ex.Message}";
-        }
-    }
-    */
 
     /// <summary>
     /// Sets avatar position from pixel coordinates (for ImGui/non-WPF callers)
@@ -1928,8 +1311,12 @@ public partial class MainViewModel : ObservableObject
             var clickLatitude = CoordinateConverter.HeightMapPixelYToLatitude(pixelY, CurrentWorld.HeightMapMetadata);
             var clickLongitude = CoordinateConverter.HeightMapPixelXToLongitude(pixelX, CurrentWorld.HeightMapMetadata);
 
+            AvatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(clickLatitude, CurrentWorld.HeightMapMetadata);
+            AvatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(clickLongitude, CurrentWorld.HeightMapMetadata);
+            var avatarElevation = SampleElevation((int)AvatarPixelX, (int)AvatarPixelY);
+
             // Move avatar to clicked position
-            SetAvatarPosition(clickLatitude, clickLongitude, CurrentWorld.HeightMapMetadata);
+            SetAvatarPosition(clickLatitude, clickLongitude, avatarElevation);
 
             // Notify external consumers (e.g., game) to teleport the 3D avatar
             AvatarTeleportRequested?.Invoke(clickLatitude, clickLongitude);
@@ -1986,35 +1373,82 @@ public partial class MainViewModel : ObservableObject
             {
                 triggeredViewModel = innermost.ViewModel;
                 hoveredSagaRef = triggeredViewModel.SagaRefName;
-                triggeredViewModel.IsHovered = true;
-                triggeredViewModel.RingOpacity = 0.3; // Hovered opacity (brighter)
             }
         }
 
-        // Update visibility for all triggers based on which Saga is hovered
+        // Step 1: Reset ALL triggers on ALL sagas
         foreach (var saga in Sagas)
         {
             foreach (var trigger in saga.Triggers)
             {
-                if (saga.RefName == hoveredSagaRef)
-                {
-                    // Show all triggers for the hovered Saga
-                    trigger.IsVisible = true;
+                trigger.IsVisible = false;
+                trigger.IsHovered = false;
+            }
+        }
 
-                    if (trigger != triggeredViewModel)
-                    {
-                        // Not the innermost, so dimmer
-                        trigger.IsHovered = false;
-                        trigger.RingOpacity = 0.15;
-                    }
-                }
-                else
+        // Step 2: Enable only triggers that are in the query results (mouse is inside them)
+        foreach (var ti in triggerInteractions)
+        {
+            var trigger = Sagas
+                .SelectMany(s => s.Triggers)
+                .FirstOrDefault(t => t.RefName == ti.SagaTriggerRef && t.SagaRefName == ti.SagaRef);
+
+            // If trigger not found, the saga may be hidden - discover it now
+            if (trigger == null && CurrentWorld != null)
+            {
+                // Try to load the hidden saga and add it to ViewModels (discovery!)
+                if (CurrentWorld.SagaArcLookup.TryGetValue(ti.SagaRef, out var sagaArc) &&
+                    CurrentWorld.SagaTriggersLookup.TryGetValue(ti.SagaRef, out var sagaTriggers) &&
+                    CurrentWorld.HeightMapMetadata != null)
                 {
-                    // Hide triggers for all other Sagas
-                    trigger.IsVisible = false;
-                    trigger.IsHovered = false;
-                    trigger.RingOpacity = 0.15;
+                    var newSagaVM = SagaViewModel.FromDomain(
+                        sagaArc,
+                        sagaTriggers.OrderByDescending(t => t.EnterRadius).ToList(),
+                        CurrentWorld.HeightMapMetadata,
+                        CurrentWorld);
+
+                    // Set feature dot color based on category (newly discovered = available)
+                    newSagaVM.InteractionStatus = InteractionStatus.Available;
+                    newSagaVM.FeatureDotColor = SagaColors.GetColor(newSagaVM.Category, InteractionStatus.Available);
+                    newSagaVM.FeatureDotOpacity = 1.0;
+
+                    Sagas.Add(newSagaVM);
+
+                    // Add triggers to AllTriggers for rendering
+                    foreach (var triggerVM in newSagaVM.Triggers)
+                    {
+                        triggerVM.SagaRefName = newSagaVM.RefName;
+                        AllTriggers.Add(triggerVM);
+                    }
+
+                    // Now find the trigger again
+                    trigger = newSagaVM.Triggers.FirstOrDefault(t => t.RefName == ti.SagaTriggerRef);
+
+                    System.Diagnostics.Debug.WriteLine($"[Discovery] Saga '{ti.SagaRef}' discovered and added to ViewModels");
                 }
+            }
+
+            if (trigger == null)
+                continue; // Still not found - skip
+
+            // Show if Available or Locked, keep hidden if Complete
+            trigger.IsVisible = ti.Status == InteractionStatus.Available ||
+                                ti.Status == InteractionStatus.Locked;
+            trigger.IsHovered = true; // Mouse is inside this trigger (from CQRS query)
+            trigger.Status = ti.Status;
+            trigger.RingColor = TriggerColors.GetColor(ti.Status);
+
+            // Debug info - show expected spawn count from trigger definition
+            if (System.Diagnostics.Debugger.IsAttached && CurrentWorld != null)
+            {
+                var saga = CurrentWorld.TryGetSagaArcByRefName(ti.SagaRef);
+                var actualTrigger = saga?.SagaTrigger?.FirstOrDefault(t => t.RefName == ti.SagaTriggerRef);
+                var expectedSpawnCount = actualTrigger?.Spawn?.Sum(s => s.Count) ?? 0;
+                var spawnDetails = actualTrigger?.Spawn?.Select(s => $"  - {s.CharacterRef} (x{s.Count})") ?? Array.Empty<string>();
+
+                trigger.DebugQueryInfo = $"Status: {ti.Status}\n" +
+                                         $"Expected spawns: {expectedSpawnCount}\n" +
+                                         string.Join("\n", spawnDetails);
             }
         }
 
@@ -2051,7 +1485,7 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
-    private int SampleElevation(int pixelX, int pixelY)
+    public int SampleElevation(int pixelX, int pixelY)
     {
         if (_processedHeightMap == null)
             return 0;
@@ -2428,5 +1862,229 @@ public partial class MainViewModel : ObservableObject
         CharacterChanged?.Invoke(this, EventArgs.Empty);
     }
 
+    #region Dev Tools - Interaction Testing
+
+    /// <summary>
+    /// Spawns a test character for dev testing using CQRS command.
+    /// Creates proper saga transactions so dialogue/trade/combat work correctly.
+    /// </summary>
+    public async Task<CharacterViewModel?> SpawnDevCharacterAsync(DevCharacterType characterType)
+    {
+        if (CurrentWorld == null || PlayerAvatar == null)
+        {
+            System.Diagnostics.Debug.WriteLine("[DevTools] Cannot spawn - no world or avatar loaded");
+            StatusMessage = "Load a world first";
+            return null;
+        }
+
+        try
+        {
+            // Find a suitable test character from the world based on type
+            var testCharacter = FindTestCharacter(characterType);
+            if (testCharacter == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DevTools] No suitable {characterType} character found in world");
+                StatusMessage = $"No {characterType} character found in world data";
+                return null;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Found test character: {testCharacter.DisplayName} ({testCharacter.RefName})");
+
+            // Find a real saga to use
+            var sagaRef = FindSagaWithCharacter(testCharacter.RefName)
+                ?? CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName
+                ?? "";
+
+            // Use CQRS command to spawn with proper transaction history
+            var spawnCommand = new SpawnDevCharacterCommand
+            {
+                AvatarId = PlayerAvatar.AvatarId,
+                CharacterRef = testCharacter.RefName,
+                SagaArcRef = sagaRef,
+                Avatar = PlayerAvatar
+            };
+
+            var result = await _mediator.Send(spawnCommand);
+
+            if (!result.Successful)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DevTools] Spawn failed: {result.ErrorMessage}");
+                StatusMessage = $"Spawn failed: {result.ErrorMessage}";
+                return null;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Spawn succeeded, InstanceId: {result.CharacterInstanceId}");
+
+            // Position near avatar (2m away for immediate interaction)
+            var spawnX = PlayerAvatar.X + 2.0;
+            var spawnZ = PlayerAvatar.Z;
+
+            // Create character ViewModel and add to collection
+            var canDialogue = testCharacter.Interactable?.DialogueTreeRef != null;
+            var canTrade = testCharacter.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false;
+            var isHostile = testCharacter.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false;
+            var isBoss = testCharacter.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false;
+
+            var characterVm = new CharacterViewModel
+            {
+                CharacterInstanceId = result.CharacterInstanceId,
+                CharacterRef = testCharacter.RefName,
+                DisplayName = testCharacter.DisplayName,
+                SagaRef = result.SagaRef ?? sagaRef,
+                CharacterType = characterType.ToString(),
+                ModelX = spawnX,
+                ModelZ = spawnZ,
+                PixelX = 0,
+                PixelY = 0,
+                IsAlive = true,
+                CanDialogue = canDialogue,
+                CanTrade = canTrade,
+                CanAttack = isHostile || isBoss,
+                MarkerColor = GetDevCharacterColor(characterType)
+            };
+
+            Characters.Add(characterVm);
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Spawned {testCharacter.DisplayName} at ({spawnX:F2}, {spawnZ:F2})");
+            StatusMessage = $"Spawned {testCharacter.DisplayName}";
+
+            return characterVm;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Error spawning character: {ex.Message}");
+            StatusMessage = $"Error: {ex.Message}";
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// Finds a suitable test character from world data based on type.
+    /// </summary>
+    private static readonly Random _devRandom = new();
+
+    private Character? FindTestCharacter(DevCharacterType characterType)
+    {
+        var characters = CurrentWorld?.Gameplay?.Characters;
+        if (characters == null || characters.Length == 0)
+            return null;
+
+        return characterType switch
+        {
+            // NPC: Prioritize NPCs with loot (gift givers), exclude merchants/bosses/hostiles
+            // Use random selection for variety
+            DevCharacterType.NPC => FindRandomNpc(characters),
+
+            // Merchant: prefer one with BOTH dialogue AND WillTrade, fallback to just WillTrade
+            DevCharacterType.Merchant => characters.FirstOrDefault(c =>
+                c.Interactable?.DialogueTreeRef != null &&
+                (c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false))
+                ?? characters.FirstOrDefault(c =>
+                    c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false),
+
+            // Boss: prefer one with BOTH dialogue AND BossFight, fallback to just BossFight
+            DevCharacterType.Boss => characters.FirstOrDefault(c =>
+                c.Interactable?.DialogueTreeRef != null &&
+                (c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false))
+                ?? characters.FirstOrDefault(c =>
+                    c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false),
+
+            // Hostile: prefer one with BOTH dialogue AND Hostile, fallback to just Hostile
+            DevCharacterType.Hostile => characters.FirstOrDefault(c =>
+                c.Interactable?.DialogueTreeRef != null &&
+                (c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false))
+                ?? characters.FirstOrDefault(c =>
+                    c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false),
+
+            _ => characters.FirstOrDefault()
+        };
+    }
+
+    /// <summary>
+    /// Finds a random NPC for dev testing, prioritizing those with loot (gift givers).
+    /// Excludes merchants, bosses, and hostiles.
+    /// </summary>
+    private static Character? FindRandomNpc(Character[] characters)
+    {
+        // Filter to friendly NPCs with dialogue (exclude merchants, bosses, hostiles)
+        var friendlyNpcs = characters.Where(c =>
+            c.Interactable?.DialogueTreeRef != null &&
+            !(c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false) &&
+            !(c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false) &&
+            !(c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false))
+            .ToList();
+
+        if (friendlyNpcs.Count == 0)
+            return null;
+
+        // Prioritize NPCs with loot (gift givers) - they have interesting dialogue paths
+        var npcsWithLoot = friendlyNpcs.Where(c => c.Interactable?.Loot != null &&
+            (c.Interactable.Loot.Equipment?.Length > 0 ||
+             c.Interactable.Loot.Consumables?.Length > 0 ||
+             c.Interactable.Loot.Spells?.Length > 0))
+            .ToList();
+
+        if (npcsWithLoot.Count > 0)
+        {
+            var selected = npcsWithLoot[_devRandom.Next(npcsWithLoot.Count)];
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Selected NPC with loot: {selected.DisplayName} ({selected.RefName})");
+            return selected;
+        }
+
+        // Fallback to any friendly NPC
+        var fallback = friendlyNpcs[_devRandom.Next(friendlyNpcs.Count)];
+        System.Diagnostics.Debug.WriteLine($"[DevTools] Selected random NPC: {fallback.DisplayName} ({fallback.RefName})");
+        return fallback;
+    }
+
+    /// <summary>
+    /// Finds a saga that spawns the given character (for dev testing with real saga refs).
+    /// </summary>
+    private string? FindSagaWithCharacter(string characterRef)
+    {
+        var sagas = CurrentWorld?.Gameplay?.SagaArcs;
+        if (sagas == null)
+            return null;
+
+        foreach (var saga in sagas)
+        {
+            // Check if this saga has triggers that spawn the character
+            if (CurrentWorld!.SagaTriggersLookup.TryGetValue(saga.RefName, out var triggers))
+            {
+                foreach (var trigger in triggers)
+                {
+                    if (trigger.Spawn != null)
+                    {
+                        foreach (var spawn in trigger.Spawn)
+                        {
+                            if (spawn.CharacterRef == characterRef)
+                            {
+                                return saga.RefName;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fallback: just return first saga (dialogue needs a saga context)
+        return sagas.FirstOrDefault()?.RefName;
+    }
+
+    /// <summary>
+    /// Gets a color for the dev character dot based on type.
+    /// </summary>
+    private System.Numerics.Vector4 GetDevCharacterColor(DevCharacterType characterType)
+    {
+        return characterType switch
+        {
+            DevCharacterType.NPC => new System.Numerics.Vector4(0.3f, 0.8f, 0.3f, 1f),      // Green
+            DevCharacterType.Merchant => new System.Numerics.Vector4(1f, 0.84f, 0f, 1f),    // Gold
+            DevCharacterType.Boss => new System.Numerics.Vector4(0.8f, 0.2f, 0.8f, 1f),     // Purple
+            DevCharacterType.Hostile => new System.Numerics.Vector4(0.9f, 0.2f, 0.2f, 1f),  // Red
+            _ => new System.Numerics.Vector4(1f, 1f, 1f, 1f)                                 // White
+        };
+    }
+
+    #endregion
 
 }

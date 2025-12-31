@@ -109,7 +109,7 @@ public class QuestLogModal
 
         if (isCompleted)
         {
-            ImGui.TextColored(new Vector4(0, 1, 0, 1), "✓");
+            ImGui.TextColored(new Vector4(0, 1, 0, 1), "[x]");
             ImGui.SameLine();
         }
 

@@ -554,37 +554,6 @@ public class WorldInfoPanel
                 ImGui.Unindent(10);
             }
 
-            ImGui.Spacing();
-            ImGui.Separator();
-
-            // Steam Testing Section (matching WPF)
-            ImGui.TextColored(new Vector4(1, 0.647f, 0, 1), "Steam Testing");
-            ImGui.Spacing();
-
-            if (ImGui.Button("Test Steam Achievement (ACH_HEAVY_FIRE)", new Vector2(-1, 25)))
-            {
-                if (viewModel.TestSteamAchievementCommand?.CanExecute(null) == true)
-                {
-                    viewModel.TestSteamAchievementCommand.Execute(null);
-                }
-            }
-
-            if (ImGui.IsItemHovered())
-            {
-                ImGui.SetTooltip("Directly set ACH_HEAVY_FIRE achievement to Steam and query status");
-            }
-
-            ImGui.Spacing();
-            ImGui.Separator();
-        }
-
-        // Spawn Character button (matching WPF at bottom)
-        if (ImGui.Button("Spawn Character", new Vector2(-1, 25)))
-        {
-            if (viewModel.ViewCharactersCommand.CanExecute(null))
-            {
-                viewModel.ViewCharactersCommand.Execute(null);
-            }
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
+using Ambient.Saga.Engine.Domain.Services;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
+using System.Diagnostics;
 using System.Numerics;
 using Ambient.Saga.UI.ViewModels;
 using Ambient.Saga.UI.Components.Modals;
@@ -15,9 +17,9 @@ namespace Ambient.Saga.UI.Components.Panels;
 public class MapViewPanel
 {
     private const float MinZoom = 0.1f;
-    private const float MaxZoom = 100.0f;
-    private const float ZoomSpeed = 0.3f; // Increased for more responsive zooming
-    private const int CenterViewCells = 50; // Number of cells to show when centering on avatar
+    private const float MaxZoom = 400.0f;
+    private const float ZoomMultiplier = 1.15f; // Exponential zoom: 15% change per scroll tick
+    private const int CenterViewCells = 10; // Number of cells to show when centering on avatar
 
     // Track if we need to center on avatar (initial load or button press)
     private bool _needsInitialCenter = true;
@@ -90,10 +92,10 @@ public class MapViewPanel
                 // Calculate avatar position in display coordinates (after zoom)
                 var zoomedDisplayWidth = displayWidth * (float)targetZoom;
                 var zoomedDisplayHeight = displayHeight * (float)targetZoom;
-
+                
                 // Get avatar pixel position
-                var avatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(viewModel.AvatarLongitude, viewModel.CurrentWorld!.HeightMapMetadata);
-                var avatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(viewModel.AvatarLatitude, viewModel.CurrentWorld!.HeightMapMetadata);
+                var avatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(viewModel.AvatarLongitude, viewModel.HeightMapMetadata);
+                var avatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(viewModel.AvatarLatitude, viewModel.HeightMapMetadata);
 
                 // Convert to display coordinates
                 var avatarDisplayX = avatarPixelX / heightMapWidth * zoomedDisplayWidth;
@@ -166,9 +168,11 @@ public class MapViewPanel
                         lonBefore = CoordinateConverter.HeightMapPixelXToLongitude(pixelXBefore, viewModel.CurrentWorld.HeightMapMetadata);
                     }
 
-                    // Apply zoom
+                    // Apply zoom (exponential for consistent feel at all zoom levels)
                     var oldZoom = viewModel.ZoomFactor;
-                    var newZoom = oldZoom + wheel * ZoomSpeed;
+                    var newZoom = wheel > 0
+                        ? oldZoom * Math.Pow(ZoomMultiplier, wheel)
+                        : oldZoom / Math.Pow(ZoomMultiplier, -wheel);
                     newZoom = Math.Clamp(newZoom, MinZoom, MaxZoom);
 
                     if (newZoom != oldZoom)
@@ -319,12 +323,43 @@ public class MapViewPanel
                 return (float)(radiusPixels * pixelsPerHeightMapPixel);
             }
 
+            // Helper to convert screen mouse position to world lat/lon (same logic as click)
+            (double latitude, double longitude)? ScreenToWorld(Vector2 mousePos)
+            {
+                if (viewModel.CurrentWorld?.HeightMapMetadata == null)
+                    return null;
+
+                var currentScrollX = ImGui.GetScrollX();
+                var currentScrollY = ImGui.GetScrollY();
+
+                var relativeX = mousePos.X - windowPos.X + currentScrollX;
+                var relativeY = mousePos.Y - windowPos.Y + currentScrollY;
+
+                if (relativeX < 0 || relativeX > displayWidth || relativeY < 0 || relativeY > displayHeight)
+                    return null;
+
+                var normalizedX = relativeX / displayWidth;
+                var normalizedY = relativeY / displayHeight;
+
+                var pixelX = normalizedX * heightMapWidth;
+                var pixelY = normalizedY * heightMapHeight;
+
+                var latitude = CoordinateConverter.HeightMapPixelYToLatitude(pixelY, viewModel.CurrentWorld.HeightMapMetadata);
+                var longitude = CoordinateConverter.HeightMapPixelXToLongitude(pixelX, viewModel.CurrentWorld.HeightMapMetadata);
+
+                return (latitude, longitude);
+            }
+
+            // Hover state is set by MainViewModel.FindTriggerAtPoint via CQRS query
+            // (called from UpdateMousePosition - same logic as trigger activation)
+
             // Draw Saga zones (proximity trigger rings)
             foreach (var saga in viewModel.Sagas)
             {
                 foreach (var trigger in saga.Triggers)
                 {
-                    // Only show triggers when visible (mouse hover)
+                    // Only show triggers when visible (controlled by MainViewModel based on query)
+                    // Completed triggers have IsVisible=false and are skipped
                     if (!trigger.IsVisible)
                         continue;
 
@@ -336,17 +371,25 @@ public class MapViewPanel
 
                     var enterRadius = RadiusPixelsToScreen(trigger.EnterRadiusPixels);
 
-                    // Use ring color from ViewModel (ImGui Vector4 color)
+                    // Highlight if this trigger is hovered (set by ViewModel via CQRS query)
+                    var isHovered = trigger.IsHovered;
+
+                    // Use ring color from ViewModel, brighten if hovered
                     var color = trigger.RingColor;
-                    var opacity = (float)trigger.RingOpacity;
-                    var circleColor = ImGui.ColorConvertFloat4ToU32(new Vector4(
-                        color.X,
-                        color.Y,
-                        color.Z,
-                        opacity));
+                    var opacity = isHovered ? 0.6f : 0.3f;
+                    var circleColor = ImGui.ColorConvertFloat4ToU32(new Vector4(color.X, color.Y, color.Z, opacity));
 
                     // Draw trigger ring
                     drawList.AddCircleFilled(center, enterRadius, circleColor, 32);
+
+                    // Debug tooltip when hovering (now using world coordinate intersection)
+                    if (Debugger.IsAttached && isHovered)
+                    {
+                        var tooltipText = $"{trigger.RefName}";
+                        if (!string.IsNullOrEmpty(trigger.DebugQueryInfo))
+                            tooltipText += $"\n{trigger.DebugQueryInfo}";
+                        ImGui.SetTooltip(tooltipText);
+                    }
                 }
             }
 
@@ -380,29 +423,29 @@ public class MapViewPanel
                 var distance = MathF.Sqrt(MathF.Pow(mousePos.X - center.X, 2) + MathF.Pow(mousePos.Y - center.Y, 2));
                 if (distance <= dotRadius + 3) // 3px tolerance for easier hovering
                 {
-                    // Draw tooltip with display name
-                    ImGui.SetTooltip(saga.DisplayName);
-
-                    // Handle click to interact with quest signpost
-                    if (ImGui.IsMouseClicked(ImGuiMouseButton.Left) && saga.FeatureType == FeatureType.QuestSignpost)
+                    // Draw tooltip - enhanced for developers
+                    if (Debugger.IsAttached)
                     {
-                        // Get quest signpost details from world
-                        var sagaArc = viewModel.CurrentWorld?.Gameplay?.SagaArcs?.FirstOrDefault(s => s.RefName == saga.RefName);
-                        if (sagaArc != null && !string.IsNullOrEmpty(sagaArc.SagaFeatureRef))
-                        {
-                            // Find quest feature
-                            var questFeature = viewModel.CurrentWorld?.TryGetSagaFeatureByRefName(sagaArc.SagaFeatureRef);
-                            if (questFeature != null && questFeature.Type == SagaFeatureType.Quest)
-                            {
-                                // Open quest modal with quest details
-                                modalManager.OpenQuestSignpost(
-                                    questFeature.QuestRef,
-                                    saga.RefName,
-                                    sagaArc.SagaFeatureRef,
-                                    viewModel);
-                            }
-                        }
+                        var tooltip = $"{saga.DisplayName}\n" +
+                                      $"Status: {saga.InteractionStatus}\n" +
+                                      $"Category: {saga.Category}\n" +
+                                      $"Ref: {saga.RefName}";
+
+                        if (saga.RequiresQuestTokens?.Length > 0)
+                            tooltip += $"\nRequires: {string.Join(", ", saga.RequiresQuestTokens)}";
+
+                        if (saga.GivesQuestTokens?.Length > 0)
+                            tooltip += $"\nGives: {string.Join(", ", saga.GivesQuestTokens)}";
+
+                        ImGui.SetTooltip(tooltip);
                     }
+                    else
+                    {
+                        ImGui.SetTooltip(saga.DisplayName);
+                    }
+
+                    // Handle click - quests are now handled via character dialogue, not direct signpost interaction
+                    // Category is just a visual hint; actual interaction happens through SagaTrigger spawned characters
                 }
             }
 
@@ -412,15 +455,14 @@ public class MapViewPanel
             //    System.Diagnostics.Debug.WriteLine($"[MapViewPanel] Rendering {viewModel.Characters.Count} characters");
             //}
 
-            foreach (var character in viewModel.Characters)
+            foreach (var character in viewModel.Characters.ToList())
             {
                 var pos = PixelToScreen(character.PixelX, character.PixelY);
                 //System.Diagnostics.Debug.WriteLine($"[MapViewPanel] Character '{character.DisplayName}' at pixel ({character.PixelX:F1}, {character.PixelY:F1}) -> screen ({pos.X:F1}, {pos.Y:F1})");
 
-                // Skip if way off-screen (allow some buffer for partial visibility)
+                // Skip if way off-screen (allow some buffer for partial visibility) - is this right? what about really bit x and y?
                 if (pos.X < -100 || pos.Y < -100)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[MapViewPanel]   -> SKIPPED (off-screen)");
                     continue;
                 }
 
@@ -438,8 +480,34 @@ public class MapViewPanel
                 var distance = MathF.Sqrt(MathF.Pow(mousePos.X - pos.X, 2) + MathF.Pow(mousePos.Y - pos.Y, 2));
                 if (distance <= radius + 3) // 3px tolerance for easier hovering
                 {
-                    // Draw tooltip with display name
-                    ImGui.SetTooltip(character.DisplayName);
+                    // Draw tooltip - enhanced for developers
+                    if (Debugger.IsAttached)
+                    {
+                        var status = character.IsAlive ? "Alive" : "Dead";
+                        var tooltip = $"{character.DisplayName}\n" +
+                                      $"Status: {status}\n" +
+                                      $"Ref: {character.CharacterRef}\n" +
+                                      $"Saga: {character.SagaRef}\n" +
+                                      $"Type: {character.CharacterType}";
+
+                        // Show interaction capabilities
+                        var capabilities = new List<string>();
+                        if (character.CanDialogue) capabilities.Add("Dialogue");
+                        if (character.CanTrade) capabilities.Add("Trade");
+                        if (character.CanAttack) capabilities.Add("Attack");
+                        if (character.CanLoot) capabilities.Add("Loot");
+                        if (capabilities.Count > 0)
+                            tooltip += $"\nCan: {string.Join(", ", capabilities)}";
+
+                        if (character.HasBeenLooted)
+                            tooltip += "\n(Looted)";
+
+                        ImGui.SetTooltip(tooltip);
+                    }
+                    else
+                    {
+                        ImGui.SetTooltip(character.DisplayName);
+                    }
 
                     // Handle click to interact with character
                     if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
@@ -458,13 +526,13 @@ public class MapViewPanel
 
                 if (avatarPos.X > -100 && avatarPos.Y > -100)
                 {
-                    // Draw avatar as lime green circle (matching WPF)
-                    var avatarColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 1, 0, 1)); // Lime
-                    var outlineColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0.5f, 0, 1)); // DarkGreen
+                    // Draw avatar as cyan circle (distinct from green "Available" locations)
+                    var avatarColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 1, 1, 1)); // Cyan
+                    var outlineColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0, 0.5f, 0.5f, 1)); // DarkCyan
                     var radius = 6f;
 
                     drawList.AddCircleFilled(avatarPos, radius, avatarColor, 12);
-                    drawList.AddCircle(avatarPos, radius, outlineColor, 12, 2.0f); // DarkGreen outline
+                    drawList.AddCircle(avatarPos, radius, outlineColor, 12, 2.0f); // DarkCyan outline
 
                     // Check if mouse is hovering over avatar
                     var mousePos = ImGui.GetMousePos();
@@ -491,17 +559,17 @@ public class MapViewPanel
         }
         ImGui.SameLine();
 
-        // Zoom controls
+        // Zoom controls (exponential for consistent feel)
         if (ImGui.Button("-"))
         {
-            viewModel.ZoomFactor = Math.Max(MinZoom, viewModel.ZoomFactor - 0.5);
+            viewModel.ZoomFactor = Math.Max(MinZoom, viewModel.ZoomFactor / ZoomMultiplier);
         }
         ImGui.SameLine();
         ImGui.Text($"Zoom: {viewModel.ZoomFactor:F1}x");
         ImGui.SameLine();
         if (ImGui.Button("+"))
         {
-            viewModel.ZoomFactor = Math.Min(MaxZoom, viewModel.ZoomFactor + 0.5);
+            viewModel.ZoomFactor = Math.Min(MaxZoom, viewModel.ZoomFactor * ZoomMultiplier);
         }
         ImGui.SameLine();
         if (ImGui.Button("Show All"))
