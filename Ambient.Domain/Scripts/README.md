@@ -43,7 +43,7 @@ The workflow generates individual class files organized into domain-specific fol
 
 ### Directory Structure
 
-- `Content/Schemas/` - XSD schemas (at solution root, shared across projects)
+- `Ambient.Domain/Content/Schemas/` - XSD schemas (shared across projects)
 - `Content/Worlds/` - XML world definitions (game content data)
 - `Ambient.Domain/Scripts/` - Generation scripts (this folder)
 - `Ambient.Domain/Generated/` - Output folder for auto-generated C# classes
@@ -57,7 +57,7 @@ The workflow generates individual class files organized into domain-specific fol
 
 This runs the complete process:
 1. Deletes and recreates the `Generated` folder
-2. Generates C# classes from `Content\Schemas\WorldDefinition.xsd` using XSD.exe
+2. Generates C# classes from `Ambient.Domain\Content\Schemas\WorldDefinition.xsd` using XSD.exe
 3. Splits the large WorldDefinition.cs into individual class files
 4. Organizes classes into domain folders (Gameplay, Simulation, Presentation)
 
