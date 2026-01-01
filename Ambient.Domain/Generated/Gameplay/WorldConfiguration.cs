@@ -45,11 +45,14 @@ namespace Ambient.Domain {
         
         private ClimateModel climateModelField;
         
+        private int displayOrderField;
+        
         public WorldConfiguration() {
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
             this.secondsInHourField = 60;
             this.climateModelField = ClimateModel.Earth;
+            this.displayOrderField = 100;
         }
         
         /// <remarks/>
@@ -175,6 +178,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.climateModelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(100)]
+        public int DisplayOrder {
+            get {
+                return this.displayOrderField;
+            }
+            set {
+                this.displayOrderField = value;
             }
         }
     }
