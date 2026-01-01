@@ -51,7 +51,7 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
             }
         }
 
-        return configs.ToArray();
+        return configs.OrderBy(c => c.DisplayOrder).ThenBy(c => c.DisplayName).ToArray();
     }
 
     private static IEnumerable<string> DiscoverWorldDirectories()

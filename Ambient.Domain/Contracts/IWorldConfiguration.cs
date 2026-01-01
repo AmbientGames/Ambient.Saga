@@ -22,4 +22,6 @@ public interface IWorldConfiguration
     string Description { get; set; }
 
     ClimateModel ClimateModel { get; set; }
+
+    int DisplayOrder { get; set; }
 }

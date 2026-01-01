@@ -18,6 +18,9 @@ public class ModalStack
     public void Push(string modalName)
     {
         _modalStack.Push(modalName);
+        // Consume the current ESC key state so the modal that just opened
+        // doesn't immediately close from the same keypress that opened it
+        _escKeyWasDown = true;
         System.Diagnostics.Debug.WriteLine($"[ModalStack] Pushed: {modalName} (Stack depth: {_modalStack.Count})");
         ModalPushed?.Invoke(modalName);
     }

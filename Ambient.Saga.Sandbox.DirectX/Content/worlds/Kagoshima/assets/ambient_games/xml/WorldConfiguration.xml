@@ -8,7 +8,8 @@
     ContentPack="japan"
     Namespace="ambient_games"
     SpawnLatitude="31.5994"
-    SpawnLongitude="130.5637">
+    SpawnLongitude="130.5637"
+	DisplayOrder="1">
 	<HeightMapSettings
         FileName="Kagoshima.tif"
         HorizontalScale="0.16666666666"
