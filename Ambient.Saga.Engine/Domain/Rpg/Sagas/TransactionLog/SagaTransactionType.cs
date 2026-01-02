@@ -78,12 +78,9 @@ public enum SagaTransactionType
     // Landmark interactions
     LandmarkDiscovered,
 
-    // Voxel mining and building (claims-based for anti-cheat)
-    LocationClaimed,         // Player position update with movement validation
-    ToolWearClaimed,         // Tool condition delta with wear rate validation
-    MiningSessionClaimed,    // Batch of blocks mined with plausibility checks
-    BuildingSessionClaimed,  // Batch of blocks placed with material validation
-    InventorySnapshot,       // Periodic full inventory state for validation baseline
+    // Extension point for domain-specific transaction types (e.g., Ambient.Core voxel claims)
+    // When Type = Extension, check ExtensionTypeName for the actual type identifier
+    Extension,
 
     // Administrative
     StateSnapshot,      // Periodic snapshot for performance

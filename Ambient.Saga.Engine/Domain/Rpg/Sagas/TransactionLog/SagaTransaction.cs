@@ -64,6 +64,14 @@ public class SagaTransaction
     public SagaTransactionType Type { get; set; }
 
     /// <summary>
+    /// Extension type name when Type = Extension.
+    /// Allows domain-specific packages (e.g., Ambient.Core) to define custom transaction types
+    /// without modifying the base SagaTransactionType enum.
+    /// Examples: "LocationClaimed", "MiningSessionClaimed", "ProcessingCycleCompleted"
+    /// </summary>
+    public string? ExtensionTypeName { get; set; }
+
+    /// <summary>
     /// Transaction-specific data (JSON-serialized).
     /// Structure depends on Type.
     /// Examples:

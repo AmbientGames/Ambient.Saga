@@ -420,10 +420,10 @@ public static class QuestProgressEvaluator
             return currentLocationRef != failCondition.LocationRef;
         }
 
-        // Fall back to checking via LocationClaimed transactions
+        // Fall back to checking via LocationClaimed transactions (Extension type)
         // Find the most recent location claim
         var lastLocationClaim = transactions
-            .Where(t => t.Type == SagaTransactionType.LocationClaimed)
+            .Where(t => t.Type == SagaTransactionType.Extension && t.ExtensionTypeName == "LocationClaimed")
             .OrderByDescending(t => t.LocalTimestamp)
             .FirstOrDefault();
 

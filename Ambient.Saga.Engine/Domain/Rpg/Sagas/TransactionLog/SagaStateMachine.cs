@@ -225,25 +225,10 @@ public class SagaStateMachine
                 ApplyEntityInteracted(state, tx);
                 break;
 
-            // Voxel mining and building
-            case SagaTransactionType.LocationClaimed:
-                ApplyLocationClaimed(state, tx);
-                break;
-
-            case SagaTransactionType.ToolWearClaimed:
-                ApplyToolWearClaimed(state, tx);
-                break;
-
-            case SagaTransactionType.MiningSessionClaimed:
-                ApplyMiningSessionClaimed(state, tx);
-                break;
-
-            case SagaTransactionType.BuildingSessionClaimed:
-                ApplyBuildingSessionClaimed(state, tx);
-                break;
-
-            case SagaTransactionType.InventorySnapshot:
-                ApplyInventorySnapshot(state, tx);
+            // Extension types are handled by domain-specific appliers (e.g., Ambient.Core)
+            // The transaction log itself is the source of truth for extension data
+            case SagaTransactionType.Extension:
+                ApplyExtension(state, tx);
                 break;
 
             // Add more cases as needed
@@ -857,50 +842,20 @@ public class SagaStateMachine
         }
     }
 
-    // ===== Voxel Transaction Application Methods =====
+    // ===== Extension Transaction Application =====
 
-    private void ApplyLocationClaimed(SagaState state, SagaTransaction tx)
+    private void ApplyExtension(SagaState state, SagaTransaction tx)
     {
-        // Location claims are primarily for anti-cheat analytics
-        // The transaction log itself is the source of truth for position history
-        // We can optionally track latest position in state for queries if needed
-        // For now, just track that location was claimed (logged)
-    }
-
-    private void ApplyToolWearClaimed(SagaState state, SagaTransaction tx)
-    {
-        // Tool wear claims are primarily for anti-cheat analytics
-        // The transaction log itself is the source of truth for tool usage history
-        // Actual tool condition is managed by the avatar entity, not Saga state
-    }
-
-    private void ApplyMiningSessionClaimed(SagaState state, SagaTransaction tx)
-    {
-        // Mining session claims are primarily for anti-cheat analytics
-        // The transaction log itself is the source of truth for mining history
-        // Block inventory is managed by the avatar entity, not Saga state
-
-        // We could optionally track total blocks mined for statistics:
-        // state.TotalBlocksMined += tx.GetData<int>("BlockCount");
-    }
-
-    private void ApplyBuildingSessionClaimed(SagaState state, SagaTransaction tx)
-    {
-        // Building session claims are primarily for anti-cheat analytics
-        // The transaction log itself is the source of truth for building history
-        // Block placement is managed by the chunk server, not Saga state
-
-        // We could optionally track total blocks placed for statistics:
-        // state.TotalBlocksPlaced += tx.GetData<int>("BlockCount");
-    }
-
-    private void ApplyInventorySnapshot(SagaState state, SagaTransaction tx)
-    {
-        // Inventory snapshots are validation baselines for anti-cheat
-        // The transaction log itself is the source of truth for inventory history
-        // Actual inventory is managed by the avatar entity, not Saga state
-
-        // These snapshots allow retrospective analysis:
-        // "Did player's inventory grow impossibly fast between snapshots?"
+        // Extension transactions are handled by domain-specific appliers (e.g., Ambient.Core)
+        // The base Saga engine simply records them in the transaction log
+        // Domain packages can query/replay the log to extract extension-specific data
+        //
+        // The ExtensionTypeName property indicates the domain-specific type:
+        // - LocationClaimed, ToolWearClaimed, MiningSessionClaimed, etc. (voxel claims)
+        // - ProcessingCycleCompleted (crafting/processing)
+        // - BlockExtensionCreated/Updated/Destroyed (cache blocks)
+        //
+        // This design keeps Ambient.Saga abstract and allows domain packages
+        // to extend the transaction system without modifying the base enum.
     }
 }
