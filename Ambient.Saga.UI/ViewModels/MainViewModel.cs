@@ -804,7 +804,7 @@ public partial class MainViewModel : ObservableObject
         try
         {
             var config = world.WorldConfiguration;
-            var heightMapPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPack, config.Namespace, config.HeightMapSettings.FileName);
+            var heightMapPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPackLibrary, config.Namespace, config.HeightMapSettings.FileName);
 
             if (heightMapPath == null)
             {

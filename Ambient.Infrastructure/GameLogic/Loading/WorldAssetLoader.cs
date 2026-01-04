@@ -87,7 +87,7 @@ public class WorldAssetLoader : IWorldLoader
     private static async Task LoadHeightMapMetadata(IWorld world)
     {
         var config = world.WorldConfiguration;
-        var resolvedPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPack, config.Namespace, config.HeightMapSettings.FileName);
+        var resolvedPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPackLibrary, config.Namespace, config.HeightMapSettings.FileName);
 
         if (resolvedPath == null)
         {

@@ -68,7 +68,7 @@ public class WorldLoadingQueryTests : IDisposable
         Assert.All(configurations, config =>
         {
             Assert.False(string.IsNullOrEmpty(config.RefName));
-            Assert.False(string.IsNullOrEmpty(config.Template));
+            Assert.False(string.IsNullOrEmpty(config.ContentPackLibrary));
         });
     }
 

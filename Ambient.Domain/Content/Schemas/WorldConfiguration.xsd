@@ -25,9 +25,8 @@
                         <xs:element name="ProceduralSettings" type="ProceduralSettings" />
                     </xs:choice>
                 </xs:sequence>
-                <xs:attribute name="Template" type="xs:string" use="required" />
-				<xs:attribute name="ResourcePack" type="xs:string" use="required" />
-				<xs:attribute name="ContentPack" type="xs:string" use="required" />
+				<xs:attribute name="ContentPackLibrary" type="xs:string" default="default" />
+				<xs:attribute name="ContentPackTheme" type="xs:string" />
 				<xs:attribute name="Namespace" type="xs:string" use="required" />
                 <xs:attribute name="CurrencyName" type="xs:string" default="Credit" />
                 <xs:attribute name="StartDate" type="xs:date" default="0001-05-01" />

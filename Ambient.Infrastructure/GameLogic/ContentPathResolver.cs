@@ -9,29 +9,29 @@ public static class ContentPathResolver
     private const string DefaultPack = "default";
     private const string DefaultNamespace = "ambient_games";
 
-    public static string? ResolveTexturePath(string resourcePack, string ns, string textureName)
+    public static string? ResolveTexturePath(string library, string ns, string textureName)
     {
-        return ResolvePath("resourcepacks", resourcePack, ns, "textures", "block", textureName + ".png");
+        return ResolvePath("packs/libraries", library, ns, "textures", "block", textureName + ".png");
     }
 
-    public static string? ResolveGeographicDataPath(string contentPack, string ns, string fileName)
+    public static string? ResolveGeographicDataPath(string library, string ns, string fileName)
     {
-        return ResolvePath("contentpacks", contentPack, ns, "geographic_data", fileName);
+        return ResolvePath("packs/libraries", library, ns, "geographic_data", fileName);
     }
 
     /// <summary>
-    /// Resolves model file path with resource pack override support.
-    /// Resolution order: resourcepack -> default resourcepack
+    /// Resolves model file path with library fallback support.
+    /// Resolution order: library -> default library
     /// Supports .litematic, .schematic, and .xml model files.
     /// </summary>
-    public static string? ResolveModelPath(string resourcePack, string ns, string modelName)
+    public static string? ResolveModelPath(string library, string ns, string modelName)
     {
         // Try each supported extension in order of preference
         string[] extensions = [".litematic", ".schematic", ".xml"];
 
         foreach (var ext in extensions)
         {
-            var path = ResolvePath("resourcepacks", resourcePack, ns, "models", "block", modelName + ext);
+            var path = ResolvePath("packs/libraries", library, ns, "models", "block", modelName + ext);
             if (path != null)
                 return path;
         }
@@ -41,9 +41,9 @@ public static class ContentPathResolver
 
     /// <summary>
     /// Resolves XML content path with world-specific override support.
-    /// Resolution order: {worldRef}_generated -> world -> resourcepack -> default resourcepack
+    /// Resolution order: {worldRef}_generated -> world -> library -> default library
     /// </summary>
-    public static string? ResolveXmlPath(string worldRef, string resourcePack, string ns, params string[] relativePath)
+    public static string? ResolveXmlPath(string worldRef, string library, string ns, params string[] relativePath)
     {
         var xmlSubPath = new[] { "xml" }.Concat(relativePath).ToArray();
 
@@ -58,15 +58,15 @@ public static class ContentPathResolver
         if (worldPath != null)
             return worldPath;
 
-        // 3. Check resourcepack location
-        var resourcePackPath = ResolvePath("resourcepacks", resourcePack, ns, xmlSubPath);
-        if (resourcePackPath != null)
-            return resourcePackPath;
+        // 3. Check library location
+        var libraryPath = ResolvePath("packs/libraries", library, ns, xmlSubPath);
+        if (libraryPath != null)
+            return libraryPath;
 
-        // 4. Fall back to default resourcepack (if not already checked)
-        if (resourcePack != DefaultPack || ns != DefaultNamespace)
+        // 4. Fall back to default library (if not already checked)
+        if (library != DefaultPack || ns != DefaultNamespace)
         {
-            var defaultPath = ResolvePath("resourcepacks", DefaultPack, DefaultNamespace, xmlSubPath);
+            var defaultPath = ResolvePath("packs/libraries", DefaultPack, DefaultNamespace, xmlSubPath);
             if (defaultPath != null)
                 return defaultPath;
         }
