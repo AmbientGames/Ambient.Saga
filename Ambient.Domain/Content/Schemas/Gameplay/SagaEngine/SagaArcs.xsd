@@ -6,6 +6,7 @@
 	<xs:simpleType name="SagaArcCategory">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Facility"/>
+			<xs:enumeration value="Stronghold"/>
 			<xs:enumeration value="Religious"/>
 			<xs:enumeration value="Ruin"/>
 			<xs:enumeration value="Landmark"/>
