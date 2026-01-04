@@ -5,11 +5,25 @@
 
 	<xs:simpleType name="SagaArcCategory">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="Landmark" />
-			<xs:enumeration value="Structure" />
-			<xs:enumeration value="Waypoint" />
-			<xs:enumeration value="Quest" />
-			<xs:enumeration value="Vendor" />
+			<xs:enumeration value="Facility"/>
+			<xs:enumeration value="Religious"/>
+			<xs:enumeration value="Ruin"/>
+			<xs:enumeration value="Landmark"/>
+			<xs:enumeration value="Infrastructure"/>
+			<xs:enumeration value="Passage"/>
+			<xs:enumeration value="TrailNode"/>
+			<xs:enumeration value="Camp"/>
+			<xs:enumeration value="QuestHub"/>
+			<xs:enumeration value="Service"/>
+			<xs:enumeration value="Default"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SagaArcKind">
+		<xs:restriction base="xs:string">
+			<!-- Examples: Shrine, Temple, Airport, Bridge, BaseCamp, Viewpoint -->
+			<!-- Allow letters/digits with optional separators to keep it filesystem-friendly -->
+			<xs:pattern value="[A-Za-z][A-Za-z0-9]*(?:[._-][A-Za-z0-9]+)*"/>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -30,6 +44,7 @@
 				<xs:attribute name="LatitudeZ" type="xs:double" use="required" />
 				<xs:attribute name="LongitudeX" type="xs:double" use="required" />
 				<xs:attribute name="Category" type="SagaArcCategory" use="required" />
+				<xs:attribute name="Kind" type="SagaArcKind" use="optional" default="Default" />
 
 				<!-- Deterministic POI interaction envelope -->
 				<xs:attribute name="DiscoverRadius" type="xs:double" use="optional" default="200"/>

@@ -21,18 +21,36 @@ namespace Ambient.Domain {
     public enum SagaArcCategory {
         
         /// <remarks/>
+        Facility,
+        
+        /// <remarks/>
+        Religious,
+        
+        /// <remarks/>
+        Ruin,
+        
+        /// <remarks/>
         Landmark,
         
         /// <remarks/>
-        Structure,
+        Infrastructure,
         
         /// <remarks/>
-        Waypoint,
+        Passage,
         
         /// <remarks/>
-        Quest,
+        TrailNode,
         
         /// <remarks/>
-        Vendor,
+        Camp,
+        
+        /// <remarks/>
+        QuestHub,
+        
+        /// <remarks/>
+        Service,
+        
+        /// <remarks/>
+        Default,
     }
 }
