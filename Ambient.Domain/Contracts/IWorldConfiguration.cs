@@ -5,8 +5,9 @@ namespace Ambient.Domain.Contracts;
 public interface IWorldConfiguration
 {
     string RefName { get; set; }
-    string ResourcePack {  get; set; }
-    string ContentPack {  get; set; }
+
+    string ContentPackLibrary {  get; set; }
+    string ContentPackTheme {  get; set; }
     string Namespace { get; set; }
 
     double SpawnLatitude { get; set; }
@@ -16,7 +17,6 @@ public interface IWorldConfiguration
     string CurrencyName { get; set; }
     DateTime StartDate { get; set; }
     int SecondsInHour { get; set; }
-    string Template { get; set; }
     object Item { get; set; }
     string DisplayName { get; set; }
     string Description { get; set; }

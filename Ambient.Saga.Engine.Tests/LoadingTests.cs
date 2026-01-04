@@ -148,7 +148,7 @@ public class LoadingTests : IAsyncLifetime
         // Test basic properties
         Assert.NotNull(_world.WorldConfiguration.DisplayName);
         Assert.NotNull(_world.WorldConfiguration.Description);
-        Assert.NotNull(_world.WorldConfiguration.Template);
+        Assert.NotNull(_world.WorldConfiguration.ContentPackLibrary);
     }
 
     //[Fact]

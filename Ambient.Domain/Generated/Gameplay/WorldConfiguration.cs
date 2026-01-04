@@ -25,11 +25,9 @@ namespace Ambient.Domain {
         
         private object itemField;
         
-        private string templateField;
+        private string contentPackLibraryField;
         
-        private string resourcePackField;
-        
-        private string contentPackField;
+        private string contentPackThemeField;
         
         private string namespaceField;
         
@@ -48,6 +46,7 @@ namespace Ambient.Domain {
         private int displayOrderField;
         
         public WorldConfiguration() {
+            this.contentPackLibraryField = "default";
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
             this.secondsInHourField = 60;
@@ -69,34 +68,24 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string Template {
+        [System.ComponentModel.DefaultValueAttribute("default")]
+        public string ContentPackLibrary {
             get {
-                return this.templateField;
+                return this.contentPackLibraryField;
             }
             set {
-                this.templateField = value;
+                this.contentPackLibraryField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ResourcePack {
+        public string ContentPackTheme {
             get {
-                return this.resourcePackField;
+                return this.contentPackThemeField;
             }
             set {
-                this.resourcePackField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string ContentPack {
-            get {
-                return this.contentPackField;
-            }
-            set {
-                this.contentPackField = value;
+                this.contentPackThemeField = value;
             }
         }
         

@@ -1,0 +1,1008 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Equipment xmlns="Ambient.Domain"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\..\..\..\bin\net8.0-windows7.0\Content\Schemas\Gameplay\Gameplay.xsd">
+
+    <!-- ============================================================================
+         CANONICAL EQUIPMENT
+
+         Organized by slot and category with multiple tiers (Common → Epic)
+         Covers all 9 archetypes: Warrior, Barbarian, Rogue, Ranger, Mage, Wizard, Cleric, Bard, Summoner
+         ============================================================================ -->
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         ONE-HANDED WEAPONS (RightHand)
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Swords -->
+    <Equipment RefName="RustySword" DisplayName="Rusty Sword" Description="A worn blade pitted with age"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="RustySword" WholesalePrice="15" Rarity="Common">
+        <Effects Strength="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="IronSword" DisplayName="Iron Sword" Description="A standard military blade of tempered iron"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="IronSword" WholesalePrice="50" Rarity="Uncommon">
+        <Effects Strength="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="SteelSword" DisplayName="Steel Sword" Description="A well-forged steel blade built for battle"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="SteelSword" WholesalePrice="120" Rarity="Uncommon">
+        <Effects Strength="0.14"/>
+    </Equipment>
+
+    <Equipment RefName="KnightsSword" DisplayName="Knight's Sword" Description="A proven blade carried by seasoned warriors"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="KnightsSword" WholesalePrice="250" Rarity="Rare">
+        <Effects Strength="0.18" Defense="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="RuneSword" DisplayName="Rune Sword" Description="A blade inscribed with arcane power"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="RuneSword" WholesalePrice="400" Rarity="Rare" AffinityRef="Arcane">
+        <Effects Strength="0.20" Magic="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="Flamebrand" DisplayName="Flamebrand" Description="A sword wreathed in eternal fire"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="Flamebrand" WholesalePrice="600" Rarity="Epic" AffinityRef="Fire">
+        <Effects Strength="0.24" Magic="0.10"/>
+    </Equipment>
+
+    <!-- Axes -->
+    <Equipment RefName="HandAxe" DisplayName="Hand Axe" Description="A simple chopping tool turned weapon"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="HandAxe" WholesalePrice="20" Rarity="Common">
+        <Effects Strength="0.06" Speed="-0.02"/>
+    </Equipment>
+
+    <Equipment RefName="BattleAxe" DisplayName="Battle Axe" Description="A heavy single-handed axe for war"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="BattleAxe" WholesalePrice="80" Rarity="Uncommon">
+        <Effects Strength="0.12" Speed="-0.03"/>
+    </Equipment>
+
+    <Equipment RefName="BerserkerAxe" DisplayName="Berserker Axe" Description="A savage axe favored by frenzied warriors"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="BerserkerAxe" WholesalePrice="200" Rarity="Rare" AffinityRef="Fire">
+        <Effects Strength="0.18" Speed="-0.02" Defense="-0.05"/>
+    </Equipment>
+
+    <!-- Maces and Hammers -->
+    <Equipment RefName="WoodenClub" DisplayName="Wooden Club" Description="A crude bludgeon hewn from hardwood"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="WoodenClub" WholesalePrice="10" Rarity="Common">
+        <Effects Strength="0.04"/>
+    </Equipment>
+
+    <Equipment RefName="IronMace" DisplayName="Iron Mace" Description="A flanged crushing weapon of solid iron"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="IronMace" WholesalePrice="60" Rarity="Uncommon">
+        <Effects Strength="0.11" Speed="-0.02"/>
+    </Equipment>
+
+    <Equipment RefName="WarHammer" DisplayName="War Hammer" Description="An armor-crushing hammer built for sieges"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="WarHammer" WholesalePrice="150" Rarity="Uncommon">
+        <Effects Strength="0.15" Speed="-0.04"/>
+    </Equipment>
+
+    <Equipment RefName="HolyMace" DisplayName="Holy Mace" Description="A blessed weapon carried by the faithful"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="HolyMace" WholesalePrice="280" Rarity="Rare" AffinityRef="Holy">
+        <Effects Strength="0.14" Magic="0.10"/>
+    </Equipment>
+
+    <!-- Daggers -->
+    <Equipment RefName="Knife" DisplayName="Knife" Description="A basic cutting blade useful in a pinch"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="Knife" WholesalePrice="8" Rarity="Common">
+        <Effects Strength="0.03" Speed="0.03"/>
+    </Equipment>
+
+    <Equipment RefName="Dagger" DisplayName="Dagger" Description="A quick stabbing blade for close work"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="Dagger" WholesalePrice="25" Rarity="Uncommon">
+        <Effects Strength="0.05" Speed="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="Stiletto" DisplayName="Stiletto" Description="A thin piercing blade that slips between plates"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="Stiletto" WholesalePrice="70" Rarity="Uncommon">
+        <Effects Strength="0.07" Speed="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="ShadowDagger" DisplayName="Shadow Dagger" Description="A blade that seems to drink the light"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="ShadowDagger" WholesalePrice="180" Rarity="Rare" AffinityRef="Umbral">
+        <Effects Strength="0.10" Speed="0.12"/>
+    </Equipment>
+
+    <Equipment RefName="VenomFang" DisplayName="Venom Fang" Description="A dagger coated in lethal poison"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="VenomFang" WholesalePrice="300" Rarity="Rare" AffinityRef="Wild">
+        <Effects Strength="0.12" Speed="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="AssassinsBlade" DisplayName="Assassin's Blade" Description="A weapon of silent death"
+          SlotRef="RightHand" Category="OneHanded" UseType="Offensive"
+          ModelRef="AssassinsBlade" WholesalePrice="500" Rarity="Epic" AffinityRef="Umbral">
+        <Effects Strength="0.15" Speed="0.15"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         TWO-HANDED WEAPONS (BothHands)
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Greatswords -->
+    <Equipment RefName="LargeSword" DisplayName="Large Sword" Description="An oversized blade requiring great strength"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="LargeSword" WholesalePrice="80" Rarity="Uncommon">
+        <Effects Strength="0.15" Speed="-0.05"/>
+    </Equipment>
+
+    <Equipment RefName="Greatsword" DisplayName="Greatsword" Description="A massive two-handed blade for crushing blows"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Greatsword" WholesalePrice="200" Rarity="Rare">
+        <Effects Strength="0.22" Speed="-0.06"/>
+    </Equipment>
+
+    <Equipment RefName="Claymore" DisplayName="Claymore" Description="A Highland great blade famed in battle"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Claymore" WholesalePrice="350" Rarity="Rare">
+        <Effects Strength="0.26" Speed="-0.05"/>
+    </Equipment>
+
+    <Equipment RefName="Zweihander" DisplayName="Zweihander" Description="A legendary two-handed sword of daunting size"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Zweihander" WholesalePrice="550" Rarity="Epic">
+        <Effects Strength="0.32" Speed="-0.08"/>
+    </Equipment>
+
+    <!-- Great Axes -->
+    <Equipment RefName="Greataxe" DisplayName="Greataxe" Description="A massive cleaving weapon that sunders lines"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Greataxe" WholesalePrice="180" Rarity="Rare">
+        <Effects Strength="0.24" Speed="-0.08"/>
+    </Equipment>
+
+    <Equipment RefName="ExecutionerAxe" DisplayName="Executioner's Axe" Description="A blade of final judgment"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="ExecutionerAxe" WholesalePrice="400" Rarity="Rare">
+        <Effects Strength="0.30" Speed="-0.10"/>
+    </Equipment>
+
+    <!-- Polearms -->
+    <Equipment RefName="Spear" DisplayName="Spear" Description="A thrusting polearm with reach"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Spear" WholesalePrice="40" Rarity="Common">
+        <Effects Strength="0.10" Speed="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="Halberd" DisplayName="Halberd" Description="An axe-headed polearm versatile in battle"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Halberd" WholesalePrice="150" Rarity="Uncommon">
+        <Effects Strength="0.18" Speed="-0.03"/>
+    </Equipment>
+
+    <Equipment RefName="Glaive" DisplayName="Glaive" Description="A bladed polearm for sweeping cuts"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Glaive" WholesalePrice="220" Rarity="Rare">
+        <Effects Strength="0.20" Speed="0.00"/>
+    </Equipment>
+
+    <!-- Great Hammers -->
+    <Equipment RefName="Maul" DisplayName="Maul" Description="A two-handed crushing hammer"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Maul" WholesalePrice="160" Rarity="Uncommon">
+        <Effects Strength="0.20" Speed="-0.08"/>
+    </Equipment>
+
+    <Equipment RefName="TitanHammer" DisplayName="Titan Hammer" Description="A weapon of impossible weight and might"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="TitanHammer" WholesalePrice="500" Rarity="Epic" AffinityRef="Stone">
+        <Effects Strength="0.35" Speed="-0.12" Defense="0.05"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         RANGED WEAPONS (BothHands)
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="ShortBow" DisplayName="Short Bow" Description="A light hunting bow"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="ShortBow" WholesalePrice="30" Rarity="Common">
+        <Effects Strength="0.06" Speed="0.04"/>
+    </Equipment>
+
+    <Equipment RefName="Longbow" DisplayName="Longbow" Description="A powerful war bow"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="Longbow" WholesalePrice="100" Rarity="Uncommon">
+        <Effects Strength="0.12" Speed="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="CompositeBow" DisplayName="Composite Bow" Description="A laminated precision bow"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="CompositeBow" WholesalePrice="200" Rarity="Rare">
+        <Effects Strength="0.16" Speed="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="HuntersBow" DisplayName="Hunter's Bow" Description="A bow favored by trackers of the wild"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="HuntersBow" WholesalePrice="300" Rarity="Rare" AffinityRef="Wild">
+        <Effects Strength="0.18" Speed="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="WindBow" DisplayName="Wind Bow" Description="A storm-blessed weapon that sings"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="WindBow" WholesalePrice="450" Rarity="Epic" AffinityRef="Storm">
+        <Effects Strength="0.20" Speed="0.08" Magic="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="LightCrossbow" DisplayName="Light Crossbow" Description="A mechanical launcher for swift bolts"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="LightCrossbow" WholesalePrice="80" Rarity="Uncommon">
+        <Effects Strength="0.14" Speed="-0.04"/>
+    </Equipment>
+
+    <Equipment RefName="HeavyCrossbow" DisplayName="Heavy Crossbow" Description="A powerful siege crossbow"
+          SlotRef="BothHands" Category="TwoHanded" UseType="Offensive"
+          ModelRef="HeavyCrossbow" WholesalePrice="200" Rarity="Rare">
+        <Effects Strength="0.22" Speed="-0.08"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         STAVES (BothHands) - Mage/Wizard/Cleric/Summoner
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="WalkingStick" DisplayName="Walking Stick" Description="A simple wooden support and focus"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="WalkingStick" WholesalePrice="5" Rarity="Common">
+        <Effects Strength="0.02" Magic="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="WoodenStaff" DisplayName="Wooden Staff" Description="A carved channeling staff"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="WoodenStaff" WholesalePrice="30" Rarity="Uncommon">
+        <Effects Strength="0.03" Defense="0.02" Magic="0.06"/>
+    </Equipment>
+
+    <Equipment RefName="OakStaff" DisplayName="Oak Staff" Description="A sturdy hardwood staff"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="OakStaff" WholesalePrice="70" Rarity="Uncommon">
+        <Effects Strength="0.04" Defense="0.03" Magic="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="MageStaff" DisplayName="Mage Staff" Description="An enchanted focus for channeling"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="MageStaff" WholesalePrice="150" Rarity="Rare" AffinityRef="Arcane">
+        <Effects Magic="0.16" Mana="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="FireStaff" DisplayName="Fire Staff" Description="A staff blazing with bound flame"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="FireStaff" WholesalePrice="250" Rarity="Rare" AffinityRef="Fire">
+        <Effects Strength="0.05" Magic="0.18"/>
+    </Equipment>
+
+    <Equipment RefName="FrostStaff" DisplayName="Frost Staff" Description="An ice-crowned staff chilled to the touch"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="FrostStaff" WholesalePrice="250" Rarity="Rare" AffinityRef="Water">
+        <Effects Magic="0.18" Defense="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="StormStaff" DisplayName="Storm Staff" Description="A lightning-charged staff humming with power"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="StormStaff" WholesalePrice="250" Rarity="Rare" AffinityRef="Storm">
+        <Effects Magic="0.18" Speed="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="HolyStaff" DisplayName="Holy Staff" Description="A divine channeling staff"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="HolyStaff" WholesalePrice="280" Rarity="Rare" AffinityRef="Holy">
+        <Effects Magic="0.15" Health="0.05" Mana="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="NecromancerStaff" DisplayName="Necromancer Staff" Description="A staff steeped in dark power"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="NecromancerStaff" WholesalePrice="300" Rarity="Rare" AffinityRef="Umbral">
+        <Effects Magic="0.20" Mana="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="ArchmageStaff" DisplayName="Archmage Staff" Description="A staff of supreme sorcery"
+          SlotRef="BothHands" Category="Staff" UseType="Offensive"
+          ModelRef="ArchmageStaff" WholesalePrice="600" Rarity="Epic" AffinityRef="Arcane">
+        <Effects Magic="0.28" Mana="0.15"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         WANDS (RightHand) - Mage/Wizard
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="ApprenticeWand" DisplayName="Apprentice Wand" Description="A basic focus for channeling spells"
+          SlotRef="RightHand" Category="Wand" UseType="Offensive"
+          ModelRef="Wand" WholesalePrice="30" Rarity="Uncommon">
+        <Effects Magic="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="OakWand" DisplayName="Oak Wand" Description="A sturdy natural wand"
+          SlotRef="RightHand" Category="Wand" UseType="Offensive"
+          ModelRef="OakWand" WholesalePrice="60" Rarity="Uncommon">
+        <Effects Magic="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="CrystalWand" DisplayName="Crystal Wand" Description="An arcane crystal focus"
+          SlotRef="RightHand" Category="Wand" UseType="Offensive"
+          ModelRef="CrystalWand" WholesalePrice="150" Rarity="Rare" AffinityRef="Arcane">
+        <Effects Magic="0.16" Mana="0.06"/>
+    </Equipment>
+
+    <Equipment RefName="FireWand" DisplayName="Fire Wand" Description="A wand touched by flame"
+          SlotRef="RightHand" Category="Wand" UseType="Offensive"
+          ModelRef="FireWand" WholesalePrice="180" Rarity="Rare" AffinityRef="Fire">
+        <Effects Magic="0.18"/>
+    </Equipment>
+
+    <Equipment RefName="FrostWand" DisplayName="Frost Wand" Description="A wand cold as winter"
+          SlotRef="RightHand" Category="Wand" UseType="Offensive"
+          ModelRef="FrostWand" WholesalePrice="180" Rarity="Rare" AffinityRef="Water">
+        <Effects Magic="0.16" Defense="0.04"/>
+    </Equipment>
+
+    <Equipment RefName="VoidWand" DisplayName="Void Wand" Description="A wand attuned to the abyss"
+          SlotRef="RightHand" Category="Wand" UseType="Offensive"
+          ModelRef="VoidWand" WholesalePrice="350" Rarity="Epic" AffinityRef="Void">
+        <Effects Magic="0.22" Mana="0.10"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         FOCUS ITEMS (RightHand) - Summoner/Cleric
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="PrayerBeads" DisplayName="Prayer Beads" Description="Holy beads used for meditation and focus"
+          SlotRef="RightHand" Category="Focus" UseType="Offensive"
+          ModelRef="PrayerBeads" WholesalePrice="40" Rarity="Uncommon" AffinityRef="Holy">
+        <Effects Magic="0.08" Mana="0.04"/>
+    </Equipment>
+
+    <Equipment RefName="SummonerOrb" DisplayName="Summoner's Orb" Description="A spirit-binding crystal orb"
+          SlotRef="RightHand" Category="Focus" UseType="Offensive"
+          ModelRef="Orb" WholesalePrice="100" Rarity="Uncommon" AffinityRef="Spirit">
+        <Effects Magic="0.12" Mana="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="HolySymbol" DisplayName="Holy Symbol" Description="A divine focus carried by clergy"
+          SlotRef="RightHand" Category="Focus" UseType="Offensive"
+          ModelRef="HolySymbol" WholesalePrice="120" Rarity="Uncommon" AffinityRef="Holy">
+        <Effects Magic="0.12" Health="0.03"/>
+    </Equipment>
+
+    <Equipment RefName="CrystalBall" DisplayName="Crystal Ball" Description="A scrying focus for visions and summons"
+          SlotRef="RightHand" Category="Focus" UseType="Offensive"
+          ModelRef="CrystalBall" WholesalePrice="200" Rarity="Rare" AffinityRef="Spirit">
+        <Effects Magic="0.16" Mana="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="SoulLantern" DisplayName="Soul Lantern" Description="A lantern said to trap wandering spirits"
+          SlotRef="RightHand" Category="Focus" UseType="Offensive"
+          ModelRef="SoulLantern" WholesalePrice="350" Rarity="Rare" AffinityRef="Void">
+        <Effects Magic="0.20" Mana="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="ReliquaryHeart" DisplayName="Reliquary Heart" Description="A sacred container brimming with holy power"
+          SlotRef="RightHand" Category="Focus" UseType="Offensive"
+          ModelRef="ReliquaryHeart" WholesalePrice="500" Rarity="Epic" AffinityRef="Holy">
+        <Effects Magic="0.22" Health="0.08" Mana="0.08"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         INSTRUMENTS (BothHands) - Bard
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="TinWhistle" DisplayName="Tin Whistle" Description="A simple wind instrument of bright tone"
+          SlotRef="BothHands" Category="Instrument" UseType="Offensive"
+          ModelRef="TinWhistle" WholesalePrice="15" Rarity="Common">
+        <Effects Magic="0.04" Speed="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="WoodenFlute" DisplayName="Wooden Flute" Description="A carved wooden wind instrument"
+          SlotRef="BothHands" Category="Instrument" UseType="Offensive"
+          ModelRef="WoodenFlute" WholesalePrice="40" Rarity="Uncommon">
+        <Effects Magic="0.08" Speed="0.03"/>
+    </Equipment>
+
+    <Equipment RefName="Lute" DisplayName="Lute" Description="A classic stringed instrument with warm voice"
+          SlotRef="BothHands" Category="Instrument" UseType="Offensive"
+          ModelRef="Lute" WholesalePrice="60" Rarity="Uncommon">
+        <Effects Magic="0.10" Speed="0.03"/>
+    </Equipment>
+
+    <Equipment RefName="Harp" DisplayName="Harp" Description="An elegant stringed instrument of soothing tone"
+          SlotRef="BothHands" Category="Instrument" UseType="Offensive"
+          ModelRef="Harp" WholesalePrice="120" Rarity="Uncommon">
+        <Effects Magic="0.12" Speed="0.04"/>
+    </Equipment>
+
+    <Equipment RefName="MasterworkLute" DisplayName="Masterwork Lute" Description="An exquisitely crafted lute"
+          SlotRef="BothHands" Category="Instrument" UseType="Offensive"
+        ModelRef="MasterworkLute" WholesalePrice="200" Rarity="Rare" AffinityRef="Spirit">
+        <Effects Magic="0.16" Speed="0.06" Mana="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="EnchantedLute" DisplayName="Enchanted Lute" Description="A lute with magically resonant strings"
+          SlotRef="BothHands" Category="Instrument" UseType="Offensive"
+          ModelRef="EnchantedLute" WholesalePrice="300" Rarity="Rare" AffinityRef="Spirit">
+        <Effects Magic="0.18" Speed="0.06" Mana="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="SirenHarp" DisplayName="Siren's Harp" Description="A harp whose song is irresistible"
+          SlotRef="BothHands" Category="Instrument" UseType="Offensive"
+          ModelRef="SirenHarp" WholesalePrice="500" Rarity="Epic" AffinityRef="Spirit">
+        <Effects Magic="0.24" Speed="0.08" Mana="0.10"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         SHIELDS (LeftHand)
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="Buckler" DisplayName="Buckler" Description="A small parrying shield"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="Buckler" WholesalePrice="20" Rarity="Common">
+        <Effects Defense="0.06" Speed="0.01"/>
+    </Equipment>
+
+    <Equipment RefName="WoodenShield" DisplayName="Wooden Shield" Description="Basic wooden defense forged from planks"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="WoodenShield" WholesalePrice="35" Rarity="Uncommon">
+        <Effects Health="0.03" Defense="0.10" Speed="-0.02"/>
+    </Equipment>
+
+    <Equipment RefName="IronShield" DisplayName="Iron Shield" Description="A standard metal shield"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="IronShield" WholesalePrice="80" Rarity="Uncommon">
+        <Effects Health="0.05" Defense="0.14" Speed="-0.03"/>
+    </Equipment>
+
+    <Equipment RefName="SteelShield" DisplayName="Steel Shield" Description="A sturdy steel defense"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="SteelShield" WholesalePrice="150" Rarity="Uncommon">
+        <Effects Health="0.08" Defense="0.18" Speed="-0.03"/>
+    </Equipment>
+
+    <Equipment RefName="TowerShield" DisplayName="Tower Shield" Description="A massive shield that covers the body"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="TowerShield" WholesalePrice="250" Rarity="Rare">
+        <Effects Health="0.10" Defense="0.25" Speed="-0.10"/>
+    </Equipment>
+
+    <Equipment RefName="KiteShield" DisplayName="Kite Shield" Description="A classic cavalry shield"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="KiteShield" WholesalePrice="200" Rarity="Rare">
+        <Effects Health="0.08" Defense="0.20" Speed="-0.04"/>
+    </Equipment>
+
+    <Equipment RefName="SpikedShield" DisplayName="Spiked Shield" Description="A shield fitted with cruel spikes"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="SpikedShield" WholesalePrice="180" Rarity="Rare">
+        <Effects Strength="0.05" Defense="0.15" Speed="-0.03"/>
+    </Equipment>
+
+    <Equipment RefName="HolyShield" DisplayName="Holy Shield" Description="A blessed protective shield"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="HolyShield" WholesalePrice="350" Rarity="Rare" AffinityRef="Holy">
+        <Effects Health="0.08" Defense="0.20" Magic="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="DragonShield" DisplayName="Dragon Shield" Description="A shield reinforced with draconic scales"
+          SlotRef="LeftHand" Category="Shield" UseType="Defensive"
+          ModelRef="DragonShield" WholesalePrice="500" Rarity="Epic" AffinityRef="Fire">
+        <Effects Health="0.12" Defense="0.28" Speed="-0.08"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         HEAD ARMOR
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Cloth/Light -->
+    <Equipment RefName="ClothCap" DisplayName="Cloth Cap" Description="A simple head covering"
+               SlotRef="Head" Category="ArmorLight" UseType="Defensive"
+               ModelRef="ClothCap" WholesalePrice="10" Rarity="Common">
+        <Effects Defense="0.02" Insulation="0.02" />
+    </Equipment>
+
+    <Equipment RefName="LeatherCap" DisplayName="Leather Cap" Description="Hardened leather headgear"
+               SlotRef="Head" Category="ArmorLight" UseType="Defensive"
+               ModelRef="LeatherCap" WholesalePrice="25" Rarity="Uncommon">
+        <Effects Defense="0.04" Speed="0.01" Insulation="0.03" />
+    </Equipment>
+
+    <Equipment RefName="HoodedCowl" DisplayName="Hooded Cowl" Description="A concealing hood"
+               SlotRef="Head" Category="ArmorLight" UseType="Defensive"
+               ModelRef="HoodedCowl" WholesalePrice="40" Rarity="Uncommon">
+        <Effects Defense="0.03" Speed="0.03" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="RangerHood" DisplayName="Ranger Hood" Description="Woodland camouflage hood"
+               SlotRef="Head" Category="ArmorLight" UseType="Defensive"
+               ModelRef="RangerHood" WholesalePrice="80" Rarity="Uncommon" AffinityRef="Wild">
+        <Effects Defense="0.05" Speed="0.04" Insulation="0.05" />
+    </Equipment>
+
+    <!-- Medium -->
+    <Equipment RefName="ChainCoif" DisplayName="Chain Coif" Description="Mail head protection"
+               SlotRef="Head" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="ChainCoif" WholesalePrice="60" Rarity="Uncommon">
+        <Effects Defense="0.08" Speed="-0.01" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="SteelHelm" DisplayName="Steel Helm" Description="A standard warrior's helm"
+               SlotRef="Head" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="SteelHelm" WholesalePrice="100" Rarity="Uncommon">
+        <Effects Health="0.03" Defense="0.10" Speed="-0.02" Insulation="0.05" />
+    </Equipment>
+
+    <!-- Heavy -->
+    <Equipment RefName="GreatHelm" DisplayName="Great Helm" Description="A full-face heavy helm"
+               SlotRef="Head" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="GreatHelm" WholesalePrice="180" Rarity="Rare">
+        <Effects Health="0.05" Defense="0.15" Speed="-0.04" Insulation="0.06" />
+    </Equipment>
+
+    <Equipment RefName="KnightsHelm" DisplayName="Knight's Helm" Description="A noble warrior's helm"
+               SlotRef="Head" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="KnightsHelm" WholesalePrice="280" Rarity="Rare">
+        <Effects Health="0.06" Defense="0.18" Speed="-0.03" Insulation="0.07" />
+    </Equipment>
+
+    <!-- Robes/Magic -->
+    <Equipment RefName="WizardHat" DisplayName="Wizard Hat" Description="A pointed mage's hat"
+               SlotRef="Head" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="WizardHat" WholesalePrice="50" Rarity="Uncommon">
+        <Effects Defense="0.02" Magic="0.06" Insulation="0.03" />
+    </Equipment>
+
+    <Equipment RefName="MageCrown" DisplayName="Mage Crown" Description="A circlet of power"
+               SlotRef="Head" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="MageCrown" WholesalePrice="150" Rarity="Rare" AffinityRef="Arcane">
+        <Effects Defense="0.03" Magic="0.12" Mana="0.05" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="HolyMitre" DisplayName="Holy Mitre" Description="A sacred headpiece"
+               SlotRef="Head" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="HolyMitre" WholesalePrice="180" Rarity="Rare" AffinityRef="Holy">
+        <Effects Defense="0.04" Magic="0.10" Health="0.04" Insulation="0.05" />
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         CHEST ARMOR
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <!-- Light -->
+    <Equipment RefName="ClothTunic" DisplayName="Cloth Tunic" Description="A simple cloth garment"
+               SlotRef="Chest" Category="ArmorLight" UseType="Defensive"
+               ModelRef="ClothTunic" WholesalePrice="15" Rarity="Common">
+        <Effects Defense="0.03" Insulation="0.03" />
+    </Equipment>
+
+    <Equipment RefName="LeatherVest" DisplayName="Leather Vest" Description="Light leather protection"
+               SlotRef="Chest" Category="ArmorLight" UseType="Defensive"
+               ModelRef="LeatherVest" WholesalePrice="35" Rarity="Uncommon">
+        <Effects Defense="0.06" Speed="0.02" Insulation="0.05" />
+    </Equipment>
+
+    <Equipment RefName="LeatherArmor" DisplayName="Leather Armor" Description="Full leather protection"
+               SlotRef="Chest" Category="ArmorLight" UseType="Defensive"
+               ModelRef="LeatherArmor" WholesalePrice="60" Rarity="Uncommon">
+        <Effects Health="0.03" Defense="0.10" Speed="0.01" Insulation="0.08" />
+    </Equipment>
+
+    <Equipment RefName="StuddedLeather" DisplayName="Studded Leather" Description="Reinforced leather armor"
+               SlotRef="Chest" Category="ArmorLight" UseType="Defensive"
+               ModelRef="StuddedLeather" WholesalePrice="100" Rarity="Uncommon">
+        <Effects Health="0.05" Defense="0.12" Insulation="0.08" />
+    </Equipment>
+
+    <Equipment RefName="RangerLeather" DisplayName="Ranger Leather" Description="Woodland scout armor"
+               SlotRef="Chest" Category="ArmorLight" UseType="Defensive"
+               ModelRef="RangerLeather" WholesalePrice="150" Rarity="Rare" AffinityRef="Wild">
+        <Effects Health="0.05" Defense="0.12" Speed="0.05" Insulation="0.10" />
+    </Equipment>
+
+    <Equipment RefName="ShadowLeather" DisplayName="Shadow Leather" Description="Darkness-infused armor"
+               SlotRef="Chest" Category="ArmorLight" UseType="Defensive"
+               ModelRef="ShadowLeather" WholesalePrice="250" Rarity="Rare" AffinityRef="Umbral">
+        <Effects Defense="0.12" Speed="0.08" Insulation="0.06" />
+    </Equipment>
+
+    <!-- Medium -->
+    <Equipment RefName="ChainShirt" DisplayName="Chain Shirt" Description="Light mail armor"
+               SlotRef="Chest" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="ChainShirt" WholesalePrice="80" Rarity="Uncommon">
+        <Effects Health="0.06" Defense="0.12" Speed="-0.01" Insulation="0.06" />
+    </Equipment>
+
+    <Equipment RefName="ChainmailArmor" DisplayName="Chainmail Armor" Description="A full suit of chainmail"
+               SlotRef="Chest" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="ChainmailArmor" WholesalePrice="140" Rarity="Uncommon">
+        <Effects Health="0.10" Defense="0.16" Speed="-0.02" Insulation="0.10" />
+    </Equipment>
+
+    <Equipment RefName="ScaleMail" DisplayName="Scale Mail" Description="Overlapping scale armor"
+               SlotRef="Chest" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="ScaleMail" WholesalePrice="200" Rarity="Rare">
+        <Effects Health="0.12" Defense="0.18" Speed="-0.03" Insulation="0.12" />
+    </Equipment>
+
+    <Equipment RefName="Brigandine" DisplayName="Brigandine" Description="A coat studded with protective plates"
+               SlotRef="Chest" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="Brigandine" WholesalePrice="250" Rarity="Rare">
+        <Effects Health="0.12" Defense="0.20" Speed="-0.02" Insulation="0.12" />
+    </Equipment>
+
+    <!-- Heavy -->
+    <Equipment RefName="BreastPlate" DisplayName="Breastplate" Description="Solid chest protection"
+               SlotRef="Chest" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="BreastPlate" WholesalePrice="200" Rarity="Rare">
+        <Effects Health="0.12" Defense="0.20" Speed="-0.04" Insulation="0.12" />
+    </Equipment>
+
+    <Equipment RefName="HalfPlate" DisplayName="Half Plate" Description="Partial plate armor"
+               SlotRef="Chest" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="HalfPlate" WholesalePrice="300" Rarity="Rare">
+        <Effects Health="0.15" Defense="0.24" Speed="-0.05" Insulation="0.15" />
+    </Equipment>
+
+    <Equipment RefName="PlateArmor" DisplayName="Plate Armor" Description="Full plate protection"
+               SlotRef="Chest" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="PlateArmor" WholesalePrice="450" Rarity="Rare">
+        <Effects Health="0.18" Defense="0.28" Strength="0.03" Speed="-0.08" Insulation="0.18" />
+    </Equipment>
+
+    <Equipment RefName="KnightsArmor" DisplayName="Knight's Armor" Description="A noble warrior's plate"
+               SlotRef="Chest" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="KnightsArmor" WholesalePrice="600" Rarity="Epic">
+        <Effects Health="0.20" Defense="0.32" Strength="0.05" Speed="-0.05" Insulation="0.20" />
+    </Equipment>
+
+    <!-- Robes -->
+    <Equipment RefName="SimpleRobe" DisplayName="Simple Robe" Description="Plain cloth robes"
+               SlotRef="Chest" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="SimpleRobe" WholesalePrice="20" Rarity="Common">
+        <Effects Defense="0.02" Magic="0.04" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="ScholarsRobe" DisplayName="Scholar's Robe" Description="Academic vestments for study and spellwork"
+               SlotRef="Chest" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="ScholarsRobe" WholesalePrice="50" Rarity="Uncommon">
+        <Effects Defense="0.03" Magic="0.08" Mana="0.04" Insulation="0.06" />
+    </Equipment>
+
+    <Equipment RefName="ElderRobes" DisplayName="Elder's Robes" Description="Robes of wisdom worn by elders"
+               SlotRef="Chest" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="ElderRobes" WholesalePrice="100" Rarity="Uncommon" AffinityRef="Spirit">
+        <Effects Defense="0.04" Magic="0.12" Mana="0.06" Insulation="0.08" />
+    </Equipment>
+
+    <Equipment RefName="WizardRobes" DisplayName="Wizard Robes" Description="Enchanted robes that focus magic"
+               SlotRef="Chest" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="WizardRobes" WholesalePrice="180" Rarity="Rare" AffinityRef="Arcane">
+        <Effects Defense="0.05" Magic="0.18" Mana="0.10" Insulation="0.10" />
+    </Equipment>
+
+    <Equipment RefName="ArchmageRobes" DisplayName="Archmage Robes" Description="Robes of supreme power"
+               SlotRef="Chest" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="ArchmageRobes" WholesalePrice="400" Rarity="Epic" AffinityRef="Arcane">
+        <Effects Defense="0.06" Magic="0.25" Mana="0.15" Insulation="0.12" />
+    </Equipment>
+
+    <Equipment RefName="ClericVestments" DisplayName="Cleric Vestments" Description="Holy ceremonial robes"
+               SlotRef="Chest" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="ClericVestments" WholesalePrice="150" Rarity="Rare" AffinityRef="Holy">
+        <Effects Health="0.08" Defense="0.06" Magic="0.12" Insulation="0.10" />
+    </Equipment>
+
+    <Equipment RefName="HighPriestRobes" DisplayName="High Priest Robes" Description="Blessed vestments radiating sanctity"
+               SlotRef="Chest" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="HighPriestRobes" WholesalePrice="350" Rarity="Epic" AffinityRef="Holy">
+        <Effects Health="0.12" Defense="0.08" Magic="0.18" Insulation="0.12" />
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         LEG ARMOR
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="ClothPants" DisplayName="Cloth Pants" Description="Simple trousers of woven cloth"
+               SlotRef="Legs" Category="ArmorLight" UseType="Defensive"
+               ModelRef="ClothPants" WholesalePrice="10" Rarity="Common">
+        <Effects Defense="0.02" Insulation="0.02" />
+    </Equipment>
+
+    <Equipment RefName="LeatherLeggings" DisplayName="Leather Leggings" Description="Light leg protection of tanned hide"
+               SlotRef="Legs" Category="ArmorLight" UseType="Defensive"
+               ModelRef="LeatherLeggings" WholesalePrice="30" Rarity="Uncommon">
+        <Effects Defense="0.05" Speed="0.01" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="ChainLeggings" DisplayName="Chain Leggings" Description="Mail leg armor for sturdy defense"
+               SlotRef="Legs" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="ChainLeggings" WholesalePrice="70" Rarity="Uncommon">
+        <Effects Health="0.03" Defense="0.10" Speed="-0.01" Insulation="0.05" />
+    </Equipment>
+
+    <Equipment RefName="PlateLeggings" DisplayName="Plate Leggings" Description="Heavy leg armor of solid plate"
+               SlotRef="Legs" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="PlateLeggings" WholesalePrice="180" Rarity="Rare">
+        <Effects Health="0.06" Defense="0.16" Speed="-0.04" Insulation="0.08" />
+    </Equipment>
+
+    <Equipment RefName="MageLeggings" DisplayName="Mage Leggings" Description="Enchanted cloth leggings"
+               SlotRef="Legs" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="MageLeggings" WholesalePrice="80" Rarity="Uncommon">
+        <Effects Defense="0.03" Magic="0.06" Insulation="0.03" />
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         FOOT ARMOR
+         ══════════════════════════════════════════════════════════════════════════ -->
+    <Equipment RefName="Sandals" DisplayName="Sandals" Description="Simple footwear for easy travel"
+               SlotRef="Feet" Category="ArmorLight" UseType="Defensive"
+               ModelRef="Sandals" WholesalePrice="5" Rarity="Common">
+        <Effects Speed="0.02" Insulation="0.01" />
+    </Equipment>
+
+    <Equipment RefName="LeatherBoots" DisplayName="Leather Boots" Description="Sturdy walking boots of tanned leather"
+               SlotRef="Feet" Category="ArmorLight" UseType="Defensive"
+               ModelRef="LeatherBoots" WholesalePrice="25" Rarity="Uncommon">
+        <Effects Defense="0.03" Speed="0.03" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="RangerBoots" DisplayName="Ranger Boots" Description="Woodland tracker boots"
+               SlotRef="Feet" Category="ArmorLight" UseType="Defensive"
+               ModelRef="RangerBoots" WholesalePrice="80" Rarity="Uncommon" AffinityRef="Wild">
+        <Effects Defense="0.04" Speed="0.06" Insulation="0.06" />
+    </Equipment>
+
+    <Equipment RefName="ChainBoots" DisplayName="Chain Boots" Description="Mail foot armor"
+               SlotRef="Feet" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="ChainBoots" WholesalePrice="60" Rarity="Uncommon">
+        <Effects Defense="0.08" Speed="-0.01" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="PlateBoots" DisplayName="Plate Boots" Description="Heavy armored boots"
+               SlotRef="Feet" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="PlateBoots" WholesalePrice="150" Rarity="Rare">
+        <Effects Health="0.03" Defense="0.12" Speed="-0.03" Insulation="0.06" />
+    </Equipment>
+
+    <Equipment RefName="ShadowBoots" DisplayName="Shadow Boots" Description="Silent-movement boots for unseen steps"
+               SlotRef="Feet" Category="ArmorLight" UseType="Defensive"
+               ModelRef="ShadowBoots" WholesalePrice="200" Rarity="Rare" AffinityRef="Umbral">
+        <Effects Defense="0.04" Speed="0.10" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="MageSlippers" DisplayName="Mage Slippers" Description="Enchanted footwear for nimble casting"
+               SlotRef="Feet" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="MageSlippers" WholesalePrice="70" Rarity="Uncommon">
+        <Effects Defense="0.02" Magic="0.04" Speed="0.02" Insulation="0.02" />
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         HAND ARMOR
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="ClothGloves" DisplayName="Cloth Gloves" Description="Simple hand coverings"
+               SlotRef="Hands" Category="ArmorLight" UseType="Defensive"
+               ModelRef="ClothGloves" WholesalePrice="8" Rarity="Common">
+        <Effects Defense="0.01" Insulation="0.02" />
+    </Equipment>
+
+    <Equipment RefName="LeatherGloves" DisplayName="Leather Gloves" Description="Work gloves of supple leather"
+               SlotRef="Hands" Category="ArmorLight" UseType="Defensive"
+               ModelRef="LeatherGloves" WholesalePrice="20" Rarity="Uncommon">
+        <Effects Defense="0.03" Strength="0.02" Insulation="0.04" />
+    </Equipment>
+
+    <Equipment RefName="ThiefGloves" DisplayName="Thief's Gloves" Description="Nimble-finger gloves for deft work"
+               SlotRef="Hands" Category="ArmorLight" UseType="Defensive"
+               ModelRef="ThiefGloves" WholesalePrice="60" Rarity="Uncommon">
+        <Effects Defense="0.02" Speed="0.05" Insulation="0.03" />
+    </Equipment>
+
+    <Equipment RefName="ChainGloves" DisplayName="Chain Gloves" Description="Mail hand armor"
+               SlotRef="Hands" Category="ArmorMedium" UseType="Defensive"
+               ModelRef="ChainGloves" WholesalePrice="50" Rarity="Uncommon">
+        <Effects Defense="0.06" Speed="-0.01" Insulation="0.03" />
+    </Equipment>
+
+    <Equipment RefName="PlateGauntlets" DisplayName="Plate Gauntlets" Description="Armored fists of hardened steel"
+               SlotRef="Hands" Category="ArmorHeavy" UseType="Defensive"
+               ModelRef="PlateGauntlets" WholesalePrice="120" Rarity="Rare">
+        <Effects Strength="0.04" Defense="0.10" Speed="-0.02" Insulation="0.05" />
+    </Equipment>
+
+    <Equipment RefName="MageGloves" DisplayName="Mage Gloves" Description="Spell-weaving gloves that focus power"
+               SlotRef="Hands" Category="ArmorRobes" UseType="Defensive"
+               ModelRef="MageGloves" WholesalePrice="60" Rarity="Uncommon">
+        <Effects Defense="0.02" Magic="0.06" Insulation="0.03" />
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         CLOAKS AND BACK ITEMS
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="TravelCloak" DisplayName="Travel Cloak" Description="A simple traveling cloak"
+               SlotRef="Back" Category="Accessory" UseType="Defensive"
+               ModelRef="TravelCloak" WholesalePrice="15" Rarity="Common">
+        <Effects Defense="0.02" Insulation="0.10" />
+    </Equipment>
+
+    <Equipment RefName="MerchantCloak" DisplayName="Merchant's Cloak" Description="A cloak with hidden pockets"
+               SlotRef="Back" Category="Accessory" UseType="Defensive"
+               ModelRef="MerchantCloak" WholesalePrice="40" Rarity="Uncommon">
+        <Effects Defense="0.03" Speed="0.02" Insulation="0.12" />
+    </Equipment>
+
+    <Equipment RefName="RangerCloak" DisplayName="Ranger's Cloak" Description="Woodland camouflage for scouts"
+               SlotRef="Back" Category="Accessory" UseType="Defensive"
+               ModelRef="RangerCloak" WholesalePrice="80" Rarity="Uncommon" AffinityRef="Wild">
+        <Effects Defense="0.04" Speed="0.05" Insulation="0.15" />
+    </Equipment>
+
+    <Equipment RefName="ShadowCloak" DisplayName="Shadow Cloak" Description="A cloak woven from shadow"
+               SlotRef="Back" Category="Accessory" UseType="Defensive"
+               ModelRef="ShadowCloak" WholesalePrice="200" Rarity="Rare" AffinityRef="Umbral">
+        <Effects Defense="0.05" Speed="0.08" Insulation="0.18" />
+    </Equipment>
+
+    <Equipment RefName="MageCloak" DisplayName="Mage Cloak" Description="Arcane protection stitched into fabric"
+               SlotRef="Back" Category="Accessory" UseType="Defensive"
+               ModelRef="MageCloak" WholesalePrice="120" Rarity="Uncommon" AffinityRef="Arcane">
+        <Effects Defense="0.03" Magic="0.08" Insulation="0.12" />
+    </Equipment>
+
+    <Equipment RefName="CloakOfProtection" DisplayName="Cloak of Protection" Description="A warded cloak that bolsters defense"
+               SlotRef="Back" Category="Accessory" UseType="Defensive"
+               ModelRef="CloakOfProtection" WholesalePrice="250" Rarity="Rare">
+        <Effects Health="0.05" Defense="0.10" Insulation="0.20" />
+    </Equipment>
+
+    <Equipment RefName="HerosCape" DisplayName="Hero's Cape" Description="An inspiring mantle worn by champions"
+               SlotRef="Back" Category="Accessory" UseType="Defensive"
+               ModelRef="HerosCape" WholesalePrice="400" Rarity="Epic">
+        <Effects Strength="0.05" Defense="0.08" Speed="0.05" Insulation="0.15" />
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         RINGS
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="CopperRing" DisplayName="Copper Ring" Description="A simple band of hammered copper"
+          SlotRef="Ring" Category="Accessory" UseType="Defensive"
+          ModelRef="CopperRing" WholesalePrice="10" Rarity="Common">
+        <Effects Health="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="SilverRing" DisplayName="Silver Ring" Description="A pure silver band"
+          SlotRef="Ring" Category="Accessory" UseType="Defensive"
+          ModelRef="SilverRing" WholesalePrice="30" Rarity="Uncommon">
+        <Effects Health="0.03" Mana="0.03"/>
+    </Equipment>
+
+    <Equipment RefName="GoldRing" DisplayName="Gold Ring" Description="A precious gold band"
+          SlotRef="Ring" Category="Accessory" UseType="Defensive"
+          ModelRef="GoldRing" WholesalePrice="80" Rarity="Uncommon">
+        <Effects Health="0.04" Magic="0.04"/>
+    </Equipment>
+
+    <Equipment RefName="RingOfStrength" DisplayName="Ring of Strength" Description="A power-granting band that hardens muscle"
+          SlotRef="Ring" Category="Accessory" UseType="Offensive"
+          ModelRef="RingOfStrength" WholesalePrice="150" Rarity="Rare">
+        <Effects Strength="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="RingOfProtection" DisplayName="Ring of Protection" Description="A warded band that deflects harm"
+          SlotRef="Ring" Category="Accessory" UseType="Defensive"
+          ModelRef="RingOfProtection" WholesalePrice="150" Rarity="Rare">
+        <Effects Defense="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="RingOfSwiftness" DisplayName="Ring of Swiftness" Description="A speed-enhancing band"
+          SlotRef="Ring" Category="Accessory" UseType="Defensive"
+          ModelRef="RingOfSwiftness" WholesalePrice="150" Rarity="Rare">
+        <Effects Speed="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="RingOfSorcery" DisplayName="Ring of Sorcery" Description="A magic-amplifying band"
+          SlotRef="Ring" Category="Accessory" UseType="Offensive"
+          ModelRef="RingOfSorcery" WholesalePrice="180" Rarity="Rare" AffinityRef="Arcane">
+        <Effects Magic="0.12"/>
+    </Equipment>
+
+    <Equipment RefName="RingOfRegeneration" DisplayName="Ring of Regeneration" Description="A healing band that slowly renews vitality"
+          SlotRef="Ring" Category="Accessory" UseType="Defensive"
+          ModelRef="RingOfRegeneration" WholesalePrice="250" Rarity="Rare">
+        <Effects Health="0.10" Stamina="0.05"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         AMULETS
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="LeatherCord" DisplayName="Leather Cord" Description="A simple necklace of braided leather"
+          SlotRef="Amulet" Category="Accessory" UseType="Defensive"
+          ModelRef="LeatherCord" WholesalePrice="5" Rarity="Common">
+        <Effects Health="0.01"/>
+    </Equipment>
+
+    <Equipment RefName="SilverPendant" DisplayName="Silver Pendant" Description="A polished silver necklace"
+          SlotRef="Amulet" Category="Accessory" UseType="Defensive"
+          ModelRef="SilverPendant" WholesalePrice="40" Rarity="Uncommon">
+        <Effects Health="0.04" Defense="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="AmuletOfHealth" DisplayName="Amulet of Health" Description="A vitality charm worn near the heart"
+          SlotRef="Amulet" Category="Accessory" UseType="Defensive"
+          ModelRef="AmuletOfHealth" WholesalePrice="120" Rarity="Rare">
+        <Effects Health="0.12"/>
+    </Equipment>
+
+    <Equipment RefName="AmuletOfMana" DisplayName="Amulet of Mana" Description="A charm that serves as a magical reservoir"
+          SlotRef="Amulet" Category="Accessory" UseType="Defensive"
+          ModelRef="AmuletOfMana" WholesalePrice="140" Rarity="Rare" AffinityRef="Arcane">
+        <Effects Mana="0.15"/>
+    </Equipment>
+
+    <Equipment RefName="HolyAmulet" DisplayName="Holy Amulet" Description="Blessed protection carried by the devout"
+          SlotRef="Amulet" Category="Accessory" UseType="Defensive"
+          ModelRef="HolyAmulet" WholesalePrice="180" Rarity="Rare" AffinityRef="Holy">
+        <Effects Health="0.08" Magic="0.08"/>
+    </Equipment>
+
+    <Equipment RefName="WardingAmulet" DisplayName="Warding Amulet" Description="A defensive charm etched with wards"
+          SlotRef="Amulet" Category="Accessory" UseType="Defensive"
+          ModelRef="WardingAmulet" WholesalePrice="200" Rarity="Rare">
+        <Effects Health="0.06" Defense="0.10"/>
+    </Equipment>
+
+    <Equipment RefName="DragonTooth" DisplayName="Dragon Tooth" Description="A powerful trophy taken from a drake"
+          SlotRef="Amulet" Category="Accessory" UseType="Offensive"
+          ModelRef="DragonTooth" WholesalePrice="400" Rarity="Epic" AffinityRef="Fire">
+        <Effects Strength="0.10" Magic="0.10"/>
+    </Equipment>
+
+    <!-- ══════════════════════════════════════════════════════════════════════════
+         BELTS
+         ══════════════════════════════════════════════════════════════════════════ -->
+
+    <Equipment RefName="RopeBelt" DisplayName="Rope Belt" Description="A simple cord belt"
+          SlotRef="Belt" Category="Accessory" UseType="Defensive"
+          ModelRef="RopeBelt" WholesalePrice="5" Rarity="Common">
+        <Effects Stamina="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="LeatherBelt" DisplayName="Leather Belt" Description="A sturdy belt of tanned leather"
+          SlotRef="Belt" Category="Accessory" UseType="Defensive"
+          ModelRef="LeatherBelt" WholesalePrice="20" Rarity="Uncommon">
+        <Effects Stamina="0.04" Defense="0.02"/>
+    </Equipment>
+
+    <Equipment RefName="WarriorBelt" DisplayName="Warrior's Belt" Description="A combat belt that supports heavy gear"
+          SlotRef="Belt" Category="Accessory" UseType="Defensive"
+          ModelRef="WarriorBelt" WholesalePrice="80" Rarity="Uncommon">
+        <Effects Strength="0.05" Stamina="0.05"/>
+    </Equipment>
+
+    <Equipment RefName="MageBelt" DisplayName="Mage's Belt" Description="An enchanted sash for casters"
+          SlotRef="Belt" Category="Accessory" UseType="Defensive"
+          ModelRef="MageBelt" WholesalePrice="100" Rarity="Uncommon">
+        <Effects Magic="0.05" Mana="0.06"/>
+    </Equipment>
+
+    <Equipment RefName="BeltOfGiants" DisplayName="Belt of Giants" Description="A strength-granting belt said to be giant-forged"
+          SlotRef="Belt" Category="Accessory" UseType="Offensive"
+          ModelRef="BeltOfGiants" WholesalePrice="300" Rarity="Rare" AffinityRef="Stone">
+        <Effects Strength="0.15" Health="0.05"/>
+    </Equipment>
+
+</Equipment>
