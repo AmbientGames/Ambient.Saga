@@ -24,6 +24,9 @@ namespace Ambient.Domain {
         Facility,
         
         /// <remarks/>
+        Stronghold,
+        
+        /// <remarks/>
         Religious,
         
         /// <remarks/>
