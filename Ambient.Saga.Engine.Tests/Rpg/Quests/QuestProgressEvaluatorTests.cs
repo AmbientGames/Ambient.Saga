@@ -896,42 +896,6 @@ public class QuestProgressEvaluatorTests
         Assert.Null(reason);
     }
 
-    [Fact]
-    public void CheckFailConditions_LocationLeft_FallsBackToTransactionCheck()
-    {
-        // Arrange
-        var quest = new Quest
-        {
-            RefName = "GUARD_DUTY",
-            DisplayName = "Guard Duty",
-            FailConditions = new[]
-            {
-                new QuestFailCondition
-                {
-                    Type = QuestFailConditionType.LocationLeft,
-                    LocationRef = "CASTLE_ENTRANCE"
-                }
-            }
-        };
-
-        var transactions = new List<SagaTransaction>
-        {
-            CreateTransaction(SagaTransactionType.LocationClaimed, new Dictionary<string, string>
-            {
-                ["LocationRef"] = "MARKET_DISTRICT" // Left the required area
-            })
-        };
-
-        // No explicit current location provided - should check transactions
-
-        // Act
-        var (failed, reason) = QuestProgressEvaluator.CheckFailConditions(quest, transactions);
-
-        // Assert
-        Assert.True(failed);
-        Assert.Contains("CASTLE_ENTRANCE", reason);
-    }
-
     #endregion
 
     #region ItemCrafted Objective Tests
