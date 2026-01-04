@@ -30,11 +30,14 @@ namespace Ambient.Domain {
         
         private SagaArcCategory categoryField;
         
+        private string kindField;
+        
         private double discoverRadiusField;
         
         private SagaArcInitialState initialStateField;
         
         public SagaArc() {
+            this.kindField = "Default";
             this.discoverRadiusField = 200D;
             this.initialStateField = SagaArcInitialState.Hidden;
         }
@@ -80,6 +83,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.categoryField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute("Default")]
+        public string Kind {
+            get {
+                return this.kindField;
+            }
+            set {
+                this.kindField = value;
             }
         }
         
