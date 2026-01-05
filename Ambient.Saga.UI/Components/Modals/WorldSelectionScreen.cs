@@ -725,12 +725,22 @@ public class WorldSelectionScreen
 
         ImGui.TextWrapped("Import a CSV file with location data to place points of interest in your world. This step is optional - you can add locations later.");
         ImGui.Spacing();
-        ImGui.Spacing();
 
-        // CSV format info
-        ImGui.TextColored(new Vector4(1, 0.8f, 0.4f, 1), "CSV Format:");
-        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "name,latitude,longitude,type");
-        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Example: Tokyo,35.6762,139.6503,city");
+        // Tabs for Template vs AI Prompt
+        if (ImGui.BeginTabBar("LocationsTabs"))
+        {
+            if (ImGui.BeginTabItem("CSV Template"))
+            {
+                RenderLocationsTemplateTab();
+                ImGui.EndTabItem();
+            }
+            if (ImGui.BeginTabItem("AI Prompt"))
+            {
+                RenderLocationsAIPromptTab();
+                ImGui.EndTabItem();
+            }
+            ImGui.EndTabBar();
+        }
 
         ImGui.Spacing();
         ImGui.Separator();
@@ -765,8 +775,10 @@ public class WorldSelectionScreen
             for (int i = 0; i < Math.Min(_importedLocations.Count, 5); i++)
             {
                 var loc = _importedLocations[i];
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1),
-                    $"{loc.Name} ({loc.Latitude:F4}, {loc.Longitude:F4}) - {loc.Type}");
+                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.7f, 1), loc.Name);
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1),
+                    $"({loc.Latitude:F4}, {loc.Longitude:F4}) [{loc.Category}/{loc.Kind}]");
             }
             if (_importedLocations.Count > 5)
             {
@@ -791,6 +803,149 @@ public class WorldSelectionScreen
 
         ImGui.Spacing();
         ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "You can skip this step if you don't have location data.");
+    }
+
+    private void RenderLocationsTemplateTab()
+    {
+        ImGui.Spacing();
+        ImGui.TextColored(new Vector4(1, 0.8f, 0.4f, 1), "Required CSV Headers:");
+        ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1), "name,description,latitude,longitude,category,kind");
+        ImGui.Spacing();
+
+        ImGui.TextColored(new Vector4(1, 0.8f, 0.4f, 1), "Example Row:");
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Ise Grand Shrine,Ancient Shinto shrine,34.4550,136.7258,Religious,Shrine");
+        ImGui.Spacing();
+
+        // Category reference
+        ImGui.TextColored(new Vector4(1, 0.8f, 0.4f, 1), "Valid Categories:");
+        ImGui.BeginChild("CategoryList", new Vector2(0, 120), ImGuiChildFlags.Borders);
+
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Religious");
+        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Shrine, Temple, Church, Monastery");
+
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Stronghold");
+        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Castle, Fortress, Keep, Watchtower");
+
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Facility");
+        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Market, Inn, Blacksmith, Hospital");
+
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Landmark");
+        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Monument, Statue, Viewpoint, Peak");
+
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Ruin");
+        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: AncientRuin, Battlefield, Tomb");
+
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Infrastructure");
+        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Bridge, Port, Well, Road");
+
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Camp");
+        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: BaseCamp, Campsite, Outpost");
+
+        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Service");
+        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Merchant, Healer, Trainer");
+
+        ImGui.EndChild();
+    }
+
+    private string _aiPromptText = "";
+    private bool _aiPromptCopied = false;
+
+    private void RenderLocationsAIPromptTab()
+    {
+        ImGui.Spacing();
+        ImGui.TextWrapped("Copy this prompt to ChatGPT, Claude, or another AI to generate location data for your world:");
+        ImGui.Spacing();
+
+        string prompt;
+
+        if (_isRealWorld && _geoTransform != null && _geoTransform.Length >= 6 && _terrainWidth > 0 && _terrainHeight > 0)
+        {
+            // Real World - use actual GPS bounds for real/historical locations
+            var minLon = _geoTransform[0];
+            var maxLon = _geoTransform[0] + _terrainWidth * _geoTransform[1];
+            var maxLat = _geoTransform[3];
+            var minLat = _geoTransform[3] + _terrainHeight * _geoTransform[5];
+
+            prompt = $@"Generate a CSV file with real-world points of interest for a game set in this area:
+- Latitude: {minLat:F4} to {maxLat:F4}
+- Longitude: {minLon:F4} to {maxLon:F4}
+
+Include historically and culturally significant locations such as:
+- Religious sites (shrines, temples, churches)
+- Historical landmarks (castles, monuments, battlefields)
+- Natural features (peaks, waterfalls, caves)
+- Infrastructure (bridges, ports, historic roads)
+
+Required CSV headers (first row):
+name,description,latitude,longitude,category,kind
+
+Valid categories and example kinds:
+- Religious: Shrine, Temple, Church, Monastery, Chapel
+- Stronghold: Castle, Fortress, Keep, Watchtower, Garrison
+- Facility: Market, Inn, Blacksmith, Hospital, Library
+- Landmark: Monument, Statue, Viewpoint, Peak, Waterfall
+- Ruin: AncientRuin, Battlefield, Tomb, AbandonedVillage
+- Infrastructure: Bridge, Port, Well, Road, Gate
+- Camp: BaseCamp, Campsite, Outpost
+- Service: Merchant, Healer, Trainer
+- Passage: Cave, Tunnel, Pass, Ford
+
+Generate 20-30 locations with accurate real-world GPS coordinates. Each should have a historically appropriate name and brief description.
+
+Output only the CSV data, no explanation.";
+        }
+        else
+        {
+            // Procedural World - fictional theme-based locations
+            var themeName = GetThemeDisplayName(AvailableThemes[_selectedTheme]);
+
+            prompt = $@"Generate a CSV file with fictional points of interest for a {themeName}-themed fantasy game world.
+
+Create locations that fit the theme, such as:
+- Religious sites appropriate to the culture
+- Strongholds and defensive structures
+- Natural landmarks and mysterious locations
+- Towns, markets, and service facilities
+
+Use fictional GPS coordinates in a reasonable range (e.g., latitude 30-45, longitude 130-145 for an East Asian theme).
+
+Required CSV headers (first row):
+name,description,latitude,longitude,category,kind
+
+Valid categories and example kinds:
+- Religious: Shrine, Temple, Church, Monastery, Chapel
+- Stronghold: Castle, Fortress, Keep, Watchtower, Garrison
+- Facility: Market, Inn, Blacksmith, Hospital, Library
+- Landmark: Monument, Statue, Viewpoint, Peak, Waterfall
+- Ruin: AncientRuin, Battlefield, Tomb, AbandonedVillage
+- Infrastructure: Bridge, Port, Well, Road, Gate
+- Camp: BaseCamp, Campsite, Outpost
+- Service: Merchant, Healer, Trainer
+- Passage: Cave, Tunnel, Pass, Ford
+
+Generate 20-30 diverse, thematically appropriate locations. Give each a creative name and brief description that fits the {themeName} setting.
+
+Output only the CSV data, no explanation.";
+        }
+
+        // Store for clipboard
+        _aiPromptText = prompt;
+
+        ImGui.BeginChild("AIPrompt", new Vector2(0, 180), ImGuiChildFlags.Borders);
+        ImGui.TextWrapped(prompt);
+        ImGui.EndChild();
+
+        ImGui.Spacing();
+        if (ImGui.Button("Copy to Clipboard", new Vector2(150, 0)))
+        {
+            ImGui.SetClipboardText(_aiPromptText);
+            _aiPromptCopied = true;
+        }
+        if (_aiPromptCopied)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.4f, 1f, 0.4f, 1), "Copied!");
+        }
     }
 
     private void RenderWizardStep_Create()
@@ -863,13 +1018,15 @@ public class WorldSelectionScreen
     private int _locationsCount = 0;
     private List<LocationEntry> _importedLocations = new();
 
-    // Simple location entry from CSV
+    // Location entry from CSV (maps to SagaArc)
     private class LocationEntry
     {
         public string Name { get; set; } = "";
+        public string Description { get; set; } = "";
         public double Latitude { get; set; }
         public double Longitude { get; set; }
-        public string Type { get; set; } = "";
+        public string Category { get; set; } = "Default";
+        public string Kind { get; set; } = "Default";
     }
 
     private static string GetThemeDisplayName(string folderName)
@@ -1386,23 +1543,53 @@ public class WorldSelectionScreen
                 }
             }
 
+            // Detect format from header
+            var isNewFormat = false;
+            if (startLine == 1 && lines.Length > 0)
+            {
+                var header = lines[0].ToLowerInvariant();
+                isNewFormat = header.Contains("description") && header.Contains("category");
+            }
+
             for (int i = startLine; i < lines.Length; i++)
             {
                 var line = lines[i].Trim();
                 if (string.IsNullOrEmpty(line)) continue;
 
                 var parts = line.Split(',');
-                if (parts.Length >= 3)
+
+                if (isNewFormat && parts.Length >= 6)
                 {
-                    if (double.TryParse(parts[1].Trim(), out var lat) &&
-                        double.TryParse(parts[2].Trim(), out var lon))
+                    // New format: name,description,latitude,longitude,category,kind
+                    if (double.TryParse(parts[2].Trim(), out var lat) &&
+                        double.TryParse(parts[3].Trim(), out var lon))
                     {
                         _importedLocations.Add(new LocationEntry
                         {
                             Name = parts[0].Trim().Trim('"'),
+                            Description = parts[1].Trim().Trim('"'),
                             Latitude = lat,
                             Longitude = lon,
-                            Type = parts.Length > 3 ? parts[3].Trim().Trim('"') : "poi"
+                            Category = parts[4].Trim().Trim('"'),
+                            Kind = parts[5].Trim().Trim('"')
+                        });
+                    }
+                }
+                else if (parts.Length >= 3)
+                {
+                    // Legacy format: name,latitude,longitude[,type]
+                    if (double.TryParse(parts[1].Trim(), out var lat) &&
+                        double.TryParse(parts[2].Trim(), out var lon))
+                    {
+                        var type = parts.Length > 3 ? parts[3].Trim().Trim('"') : "Default";
+                        _importedLocations.Add(new LocationEntry
+                        {
+                            Name = parts[0].Trim().Trim('"'),
+                            Description = "",
+                            Latitude = lat,
+                            Longitude = lon,
+                            Category = type,
+                            Kind = "Default"
                         });
                     }
                 }
@@ -1488,9 +1675,9 @@ public class WorldSelectionScreen
                 {
                     _creationStatus = "Writing locations.csv...";
                     var locationsPath = Path.Combine(outputPath, "locations.csv");
-                    var csvLines = new List<string> { "name,latitude,longitude,type" };
+                    var csvLines = new List<string> { "name,description,latitude,longitude,category,kind" };
                     csvLines.AddRange(_importedLocations.Select(l =>
-                        $"\"{l.Name}\",{l.Latitude},{l.Longitude},{l.Type}"));
+                        $"\"{l.Name}\",\"{l.Description}\",{l.Latitude},{l.Longitude},{l.Category},{l.Kind}"));
                     File.WriteAllLines(locationsPath, csvLines);
                 }
 
