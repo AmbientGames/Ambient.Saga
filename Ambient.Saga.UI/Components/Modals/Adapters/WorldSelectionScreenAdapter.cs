@@ -1,6 +1,7 @@
 using Ambient.Application.Contracts;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI.Services;
 
 namespace Ambient.Saga.UI.Components.Modals.Adapters;
 
@@ -11,11 +12,15 @@ public class WorldSelectionScreenAdapter : IModal
 {
     private readonly WorldSelectionScreen _modal;
 
-    public WorldSelectionScreenAdapter(IWorldContentGenerator worldContentGenerator, IGameSettings gameSettings)
+    public WorldSelectionScreenAdapter(
+        IWorldContentGenerator worldContentGenerator,
+        IGameSettings gameSettings,
+        IFileDialogService? fileDialogService = null)
     {
         _modal = new WorldSelectionScreen(
             worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator)),
-            gameSettings ?? throw new ArgumentNullException(nameof(gameSettings)));
+            gameSettings ?? throw new ArgumentNullException(nameof(gameSettings)),
+            fileDialogService);
     }
 
     public string Name => "WorldSelection";
