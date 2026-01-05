@@ -65,6 +65,11 @@ public class WorldSelectionScreen
     private ushort[]? _heightData; // Raw height values for lookup
     private int _heightDataWidth; // Width of height data array
 
+    // Location generation settings
+    private string _locationGenerationType = "trail"; // "trail" or "radial"
+    private double _spawnLatitude; // GPS latitude of spawn point
+    private double _spawnLongitude; // GPS longitude of spawn point
+
     private static readonly string[] ProceduralModes = new[]
     {
         "Rugged", "Rolling", "Extreme"
@@ -860,70 +865,72 @@ public class WorldSelectionScreen
 
         if (_isRealWorld && _geoTransform != null && _geoTransform.Length >= 6 && _terrainWidth > 0 && _terrainHeight > 0)
         {
-            // Real World - use actual GPS bounds for real/historical locations
+            // Real World - use actual GPS bounds and spawn location
             var minLon = _geoTransform[0];
             var maxLon = _geoTransform[0] + _terrainWidth * _geoTransform[1];
             var maxLat = _geoTransform[3];
             var minLat = _geoTransform[3] + _terrainHeight * _geoTransform[5];
 
-            prompt = $@"Generate a CSV file with real-world points of interest for a game set in this area:
+            // Calculate spawn GPS from pixel coordinates
+            _spawnLongitude = _geoTransform[0] + _selectedSpawnPixel.X * _geoTransform[1] + _selectedSpawnPixel.Y * _geoTransform[2];
+            _spawnLatitude = _geoTransform[3] + _selectedSpawnPixel.X * _geoTransform[4] + _selectedSpawnPixel.Y * _geoTransform[5];
+
+            prompt = $@"Generate a CSV file with points of interest for a game set in this real-world area:
+
+Map bounds:
 - Latitude: {minLat:F4} to {maxLat:F4}
 - Longitude: {minLon:F4} to {maxLon:F4}
 
-Include historically and culturally significant locations such as:
-- Religious sites (shrines, temples, churches)
-- Historical landmarks (castles, monuments, battlefields)
-- Natural features (peaks, waterfalls, caves)
-- Infrastructure (bridges, ports, historic roads)
+Player spawn point: {_spawnLatitude:F4}, {_spawnLongitude:F4}
+
+Include a mix of:
+- Historical/cultural sites (shrines, temples, castles, monuments)
+- Scenic locations (viewpoints, peaks, waterfalls)
+- Points of interest (interesting places to explore)
+
+Locations should form a natural exploration path radiating outward from the spawn point.
 
 Required CSV headers (first row):
 name,description,latitude,longitude,category,kind
 
-Valid categories and example kinds:
-- Religious: Shrine, Temple, Church, Monastery, Chapel
-- Stronghold: Castle, Fortress, Keep, Watchtower, Garrison
-- Facility: Market, Inn, Blacksmith, Hospital, Library
-- Landmark: Monument, Statue, Viewpoint, Peak, Waterfall
-- Ruin: AncientRuin, Battlefield, Tomb, AbandonedVillage
-- Infrastructure: Bridge, Port, Well, Road, Gate
-- Camp: BaseCamp, Campsite, Outpost
-- Service: Merchant, Healer, Trainer
-- Passage: Cave, Tunnel, Pass, Ford
+Valid categories: Religious, Stronghold, Facility, Landmark, Ruin, Infrastructure, Camp, Service, Passage, Waypoint
+Example kinds: Shrine, Temple, Castle, Monument, Viewpoint, Peak, Bridge, Cave, Inn, Market
 
-Generate 20-30 locations with accurate real-world GPS coordinates. Each should have a historically appropriate name and brief description.
+Generate 20-30 locations with accurate real-world GPS coordinates within the map bounds. Place interesting locations near the spawn point for early exploration.
 
 Output only the CSV data, no explanation.";
         }
         else
         {
-            // Procedural World - fictional theme-based locations
+            // Procedural World - fictional theme-based locations within 1 degree of spawn
             var themeName = GetThemeDisplayName(AvailableThemes[_selectedTheme]);
+
+            // For procedural, use a default spawn area (can be adjusted)
+            // Center around a thematic location (e.g., 35, 135 for Japan theme)
+            _spawnLatitude = 35.0;
+            _spawnLongitude = 135.0;
+            var latRange = 1.0; // 1 degree in each direction
 
             prompt = $@"Generate a CSV file with fictional points of interest for a {themeName}-themed fantasy game world.
 
-Create locations that fit the theme, such as:
-- Religious sites appropriate to the culture
+Player spawn point: {_spawnLatitude:F4}, {_spawnLongitude:F4}
+Area: Within ~{latRange} degree in each direction from spawn
+
+Create {themeName}-themed locations such as:
+- Sacred sites appropriate to the culture
 - Strongholds and defensive structures
 - Natural landmarks and mysterious locations
-- Towns, markets, and service facilities
+- Villages, markets, and service facilities
 
-Use fictional GPS coordinates in a reasonable range (e.g., latitude 30-45, longitude 130-145 for an East Asian theme).
+Locations should form a natural exploration path radiating outward from the spawn point, with easier/friendlier locations near spawn and more challenging ones further out.
 
 Required CSV headers (first row):
 name,description,latitude,longitude,category,kind
 
-Valid categories and example kinds:
-- Religious: Shrine, Temple, Church, Monastery, Chapel
-- Stronghold: Castle, Fortress, Keep, Watchtower, Garrison
-- Facility: Market, Inn, Blacksmith, Hospital, Library
-- Landmark: Monument, Statue, Viewpoint, Peak, Waterfall
-- Ruin: AncientRuin, Battlefield, Tomb, AbandonedVillage
-- Infrastructure: Bridge, Port, Well, Road, Gate
-- Camp: BaseCamp, Campsite, Outpost
-- Service: Merchant, Healer, Trainer
-- Passage: Cave, Tunnel, Pass, Ford
+Valid categories: Religious, Stronghold, Facility, Landmark, Ruin, Infrastructure, Camp, Service, Passage, Waypoint
+Example kinds: Shrine, Temple, Castle, Monument, Viewpoint, Peak, Bridge, Cave, Inn, Market
 
-Generate 20-30 diverse, thematically appropriate locations. Give each a creative name and brief description that fits the {themeName} setting.
+Generate 20-30 diverse locations. Give each a creative {themeName}-appropriate name and brief description.
 
 Output only the CSV data, no explanation.";
         }
@@ -1670,16 +1677,28 @@ Output only the CSV data, no explanation.";
                     File.Copy(_validatedTifPath, terrainDest, overwrite: true);
                 }
 
-                // Create locations.csv if we have locations
+                // Create locations.csv - either imported or default radial locations
+                _creationStatus = "Writing locations.csv...";
+                var locationsPath = Path.Combine(outputPath, "locations.csv");
+                var csvLines = new List<string> { "name,description,latitude,longitude,category,kind" };
+
                 if (_importedLocations.Count > 0)
                 {
-                    _creationStatus = "Writing locations.csv...";
-                    var locationsPath = Path.Combine(outputPath, "locations.csv");
-                    var csvLines = new List<string> { "name,description,latitude,longitude,category,kind" };
+                    // User provided locations - use trail generation
+                    _locationGenerationType = "trail";
                     csvLines.AddRange(_importedLocations.Select(l =>
                         $"\"{l.Name}\",\"{l.Description}\",{l.Latitude},{l.Longitude},{l.Category},{l.Kind}"));
-                    File.WriteAllLines(locationsPath, csvLines);
                 }
+                else
+                {
+                    // No locations provided - generate 3 default radial locations
+                    _locationGenerationType = "radial";
+                    var defaultLocations = GenerateDefaultRadialLocations();
+                    csvLines.AddRange(defaultLocations.Select(l =>
+                        $"\"{l.Name}\",\"{l.Description}\",{l.Latitude},{l.Longitude},{l.Category},{l.Kind}"));
+                }
+
+                File.WriteAllLines(locationsPath, csvLines);
 
                 _lastGenerationMessage = $"World '{_worldName}' created successfully at:\n{outputPath}";
                 _showGenerationMessage = true;
@@ -1694,6 +1713,63 @@ Output only the CSV data, no explanation.";
                 _creationStatus = "";
             }
         });
+    }
+
+    /// <summary>
+    /// Generates 3 default radial seed locations around the spawn point.
+    /// These serve as starting points for the radial generation algorithm
+    /// which will add intermediate waypoints connecting them.
+    /// </summary>
+    private List<LocationEntry> GenerateDefaultRadialLocations()
+    {
+        var locations = new List<LocationEntry>();
+        var random = new Random();
+
+        // Calculate spawn GPS if we have geotransform
+        if (_geoTransform != null && _geoTransform.Length >= 6)
+        {
+            _spawnLongitude = _geoTransform[0] + _selectedSpawnPixel.X * _geoTransform[1] + _selectedSpawnPixel.Y * _geoTransform[2];
+            _spawnLatitude = _geoTransform[3] + _selectedSpawnPixel.X * _geoTransform[4] + _selectedSpawnPixel.Y * _geoTransform[5];
+        }
+        else
+        {
+            // Default for procedural worlds
+            _spawnLatitude = 35.0;
+            _spawnLongitude = 135.0;
+        }
+
+        // Generate 3 seed locations at roughly 120-degree angles from spawn
+        // Distance varies between 0.1 and 0.3 degrees (~10-30km)
+        var angles = new[] { 0.0, 120.0, 240.0 };
+        var categories = new[] { "Landmark", "Religious", "Stronghold" };
+        var kinds = new[] { "Peak", "Shrine", "Ruin" };
+        var names = new[] { "Distant Peak", "Ancient Shrine", "Forgotten Fortress" };
+        var descriptions = new[] {
+            "A towering peak visible from afar",
+            "A sacred site of forgotten rituals",
+            "Crumbling walls of an ancient stronghold"
+        };
+
+        for (int i = 0; i < 3; i++)
+        {
+            var angleRad = angles[i] * Math.PI / 180.0;
+            var distance = 0.15 + random.NextDouble() * 0.15; // 0.15 to 0.3 degrees
+
+            var lat = _spawnLatitude + distance * Math.Cos(angleRad);
+            var lon = _spawnLongitude + distance * Math.Sin(angleRad);
+
+            locations.Add(new LocationEntry
+            {
+                Name = names[i],
+                Description = descriptions[i],
+                Latitude = lat,
+                Longitude = lon,
+                Category = categories[i],
+                Kind = kinds[i]
+            });
+        }
+
+        return locations;
     }
 
     private string GenerateGenerationXml(string worldRef)
@@ -1712,6 +1788,7 @@ Output only the CSV data, no explanation.";
   <Theme>{AvailableThemes[_selectedTheme]}</Theme>
   <SpawnX>{(int)_selectedSpawnPixel.X}</SpawnX>
   <SpawnY>{(int)_selectedSpawnPixel.Y}</SpawnY>
+  <LocationGenerationType>{_locationGenerationType}</LocationGenerationType>
   {(_isRealWorld ? $"<TerrainFile>terrain.tif</TerrainFile>" : "")}
 </Generation>";
     }
