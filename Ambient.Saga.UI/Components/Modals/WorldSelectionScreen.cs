@@ -59,6 +59,12 @@ public class WorldSelectionScreen
     private IDisposable[]? _terrainTextureResources;
     private Vector2 _selectedSpawnPixel = Vector2.Zero; // Pixel coordinates on map
     private bool _spawnSelected = false;
+
+    // GeoTIFF metadata for coordinate/height display
+    private double[]? _geoTransform; // [originX, pixelWidth, rotX, originY, rotY, pixelHeight]
+    private ushort[]? _heightData; // Raw height values for lookup
+    private int _heightDataWidth; // Width of height data array
+
     private static readonly string[] ProceduralModes = new[]
     {
         "Rugged", "Rolling", "Extreme"
@@ -536,6 +542,39 @@ public class WorldSelectionScreen
                 _spawnSelected = true;
             }
 
+            // Show height and GPS coordinates on hover
+            if (ImGui.IsItemHovered() && _heightData != null)
+            {
+                var mousePos = ImGui.GetMousePos();
+                var relativePos = mousePos - imagePos;
+
+                // Convert to pixel coordinates
+                var pixelX = (int)(relativePos.X / displayWidth * _terrainPreviewImage.Width);
+                var pixelY = (int)(relativePos.Y / displayHeight * _terrainPreviewImage.Height);
+
+                // Clamp to valid range
+                pixelX = Math.Clamp(pixelX, 0, _terrainPreviewImage.Width - 1);
+                pixelY = Math.Clamp(pixelY, 0, _terrainPreviewImage.Height - 1);
+
+                // Get height value
+                var heightIndex = pixelY * _heightDataWidth + pixelX;
+                var heightValue = heightIndex < _heightData.Length ? _heightData[heightIndex] : 0;
+
+                // Build tooltip text
+                var tooltipText = $"Height: {heightValue}m";
+
+                // Add GPS coordinates if geotransform is available
+                if (_geoTransform != null && _geoTransform.Length >= 6)
+                {
+                    // GeoTransform: [originX, pixelWidth, rotX, originY, rotY, pixelHeight]
+                    var lon = _geoTransform[0] + pixelX * _geoTransform[1] + pixelY * _geoTransform[2];
+                    var lat = _geoTransform[3] + pixelX * _geoTransform[4] + pixelY * _geoTransform[5];
+                    tooltipText += $"\nLat: {lat:F5}, Lon: {lon:F5}";
+                }
+
+                ImGui.SetTooltip(tooltipText);
+            }
+
             // Draw spawn marker
             if (_spawnSelected)
             {
@@ -874,6 +913,9 @@ public class WorldSelectionScreen
         // Reset preview state
         _terrainPreviewImage = null;
         _isLoadingPreview = false;
+        _geoTransform = null;
+        _heightData = null;
+        _heightDataWidth = 0;
         if (_terrainTexturePtr != IntPtr.Zero && _terrainTextureResources != null && _textureProvider != null)
         {
             _textureProvider.DisposeTexture(_terrainTextureResources);
@@ -969,6 +1011,14 @@ public class WorldSelectionScreen
                     _validatedTifPath = convertedPath; // Use converted file for everything
                     _terrainFileStatus = $"Valid: {width}x{height} ({totalPixels:N0} pixels)";
                     System.Diagnostics.Debug.WriteLine($"[Terrain] GDAL conversion succeeded: {convertedPath}");
+
+                    // Capture geotransform for GPS coordinate display
+                    var info = _geoTiffConverter.GetInfo(convertedPath);
+                    if (info != null)
+                    {
+                        _geoTransform = info.GeoTransform;
+                        System.Diagnostics.Debug.WriteLine($"[Terrain] GeoTransform: [{string.Join(", ", _geoTransform)}]");
+                    }
                 }
                 else
                 {
@@ -1019,6 +1069,22 @@ public class WorldSelectionScreen
                 // Load and process the height map
                 using var image = Image.Load<L16>(tifPath);
                 System.Diagnostics.Debug.WriteLine($"[Terrain] Image loaded: {image.Width}x{image.Height}");
+
+                // Extract raw height data for hover display
+                _heightDataWidth = image.Width;
+                _heightData = new ushort[image.Width * image.Height];
+                image.ProcessPixelRows(accessor =>
+                {
+                    for (int y = 0; y < accessor.Height; y++)
+                    {
+                        var row = accessor.GetRowSpan(y);
+                        for (int x = 0; x < row.Length; x++)
+                        {
+                            _heightData[y * image.Width + x] = row[x].PackedValue;
+                        }
+                    }
+                });
+                System.Diagnostics.Debug.WriteLine($"[Terrain] Height data extracted: {_heightData.Length} values");
 
                 var processedMap = HeightMapProcessor.ProcessHeightMap(image, minWaterAreaSize: 50, adjustMinWaterAreaSizeByElevation: true, verticalShift: 0);
                 System.Diagnostics.Debug.WriteLine($"[Terrain] HeightMap processed: {processedMap.Width}x{processedMap.Height}");
