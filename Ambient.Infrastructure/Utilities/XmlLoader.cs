@@ -2,6 +2,7 @@
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Infrastructure.Utilities;
 
@@ -16,11 +17,15 @@ public static class XmlLoader
     /// <typeparam name="T">The type to deserialize the XML content into.</typeparam>
     /// <param name="xmlFilePath">The path to the XML file to load.</param>
     /// <param name="cancellationToken">Optional cancellation token to cancel the loading operation.</param>
+    /// <param name="logger">Optional logger for detailed logging.</param>
     /// <returns>A deserialized object of type T.</returns>
-    public static async Task<T> LoadFromXmlAsync<T>(string xmlFilePath, CancellationToken cancellationToken = default)
+    public static async Task<T> LoadFromXmlAsync<T>(string xmlFilePath, ILogger? logger = null, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(xmlFilePath))
             throw new ArgumentException("XML file path cannot be null or empty.", nameof(xmlFilePath));
+
+        var fullPath = Path.GetFullPath(xmlFilePath);
+        var typeName = typeof(T).Name;
 
         T result = default;
 
@@ -31,21 +36,27 @@ public static class XmlLoader
 
         try
         {
+            logger?.LogInformation("Loading XML file: {FilePath} as type {TypeName}", fullPath, typeName);
+            Debug.WriteLine($"Loading: {fullPath}");
+
             using Stream stream = File.OpenRead(xmlFilePath);
             using var xmlReader = XmlReader.Create(stream, settings);
             var serializer = new XmlSerializer(typeof(T));
 
-            Debug.WriteLine($"Loading: {xmlFilePath}");
             result = (T)await Task.Run(() => serializer.Deserialize(xmlReader), cancellationToken);
+
+            logger?.LogInformation("Successfully loaded: {FilePath}", fullPath);
         }
         catch (InvalidOperationException e)
         {
-            Debug.WriteLine($"Deserialization failed: {e.Message}-{xmlFilePath}");
+            logger?.LogError(e, "Deserialization failed for {TypeName} from {FilePath}: {Message}", typeName, fullPath, e.Message);
+            Debug.WriteLine($"Deserialization failed: {e.Message}-{fullPath}");
             throw new Exception($"Deserialization failed: {e.Message}", e);
         }
         catch (Exception e)
         {
-            Debug.WriteLine($"Unexpected error: {e.Message}-{xmlFilePath}");
+            logger?.LogError(e, "Unexpected error loading {TypeName} from {FilePath}: {Message}", typeName, fullPath, e.Message);
+            Debug.WriteLine($"Unexpected error: {e.Message}-{fullPath}");
             throw;
         }
 
@@ -59,14 +70,19 @@ public static class XmlLoader
     /// <param name="xmlFilePath">The path to the XML file to load.</param>
     /// <param name="xsdFilePath">The path to the XSD schema file for validation.</param>
     /// <param name="cancellationToken">Optional cancellation token to cancel the loading operation.</param>
+    /// <param name="logger">Optional logger for detailed logging.</param>
     /// <returns>A deserialized object of type T.</returns>
-    public static async Task<T> LoadFromXmlAsync<T>(string xmlFilePath, string xsdFilePath, CancellationToken cancellationToken = default)
+    public static async Task<T> LoadFromXmlAsync<T>(string xmlFilePath, string xsdFilePath, ILogger? logger = null, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(xmlFilePath))
             throw new ArgumentException("XML file path cannot be null or empty.", nameof(xmlFilePath));
 
         if (string.IsNullOrWhiteSpace(xsdFilePath))
             throw new ArgumentException("XSD file path cannot be null or empty.", nameof(xsdFilePath));
+
+        var fullPath = Path.GetFullPath(xmlFilePath);
+        var fullXsdPath = Path.GetFullPath(xsdFilePath);
+        var typeName = typeof(T).Name;
 
         T result = default;
 
@@ -78,6 +94,8 @@ public static class XmlLoader
 
         try
         {
+            logger?.LogInformation("Loading XML file: {FilePath} as type {TypeName} with schema {XsdPath}", fullPath, typeName, fullXsdPath);
+
             var schemaSet = new XmlSchemaSet
             {
                 XmlResolver = new DebugXmlResolver()
@@ -90,6 +108,7 @@ public static class XmlLoader
             schemaSet.ValidationEventHandler += (sender, args) =>
             {
                 Debug.WriteLine($"Schema validation error: {args.Message}");
+                logger?.LogWarning("Schema validation issue in {FilePath}: {Message}", fullPath, args.Message);
                 if (args.Severity == XmlSeverityType.Error)
                     throw new XmlSchemaValidationException(args.Message);
             };
@@ -102,22 +121,27 @@ public static class XmlLoader
             using var xmlReader = XmlReader.Create(stream, settings);
             var serializer = new XmlSerializer(typeof(T));
 
-            Debug.WriteLine($"Loading: {xmlFilePath}");
+            Debug.WriteLine($"Loading: {fullPath}");
             result = (T)await Task.Run(() => serializer.Deserialize(xmlReader), cancellationToken);
+
+            logger?.LogInformation("Successfully loaded: {FilePath}", fullPath);
         }
         catch (XmlSchemaValidationException e)
         {
-            Debug.WriteLine($"Validation failed: {e.Message}-{xmlFilePath}");
+            logger?.LogError(e, "Schema validation failed for {TypeName} from {FilePath}: {Message}", typeName, fullPath, e.Message);
+            Debug.WriteLine($"Validation failed: {e.Message}-{fullPath}");
             throw new Exception($"XML validation failed: {e.Message}", e);
         }
         catch (InvalidOperationException e)
         {
-            Debug.WriteLine($"Deserialization failed: {e.Message}-{xmlFilePath}");
+            logger?.LogError(e, "Deserialization failed for {TypeName} from {FilePath}: {Message}", typeName, fullPath, e.Message);
+            Debug.WriteLine($"Deserialization failed: {e.Message}-{fullPath}");
             throw new Exception($"Deserialization failed: {e.Message}", e);
         }
         catch (Exception e)
         {
-            Debug.WriteLine($"Unexpected error: {e.Message}-{xmlFilePath}");
+            logger?.LogError(e, "Unexpected error loading {TypeName} from {FilePath}: {Message}", typeName, fullPath, e.Message);
+            Debug.WriteLine($"Unexpected error: {e.Message}-{fullPath}");
             throw;
         }
 

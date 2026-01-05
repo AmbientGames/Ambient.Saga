@@ -70,7 +70,7 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
 
         // Check %APPDATA% location
         var appDataWorldsPath = Path.Combine(_gameSettings.GetAppDataContentPath(), "worlds");
-        _logger?.LogDebug("Checking AppData worlds path: {Path}", appDataWorldsPath);
+        _logger?.LogInformation("Checking AppData worlds path: {Path}", appDataWorldsPath);
         if (Directory.Exists(appDataWorldsPath))
         {
             foreach (var dir in Directory.GetDirectories(appDataWorldsPath))
