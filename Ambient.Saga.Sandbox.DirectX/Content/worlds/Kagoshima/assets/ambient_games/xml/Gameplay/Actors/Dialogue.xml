@@ -2704,22 +2704,10 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke4Ring1" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Wizard Robes and Throwing Star. Please, take it.</Text>
-      <Choice Text="Thank you for the Wizard Robes and Throwing Star!" NextNodeId="gift_accepted" />
-      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
-    </Node>
-    <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Wizard Robes and Throwing Star serve you well on your journey!</Text>
-      <Action Type="GiveEquipment" RefName="WizardRobes" Amount="1" />
-      <Action Type="GiveConsumable" RefName="ThrowingStar" Amount="1" />
-      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
-    </Node>
     <Node NodeId="greeting">
       <Text>Ah, another soul drawn to Tsurumaru-jō Spoke 4 Ring 1. There's something special about this place.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>It's good to meet a friendly face! Have you visited TerukuniDaimyōjinshaSpoke3Ring1 or TerukuniDaimyōjinshaSpoke2Ring1 yet?</Text>
@@ -2734,10 +2722,22 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke4Ring2" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="gift_offer">
+      <Text>I'd like to give you something... a Sandals and Phoenix Tears. Please, take it.</Text>
+      <Choice Text="Thank you for the Sandals and Phoenix Tears!" NextNodeId="gift_accepted" />
+      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
+    </Node>
+    <Node NodeId="gift_accepted">
+      <Text>It's yours now. May the Sandals and Phoenix Tears serve you well on your journey!</Text>
+      <Action Type="GiveEquipment" RefName="Sandals" Amount="1" />
+      <Action Type="GiveConsumable" RefName="PhoenixTears" Amount="1" />
+      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
+    </Node>
     <Node NodeId="greeting">
       <Text>Ah, another soul drawn to Tsurumaru-jō Spoke 4 Ring 2. There's something special about this place.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>A pleasure to meet you! If you haven't been to TerukuniDaimyōjinshaSpoke3Ring1 or TerukuniDaimyōjinshaSpoke3Ring2, I recommend it.</Text>
@@ -3064,22 +3064,10 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TsurumarujōSpoke6Ring1" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Half Plate and Frost Bomb. Please, take it.</Text>
-      <Choice Text="Thank you for the Half Plate and Frost Bomb!" NextNodeId="gift_accepted" />
-      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
-    </Node>
-    <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Half Plate and Frost Bomb serve you well on your journey!</Text>
-      <Action Type="GiveEquipment" RefName="HalfPlate" Amount="1" />
-      <Action Type="GiveConsumable" RefName="FrostBomb" Amount="1" />
-      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
-    </Node>
     <Node NodeId="greeting">
       <Text>Greetings, friend. Are you also visiting Tsurumaru-jō Spoke 6 Ring 1? It's quite a sight to behold.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>It's good to meet a friendly face! Have you visited TerukuniDaimyōjinshaSpoke1Ring1 or Tsurumarujō1_to_TerukuniDaimyōjinsha1_0 yet?</Text>
@@ -3411,10 +3399,21 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke3Ring1" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="gift_offer">
+      <Text>I'd like to give you something... a Thunder Bomb. Please, take it.</Text>
+      <Choice Text="Thank you for the Thunder Bomb!" NextNodeId="gift_accepted" />
+      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
+    </Node>
+    <Node NodeId="gift_accepted">
+      <Text>It's yours now. May the Thunder Bomb serve you well on your journey!</Text>
+      <Action Type="GiveConsumable" RefName="ThunderBomb" Amount="1" />
+      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
+    </Node>
     <Node NodeId="greeting">
       <Text>Hello there! Iso-teien Spoke 3 Ring 1 is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>Good to meet you! There's much to see around here, especially IsoteienSpoke2Ring1 or IsoteienSpoke3Ring2.</Text>
@@ -3561,10 +3560,22 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring2" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="gift_offer">
+      <Text>I'd like to give you something... a Leather Vest and Apple. Please, take it.</Text>
+      <Choice Text="Thank you for the Leather Vest and Apple!" NextNodeId="gift_accepted" />
+      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
+    </Node>
+    <Node NodeId="gift_accepted">
+      <Text>It's yours now. May the Leather Vest and Apple serve you well on your journey!</Text>
+      <Action Type="GiveEquipment" RefName="LeatherVest" Amount="1" />
+      <Action Type="GiveConsumable" RefName="Apple" Amount="1" />
+      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
+    </Node>
     <Node NodeId="greeting">
       <Text>A fellow traveler! I've been resting here at Iso-teien Spoke 4 Ring 2. The journey has been long.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>A pleasure to meet you! If you haven't been to TsurumarujōSpoke2Ring5 or IsoteienSpoke4Ring3, I recommend it.</Text>
@@ -3615,10 +3626,22 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_IsoteienSpoke4Ring5" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="gift_offer">
+      <Text>I'd like to give you something... a Mage Staff and Weakening Poison. Please, take it.</Text>
+      <Choice Text="Thank you for the Mage Staff and Weakening Poison!" NextNodeId="gift_accepted" />
+      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
+    </Node>
+    <Node NodeId="gift_accepted">
+      <Text>It's yours now. May the Mage Staff and Weakening Poison serve you well on your journey!</Text>
+      <Action Type="GiveEquipment" RefName="MageStaff" Amount="1" />
+      <Action Type="GiveConsumable" RefName="WeakeningPoison" Amount="1" />
+      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
+    </Node>
     <Node NodeId="greeting">
       <Text>Greetings, friend. Are you also visiting Iso-teien Spoke 4 Ring 5? It's quite a sight to behold.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>It's good to meet a friendly face! Have you visited IsoteienSpoke4Ring4 or IsoteienSpoke4Ring3 yet?</Text>
@@ -3884,10 +3907,21 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="gift_offer">
+      <Text>I'd like to give you something... a Acid Bomb. Please, take it.</Text>
+      <Choice Text="Thank you for the Acid Bomb!" NextNodeId="gift_accepted" />
+      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
+    </Node>
+    <Node NodeId="gift_accepted">
+      <Text>It's yours now. May the Acid Bomb serve you well on your journey!</Text>
+      <Action Type="GiveConsumable" RefName="AcidBomb" Amount="1" />
+      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
+    </Node>
     <Node NodeId="greeting">
       <Text>Greetings, friend. Are you also visiting Terukuni Daimyōjin-sha Spoke 2 Ring 5? It's quite a sight to behold.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke2Ring4 or TsurumarujōSpoke2Ring3.</Text>
@@ -3962,10 +3996,21 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="gift_offer">
+      <Text>I'd like to give you something... a Superior Healing Potion. Please, take it.</Text>
+      <Choice Text="Thank you for the Superior Healing Potion!" NextNodeId="gift_accepted" />
+      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
+    </Node>
+    <Node NodeId="gift_accepted">
+      <Text>It's yours now. May the Superior Healing Potion serve you well on your journey!</Text>
+      <Action Type="GiveConsumable" RefName="SuperiorHealingPotion" Amount="1" />
+      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
+    </Node>
     <Node NodeId="greeting">
       <Text>Ah, another soul drawn to Terukuni Daimyōjin-sha Spoke 3 Ring 2. There's something special about this place.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke4Ring2 or TerukuniDaimyōjinshaSpoke3Ring3.</Text>
@@ -4058,21 +4103,10 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Flash Bomb. Please, take it.</Text>
-      <Choice Text="Thank you for the Flash Bomb!" NextNodeId="gift_accepted" />
-      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
-    </Node>
-    <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Flash Bomb serve you well on your journey!</Text>
-      <Action Type="GiveConsumable" RefName="FlashBomb" Amount="1" />
-      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
-    </Node>
     <Node NodeId="greeting">
       <Text>Greetings, friend. Are you also visiting Terukuni Daimyōjin-sha Spoke 3 Ring 5? It's quite a sight to behold.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>Good to meet you! There's much to see around here, especially TerukuniDaimyōjinshaSpoke3Ring4 or TsurumarujōSpoke3Ring5.</Text>
@@ -4261,10 +4295,21 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="gift_offer">
+      <Text>I'd like to give you something... a Apple. Please, take it.</Text>
+      <Choice Text="Thank you for the Apple!" NextNodeId="gift_accepted" />
+      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
+    </Node>
+    <Node NodeId="gift_accepted">
+      <Text>It's yours now. May the Apple serve you well on your journey!</Text>
+      <Action Type="GiveConsumable" RefName="Apple" Amount="1" />
+      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
+    </Node>
     <Node NodeId="greeting">
       <Text>A fellow traveler! I've been resting here at Terukuni Daimyōjin-sha Spoke 5 Ring 1. The journey has been long.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
+      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>Welcome, friend! Many pass through here on their way to TsurumarujōSpoke5Ring2 or TsurumarujōSpoke5Ring3.</Text>
@@ -4490,14 +4535,14 @@
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_1" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
     <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Mage Crown and Minor Mana Potion. Please, take it.</Text>
-      <Choice Text="Thank you for the Mage Crown and Minor Mana Potion!" NextNodeId="gift_accepted" />
+      <Text>I'd like to give you something... a Ring Of Swiftness and Stew. Please, take it.</Text>
+      <Choice Text="Thank you for the Ring Of Swiftness and Stew!" NextNodeId="gift_accepted" />
       <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
     </Node>
     <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Mage Crown and Minor Mana Potion serve you well on your journey!</Text>
-      <Action Type="GiveEquipment" RefName="MageCrown" Amount="1" />
-      <Action Type="GiveConsumable" RefName="MinorManaPotion" Amount="1" />
+      <Text>It's yours now. May the Ring Of Swiftness and Stew serve you well on your journey!</Text>
+      <Action Type="GiveEquipment" RefName="RingOfSwiftness" Amount="1" />
+      <Action Type="GiveConsumable" RefName="Stew" Amount="1" />
       <Choice Text="Farewell, and thank you!" NextNodeId="end" />
     </Node>
     <Node NodeId="greeting">
@@ -4537,22 +4582,10 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_3" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Siren Harp and Juice. Please, take it.</Text>
-      <Choice Text="Thank you for the Siren Harp and Juice!" NextNodeId="gift_accepted" />
-      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
-    </Node>
-    <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Siren Harp and Juice serve you well on your journey!</Text>
-      <Action Type="GiveEquipment" RefName="SirenHarp" Amount="1" />
-      <Action Type="GiveConsumable" RefName="Juice" Amount="1" />
-      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
-    </Node>
     <Node NodeId="greeting">
       <Text>Ah, another soul drawn to Waypoint between Iso-teien and Tsurumaru-jō (4). There's something special about this place.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>Good to meet you! There's much to see around here, especially TsurumarujōSpoke2Ring3 or Isoteien1_to_Tsurumarujō1_2.</Text>
@@ -4642,6 +4675,60 @@
     </Node>
     <Node NodeId="end">
       <Text>Take care out there!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_GUARD_Tsurumarujō_0" DisplayName="Guard at Tsurumaru-jō Dialogue" Description="Dialogue tree for Guard at Tsurumaru-jō" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Who goes there? This territory is off limits to outsiders!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Ah, a fellow wanderer! May your journey be filled with discovery.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Tsurumaru-jō, holds many secrets. Those who listen carefully learn much.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Farewell, and good luck on your journey!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_GUARD_Isoteien_1" DisplayName="Guard at Iso-teien Dialogue" Description="Dialogue tree for Guard at Iso-teien" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Who goes there? This territory is off limits to outsiders!</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Iso-teien has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_GUARD_TerukuniDaimyōjinsha_2" DisplayName="Guard at Terukuni Daimyōjin-sha Dialogue" Description="Dialogue tree for Guard at Terukuni Daimyōjin-sha" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Another intruder. I've dealt with your kind before.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Good to meet you! Travel safely - these paths can be treacherous.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Terukuni Daimyōjin-sha has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
 </DialogueTrees>
