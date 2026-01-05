@@ -66,7 +66,6 @@ public class WorldSelectionScreen
     private int _heightDataWidth; // Width of height data array
 
     // Location generation settings
-    private string _locationGenerationType = "trail"; // "trail" or "radial"
     private double _spawnLatitude; // GPS latitude of spawn point
     private double _spawnLongitude; // GPS longitude of spawn point
 
@@ -1004,7 +1003,11 @@ Output only the CSV data, no explanation.";
 
         // Output location info
         var worldRef = SanitizeWorldName(_worldName);
-        var outputPath = GetWorldOutputPath(worldRef);
+        var generatedWorldRef = worldRef + "_generated";
+        var outputPath = Path.Combine(
+            _gameSettings.GetAppDataContentPath(),
+            "worlds",
+            generatedWorldRef);
         ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Files will be created at:");
         ImGui.TextWrapped(outputPath);
 
@@ -1154,9 +1157,6 @@ Output only the CSV data, no explanation.";
             // Convert with GDAL to standardized format
             if (_geoTiffConverter != null && _geoTiffConverter.IsAvailable)
             {
-                // Debug breakpoint for terrain conversion
-                System.Diagnostics.Debugger.Break();
-
                 _terrainFileStatus = "Converting with GDAL...";
 
                 // Create temp path for converted file
@@ -1630,14 +1630,6 @@ Output only the CSV data, no explanation.";
         return new string(chars);
     }
 
-    private string GetWorldOutputPath(string worldRef)
-    {
-        return Path.Combine(
-            _gameSettings.GetAppDataContentPath(),
-            "worlds",
-            worldRef);
-    }
-
     private bool _isCreatingWorld;
     private string _creationStatus = "";
 
@@ -1648,59 +1640,80 @@ Output only the CSV data, no explanation.";
         _isCreatingWorld = true;
         _creationStatus = "Creating world...";
 
+        // Capture all state BEFORE entering async task to avoid threading issues
+        var gameSettings = _gameSettings;
+        var worldName = _worldName;
+        var worldRef = SanitizeWorldName(_worldName);
+        var generatedWorldRef = worldRef + "_generated";
+        var isRealWorld = _isRealWorld;
+        var validatedTifPath = _validatedTifPath;
+        var selectedTheme = _selectedTheme;
+        var selectedProceduralMode = _selectedProceduralMode;
+        var geoTransform = _geoTransform;
+        var selectedSpawnPixel = _selectedSpawnPixel;
+        var spawnLatitude = _spawnLatitude;
+        var spawnLongitude = _spawnLongitude;
+
+        // Capture imported locations - make a copy of the list
+        List<LocationEntry> locationsToUse;
+        string locationGenerationType;
+        if (_importedLocations.Count > 0)
+        {
+            locationGenerationType = "trail";
+            locationsToUse = _importedLocations.ToList(); // Make a copy
+        }
+        else
+        {
+            locationGenerationType = "radial";
+            locationsToUse = GenerateDefaultRadialLocations();
+        }
+
         // Run world creation asynchronously
         Task.Run(async () =>
         {
             try
             {
-                var worldRef = SanitizeWorldName(_worldName);
-                var outputPath = GetWorldOutputPath(worldRef);
+                // Output path follows standard: {appDataContentPath}/worlds/{worldRef}_generated/
+                var worldPath = Path.Combine(
+                    gameSettings.GetAppDataContentPath(),
+                    "worlds",
+                    generatedWorldRef);
 
-                // Create directory structure
-                Directory.CreateDirectory(outputPath);
+                // XML files go in assets/ambient_games/xml subfolder
+                var xmlPath = Path.Combine(worldPath, "assets", "ambient_games", "xml");
 
-                // Create generation.xml
-                _creationStatus = "Writing generation.xml...";
-                var generationXml = GenerateGenerationXml(worldRef);
-                File.WriteAllText(Path.Combine(outputPath, "generation.xml"), generationXml);
+                // Create output directories
+                _creationStatus = "Creating directories...";
+                Directory.CreateDirectory(worldPath);
+                Directory.CreateDirectory(xmlPath);
 
-                // Create worldconfiguration.xml
-                _creationStatus = "Writing worldconfiguration.xml...";
-                var configXml = GenerateWorldConfigurationXml(worldRef);
-                File.WriteAllText(Path.Combine(outputPath, "worldconfiguration.xml"), configXml);
+                // Create Generation.xml (Schema.Codex.WorldForge format)
+                _creationStatus = "Writing Generation.xml...";
+                var generationXml = GenerateGenerationXml(worldRef, worldName, locationGenerationType, selectedTheme, locationsToUse);
+                File.WriteAllText(Path.Combine(xmlPath, "Generation.xml"), generationXml);
+
+                // Create WorldConfiguration.xml (Ambient.Core format)
+                _creationStatus = "Writing WorldConfiguration.xml...";
+                var configXml = GenerateWorldConfigurationXml(worldRef, worldName, isRealWorld, selectedTheme, selectedProceduralMode, geoTransform, selectedSpawnPixel, spawnLatitude, spawnLongitude);
+                File.WriteAllText(Path.Combine(xmlPath, "WorldConfiguration.xml"), configXml);
 
                 // Copy terrain file if real world (already converted during validation)
-                if (_isRealWorld && !string.IsNullOrEmpty(_validatedTifPath))
+                if (isRealWorld && !string.IsNullOrEmpty(validatedTifPath))
                 {
                     _creationStatus = "Copying terrain file...";
-                    var terrainDest = Path.Combine(outputPath, "terrain.tif");
-                    File.Copy(_validatedTifPath, terrainDest, overwrite: true);
+                    var terrainDest = Path.Combine(worldPath, "terrain.tif");
+                    File.Copy(validatedTifPath, terrainDest, overwrite: true);
                 }
 
-                // Create locations.csv - either imported or default radial locations
+                // Create locations.csv from the locations we're using
                 _creationStatus = "Writing locations.csv...";
-                var locationsPath = Path.Combine(outputPath, "locations.csv");
+                var locationsFilePath = Path.Combine(xmlPath, "locations.csv");
                 var csvLines = new List<string> { "name,description,latitude,longitude,category,kind" };
+                csvLines.AddRange(locationsToUse.Select(l =>
+                    $"\"{l.Name}\",\"{l.Description}\",{l.Latitude},{l.Longitude},{l.Category},{l.Kind}"));
+                File.WriteAllLines(locationsFilePath, csvLines);
 
-                if (_importedLocations.Count > 0)
-                {
-                    // User provided locations - use trail generation
-                    _locationGenerationType = "trail";
-                    csvLines.AddRange(_importedLocations.Select(l =>
-                        $"\"{l.Name}\",\"{l.Description}\",{l.Latitude},{l.Longitude},{l.Category},{l.Kind}"));
-                }
-                else
-                {
-                    // No locations provided - generate 3 default radial locations
-                    _locationGenerationType = "radial";
-                    var defaultLocations = GenerateDefaultRadialLocations();
-                    csvLines.AddRange(defaultLocations.Select(l =>
-                        $"\"{l.Name}\",\"{l.Description}\",{l.Latitude},{l.Longitude},{l.Category},{l.Kind}"));
-                }
-
-                File.WriteAllLines(locationsPath, csvLines);
-
-                _lastGenerationMessage = $"World '{_worldName}' created successfully at:\n{outputPath}";
+                _lastGenerationMessage = $"World '{worldName}' created successfully at:\n{worldPath}";
                 _showGenerationMessage = true;
                 _isCreatingWorld = false;
                 _creationStatus = "";
@@ -1772,35 +1785,95 @@ Output only the CSV data, no explanation.";
         return locations;
     }
 
-    private string GenerateGenerationXml(string worldRef)
+    private string GenerateGenerationXml(string worldRef, string worldName, string locationGenerationType, int selectedTheme, List<LocationEntry> locations)
     {
-        var mode = _isRealWorld ? "RealWorld" : ProceduralModes[_selectedProceduralMode];
-        var latitude = LatitudeValues[_selectedLatitude];
-        var height = _isRealWorld ? 512 : WorldHeightValues[_selectedWorldHeight];
+        // Use proper GenerationConfiguration schema from Schema.Codex.WorldForge
+        var generationStyle = locationGenerationType == "radial" ? "RadialExploration" : "Trail";
+        var themeName = GetThemeDisplayName(AvailableThemes[selectedTheme]);
+
+        // Build SourceLocation elements from provided locations
+        var sourceLocationsXml = new System.Text.StringBuilder();
+        foreach (var loc in locations)
+        {
+            sourceLocationsXml.AppendLine($@"  <SourceLocation DisplayName=""{EscapeXml(loc.Name)}"" Description=""{EscapeXml(loc.Description)}"" Category=""{loc.Category}"" Kind=""{loc.Kind}"" Lat=""{loc.Latitude}"" Lon=""{loc.Longitude}"" />");
+        }
 
         return $@"<?xml version=""1.0"" encoding=""utf-8""?>
-<Generation xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
-  <WorldRef>{worldRef}</WorldRef>
-  <DisplayName>{_worldName}</DisplayName>
-  <Mode>{mode}</Mode>
-  <Latitude>{latitude}</Latitude>
-  <WorldHeight>{height}</WorldHeight>
-  <Theme>{AvailableThemes[_selectedTheme]}</Theme>
-  <SpawnX>{(int)_selectedSpawnPixel.X}</SpawnX>
-  <SpawnY>{(int)_selectedSpawnPixel.Y}</SpawnY>
-  <LocationGenerationType>{_locationGenerationType}</LocationGenerationType>
-  {(_isRealWorld ? $"<TerrainFile>terrain.tif</TerrainFile>" : "")}
-</Generation>";
+<GenerationConfiguration xmlns=""Ambient.WorldContentGenerator"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+    WorldRef=""{worldRef}""
+    DisplayName=""{EscapeXml(worldName)}""
+    Description=""Generated by World Creation Wizard""
+    GenerationStyle=""{generationStyle}""
+    Spacing=""500""
+    Seed=""0""
+    Theme=""{themeName}"">
+{sourceLocationsXml}</GenerationConfiguration>";
     }
 
-    private string GenerateWorldConfigurationXml(string worldRef)
+    private static string EscapeXml(string text)
     {
+        if (string.IsNullOrEmpty(text)) return "";
+        return text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
+    }
+
+    private string GenerateWorldConfigurationXml(
+        string worldRef,
+        string worldName,
+        bool isRealWorld,
+        int selectedTheme,
+        int selectedProceduralMode,
+        double[]? geoTransform,
+        Vector2 selectedSpawnPixel,
+        double spawnLatitude,
+        double spawnLongitude)
+    {
+        // Calculate spawn GPS coordinates
+        double spawnLat, spawnLon;
+        if (isRealWorld && geoTransform != null && geoTransform.Length >= 6)
+        {
+            // Real world - calculate from selected pixel and geotransform
+            spawnLon = geoTransform[0] + selectedSpawnPixel.X * geoTransform[1] + selectedSpawnPixel.Y * geoTransform[2];
+            spawnLat = geoTransform[3] + selectedSpawnPixel.X * geoTransform[4] + selectedSpawnPixel.Y * geoTransform[5];
+        }
+        else
+        {
+            // Procedural - use default thematic location
+            spawnLat = spawnLatitude;
+            spawnLon = spawnLongitude;
+        }
+
+        // Generate terrain settings element based on world type
+        string terrainSettingsXml;
+        string dataSource;
+        if (isRealWorld)
+        {
+            // HeightMapSettings for real world terrain - standard scale is 1/3 in each direction
+            terrainSettingsXml = $@"  <HeightMapSettings FileName=""terrain.tif"" HorizontalScale=""0.333333"" VerticalScale=""0.333333"" VerticalShift=""0.0"" />";
+            dataSource = "GIS";
+        }
+        else
+        {
+            // ProceduralSettings for generated terrain
+            var proceduralMode = ProceduralModes[selectedProceduralMode]; // Rugged, Rolling, Extreme
+            terrainSettingsXml = $@"  <ProceduralSettings ProceduralGenerationMode=""{proceduralMode}"" />";
+            dataSource = "Generated";
+        }
+
+        // Generate a random seed between 0 and 1
+        var seed = new Random().NextDouble();
+
         return $@"<?xml version=""1.0"" encoding=""utf-8""?>
-<WorldConfiguration xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
-  <RefName>{worldRef}</RefName>
-  <DisplayName>{_worldName}</DisplayName>
-  <Description>Created with World Creation Wizard</Description>
-  <Theme>{AvailableThemes[_selectedTheme]}</Theme>
+<WorldConfiguration xmlns=""Ambient.Core.Domain"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance""
+    RefName=""{worldRef}""
+    DisplayName=""{EscapeXml(worldName)}""
+    Description=""World generated from {(isRealWorld ? "GeoTIFF elevation data" : "procedural terrain")} using World Creation Wizard""
+    Namespace=""{worldRef}""
+    ContentPackTheme=""{AvailableThemes[selectedTheme]}""
+    DataSource=""{dataSource}""
+    SpawnLatitude=""{spawnLat:F6}""
+    SpawnLongitude=""{spawnLon:F6}""
+    Seed=""{seed:F4}"">
+{terrainSettingsXml}
 </WorldConfiguration>";
     }
 }
