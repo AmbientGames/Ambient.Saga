@@ -16,6 +16,7 @@ public class ModalManager
 {
     // Modal instances
     private WorldSelectionScreen _worldSelectionScreen;
+    private Adapters.WorldSelectionScreenAdapter? _worldSelectionScreenAdapter;
     private ArchetypeSelectionModal _archetypeSelectionModal = new();
     private AvatarInfoModal _avatarInfoModal = new();
     private CharactersModal _charactersModal = new();
@@ -44,6 +45,8 @@ public class ModalManager
     private readonly IWorldContentGenerator _worldContentGenerator;
     private readonly IGameSettings _gameSettings;
     private readonly IFileDialogService? _fileDialogService;
+    private readonly IGeoTiffConverter? _geoTiffConverter;
+    private ITextureProvider? _textureProvider;
 
     // Event for quit request (so host application can handle it)
     public event Action? QuitRequested;
@@ -57,16 +60,29 @@ public class ModalManager
         QuitRequested?.Invoke();
     }
 
-    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, IGameSettings gameSettings, IFileDialogService? fileDialogService = null, ISettingsPanel? settingsPanel = null)
+    /// <summary>
+    /// Sets the texture provider for modals that need to render images.
+    /// Call this after the graphics device is available.
+    /// </summary>
+    public void SetTextureProvider(ITextureProvider textureProvider)
+    {
+        _textureProvider = textureProvider;
+        _worldSelectionScreen.SetTextureProvider(textureProvider);
+        _worldSelectionScreenAdapter?.SetTextureProvider(textureProvider);
+    }
+
+    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, IGameSettings gameSettings, IFileDialogService? fileDialogService = null, IGeoTiffConverter? geoTiffConverter = null, ITextureProvider? textureProvider = null, ISettingsPanel? settingsPanel = null)
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
+        _textureProvider = textureProvider;
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _fileDialogService = fileDialogService;
+        _geoTiffConverter = geoTiffConverter;
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
-        _worldSelectionScreen = new WorldSelectionScreen(_worldContentGenerator, _gameSettings, _fileDialogService);
+        _worldSelectionScreen = new WorldSelectionScreen(_worldContentGenerator, _gameSettings, _fileDialogService, _geoTiffConverter, _textureProvider);
         _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
 
         // Initialize modal registry
@@ -108,7 +124,8 @@ public class ModalManager
         _modalRegistry.Register(new Adapters.QuestDetailModalAdapter(_mediator));
 
         // Special modals
-        _modalRegistry.Register(new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator, _gameSettings, _fileDialogService));
+        _worldSelectionScreenAdapter = new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator, _gameSettings, _fileDialogService, _geoTiffConverter, _textureProvider);
+        _modalRegistry.Register(_worldSelectionScreenAdapter);
         _modalRegistry.Register(new Adapters.WorldSelectionTilesAdapter()); // User-friendly tile version
         _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
 

@@ -15,12 +15,16 @@ public class WorldSelectionScreenAdapter : IModal
     public WorldSelectionScreenAdapter(
         IWorldContentGenerator worldContentGenerator,
         IGameSettings gameSettings,
-        IFileDialogService? fileDialogService = null)
+        IFileDialogService? fileDialogService = null,
+        IGeoTiffConverter? geoTiffConverter = null,
+        ITextureProvider? textureProvider = null)
     {
         _modal = new WorldSelectionScreen(
             worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator)),
             gameSettings ?? throw new ArgumentNullException(nameof(gameSettings)),
-            fileDialogService);
+            fileDialogService,
+            geoTiffConverter,
+            textureProvider);
     }
 
     public string Name => "WorldSelection";
@@ -51,5 +55,13 @@ public class WorldSelectionScreenAdapter : IModal
     public void OnClosed()
     {
         System.Diagnostics.Debug.WriteLine("[WorldSelectionScreen] Closed");
+    }
+
+    /// <summary>
+    /// Sets the texture provider for rendering terrain previews.
+    /// </summary>
+    public void SetTextureProvider(ITextureProvider textureProvider)
+    {
+        _modal.SetTextureProvider(textureProvider);
     }
 }

@@ -1,11 +1,14 @@
 using Ambient.Application.Contracts;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI.Models;
 using Ambient.Saga.UI.Services;
 using BitMiracle.LibTiff.Classic;
 using ImGuiNET;
 using Microsoft.Extensions.Logging;
 using SharpCompress.Readers;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Modals;
@@ -27,6 +30,8 @@ public class WorldSelectionScreen
     private readonly IWorldContentGenerator _worldContentGenerator;
     private readonly IGameSettings _gameSettings;
     private readonly IFileDialogService? _fileDialogService;
+    private readonly IGeoTiffConverter? _geoTiffConverter;
+    private ITextureProvider? _textureProvider;
     private readonly ILogger<WorldSelectionScreen>? _logger;
     private string? _lastGenerationMessage;
     private bool _showGenerationMessage;
@@ -47,6 +52,13 @@ public class WorldSelectionScreen
     private int _terrainHeight = 0;
     private const int MaxTerrainPixels = 3600 * 3600; // 12,960,000 max pixels
     private int _selectedProceduralMode = 0;
+
+    // Terrain preview and spawn selection
+    private HeightMapImageData? _terrainPreviewImage;
+    private nint _terrainTexturePtr;
+    private IDisposable[]? _terrainTextureResources;
+    private Vector2 _selectedSpawnPixel = Vector2.Zero; // Pixel coordinates on map
+    private bool _spawnSelected = false;
     private static readonly string[] ProceduralModes = new[]
     {
         "Rugged", "Rolling", "Extreme"
@@ -90,12 +102,25 @@ public class WorldSelectionScreen
         IWorldContentGenerator worldContentGenerator,
         IGameSettings gameSettings,
         IFileDialogService? fileDialogService = null,
+        IGeoTiffConverter? geoTiffConverter = null,
+        ITextureProvider? textureProvider = null,
         ILogger<WorldSelectionScreen>? logger = null)
     {
         _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _fileDialogService = fileDialogService;
+        _geoTiffConverter = geoTiffConverter;
+        _textureProvider = textureProvider;
         _logger = logger;
+    }
+
+    /// <summary>
+    /// Sets the texture provider for rendering terrain previews.
+    /// Call this after the graphics device is available.
+    /// </summary>
+    public void SetTextureProvider(ITextureProvider textureProvider)
+    {
+        _textureProvider = textureProvider;
     }
 
     public void Render(MainViewModel viewModel, ref bool isOpen)
@@ -355,8 +380,11 @@ public class WorldSelectionScreen
             case 2:
                 RenderWizardStep_Details();
                 break;
-            default:
-                ImGui.Text("(Coming soon...)");
+            case 3:
+                RenderWizardStep_Locations();
+                break;
+            case 4:
+                RenderWizardStep_Create();
                 break;
         }
 
@@ -472,8 +500,61 @@ public class WorldSelectionScreen
             ImGui.TextColored(statusColor, _terrainFileStatus);
         }
 
-        ImGui.Spacing();
-        ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "Supported: .tif, .tiff, .tar.gz (containing GeoTIFF)");
+        // Create texture on main thread if image data is ready
+        CreateTerrainTexture();
+
+        // Show terrain preview with spawn selection when validated
+        if (_terrainValidated && _terrainTexturePtr != IntPtr.Zero && _terrainPreviewImage != null)
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+            ImGui.Text("Click to set spawn location:");
+
+            // Calculate display size (fill available width, maintain aspect ratio)
+            var availWidth = ImGui.GetContentRegionAvail().X;
+            var aspectRatio = (float)_terrainPreviewImage.Width / _terrainPreviewImage.Height;
+            var displayWidth = availWidth;
+            var displayHeight = displayWidth / aspectRatio;
+            var imageSize = new Vector2(displayWidth, displayHeight);
+
+            // Get cursor position before image
+            var imagePos = ImGui.GetCursorScreenPos();
+
+            // Draw the map
+            ImGui.Image(_terrainTexturePtr, imageSize);
+
+            // Handle click to select spawn
+            if (ImGui.IsItemClicked())
+            {
+                var mousePos = ImGui.GetMousePos();
+                var relativePos = mousePos - imagePos;
+                // Convert to pixel coordinates
+                _selectedSpawnPixel = new Vector2(
+                    relativePos.X / displayWidth * _terrainPreviewImage.Width,
+                    relativePos.Y / displayHeight * _terrainPreviewImage.Height);
+                _spawnSelected = true;
+            }
+
+            // Draw spawn marker
+            if (_spawnSelected)
+            {
+                var markerScreenPos = imagePos + new Vector2(
+                    _selectedSpawnPixel.X / _terrainPreviewImage.Width * displayWidth,
+                    _selectedSpawnPixel.Y / _terrainPreviewImage.Height * displayHeight);
+                var drawList = ImGui.GetWindowDrawList();
+                drawList.AddCircleFilled(markerScreenPos, 6, ImGui.ColorConvertFloat4ToU32(new Vector4(1, 0, 0, 1)));
+                drawList.AddCircle(markerScreenPos, 6, ImGui.ColorConvertFloat4ToU32(new Vector4(1, 1, 1, 1)), 12, 2);
+            }
+
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1),
+                $"Spawn: ({(int)_selectedSpawnPixel.X}, {(int)_selectedSpawnPixel.Y})");
+        }
+        else if (!_terrainValidated)
+        {
+            ImGui.Spacing();
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "Supported: .tif, .tiff, .tar.gz (containing GeoTIFF)");
+        }
     }
 
     private void RenderWizardStep_Terrain_Procedural()
@@ -598,6 +679,160 @@ public class WorldSelectionScreen
     private static readonly string[] AvailableThemes = new[] { "feudal_japan" };
     private int _selectedTheme = 0;
 
+    private void RenderWizardStep_Locations()
+    {
+        ImGui.TextColored(new Vector4(0.8f, 0.9f, 1f, 1), "Source Locations (Optional)");
+        ImGui.Spacing();
+
+        ImGui.TextWrapped("Import a CSV file with location data to place points of interest in your world. This step is optional - you can add locations later.");
+        ImGui.Spacing();
+        ImGui.Spacing();
+
+        // CSV format info
+        ImGui.TextColored(new Vector4(1, 0.8f, 0.4f, 1), "CSV Format:");
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "name,latitude,longitude,type");
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Example: Tokyo,35.6762,139.6503,city");
+
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // File selection
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 90);
+        ImGui.InputText("##LocationsFile", ref _selectedLocationsFile, 512);
+        ImGui.SameLine();
+        if (ImGui.Button("Browse...", new Vector2(80, 0)))
+        {
+            BrowseForLocationsFile();
+        }
+
+        // Show file status
+        if (!string.IsNullOrEmpty(_locationsFileStatus))
+        {
+            ImGui.Spacing();
+            var statusColor = _locationsFileStatus.StartsWith("Error")
+                ? new Vector4(1, 0.4f, 0.4f, 1)
+                : new Vector4(0.4f, 1, 0.4f, 1);
+            ImGui.TextColored(statusColor, _locationsFileStatus);
+        }
+
+        // Show imported locations preview
+        if (_locationsValidated && _importedLocations.Count > 0)
+        {
+            ImGui.Spacing();
+            ImGui.Text($"Preview ({Math.Min(_importedLocations.Count, 5)} of {_importedLocations.Count}):");
+
+            ImGui.BeginChild("LocationsPreview", new Vector2(0, 100), ImGuiChildFlags.Borders);
+            for (int i = 0; i < Math.Min(_importedLocations.Count, 5); i++)
+            {
+                var loc = _importedLocations[i];
+                ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1),
+                    $"{loc.Name} ({loc.Latitude:F4}, {loc.Longitude:F4}) - {loc.Type}");
+            }
+            if (_importedLocations.Count > 5)
+            {
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"... and {_importedLocations.Count - 5} more");
+            }
+            ImGui.EndChild();
+        }
+
+        // Clear button
+        if (_locationsValidated)
+        {
+            ImGui.Spacing();
+            if (ImGui.Button("Clear Locations"))
+            {
+                _selectedLocationsFile = "";
+                _locationsFileStatus = "";
+                _locationsValidated = false;
+                _locationsCount = 0;
+                _importedLocations.Clear();
+            }
+        }
+
+        ImGui.Spacing();
+        ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "You can skip this step if you don't have location data.");
+    }
+
+    private void RenderWizardStep_Create()
+    {
+        ImGui.TextColored(new Vector4(0.5f, 1f, 0.5f, 1), "Ready to Create World");
+        ImGui.Spacing();
+
+        ImGui.TextWrapped("Review your world settings below. Click 'Create' to generate the world configuration files.");
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // Summary
+        ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), "Summary:");
+        ImGui.Spacing();
+
+        ImGui.Indent(10);
+
+        ImGui.Text($"World Name: {_worldName}");
+        ImGui.Text($"World Type: {(_isRealWorld ? "Real World (DEM)" : "Procedural")}");
+        ImGui.Text($"Theme: {GetThemeDisplayName(AvailableThemes[_selectedTheme])}");
+
+        if (_isRealWorld)
+        {
+            ImGui.Text($"Terrain Size: {_terrainWidth}x{_terrainHeight}");
+            ImGui.Text($"Spawn Location: ({(int)_selectedSpawnPixel.X}, {(int)_selectedSpawnPixel.Y})");
+        }
+        else
+        {
+            ImGui.Text($"Terrain Style: {ProceduralModes[_selectedProceduralMode]}");
+            ImGui.Text($"Climate Zone: {Latitudes[_selectedLatitude]}");
+            ImGui.Text($"World Height: {WorldHeightValues[_selectedWorldHeight]}");
+        }
+
+        if (_locationsValidated && _importedLocations.Count > 0)
+        {
+            ImGui.Text($"Locations: {_importedLocations.Count} imported");
+        }
+        else
+        {
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "Locations: None");
+        }
+
+        ImGui.Unindent(10);
+
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // Output location info
+        var worldRef = SanitizeWorldName(_worldName);
+        var outputPath = GetWorldOutputPath(worldRef);
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Files will be created at:");
+        ImGui.TextWrapped(outputPath);
+
+        // Show creation status if in progress
+        if (_isCreatingWorld && !string.IsNullOrEmpty(_creationStatus))
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+            ImGui.TextColored(new Vector4(0.4f, 0.8f, 1f, 1), _creationStatus);
+        }
+    }
+
+    // Step 4: Locations state
+    private string _selectedLocationsFile = "";
+    private string _locationsFileStatus = "";
+    private bool _locationsValidated = false;
+    private int _locationsCount = 0;
+    private List<LocationEntry> _importedLocations = new();
+
+    // Simple location entry from CSV
+    private class LocationEntry
+    {
+        public string Name { get; set; } = "";
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public string Type { get; set; } = "";
+    }
+
     private static string GetThemeDisplayName(string folderName)
     {
         // Convert "feudal_japan" to "Feudal Japan"
@@ -626,12 +861,25 @@ public class WorldSelectionScreen
             });
     }
 
+    private string _convertedTifPath = ""; // Path to GDAL-converted file (what we actually use)
+
     private void ValidateTerrainFile()
     {
         _terrainValidated = false;
         _validatedTifPath = "";
+        _convertedTifPath = "";
         _terrainWidth = 0;
         _terrainHeight = 0;
+
+        // Reset preview state
+        _terrainPreviewImage = null;
+        _isLoadingPreview = false;
+        if (_terrainTexturePtr != IntPtr.Zero && _terrainTextureResources != null && _textureProvider != null)
+        {
+            _textureProvider.DisposeTexture(_terrainTextureResources);
+            _terrainTextureResources = null;
+        }
+        _terrainTexturePtr = IntPtr.Zero;
 
         if (string.IsNullOrEmpty(_selectedTerrainFile))
         {
@@ -645,20 +893,27 @@ public class WorldSelectionScreen
             return;
         }
 
+        // Run validation and conversion asynchronously
+        _terrainFileStatus = "Processing terrain file...";
+        Task.Run(() => ValidateAndConvertTerrainFileAsync());
+    }
+
+    private async Task ValidateAndConvertTerrainFileAsync()
+    {
         try
         {
-            string tifPath;
+            string sourceTifPath;
             var ext = Path.GetExtension(_selectedTerrainFile).ToLowerInvariant();
 
             if (ext == ".tif" || ext == ".tiff")
             {
-                tifPath = _selectedTerrainFile;
+                sourceTifPath = _selectedTerrainFile;
             }
             else if (_selectedTerrainFile.EndsWith(".tar.gz", StringComparison.OrdinalIgnoreCase))
             {
                 _terrainFileStatus = "Extracting archive...";
-                tifPath = ExtractTifFromTarGz(_selectedTerrainFile);
-                if (string.IsNullOrEmpty(tifPath))
+                sourceTifPath = ExtractTifFromTarGz(_selectedTerrainFile);
+                if (string.IsNullOrEmpty(sourceTifPath))
                 {
                     _terrainFileStatus = "Error: No .tif file found in archive";
                     return;
@@ -670,9 +925,9 @@ public class WorldSelectionScreen
                 return;
             }
 
-            // Validate the GeoTIFF dimensions
-            _terrainFileStatus = "Validating GeoTIFF...";
-            var (width, height, error) = ValidateGeoTiffDimensions(tifPath);
+            // Validate the source GeoTIFF dimensions first
+            _terrainFileStatus = "Validating dimensions...";
+            var (width, height, error) = ValidateGeoTiffDimensions(sourceTifPath);
 
             if (!string.IsNullOrEmpty(error))
             {
@@ -689,14 +944,148 @@ public class WorldSelectionScreen
 
             _terrainWidth = width;
             _terrainHeight = height;
-            _validatedTifPath = tifPath;
+
+            // Convert with GDAL to standardized format
+            if (_geoTiffConverter != null && _geoTiffConverter.IsAvailable)
+            {
+                // Debug breakpoint for terrain conversion
+                System.Diagnostics.Debugger.Break();
+
+                _terrainFileStatus = "Converting with GDAL...";
+
+                // Create temp path for converted file
+                var tempDir = Path.Combine(Path.GetTempPath(), "AmbientTerrainConverted");
+                Directory.CreateDirectory(tempDir);
+                var convertedPath = Path.Combine(tempDir, $"{Guid.NewGuid():N}.tif");
+
+                var success = await _geoTiffConverter.ConvertAsync(
+                    sourceTifPath,
+                    convertedPath,
+                    progress => _terrainFileStatus = $"Converting... {progress * 100:F0}%");
+
+                if (success)
+                {
+                    _convertedTifPath = convertedPath;
+                    _validatedTifPath = convertedPath; // Use converted file for everything
+                    _terrainFileStatus = $"Valid: {width}x{height} ({totalPixels:N0} pixels)";
+                    System.Diagnostics.Debug.WriteLine($"[Terrain] GDAL conversion succeeded: {convertedPath}");
+                }
+                else
+                {
+                    _terrainFileStatus = "Error: GDAL conversion failed";
+                    System.Diagnostics.Debug.WriteLine("[Terrain] GDAL conversion FAILED");
+                    return;
+                }
+            }
+            else
+            {
+                // No GDAL - use source file directly (may not work correctly)
+                _validatedTifPath = sourceTifPath;
+                _terrainFileStatus = $"Valid: {width}x{height} (no GDAL - using raw file)";
+                System.Diagnostics.Debug.WriteLine($"[Terrain] No GDAL available, using raw file: {sourceTifPath}");
+            }
+
             _terrainValidated = true;
-            _terrainFileStatus = $"Valid: {width}x{height} ({totalPixels:N0} pixels)";
+            System.Diagnostics.Debug.WriteLine($"[Terrain] Validated, calling GenerateTerrainPreview with: {_validatedTifPath}");
+
+            // Generate terrain preview for spawn selection
+            GenerateTerrainPreview(_validatedTifPath);
         }
         catch (Exception ex)
         {
             _terrainFileStatus = $"Error: {ex.Message}";
         }
+    }
+
+    private bool _isLoadingPreview;
+
+    private void GenerateTerrainPreview(string tifPath)
+    {
+        System.Diagnostics.Debug.WriteLine($"[Terrain] GenerateTerrainPreview called with: {tifPath}");
+        if (_isLoadingPreview)
+        {
+            System.Diagnostics.Debug.WriteLine("[Terrain] Already loading preview, skipping");
+            return;
+        }
+        _isLoadingPreview = true;
+        _terrainFileStatus = "Loading terrain preview...";
+
+        // Run on background thread to avoid blocking UI
+        Task.Run(() =>
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine($"[Terrain] Loading image from: {tifPath}");
+                // Load and process the height map
+                using var image = Image.Load<L16>(tifPath);
+                System.Diagnostics.Debug.WriteLine($"[Terrain] Image loaded: {image.Width}x{image.Height}");
+
+                var processedMap = HeightMapProcessor.ProcessHeightMap(image, minWaterAreaSize: 50, adjustMinWaterAreaSizeByElevation: true, verticalShift: 0);
+                System.Diagnostics.Debug.WriteLine($"[Terrain] HeightMap processed: {processedMap.Width}x{processedMap.Height}");
+
+                // Convert to BGRA image data
+                var imageData = ConvertProcessedMapToImageData(processedMap);
+                System.Diagnostics.Debug.WriteLine($"[Terrain] Image data created: {imageData.Width}x{imageData.Height}, {imageData.PixelData.Length} bytes");
+
+                // Update UI state (will be picked up on next render)
+                _terrainPreviewImage = imageData;
+                _selectedSpawnPixel = new Vector2(processedMap.Width / 2f, processedMap.Height / 2f);
+                _spawnSelected = true;
+                _terrainFileStatus = $"Valid: {_terrainWidth}x{_terrainHeight} - Click map to set spawn";
+                _isLoadingPreview = false;
+                System.Diagnostics.Debug.WriteLine("[Terrain] Preview generation complete, _terrainPreviewImage set");
+            }
+            catch (Exception ex)
+            {
+                _terrainFileStatus = $"Preview error: {ex.Message}";
+                _isLoadingPreview = false;
+                System.Diagnostics.Debug.WriteLine($"[Terrain] Preview error: {ex.Message}\n{ex.StackTrace}");
+            }
+        });
+    }
+
+    private void CreateTerrainTexture()
+    {
+        // Create texture on main thread when image data is ready
+        if (_terrainPreviewImage != null && _terrainTexturePtr == IntPtr.Zero && _textureProvider != null)
+        {
+            System.Diagnostics.Debug.WriteLine($"[Terrain] CreateTerrainTexture: Creating texture from image {_terrainPreviewImage.Width}x{_terrainPreviewImage.Height}");
+
+            // Dispose previous texture if any
+            if (_terrainTextureResources != null)
+            {
+                _textureProvider.DisposeTexture(_terrainTextureResources);
+                _terrainTextureResources = null;
+            }
+
+            var (texturePtr, _, _, resources) = _textureProvider.CreateTextureFromImageData(_terrainPreviewImage);
+            _terrainTexturePtr = texturePtr;
+            _terrainTextureResources = resources;
+            System.Diagnostics.Debug.WriteLine($"[Terrain] Texture created, ptr: {texturePtr}");
+        }
+    }
+
+    private static HeightMapImageData ConvertProcessedMapToImageData(HeightMapProcessor.ProcessedHeightMap processedMap)
+    {
+        var width = processedMap.Width;
+        var height = processedMap.Height;
+        var stride = width * 4;
+        var pixelData = new byte[height * stride];
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                var color = HeightMapProcessor.GetElevationColorWithWater(x, y, processedMap);
+                var index = y * stride + x * 4;
+                pixelData[index] = color.B;
+                pixelData[index + 1] = color.G;
+                pixelData[index + 2] = color.R;
+                pixelData[index + 3] = 255;
+            }
+        }
+
+        return new HeightMapImageData(pixelData, width, height, stride);
     }
 
     private string ExtractTifFromTarGz(string tarGzPath)
@@ -755,7 +1144,7 @@ public class WorldSelectionScreen
         // Cancel button (left side)
         if (ImGui.Button("Cancel", new Vector2(80, 30)))
         {
-            _wizardStep = 0;
+            ResetWizardState();
             isOpen = false;
         }
 
@@ -792,8 +1181,9 @@ public class WorldSelectionScreen
         {
             if (isLastStep)
             {
-                // TODO: Create the world
-                _wizardStep = 0;
+                // Create the world files
+                CreateWorld();
+                ResetWizardState();
                 isOpen = false;
             }
             else
@@ -811,6 +1201,9 @@ public class WorldSelectionScreen
 
     private bool CanProceedFromCurrentStep()
     {
+        // Block all navigation while creating world
+        if (_isCreatingWorld) return false;
+
         return _wizardStep switch
         {
             0 => true, // World Type - always can proceed
@@ -834,5 +1227,250 @@ public class WorldSelectionScreen
         {
             // Ignore errors opening URL
         }
+    }
+
+    private void ResetWizardState()
+    {
+        _wizardStep = 0;
+        _isRealWorld = true;
+        _selectedTerrainFile = "";
+        _terrainFileStatus = "";
+        _terrainValidated = false;
+        _validatedTifPath = "";
+        _convertedTifPath = "";
+        _terrainWidth = 0;
+        _terrainHeight = 0;
+        _selectedProceduralMode = 0;
+        _terrainPreviewImage = null;
+        _terrainTexturePtr = IntPtr.Zero;
+        _selectedSpawnPixel = Vector2.Zero;
+        _spawnSelected = false;
+        _isLoadingPreview = false;
+        _worldName = "";
+        _selectedLatitude = 0;
+        _selectedWorldHeight = 0;
+        _selectedTheme = 0;
+        _selectedLocationsFile = "";
+        _locationsFileStatus = "";
+        _locationsValidated = false;
+        _locationsCount = 0;
+        _importedLocations.Clear();
+        _isCreatingWorld = false;
+        _creationStatus = "";
+
+        // Dispose terrain texture if any
+        if (_terrainTextureResources != null && _textureProvider != null)
+        {
+            _textureProvider.DisposeTexture(_terrainTextureResources);
+            _terrainTextureResources = null;
+        }
+    }
+
+    private void BrowseForLocationsFile()
+    {
+        if (_fileDialogService == null)
+        {
+            _locationsFileStatus = "File dialog not available on this platform";
+            return;
+        }
+
+        _fileDialogService.OpenFile(
+            "Select Locations CSV File",
+            "CSV files|*.csv|All files|*.*",
+            selectedPath =>
+            {
+                if (!string.IsNullOrEmpty(selectedPath))
+                {
+                    _selectedLocationsFile = selectedPath;
+                    ValidateLocationsFile();
+                }
+            });
+    }
+
+    private void ValidateLocationsFile()
+    {
+        _locationsValidated = false;
+        _locationsCount = 0;
+        _importedLocations.Clear();
+
+        if (string.IsNullOrEmpty(_selectedLocationsFile))
+        {
+            _locationsFileStatus = "";
+            return;
+        }
+
+        if (!File.Exists(_selectedLocationsFile))
+        {
+            _locationsFileStatus = "Error: File not found";
+            return;
+        }
+
+        try
+        {
+            var lines = File.ReadAllLines(_selectedLocationsFile);
+            var startLine = 0;
+
+            // Check if first line is header
+            if (lines.Length > 0)
+            {
+                var firstLine = lines[0].ToLowerInvariant();
+                if (firstLine.Contains("name") || firstLine.Contains("latitude") || firstLine.Contains("longitude"))
+                {
+                    startLine = 1; // Skip header
+                }
+            }
+
+            for (int i = startLine; i < lines.Length; i++)
+            {
+                var line = lines[i].Trim();
+                if (string.IsNullOrEmpty(line)) continue;
+
+                var parts = line.Split(',');
+                if (parts.Length >= 3)
+                {
+                    if (double.TryParse(parts[1].Trim(), out var lat) &&
+                        double.TryParse(parts[2].Trim(), out var lon))
+                    {
+                        _importedLocations.Add(new LocationEntry
+                        {
+                            Name = parts[0].Trim().Trim('"'),
+                            Latitude = lat,
+                            Longitude = lon,
+                            Type = parts.Length > 3 ? parts[3].Trim().Trim('"') : "poi"
+                        });
+                    }
+                }
+            }
+
+            if (_importedLocations.Count == 0)
+            {
+                _locationsFileStatus = "Error: No valid locations found in CSV";
+                return;
+            }
+
+            _locationsCount = _importedLocations.Count;
+            _locationsValidated = true;
+            _locationsFileStatus = $"Imported {_locationsCount} locations";
+        }
+        catch (Exception ex)
+        {
+            _locationsFileStatus = $"Error: {ex.Message}";
+        }
+    }
+
+    private static string SanitizeWorldName(string name)
+    {
+        // Convert to lowercase, replace spaces and invalid chars with underscores
+        var sanitized = name.ToLowerInvariant()
+            .Replace(" ", "_")
+            .Replace("-", "_");
+
+        // Remove any characters that aren't alphanumeric or underscore
+        var chars = sanitized.Where(c => char.IsLetterOrDigit(c) || c == '_').ToArray();
+        return new string(chars);
+    }
+
+    private string GetWorldOutputPath(string worldRef)
+    {
+        return Path.Combine(
+            _gameSettings.GetAppDataContentPath(),
+            "worlds",
+            worldRef);
+    }
+
+    private bool _isCreatingWorld;
+    private string _creationStatus = "";
+
+    private void CreateWorld()
+    {
+        if (_isCreatingWorld) return;
+
+        _isCreatingWorld = true;
+        _creationStatus = "Creating world...";
+
+        // Run world creation asynchronously
+        Task.Run(async () =>
+        {
+            try
+            {
+                var worldRef = SanitizeWorldName(_worldName);
+                var outputPath = GetWorldOutputPath(worldRef);
+
+                // Create directory structure
+                Directory.CreateDirectory(outputPath);
+
+                // Create generation.xml
+                _creationStatus = "Writing generation.xml...";
+                var generationXml = GenerateGenerationXml(worldRef);
+                File.WriteAllText(Path.Combine(outputPath, "generation.xml"), generationXml);
+
+                // Create worldconfiguration.xml
+                _creationStatus = "Writing worldconfiguration.xml...";
+                var configXml = GenerateWorldConfigurationXml(worldRef);
+                File.WriteAllText(Path.Combine(outputPath, "worldconfiguration.xml"), configXml);
+
+                // Copy terrain file if real world (already converted during validation)
+                if (_isRealWorld && !string.IsNullOrEmpty(_validatedTifPath))
+                {
+                    _creationStatus = "Copying terrain file...";
+                    var terrainDest = Path.Combine(outputPath, "terrain.tif");
+                    File.Copy(_validatedTifPath, terrainDest, overwrite: true);
+                }
+
+                // Create locations.csv if we have locations
+                if (_importedLocations.Count > 0)
+                {
+                    _creationStatus = "Writing locations.csv...";
+                    var locationsPath = Path.Combine(outputPath, "locations.csv");
+                    var csvLines = new List<string> { "name,latitude,longitude,type" };
+                    csvLines.AddRange(_importedLocations.Select(l =>
+                        $"\"{l.Name}\",{l.Latitude},{l.Longitude},{l.Type}"));
+                    File.WriteAllLines(locationsPath, csvLines);
+                }
+
+                _lastGenerationMessage = $"World '{_worldName}' created successfully at:\n{outputPath}";
+                _showGenerationMessage = true;
+                _isCreatingWorld = false;
+                _creationStatus = "";
+            }
+            catch (Exception ex)
+            {
+                _lastGenerationMessage = $"Error creating world: {ex.Message}";
+                _showGenerationMessage = true;
+                _isCreatingWorld = false;
+                _creationStatus = "";
+            }
+        });
+    }
+
+    private string GenerateGenerationXml(string worldRef)
+    {
+        var mode = _isRealWorld ? "RealWorld" : ProceduralModes[_selectedProceduralMode];
+        var latitude = LatitudeValues[_selectedLatitude];
+        var height = _isRealWorld ? 512 : WorldHeightValues[_selectedWorldHeight];
+
+        return $@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Generation xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <WorldRef>{worldRef}</WorldRef>
+  <DisplayName>{_worldName}</DisplayName>
+  <Mode>{mode}</Mode>
+  <Latitude>{latitude}</Latitude>
+  <WorldHeight>{height}</WorldHeight>
+  <Theme>{AvailableThemes[_selectedTheme]}</Theme>
+  <SpawnX>{(int)_selectedSpawnPixel.X}</SpawnX>
+  <SpawnY>{(int)_selectedSpawnPixel.Y}</SpawnY>
+  {(_isRealWorld ? $"<TerrainFile>terrain.tif</TerrainFile>" : "")}
+</Generation>";
+    }
+
+    private string GenerateWorldConfigurationXml(string worldRef)
+    {
+        return $@"<?xml version=""1.0"" encoding=""utf-8""?>
+<WorldConfiguration xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
+  <RefName>{worldRef}</RefName>
+  <DisplayName>{_worldName}</DisplayName>
+  <Description>Created with World Creation Wizard</Description>
+  <Theme>{AvailableThemes[_selectedTheme]}</Theme>
+</WorldConfiguration>";
     }
 }
