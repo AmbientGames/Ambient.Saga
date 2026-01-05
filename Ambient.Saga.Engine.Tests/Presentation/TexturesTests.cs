@@ -7,8 +7,6 @@ namespace Ambient.Saga.Engine.Tests.Presentation;
 
 public partial class TexturesTests : IAsyncLifetime
 {
-    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
-    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
     private readonly IWorldLoader _worldLoader;
     private IWorld _world;
 
@@ -23,7 +21,7 @@ public partial class TexturesTests : IAsyncLifetime
         // Content/Worlds is at solution root (shared by all Sandboxes)
         _dataDirectory = FindWorldsDirectory();
 
-        _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
+        _worldLoader = TestWorldFactory.CreateTestWorldAssetLoader();
     }
 
     private static string FindWorldsDirectory()

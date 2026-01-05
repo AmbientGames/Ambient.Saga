@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic.Loading;
 
@@ -6,8 +6,7 @@ namespace Ambient.Saga.Engine.Tests;
 
 public class LoadingTests : IAsyncLifetime
 {
-    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
-    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
+    private readonly IWorldConfigurationLoader _configurationLoader = TestWorldFactory.CreateTestWorldConfigurationLoader();
     private readonly IWorldLoader _worldLoader;
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
@@ -22,7 +21,7 @@ public class LoadingTests : IAsyncLifetime
         var solutionRoot = FindSolutionRoot();
         _dataDirectory = Path.Combine(solutionRoot, "Content", "Worlds");
 
-        _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
+        _worldLoader = TestWorldFactory.CreateTestWorldAssetLoader();
     }
 
     private static string FindSolutionRoot()

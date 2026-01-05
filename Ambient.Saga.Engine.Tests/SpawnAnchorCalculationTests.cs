@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic.Loading;
 using Xunit.Abstractions;
 
@@ -10,8 +10,6 @@ namespace Ambient.Saga.Engine.Tests;
 /// </summary>
 public class SpawnAnchorCalculationTests
 {
-    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
-    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
     private readonly IWorldLoader _worldLoader;
     private readonly ITestOutputHelper _output;
     private readonly string _dataDirectory;
@@ -27,7 +25,7 @@ public class SpawnAnchorCalculationTests
         // Content/Worlds is at solution root (shared by all Sandboxes)
         _dataDirectory = FindWorldsDirectory();
 
-        _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
+        _worldLoader = TestWorldFactory.CreateTestWorldAssetLoader();
     }
 
     private static string FindWorldsDirectory()

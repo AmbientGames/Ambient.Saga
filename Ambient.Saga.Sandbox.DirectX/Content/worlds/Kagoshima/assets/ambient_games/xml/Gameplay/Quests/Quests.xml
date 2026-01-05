@@ -374,19 +374,19 @@
       <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="Visit Tsurumaru-jō" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
         <Objectives>
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Tsurumaru-jō" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jō" CharacterRef="BOSS_Tsurumarujō" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="DialogueCompleted" Threshold="1" DisplayName="Speak with Quest Giver at Tsurumaru-jō" CharacterRef="QUESTGIVER_Tsurumarujō" />
         </Objectives>
       </Stage>
       <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="Visit Iso-teien" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_03">
         <Objectives>
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Iso-teien" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Iso-teien" CharacterRef="BOSS_Isoteien" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="DialogueCompleted" Threshold="1" DisplayName="Speak with Quest Giver at Iso-teien" CharacterRef="QUESTGIVER_Isoteien" />
         </Objectives>
       </Stage>
       <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="Visit Terukuni Daimyōjin-sha">
         <Objectives>
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Terukuni Daimyōjin-sha" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyōjin-sha" CharacterRef="BOSS_TerukuniDaimyōjinsha" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="DialogueCompleted" Threshold="1" DisplayName="Speak with Quest Giver at Terukuni Daimyōjin-sha" CharacterRef="QUESTGIVER_TerukuniDaimyōjinsha" />
         </Objectives>
       </Stage>
     </Stages>
@@ -477,60 +477,9 @@
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_Tsurumarujō" DisplayName="Bounty: Guardian of Tsurumaru-jō" Description="Defeat Guardian of Tsurumaru-jō and claim the bounty.">
-    <Stages StartStage="DEFEAT">
-      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
-        <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jō" CharacterRef="BOSS_Tsurumarujō" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="500" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="WoodenClub" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="BOUNTY_Isoteien" DisplayName="Bounty: Guardian of Iso-teien" Description="Defeat Guardian of Iso-teien and claim the bounty.">
-    <Stages StartStage="DEFEAT">
-      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
-        <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Iso-teien" CharacterRef="BOSS_Isoteien" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="500" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="KnightsSword" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
-  <Quest RefName="BOUNTY_TerukuniDaimyōjinsha" DisplayName="Bounty: Guardian of Terukuni Daimyōjin-sha" Description="Defeat Guardian of Terukuni Daimyōjin-sha and claim the bounty.">
-    <Stages StartStage="DEFEAT">
-      <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
-        <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyōjin-sha" CharacterRef="BOSS_TerukuniDaimyōjinsha" />
-        </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <Currency Amount="500" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="RuneSword" Quantity="1" />
-          </Reward>
-        </Rewards>
-      </Stage>
-    </Stages>
-  </Quest>
   <Quest RefName="HIDDEN_FORGOTTEN_SHRINE" DisplayName="Secret: The Forgotten Shrine" Description="An ancient shrine marked on a mysterious map. What secrets does it hold?">
     <Prerequisites>
-      <Prerequisite MinimumLevel="20" RequiredItemRef="HoodedCowl" />
+      <Prerequisite MinimumLevel="20" RequiredItemRef="Spear" />
     </Prerequisites>
     <Stages StartStage="FIND_SHRINE">
       <Stage RefName="FIND_SHRINE" DisplayName="Locate the Hidden Shrine" NextStage="UNLOCK_SHRINE">
@@ -551,7 +500,7 @@
             <Experience Amount="5000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="Halberd" Quantity="1" />
+            <Equipment EquipmentRef="OakStaff" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>
@@ -564,13 +513,13 @@
     <Stages StartStage="DISCOVER_WORKSHOP">
       <Stage RefName="DISCOVER_WORKSHOP" DisplayName="Discover the Hidden Workshop" NextStage="CRAFT_MASTERPIECE">
         <Objectives>
-          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Iso-teien" SagaArcRef="Isoteien1" Hidden="true" />
+          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Tsurumaru-jō" SagaArcRef="Tsurumarujō1" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Craft the Ultimate Masterpiece">
         <Objectives>
-          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="LightCrossbow" />
-          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="OakStaff" />
+          <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="HoodedCowl" />
+          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="Halberd" />
           <Objective RefName="BONUS_FLAWLESS_CRAFT" Type="Custom" Threshold="1" DisplayName="Achieve 100% quality on first try" Optional="true" />
         </Objectives>
         <Rewards>
@@ -581,7 +530,37 @@
             <Experience Amount="8000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="LeatherCap" Quantity="2" />
+            <Equipment EquipmentRef="ChainBoots" Quantity="2" />
+          </Reward>
+        </Rewards>
+      </Stage>
+    </Stages>
+  </Quest>
+  <Quest RefName="HIDDEN_COLLECTOR_PARADISE" DisplayName="Secret: The Collector's Vault" Description="A legendary collector's vault, accessible only to those who possess all the ancient seals.">
+    <Prerequisites>
+      <Prerequisite MinimumLevel="35" RequiredItemRef="OakStaff" />
+    </Prerequisites>
+    <Stages StartStage="UNLOCK_VAULT">
+      <Stage RefName="UNLOCK_VAULT" DisplayName="Unlock the Collector's Vault" NextStage="CLAIM_TREASURES">
+        <Objectives>
+          <Objective RefName="REACH_VAULT" Type="LocationReached" Threshold="1" DisplayName="Reach the vault at Iso-teien" SagaArcRef="Isoteien1" Hidden="true" />
+          <Objective RefName="PLACE_SEALS" Type="Custom" Threshold="5" DisplayName="Place all 5 ancient seals" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CLAIM_TREASURES" DisplayName="Claim the Legendary Treasures">
+        <Objectives>
+          <Objective RefName="DEFEAT_VAULT_GUARDIAN" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the vault guardian" CharacterTag="boss" />
+          <Objective RefName="LOOT_VAULT" Type="Custom" Threshold="1" DisplayName="Claim the vault's treasures" />
+        </Objectives>
+        <Rewards>
+          <Reward Condition="OnSuccess">
+            <Currency Amount="10000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Experience Amount="15000" />
+          </Reward>
+          <Reward Condition="OnSuccess">
+            <Equipment EquipmentRef="LeatherCap" Quantity="5" />
           </Reward>
         </Rewards>
       </Stage>
@@ -612,7 +591,7 @@
             <Experience Amount="7000" />
           </Reward>
           <Reward Condition="OnSuccess">
-            <Equipment EquipmentRef="SoulLantern" Quantity="1" />
+            <Equipment EquipmentRef="OakWand" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>

@@ -1,11 +1,12 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Infrastructure.GameLogic.Services;
 
 public static class WorldValidationService
 {
-    public static void ValidateReferentialIntegrity(IWorld world)
+    public static void ValidateReferentialIntegrity(IWorld world, ILogger? logger = null)
     {
         var errors = new List<string>();
 
@@ -25,6 +26,14 @@ public static class WorldValidationService
 
         if (errors.Count > 0)
         {
+            // Log each error individually before throwing - AutoFlush ensures immediate write
+            logger?.LogError("Referential integrity validation failed with {ErrorCount} errors for world {WorldRef}:",
+                errors.Count, world.WorldConfiguration?.RefName ?? "unknown");
+            foreach (var error in errors)
+            {
+                logger?.LogError("  Validation error: {ValidationError}", error);
+            }
+
             var errorMessage = "Referential integrity validation failed:\n" + string.Join("\n", errors);
             throw new InvalidOperationException(errorMessage);
         }

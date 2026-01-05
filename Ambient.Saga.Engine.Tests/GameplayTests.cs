@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Loading;
@@ -7,8 +7,6 @@ namespace Ambient.Saga.Engine.Tests;
 
 public class GameplayTests : IAsyncLifetime
 {
-    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
-    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
     private readonly IWorldLoader _worldLoader;
     private IWorld _world;
 
@@ -23,7 +21,7 @@ public class GameplayTests : IAsyncLifetime
         // Content/Worlds is at solution root (shared by all Sandboxes)
         _dataDirectory = FindWorldsDirectory();
 
-        _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
+        _worldLoader = TestWorldFactory.CreateTestWorldAssetLoader();
     }
 
     private static string FindWorldsDirectory()

@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Engine.Contracts;
+using Ambient.Application.Contracts;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using MediatR;
@@ -41,6 +42,7 @@ public class ModalManager
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
     private readonly IMediator _mediator;
     private readonly IWorldContentGenerator _worldContentGenerator;
+    private readonly IGameSettings _gameSettings;
 
     // Event for quit request (so host application can handle it)
     public event Action? QuitRequested;
@@ -54,14 +56,15 @@ public class ModalManager
         QuitRequested?.Invoke();
     }
 
-    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, ISettingsPanel? settingsPanel = null)
+    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, IGameSettings gameSettings, ISettingsPanel? settingsPanel = null)
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
+        _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
-        _worldSelectionScreen = new WorldSelectionScreen(_worldContentGenerator);
+        _worldSelectionScreen = new WorldSelectionScreen(_worldContentGenerator, _gameSettings);
         _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
 
         // Initialize modal registry
@@ -103,7 +106,7 @@ public class ModalManager
         _modalRegistry.Register(new Adapters.QuestDetailModalAdapter(_mediator));
 
         // Special modals
-        _modalRegistry.Register(new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator));
+        _modalRegistry.Register(new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator, _gameSettings));
         _modalRegistry.Register(new Adapters.WorldSelectionTilesAdapter()); // User-friendly tile version
         _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
 

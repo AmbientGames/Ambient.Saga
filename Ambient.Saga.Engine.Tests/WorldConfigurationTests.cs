@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic.Loading;
 
@@ -6,7 +6,7 @@ namespace Ambient.Saga.Engine.Tests;
 
 public class WorldConfigurationTests
 {
-    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
+    private readonly IWorldConfigurationLoader _configurationLoader = TestWorldFactory.CreateTestWorldConfigurationLoader();
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
 

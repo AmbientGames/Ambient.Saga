@@ -1,10 +1,13 @@
-﻿using Ambient.Saga.Engine.Application.Behaviors;
+using Ambient.Application.Contracts;
+using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Services;
+using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Loading;
+using Ambient.Infrastructure.Logging;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.UI.Components.Modals;
@@ -40,10 +43,13 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
         {
             var services = new ServiceCollection();
 
+            // Create game settings first - needed for logging path configuration
+            var gameSettings = new GameSettings("AmbientGames", "Saga");
+
             // Configure application services
             ConfigureAppServices(services);
-            ConfigureLogging(services);
-            ConfigureGameplayServices(services);
+            ConfigureLogging(services, gameSettings);
+            ConfigureGameplayServices(services, gameSettings);
             ConfigureSandboxServices(services);
 
             return services.BuildServiceProvider(new ServiceProviderOptions
@@ -80,7 +86,8 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
                 var selector = sp.GetRequiredService<ImGuiArchetypeSelector>();
                 var mediator = sp.GetRequiredService<IMediator>();
                 var worldContentGenerator = sp.GetRequiredService<IWorldContentGenerator>();
-                var modalManager = new ModalManager(selector, mediator, worldContentGenerator);
+                var gameSettings = sp.GetRequiredService<IGameSettings>();
+                var modalManager = new ModalManager(selector, mediator, worldContentGenerator, gameSettings);
                 selector.SetModalManager(modalManager); // Wire up circular reference
                 return modalManager;
             });
@@ -89,20 +96,35 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             services.AddTransient<WorldMapUI>();
         }
 
-        private static void ConfigureLogging(IServiceCollection services)
+        private static void ConfigureLogging(IServiceCollection services, IGameSettings gameSettings)
         {
+            // Build log file path: %APPDATA%/{PublisherFolder}/{GameName}/logs/latest.log
+            var logDirectory = Path.Combine(gameSettings.GetAppDataBasePath(), "logs");
+            var logFilePath = Path.Combine(logDirectory, "latest.log");
+
             services.AddLogging(configure =>
             {
                 configure.AddConsole();
                 configure.AddDebug();
+                configure.AddFile(logFilePath, LogLevel.Information, clearOnStart: true);
                 configure.SetMinimumLevel(LogLevel.Information);
             });
         }
 
-        private static void ConfigureGameplayServices(IServiceCollection services)
+        private static void ConfigureGameplayServices(IServiceCollection services, IGameSettings gameSettings)
         {
+            // Game settings - core configuration for paths and game identity
+            // Provided by the consuming application (test exe defines the game name)
+            services.AddSingleton(gameSettings);
+
+            // Content path resolver - uses game settings for AppData paths
+            services.AddSingleton<IContentPathResolver, ContentPathResolver>();
+
             // World factory - creates World instances for loading
             services.AddSingleton<IWorldFactory, WorldFactory>();
+
+            // Gameplay component loader - loads XML content using content path resolver
+            services.AddSingleton<IGameplayComponentLoader, GameplayComponentLoader>();
 
             // World configuration and asset loaders
             services.AddSingleton<IWorldConfigurationLoader, WorldConfigurationLoader>();

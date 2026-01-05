@@ -3,25 +3,25 @@
   <Achievement RefName="ACH_COMPLETE_ISE" DisplayName="Legend of Ise" Description="Write your name in the annals of Ise's history by completing the main quest.">
     <Criteria Type="SagaArcsCompleted" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_ISE" DisplayName="Vanquisher" Description="Strike down every powerful foe who dares challenge you in Ise.">
+  <Achievement RefName="ACH_DEFEAT_ALL_BOSSES_ISE" DisplayName="Slayer" Description="Bring low every mighty enemy that terrorizes the lands of Ise.">
     <Criteria Type="CharactersDefeatedByType" CharacterType="Boss" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_EXPLORER_ISE" DisplayName="Trailblazer" Description="Be the first to set foot in all the locations of Ise.">
+  <Achievement RefName="ACH_EXPLORER_ISE" DisplayName="Wanderer" Description="Let your curiosity guide you to every hidden place in Ise.">
     <Criteria Type="SagaArcsDiscovered" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_SOCIAL_ISE" DisplayName="Networker" Description="Build connections with everyone you meet throughout Ise.">
+  <Achievement RefName="ACH_SOCIAL_ISE" DisplayName="Social Butterfly" Description="Make acquaintance with every soul dwelling in Ise.">
     <Criteria Type="UniqueCharactersMet" Threshold="16" />
   </Achievement>
-  <Achievement RefName="ACH_DIALOGUE_MASTER_ISE" DisplayName="Eloquent" Description="Leave no word unspoken in your travels through Ise.">
+  <Achievement RefName="ACH_DIALOGUE_MASTER_ISE" DisplayName="Wordsmith" Description="Master the art of conversation with everyone in Ise.">
     <Criteria Type="DialogueTreesCompleted" Threshold="16" />
   </Achievement>
-  <Achievement RefName="ACH_COLLECTOR_ISE" DisplayName="Perfectionist" Description="Leave no token unclaimed in your journey through Ise.">
+  <Achievement RefName="ACH_COLLECTOR_ISE" DisplayName="Collector" Description="Gather all the tokens of achievement throughout Ise.">
     <Criteria Type="QuestTokensEarned" Threshold="7" />
   </Achievement>
-  <Achievement RefName="ACH_MERCHANT_ISE" DisplayName="Master Trader" Description="Conduct business with every merchant in Ise.">
+  <Achievement RefName="ACH_MERCHANT_ISE" DisplayName="Patron" Description="Support the commerce of Ise by trading with every vendor.">
     <Criteria Type="ItemsTraded" Threshold="5" />
   </Achievement>
-  <Achievement RefName="ACH_DIPLOMAT_ISE" DisplayName="Friend to All" Description="Earn the trust and friendship of many throughout Ise.">
+  <Achievement RefName="ACH_DIPLOMAT_ISE" DisplayName="Ambassador" Description="Represent the best of humanity in your dealings throughout Ise.">
     <Criteria Type="TraitsAssignedByType" TraitType="Friendly" Threshold="8" />
   </Achievement>
 </Achievements>

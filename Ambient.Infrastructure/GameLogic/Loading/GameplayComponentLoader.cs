@@ -1,13 +1,33 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Infrastructure.GameLogic.Loading;
 
-public static class GameplayComponentLoader
+/// <summary>
+/// Interface for loading gameplay components into a world.
+/// </summary>
+public interface IGameplayComponentLoader
 {
-    public static async Task LoadAsync(string? definitionDirectory, IWorld world)
+    Task LoadAsync(string? definitionDirectory, IWorld world);
+}
+
+/// <summary>
+/// Loads gameplay components (consumables, spells, characters, etc.) into a world.
+/// </summary>
+public class GameplayComponentLoader : IGameplayComponentLoader
+{
+    private readonly IContentPathResolver _contentPathResolver;
+    private readonly ILogger<GameplayComponentLoader>? _logger;
+
+    public GameplayComponentLoader(IContentPathResolver contentPathResolver, ILogger<GameplayComponentLoader>? logger = null)
+    {
+        _contentPathResolver = contentPathResolver ?? throw new ArgumentNullException(nameof(contentPathResolver));
+        _logger = logger;
+    }
+
+    public async Task LoadAsync(string? definitionDirectory, IWorld world)
     {
         world.WorldTemplate.Gameplay = new GameplayComponents();
 
@@ -17,11 +37,16 @@ public static class GameplayComponentLoader
             : null;
         var useValidation = xsdFilePath != null && File.Exists(xsdFilePath);
 
+        _logger?.LogDebug("Loading gameplay data for world {WorldRef}, validation={UseValidation}",
+            world.WorldConfiguration.RefName, useValidation);
+
         await LoadGameplayData(useValidation ? xsdFilePath : null, world);
         BuildGameplayLookups(world);
+
+        _logger?.LogInformation("Loaded gameplay components for world {WorldRef}", world.WorldConfiguration.RefName);
     }
 
-    private static async Task LoadGameplayData(string? xsdFilePath, IWorld world)
+    private async Task LoadGameplayData(string? xsdFilePath, IWorld world)
     {
         var config = world.WorldConfiguration;
         var worldRef = config.RefName;
@@ -48,9 +73,9 @@ public static class GameplayComponentLoader
         world.Gameplay.AttackTells = (await LoadXmlAsync<AttackTells>(worldRef, library, ns, xsdFilePath, "Gameplay", "Combat", "AttackTells.xml")).AttackTell ?? [];
     }
 
-    private static async Task<T> LoadXmlAsync<T>(string worldRef, string library, string ns, string? xsdFilePath, params string[] relativePath)
+    private async Task<T> LoadXmlAsync<T>(string worldRef, string library, string ns, string? xsdFilePath, params string[] relativePath)
     {
-        var resolvedPath = ContentPathResolver.ResolveXmlPath(worldRef, library, ns, relativePath);
+        var resolvedPath = _contentPathResolver.ResolveXmlPath(worldRef, library, ns, relativePath);
         if (resolvedPath == null)
         {
             throw new FileNotFoundException($"XML content not found: {string.Join("/", relativePath)}");
@@ -143,5 +168,4 @@ public static class GameplayComponentLoader
             }
         }
     }
-
 }

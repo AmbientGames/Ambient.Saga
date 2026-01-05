@@ -1,6 +1,9 @@
+using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
+using Ambient.Infrastructure.GameLogic;
+using Ambient.Infrastructure.GameLogic.Loading;
 
 namespace Ambient.Saga.Engine.Tests;
 
@@ -11,6 +14,40 @@ namespace Ambient.Saga.Engine.Tests;
 public class TestWorldFactory : IWorldFactory
 {
     public IWorld CreateWorld() => new World();
+
+    /// <summary>
+    /// Creates test game settings with default values for testing.
+    /// </summary>
+    public static IGameSettings CreateTestGameSettings() =>
+        new GameSettings("AmbientGames", "Saga");
+
+    /// <summary>
+    /// Creates a content path resolver for tests.
+    /// </summary>
+    public static IContentPathResolver CreateTestContentPathResolver() =>
+        new ContentPathResolver(CreateTestGameSettings());
+
+    /// <summary>
+    /// Creates a world configuration loader for tests.
+    /// </summary>
+    public static WorldConfigurationLoader CreateTestWorldConfigurationLoader() =>
+        new WorldConfigurationLoader(CreateTestGameSettings());
+
+    /// <summary>
+    /// Creates a gameplay component loader for tests.
+    /// </summary>
+    public static GameplayComponentLoader CreateTestGameplayComponentLoader() =>
+        new GameplayComponentLoader(CreateTestContentPathResolver());
+
+    /// <summary>
+    /// Creates a world asset loader for tests.
+    /// </summary>
+    public static WorldAssetLoader CreateTestWorldAssetLoader() =>
+        new WorldAssetLoader(
+            new TestWorldFactory(),
+            CreateTestWorldConfigurationLoader(),
+            CreateTestGameplayComponentLoader(),
+            CreateTestContentPathResolver());
 
     /// <summary>
     /// Creates a minimal valid world for testing.

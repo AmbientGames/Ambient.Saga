@@ -12,7 +12,7 @@
 			<xs:enumeration value="Landmark"/>
 			<xs:enumeration value="Infrastructure"/>
 			<xs:enumeration value="Passage"/>
-			<xs:enumeration value="TrailNode"/>
+			<xs:enumeration value="Waypoint"/>
 			<xs:enumeration value="Camp"/>
 			<xs:enumeration value="QuestHub"/>
 			<xs:enumeration value="Service"/>
