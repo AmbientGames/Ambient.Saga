@@ -1,7 +1,9 @@
+using Ambient.Application.Contracts;
 using Ambient.Application.Utilities;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.Utilities;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Infrastructure.GameLogic.Loading;
 
@@ -10,7 +12,15 @@ namespace Ambient.Infrastructure.GameLogic.Loading;
 /// </summary>
 public class WorldConfigurationLoader : IWorldConfigurationLoader
 {
+    private readonly IGameSettings _gameSettings;
+    private readonly ILogger<WorldConfigurationLoader>? _logger;
     private const string DefaultNamespace = "ambient_games";
+
+    public WorldConfigurationLoader(IGameSettings gameSettings, ILogger<WorldConfigurationLoader>? logger = null)
+    {
+        _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
+        _logger = logger;
+    }
 
     public async Task<IWorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string? definitionDirectory)
     {
@@ -46,7 +56,7 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Failed to load WorldConfiguration from {configPath}: {ex.Message}");
+                    _logger?.LogWarning(ex, "Failed to load WorldConfiguration from {ConfigPath}", configPath);
                 }
             }
         }
@@ -54,14 +64,13 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
         return configs.OrderBy(c => c.DisplayOrder).ThenBy(c => c.DisplayName).ToArray();
     }
 
-    private static IEnumerable<string> DiscoverWorldDirectories()
+    private IEnumerable<string> DiscoverWorldDirectories()
     {
         var worldDirs = new HashSet<string>();
 
         // Check %APPDATA% location
-        var appDataWorldsPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            "AmbientGames", "Schema", "content", "worlds");
+        var appDataWorldsPath = Path.Combine(_gameSettings.GetAppDataContentPath(), "worlds");
+        _logger?.LogDebug("Checking AppData worlds path: {Path}", appDataWorldsPath);
         if (Directory.Exists(appDataWorldsPath))
         {
             foreach (var dir in Directory.GetDirectories(appDataWorldsPath))

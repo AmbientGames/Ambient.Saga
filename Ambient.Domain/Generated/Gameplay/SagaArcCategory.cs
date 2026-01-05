@@ -42,7 +42,7 @@ namespace Ambient.Domain {
         Passage,
         
         /// <remarks/>
-        TrailNode,
+        Waypoint,
         
         /// <remarks/>
         Camp,

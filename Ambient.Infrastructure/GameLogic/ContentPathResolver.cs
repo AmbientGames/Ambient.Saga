@@ -1,20 +1,46 @@
-using Ambient.Application.Utilities;
+using Ambient.Application.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Infrastructure.GameLogic;
 
-public static class ContentPathResolver
+/// <summary>
+/// Interface for resolving content paths with AppData and install location fallback.
+/// </summary>
+public interface IContentPathResolver
 {
-    private const string AppDataFolder = "AmbientGames";
-    private const string GameFolder = "Schema";
+    string? ResolveTexturePath(string library, string ns, string textureName);
+    string? ResolveGeographicDataPath(string library, string ns, string fileName);
+    string? ResolveModelPath(string library, string ns, string modelName);
+    string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null);
+    string? ResolveModelRefByCategoryKind(string library, string ns, string category, string? kind, Random? random = null);
+    string? ResolveXmlPath(string worldRef, string library, string ns, params string[] relativePath);
+}
+
+/// <summary>
+/// Resolves content paths with AppData and install location fallback support.
+/// </summary>
+public class ContentPathResolver : IContentPathResolver
+{
+    private readonly IGameSettings _gameSettings;
+    private readonly ILogger<ContentPathResolver>? _logger;
+
     private const string DefaultPack = "default";
     private const string DefaultNamespace = "ambient_games";
 
-    public static string? ResolveTexturePath(string library, string ns, string textureName)
+    public ContentPathResolver(IGameSettings gameSettings, ILogger<ContentPathResolver>? logger = null)
+    {
+        _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
+        _logger = logger;
+        _logger?.LogDebug("ContentPathResolver initialized with PublisherFolder={Publisher}, GameName={Game}",
+            gameSettings.PublisherFolder, gameSettings.GameName);
+    }
+
+    public string? ResolveTexturePath(string library, string ns, string textureName)
     {
         return ResolvePath("packs/libraries", library, ns, "textures", "block", textureName + ".png");
     }
 
-    public static string? ResolveGeographicDataPath(string library, string ns, string fileName)
+    public string? ResolveGeographicDataPath(string library, string ns, string fileName)
     {
         return ResolvePath("packs/libraries", library, ns, "geographic_data", fileName);
     }
@@ -24,7 +50,7 @@ public static class ContentPathResolver
     /// Resolution order: library -> default library
     /// Supports .litematic, .schematic, and .xml model files.
     /// </summary>
-    public static string? ResolveModelPath(string library, string ns, string modelName)
+    public string? ResolveModelPath(string library, string ns, string modelName)
     {
         // Try each supported extension in order of preference
         string[] extensions = [".litematic", ".schematic", ".xml"];
@@ -44,7 +70,7 @@ public static class ContentPathResolver
     /// Resolution order: models/{Category}/{Kind}/ -> models/{Category}/ -> models/Default/
     /// Returns a random model from the matching directory.
     /// </summary>
-    public static string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
+    public string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
     {
         var rng = random ?? new Random();
         string[] extensions = ["*.litematic", "*.schematic", "*.xml"];
@@ -72,13 +98,13 @@ public static class ContentPathResolver
     /// <summary>
     /// Gets the model reference (filename without extension) for a Category/Kind.
     /// </summary>
-    public static string? ResolveModelRefByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
+    public string? ResolveModelRefByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
     {
         var modelPath = ResolveModelPathByCategoryKind(library, ns, category, kind, random);
         return modelPath != null ? Path.GetFileNameWithoutExtension(modelPath) : null;
     }
 
-    private static string? ResolveModelDirectoryPath(string library, string ns, params string[] categoryPath)
+    private string? ResolveModelDirectoryPath(string library, string ns, params string[] categoryPath)
     {
         var subPath = new[] { "models" }.Concat(categoryPath).ToArray();
         var relativePath = BuildRelativePath("packs/libraries", library, ns, subPath);
@@ -86,12 +112,12 @@ public static class ContentPathResolver
         // Check %APPDATA% location first
         var appDataPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            AppDataFolder, GameFolder, relativePath);
+            _gameSettings.PublisherFolder, _gameSettings.GameName, relativePath);
         if (Directory.Exists(appDataPath))
             return appDataPath;
 
         // Fall back to install location
-        var installPath = Path.Combine(FileManager.GetExecutingDirectoryName(), relativePath);
+        var installPath = Path.Combine(_gameSettings.InstallPath, relativePath);
         if (Directory.Exists(installPath))
             return installPath;
 
@@ -102,11 +128,11 @@ public static class ContentPathResolver
 
             var defaultAppDataPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                AppDataFolder, GameFolder, defaultRelativePath);
+                _gameSettings.PublisherFolder, _gameSettings.GameName, defaultRelativePath);
             if (Directory.Exists(defaultAppDataPath))
                 return defaultAppDataPath;
 
-            var defaultInstallPath = Path.Combine(FileManager.GetExecutingDirectoryName(), defaultRelativePath);
+            var defaultInstallPath = Path.Combine(_gameSettings.InstallPath, defaultRelativePath);
             if (Directory.Exists(defaultInstallPath))
                 return defaultInstallPath;
         }
@@ -133,7 +159,7 @@ public static class ContentPathResolver
     /// Resolves XML content path with world-specific override support.
     /// Resolution order: {worldRef}_generated -> world -> library -> default library
     /// </summary>
-    public static string? ResolveXmlPath(string worldRef, string library, string ns, params string[] relativePath)
+    public string? ResolveXmlPath(string worldRef, string library, string ns, params string[] relativePath)
     {
         var xmlSubPath = new[] { "xml" }.Concat(relativePath).ToArray();
 
@@ -164,38 +190,38 @@ public static class ContentPathResolver
         return null;
     }
 
-    private static string? ResolveWorldPath(string worldRef, string ns, string[] subPath)
+    private string? ResolveWorldPath(string worldRef, string ns, string[] subPath)
     {
         var relativePath = Path.Combine("content", "worlds", worldRef, "assets", ns, Path.Combine(subPath));
 
         // Check %APPDATA% location first
         var appDataPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            AppDataFolder, GameFolder, relativePath);
+            _gameSettings.PublisherFolder, _gameSettings.GameName, relativePath);
         if (File.Exists(appDataPath))
             return appDataPath;
 
         // Fall back to install location
-        var installPath = Path.Combine(FileManager.GetExecutingDirectoryName(), relativePath);
+        var installPath = Path.Combine(_gameSettings.InstallPath, relativePath);
         if (File.Exists(installPath))
             return installPath;
 
         return null;
     }
 
-    private static string? ResolvePath(string packType, string pack, string ns, params string[] subPath)
+    private string? ResolvePath(string packType, string pack, string ns, params string[] subPath)
     {
         var relativePath = BuildRelativePath(packType, pack, ns, subPath);
 
         // Check %APPDATA% location first
         var appDataPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            AppDataFolder, GameFolder, relativePath);
+            _gameSettings.PublisherFolder, _gameSettings.GameName, relativePath);
         if (File.Exists(appDataPath))
             return appDataPath;
 
         // Fall back to install location
-        var installPath = Path.Combine(FileManager.GetExecutingDirectoryName(), relativePath);
+        var installPath = Path.Combine(_gameSettings.InstallPath, relativePath);
         if (File.Exists(installPath))
             return installPath;
 
@@ -206,11 +232,11 @@ public static class ContentPathResolver
 
             var defaultAppDataPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                AppDataFolder, GameFolder, defaultRelativePath);
+                _gameSettings.PublisherFolder, _gameSettings.GameName, defaultRelativePath);
             if (File.Exists(defaultAppDataPath))
                 return defaultAppDataPath;
 
-            var defaultInstallPath = Path.Combine(FileManager.GetExecutingDirectoryName(), defaultRelativePath);
+            var defaultInstallPath = Path.Combine(_gameSettings.InstallPath, defaultRelativePath);
             if (File.Exists(defaultInstallPath))
                 return defaultInstallPath;
         }

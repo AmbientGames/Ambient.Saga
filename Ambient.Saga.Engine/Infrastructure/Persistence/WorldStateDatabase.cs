@@ -1,7 +1,9 @@
-﻿using Ambient.Domain.Entities;
+using Ambient.Application.Contracts;
+using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using LiteDB;
+using Microsoft.Extensions.Logging;
 using SharpDX;
 using System.IO;
 
@@ -9,22 +11,26 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 
 /// <summary>
 /// Manages LiteDB database connection for world state persistence.
-/// Database location: %APPDATA%\AmbientGames\{GameName}\saves\{WorldConfigRef}.db
+/// Database location: %APPDATA%\{PublisherFolder}\{GameName}\saves\{WorldConfigRef}.db
 /// </summary>
 internal class WorldStateDatabase : IDisposable
 {
     private readonly LiteDatabase _database;
+    private readonly ILogger<WorldStateDatabase>? _logger;
     private bool _disposed;
 
-    public WorldStateDatabase(string gameName, string worldConfigurationRef)
+    public WorldStateDatabase(IGameSettings gameSettings, string worldConfigurationRef, ILogger<WorldStateDatabase>? logger = null)
     {
-        var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-        var savesDirectory = Path.Combine(appDataPath, "AmbientGames", gameName, "saves");
+        ArgumentNullException.ThrowIfNull(gameSettings);
+        _logger = logger;
+
+        var savesDirectory = Path.Combine(gameSettings.GetAppDataBasePath(), "saves");
 
         // Ensure directory exists
         Directory.CreateDirectory(savesDirectory);
 
         var dbPath = Path.Combine(savesDirectory, $"{worldConfigurationRef}.db");
+        _logger?.LogInformation("Opening database: {DbPath}", dbPath);
 
         // Configure BsonMapper to use InstanceId as the document ID
         var mapper = new BsonMapper();

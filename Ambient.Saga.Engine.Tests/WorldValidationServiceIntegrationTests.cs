@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Infrastructure.GameLogic.Services;
 using Ambient.Infrastructure.GameLogic.Loading;
 using Ambient.Domain.Contracts;
@@ -12,8 +12,7 @@ namespace Ambient.Saga.Engine.Tests;
 /// </summary>
 public class WorldValidationServiceIntegrationTests
 {
-    private readonly IWorldFactory _worldFactory = new TestWorldFactory();
-    private readonly IWorldConfigurationLoader _configurationLoader = new WorldConfigurationLoader();
+    private readonly IWorldConfigurationLoader _configurationLoader = TestWorldFactory.CreateTestWorldConfigurationLoader();
     private readonly IWorldLoader _worldLoader;
     private readonly string _dataDirectory;
     private readonly string _definitionDirectory;
@@ -27,7 +26,7 @@ public class WorldValidationServiceIntegrationTests
         // Content/Worlds is at solution root (shared by all Sandboxes)
         _dataDirectory = FindWorldsDirectory();
 
-        _worldLoader = new WorldAssetLoader(_worldFactory, _configurationLoader);
+        _worldLoader = TestWorldFactory.CreateTestWorldAssetLoader();
     }
 
     private static string FindWorldsDirectory()
@@ -155,7 +154,7 @@ public class WorldValidationServiceIntegrationTests
         // Content/Worlds is at solution root (shared by all Sandboxes)
         var dataDirectory = FindWorldsDirectory();
 
-        var configurationLoader = new WorldConfigurationLoader();
+        var configurationLoader = TestWorldFactory.CreateTestWorldConfigurationLoader();
         var configurations = configurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory).GetAwaiter().GetResult();
 
         foreach (var config in configurations)

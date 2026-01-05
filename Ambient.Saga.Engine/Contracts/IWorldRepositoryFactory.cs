@@ -15,12 +15,11 @@ public interface IWorldRepositoryFactory
     /// <summary>
     /// Creates all repository instances for the specified world.
     /// </summary>
-    /// <param name="gameName">Game name for database path</param>
     /// <param name="worldRefName">World configuration RefName (database name)</param>
     /// <param name="world">Loaded world instance</param>
     /// <param name="isSteamAvailable">Whether Steam is available for achievement sync</param>
     /// <returns>Repository instances and database</returns>
-    WorldRepositories CreateRepositories(string gameName, string worldRefName, IWorld world, bool isSteamAvailable);
+    WorldRepositories CreateRepositories(string worldRefName, IWorld world, bool isSteamAvailable);
 }
 
 /// <summary>

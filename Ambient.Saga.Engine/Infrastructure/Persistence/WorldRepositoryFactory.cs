@@ -1,7 +1,9 @@
-﻿using Ambient.Domain.Contracts;
+using Ambient.Application.Contracts;
+using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Domain.Achievements;
 using LiteDB;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 
@@ -11,29 +13,35 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 /// </summary>
 public class WorldRepositoryFactory : IWorldRepositoryFactory
 {
+    private readonly IGameSettings _gameSettings;
+    private readonly ILoggerFactory? _loggerFactory;
     private readonly LiteDatabase? _sharedDatabase;
 
     /// <summary>
     /// Default constructor - creates its own database (for Sandbox/standalone usage).
     /// </summary>
-    public WorldRepositoryFactory()
+    public WorldRepositoryFactory(IGameSettings gameSettings, ILoggerFactory? loggerFactory = null)
     {
+        _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
+        _loggerFactory = loggerFactory;
         _sharedDatabase = null;
     }
 
     /// <summary>
     /// Constructor with shared database injection (for Carbon/integrated usage).
     /// </summary>
-    public WorldRepositoryFactory(LiteDatabase sharedDatabase)
+    public WorldRepositoryFactory(IGameSettings gameSettings, LiteDatabase sharedDatabase, ILoggerFactory? loggerFactory = null)
     {
+        _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _sharedDatabase = sharedDatabase;
+        _loggerFactory = loggerFactory;
     }
 
     /// <summary>
     /// Creates all repository instances for the specified world.
     /// Uses shared database if provided via constructor, otherwise creates its own.
     /// </summary>
-    public WorldRepositories CreateRepositories(string gameName, string worldRefName, IWorld world, bool isSteamAvailable)
+    public WorldRepositories CreateRepositories(string worldRefName, IWorld world, bool isSteamAvailable)
     {
         // Use shared database if provided (Saga), otherwise create new one (Sandbox)
         WorldStateDatabase? ownedDatabase = null;
@@ -46,7 +54,8 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
         else
         {
             // Sandbox path: create own database
-            ownedDatabase = new WorldStateDatabase(gameName, worldRefName);
+            var logger = _loggerFactory?.CreateLogger<WorldStateDatabase>();
+            ownedDatabase = new WorldStateDatabase(_gameSettings, worldRefName, logger);
             database = ownedDatabase.Database;
         }
 

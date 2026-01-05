@@ -40,9 +40,9 @@
     </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\Ambient.Saga.Sandbox.DirectX\Content\**\*">
-			<Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			<TargetPath>Content\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+		<Content Include="..\Ambient.Saga.Sandbox.DirectX\content\**\*">
+			<Link>content\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			<TargetPath>content\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>

@@ -207,6 +207,7 @@ public partial class MainViewModel : ObservableObject
     private readonly GameAvatarRepositoryProvider _avatarRepositoryProvider;
     private readonly WorldStateRepositoryProvider _worldStateRepositoryProvider;
     private readonly IWorldRepositoryFactory _repositoryFactory;
+    private readonly IContentPathResolver _contentPathResolver;
     private readonly MediatR.IMediator _mediator;
     //private readonly Services.IArchetypeSelector _wpfArchetypeSelector;
     private readonly IArchetypeSelector _imguiArchetypeSelector;
@@ -221,6 +222,7 @@ public partial class MainViewModel : ObservableObject
         GameAvatarRepositoryProvider avatarRepositoryProvider,
         WorldStateRepositoryProvider worldStateRepositoryProvider,
         IWorldRepositoryFactory repositoryFactory,
+        IContentPathResolver contentPathResolver,
         MediatR.IMediator mediator,
         [Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute("imgui")] IArchetypeSelector imguiArchetypeSelector)
     {
@@ -229,6 +231,7 @@ public partial class MainViewModel : ObservableObject
         _avatarRepositoryProvider = avatarRepositoryProvider ?? throw new ArgumentNullException(nameof(avatarRepositoryProvider));
         _worldStateRepositoryProvider = worldStateRepositoryProvider ?? throw new ArgumentNullException(nameof(worldStateRepositoryProvider));
         _repositoryFactory = repositoryFactory ?? throw new ArgumentNullException(nameof(repositoryFactory));
+        _contentPathResolver = contentPathResolver ?? throw new ArgumentNullException(nameof(contentPathResolver));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         //_wpfArchetypeSelector = wpfArchetypeSelector ?? throw new ArgumentNullException(nameof(wpfArchetypeSelector));
         _imguiArchetypeSelector = imguiArchetypeSelector ?? throw new ArgumentNullException(nameof(imguiArchetypeSelector));
@@ -804,7 +807,7 @@ public partial class MainViewModel : ObservableObject
         try
         {
             var config = world.WorldConfiguration;
-            var heightMapPath = ContentPathResolver.ResolveGeographicDataPath(config.ContentPackLibrary, config.Namespace, config.HeightMapSettings.FileName);
+            var heightMapPath = _contentPathResolver.ResolveGeographicDataPath(config.ContentPackLibrary, config.Namespace, config.HeightMapSettings.FileName);
 
             if (heightMapPath == null)
             {
@@ -1053,7 +1056,6 @@ public partial class MainViewModel : ObservableObject
 
             // Use factory to create all repositories (eliminates Infrastructure imports)
             var repositories = _repositoryFactory.CreateRepositories(
-                "Saga",
                 world.WorldConfiguration.RefName,
                 world,
                 SteamContext.IsSteamInitialized);

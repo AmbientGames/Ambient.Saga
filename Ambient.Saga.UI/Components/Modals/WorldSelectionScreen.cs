@@ -1,6 +1,8 @@
+using Ambient.Application.Contracts;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -21,14 +23,21 @@ namespace Ambient.Saga.UI.Components.Modals;
 public class WorldSelectionScreen
 {
     private readonly IWorldContentGenerator _worldContentGenerator;
+    private readonly IGameSettings _gameSettings;
+    private readonly ILogger<WorldSelectionScreen>? _logger;
     private string? _lastGenerationMessage;
     private bool _showGenerationMessage;
     private Task? _generationTask;
     private bool _isGenerating;
 
-    public WorldSelectionScreen(IWorldContentGenerator worldContentGenerator)
+    public WorldSelectionScreen(
+        IWorldContentGenerator worldContentGenerator,
+        IGameSettings gameSettings,
+        ILogger<WorldSelectionScreen>? logger = null)
     {
         _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
+        _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
+        _logger = logger;
     }
 
     public void Render(MainViewModel viewModel, ref bool isOpen)
@@ -119,42 +128,42 @@ public class WorldSelectionScreen
                 }
                 else if (ImGui.Button("Generate World Content", new Vector2(-1, 30)))
                 {
-                    Debug.WriteLine($"Generate button clicked for: {viewModel.SelectedConfiguration.RefName}");
+                    _logger?.LogInformation("Generate button clicked for: {ConfigRefName}", viewModel.SelectedConfiguration.RefName);
 
                     var selectedConfig = viewModel.SelectedConfiguration;
                     _isGenerating = true;
+                    var gameSettings = _gameSettings;
+                    var logger = _logger;
                     _generationTask = Task.Run(async () =>
                     {
                         try
                         {
                             var generatedWorldRef = selectedConfig.RefName.ToLowerInvariant() + "_generated";
                             var outputDirectory = Path.Combine(
-                                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                                "AmbientGames", "Schema", "content", "worlds", generatedWorldRef,
+                                gameSettings.GetAppDataContentPath(),
+                                "worlds", generatedWorldRef,
                                 "assets", "ambient_games", "xml");
 
                             // Ensure directory exists
                             Directory.CreateDirectory(outputDirectory);
 
-                            Debug.WriteLine($"Generating world content to: {outputDirectory}");
+                            logger?.LogInformation("Generating world content to: {OutputDirectory}", outputDirectory);
                             var generatedFiles = await _worldContentGenerator.GenerateWorldContentAsync(selectedConfig, outputDirectory);
 
-                            Debug.WriteLine($"Generated {generatedFiles.Count} files:");
+                            logger?.LogInformation("Generated {FileCount} files", generatedFiles.Count);
                             foreach (var file in generatedFiles)
                             {
-                                Debug.WriteLine($"  - {file}");
+                                logger?.LogDebug("  Generated: {File}", file);
                             }
 
                             _lastGenerationMessage = $"Generated {generatedFiles.Count} files successfully!";
                             _showGenerationMessage = true;
-                            Debug.WriteLine("World content generation complete!");
                         }
                         catch (Exception ex)
                         {
                             _lastGenerationMessage = $"Error: {ex.Message}";
                             _showGenerationMessage = true;
-                            Debug.WriteLine($"Error generating world content: {ex.Message}");
-                            Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                            logger?.LogError(ex, "Error generating world content");
                         }
                     });
                 }
