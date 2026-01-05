@@ -2304,10 +2304,10 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="IronShield" Amount="1" />
-      <Action Type="GiveEquipment" RefName="ChainLeggings" Amount="1" />
-      <Action Type="GiveConsumable" RefName="Stew" Amount="1" />
-      <Action Type="GiveSpell" RefName="PredatorsInstinct" Amount="1" />
+      <Action Type="GiveEquipment" RefName="CrystalWand" Amount="1" />
+      <Action Type="GiveConsumable" RefName="ScrollOfTeleport" Amount="1" />
+      <Action Type="GiveConsumable" RefName="Pie" Amount="1" />
+      <Action Type="GiveSpell" RefName="ConjurePortal" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2323,15 +2323,15 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially KōtaiJingūInnerShrine or Aramatsurinomiya.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to KōtaiJingūInnerShrine or Aramatsurinomiya.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>This place, Kazahinomi-no-Miya, holds many secrets. Those who listen carefully learn much.</Text>
+      <Text>Kazahinomi-no-Miya has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine) Dialogue" Description="Dialogue tree for Guardian of Kōtai Jingū (Inner Shrine)" StartNodeId="greeting">
@@ -2366,9 +2366,10 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="ClothCap" Amount="1" />
-      <Action Type="GiveConsumable" RefName="HerbBundle" Amount="1" />
-      <Action Type="GiveSpell" RefName="ArcaneBlast" Amount="1" />
+      <Action Type="GiveEquipment" RefName="Dagger" Amount="1" />
+      <Action Type="GiveConsumable" RefName="WarriorRation" Amount="1" />
+      <Action Type="GiveConsumable" RefName="ManaPotion" Amount="1" />
+      <Action Type="GiveSpell" RefName="HolyFire" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2384,7 +2385,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to Kazahinominomiya or Aramatsurinomiya.</Text>
+      <Text>Nice to see a fellow traveler! Kazahinominomiya or Aramatsurinomiya is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2427,11 +2428,9 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="Maul" Amount="1" />
-      <Action Type="GiveEquipment" RefName="SimpleRobe" Amount="1" />
-      <Action Type="GiveConsumable" RefName="HerbBundle" Amount="1" />
-      <Action Type="GiveConsumable" RefName="Cheese" Amount="1" />
-      <Action Type="GiveSpell" RefName="Heroism" Amount="1" />
+      <Action Type="GiveEquipment" RefName="LightCrossbow" Amount="1" />
+      <Action Type="GiveConsumable" RefName="SmellingSalts" Amount="1" />
+      <Action Type="GiveConsumable" RefName="EnduranceElixir" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2451,11 +2450,11 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Aramatsuri-no-Miya has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Ah, Aramatsuri-no-Miya! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
@@ -2465,7 +2464,7 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1 or Aramatsurinomiya is worth a visit if you have time.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1 or Aramatsurinomiya.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2477,50 +2476,51 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) is beautiful this time of year, isn't it?</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>Nice to see a fellow traveler! Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0 is worth a visit if you have time.</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2), holds many secrets. Those who listen carefully learn much.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>May the road rise to meet you!</Text>
+    </Node>
+  </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
     <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Defense Elixir. Please, take it.</Text>
-      <Choice Text="Thank you for the Defense Elixir!" NextNodeId="gift_accepted" />
+      <Text>I'd like to give you something... a Tower Shield and Feast Platter. Please, take it.</Text>
+      <Choice Text="Thank you for the Tower Shield and Feast Platter!" NextNodeId="gift_accepted" />
       <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
     </Node>
     <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Defense Elixir serve you well on your journey!</Text>
-      <Action Type="GiveConsumable" RefName="DefenseElixir" Amount="1" />
+      <Text>It's yours now. May the Tower Shield and Feast Platter serve you well on your journey!</Text>
+      <Action Type="GiveEquipment" RefName="TowerShield" Amount="1" />
+      <Action Type="GiveConsumable" RefName="FeastPlatter" Amount="1" />
       <Choice Text="Farewell, and thank you!" NextNodeId="end" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) is beautiful this time of year, isn't it?</Text>
+      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0, I recommend it.</Text>
+      <Text>A pleasure to meet you! If you haven't been to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1, I recommend it.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="greeting">
-      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) is beautiful this time of year, isn't it?</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3), holds many secrets. Those who listen carefully learn much.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trail Hazard Dialogue" Description="Dialogue tree for Trail Hazard" StartNodeId="greeting">
@@ -2530,50 +2530,38 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2 yet?</Text>
+      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4) has quite a history. Many travelers pass through here seeking adventure.</Text>
-      <Choice Text="Thanks for the information!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
-    </Node>
-  </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Chain Coif and Divine Blessing. Please, take it.</Text>
-      <Choice Text="Thank you for the Chain Coif and Divine Blessing!" NextNodeId="gift_accepted" />
-      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
-    </Node>
-    <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Chain Coif and Divine Blessing serve you well on your journey!</Text>
-      <Action Type="GiveEquipment" RefName="ChainCoif" Amount="1" />
-      <Action Type="GiveConsumable" RefName="DivineBlessing" Amount="1" />
-      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5). The journey has been long.</Text>
-      <Choice Text="Hello, friend!" NextNodeId="friendly" />
-      <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
-    </Node>
-    <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3, I recommend it.</Text>
-      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
-    </Node>
-    <Node NodeId="info">
-      <Text>You want to know about Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)? Settle in - there's much to tell.</Text>
+      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+    <Node NodeId="greeting">
+      <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5). The journey has been long.</Text>
+      <Choice Text="Hello, friend!" NextNodeId="friendly" />
+      <Choice Text="Tell me about this place." NextNodeId="info" />
+    </Node>
+    <Node NodeId="friendly">
+      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3 yet?</Text>
+      <Choice Text="I should be going. Farewell!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="info">
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Choice Text="Thanks for the information!" NextNodeId="end" />
+    </Node>
+    <Node NodeId="end">
+      <Text>Until we meet again!</Text>
+    </Node>
+  </DialogueTree>
   <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveling Merchant Dialogue" Description="Dialogue tree for Traveling Merchant" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
-      <Text>A customer! Take a look at my wares - I have the finest goods in the region.</Text>
+      <Text>Looking to buy or sell? Either way, you've come to the right place!</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
       <Choice Text="Can we negotiate on price?" NextNodeId="attempt_bargain" />
       <Choice Text="I'll come back later" NextNodeId="end" />
@@ -2620,7 +2608,7 @@
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7 yet?</Text>
+      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2628,7 +2616,7 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>May the road rise to meet you!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
@@ -2638,15 +2626,15 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to ToyōkeDaijingūOuterShrine or ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0.</Text>
+      <Text>Good to meet you! There's much to see around here, especially ToyōkeDaijingūOuterShrine or ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine) Dialogue" Description="Dialogue tree for Guardian of Toyōke Daijingū (Outer Shrine)" StartNodeId="greeting">
@@ -2681,8 +2669,10 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="WoodenFlute" Amount="1" />
-      <Action Type="GiveConsumable" RefName="AcidBomb" Amount="1" />
+      <Action Type="GiveEquipment" RefName="BeltOfGiants" Amount="1" />
+      <Action Type="GiveEquipment" RefName="LargeSword" Amount="1" />
+      <Action Type="GiveConsumable" RefName="HerbBundle" Amount="1" />
+      <Action Type="GiveConsumable" RefName="Ale" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2702,41 +2692,29 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Toyōke Daijingū (Outer Shrine) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Toyōke Daijingū (Outer Shrine) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Safe travels, adventurer!</Text>
+      <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Siren Harp and Scroll Of Icebolt. Please, take it.</Text>
-      <Choice Text="Thank you for the Siren Harp and Scroll Of Icebolt!" NextNodeId="gift_accepted" />
-      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
-    </Node>
-    <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Siren Harp and Scroll Of Icebolt serve you well on your journey!</Text>
-      <Action Type="GiveEquipment" RefName="SirenHarp" Amount="1" />
-      <Action Type="GiveConsumable" RefName="ScrollOfIcebolt" Amount="1" />
-      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
-    </Node>
     <Node NodeId="greeting">
       <Text>Welcome to Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1). I don't see many visitors around these parts.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to KazamiyaGekū or ToyōkeDaijingūOuterShrine.</Text>
+      <Text>Nice to see a fellow traveler! KazamiyaGekū or ToyōkeDaijingūOuterShrine is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>You want to know about Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)? Settle in - there's much to tell.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū) Dialogue" Description="Dialogue tree for Guardian of Kazamiya (Gekū)" StartNodeId="greeting">
@@ -2771,11 +2749,10 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="KiteShield" Amount="1" />
-      <Action Type="GiveEquipment" RefName="Dagger" Amount="1" />
-      <Action Type="GiveConsumable" RefName="SoulShard" Amount="1" />
-      <Action Type="GiveConsumable" RefName="WarriorRation" Amount="1" />
-      <Action Type="GiveSpell" RefName="Lullaby" Amount="1" />
+      <Action Type="GiveEquipment" RefName="SilverRing" Amount="1" />
+      <Action Type="GiveConsumable" RefName="IronskinPotion" Amount="1" />
+      <Action Type="GiveConsumable" RefName="MinorStaminaPotion" Amount="1" />
+      <Action Type="GiveSpell" RefName="BerserkerRage" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2791,15 +2768,15 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to Tsuchinomiya or Takanomiya, I recommend it.</Text>
+      <Text>Nice to see a fellow traveler! Tsuchinomiya or Takanomiya is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Kazamiya (Gekū) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>You want to know about Kazamiya (Gekū)? Settle in - there's much to tell.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Take care out there!</Text>
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya Dialogue" Description="Dialogue tree for Guardian of Tsuchi-no-Miya" StartNodeId="greeting">
@@ -2834,9 +2811,8 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="Spear" Amount="1" />
-      <Action Type="GiveEquipment" RefName="ClothPants" Amount="1" />
-      <Action Type="GiveConsumable" RefName="Berries" Amount="1" />
+      <Action Type="GiveEquipment" RefName="Knife" Amount="1" />
+      <Action Type="GiveConsumable" RefName="WarriorRation" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2852,7 +2828,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! KazamiyaGekū or Takanomiya is worth a visit if you have time.</Text>
+      <Text>A pleasure to meet you! If you haven't been to KazamiyaGekū or Takanomiya, I recommend it.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2860,7 +2836,7 @@
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Until we meet again!</Text>
+      <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_BOSS_Takanomiya" DisplayName="Guardian of Taka-no-Miya Dialogue" Description="Dialogue tree for Guardian of Taka-no-Miya" StartNodeId="greeting">
@@ -2895,11 +2871,10 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="FireStaff" Amount="1" />
-      <Action Type="GiveEquipment" RefName="Claymore" Amount="1" />
-      <Action Type="GiveConsumable" RefName="MagesBiscuit" Amount="1" />
-      <Action Type="GiveConsumable" RefName="SuperiorHealingPotion" Amount="1" />
-      <Action Type="GiveSpell" RefName="Heroism" Amount="1" />
+      <Action Type="GiveEquipment" RefName="TravelCloak" Amount="1" />
+      <Action Type="GiveEquipment" RefName="BreastPlate" Amount="1" />
+      <Action Type="GiveConsumable" RefName="Milk" Amount="1" />
+      <Action Type="GiveSpell" RefName="Doom" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2915,11 +2890,11 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! Tsuchinomiya or KazamiyaGekū is worth a visit if you have time.</Text>
+      <Text>It's good to meet a friendly face! Have you visited Tsuchinomiya or KazamiyaGekū yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Taka-no-Miya! There are tales of this place that would fill a library.</Text>
+      <Text>Taka-no-Miya is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -2933,15 +2908,15 @@
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! The road has many surprises if you keep your eyes open.</Text>
+      <Text>It's good to meet a friendly face! There's much to see in this area.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Kazahinomi-no-Miya is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>This place, Kazahinomi-no-Miya, holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
-      <Text>Farewell, and good luck on your journey!</Text>
+      <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
 </DialogueTrees>

@@ -153,7 +153,7 @@ public class WorldSelectionScreen
                             logger?.LogInformation("Generated {FileCount} files", generatedFiles.Count);
                             foreach (var file in generatedFiles)
                             {
-                                logger?.LogDebug("  Generated: {File}", file);
+                                logger?.LogInformation("  Generated: {File}", file);
                             }
 
                             _lastGenerationMessage = $"Generated {generatedFiles.Count} files successfully!";

@@ -1,5 +1,7 @@
+using Ambient.Application.Contracts;
 using Ambient.Saga.Engine.Application.Handlers.Loading;
 using Ambient.Saga.Engine.Application.Queries.Loading;
+using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Loading;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,8 +29,11 @@ public class WorldLoadingQueryTests : IDisposable
 
         // Setup MediatR with world loading handlers
         var services = new ServiceCollection();
+        services.AddSingleton<IGameSettings>(TestWorldFactory.CreateTestGameSettings());
+        services.AddSingleton<IContentPathResolver, ContentPathResolver>();
         services.AddSingleton<IWorldFactory, TestWorldFactory>();
         services.AddSingleton<IWorldConfigurationLoader, WorldConfigurationLoader>();
+        services.AddSingleton<IGameplayComponentLoader, GameplayComponentLoader>();
         services.AddSingleton<IWorldLoader, WorldAssetLoader>();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoadWorldHandler).Assembly));
         var serviceProvider = services.BuildServiceProvider();

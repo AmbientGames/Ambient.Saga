@@ -34,7 +34,7 @@ public class WorldAssetLoader : IWorldLoader
     /// <inheritdoc />
     public async Task<IWorld> LoadWorldByConfigurationAsync(string dataDirectory, string? definitionDirectory, string configurationRefName)
     {
-        _logger?.LogDebug("Loading world by configuration: {RefName}", configurationRefName);
+        _logger?.LogInformation("Loading world by configuration: {RefName}", configurationRefName);
 
         var configurations = await _configurationLoader.LoadAvailableWorldConfigurationsAsync(dataDirectory, definitionDirectory);
 
@@ -105,7 +105,7 @@ public class WorldAssetLoader : IWorldLoader
             throw new FileNotFoundException($"Geographic data not found: {config.HeightMapSettings.FileName}");
         }
 
-        _logger?.LogDebug("Loading height map from: {Path}", resolvedPath);
+        _logger?.LogInformation("Loading height map from: {Path}", resolvedPath);
         world.HeightMapMetadata = GeoTiffReader.ReadMetadata(resolvedPath);
     }
 }

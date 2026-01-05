@@ -31,7 +31,7 @@ public class ContentPathResolver : IContentPathResolver
     {
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _logger = logger;
-        _logger?.LogDebug("ContentPathResolver initialized with PublisherFolder={Publisher}, GameName={Game}",
+        _logger?.LogInformation("ContentPathResolver initialized with PublisherFolder={Publisher}, GameName={Game}",
             gameSettings.PublisherFolder, gameSettings.GameName);
     }
 

@@ -37,7 +37,7 @@ public class GameplayComponentLoader : IGameplayComponentLoader
             : null;
         var useValidation = xsdFilePath != null && File.Exists(xsdFilePath);
 
-        _logger?.LogDebug("Loading gameplay data for world {WorldRef}, validation={UseValidation}",
+        _logger?.LogInformation("Loading gameplay data for world {WorldRef}, validation={UseValidation}",
             world.WorldConfiguration.RefName, useValidation);
 
         await LoadGameplayData(useValidation ? xsdFilePath : null, world);
@@ -84,9 +84,9 @@ public class GameplayComponentLoader : IGameplayComponentLoader
         // Use validation if schema file is available, otherwise load without validation
         if (!string.IsNullOrEmpty(xsdFilePath))
         {
-            return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath, xsdFilePath);
+            return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath, xsdFilePath, _logger);
         }
-        return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath);
+        return await XmlLoader.LoadFromXmlAsync<T>(resolvedPath, _logger);
     }
 
     private static void BuildGameplayLookups(IWorld world)
