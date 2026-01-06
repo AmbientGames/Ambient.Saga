@@ -1,4 +1,5 @@
 using Ambient.Application.Contracts;
+using Ambient.Application.WorldCreation;
 using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -8,6 +9,7 @@ using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Loading;
 using Ambient.Infrastructure.Logging;
+using Ambient.Infrastructure.WorldCreation;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.UI.Components.Modals;
@@ -80,6 +82,16 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             // Block provider (mock implementation with sample blocks for UI demonstration)
             services.AddSingleton<IBlockProvider, MockBlockProvider>();
 
+            // World creation services (theme discovery and world file generation)
+            services.AddSingleton<IThemeProvider>(sp =>
+            {
+                var gameSettings = sp.GetRequiredService<IGameSettings>();
+                return new ThemeProvider(
+                    gameSettings.GetAppDataContentPath(),
+                    AppDomain.CurrentDomain.BaseDirectory);
+            });
+            services.AddSingleton<IWorldCreationService, WorldCreationService>();
+
             // Modal manager for ImGui archetype selector (with circular dependency resolution)
             services.AddSingleton(sp =>
             {
@@ -87,7 +99,9 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
                 var mediator = sp.GetRequiredService<IMediator>();
                 var worldContentGenerator = sp.GetRequiredService<IWorldContentGenerator>();
                 var gameSettings = sp.GetRequiredService<IGameSettings>();
-                var modalManager = new ModalManager(selector, mediator, worldContentGenerator, gameSettings);
+                var themeProvider = sp.GetRequiredService<IThemeProvider>();
+                var worldCreationService = sp.GetRequiredService<IWorldCreationService>();
+                var modalManager = new ModalManager(selector, mediator, worldContentGenerator, gameSettings, themeProvider, worldCreationService);
                 selector.SetModalManager(modalManager); // Wire up circular reference
                 return modalManager;
             });

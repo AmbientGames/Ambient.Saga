@@ -1,20 +1,23 @@
 using Ambient.Application.Contracts;
 using Ambient.Application.WorldCreation;
-using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.UI.Services;
 
 namespace Ambient.Saga.UI.Components.Modals.Adapters;
 
 /// <summary>
-/// Adapter for WorldSelectionScreen to work with the Modal Registry Pattern.
+/// Adapter for WorldCreationWizard to work with the Modal Registry Pattern.
 /// </summary>
-public class WorldSelectionScreenAdapter : IModal
+public class WorldCreationWizardAdapter : IModal
 {
-    private readonly WorldSelectionScreen _modal;
+    private readonly WorldCreationWizard _wizard;
 
-    public WorldSelectionScreenAdapter(
-        IWorldContentGenerator worldContentGenerator,
+    /// <summary>
+    /// Event raised when a world is successfully created.
+    /// </summary>
+    public event Action<string>? WorldCreated;
+
+    public WorldCreationWizardAdapter(
         IGameSettings gameSettings,
         IThemeProvider themeProvider,
         IWorldCreationService worldCreationService,
@@ -22,44 +25,41 @@ public class WorldSelectionScreenAdapter : IModal
         IGeoTiffConverter? geoTiffConverter = null,
         ITextureProvider? textureProvider = null)
     {
-        _modal = new WorldSelectionScreen(
-            worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator)),
+        _wizard = new WorldCreationWizard(
             gameSettings ?? throw new ArgumentNullException(nameof(gameSettings)),
             themeProvider ?? throw new ArgumentNullException(nameof(themeProvider)),
             worldCreationService ?? throw new ArgumentNullException(nameof(worldCreationService)),
             fileDialogService,
             geoTiffConverter,
             textureProvider);
+
+        // Forward the wizard's WorldCreated event
+        _wizard.WorldCreated += path => WorldCreated?.Invoke(path);
     }
 
-    public string Name => "WorldSelection";
+    public string Name => "WorldCreationWizard";
 
     public bool CanOpen(object? context)
     {
-        return context is MainViewModel;
+        // Can be opened from any context - MainViewModel or null
+        return true;
     }
 
     public void OnOpening(object? context)
     {
-        System.Diagnostics.Debug.WriteLine("[WorldSelectionScreen] Opening");
+        // Reset wizard state when opening
+        _wizard.Reset();
+        System.Diagnostics.Debug.WriteLine("[WorldCreationWizard] Opening");
     }
 
     public void Render(object? context, ref bool isOpen)
     {
-        if (context is MainViewModel viewModel)
-        {
-            _modal.Render(viewModel, ref isOpen);
-        }
-        else
-        {
-            System.Diagnostics.Debug.WriteLine("[WorldSelectionScreen] Invalid context, closing");
-            isOpen = false;
-        }
+        _wizard.Render(ref isOpen);
     }
 
     public void OnClosed()
     {
-        System.Diagnostics.Debug.WriteLine("[WorldSelectionScreen] Closed");
+        System.Diagnostics.Debug.WriteLine("[WorldCreationWizard] Closed");
     }
 
     /// <summary>
@@ -67,6 +67,6 @@ public class WorldSelectionScreenAdapter : IModal
     /// </summary>
     public void SetTextureProvider(ITextureProvider textureProvider)
     {
-        _modal.SetTextureProvider(textureProvider);
+        _wizard.SetTextureProvider(textureProvider);
     }
 }
