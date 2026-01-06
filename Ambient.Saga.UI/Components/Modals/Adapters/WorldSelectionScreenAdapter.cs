@@ -14,6 +14,8 @@ public class WorldSelectionScreenAdapter : IModal
 {
     private readonly WorldSelectionScreen _modal;
 
+    public event Action<string>? WorldCreated;
+
     public WorldSelectionScreenAdapter(
         IWorldContentGenerator worldContentGenerator,
         IGameSettings gameSettings,
@@ -33,6 +35,8 @@ public class WorldSelectionScreenAdapter : IModal
             fileDialogService,
             geoTiffConverter,
             textureProvider, aiWorldGenerationService, logger);
+
+        _modal.WorldCreated += path => WorldCreated?.Invoke(path);
     }
 
     public string Name => "WorldSelection";

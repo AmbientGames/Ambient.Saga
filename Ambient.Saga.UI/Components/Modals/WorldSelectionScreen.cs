@@ -34,6 +34,11 @@ public class WorldSelectionScreen
     private bool _isGenerating;
     private bool _showWorldCreationWizard;
 
+    /// <summary>
+    /// Event raised when a world is successfully created.
+    /// </summary>
+    public event Action<string>? WorldCreated;
+
     public WorldSelectionScreen(
         IWorldContentGenerator worldContentGenerator,
         IGameSettings gameSettings,
@@ -78,6 +83,9 @@ public class WorldSelectionScreen
         _lastGenerationMessage = $"World created successfully at:\n{outputPath}";
         _showGenerationMessage = true;
         _showWorldCreationWizard = false;
+
+        // Forward event so parent can refresh world list
+        WorldCreated?.Invoke(outputPath);
     }
 
     public void Render(MainViewModel viewModel, ref bool isOpen)

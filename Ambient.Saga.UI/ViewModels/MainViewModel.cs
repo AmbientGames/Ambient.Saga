@@ -678,6 +678,12 @@ public partial class MainViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Refreshes the list of available world configurations.
+    /// Call this after creating a new world.
+    /// </summary>
+    public Task RefreshConfigurationsAsync() => LoadAvailableConfigurationsAsync();
+
     [RelayCommand]
     private async Task LoadSelectedConfigurationAsync()
     {

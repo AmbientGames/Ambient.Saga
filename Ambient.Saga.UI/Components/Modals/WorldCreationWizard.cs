@@ -1279,18 +1279,35 @@ Generate 40 diverse locations spread across the map with {themeName} theming.";
 
         Task.Run(async () =>
         {
-            var result = await _worldCreationService.CreateWorldAsync(
-                parameters,
-                appDataContentPath,
-                status => _creationStatus = status);
-
-            _isCreatingWorld = false;
-            _creationStatus = "";
-
-            if (result.Success)
+            try
             {
-                // Event handler (in parent) is responsible for closing the dialog
-                WorldCreated?.Invoke(result.OutputPath ?? "");
+                System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] Starting CreateWorldAsync...");
+                var result = await _worldCreationService.CreateWorldAsync(
+                    parameters,
+                    appDataContentPath,
+                    status => _creationStatus = status);
+
+                System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] CreateWorldAsync completed. Success={result.Success}, OutputPath={result.OutputPath}");
+
+                _isCreatingWorld = false;
+                _creationStatus = "";
+
+                if (result.Success)
+                {
+                    // Event handler (in parent) is responsible for closing the dialog
+                    System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] Invoking WorldCreated event: {result.OutputPath}");
+                    WorldCreated?.Invoke(result.OutputPath ?? "");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] World creation failed - Success was false");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] Exception in CreateWorldAsync: {ex.Message}");
+                _isCreatingWorld = false;
+                _creationStatus = $"Error: {ex.Message}";
             }
         });
     }

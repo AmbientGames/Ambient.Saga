@@ -56,6 +56,9 @@ public class ModalManager
     // Event for quit request (so host application can handle it)
     public event Action? QuitRequested;
 
+    // Event raised when a world is created (so host can refresh world list)
+    public event Action<string>? WorldCreated;
+
     /// <summary>
     /// Requests the application to quit.
     /// Called when the user needs to exit (e.g., cancels mandatory archetype selection).
@@ -134,12 +137,18 @@ public class ModalManager
 
         // Special modals
         _worldSelectionScreenAdapter = new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator, _gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider, _aiWorldGenerationService);
+        _worldSelectionScreenAdapter.WorldCreated += path => WorldCreated?.Invoke(path);
         _modalRegistry.Register(_worldSelectionScreenAdapter);
         _modalRegistry.Register(new Adapters.WorldSelectionTilesAdapter()); // User-friendly tile version
         _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
 
         // World creation wizard - can be opened independently from multiple places
         _worldCreationWizardAdapter = new Adapters.WorldCreationWizardAdapter(_gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider, _aiWorldGenerationService);
+        _worldCreationWizardAdapter.WorldCreated += path =>
+        {
+            System.Diagnostics.Debug.WriteLine($"[ModalManager] Forwarding WorldCreated: {path}");
+            WorldCreated?.Invoke(path);
+        };
         _modalRegistry.Register(_worldCreationWizardAdapter);
 
         // Note: PauseMenu and Settings are not migrated as they have special rendering requirements

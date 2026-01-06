@@ -38,7 +38,11 @@ public class WorldCreationWizardAdapter : IModal
             aiWorldGenerationService);
 
         // Forward the wizard's WorldCreated event
-        _wizard.WorldCreated += path => WorldCreated?.Invoke(path);
+        _wizard.WorldCreated += path =>
+        {
+            System.Diagnostics.Debug.WriteLine($"[WorldCreationWizardAdapter] Forwarding WorldCreated: {path}");
+            WorldCreated?.Invoke(path);
+        };
     }
 
     public string Name => "WorldCreationWizard";
