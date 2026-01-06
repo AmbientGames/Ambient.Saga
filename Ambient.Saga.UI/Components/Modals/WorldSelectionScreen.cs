@@ -64,6 +64,8 @@ public class WorldSelectionScreen
     private double[]? _geoTransform; // [originX, pixelWidth, rotX, originY, rotY, pixelHeight]
     private ushort[]? _heightData; // Raw height values for lookup
     private int _heightDataWidth; // Width of height data array
+    private int _minElevation; // Lowest elevation in terrain
+    private int _maxElevation; // Highest elevation in terrain
 
     // Location generation settings
     private double _spawnLatitude; // GPS latitude of spawn point
@@ -122,6 +124,50 @@ public class WorldSelectionScreen
         _geoTiffConverter = geoTiffConverter;
         _textureProvider = textureProvider;
         _logger = logger;
+
+        // Load available themes from Content/Generation/Themes/
+        LoadAvailableThemes();
+    }
+
+    private void LoadAvailableThemes()
+    {
+        var themeNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        // Check AppData location first (user themes take priority)
+        var appDataThemesPath = Path.Combine(_gameSettings.GetAppDataContentPath(), "Generation", "Themes");
+        if (Directory.Exists(appDataThemesPath))
+        {
+            foreach (var dir in Directory.GetDirectories(appDataThemesPath))
+            {
+                var themeName = Path.GetFileName(dir);
+                if (!string.IsNullOrEmpty(themeName))
+                {
+                    themeNames.Add(themeName);
+                }
+            }
+        }
+
+        // Check install location (bundled themes)
+        var installThemesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Generation", "Themes");
+        if (Directory.Exists(installThemesPath))
+        {
+            foreach (var dir in Directory.GetDirectories(installThemesPath))
+            {
+                var themeName = Path.GetFileName(dir);
+                if (!string.IsNullOrEmpty(themeName))
+                {
+                    themeNames.Add(themeName);
+                }
+            }
+        }
+
+        _availableThemes = themeNames.OrderBy(t => t).ToArray();
+
+        // Fallback if no themes found
+        if (_availableThemes.Length == 0)
+        {
+            _availableThemes = new[] { "Default" };
+        }
     }
 
     /// <summary>
@@ -656,12 +702,12 @@ public class WorldSelectionScreen
         // Theme selection (applies to all worlds)
         ImGui.Text("Theme:");
         ImGui.SetNextItemWidth(-1);
-        if (ImGui.BeginCombo("##Theme", GetThemeDisplayName(AvailableThemes[_selectedTheme])))
+        if (ImGui.BeginCombo("##Theme", GetThemeDisplayName(_availableThemes[_selectedTheme])))
         {
-            for (int i = 0; i < AvailableThemes.Length; i++)
+            for (int i = 0; i < _availableThemes.Length; i++)
             {
                 var isSelected = _selectedTheme == i;
-                if (ImGui.Selectable(GetThemeDisplayName(AvailableThemes[i]), isSelected))
+                if (ImGui.Selectable(GetThemeDisplayName(_availableThemes[i]), isSelected))
                 {
                     _selectedTheme = i;
                 }
@@ -718,8 +764,8 @@ public class WorldSelectionScreen
         }
     }
 
-    // Available themes (folder names from Content/packs/themes/)
-    private static readonly string[] AvailableThemes = new[] { "feudal_japan" };
+    // Available themes (folder names from Content/Generation/Themes/)
+    private string[] _availableThemes = Array.Empty<string>();
     private int _selectedTheme = 0;
 
     private void RenderWizardStep_Locations()
@@ -902,7 +948,7 @@ Output only the CSV data, no explanation.";
         else
         {
             // Procedural World - fictional theme-based locations within 1 degree of spawn
-            var themeName = GetThemeDisplayName(AvailableThemes[_selectedTheme]);
+            var themeName = GetThemeDisplayName(_availableThemes[_selectedTheme]);
 
             // For procedural, use a default spawn area (can be adjusted)
             // Center around a thematic location (e.g., 35, 135 for Japan theme)
@@ -972,7 +1018,7 @@ Output only the CSV data, no explanation.";
 
         ImGui.Text($"World Name: {_worldName}");
         ImGui.Text($"World Type: {(_isRealWorld ? "Real World (DEM)" : "Procedural")}");
-        ImGui.Text($"Theme: {GetThemeDisplayName(AvailableThemes[_selectedTheme])}");
+        ImGui.Text($"Theme: {GetThemeDisplayName(_availableThemes[_selectedTheme])}");
 
         if (_isRealWorld)
         {
@@ -1083,6 +1129,8 @@ Output only the CSV data, no explanation.";
         _geoTransform = null;
         _heightData = null;
         _heightDataWidth = 0;
+        _minElevation = 0;
+        _maxElevation = 0;
         if (_terrainTexturePtr != IntPtr.Zero && _terrainTextureResources != null && _textureProvider != null)
         {
             _textureProvider.DisposeTexture(_terrainTextureResources);
@@ -1248,7 +1296,16 @@ Output only the CSV data, no explanation.";
                         }
                     }
                 });
-                System.Diagnostics.Debug.WriteLine($"[Terrain] Height data extracted: {_heightData.Length} values");
+
+                // Calculate min/max elevation from height data
+                _minElevation = int.MaxValue;
+                _maxElevation = int.MinValue;
+                foreach (var height in _heightData)
+                {
+                    if (height < _minElevation) _minElevation = height;
+                    if (height > _maxElevation) _maxElevation = height;
+                }
+                System.Diagnostics.Debug.WriteLine($"[Terrain] Height data extracted: {_heightData.Length} values, min={_minElevation}, max={_maxElevation}");
 
                 var processedMap = HeightMapProcessor.ProcessHeightMap(image, minWaterAreaSize: 50, adjustMinWaterAreaSizeByElevation: true, verticalShift: 0);
                 System.Diagnostics.Debug.WriteLine($"[Terrain] HeightMap processed: {processedMap.Width}x{processedMap.Height}");
@@ -1653,6 +1710,8 @@ Output only the CSV data, no explanation.";
         var selectedSpawnPixel = _selectedSpawnPixel;
         var spawnLatitude = _spawnLatitude;
         var spawnLongitude = _spawnLongitude;
+        var minElevation = _minElevation;
+        var maxElevation = _maxElevation;
 
         // Capture imported locations - make a copy of the list
         List<LocationEntry> locationsToUse;
@@ -1687,14 +1746,14 @@ Output only the CSV data, no explanation.";
                 Directory.CreateDirectory(worldPath);
                 Directory.CreateDirectory(xmlPath);
 
-                // Create Generation.xml (Schema.Codex.WorldForge format)
-                _creationStatus = "Writing Generation.xml...";
+                // Create WorldGeneration.xml (Schema.Codex.WorldForge format)
+                _creationStatus = "Writing WorldGeneration.xml...";
                 var generationXml = GenerateGenerationXml(worldRef, worldName, locationGenerationType, selectedTheme, locationsToUse);
-                File.WriteAllText(Path.Combine(xmlPath, "Generation.xml"), generationXml);
+                File.WriteAllText(Path.Combine(xmlPath, "WorldGeneration.xml"), generationXml);
 
                 // Create WorldConfiguration.xml (Ambient.Core format)
                 _creationStatus = "Writing WorldConfiguration.xml...";
-                var configXml = GenerateWorldConfigurationXml(worldRef, worldName, isRealWorld, selectedTheme, selectedProceduralMode, geoTransform, selectedSpawnPixel, spawnLatitude, spawnLongitude);
+                var configXml = GenerateWorldConfigurationXml(worldRef, worldName, isRealWorld, selectedTheme, selectedProceduralMode, geoTransform, selectedSpawnPixel, spawnLatitude, spawnLongitude, minElevation, maxElevation);
                 File.WriteAllText(Path.Combine(xmlPath, "WorldConfiguration.xml"), configXml);
 
                 // Copy terrain file if real world (already converted during validation)
@@ -1796,7 +1855,7 @@ Output only the CSV data, no explanation.";
     {
         // Use proper GenerationConfiguration schema from Schema.Codex.WorldForge
         var generationStyle = locationGenerationType == "radial" ? "RadialExploration" : "Trail";
-        var themeName = GetThemeDisplayName(AvailableThemes[selectedTheme]);
+        var themeName = GetThemeDisplayName(_availableThemes[selectedTheme]);
 
         // Build SourceLocation elements from provided locations
         var sourceLocationsXml = new System.Text.StringBuilder();
@@ -1832,7 +1891,9 @@ Output only the CSV data, no explanation.";
         double[]? geoTransform,
         Vector2 selectedSpawnPixel,
         double spawnLatitude,
-        double spawnLongitude)
+        double spawnLongitude,
+        int minElevation,
+        int maxElevation)
     {
         // Calculate spawn GPS coordinates
         double spawnLat, spawnLon;
@@ -1851,20 +1912,41 @@ Output only the CSV data, no explanation.";
 
         // Generate terrain settings element based on world type
         string terrainSettingsXml;
-        string dataSource;
+        string chunkHeightXml = "";
         if (isRealWorld)
         {
             // HeightMapSettings for real world terrain - standard scale is 1/3 in each direction
             var terrainFileName = $"{worldRef}_terrain.tif";
-            terrainSettingsXml = $@"  <HeightMapSettings FileName=""{terrainFileName}"" HorizontalScale=""0.333333"" VerticalScale=""0.333333"" VerticalShift=""0.0"" />";
-            dataSource = "GIS";
+            const double verticalScale = 0.333333;
+
+            // Calculate vertical shift: round down lowest elevation to nearest 100, then negate
+            // e.g., 253 → -(int)(253/100) * 100 = -200
+            var verticalShift = -(minElevation / 100) * 100;
+
+            // Calculate scaled maximum height to determine required ChunkHeight
+            var scaledMaxHeight = (maxElevation + verticalShift) * verticalScale;
+
+            // Find smallest ChunkHeight that can contain the scaled terrain
+            int[] chunkHeightOptions = { 256, 512, 1024, 2048, 4096 };
+            var chunkHeight = chunkHeightOptions[^1]; // Default to largest
+            foreach (var option in chunkHeightOptions)
+            {
+                if (option >= scaledMaxHeight)
+                {
+                    chunkHeight = option;
+                    break;
+                }
+            }
+
+            terrainSettingsXml = $@"  <HeightMapSettings FileName=""{terrainFileName}"" HorizontalScale=""0.333333"" VerticalScale=""{verticalScale}"" VerticalShift=""{verticalShift}"" />";
+            chunkHeightXml = $@"
+    ChunkHeight=""{chunkHeight}""";
         }
         else
         {
             // ProceduralSettings for generated terrain
             var proceduralMode = ProceduralModes[selectedProceduralMode]; // Rugged, Rolling, Extreme
             terrainSettingsXml = $@"  <ProceduralSettings ProceduralGenerationMode=""{proceduralMode}"" />";
-            dataSource = "Generated";
         }
 
         // Generate a random seed between 0 and 1
@@ -1877,11 +1959,11 @@ Output only the CSV data, no explanation.";
     Description=""World generated from {(isRealWorld ? "GeoTIFF elevation data" : "procedural terrain")} using World Creation Wizard""
     Namespace=""{worldRef}""
     ContentPackLibrary=""{worldRef}""
-    ContentPackTheme=""{AvailableThemes[selectedTheme]}""
-    DataSource=""{dataSource}""
+    ContentPackTheme=""{_availableThemes[selectedTheme]}""
     SpawnLatitude=""{spawnLat:F6}""
     SpawnLongitude=""{spawnLon:F6}""
-    Seed=""{seed:F4}"">
+    Seed=""{seed:F4}""
+    ShortNightsAndWinter=""true""{chunkHeightXml}>
 {terrainSettingsXml}
 </WorldConfiguration>";
     }
