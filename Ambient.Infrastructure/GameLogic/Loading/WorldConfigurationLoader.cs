@@ -68,32 +68,44 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
     {
         var worldDirs = new HashSet<string>();
 
-        // Check %APPDATA% location
+        // BREAKPOINT: Check %APPDATA% location
         var appDataWorldsPath = Path.Combine(_gameSettings.GetAppDataContentPath(), "worlds");
+        System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader] AppData worlds path: {appDataWorldsPath}");
+        System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader] AppData exists: {Directory.Exists(appDataWorldsPath)}");
         _logger?.LogInformation("Checking AppData worlds path: {Path}", appDataWorldsPath);
         if (Directory.Exists(appDataWorldsPath))
         {
-            foreach (var dir in Directory.GetDirectories(appDataWorldsPath))
+            var appDataDirs = Directory.GetDirectories(appDataWorldsPath);
+            System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader] Found {appDataDirs.Length} dirs in AppData");
+            foreach (var dir in appDataDirs)
             {
+                var configPath = Path.Combine(dir, "assets", "ambient_games", "xml", "WorldConfiguration.xml");
+                System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader]   {Path.GetFileName(dir)} - WorldConfig exists: {File.Exists(configPath)}");
                 worldDirs.Add(dir);
             }
         }
 
         // Check install location
         var installWorldsPath = Path.Combine(FileManager.GetExecutingDirectoryName(), "content", "worlds");
+        System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader] Install worlds path: {installWorldsPath}");
+        System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader] Install exists: {Directory.Exists(installWorldsPath)}");
         if (Directory.Exists(installWorldsPath))
         {
-            foreach (var dir in Directory.GetDirectories(installWorldsPath))
+            var installDirs = Directory.GetDirectories(installWorldsPath);
+            System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader] Found {installDirs.Length} dirs in Install");
+            foreach (var dir in installDirs)
             {
                 // Only add if not already found in appdata (appdata takes priority)
                 var worldName = Path.GetFileName(dir);
                 if (!worldDirs.Any(d => Path.GetFileName(d) == worldName))
                 {
                     worldDirs.Add(dir);
+                    System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader]   Added from install: {worldName}");
                 }
             }
         }
 
+        System.Diagnostics.Debug.WriteLine($"[WorldConfigurationLoader] Total world dirs: {worldDirs.Count}");
         return worldDirs;
     }
 

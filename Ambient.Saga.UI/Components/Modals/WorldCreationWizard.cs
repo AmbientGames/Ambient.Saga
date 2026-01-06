@@ -608,6 +608,14 @@ public class WorldCreationWizard
     private string BuildManualXmlPrompt()
     {
         var themeName = _themeProvider.GetDisplayName(_availableThemes[_selectedTheme]);
+
+        // Map "Default" to a classic RPG theme name for better AI generation
+        if (themeName.Equals("Default Theme", StringComparison.OrdinalIgnoreCase) ||
+            themeName.Equals("Default", StringComparison.OrdinalIgnoreCase))
+        {
+            themeName = "Classic Fantasy";
+        }
+
         var worldType = _isRealWorld ? "real" : "procedural";
 
         double minLat, maxLat, minLon, maxLon, spawnLat, spawnLon;
@@ -657,6 +665,14 @@ Generate 40 diverse locations spread across the map with {themeName} theming.";
         // Build the request from current wizard state
         var regionName = !string.IsNullOrWhiteSpace(_worldName) ? _worldName : "Generated World";
         var themeName = _themeProvider.GetDisplayName(_availableThemes[_selectedTheme]);
+
+        // Map "Default" to a classic RPG theme name for better AI generation
+        if (themeName.Equals("Default Theme", StringComparison.OrdinalIgnoreCase) ||
+            themeName.Equals("Default", StringComparison.OrdinalIgnoreCase))
+        {
+            themeName = "Classic Fantasy";
+        }
+
         var worldType = _isRealWorld ? "real" : "procedural";
         var worldRef = GenerateWorldRef(_worldName);
 
