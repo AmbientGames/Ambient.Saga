@@ -1698,10 +1698,17 @@ Output only the CSV data, no explanation.";
                 File.WriteAllText(Path.Combine(xmlPath, "WorldConfiguration.xml"), configXml);
 
                 // Copy terrain file if real world (already converted during validation)
+                // Geographic data goes in packs/libraries/{worldRef}/assets/ambient_games/geographic_data/
                 if (isRealWorld && !string.IsNullOrEmpty(validatedTifPath))
                 {
                     _creationStatus = "Copying terrain file...";
-                    var terrainDest = Path.Combine(worldPath, "terrain.tif");
+                    var geographicDataPath = Path.Combine(
+                        gameSettings.GetAppDataContentPath(),
+                        "packs", "libraries", worldRef,
+                        "assets", "ambient_games", "geographic_data");
+                    Directory.CreateDirectory(geographicDataPath);
+                    var terrainFileName = $"{worldRef}_terrain.tif";
+                    var terrainDest = Path.Combine(geographicDataPath, terrainFileName);
                     File.Copy(validatedTifPath, terrainDest, overwrite: true);
                 }
 
@@ -1848,7 +1855,8 @@ Output only the CSV data, no explanation.";
         if (isRealWorld)
         {
             // HeightMapSettings for real world terrain - standard scale is 1/3 in each direction
-            terrainSettingsXml = $@"  <HeightMapSettings FileName=""terrain.tif"" HorizontalScale=""0.333333"" VerticalScale=""0.333333"" VerticalShift=""0.0"" />";
+            var terrainFileName = $"{worldRef}_terrain.tif";
+            terrainSettingsXml = $@"  <HeightMapSettings FileName=""{terrainFileName}"" HorizontalScale=""0.333333"" VerticalScale=""0.333333"" VerticalShift=""0.0"" />";
             dataSource = "GIS";
         }
         else
@@ -1868,6 +1876,7 @@ Output only the CSV data, no explanation.";
     DisplayName=""{EscapeXml(worldName)}""
     Description=""World generated from {(isRealWorld ? "GeoTIFF elevation data" : "procedural terrain")} using World Creation Wizard""
     Namespace=""{worldRef}""
+    ContentPackLibrary=""{worldRef}""
     ContentPackTheme=""{AvailableThemes[selectedTheme]}""
     DataSource=""{dataSource}""
     SpawnLatitude=""{spawnLat:F6}""
