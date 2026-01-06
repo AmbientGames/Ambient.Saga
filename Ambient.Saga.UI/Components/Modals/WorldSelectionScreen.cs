@@ -26,7 +26,7 @@ public class WorldSelectionScreen
     private readonly IWorldContentGenerator _worldContentGenerator;
     private readonly IGameSettings _gameSettings;
     private readonly WorldCreationWizard _worldCreationWizard;
-    private readonly ILogger<WorldSelectionScreen>? _logger;
+    private readonly ILogger? _logger;
 
     private string? _lastGenerationMessage;
     private bool _showGenerationMessage;
@@ -39,10 +39,11 @@ public class WorldSelectionScreen
         IGameSettings gameSettings,
         IThemeProvider themeProvider,
         IWorldCreationService worldCreationService,
-        IFileDialogService? fileDialogService = null,
-        IGeoTiffConverter? geoTiffConverter = null,
-        ITextureProvider? textureProvider = null,
-        ILogger<WorldSelectionScreen>? logger = null)
+        IFileDialogService? fileDialogService,
+        IGeoTiffConverter? geoTiffConverter,
+        ITextureProvider? textureProvider,
+        IAIWorldGenerationService? aiWorldGenerationService,
+        ILogger? logger = null)
     {
         _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
@@ -55,7 +56,9 @@ public class WorldSelectionScreen
             worldCreationService,
             fileDialogService,
             geoTiffConverter,
-            textureProvider);
+            textureProvider,
+            aiWorldGenerationService,
+            logger);
 
         // Handle wizard completion
         _worldCreationWizard.WorldCreated += OnWorldCreated;

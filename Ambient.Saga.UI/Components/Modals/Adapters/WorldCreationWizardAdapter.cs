@@ -2,6 +2,7 @@ using Ambient.Application.Contracts;
 using Ambient.Application.WorldCreation;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.UI.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Saga.UI.Components.Modals.Adapters;
 
@@ -21,10 +22,11 @@ public class WorldCreationWizardAdapter : IModal
         IGameSettings gameSettings,
         IThemeProvider themeProvider,
         IWorldCreationService worldCreationService,
-        IFileDialogService? fileDialogService = null,
-        IGeoTiffConverter? geoTiffConverter = null,
-        ITextureProvider? textureProvider = null,
-        ILocationGenerator? locationGenerator = null)
+        IFileDialogService? fileDialogService,
+        IGeoTiffConverter? geoTiffConverter,
+        ITextureProvider? textureProvider,
+        IAIWorldGenerationService? aiWorldGenerationService,
+        ILogger? logger = null)
     {
         _wizard = new WorldCreationWizard(
             gameSettings ?? throw new ArgumentNullException(nameof(gameSettings)),
@@ -33,7 +35,7 @@ public class WorldCreationWizardAdapter : IModal
             fileDialogService,
             geoTiffConverter,
             textureProvider,
-            locationGenerator);
+            aiWorldGenerationService);
 
         // Forward the wizard's WorldCreated event
         _wizard.WorldCreated += path => WorldCreated?.Invoke(path);

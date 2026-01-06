@@ -23,9 +23,9 @@ public class WorldCreationWizard
     private readonly IGeoTiffConverter? _geoTiffConverter;
     private readonly IThemeProvider _themeProvider;
     private readonly IWorldCreationService _worldCreationService;
-    private readonly ILocationGenerator? _locationGenerator;
+    private readonly IAIWorldGenerationService? _aiWorldGenerationService;
     private ITextureProvider? _textureProvider;
-    private readonly ILogger<WorldCreationWizard>? _logger;
+    private readonly ILogger? _logger;
 
     // Wizard state
     private int _wizardStep = 0;
@@ -56,10 +56,6 @@ public class WorldCreationWizard
     private int _minElevation;
     private int _maxElevation;
 
-    // Location generation settings
-    private double _spawnLatitude;
-    private double _spawnLongitude;
-
     // Step 3: World details state
     private string _worldName = "";
     private int _selectedLatitude = 0;
@@ -68,21 +64,13 @@ public class WorldCreationWizard
     private int _selectedTheme = 0;
 
     // Step 4: Locations state
-    private string _selectedLocationsFile = "";
-    private string _locationsFileStatus = "";
     private bool _locationsValidated = false;
-    private int _locationsCount = 0;
-    private List<LocationEntry> _importedLocations = new();
-
-    // AI prompt state
-    private string _aiPromptText = "";
-    private bool _aiPromptCopied = false;
+    private string _locationsStatus = "";
 
     // AI generation state
     private bool _isGeneratingLocations;
     private string _aiGenerationStatus = "";
-    private LocationGenerationResponse? _aiGenerationResult;
-    private List<GeneratedLocationEntry> _aiGeneratedLocations = new();
+    private WorldGenerationResult? _aiGenerationResult;
 
     // Creation state
     private bool _isCreatingWorld;
@@ -120,26 +108,15 @@ public class WorldCreationWizard
     };
     private static readonly int[] LatitudeNumericValues = { 0, 30, 45, 60 };
 
-    // Location entry from CSV
-    private class LocationEntry
-    {
-        public string Name { get; set; } = "";
-        public string Description { get; set; } = "";
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public string Category { get; set; } = "Default";
-        public string Kind { get; set; } = "Default";
-    }
-
     public WorldCreationWizard(
         IGameSettings gameSettings,
         IThemeProvider themeProvider,
         IWorldCreationService worldCreationService,
-        IFileDialogService? fileDialogService = null,
-        IGeoTiffConverter? geoTiffConverter = null,
-        ITextureProvider? textureProvider = null,
-        ILocationGenerator? locationGenerator = null,
-        ILogger<WorldCreationWizard>? logger = null)
+        IFileDialogService? fileDialogService,
+        IGeoTiffConverter? geoTiffConverter,
+        ITextureProvider? textureProvider,
+        IAIWorldGenerationService? aiWorldGenerationService,
+        ILogger? logger = null)
     {
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _themeProvider = themeProvider ?? throw new ArgumentNullException(nameof(themeProvider));
@@ -147,7 +124,7 @@ public class WorldCreationWizard
         _fileDialogService = fileDialogService;
         _geoTiffConverter = geoTiffConverter;
         _textureProvider = textureProvider;
-        _locationGenerator = locationGenerator;
+        _aiWorldGenerationService = aiWorldGenerationService;
         _logger = logger;
 
         _availableThemes = _themeProvider.GetAvailableThemes();
@@ -227,15 +204,11 @@ public class WorldCreationWizard
         _selectedLatitude = 0;
         _selectedWorldHeight = 0;
         _selectedTheme = 0;
-        _selectedLocationsFile = "";
-        _locationsFileStatus = "";
         _locationsValidated = false;
-        _locationsCount = 0;
-        _importedLocations.Clear();
+        _locationsStatus = "";
         _isGeneratingLocations = false;
         _aiGenerationStatus = "";
         _aiGenerationResult = null;
-        _aiGeneratedLocations.Clear();
         _isCreatingWorld = false;
         _creationStatus = "";
         _geoTransform = null;
@@ -524,269 +497,168 @@ public class WorldCreationWizard
 
     private void RenderWizardStep_Locations()
     {
-        ImGui.TextColored(new Vector4(0.8f, 0.9f, 1f, 1), "Source Locations (Optional)");
+        ImGui.TextColored(new Vector4(0.8f, 0.9f, 1f, 1), "Generate Locations");
         ImGui.Spacing();
 
-        ImGui.TextWrapped("Generate or import locations to place points of interest in your world. This step is optional - you can add locations later.");
-        ImGui.Spacing();
-
-        if (ImGui.BeginTabBar("LocationsTabs"))
+        // Auto-start AI generation if available and not already started
+        if (_aiWorldGenerationService != null &&
+            !_locationsValidated &&
+            !_isGeneratingLocations &&
+            _aiGenerationResult == null)
         {
-            // Show AI Generate tab first if generator is available
-            if (_locationGenerator != null)
-            {
-                if (ImGui.BeginTabItem("AI Generate"))
-                {
-                    RenderLocationsAIGenerateTab();
-                    ImGui.EndTabItem();
-                }
-            }
-            if (ImGui.BeginTabItem("CSV Import"))
-            {
-                RenderLocationsTemplateTab();
-                ImGui.EndTabItem();
-            }
-            if (ImGui.BeginTabItem("AI Prompt (Manual)"))
-            {
-                RenderLocationsAIPromptTab();
-                ImGui.EndTabItem();
-            }
-            ImGui.EndTabBar();
+            GenerateLocationsWithAI();
         }
 
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
-
-        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 90);
-        ImGui.InputText("##LocationsFile", ref _selectedLocationsFile, 512);
-        ImGui.SameLine();
-        if (ImGui.Button("Browse...", new Vector2(80, 0)))
-        {
-            BrowseForLocationsFile();
-        }
-
-        if (!string.IsNullOrEmpty(_locationsFileStatus))
-        {
-            ImGui.Spacing();
-            var statusColor = _locationsFileStatus.StartsWith("Error")
-                ? new Vector4(1, 0.4f, 0.4f, 1)
-                : new Vector4(0.4f, 1, 0.4f, 1);
-            ImGui.TextColored(statusColor, _locationsFileStatus);
-        }
-
-        if (_locationsValidated && _importedLocations.Count > 0)
-        {
-            ImGui.Spacing();
-            ImGui.Text($"Preview ({Math.Min(_importedLocations.Count, 5)} of {_importedLocations.Count}):");
-
-            ImGui.BeginChild("LocationsPreview", new Vector2(0, 100), ImGuiChildFlags.Borders);
-            for (int i = 0; i < Math.Min(_importedLocations.Count, 5); i++)
-            {
-                var loc = _importedLocations[i];
-                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.7f, 1), loc.Name);
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1),
-                    $"({loc.Latitude:F4}, {loc.Longitude:F4}) [{loc.Category}/{loc.Kind}]");
-            }
-            if (_importedLocations.Count > 5)
-            {
-                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"... and {_importedLocations.Count - 5} more");
-            }
-            ImGui.EndChild();
-        }
-
-        if (_locationsValidated)
-        {
-            ImGui.Spacing();
-            if (ImGui.Button("Clear Locations"))
-            {
-                _selectedLocationsFile = "";
-                _locationsFileStatus = "";
-                _locationsValidated = false;
-                _locationsCount = 0;
-                _importedLocations.Clear();
-            }
-        }
-
-        ImGui.Spacing();
-        ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "You can skip this step if you don't have location data.");
-    }
-
-    private void RenderLocationsTemplateTab()
-    {
-        ImGui.Spacing();
-        ImGui.TextColored(new Vector4(1, 0.8f, 0.4f, 1), "Required CSV Headers:");
-        ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1), "name,description,latitude,longitude,category,kind");
-        ImGui.Spacing();
-
-        ImGui.TextColored(new Vector4(1, 0.8f, 0.4f, 1), "Example Row:");
-        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Ise Grand Shrine,Ancient Shinto shrine,34.4550,136.7258,Religious,Shrine");
-        ImGui.Spacing();
-
-        ImGui.TextColored(new Vector4(1, 0.8f, 0.4f, 1), "Valid Categories:");
-        ImGui.BeginChild("CategoryList", new Vector2(0, 120), ImGuiChildFlags.Borders);
-
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Religious");
-        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Shrine, Temple, Church, Monastery");
-
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Stronghold");
-        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Castle, Fortress, Keep, Watchtower");
-
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Facility");
-        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Market, Inn, Blacksmith, Hospital");
-
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Landmark");
-        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Monument, Statue, Viewpoint, Peak");
-
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Ruin");
-        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: AncientRuin, Battlefield, Tomb");
-
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Infrastructure");
-        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Bridge, Port, Well, Road");
-
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Camp");
-        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: BaseCamp, Campsite, Outpost");
-
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1f, 1), "Service");
-        ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Merchant, Healer, Trainer");
-
-        ImGui.EndChild();
-    }
-
-    private void RenderLocationsAIGenerateTab()
-    {
-        ImGui.Spacing();
-        ImGui.TextColored(new Vector4(0.4f, 1f, 0.8f, 1), "Generate Locations with AI");
-        ImGui.Spacing();
-
-        ImGui.TextWrapped("Click the button below to generate themed locations, characters, and story assignments using AI. This requires Steam authentication and an internet connection.");
-        ImGui.Spacing();
-
-        // Show current settings that will be used
-        var themeName = _themeProvider.GetDisplayName(_availableThemes[_selectedTheme]);
-        var worldType = _isRealWorld ? "Real World" : "Procedural";
-
-        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"World Type: {worldType}");
-        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Theme: {themeName}");
-
-        if (_isRealWorld && _geoTransform != null && _geoTransform.Length >= 6)
-        {
-            var minLat = _geoTransform[3] + _terrainHeight * _geoTransform[5];
-            var maxLat = _geoTransform[3];
-            var minLon = _geoTransform[0];
-            var maxLon = _geoTransform[0] + _terrainWidth * _geoTransform[1];
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Bounds: ({minLat:F2}, {minLon:F2}) to ({maxLat:F2}, {maxLon:F2})");
-        }
-
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
-
-        // Generation button
+        // Show generation in progress
         if (_isGeneratingLocations)
         {
-            ImGui.BeginDisabled();
-            ImGui.Button("Generating...", new Vector2(-1, 40));
-            ImGui.EndDisabled();
-
-            if (!string.IsNullOrEmpty(_aiGenerationStatus))
-            {
-                ImGui.Spacing();
-                ImGui.TextColored(new Vector4(0.4f, 0.8f, 1f, 1), _aiGenerationStatus);
-            }
-        }
-        else
-        {
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.5f, 0.7f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.6f, 0.8f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.9f, 1));
-            if (ImGui.Button("Generate Locations with AI", new Vector2(-1, 40)))
-            {
-                GenerateLocationsWithAI();
-            }
-            ImGui.PopStyleColor(3);
+            ImGui.TextColored(new Vector4(0.4f, 0.8f, 1f, 1), _aiGenerationStatus);
+            ImGui.Spacing();
+            ImGui.ProgressBar(-1.0f * (float)ImGui.GetTime() % 1.0f, new Vector2(-1, 0), "Generating...");
+            return;
         }
 
-        // Show results
-        if (_aiGeneratedLocations.Count > 0)
+        // Show successful AI result
+        if (_aiGenerationResult != null && _aiGenerationResult.IsSuccess)
         {
+            ImGui.TextColored(new Vector4(0.4f, 1f, 0.4f, 1), _aiGenerationResult.Summary);
+            ImGui.Spacing();
+
+            // Quality rating based on story count
+            var (qualityLabel, qualityColor, qualityStars) = GetGenerationQuality(_aiGenerationResult.StoryCount);
+            ImGui.TextColored(qualityColor, $"Quality: {qualityStars} {qualityLabel}");
+
+            if (_aiGenerationResult.StoryCount < 6)
+            {
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "(Regenerate for more story content)");
+            }
+            ImGui.Spacing();
+
+            if (!string.IsNullOrEmpty(_aiGenerationResult.ConfigurationPath))
+            {
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"Saved to: {Path.GetDirectoryName(_aiGenerationResult.ConfigurationPath)}");
+            }
+            ImGui.Spacing();
+
+            _locationsValidated = true;
+            _locationsStatus = _aiGenerationResult.Summary;
+
+            if (ImGui.Button("Regenerate", new Vector2(150, 30)))
+            {
+                _aiGenerationResult = null;
+                _locationsValidated = false;
+                // Will auto-regenerate on next frame
+            }
+            return;
+        }
+
+        // Fallback: No AI service available or AI failed
+        if (_aiWorldGenerationService == null)
+        {
+            ImGui.TextWrapped("AI location generation is not available.");
+            ImGui.Spacing();
+            RenderManualFallbackOption();
+        }
+        else if (_aiGenerationResult != null && !_aiGenerationResult.IsSuccess)
+        {
+            // AI was attempted but failed
+            ImGui.TextColored(new Vector4(1f, 0.6f, 0.4f, 1), "Generation failed. You can retry or use manual fallback.");
+            if (_aiGenerationResult.ParseErrors?.Count > 0)
+            {
+                ImGui.TextColored(new Vector4(1f, 0.5f, 0.3f, 1), string.Join("\n", _aiGenerationResult.ParseErrors.Take(3)));
+            }
+            ImGui.Spacing();
+
+            if (ImGui.Button("Retry AI Generation", new Vector2(200, 30)))
+            {
+                _aiGenerationResult = null;
+                // Will auto-regenerate on next frame
+            }
+
             ImGui.Spacing();
             ImGui.Separator();
             ImGui.Spacing();
-
-            var storyLocations = _aiGeneratedLocations.Where(l => l.StoryAssignment != null).ToList();
-            var uniqueStories = storyLocations.Select(l => l.StoryAssignment!.Story).Distinct().Count();
-
-            ImGui.TextColored(new Vector4(0.4f, 1f, 0.4f, 1),
-                $"Generated {_aiGeneratedLocations.Count} locations ({storyLocations.Count} with story assignments, {uniqueStories} unique stories)");
-            ImGui.Spacing();
-
-            ImGui.Text($"Preview (first 5 of {_aiGeneratedLocations.Count}):");
-            ImGui.BeginChild("AILocationsPreview", new Vector2(0, 120), ImGuiChildFlags.Borders);
-
-            for (int i = 0; i < Math.Min(_aiGeneratedLocations.Count, 5); i++)
-            {
-                var loc = _aiGeneratedLocations[i];
-                var storyMarker = loc.StoryAssignment != null ? $" [STORY: {loc.StoryAssignment.Story}]" : "";
-
-                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.7f, 1), loc.Name);
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1),
-                    $"({loc.Category}/{loc.Kind}){storyMarker}");
-
-                if (loc.Character != null)
-                {
-                    ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1),
-                        $"  Character: {loc.Character.Name} ({loc.Character.Role})");
-                }
-            }
-
-            if (_aiGeneratedLocations.Count > 5)
-            {
-                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"... and {_aiGeneratedLocations.Count - 5} more");
-            }
-            ImGui.EndChild();
-
-            ImGui.Spacing();
-            if (ImGui.Button("Use These Locations"))
-            {
-                UseAIGeneratedLocations();
-            }
-            ImGui.SameLine();
-            if (ImGui.Button("Regenerate"))
-            {
-                GenerateLocationsWithAI();
-            }
-        }
-
-        // Show parse errors if any
-        if (_aiGenerationResult?.ParseErrors?.Count > 0)
-        {
-            ImGui.Spacing();
-            ImGui.TextColored(new Vector4(1f, 0.6f, 0.4f, 1), $"Parse warnings ({_aiGenerationResult.ParseErrors.Count}):");
-            ImGui.BeginChild("ParseErrors", new Vector2(0, 60), ImGuiChildFlags.Borders);
-            foreach (var err in _aiGenerationResult.ParseErrors.Take(3))
-            {
-                ImGui.TextColored(new Vector4(0.8f, 0.5f, 0.3f, 1), $"- {err}");
-            }
-            ImGui.EndChild();
+            RenderManualFallbackOption();
         }
     }
 
+    private void RenderManualFallbackOption()
+    {
+        ImGui.TextColored(new Vector4(1, 0.9f, 0.6f, 1), "Manual Fallback");
+        ImGui.TextWrapped("Copy this prompt to ChatGPT or Claude to generate location XML. Then paste the result into your world's GenerationConfiguration.xml file.");
+        ImGui.Spacing();
+
+        var prompt = BuildManualXmlPrompt();
+
+        ImGui.BeginChild("ManualPrompt", new Vector2(0, 150), ImGuiChildFlags.Borders);
+        ImGui.TextWrapped(prompt);
+        ImGui.EndChild();
+
+        ImGui.Spacing();
+        if (ImGui.Button("Copy Prompt to Clipboard", new Vector2(200, 0)))
+        {
+            ImGui.SetClipboardText(prompt);
+        }
+
+        ImGui.Spacing();
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "After copying, click Next to create the world. Paste the AI-generated XML into GenerationConfiguration.xml in your world folder.");
+    }
+
+    private string BuildManualXmlPrompt()
+    {
+        var themeName = _themeProvider.GetDisplayName(_availableThemes[_selectedTheme]);
+        var worldType = _isRealWorld ? "real" : "procedural";
+
+        double minLat, maxLat, minLon, maxLon, spawnLat, spawnLon;
+        if (_isRealWorld && _geoTransform != null && _geoTransform.Length >= 6)
+        {
+            minLon = _geoTransform[0];
+            maxLon = _geoTransform[0] + _terrainWidth * _geoTransform[1];
+            maxLat = _geoTransform[3];
+            minLat = _geoTransform[3] + _terrainHeight * _geoTransform[5];
+            spawnLon = _geoTransform[0] + _selectedSpawnPixel.X * _geoTransform[1];
+            spawnLat = _geoTransform[3] + _selectedSpawnPixel.Y * _geoTransform[5];
+        }
+        else
+        {
+            minLat = 0; maxLat = 100; minLon = 0; maxLon = 100;
+            spawnLat = 50; spawnLon = 50;
+        }
+
+        return $@"Generate 40 SourceLocation XML elements for a {themeName} themed {worldType} world.
+
+Bounds: Lat {minLat:F2} to {maxLat:F2}, Lon {minLon:F2} to {maxLon:F2}
+Spawn point: ({spawnLat:F2}, {spawnLon:F2})
+
+Each location needs: DisplayName, Description, Category, Kind, Lat, Lon, and a Character with Name, Role, Personality, Greeting.
+
+Valid Categories: Religious, Stronghold, Facility, Landmark, Ruin, Camp, Service, QuestHub, Waypoint, Passage, Infrastructure
+Valid Roles: Boss, Merchant, QuestGiver, NPC, Hostile
+Valid Personalities: cunning, brave, wise, fierce, gentle, stern, mysterious, cautious, cheerful, gruff
+
+Output format (XML only, no explanation):
+<SourceLocation DisplayName=""Example Shrine"" Description=""An ancient shrine"" Category=""Religious"" Kind=""Shrine"" Lat=""{spawnLat:F4}"" Lon=""{spawnLon:F4}"">
+  <Character Name=""Priest Tanaka"" Role=""NPC"" Personality=""wise"" Greeting=""Welcome, traveler."" />
+</SourceLocation>
+
+Generate 40 diverse locations spread across the map with {themeName} theming.";
+    }
+
+
     private void GenerateLocationsWithAI()
     {
-        if (_locationGenerator == null || _isGeneratingLocations) return;
+        if (_aiWorldGenerationService == null || _isGeneratingLocations) return;
 
         _isGeneratingLocations = true;
         _aiGenerationStatus = "Preparing request...";
-        _aiGeneratedLocations.Clear();
         _aiGenerationResult = null;
 
         // Build the request from current wizard state
         var regionName = !string.IsNullOrWhiteSpace(_worldName) ? _worldName : "Generated World";
         var themeName = _themeProvider.GetDisplayName(_availableThemes[_selectedTheme]);
         var worldType = _isRealWorld ? "real" : "procedural";
+        var worldRef = GenerateWorldRef(_worldName);
 
         double minLat, maxLat, minLon, maxLon, spawnLat, spawnLon;
 
@@ -823,6 +695,13 @@ public class WorldCreationWizard
             SpawnLongitude: spawnLon,
             LocationCount: 40);
 
+        // Calculate output directory
+        var outputDirectory = Path.Combine(
+            _gameSettings.GetAppDataContentPath(),
+            "worlds",
+            worldRef + "_generated",
+            "assets", "ambient_games", "xml");
+
         Task.Run(async () =>
         {
             try
@@ -830,20 +709,28 @@ public class WorldCreationWizard
                 _aiGenerationStatus = "Authenticating with Steam...";
                 System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] Starting AI generation for '{regionName}'...");
 
-                _aiGenerationStatus = "Generating locations (this may take a minute)...";
-                var response = await _locationGenerator.GenerateAsync(request);
+                _aiGenerationStatus = "Generating locations (this may take several minutes)...";
+                _aiGenerationResult = await _aiWorldGenerationService.GenerateAndSaveAsync(
+                    request,
+                    worldRef,
+                    regionName,
+                    $"AI-generated world based on {themeName}",
+                    outputDirectory);
 
-                _aiGenerationResult = response;
-                _aiGeneratedLocations = response.Locations.ToList();
-
-                var storyCount = _aiGeneratedLocations.Count(l => l.StoryAssignment != null);
-                _aiGenerationStatus = $"Generated {_aiGeneratedLocations.Count} locations with {storyCount} story assignments";
-
-                System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] AI generation complete: {_aiGeneratedLocations.Count} locations");
+                _aiGenerationStatus = _aiGenerationResult.Summary;
+                System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] AI generation complete: {_aiGenerationResult.Summary}");
             }
             catch (Exception ex)
             {
                 _aiGenerationStatus = $"Error: {ex.Message}";
+                _aiGenerationResult = new WorldGenerationResult(
+                    IsSuccess: false,
+                    ConfigurationPath: null,
+                    LocationCount: 0,
+                    StoryCount: 0,
+                    CharacterCount: 0,
+                    ParseErrors: new List<string> { ex.Message },
+                    Summary: $"Error: {ex.Message}");
                 System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] AI generation failed: {ex}");
             }
             finally
@@ -853,123 +740,20 @@ public class WorldCreationWizard
         });
     }
 
-    private void UseAIGeneratedLocations()
+    private static string GenerateWorldRef(string worldName)
     {
-        // Convert AI locations to the wizard's internal format and mark as validated
-        _importedLocations.Clear();
+        if (string.IsNullOrWhiteSpace(worldName))
+            return $"world_{DateTime.Now:yyyyMMddHHmmss}";
 
-        foreach (var aiLoc in _aiGeneratedLocations)
-        {
-            _importedLocations.Add(new LocationEntry
-            {
-                Name = aiLoc.Name,
-                Description = aiLoc.Description,
-                Latitude = aiLoc.Latitude,
-                Longitude = aiLoc.Longitude,
-                Category = aiLoc.Category,
-                Kind = aiLoc.Kind
-            });
-        }
+        // Convert to valid ref name (lowercase, underscores)
+        var refName = worldName.ToLowerInvariant()
+            .Replace(' ', '_')
+            .Replace('-', '_');
 
-        _locationsCount = _importedLocations.Count;
-        _locationsValidated = true;
-        _locationsFileStatus = $"Using {_locationsCount} AI-generated locations";
-        _selectedLocationsFile = "(AI Generated)";
+        // Remove invalid characters
+        refName = new string(refName.Where(c => char.IsLetterOrDigit(c) || c == '_').ToArray());
 
-        System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] Using {_locationsCount} AI-generated locations");
-    }
-
-    private void RenderLocationsAIPromptTab()
-    {
-        ImGui.Spacing();
-        ImGui.TextWrapped("Copy this prompt to ChatGPT, Claude, or another AI to generate location data for your world:");
-        ImGui.Spacing();
-
-        string prompt;
-
-        if (_isRealWorld && _geoTransform != null && _geoTransform.Length >= 6 && _terrainWidth > 0 && _terrainHeight > 0)
-        {
-            var minLon = _geoTransform[0];
-            var maxLon = _geoTransform[0] + _terrainWidth * _geoTransform[1];
-            var maxLat = _geoTransform[3];
-            var minLat = _geoTransform[3] + _terrainHeight * _geoTransform[5];
-
-            _spawnLongitude = _geoTransform[0] + _selectedSpawnPixel.X * _geoTransform[1] + _selectedSpawnPixel.Y * _geoTransform[2];
-            _spawnLatitude = _geoTransform[3] + _selectedSpawnPixel.X * _geoTransform[4] + _selectedSpawnPixel.Y * _geoTransform[5];
-
-            prompt = $@"Generate a CSV file with points of interest for a game set in this real-world area:
-
-Map bounds:
-- Latitude: {minLat:F4} to {maxLat:F4}
-- Longitude: {minLon:F4} to {maxLon:F4}
-
-Player spawn point: {_spawnLatitude:F4}, {_spawnLongitude:F4}
-
-Include a mix of:
-- Historical/cultural sites (shrines, temples, castles, monuments)
-- Scenic locations (viewpoints, peaks, waterfalls)
-- Points of interest (interesting places to explore)
-
-Locations should form a natural exploration path radiating outward from the spawn point.
-
-Required CSV headers (first row):
-name,description,latitude,longitude,category,kind
-
-Valid categories: Religious, Stronghold, Facility, Landmark, Ruin, Infrastructure, Camp, Service, Passage, Waypoint
-Example kinds: Shrine, Temple, Castle, Monument, Viewpoint, Peak, Bridge, Cave, Inn, Market
-
-Generate 20-30 locations with accurate real-world GPS coordinates within the map bounds. Place interesting locations near the spawn point for early exploration.
-
-Output only the CSV data, no explanation.";
-        }
-        else
-        {
-            var themeName = _themeProvider.GetDisplayName(_availableThemes[_selectedTheme]);
-            _spawnLatitude = 35.0;
-            _spawnLongitude = 135.0;
-            var latRange = 1.0;
-
-            prompt = $@"Generate a CSV file with fictional points of interest for a {themeName}-themed fantasy game world.
-
-Player spawn point: {_spawnLatitude:F4}, {_spawnLongitude:F4}
-Area: Within ~{latRange} degree in each direction from spawn
-
-Create {themeName}-themed locations such as:
-- Sacred sites appropriate to the culture
-- Strongholds and defensive structures
-- Natural landmarks and mysterious locations
-- Villages, markets, and service facilities
-
-Locations should form a natural exploration path radiating outward from the spawn point, with easier/friendlier locations near spawn and more challenging ones further out.
-
-Required CSV headers (first row):
-name,description,latitude,longitude,category,kind
-
-Valid categories: Religious, Stronghold, Facility, Landmark, Ruin, Infrastructure, Camp, Service, Passage, Waypoint
-Example kinds: Shrine, Temple, Castle, Monument, Viewpoint, Peak, Bridge, Cave, Inn, Market
-
-Generate 20-30 diverse locations. Give each a creative {themeName}-appropriate name and brief description.
-
-Output only the CSV data, no explanation.";
-        }
-
-        _aiPromptText = prompt;
-
-        ImGui.BeginChild("AIPrompt", new Vector2(0, 180), ImGuiChildFlags.Borders);
-        ImGui.TextWrapped(prompt);
-        ImGui.EndChild();
-
-        ImGui.Spacing();
-        if (ImGui.Button("Copy to Clipboard", new Vector2(150, 0)))
-        {
-            ImGui.SetClipboardText(_aiPromptText);
-            _aiPromptCopied = true;
-        }
-        if (_aiPromptCopied)
-        {
-            ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.4f, 1f, 0.4f, 1), "Copied!");
-        }
+        return string.IsNullOrEmpty(refName) ? $"world_{DateTime.Now:yyyyMMddHHmmss}" : refName;
     }
 
     private void RenderWizardStep_Create()
@@ -1003,13 +787,13 @@ Output only the CSV data, no explanation.";
             ImGui.Text($"World Height: {WorldHeightValues[_selectedWorldHeight]}");
         }
 
-        if (_locationsValidated && _importedLocations.Count > 0)
+        if (_locationsValidated && _aiGenerationResult?.IsSuccess == true)
         {
-            ImGui.Text($"Locations: {_importedLocations.Count} imported");
+            ImGui.Text($"Locations: {_aiGenerationResult.Summary}");
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "Locations: None");
+            ImGui.TextColored(new Vector4(1f, 0.8f, 0.4f, 1), "Locations: Manual fallback (paste XML after creation)");
         }
 
         ImGui.Unindent(10);
@@ -1101,8 +885,24 @@ Output only the CSV data, no explanation.";
             0 => true,
             1 => !_isRealWorld || _terrainValidated,
             2 => !string.IsNullOrWhiteSpace(_worldName),
+            3 => CanProceedFromLocationsStep(),
             _ => true
         };
+    }
+
+    private bool CanProceedFromLocationsStep()
+    {
+        // No AI available - can always proceed (manual fallback)
+        if (_aiWorldGenerationService == null) return true;
+
+        // AI succeeded
+        if (_locationsValidated && _aiGenerationResult?.IsSuccess == true) return true;
+
+        // AI failed - allow proceeding with manual fallback
+        if (_aiGenerationResult != null && !_aiGenerationResult.IsSuccess) return true;
+
+        // Still generating or waiting
+        return false;
     }
 
     #endregion
@@ -1401,124 +1201,6 @@ Output only the CSV data, no explanation.";
         }
     }
 
-    private void BrowseForLocationsFile()
-    {
-        if (_fileDialogService == null)
-        {
-            _locationsFileStatus = "File dialog not available on this platform";
-            return;
-        }
-
-        _fileDialogService.OpenFile(
-            "Select Locations CSV File",
-            "CSV files|*.csv|All files|*.*",
-            selectedPath =>
-            {
-                if (!string.IsNullOrEmpty(selectedPath))
-                {
-                    _selectedLocationsFile = selectedPath;
-                    ValidateLocationsFile();
-                }
-            });
-    }
-
-    private void ValidateLocationsFile()
-    {
-        _locationsValidated = false;
-        _locationsCount = 0;
-        _importedLocations.Clear();
-
-        if (string.IsNullOrEmpty(_selectedLocationsFile))
-        {
-            _locationsFileStatus = "";
-            return;
-        }
-
-        if (!File.Exists(_selectedLocationsFile))
-        {
-            _locationsFileStatus = "Error: File not found";
-            return;
-        }
-
-        try
-        {
-            var lines = File.ReadAllLines(_selectedLocationsFile);
-            var startLine = 0;
-
-            if (lines.Length > 0)
-            {
-                var firstLine = lines[0].ToLowerInvariant();
-                if (firstLine.Contains("name") || firstLine.Contains("latitude") || firstLine.Contains("longitude"))
-                {
-                    startLine = 1;
-                }
-            }
-
-            var isNewFormat = false;
-            if (startLine == 1 && lines.Length > 0)
-            {
-                var header = lines[0].ToLowerInvariant();
-                isNewFormat = header.Contains("description") && header.Contains("category");
-            }
-
-            for (int i = startLine; i < lines.Length; i++)
-            {
-                var line = lines[i].Trim();
-                if (string.IsNullOrEmpty(line)) continue;
-
-                var parts = line.Split(',');
-
-                if (isNewFormat && parts.Length >= 6)
-                {
-                    if (double.TryParse(parts[2].Trim(), out var lat) &&
-                        double.TryParse(parts[3].Trim(), out var lon))
-                    {
-                        _importedLocations.Add(new LocationEntry
-                        {
-                            Name = parts[0].Trim().Trim('"'),
-                            Description = parts[1].Trim().Trim('"'),
-                            Latitude = lat,
-                            Longitude = lon,
-                            Category = parts[4].Trim().Trim('"'),
-                            Kind = parts[5].Trim().Trim('"')
-                        });
-                    }
-                }
-                else if (parts.Length >= 3)
-                {
-                    if (double.TryParse(parts[1].Trim(), out var lat) &&
-                        double.TryParse(parts[2].Trim(), out var lon))
-                    {
-                        var type = parts.Length > 3 ? parts[3].Trim().Trim('"') : "Default";
-                        _importedLocations.Add(new LocationEntry
-                        {
-                            Name = parts[0].Trim().Trim('"'),
-                            Description = "",
-                            Latitude = lat,
-                            Longitude = lon,
-                            Category = type,
-                            Kind = "Default"
-                        });
-                    }
-                }
-            }
-
-            if (_importedLocations.Count == 0)
-            {
-                _locationsFileStatus = "Error: No valid locations found in CSV";
-                return;
-            }
-
-            _locationsCount = _importedLocations.Count;
-            _locationsValidated = true;
-            _locationsFileStatus = $"Imported {_locationsCount} locations";
-        }
-        catch (Exception ex)
-        {
-            _locationsFileStatus = $"Error: {ex.Message}";
-        }
-    }
-
     #endregion
 
     #region World Creation
@@ -1557,35 +1239,8 @@ Output only the CSV data, no explanation.";
             chunkHeight = WorldHeightValues[_selectedWorldHeight];
         }
 
-        string locationGenerationType;
-        List<Ambient.Application.WorldCreation.LocationEntry> locations;
-        if (_importedLocations.Count > 0)
-        {
-            locationGenerationType = "trail";
-            locations = _importedLocations.Select(l => new Ambient.Application.WorldCreation.LocationEntry
-            {
-                Name = l.Name,
-                Description = l.Description,
-                Latitude = l.Latitude,
-                Longitude = l.Longitude,
-                Category = l.Category,
-                Kind = l.Kind
-            }).ToList();
-        }
-        else
-        {
-            locationGenerationType = "radial";
-            locations = GenerateDefaultRadialLocations().Select(l => new Ambient.Application.WorldCreation.LocationEntry
-            {
-                Name = l.Name,
-                Description = l.Description,
-                Latitude = l.Latitude,
-                Longitude = l.Longitude,
-                Category = l.Category,
-                Kind = l.Kind
-            }).ToList();
-        }
-
+        // Locations are saved to GenerationConfiguration.xml by AI service
+        // WorldCreationService just creates WorldConfiguration.xml
         var parameters = new WorldCreationParameters
         {
             WorldRef = worldRef,
@@ -1600,8 +1255,8 @@ Output only the CSV data, no explanation.";
             SpawnLatitude = spawnLat,
             SpawnLongitude = spawnLon,
             ChunkHeight = chunkHeight,
-            Locations = locations,
-            LocationGenerationType = locationGenerationType
+            Locations = new List<Ambient.Application.WorldCreation.LocationEntry>(),
+            LocationGenerationType = _aiGenerationResult?.IsSuccess == true ? "ai" : "none"
         };
 
         var appDataContentPath = _gameSettings.GetAppDataContentPath();
@@ -1622,54 +1277,6 @@ Output only the CSV data, no explanation.";
                 WorldCreated?.Invoke(result.OutputPath ?? "");
             }
         });
-    }
-
-    private List<LocationEntry> GenerateDefaultRadialLocations()
-    {
-        var locations = new List<LocationEntry>();
-        var random = new Random();
-
-        if (_geoTransform != null && _geoTransform.Length >= 6)
-        {
-            _spawnLongitude = _geoTransform[0] + _selectedSpawnPixel.X * _geoTransform[1] + _selectedSpawnPixel.Y * _geoTransform[2];
-            _spawnLatitude = _geoTransform[3] + _selectedSpawnPixel.X * _geoTransform[4] + _selectedSpawnPixel.Y * _geoTransform[5];
-        }
-        else
-        {
-            _spawnLatitude = 35.0;
-            _spawnLongitude = 135.0;
-        }
-
-        var angles = new[] { 0.0, 120.0, 240.0 };
-        var categories = new[] { "Landmark", "Religious", "Stronghold" };
-        var kinds = new[] { "Peak", "Shrine", "Ruin" };
-        var names = new[] { "Distant Peak", "Ancient Shrine", "Forgotten Fortress" };
-        var descriptions = new[] {
-            "A towering peak visible from afar",
-            "A sacred site of forgotten rituals",
-            "Crumbling walls of an ancient stronghold"
-        };
-
-        for (int i = 0; i < 3; i++)
-        {
-            var angleRad = angles[i] * Math.PI / 180.0;
-            var distance = 0.15 + random.NextDouble() * 0.15;
-
-            var lat = _spawnLatitude + distance * Math.Cos(angleRad);
-            var lon = _spawnLongitude + distance * Math.Sin(angleRad);
-
-            locations.Add(new LocationEntry
-            {
-                Name = names[i],
-                Description = descriptions[i],
-                Latitude = lat,
-                Longitude = lon,
-                Category = categories[i],
-                Kind = kinds[i]
-            });
-        }
-
-        return locations;
     }
 
     private static string SanitizeWorldName(string name)
@@ -1696,6 +1303,21 @@ Output only the CSV data, no explanation.";
         {
             // Ignore errors opening URL
         }
+    }
+
+    /// <summary>
+    /// Returns quality rating based on story count.
+    /// 6+ stories = Excellent, 3-5 = Good, 1-2 = Fair, 0 = Basic
+    /// </summary>
+    private static (string label, Vector4 color, string stars) GetGenerationQuality(int storyCount)
+    {
+        return storyCount switch
+        {
+            >= 6 => ("Excellent", new Vector4(0.4f, 1f, 0.4f, 1), "[***]"),
+            >= 3 => ("Good", new Vector4(0.9f, 0.9f, 0.4f, 1), "[** ]"),
+            >= 1 => ("Fair", new Vector4(1f, 0.7f, 0.4f, 1), "[*  ]"),
+            _ => ("Basic", new Vector4(0.6f, 0.6f, 0.6f, 1), "[   ]")
+        };
     }
 
     #endregion

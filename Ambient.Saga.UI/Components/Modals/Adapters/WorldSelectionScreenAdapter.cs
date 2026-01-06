@@ -3,6 +3,7 @@ using Ambient.Application.WorldCreation;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.UI.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Saga.UI.Components.Modals.Adapters;
 
@@ -18,9 +19,11 @@ public class WorldSelectionScreenAdapter : IModal
         IGameSettings gameSettings,
         IThemeProvider themeProvider,
         IWorldCreationService worldCreationService,
-        IFileDialogService? fileDialogService = null,
-        IGeoTiffConverter? geoTiffConverter = null,
-        ITextureProvider? textureProvider = null)
+        IFileDialogService? fileDialogService,
+        IGeoTiffConverter? geoTiffConverter,
+        ITextureProvider? textureProvider,
+        IAIWorldGenerationService? aiWorldGenerationService,
+        ILogger? logger = null)
     {
         _modal = new WorldSelectionScreen(
             worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator)),
@@ -29,7 +32,7 @@ public class WorldSelectionScreenAdapter : IModal
             worldCreationService ?? throw new ArgumentNullException(nameof(worldCreationService)),
             fileDialogService,
             geoTiffConverter,
-            textureProvider);
+            textureProvider, aiWorldGenerationService, logger);
     }
 
     public string Name => "WorldSelection";

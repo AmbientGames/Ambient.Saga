@@ -34,10 +34,18 @@ public class WorldCreationService : IWorldCreationService
             Directory.CreateDirectory(worldPath);
             Directory.CreateDirectory(xmlPath);
 
-            // Generate and write GenerationConfiguration.xml
-            progress?.Invoke("Writing GenerationConfiguration.xml...");
-            var generationXml = _generationConfigBuilder.Build(parameters);
-            await File.WriteAllTextAsync(Path.Combine(xmlPath, "GenerationConfiguration.xml"), generationXml);
+            // Generate and write GenerationConfiguration.xml (only if it doesn't exist - AI service may have already created it)
+            var generationConfigPath = Path.Combine(xmlPath, "GenerationConfiguration.xml");
+            if (!File.Exists(generationConfigPath))
+            {
+                progress?.Invoke("Writing GenerationConfiguration.xml...");
+                var generationXml = _generationConfigBuilder.Build(parameters);
+                await File.WriteAllTextAsync(generationConfigPath, generationXml);
+            }
+            else
+            {
+                progress?.Invoke("Using existing GenerationConfiguration.xml (AI-generated)...");
+            }
 
             // Generate and write WorldConfiguration.xml
             progress?.Invoke("Writing WorldConfiguration.xml...");
