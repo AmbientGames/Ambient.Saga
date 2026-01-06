@@ -1712,6 +1712,8 @@ Output only the CSV data, no explanation.";
         var spawnLongitude = _spawnLongitude;
         var minElevation = _minElevation;
         var maxElevation = _maxElevation;
+        var selectedLatitude = _selectedLatitude;
+        var selectedWorldHeight = _selectedWorldHeight;
 
         // Capture imported locations - make a copy of the list
         List<LocationEntry> locationsToUse;
@@ -1746,14 +1748,14 @@ Output only the CSV data, no explanation.";
                 Directory.CreateDirectory(worldPath);
                 Directory.CreateDirectory(xmlPath);
 
-                // Create WorldGeneration.xml (Schema.Codex.WorldForge format)
-                _creationStatus = "Writing WorldGeneration.xml...";
+                // Create GenerationConfiguration.xml (Schema.Codex.WorldForge format)
+                _creationStatus = "Writing GenerationConfiguration.xml...";
                 var generationXml = GenerateGenerationXml(worldRef, worldName, locationGenerationType, selectedTheme, locationsToUse);
-                File.WriteAllText(Path.Combine(xmlPath, "WorldGeneration.xml"), generationXml);
+                File.WriteAllText(Path.Combine(xmlPath, "GenerationConfiguration.xml"), generationXml);
 
                 // Create WorldConfiguration.xml (Ambient.Core format)
                 _creationStatus = "Writing WorldConfiguration.xml...";
-                var configXml = GenerateWorldConfigurationXml(worldRef, worldName, isRealWorld, selectedTheme, selectedProceduralMode, geoTransform, selectedSpawnPixel, spawnLatitude, spawnLongitude, minElevation, maxElevation);
+                var configXml = GenerateWorldConfigurationXml(worldRef, worldName, isRealWorld, selectedTheme, selectedProceduralMode, geoTransform, selectedSpawnPixel, spawnLatitude, spawnLongitude, minElevation, maxElevation, selectedLatitude, selectedWorldHeight);
                 File.WriteAllText(Path.Combine(xmlPath, "WorldConfiguration.xml"), configXml);
 
                 // Copy terrain file if real world (already converted during validation)
@@ -1770,14 +1772,6 @@ Output only the CSV data, no explanation.";
                     var terrainDest = Path.Combine(geographicDataPath, terrainFileName);
                     File.Copy(validatedTifPath, terrainDest, overwrite: true);
                 }
-
-                // Create locations.csv from the locations we're using
-                _creationStatus = "Writing locations.csv...";
-                var locationsFilePath = Path.Combine(xmlPath, "locations.csv");
-                var csvLines = new List<string> { "name,description,latitude,longitude,category,kind" };
-                csvLines.AddRange(locationsToUse.Select(l =>
-                    $"\"{l.Name}\",\"{l.Description}\",{l.Latitude},{l.Longitude},{l.Category},{l.Kind}"));
-                File.WriteAllLines(locationsFilePath, csvLines);
 
                 _lastGenerationMessage = $"World '{worldName}' created successfully at:\n{worldPath}";
                 _showGenerationMessage = true;
@@ -1882,6 +1876,9 @@ Output only the CSV data, no explanation.";
         return text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;").Replace("'", "&apos;");
     }
 
+    // Latitude values corresponding to Latitudes dropdown (0°, 30°, 45°, 60°)
+    private static readonly int[] LatitudeNumericValues = { 0, 30, 45, 60 };
+
     private string GenerateWorldConfigurationXml(
         string worldRef,
         string worldName,
@@ -1893,28 +1890,21 @@ Output only the CSV data, no explanation.";
         double spawnLatitude,
         double spawnLongitude,
         int minElevation,
-        int maxElevation)
+        int maxElevation,
+        int selectedLatitude,
+        int selectedWorldHeight)
     {
-        // Calculate spawn GPS coordinates
+        // Calculate spawn GPS coordinates and ChunkHeight based on world type
         double spawnLat, spawnLon;
+        string terrainSettingsXml;
+        string chunkHeightXml;
+
         if (isRealWorld && geoTransform != null && geoTransform.Length >= 6)
         {
-            // Real world - calculate from selected pixel and geotransform
+            // Real world - calculate spawn from selected pixel and geotransform
             spawnLon = geoTransform[0] + selectedSpawnPixel.X * geoTransform[1] + selectedSpawnPixel.Y * geoTransform[2];
             spawnLat = geoTransform[3] + selectedSpawnPixel.X * geoTransform[4] + selectedSpawnPixel.Y * geoTransform[5];
-        }
-        else
-        {
-            // Procedural - use default thematic location
-            spawnLat = spawnLatitude;
-            spawnLon = spawnLongitude;
-        }
 
-        // Generate terrain settings element based on world type
-        string terrainSettingsXml;
-        string chunkHeightXml = "";
-        if (isRealWorld)
-        {
             // HeightMapSettings for real world terrain - standard scale is 1/3 in each direction
             var terrainFileName = $"{worldRef}_terrain.tif";
             const double verticalScale = 0.333333;
@@ -1944,9 +1934,18 @@ Output only the CSV data, no explanation.";
         }
         else
         {
+            // Procedural - use latitude from dropdown, longitude always 0
+            spawnLat = LatitudeNumericValues[selectedLatitude];
+            spawnLon = 0;
+
+            // ChunkHeight from world height dropdown
+            var chunkHeight = WorldHeightValues[selectedWorldHeight];
+
             // ProceduralSettings for generated terrain
             var proceduralMode = ProceduralModes[selectedProceduralMode]; // Rugged, Rolling, Extreme
             terrainSettingsXml = $@"  <ProceduralSettings ProceduralGenerationMode=""{proceduralMode}"" />";
+            chunkHeightXml = $@"
+    ChunkHeight=""{chunkHeight}""";
         }
 
         // Generate a random seed between 0 and 1
