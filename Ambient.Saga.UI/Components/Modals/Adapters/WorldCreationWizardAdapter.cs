@@ -23,7 +23,8 @@ public class WorldCreationWizardAdapter : IModal
         IWorldCreationService worldCreationService,
         IFileDialogService? fileDialogService = null,
         IGeoTiffConverter? geoTiffConverter = null,
-        ITextureProvider? textureProvider = null)
+        ITextureProvider? textureProvider = null,
+        ILocationGenerator? locationGenerator = null)
     {
         _wizard = new WorldCreationWizard(
             gameSettings ?? throw new ArgumentNullException(nameof(gameSettings)),
@@ -31,7 +32,8 @@ public class WorldCreationWizardAdapter : IModal
             worldCreationService ?? throw new ArgumentNullException(nameof(worldCreationService)),
             fileDialogService,
             geoTiffConverter,
-            textureProvider);
+            textureProvider,
+            locationGenerator);
 
         // Forward the wizard's WorldCreated event
         _wizard.WorldCreated += path => WorldCreated?.Invoke(path);

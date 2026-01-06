@@ -23,6 +23,7 @@ public class WorldCreationWizard
     private readonly IGeoTiffConverter? _geoTiffConverter;
     private readonly IThemeProvider _themeProvider;
     private readonly IWorldCreationService _worldCreationService;
+    private readonly ILocationGenerator? _locationGenerator;
     private ITextureProvider? _textureProvider;
     private readonly ILogger<WorldCreationWizard>? _logger;
 
@@ -76,6 +77,12 @@ public class WorldCreationWizard
     // AI prompt state
     private string _aiPromptText = "";
     private bool _aiPromptCopied = false;
+
+    // AI generation state
+    private bool _isGeneratingLocations;
+    private string _aiGenerationStatus = "";
+    private LocationGenerationResponse? _aiGenerationResult;
+    private List<GeneratedLocationEntry> _aiGeneratedLocations = new();
 
     // Creation state
     private bool _isCreatingWorld;
@@ -131,6 +138,7 @@ public class WorldCreationWizard
         IFileDialogService? fileDialogService = null,
         IGeoTiffConverter? geoTiffConverter = null,
         ITextureProvider? textureProvider = null,
+        ILocationGenerator? locationGenerator = null,
         ILogger<WorldCreationWizard>? logger = null)
     {
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
@@ -139,6 +147,7 @@ public class WorldCreationWizard
         _fileDialogService = fileDialogService;
         _geoTiffConverter = geoTiffConverter;
         _textureProvider = textureProvider;
+        _locationGenerator = locationGenerator;
         _logger = logger;
 
         _availableThemes = _themeProvider.GetAvailableThemes();
@@ -223,6 +232,10 @@ public class WorldCreationWizard
         _locationsValidated = false;
         _locationsCount = 0;
         _importedLocations.Clear();
+        _isGeneratingLocations = false;
+        _aiGenerationStatus = "";
+        _aiGenerationResult = null;
+        _aiGeneratedLocations.Clear();
         _isCreatingWorld = false;
         _creationStatus = "";
         _geoTransform = null;
@@ -514,17 +527,26 @@ public class WorldCreationWizard
         ImGui.TextColored(new Vector4(0.8f, 0.9f, 1f, 1), "Source Locations (Optional)");
         ImGui.Spacing();
 
-        ImGui.TextWrapped("Import a CSV file with location data to place points of interest in your world. This step is optional - you can add locations later.");
+        ImGui.TextWrapped("Generate or import locations to place points of interest in your world. This step is optional - you can add locations later.");
         ImGui.Spacing();
 
         if (ImGui.BeginTabBar("LocationsTabs"))
         {
-            if (ImGui.BeginTabItem("CSV Template"))
+            // Show AI Generate tab first if generator is available
+            if (_locationGenerator != null)
+            {
+                if (ImGui.BeginTabItem("AI Generate"))
+                {
+                    RenderLocationsAIGenerateTab();
+                    ImGui.EndTabItem();
+                }
+            }
+            if (ImGui.BeginTabItem("CSV Import"))
             {
                 RenderLocationsTemplateTab();
                 ImGui.EndTabItem();
             }
-            if (ImGui.BeginTabItem("AI Prompt"))
+            if (ImGui.BeginTabItem("AI Prompt (Manual)"))
             {
                 RenderLocationsAIPromptTab();
                 ImGui.EndTabItem();
@@ -630,6 +652,231 @@ public class WorldCreationWizard
         ImGui.SameLine(120); ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Kinds: Merchant, Healer, Trainer");
 
         ImGui.EndChild();
+    }
+
+    private void RenderLocationsAIGenerateTab()
+    {
+        ImGui.Spacing();
+        ImGui.TextColored(new Vector4(0.4f, 1f, 0.8f, 1), "Generate Locations with AI");
+        ImGui.Spacing();
+
+        ImGui.TextWrapped("Click the button below to generate themed locations, characters, and story assignments using AI. This requires Steam authentication and an internet connection.");
+        ImGui.Spacing();
+
+        // Show current settings that will be used
+        var themeName = _themeProvider.GetDisplayName(_availableThemes[_selectedTheme]);
+        var worldType = _isRealWorld ? "Real World" : "Procedural";
+
+        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"World Type: {worldType}");
+        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Theme: {themeName}");
+
+        if (_isRealWorld && _geoTransform != null && _geoTransform.Length >= 6)
+        {
+            var minLat = _geoTransform[3] + _terrainHeight * _geoTransform[5];
+            var maxLat = _geoTransform[3];
+            var minLon = _geoTransform[0];
+            var maxLon = _geoTransform[0] + _terrainWidth * _geoTransform[1];
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Bounds: ({minLat:F2}, {minLon:F2}) to ({maxLat:F2}, {maxLon:F2})");
+        }
+
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // Generation button
+        if (_isGeneratingLocations)
+        {
+            ImGui.BeginDisabled();
+            ImGui.Button("Generating...", new Vector2(-1, 40));
+            ImGui.EndDisabled();
+
+            if (!string.IsNullOrEmpty(_aiGenerationStatus))
+            {
+                ImGui.Spacing();
+                ImGui.TextColored(new Vector4(0.4f, 0.8f, 1f, 1), _aiGenerationStatus);
+            }
+        }
+        else
+        {
+            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.5f, 0.7f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.6f, 0.8f, 1));
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.9f, 1));
+            if (ImGui.Button("Generate Locations with AI", new Vector2(-1, 40)))
+            {
+                GenerateLocationsWithAI();
+            }
+            ImGui.PopStyleColor(3);
+        }
+
+        // Show results
+        if (_aiGeneratedLocations.Count > 0)
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var storyLocations = _aiGeneratedLocations.Where(l => l.StoryAssignment != null).ToList();
+            var uniqueStories = storyLocations.Select(l => l.StoryAssignment!.Story).Distinct().Count();
+
+            ImGui.TextColored(new Vector4(0.4f, 1f, 0.4f, 1),
+                $"Generated {_aiGeneratedLocations.Count} locations ({storyLocations.Count} with story assignments, {uniqueStories} unique stories)");
+            ImGui.Spacing();
+
+            ImGui.Text($"Preview (first 5 of {_aiGeneratedLocations.Count}):");
+            ImGui.BeginChild("AILocationsPreview", new Vector2(0, 120), ImGuiChildFlags.Borders);
+
+            for (int i = 0; i < Math.Min(_aiGeneratedLocations.Count, 5); i++)
+            {
+                var loc = _aiGeneratedLocations[i];
+                var storyMarker = loc.StoryAssignment != null ? $" [STORY: {loc.StoryAssignment.Story}]" : "";
+
+                ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.7f, 1), loc.Name);
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1),
+                    $"({loc.Category}/{loc.Kind}){storyMarker}");
+
+                if (loc.Character != null)
+                {
+                    ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1),
+                        $"  Character: {loc.Character.Name} ({loc.Character.Role})");
+                }
+            }
+
+            if (_aiGeneratedLocations.Count > 5)
+            {
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"... and {_aiGeneratedLocations.Count - 5} more");
+            }
+            ImGui.EndChild();
+
+            ImGui.Spacing();
+            if (ImGui.Button("Use These Locations"))
+            {
+                UseAIGeneratedLocations();
+            }
+            ImGui.SameLine();
+            if (ImGui.Button("Regenerate"))
+            {
+                GenerateLocationsWithAI();
+            }
+        }
+
+        // Show parse errors if any
+        if (_aiGenerationResult?.ParseErrors?.Count > 0)
+        {
+            ImGui.Spacing();
+            ImGui.TextColored(new Vector4(1f, 0.6f, 0.4f, 1), $"Parse warnings ({_aiGenerationResult.ParseErrors.Count}):");
+            ImGui.BeginChild("ParseErrors", new Vector2(0, 60), ImGuiChildFlags.Borders);
+            foreach (var err in _aiGenerationResult.ParseErrors.Take(3))
+            {
+                ImGui.TextColored(new Vector4(0.8f, 0.5f, 0.3f, 1), $"- {err}");
+            }
+            ImGui.EndChild();
+        }
+    }
+
+    private void GenerateLocationsWithAI()
+    {
+        if (_locationGenerator == null || _isGeneratingLocations) return;
+
+        _isGeneratingLocations = true;
+        _aiGenerationStatus = "Preparing request...";
+        _aiGeneratedLocations.Clear();
+        _aiGenerationResult = null;
+
+        // Build the request from current wizard state
+        var regionName = !string.IsNullOrWhiteSpace(_worldName) ? _worldName : "Generated World";
+        var themeName = _themeProvider.GetDisplayName(_availableThemes[_selectedTheme]);
+        var worldType = _isRealWorld ? "real" : "procedural";
+
+        double minLat, maxLat, minLon, maxLon, spawnLat, spawnLon;
+
+        if (_isRealWorld && _geoTransform != null && _geoTransform.Length >= 6)
+        {
+            minLon = _geoTransform[0];
+            maxLon = _geoTransform[0] + _terrainWidth * _geoTransform[1];
+            maxLat = _geoTransform[3];
+            minLat = _geoTransform[3] + _terrainHeight * _geoTransform[5];
+
+            spawnLon = _geoTransform[0] + _selectedSpawnPixel.X * _geoTransform[1] + _selectedSpawnPixel.Y * _geoTransform[2];
+            spawnLat = _geoTransform[3] + _selectedSpawnPixel.X * _geoTransform[4] + _selectedSpawnPixel.Y * _geoTransform[5];
+        }
+        else
+        {
+            // Procedural world - use 0-100 coordinate space
+            minLat = 0;
+            maxLat = 100;
+            minLon = 0;
+            maxLon = 100;
+            spawnLat = 50;
+            spawnLon = 50;
+        }
+
+        var request = new LocationGenerationRequest(
+            RegionName: regionName,
+            Theme: themeName,
+            WorldType: worldType,
+            MinLatitude: minLat,
+            MaxLatitude: maxLat,
+            MinLongitude: minLon,
+            MaxLongitude: maxLon,
+            SpawnLatitude: spawnLat,
+            SpawnLongitude: spawnLon,
+            LocationCount: 40);
+
+        Task.Run(async () =>
+        {
+            try
+            {
+                _aiGenerationStatus = "Authenticating with Steam...";
+                System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] Starting AI generation for '{regionName}'...");
+
+                _aiGenerationStatus = "Generating locations (this may take a minute)...";
+                var response = await _locationGenerator.GenerateAsync(request);
+
+                _aiGenerationResult = response;
+                _aiGeneratedLocations = response.Locations.ToList();
+
+                var storyCount = _aiGeneratedLocations.Count(l => l.StoryAssignment != null);
+                _aiGenerationStatus = $"Generated {_aiGeneratedLocations.Count} locations with {storyCount} story assignments";
+
+                System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] AI generation complete: {_aiGeneratedLocations.Count} locations");
+            }
+            catch (Exception ex)
+            {
+                _aiGenerationStatus = $"Error: {ex.Message}";
+                System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] AI generation failed: {ex}");
+            }
+            finally
+            {
+                _isGeneratingLocations = false;
+            }
+        });
+    }
+
+    private void UseAIGeneratedLocations()
+    {
+        // Convert AI locations to the wizard's internal format and mark as validated
+        _importedLocations.Clear();
+
+        foreach (var aiLoc in _aiGeneratedLocations)
+        {
+            _importedLocations.Add(new LocationEntry
+            {
+                Name = aiLoc.Name,
+                Description = aiLoc.Description,
+                Latitude = aiLoc.Latitude,
+                Longitude = aiLoc.Longitude,
+                Category = aiLoc.Category,
+                Kind = aiLoc.Kind
+            });
+        }
+
+        _locationsCount = _importedLocations.Count;
+        _locationsValidated = true;
+        _locationsFileStatus = $"Using {_locationsCount} AI-generated locations";
+        _selectedLocationsFile = "(AI Generated)";
+
+        System.Diagnostics.Debug.WriteLine($"[WorldCreationWizard] Using {_locationsCount} AI-generated locations");
     }
 
     private void RenderLocationsAIPromptTab()

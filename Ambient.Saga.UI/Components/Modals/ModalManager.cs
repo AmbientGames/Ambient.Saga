@@ -50,6 +50,7 @@ public class ModalManager
     private readonly IWorldCreationService _worldCreationService;
     private readonly IFileDialogService? _fileDialogService;
     private readonly IGeoTiffConverter? _geoTiffConverter;
+    private readonly ILocationGenerator? _locationGenerator;
     private ITextureProvider? _textureProvider;
 
     // Event for quit request (so host application can handle it)
@@ -76,7 +77,7 @@ public class ModalManager
         _worldCreationWizardAdapter?.SetTextureProvider(textureProvider);
     }
 
-    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, IGameSettings gameSettings, IThemeProvider themeProvider, IWorldCreationService worldCreationService, IFileDialogService? fileDialogService = null, IGeoTiffConverter? geoTiffConverter = null, ITextureProvider? textureProvider = null, ISettingsPanel? settingsPanel = null)
+    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, IGameSettings gameSettings, IThemeProvider themeProvider, IWorldCreationService worldCreationService, IFileDialogService? fileDialogService = null, IGeoTiffConverter? geoTiffConverter = null, ILocationGenerator? locationGenerator = null, ITextureProvider? textureProvider = null, ISettingsPanel? settingsPanel = null)
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
@@ -87,6 +88,7 @@ public class ModalManager
         _worldCreationService = worldCreationService ?? throw new ArgumentNullException(nameof(worldCreationService));
         _fileDialogService = fileDialogService;
         _geoTiffConverter = geoTiffConverter;
+        _locationGenerator = locationGenerator;
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
         _worldSelectionScreen = new WorldSelectionScreen(_worldContentGenerator, _gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider);
@@ -137,7 +139,7 @@ public class ModalManager
         _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
 
         // World creation wizard - can be opened independently from multiple places
-        _worldCreationWizardAdapter = new Adapters.WorldCreationWizardAdapter(_gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider);
+        _worldCreationWizardAdapter = new Adapters.WorldCreationWizardAdapter(_gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider, _locationGenerator);
         _modalRegistry.Register(_worldCreationWizardAdapter);
 
         // Note: PauseMenu and Settings are not migrated as they have special rendering requirements
