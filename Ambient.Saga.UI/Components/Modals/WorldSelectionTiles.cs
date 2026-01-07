@@ -15,7 +15,7 @@ public class WorldSelectionTiles
     private const float TileSpacing = 15f;
     private const int TilesPerRow = 2;
 
-    public void Render(MainViewModel viewModel, ref bool isOpen)
+    public void Render(MainViewModel viewModel, ref bool isOpen, Action? onAddWorldRequested = null)
     {
         if (!isOpen) return;
 
@@ -86,11 +86,33 @@ public class WorldSelectionTiles
             }
         }
 
+        // Add "Add World" tile at the end (if callback provided)
+        if (onAddWorldRequested != null)
+        {
+            int addTileIndex = configCount;
+            int addCol = addTileIndex % TilesPerRow;
+
+            if (addCol == 0)
+            {
+                ImGui.SetCursorPosX(TileSpacing);
+            }
+            else
+            {
+                ImGui.SameLine();
+                ImGui.SetCursorPosX(TileSpacing + (addCol * (TileWidth + TileSpacing)));
+            }
+
+            if (RenderAddWorldTile(TileWidth, TileHeight))
+            {
+                onAddWorldRequested.Invoke();
+            }
+        }
+
         // Handle empty state
         if (configCount == 0)
         {
             ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "No worlds available.");
-            ImGui.TextWrapped("Please ensure world configurations are properly installed.");
+            ImGui.TextWrapped("Click 'Add World' to create your first world.");
         }
 
         ImGui.EndChild();
@@ -184,6 +206,70 @@ public class WorldSelectionTiles
             ? ImGui.ColorConvertFloat4ToU32(new Vector4(0.5f, 0.8f, 0.5f, 1f))
             : ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.5f, 1f));
         drawList.AddText(hintPos, hintColor, isHovered ? "Click to Play" : "");
+
+        ImGui.PopID();
+
+        return clicked;
+    }
+
+    private bool RenderAddWorldTile(float width, float height)
+    {
+        bool clicked = false;
+
+        ImGui.PushID("##addworld");
+
+        var cursorPos = ImGui.GetCursorScreenPos();
+
+        clicked = ImGui.InvisibleButton("##addtile", new Vector2(width, height));
+        var isHovered = ImGui.IsItemHovered();
+
+        var drawList = ImGui.GetWindowDrawList();
+
+        // Darker, more subtle background for the add tile
+        var bgColor = isHovered
+            ? ImGui.ColorConvertFloat4ToU32(new Vector4(0.2f, 0.22f, 0.25f, 1f))
+            : ImGui.ColorConvertFloat4ToU32(new Vector4(0.12f, 0.12f, 0.15f, 1f));
+
+        var borderColor = isHovered
+            ? ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.5f, 0.4f, 1f))
+            : ImGui.ColorConvertFloat4ToU32(new Vector4(0.25f, 0.25f, 0.3f, 1f));
+
+        var rectMin = cursorPos;
+        var rectMax = new Vector2(cursorPos.X + width, cursorPos.Y + height);
+
+        // Background with dashed-like appearance (dotted border effect)
+        drawList.AddRectFilled(rectMin, rectMax, bgColor, 8f);
+        drawList.AddRect(rectMin, rectMax, borderColor, 8f, ImDrawFlags.None, 1f);
+
+        // Large "+" in center
+        var plusColor = isHovered
+            ? ImGui.ColorConvertFloat4ToU32(new Vector4(0.6f, 0.8f, 0.6f, 1f))
+            : ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.45f, 1f));
+
+        var centerX = cursorPos.X + width / 2;
+        var centerY = cursorPos.Y + height / 2 - 15f;
+        var plusSize = 30f;
+
+        // Horizontal line of +
+        drawList.AddLine(
+            new Vector2(centerX - plusSize, centerY),
+            new Vector2(centerX + plusSize, centerY),
+            plusColor, 3f);
+        // Vertical line of +
+        drawList.AddLine(
+            new Vector2(centerX, centerY - plusSize),
+            new Vector2(centerX, centerY + plusSize),
+            plusColor, 3f);
+
+        // "Add World" text below
+        var textColor = isHovered
+            ? ImGui.ColorConvertFloat4ToU32(new Vector4(0.7f, 0.9f, 0.7f, 1f))
+            : ImGui.ColorConvertFloat4ToU32(new Vector4(0.5f, 0.5f, 0.55f, 1f));
+
+        var text = "Add World";
+        var textSize = ImGui.CalcTextSize(text);
+        var textPos = new Vector2(centerX - textSize.X / 2, centerY + plusSize + 15f);
+        drawList.AddText(textPos, textColor, text);
 
         ImGui.PopID();
 

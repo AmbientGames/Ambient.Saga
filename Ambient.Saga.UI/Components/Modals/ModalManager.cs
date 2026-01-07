@@ -139,7 +139,7 @@ public class ModalManager
         _worldSelectionScreenAdapter = new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator, _gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider, _aiWorldGenerationService);
         _worldSelectionScreenAdapter.WorldCreated += path => WorldCreated?.Invoke(path);
         _modalRegistry.Register(_worldSelectionScreenAdapter);
-        _modalRegistry.Register(new Adapters.WorldSelectionTilesAdapter()); // User-friendly tile version
+        _modalRegistry.Register(new Adapters.WorldSelectionTilesAdapter(() => OpenWorldCreationWizard())); // User-friendly tile version with Add World
         _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
 
         // World creation wizard - can be opened independently from multiple places
