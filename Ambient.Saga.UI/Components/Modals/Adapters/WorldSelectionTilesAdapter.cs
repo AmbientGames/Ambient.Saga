@@ -9,6 +9,12 @@ namespace Ambient.Saga.UI.Components.Modals.Adapters;
 public class WorldSelectionTilesAdapter : IModal
 {
     private readonly WorldSelectionTiles _modal = new();
+    private readonly Action? _onAddWorldRequested;
+
+    public WorldSelectionTilesAdapter(Action? onAddWorldRequested = null)
+    {
+        _onAddWorldRequested = onAddWorldRequested;
+    }
 
     public string Name => "WorldSelectionTiles";
 
@@ -26,7 +32,7 @@ public class WorldSelectionTilesAdapter : IModal
     {
         if (context is MainViewModel viewModel)
         {
-            _modal.Render(viewModel, ref isOpen);
+            _modal.Render(viewModel, ref isOpen, _onAddWorldRequested);
         }
         else
         {
