@@ -1,8 +1,11 @@
+using Ambient.Application.Contracts;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using MediatR;
 using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Saga.UI.Components.Modals;
 
@@ -28,6 +31,9 @@ public class ModalManager
     // Reference to ImGui archetype selector for callbacks
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
     private readonly IMediator _mediator;
+    private readonly IWorldContentGenerator _worldContentGenerator;
+    private readonly IGameSettings _gameSettings;
+    private readonly ILoggerFactory? _loggerFactory;
 
     // Event for quit request (so host application can handle it)
     public event Action? QuitRequested;
@@ -41,10 +47,19 @@ public class ModalManager
         QuitRequested?.Invoke();
     }
 
-    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, ISettingsPanel? settingsPanel)
+    public ModalManager(
+        ImGuiArchetypeSelector archetypeSelector,
+        IMediator mediator,
+        IWorldContentGenerator worldContentGenerator,
+        IGameSettings gameSettings,
+        ISettingsPanel? settingsPanel,
+        ILoggerFactory? loggerFactory = null)
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
+        _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
+        _loggerFactory = loggerFactory;
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
         _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
@@ -88,7 +103,8 @@ public class ModalManager
         _modalRegistry.Register(new Adapters.QuestDetailModalAdapter(_mediator));
 
         // Special modals
-        _modalRegistry.Register(new Adapters.WorldSelectionScreenAdapter());
+        var worldSelectionLogger = _loggerFactory?.CreateLogger<WorldSelectionScreen>();
+        _modalRegistry.Register(new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator, _gameSettings, worldSelectionLogger));
         _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
 
         // Note: PauseMenu and Settings are not migrated as they have special rendering requirements

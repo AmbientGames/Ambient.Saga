@@ -1,13 +1,24 @@
+using Ambient.Application.Contracts;
+using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Saga.UI.Components.Modals.Adapters;
 
 /// <summary>
-/// Adapter for simplified WorldSelectionScreen to work with the Modal Registry Pattern.
+/// Adapter for WorldSelectionScreen to work with the Modal Registry Pattern.
 /// </summary>
 public class WorldSelectionScreenAdapter : IModal
 {
-    private readonly WorldSelectionScreen _modal = new();
+    private readonly WorldSelectionScreen _modal;
+
+    public WorldSelectionScreenAdapter(
+        IWorldContentGenerator worldContentGenerator,
+        IGameSettings gameSettings,
+        ILogger<WorldSelectionScreen>? logger = null)
+    {
+        _modal = new WorldSelectionScreen(worldContentGenerator, gameSettings, logger);
+    }
 
     public string Name => "WorldSelection";
 
