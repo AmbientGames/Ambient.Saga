@@ -24,4 +24,10 @@ public interface IWorldConfiguration
     ClimateModel ClimateModel { get; set; }
 
     int DisplayOrder { get; set; }
+
+    /// <summary>
+    /// The directory where this configuration was loaded from (e.g., the xml folder containing WorldConfiguration.xml).
+    /// Used for locating GenerationConfiguration.xml and outputting generated content.
+    /// </summary>
+    string? SourceDirectory { get; set; }
 }

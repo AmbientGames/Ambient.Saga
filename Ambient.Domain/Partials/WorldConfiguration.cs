@@ -12,4 +12,10 @@ public partial class WorldConfiguration : IWorldConfiguration
 {
     [XmlIgnore] public IProceduralSettings ProceduralSettings { get; set; }
     [XmlIgnore] public IHeightMapSettings HeightMapSettings { get; set; }
+
+    /// <summary>
+    /// The directory where this configuration was loaded from.
+    /// Set by WorldConfigurationLoader after deserialization.
+    /// </summary>
+    [XmlIgnore] public string? SourceDirectory { get; set; }
 }

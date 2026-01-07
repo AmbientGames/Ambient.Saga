@@ -33,7 +33,7 @@ public class WorldConfigurationBuilder
     RefName=""{parameters.WorldRef}""
     DisplayName=""{EscapeXml(parameters.DisplayName)}""
     Description=""World generated from {(parameters.IsRealWorld ? "GeoTIFF elevation data" : "procedural terrain")} using World Creation Wizard""
-    Namespace=""{parameters.WorldRef}""
+    Namespace=""ambient_games""
     ContentPackLibrary=""{parameters.WorldRef}""
     ContentPackTheme=""{parameters.Theme}""
     SpawnLatitude=""{parameters.SpawnLatitude:F6}""

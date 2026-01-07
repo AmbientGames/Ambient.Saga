@@ -52,6 +52,10 @@ public class WorldConfigurationLoader : IWorldConfigurationLoader
                         config = await XmlLoader.LoadFromXmlAsync<WorldConfiguration>(configPath);
                     }
                     LoadWorldConfigurationSettings(config);
+
+                    // Set the source directory so content generator knows where to find/output files
+                    config.SourceDirectory = Path.GetDirectoryName(configPath);
+
                     configs.Add(config);
                 }
                 catch (Exception ex)

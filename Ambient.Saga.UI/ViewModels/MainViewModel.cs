@@ -209,6 +209,7 @@ public partial class MainViewModel : ObservableObject
     private readonly IWorldRepositoryFactory _repositoryFactory;
     private readonly IContentPathResolver _contentPathResolver;
     private readonly MediatR.IMediator _mediator;
+    private readonly IWorldContentGenerator _worldContentGenerator;
     //private readonly Services.IArchetypeSelector _wpfArchetypeSelector;
     private readonly IArchetypeSelector _imguiArchetypeSelector;
     //private bool _useImGuiMode = false;
@@ -224,6 +225,7 @@ public partial class MainViewModel : ObservableObject
         IWorldRepositoryFactory repositoryFactory,
         IContentPathResolver contentPathResolver,
         MediatR.IMediator mediator,
+        IWorldContentGenerator worldContentGenerator,
         [Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute("imgui")] IArchetypeSelector imguiArchetypeSelector)
     {
         _worldProvider = worldProvider ?? throw new ArgumentNullException(nameof(worldProvider));
@@ -233,6 +235,7 @@ public partial class MainViewModel : ObservableObject
         _repositoryFactory = repositoryFactory ?? throw new ArgumentNullException(nameof(repositoryFactory));
         _contentPathResolver = contentPathResolver ?? throw new ArgumentNullException(nameof(contentPathResolver));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
         //_wpfArchetypeSelector = wpfArchetypeSelector ?? throw new ArgumentNullException(nameof(wpfArchetypeSelector));
         _imguiArchetypeSelector = imguiArchetypeSelector ?? throw new ArgumentNullException(nameof(imguiArchetypeSelector));
 
@@ -698,12 +701,51 @@ public partial class MainViewModel : ObservableObject
             IsLoading = true;
             StatusMessage = $"Loading world configuration: {SelectedConfiguration.RefName}...";
 
-            var world = await _mediator.Send(new LoadWorldQuery
+            IWorld world;
+            try
             {
-                DataDirectory = _dataDirectory,
-                DefinitionDirectory = _schemaDirectory,
-                ConfigurationRefName = SelectedConfiguration.RefName
-            });
+                world = await _mediator.Send(new LoadWorldQuery
+                {
+                    DataDirectory = _dataDirectory,
+                    DefinitionDirectory = _schemaDirectory,
+                    ConfigurationRefName = SelectedConfiguration.RefName
+                });
+            }
+            catch (Exception loadEx)
+            {
+                // Loading failed - try regenerating content if generator is available
+                if (_worldContentGenerator.IsAvailable && !string.IsNullOrEmpty(SelectedConfiguration.SourceDirectory))
+                {
+                    System.Diagnostics.Debug.WriteLine($"[MainViewModel] World load failed, attempting content regeneration: {loadEx.Message}");
+                    System.Diagnostics.Debug.WriteLine($"[MainViewModel] Using source directory: {SelectedConfiguration.SourceDirectory}");
+                    StatusMessage = "Regenerating world content...";
+
+                    var generatedFiles = await _worldContentGenerator.GenerateWorldContentAsync(
+                        SelectedConfiguration, SelectedConfiguration.SourceDirectory);
+
+                    if (generatedFiles.Count > 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[MainViewModel] Regenerated {generatedFiles.Count} files, retrying load...");
+                        StatusMessage = $"Regenerated {generatedFiles.Count} files, loading...";
+
+                        // Retry loading
+                        world = await _mediator.Send(new LoadWorldQuery
+                        {
+                            DataDirectory = _dataDirectory,
+                            DefinitionDirectory = _schemaDirectory,
+                            ConfigurationRefName = SelectedConfiguration.RefName
+                        });
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Content regeneration produced no files. Original error: {loadEx.Message}");
+                    }
+                }
+                else
+                {
+                    throw; // Re-throw if generator not available
+                }
+            }
 
             // Initialize world bootstrapper (required when loading via mediator)
             WorldBootstrapper.Initialize(world);
