@@ -1,11 +1,8 @@
-using Ambient.Application.Contracts;
-using Ambient.Application.WorldCreation;
-using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using MediatR;
-using Ambient.Saga.UI.Services;
 using Ambient.Saga.UI.Components.Panels;
+using Ambient.Saga.UI.Services;
 
 namespace Ambient.Saga.UI.Components.Modals;
 
@@ -16,22 +13,9 @@ namespace Ambient.Saga.UI.Components.Modals;
 public class ModalManager
 {
     // Modal instances
-    private WorldSelectionScreen _worldSelectionScreen;
-    private Adapters.WorldSelectionScreenAdapter? _worldSelectionScreenAdapter;
-    private Adapters.WorldCreationWizardAdapter? _worldCreationWizardAdapter;
-    private ArchetypeSelectionModal _archetypeSelectionModal = new();
-    private AvatarInfoModal _avatarInfoModal = new();
-    private CharactersModal _charactersModal = new();
-    private AchievementsModal _achievementsModal = new();
-    private WorldCatalogModal _worldCatalogModal = new();
-    private MerchantTradeModal _merchantTradeModal = new();
     private QuestModal _questModal;
-    private QuestLogModal _questLogModal = new();
     private QuestDetailModal _questDetailModal;
-    private DialogueModal _dialogueModal = new();
-    private LootModal _lootModal = new();
     private BattleModal _battleModal = new();
-    private FactionReputationModal _factionReputationModal = new();
     private PauseMenuModal _pauseMenuModal = new();
     private ISettingsPanel _settingsPanel;
 
@@ -44,20 +28,9 @@ public class ModalManager
     // Reference to ImGui archetype selector for callbacks
     private readonly ImGuiArchetypeSelector? _archetypeSelector;
     private readonly IMediator _mediator;
-    private readonly IWorldContentGenerator _worldContentGenerator;
-    private readonly IGameSettings _gameSettings;
-    private readonly IThemeProvider _themeProvider;
-    private readonly IWorldCreationService _worldCreationService;
-    private readonly IFileDialogService? _fileDialogService;
-    private readonly IGeoTiffConverter? _geoTiffConverter;
-    private readonly IAIWorldGenerationService? _aiWorldGenerationService;
-    private ITextureProvider? _textureProvider;
 
     // Event for quit request (so host application can handle it)
     public event Action? QuitRequested;
-
-    // Event raised when a world is created (so host can refresh world list)
-    public event Action<string>? WorldCreated;
 
     /// <summary>
     /// Requests the application to quit.
@@ -68,39 +41,18 @@ public class ModalManager
         QuitRequested?.Invoke();
     }
 
-    /// <summary>
-    /// Sets the texture provider for modals that need to render images.
-    /// Call this after the graphics device is available.
-    /// </summary>
-    public void SetTextureProvider(ITextureProvider textureProvider)
-    {
-        _textureProvider = textureProvider;
-        _worldSelectionScreen.SetTextureProvider(textureProvider);
-        _worldSelectionScreenAdapter?.SetTextureProvider(textureProvider);
-        _worldCreationWizardAdapter?.SetTextureProvider(textureProvider);
-    }
-
-    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, IWorldContentGenerator worldContentGenerator, IGameSettings gameSettings, IThemeProvider themeProvider, IWorldCreationService worldCreationService, IFileDialogService? fileDialogService, IGeoTiffConverter? geoTiffConverter, IAIWorldGenerationService? aiWorldGenerationService, ITextureProvider? textureProvider, ISettingsPanel? settingsPanel)
+    public ModalManager(ImGuiArchetypeSelector archetypeSelector, IMediator mediator, ISettingsPanel? settingsPanel)
     {
         _archetypeSelector = archetypeSelector;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
-        _textureProvider = textureProvider;
-        _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
-        _themeProvider = themeProvider ?? throw new ArgumentNullException(nameof(themeProvider));
-        _worldCreationService = worldCreationService ?? throw new ArgumentNullException(nameof(worldCreationService));
-        _fileDialogService = fileDialogService;
-        _geoTiffConverter = geoTiffConverter;
-        _aiWorldGenerationService = aiWorldGenerationService;
         _questModal = new QuestModal(_mediator);
         _questDetailModal = new QuestDetailModal(_mediator);
-        _worldSelectionScreen = new WorldSelectionScreen(_worldContentGenerator, _gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider, _aiWorldGenerationService);
         _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
 
         // Initialize modal registry
         _modalRegistry = new ModalRegistry(_modalStack);
 
-        // Register modals with the registry (demonstration of migration pattern)
+        // Register modals with the registry
         RegisterModalAdapters();
 
         // Wire up pause menu events
@@ -136,20 +88,8 @@ public class ModalManager
         _modalRegistry.Register(new Adapters.QuestDetailModalAdapter(_mediator));
 
         // Special modals
-        _worldSelectionScreenAdapter = new Adapters.WorldSelectionScreenAdapter(_worldContentGenerator, _gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider, _aiWorldGenerationService);
-        _worldSelectionScreenAdapter.WorldCreated += path => WorldCreated?.Invoke(path);
-        _modalRegistry.Register(_worldSelectionScreenAdapter);
-        _modalRegistry.Register(new Adapters.WorldSelectionTilesAdapter(() => OpenWorldCreationWizard())); // User-friendly tile version with Add World
+        _modalRegistry.Register(new Adapters.WorldSelectionScreenAdapter());
         _modalRegistry.Register(new Adapters.ArchetypeSelectionModalAdapter(_archetypeSelector));
-
-        // World creation wizard - can be opened independently from multiple places
-        _worldCreationWizardAdapter = new Adapters.WorldCreationWizardAdapter(_gameSettings, _themeProvider, _worldCreationService, _fileDialogService, _geoTiffConverter, _textureProvider, _aiWorldGenerationService);
-        _worldCreationWizardAdapter.WorldCreated += path =>
-        {
-            System.Diagnostics.Debug.WriteLine($"[ModalManager] Forwarding WorldCreated: {path}");
-            WorldCreated?.Invoke(path);
-        };
-        _modalRegistry.Register(_worldCreationWizardAdapter);
 
         // Note: PauseMenu and Settings are not migrated as they have special rendering requirements
     }
@@ -170,8 +110,6 @@ public class ModalManager
 
     // Modal state - derived from stack (read-only)
     public bool ShowWorldSelection => _modalStack.Contains("WorldSelection");
-    public bool ShowWorldSelectionTiles => _modalStack.Contains("WorldSelectionTiles");
-    public bool ShowWorldCreationWizard => _modalStack.Contains("WorldCreationWizard");
     public bool ShowArchetypeSelection => _modalStack.Contains("ArchetypeSelection");
     public bool ShowAvatarInfo => _modalStack.Contains("AvatarInfo");
     public bool ShowCharacters => _modalStack.Contains("Characters");
@@ -247,8 +185,6 @@ public class ModalManager
     }
 
     public void OpenWorldSelection() => OpenModal("WorldSelection");
-    public void OpenWorldSelectionTiles() => OpenModal("WorldSelectionTiles");
-    public void OpenWorldCreationWizard() => OpenModal("WorldCreationWizard");
     public void OpenArchetypeSelection() => OpenModal("ArchetypeSelection");
     public void OpenAvatarInfo() => OpenModal("AvatarInfo");
     public void OpenCharacters() => OpenModal("Characters");

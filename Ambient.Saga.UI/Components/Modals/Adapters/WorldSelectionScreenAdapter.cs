@@ -1,43 +1,13 @@
-using Ambient.Application.Contracts;
-using Ambient.Application.WorldCreation;
-using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.UI.Services;
-using Microsoft.Extensions.Logging;
 
 namespace Ambient.Saga.UI.Components.Modals.Adapters;
 
 /// <summary>
-/// Adapter for WorldSelectionScreen to work with the Modal Registry Pattern.
+/// Adapter for simplified WorldSelectionScreen to work with the Modal Registry Pattern.
 /// </summary>
 public class WorldSelectionScreenAdapter : IModal
 {
-    private readonly WorldSelectionScreen _modal;
-
-    public event Action<string>? WorldCreated;
-
-    public WorldSelectionScreenAdapter(
-        IWorldContentGenerator worldContentGenerator,
-        IGameSettings gameSettings,
-        IThemeProvider themeProvider,
-        IWorldCreationService worldCreationService,
-        IFileDialogService? fileDialogService,
-        IGeoTiffConverter? geoTiffConverter,
-        ITextureProvider? textureProvider,
-        IAIWorldGenerationService? aiWorldGenerationService,
-        ILogger? logger = null)
-    {
-        _modal = new WorldSelectionScreen(
-            worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator)),
-            gameSettings ?? throw new ArgumentNullException(nameof(gameSettings)),
-            themeProvider ?? throw new ArgumentNullException(nameof(themeProvider)),
-            worldCreationService ?? throw new ArgumentNullException(nameof(worldCreationService)),
-            fileDialogService,
-            geoTiffConverter,
-            textureProvider, aiWorldGenerationService, logger);
-
-        _modal.WorldCreated += path => WorldCreated?.Invoke(path);
-    }
+    private readonly WorldSelectionScreen _modal = new();
 
     public string Name => "WorldSelection";
 
@@ -67,13 +37,5 @@ public class WorldSelectionScreenAdapter : IModal
     public void OnClosed()
     {
         System.Diagnostics.Debug.WriteLine("[WorldSelectionScreen] Closed");
-    }
-
-    /// <summary>
-    /// Sets the texture provider for rendering terrain previews.
-    /// </summary>
-    public void SetTextureProvider(ITextureProvider textureProvider)
-    {
-        _modal.SetTextureProvider(textureProvider);
     }
 }

@@ -104,7 +104,6 @@ public class WorldMapUI
             if (_viewModel.CurrentWorld != null)
             {
                 _modalManager.CloseModal("WorldSelection");
-                _modalManager.CloseModal("WorldSelectionTiles");
             }
         }
     }

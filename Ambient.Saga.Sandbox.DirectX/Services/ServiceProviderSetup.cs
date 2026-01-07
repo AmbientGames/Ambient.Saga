@@ -97,11 +97,7 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             {
                 var selector = sp.GetRequiredService<ImGuiArchetypeSelector>();
                 var mediator = sp.GetRequiredService<IMediator>();
-                var worldContentGenerator = sp.GetRequiredService<IWorldContentGenerator>();
-                var gameSettings = sp.GetRequiredService<IGameSettings>();
-                var themeProvider = sp.GetRequiredService<IThemeProvider>();
-                var worldCreationService = sp.GetRequiredService<IWorldCreationService>();
-                var modalManager = new ModalManager(selector, mediator, worldContentGenerator, gameSettings, themeProvider, worldCreationService, null, null, null, null, null);
+                var modalManager = new ModalManager(selector, mediator, null);
                 selector.SetModalManager(modalManager); // Wire up circular reference
                 return modalManager;
             });
