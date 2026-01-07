@@ -1,10 +1,9 @@
 using Ambient.Application.Contracts;
-using Ambient.Application.WorldCreation;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.UI.Services;
 using ImGuiNET;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Modals;
@@ -25,67 +24,20 @@ public class WorldSelectionScreen
 {
     private readonly IWorldContentGenerator _worldContentGenerator;
     private readonly IGameSettings _gameSettings;
-    private readonly WorldCreationWizard _worldCreationWizard;
-    private readonly ILogger? _logger;
-
+    private readonly ILogger<WorldSelectionScreen>? _logger;
     private string? _lastGenerationMessage;
     private bool _showGenerationMessage;
     private Task? _generationTask;
     private bool _isGenerating;
-    private bool _showWorldCreationWizard;
-
-    /// <summary>
-    /// Event raised when a world is successfully created.
-    /// </summary>
-    public event Action<string>? WorldCreated;
 
     public WorldSelectionScreen(
         IWorldContentGenerator worldContentGenerator,
         IGameSettings gameSettings,
-        IThemeProvider themeProvider,
-        IWorldCreationService worldCreationService,
-        IFileDialogService? fileDialogService,
-        IGeoTiffConverter? geoTiffConverter,
-        ITextureProvider? textureProvider,
-        IAIWorldGenerationService? aiWorldGenerationService,
-        ILogger? logger = null)
+        ILogger<WorldSelectionScreen>? logger = null)
     {
         _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _logger = logger;
-
-        // Create embedded wizard instance
-        _worldCreationWizard = new WorldCreationWizard(
-            gameSettings,
-            themeProvider,
-            worldCreationService,
-            fileDialogService,
-            geoTiffConverter,
-            textureProvider,
-            aiWorldGenerationService,
-            logger);
-
-        // Handle wizard completion
-        _worldCreationWizard.WorldCreated += OnWorldCreated;
-    }
-
-    /// <summary>
-    /// Sets the texture provider for rendering terrain previews.
-    /// Call this after the graphics device is available.
-    /// </summary>
-    public void SetTextureProvider(ITextureProvider textureProvider)
-    {
-        _worldCreationWizard.SetTextureProvider(textureProvider);
-    }
-
-    private void OnWorldCreated(string outputPath)
-    {
-        _lastGenerationMessage = $"World created successfully at:\n{outputPath}";
-        _showGenerationMessage = true;
-        _showWorldCreationWizard = false;
-
-        // Forward event so parent can refresh world list
-        WorldCreated?.Invoke(outputPath);
     }
 
     public void Render(MainViewModel viewModel, ref bool isOpen)
@@ -130,17 +82,6 @@ public class WorldSelectionScreen
             }
             ImGui.EndCombo();
         }
-
-        ImGui.SameLine();
-        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.3f, 0.5f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.4f, 0.6f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.5f, 0.7f, 1));
-        if (ImGui.Button("+ New", new Vector2(60, 0)))
-        {
-            _worldCreationWizard.Reset();
-            _showWorldCreationWizard = true;
-        }
-        ImGui.PopStyleColor(3);
 
         ImGui.Spacing();
         ImGui.Separator();
@@ -308,11 +249,5 @@ public class WorldSelectionScreen
         }
 
         ImGui.End();
-
-        // Render World Creation Wizard if open
-        if (_showWorldCreationWizard)
-        {
-            _worldCreationWizard.Render(ref _showWorldCreationWizard);
-        }
     }
 }
