@@ -26,12 +26,13 @@ public class AvatarActionsPanel
 
         // Calculate available height for content AFTER the header is rendered
         // Reserve space for action buttons at the bottom:
-        // spacing (4) + separator (1) + spacing (4) + label (~18) + 4 buttons (25 each) + spacing between (4*3) = ~155
-        var actionsHeight = 155f;
+        // spacing + separator + label + 4 buttons with spacing
+        var buttonHeight = ImGui.GetFrameHeight();
+        var actionsHeight = ImGui.GetFrameHeightWithSpacing() * 6; // Actions label + 4 buttons + separator/spacing
         var availableHeight = ImGui.GetContentRegionAvail().Y - actionsHeight;
 
         // Tab bar with scrollable content area
-        ImGui.BeginChild("AvatarTabsContainer", new Vector2(0, availableHeight), ImGuiChildFlags.None);
+        ImGui.BeginChild("AvatarTabsContainer", new Vector2(ImGuiSizes.Fill, availableHeight), ImGuiChildFlags.None);
 
         if (ImGui.BeginTabBar("AvatarTabs", ImGuiTabBarFlags.None))
         {
@@ -63,22 +64,22 @@ public class AvatarActionsPanel
         ImGui.Separator();
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Actions:");
 
-        if (ImGui.Button("Quest Log", new Vector2(-1, 25)))
+        if (ImGui.Button("Quest Log", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             modalManager.OpenQuestLog();
         }
 
-        if (ImGui.Button("View Characters", new Vector2(-1, 25)))
+        if (ImGui.Button("View Characters", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             modalManager.OpenCharacters();
         }
 
-        if (ImGui.Button("View World Catalog", new Vector2(-1, 25)))
+        if (ImGui.Button("View World Catalog", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             modalManager.OpenWorldCatalog();
         }
 
-        if (ImGui.Button("Faction Reputation", new Vector2(-1, 25)))
+        if (ImGui.Button("Faction Reputation", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             modalManager.OpenFactionReputation();
         }
@@ -86,7 +87,7 @@ public class AvatarActionsPanel
 
     private void RenderAvatarInfoTab(MainViewModel viewModel)
     {
-        ImGui.BeginChild("AvatarInfoScroll", new Vector2(0, 0), ImGuiChildFlags.None);
+        ImGui.BeginChild("AvatarInfoScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
 
         // Position
         ImGui.TextColored(new Vector4(1, 1, 0, 1), "Position:");
@@ -146,7 +147,9 @@ public class AvatarActionsPanel
                         var affinity = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?
                             .FirstOrDefault(a => a.RefName == archetype.AffinityRef);
                         var affinityName = affinity?.DisplayName ?? archetype.AffinityRef;
-                        ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), $"Affinity: {affinityName}");
+                        ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), "Affinity:");
+                        ImGui.SameLine();
+                        ImGui.Text(affinityName);
                     }
 
                     // Archetype bias (permanent stat modifiers)
@@ -200,8 +203,10 @@ public class AvatarActionsPanel
                 {
                     foreach (var block in caps.Blocks)
                     {
+                        var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(block.BlockRef);
+                        var blockName = blockDef?.DisplayName ?? block.BlockRef;
                         ImGui.Indent();
-                        ImGui.BulletText($"{block.BlockRef} x{block.Quantity}");
+                        ImGui.BulletText($"{blockName} x{block.Quantity}");
                         ImGui.Unindent();
                     }
                 }
@@ -214,8 +219,10 @@ public class AvatarActionsPanel
                 {
                     foreach (var tool in caps.Tools)
                     {
+                        var toolDef = viewModel.CurrentWorld?.Gameplay?.Tools?.FirstOrDefault(t => t.RefName == tool.ToolRef);
+                        var toolName = toolDef?.DisplayName ?? tool.ToolRef;
                         ImGui.Indent();
-                        ImGui.BulletText($"{tool.ToolRef} ({tool.Condition:P0})");
+                        ImGui.BulletText($"{toolName} ({tool.Condition:P0})");
                         ImGui.Unindent();
                     }
                 }
@@ -466,7 +473,7 @@ public class AvatarActionsPanel
                         {
                             ImGui.Spacing();
                             ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Matchups:");
-                            ImGui.Indent(10);
+                            ImGui.Indent(10 * UIConstants.DpiScale);
                             foreach (var matchup in affinityDef.Matchup)
                             {
                                 var targetAffinityDef = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == matchup.TargetAffinityRef);
@@ -476,7 +483,7 @@ public class AvatarActionsPanel
                                     : new Vector4(1, 0.5f, 0.2f, 1); // Orange for weak
                                 ImGui.TextColored(color, $"vs {targetName}: {matchup.Multiplier}x");
                             }
-                            ImGui.Unindent(10);
+                            ImGui.Unindent(10 * UIConstants.DpiScale);
                         }
                     }
 
@@ -538,31 +545,42 @@ public class AvatarActionsPanel
 
             var avatar = viewModel.PlayerAvatar;
 
-            // Play time
-            var playTimeHours = avatar.PlayTimeHours;
-            if (playTimeHours >= 1)
+            if (ImGui.BeginTable("LifetimeStatsTable", 2, ImGuiTableFlags.SizingFixedFit))
             {
-                RenderStatLine("Play Time:", $"{playTimeHours:F1} hours");
-            }
-            else
-            {
-                RenderStatLine("Play Time:", $"{playTimeHours * 60:F0} minutes");
-            }
+                ImGui.TableSetupColumn("Label", ImGuiTableColumnFlags.WidthFixed);
+                ImGui.TableSetupColumn("Value", ImGuiTableColumnFlags.WidthStretch);
 
-            // Distance traveled
-            var distance = avatar.DistanceTraveled;
-            if (distance >= 1000)
-            {
-                RenderStatLine("Distance:", $"{distance / 1000:F2} km");
-            }
-            else
-            {
-                RenderStatLine("Distance:", $"{distance:F0} m");
-            }
+                // Play time
+                var playTimeHours = avatar.PlayTimeHours;
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text("Play Time:");
+                ImGui.TableNextColumn();
+                ImGui.Text(playTimeHours >= 1 ? $"{playTimeHours:F1} hours" : $"{playTimeHours * 60:F0} minutes");
 
-            // Blocks
-            RenderStatLine("Blocks Placed:", $"{avatar.BlocksPlaced:N0}");
-            RenderStatLine("Blocks Destroyed:", $"{avatar.BlocksDestroyed:N0}");
+                // Distance traveled
+                var distance = avatar.DistanceTraveled;
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text("Distance:");
+                ImGui.TableNextColumn();
+                ImGui.Text(distance >= 1000 ? $"{distance / 1000:F2} km" : $"{distance:F0} m");
+
+                // Blocks
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text("Blocks Placed:");
+                ImGui.TableNextColumn();
+                ImGui.Text($"{avatar.BlocksPlaced:N0}");
+
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text("Blocks Destroyed:");
+                ImGui.TableNextColumn();
+                ImGui.Text($"{avatar.BlocksDestroyed:N0}");
+
+                ImGui.EndTable();
+            }
         }
 
         ImGui.EndChild();
@@ -570,7 +588,7 @@ public class AvatarActionsPanel
 
     private void RenderQuestsTab(MainViewModel viewModel)
     {
-        ImGui.BeginChild("QuestsScroll", new Vector2(0, 0), ImGuiChildFlags.None);
+        ImGui.BeginChild("QuestsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
 
         // Show Completed toggle
         ImGui.Checkbox("Show Completed", ref _showCompletedQuests);
@@ -591,8 +609,10 @@ public class AvatarActionsPanel
 
             foreach (var quest in viewModel.QuestLog.ActiveQuests)
             {
+                // Card height: title + description + progress bar (about 3.5 rows)
+                var questCardHeight = ImGui.GetFrameHeightWithSpacing() * 3.5f;
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.1f, 0.3f));
-                ImGui.BeginChild($"quest_{quest.RefName}", new Vector2(0, 80), ImGuiChildFlags.Borders);
+                ImGui.BeginChild($"quest_{quest.RefName}", new Vector2(ImGuiSizes.Fill, questCardHeight), ImGuiChildFlags.Borders);
 
                 ImGui.TextColored(new Vector4(1, 1, 0, 1), quest.DisplayName ?? quest.RefName);
                 if (!string.IsNullOrEmpty(quest.Description))
@@ -602,11 +622,11 @@ public class AvatarActionsPanel
 
                 // Progress bar
                 var progress = (float)quest.ProgressPercentage / 100f;
-                ImGui.ProgressBar(progress, new Vector2(-1, 20), quest.ProgressText);
+                ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), quest.ProgressText);
 
                 // Make the card clickable
                 ImGui.SetCursorPos(new Vector2(0, 0));
-                ImGui.InvisibleButton($"quest_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, 80));
+                ImGui.InvisibleButton($"quest_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, questCardHeight - ImGui.GetStyle().WindowPadding.Y * 2));
 
                 if (ImGui.IsItemHovered())
                 {
@@ -639,8 +659,10 @@ public class AvatarActionsPanel
 
             foreach (var quest in viewModel.QuestLog.CompletedQuests)
             {
+                // Completed card height: title + description (about 2.5 rows)
+                var completedCardHeight = ImGui.GetFrameHeightWithSpacing() * 2.5f;
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.0f, 0.2f, 0.0f, 0.2f));
-                ImGui.BeginChild($"quest_completed_{quest.RefName}", new Vector2(0, 60), ImGuiChildFlags.Borders);
+                ImGui.BeginChild($"quest_completed_{quest.RefName}", new Vector2(ImGuiSizes.Fill, completedCardHeight), ImGuiChildFlags.Borders);
 
                 ImGui.Text($"[x] {quest.DisplayName ?? quest.RefName}");
                 if (!string.IsNullOrEmpty(quest.Description))
@@ -650,7 +672,7 @@ public class AvatarActionsPanel
 
                 // Make the card clickable
                 ImGui.SetCursorPos(new Vector2(0, 0));
-                ImGui.InvisibleButton($"quest_completed_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, 60));
+                ImGui.InvisibleButton($"quest_completed_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, completedCardHeight - ImGui.GetStyle().WindowPadding.Y * 2));
 
                 if (ImGui.IsItemHovered())
                 {
@@ -674,7 +696,7 @@ public class AvatarActionsPanel
 
     private void RenderAchievementsTab(MainViewModel viewModel)
     {
-        ImGui.BeginChild("AchievementsScroll", new Vector2(0, 0), ImGuiChildFlags.None);
+        ImGui.BeginChild("AchievementsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
 
         if (viewModel.Achievements == null)
         {
@@ -702,8 +724,10 @@ public class AvatarActionsPanel
 
             foreach (var achievement in viewModel.Achievements.UnlockedAchievements)
             {
+                // Unlocked achievement card: icon/title + description + status (about 3 rows)
+                var unlockedCardHeight = ImGui.GetFrameHeightWithSpacing() * 3;
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.0f, 0.2f, 0.0f, 0.2f));
-                ImGui.BeginChild($"ach_unlocked_{achievement.RefName}", new Vector2(0, 70), ImGuiChildFlags.Borders);
+                ImGui.BeginChild($"ach_unlocked_{achievement.RefName}", new Vector2(ImGuiSizes.Fill, unlockedCardHeight), ImGuiChildFlags.Borders);
 
                 ImGui.Text($"🏆 {achievement.DisplayName ?? achievement.RefName}");
                 if (!string.IsNullOrEmpty(achievement.Description))
@@ -735,8 +759,10 @@ public class AvatarActionsPanel
 
             foreach (var achievement in viewModel.Achievements.LockedAchievements)
             {
+                // Locked achievement card: title + description + criteria + progress (about 4 rows)
+                var lockedCardHeight = ImGui.GetFrameHeightWithSpacing() * 4;
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.1f, 0.2f));
-                ImGui.BeginChild($"ach_locked_{achievement.RefName}", new Vector2(0, 90), ImGuiChildFlags.Borders);
+                ImGui.BeginChild($"ach_locked_{achievement.RefName}", new Vector2(ImGuiSizes.Fill, lockedCardHeight), ImGuiChildFlags.Borders);
 
                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"[Locked] {achievement.DisplayName ?? achievement.RefName}");
                 if (!string.IsNullOrEmpty(achievement.Description))
@@ -750,7 +776,7 @@ public class AvatarActionsPanel
 
                 // Progress bar
                 var progress = (float)achievement.ProgressPercentage / 100f;
-                ImGui.ProgressBar(progress, new Vector2(-1, 15), achievement.ProgressText);
+                ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight() * 0.7f), achievement.ProgressText);
 
                 ImGui.EndChild();
                 ImGui.PopStyleColor();
@@ -763,8 +789,9 @@ public class AvatarActionsPanel
 
     private void RenderStatLine(string label, string value)
     {
+        var scale = UIConstants.DpiScale;
         ImGui.Text(label);
-        ImGui.SameLine(120);
+        ImGui.SameLine(120 * scale);
         ImGui.Text(value);
     }
 

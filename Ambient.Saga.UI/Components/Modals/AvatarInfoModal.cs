@@ -1,5 +1,6 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI;
 using ImGuiNET;
 using System.Numerics;
 using Ambient.Saga.UI.Components.Utilities;
@@ -25,7 +26,9 @@ public class AvatarInfoModal
                 var avatar = viewModel.PlayerAvatar;
 
                 // Header
+                ImGui.PushFont(UIConstants.FontTitle);
                 ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), avatar.DisplayName ?? "Avatar");
+                ImGui.PopFont();
                 if (!string.IsNullOrEmpty(avatar.ArchetypeRef))
                 {
                     ImGui.SameLine();
@@ -131,7 +134,9 @@ public class AvatarInfoModal
             if (!string.IsNullOrEmpty(avatar.ActiveAffinityRef))
             {
                 ImGui.Spacing();
-                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Active Affinity: {avatar.ActiveAffinityRef}");
+                var activeAffinity = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(avatar.ActiveAffinityRef);
+                var activeAffinityName = activeAffinity?.DisplayName ?? avatar.ActiveAffinityRef;
+                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Active Affinity: {activeAffinityName}");
             }
         }
 
@@ -261,7 +266,7 @@ public class AvatarInfoModal
             {
                 foreach (var block in caps.Blocks)
                 {
-                    var blockInfo = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRef(block.BlockRef);
+                    var blockInfo = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(block.BlockRef);
                     var name = blockInfo?.DisplayName ?? block.BlockRef;
                     ImGui.BulletText($"{name} x{block.Quantity}");
 
@@ -360,8 +365,9 @@ public class AvatarInfoModal
             var character = viewModel.CurrentWorld?.TryGetCharacterByRefName(member.CharacterRef);
             var name = character?.DisplayName ?? member.CharacterRef;
 
+            var memberCardHeight = ImGui.GetFrameHeightWithSpacing() * 3;
             ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.15f, 0.2f, 0.15f, 0.4f));
-            ImGui.BeginChild($"party_{member.CharacterRef}", new Vector2(0, 80), ImGuiChildFlags.Borders);
+            ImGui.BeginChild($"party_{member.CharacterRef}", new Vector2(ImGuiSizes.Fill, memberCardHeight), ImGuiChildFlags.Borders);
 
             ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), name);
             ImGui.Text($"Slot: {member.SlotRef}");
@@ -415,8 +421,9 @@ public class AvatarInfoModal
             var name = character?.DisplayName ?? summon.CapturedFromCharacterRef ?? "Unknown";
             var affinityName = affinity?.DisplayName ?? summon.AffinityRef ?? "None";
 
+            var summonCardHeight = ImGui.GetFrameHeightWithSpacing() * 2.5f;
             ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.2f, 0.15f, 0.2f, 0.4f));
-            ImGui.BeginChild($"summon_{summon.CapturedFromCharacterRef}", new Vector2(0, 70), ImGuiChildFlags.Borders);
+            ImGui.BeginChild($"summon_{summon.CapturedFromCharacterRef}", new Vector2(ImGuiSizes.Fill, summonCardHeight), ImGuiChildFlags.Borders);
 
             ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), name);
             ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Affinity: {affinityName}");
@@ -434,10 +441,12 @@ public class AvatarInfoModal
     }
     private void RenderStatBar(string label, double value, Vector4 color)
     {
+        var scale = UIConstants.DpiScale;
+        ImGui.AlignTextToFramePadding();
         ImGui.Text($"{label}:");
-        ImGui.SameLine(110);
+        ImGui.SameLine(110 * scale);
         ImGui.PushStyleColor(ImGuiCol.PlotHistogram, color);
-        ImGui.ProgressBar((float)value, new Vector2(-1, 18), $"{value * 100:F0}%");
+        ImGui.ProgressBar((float)value, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), $"{value * 100:F0}%");
         ImGui.PopStyleColor();
     }
 }

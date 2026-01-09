@@ -8,6 +8,8 @@ using Ambient.Saga.UI.Components.Rendering;
 
 namespace Ambient.Saga.UI.Components;
 
+using Ambient.Saga.UI;
+
 /// <summary>
 /// Which panel is currently active in game mode.
 /// In game mode, only one panel is shown at a time (press key to toggle).
@@ -223,10 +225,15 @@ public class GameplayOverlay
 
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
+        var scale = UIConstants.DpiScale;
 
-        // Full screen with consistent 10px margins (leaving room for HUD bar at bottom)
-        var margin = 10f;
-        var hudHeight = 40f;
+        // Full screen with consistent margins (leaving room for HUD bar at bottom)
+        var margin = 10f * scale;
+        // Calculate HUD height dynamically (same as DefaultHudRenderer)
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
         var panelX = margin;
         var panelY = margin;
         var panelWidth = displaySize.X - (margin * 2);
@@ -255,12 +262,20 @@ public class GameplayOverlay
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
+        var scale = UIConstants.DpiScale;
+
+        // Calculate HUD height dynamically (same as DefaultHudRenderer)
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
 
         // Panel top-left, full height
-        var panelWidth = 350f;
-        var panelHeight = displaySize.Y - 60; // Leave room for HUD bar + margin
-        var panelX = 10f;
-        var panelY = 10f;
+        var margin = 10f * scale;
+        var panelWidth = 350f * scale;
+        var panelHeight = displaySize.Y - hudHeight - (margin * 2); // Leave room for HUD bar + margins
+        var panelX = margin;
+        var panelY = margin;
 
         ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
         ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
@@ -285,12 +300,20 @@ public class GameplayOverlay
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
+        var scale = UIConstants.DpiScale;
+
+        // Calculate HUD height dynamically (same as DefaultHudRenderer)
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
 
         // Panel top-left, full height
-        var panelWidth = 350f;
-        var panelHeight = displaySize.Y - 60; // Leave room for HUD bar + margin
-        var panelX = 10f;
-        var panelY = 10f;
+        var margin = 10f * scale;
+        var panelWidth = 350f * scale;
+        var panelHeight = displaySize.Y - hudHeight - (margin * 2); // Leave room for HUD bar + margins
+        var panelX = margin;
+        var panelY = margin;
 
         ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
         ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
@@ -323,12 +346,20 @@ public class GameplayOverlay
 
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
+        var scale = UIConstants.DpiScale;
+
+        // Calculate HUD height dynamically (same as DefaultHudRenderer)
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
 
         // Panel top-left, full height
-        var panelWidth = 350f;
-        var panelHeight = displaySize.Y - 60; // Leave room for HUD bar + margin
-        var panelX = 10f;
-        var panelY = 10f;
+        var margin = 10f * scale;
+        var panelWidth = 350f * scale;
+        var panelHeight = displaySize.Y - hudHeight - (margin * 2); // Leave room for HUD bar + margins
+        var panelX = margin;
+        var panelY = margin;
 
         ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
         ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);

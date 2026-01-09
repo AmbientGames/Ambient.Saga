@@ -1,6 +1,8 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System;
 using System.Numerics;
@@ -32,9 +34,13 @@ public class ItemSelectionModal
     /// </summary>
     public void Render()
     {
-        ImGui.TextColored(new Vector4(0.8f, 0.3f, 0.3f, 1.0f), "💊 USE ITEM");
+        ImGui.PushFont(UIConstants.FontTitle);
+        ImGui.TextColored(new Vector4(0.8f, 0.3f, 0.3f, 1.0f), "USE ITEM");
+        ImGui.PopFont();
         ImGui.Separator();
         ImGui.Spacing();
+
+        var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
         // Check if player has any items
         if (_player.Capabilities?.Consumables == null || _player.Capabilities.Consumables.Length == 0)
@@ -42,14 +48,14 @@ public class ItemSelectionModal
             ImGui.Text("No items available!");
             ImGui.Spacing();
 
-            if (ImGui.Button("OK", new Vector2(200, 40)))
+            if (ImGui.Button("OK", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 Cancelled?.Invoke();
             }
             return;
         }
 
-        // Item buttons
+        // Item buttons - full width
         foreach (var itemEntry in _player.Capabilities.Consumables)
         {
             if (itemEntry.Quantity <= 0) continue; // Skip empty items
@@ -58,7 +64,7 @@ public class ItemSelectionModal
             if (consumable == null) continue;
 
             var itemRef = itemEntry.ConsumableRef; // Capture for lambda
-            if (ImGui.Button($"{consumable.DisplayName} x{itemEntry.Quantity}", new Vector2(400, 50)))
+            if (ImGui.Button($"{consumable.DisplayName} x{itemEntry.Quantity}", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 Console.WriteLine($"Item selected: {consumable.DisplayName} ({itemRef})");
                 ItemSelected?.Invoke(itemRef);
@@ -67,8 +73,8 @@ public class ItemSelectionModal
 
         ImGui.Spacing();
 
-        // Cancel button
-        if (ImGui.Button("Cancel", new Vector2(400, 40)))
+        // Cancel button - full width
+        if (ImGui.Button("Cancel", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             Console.WriteLine("Item selection cancelled");
             Cancelled?.Invoke();

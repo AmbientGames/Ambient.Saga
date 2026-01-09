@@ -1,6 +1,8 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -30,7 +32,9 @@ public class AchievementsModal
             }
 
             // Header with completion stats
+            ImGui.PushFont(UIConstants.FontTitle);
             ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "ACHIEVEMENTS");
+            ImGui.PopFont();
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"({viewModel.Achievements.CompletionText})");
 
@@ -41,7 +45,7 @@ public class AchievementsModal
             {
                 var overallProgress = (float)unlockedCount / totalCount;
                 ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(1, 0.843f, 0, 1));
-                ImGui.ProgressBar(overallProgress, new Vector2(-1, 25), $"{unlockedCount}/{totalCount} Unlocked");
+                ImGui.ProgressBar(overallProgress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), $"{unlockedCount}/{totalCount} Unlocked");
                 ImGui.PopStyleColor();
             }
 
@@ -55,8 +59,9 @@ public class AchievementsModal
 
             ImGui.Spacing();
 
-            // Scrolling region for achievements
-            ImGui.BeginChild("AchievementsList", new Vector2(0, -40), ImGuiChildFlags.Borders);
+            // Scrolling region for achievements - reserve space for footer
+            var footerHeight = ImGui.GetFrameHeightWithSpacing() * 1.5f;
+            ImGui.BeginChild("AchievementsList", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
             // Unlocked Achievements
             if (viewModel.Achievements.UnlockedAchievements?.Count > 0)
@@ -103,7 +108,7 @@ public class AchievementsModal
             ImGui.EndChild();
 
             // Footer with refresh button
-            if (ImGui.Button("Refresh", new Vector2(100, 30)))
+            if (ImGui.Button("Refresh", new Vector2(100, ImGui.GetFrameHeight())))
             {
                 viewModel.Achievements.RefreshAchievements();
             }
@@ -120,8 +125,10 @@ public class AchievementsModal
             ? new Vector4(0.1f, 0.3f, 0.1f, 0.4f)
             : new Vector4(0.15f, 0.15f, 0.15f, 0.4f);
 
+        // Calculate card height dynamically based on content rows
+        var cardHeight = ImGui.GetFrameHeightWithSpacing() * 4;
         ImGui.PushStyleColor(ImGuiCol.ChildBg, bgColor);
-        ImGui.BeginChild($"achievement_{achievement.RefName}", new Vector2(0, 100), ImGuiChildFlags.Borders);
+        ImGui.BeginChild($"achievement_{achievement.RefName}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
 
         // Icon and title
         var icon = isUnlocked ? "*" : "-";
@@ -143,7 +150,7 @@ public class AchievementsModal
         {
             var progress = achievement.ProgressPercentage / 100f;
             ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.3f, 0.6f, 1, 1));
-            ImGui.ProgressBar(progress, new Vector2(-1, 18), $"{achievement.CurrentValue:F0} / {achievement.Threshold:F0}");
+            ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight() * 0.8f), $"{achievement.CurrentValue:F0} / {achievement.Threshold:F0}");
             ImGui.PopStyleColor();
         }
         else

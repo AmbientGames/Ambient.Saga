@@ -43,11 +43,12 @@ public class DevToolsPanel
 
         // Steam Testing Section
         ImGui.Spacing();
+        var devButtonHeight = ImGui.GetFrameHeight();
         if (ImGui.CollapsingHeader("Steam Testing", ImGuiTreeNodeFlags.DefaultOpen))
         {
-            ImGui.Indent(10);
+            ImGui.Indent(10 * UIConstants.DpiScale);
 
-            if (ImGui.Button("Test Achievement (ACH_HEAVY_FIRE)", new Vector2(-10, 25)))
+            if (ImGui.Button("Test Achievement (ACH_HEAVY_FIRE)", new Vector2(-10, devButtonHeight)))
             {
                 if (viewModel.TestSteamAchievementCommand?.CanExecute(null) == true)
                 {
@@ -60,20 +61,20 @@ public class DevToolsPanel
                 ImGui.SetTooltip("Directly set ACH_HEAVY_FIRE achievement to Steam and query status");
             }
 
-            ImGui.Unindent(10);
+            ImGui.Unindent(10 * UIConstants.DpiScale);
         }
 
         // Interaction Testing Section
         ImGui.Spacing();
         if (ImGui.CollapsingHeader("Interaction Testing", ImGuiTreeNodeFlags.DefaultOpen))
         {
-            ImGui.Indent(10);
+            ImGui.Indent(10 * UIConstants.DpiScale);
 
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "Spawn & interact with test characters:");
             ImGui.Spacing();
 
             // NPC Dialogue Test
-            if (ImGui.Button("Test NPC Dialogue", new Vector2(-10, 25)))
+            if (ImGui.Button("Test NPC Dialogue", new Vector2(-10, devButtonHeight)))
             {
                 _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.NPC, "Dialogue");
             }
@@ -83,7 +84,7 @@ public class DevToolsPanel
             }
 
             // Merchant Dialogue (can transition to trade)
-            if (ImGui.Button("Test Merchant Dialogue", new Vector2(-10, 25)))
+            if (ImGui.Button("Test Merchant Dialogue", new Vector2(-10, devButtonHeight)))
             {
                 _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Merchant, "Dialogue");
             }
@@ -93,7 +94,7 @@ public class DevToolsPanel
             }
 
             // Boss Dialogue (can transition to combat)
-            if (ImGui.Button("Test Boss Dialogue", new Vector2(-10, 25)))
+            if (ImGui.Button("Test Boss Dialogue", new Vector2(-10, devButtonHeight)))
             {
                 _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Boss, "Dialogue");
             }
@@ -103,7 +104,7 @@ public class DevToolsPanel
             }
 
             // Hostile Dialogue (can transition to combat)
-            if (ImGui.Button("Test Hostile Dialogue", new Vector2(-10, 25)))
+            if (ImGui.Button("Test Hostile Dialogue", new Vector2(-10, devButtonHeight)))
             {
                 _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Hostile, "Dialogue");
             }
@@ -116,7 +117,7 @@ public class DevToolsPanel
             ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "Direct modal tests:");
 
             // Direct Trade Modal
-            if (ImGui.Button("Direct Trade Modal", new Vector2(-10, 25)))
+            if (ImGui.Button("Direct Trade Modal", new Vector2(-10, devButtonHeight)))
             {
                 _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Merchant, "MerchantTrade");
             }
@@ -126,7 +127,7 @@ public class DevToolsPanel
             }
 
             // Direct Battle Modal
-            if (ImGui.Button("Direct Battle Modal", new Vector2(-10, 25)))
+            if (ImGui.Button("Direct Battle Modal", new Vector2(-10, devButtonHeight)))
             {
                 _ = SpawnAndOpenModalAsync(viewModel, modalManager, DevCharacterType.Boss, "BossBattle");
             }
@@ -135,16 +136,16 @@ public class DevToolsPanel
                 ImGui.SetTooltip("Open battle window directly (skip dialogue)");
             }
 
-            ImGui.Unindent(10);
+            ImGui.Unindent(10 * UIConstants.DpiScale);
         }
 
         // Character Spawning Section (legacy - view characters)
         ImGui.Spacing();
         if (ImGui.CollapsingHeader("Character Browser"))
         {
-            ImGui.Indent(10);
+            ImGui.Indent(10 * UIConstants.DpiScale);
 
-            if (ImGui.Button("View All Characters", new Vector2(-10, 25)))
+            if (ImGui.Button("View All Characters", new Vector2(-10, devButtonHeight)))
             {
                 if (viewModel.ViewCharactersCommand.CanExecute(null))
                 {
@@ -157,14 +158,14 @@ public class DevToolsPanel
                 ImGui.SetTooltip("Open character list to browse defined characters");
             }
 
-            ImGui.Unindent(10);
+            ImGui.Unindent(10 * UIConstants.DpiScale);
         }
 
         // Debug Info Section
         ImGui.Spacing();
         if (ImGui.CollapsingHeader("Debug Info"))
         {
-            ImGui.Indent(10);
+            ImGui.Indent(10 * UIConstants.DpiScale);
 
             // Avatar position
             if (viewModel.PlayerAvatar != null)
@@ -187,14 +188,14 @@ public class DevToolsPanel
             ImGui.Spacing();
             ImGui.Text($"Active Characters: {viewModel.Characters?.Count ?? 0}");
 
-            ImGui.Unindent(10);
+            ImGui.Unindent(10 * UIConstants.DpiScale);
         }
 
         // Transaction Log Section (for Saga debugging)
         ImGui.Spacing();
         if (ImGui.CollapsingHeader("Saga Debug"))
         {
-            ImGui.Indent(10);
+            ImGui.Indent(10 * UIConstants.DpiScale);
 
             if (viewModel.Sagas?.Count > 0)
             {
@@ -213,7 +214,7 @@ public class DevToolsPanel
                 ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No active sagas");
             }
 
-            ImGui.Unindent(10);
+            ImGui.Unindent(10 * UIConstants.DpiScale);
         }
     }
 

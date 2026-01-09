@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI;
 using ImGuiNET;
 using System.Numerics;
 
@@ -16,7 +17,9 @@ public class CharactersModal
         ImGui.SetNextWindowSize(new Vector2(700, 600), ImGuiCond.FirstUseEver);
         if (ImGui.Begin("Characters", ref isOpen))
         {
+            ImGui.PushFont(UIConstants.FontTitle);
             ImGui.TextColored(new Vector4(1, 1, 0, 1), "WORLD CHARACTERS");
+            ImGui.PopFont();
             ImGui.Separator();
 
             if (viewModel.Characters?.Count > 0)

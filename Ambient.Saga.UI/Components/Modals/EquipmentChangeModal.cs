@@ -1,6 +1,8 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System;
 using System.Collections.Generic;
@@ -127,7 +129,9 @@ public class EquipmentChangeModal
     /// </summary>
     public void Render()
     {
+        ImGui.PushFont(UIConstants.FontTitle);
         ImGui.TextColored(new Vector4(0.3f, 0.8f, 0.3f, 1.0f), "CHANGE LOADOUT");
+        ImGui.PopFont();
         ImGui.Separator();
         ImGui.Spacing();
 
@@ -148,13 +152,13 @@ public class EquipmentChangeModal
 
         ImGui.Spacing();
 
-        // Action buttons
-        if (ImGui.Button("Accept", new Vector2(190, 50)))
+        // Action buttons - use ButtonRow pattern for evenly spaced buttons
+        var result = ImGuiHelpers.OkCancelButtons("Accept", "Cancel");
+        if (result == 0)
         {
             OnAcceptPressed();
         }
-        ImGui.SameLine();
-        if (ImGui.Button("Cancel", new Vector2(190, 50)))
+        else if (result == 1)
         {
             Console.WriteLine("Equipment change cancelled");
             Cancelled?.Invoke();
@@ -163,13 +167,16 @@ public class EquipmentChangeModal
 
     private void RenderEquipmentSlotDropdown(string slotName)
     {
+        // Use table-like alignment with AlignTextToFramePadding
+        ImGui.AlignTextToFramePadding();
         ImGui.Text($"{slotName}:");
-        ImGui.SameLine(100);
+        ImGui.SameLine(100 * UIConstants.DpiScale);
 
         if (_slotOptions.TryGetValue(slotName, out var options) &&
             _slotSelections.TryGetValue(slotName, out var selectedIndex))
         {
-            ImGui.SetNextItemWidth(300);
+            // Fill remaining width
+            ImGuiHelpers.FullWidth();
 
             var items = options.Select(o =>
             {
@@ -187,9 +194,10 @@ public class EquipmentChangeModal
 
     private void RenderAffinityDropdown()
     {
+        ImGui.AlignTextToFramePadding();
         ImGui.Text("Affinity:");
-        ImGui.SameLine(100);
-        ImGui.SetNextItemWidth(300);
+        ImGui.SameLine(100 * UIConstants.DpiScale);
+        ImGuiHelpers.FullWidth();
 
         var items = _affinityOptions.Select(a =>
         {
@@ -202,9 +210,10 @@ public class EquipmentChangeModal
 
     private void RenderStanceDropdown()
     {
+        ImGui.AlignTextToFramePadding();
         ImGui.Text("Stance:");
-        ImGui.SameLine(100);
-        ImGui.SetNextItemWidth(300);
+        ImGui.SameLine(100 * UIConstants.DpiScale);
+        ImGuiHelpers.FullWidth();
 
         var items = _stanceOptions.Select(s =>
         {

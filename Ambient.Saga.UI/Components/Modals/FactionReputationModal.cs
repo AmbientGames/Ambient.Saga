@@ -1,5 +1,7 @@
 using Ambient.Domain;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -29,7 +31,9 @@ public class FactionReputationModal
             }
 
             // Header
+            ImGui.PushFont(UIConstants.FontTitle);
             ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "FACTION STANDINGS");
+            ImGui.PopFont();
             ImGui.Separator();
 
             // Filter
@@ -37,8 +41,8 @@ public class FactionReputationModal
             ImGui.InputTextWithHint("##Filter", "Filter factions...", ref _filterText, 100);
             ImGui.Spacing();
 
-            // Faction list
-            ImGui.BeginChild("FactionList", new Vector2(0, 0), ImGuiChildFlags.Borders);
+            // Faction list - fill remaining space
+            ImGui.BeginChild("FactionList", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.Borders);
 
             foreach (var faction in viewModel.CurrentWorld.Gameplay.Factions)
             {
@@ -63,8 +67,9 @@ public class FactionReputationModal
         var repLevel = GetReputationLevel(currentRep);
         var (levelColor, levelName) = GetReputationDisplay(repLevel);
 
+        var factionCardHeight = ImGui.GetFrameHeightWithSpacing() * 7;
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.12f, 0.12f, 0.15f, 0.6f));
-        ImGui.BeginChild($"faction_{faction.RefName}", new Vector2(0, 180), ImGuiChildFlags.Borders);
+        ImGui.BeginChild($"faction_{faction.RefName}", new Vector2(ImGuiSizes.Fill, factionCardHeight), ImGuiChildFlags.Borders);
 
         // Faction name and category
         ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), faction.DisplayName);
@@ -90,7 +95,7 @@ public class FactionReputationModal
         var (minRep, maxRep) = GetReputationRange(repLevel);
         var progress = maxRep > minRep ? (float)(currentRep - minRep) / (maxRep - minRep) : 0.5f;
         ImGui.PushStyleColor(ImGuiCol.PlotHistogram, levelColor);
-        ImGui.ProgressBar(progress, new Vector2(-1, 20), $"{levelName}");
+        ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), $"{levelName}");
         ImGui.PopStyleColor();
 
         // Faction relationships
@@ -105,7 +110,9 @@ public class FactionReputationModal
                 var relColor = rel.RelationshipType == FactionRelationshipRelationshipType.Allied
                     ? new Vector4(0.5f, 1, 0.5f, 1)
                     : new Vector4(1, 0.5f, 0.5f, 1);
-                ImGui.TextColored(relColor, $"{rel.FactionRef} ({rel.RelationshipType})");
+                var relFaction = viewModel.CurrentWorld?.Gameplay?.Factions?.FirstOrDefault(f => f.RefName == rel.FactionRef);
+                var relFactionName = relFaction?.DisplayName ?? rel.FactionRef;
+                ImGui.TextColored(relColor, $"{relFactionName} ({rel.RelationshipType})");
                 ImGui.SameLine();
             }
             ImGui.NewLine();

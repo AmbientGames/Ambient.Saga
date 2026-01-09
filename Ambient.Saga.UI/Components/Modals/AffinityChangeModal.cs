@@ -1,5 +1,7 @@
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -29,10 +31,8 @@ public class AffinityChangeModal
     {
         if (!isOpen) return;
 
-        // Center the modal
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(400, 350), ImGuiCond.FirstUseEver);
+        // Center the modal using helper
+        ImGuiHelpers.SetupModalWindow(400, 350);
 
         // Style with cyan/teal border (evasion/elemental theme)
         ImGui.PushStyleColor(ImGuiCol.Border, new Vector4(0.2f, 0.7f, 0.7f, 1.0f));
@@ -42,9 +42,9 @@ public class AffinityChangeModal
         if (ImGui.Begin("Change Affinity###AffinityChangeModal", ref isOpen, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
         {
             // Title
-            ImGui.SetWindowFontScale(1.2f);
+            ImGui.PushFont(UIConstants.FontTitle);
             ImGui.TextColored(new Vector4(0.2f, 0.8f, 0.8f, 1.0f), "Change Affinity");
-            ImGui.SetWindowFontScale(1.0f);
+            ImGui.PopFont();
             ImGui.Spacing();
 
             // Info text
@@ -80,7 +80,8 @@ public class AffinityChangeModal
                 ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.5f, 0.5f, 1.0f));
                 ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.65f, 0.65f, 1.0f));
 
-                if (ImGui.Button(isCurrent ? $"{displayName} (Current)" : displayName, new Vector2(-1, 40)))
+                var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
+                if (ImGui.Button(isCurrent ? $"{displayName} (Current)" : displayName, new Vector2(ImGuiSizes.Fill, buttonHeight)))
                 {
                     AffinitySelected?.Invoke(affinityRef);
                     isOpen = false;
@@ -103,8 +104,8 @@ public class AffinityChangeModal
             ImGui.Separator();
             ImGui.Spacing();
 
-            // Cancel button
-            if (ImGui.Button("Cancel", new Vector2(-1, 35)))
+            // Cancel button - full width
+            if (ImGui.Button("Cancel", new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight())))
             {
                 Cancelled?.Invoke();
                 isOpen = false;

@@ -1,6 +1,8 @@
 using Ambient.Application.Contracts;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -44,13 +46,20 @@ public class WorldSelectionScreen
     {
         if (!isOpen) return;
 
-        // Center the selection window
+        // Center the selection window (auto-resize with content, capped to screen)
         var viewport = ImGui.GetMainViewport();
-        ImGui.SetNextWindowPos(new Vector2(viewport.Size.X * 0.5f, viewport.Size.Y * 0.5f), ImGuiCond.Always, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(600, 461), ImGuiCond.Always);
+        var center = viewport.GetCenter();
+        var scale = UIConstants.DpiScale;
 
-        // NoTitleBar removes the close box - world selection is mandatory in sandbox
-        var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoTitleBar;
+        ImGui.SetNextWindowPos(center, ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+        ImGui.SetNextWindowSizeConstraints(
+            new Vector2(600 * scale, 461 * scale),
+            new Vector2(600 * scale, viewport.Size.Y * 0.9f));
+
+        var windowFlags =
+            ImGuiWindowFlags.NoCollapse |
+            ImGuiWindowFlags.NoTitleBar |
+            ImGuiWindowFlags.AlwaysAutoResize;
 
         if (!ImGui.Begin("World Selection", windowFlags))
         {
@@ -58,19 +67,21 @@ public class WorldSelectionScreen
             return;
         }
 
+        ImGui.PushFont(UIConstants.FontTitle);
         ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Select a World to Load");
-        ImGui.TextColored(new Vector4(1, 0.7f, 0.3f, 1), "? You must select and load a world to continue");
+        ImGui.PopFont();
         ImGui.Separator();
         ImGui.Spacing();
 
-        // World configuration selection
-        ImGui.Text("Configuration:");
-        if (ImGui.BeginCombo("##WorldConfig", viewModel.SelectedConfiguration?.RefName ?? "Select world..."))
+        // World selection
+        ImGui.Text("World:");
+        ImGui.SetNextItemWidth(ImGuiSizes.Fill);
+        if (ImGui.BeginCombo("##WorldConfig", viewModel.SelectedConfiguration?.DisplayName ?? viewModel.SelectedConfiguration?.RefName ?? "Select a world..."))
         {
             foreach (var config in viewModel.AvailableConfigurations)
             {
                 var isSelected = viewModel.SelectedConfiguration?.RefName == config.RefName;
-                if (ImGui.Selectable(config.RefName, isSelected))
+                if (ImGui.Selectable(config.DisplayName ?? config.RefName, isSelected))
                 {
                     viewModel.SelectedConfiguration = config;
                 }
@@ -87,20 +98,18 @@ public class WorldSelectionScreen
         ImGui.Separator();
         ImGui.Spacing();
 
-        // Display selected configuration info
+        // Display selected world info
         if (viewModel.SelectedConfiguration != null)
         {
-            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Selected World:");
-            ImGui.Indent(10);
-            ImGui.Text($"Name: {viewModel.SelectedConfiguration.RefName}");
-            ImGui.Text($"Display Name: {viewModel.SelectedConfiguration.DisplayName ?? "N/A"}");
+            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), viewModel.SelectedConfiguration.DisplayName ?? viewModel.SelectedConfiguration.RefName);
+            ImGui.Indent(10 * UIConstants.DpiScale);
 
             if (!string.IsNullOrEmpty(viewModel.SelectedConfiguration.Description))
             {
                 ImGui.Spacing();
                 ImGui.TextWrapped(viewModel.SelectedConfiguration.Description);
             }
-            ImGui.Unindent(10);
+            ImGui.Unindent(10 * UIConstants.DpiScale);
 
             ImGui.Spacing();
             ImGui.Separator();
@@ -109,6 +118,8 @@ public class WorldSelectionScreen
             // World Content Generation section
             ImGui.TextColored(new Vector4(1, 0.647f, 0, 1), "World Content Generation:");
             ImGui.Spacing();
+
+            var generateButtonHeight = ImGui.GetFrameHeight() * 1.2f;
 
             if (_worldContentGenerator.IsAvailable)
             {
@@ -123,10 +134,10 @@ public class WorldSelectionScreen
                 if (_isGenerating)
                 {
                     ImGui.BeginDisabled();
-                    ImGui.Button("Generating...", new Vector2(-1, 30));
+                    ImGui.Button("Generating...", new Vector2(ImGuiSizes.Fill, generateButtonHeight));
                     ImGui.EndDisabled();
                 }
-                else if (ImGui.Button("Generate World Content", new Vector2(-1, 30)))
+                else if (ImGui.Button("Generate World Content", new Vector2(ImGuiSizes.Fill, generateButtonHeight)))
                 {
                     _logger?.LogInformation("Generate button clicked for: {ConfigRefName}", viewModel.SelectedConfiguration.RefName);
 
@@ -171,7 +182,7 @@ public class WorldSelectionScreen
             else
             {
                 ImGui.BeginDisabled();
-                ImGui.Button("Generate World Content", new Vector2(-1, 30));
+                ImGui.Button("Generate World Content", new Vector2(ImGuiSizes.Fill, generateButtonHeight));
                 ImGui.EndDisabled();
 
                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _worldContentGenerator.StatusMessage);
@@ -198,10 +209,11 @@ public class WorldSelectionScreen
                 ImGui.BeginDisabled();
             }
 
+            var loadButtonHeight = ImGui.GetFrameHeight() * 1.4f;
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
-            if (ImGui.Button("Load World", new Vector2(-1, 40)))
+            if (ImGui.Button("Load World", new Vector2(ImGuiSizes.Fill, loadButtonHeight)))
             {
                 if (viewModel.LoadSelectedConfigurationCommand.CanExecute(null))
                 {
@@ -218,10 +230,11 @@ public class WorldSelectionScreen
             ImGui.Spacing();
 
             // Quit button
+            var quitButtonHeight = ImGui.GetFrameHeight() * 1.2f;
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
-            if (ImGui.Button("Quit Game", new Vector2(-1, 30)))
+            if (ImGui.Button("Quit Game", new Vector2(ImGuiSizes.Fill, quitButtonHeight)))
             {
                 // Request quit through parent's quit mechanism
                 isOpen = false;
@@ -231,16 +244,12 @@ public class WorldSelectionScreen
         }
         else
         {
-            ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "Please select a world configuration to continue.");
-
-            ImGui.Spacing();
-            ImGui.Spacing();
-
             // Quit button when no world selected
+            var quitButtonHeight = ImGui.GetFrameHeight() * 1.4f;
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
-            if (ImGui.Button("Quit Game", new Vector2(-1, 40)))
+            if (ImGui.Button("Quit Game", new Vector2(ImGuiSizes.Fill, quitButtonHeight)))
             {
                 isOpen = false;
                 viewModel.RaiseRequestQuit();

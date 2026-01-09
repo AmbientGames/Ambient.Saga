@@ -1,5 +1,7 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 using Ambient.Saga.UI.Services;
@@ -27,8 +29,7 @@ public class ArchetypeSelectionModal
             ImGui.OpenPopup("Choose Your Character");
         }
 
-        ImGui.SetNextWindowSize(new Vector2(900, 600), ImGuiCond.FirstUseEver);
-        ImGui.SetNextWindowPos(ImGui.GetMainViewport().GetCenter(), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+        ImGuiHelpers.SetupModalWindow(1200, 800);
 
         // NoClose flag prevents the X button - archetype selection is mandatory
         // Note: ImGui doesn't have NoClose flag, so we pass a dummy bool that we ignore
@@ -37,10 +38,10 @@ public class ArchetypeSelectionModal
         if (ImGui.BeginPopupModal("Choose Your Character", ref dummyOpen, ImGuiWindowFlags.NoResize))
         {
             // Header
+            ImGui.PushFont(UIConstants.FontTitle);
             ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Choose Your Character Archetype");
+            ImGui.PopFont();
             ImGui.Text("This choice determines your starting equipment and stats");
-            ImGui.Spacing();
-            ImGui.TextColored(new Vector4(1, 0.7f, 0.3f, 1), "[!] You must select an archetype to continue");
             ImGui.Separator();
             ImGui.Spacing();
 
@@ -53,14 +54,15 @@ public class ArchetypeSelectionModal
                 // Two-column layout
                 if (ImGui.BeginTable("ArchetypeLayout", 2, ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV))
                 {
-                    ImGui.TableSetupColumn("List", ImGuiTableColumnFlags.WidthFixed, 400);
+                    ImGui.TableSetupColumn("List", ImGuiTableColumnFlags.WidthStretch);
                     ImGui.TableSetupColumn("Details", ImGuiTableColumnFlags.WidthStretch);
 
                     ImGui.TableNextRow();
 
                     // Left column: Archetype list
                     ImGui.TableNextColumn();
-                    ImGui.BeginChild("ArchetypeList", new Vector2(0, -40), ImGuiChildFlags.Borders);
+                    var footerHeight = ImGui.GetFrameHeightWithSpacing() * 1.5f;
+                    ImGui.BeginChild("ArchetypeList", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
                     for (var i = 0; i < archetypes.Count; i++)
                     {
@@ -68,7 +70,9 @@ public class ArchetypeSelectionModal
                         var isSelected = i == _selectedIndex;
 
                         // Use a child region for each archetype card for better layout control
-                        var cardHeight = 97f;
+                        // Card shows: name, affinity, description - calculate height based on content
+                        var lineHeight = ImGui.GetTextLineHeightWithSpacing();
+                        var cardHeight = lineHeight * 5; // Name + Affinity + ~3 lines for description
 
                         // Store positions before any rendering
                         var cursorScreenPos = ImGui.GetCursorScreenPos();
@@ -110,7 +114,9 @@ public class ArchetypeSelectionModal
                         ImGui.TextColored(new Vector4(1, 1, 1, 1), archetype.DisplayName ?? archetype.RefName);
 
                         ImGui.SetCursorPosX(startPos.X + 8);
-                        ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), $"Affinity: {archetype.AffinityRef ?? "None"}");
+                        var affinity = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(archetype.AffinityRef ?? "");
+                        var affinityName = affinity?.DisplayName ?? archetype.AffinityRef ?? "None";
+                        ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), $"Affinity: {affinityName}");
 
                         ImGui.SetCursorPosX(startPos.X + 8);
                         ImGui.PushTextWrapPos(startPos.X + ImGui.GetContentRegionAvail().X - 8);
@@ -131,11 +137,11 @@ public class ArchetypeSelectionModal
 
                     // Right column: Details
                     ImGui.TableNextColumn();
-                    ImGui.BeginChild("ArchetypeDetails", new Vector2(0, -40), ImGuiChildFlags.Borders);
+                    ImGui.BeginChild("ArchetypeDetails", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
                     if (_selectedArchetype != null)
                     {
-                        RenderArchetypeDetails(_selectedArchetype, currencyName);
+                        RenderArchetypeDetails(_selectedArchetype, currencyName, viewModel);
                     }
                     else
                     {
@@ -150,17 +156,23 @@ public class ArchetypeSelectionModal
 
             ImGui.Separator();
 
-            // Buttons
-            float buttonWidth = 120;
-            float spacing = 10;
-            var totalWidth = buttonWidth * 2 + spacing;
-            ImGui.SetCursorPosX(ImGui.GetWindowWidth() - totalWidth - 20);
+            // Buttons - auto-size based on text content
+            var style = ImGui.GetStyle();
+            var quitTextSize = ImGui.CalcTextSize("Quit Game");
+            var enterTextSize = ImGui.CalcTextSize("Enter World");
+            var buttonPadding = style.FramePadding * 2;
+            var quitButtonWidth = quitTextSize.X + buttonPadding.X;
+            var enterButtonWidth = enterTextSize.X + buttonPadding.X;
+            var buttonHeight = Math.Max(quitTextSize.Y, enterTextSize.Y) + buttonPadding.Y;
+            var spacing = style.ItemSpacing.X;
+            var totalWidth = quitButtonWidth + enterButtonWidth + spacing;
+            ImGui.SetCursorPosX(ImGui.GetWindowWidth() - totalWidth - style.WindowPadding.X);
 
             // Quit Game button (red) - this is the only way out if you don't want to play
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
-            if (ImGui.Button("Quit Game", new Vector2(buttonWidth, 30)))
+            if (ImGui.Button("Quit Game", new Vector2(quitButtonWidth, buttonHeight)))
             {
                 selector?.CancelSelection();
                 ImGui.CloseCurrentPopup(); // Explicitly close ImGui popup
@@ -179,7 +191,7 @@ public class ArchetypeSelectionModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
-            if (ImGui.Button("Enter World", new Vector2(buttonWidth, 30)))
+            if (ImGui.Button("Enter World", new Vector2(enterButtonWidth, buttonHeight)))
             {
                 selector?.CompleteSelection(_selectedArchetype);
                 ImGui.CloseCurrentPopup(); // Explicitly close ImGui popup to prevent lingering state
@@ -198,7 +210,7 @@ public class ArchetypeSelectionModal
         // Clicking "Quit Game" will call CancelSelection and quit the application
     }
 
-    private void RenderArchetypeDetails(AvatarArchetype archetype, string currencyName)
+    private void RenderArchetypeDetails(AvatarArchetype archetype, string currencyName, MainViewModel viewModel)
     {
         // Archetype Bias (permanent stat modifiers)
         if (archetype.ArchetypeBias != null)
@@ -358,7 +370,9 @@ public class ArchetypeSelectionModal
                 ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Equipment:");
                 foreach (var item in caps.Equipment)
                 {
-                    ImGui.BulletText($"{item.EquipmentRef} ({item.Condition:P0})");
+                    var equipDef = viewModel.CurrentWorld?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == item.EquipmentRef);
+                    var equipName = equipDef?.DisplayName ?? item.EquipmentRef;
+                    ImGui.BulletText($"{equipName} ({item.Condition:P0})");
                 }
                 ImGui.Spacing();
                 hasAnyItems = true;
@@ -369,7 +383,9 @@ public class ArchetypeSelectionModal
                 ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Consumables:");
                 foreach (var item in caps.Consumables)
                 {
-                    ImGui.BulletText($"{item.ConsumableRef} x{item.Quantity}");
+                    var consumableDef = viewModel.CurrentWorld?.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == item.ConsumableRef);
+                    var consumableName = consumableDef?.DisplayName ?? item.ConsumableRef;
+                    ImGui.BulletText($"{consumableName} x{item.Quantity}");
                 }
                 ImGui.Spacing();
                 hasAnyItems = true;
@@ -380,7 +396,9 @@ public class ArchetypeSelectionModal
                 ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Spells:");
                 foreach (var item in caps.Spells)
                 {
-                    ImGui.BulletText($"{item.SpellRef} ({item.Condition:P0})");
+                    var spellDef = viewModel.CurrentWorld?.Gameplay?.Spells?.FirstOrDefault(s => s.RefName == item.SpellRef);
+                    var spellName = spellDef?.DisplayName ?? item.SpellRef;
+                    ImGui.BulletText($"{spellName} ({item.Condition:P0})");
                 }
                 ImGui.Spacing();
                 hasAnyItems = true;
@@ -391,7 +409,9 @@ public class ArchetypeSelectionModal
                 ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Tools:");
                 foreach (var item in caps.Tools)
                 {
-                    ImGui.BulletText($"{item.ToolRef} ({item.Condition:P0})");
+                    var toolDef = viewModel.CurrentWorld?.Gameplay?.Tools?.FirstOrDefault(t => t.RefName == item.ToolRef);
+                    var toolName = toolDef?.DisplayName ?? item.ToolRef;
+                    ImGui.BulletText($"{toolName} ({item.Condition:P0})");
                 }
                 ImGui.Spacing();
                 hasAnyItems = true;
@@ -402,7 +422,9 @@ public class ArchetypeSelectionModal
                 ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Blocks:");
                 foreach (var item in caps.Blocks)
                 {
-                    ImGui.BulletText($"{item.BlockRef} x{item.Quantity}");
+                    var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(item.BlockRef);
+                    var blockName = blockDef?.DisplayName ?? item.BlockRef;
+                    ImGui.BulletText($"{blockName} x{item.Quantity}");
                 }
                 ImGui.Spacing();
                 hasAnyItems = true;
@@ -413,7 +435,9 @@ public class ArchetypeSelectionModal
                 ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Building Materials:");
                 foreach (var item in caps.BuildingMaterials)
                 {
-                    ImGui.BulletText($"{item.BuildingMaterialRef} x{item.Quantity}");
+                    var materialDef = viewModel.CurrentWorld?.TryGetBuildingMaterialByRefName(item.BuildingMaterialRef);
+                    var materialName = materialDef?.DisplayName ?? item.BuildingMaterialRef;
+                    ImGui.BulletText($"{materialName} x{item.Quantity}");
                 }
                 hasAnyItems = true;
             }

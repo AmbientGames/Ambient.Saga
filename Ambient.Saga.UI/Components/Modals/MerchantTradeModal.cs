@@ -1,6 +1,8 @@
-﻿using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -36,10 +38,8 @@ public class MerchantTradeModal
             return;
         }
 
-        // Center the window
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(800, 650), ImGuiCond.FirstUseEver);
+        // Center the window using helper
+        ImGuiHelpers.SetupModalWindow(800, 650);
 
         // Style the window
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
@@ -50,9 +50,9 @@ public class MerchantTradeModal
         if (ImGui.Begin($"Trade###MerchantTradeModal", ref isOpen, windowFlags))
         {
             // Merchant header
-            ImGui.SetWindowFontScale(1.2f);
+            ImGui.PushFont(UIConstants.FontTitle);
             ImGui.TextColored(new Vector4(1, 0.85f, 0.3f, 1), character.DisplayName);
-            ImGui.SetWindowFontScale(1.0f);
+            ImGui.PopFont();
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "- Merchant");
 
@@ -62,17 +62,18 @@ public class MerchantTradeModal
             // Player money display at top
             if (_tradeViewModel.IsMerchant && _tradeViewModel.PlayerAvatar?.Stats != null)
             {
+                var moneyBarHeight = ImGui.GetFrameHeightWithSpacing() * 1.5f;
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.12f, 0.08f, 0.9f));
-                ImGui.BeginChild("PlayerMoney", new Vector2(0, 45), ImGuiChildFlags.Borders);
+                ImGui.BeginChild("PlayerMoney", new Vector2(ImGuiSizes.Fill, moneyBarHeight), ImGuiChildFlags.Borders);
                 ImGui.Spacing();
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1), "Your Funds:");
                 ImGui.SameLine();
-                ImGui.SetWindowFontScale(1.1f);
+                ImGui.PushFont(UIConstants.FontTitle);
                 ImGui.TextColored(new Vector4(1, 0.85f, 0.2f, 1),
                     $"{_tradeViewModel.PlayerAvatar.Stats.Credits:N0} {_tradeViewModel.PluralCurrencyName}");
-                ImGui.SetWindowFontScale(1.0f);
-                ImGui.Unindent(10);
+                ImGui.PopFont();
+                ImGui.Unindent(10 * UIConstants.DpiScale);
                 ImGui.EndChild();
                 ImGui.PopStyleColor();
                 ImGui.Spacing();
@@ -84,6 +85,7 @@ public class MerchantTradeModal
                 var isBuyMode = _tradeViewModel.TradeMode == "Buy";
                 var isSellMode = _tradeViewModel.TradeMode == "Sell";
                 var buttonWidth = 120f;
+                var toggleButtonHeight = ImGui.GetFrameHeight();
 
                 // Buy button
                 if (isBuyMode)
@@ -98,7 +100,7 @@ public class MerchantTradeModal
                     ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.35f, 0.35f, 0.35f, 1));
                     ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.4f, 0.4f, 1));
                 }
-                if (ImGui.Button("Buy from Merchant", new Vector2(buttonWidth + 40, 30)))
+                if (ImGui.Button("Buy from Merchant", new Vector2(buttonWidth + 40, toggleButtonHeight)))
                 {
                     _tradeViewModel.TradeMode = "Buy";
                 }
@@ -119,7 +121,7 @@ public class MerchantTradeModal
                     ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.35f, 0.35f, 0.35f, 1));
                     ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.4f, 0.4f, 1));
                 }
-                if (ImGui.Button("Sell your Items", new Vector2(buttonWidth + 30, 30)))
+                if (ImGui.Button("Sell your Items", new Vector2(buttonWidth + 30, toggleButtonHeight)))
                 {
                     _tradeViewModel.TradeMode = "Sell";
                 }
@@ -153,9 +155,10 @@ public class MerchantTradeModal
             ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1), headerText);
             ImGui.Spacing();
 
-            // Trade inventory list
+            // Trade inventory list - reserve space for footer
+            var tradeFooterHeight = ImGui.GetFrameHeightWithSpacing() * 2;
             ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
-            ImGui.BeginChild("TradeInventory", new Vector2(0, -50), ImGuiChildFlags.Borders);
+            ImGui.BeginChild("TradeInventory", new Vector2(ImGuiSizes.Fill, -tradeFooterHeight), ImGuiChildFlags.Borders);
 
             if (_tradeViewModel.TradeInventory.Count == 0)
             {
@@ -195,6 +198,7 @@ public class MerchantTradeModal
                     ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _tradeViewModel.CurrencyName);
 
                     // Buy/Sell button
+                    var itemButtonHeight = ImGui.GetFrameHeight();
                     ImGui.SameLine(ImGui.GetWindowWidth() - 80);
                     if (_tradeViewModel.TradeMode == "Buy")
                     {
@@ -202,7 +206,7 @@ public class MerchantTradeModal
                         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.5f, 0.3f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.65f, 0.4f, 1));
 
-                        var buttonClicked = ImGui.Button($"Buy##{tradeItem.Item.RefName}", new Vector2(60, 25));
+                        var buttonClicked = ImGui.Button($"Buy##{tradeItem.Item.RefName}", new Vector2(60, itemButtonHeight));
                         var isHovered = ImGui.IsItemHovered();
                         var isActive = ImGui.IsItemActive();
 
@@ -224,7 +228,7 @@ public class MerchantTradeModal
                         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.25f, 0.15f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.35f, 0.2f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.45f, 0.25f, 1));
-                        if (ImGui.Button($"Sell##{tradeItem.Item.RefName}", new Vector2(60, 25)))
+                        if (ImGui.Button($"Sell##{tradeItem.Item.RefName}", new Vector2(60, itemButtonHeight)))
                         {
                             System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Sell button clicked for {tradeItem.Item.RefName}");
                             _tradeViewModel.SellItemCommand.Execute(tradeItem);
@@ -244,8 +248,9 @@ public class MerchantTradeModal
             // Close button centered
             ImGui.Spacing();
             var closeWidth = 130f;
+            var closeButtonHeight = ImGui.GetFrameHeight() * 1.2f;
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - closeWidth) * 0.5f);
-            if (ImGui.Button("Leave Shop", new Vector2(closeWidth, 35)))
+            if (ImGui.Button("Leave Shop", new Vector2(closeWidth, closeButtonHeight)))
             {
                 isOpen = false;
             }

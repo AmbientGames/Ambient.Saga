@@ -1,5 +1,6 @@
 ﻿using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -18,8 +19,7 @@ public class QuestLogModal
     {
         if (!isOpen) return;
 
-        ImGui.SetNextWindowSize(new Vector2(800, 600), ImGuiCond.FirstUseEver);
-        ImGui.SetNextWindowPos(ImGui.GetMainViewport().GetCenter(), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+        ImGuiHelpers.SetupModalWindow(800, 600);
 
         if (ImGui.Begin("Quest Log", ref isOpen, ImGuiWindowFlags.None))
         {
@@ -36,7 +36,9 @@ public class QuestLogModal
             ImGui.Separator();
             ImGui.Spacing();
 
-            ImGui.BeginChild("QuestLogScroll", new Vector2(0, -50), ImGuiChildFlags.None);
+            // Reserve space for footer (separator + info text)
+            var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2;
+            ImGui.BeginChild("QuestLogScroll", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.None);
 
             // Active Quests
             ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Active Quests ({viewModel.QuestLog.ActiveQuests?.Count ?? 0})");
@@ -99,8 +101,11 @@ public class QuestLogModal
             new Vector4(0, 0.5f, 0, 1) :
             new Vector4(0.3f, 0.3f, 1, 1));
 
-        var cardHeight = isCompleted ? 70f : 100f;
-        ImGui.BeginChild($"quest_card_{quest.RefName}", new Vector2(0, cardHeight), ImGuiChildFlags.Borders);
+        // Card height: completed quests show less info (3 rows), active quests show more (4 rows with progress bar)
+        var cardHeight = isCompleted
+            ? ImGui.GetFrameHeightWithSpacing() * 3
+            : ImGui.GetFrameHeightWithSpacing() * 4;
+        ImGui.BeginChild($"quest_card_{quest.RefName}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
 
         // Quest title
         var titleColor = isCompleted ?
@@ -125,12 +130,12 @@ public class QuestLogModal
         if (!isCompleted)
         {
             var progress = (float)quest.ProgressPercentage / 100f;
-            ImGui.ProgressBar(progress, new Vector2(-1, 20), quest.ProgressText);
+            ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), quest.ProgressText);
         }
 
-        // Make the whole card clickable
+        // Make the whole card clickable - use full content width and calculated card height
         ImGui.SetCursorPos(new Vector2(0, 0));
-        ImGui.InvisibleButton($"quest_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, cardHeight));
+        ImGui.InvisibleButton($"quest_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, cardHeight - ImGui.GetStyle().WindowPadding.Y * 2));
 
         if (ImGui.IsItemHovered())
         {

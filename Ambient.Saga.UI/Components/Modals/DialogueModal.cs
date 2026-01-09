@@ -2,6 +2,8 @@ using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -37,10 +39,8 @@ public class DialogueModal
             _ = InitializeDialogueAndSetLoadingAsync(viewModel, character);
         }
 
-        // Center the window
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(750, 550), ImGuiCond.FirstUseEver);
+        // Center the window using helper
+        ImGuiHelpers.SetupModalWindow(750, 550);
 
         // Style the window
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
@@ -100,11 +100,9 @@ public class DialogueModal
     private void RenderCharacterHeader(MainViewModel viewModel, CharacterViewModel character)
     {
         // Character name with colored styling
-        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.4f, 0.9f, 0.4f, 1.0f));
-        ImGui.SetWindowFontScale(1.2f);
-        ImGui.Text(character.DisplayName);
-        ImGui.SetWindowFontScale(1.0f);
-        ImGui.PopStyleColor();
+        ImGui.PushFont(UIConstants.FontTitle);
+        ImGui.TextColored(new Vector4(0.4f, 0.9f, 0.4f, 1.0f), character.DisplayName);
+        ImGui.PopFont();
 
         // Character type/description if available
         var characterTemplate = viewModel.CurrentWorld?.Gameplay?.Characters?
@@ -145,7 +143,8 @@ public class DialogueModal
         ImGui.Spacing();
         ImGui.Spacing();
 
-        if (ImGui.Button("Close", new Vector2(120, 35)))
+        // Use frame height for button
+        if (ImGui.Button("Close", new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight())))
         {
             CloseAndReset(ref isOpen);
         }
@@ -166,19 +165,19 @@ public class DialogueModal
         ImGui.Spacing();
         ImGui.Spacing();
 
+        // Center text using available width
         var text = "This character has nothing to say.";
         var textSize = ImGui.CalcTextSize(text);
-        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+        var avail = ImGui.GetContentRegionAvail();
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (avail.X - textSize.X) * 0.5f);
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.6f, 1), text);
 
         ImGui.Spacing();
         ImGui.Spacing();
         ImGui.Spacing();
 
-        // Center the close button
-        var buttonWidth = 120f;
-        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
-        if (ImGui.Button("Close", new Vector2(buttonWidth, 35)))
+        // Full-width close button
+        if (ImGui.Button("Close", new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight())))
         {
             CloseAndReset(ref isOpen);
         }
@@ -189,27 +188,28 @@ public class DialogueModal
         ImGui.Spacing();
         ImGui.Spacing();
 
+        // Center text using available width
         var endText = "The conversation has ended.";
         var textSize = ImGui.CalcTextSize(endText);
-        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+        var avail = ImGui.GetContentRegionAvail();
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (avail.X - textSize.X) * 0.5f);
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1), endText);
 
         ImGui.Spacing();
         ImGui.Spacing();
         ImGui.Spacing();
 
+        var buttonHeight = ImGui.GetFrameHeight();
+
         // Check if character is lootable (defeated and has loot)
         if (character.CanLoot && !character.IsAlive)
         {
-            // Show loot option for defeated characters
-            var lootButtonWidth = 150f;
-            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - lootButtonWidth) * 0.5f);
-
+            // Show loot option for defeated characters - full width
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.6f, 0.5f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.7f, 0.6f, 0.25f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.8f, 0.7f, 0.3f, 1));
 
-            if (ImGui.Button("Collect Loot", new Vector2(lootButtonWidth, 35)))
+            if (ImGui.Button("Collect Loot", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 // Close dialogue and open loot modal
                 modalManager.CloseModal("Dialogue");
@@ -225,10 +225,8 @@ public class DialogueModal
             ImGui.Spacing();
         }
 
-        // Center the close button
-        var buttonWidth = 150f;
-        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
-        if (ImGui.Button("End Conversation", new Vector2(buttonWidth, 35)))
+        // Full-width close button
+        if (ImGui.Button("End Conversation", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             CloseAndReset(ref isOpen);
         }
@@ -238,18 +236,19 @@ public class DialogueModal
     {
         if (_currentState == null) return;
 
-        // Calculate dynamic heights
-        var windowHeight = ImGui.GetWindowHeight();
-        var availableHeight = windowHeight - 180; // Reserve space for header, buttons, padding
-        var dialogueHeight = Math.Max(150, availableHeight * 0.55f);
-        var choicesHeight = Math.Max(100, availableHeight * 0.45f);
+        // Calculate dynamic heights using GetContentRegionAvail
+        // Reserve space for bottom bar (separator + button row)
+        var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2;
+        var availableHeight = ImGui.GetContentRegionAvail().Y - footerHeight;
+        var dialogueHeight = Math.Max(ImGui.GetFrameHeightWithSpacing() * 5, availableHeight * 0.55f);
+        var choicesHeight = Math.Max(ImGui.GetFrameHeightWithSpacing() * 3, availableHeight * 0.45f);
 
         // Dialogue text area with styled background
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
-        ImGui.BeginChild("DialogueTextArea", new Vector2(0, dialogueHeight), ImGuiChildFlags.Borders);
+        ImGui.BeginChild("DialogueTextArea", new Vector2(ImGuiSizes.Fill, dialogueHeight), ImGuiChildFlags.Borders);
 
         ImGui.Spacing();
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         // Render each line of dialogue text
         foreach (var text in _currentState.DialogueText)
@@ -264,7 +263,7 @@ public class DialogueModal
             ImGui.Spacing();
         }
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
         ImGui.EndChild();
         ImGui.PopStyleColor();
 
@@ -299,7 +298,7 @@ public class DialogueModal
         ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), "Choose your response:");
         ImGui.Spacing();
 
-        ImGui.BeginChild("ChoicesArea", new Vector2(0, height), ImGuiChildFlags.None);
+        ImGui.BeginChild("ChoicesArea", new Vector2(ImGuiSizes.Fill, height), ImGuiChildFlags.None);
 
         var choiceIndex = 0;
         foreach (var choice in _currentState.Choices)
@@ -338,8 +337,9 @@ public class DialogueModal
             ImGui.PushStyleColor(ImGuiCol.HeaderActive, new Vector4(0.25f, 0.45f, 0.25f, 1));
         }
 
-        // Use Selectable for click handling with custom styling
-        if (ImGui.Selectable($"  {choiceText}##choice_{index}", false, ImGuiSelectableFlags.None, new Vector2(0, 30)))
+        // Use Selectable for click handling with custom styling - use frame height for consistent sizing
+        var selectableHeight = ImGui.GetFrameHeight();
+        if (ImGui.Selectable($"  {choiceText}##choice_{index}", false, ImGuiSelectableFlags.None, new Vector2(ImGuiSizes.Fill, selectableHeight)))
         {
             if (canSelect)
             {
@@ -353,9 +353,9 @@ public class DialogueModal
         // Show blocked reason if unavailable
         if (!choice.IsAvailable && !string.IsNullOrEmpty(choice.BlockedReason))
         {
-            ImGui.Indent(30);
+            ImGui.Indent(30 * UIConstants.DpiScale);
             ImGui.TextColored(new Vector4(1, 0.5f, 0.3f, 1), $"({choice.BlockedReason})");
-            ImGui.Unindent(30);
+            ImGui.Unindent(30 * UIConstants.DpiScale);
         }
 
         ImGui.Spacing();
@@ -366,9 +366,8 @@ public class DialogueModal
         ImGui.Spacing();
         ImGui.Spacing();
 
-        // Center the continue button
-        var buttonWidth = 200f;
-        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
+        // Full-width continue button using frame height
+        var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
         var canContinue = !_isLoading;
         if (!canContinue)
@@ -376,7 +375,7 @@ public class DialogueModal
             ImGui.BeginDisabled();
         }
 
-        if (ImGui.Button("Continue...", new Vector2(buttonWidth, 40)))
+        if (ImGui.Button("Continue...", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             _isLoading = true;
             _ = AdvanceDialogueAndSetLoadingAsync(viewModel, character, modalManager);
@@ -393,15 +392,14 @@ public class DialogueModal
         ImGui.Spacing();
         ImGui.Spacing();
 
-        // Center the farewell button
-        var buttonWidth = 200f;
-        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
+        // Full-width farewell button using frame height
+        var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.3f, 1));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.25f, 0.5f, 0.4f, 1));
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.3f, 0.6f, 0.5f, 1));
 
-        if (ImGui.Button("Farewell", new Vector2(buttonWidth, 40)))
+        if (ImGui.Button("Farewell", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             CloseAndReset(ref isOpen);
         }
@@ -411,15 +409,17 @@ public class DialogueModal
 
     private void RenderBottomBar(ref bool isOpen)
     {
-        // End conversation button on the right
-        var buttonWidth = 150f;
-        ImGui.SetCursorPosX(ImGui.GetWindowWidth() - buttonWidth - 20);
+        // End conversation button - use available width calculation
+        var avail = ImGui.GetContentRegionAvail();
+        var buttonWidth = avail.X * 0.3f;
+        var buttonHeight = ImGui.GetFrameHeight();
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + avail.X - buttonWidth);
 
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.2f, 0.2f, 1));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.25f, 0.25f, 1));
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.3f, 0.3f, 1));
 
-        if (ImGui.Button("Leave", new Vector2(buttonWidth, 30)))
+        if (ImGui.Button("Leave", new Vector2(buttonWidth, buttonHeight)))
         {
             CloseAndReset(ref isOpen);
         }

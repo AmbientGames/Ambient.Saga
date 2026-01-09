@@ -1,10 +1,12 @@
-﻿using Ambient.Saga.UI.Services;
+﻿using Ambient.Saga.UI;
+using Ambient.Saga.UI.Services;
 using ImGuiNET;
 using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using System.Runtime.InteropServices;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Device = SharpDX.Direct3D11.Device;
 
@@ -29,7 +31,12 @@ public class ImGuiRendererDX11 : IDisposable
     private int _vertexBufferSize = 10000;
     private int _indexBufferSize = 30000;
 
-    public ImGuiRendererDX11(Device device, int width, int height)
+    [DllImport("user32.dll")]
+    private static extern uint GetDpiForWindow(IntPtr hWnd);
+
+    private static float GetDpiScaleForWindow(IntPtr hwnd) => GetDpiForWindow(hwnd) / 96f;
+
+    public ImGuiRendererDX11(IntPtr hwnd, Device device, int width, int height)
     {
         _device = device;
         _deviceContext = device.ImmediateContext;
@@ -44,6 +51,9 @@ public class ImGuiRendererDX11 : IDisposable
 
         // Apply the beautiful theme!
         ImGuiTheme.ApplyTheme(ImGuiTheme.ThemePreset.DarkFantasy);
+
+        // Load DPI-scaled fonts
+        UIConstants.LoadFonts(GetDpiScaleForWindow(hwnd));
 
         CreateDeviceObjects();
         CreateFontsTexture();
