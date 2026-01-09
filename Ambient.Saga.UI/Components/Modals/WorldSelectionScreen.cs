@@ -68,7 +68,7 @@ public class WorldSelectionScreen
         }
 
         ImGui.PushFont(UIConstants.FontTitle);
-        ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Select a World to Load");
+        ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Select a World");
         ImGui.PopFont();
         ImGui.Separator();
         ImGui.Spacing();
@@ -213,7 +213,7 @@ public class WorldSelectionScreen
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
-            if (ImGui.Button("Load World", new Vector2(ImGuiSizes.Fill, loadButtonHeight)))
+            if (ImGui.Button("Load Selected World", new Vector2(ImGuiSizes.Fill, loadButtonHeight)))
             {
                 if (viewModel.LoadSelectedConfigurationCommand.CanExecute(null))
                 {

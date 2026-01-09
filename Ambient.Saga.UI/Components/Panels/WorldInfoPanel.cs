@@ -94,7 +94,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var material in materials)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(material.DisplayName ?? material.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{material.DisplayName ?? material.RefName}##{material.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(material.Description))
@@ -121,7 +121,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var equip in equipment)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(equip.DisplayName ?? equip.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{equip.DisplayName ?? equip.RefName}##{equip.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(equip.Description))
@@ -146,7 +146,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var consumable in consumables)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(consumable.DisplayName ?? consumable.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{consumable.DisplayName ?? consumable.RefName}##{consumable.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(consumable.Description))
@@ -171,7 +171,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var spell in spells)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(spell.DisplayName ?? spell.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{spell.DisplayName ?? spell.RefName}##{spell.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(spell.Description))
@@ -196,7 +196,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var archetype in archetypes)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(archetype.DisplayName ?? archetype.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{archetype.DisplayName ?? archetype.RefName}##{archetype.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(archetype.Description))
@@ -220,7 +220,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var character in characters)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(character.DisplayName ?? character.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{character.DisplayName ?? character.RefName}##{character.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(character.Description))
@@ -245,7 +245,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var affinity in affinities)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(affinity.DisplayName ?? affinity.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{affinity.DisplayName ?? affinity.RefName}##{affinity.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(affinity.Description))
@@ -279,7 +279,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var quest in quests)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(quest.DisplayName ?? quest.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{quest.DisplayName ?? quest.RefName}##{quest.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(quest.Description))
@@ -304,7 +304,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var tree in dialogueTrees)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(tree.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{tree.DisplayName ?? tree.RefName}##{tree.RefName}");
                     if (treeNodeOpen)
                     {
                         ImGui.Text($"Start Node: {tree.StartNodeId}");
@@ -325,7 +325,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var stance in stances)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(stance.DisplayName ?? stance.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{stance.DisplayName ?? stance.RefName}##{stance.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(stance.Description))
@@ -345,7 +345,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var slot in loadoutSlots)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(slot.DisplayName ?? slot.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{slot.DisplayName ?? slot.RefName}##{slot.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(slot.Description))
@@ -365,7 +365,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var effect in statusEffects)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(effect.DisplayName ?? effect.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{effect.DisplayName ?? effect.RefName}##{effect.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(effect.Description))
@@ -430,7 +430,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var faction in factions)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(faction.DisplayName ?? faction.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{faction.DisplayName ?? faction.RefName}##{faction.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(faction.Description))
@@ -511,7 +511,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var token in questTokens)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(token.DisplayName ?? token.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{token.DisplayName ?? token.RefName}##{token.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(token.Description))
@@ -531,7 +531,7 @@ public class WorldInfoPanel
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var achievement in achievements)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(achievement.DisplayName ?? achievement.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{achievement.DisplayName ?? achievement.RefName}##{achievement.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(achievement.Description))

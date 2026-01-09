@@ -25,10 +25,11 @@ public class AvatarActionsPanel
         ImGui.Separator();
 
         // Calculate available height for content AFTER the header is rendered
-        // Reserve space for action buttons at the bottom:
-        // spacing + separator + label + 4 buttons with spacing
+        // Reserve space for action buttons at the bottom
         var buttonHeight = ImGui.GetFrameHeight();
-        var actionsHeight = ImGui.GetFrameHeightWithSpacing() * 6; // Actions label + 4 buttons + separator/spacing
+        var style = ImGui.GetStyle();
+        // 4 buttons (3 with spacing + 1 without) + separator area
+        var actionsHeight = ImGui.GetFrameHeightWithSpacing() * 3 + buttonHeight + style.ItemSpacing.Y * 4;
         var availableHeight = ImGui.GetContentRegionAvail().Y - actionsHeight;
 
         // Tab bar with scrollable content area
@@ -62,7 +63,7 @@ public class AvatarActionsPanel
         // Action buttons at bottom (always visible, outside scroll area)
         ImGui.Spacing();
         ImGui.Separator();
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Actions:");
+        ImGui.Spacing();
 
         if (ImGui.Button("Quest Log", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
@@ -241,7 +242,7 @@ public class AvatarActionsPanel
                         ImGui.Indent();
 
                         // Expandable header for each material
-                        var treeNodeOpen = ImGui.TreeNode($"{name} x{material.Quantity}");
+                        var treeNodeOpen = ImGui.TreeNode($"{name} x{material.Quantity}##{material.BuildingMaterialRef}");
 
                         if (treeNodeOpen)
                         {
@@ -283,7 +284,7 @@ public class AvatarActionsPanel
                         ImGui.Indent();
 
                         // Expandable header for each equipment item
-                        var treeNodeOpen = ImGui.TreeNode($"{name} ({equip.Condition:P0})");
+                        var treeNodeOpen = ImGui.TreeNode($"{name} ({equip.Condition:P0})##{equip.EquipmentRef}");
 
                         if (treeNodeOpen)
                         {
@@ -324,7 +325,7 @@ public class AvatarActionsPanel
                         ImGui.Indent();
 
                         // Expandable header for each consumable item
-                        var treeNodeOpen = ImGui.TreeNode($"{name} x{consumable.Quantity}");
+                        var treeNodeOpen = ImGui.TreeNode($"{name} x{consumable.Quantity}##{consumable.ConsumableRef}");
 
                         if (treeNodeOpen)
                         {
@@ -365,7 +366,7 @@ public class AvatarActionsPanel
                         ImGui.Indent();
 
                         // Expandable header for each spell
-                        var treeNodeOpen = ImGui.TreeNode($"{name} ({spell.Condition:P0})");
+                        var treeNodeOpen = ImGui.TreeNode($"{name} ({spell.Condition:P0})##{spell.SpellRef}");
 
                         if (treeNodeOpen)
                         {
