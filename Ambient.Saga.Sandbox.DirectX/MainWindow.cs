@@ -28,9 +28,12 @@ public partial class MainWindow : Form
 
         InitializeComponent();
 
-        // Set window properties
+        // Set window properties - 75% of screen size, centered
         this.Text = "Ambient Saga Sandbox";
-        this.ClientSize = new System.Drawing.Size(1400, 900);
+        var workingArea = Screen.PrimaryScreen?.WorkingArea ?? new Rectangle(0, 0, 1920, 1080);
+        this.ClientSize = new System.Drawing.Size(
+            (int)(workingArea.Width * 0.75),
+            (int)(workingArea.Height * 0.75));
         this.StartPosition = FormStartPosition.CenterScreen;
 
         // Create main panel for 3D rendering with ImGui overlay
@@ -46,7 +49,7 @@ public partial class MainWindow : Form
         _renderer.Initialize(_mainPanel.Handle, _mainPanel.ClientSize.Width, _mainPanel.ClientSize.Height);
 
         // Initialize ImGui renderer
-        _imguiRenderer = new ImGuiRendererDX11(_renderer.Device, _mainPanel.ClientSize.Width, _mainPanel.ClientSize.Height);
+        _imguiRenderer = new ImGuiRendererDX11(this.Handle, _renderer.Device, _mainPanel.ClientSize.Width, _mainPanel.ClientSize.Height);
 
         // Wire up mouse events for ImGui input
         _mainPanel.MouseMove += (s, e) => _imguiRenderer?.UpdateMousePos(e.X, e.Y);

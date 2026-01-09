@@ -13,8 +13,13 @@ public class DefaultHudRenderer : IHudRenderer
 {
     public void Render(MainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
     {
+        // Calculate HUD height based on text size + padding
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
+
         // Position at bottom of screen
-        var hudHeight = 40f;
         ImGui.SetNextWindowPos(new Vector2(0, displaySize.Y - hudHeight));
         ImGui.SetNextWindowSize(new Vector2(displaySize.X, hudHeight));
 
@@ -25,7 +30,6 @@ public class DefaultHudRenderer : IHudRenderer
                           ImGuiWindowFlags.NoCollapse |
                           ImGuiWindowFlags.NoBringToFrontOnFocus;
 
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(10, 8));
         ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.1f, 0.1f, 0.15f, 0.9f));
 
         if (ImGui.Begin("##HudBar", windowFlags))
@@ -79,7 +83,6 @@ public class DefaultHudRenderer : IHudRenderer
         ImGui.End();
 
         ImGui.PopStyleColor();
-        ImGui.PopStyleVar();
     }
 
     private void RenderHotkeyHint(string key, string label, bool isActive, bool isDevTool = false)
@@ -110,14 +113,14 @@ public class DefaultHudRenderer : IHudRenderer
         ImGui.PushStyleColor(ImGuiCol.Button, keyColor);
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, keyColor);
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, keyColor);
-        ImGui.PushStyleVar(ImGuiStyleVar.FramePadding, new Vector2(6, 4));
 
-        // Size button to fit text with minimum width
+        // Auto-size button based on text content
         var textSize = ImGui.CalcTextSize(key);
-        var buttonWidth = Math.Max(28, textSize.X + 14);
-        ImGui.Button(key, new Vector2(buttonWidth, 26));
+        var style = ImGui.GetStyle();
+        var buttonWidth = textSize.X + style.FramePadding.X * 2;
+        var buttonHeight = textSize.Y + style.FramePadding.Y * 2;
+        ImGui.Button(key, new Vector2(buttonWidth, buttonHeight));
 
-        ImGui.PopStyleVar();
         ImGui.PopStyleColor(3);
 
         ImGui.SameLine();

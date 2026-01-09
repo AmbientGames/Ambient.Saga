@@ -1,6 +1,8 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -28,10 +30,8 @@ public class StanceChangeModal
     {
         if (!isOpen) return;
 
-        // Center the modal
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(400, 400), ImGuiCond.FirstUseEver);
+        // Center the modal using helper
+        ImGuiHelpers.SetupModalWindow(400, 400);
 
         // Style with orange border (combat/martial theme)
         ImGui.PushStyleColor(ImGuiCol.Border, new Vector4(0.8f, 0.5f, 0.2f, 1.0f));
@@ -41,9 +41,9 @@ public class StanceChangeModal
         if (ImGui.Begin("Change Stance###StanceChangeModal", ref isOpen, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
         {
             // Title
-            ImGui.SetWindowFontScale(1.2f);
+            ImGui.PushFont(UIConstants.FontTitle);
             ImGui.TextColored(new Vector4(0.9f, 0.6f, 0.2f, 1.0f), "Change Stance");
-            ImGui.SetWindowFontScale(1.0f);
+            ImGui.PopFont();
             ImGui.Spacing();
 
             // Info text
@@ -83,7 +83,8 @@ public class StanceChangeModal
                 ImGui.PushStyleColor(ImGuiCol.ButtonActive, buttonColor * 1.5f);
 
                 var buttonLabel = isCurrent ? $"{stance.DisplayName} (Current)" : stance.DisplayName;
-                if (ImGui.Button(buttonLabel, new Vector2(-1, 40)))
+                var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
+                if (ImGui.Button(buttonLabel, new Vector2(ImGuiSizes.Fill, buttonHeight)))
                 {
                     StanceSelected?.Invoke(stance.RefName);
                     isOpen = false;
@@ -115,8 +116,8 @@ public class StanceChangeModal
             ImGui.Separator();
             ImGui.Spacing();
 
-            // Cancel button
-            if (ImGui.Button("Cancel", new Vector2(-1, 35)))
+            // Cancel button - full width
+            if (ImGui.Button("Cancel", new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight())))
             {
                 Cancelled?.Invoke();
                 isOpen = false;

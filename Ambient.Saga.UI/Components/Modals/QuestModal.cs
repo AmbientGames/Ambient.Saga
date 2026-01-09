@@ -1,7 +1,9 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Saga;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using MediatR;
 using System.Numerics;
@@ -62,10 +64,8 @@ public class QuestModal
     {
         if (!isOpen || _currentQuest == null) return;
 
-        // Center the window
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(650, 550), ImGuiCond.FirstUseEver);
+        // Center the window using helper
+        ImGuiHelpers.SetupModalWindow(650, 550);
 
         // Style the window
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
@@ -88,14 +88,15 @@ public class QuestModal
                 ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1), "Description:");
                 ImGui.Spacing();
 
+                var descriptionHeight = ImGui.GetFrameHeightWithSpacing() * 4;
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
-                ImGui.BeginChild("QuestDescription", new Vector2(0, 100), ImGuiChildFlags.Borders);
-                ImGui.Indent(10);
+                ImGui.BeginChild("QuestDescription", new Vector2(ImGuiSizes.Fill, descriptionHeight), ImGuiChildFlags.Borders);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 ImGui.Spacing();
                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.9f, 0.9f, 0.85f, 1));
                 ImGui.TextWrapped(_currentQuest.Description);
                 ImGui.PopStyleColor();
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
                 ImGui.EndChild();
                 ImGui.PopStyleColor();
                 ImGui.Spacing();
@@ -105,12 +106,13 @@ public class QuestModal
             ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), "Objectives:");
             ImGui.Spacing();
 
+            var objectivesHeight = ImGui.GetFrameHeightWithSpacing() * 3;
             ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.08f, 0.05f, 0.9f));
-            ImGui.BeginChild("QuestObjectives", new Vector2(0, 80), ImGuiChildFlags.Borders);
-            ImGui.Indent(10);
+            ImGui.BeginChild("QuestObjectives", new Vector2(ImGuiSizes.Fill, objectivesHeight), ImGuiChildFlags.Borders);
+            ImGui.Indent(10 * UIConstants.DpiScale);
             ImGui.Spacing();
             ImGui.BulletText("See quest log for detailed objectives and progress");
-            ImGui.Unindent(10);
+            ImGui.Unindent(10 * UIConstants.DpiScale);
             ImGui.EndChild();
             ImGui.PopStyleColor();
             ImGui.Spacing();
@@ -136,9 +138,9 @@ public class QuestModal
     private void RenderQuestHeader()
     {
         // Quest name with larger text
-        ImGui.SetWindowFontScale(1.2f);
+        ImGui.PushFont(UIConstants.FontTitle);
         ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), _currentQuest!.DisplayName ?? _currentQuest.RefName);
-        ImGui.SetWindowFontScale(1.0f);
+        ImGui.PopFont();
 
         // Status badge
         if (_isAlreadyCompleted)
@@ -164,17 +166,17 @@ public class QuestModal
     private void RenderQuestMetadata()
     {
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Quest Details:");
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         ImGui.Text($"Quest ID: {_currentQuest!.RefName}");
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
     private void RenderActionButtons(MainViewModel viewModel, ref bool isOpen)
     {
         var buttonWidth = 140f;
-        var buttonHeight = 38f;
+        var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
         if (_isAlreadyCompleted)
         {

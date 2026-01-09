@@ -1,6 +1,7 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI;
 using ImGuiNET;
 using System.Numerics;
 using Ambient.Saga.UI.Components.Utilities;
@@ -39,23 +40,25 @@ public class WorldCatalogModal
             var gameplay = viewModel.CurrentWorld.Gameplay;
 
             // Header
-            ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "WORLD CATALOG");
-            ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"- {viewModel.CurrentWorld.WorldConfiguration?.DisplayName ?? "Unknown World"}");
+            ImGui.PushFont(UIConstants.FontTitle);
+            ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"WORLD CATALOG - {viewModel.CurrentWorld.WorldConfiguration?.DisplayName ?? "Unknown World"}");
+            ImGui.PopFont();
             ImGui.Separator();
 
             // Search and category selection
             ImGui.SetNextItemWidth(300);
             ImGui.InputTextWithHint("##Search", "Search items...", ref _searchFilter, 100);
             ImGui.SameLine();
-            ImGui.SetNextItemWidth(200);
-            ImGui.Combo("Category", ref _selectedCategory, _categories, _categories.Length);
+            ImGui.Text("Category:");
+            ImGui.SameLine();
+            ImGui.SetNextItemWidth(250);
+            ImGui.Combo("##Category", ref _selectedCategory, _categories, _categories.Length);
 
             ImGui.Spacing();
             ImGui.Separator();
 
-            // Content area
-            ImGui.BeginChild("CatalogContent", new Vector2(0, 0), ImGuiChildFlags.Borders);
+            // Content area - fill remaining space
+            ImGui.BeginChild("CatalogContent", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.Borders);
 
             switch (_selectedCategory)
             {
@@ -66,8 +69,8 @@ public class WorldCatalogModal
                 case 4: RenderBuildingMaterialsCatalog(gameplay); break;
                 case 5: RenderBlocksCatalog(viewModel.CurrentWorld); break;
                 case 6: RenderCharactersCatalog(gameplay); break;
-                case 7: RenderQuestsCatalog(gameplay); break;
-                case 8: RenderFactionsCatalog(gameplay); break;
+                case 7: RenderQuestsCatalog(gameplay, viewModel); break;
+                case 8: RenderFactionsCatalog(gameplay, viewModel); break;
                 case 9: RenderDialogueTreesCatalog(gameplay); break;
                 case 10: RenderStatusEffectsCatalog(gameplay); break;
                 case 11: RenderCombatStancesCatalog(gameplay); break;
@@ -213,7 +216,7 @@ public class WorldCatalogModal
                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description ?? "No description");
                 ImGui.Text($"Rarity: {item.Rarity}");
                 ImGui.Text($"Price: {item.WholesalePrice}");
-                ImGui.Text($"Durability Loss: {item.DurabilityLoss:P1} per use");
+                ImGui.Text($"Durability Loss: {item.DurabilityLoss:P2} per use");
                 if (item.EffectiveSubstances?.Length > 0)
                 {
                     ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Effective against:");
@@ -347,7 +350,7 @@ public class WorldCatalogModal
         }
     }
 
-    private void RenderQuestsCatalog(GameplayComponents gameplay)
+    private void RenderQuestsCatalog(GameplayComponents gameplay, MainViewModel viewModel)
     {
         if (gameplay.Quests == null || gameplay.Quests.Length == 0)
         {
@@ -376,7 +379,11 @@ public class WorldCatalogModal
                     foreach (var prereq in quest.Prerequisites)
                     {
                         if (prereq.QuestRef != null)
-                            ImGui.BulletText($"Quest: {prereq.QuestRef}");
+                        {
+                            var prereqQuest = viewModel.CurrentWorld?.TryGetQuestByRefName(prereq.QuestRef);
+                            var prereqQuestName = prereqQuest?.DisplayName ?? prereq.QuestRef;
+                            ImGui.BulletText($"Quest: {prereqQuestName}");
+                        }
                         if (prereq.MinimumLevel > 0)
                             ImGui.BulletText($"Level: {prereq.MinimumLevel}");
                     }
@@ -392,7 +399,7 @@ public class WorldCatalogModal
         }
     }
 
-    private void RenderFactionsCatalog(GameplayComponents gameplay)
+    private void RenderFactionsCatalog(GameplayComponents gameplay, MainViewModel viewModel)
     {
         if (gameplay.Factions == null || gameplay.Factions.Length == 0)
         {
@@ -422,7 +429,9 @@ public class WorldCatalogModal
                         var color = rel.RelationshipType == FactionRelationshipRelationshipType.Allied
                             ? new Vector4(0.5f, 1, 0.5f, 1)
                             : new Vector4(1, 0.5f, 0.5f, 1);
-                        ImGui.TextColored(color, $"  {rel.FactionRef}: {rel.RelationshipType} ({rel.SpilloverPercent:P0} spillover)");
+                        var relFaction = viewModel.CurrentWorld?.Gameplay?.Factions?.FirstOrDefault(f => f.RefName == rel.FactionRef);
+                        var relFactionName = relFaction?.DisplayName ?? rel.FactionRef;
+                        ImGui.TextColored(color, $"  {relFactionName}: {rel.RelationshipType} ({rel.SpilloverPercent:P0} spillover)");
                     }
                 }
 

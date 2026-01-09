@@ -108,7 +108,7 @@ public class TradeEngine
                         if (entry == null || string.IsNullOrEmpty(entry.BlockRef))
                             continue;
 
-                        var block = _world.BlockProvider.GetBlockByRef(entry.BlockRef);
+                        var block = _world.BlockProvider.GetBlockByRefName(entry.BlockRef);
                         if (block != null)
                         {
                             var price = isBuying ? CalculateBuyPrice(block, true, characterTraits) : CalculateSellPrice(block);

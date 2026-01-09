@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Entities;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine;
@@ -6,6 +6,8 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -116,10 +118,8 @@ public class BattleModal
             _ = InitializeBattleAsync(viewModel, character);
         }
 
-        // Center the window
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(1100, 750), ImGuiCond.FirstUseEver);
+        // Center the window using helper
+        ImGuiHelpers.SetupModalWindow(1100, 750);
 
         // Style the window
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(16, 16));
@@ -207,10 +207,14 @@ public class BattleModal
         // Header showing whose turn it is
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.15f, 0.8f));
 
-        // Increase height for reaction phase to fit tell text + timer + buttons
-        // Non-reaction phase needs 130f for two rows of action buttons
-        var headerHeight = _inReactionPhase ? 160f : 130f;
-        ImGui.BeginChild("TurnHeader", new Vector2(0, headerHeight), ImGuiChildFlags.Borders);
+        // Calculate header height based on content:
+        // - Reaction phase: title row + timer bar + reaction buttons row + spacing
+        // - Normal phase: title row + two rows of action buttons + spacing
+        var frameHeight = ImGui.GetFrameHeightWithSpacing();
+        var headerHeight = _inReactionPhase
+            ? frameHeight * 5.5f  // Tell text + timer bar + reaction buttons
+            : frameHeight * 4.5f; // Title + two rows of action buttons
+        ImGui.BeginChild("TurnHeader", new Vector2(ImGuiSizes.Fill, headerHeight), ImGuiChildFlags.Borders);
 
         // Reaction phase - show tell text, countdown, and reaction buttons
         if (_inReactionPhase)
@@ -229,12 +233,12 @@ public class BattleModal
         else
         {
             ImGui.Spacing();
-            ImGui.SetWindowFontScale(1.1f);
+            ImGui.PushFont(UIConstants.FontTitle);
             var turnText = "YOUR TURN - Choose an Action";
             var textSize = ImGui.CalcTextSize(turnText);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
             ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.4f, 1.0f), turnText);
-            ImGui.SetWindowFontScale(1.0f);
+            ImGui.PopFont();
             ImGui.Spacing();
 
             // Center the action buttons
@@ -244,11 +248,14 @@ public class BattleModal
             var startX = (ImGui.GetWindowWidth() - totalWidth) * 0.5f;
             ImGui.SetCursorPosX(startX);
 
+            // Button height based on frame height for DPI scaling
+            var actionButtonHeight = ImGui.GetFrameHeight() * 1.2f;
+
             // Core combat actions with styled buttons
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.15f, 0.15f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.3f, 0.3f, 1.0f));
-            if (ImGui.Button("Attack", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Attack", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Attack });
             }
@@ -258,7 +265,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.25f, 0.35f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.35f, 0.5f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.45f, 0.65f, 1.0f));
-            if (ImGui.Button("Defend", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Defend", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Defend });
             }
@@ -268,7 +275,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.2f, 0.5f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.45f, 0.3f, 0.65f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.55f, 0.4f, 0.8f, 1.0f));
-            if (ImGui.Button("Cast Spell", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Cast Spell", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 OpenSpellSelectionModal(viewModel);
             }
@@ -278,7 +285,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.35f, 0.2f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.5f, 0.3f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.65f, 0.4f, 1.0f));
-            if (ImGui.Button("Use Item", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Use Item", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 OpenItemSelectionModal(viewModel);
             }
@@ -288,7 +295,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.35f, 0.2f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.5f, 0.3f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.65f, 0.4f, 1.0f));
-            if (ImGui.Button("Talk", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Talk", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 OpenMidBattleDialogue(viewModel, character);
             }
@@ -298,7 +305,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.3f, 0.15f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.4f, 0.2f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.5f, 0.25f, 1.0f));
-            if (ImGui.Button("Flee", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Flee", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 _ = ExecuteTurnAsync(viewModel, character, new CombatAction { ActionType = ActionType.Flee });
             }
@@ -311,7 +318,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.3f, 0.3f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.4f, 0.4f, 0.4f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.5f, 0.5f, 0.5f, 1.0f));
-            if (ImGui.Button("Loadout", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Loadout", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 OpenEquipmentChangeModal(viewModel);
             }
@@ -323,7 +330,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.35f, 0.35f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.5f, 0.5f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.65f, 0.65f, 1.0f));
-            if (ImGui.Button("Affinity", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Affinity", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 OpenAffinityChangeModal(viewModel);
             }
@@ -335,7 +342,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.25f, 0.1f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.35f, 0.15f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.45f, 0.2f, 1.0f));
-            if (ImGui.Button("Stance", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Stance", new Vector2(buttonWidth, actionButtonHeight)))
             {
                 OpenStanceChangeModal(viewModel);
             }
@@ -355,12 +362,12 @@ public class BattleModal
     {
         // Tell text - narrative preview of incoming attack
         ImGui.Spacing();
-        ImGui.SetWindowFontScale(1.1f);
+        ImGui.PushFont(UIConstants.FontTitle);
         var tellText = _currentTellText ?? "The enemy prepares to strike...";
         var tellSize = ImGui.CalcTextSize(tellText);
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - tellSize.X) * 0.5f);
         ImGui.TextColored(new Vector4(1.0f, 0.7f, 0.3f, 1.0f), tellText);
-        ImGui.SetWindowFontScale(1.0f);
+        ImGui.PopFont();
         ImGui.Spacing();
 
         // Countdown timer bar
@@ -374,8 +381,9 @@ public class BattleModal
 
         var timerText = $"REACT! {_reactionTimeRemaining:F1}s";
         var barWidth = ImGui.GetWindowWidth() * 0.6f;
+        var barHeight = ImGui.GetFrameHeight();
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - barWidth) * 0.5f);
-        ImGui.ProgressBar(timeRatio, new Vector2(barWidth, 24), timerText);
+        ImGui.ProgressBar(timeRatio, new Vector2(barWidth, barHeight), timerText);
 
         ImGui.PopStyleColor(2);
         ImGui.Spacing();
@@ -383,6 +391,7 @@ public class BattleModal
         // Reaction buttons - Dodge, Block, Parry, Brace
         var buttonWidth = 120f;
         var buttonSpacing = 15f;
+        var reactionButtonHeight = ImGui.GetFrameHeight() * 1.4f;
         var totalWidth = buttonWidth * 4 + buttonSpacing * 3;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) * 0.5f);
 
@@ -390,7 +399,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.1f, 0.4f, 0.4f, 1.0f));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.15f, 0.55f, 0.55f, 1.0f));
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.2f, 0.7f, 0.7f, 1.0f));
-        if (ImGui.Button("Dodge", new Vector2(buttonWidth, 40)))
+        if (ImGui.Button("Dodge", new Vector2(buttonWidth, reactionButtonHeight)))
         {
             SelectReaction(PlayerDefenseType.Dodge, viewModel, character);
         }
@@ -402,7 +411,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.25f, 0.45f, 1.0f));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.35f, 0.6f, 1.0f));
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.45f, 0.75f, 1.0f));
-        if (ImGui.Button("Block", new Vector2(buttonWidth, 40)))
+        if (ImGui.Button("Block", new Vector2(buttonWidth, reactionButtonHeight)))
         {
             SelectReaction(PlayerDefenseType.Block, viewModel, character);
         }
@@ -414,7 +423,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.45f, 0.35f, 0.1f, 1.0f));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.6f, 0.5f, 0.15f, 1.0f));
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.75f, 0.65f, 0.2f, 1.0f));
-        if (ImGui.Button("Parry", new Vector2(buttonWidth, 40)))
+        if (ImGui.Button("Parry", new Vector2(buttonWidth, reactionButtonHeight)))
         {
             SelectReaction(PlayerDefenseType.Parry, viewModel, character);
         }
@@ -426,7 +435,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.2f, 0.45f, 1.0f));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.3f, 0.6f, 1.0f));
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.4f, 0.75f, 1.0f));
-        if (ImGui.Button("Brace", new Vector2(buttonWidth, 40)))
+        if (ImGui.Button("Brace", new Vector2(buttonWidth, reactionButtonHeight)))
         {
             SelectReaction(PlayerDefenseType.Brace, viewModel, character);
         }
@@ -624,15 +633,17 @@ public class BattleModal
 
         // Combatant name header
         ImGui.Spacing();
-        ImGui.SetWindowFontScale(1.1f);
+        ImGui.PushFont(UIConstants.FontTitle);
         ImGui.TextColored(titleColor, combatant.DisplayName);
-        ImGui.SetWindowFontScale(1.0f);
+        ImGui.PopFont();
 
         // Show affinity if available
         if (!string.IsNullOrEmpty(combatant.AffinityRef))
         {
             ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.6f, 0.7f, 1.0f, 1.0f), $"({combatant.AffinityRef})");
+            var affinity = _cachedViewModel?.CurrentWorld?.TryGetCharacterAffinityByRefName(combatant.AffinityRef);
+            var affinityName = affinity?.DisplayName ?? combatant.AffinityRef;
+            ImGui.TextColored(new Vector4(0.6f, 0.7f, 1.0f, 1.0f), $"({affinityName})");
         }
 
         ImGui.Separator();
@@ -660,10 +671,12 @@ public class BattleModal
 
     private void RenderStatBar(string name, float value, float maxValue, Vector4 color)
     {
+        var scale = UIConstants.DpiScale;
+        ImGui.AlignTextToFramePadding();
         ImGui.Text($"{name}:");
-        ImGui.SameLine(100);
+        ImGui.SameLine(100 * scale);
         ImGui.PushStyleColor(ImGuiCol.PlotHistogram, color);
-        ImGui.ProgressBar(value / maxValue, new Vector2(-1, 20), $"{value:F2} / {maxValue:F2}");
+        ImGui.ProgressBar(value / maxValue, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), $"{value:F2} / {maxValue:F2}");
         ImGui.PopStyleColor();
     }
 
@@ -744,12 +757,12 @@ public class BattleModal
 
         if (_currentState.PlayerVictory == true)
         {
-            ImGui.SetWindowFontScale(1.5f);
+            ImGui.PushFont(UIConstants.FontTitle);
             var text = "VICTORY!";
             var textSize = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
             ImGui.TextColored(new Vector4(0.3f, 1.0f, 0.3f, 1.0f), text);
-            ImGui.SetWindowFontScale(1.0f);
+            ImGui.PopFont();
 
             ImGui.Spacing();
             var subText = "You have defeated your opponent!";
@@ -759,12 +772,12 @@ public class BattleModal
         }
         else if (_currentState.PlayerVictory == false)
         {
-            ImGui.SetWindowFontScale(1.5f);
+            ImGui.PushFont(UIConstants.FontTitle);
             var text = "DEFEAT";
             var textSize = ImGui.CalcTextSize(text);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
             ImGui.TextColored(new Vector4(1.0f, 0.3f, 0.3f, 1.0f), text);
-            ImGui.SetWindowFontScale(1.0f);
+            ImGui.PopFont();
 
             ImGui.Spacing();
             var subText = "You have been defeated...";
@@ -786,8 +799,10 @@ public class BattleModal
         ImGui.Spacing();
 
         // Show battle log with styled background
+        // Reserve space for the bottom buttons (one row of buttons + spacing)
+        var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2;
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
-        ImGui.BeginChild("FinalBattleLog", new Vector2(0, -60), ImGuiChildFlags.Borders);
+        ImGui.BeginChild("FinalBattleLog", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
         foreach (var line in _currentState.BattleLog)
         {
@@ -819,6 +834,7 @@ public class BattleModal
 
         // Center the action buttons
         var buttonWidth = 150f;
+        var endButtonHeight = ImGui.GetFrameHeight() * 1.4f;
         var totalButtonWidth = _currentState.PlayerVictory == true ? buttonWidth * 2 + 20 : buttonWidth;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalButtonWidth) * 0.5f);
 
@@ -828,7 +844,7 @@ public class BattleModal
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1.0f));
-            if (ImGui.Button("Collect Loot", new Vector2(buttonWidth, 40)))
+            if (ImGui.Button("Collect Loot", new Vector2(buttonWidth, endButtonHeight)))
             {
                 // Transition to loot modal
                 modalManager.CloseModal("BossBattle");
@@ -838,7 +854,7 @@ public class BattleModal
             ImGui.SameLine();
         }
 
-        if (ImGui.Button("Close", new Vector2(buttonWidth, 40)))
+        if (ImGui.Button("Close", new Vector2(buttonWidth, endButtonHeight)))
         {
             modalManager.CloseModal("BossBattle");
         }
@@ -1226,7 +1242,7 @@ public class BattleModal
         // Spell selection modal
         if (_showSpellSelection && _spellSelectionModal != null)
         {
-            ImGui.SetNextWindowSize(new Vector2(500, 600), ImGuiCond.FirstUseEver);
+            ImGuiHelpers.SetupModalWindow(500, 600);
             if (ImGui.Begin("Select Spell", ref _showSpellSelection, ImGuiWindowFlags.Modal))
             {
                 _spellSelectionModal.Render();
@@ -1242,7 +1258,7 @@ public class BattleModal
         // Item selection modal
         if (_showItemSelection && _itemSelectionModal != null)
         {
-            ImGui.SetNextWindowSize(new Vector2(500, 600), ImGuiCond.FirstUseEver);
+            ImGuiHelpers.SetupModalWindow(500, 600);
             if (ImGui.Begin("Select Item", ref _showItemSelection, ImGuiWindowFlags.Modal))
             {
                 _itemSelectionModal.Render();
@@ -1258,7 +1274,7 @@ public class BattleModal
         // Equipment change modal
         if (_showEquipmentChange && _equipmentChangeModal != null)
         {
-            ImGui.SetNextWindowSize(new Vector2(500, 700), ImGuiCond.FirstUseEver);
+            ImGuiHelpers.SetupModalWindow(500, 700);
             if (ImGui.Begin("Change Loadout", ref _showEquipmentChange, ImGuiWindowFlags.Modal))
             {
                 _equipmentChangeModal.Render();

@@ -1,3 +1,5 @@
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -20,9 +22,8 @@ public class PauseMenuModal
             return;
         }
 
-        // Center the window
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Always, new Vector2(0.5f, 0.5f));
+        // Center the window using helper
+        ImGuiHelpers.CenterNextWindow();
         ImGui.SetNextWindowSize(new Vector2(300, 300), ImGuiCond.Always);
 
         // Style the window
@@ -44,14 +45,15 @@ public class PauseMenuModal
                 ResumeRequested?.Invoke();
             }
 
-            // Title
+            // Title - centered using available width
             ImGui.Spacing();
-            ImGui.SetWindowFontScale(1.3f);
+            ImGui.PushFont(UIConstants.FontTitle);
             var titleText = "PAUSED";
             var titleSize = ImGui.CalcTextSize(titleText);
-            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - titleSize.X) * 0.5f);
+            var avail = ImGui.GetContentRegionAvail();
+            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (avail.X - titleSize.X) * 0.5f);
             ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), titleText);
-            ImGui.SetWindowFontScale(1.0f);
+            ImGui.PopFont();
 
             ImGui.Spacing();
             ImGui.Spacing();
@@ -59,17 +61,14 @@ public class PauseMenuModal
             ImGui.Spacing();
             ImGui.Spacing();
 
-            var buttonWidth = 260f;
-            var buttonHeight = 40f;
+            // Use frame height for consistent button sizing
+            var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
-            // Center buttons
-            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
-
-            // Resume button
+            // Resume button - full width
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
-            if (ImGui.Button("Resume Game", new Vector2(buttonWidth, buttonHeight)))
+            if (ImGui.Button("Resume Game", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 isOpen = false;
                 ResumeRequested?.Invoke();
@@ -77,26 +76,24 @@ public class PauseMenuModal
             ImGui.PopStyleColor(3);
 
             ImGui.Spacing();
-            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
 
-            // Settings button
+            // Settings button - full width
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.3f, 0.35f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.4f, 0.4f, 0.45f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.5f, 0.5f, 0.55f, 1));
-            if (ImGui.Button("Settings", new Vector2(buttonWidth, buttonHeight)))
+            if (ImGui.Button("Settings", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 SettingsRequested?.Invoke();
             }
             ImGui.PopStyleColor(3);
 
             ImGui.Spacing();
-            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
 
-            // Quit button
+            // Quit button - full width
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
-            if (ImGui.Button("Quit to Desktop", new Vector2(buttonWidth, buttonHeight)))
+            if (ImGui.Button("Quit to Desktop", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 QuitRequested?.Invoke();
             }
@@ -107,10 +104,11 @@ public class PauseMenuModal
             ImGui.Separator();
             ImGui.Spacing();
 
-            // Hint
+            // Hint - centered using available width
             var hintText = "Press ESC to resume";
             var hintSize = ImGui.CalcTextSize(hintText);
-            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - hintSize.X) * 0.5f);
+            var hintAvail = ImGui.GetContentRegionAvail();
+            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (hintAvail.X - hintSize.X) * 0.5f);
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), hintText);
         }
         ImGui.End();

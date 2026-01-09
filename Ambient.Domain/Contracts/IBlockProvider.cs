@@ -18,7 +18,7 @@ public interface IBlockProvider
     /// </summary>
     /// <param name="blockRef">The reference name of the block to find.</param>
     /// <returns>The block if found, null otherwise.</returns>
-    IBlock? GetBlockByRef(string blockRef);
+    IBlock? GetBlockByRefName(string blockRef);
 
     /// <summary>
     /// Gets blocks filtered by substance type.

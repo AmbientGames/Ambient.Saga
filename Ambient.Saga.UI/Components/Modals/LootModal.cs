@@ -1,5 +1,7 @@
-﻿using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -22,10 +24,8 @@ public class LootModal
             return;
         }
 
-        // Center the window
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(550, 450), ImGuiCond.FirstUseEver);
+        // Center the window using helper
+        ImGuiHelpers.SetupModalWindow(550, 450);
 
         // Style the window
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
@@ -36,9 +36,9 @@ public class LootModal
         if (ImGui.Begin($"Loot###LootModal", ref isOpen, windowFlags))
         {
             // Header showing defeated enemy
-            ImGui.SetWindowFontScale(1.2f);
+            ImGui.PushFont(UIConstants.FontTitle);
             ImGui.TextColored(new Vector4(1, 0.4f, 0.4f, 1), character.DisplayName);
-            ImGui.SetWindowFontScale(1.0f);
+            ImGui.PopFont();
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "- Defeated");
 
@@ -78,8 +78,9 @@ public class LootModal
         ImGui.Spacing();
 
         var buttonWidth = 120f;
+        var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
-        if (ImGui.Button("Close", new Vector2(buttonWidth, 35)))
+        if (ImGui.Button("Close", new Vector2(buttonWidth, buttonHeight)))
         {
             isOpen = false;
         }
@@ -94,8 +95,10 @@ public class LootModal
         var characterTemplate = viewModel.CurrentWorld?.Gameplay?.Characters?
             .FirstOrDefault(c => c.RefName == character.CharacterRef);
 
+        // Reserve space for bottom buttons
+        var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2;
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
-        ImGui.BeginChild("LootList", new Vector2(0, -60), ImGuiChildFlags.Borders);
+        ImGui.BeginChild("LootList", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
         if (characterTemplate?.Capabilities != null)
         {
@@ -107,11 +110,11 @@ public class LootModal
                 ImGui.TextColored(new Vector4(0.6f, 0.7f, 1, 1), "Equipment:");
                 foreach (var equipment in characterTemplate.Capabilities.Equipment)
                 {
-                    ImGui.Indent(15);
+                    ImGui.Indent(15 * UIConstants.DpiScale);
                     ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), equipment.EquipmentRef);
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"({equipment.Condition:P0})");
-                    ImGui.Unindent(15);
+                    ImGui.Unindent(15 * UIConstants.DpiScale);
                     hasAnyLoot = true;
                 }
                 ImGui.Spacing();
@@ -123,11 +126,11 @@ public class LootModal
                 ImGui.TextColored(new Vector4(0.4f, 1, 0.6f, 1), "Consumables:");
                 foreach (var consumable in characterTemplate.Capabilities.Consumables)
                 {
-                    ImGui.Indent(15);
+                    ImGui.Indent(15 * UIConstants.DpiScale);
                     ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), consumable.ConsumableRef);
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"x{consumable.Quantity}");
-                    ImGui.Unindent(15);
+                    ImGui.Unindent(15 * UIConstants.DpiScale);
                     hasAnyLoot = true;
                 }
                 ImGui.Spacing();
@@ -139,11 +142,11 @@ public class LootModal
                 ImGui.TextColored(new Vector4(0.8f, 0.6f, 0.4f, 1), "Materials:");
                 foreach (var material in characterTemplate.Capabilities.BuildingMaterials)
                 {
-                    ImGui.Indent(15);
+                    ImGui.Indent(15 * UIConstants.DpiScale);
                     ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), material.BuildingMaterialRef);
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"x{material.Quantity}");
-                    ImGui.Unindent(15);
+                    ImGui.Unindent(15 * UIConstants.DpiScale);
                     hasAnyLoot = true;
                 }
                 ImGui.Spacing();
@@ -155,11 +158,11 @@ public class LootModal
                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.9f, 1), "Tools:");
                 foreach (var tool in characterTemplate.Capabilities.Tools)
                 {
-                    ImGui.Indent(15);
+                    ImGui.Indent(15 * UIConstants.DpiScale);
                     ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), tool.ToolRef);
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"({tool.Condition:P0})");
-                    ImGui.Unindent(15);
+                    ImGui.Unindent(15 * UIConstants.DpiScale);
                     hasAnyLoot = true;
                 }
                 ImGui.Spacing();
@@ -190,6 +193,7 @@ public class LootModal
 
         // Action buttons centered
         var buttonWidth = 130f;
+        var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
         var totalWidth = buttonWidth * 2 + 20;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) * 0.5f);
 
@@ -201,7 +205,7 @@ public class LootModal
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
-        if (ImGui.Button(_isLooting ? "Looting..." : "Take All", new Vector2(buttonWidth, 38)) && !_isLooting)
+        if (ImGui.Button(_isLooting ? "Looting..." : "Take All", new Vector2(buttonWidth, buttonHeight)) && !_isLooting)
         {
             _isLooting = true;
             _ = LootCharacterAsync(viewModel, character);
@@ -218,7 +222,7 @@ public class LootModal
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.25f, 0.25f, 1));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.3f, 0.3f, 1));
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.35f, 0.35f, 1));
-        if (ImGui.Button("Leave", new Vector2(buttonWidth, 38)))
+        if (ImGui.Button("Leave", new Vector2(buttonWidth, buttonHeight)))
         {
             isOpen = false;
         }

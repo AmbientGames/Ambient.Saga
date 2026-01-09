@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Numerics;
 using Ambient.Saga.UI.ViewModels;
 using Ambient.Saga.UI.Components.Modals;
+using Ambient.Saga.UI;
 
 namespace Ambient.Saga.UI.Components.Panels;
 
@@ -32,15 +33,18 @@ public class MapViewPanel
         var availableRegion = ImGui.GetContentRegionAvail();
 
         // Two-column layout: Map on left, Legend on right
-        var legendWidth = 180f;
-        var mapWidth = availableRegion.X - legendWidth - 10; // 10px gap
+        var scale = UIConstants.DpiScale;
+        var legendWidth = 230f * scale;
+        var mapWidth = availableRegion.X - legendWidth - (10f * scale); // scaled gap
 
         // Left side: Map viewport
         ImGui.BeginChild("MapContainer", new Vector2(mapWidth, availableRegion.Y), ImGuiChildFlags.None);
         var mapRegion = ImGui.GetContentRegionAvail();
 
         // Map viewport with scrolling enabled for panning
-        ImGui.BeginChild("MapViewport", new Vector2(mapRegion.X, mapRegion.Y - 40),
+        // Reserve space for the control buttons below (scaled)
+        var controlsHeight = ImGui.GetFrameHeightWithSpacing() + ImGui.GetStyle().ItemSpacing.Y;
+        ImGui.BeginChild("MapViewport", new Vector2(mapRegion.X, mapRegion.Y - controlsHeight),
             ImGuiChildFlags.Borders,
             ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
 
@@ -54,8 +58,8 @@ public class MapViewPanel
         {
             // Calculate scaled size to fit viewport while maintaining aspect ratio
             var aspectRatio = (float)heightMapWidth / heightMapHeight;
-            var baseWidth = availableRegion.X - 20;
-            var baseHeight = availableRegion.Y - 60;
+            var baseWidth = availableRegion.X - (20 * scale);
+            var baseHeight = availableRegion.Y - (60 * scale);
 
             // Start with fitting to available space
             var displayWidth = baseWidth;
@@ -603,7 +607,9 @@ public class MapViewPanel
         if (viewModel.Characters.Count == 0)
         {
             ImGui.Spacing();
-            ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "Move into Saga zones to spawn characters");
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1, 0.5f, 0.5f, 1));
+            ImGui.TextWrapped("Move into Saga zones to spawn characters");
+            ImGui.PopStyleColor();
         }
 
         // Mouse position info (only visible when hovering over map)

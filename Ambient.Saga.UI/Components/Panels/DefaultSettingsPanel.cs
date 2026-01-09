@@ -50,7 +50,7 @@ public class DefaultSettingsPanel : ISettingsPanel
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
-            if (ImGui.Button("Close", new Vector2(buttonWidth, 35)))
+            if (ImGui.Button("Close", new Vector2(buttonWidth, ImGui.GetFrameHeight() * 1.2f)))
             {
                 isOpen = false;
             }

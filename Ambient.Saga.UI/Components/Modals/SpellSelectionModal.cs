@@ -1,6 +1,8 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Ambient.Saga.UI;
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System;
 using System.Numerics;
@@ -32,9 +34,13 @@ public class SpellSelectionModal
     /// </summary>
     public void Render()
     {
-        ImGui.TextColored(new Vector4(0.5f, 0.3f, 0.8f, 1.0f), "✨ CAST SPELL");
+        ImGui.PushFont(UIConstants.FontTitle);
+        ImGui.TextColored(new Vector4(0.5f, 0.3f, 0.8f, 1.0f), "CAST SPELL");
+        ImGui.PopFont();
         ImGui.Separator();
         ImGui.Spacing();
+
+        var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
         // Check if player has any spells
         if (_player.Capabilities?.Spells == null || _player.Capabilities.Spells.Length == 0)
@@ -42,14 +48,14 @@ public class SpellSelectionModal
             ImGui.Text("No spells available!");
             ImGui.Spacing();
 
-            if (ImGui.Button("OK", new Vector2(200, 40)))
+            if (ImGui.Button("OK", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 Cancelled?.Invoke();
             }
             return;
         }
 
-        // Spell buttons
+        // Spell buttons - full width
         foreach (var spellEntry in _player.Capabilities.Spells)
         {
             if (spellEntry.Condition <= 0) continue; // Skip broken spells
@@ -58,7 +64,7 @@ public class SpellSelectionModal
             if (spell == null) continue;
 
             var spellRef = spellEntry.SpellRef; // Capture for lambda
-            if (ImGui.Button($"{spell.DisplayName} ({spellEntry.Condition:P0})", new Vector2(400, 50)))
+            if (ImGui.Button($"{spell.DisplayName} ({spellEntry.Condition:P0})", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 Console.WriteLine($"Spell selected: {spell.DisplayName} ({spellRef})");
                 SpellSelected?.Invoke(spellRef);
@@ -67,8 +73,8 @@ public class SpellSelectionModal
 
         ImGui.Spacing();
 
-        // Cancel button
-        if (ImGui.Button("Cancel", new Vector2(400, 40)))
+        // Cancel button - full width
+        if (ImGui.Button("Cancel", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
             Console.WriteLine("Spell selection cancelled");
             Cancelled?.Invoke();

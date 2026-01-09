@@ -5,6 +5,8 @@ using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Panels;
 
+using Ambient.Saga.UI;
+
 /// <summary>
 /// Renders the map legend showing what map markers mean.
 /// Simple for players, with extra detail when debugger is attached.
@@ -18,7 +20,7 @@ public static class MapLegend
     {
         if (ImGui.CollapsingHeader("Legend", ImGuiTreeNodeFlags.DefaultOpen))
         {
-            ImGui.Indent(5);
+            ImGui.Indent(5 * UIConstants.DpiScale);
 
             RenderLocationsLegend();
             ImGui.Spacing();
@@ -35,7 +37,7 @@ public static class MapLegend
                 RenderDevLegend();
             }
 
-            ImGui.Unindent(5);
+            ImGui.Unindent(5 * UIConstants.DpiScale);
         }
     }
 
@@ -46,14 +48,14 @@ public static class MapLegend
     {
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Locations:");
         ImGui.Spacing();
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         // Status-based colors - matches SagaColors
         RenderLegendCircle(SagaColors.Available, "Available", filled: true);
         RenderLegendCircle(SagaColors.Locked, "Locked", filled: true);
         RenderLegendCircle(SagaColors.Complete, "Complete", filled: true);
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
         ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Hover for details");
     }
 
@@ -65,13 +67,13 @@ public static class MapLegend
     {
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Trigger Rings:");
         ImGui.Spacing();
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         // Status-based colors - matches TriggerColors (Complete hidden, not shown)
         RenderLegendCircle(TriggerColors.AvailableColor, "Available", filled: false);
         RenderLegendCircle(TriggerColors.LockedColor, "Locked", filled: false);
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
     /// <summary>
@@ -81,14 +83,14 @@ public static class MapLegend
     {
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Characters:");
         ImGui.Spacing();
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         // Matches MainViewModel character coloring
         RenderLegendCircle(new Vector4(1f, 0.65f, 0f, 1f), "Alive", filled: true);    // Orange
         RenderLegendCircle(new Vector4(0.5f, 0.5f, 0.5f, 1f), "Dead", filled: true);  // Gray
         RenderLegendCircle(new Vector4(0f, 1f, 1f, 1f), "You", filled: true);         // Cyan
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
     /// <summary>
@@ -100,7 +102,7 @@ public static class MapLegend
         ImGui.Separator();
         ImGui.TextColored(new Vector4(1f, 0.5f, 0f, 1f), "Dev Info:");
         ImGui.Spacing();
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Hover shows:");
         ImGui.BulletText("Feature type");
@@ -108,17 +110,19 @@ public static class MapLegend
         ImGui.BulletText("Interaction status");
         ImGui.BulletText("Quest tokens");
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
     private static void RenderLegendCircle(Vector4 color, string label, bool filled)
     {
         var drawList = ImGui.GetWindowDrawList();
         var cursorPos = ImGui.GetCursorScreenPos();
+        var scale = UIConstants.DpiScale;
 
-        // Draw circle at current position
-        var circleCenter = new Vector2(cursorPos.X + 5, cursorPos.Y + 7); // Offset to align with text
-        var radius = 4f;
+        // Draw circle at current position (scaled offsets to align with text)
+        var textHeight = ImGui.GetTextLineHeight();
+        var radius = 4f * scale;
+        var circleCenter = new Vector2(cursorPos.X + radius, cursorPos.Y + textHeight / 2);
         var circleColor = ImGui.ColorConvertFloat4ToU32(color);
 
         if (filled)
@@ -127,11 +131,11 @@ public static class MapLegend
         }
         else
         {
-            drawList.AddCircle(circleCenter, radius, circleColor, 12, 2.0f);
+            drawList.AddCircle(circleCenter, radius, circleColor, 12, 2.0f * scale);
         }
 
         // Move cursor past the circle and render text
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + 15);
+        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + radius * 2 + 8 * scale);
         ImGui.Text(label);
     }
 }

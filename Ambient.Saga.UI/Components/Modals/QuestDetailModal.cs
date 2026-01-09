@@ -4,6 +4,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using ImGuiNET;
+using Ambient.Saga.UI.Components.Utilities;
 using MediatR;
 using System.Numerics;
 
@@ -82,8 +83,7 @@ public class QuestDetailModal
     {
         if (!isOpen || _questTemplate == null) return;
 
-        ImGui.SetNextWindowSize(new Vector2(900, 700), ImGuiCond.FirstUseEver);
-        ImGui.SetNextWindowPos(ImGui.GetMainViewport().GetCenter(), ImGuiCond.Appearing, new Vector2(0.5f, 0.5f));
+        ImGuiHelpers.SetupModalWindow(900, 700);
 
         var title = _questTemplate.DisplayName ?? _questTemplate.RefName;
         if (_questProgress?.IsComplete == true)
@@ -121,7 +121,9 @@ public class QuestDetailModal
 
     private void RenderQuestContent(MainViewModel viewModel, ref bool isOpen)
     {
-        ImGui.BeginChild("QuestDetailScroll", new Vector2(0, -60), ImGuiChildFlags.None);
+        // Reserve space for action buttons at bottom
+        var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2.5f;
+        ImGui.BeginChild("QuestDetailScroll", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.None);
 
         // Header with quest name and description
         RenderHeader();
@@ -148,7 +150,7 @@ public class QuestDetailModal
             ImGui.Spacing();
             ImGui.Separator();
             ImGui.Spacing();
-            RenderRewards();
+            RenderRewards(viewModel);
         }
 
         // Fail conditions
@@ -157,7 +159,7 @@ public class QuestDetailModal
             ImGui.Spacing();
             ImGui.Separator();
             ImGui.Spacing();
-            RenderFailConditions();
+            RenderFailConditions(viewModel);
         }
 
         // Prerequisites (if not met, would be grayed out)
@@ -166,7 +168,7 @@ public class QuestDetailModal
             ImGui.Spacing();
             ImGui.Separator();
             ImGui.Spacing();
-            RenderPrerequisites();
+            RenderPrerequisites(viewModel);
         }
 
         ImGui.EndChild();
@@ -234,7 +236,7 @@ public class QuestDetailModal
         ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Current Stage:");
         ImGui.Spacing();
 
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         // Stage name
         ImGui.TextColored(new Vector4(1, 1, 0, 1), _questProgress!.CurrentStageDisplayName);
@@ -260,7 +262,7 @@ public class QuestDetailModal
             }
         }
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
     private void RenderObjective(ObjectiveProgress objective)
@@ -292,11 +294,11 @@ public class QuestDetailModal
         // Progress bar
         if (!isComplete && objective.TargetValue > 0)
         {
-            ImGui.Indent(20);
+            ImGui.Indent(20 * UIConstants.DpiScale);
             var progress = (float)objective.CurrentValue / objective.TargetValue;
             var progressText = $"{objective.CurrentValue} / {objective.TargetValue}";
-            ImGui.ProgressBar(progress, new Vector2(-1, 20), progressText);
-            ImGui.Unindent(20);
+            ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), progressText);
+            ImGui.Unindent(20 * UIConstants.DpiScale);
         }
 
         ImGui.Spacing();
@@ -335,9 +337,9 @@ public class QuestDetailModal
             // Show branch objective if it exists
             if (branch.Objective != null)
             {
-                ImGui.Indent(20);
+                ImGui.Indent(20 * UIConstants.DpiScale);
                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Requires: {branch.Objective.DisplayName}");
-                ImGui.Unindent(20);
+                ImGui.Unindent(20 * UIConstants.DpiScale);
             }
 
             ImGui.Spacing();
@@ -354,7 +356,7 @@ public class QuestDetailModal
 
         if (ImGui.CollapsingHeader("Quest History"))
         {
-            ImGui.Indent(10);
+            ImGui.Indent(10 * UIConstants.DpiScale);
 
             foreach (var (stageRef, completedObjs) in _questState.CompletedObjectives)
             {
@@ -373,16 +375,16 @@ public class QuestDetailModal
                 }
             }
 
-            ImGui.Unindent(10);
+            ImGui.Unindent(10 * UIConstants.DpiScale);
         }
     }
 
-    private void RenderRewards()
+    private void RenderRewards(MainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "Rewards:");
         ImGui.Spacing();
 
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         foreach (var reward in _questTemplate!.Rewards!)
         {
@@ -400,7 +402,9 @@ public class QuestDetailModal
             {
                 foreach (var equip in reward.Equipment)
                 {
-                    ImGui.BulletText($"{equip.EquipmentRef} x{equip.Quantity}");
+                    var equipDef = viewModel.CurrentWorld?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
+                    var equipName = equipDef?.DisplayName ?? equip.EquipmentRef;
+                    ImGui.BulletText($"{equipName} x{equip.Quantity}");
                 }
             }
 
@@ -408,7 +412,9 @@ public class QuestDetailModal
             {
                 foreach (var consumable in reward.Consumable)
                 {
-                    ImGui.BulletText($"{consumable.ConsumableRef} x{consumable.Quantity}");
+                    var consumableDef = viewModel.CurrentWorld?.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == consumable.ConsumableRef);
+                    var consumableName = consumableDef?.DisplayName ?? consumable.ConsumableRef;
+                    ImGui.BulletText($"{consumableName} x{consumable.Quantity}");
                 }
             }
 
@@ -416,26 +422,28 @@ public class QuestDetailModal
             {
                 foreach (var token in reward.QuestToken)
                 {
-                    ImGui.BulletText($"Quest Token: {token.QuestTokenRef} x{token.Quantity}");
+                    var tokenDef = viewModel.CurrentWorld?.Gameplay?.QuestTokens?.FirstOrDefault(t => t.RefName == token.QuestTokenRef);
+                    var tokenName = tokenDef?.DisplayName ?? token.QuestTokenRef;
+                    ImGui.BulletText($"Quest Token: {tokenName} x{token.Quantity}");
                 }
             }
         }
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
-    private void RenderFailConditions()
+    private void RenderFailConditions(MainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "Failure Conditions:");
         ImGui.Spacing();
 
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         foreach (var failCondition in _questTemplate!.FailConditions!)
         {
             var conditionText = failCondition.Type switch
             {
-                QuestFailConditionType.CharacterDied => $"If {failCondition.CharacterRef} dies",
+                QuestFailConditionType.CharacterDied => GetCharacterDiedText(failCondition.CharacterRef, viewModel),
                 QuestFailConditionType.TimeExpired => $"If time expires ({failCondition.TimeLimit} minutes)",
                 QuestFailConditionType.WrongChoiceMade => $"If wrong choice made in dialogue",
                 QuestFailConditionType.ItemLost => $"If {failCondition.ItemRef} is lost",
@@ -445,15 +453,23 @@ public class QuestDetailModal
             ImGui.BulletText(conditionText);
         }
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
-    private void RenderPrerequisites()
+    private string GetCharacterDiedText(string? characterRef, MainViewModel viewModel)
+    {
+        if (string.IsNullOrEmpty(characterRef)) return "If character dies";
+        var charDef = viewModel.CurrentWorld?.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == characterRef);
+        var charName = charDef?.DisplayName ?? characterRef;
+        return $"If {charName} dies";
+    }
+
+    private void RenderPrerequisites(MainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Prerequisites:");
         ImGui.Spacing();
 
-        ImGui.Indent(10);
+        ImGui.Indent(10 * UIConstants.DpiScale);
 
         foreach (var prereq in _questTemplate!.Prerequisites!)
         {
@@ -461,7 +477,9 @@ public class QuestDetailModal
 
             if (!string.IsNullOrEmpty(prereq.QuestRef))
             {
-                prereqText = $"Complete quest: {prereq.QuestRef}";
+                var questDef = viewModel.CurrentWorld?.TryGetQuestByRefName(prereq.QuestRef);
+                var questName = questDef?.DisplayName ?? prereq.QuestRef;
+                prereqText = $"Complete quest: {questName}";
             }
             else if (prereq.MinimumLevelSpecified)
             {
@@ -473,7 +491,9 @@ public class QuestDetailModal
             }
             else if (!string.IsNullOrEmpty(prereq.RequiredAchievementRef))
             {
-                prereqText = $"Require achievement: {prereq.RequiredAchievementRef}";
+                var achievementDef = viewModel.CurrentWorld?.Gameplay?.Achievements?.FirstOrDefault(a => a.RefName == prereq.RequiredAchievementRef);
+                var achievementName = achievementDef?.DisplayName ?? prereq.RequiredAchievementRef;
+                prereqText = $"Require achievement: {achievementName}";
             }
             else
             {
@@ -483,17 +503,19 @@ public class QuestDetailModal
             ImGui.BulletText(prereqText);
         }
 
-        ImGui.Unindent(10);
+        ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
     private void RenderActionButtons(MainViewModel viewModel, ref bool isOpen)
     {
         ImGui.Spacing();
 
+        var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
+
         if (_questProgress?.IsComplete == true)
         {
             // Completed quest - just close
-            if (ImGui.Button("Close", new Vector2(150, 35)))
+            if (ImGui.Button("Close", new Vector2(150, buttonHeight)))
             {
                 isOpen = false;
             }
@@ -506,7 +528,7 @@ public class QuestDetailModal
                 ImGui.BeginDisabled();
             }
 
-            if (ImGui.Button("Abandon Quest", new Vector2(150, 35)))
+            if (ImGui.Button("Abandon Quest", new Vector2(150, buttonHeight)))
             {
                 AbandonQuest(viewModel);
             }
@@ -519,7 +541,7 @@ public class QuestDetailModal
             }
 
             ImGui.SameLine();
-            if (ImGui.Button("Close", new Vector2(100, 35)))
+            if (ImGui.Button("Close", new Vector2(100, buttonHeight)))
             {
                 isOpen = false;
             }

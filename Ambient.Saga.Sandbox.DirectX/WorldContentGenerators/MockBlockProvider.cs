@@ -20,7 +20,7 @@ public class MockBlockProvider : IBlockProvider
     public IEnumerable<IBlock> GetAllBlocks() => _blocks.Values;
 
     /// <inheritdoc />
-    public IBlock? GetBlockByRef(string blockRef) =>
+    public IBlock? GetBlockByRefName(string blockRef) =>
         _blocks.TryGetValue(blockRef, out var block) ? block : null;
 
     /// <inheritdoc />
@@ -59,6 +59,23 @@ public class MockBlockProvider : IBlockProvider
         yield return new MockBlock("Glass", "Glass", "Transparent glass block.", "Glass", 20, 1.5f);
         yield return new MockBlock("Obsidian", "Obsidian", "Volcanic glass. Extremely hard.", "Stone", 200, 2.5f);
         yield return new MockBlock("Glowstone", "Glowstone", "Luminescent block. Provides light.", "Crystal", 150, 2.0f);
+
+        // Functional blocks (machines, storage, lighting)
+        yield return new MockBlock("Cache", "Storage Cache", "Secure storage container for items.", "Functional", 50, 1.5f);
+        yield return new MockBlock("Lamp", "Lamp", "Portable light source.", "Functional", 15, 1.3f);
+        yield return new MockBlock("WoodStove", "Wood Stove", "Basic heating and cooking appliance.", "Functional", 75, 1.4f);
+        yield return new MockBlock("BlastFurnace", "Blast Furnace", "Industrial furnace for smelting ores.", "Functional", 200, 1.6f);
+        yield return new MockBlock("BlastFurnaceMK2", "Blast Furnace MK2", "Improved blast furnace with higher efficiency.", "Functional", 400, 1.8f);
+        yield return new MockBlock("BlastFurnaceMK3", "Blast Furnace MK3", "Advanced blast furnace for rapid smelting.", "Functional", 800, 2.0f);
+        yield return new MockBlock("CharcoalKiln", "Charcoal Kiln", "Converts wood into charcoal fuel.", "Functional", 100, 1.5f);
+        yield return new MockBlock("SawMill", "Sawmill", "Processes logs into lumber efficiently.", "Functional", 150, 1.5f);
+
+        // Natural resources
+        yield return new MockBlock("Oak", "Oak Wood", "Raw oak timber for construction and fuel.", "Wood", 5, 1.2f);
+        yield return new MockBlock("Coal", "Coal", "Combustible mineral for fuel and smelting.", "Ore", 10, 1.3f);
+        yield return new MockBlock("IronOre", "Iron Ore", "Raw iron ore for smelting into iron.", "Ore", 20, 1.4f);
+        yield return new MockBlock("ManganeseOre", "Manganese Ore", "Rare ore used in steel alloys.", "Ore", 50, 1.6f);
+        yield return new MockBlock("ChromiumOre", "Chromium Ore", "Precious ore for advanced metallurgy.", "Ore", 75, 1.8f);
     }
 }
 

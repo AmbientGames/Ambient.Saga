@@ -39,7 +39,7 @@ public class WorldInfoPanel
             var blocks = viewModel.CurrentWorld.BlockProvider?.GetAllBlocks().ToList();
             if (blocks != null && blocks.Count > 0 && ImGui.CollapsingHeader($"Blocks ({blocks.Count})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 // Group blocks by substance for better organization
                 var blocksBySubstance = blocks
                     .GroupBy(b => b.SubstanceRef ?? "Other")
@@ -72,29 +72,29 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Tools (collapsible with basic list)
             var tools = viewModel.CurrentWorld.Gameplay?.Tools;
             if (tools != null && ImGui.CollapsingHeader($"Tools ({tools.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var tool in tools)
                 {
                     ImGui.BulletText(tool.DisplayName ?? tool.RefName);
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Materials (collapsible with detailed expandable items)
             var materials = viewModel.CurrentWorld.Gameplay?.BuildingMaterials;
             if (materials != null && ImGui.CollapsingHeader($"Materials ({materials.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var material in materials)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(material.DisplayName ?? material.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{material.DisplayName ?? material.RefName}##{material.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(material.Description))
@@ -106,7 +106,7 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             ImGui.Spacing();
@@ -118,10 +118,10 @@ public class WorldInfoPanel
             var equipment = viewModel.CurrentWorld.Gameplay?.Equipment;
             if (equipment != null && ImGui.CollapsingHeader($"Equipment ({equipment.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var equip in equipment)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(equip.DisplayName ?? equip.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{equip.DisplayName ?? equip.RefName}##{equip.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(equip.Description))
@@ -136,17 +136,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Consumables (collapsible with detailed expandable items)
             var consumables = viewModel.CurrentWorld.Gameplay?.Consumables;
             if (consumables != null && ImGui.CollapsingHeader($"Consumables ({consumables.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var consumable in consumables)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(consumable.DisplayName ?? consumable.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{consumable.DisplayName ?? consumable.RefName}##{consumable.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(consumable.Description))
@@ -161,17 +161,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Spells (collapsible with detailed expandable items)
             var spells = viewModel.CurrentWorld.Gameplay?.Spells;
             if (spells != null && ImGui.CollapsingHeader($"Spells ({spells.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var spell in spells)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(spell.DisplayName ?? spell.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{spell.DisplayName ?? spell.RefName}##{spell.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(spell.Description))
@@ -186,17 +186,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Character Archetypes (collapsible with detailed expandable items)
             var archetypes = viewModel.CurrentWorld.Gameplay?.AvatarArchetypes;
             if (archetypes != null && ImGui.CollapsingHeader($"Character Archetypes ({archetypes.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var archetype in archetypes)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(archetype.DisplayName ?? archetype.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{archetype.DisplayName ?? archetype.RefName}##{archetype.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(archetype.Description))
@@ -204,21 +204,23 @@ public class WorldInfoPanel
                             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), archetype.Description);
                             ImGui.Spacing();
                         }
-                        ImGui.Text($"Affinity: {archetype.AffinityRef}");
+                        var affinityDef = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(archetype.AffinityRef ?? "");
+                        var affinityName = affinityDef?.DisplayName ?? archetype.AffinityRef ?? "None";
+                        ImGui.Text($"Affinity: {affinityName}");
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Characters (NPC/boss templates)
             var characters = viewModel.CurrentWorld.Gameplay?.Characters;
             if (characters != null && ImGui.CollapsingHeader($"Characters ({characters.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var character in characters)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(character.DisplayName ?? character.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{character.DisplayName ?? character.RefName}##{character.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(character.Description))
@@ -233,17 +235,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Character Affinities (combat types)
             var affinities = viewModel.CurrentWorld.Gameplay?.CharacterAffinities;
             if (affinities != null && ImGui.CollapsingHeader($"Character Affinities ({affinities.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var affinity in affinities)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(affinity.DisplayName ?? affinity.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{affinity.DisplayName ?? affinity.RefName}##{affinity.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(affinity.Description))
@@ -254,7 +256,7 @@ public class WorldInfoPanel
                         if (affinity.Matchup != null && affinity.Matchup.Length > 0)
                         {
                             ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Matchups:");
-                            ImGui.Indent(10);
+                            ImGui.Indent(10 * UIConstants.DpiScale);
                             foreach (var matchup in affinity.Matchup)
                             {
                                 var color = matchup.Multiplier > 1.0
@@ -262,22 +264,22 @@ public class WorldInfoPanel
                                     : new Vector4(1, 0.5f, 0.2f, 1); // Orange for weak
                                 ImGui.TextColored(color, $"vs {matchup.TargetAffinityRef}: {matchup.Multiplier}x");
                             }
-                            ImGui.Unindent(10);
+                            ImGui.Unindent(10 * UIConstants.DpiScale);
                         }
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Quests (quest templates)
             var quests = viewModel.CurrentWorld.Gameplay?.Quests;
             if (quests != null && ImGui.CollapsingHeader($"Quests ({quests.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var quest in quests)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(quest.DisplayName ?? quest.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{quest.DisplayName ?? quest.RefName}##{quest.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(quest.Description))
@@ -292,17 +294,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Dialogue Trees
             var dialogueTrees = viewModel.CurrentWorld.Gameplay?.DialogueTrees;
             if (dialogueTrees != null && ImGui.CollapsingHeader($"Dialogue Trees ({dialogueTrees.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var tree in dialogueTrees)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(tree.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{tree.DisplayName ?? tree.RefName}##{tree.RefName}");
                     if (treeNodeOpen)
                     {
                         ImGui.Text($"Start Node: {tree.StartNodeId}");
@@ -313,17 +315,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Combat Stances
             var stances = viewModel.CurrentWorld.Gameplay?.CombatStances;
             if (stances != null && ImGui.CollapsingHeader($"Combat Stances ({stances.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var stance in stances)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(stance.DisplayName ?? stance.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{stance.DisplayName ?? stance.RefName}##{stance.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(stance.Description))
@@ -333,17 +335,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Loadout Slots
             var loadoutSlots = viewModel.CurrentWorld.Gameplay?.LoadoutSlots;
             if (loadoutSlots != null && ImGui.CollapsingHeader($"Loadout Slots ({loadoutSlots.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var slot in loadoutSlots)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(slot.DisplayName ?? slot.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{slot.DisplayName ?? slot.RefName}##{slot.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(slot.Description))
@@ -353,17 +355,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Status Effects
             var statusEffects = viewModel.CurrentWorld.Gameplay?.StatusEffects;
             if (statusEffects != null && ImGui.CollapsingHeader($"Status Effects ({statusEffects.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var effect in statusEffects)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(effect.DisplayName ?? effect.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{effect.DisplayName ?? effect.RefName}##{effect.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(effect.Description))
@@ -385,7 +387,7 @@ public class WorldInfoPanel
                         {
                             ImGui.Spacing();
                             ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Modifiers:");
-                            ImGui.Indent(10);
+                            ImGui.Indent(10 * UIConstants.DpiScale);
                             if (effect.StrengthModifier != 0)
                                 ImGui.TextColored(effect.StrengthModifier > 0 ? new Vector4(0.2f, 1, 0.2f, 1) : new Vector4(1, 0.3f, 0.3f, 1),
                                     $"Strength: {effect.StrengthModifier:+0.#;-0.#}");
@@ -403,7 +405,7 @@ public class WorldInfoPanel
                                     $"Accuracy: {effect.AccuracyModifier:+0.#;-0.#}");
                             if (effect.DamagePerTurn != 0)
                                 ImGui.TextColored(new Vector4(1, 0.5f, 0.2f, 1), $"Damage/Turn: {effect.DamagePerTurn}");
-                            ImGui.Unindent(10);
+                            ImGui.Unindent(10 * UIConstants.DpiScale);
                         }
 
                         // Additional info
@@ -413,7 +415,7 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             ImGui.Spacing();
@@ -425,10 +427,10 @@ public class WorldInfoPanel
             var factions = viewModel.CurrentWorld.Gameplay?.Factions;
             if (factions != null && ImGui.CollapsingHeader($"Factions ({factions.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var faction in factions)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(faction.DisplayName ?? faction.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{faction.DisplayName ?? faction.RefName}##{faction.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(faction.Description))
@@ -448,7 +450,7 @@ public class WorldInfoPanel
                         {
                             ImGui.Spacing();
                             ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Relationships:");
-                            ImGui.Indent(10);
+                            ImGui.Indent(10 * UIConstants.DpiScale);
                             foreach (var rel in faction.Relationships)
                             {
                                 var relFaction = factions.FirstOrDefault(f => f.RefName == rel.FactionRef);
@@ -463,7 +465,7 @@ public class WorldInfoPanel
                                 };
                                 ImGui.TextColored(relColor, $"{relName}: {rel.RelationshipType} ({rel.SpilloverPercent:P0} spillover)");
                             }
-                            ImGui.Unindent(10);
+                            ImGui.Unindent(10 * UIConstants.DpiScale);
                         }
 
                         // Reputation rewards
@@ -471,7 +473,7 @@ public class WorldInfoPanel
                         {
                             ImGui.Spacing();
                             ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "Reputation Rewards:");
-                            ImGui.Indent(10);
+                            ImGui.Indent(10 * UIConstants.DpiScale);
                             foreach (var reward in faction.ReputationRewards)
                             {
                                 var rewardItems = new List<string>();
@@ -488,13 +490,13 @@ public class WorldInfoPanel
                                 var rewardText = rewardItems.Count > 0 ? string.Join(", ", rewardItems) : "Unlocks rewards";
                                 ImGui.Text($"At {reward.RequiredLevel}: {rewardText}");
                             }
-                            ImGui.Unindent(10);
+                            ImGui.Unindent(10 * UIConstants.DpiScale);
                         }
 
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             ImGui.Spacing();
@@ -506,10 +508,10 @@ public class WorldInfoPanel
             var questTokens = viewModel.CurrentWorld.Gameplay?.QuestTokens;
             if (questTokens != null && ImGui.CollapsingHeader($"Quest Tokens ({questTokens.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var token in questTokens)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(token.DisplayName ?? token.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{token.DisplayName ?? token.RefName}##{token.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(token.Description))
@@ -519,17 +521,17 @@ public class WorldInfoPanel
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
             // Achievements (collapsible with detailed expandable items)
             var achievements = viewModel.CurrentWorld.Gameplay?.Achievements;
             if (achievements != null && ImGui.CollapsingHeader($"Achievements ({achievements.Length})"))
             {
-                ImGui.Indent(10);
+                ImGui.Indent(10 * UIConstants.DpiScale);
                 foreach (var achievement in achievements)
                 {
-                    var treeNodeOpen = ImGui.TreeNode(achievement.DisplayName ?? achievement.RefName);
+                    var treeNodeOpen = ImGui.TreeNode($"{achievement.DisplayName ?? achievement.RefName}##{achievement.RefName}");
                     if (treeNodeOpen)
                     {
                         if (!string.IsNullOrEmpty(achievement.Description))
@@ -543,15 +545,15 @@ public class WorldInfoPanel
                         {
                             ImGui.Spacing();
                             ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Unlock Criteria:");
-                            ImGui.Indent(10);
+                            ImGui.Indent(10 * UIConstants.DpiScale);
                             ImGui.Text($"Type: {achievement.Criteria.Type}");
                             ImGui.Text($"Threshold: {achievement.Criteria.Threshold:F0}");
-                            ImGui.Unindent(10);
+                            ImGui.Unindent(10 * UIConstants.DpiScale);
                         }
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10);
+                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
 
         }

@@ -1,4 +1,4 @@
-using Ambient.Application.Contracts;
+﻿using Ambient.Application.Contracts;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Queries.Saga;
@@ -16,8 +16,6 @@ namespace Ambient.Saga.UI.Components.Modals;
 public class ModalManager
 {
     // Modal instances
-    private QuestModal _questModal;
-    private QuestDetailModal _questDetailModal;
     private BattleModal _battleModal = new();
     private PauseMenuModal _pauseMenuModal = new();
     private ISettingsPanel _settingsPanel;
@@ -60,8 +58,6 @@ public class ModalManager
         _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _loggerFactory = loggerFactory;
-        _questModal = new QuestModal(_mediator);
-        _questDetailModal = new QuestDetailModal(_mediator);
         _settingsPanel = settingsPanel ?? new DefaultSettingsPanel();
 
         // Initialize modal registry
@@ -146,15 +142,7 @@ public class ModalManager
     public CharacterViewModel? SelectedCharacter { get; set; }
 
     // Quest context (for quest signpost interactions)
-    private string? _questRef;
-    private string? _questSagaRef;
-    private string? _questSignpostRef;
     private MainViewModel? _questViewModel;
-
-    // Quest detail context
-    private string? _questDetailRef;
-    private string? _questDetailSagaRef;
-
     // Check if any modal is currently open
     public bool IsAnyModalOpen => _modalStack.HasModals;
 
@@ -293,9 +281,6 @@ public class ModalManager
 
     public void OpenQuestSignpost(string questRef, string sagaRef, string signpostRef, MainViewModel viewModel)
     {
-        _questRef = questRef;
-        _questSagaRef = sagaRef;
-        _questSignpostRef = signpostRef;
         _questViewModel = viewModel;
 
         // Create quest context and open via registry
@@ -322,9 +307,6 @@ public class ModalManager
             });
 
             if (sagaRef == null) return;
-
-            _questDetailRef = questRef;
-            _questDetailSagaRef = sagaRef;
 
             // Create quest detail context and open via registry
             var context = new QuestDetailContext(questRef, sagaRef, _questViewModel);
