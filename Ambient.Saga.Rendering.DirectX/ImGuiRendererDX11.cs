@@ -1,4 +1,4 @@
-﻿using Ambient.Saga.UI;
+using Ambient.Saga.UI;
 using Ambient.Saga.UI.Services;
 using ImGuiNET;
 using SharpDX;
@@ -10,23 +10,27 @@ using System.Runtime.InteropServices;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Device = SharpDX.Direct3D11.Device;
 
-namespace Ambient.Saga.Sandbox.DirectX;
+namespace Ambient.Saga.Rendering.DirectX;
 
+/// <summary>
+/// ImGui renderer for DirectX 11.
+/// Includes keyboard navigation and native Windows clipboard support.
+/// </summary>
 public class ImGuiRendererDX11 : IDisposable
 {
-    private Device _device;
-    private DeviceContext _deviceContext;
-    private Buffer _vertexBuffer;
-    private Buffer _indexBuffer;
-    private Buffer _constantBuffer;
-    private VertexShader _vertexShader;
-    private PixelShader _pixelShader;
-    private InputLayout _inputLayout;
-    private BlendState _blendState;
-    private RasterizerState _rasterizerState;
-    private DepthStencilState _depthStencilState;
-    private SamplerState _samplerState;
-    private ShaderResourceView _fontTextureView;
+    private readonly Device _device;
+    private readonly DeviceContext _deviceContext;
+    private Buffer? _vertexBuffer;
+    private Buffer? _indexBuffer;
+    private Buffer _constantBuffer = null!;
+    private VertexShader _vertexShader = null!;
+    private PixelShader _pixelShader = null!;
+    private InputLayout _inputLayout = null!;
+    private BlendState _blendState = null!;
+    private RasterizerState _rasterizerState = null!;
+    private DepthStencilState _depthStencilState = null!;
+    private SamplerState _samplerState = null!;
+    private ShaderResourceView _fontTextureView = null!;
 
     private int _vertexBufferSize = 10000;
     private int _indexBufferSize = 30000;
@@ -49,10 +53,14 @@ public class ImGuiRendererDX11 : IDisposable
         io.DisplayFramebufferScale = new System.Numerics.Vector2(1, 1);
         io.DeltaTime = 1.0f / 60.0f;
 
-        // Apply the beautiful theme!
-        ImGuiTheme.ApplyTheme(ImGuiTheme.ThemePreset.DarkFantasy);
+        // Enable keyboard navigation
+        io.ConfigFlags |= ImGuiConfigFlags.NavEnableKeyboard;
+        io.BackendFlags |= ImGuiBackendFlags.HasMouseCursors;
 
-        // Load DPI-scaled fonts
+        // Set up clipboard callbacks (native Windows clipboard support)
+        ImGuiClipboard.Install();
+
+        ImGuiTheme.ApplyTheme(ImGuiTheme.ThemePreset.DarkFantasy);
         UIConstants.LoadFonts(GetDpiScaleForWindow(hwnd));
 
         CreateDeviceObjects();
@@ -61,7 +69,6 @@ public class ImGuiRendererDX11 : IDisposable
 
     private void CreateDeviceObjects()
     {
-        // Vertex shader
         var vertexShaderCode = @"
             cbuffer vertexBuffer : register(b0)
             {
@@ -91,7 +98,6 @@ public class ImGuiRendererDX11 : IDisposable
         using (var vertexShaderBlob = ShaderBytecode.Compile(vertexShaderCode, "main", "vs_4_0"))
         {
             _vertexShader = new VertexShader(_device, vertexShaderBlob);
-
             _inputLayout = new InputLayout(_device, vertexShaderBlob, new[]
             {
                 new InputElement("POSITION", 0, Format.R32G32_Float, 0, 0),
@@ -100,7 +106,6 @@ public class ImGuiRendererDX11 : IDisposable
             });
         }
 
-        // Pixel shader
         var pixelShaderCode = @"
             struct PS_INPUT
             {
@@ -110,7 +115,6 @@ public class ImGuiRendererDX11 : IDisposable
             };
             sampler sampler0;
             Texture2D texture0;
-
             float4 main(PS_INPUT input) : SV_Target
             {
                 float4 out_col = input.col * texture0.Sample(sampler0, input.uv);
@@ -122,14 +126,9 @@ public class ImGuiRendererDX11 : IDisposable
             _pixelShader = new PixelShader(_device, pixelShaderBlob);
         }
 
-        // Constant buffer
         _constantBuffer = new Buffer(_device, Utilities.SizeOf<Matrix>(), ResourceUsage.Dynamic, BindFlags.ConstantBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0);
 
-        // Blend state
-        var blendDesc = new BlendStateDescription
-        {
-            AlphaToCoverageEnable = false
-        };
+        var blendDesc = new BlendStateDescription { AlphaToCoverageEnable = false };
         blendDesc.RenderTarget[0] = new RenderTargetBlendDescription
         {
             IsBlendEnabled = true,
@@ -143,7 +142,6 @@ public class ImGuiRendererDX11 : IDisposable
         };
         _blendState = new BlendState(_device, blendDesc);
 
-        // Rasterizer state
         var rasterizerDesc = new RasterizerStateDescription
         {
             FillMode = FillMode.Solid,
@@ -153,7 +151,6 @@ public class ImGuiRendererDX11 : IDisposable
         };
         _rasterizerState = new RasterizerState(_device, rasterizerDesc);
 
-        // Depth stencil state
         var depthStencilDesc = new DepthStencilStateDescription
         {
             IsDepthEnabled = false,
@@ -163,7 +160,6 @@ public class ImGuiRendererDX11 : IDisposable
         };
         _depthStencilState = new DepthStencilState(_device, depthStencilDesc);
 
-        // Sampler state - using point filtering for crisp pixel rendering (maps)
         var samplerDesc = new SamplerStateDescription
         {
             Filter = Filter.MinMagMipPoint,
@@ -256,12 +252,10 @@ public class ImGuiRendererDX11 : IDisposable
         if (drawData.TotalVtxCount == 0)
             return;
 
-        // Save critical render states
         var oldBlendState = _deviceContext.OutputMerger.GetBlendState(out var oldBlendFactor, out var oldSampleMask);
         var oldDepthStencilState = _deviceContext.OutputMerger.GetDepthStencilState(out var oldStencilRef);
         var oldRasterizerState = _deviceContext.Rasterizer.State;
 
-        // Create or resize vertex/index buffers if needed
         if (_vertexBuffer == null || _vertexBufferSize < drawData.TotalVtxCount)
         {
             _vertexBuffer?.Dispose();
@@ -276,7 +270,6 @@ public class ImGuiRendererDX11 : IDisposable
             _indexBuffer = new Buffer(_device, _indexBufferSize * sizeof(ushort), ResourceUsage.Dynamic, BindFlags.IndexBuffer, CpuAccessFlags.Write, ResourceOptionFlags.None, 0);
         }
 
-        // Upload vertex/index data
         var vtxResource = _deviceContext.MapSubresource(_vertexBuffer, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None);
         var idxResource = _deviceContext.MapSubresource(_indexBuffer, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None);
 
@@ -295,8 +288,6 @@ public class ImGuiRendererDX11 : IDisposable
         _deviceContext.UnmapSubresource(_vertexBuffer, 0);
         _deviceContext.UnmapSubresource(_indexBuffer, 0);
 
-        // Setup orthographic projection matrix
-        var io = ImGui.GetIO();
         var L = drawData.DisplayPos.X;
         var R = drawData.DisplayPos.X + drawData.DisplaySize.X;
         var T = drawData.DisplayPos.Y;
@@ -312,7 +303,6 @@ public class ImGuiRendererDX11 : IDisposable
         Utilities.Write(mappedResource.DataPointer, ref mvp);
         _deviceContext.UnmapSubresource(_constantBuffer, 0);
 
-        // Setup render state
         _deviceContext.InputAssembler.InputLayout = _inputLayout;
         _deviceContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(_vertexBuffer, Utilities.SizeOf<ImDrawVert>(), 0));
         _deviceContext.InputAssembler.SetIndexBuffer(_indexBuffer, Format.R16_UInt, 0);
@@ -325,7 +315,6 @@ public class ImGuiRendererDX11 : IDisposable
         _deviceContext.OutputMerger.SetDepthStencilState(_depthStencilState);
         _deviceContext.Rasterizer.State = _rasterizerState;
 
-        // Render command lists
         var vtxOffset = 0;
         var idxOffset = 0;
 
@@ -336,14 +325,12 @@ public class ImGuiRendererDX11 : IDisposable
             {
                 var cmd = cmdList.CmdBuffer[i];
 
-                // Set scissor rectangle
                 _deviceContext.Rasterizer.SetScissorRectangle(
                     (int)cmd.ClipRect.X,
                     (int)cmd.ClipRect.Y,
                     (int)cmd.ClipRect.Z,
                     (int)cmd.ClipRect.W);
 
-                // Set texture - cast the TextureId IntPtr directly to ShaderResourceView
                 var textureView = new ShaderResourceView(cmd.TextureId);
                 _deviceContext.PixelShader.SetShaderResource(0, textureView);
 
@@ -354,11 +341,9 @@ public class ImGuiRendererDX11 : IDisposable
             idxOffset += cmdList.IdxBuffer.Size;
         }
 
-        // Restore rasterizer state (includes scissor test)
         _deviceContext.OutputMerger.SetBlendState(oldBlendState, oldBlendFactor, oldSampleMask);
         _deviceContext.OutputMerger.SetDepthStencilState(oldDepthStencilState, oldStencilRef);
         _deviceContext.Rasterizer.State = oldRasterizerState;
-        // Cleanup saved state objects
         oldBlendState?.Dispose();
         oldDepthStencilState?.Dispose();
         oldRasterizerState?.Dispose();
@@ -366,6 +351,8 @@ public class ImGuiRendererDX11 : IDisposable
 
     public void Dispose()
     {
+        ImGuiClipboard.Shutdown();
+
         _vertexBuffer?.Dispose();
         _indexBuffer?.Dispose();
         _constantBuffer?.Dispose();

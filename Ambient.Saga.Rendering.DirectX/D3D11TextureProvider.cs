@@ -2,8 +2,9 @@ using Ambient.Saga.UI.Models;
 using Ambient.Saga.UI.Services;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
+using Device = SharpDX.Direct3D11.Device;
 
-namespace Ambient.Saga.Sandbox.DirectX;
+namespace Ambient.Saga.Rendering.DirectX;
 
 /// <summary>
 /// DirectX11 implementation of ITextureProvider.
@@ -11,9 +12,9 @@ namespace Ambient.Saga.Sandbox.DirectX;
 /// </summary>
 public class D3D11TextureProvider : ITextureProvider
 {
-    private readonly SharpDX.Direct3D11.Device _device;
+    private readonly Device _device;
 
-    public D3D11TextureProvider(SharpDX.Direct3D11.Device device)
+    public D3D11TextureProvider(Device device)
     {
         _device = device ?? throw new ArgumentNullException(nameof(device));
     }
@@ -32,14 +33,13 @@ public class D3D11TextureProvider : ITextureProvider
         var stride = imageData.Stride;
         var pixels = imageData.PixelData;
 
-        // Create DirectX11 Texture2D
         var textureDesc = new Texture2DDescription
         {
             Width = width,
             Height = height,
             MipLevels = 1,
             ArraySize = 1,
-            Format = Format.B8G8R8A8_UNorm, // BGRA format
+            Format = Format.B8G8R8A8_UNorm,
             SampleDescription = new SampleDescription(1, 0),
             Usage = ResourceUsage.Immutable,
             BindFlags = BindFlags.ShaderResource,
@@ -47,13 +47,11 @@ public class D3D11TextureProvider : ITextureProvider
             OptionFlags = ResourceOptionFlags.None
         };
 
-        // Pin pixel data and create texture
         var dataPointer = System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement(pixels, 0);
         var dataBox = new SharpDX.DataBox(dataPointer, stride, 0);
 
         var texture = new Texture2D(_device, textureDesc, new[] { dataBox });
 
-        // Create ShaderResourceView
         var srvDesc = new ShaderResourceViewDescription
         {
             Format = textureDesc.Format,
@@ -67,7 +65,6 @@ public class D3D11TextureProvider : ITextureProvider
 
         var srv = new ShaderResourceView(_device, texture, srvDesc);
 
-        // Return SRV pointer and resources to dispose later
         return (srv.NativePointer, width, height, new IDisposable[] { texture, srv });
     }
 

@@ -4,7 +4,7 @@ using ImGuiNET;
 using Steamworks;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.Sandbox.DirectX.Services;
-using Ambient.Saga.Sandbox.DirectX;
+using Ambient.Saga.Rendering.DirectX;
 using Ambient.Saga.UI.Components.Modals;
 
 namespace Ambient.Saga.Sandbox.WindowsUI;
