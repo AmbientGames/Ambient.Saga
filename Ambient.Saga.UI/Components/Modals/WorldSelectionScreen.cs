@@ -218,6 +218,7 @@ public class WorldSelectionScreen
                 if (viewModel.LoadSelectedConfigurationCommand.CanExecute(null))
                 {
                     viewModel.LoadSelectedConfigurationCommand.Execute(null);
+                    isOpen = false;
                 }
             }
             ImGui.PopStyleColor(3);

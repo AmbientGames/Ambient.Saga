@@ -98,14 +98,6 @@ public class WorldMapUI
             // Defer texture update to avoid disposing texture during render frame
             _pendingTextureUpdate = true;
         }
-        else if (e.PropertyName == nameof(MainViewModel.CurrentWorld))
-        {
-            // World loaded - hide selection screen and show main UI
-            if (_viewModel.CurrentWorld != null)
-            {
-                _modalManager.CloseModal("WorldSelection");
-            }
-        }
     }
 
     private void UpdateHeightMapTexture()

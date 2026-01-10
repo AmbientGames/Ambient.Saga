@@ -1,3 +1,4 @@
+using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
 
@@ -16,15 +17,15 @@ public class DefaultSettingsPanel : ISettingsPanel
         if (!isOpen) return;
 
         // Center the window
-        var io = ImGui.GetIO();
-        ImGui.SetNextWindowPos(new Vector2(io.DisplaySize.X * 0.5f, io.DisplaySize.Y * 0.5f), ImGuiCond.Always, new Vector2(0.5f, 0.5f));
-        ImGui.SetNextWindowSize(new Vector2(350, 200), ImGuiCond.Always);
+        var scale = UIConstants.DpiScale;
+        ImGuiHelpers.CenterNextWindow();
+        ImGui.SetNextWindowSize(new Vector2(350 * scale, 0), ImGuiCond.Always);
 
         // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
-        var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
+        var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.AlwaysAutoResize;
 
         ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
 
@@ -44,7 +45,7 @@ public class DefaultSettingsPanel : ISettingsPanel
             ImGui.Spacing();
 
             // Close button
-            var buttonWidth = 120f;
+            var buttonWidth = 120f * UIConstants.DpiScale;
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
 
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
