@@ -74,7 +74,7 @@ public sealed record GeneratedLocationEntry(
 /// Request parameters for generating locations.
 /// </summary>
 public sealed record LocationGenerationRequest(
-    string RegionName,
+    string WorldContext,
     string Theme,
     string WorldType,  // "real" or "procedural"
     double MinLatitude,
