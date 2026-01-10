@@ -116,6 +116,9 @@ public partial class MainWindow : Form
         // Subscribe to dialogue requests from MainViewModel
         _viewModel.DialogueRequested += OnDialogueRequested;
 
+        // Open world selection screen at startup
+        _modalManager.OpenWorldSelection();
+
         // Start render loop
         _isRendering = true;
         System.Windows.Forms.Application.Idle += OnApplicationIdle;

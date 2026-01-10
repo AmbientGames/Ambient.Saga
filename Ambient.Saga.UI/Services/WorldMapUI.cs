@@ -62,9 +62,6 @@ public class WorldMapUI
         // Subscribe to quit request from viewModel (raised by WorldSelectionScreen)
         _viewModel.RequestQuit += OnQuitRequestedFromViewModel;
 
-        // Show world selection at startup (Sandbox-specific flow)
-        _modalManager.OpenWorldSelection();
-
         // Subscribe to heightmap changes
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
