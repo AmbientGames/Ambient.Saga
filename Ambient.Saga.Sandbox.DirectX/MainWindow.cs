@@ -69,27 +69,37 @@ public partial class MainWindow : Form
 
         // Wire up keyboard events for ImGui input
         this.KeyPreview = true;
+        var pressedKeys = new HashSet<Keys>();
         this.KeyDown += (s, e) =>
         {
+            // Ignore key repeats - only send first press
+            if (pressedKeys.Contains(e.KeyCode))
+                return;
+            pressedKeys.Add(e.KeyCode);
+
+            // Send modifier keys first
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, e.Control);
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, e.Shift);
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, e.Alt);
+
+            // Send the actual key
             var imguiKey = MapKeyToImGui(e.KeyCode);
             if (imguiKey != ImGuiNET.ImGuiKey.None)
                 _imguiRenderer?.UpdateKeyState(imguiKey, true);
-
-            // Handle modifier keys
-            if (e.Control) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, true);
-            if (e.Shift) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, true);
-            if (e.Alt) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, true);
         };
         this.KeyUp += (s, e) =>
         {
+            pressedKeys.Remove(e.KeyCode);
+
+            // Send modifier key states
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, e.Control);
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, e.Shift);
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, e.Alt);
+
+            // Send the actual key release
             var imguiKey = MapKeyToImGui(e.KeyCode);
             if (imguiKey != ImGuiNET.ImGuiKey.None)
                 _imguiRenderer?.UpdateKeyState(imguiKey, false);
-
-            // Handle modifier keys
-            if (!e.Control) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, false);
-            if (!e.Shift) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, false);
-            if (!e.Alt) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, false);
         };
         this.KeyPress += (s, e) =>
         {

@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWindowsForms>true</UseWindowsForms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Description>DirectX 11 rendering library for Ambient games - D3D11 renderer, ImGui integration, and texture providers</Description>
   </PropertyGroup>
 
