@@ -19,14 +19,14 @@ public class WorldCreationService : IWorldCreationService
     /// <inheritdoc/>
     public async Task<WorldCreationResult> CreateWorldAsync(
         WorldCreationParameters parameters,
-        string appDataContentPath,
+        string worldsBasePath,
         Action<string>? progress = null)
     {
         try
         {
             // Calculate output paths
             var generatedWorldRef = parameters.WorldRef + "_generated";
-            var worldPath = Path.Combine(appDataContentPath, "worlds", generatedWorldRef);
+            var worldPath = Path.Combine(worldsBasePath, generatedWorldRef);
             var xmlPath = Path.Combine(worldPath, "assets", "ambient_games", "xml");
 
             // Create directories
@@ -52,13 +52,12 @@ public class WorldCreationService : IWorldCreationService
             var configXml = _worldConfigBuilder.Build(parameters);
             await File.WriteAllTextAsync(Path.Combine(xmlPath, "WorldConfiguration.xml"), configXml);
 
-            // Copy terrain file if real world
+            // Copy terrain file if real world (into world folder)
             if (parameters.IsRealWorld && !string.IsNullOrEmpty(parameters.TerrainFilePath))
             {
                 progress?.Invoke("Copying terrain file...");
                 var geographicDataPath = Path.Combine(
-                    appDataContentPath,
-                    "packs", "libraries", parameters.WorldRef,
+                    worldPath,
                     "assets", "ambient_games", "geographic_data");
 
                 Directory.CreateDirectory(geographicDataPath);

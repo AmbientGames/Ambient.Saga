@@ -192,17 +192,16 @@ public class ContentPathResolver : IContentPathResolver
 
     private string? ResolveWorldPath(string worldRef, string ns, string[] subPath)
     {
-        var relativePath = Path.Combine("content", "worlds", worldRef, "assets", ns, Path.Combine(subPath));
+        var worldRelativePath = Path.Combine(worldRef, "assets", ns, Path.Combine(subPath));
 
-        // Check %APPDATA% location first
-        var appDataPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            _gameSettings.PublisherFolder, _gameSettings.GameName, relativePath);
-        if (File.Exists(appDataPath))
-            return appDataPath;
+        // Check Documents location first (user-created worlds)
+        var documentsPath = Path.Combine(_gameSettings.GetWorldsPath(), worldRelativePath);
+        if (File.Exists(documentsPath))
+            return documentsPath;
 
         // Fall back to install location
-        var installPath = Path.Combine(_gameSettings.InstallPath, relativePath);
+        var installRelativePath = Path.Combine("content", "worlds", worldRef, "assets", ns, Path.Combine(subPath));
+        var installPath = Path.Combine(_gameSettings.InstallPath, installRelativePath);
         if (File.Exists(installPath))
             return installPath;
 

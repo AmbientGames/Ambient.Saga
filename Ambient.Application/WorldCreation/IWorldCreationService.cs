@@ -10,12 +10,12 @@ public interface IWorldCreationService
     /// Create a new world with the given parameters.
     /// </summary>
     /// <param name="parameters">World creation parameters</param>
-    /// <param name="appDataContentPath">AppData content path for output</param>
+    /// <param name="worldsBasePath">Base path for worlds (e.g., Documents/{Publisher}/{GameName}/worlds)</param>
     /// <param name="progress">Optional progress callback</param>
     /// <returns>Result containing output path or error</returns>
     Task<WorldCreationResult> CreateWorldAsync(
         WorldCreationParameters parameters,
-        string appDataContentPath,
+        string worldsBasePath,
         Action<string>? progress = null);
 }
 
