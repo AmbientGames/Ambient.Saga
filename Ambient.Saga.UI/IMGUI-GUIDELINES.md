@@ -212,21 +212,40 @@ When something is off by pixels:
 
 ## 7. Font Usage
 
-Use `UIConstants` for consistent fonts:
+Use `UIConstants` for consistent fonts. The hierarchy from largest to smallest:
+
+| Font | Size | Weight | Use For |
+|------|------|--------|---------|
+| `FontTitle` | 30pt | Bold | Modal titles, main screen titles |
+| `FontHeading` | 24pt | Semibold | Section headers, card titles within modals |
+| `FontBody` | 20pt | Regular | Body text, descriptions (default) |
+| `FontSmall` | 16pt | Regular | Fine print, hints, helper text |
 
 ```csharp
-// Title text (30pt bold)
+// Modal title (30pt bold)
 ImGui.PushFont(UIConstants.FontTitle);
-ImGui.Text("MODAL TITLE");
+ImGui.Text("Create New World");
 ImGui.PopFont();
 
-// Body text (20pt, default)
-ImGui.Text("Regular body text");
+// Section header within modal (24pt semibold)
+ImGui.PushFont(UIConstants.FontHeading);
+ImGui.TextColored(accentColor, "Real World Location");
+ImGui.PopFont();
 
-// Small text (16pt)
+// Body text (20pt, default - no push needed)
+ImGui.Text("Regular body text and descriptions");
+
+// Fine print (16pt)
 ImGui.PushFont(UIConstants.FontSmall);
-ImGui.Text("Fine print");
+ImGui.TextColored(dimColor, "Helper text or hints");
 ImGui.PopFont();
 ```
+
+### When to Use Each Font
+
+- **FontTitle**: One per modal/screen - the main title at the top
+- **FontHeading**: Section dividers, card titles, category labels within a modal
+- **FontBody**: Everything else - descriptions, instructions, form labels
+- **FontSmall**: Secondary information, keyboard shortcuts, status hints
 
 Fonts are automatically DPI-scaled via `UIConstants.LoadFonts(dpiScale)`.
