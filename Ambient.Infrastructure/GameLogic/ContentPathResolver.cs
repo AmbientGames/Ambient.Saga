@@ -72,6 +72,10 @@ public class ContentPathResolver : IContentPathResolver
     /// </summary>
     public string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
     {
+        if (category != "Waypoint" && category != "QuestHub")
+        {
+            System.Diagnostics.Debug.WriteLine($"{category}-{kind}");
+        }
         var rng = random ?? new Random();
         string[] extensions = ["*.litematic", "*.schematic", "*.xml"];
 

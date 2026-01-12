@@ -20,7 +20,7 @@ public class MapViewPanel
     private const float MinZoom = 0.1f;
     private const float MaxZoom = 400.0f;
     private const float ZoomMultiplier = 1.15f; // Exponential zoom: 15% change per scroll tick
-    private const int CenterViewCells = 10; // Number of cells to show when centering on avatar
+    private const int CenterViewCells = 20; // Number of cells to show when centering on avatar
 
     // Track if we need to center on avatar (initial load or button press)
     private bool _needsInitialCenter = true;
