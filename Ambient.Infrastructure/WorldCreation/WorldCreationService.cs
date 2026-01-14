@@ -51,18 +51,23 @@ public class WorldCreationService : IWorldCreationService
             var configXml = _worldConfigBuilder.Build(parameters);
             await File.WriteAllTextAsync(Path.Combine(xmlPath, "WorldConfiguration.xml"), configXml);
 
-            // Copy terrain file if real world (into world folder)
+            // Copy terrain file if real world (into ContentPackLibrary location)
+            // Terrain is a library asset, not a world asset - resolver looks in packs/libraries/{library}/
             if (parameters.IsRealWorld && !string.IsNullOrEmpty(parameters.TerrainFilePath))
             {
                 progress?.Invoke("Copying terrain file...");
-                var geographicDataPath = Path.Combine(
-                    worldPath,
-                    "assets", "ambient_games", "geographic_data");
 
-                Directory.CreateDirectory(geographicDataPath);
+                // ContentPackLibrary is set to WorldRef, so terrain goes to:
+                // content/packs/libraries/{worldRef}/assets/ambient_games/geographic_data/
+                var libraryPath = Path.Combine(
+                    worldsBasePath, "..", "packs", "libraries", parameters.WorldRef,
+                    "assets", "ambient_games", "geographic_data");
+                libraryPath = Path.GetFullPath(libraryPath); // Normalize the path
+
+                Directory.CreateDirectory(libraryPath);
 
                 var terrainFileName = $"{parameters.WorldRef}_terrain.tif";
-                var terrainDest = Path.Combine(geographicDataPath, terrainFileName);
+                var terrainDest = Path.Combine(libraryPath, terrainFileName);
 
                 File.Copy(parameters.TerrainFilePath, terrainDest, overwrite: true);
             }
