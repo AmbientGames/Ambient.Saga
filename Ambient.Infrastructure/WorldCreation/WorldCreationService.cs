@@ -25,8 +25,7 @@ public class WorldCreationService : IWorldCreationService
         try
         {
             // Calculate output paths
-            var generatedWorldRef = parameters.WorldRef + "_generated";
-            var worldPath = Path.Combine(worldsBasePath, generatedWorldRef);
+            var worldPath = Path.Combine(worldsBasePath, parameters.WorldRef);
             var xmlPath = Path.Combine(worldPath, "assets", "ambient_games", "xml");
 
             // Create directories

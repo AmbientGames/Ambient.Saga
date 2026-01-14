@@ -143,20 +143,19 @@ public class WorldSelectionScreen
 
                     var selectedConfig = viewModel.SelectedConfiguration;
                     _isGenerating = true;
-                    var gameSettings = _gameSettings;
                     var logger = _logger;
                     _generationTask = Task.Run(async () =>
                     {
                         try
                         {
-                            var generatedWorldRef = selectedConfig.RefName.ToLowerInvariant() + "_generated";
-                            var outputDirectory = Path.Combine(
-                                gameSettings.GetAppDataContentPath(),
-                                "worlds", generatedWorldRef,
-                                "assets", "ambient_games", "xml");
-
-                            // Ensure directory exists
-                            Directory.CreateDirectory(outputDirectory);
+                            // Use the source directory where WorldConfiguration.xml lives
+                            var outputDirectory = selectedConfig.SourceDirectory;
+                            if (string.IsNullOrEmpty(outputDirectory))
+                            {
+                                _lastGenerationMessage = "Error: World configuration has no source directory";
+                                _showGenerationMessage = true;
+                                return;
+                            }
 
                             logger?.LogInformation("Generating world content to: {OutputDirectory}", outputDirectory);
                             var generatedFiles = await _worldContentGenerator.GenerateWorldContentAsync(selectedConfig, outputDirectory);
