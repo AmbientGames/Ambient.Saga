@@ -8,6 +8,9 @@
         <Entry EquipmentRef="ChainmailArmor" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>BanditChief_QuestStart</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -101,6 +104,9 @@
         <Entry EquipmentRef="ClothTunic" Condition="0.5" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>BanditChief_QuestStart</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -118,6 +124,9 @@
         <Entry SpellRef="Incinerate" Condition="1.0" />
       </Spells>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>ElementalSage_Introduction</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="GrantsAffinity" Value="1" />
@@ -159,6 +168,9 @@
         <Entry EquipmentRef="TravelCloak" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -175,6 +187,9 @@
         <Entry SpellRef="Illusion" Condition="1.0" />
       </Spells>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="WillingToBargain" Value="60" />
@@ -192,6 +207,9 @@
         <Entry EquipmentRef="WoodenStaff" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
     </Traits>
@@ -203,6 +221,9 @@
         <Entry EquipmentRef="ClothTunic" Condition="0.6" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -216,6 +237,9 @@
         <Entry EquipmentRef="IronShield" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
     </Traits>
@@ -227,6 +251,9 @@
         <Entry EquipmentRef="ScholarsRobe" Condition="0.8" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>FalseProphet_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -238,6 +265,9 @@
         <Entry EquipmentRef="ScholarsRobe" Condition="0.8" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>HiddenCache_MapStart</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="WillTrade" Value="1" />
@@ -251,6 +281,9 @@
         <Entry EquipmentRef="ElderRobes" Condition="0.9" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>HiddenCache_MapStart</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -266,6 +299,9 @@
         <Entry ConsumableRef="HerbBundle" Quantity="3" />
       </Consumables>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>HiddenCache_MapStart</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="0" />
     </Traits>
@@ -282,6 +318,9 @@
         <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
       </Consumables>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>HiddenCache_MapStart</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
       <Trait Name="WillingToBargain" Value="40" />
@@ -311,6 +350,9 @@
         <Entry EquipmentRef="TravelCloak" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -326,6 +368,9 @@
         <Entry SpellRef="PerfectStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="0" />
     </Traits>
@@ -343,6 +388,9 @@
         <Entry EquipmentRef="LeatherArmor" Condition="0.5" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
     </Traits>
@@ -358,6 +406,9 @@
         <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
       </Consumables>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
       <Trait Name="Aggression" Value="50" />
@@ -370,6 +421,9 @@
         <Entry EquipmentRef="ElderRobes" Condition="0.8" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>LostTechnique_Story</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -381,6 +435,9 @@
         <Entry EquipmentRef="ClothTunic" Condition="0.8" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="WillTrade" Value="0" />
@@ -393,6 +450,9 @@
         <Entry EquipmentRef="LeatherVest" Condition="0.9" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -415,6 +475,7 @@
           <Entry QuestTokenRef="MissingHeirloom_ThiefConfession" />
         </QuestTokens>
       </Loot>
+      <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
@@ -440,6 +501,7 @@
           <Entry QuestTokenRef="MissingHeirloom_Heirloom" />
         </QuestTokens>
       </Loot>
+      <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -454,6 +516,9 @@
         <Entry EquipmentRef="TravelCloak" Condition="0.6" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -466,6 +531,9 @@
         <Entry EquipmentRef="LeatherVest" Condition="0.5" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="FleeThreshold" Value="10" />
@@ -485,6 +553,9 @@
         <Entry SpellRef="MinorHeal" Condition="1.0" />
       </Spells>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -498,6 +569,9 @@
         <Entry EquipmentRef="LeatherArmor" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -509,6 +583,9 @@
         <Entry EquipmentRef="ClothTunic" Condition="0.5" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -562,6 +639,9 @@
         <Entry EquipmentRef="ChainShirt" Condition="0.8" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RefugeeEscort_Start</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="0" />
     </Traits>
@@ -574,6 +654,9 @@
         <Entry EquipmentRef="CrystalWand" Condition="0.8" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -589,6 +672,9 @@
         <Entry ConsumableRef="HealingPotion" Quantity="1" />
       </Consumables>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -614,6 +700,7 @@
           <Entry QuestTokenRef="RivalGuild_LeaderDefeated" />
         </QuestTokens>
       </Loot>
+      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="0" />
@@ -646,6 +733,9 @@
         <Entry EquipmentRef="Stiletto" Condition="0.8" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="0" />
       <Trait Name="WillingToBargain" Value="80" />
@@ -658,6 +748,9 @@
         <Entry EquipmentRef="ElderRobes" Condition="0.9" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
     </Traits>
@@ -685,6 +778,9 @@
         <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
       </Consumables>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="WillTrade" Value="1" />
@@ -700,6 +796,9 @@
         <Entry EquipmentRef="ChainShirt" Condition="0.7" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="WillingToBargain" Value="30" />
     </Traits>
@@ -724,6 +823,9 @@
         <Entry EquipmentRef="ClothTunic" Condition="0.9" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="WillTrade" Value="1" />
@@ -737,6 +839,9 @@
         <Entry EquipmentRef="ScholarsRobe" Condition="0.9" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="WillTrade" Value="1" />
@@ -750,46 +855,50 @@
         <Entry EquipmentRef="LeatherVest" Condition="0.8" />
       </Equipment>
     </Capabilities>
+    <Interactable>
+      <DialogueTreeRef>WanderingMerchant_Introduction</DialogueTreeRef>
+    </Interactable>
     <Traits>
       <Trait Name="Friendly" Value="1" />
       <Trait Name="WillTrade" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="BOSS_Kazahinominomiya" DisplayName="Guardian of Kazahinomi-no-Miya" Description="The stoic Guardian of Kazahinomi-no-Miya rules over Kazahinomi-no-Miya with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
+  <Character RefName="BOSS_Kazahinominomiya" DisplayName="Guardian of Kazahinomi-no-Miya" Description="The resolute Guardian of Kazahinomi-no-Miya rules over Kazahinomi-no-Miya with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Brigandine" Condition="1.0" />
-        <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
-        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
-        <Entry EquipmentRef="LargeSword" Condition="1.0" />
-        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
-        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="ClothCap" Condition="1.0" />
+        <Entry EquipmentRef="Stiletto" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
+        <Entry EquipmentRef="LeatherGloves" Condition="1.0" />
+        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
+        <Entry EquipmentRef="Halberd" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HastePotion" Quantity="4" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
-        <Entry ConsumableRef="SoulShard" Quantity="3" />
+        <Entry ConsumableRef="DivineBlessing" Quantity="3" />
+        <Entry ConsumableRef="Pie" Quantity="3" />
+        <Entry ConsumableRef="HerbBundle" Quantity="3" />
+        <Entry ConsumableRef="PoisonVial" Quantity="2" />
+        <Entry ConsumableRef="HerbalTea" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Whirlwind" Condition="1.0" />
-        <Entry SpellRef="PerfectStrike" Condition="1.0" />
-        <Entry SpellRef="ShieldBash" Condition="1.0" />
+        <Entry SpellRef="Taunt" Condition="1.0" />
+        <Entry SpellRef="Charge" Condition="1.0" />
         <Entry SpellRef="WarCry" Condition="1.0" />
         <Entry SpellRef="PowerStrike" Condition="1.0" />
+        <Entry SpellRef="BattleCry" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
+          <Entry EquipmentRef="RangerCloak" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="ConjureArmor" Condition="1.0" />
+          <Entry SpellRef="Charge" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_Kazahinominomiya</DialogueTreeRef>
@@ -809,26 +918,26 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine)" Description="A powerful foe known as Guardian of Kōtai Jingū (Inner Shrine), whose determined demeanor intimidates all who approach Kōtai Jingū (Inner Shrine)." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
+  <Character RefName="BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine)" Description="A powerful foe known as Guardian of Kōtai Jingū (Inner Shrine), whose enigmatic demeanor intimidates all who approach Kōtai Jingū (Inner Shrine)." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
     <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
+        <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
+        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
         <Entry EquipmentRef="Harp" Condition="1.0" />
-        <Entry EquipmentRef="Knife" Condition="1.0" />
-        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
-        <Entry EquipmentRef="MageBelt" Condition="1.0" />
-        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
+        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
+        <Entry EquipmentRef="HandAxe" Condition="1.0" />
+        <Entry EquipmentRef="Spear" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="RestorationPotion" Quantity="2" />
-        <Entry ConsumableRef="Milk" Quantity="2" />
-        <Entry ConsumableRef="DefenseElixir" Quantity="3" />
-        <Entry ConsumableRef="DivineBlessing" Quantity="1" />
-        <Entry ConsumableRef="ThrowingRock" Quantity="2" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="1" />
+        <Entry ConsumableRef="RangerTrailMix" Quantity="4" />
+        <Entry ConsumableRef="WarriorRation" Quantity="3" />
+        <Entry ConsumableRef="ThrowingStar" Quantity="3" />
+        <Entry ConsumableRef="SorceryPotion" Quantity="1" />
+        <Entry ConsumableRef="ManaGem" Quantity="4" />
+        <Entry ConsumableRef="DriedMeat" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Obliterate" Condition="1.0" />
         <Entry SpellRef="Disintegrate" Condition="1.0" />
         <Entry SpellRef="ArcaneBlast" Condition="1.0" />
       </Spells>
@@ -836,12 +945,15 @@
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
-          <Entry EquipmentRef="HeavyCrossbow" Condition="1.0" />
+          <Entry EquipmentRef="DragonTooth" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="Bread" Quantity="1" />
+          <Entry ConsumableRef="ScrollOfStrength" Quantity="1" />
+          <Entry ConsumableRef="MinorStaminaPotion" Quantity="2" />
         </Consumables>
+        <Spells>
+          <Entry SpellRef="MagicArmor" Condition="1.0" />
+        </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_KōtaiJingūInnerShrine</DialogueTreeRef>
     </Interactable>
@@ -860,43 +972,41 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya" Description="Guardian of Aramatsuri-no-Miya stands as the ultimate challenge at Aramatsuri-no-Miya, their determined nature apparent to all." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
+  <Character RefName="BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya" Description="The vigilant Guardian of Aramatsuri-no-Miya rules over Aramatsuri-no-Miya with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
     <Stats Health="0.81" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Sandals" Condition="1.0" />
-        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
-        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
-        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
-        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
+        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
+        <Entry EquipmentRef="Buckler" Condition="1.0" />
+        <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="Spear" Condition="1.0" />
+        <Entry EquipmentRef="Flamebrand" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DivineBlessing" Quantity="4" />
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="1" />
-        <Entry ConsumableRef="ManaGem" Quantity="4" />
-        <Entry ConsumableRef="Pie" Quantity="3" />
         <Entry ConsumableRef="ScrollOfHealing" Quantity="2" />
+        <Entry ConsumableRef="HerbBundle" Quantity="4" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="4" />
+        <Entry ConsumableRef="PoisonVial" Quantity="1" />
+        <Entry ConsumableRef="CurativePotion" Quantity="3" />
       </Consumables>
       <Spells>
         <Entry SpellRef="WarStomp" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
         <Entry SpellRef="Bloodlust" Condition="1.0" />
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
-          <Entry EquipmentRef="Claymore" Condition="1.0" />
+          <Entry EquipmentRef="BattleAxe" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="Berries" Quantity="2" />
+          <Entry ConsumableRef="ScrollOfStrength" Quantity="2" />
+          <Entry ConsumableRef="ScrollOfHealing" Quantity="2" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Shatter" Condition="1.0" />
+          <Entry SpellRef="DiscordantNote" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_Aramatsurinomiya</DialogueTreeRef>
@@ -916,44 +1026,55 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1), Fellow Traveler goes about their day with weathered demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya&quot;,&quot;K\u014DtaiJing\u016BInnerShrine&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Fellow Traveler" Description="The resolute Fellow Traveler calls Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1) home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya&quot;,&quot;K\u014DtaiJing\u016BInnerShrine&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2), Fellow Traveler goes about their day with seasoned demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2), Fellow Traveler goes about their day with determined demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
+      <Loot>
+        <Consumables>
+          <Entry ConsumableRef="ManaPotion" Quantity="1" />
+        </Consumables>
+      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3), Fellow Traveler goes about their day with stoic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3), Fellow Traveler goes about their day with mysterious demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+        </Consumables>
+      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;]}">
+  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
+        <Entry EquipmentRef="Maul" Condition="1.0" />
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
         <Entry EquipmentRef="WoodenFlute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="DeadlyPoison" Quantity="2" />
-        <Entry ConsumableRef="ElementalEssence" Quantity="3" />
-        <Entry ConsumableRef="ScrollOfHaste" Quantity="2" />
+        <Entry ConsumableRef="PoisonedDart" Quantity="1" />
+        <Entry ConsumableRef="DarkEssence" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
+        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -962,45 +1083,52 @@
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler" Description="Fellow Traveler, a mysterious resident of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler" Description="Fellow Traveler, a seasoned resident of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveling Merchant" Description="A weathered vendor named Traveling Merchant sells wares at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;]}">
+  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveling Merchant" Description="At Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6), Traveling Merchant offers merchandise with a enigmatic approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
-        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
+        <Entry EquipmentRef="WarHammer" Condition="1.0" />
+        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SmellingSalts" Quantity="4" />
-        <Entry ConsumableRef="Panacea" Quantity="4" />
+        <Entry ConsumableRef="WarriorRation" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfIcebolt" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Ambush" Condition="1.0" />
+        <Entry SpellRef="SilentStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="MageGloves" Condition="1.0" />
-          <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+          <Entry EquipmentRef="SilverRing" Condition="1.0" />
           <Entry EquipmentRef="ShortBow" Condition="1.0" />
-          <Entry EquipmentRef="CrystalBall" Condition="1.0" />
+          <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="Water" Quantity="5" />
-          <Entry ConsumableRef="RoastChicken" Quantity="3" />
-          <Entry ConsumableRef="DragonBlood" Quantity="3" />
+          <Entry ConsumableRef="Mead" Quantity="3" />
+          <Entry ConsumableRef="SoulShard" Quantity="5" />
+          <Entry ConsumableRef="RoastChicken" Quantity="6" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="DimensionDoor" Condition="1.0" />
-          <Entry SpellRef="FrostNova" Condition="1.0" />
+          <Entry SpellRef="Ambush" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</DialogueTreeRef>
@@ -1011,59 +1139,60 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8), known for their seasoned temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Fellow Traveler" Description="Fellow Traveler, a stoic resident of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;]}">
+    <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
+    <Capabilities />
+    <Interactable>
+      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</DialogueTreeRef>
+    </Interactable>
+  </Character>
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8), Fellow Traveler goes about their day with stoic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <Loot>
-        <Equipment>
-          <Entry EquipmentRef="FireWand" Condition="1.0" />
-        </Equipment>
         <Consumables>
-          <Entry ConsumableRef="AcidBomb" Quantity="1" />
+          <Entry ConsumableRef="WarriorRation" Quantity="1" />
         </Consumables>
       </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine)" Description="Guardian of Toyōke Daijingū (Outer Shrine) stands as the ultimate challenge at Toyōke Daijingū (Outer Shrine), their determined nature apparent to all." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;KazamiyaGek\u016B&quot;]}">
-    <Stats Health="1.23" Stamina="1.0" Mana="0.9" Strength="0.11" Defense="0.08" Speed="0.06" Magic="0.06" Credits="50" />
+  <Character RefName="BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine)" Description="At Toyōke Daijingū (Outer Shrine), the determined warrior Guardian of Toyōke Daijingū (Outer Shrine) awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;KazamiyaGek\u016B&quot;]}">
+    <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
-        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
-        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
-        <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
-        <Entry EquipmentRef="RustySword" Condition="1.0" />
-        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
+        <Entry EquipmentRef="Greataxe" Condition="1.0" />
+        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+        <Entry EquipmentRef="PlateGauntlets" Condition="1.0" />
+        <Entry EquipmentRef="WoodenClub" Condition="1.0" />
+        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
+        <Entry EquipmentRef="OakStaff" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DeadlyPoison" Quantity="3" />
-        <Entry ConsumableRef="ManaPotion" Quantity="4" />
-        <Entry ConsumableRef="RestorationPotion" Quantity="1" />
-        <Entry ConsumableRef="ThrowingStar" Quantity="1" />
-        <Entry ConsumableRef="ElixirOfLife" Quantity="3" />
-        <Entry ConsumableRef="ElementalEssence" Quantity="2" />
+        <Entry ConsumableRef="SoulShard" Quantity="2" />
+        <Entry ConsumableRef="WisdomElixir" Quantity="3" />
+        <Entry ConsumableRef="Javelin" Quantity="4" />
+        <Entry ConsumableRef="Bread" Quantity="1" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Whirlwind" Condition="1.0" />
-        <Entry SpellRef="Taunt" Condition="1.0" />
-        <Entry SpellRef="CrushingBlow" Condition="1.0" />
-        <Entry SpellRef="PowerStrike" Condition="1.0" />
+        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
+        <Entry SpellRef="Obliterate" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
-          <Entry EquipmentRef="SteelHelm" Condition="1.0" />
+          <Entry EquipmentRef="TowerShield" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="MinorManaPotion" Quantity="2" />
-          <Entry ConsumableRef="MinorStaminaPotion" Quantity="2" />
+          <Entry ConsumableRef="CurativePotion" Quantity="2" />
+          <Entry ConsumableRef="FrostBomb" Quantity="1" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Fear" Condition="1.0" />
+          <Entry SpellRef="Levitate" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine</DialogueTreeRef>
@@ -1083,46 +1212,84 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Fellow Traveler" Description="Fellow Traveler, a stoic resident of Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Tsuchinomiya&quot;]}">
-    <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
-    <Capabilities />
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</DialogueTreeRef>
-    </Interactable>
-  </Character>
-  <Character RefName="BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū)" Description="Guardian of Kazamiya (Gekū) stands as the ultimate challenge at Kazamiya (Gekū), their resolute nature apparent to all." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
-    <Stats Health="1.23" Stamina="1.0" Mana="0.9" Strength="0.11" Defense="0.08" Speed="0.06" Magic="0.06" Credits="50" />
+  <Character RefName="MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Traveling Merchant" Description="Traveling Merchant, a weathered trader offering goods at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Tsuchinomiya&quot;]}">
+    <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
-        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
-        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
-        <Entry EquipmentRef="OakStaff" Condition="1.0" />
-        <Entry EquipmentRef="Claymore" Condition="1.0" />
-        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="1" />
-        <Entry ConsumableRef="StrengthElixir" Quantity="4" />
-        <Entry ConsumableRef="Berries" Quantity="4" />
-        <Entry ConsumableRef="ElementalEssence" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfFireball" Quantity="1" />
+        <Entry ConsumableRef="StaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BattleCry" Condition="1.0" />
-        <Entry SpellRef="Taunt" Condition="1.0" />
-        <Entry SpellRef="Whirlwind" Condition="1.0" />
-        <Entry SpellRef="Charge" Condition="1.0" />
+        <Entry SpellRef="MightyStrength" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="CrystalWand" Condition="1.0" />
-          <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
+          <Entry EquipmentRef="TowerShield" Condition="1.0" />
+          <Entry EquipmentRef="VenomFang" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="StaminaPotion" Quantity="2" />
+          <Entry ConsumableRef="SwiftnessPotion" Quantity="12" />
+          <Entry ConsumableRef="ParalyzingPoison" Quantity="5" />
+          <Entry ConsumableRef="SoulShard" Quantity="6" />
         </Consumables>
+        <Spells>
+          <Entry SpellRef="MassIllusion" Condition="1.0" />
+          <Entry SpellRef="SilentStrike" Condition="1.0" />
+          <Entry SpellRef="Barkskin" Condition="1.0" />
+        </Spells>
+      </Loot>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</DialogueTreeRef>
+    </Interactable>
+    <Traits>
+      <Trait Name="WillTrade" Value="1" />
+      <Trait Name="Friendly" Value="1" />
+      <Trait Name="WillingToBargain" Value="50" />
+    </Traits>
+  </Character>
+  <Character RefName="BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū)" Description="A powerful foe known as Guardian of Kazamiya (Gekū), whose determined demeanor intimidates all who approach Kazamiya (Gekū)." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
+    <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
+    <Capabilities>
+      <Equipment>
+        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
+        <Entry EquipmentRef="VoidWand" Condition="1.0" />
+        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
+        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
+        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
+        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
+        <Entry EquipmentRef="SteelShield" Condition="1.0" />
+      </Equipment>
+      <Consumables>
+        <Entry ConsumableRef="ThrowingAxe" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfStrength" Quantity="4" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="1" />
+        <Entry ConsumableRef="Ale" Quantity="4" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
+        <Entry ConsumableRef="DragonBlood" Quantity="2" />
+      </Consumables>
+      <Spells>
+        <Entry SpellRef="ConjurePortal" Condition="1.0" />
+        <Entry SpellRef="SummonDemon" Condition="1.0" />
+      </Spells>
+    </Capabilities>
+    <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="SilverRing" Condition="1.0" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="Berries" Quantity="2" />
+          <Entry ConsumableRef="ScrollOfHealing" Quantity="2" />
+        </Consumables>
+        <Spells>
+          <Entry SpellRef="Whirlwind" Condition="1.0" />
+        </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_KazamiyaGekū</DialogueTreeRef>
     </Interactable>
@@ -1141,42 +1308,38 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya" Description="Guardian of Tsuchi-no-Miya, a formidable adversary who commands respect and fear at Tsuchi-no-Miya." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
+  <Character RefName="BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya" Description="The seasoned Guardian of Tsuchi-no-Miya rules over Tsuchi-no-Miya with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
     <Stats Health="1.30" Stamina="1.0" Mana="1.1" Strength="0.12" Defense="0.09" Speed="0.08" Magic="0.09" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
-        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
-        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
-        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
-        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+        <Entry EquipmentRef="IronMace" Condition="1.0" />
         <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
-        <Entry EquipmentRef="HandAxe" Condition="1.0" />
-        <Entry EquipmentRef="ClothPants" Condition="1.0" />
+        <Entry EquipmentRef="Maul" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="ChainBoots" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCord" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="CurativePotion" Quantity="1" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-        <Entry ConsumableRef="Berries" Quantity="2" />
-        <Entry ConsumableRef="GreaterManaPotion" Quantity="4" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="2" />
+        <Entry ConsumableRef="WeakPoison" Quantity="2" />
+        <Entry ConsumableRef="ElixirOfLife" Quantity="2" />
+        <Entry ConsumableRef="ManaGem" Quantity="6" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="Disintegrate" Condition="1.0" />
         <Entry SpellRef="Obliterate" Condition="1.0" />
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="MageBelt" Condition="1.0" />
-          <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
+          <Entry EquipmentRef="ClothCap" Condition="1.0" />
         </Equipment>
         <Consumables>
           <Entry ConsumableRef="SmellingSalts" Quantity="1" />
-          <Entry ConsumableRef="Bread" Quantity="2" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Whirlwind" Condition="1.0" />
+          <Entry SpellRef="SummonDemon" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_Tsuchinomiya</DialogueTreeRef>
@@ -1197,42 +1360,39 @@
     </BattleDialogue>
   </Character>
   <Character RefName="BOSS_Takanomiya" DisplayName="Guardian of Taka-no-Miya" Description="At Taka-no-Miya, the mysterious warrior Guardian of Taka-no-Miya awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
-    <Stats Health="1.51" Stamina="1.0" Mana="0.9" Strength="0.13" Defense="0.10" Speed="0.08" Magic="0.08" Credits="50" />
+    <Stats Health="1.30" Stamina="1.0" Mana="1.1" Strength="0.12" Defense="0.09" Speed="0.08" Magic="0.09" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
-        <Entry EquipmentRef="SteelSword" Condition="1.0" />
-        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
-        <Entry EquipmentRef="ClothGloves" Condition="1.0" />
-        <Entry EquipmentRef="Zweihander" Condition="1.0" />
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
-        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
-        <Entry EquipmentRef="LargeSword" Condition="1.0" />
+        <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+        <Entry EquipmentRef="Glaive" Condition="1.0" />
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="MageGloves" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="FrostBomb" Quantity="4" />
-        <Entry ConsumableRef="Bread" Quantity="4" />
-        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="3" />
-        <Entry ConsumableRef="WisdomElixir" Quantity="1" />
-        <Entry ConsumableRef="ScrollOfResurrection" Quantity="1" />
-        <Entry ConsumableRef="Bandage" Quantity="3" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="4" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="3" />
+        <Entry ConsumableRef="LightningResistPotion" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfHaste" Quantity="4" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="WarCry" Condition="1.0" />
-        <Entry SpellRef="Charge" Condition="1.0" />
-        <Entry SpellRef="ShieldBash" Condition="1.0" />
-        <Entry SpellRef="Disarm" Condition="1.0" />
+        <Entry SpellRef="Obliterate" Condition="1.0" />
+        <Entry SpellRef="Disintegrate" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="ShortBow" Condition="1.0" />
-          <Entry EquipmentRef="SilverRing" Condition="1.0" />
+          <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="RoastChicken" Quantity="2" />
+          <Entry ConsumableRef="MinorHealingPotion" Quantity="1" />
         </Consumables>
+        <Spells>
+          <Entry SpellRef="Wisdom" Condition="1.0" />
+        </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_Takanomiya</DialogueTreeRef>
     </Interactable>
@@ -1251,24 +1411,22 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Takanomiya" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya" Description="At Kazahinomi-no-Miya, the aggressive defender Guard at Kazahinomi-no-Miya challenges all who approach." Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
-    <Stats Health="0.57" Stamina="1.0" Mana="1.0" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
+  <Character RefName="GUARD_Kazahinominomiya_0" DisplayName="Guard at Kazahinomi-no-Miya" Description="Guard at Kazahinomi-no-Miya defends Kazahinomi-no-Miya, their aggressive vigilance ever-present." Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+    <Stats Health="0.63" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HandAxe" Condition="1.0" />
-        <Entry EquipmentRef="VenomFang" Condition="1.0" />
-        <Entry EquipmentRef="ShortBow" Condition="1.0" />
-        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="LargeSword" Condition="1.0" />
+        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Bandage" Quantity="2" />
-        <Entry ConsumableRef="DriedMeat" Quantity="2" />
-        <Entry ConsumableRef="MinorHealingPotion" Quantity="4" />
-        <Entry ConsumableRef="WeakPoison" Quantity="2" />
+        <Entry ConsumableRef="EnduranceElixir" Quantity="1" />
+        <Entry ConsumableRef="ThrowingStar" Quantity="3" />
+        <Entry ConsumableRef="StrengthElixir" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ThornBarrier" Condition="1.0" />
-        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
+        <Entry SpellRef="Taunt" Condition="1.0" />
+        <Entry SpellRef="ShieldBash" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1277,5 +1435,13 @@
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
+    <BattleDialogue>
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_GUARD_Kazahinominomiya_0" StartNodeId="battle_defeated" OnceOnly="true" />
+    </BattleDialogue>
   </Character>
 </Characters>
