@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WorldConfiguration
+    xmlns="Ambient.Domain"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="Ambient.Domain ../../../../../../../Ambient.Domain/Content/Schemas/WorldDefinition.xsd"
+    RefName="Kagoshima"
+    DisplayName="Kagoshima, Japan"
+    Description="Seaside city with active volcano Sakurajima"
+    ContentPackLibrary="japan"
+    ContentPackTheme="feudal_japan"
+    Namespace="ambient_games"
+    SpawnLatitude="31.5994"
+    SpawnLongitude="130.5637"
+    DisplayOrder="1">
+    <HeightMapSettings
+        FileName="Kagoshima.tif"
+        HorizontalScale="0.16666666666"
+        VerticalScale="0.16666666666"
+        VerticalShift="0" />
+</WorldConfiguration>
