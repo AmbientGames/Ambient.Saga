@@ -29,18 +29,16 @@
     <CompatibleSubstances>
       <Substance SubstanceRef="Stone" />
       <Substance SubstanceRef="Aggregate" />
-      <Substance SubstanceRef="SteelReinforcedConcrete" />
     </CompatibleSubstances>
   </BuildingMaterial>
   <BuildingMaterial RefName="Screws" DisplayName="Neji Kugi" Description="Threaded iron fasteners" WholesalePrice="3" TextureRef="Screws">
     <CompatibleSubstances>
-      <Substance SubstanceRef="Steel" />
+      <Substance SubstanceRef="Metal" />
     </CompatibleSubstances>
   </BuildingMaterial>
   <BuildingMaterial RefName="Bolts" DisplayName="Kasugai" Description="Iron staples for joining heavy timbers" WholesalePrice="4" TextureRef="Bolts">
     <CompatibleSubstances>
       <Substance SubstanceRef="Metal" />
-      <Substance SubstanceRef="Steel" />
       <Substance SubstanceRef="Wood" />
     </CompatibleSubstances>
   </BuildingMaterial>

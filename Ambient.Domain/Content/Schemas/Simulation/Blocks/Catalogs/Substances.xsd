@@ -7,12 +7,12 @@
             <xs:enumeration value="Carbon" />
             <xs:enumeration value="Stone" />
             <xs:enumeration value="Metal" />
-            <xs:enumeration value="Steel" />
-            <xs:enumeration value="SteelReinforcedConcrete" />
             <xs:enumeration value="Plant" />
             <xs:enumeration value="Wood" />
             <xs:enumeration value="Other" />
-            <xs:enumeration value="Reserved9" />
+			<xs:enumeration value="Reserved7" />
+			<xs:enumeration value="Reserved8" />
+			<xs:enumeration value="Reserved9" />
             <xs:enumeration value="Reserved10" />
             <xs:enumeration value="Reserved11" />
             <xs:enumeration value="Reserved12" />

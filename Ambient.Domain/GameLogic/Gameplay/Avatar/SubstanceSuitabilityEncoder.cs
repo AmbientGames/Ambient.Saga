@@ -9,21 +9,18 @@ public static class SubstanceSuitabilityEncoder
         { "Carbon", 2 },
         { "Stone", 4 },
         { "Metal", 8 },
-        { "Steel", 16 },
-        { "SteelReinforcedConcrete", 32 },
-        { "Plant", 64 },
-        { "Wood", 128 },
-        { "Other", 256 },
-        { "Custom0", 512 },
-        { "Custom1", 1024 },
-        { "Custom2", 2048 },
-        { "Custom3", 4096 },
-        { "Custom4", 8192 },
-        { "Custom5", 16384 },
-        { "Custom6", 32768 },
-        { "Custom7", 65536 },
-        { "Custom8", 131072 },
-        { "Custom9", 262144 }
+        { "Plant", 16 },
+        { "Wood", 32 },
+        { "Other", 64 },
+        { "Reserved7", 128 },
+        { "Reserved8", 256 },
+        { "Reserved9", 512 },
+        { "Reserved10", 1024 },
+        { "Reserved11", 2048 },
+        { "Reserved12", 4096 },
+        { "Reserved13", 8192 },
+        { "Reserved14", 16384 },
+        { "Reserved15", 32768 }
     };
 
     public static uint Encode(string subtance)
