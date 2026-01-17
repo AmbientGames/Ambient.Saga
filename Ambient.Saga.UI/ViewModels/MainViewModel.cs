@@ -2025,28 +2025,49 @@ public partial class MainViewModel : ObservableObject
             DevCharacterType.NPC => FindRandomNpc(characters),
 
             // Merchant: prefer one with BOTH dialogue AND WillTrade, fallback to just WillTrade
-            DevCharacterType.Merchant => characters.FirstOrDefault(c =>
-                c.Interactable?.DialogueTreeRef != null &&
-                (c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false))
-                ?? characters.FirstOrDefault(c =>
-                    c.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false),
+            DevCharacterType.Merchant => FindRandomCharacterWithTrait(characters, CharacterTraitType.WillTrade),
 
             // Boss: prefer one with BOTH dialogue AND BossFight, fallback to just BossFight
-            DevCharacterType.Boss => characters.FirstOrDefault(c =>
-                c.Interactable?.DialogueTreeRef != null &&
-                (c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false))
-                ?? characters.FirstOrDefault(c =>
-                    c.Traits?.Any(t => t.Name == CharacterTraitType.BossFight) ?? false),
+            DevCharacterType.Boss => FindRandomCharacterWithTrait(characters, CharacterTraitType.BossFight),
 
             // Hostile: prefer one with BOTH dialogue AND Hostile, fallback to just Hostile
-            DevCharacterType.Hostile => characters.FirstOrDefault(c =>
-                c.Interactable?.DialogueTreeRef != null &&
-                (c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false))
-                ?? characters.FirstOrDefault(c =>
-                    c.Traits?.Any(t => t.Name == CharacterTraitType.Hostile) ?? false),
+            DevCharacterType.Hostile => FindRandomCharacterWithTrait(characters, CharacterTraitType.Hostile),
 
-            _ => characters.FirstOrDefault()
+            _ => characters.Length > 0 ? characters[_devRandom.Next(characters.Length)] : null
         };
+    }
+
+    /// <summary>
+    /// Finds a random character with the specified trait, preferring those with dialogue.
+    /// </summary>
+    private static Character? FindRandomCharacterWithTrait(Character[] characters, CharacterTraitType trait)
+    {
+        // Prefer characters with BOTH dialogue AND the trait
+        var withDialogue = characters.Where(c =>
+            c.Interactable?.DialogueTreeRef != null &&
+            (c.Traits?.Any(t => t.Name == trait) ?? false))
+            .ToList();
+
+        if (withDialogue.Count > 0)
+        {
+            var selected = withDialogue[_devRandom.Next(withDialogue.Count)];
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Selected random {trait} with dialogue: {selected.DisplayName} ({selected.RefName})");
+            return selected;
+        }
+
+        // Fallback to any character with the trait
+        var withTrait = characters.Where(c =>
+            c.Traits?.Any(t => t.Name == trait) ?? false)
+            .ToList();
+
+        if (withTrait.Count > 0)
+        {
+            var selected = withTrait[_devRandom.Next(withTrait.Count)];
+            System.Diagnostics.Debug.WriteLine($"[DevTools] Selected random {trait} (no dialogue): {selected.DisplayName} ({selected.RefName})");
+            return selected;
+        }
+
+        return null;
     }
 
     /// <summary>

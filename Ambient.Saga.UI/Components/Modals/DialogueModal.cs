@@ -237,15 +237,19 @@ public class DialogueModal
         if (_currentState == null) return;
 
         // Calculate dynamic heights using GetContentRegionAvail
-        // Reserve space for bottom bar (separator + button row)
+        // Reserve space for bottom bar (separator + button row) AND choices header text
         var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2;
-        var availableHeight = ImGui.GetContentRegionAvail().Y - footerHeight;
+        var choicesHeaderHeight = ImGui.GetTextLineHeightWithSpacing() * 2; // "Choose your response:" + spacing
+        var availableHeight = ImGui.GetContentRegionAvail().Y - footerHeight - choicesHeaderHeight;
         var dialogueHeight = Math.Max(ImGui.GetFrameHeightWithSpacing() * 5, availableHeight * 0.55f);
         var choicesHeight = Math.Max(ImGui.GetFrameHeightWithSpacing() * 3, availableHeight * 0.45f);
 
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] Layout - Available: {ImGui.GetContentRegionAvail().Y}, Footer: {footerHeight}, ChoicesHeader: {choicesHeaderHeight}, DialogueH: {dialogueHeight}, ChoicesH: {choicesHeight}");
+
         // Dialogue text area with styled background
+        // For BeginChild, 0 means "use remaining width", not -1
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
-        ImGui.BeginChild("DialogueTextArea", new Vector2(ImGuiSizes.Fill, dialogueHeight), ImGuiChildFlags.Borders);
+        ImGui.BeginChild("DialogueTextArea", new Vector2(0, dialogueHeight), ImGuiChildFlags.Borders);
 
         ImGui.Spacing();
         ImGui.Indent(10 * UIConstants.DpiScale);
@@ -295,15 +299,20 @@ public class DialogueModal
     {
         if (_currentState == null) return;
 
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] RenderChoices called with height={height}, ChoiceCount={_currentState.Choices.Count}");
+
         ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), "Choose your response:");
         ImGui.Spacing();
 
-        ImGui.BeginChild("ChoicesArea", new Vector2(ImGuiSizes.Fill, height), ImGuiChildFlags.None);
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] ChoicesArea position before: {ImGui.GetCursorPosY()}, remaining: {ImGui.GetContentRegionAvail().Y}");
+        // For BeginChild, 0 means "use remaining width", not -1
+        ImGui.BeginChild("ChoicesArea", new Vector2(0, height), ImGuiChildFlags.None);
 
         var choiceIndex = 0;
         foreach (var choice in _currentState.Choices)
         {
             choiceIndex++;
+            System.Diagnostics.Debug.WriteLine($"[DialogueModal] Rendering choice {choiceIndex}: {choice.Text} (Available={choice.IsAvailable})");
             RenderChoice(viewModel, character, modalManager, choice, choiceIndex);
         }
 
@@ -338,8 +347,9 @@ public class DialogueModal
         }
 
         // Use Selectable for click handling with custom styling - use frame height for consistent sizing
+        // Note: For Selectable size, 0 means "fill remaining width", not -1
         var selectableHeight = ImGui.GetFrameHeight();
-        if (ImGui.Selectable($"  {choiceText}##choice_{index}", false, ImGuiSelectableFlags.None, new Vector2(ImGuiSizes.Fill, selectableHeight)))
+        if (ImGui.Selectable($"  {choiceText}##choice_{index}", false, ImGuiSelectableFlags.None, new Vector2(0, selectableHeight)))
         {
             if (canSelect)
             {
