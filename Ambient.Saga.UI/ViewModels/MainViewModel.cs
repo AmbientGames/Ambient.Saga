@@ -4,27 +4,28 @@ using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
+using Ambient.Domain.Sampling;
+using Ambient.Domain.ValueObjects;
 using Ambient.Infrastructure.GameLogic;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Loading;
-using SpawnDevCharacterCommand = Ambient.Saga.Engine.Application.Commands.Saga.SpawnDevCharacterCommand;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Domain.Services;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using SixLabors.ImageSharp.PixelFormats;
-using System.Collections.ObjectModel;
+using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Models;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.UI.ViewModels;
-using Ambient.Saga.UI.Components.Panels;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using SharpDX;
-using Ambient.Domain.ValueObjects;
+using SixLabors.ImageSharp.PixelFormats;
+using System.Collections.ObjectModel;
 using static Ambient.Saga.UI.Services.HeightMapProcessor;
+using SpawnDevCharacterCommand = Ambient.Saga.Engine.Application.Commands.Saga.SpawnDevCharacterCommand;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 
@@ -160,8 +161,8 @@ public partial class MainViewModel : ObservableObject
     // Event for when dialogue should be displayed (for character interactions)
     public event Action<CharacterViewModel>? DialogueRequested;
 
-    // Event for when avatar is loaded or created (for external state synchronization)
-    public event Action<AvatarEntity>? AvatarLoaded;
+    // Event for when session is ready (avatar loaded and height map available)
+    public event Action<AvatarEntity, ElevationWaterMap?>? SessionReady;
 
     // Event for when world definition is loaded (before avatar selection)
     public event Action<IWorld>? WorldLoaded;
@@ -822,6 +823,10 @@ public partial class MainViewModel : ObservableObject
 
         // Load and display height map if available
         await LoadHeightMapImageInternalAsync(world, dataDirectory);
+
+        // Signal session is ready with avatar and height map (for game initialization)
+        var elevationWaterMap = world.WorldConfiguration?.HeightMapSettings?.ElevationWaterMap;
+        SessionReady?.Invoke(PlayerAvatar, elevationWaterMap);
 
         // Load Sagas and triggers from world with feature status
         var (sagas, triggers) = await SagaViewModel.LoadFromWorldAsync(world, PlayerAvatar, _worldRepository);
@@ -1562,7 +1567,6 @@ public partial class MainViewModel : ObservableObject
         {
             // Avatar exists, load it
             PlayerAvatar = existingAvatar;
-            AvatarLoaded?.Invoke(existingAvatar);
 
             // Debug output to verify what was loaded
             var toolCount = PlayerAvatar.Capabilities?.Tools?.Length ?? 0;
@@ -1605,7 +1609,6 @@ public partial class MainViewModel : ObservableObject
 
         // Create new avatar from archetype
         PlayerAvatar = CreateAvatarFromArchetype(selectedArchetype, world);
-        AvatarLoaded?.Invoke(PlayerAvatar);
         AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
 
         // Save to database
