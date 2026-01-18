@@ -60,10 +60,10 @@ public class HeightMapProcessor
 
     public static IEnumerable<FlattenLocation> GetFlattenLocations(IWorld world)
     {
-        const int StructureElevationOffset = 4;
-        const int StructureRadius = 5;
-        const int DefaultElevationOffset = 2;
-        const int DefaultRadius = 3;
+        const int StructureElevationOffset = 10 / 3;
+        const double StructureRadius = .833333;
+        const int DefaultElevationOffset = 10 / 6;
+        const double DefaultRadius = .5;
 
         // Check if we have the necessary data
         if (world.SagaArcLookup == null || world.SagaArcLookup.Count == 0)
@@ -80,8 +80,8 @@ public class HeightMapProcessor
 
             // Determine elevation offset and radius based on feature type
             // Categories with large structures need more terrain flattening
-            var elevationOffset = DefaultElevationOffset / world.VerticalScale;
-            var radius = DefaultRadius;
+            var elevationOffset = DefaultElevationOffset / world.WorldConfiguration.HeightMapSettings.VerticalScale;
+            var radius = DefaultRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale;
 
             var isLargeStructure = sagaArc.Category is
                 Domain.SagaArcCategory.Stronghold or
@@ -93,8 +93,8 @@ public class HeightMapProcessor
 
             if (isLargeStructure)
             {
-                elevationOffset = StructureElevationOffset / world.VerticalScale;
-                radius = StructureRadius;
+                elevationOffset = StructureElevationOffset / world.WorldConfiguration.HeightMapSettings.VerticalScale;
+                radius = StructureRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale;
             }
 
             // Ensure within bounds (accounting for sample radius which is radius + 1)
@@ -103,7 +103,7 @@ public class HeightMapProcessor
                 pixelY < sampleRadius || pixelY >= world.HeightMapMetadata.ImageHeight - sampleRadius)
                 continue;
 
-            yield return new FlattenLocation(pixelX, pixelY, (int)Math.Round(elevationOffset), radius);
+            yield return new FlattenLocation(pixelX, pixelY, (int)Math.Round(elevationOffset), (int)Math.Round(radius));
         }
     }
 
