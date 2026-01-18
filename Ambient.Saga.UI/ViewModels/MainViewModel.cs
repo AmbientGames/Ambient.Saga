@@ -24,6 +24,7 @@ using Ambient.Saga.UI.ViewModels;
 using Ambient.Saga.UI.Components.Panels;
 using SharpDX;
 using Ambient.Domain.ValueObjects;
+using static Ambient.Saga.UI.Services.HeightMapProcessor;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 
@@ -181,7 +182,7 @@ public partial class MainViewModel : ObservableObject
     private IDisposable? _worldDatabase;
     private IWorldStateRepository _worldRepository;
     private ISteamAchievementService? _steamAchievementService;
-    private HeightMapProcessor.ProcessedHeightMap? _processedHeightMap;
+    private ProcessedHeightMap? _processedHeightMap;
 
     // Background processing for interaction checks (runs off the UI thread)
     private CancellationTokenSource? _backgroundProcessingCts;
@@ -877,7 +878,9 @@ public partial class MainViewModel : ObservableObject
                 verticalShift = (int)world.WorldConfiguration.HeightMapSettings.VerticalShift;
             }
 
-            var processedMap = await Task.Run(() => HeightMapProcessor.ProcessHeightMap(image, 40, true, verticalShift));
+            var flattenLocations = HeightMapProcessor.GetFlattenLocations(world);
+            var processedMap = await Task.Run(() => HeightMapProcessor.ProcessHeightMap(image, 40, true, flattenLocations, verticalShift));
+            world.WorldConfiguration.HeightMapSettings.ElevationWaterMap = processedMap.ElevationWaterMap;
             _processedHeightMap = processedMap;
             
             // Convert to platform-agnostic image data for display with water-aware coloring
@@ -1002,7 +1005,7 @@ public partial class MainViewModel : ObservableObject
     //    return new HeightMapImageData(pixelData, width, height, stride);
     //}
 
-    private static async Task<HeightMapImageData> ConvertProcessedMapToImageDataAsync(HeightMapProcessor.ProcessedHeightMap processedMap)
+    private static async Task<HeightMapImageData> ConvertProcessedMapToImageDataAsync(ProcessedHeightMap processedMap)
     {
         var width = processedMap.Width;
         var height = processedMap.Height;
