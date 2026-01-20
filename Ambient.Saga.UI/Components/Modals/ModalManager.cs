@@ -89,14 +89,14 @@ public class ModalManager
         _modalRegistry.Register(new Adapters.MerchantTradeModalAdapter());
 
         // Complex modals (need ModalManager reference)
-        _modalRegistry.Register(new Adapters.CharactersModalAdapter(this));
         _modalRegistry.Register(new Adapters.DialogueModalAdapter(this));
         _modalRegistry.Register(new Adapters.BattleModalAdapter(this));
-        _modalRegistry.Register(new Adapters.QuestLogModalAdapter(this));
 
         // Quest modals (need IMediator)
         _modalRegistry.Register(new Adapters.QuestModalAdapter(_mediator));
         _modalRegistry.Register(new Adapters.QuestDetailModalAdapter(_mediator));
+
+        // Note: Journal is now a panel (not a modal), accessed via J key
 
         // Special modals
         var worldSelectionLogger = _loggerFactory?.CreateLogger<WorldSelectionScreen>();
@@ -124,19 +124,18 @@ public class ModalManager
     public bool ShowWorldSelection => _modalStack.Contains("WorldSelection");
     public bool ShowArchetypeSelection => _modalStack.Contains("ArchetypeSelection");
     public bool ShowAvatarInfo => _modalStack.Contains("AvatarInfo");
-    public bool ShowCharacters => _modalStack.Contains("Characters");
     public bool ShowAchievements => _modalStack.Contains("Achievements");
     public bool ShowWorldCatalog => _modalStack.Contains("WorldCatalog");
     public bool ShowMerchantTrade => _modalStack.Contains("MerchantTrade");
     public bool ShowBossBattle => _modalStack.Contains("BossBattle");
     public bool ShowQuest => _modalStack.Contains("Quest");
-    public bool ShowQuestLog => _modalStack.Contains("QuestLog");
     public bool ShowQuestDetail => _modalStack.Contains("QuestDetail");
     public bool ShowDialogue => _modalStack.Contains("Dialogue");
     public bool ShowLoot => _modalStack.Contains("Loot");
     public bool ShowFactionReputation => _modalStack.Contains("FactionReputation");
     public bool ShowPauseMenu => _modalStack.Contains("PauseMenu");
     public bool ShowSettings => _modalStack.Contains("Settings");
+    public bool ShowJournal => _modalStack.Contains("Journal");
 
     // Selected character for interactions
     public CharacterViewModel? SelectedCharacter { get; set; }
@@ -191,13 +190,12 @@ public class ModalManager
     public void OpenWorldSelection() => OpenModal("WorldSelection");
     public void OpenArchetypeSelection() => OpenModal("ArchetypeSelection");
     public void OpenAvatarInfo() => OpenModal("AvatarInfo");
-    public void OpenCharacters() => OpenModal("Characters");
     public void OpenAchievements() => OpenModal("Achievements");
     public void OpenWorldCatalog() => OpenModal("WorldCatalog");
     public void OpenFactionReputation() => OpenModal("FactionReputation");
-    public void OpenQuestLog() => OpenModal("QuestLog");
     public void OpenPauseMenu() => OpenModal("PauseMenu");
     public void OpenSettings() => OpenModal("Settings");
+    // Note: Journal panel (J key) now consolidates Quests and Characters info
 
     public void Update(float deltaTime)
     {

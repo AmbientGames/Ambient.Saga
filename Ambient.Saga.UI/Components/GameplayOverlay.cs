@@ -24,6 +24,8 @@ public enum ActivePanel
     Character,
     /// <summary>World Info panel (press I) - shows world catalog</summary>
     WorldInfo,
+    /// <summary>Journal panel (press J) - RPG journal with quests, bestiary, world info</summary>
+    Journal,
     /// <summary>Dev Tools panel (press Insert) - only available when debugger attached</summary>
     DevTools
 }
@@ -78,6 +80,7 @@ public class GameplayOverlay
     private readonly MapViewPanel _mapViewPanel;
     private readonly AvatarActionsPanel _avatarActionsPanel;
     private readonly DevToolsPanel _devToolsPanel;
+    private readonly JournalPanel _journalPanel;
 
     // Modal system
     private readonly ModalManager _modalManager;
@@ -140,6 +143,7 @@ public class GameplayOverlay
         _mapViewPanel = new MapViewPanel();
         _avatarActionsPanel = new AvatarActionsPanel();
         _devToolsPanel = new DevToolsPanel();
+        _journalPanel = new JournalPanel();
     }
 
     /// <summary>
@@ -201,6 +205,9 @@ public class GameplayOverlay
                 break;
             case ActivePanel.WorldInfo:
                 RenderWorldInfoPanel(viewModel);
+                break;
+            case ActivePanel.Journal:
+                RenderJournalPanel(viewModel);
                 break;
             case ActivePanel.DevTools:
                 RenderDevToolsPanel(viewModel);
@@ -372,6 +379,45 @@ public class GameplayOverlay
         if (ImGui.Begin("Dev Tools [Ins]", windowFlags))
         {
             _devToolsPanel.Render(viewModel, _modalManager);
+        }
+        ImGui.End();
+
+        ImGui.PopStyleColor();
+    }
+
+    /// <summary>
+    /// Render the Journal panel (top-left, full height).
+    /// Shows quests, bestiary, and world information.
+    /// </summary>
+    private void RenderJournalPanel(MainViewModel viewModel)
+    {
+        var io = ImGui.GetIO();
+        var displaySize = io.DisplaySize;
+        var scale = UIConstants.DpiScale;
+
+        // Calculate HUD height dynamically (same as DefaultHudRenderer)
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
+
+        // Panel top-left, full height (wider than other panels for tabbed content)
+        var margin = 10f * scale;
+        var panelWidth = 450f * scale;
+        var panelHeight = displaySize.Y - hudHeight - (margin * 2); // Leave room for HUD bar + margins
+        var panelX = margin;
+        var panelY = margin;
+
+        ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
+        ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
+
+        var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
+
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+
+        if (ImGui.Begin("Journal [J]", windowFlags))
+        {
+            _journalPanel.Render(viewModel, _modalManager);
         }
         ImGui.End();
 

@@ -48,6 +48,10 @@ public class DefaultHudRenderer : IHudRenderer
             ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
             ImGui.SameLine();
             RenderHotkeyHint("I", "World Info", activePanel == ActivePanel.WorldInfo);
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
+            ImGui.SameLine();
+            RenderHotkeyHint("J", "Journal", activePanel == ActivePanel.Journal);
 
             // Dev Tools hint (only when debugger attached)
             if (Debugger.IsAttached)

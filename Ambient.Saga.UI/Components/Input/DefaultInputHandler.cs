@@ -11,6 +11,7 @@ namespace Ambient.Saga.UI.Components.Input;
 /// - M: Toggle Map panel
 /// - C: Toggle Character panel
 /// - I: Toggle World Info panel
+/// - J: Open Journal modal
 /// - Insert: Toggle Dev Tools panel (only when debugger attached)
 /// - ESC: Close panels OR open pause menu (hierarchical behavior)
 /// 
@@ -29,6 +30,7 @@ public class DefaultInputHandler : IInputHandler
     private bool _mKeyWasPressed = false;
     private bool _cKeyWasPressed = false;
     private bool _iKeyWasPressed = false;
+    private bool _jKeyWasPressed = false;
     private bool _insertKeyWasPressed = false;
     private bool _escKeyWasPressed = false;
     private bool _pauseMenuRequestedThisFrame = false;
@@ -56,7 +58,7 @@ public class DefaultInputHandler : IInputHandler
 
     public void ProcessInput(InputContext context)
     {
-        // Reset pause menu flag at start of frame
+        // Reset request flags at start of frame
         _pauseMenuRequestedThisFrame = false;
 
         // Skip input processing when modal is active or text input is focused
@@ -86,6 +88,14 @@ public class DefaultInputHandler : IInputHandler
             context.TogglePanelAction(ActivePanel.WorldInfo);
         }
         _iKeyWasPressed = iKeyDown;
+
+        // J key - Journal
+        bool jKeyDown = ImGui.IsKeyDown(ImGuiKey.J);
+        if (jKeyDown && !_jKeyWasPressed)
+        {
+            context.TogglePanelAction(ActivePanel.Journal);
+        }
+        _jKeyWasPressed = jKeyDown;
 
         // Insert key - Dev Tools (only when debugger attached)
         bool insertKeyDown = ImGui.IsKeyDown(ImGuiKey.Insert);

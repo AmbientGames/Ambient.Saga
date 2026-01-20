@@ -83,7 +83,7 @@ public partial class MainWindow : Form
             _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, e.Alt);
 
             // Send the actual key
-            var imguiKey = MapKeyToImGui(e.KeyCode);
+            var imguiKey = WinFormsKeyMapper.MapKeyToImGui(e.KeyCode);
             if (imguiKey != ImGuiNET.ImGuiKey.None)
                 _imguiRenderer?.UpdateKeyState(imguiKey, true);
         };
@@ -97,7 +97,7 @@ public partial class MainWindow : Form
             _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, e.Alt);
 
             // Send the actual key release
-            var imguiKey = MapKeyToImGui(e.KeyCode);
+            var imguiKey = WinFormsKeyMapper.MapKeyToImGui(e.KeyCode);
             if (imguiKey != ImGuiNET.ImGuiKey.None)
                 _imguiRenderer?.UpdateKeyState(imguiKey, false);
         };
@@ -226,34 +226,4 @@ public partial class MainWindow : Form
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern bool PeekMessage(out NativeMessage message, IntPtr window, uint filterMin, uint filterMax, uint remove);
-
-    private static ImGuiKey MapKeyToImGui(Keys key) => key switch
-    {
-        Keys.Tab => ImGuiKey.Tab,
-        Keys.Left => ImGuiKey.LeftArrow,
-        Keys.Right => ImGuiKey.RightArrow,
-        Keys.Up => ImGuiKey.UpArrow,
-        Keys.Down => ImGuiKey.DownArrow,
-        Keys.PageUp => ImGuiKey.PageUp,
-        Keys.PageDown => ImGuiKey.PageDown,
-        Keys.Home => ImGuiKey.Home,
-        Keys.End => ImGuiKey.End,
-        Keys.Insert => ImGuiKey.Insert,
-        Keys.Delete => ImGuiKey.Delete,
-        Keys.Back => ImGuiKey.Backspace,
-        Keys.Space => ImGuiKey.Space,
-        Keys.Enter => ImGuiKey.Enter,
-        Keys.Escape => ImGuiKey.Escape,
-        // Text editing keys
-        Keys.A => ImGuiKey.A,
-        Keys.C => ImGuiKey.C,
-        Keys.V => ImGuiKey.V,
-        Keys.X => ImGuiKey.X,
-        Keys.Y => ImGuiKey.Y,
-        Keys.Z => ImGuiKey.Z,
-        // Panel hotkeys (M=Map, C=Character, I=World Info)
-        Keys.M => ImGuiKey.M,
-        Keys.I => ImGuiKey.I,
-        _ => ImGuiKey.None
-    };
 }

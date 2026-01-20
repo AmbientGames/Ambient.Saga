@@ -7,20 +7,13 @@ using Ambient.Saga.UI.Components.Modals;
 namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
-/// Right panel showing avatar info, quests, and achievements in tabs
-/// Matches WPF version functionality with tabs instead of modals
+/// Right panel showing avatar information: position, stats, inventory, affinities, party.
+/// Quests and Achievements have moved to the Journal panel (J key).
 /// </summary>
 public class AvatarActionsPanel
 {
-    private bool _showCompletedQuests = false;
-    private bool _showLockedAchievements = false;
-
-    private ModalManager? _modalManager;
-
     public void Render(MainViewModel viewModel, ModalManager modalManager)
     {
-        _modalManager = modalManager;
-
         ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "AVATAR");
         ImGui.Separator();
 
@@ -28,67 +21,12 @@ public class AvatarActionsPanel
         // Reserve space for action buttons at the bottom
         var buttonHeight = ImGui.GetFrameHeight();
         var style = ImGui.GetStyle();
-        // 4 buttons (3 with spacing + 1 without) + separator area
-        var actionsHeight = ImGui.GetFrameHeightWithSpacing() * 3 + buttonHeight + style.ItemSpacing.Y * 4;
+        // 2 buttons (1 with spacing + 1 without) + separator area
+        var actionsHeight = ImGui.GetFrameHeightWithSpacing() + buttonHeight + style.ItemSpacing.Y * 4;
         var availableHeight = ImGui.GetContentRegionAvail().Y - actionsHeight;
 
-        // Tab bar with scrollable content area
-        ImGui.BeginChild("AvatarTabsContainer", new Vector2(ImGuiSizes.Fill, availableHeight), ImGuiChildFlags.None);
-
-        if (ImGui.BeginTabBar("AvatarTabs", ImGuiTabBarFlags.None))
-        {
-            if (ImGui.BeginTabItem("Info"))
-            {
-                RenderAvatarInfoTab(viewModel);
-                ImGui.EndTabItem();
-            }
-
-            if (ImGui.BeginTabItem("Quests"))
-            {
-                RenderQuestsTab(viewModel);
-                ImGui.EndTabItem();
-            }
-
-            if (ImGui.BeginTabItem("Achievements"))
-            {
-                RenderAchievementsTab(viewModel);
-                ImGui.EndTabItem();
-            }
-
-            ImGui.EndTabBar();
-        }
-
-        ImGui.EndChild();
-
-        // Action buttons at bottom (always visible, outside scroll area)
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
-
-        if (ImGui.Button("Quest Log", new Vector2(ImGuiSizes.Fill, buttonHeight)))
-        {
-            modalManager.OpenQuestLog();
-        }
-
-        if (ImGui.Button("View Characters", new Vector2(ImGuiSizes.Fill, buttonHeight)))
-        {
-            modalManager.OpenCharacters();
-        }
-
-        if (ImGui.Button("View World Catalog", new Vector2(ImGuiSizes.Fill, buttonHeight)))
-        {
-            modalManager.OpenWorldCatalog();
-        }
-
-        if (ImGui.Button("Faction Reputation", new Vector2(ImGuiSizes.Fill, buttonHeight)))
-        {
-            modalManager.OpenFactionReputation();
-        }
-    }
-
-    private void RenderAvatarInfoTab(MainViewModel viewModel)
-    {
-        ImGui.BeginChild("AvatarInfoScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
+        // Scrollable avatar info content
+        ImGui.BeginChild("AvatarInfoScroll", new Vector2(ImGuiSizes.Fill, availableHeight), ImGuiChildFlags.None);
 
         // Position
         ImGui.TextColored(new Vector4(1, 1, 0, 1), "Position:");
@@ -585,207 +523,21 @@ public class AvatarActionsPanel
         }
 
         ImGui.EndChild();
-    }
 
-    private void RenderQuestsTab(MainViewModel viewModel)
-    {
-        ImGui.BeginChild("QuestsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
-
-        // Show Completed toggle
-        ImGui.Checkbox("Show Completed", ref _showCompletedQuests);
+        // Action buttons at bottom (always visible, outside scroll area)
+        ImGui.Spacing();
+        ImGui.Separator();
         ImGui.Spacing();
 
-        if (viewModel.QuestLog == null)
+        if (ImGui.Button("View World Catalog", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "No quest log available");
-            ImGui.EndChild();
-            return;
+            modalManager.OpenWorldCatalog();
         }
 
-        // Active Quests
-        if (viewModel.QuestLog.ActiveQuests?.Count > 0)
+        if (ImGui.Button("Faction Reputation", new Vector2(ImGuiSizes.Fill, buttonHeight)))
         {
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Active Quests:");
-            ImGui.Spacing();
-
-            foreach (var quest in viewModel.QuestLog.ActiveQuests)
-            {
-                // Card height: title + description + progress bar (about 3.5 rows)
-                var questCardHeight = ImGui.GetFrameHeightWithSpacing() * 3.5f;
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.1f, 0.3f));
-                ImGui.BeginChild($"quest_{quest.RefName}", new Vector2(ImGuiSizes.Fill, questCardHeight), ImGuiChildFlags.Borders);
-
-                ImGui.TextColored(new Vector4(1, 1, 0, 1), quest.DisplayName ?? quest.RefName);
-                if (!string.IsNullOrEmpty(quest.Description))
-                {
-                    ImGui.TextWrapped(quest.Description);
-                }
-
-                // Progress bar
-                var progress = (float)quest.ProgressPercentage / 100f;
-                ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), quest.ProgressText);
-
-                // Make the card clickable
-                ImGui.SetCursorPos(new Vector2(0, 0));
-                ImGui.InvisibleButton($"quest_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, questCardHeight - ImGui.GetStyle().WindowPadding.Y * 2));
-
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-                }
-
-                if (ImGui.IsItemClicked() && _modalManager != null)
-                {
-                    // Open quest detail modal
-                    _modalManager.OpenQuestDetail(quest.RefName);
-                }
-
-                ImGui.EndChild();
-                ImGui.PopStyleColor();
-                ImGui.Spacing();
-            }
+            modalManager.OpenFactionReputation();
         }
-        else
-        {
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "No active quests");
-        }
-
-        // Completed Quests
-        if (_showCompletedQuests && viewModel.QuestLog.CompletedQuests?.Count > 0)
-        {
-            ImGui.Spacing();
-            ImGui.Separator();
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Completed Quests:");
-            ImGui.Spacing();
-
-            foreach (var quest in viewModel.QuestLog.CompletedQuests)
-            {
-                // Completed card height: title + description (about 2.5 rows)
-                var completedCardHeight = ImGui.GetFrameHeightWithSpacing() * 2.5f;
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.0f, 0.2f, 0.0f, 0.2f));
-                ImGui.BeginChild($"quest_completed_{quest.RefName}", new Vector2(ImGuiSizes.Fill, completedCardHeight), ImGuiChildFlags.Borders);
-
-                ImGui.Text($"[x] {quest.DisplayName ?? quest.RefName}");
-                if (!string.IsNullOrEmpty(quest.Description))
-                {
-                    ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), quest.Description);
-                }
-
-                // Make the card clickable
-                ImGui.SetCursorPos(new Vector2(0, 0));
-                ImGui.InvisibleButton($"quest_completed_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, completedCardHeight - ImGui.GetStyle().WindowPadding.Y * 2));
-
-                if (ImGui.IsItemHovered())
-                {
-                    ImGui.SetMouseCursor(ImGuiMouseCursor.Hand);
-                }
-
-                if (ImGui.IsItemClicked() && _modalManager != null)
-                {
-                    // Open quest detail modal
-                    _modalManager.OpenQuestDetail(quest.RefName);
-                }
-
-                ImGui.EndChild();
-                ImGui.PopStyleColor();
-                ImGui.Spacing();
-            }
-        }
-
-        ImGui.EndChild();
-    }
-
-    private void RenderAchievementsTab(MainViewModel viewModel)
-    {
-        ImGui.BeginChild("AchievementsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
-
-        if (viewModel.Achievements == null)
-        {
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "No achievements available");
-            ImGui.EndChild();
-            return;
-        }
-
-        // Completion stats
-        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Achievements");
-        ImGui.SameLine();
-        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"({viewModel.Achievements.CompletionText})");
-
-        ImGui.Spacing();
-
-        // Show Locked toggle
-        ImGui.Checkbox("Show Locked", ref _showLockedAchievements);
-        ImGui.Spacing();
-
-        // Unlocked Achievements
-        if (viewModel.Achievements.UnlockedAchievements?.Count > 0)
-        {
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Unlocked:");
-            ImGui.Spacing();
-
-            foreach (var achievement in viewModel.Achievements.UnlockedAchievements)
-            {
-                // Unlocked achievement card: icon/title + description + status (about 3 rows)
-                var unlockedCardHeight = ImGui.GetFrameHeightWithSpacing() * 3;
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.0f, 0.2f, 0.0f, 0.2f));
-                ImGui.BeginChild($"ach_unlocked_{achievement.RefName}", new Vector2(ImGuiSizes.Fill, unlockedCardHeight), ImGuiChildFlags.Borders);
-
-                ImGui.Text($"🏆 {achievement.DisplayName ?? achievement.RefName}");
-                if (!string.IsNullOrEmpty(achievement.Description))
-                {
-                    ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), achievement.Description);
-                }
-                if (!string.IsNullOrEmpty(achievement.StatusText))
-                {
-                    ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1), achievement.StatusText);
-                }
-
-                ImGui.EndChild();
-                ImGui.PopStyleColor();
-                ImGui.Spacing();
-            }
-        }
-        else
-        {
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "No achievements unlocked yet");
-        }
-
-        // Locked Achievements
-        if (_showLockedAchievements && viewModel.Achievements.LockedAchievements?.Count > 0)
-        {
-            ImGui.Spacing();
-            ImGui.Separator();
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "Locked:");
-            ImGui.Spacing();
-
-            foreach (var achievement in viewModel.Achievements.LockedAchievements)
-            {
-                // Locked achievement card: title + description + criteria + progress (about 4 rows)
-                var lockedCardHeight = ImGui.GetFrameHeightWithSpacing() * 4;
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.1f, 0.2f));
-                ImGui.BeginChild($"ach_locked_{achievement.RefName}", new Vector2(ImGuiSizes.Fill, lockedCardHeight), ImGuiChildFlags.Borders);
-
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"[Locked] {achievement.DisplayName ?? achievement.RefName}");
-                if (!string.IsNullOrEmpty(achievement.Description))
-                {
-                    ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), achievement.Description);
-                }
-                if (!string.IsNullOrEmpty(achievement.CriteriaText))
-                {
-                    ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), achievement.CriteriaText);
-                }
-
-                // Progress bar
-                var progress = (float)achievement.ProgressPercentage / 100f;
-                ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight() * 0.7f), achievement.ProgressText);
-
-                ImGui.EndChild();
-                ImGui.PopStyleColor();
-                ImGui.Spacing();
-            }
-        }
-
-        ImGui.EndChild();
     }
 
     private void RenderStatLine(string label, string value)
