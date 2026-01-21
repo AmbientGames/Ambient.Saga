@@ -34,7 +34,7 @@ public class DefaultHudRenderer : IHudRenderer
 
         if (ImGui.Begin("##HudBar", windowFlags))
         {
-            // Left side: Hotkey hints
+            // Left side: Gameplay hotkey hints
             // Only show Map hint if world has a height map (procedural/generated worlds don't)
             if (viewModel.HeightMapImage != null)
             {
@@ -47,20 +47,7 @@ public class DefaultHudRenderer : IHudRenderer
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
             ImGui.SameLine();
-            RenderHotkeyHint("I", "World Info", activePanel == ActivePanel.WorldInfo);
-            ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
-            ImGui.SameLine();
             RenderHotkeyHint("J", "Journal", activePanel == ActivePanel.Journal);
-
-            // Dev Tools hint (only when debugger attached)
-            if (Debugger.IsAttached)
-            {
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
-                ImGui.SameLine();
-                RenderHotkeyHint("Ins", "Dev Tools", activePanel == ActivePanel.DevTools, isDevTool: true);
-            }
 
             // Center: Status message
             if (!string.IsNullOrEmpty(viewModel.StatusMessage))
@@ -69,9 +56,50 @@ public class DefaultHudRenderer : IHudRenderer
                 ImGui.Text(viewModel.StatusMessage);
             }
 
-            // Right side: Avatar position (if available)
-            if (viewModel.HasAvatarPosition)
+            // Right side: Developer tools (F1=World Info, F12=Dev Tools) and position
+            // Only shown when debugger is attached
+            if (Debugger.IsAttached)
             {
+                // Calculate right-side content width for positioning
+                var devToolsStartX = displaySize.X - 20; // Start from right edge
+
+                // Avatar position (rightmost)
+                if (viewModel.HasAvatarPosition)
+                {
+                    var posText = $"({viewModel.AvatarLatitude:F2}, {viewModel.AvatarLongitude:F2})";
+                    var posWidth = ImGui.CalcTextSize(posText).X;
+                    devToolsStartX -= posWidth + 20;
+                }
+
+                // Dev Tools (F12)
+                var f12Width = CalcHotkeyHintWidth("F12", "Dev Tools");
+                devToolsStartX -= f12Width + 20;
+
+                // World Info (F1)
+                var f1Width = CalcHotkeyHintWidth("F1", "World Info");
+                devToolsStartX -= f1Width + 10;
+
+                // Render developer keys at calculated position
+                ImGui.SameLine(devToolsStartX);
+                RenderHotkeyHint("F1", "World Info", activePanel == ActivePanel.WorldInfo, isDevelopment: true);
+                ImGui.SameLine();
+                ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
+                ImGui.SameLine();
+                RenderHotkeyHint("F12", "Dev Tools", activePanel == ActivePanel.DevTools, isDevelopment: true);
+
+                // Avatar position (rightmost)
+                if (viewModel.HasAvatarPosition)
+                {
+                    ImGui.SameLine();
+                    ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
+                    ImGui.SameLine();
+                    var posText = $"({viewModel.AvatarLatitude:F2}, {viewModel.AvatarLongitude:F2})";
+                    ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1), posText);
+                }
+            }
+            else if (viewModel.HasAvatarPosition)
+            {
+                // No dev tools - just show avatar position on the right
                 var posText = $"({viewModel.AvatarLatitude:F2}, {viewModel.AvatarLongitude:F2})";
                 var textWidth = ImGui.CalcTextSize(posText).X;
                 ImGui.SameLine(displaySize.X - textWidth - 20);
@@ -89,13 +117,25 @@ public class DefaultHudRenderer : IHudRenderer
         ImGui.PopStyleColor();
     }
 
-    private void RenderHotkeyHint(string key, string label, bool isActive, bool isDevTool = false)
+    /// <summary>
+    /// Calculate the width of a hotkey hint (key button + label) for layout purposes.
+    /// </summary>
+    private float CalcHotkeyHintWidth(string key, string label)
     {
-        // Key box - dev tools get orange styling
+        var style = ImGui.GetStyle();
+        var keySize = ImGui.CalcTextSize(key);
+        var labelSize = ImGui.CalcTextSize(label);
+        var buttonWidth = keySize.X + style.FramePadding.X * 2;
+        return buttonWidth + style.ItemSpacing.X + labelSize.X;
+    }
+
+    private void RenderHotkeyHint(string key, string label, bool isActive, bool isDevelopment = false)
+    {
+        // Key box - development keys (F1, F12) get orange styling
         Vector4 keyColor;
         Vector4 textColor;
 
-        if (isDevTool)
+        if (isDevelopment)
         {
             keyColor = isActive
                 ? new Vector4(0.8f, 0.5f, 0.2f, 1f)  // Orange when active
