@@ -53,35 +53,27 @@ public class DefaultHudRenderer : IHudRenderer
             ImGui.SameLine();
             RenderHotkeyHint("J", "Journal", activePanel == ActivePanel.Journal);
 
-            // Center: Status message
+            // Center: Status messages (primary status + loading indicator)
+            var centerX = displaySize.X / 2 - 100;
             if (!string.IsNullOrEmpty(viewModel.StatusMessage))
             {
-                ImGui.SameLine(displaySize.X / 2 - 100);
+                ImGui.SameLine(centerX);
                 ImGui.Text(viewModel.StatusMessage);
             }
+            else if (viewModel.IsLoading)
+            {
+                ImGui.SameLine(centerX);
+                ImGui.TextColored(new Vector4(1, 1, 0, 1), "Loading...");
+            }
 
-            // Right side: Developer tools (F1=World Info, F12=Dev Tools) and position
+            // Right side: Developer tools (F1=World Info, F12=Dev Tools)
             // Only shown when debugger is attached
             if (Debugger.IsAttached)
             {
                 // Calculate right-side content width for positioning
-                var devToolsStartX = displaySize.X - 20; // Start from right edge
-
-                // Avatar position (rightmost)
-                if (viewModel.HasAvatarPosition)
-                {
-                    var posText = $"({viewModel.AvatarLatitude:F2}, {viewModel.AvatarLongitude:F2})";
-                    var posWidth = ImGui.CalcTextSize(posText).X;
-                    devToolsStartX -= posWidth + 20;
-                }
-
-                // Dev Tools (F12)
                 var f12Width = CalcHotkeyHintWidth("F12", "Dev Tools");
-                devToolsStartX -= f12Width + 20;
-
-                // World Info (F1)
                 var f1Width = CalcHotkeyHintWidth("F1", "World Info");
-                devToolsStartX -= f1Width + 10;
+                var devToolsStartX = displaySize.X - f12Width - f1Width - 40;
 
                 // Render developer keys at calculated position
                 ImGui.SameLine(devToolsStartX);
@@ -90,30 +82,6 @@ public class DefaultHudRenderer : IHudRenderer
                 ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
                 ImGui.SameLine();
                 RenderHotkeyHint("F12", "Dev Tools", activePanel == ActivePanel.DevTools, isDevelopment: true);
-
-                // Avatar position (rightmost)
-                if (viewModel.HasAvatarPosition)
-                {
-                    ImGui.SameLine();
-                    ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
-                    ImGui.SameLine();
-                    var posText = $"({viewModel.AvatarLatitude:F2}, {viewModel.AvatarLongitude:F2})";
-                    ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1), posText);
-                }
-            }
-            else if (viewModel.HasAvatarPosition)
-            {
-                // No dev tools - just show avatar position on the right
-                var posText = $"({viewModel.AvatarLatitude:F2}, {viewModel.AvatarLongitude:F2})";
-                var textWidth = ImGui.CalcTextSize(posText).X;
-                ImGui.SameLine(displaySize.X - textWidth - 20);
-                ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1), posText);
-            }
-
-            if (viewModel.IsLoading)
-            {
-                ImGui.SameLine();
-                ImGui.TextColored(new Vector4(1, 1, 0, 1), "Loading...");
             }
         }
         ImGui.End();
