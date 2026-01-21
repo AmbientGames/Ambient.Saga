@@ -20,13 +20,15 @@ public enum ActivePanel
     None,
     /// <summary>Map panel (press M) - shows world map with click-to-teleport</summary>
     Map,
-    /// <summary>Character panel (press C) - shows avatar stats, inventory, quests</summary>
+    /// <summary>Character panel (press C) - shows avatar stats, affinities, party</summary>
     Character,
-    /// <summary>World Info panel (press I) - shows world catalog</summary>
-    WorldInfo,
+    /// <summary>Inventory panel (press I) - shows equipment, items, spells</summary>
+    Inventory,
     /// <summary>Journal panel (press J) - RPG journal with quests, bestiary, world info</summary>
     Journal,
-    /// <summary>Dev Tools panel (press Insert) - only available when debugger attached</summary>
+    /// <summary>World Info panel (press F1) - shows world catalog (debugger only)</summary>
+    WorldInfo,
+    /// <summary>Dev Tools panel (press F12) - only available when debugger attached</summary>
     DevTools
 }
 
@@ -34,19 +36,21 @@ public enum ActivePanel
 /// GAME-REUSABLE: Main ImGui gameplay overlay for the 3D world.
 //>
 /// This component displays the tactical world view including:
-/// - Toggle-based panel system (M=Map, C=Character, I=World Info)
+/// - Toggle-based panel system (M=Map, C=Character, I=Inventory, J=Journal)
 /// - Status bar with hotkey hints
 /// - All interactive modals (Dialogue, Battle, Trade, Loot, Quest, etc.)
 ///
 /// EXTENSIBILITY:
 /// The overlay now supports custom input handling and HUD rendering through:
-/// - IInputHandler: Customize keyboard/mouse controls (default: M/C/I/ESC)
+/// - IInputHandler: Customize keyboard/mouse controls (default: M/C/I/J/ESC)
 /// - IHudRenderer: Customize the always-visible HUD bar (default: bottom bar with hotkeys)
 ///
 /// KEYBOARD CONTROLS (Default):
 /// - M: Toggle Map panel (quarter-screen map with click-to-teleport)
-/// - C: Toggle Character panel (avatar stats, inventory, quests, achievements)
-/// - I: Toggle World Info panel (world catalog, debug info)
+/// - C: Toggle Character panel (avatar stats, affinities, party)
+/// - I: Toggle Inventory panel (equipment, items, spells)
+/// - J: Toggle Journal panel (quests, bestiary, achievements)
+/// - F1/F12: Developer tools (debugger only)
 /// - ESC: Close current panel
 ///
 /// ARCHITECTURE:
@@ -79,6 +83,7 @@ public class GameplayOverlay
     private readonly WorldInfoPanel _worldInfoPanel;
     private readonly MapViewPanel _mapViewPanel;
     private readonly AvatarActionsPanel _avatarActionsPanel;
+    private readonly InventoryPanel _inventoryPanel;
     private readonly DevToolsPanel _devToolsPanel;
     private readonly JournalPanel _journalPanel;
 
@@ -142,6 +147,7 @@ public class GameplayOverlay
         _worldInfoPanel = new WorldInfoPanel();
         _mapViewPanel = new MapViewPanel();
         _avatarActionsPanel = new AvatarActionsPanel();
+        _inventoryPanel = new InventoryPanel();
         _devToolsPanel = new DevToolsPanel();
         _journalPanel = new JournalPanel();
     }
@@ -202,6 +208,9 @@ public class GameplayOverlay
                 break;
             case ActivePanel.Character:
                 RenderCharacterPanel(viewModel);
+                break;
+            case ActivePanel.Inventory:
+                RenderInventoryPanel(viewModel);
                 break;
             case ActivePanel.WorldInfo:
                 RenderWorldInfoPanel(viewModel);
@@ -301,6 +310,44 @@ public class GameplayOverlay
     }
 
     /// <summary>
+    /// Render the Inventory panel (top-left, full height).
+    /// </summary>
+    private void RenderInventoryPanel(MainViewModel viewModel)
+    {
+        var io = ImGui.GetIO();
+        var displaySize = io.DisplaySize;
+        var scale = UIConstants.DpiScale;
+
+        // Calculate HUD height dynamically (same as DefaultHudRenderer)
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
+
+        // Panel top-left, full height
+        var margin = 10f * scale;
+        var panelWidth = 350f * scale;
+        var panelHeight = displaySize.Y - hudHeight - (margin * 2); // Leave room for HUD bar + margins
+        var panelX = margin;
+        var panelY = margin;
+
+        ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
+        ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
+
+        var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
+
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+
+        if (ImGui.Begin("Inventory [I]", windowFlags))
+        {
+            _inventoryPanel.Render(viewModel);
+        }
+        ImGui.End();
+
+        ImGui.PopStyleColor();
+    }
+
+    /// <summary>
     /// Render the World Info panel (top-left, full height).
     /// </summary>
     private void RenderWorldInfoPanel(MainViewModel viewModel)
@@ -329,7 +376,7 @@ public class GameplayOverlay
 
         ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
 
-        if (ImGui.Begin("World Info [I]", windowFlags))
+        if (ImGui.Begin("World Info [F1]", windowFlags))
         {
             _worldInfoPanel.Render(viewModel);
         }
@@ -376,7 +423,7 @@ public class GameplayOverlay
         // Dev tools has a distinct orange-tinted background
         ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.12f, 0.08f, 0.06f, 0.95f));
 
-        if (ImGui.Begin("Dev Tools [Ins]", windowFlags))
+        if (ImGui.Begin("Dev Tools [F12]", windowFlags))
         {
             _devToolsPanel.Render(viewModel, _modalManager);
         }

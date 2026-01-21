@@ -4,12 +4,13 @@ using ImGuiNET;
 namespace Ambient.Saga.UI.Components.Input;
 
 /// <summary>
-/// Default input handler for GameplayOverlay using M/C/J/F1/F12/ESC keys.
+/// Default input handler for GameplayOverlay using M/C/I/J/F1/F12/ESC keys.
 /// This is the standard keyboard mapping but can be replaced with custom implementations.
 ///
 /// Key Bindings:
 /// - M: Toggle Map panel
 /// - C: Toggle Character panel
+/// - I: Toggle Inventory panel
 /// - J: Toggle Journal panel
 /// - F1: Toggle World Info panel (debugger only)
 /// - F12: Toggle Dev Tools panel (debugger only)
@@ -29,6 +30,7 @@ public class DefaultInputHandler : IInputHandler
     // Track key states to detect press (not hold)
     private bool _mKeyWasPressed = false;
     private bool _cKeyWasPressed = false;
+    private bool _iKeyWasPressed = false;
     private bool _jKeyWasPressed = false;
     private bool _f1KeyWasPressed = false;
     private bool _f12KeyWasPressed = false;
@@ -80,6 +82,14 @@ public class DefaultInputHandler : IInputHandler
             context.TogglePanelAction(ActivePanel.Character);
         }
         _cKeyWasPressed = cKeyDown;
+
+        // I key - Inventory
+        bool iKeyDown = ImGui.IsKeyDown(ImGuiKey.I);
+        if (iKeyDown && !_iKeyWasPressed)
+        {
+            context.TogglePanelAction(ActivePanel.Inventory);
+        }
+        _iKeyWasPressed = iKeyDown;
 
         // J key - Journal
         bool jKeyDown = ImGui.IsKeyDown(ImGuiKey.J);

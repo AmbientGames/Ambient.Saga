@@ -47,6 +47,10 @@ public class DefaultHudRenderer : IHudRenderer
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
             ImGui.SameLine();
+            RenderHotkeyHint("I", "Inventory", activePanel == ActivePanel.Inventory);
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.4f, 0.4f, 0.4f, 1), "|");
+            ImGui.SameLine();
             RenderHotkeyHint("J", "Journal", activePanel == ActivePanel.Journal);
 
             // Center: Status message
