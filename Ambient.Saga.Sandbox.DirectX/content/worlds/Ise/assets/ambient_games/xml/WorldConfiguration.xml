@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorldConfiguration
-    xmlns="Ambient.Core.Domain"
+    xmlns="Ambient.Domain"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="Ambient.Domain ../../../../../../../Ambient.Domain/Content/Schemas/WorldDefinition.xsd"
     RefName="Ise"
     DisplayName="Ise, Japan"
     Description="Ise: Japan's Sacred City - High school field trip"
@@ -9,15 +10,10 @@
     Namespace="ambient_games"
     SpawnLatitude="34.492"
     SpawnLongitude="136.702"
-    ChunkHeight="256"
-    Seed="0.5739283232"
-    BlockScaleFactor="1.0"
-    Gravity="20.0"
-    ShortNightsAndWinter="true"
     DisplayOrder="4">
-    <HeightMapSettings
+	<HeightMapSettings
         FileName="Ise.tif"
-        HorizontalScale=".333333"
-        VerticalScale=".333333"
+        HorizontalScale="1.0"
+        VerticalScale="1.0"
         VerticalShift="0" />
 </WorldConfiguration>
