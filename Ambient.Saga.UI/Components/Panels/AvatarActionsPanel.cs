@@ -48,14 +48,19 @@ public class AvatarActionsPanel
 
             ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Stats:");
 
+            // Resources
             RenderStatLine("Health:", vitals.Health.ToString());
+            RenderStatLine("Stamina:", vitals.Stamina.ToString());
+            RenderStatLine("Mana:", vitals.Mana.ToString());
+            // State
+            RenderStatLine("Temperature:", $"{vitals.Temperature:F1}C");
+            // Attributes
             RenderStatLine("Strength:", vitals.Strength.ToString());
             RenderStatLine("Defense:", vitals.Defense.ToString());
-            RenderStatLine("Speed:", vitals.Speed.ToString());
             RenderStatLine("Magic:", vitals.Magic.ToString());
-            RenderStatLine("Temperature:", $"{vitals.Temperature:F1}C");
-            RenderStatLine("Hunger:", vitals.Hunger.ToString());
-            RenderStatLine("Thirst:", vitals.Thirst.ToString());
+            RenderStatLine("Speed:", vitals.Speed.ToString());
+            RenderStatLine("Endurance:", vitals.Endurance.ToString());
+            // Progression
             RenderStatLine($"{pluralCurrency}:", $"{vitals.Credits:N0}");
 
             // Archetype info with bias
@@ -90,7 +95,7 @@ public class AvatarActionsPanel
                     {
                         var bias = archetype.ArchetypeBias;
                         var hasBias = bias.Strength != 0 || bias.Defense != 0 || bias.Speed != 0 || bias.Magic != 0 ||
-                                      bias.Health != 1 || bias.Stamina != 1 || bias.Mana != 1 || bias.Insulation != 0;
+                                      bias.Health != 1 || bias.Stamina != 1 || bias.Mana != 1 || bias.Endurance != 0;
 
                         if (hasBias)
                         {
@@ -101,10 +106,10 @@ public class AvatarActionsPanel
                             if (bias.Defense != 0) RenderBiasLine("Defense", bias.Defense);
                             if (bias.Speed != 0) RenderBiasLine("Speed", bias.Speed);
                             if (bias.Magic != 0) RenderBiasLine("Magic", bias.Magic);
+                            if (bias.Endurance != 0) RenderBiasLine("Endurance", bias.Endurance);
                             if (bias.Health != 1) RenderBiasLine("Health", bias.Health - 1);
                             if (bias.Stamina != 1) RenderBiasLine("Stamina", bias.Stamina - 1);
                             if (bias.Mana != 1) RenderBiasLine("Mana", bias.Mana - 1);
-                            if (bias.Insulation != 0) RenderBiasLine("Insulation", bias.Insulation);
                         }
                     }
                 }

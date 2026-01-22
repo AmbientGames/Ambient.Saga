@@ -3,7 +3,7 @@
     <xs:include schemaLocation="DegradableAcquirable.xsd" />
     <xs:include schemaLocation="../Usability.xsd" />
     <xs:include schemaLocation="../LoadoutSlots.xsd" />
-    <xs:include schemaLocation="CharacterEffects.xsd" />
+    <xs:include schemaLocation="Attributes.xsd" />
     <xs:simpleType name="EquipmentRef">
         <xs:restriction base="xs:string">
             <xs:minLength value="1" />
@@ -13,9 +13,9 @@
         <xs:complexContent>
             <xs:extension base="DegradableAcquirable">
                 <xs:sequence>
-                    <xs:element name="Effects" type="CharacterEffects" />
+                    <xs:element name="Effects" type="Attributes" />
                     <!-- Minimum stats required to equip this item -->
-                    <xs:element name="MinimumStats" type="CharacterEffects" minOccurs="0" />
+                    <xs:element name="MinimumStats" type="Attributes" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="SlotRef" type="LoadoutSlotRef" use="required" />
                 <!-- Equipment category (what class of item this is) -->

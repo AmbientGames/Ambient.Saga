@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../EntityBase.xsd" />
     <xs:include schemaLocation="../Usability.xsd" />
-    <xs:include schemaLocation="../Acquirables/CharacterEffects.xsd" />
+    <xs:include schemaLocation="../Acquirables/Attributes.xsd" />
 
     <!--
     Combat Tell/Reaction System
@@ -66,7 +66,7 @@
         <xs:sequence>
             <!-- Stat effects applied on this defense (uses standard StatBlock pattern) -->
             <!-- Example: <Effects Stamina="0.1"/> grants 10% stamina for skilled defense -->
-            <xs:element name="Effects" type="CharacterEffects" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Effects" type="Attributes" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
         <xs:attribute name="Reaction" type="DefenseReactionType" use="required" />
         <!-- Damage multiplier (0.0 = no damage, 1.0 = full damage, 0.5 = half) -->

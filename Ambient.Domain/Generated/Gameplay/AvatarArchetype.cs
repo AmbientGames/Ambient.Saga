@@ -22,7 +22,7 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class AvatarArchetype : EntityBase {
         
-        private CharacterEffects archetypeBiasField;
+        private Attributes archetypeBiasField;
         
         private CharacterStats spawnStatsField;
         
@@ -35,7 +35,7 @@ namespace Ambient.Domain {
         private string affinityRefField;
         
         /// <remarks/>
-        public CharacterEffects ArchetypeBias {
+        public Attributes ArchetypeBias {
             get {
                 return this.archetypeBiasField;
             }

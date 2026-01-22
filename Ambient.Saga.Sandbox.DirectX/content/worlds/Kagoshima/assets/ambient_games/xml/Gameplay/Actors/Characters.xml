@@ -863,40 +863,38 @@
       <Trait Name="WillTrade" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="BOSS_Tsurumarujō" DisplayName="Guardian of Tsurumaru-jō" Description="Guardian of Tsurumaru-jō stands as the ultimate challenge at Tsurumaru-jō, their resolute nature apparent to all." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;]}">
+  <Character RefName="BOSS_Tsurumarujō" DisplayName="Guardian of Tsurumaru-jō" Description="Guardian of Tsurumaru-jō stands as the ultimate challenge at Tsurumaru-jō, their vigilant nature apparent to all." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;]}">
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="TowerShield" Condition="1.0" />
-        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
-        <Entry EquipmentRef="Harp" Condition="1.0" />
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
-        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
-        <Entry EquipmentRef="IronShield" Condition="1.0" />
-        <Entry EquipmentRef="Zweihander" Condition="1.0" />
+        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="SteelSword" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
+        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
+        <Entry ConsumableRef="HolyWaterBomb" Quantity="1" />
+        <Entry ConsumableRef="HastePotion" Quantity="3" />
         <Entry ConsumableRef="ScrollOfIcebolt" Quantity="3" />
-        <Entry ConsumableRef="ManaGem" Quantity="1" />
-        <Entry ConsumableRef="FrostResistPotion" Quantity="2" />
-        <Entry ConsumableRef="SmellingSalts" Quantity="3" />
+        <Entry ConsumableRef="DarkEssence" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BattleCry" Condition="1.0" />
-        <Entry SpellRef="CrushingBlow" Condition="1.0" />
+        <Entry SpellRef="Charge" Condition="1.0" />
+        <Entry SpellRef="WarCry" Condition="1.0" />
         <Entry SpellRef="Taunt" Condition="1.0" />
-        <Entry SpellRef="Whirlwind" Condition="1.0" />
-        <Entry SpellRef="ShieldBash" Condition="1.0" />
-        <Entry SpellRef="PerfectStrike" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="ChainShirt" Condition="1.0" />
+          <Entry EquipmentRef="BattleAxe" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="ScrollOfHealing" Quantity="2" />
+          <Entry ConsumableRef="GreaterHealingPotion" Quantity="1" />
         </Consumables>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_Tsurumarujō</DialogueTreeRef>
@@ -916,37 +914,39 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke1Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a mysterious trader offering goods at Tsurumaru-jō Spoke 1 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke1Ring1" DisplayName="Traveling Merchant" Description="A seasoned vendor named Traveling Merchant sells wares at Tsurumaru-jō Spoke 1 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
+        <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Javelin" Quantity="1" />
-        <Entry ConsumableRef="Apple" Quantity="2" />
+        <Entry ConsumableRef="PoisonVial" Quantity="1" />
+        <Entry ConsumableRef="DivineBlessing" Quantity="1" />
+        <Entry ConsumableRef="FlashBomb" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+        <Entry SpellRef="SoothingSong" Condition="1.0" />
+        <Entry SpellRef="SongOfCourage" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="MageGloves" Condition="1.0" />
-          <Entry EquipmentRef="WizardRobes" Condition="1.0" />
-          <Entry EquipmentRef="Zweihander" Condition="1.0" />
-          <Entry EquipmentRef="Claymore" Condition="1.0" />
+          <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
+          <Entry EquipmentRef="VoidWand" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="PoisonVial" Quantity="7" />
-          <Entry ConsumableRef="WeakeningPoison" Quantity="7" />
-          <Entry ConsumableRef="LightningResistPotion" Quantity="5" />
+          <Entry ConsumableRef="ElixirOfArcana" Quantity="7" />
+          <Entry ConsumableRef="Cheese" Quantity="5" />
+          <Entry ConsumableRef="FrostBomb" Quantity="6" />
+          <Entry ConsumableRef="Water" Quantity="5" />
+          <Entry ConsumableRef="LightningResistPotion" Quantity="3" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="ToxicCloud" Condition="1.0" />
-          <Entry SpellRef="BattleCry" Condition="1.0" />
-          <Entry SpellRef="Earthquake" Condition="1.0" />
+          <Entry SpellRef="Exhaust" Condition="1.0" />
+          <Entry SpellRef="SummonPhoenix" Condition="1.0" />
+          <Entry SpellRef="StoneSpike" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke1Ring1</DialogueTreeRef>
@@ -954,26 +954,25 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke1Ring2" DisplayName="Trail Hazard" Description="At Tsurumaru-jō Spoke 1 Ring 2, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujōSpoke1Ring2" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Tsurumaru-jō Spoke 1 Ring 2 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
+        <Entry EquipmentRef="Greatsword" Condition="1.0" />
+        <Entry EquipmentRef="WarriorBelt" Condition="1.0" />
         <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="IronShield" Condition="1.0" />
-        <Entry EquipmentRef="Maul" Condition="1.0" />
-        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
+        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfTeleport" Quantity="1" />
-        <Entry ConsumableRef="DriedMeat" Quantity="3" />
-        <Entry ConsumableRef="LightningResistPotion" Quantity="3" />
+        <Entry ConsumableRef="Ale" Quantity="1" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ScentOfBlood" Condition="1.0" />
-        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
+        <Entry SpellRef="NaturalRemedy" Condition="1.0" />
+        <Entry SpellRef="WildRegeneration" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -991,36 +990,38 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke1Ring3" DisplayName="Traveling Merchant" Description="A determined vendor named Traveling Merchant sells wares at Tsurumaru-jō Spoke 1 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;IsoteienSpoke5Ring4&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke1Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Tsurumaru-jō Spoke 1 Ring 3, known for being seasoned in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;IsoteienSpoke5Ring4&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="KiteShield" Condition="1.0" />
-        <Entry EquipmentRef="ElderRobes" Condition="1.0" />
+        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
+        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Water" Quantity="2" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="ScrollOfIcebolt" Quantity="4" />
+        <Entry ConsumableRef="HerbalTea" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Agility" Condition="1.0" />
-        <Entry SpellRef="Wisdom" Condition="1.0" />
+        <Entry SpellRef="Heroism" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="WizardHat" Condition="1.0" />
-          <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-          <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
-          <Entry EquipmentRef="ShadowLeather" Condition="1.0" />
+          <Entry EquipmentRef="MageBelt" Condition="1.0" />
+          <Entry EquipmentRef="ArchmageRobes" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="ThrowingKnife" Quantity="5" />
-          <Entry ConsumableRef="RangerTrailMix" Quantity="3" />
-          <Entry ConsumableRef="GreaterStaminaPotion" Quantity="6" />
+          <Entry ConsumableRef="FireResistPotion" Quantity="4" />
+          <Entry ConsumableRef="ManaGem" Quantity="6" />
+          <Entry ConsumableRef="EnduranceElixir" Quantity="4" />
+          <Entry ConsumableRef="GreaterManaPotion" Quantity="7" />
+          <Entry ConsumableRef="ElementalEssence" Quantity="4" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+          <Entry SpellRef="LightningBolt" Condition="1.0" />
+          <Entry SpellRef="Fireball" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke1Ring3</DialogueTreeRef>
@@ -1028,7 +1029,7 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
   <Character RefName="HOSTILE_TsurumarujōSpoke1Ring4" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Tsurumaru-jō Spoke 1 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
@@ -1036,18 +1037,19 @@
     <Capabilities>
       <Equipment>
         <Entry EquipmentRef="MageBelt" Condition="1.0" />
-        <Entry EquipmentRef="ScaleMail" Condition="1.0" />
-        <Entry EquipmentRef="AssassinsBlade" Condition="1.0" />
-        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
+        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Mead" Quantity="4" />
-        <Entry ConsumableRef="HerbalTea" Quantity="2" />
-        <Entry ConsumableRef="SmellingSalts" Quantity="4" />
+        <Entry ConsumableRef="Javelin" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfLightning" Quantity="3" />
+        <Entry ConsumableRef="RestorationPotion" Quantity="1" />
+        <Entry ConsumableRef="Water" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SmokeBomb" Condition="1.0" />
         <Entry SpellRef="Ambush" Condition="1.0" />
+        <Entry SpellRef="Backstab" Condition="1.0" />
+        <Entry SpellRef="ShadowStep" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1065,23 +1067,22 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke1Ring5" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Tsurumaru-jō Spoke 1 Ring 5." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;IsoteienSpoke5Ring4&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujōSpoke1Ring5" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Tsurumaru-jō Spoke 1 Ring 5 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;IsoteienSpoke5Ring4&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
-        <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
-        <Entry EquipmentRef="GoldRing" Condition="1.0" />
-        <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCord" Condition="1.0" />
+        <Entry EquipmentRef="Stiletto" Condition="1.0" />
+        <Entry EquipmentRef="Zweihander" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HealingPotion" Quantity="4" />
-        <Entry ConsumableRef="DivineBlessing" Quantity="1" />
+        <Entry ConsumableRef="Cheese" Quantity="2" />
+        <Entry ConsumableRef="ThrowingAxe" Quantity="2" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="PredatorsInstinct" Condition="1.0" />
-        <Entry SpellRef="NaturesGrasp" Condition="1.0" />
         <Entry SpellRef="NaturalRemedy" Condition="1.0" />
+        <Entry SpellRef="HuntersMark" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1099,37 +1100,37 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke2Ring1" DisplayName="Traveling Merchant" Description="The seasoned merchant Traveling Merchant has set up shop at Tsurumaru-jō Spoke 2 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke2Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Tsurumaru-jō Spoke 2 Ring 1, known for being resolute in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
+        <Entry EquipmentRef="Harp" Condition="1.0" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Antidote" Quantity="1" />
-        <Entry ConsumableRef="Juice" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="1" />
+        <Entry ConsumableRef="Bandage" Quantity="3" />
+        <Entry ConsumableRef="GiantStrengthPotion" Quantity="3" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="Ambush" Condition="1.0" />
         <Entry SpellRef="Backstab" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="Zweihander" Condition="1.0" />
-          <Entry EquipmentRef="SummonerOrb" Condition="1.0" />
+          <Entry EquipmentRef="Halberd" Condition="1.0" />
+          <Entry EquipmentRef="RingOfSorcery" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="ScrollOfHaste" Quantity="3" />
-          <Entry ConsumableRef="FrostResistPotion" Quantity="6" />
-          <Entry ConsumableRef="ThrowingKnife" Quantity="4" />
-          <Entry ConsumableRef="Berries" Quantity="7" />
-          <Entry ConsumableRef="EnduranceElixir" Quantity="3" />
+          <Entry ConsumableRef="HolyWaterBomb" Quantity="6" />
+          <Entry ConsumableRef="ThrowingStar" Quantity="7" />
+          <Entry ConsumableRef="IronskinPotion" Quantity="4" />
+          <Entry ConsumableRef="MinorStaminaPotion" Quantity="7" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Heal" Condition="1.0" />
-          <Entry SpellRef="Ambush" Condition="1.0" />
-          <Entry SpellRef="Blessing" Condition="1.0" />
+          <Entry SpellRef="LightningBolt" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke2Ring1</DialogueTreeRef>
@@ -1140,22 +1141,22 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke2Ring2" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Tsurumaru-jō Spoke 2 Ring 2 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujōSpoke2Ring2" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jō Spoke 2 Ring 2." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
+        <Entry EquipmentRef="ClothPants" Condition="1.0" />
+        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
         <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-        <Entry EquipmentRef="DragonTooth" Condition="1.0" />
-        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
-        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HolyWaterBomb" Quantity="2" />
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="4" />
+        <Entry ConsumableRef="Bandage" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="RecklessAssault" Condition="1.0" />
         <Entry SpellRef="PrimalRoar" Condition="1.0" />
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1173,44 +1174,42 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke2Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jō Spoke 2 Ring 3, known for their weathered temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke2Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Tsurumaru-jō Spoke 2 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke2Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke2Ring4" DisplayName="Traveling Merchant" Description="The stoic merchant Traveling Merchant has set up shop at Tsurumaru-jō Spoke 2 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;,&quot;Tsurumaruj\u014DSpoke2Ring5&quot;,&quot;Tsurumaruj\u014DSpoke2Ring3&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke2Ring4" DisplayName="Traveling Merchant" Description="The vigilant merchant Traveling Merchant has set up shop at Tsurumaru-jō Spoke 2 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;,&quot;Tsurumaruj\u014DSpoke2Ring5&quot;,&quot;Tsurumaruj\u014DSpoke2Ring3&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="WoodenClub" Condition="1.0" />
+        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="2" />
-        <Entry ConsumableRef="SuperiorManaPotion" Quantity="4" />
+        <Entry ConsumableRef="HealingPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Agility" Condition="1.0" />
+        <Entry SpellRef="Heroism" Condition="1.0" />
+        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
-          <Entry EquipmentRef="RangerBoots" Condition="1.0" />
-          <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
+          <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
+          <Entry EquipmentRef="IronShield" Condition="1.0" />
+          <Entry EquipmentRef="SilverRing" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="Bandage" Quantity="5" />
-          <Entry ConsumableRef="Milk" Quantity="6" />
-          <Entry ConsumableRef="StrengthElixir" Quantity="6" />
-          <Entry ConsumableRef="IronskinPotion" Quantity="5" />
-          <Entry ConsumableRef="CurativePotion" Quantity="7" />
+          <Entry ConsumableRef="SmellingSalts" Quantity="5" />
+          <Entry ConsumableRef="ScrollOfHealing" Quantity="7" />
+          <Entry ConsumableRef="ScrollOfResurrection" Quantity="4" />
+          <Entry ConsumableRef="CookedMeat" Quantity="3" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Sanctuary" Condition="1.0" />
-          <Entry SpellRef="CorrosiveTouch" Condition="1.0" />
+          <Entry SpellRef="Distraction" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke2Ring4</DialogueTreeRef>
@@ -1218,49 +1217,47 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke2Ring5" DisplayName="Fellow Traveler" Description="A stoic local named Fellow Traveler can be found at Tsurumaru-jō Spoke 2 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke4Ring2&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke2Ring4&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke2Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Tsurumaru-jō Spoke 2 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke4Ring2&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke2Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke2Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke3Ring1" DisplayName="Traveling Merchant" Description="At Tsurumaru-jō Spoke 3 Ring 1, Traveling Merchant offers merchandise with a determined approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014DSpoke2Ring1&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke3Ring1" DisplayName="Traveling Merchant" Description="The vigilant merchant Traveling Merchant has set up shop at Tsurumaru-jō Spoke 3 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014DSpoke2Ring1&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
-        <Entry EquipmentRef="WoodenFlute" Condition="1.0" />
+        <Entry EquipmentRef="CrystalBall" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SmokeBomb" Quantity="1" />
-        <Entry ConsumableRef="ScrollOfResurrection" Quantity="3" />
-        <Entry ConsumableRef="SuperiorManaPotion" Quantity="1" />
+        <Entry ConsumableRef="Panacea" Quantity="4" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="HymnOfValor" Condition="1.0" />
+        <Entry SpellRef="Heroism" Condition="1.0" />
+        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="RuneSword" Condition="1.0" />
-          <Entry EquipmentRef="VoidWand" Condition="1.0" />
-          <Entry EquipmentRef="ClothTunic" Condition="1.0" />
+          <Entry EquipmentRef="Dagger" Condition="1.0" />
+          <Entry EquipmentRef="RangerLeather" Condition="1.0" />
+          <Entry EquipmentRef="FireStaff" Condition="1.0" />
+          <Entry EquipmentRef="IronShield" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="MinorHealingPotion" Quantity="6" />
-          <Entry ConsumableRef="FireBomb" Quantity="13" />
-          <Entry ConsumableRef="HealingPotion" Quantity="5" />
-          <Entry ConsumableRef="FrostBomb" Quantity="6" />
+          <Entry ConsumableRef="CookedMeat" Quantity="3" />
+          <Entry ConsumableRef="Pie" Quantity="5" />
+          <Entry ConsumableRef="ScrollOfLightning" Quantity="3" />
+          <Entry ConsumableRef="GiantStrengthPotion" Quantity="4" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Bloodlust" Condition="1.0" />
-          <Entry SpellRef="InspiringVerse" Condition="1.0" />
-          <Entry SpellRef="Heroism" Condition="1.0" />
+          <Entry SpellRef="WarStomp" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke3Ring1</DialogueTreeRef>
@@ -1271,35 +1268,36 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke3Ring2" DisplayName="Fellow Traveler" Description="At Tsurumaru-jō Spoke 3 Ring 2, Fellow Traveler goes about their day with vigilant demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke3Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Tsurumaru-jō Spoke 3 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke3Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke3Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jō Spoke 3 Ring 3, known for their seasoned temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring4&quot;,&quot;Tsurumaruj\u014DSpoke3Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke3Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jō Spoke 3 Ring 3, known for their stoic temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring4&quot;,&quot;Tsurumaruj\u014DSpoke3Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke3Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke3Ring4" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jō Spoke 3 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujōSpoke3Ring4" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Tsurumaru-jō Spoke 3 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="OakWand" Condition="1.0" />
-        <Entry EquipmentRef="Halberd" Condition="1.0" />
-        <Entry EquipmentRef="Stiletto" Condition="1.0" />
-        <Entry EquipmentRef="KiteShield" Condition="1.0" />
+        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
+        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
+        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GiantStrengthPotion" Quantity="1" />
-        <Entry ConsumableRef="PoisonedDart" Quantity="4" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="4" />
+        <Entry ConsumableRef="GiantStrengthPotion" Quantity="2" />
+        <Entry ConsumableRef="SmellingSalts" Quantity="3" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
         <Entry SpellRef="Bloodlust" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -1318,34 +1316,35 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke3Ring5" DisplayName="Traveling Merchant" Description="The enigmatic merchant Traveling Merchant has set up shop at Tsurumaru-jō Spoke 3 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke3Ring5" DisplayName="Traveling Merchant" Description="Traveling Merchant, a stoic trader offering goods at Tsurumaru-jō Spoke 3 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
+        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
-        <Entry ConsumableRef="ElementalEssence" Quantity="3" />
+        <Entry ConsumableRef="MinorStaminaPotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="Ambush" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-          <Entry EquipmentRef="HolyMitre" Condition="1.0" />
+          <Entry EquipmentRef="ShadowLeather" Condition="1.0" />
+          <Entry EquipmentRef="HolyShield" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="DivineBlessing" Quantity="3" />
-          <Entry ConsumableRef="SorceryPotion" Quantity="4" />
-          <Entry ConsumableRef="MinorManaPotion" Quantity="4" />
+          <Entry ConsumableRef="PoisonResistPotion" Quantity="4" />
+          <Entry ConsumableRef="FrostResistPotion" Quantity="4" />
+          <Entry ConsumableRef="SmellingSalts" Quantity="6" />
+          <Entry ConsumableRef="ThrowingRock" Quantity="7" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="ConjureFlames" Condition="1.0" />
-          <Entry SpellRef="SmokeBomb" Condition="1.0" />
+          <Entry SpellRef="HolyArmor" Condition="1.0" />
+          <Entry SpellRef="Hallucination" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke3Ring5</DialogueTreeRef>
@@ -1356,34 +1355,37 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring1" DisplayName="Traveling Merchant" Description="A weathered vendor named Traveling Merchant sells wares at Tsurumaru-jō Spoke 4 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring1" DisplayName="Traveling Merchant" Description="The stoic merchant Traveling Merchant has set up shop at Tsurumaru-jō Spoke 4 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
+        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
+        <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfProtection" Quantity="5" />
-        <Entry ConsumableRef="MinorStaminaPotion" Quantity="1" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="2" />
+        <Entry ConsumableRef="SorceryPotion" Quantity="3" />
+        <Entry ConsumableRef="ThrowingKnife" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ShadowStrike" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
+        <Entry SpellRef="SmokeBomb" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
-          <Entry EquipmentRef="TowerShield" Condition="1.0" />
+          <Entry EquipmentRef="CrystalWand" Condition="1.0" />
+          <Entry EquipmentRef="RangerCloak" Condition="1.0" />
+          <Entry EquipmentRef="Buckler" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="FireBomb" Quantity="6" />
-          <Entry ConsumableRef="ScrollOfHealing" Quantity="7" />
-          <Entry ConsumableRef="SoulShard" Quantity="5" />
-          <Entry ConsumableRef="ThrowingKnife" Quantity="7" />
+          <Entry ConsumableRef="SmokeBomb" Quantity="3" />
+          <Entry ConsumableRef="ThrowingAxe" Quantity="4" />
+          <Entry ConsumableRef="HealingPotion" Quantity="4" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Smite" Condition="1.0" />
+          <Entry SpellRef="Curse" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring1</DialogueTreeRef>
@@ -1391,27 +1393,27 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke4Ring2" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jō Spoke 4 Ring 2." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujōSpoke4Ring2" DisplayName="Trail Hazard" Description="At Tsurumaru-jō Spoke 4 Ring 2, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Lute" Condition="1.0" />
-        <Entry EquipmentRef="IronSword" Condition="1.0" />
-        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
+        <Entry EquipmentRef="Longbow" Condition="1.0" />
+        <Entry EquipmentRef="Spear" Condition="1.0" />
+        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+        <Entry EquipmentRef="ClothCap" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Antidote" Quantity="1" />
-        <Entry ConsumableRef="HealingSalve" Quantity="3" />
-        <Entry ConsumableRef="RangerTrailMix" Quantity="4" />
-        <Entry ConsumableRef="ElixirOfArcana" Quantity="1" />
+        <Entry ConsumableRef="FlashBomb" Quantity="2" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfResurrection" Quantity="1" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
-        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
+        <Entry SpellRef="Bloodlust" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1429,36 +1431,38 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Tsurumaru-jō Spoke 4 Ring 3, known for being resolute in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring2&quot;,&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant, a mysterious trader offering goods at Tsurumaru-jō Spoke 4 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring2&quot;,&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HandAxe" Condition="1.0" />
-        <Entry EquipmentRef="SilverPendant" Condition="1.0" />
+        <Entry EquipmentRef="WizardHat" Condition="1.0" />
+        <Entry EquipmentRef="CompositeBow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Apple" Quantity="3" />
+        <Entry ConsumableRef="HealingSalve" Quantity="3" />
+        <Entry ConsumableRef="PoisonVial" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CloakOfNight" Condition="1.0" />
-        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
+        <Entry SpellRef="ShadowMeld" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="TowerShield" Condition="1.0" />
-          <Entry EquipmentRef="ShortBow" Condition="1.0" />
+          <Entry EquipmentRef="VoidWand" Condition="1.0" />
+          <Entry EquipmentRef="IronShield" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="Antidote" Quantity="4" />
-          <Entry ConsumableRef="Water" Quantity="3" />
-          <Entry ConsumableRef="PoisonVial" Quantity="7" />
-          <Entry ConsumableRef="RangerTrailMix" Quantity="5" />
+          <Entry ConsumableRef="Apple" Quantity="6" />
+          <Entry ConsumableRef="SmellingSalts" Quantity="6" />
+          <Entry ConsumableRef="SmokeBomb" Quantity="6" />
+          <Entry ConsumableRef="HerbBundle" Quantity="5" />
+          <Entry ConsumableRef="DivineBlessing" Quantity="4" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="TimeWarp" Condition="1.0" />
-          <Entry SpellRef="BattleCry" Condition="1.0" />
+          <Entry SpellRef="ConjureArmor" Condition="1.0" />
+          <Entry SpellRef="ConjureFlames" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring3</DialogueTreeRef>
@@ -1466,42 +1470,40 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring4" DisplayName="Traveling Merchant" Description="At Tsurumaru-jō Spoke 4 Ring 4, Traveling Merchant offers merchandise with a resolute approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;Tsurumaruj\u014DSpoke4Ring3&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring4" DisplayName="Traveling Merchant" Description="A vigilant vendor named Traveling Merchant sells wares at Tsurumaru-jō Spoke 4 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;Tsurumaruj\u014DSpoke4Ring3&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
-        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
+        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="WisdomElixir" Quantity="3" />
-        <Entry ConsumableRef="DragonBlood" Quantity="1" />
+        <Entry ConsumableRef="FireResistPotion" Quantity="1" />
+        <Entry ConsumableRef="DarkEssence" Quantity="3" />
+        <Entry ConsumableRef="ElementalEssence" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Backstab" Condition="1.0" />
-        <Entry SpellRef="Ambush" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="CrystalBall" Condition="1.0" />
-          <Entry EquipmentRef="CompositeBow" Condition="1.0" />
-          <Entry EquipmentRef="Maul" Condition="1.0" />
+          <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+          <Entry EquipmentRef="HighPriestRobes" Condition="1.0" />
+          <Entry EquipmentRef="Brigandine" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="FireBomb" Quantity="4" />
-          <Entry ConsumableRef="Bread" Quantity="5" />
-          <Entry ConsumableRef="ScrollOfHealing" Quantity="6" />
-          <Entry ConsumableRef="FrostResistPotion" Quantity="7" />
+          <Entry ConsumableRef="FlashBomb" Quantity="7" />
+          <Entry ConsumableRef="FireResistPotion" Quantity="7" />
+          <Entry ConsumableRef="MonkRice" Quantity="7" />
+          <Entry ConsumableRef="WarriorRation" Quantity="5" />
+          <Entry ConsumableRef="ThrowingKnife" Quantity="7" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="CloakOfNight" Condition="1.0" />
-          <Entry SpellRef="Shatter" Condition="1.0" />
-          <Entry SpellRef="Banish" Condition="1.0" />
+          <Entry SpellRef="CallOfTheWild" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring4</DialogueTreeRef>
@@ -1512,28 +1514,29 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke4Ring5" DisplayName="Fellow Traveler" Description="At Tsurumaru-jō Spoke 4 Ring 5, Fellow Traveler goes about their day with vigilant demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring5&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke4Ring5" DisplayName="Fellow Traveler" Description="A enigmatic local named Fellow Traveler can be found at Tsurumaru-jō Spoke 4 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke4Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke5Ring1" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Tsurumaru-jō Spoke 5 Ring 1 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014Djinsha&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujōSpoke5Ring1" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Tsurumaru-jō Spoke 5 Ring 1." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014Djinsha&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HalfPlate" Condition="1.0" />
-        <Entry EquipmentRef="TinWhistle" Condition="1.0" />
-        <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
-        <Entry EquipmentRef="HerosCape" Condition="1.0" />
+        <Entry EquipmentRef="Harp" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
+        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="EnergyDrink" Quantity="2" />
-        <Entry ConsumableRef="StaminaPotion" Quantity="2" />
+        <Entry ConsumableRef="ParalyzingPoison" Quantity="2" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
+        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1558,35 +1561,37 @@
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke5Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke5Ring3" DisplayName="Traveling Merchant" Description="A resolute vendor named Traveling Merchant sells wares at Tsurumaru-jō Spoke 5 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring2&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke5Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant, a resolute trader offering goods at Tsurumaru-jō Spoke 5 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring2&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateGauntlets" Condition="1.0" />
-        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
+        <Entry EquipmentRef="EnchantedLute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="2" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
+        <Entry ConsumableRef="FireBomb" Quantity="2" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="InspiringVerse" Condition="1.0" />
-        <Entry SpellRef="Fortitude" Condition="1.0" />
+        <Entry SpellRef="SoothingSong" Condition="1.0" />
+        <Entry SpellRef="Lullaby" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="HandAxe" Condition="1.0" />
-          <Entry EquipmentRef="MageBelt" Condition="1.0" />
+          <Entry EquipmentRef="WoodenFlute" Condition="1.0" />
+          <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="Wine" Quantity="7" />
-          <Entry ConsumableRef="HealingPotion" Quantity="5" />
-          <Entry ConsumableRef="ThrowingKnife" Quantity="7" />
+          <Entry ConsumableRef="Wine" Quantity="4" />
+          <Entry ConsumableRef="WeakPoison" Quantity="4" />
+          <Entry ConsumableRef="EnergyDrink" Quantity="3" />
+          <Entry ConsumableRef="MedicKit" Quantity="6" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="ConjureFood" Condition="1.0" />
-          <Entry SpellRef="Whirlwind" Condition="1.0" />
+          <Entry SpellRef="PhaseWalk" Condition="1.0" />
+          <Entry SpellRef="PowerStrike" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke5Ring3</DialogueTreeRef>
@@ -1594,58 +1599,53 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke5Ring4" DisplayName="Fellow Traveler" Description="A determined local named Fellow Traveler can be found at Tsurumaru-jō Spoke 5 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring3&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke5Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jō Spoke 5 Ring 4, known for their seasoned temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <Loot>
-        <Consumables>
-          <Entry ConsumableRef="PoisonedDart" Quantity="2" />
-        </Consumables>
-      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke5Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke5Ring5" DisplayName="Fellow Traveler" Description="A determined local named Fellow Traveler can be found at Tsurumaru-jō Spoke 5 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke5Ring4&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke5Ring5" DisplayName="Fellow Traveler" Description="The vigilant Fellow Traveler calls Tsurumaru-jō Spoke 5 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke5Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke5Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke6Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a enigmatic trader offering goods at Tsurumaru-jō Spoke 6 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujōSpoke6Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Tsurumaru-jō Spoke 6 Ring 1, known for being stoic in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+        <Entry EquipmentRef="Lute" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DriedMeat" Quantity="4" />
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="2" />
-        <Entry ConsumableRef="SuperiorManaPotion" Quantity="1" />
+        <Entry ConsumableRef="WisdomElixir" Quantity="1" />
+        <Entry ConsumableRef="Wine" Quantity="2" />
+        <Entry ConsumableRef="DeadlyPoison" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fortitude" Condition="1.0" />
+        <Entry SpellRef="DiscordantNote" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="SteelHelm" Condition="1.0" />
-          <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
+          <Entry EquipmentRef="SilverRing" Condition="1.0" />
+          <Entry EquipmentRef="MageBelt" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="HealingPotion" Quantity="6" />
-          <Entry ConsumableRef="Water" Quantity="4" />
-          <Entry ConsumableRef="ScrollOfHaste" Quantity="6" />
+          <Entry ConsumableRef="SoulShard" Quantity="3" />
+          <Entry ConsumableRef="PoisonVial" Quantity="6" />
+          <Entry ConsumableRef="Bandage" Quantity="5" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Agility" Condition="1.0" />
-          <Entry SpellRef="Obliterate" Condition="1.0" />
-          <Entry SpellRef="PowerStrike" Condition="1.0" />
+          <Entry SpellRef="MagicBreak" Condition="1.0" />
+          <Entry SpellRef="Heroism" Condition="1.0" />
+          <Entry SpellRef="SongOfCourage" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke6Ring1</DialogueTreeRef>
@@ -1656,31 +1656,30 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke6Ring2" DisplayName="Fellow Traveler" Description="At Tsurumaru-jō Spoke 6 Ring 2, Fellow Traveler goes about their day with determined demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke6Ring1&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke6Ring2" DisplayName="Fellow Traveler" Description="A weathered local named Fellow Traveler can be found at Tsurumaru-jō Spoke 6 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke6Ring1&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke6Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke6Ring3" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Tsurumaru-jō Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring2&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujōSpoke6Ring3" DisplayName="Trail Hazard" Description="At Tsurumaru-jō Spoke 6 Ring 3, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring2&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
-        <Entry EquipmentRef="SteelShield" Condition="1.0" />
-        <Entry EquipmentRef="WoodenFlute" Condition="1.0" />
+        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
+        <Entry EquipmentRef="ClothPants" Condition="1.0" />
+        <Entry EquipmentRef="WarHammer" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="4" />
-        <Entry ConsumableRef="DefenseElixir" Quantity="4" />
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="ManaGem" Quantity="3" />
+        <Entry ConsumableRef="RestorationPotion" Quantity="2" />
+        <Entry ConsumableRef="CookedMeat" Quantity="1" />
+        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="SwiftnessPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="Bloodlust" Condition="1.0" />
+        <Entry SpellRef="WarStomp" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1702,17 +1701,17 @@
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
-        <Entry EquipmentRef="LightCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="Halberd" Condition="1.0" />
+        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HealingPotion" Quantity="2" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
+        <Entry ConsumableRef="PoisonVial" Quantity="4" />
+        <Entry ConsumableRef="ScrollOfHaste" Quantity="4" />
+        <Entry ConsumableRef="Ale" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Backstab" Condition="1.0" />
-        <Entry SpellRef="SilentStrike" Condition="1.0" />
+        <Entry SpellRef="SmokeBomb" Condition="1.0" />
+        <Entry SpellRef="ShadowMeld" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1730,41 +1729,43 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke6Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jō Spoke 6 Ring 5, known for their determined temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;]}">
+  <Character RefName="NPC_TsurumarujōSpoke6Ring5" DisplayName="Fellow Traveler" Description="A determined local named Fellow Traveler can be found at Tsurumaru-jō Spoke 6 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke6Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_Isoteien" DisplayName="Trader at Iso-teien" Description="At Iso-teien, Trader at Iso-teien offers merchandise with a resolute approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring1&quot;,&quot;IsoteienSpoke6Ring2&quot;,&quot;IsoteienSpoke6Ring3&quot;]}">
+  <Character RefName="MERCHANT_Isoteien" DisplayName="Trader at Iso-teien" Description="At Iso-teien, Trader at Iso-teien offers merchandise with a enigmatic approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring1&quot;,&quot;IsoteienSpoke6Ring2&quot;,&quot;IsoteienSpoke6Ring3&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
+        <Entry EquipmentRef="ChainCoif" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MonkRice" Quantity="1" />
+        <Entry ConsumableRef="ElixirOfArcana" Quantity="4" />
+        <Entry ConsumableRef="HerbalTea" Quantity="3" />
+        <Entry ConsumableRef="Pie" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SmokeBomb" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="PlateGauntlets" Condition="1.0" />
-          <Entry EquipmentRef="VoidWand" Condition="1.0" />
-          <Entry EquipmentRef="ChainGloves" Condition="1.0" />
+          <Entry EquipmentRef="Halberd" Condition="1.0" />
+          <Entry EquipmentRef="TinWhistle" Condition="1.0" />
+          <Entry EquipmentRef="MageCloak" Condition="1.0" />
+          <Entry EquipmentRef="Flamebrand" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="ScrollOfHealing" Quantity="7" />
-          <Entry ConsumableRef="DivineBlessing" Quantity="5" />
-          <Entry ConsumableRef="HolyWaterBomb" Quantity="5" />
-          <Entry ConsumableRef="SuperiorHealingPotion" Quantity="3" />
+          <Entry ConsumableRef="FrostResistPotion" Quantity="6" />
+          <Entry ConsumableRef="Pie" Quantity="6" />
+          <Entry ConsumableRef="Wine" Quantity="7" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="HealingAura" Condition="1.0" />
+          <Entry SpellRef="Obliterate" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_Isoteien</DialogueTreeRef>
@@ -1775,70 +1776,75 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke1Ring1" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 1 Ring 1, known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring1&quot;,&quot;IsoteienSpoke1Ring2&quot;,&quot;Isoteien&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke1Ring1" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 1 Ring 1, Fellow Traveler goes about their day with determined demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring1&quot;,&quot;IsoteienSpoke1Ring2&quot;,&quot;Isoteien&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke1Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke1Ring2" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 1 Ring 2, Fellow Traveler goes about their day with weathered demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring1&quot;,&quot;IsoteienSpoke1Ring3&quot;,&quot;IsoteienSpoke1Ring1&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke1Ring2" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 1 Ring 2, Fellow Traveler goes about their day with resolute demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring1&quot;,&quot;IsoteienSpoke1Ring3&quot;,&quot;IsoteienSpoke1Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke1Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke1Ring3" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 1 Ring 3, Fellow Traveler goes about their day with weathered demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke1Ring2&quot;,&quot;IsoteienSpoke1Ring4&quot;,&quot;IsoteienSpoke2Ring2&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke1Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 1 Ring 3, known for their weathered temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke1Ring2&quot;,&quot;IsoteienSpoke1Ring4&quot;,&quot;IsoteienSpoke2Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke1Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke1Ring4" DisplayName="Fellow Traveler" Description="A vigilant local named Fellow Traveler can be found at Iso-teien Spoke 1 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke1Ring3&quot;,&quot;IsoteienSpoke1Ring2&quot;,&quot;IsoteienSpoke2Ring3&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke1Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 1 Ring 4, known for their weathered temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke1Ring3&quot;,&quot;IsoteienSpoke1Ring2&quot;,&quot;IsoteienSpoke2Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <Loot>
+        <Equipment>
+          <Entry EquipmentRef="SteelHelm" Condition="1.0" />
+        </Equipment>
         <Consumables>
-          <Entry ConsumableRef="ScrollOfHealing" Quantity="1" />
+          <Entry ConsumableRef="IronskinPotion" Quantity="1" />
         </Consumables>
       </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke1Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_IsoteienSpoke1Ring5" DisplayName="Traveling Merchant" Description="A seasoned vendor named Traveling Merchant sells wares at Iso-teien Spoke 1 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring4&quot;,&quot;IsoteienSpoke6Ring5&quot;,&quot;IsoteienSpoke1Ring4&quot;]}">
+  <Character RefName="MERCHANT_IsoteienSpoke1Ring5" DisplayName="Traveling Merchant" Description="A stoic vendor named Traveling Merchant sells wares at Iso-teien Spoke 1 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring4&quot;,&quot;IsoteienSpoke6Ring5&quot;,&quot;IsoteienSpoke1Ring4&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HeavyCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="ElderRobes" Condition="1.0" />
+        <Entry EquipmentRef="BreastPlate" Condition="1.0" />
+        <Entry EquipmentRef="SteelSword" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="3" />
-        <Entry ConsumableRef="Ale" Quantity="2" />
+        <Entry ConsumableRef="FrostBomb" Quantity="4" />
+        <Entry ConsumableRef="Pie" Quantity="2" />
+        <Entry ConsumableRef="CurativePotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="MightyStrength" Condition="1.0" />
+        <Entry SpellRef="SongOfCourage" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="SpikedShield" Condition="1.0" />
-          <Entry EquipmentRef="DragonTooth" Condition="1.0" />
+          <Entry EquipmentRef="KiteShield" Condition="1.0" />
+          <Entry EquipmentRef="RangerHood" Condition="1.0" />
+          <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
+          <Entry EquipmentRef="MageBelt" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="Bandage" Quantity="4" />
-          <Entry ConsumableRef="IronskinPotion" Quantity="3" />
-          <Entry ConsumableRef="Cheese" Quantity="7" />
-          <Entry ConsumableRef="FireBomb" Quantity="3" />
-          <Entry ConsumableRef="Bread" Quantity="4" />
+          <Entry ConsumableRef="DefenseElixir" Quantity="7" />
+          <Entry ConsumableRef="Water" Quantity="6" />
+          <Entry ConsumableRef="WeakeningPoison" Quantity="5" />
+          <Entry ConsumableRef="MonkRice" Quantity="7" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="PhantasmalForce" Condition="1.0" />
-          <Entry SpellRef="Charge" Condition="1.0" />
+          <Entry SpellRef="CloakOfNight" Condition="1.0" />
+          <Entry SpellRef="Shield" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_IsoteienSpoke1Ring5</DialogueTreeRef>
@@ -1846,36 +1852,39 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke2Ring1" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 2 Ring 1, Fellow Traveler goes about their day with stoic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke1Ring1&quot;,&quot;IsoteienSpoke1Ring2&quot;,&quot;IsoteienSpoke3Ring1&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke2Ring1" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Iso-teien Spoke 2 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke1Ring1&quot;,&quot;IsoteienSpoke1Ring2&quot;,&quot;IsoteienSpoke3Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke2Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke2Ring2" DisplayName="Fellow Traveler" Description="A determined local named Fellow Traveler can be found at Iso-teien Spoke 2 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke1Ring2&quot;,&quot;IsoteienSpoke2Ring3&quot;,&quot;IsoteienSpoke2Ring1&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke2Ring2" DisplayName="Fellow Traveler" Description="A enigmatic local named Fellow Traveler can be found at Iso-teien Spoke 2 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke1Ring2&quot;,&quot;IsoteienSpoke2Ring3&quot;,&quot;IsoteienSpoke2Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke2Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_IsoteienSpoke2Ring3" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Iso-teien Spoke 2 Ring 3 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring4&quot;,&quot;IsoteienSpoke2Ring2&quot;,&quot;IsoteienSpoke1Ring3&quot;]}">
+  <Character RefName="HOSTILE_IsoteienSpoke2Ring3" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Iso-teien Spoke 2 Ring 3." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring4&quot;,&quot;IsoteienSpoke2Ring2&quot;,&quot;IsoteienSpoke1Ring3&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
-        <Entry EquipmentRef="Harp" Condition="1.0" />
-        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
+        <Entry EquipmentRef="SteelSword" Condition="1.0" />
+        <Entry EquipmentRef="StuddedLeather" Condition="1.0" />
+        <Entry EquipmentRef="RopeBelt" Condition="1.0" />
+        <Entry EquipmentRef="BattleAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HerbBundle" Quantity="2" />
-        <Entry ConsumableRef="LightningResistPotion" Quantity="1" />
+        <Entry ConsumableRef="ScrollOfFireball" Quantity="4" />
+        <Entry ConsumableRef="ScrollOfHaste" Quantity="2" />
+        <Entry ConsumableRef="RestorationPotion" Quantity="1" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
         <Entry SpellRef="Obliterate" Condition="1.0" />
         <Entry SpellRef="Disintegrate" Condition="1.0" />
       </Spells>
@@ -1895,37 +1904,42 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_IsoteienSpoke2Ring3" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke2Ring4" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 2 Ring 4, Fellow Traveler goes about their day with mysterious demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring5&quot;,&quot;IsoteienSpoke2Ring3&quot;,&quot;IsoteienSpoke2Ring2&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke2Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler, a stoic resident of Iso-teien Spoke 2 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring5&quot;,&quot;IsoteienSpoke2Ring3&quot;,&quot;IsoteienSpoke2Ring2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke2Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke2Ring5" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 2 Ring 5, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring4&quot;,&quot;IsoteienSpoke2Ring3&quot;,&quot;IsoteienSpoke1Ring4&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke2Ring5" DisplayName="Fellow Traveler" Description="The seasoned Fellow Traveler calls Iso-teien Spoke 2 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring4&quot;,&quot;IsoteienSpoke2Ring3&quot;,&quot;IsoteienSpoke1Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="ShadowBoots" Condition="1.0" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="DeadlyPoison" Quantity="2" />
+        </Consumables>
+      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke2Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_IsoteienSpoke3Ring1" DisplayName="Trail Hazard" Description="At Iso-teien Spoke 3 Ring 1, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring1&quot;,&quot;IsoteienSpoke3Ring2&quot;,&quot;Isoteien&quot;]}">
+  <Character RefName="HOSTILE_IsoteienSpoke3Ring1" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Iso-teien Spoke 3 Ring 1." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke2Ring1&quot;,&quot;IsoteienSpoke3Ring2&quot;,&quot;Isoteien&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="GoldRing" Condition="1.0" />
-        <Entry EquipmentRef="HeavyCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="Glaive" Condition="1.0" />
-        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+        <Entry EquipmentRef="Claymore" Condition="1.0" />
+        <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
+        <Entry EquipmentRef="MageLeggings" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonedDart" Quantity="3" />
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="2" />
-        <Entry ConsumableRef="ManaPotion" Quantity="3" />
+        <Entry ConsumableRef="ThrowingAxe" Quantity="5" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="PrimalRoar" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="IgnorePain" Condition="1.0" />
         <Entry SpellRef="Bloodlust" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -1944,37 +1958,37 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_IsoteienSpoke3Ring1" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke3Ring2" DisplayName="Fellow Traveler" Description="The enigmatic Fellow Traveler calls Iso-teien Spoke 3 Ring 2 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke3Ring3&quot;,&quot;IsoteienSpoke3Ring1&quot;,&quot;IsoteienSpoke2Ring1&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke3Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 3 Ring 2, known for their stoic temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke3Ring3&quot;,&quot;IsoteienSpoke3Ring1&quot;,&quot;IsoteienSpoke2Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke3Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke3Ring3" DisplayName="Fellow Traveler" Description="The resolute Fellow Traveler calls Iso-teien Spoke 3 Ring 3 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke3Ring4&quot;,&quot;IsoteienSpoke3Ring2&quot;,&quot;IsoteienSpoke3Ring5&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke3Ring3" DisplayName="Fellow Traveler" Description="A determined local named Fellow Traveler can be found at Iso-teien Spoke 3 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke3Ring4&quot;,&quot;IsoteienSpoke3Ring2&quot;,&quot;IsoteienSpoke3Ring5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke3Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_IsoteienSpoke3Ring4" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Iso-teien Spoke 3 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke3Ring5&quot;,&quot;IsoteienSpoke3Ring3&quot;,&quot;IsoteienSpoke3Ring2&quot;]}">
+  <Character RefName="HOSTILE_IsoteienSpoke3Ring4" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Iso-teien Spoke 3 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke3Ring5&quot;,&quot;IsoteienSpoke3Ring3&quot;,&quot;IsoteienSpoke3Ring2&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
-        <Entry EquipmentRef="Stiletto" Condition="1.0" />
-        <Entry EquipmentRef="Knife" Condition="1.0" />
+        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
+        <Entry EquipmentRef="ArchmageRobes" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfResurrection" Quantity="3" />
-        <Entry ConsumableRef="IronskinPotion" Quantity="1" />
-        <Entry ConsumableRef="SwiftnessPotion" Quantity="2" />
-        <Entry ConsumableRef="ScrollOfHealing" Quantity="2" />
+        <Entry ConsumableRef="WarriorRation" Quantity="1" />
+        <Entry ConsumableRef="HolyWaterBomb" Quantity="4" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="MinorHealingPotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
-        <Entry SpellRef="Obliterate" Condition="1.0" />
+        <Entry SpellRef="Disintegrate" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -1992,45 +2006,53 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_IsoteienSpoke3Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke3Ring5" DisplayName="Fellow Traveler" Description="The weathered Fellow Traveler calls Iso-teien Spoke 3 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke3Ring4&quot;,&quot;IsoteienSpoke3Ring3&quot;,&quot;IsoteienSpoke3Ring2&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke3Ring5" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 3 Ring 5, Fellow Traveler goes about their day with seasoned demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke3Ring4&quot;,&quot;IsoteienSpoke3Ring3&quot;,&quot;IsoteienSpoke3Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="WeakPoison" Quantity="1" />
+        </Consumables>
+      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke3Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke4Ring1" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 4 Ring 1, Fellow Traveler goes about their day with mysterious demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_0&quot;,&quot;IsoteienSpoke5Ring1&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke4Ring1" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 4 Ring 1, known for their vigilant temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_0&quot;,&quot;IsoteienSpoke5Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke4Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke4Ring2" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 4 Ring 2, Fellow Traveler goes about their day with mysterious demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring5&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;IsoteienSpoke4Ring1&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke4Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a seasoned resident of Iso-teien Spoke 4 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring5&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;IsoteienSpoke4Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke4Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke4Ring3" DisplayName="Fellow Traveler" Description="The vigilant Fellow Traveler calls Iso-teien Spoke 4 Ring 3 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring5&quot;,&quot;IsoteienSpoke4Ring2&quot;,&quot;IsoteienSpoke4Ring4&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke4Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 4 Ring 3, known for their seasoned temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring5&quot;,&quot;IsoteienSpoke4Ring2&quot;,&quot;IsoteienSpoke4Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke4Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_IsoteienSpoke4Ring4" DisplayName="Traveling Merchant" Description="A vigilant vendor named Traveling Merchant sells wares at Iso-teien Spoke 4 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke4Ring5&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
+  <Character RefName="MERCHANT_IsoteienSpoke4Ring4" DisplayName="Traveling Merchant" Description="The weathered merchant Traveling Merchant has set up shop at Iso-teien Spoke 4 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke4Ring5&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
+        <Entry EquipmentRef="GoldRing" Condition="1.0" />
         <Entry EquipmentRef="ScholarsRobe" Condition="1.0" />
-        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ParalyzingPoison" Quantity="4" />
-        <Entry ConsumableRef="SmellingSalts" Quantity="3" />
-        <Entry ConsumableRef="HerbBundle" Quantity="4" />
+        <Entry ConsumableRef="WarriorRation" Quantity="4" />
+        <Entry ConsumableRef="DefenseElixir" Quantity="1" />
+        <Entry ConsumableRef="MonkRice" Quantity="4" />
       </Consumables>
       <Spells>
         <Entry SpellRef="Wisdom" Condition="1.0" />
@@ -2039,18 +2061,16 @@
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="RangerHood" Condition="1.0" />
-          <Entry EquipmentRef="VoidWand" Condition="1.0" />
-          <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
-          <Entry EquipmentRef="WoodenClub" Condition="1.0" />
+          <Entry EquipmentRef="IronMace" Condition="1.0" />
+          <Entry EquipmentRef="Brigandine" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="FlashBomb" Quantity="5" />
-          <Entry ConsumableRef="ScrollOfTeleport" Quantity="5" />
-          <Entry ConsumableRef="ThrowingStar" Quantity="6" />
+          <Entry ConsumableRef="CurativePotion" Quantity="4" />
+          <Entry ConsumableRef="HerbBundle" Quantity="3" />
+          <Entry ConsumableRef="ScrollOfFireball" Quantity="3" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="SummonGolem" Condition="1.0" />
+          <Entry SpellRef="SpellSteal" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_IsoteienSpoke4Ring4</DialogueTreeRef>
@@ -2061,35 +2081,38 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_IsoteienSpoke4Ring5" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Iso-teien Spoke 4 Ring 5, known for being mysterious in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke4Ring4&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
+  <Character RefName="MERCHANT_IsoteienSpoke4Ring5" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Iso-teien Spoke 4 Ring 5, known for being stoic in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke4Ring4&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ClothPants" Condition="1.0" />
+        <Entry EquipmentRef="IronShield" Condition="1.0" />
+        <Entry EquipmentRef="Harp" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="WeakeningPoison" Quantity="2" />
+        <Entry ConsumableRef="Mead" Quantity="2" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SilentStrike" Condition="1.0" />
-        <Entry SpellRef="ShadowStrike" Condition="1.0" />
+        <Entry SpellRef="ShadowMeld" Condition="1.0" />
+        <Entry SpellRef="Vanish" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="MageSlippers" Condition="1.0" />
-          <Entry EquipmentRef="SummonerOrb" Condition="1.0" />
-          <Entry EquipmentRef="TravelCloak" Condition="1.0" />
-          <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
+          <Entry EquipmentRef="SilverRing" Condition="1.0" />
+          <Entry EquipmentRef="ChainCoif" Condition="1.0" />
+          <Entry EquipmentRef="PlateBoots" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="MedicKit" Quantity="12" />
-          <Entry ConsumableRef="WeakeningPoison" Quantity="6" />
-          <Entry ConsumableRef="GreaterManaPotion" Quantity="5" />
+          <Entry ConsumableRef="Mead" Quantity="3" />
+          <Entry ConsumableRef="Cheese" Quantity="4" />
+          <Entry ConsumableRef="GiantStrengthPotion" Quantity="5" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
+          <Entry SpellRef="Disarm" Condition="1.0" />
+          <Entry SpellRef="ShadowMeld" Condition="1.0" />
+          <Entry SpellRef="SummonBeast" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_IsoteienSpoke4Ring5</DialogueTreeRef>
@@ -2097,66 +2120,59 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke5Ring1" DisplayName="Fellow Traveler" Description="Fellow Traveler, a enigmatic resident of Iso-teien Spoke 5 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_0&quot;,&quot;IsoteienSpoke6Ring3&quot;,&quot;IsoteienSpoke6Ring2&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke5Ring1" DisplayName="Fellow Traveler" Description="A vigilant local named Fellow Traveler can be found at Iso-teien Spoke 5 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_0&quot;,&quot;IsoteienSpoke6Ring3&quot;,&quot;IsoteienSpoke6Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <Loot>
-        <Consumables>
-          <Entry ConsumableRef="ScrollOfStrength" Quantity="2" />
-        </Consumables>
-      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke5Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke5Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a enigmatic resident of Iso-teien Spoke 5 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_1&quot;,&quot;IsoteienSpoke5Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke5Ring2" DisplayName="Fellow Traveler" Description="A mysterious local named Fellow Traveler can be found at Iso-teien Spoke 5 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_1&quot;,&quot;IsoteienSpoke5Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke5Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke5Ring3" DisplayName="Fellow Traveler" Description="The mysterious Fellow Traveler calls Iso-teien Spoke 5 Ring 3 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke5Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 5 Ring 3, known for their weathered temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke5Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_IsoteienSpoke5Ring4" DisplayName="Traveling Merchant" Description="At Iso-teien Spoke 5 Ring 4, Traveling Merchant offers merchandise with a weathered approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
+  <Character RefName="MERCHANT_IsoteienSpoke5Ring4" DisplayName="Traveling Merchant" Description="The mysterious merchant Traveling Merchant has set up shop at Iso-teien Spoke 5 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
-        <Entry EquipmentRef="OakStaff" Condition="1.0" />
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
+        <Entry EquipmentRef="GoldRing" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Apple" Quantity="3" />
-        <Entry ConsumableRef="MedicKit" Quantity="1" />
+        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="3" />
+        <Entry ConsumableRef="ElixirOfArcana" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="SymphonyOfPower" Condition="1.0" />
-        <Entry SpellRef="Heroism" Condition="1.0" />
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="ChainCoif" Condition="1.0" />
-          <Entry EquipmentRef="DragonShield" Condition="1.0" />
+          <Entry EquipmentRef="Dagger" Condition="1.0" />
+          <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="MagesBiscuit" Quantity="6" />
-          <Entry ConsumableRef="FeastPlatter" Quantity="6" />
-          <Entry ConsumableRef="SmokeBomb" Quantity="6" />
-          <Entry ConsumableRef="ThrowingAxe" Quantity="6" />
+          <Entry ConsumableRef="FireBomb" Quantity="4" />
+          <Entry ConsumableRef="PoisonResistPotion" Quantity="4" />
+          <Entry ConsumableRef="SmokeBomb" Quantity="4" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Dominate" Condition="1.0" />
-          <Entry SpellRef="Disguise" Condition="1.0" />
+          <Entry SpellRef="AbsorbMagic" Condition="1.0" />
+          <Entry SpellRef="SummonDemon" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_IsoteienSpoke5Ring4</DialogueTreeRef>
@@ -2164,61 +2180,63 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="20" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke5Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 5 Ring 5, known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke5Ring5" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 5 Ring 5, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke5Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke6Ring1" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 6 Ring 1, known for their seasoned temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring2&quot;,&quot;Isoteien&quot;,&quot;IsoteienSpoke6Ring3&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke6Ring1" DisplayName="Fellow Traveler" Description="A vigilant local named Fellow Traveler can be found at Iso-teien Spoke 6 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring2&quot;,&quot;Isoteien&quot;,&quot;IsoteienSpoke6Ring3&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke6Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke6Ring2" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 6 Ring 2, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring1&quot;,&quot;IsoteienSpoke6Ring3&quot;,&quot;Isoteien&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke6Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Iso-teien Spoke 6 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring1&quot;,&quot;IsoteienSpoke6Ring3&quot;,&quot;Isoteien&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke6Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_IsoteienSpoke6Ring3" DisplayName="Traveling Merchant" Description="A seasoned vendor named Traveling Merchant sells wares at Iso-teien Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring2&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_0&quot;,&quot;IsoteienSpoke6Ring1&quot;]}">
+  <Character RefName="MERCHANT_IsoteienSpoke6Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant, a mysterious trader offering goods at Iso-teien Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring2&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_0&quot;,&quot;IsoteienSpoke6Ring1&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="EnchantedLute" Condition="1.0" />
+        <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
+        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HolyWaterBomb" Quantity="3" />
-        <Entry ConsumableRef="CurativePotion" Quantity="1" />
+        <Entry ConsumableRef="GreaterManaPotion" Quantity="4" />
+        <Entry ConsumableRef="Wine" Quantity="4" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
         <Entry SpellRef="SongOfCourage" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="WizardHat" Condition="1.0" />
-          <Entry EquipmentRef="HerosCape" Condition="1.0" />
+          <Entry EquipmentRef="RingOfSorcery" Condition="1.0" />
+          <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+          <Entry EquipmentRef="ScaleMail" Condition="1.0" />
+          <Entry EquipmentRef="Knife" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="HolyWaterBomb" Quantity="4" />
-          <Entry ConsumableRef="ManaPotion" Quantity="3" />
-          <Entry ConsumableRef="SmellingSalts" Quantity="5" />
-          <Entry ConsumableRef="MonkRice" Quantity="6" />
-          <Entry ConsumableRef="DarkEssence" Quantity="6" />
+          <Entry ConsumableRef="HerbBundle" Quantity="7" />
+          <Entry ConsumableRef="ScrollOfResurrection" Quantity="4" />
+          <Entry ConsumableRef="ElementalEssence" Quantity="4" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="CurePoison" Condition="1.0" />
-          <Entry SpellRef="SummonSpirit" Condition="1.0" />
-          <Entry SpellRef="Distraction" Condition="1.0" />
+          <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+          <Entry SpellRef="Backstab" Condition="1.0" />
+          <Entry SpellRef="Swiftness" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_IsoteienSpoke6Ring3</DialogueTreeRef>
@@ -2229,35 +2247,43 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke6Ring4" DisplayName="Fellow Traveler" Description="At Iso-teien Spoke 6 Ring 4, Fellow Traveler goes about their day with vigilant demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring5&quot;,&quot;IsoteienSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring5&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke6Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 6 Ring 4, known for their vigilant temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring5&quot;,&quot;IsoteienSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring5&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke6Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_IsoteienSpoke6Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Iso-teien Spoke 6 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring4&quot;,&quot;IsoteienSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring5&quot;]}">
+  <Character RefName="NPC_IsoteienSpoke6Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Iso-teien Spoke 6 Ring 5, known for their mysterious temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring4&quot;,&quot;IsoteienSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
+      <Loot>
+        <Consumables>
+          <Entry ConsumableRef="Javelin" Quantity="2" />
+        </Consumables>
+      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke6Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="BOSS_TerukuniDaimyōjinsha" DisplayName="Guardian of Terukuni Daimyōjin-sha" Description="At Terukuni Daimyōjin-sha, the enigmatic warrior Guardian of Terukuni Daimyōjin-sha awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;Tsurumaruj\u014DSpoke5Ring2&quot;]}">
+  <Character RefName="BOSS_TerukuniDaimyōjinsha" DisplayName="Guardian of Terukuni Daimyōjin-sha" Description="The vigilant Guardian of Terukuni Daimyōjin-sha rules over Terukuni Daimyōjin-sha with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;Tsurumaruj\u014DSpoke5Ring2&quot;]}">
     <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ApprenticeWand" Condition="1.0" />
-        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
-        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
-        <Entry EquipmentRef="MageSlippers" Condition="1.0" />
-        <Entry EquipmentRef="WalkingStick" Condition="1.0" />
+        <Entry EquipmentRef="RingOfSwiftness" Condition="1.0" />
+        <Entry EquipmentRef="IronSword" Condition="1.0" />
+        <Entry EquipmentRef="Maul" Condition="1.0" />
+        <Entry EquipmentRef="RustySword" Condition="1.0" />
+        <Entry EquipmentRef="ChainShirt" Condition="1.0" />
+        <Entry EquipmentRef="Sandals" Condition="1.0" />
+        <Entry EquipmentRef="WarHammer" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
-        <Entry ConsumableRef="ScrollOfResurrection" Quantity="3" />
-        <Entry ConsumableRef="WarriorRation" Quantity="4" />
-        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfTeleport" Quantity="1" />
+        <Entry ConsumableRef="DarkEssence" Quantity="2" />
+        <Entry ConsumableRef="ManaGem" Quantity="3" />
+        <Entry ConsumableRef="GiantStrengthPotion" Quantity="1" />
+        <Entry ConsumableRef="PoisonResistPotion" Quantity="4" />
       </Consumables>
       <Spells>
         <Entry SpellRef="ConjurePortal" Condition="1.0" />
@@ -2267,12 +2293,15 @@
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
-          <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+          <Entry EquipmentRef="ChainBoots" Condition="1.0" />
+          <Entry EquipmentRef="GoldRing" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="AcidBomb" Quantity="2" />
+          <Entry ConsumableRef="LightningResistPotion" Quantity="1" />
         </Consumables>
+        <Spells>
+          <Entry SpellRef="Paralyze" Condition="1.0" />
+        </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_BOSS_TerukuniDaimyōjinsha</DialogueTreeRef>
     </Interactable>
@@ -2291,41 +2320,47 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyōjinsha" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 1 Ring 1, Fellow Traveler goes about their day with vigilant demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Fellow Traveler" Description="Fellow Traveler, a seasoned resident of Terukuni Daimyōjin-sha Spoke 1 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 1 Ring 2, known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke1Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a weathered resident of Terukuni Daimyōjin-sha Spoke 1 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke1Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Fellow Traveler" Description="A stoic local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 1 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 1 Ring 3, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
+      <Loot>
+        <Equipment>
+          <Entry EquipmentRef="ArchmageRobes" Condition="1.0" />
+        </Equipment>
+        <Consumables>
+          <Entry ConsumableRef="RejuvenationPotion" Quantity="1" />
+        </Consumables>
+      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" DisplayName="Trail Hazard" Description="At Terukuni Daimyōjin-sha Spoke 1 Ring 4, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring3&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
+  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Terukuni Daimyōjin-sha Spoke 1 Ring 4 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring3&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
-        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
-        <Entry EquipmentRef="TravelCloak" Condition="1.0" />
-        <Entry EquipmentRef="WarHammer" Condition="1.0" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
+        <Entry EquipmentRef="Brigandine" Condition="1.0" />
+        <Entry EquipmentRef="LeatherLeggings" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="DefenseElixir" Quantity="1" />
-        <Entry ConsumableRef="WeakPoison" Quantity="3" />
-        <Entry ConsumableRef="HerbBundle" Quantity="4" />
-        <Entry ConsumableRef="WisdomElixir" Quantity="3" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="Stew" Quantity="2" />
+        <Entry ConsumableRef="ScrollOfIcebolt" Quantity="6" />
       </Consumables>
       <Spells>
         <Entry SpellRef="Obliterate" Condition="1.0" />
@@ -2347,21 +2382,23 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Terukuni Daimyōjin-sha Spoke 1 Ring 5." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
+  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" DisplayName="Trail Hazard" Description="At Terukuni Daimyōjin-sha Spoke 1 Ring 5, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="KiteShield" Condition="1.0" />
-        <Entry EquipmentRef="MageBelt" Condition="1.0" />
+        <Entry EquipmentRef="SpikedShield" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="HastePotion" Quantity="3" />
-        <Entry ConsumableRef="WeakeningPoison" Quantity="2" />
-        <Entry ConsumableRef="ThrowingKnife" Quantity="1" />
+        <Entry ConsumableRef="EnergyDrink" Quantity="1" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="WeakeningPoison" Quantity="1" />
+        <Entry ConsumableRef="Bandage" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="EagleEye" Condition="1.0" />
-        <Entry SpellRef="ScentOfBlood" Condition="1.0" />
+        <Entry SpellRef="EntanglingRoots" Condition="1.0" />
+        <Entry SpellRef="HuntersMark" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -2379,36 +2416,40 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Traveling Merchant" Description="At Terukuni Daimyōjin-sha Spoke 2 Ring 1, Traveling Merchant offers merchandise with a enigmatic approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014D&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;Tsurumaruj\u014DSpoke4Ring1&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Traveling Merchant" Description="The seasoned merchant Traveling Merchant has set up shop at Terukuni Daimyōjin-sha Spoke 2 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014D&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;Tsurumaruj\u014DSpoke4Ring1&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Spear" Condition="1.0" />
-        <Entry EquipmentRef="ChainmailArmor" Condition="1.0" />
+        <Entry EquipmentRef="Sandals" Condition="1.0" />
+        <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="PoisonVial" Quantity="2" />
-        <Entry ConsumableRef="ScrollOfLightning" Quantity="1" />
+        <Entry ConsumableRef="EnergyDrink" Quantity="3" />
+        <Entry ConsumableRef="PoisonedDart" Quantity="4" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fortitude" Condition="1.0" />
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+        <Entry SpellRef="HymnOfValor" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="HighPriestRobes" Condition="1.0" />
-          <Entry EquipmentRef="MageCrown" Condition="1.0" />
+          <Entry EquipmentRef="SimpleRobe" Condition="1.0" />
+          <Entry EquipmentRef="OakStaff" Condition="1.0" />
+          <Entry EquipmentRef="Flamebrand" Condition="1.0" />
+          <Entry EquipmentRef="ClothGloves" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="GreaterHealingPotion" Quantity="6" />
-          <Entry ConsumableRef="Torch" Quantity="3" />
-          <Entry ConsumableRef="ThrowingRock" Quantity="3" />
-          <Entry ConsumableRef="Stew" Quantity="7" />
-          <Entry ConsumableRef="GreaterStaminaPotion" Quantity="4" />
+          <Entry ConsumableRef="ThunderBomb" Quantity="5" />
+          <Entry ConsumableRef="HerbBundle" Quantity="6" />
+          <Entry ConsumableRef="SuperiorManaPotion" Quantity="4" />
+          <Entry ConsumableRef="FrostResistPotion" Quantity="4" />
+          <Entry ConsumableRef="ParalyzingPoison" Quantity="6" />
         </Consumables>
         <Spells>
           <Entry SpellRef="VoidRift" Condition="1.0" />
+          <Entry SpellRef="Exorcism" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke2Ring1</DialogueTreeRef>
@@ -2416,70 +2457,66 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a vigilant resident of Terukuni Daimyōjin-sha Spoke 2 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Fellow Traveler" Description="A mysterious local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 2 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Terukuni Daimyōjin-sha Spoke 2 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;,&quot;Tsurumaruj\u014DSpoke2Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 2 Ring 3, Fellow Traveler goes about their day with determined demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;,&quot;Tsurumaruj\u014DSpoke2Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Fellow Traveler" Description="A seasoned local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 2 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 2 Ring 4, Fellow Traveler goes about their day with resolute demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Fellow Traveler" Description="The mysterious Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 2 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring4&quot;,&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 2 Ring 5, Fellow Traveler goes about their day with resolute demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring4&quot;,&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Traveling Merchant" Description="The stoic merchant Traveling Merchant has set up shop at Terukuni Daimyōjin-sha Spoke 3 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring1&quot;,&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Traveling Merchant" Description="A stoic vendor named Traveling Merchant sells wares at Terukuni Daimyōjin-sha Spoke 3 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring1&quot;,&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="GoldRing" Condition="1.0" />
+        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="RejuvenationPotion" Quantity="4" />
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="3" />
+        <Entry ConsumableRef="PhoenixTears" Quantity="2" />
+        <Entry ConsumableRef="HerbalTea" Quantity="4" />
+        <Entry ConsumableRef="CurativePotion" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="InspiringVerse" Condition="1.0" />
-        <Entry SpellRef="Agility" Condition="1.0" />
+        <Entry SpellRef="Heroism" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="Zweihander" Condition="1.0" />
-          <Entry EquipmentRef="ClothPants" Condition="1.0" />
-          <Entry EquipmentRef="ClothTunic" Condition="1.0" />
+          <Entry EquipmentRef="MageCloak" Condition="1.0" />
+          <Entry EquipmentRef="RingOfRegeneration" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="SuperiorHealingPotion" Quantity="4" />
-          <Entry ConsumableRef="Cheese" Quantity="4" />
-          <Entry ConsumableRef="ScrollOfStrength" Quantity="4" />
-          <Entry ConsumableRef="StaminaPotion" Quantity="5" />
-          <Entry ConsumableRef="HastePotion" Quantity="7" />
+          <Entry ConsumableRef="MagesBiscuit" Quantity="3" />
+          <Entry ConsumableRef="StrengthElixir" Quantity="5" />
+          <Entry ConsumableRef="GreaterStaminaPotion" Quantity="7" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="NaturesCompass" Condition="1.0" />
-          <Entry SpellRef="DeadlyVenom" Condition="1.0" />
-          <Entry SpellRef="TrapSense" Condition="1.0" />
+          <Entry SpellRef="NaturesGrasp" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke3Ring1</DialogueTreeRef>
@@ -2490,43 +2527,44 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Fellow Traveler" Description="The vigilant Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 3 Ring 2 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 3 Ring 2, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant, a enigmatic trader offering goods at Terukuni Daimyōjin-sha Spoke 3 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;,&quot;Tsurumaruj\u014DSpoke3Ring3&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Traveling Merchant" Description="A resolute vendor named Traveling Merchant sells wares at Terukuni Daimyōjin-sha Spoke 3 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;,&quot;Tsurumaruj\u014DSpoke3Ring3&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ChainLeggings" Condition="1.0" />
-        <Entry EquipmentRef="WoodenClub" Condition="1.0" />
+        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="WisdomElixir" Quantity="4" />
+        <Entry ConsumableRef="CookedMeat" Quantity="3" />
+        <Entry ConsumableRef="SoulShard" Quantity="3" />
+        <Entry ConsumableRef="DefenseElixir" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="InspiringVerse" Condition="1.0" />
+        <Entry SpellRef="Agility" Condition="1.0" />
+        <Entry SpellRef="Heroism" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="TinWhistle" Condition="1.0" />
-          <Entry EquipmentRef="BattleAxe" Condition="1.0" />
-          <Entry EquipmentRef="StormStaff" Condition="1.0" />
+          <Entry EquipmentRef="FrostWand" Condition="1.0" />
+          <Entry EquipmentRef="KiteShield" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="ParalyzingPoison" Quantity="6" />
-          <Entry ConsumableRef="Torch" Quantity="7" />
-          <Entry ConsumableRef="Javelin" Quantity="7" />
-          <Entry ConsumableRef="StaminaPotion" Quantity="3" />
-          <Entry ConsumableRef="CurativePotion" Quantity="4" />
+          <Entry ConsumableRef="ThrowingKnife" Quantity="3" />
+          <Entry ConsumableRef="ManaPotion" Quantity="7" />
+          <Entry ConsumableRef="DriedMeat" Quantity="7" />
+          <Entry ConsumableRef="HerbalTea" Quantity="3" />
+          <Entry ConsumableRef="FlashBomb" Quantity="4" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="EntanglingRoots" Condition="1.0" />
+          <Entry SpellRef="DivineJudgment" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3</DialogueTreeRef>
@@ -2534,61 +2572,54 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="70" />
+      <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Fellow Traveler" Description="The weathered Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 3 Ring 4 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 3 Ring 4, known for their stoic temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <Loot>
-        <Equipment>
-          <Entry EquipmentRef="CompositeBow" Condition="1.0" />
-        </Equipment>
-        <Consumables>
-          <Entry ConsumableRef="Bandage" Quantity="1" />
-        </Consumables>
-      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Fellow Traveler" Description="The resolute Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 3 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;,&quot;Tsurumaruj\u014DSpoke3Ring5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 3 Ring 5, known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;,&quot;Tsurumaruj\u014DSpoke3Ring5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a mysterious trader offering goods at Terukuni Daimyōjin-sha Spoke 4 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014Djinsha&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Traveling Merchant" Description="At Terukuni Daimyōjin-sha Spoke 4 Ring 1, Traveling Merchant offers merchandise with a stoic approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014Djinsha&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
-        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfTeleport" Quantity="4" />
+        <Entry ConsumableRef="Panacea" Quantity="4" />
+        <Entry ConsumableRef="Cheese" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="MesmerizingMelody" Condition="1.0" />
+        <Entry SpellRef="SongOfCourage" Condition="1.0" />
+        <Entry SpellRef="HymnOfValor" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="LeatherVest" Condition="1.0" />
-          <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-          <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
+          <Entry EquipmentRef="BreastPlate" Condition="1.0" />
+          <Entry EquipmentRef="WoodenStaff" Condition="1.0" />
+          <Entry EquipmentRef="MageGloves" Condition="1.0" />
+          <Entry EquipmentRef="RangerHood" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="SoulShard" Quantity="6" />
-          <Entry ConsumableRef="ElixirOfLife" Quantity="6" />
-          <Entry ConsumableRef="Ale" Quantity="6" />
-          <Entry ConsumableRef="HealingPotion" Quantity="5" />
+          <Entry ConsumableRef="PoisonResistPotion" Quantity="4" />
+          <Entry ConsumableRef="MinorStaminaPotion" Quantity="6" />
+          <Entry ConsumableRef="WeakeningPoison" Quantity="5" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="Distraction" Condition="1.0" />
-          <Entry SpellRef="Earthquake" Condition="1.0" />
+          <Entry SpellRef="Whirlwind" Condition="1.0" />
+          <Entry SpellRef="Heal" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1</DialogueTreeRef>
@@ -2596,42 +2627,38 @@
     <Traits>
       <Trait Name="WillTrade" Value="1" />
       <Trait Name="Friendly" Value="1" />
-      <Trait Name="WillingToBargain" Value="50" />
+      <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Traveling Merchant" Description="A mysterious vendor named Traveling Merchant sells wares at Terukuni Daimyōjin-sha Spoke 4 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Traveling Merchant" Description="At Terukuni Daimyōjin-sha Spoke 4 Ring 2, Traveling Merchant offers merchandise with a mysterious approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SummonerOrb" Condition="1.0" />
+        <Entry EquipmentRef="ExecutionerAxe" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Apple" Quantity="3" />
-        <Entry ConsumableRef="ScrollOfHaste" Quantity="3" />
-        <Entry ConsumableRef="ElementalEssence" Quantity="4" />
+        <Entry ConsumableRef="ThunderBomb" Quantity="1" />
+        <Entry ConsumableRef="ParalyzingPoison" Quantity="4" />
+        <Entry ConsumableRef="ElixirOfArcana" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Fortitude" Condition="1.0" />
-        <Entry SpellRef="Heroism" Condition="1.0" />
+        <Entry SpellRef="Wisdom" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
-          <Entry EquipmentRef="MageStaff" Condition="1.0" />
-          <Entry EquipmentRef="HerosCape" Condition="1.0" />
+          <Entry EquipmentRef="PlateLeggings" Condition="1.0" />
+          <Entry EquipmentRef="WardingAmulet" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="PoisonedDart" Quantity="3" />
-          <Entry ConsumableRef="RangerTrailMix" Quantity="4" />
-          <Entry ConsumableRef="GiantStrengthPotion" Quantity="4" />
-          <Entry ConsumableRef="CurativePotion" Quantity="7" />
-          <Entry ConsumableRef="Mead" Quantity="3" />
+          <Entry ConsumableRef="ThunderBomb" Quantity="7" />
+          <Entry ConsumableRef="HealingPotion" Quantity="4" />
+          <Entry ConsumableRef="ScrollOfHaste" Quantity="7" />
+          <Entry ConsumableRef="RestorationPotion" Quantity="6" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="SpellSteal" Condition="1.0" />
-          <Entry SpellRef="Teleport" Condition="1.0" />
+          <Entry SpellRef="DivineLight" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke4Ring2</DialogueTreeRef>
@@ -2642,36 +2669,38 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Traveling Merchant" Description="A vigilant vendor named Traveling Merchant sells wares at Terukuni Daimyōjin-sha Spoke 4 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Traveling Merchant" Description="A mysterious vendor named Traveling Merchant sells wares at Terukuni Daimyōjin-sha Spoke 4 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="SteelSword" Condition="1.0" />
+        <Entry EquipmentRef="IronShield" Condition="1.0" />
+        <Entry EquipmentRef="LeatherGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfStrength" Quantity="1" />
+        <Entry ConsumableRef="HastePotion" Quantity="2" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Lullaby" Condition="1.0" />
+        <Entry SpellRef="InspiringVerse" Condition="1.0" />
         <Entry SpellRef="Wisdom" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
       <Loot>
         <Equipment>
-          <Entry EquipmentRef="MageLeggings" Condition="1.0" />
-          <Entry EquipmentRef="KnightsHelm" Condition="1.0" />
-          <Entry EquipmentRef="MageCrown" Condition="1.0" />
-          <Entry EquipmentRef="Zweihander" Condition="1.0" />
+          <Entry EquipmentRef="WoodenFlute" Condition="1.0" />
+          <Entry EquipmentRef="HolyMitre" Condition="1.0" />
+          <Entry EquipmentRef="MageBelt" Condition="1.0" />
+          <Entry EquipmentRef="MasterworkLute" Condition="1.0" />
         </Equipment>
         <Consumables>
-          <Entry ConsumableRef="IronskinPotion" Quantity="3" />
-          <Entry ConsumableRef="PoisonedDart" Quantity="3" />
-          <Entry ConsumableRef="FlashBomb" Quantity="5" />
+          <Entry ConsumableRef="WisdomElixir" Quantity="4" />
+          <Entry ConsumableRef="DarkEssence" Quantity="7" />
+          <Entry ConsumableRef="FrostBomb" Quantity="7" />
+          <Entry ConsumableRef="ThrowingAxe" Quantity="3" />
+          <Entry ConsumableRef="MagesBiscuit" Quantity="4" />
         </Consumables>
         <Spells>
-          <Entry SpellRef="ManaShield" Condition="1.0" />
-          <Entry SpellRef="DeadlyVenom" Condition="1.0" />
+          <Entry SpellRef="Dominate" Condition="1.0" />
         </Spells>
       </Loot>
       <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke4Ring3</DialogueTreeRef>
@@ -2682,54 +2711,53 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 4 Ring 4, known for their seasoned temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Fellow Traveler" Description="A weathered local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 4 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <Loot>
-        <Equipment>
-          <Entry EquipmentRef="KnightsSword" Condition="1.0" />
-        </Equipment>
         <Consumables>
-          <Entry ConsumableRef="WarriorRation" Quantity="1" />
+          <Entry ConsumableRef="ElixirOfLife" Quantity="1" />
         </Consumables>
       </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke4Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Fellow Traveler" Description="A vigilant local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 4 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;,&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Fellow Traveler" Description="The resolute Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 4 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;,&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke4Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 5 Ring 1, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Fellow Traveler" Description="The resolute Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 5 Ring 1 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <Loot>
         <Consumables>
-          <Entry ConsumableRef="Water" Quantity="2" />
+          <Entry ConsumableRef="SmellingSalts" Quantity="2" />
         </Consumables>
       </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Terukuni Daimyōjin-sha Spoke 5 Ring 2." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;]}">
+  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Terukuni Daimyōjin-sha Spoke 5 Ring 2." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="MerchantCloak" Condition="1.0" />
-        <Entry EquipmentRef="ThiefGloves" Condition="1.0" />
-        <Entry EquipmentRef="Sandals" Condition="1.0" />
+        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="LeatherCap" Condition="1.0" />
+        <Entry EquipmentRef="ChainGloves" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MedicKit" Quantity="2" />
-        <Entry ConsumableRef="ScrollOfFireball" Quantity="2" />
+        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="2" />
+        <Entry ConsumableRef="SoulShard" Quantity="4" />
+        <Entry ConsumableRef="FrostResistPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="ArcaneBlast" Condition="1.0" />
+        <Entry SpellRef="Obliterate" Condition="1.0" />
         <Entry SpellRef="Disintegrate" Condition="1.0" />
       </Spells>
     </Capabilities>
@@ -2748,29 +2776,24 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Fellow Traveler" Description="The enigmatic Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 5 Ring 3 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Fellow Traveler" Description="The determined Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 5 Ring 3 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 5 Ring 4, Fellow Traveler goes about their day with stoic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring5&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler, a mysterious resident of Terukuni Daimyōjin-sha Spoke 5 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring5&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 5 Ring 5, known for their determined temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Fellow Traveler" Description="A resolute local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 5 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <Loot>
-        <Consumables>
-          <Entry ConsumableRef="Juice" Quantity="2" />
-        </Consumables>
-      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
@@ -2785,18 +2808,20 @@
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
-        <Entry EquipmentRef="BerserkerAxe" Condition="1.0" />
-        <Entry EquipmentRef="HandAxe" Condition="1.0" />
-        <Entry EquipmentRef="PlateBoots" Condition="1.0" />
+        <Entry EquipmentRef="RingOfProtection" Condition="1.0" />
+        <Entry EquipmentRef="Halberd" Condition="1.0" />
+        <Entry EquipmentRef="AmuletOfHealth" Condition="1.0" />
+        <Entry EquipmentRef="PlateArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ThrowingKnife" Quantity="4" />
-        <Entry ConsumableRef="MedicKit" Quantity="4" />
+        <Entry ConsumableRef="Milk" Quantity="3" />
+        <Entry ConsumableRef="GreaterHealingPotion" Quantity="4" />
+        <Entry ConsumableRef="Mead" Quantity="1" />
       </Consumables>
       <Spells>
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="RecklessAssault" Condition="1.0" />
         <Entry SpellRef="Bloodlust" Condition="1.0" />
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -2814,21 +2839,26 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Fellow Traveler" Description="A weathered local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;,&quot;Tsurumaruj\u014DSpoke6Ring3&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Terukuni Daimyōjin-sha Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;,&quot;Tsurumaruj\u014DSpoke6Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Fellow Traveler" Description="A resolute local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 6 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Fellow Traveler" Description="The stoic Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 6 Ring 4 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
+      <Loot>
+        <Consumables>
+          <Entry ConsumableRef="Stew" Quantity="2" />
+        </Consumables>
+      </Loot>
       <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 6 Ring 5, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;,&quot;Tsurumaruj\u014DSpoke6Ring5&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 6 Ring 5, known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;,&quot;Tsurumaruj\u014DSpoke6Ring5&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
@@ -2839,19 +2869,17 @@
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="HeavyCrossbow" Condition="1.0" />
-        <Entry EquipmentRef="GreatHelm" Condition="1.0" />
-        <Entry EquipmentRef="ClothGloves" Condition="1.0" />
-        <Entry EquipmentRef="ShortBow" Condition="1.0" />
+        <Entry EquipmentRef="LeatherVest" Condition="1.0" />
+        <Entry EquipmentRef="ClothCap" Condition="1.0" />
+        <Entry EquipmentRef="LeatherBelt" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="Water" Quantity="2" />
-        <Entry ConsumableRef="PhoenixTears" Quantity="4" />
+        <Entry ConsumableRef="ElixirOfArcana" Quantity="1" />
+        <Entry ConsumableRef="FrostResistPotion" Quantity="1" />
       </Consumables>
       <Spells>
         <Entry SpellRef="BerserkerRage" Condition="1.0" />
-        <Entry SpellRef="IgnorePain" Condition="1.0" />
-        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
+        <Entry SpellRef="PrimalRoar" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -2869,30 +2897,27 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_1" DisplayName="Fellow Traveler" Description="The determined Fellow Traveler calls Waypoint between Iso-teien and Tsurumaru-jō (2) home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring2&quot;,&quot;IsoteienSpoke5Ring1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;]}">
+  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_1" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Waypoint between Iso-teien and Tsurumaru-jō (2), known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring2&quot;,&quot;IsoteienSpoke5Ring1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_Isoteien1_to_Tsurumarujō1_2" DisplayName="Trail Hazard" Description="At Waypoint between Iso-teien and Tsurumaru-jō (3), the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_3&quot;]}">
+  <Character RefName="HOSTILE_Isoteien1_to_Tsurumarujō1_2" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Waypoint between Iso-teien and Tsurumaru-jō (3)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_3&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="VenomFang" Condition="1.0" />
-        <Entry EquipmentRef="HoodedCowl" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
-        <Entry EquipmentRef="KnightsSword" Condition="1.0" />
+        <Entry EquipmentRef="RangerCloak" Condition="1.0" />
+        <Entry EquipmentRef="ClothCap" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="MagesBiscuit" Quantity="4" />
-        <Entry ConsumableRef="GiantStrengthPotion" Quantity="2" />
-        <Entry ConsumableRef="Mead" Quantity="1" />
+        <Entry ConsumableRef="HerbBundle" Quantity="1" />
+        <Entry ConsumableRef="EnduranceElixir" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="WildRegeneration" Condition="1.0" />
-        <Entry SpellRef="StormOfLeaves" Condition="1.0" />
+        <Entry SpellRef="EagleEye" Condition="1.0" />
+        <Entry SpellRef="NaturalRemedy" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -2917,35 +2942,36 @@
       <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Waypoint between Iso-teien and Tsurumaru-jō (5), known for their enigmatic temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;]}">
+  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_4" DisplayName="Fellow Traveler" Description="At Waypoint between Iso-teien and Tsurumaru-jō (5), Fellow Traveler goes about their day with vigilant demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_5" DisplayName="Fellow Traveler" Description="The weathered Fellow Traveler calls Waypoint between Iso-teien and Tsurumaru-jō (6) home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring1&quot;]}">
+  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Waypoint between Iso-teien and Tsurumaru-jō (6), known for their vigilant temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
       <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D&quot;]}">
+  <Character RefName="HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="KiteShield" Condition="1.0" />
-        <Entry EquipmentRef="KnightsArmor" Condition="1.0" />
+        <Entry EquipmentRef="RingOfStrength" Condition="1.0" />
+        <Entry EquipmentRef="TowerShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="ScrollOfTeleport" Quantity="2" />
-        <Entry ConsumableRef="ParalyzingPoison" Quantity="4" />
+        <Entry ConsumableRef="AcidBomb" Quantity="1" />
+        <Entry ConsumableRef="FeastPlatter" Quantity="3" />
+        <Entry ConsumableRef="ManaPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="Barkskin" Condition="1.0" />
-        <Entry SpellRef="WildRegeneration" Condition="1.0" />
-        <Entry SpellRef="ThornBarrier" Condition="1.0" />
+        <Entry SpellRef="EagleEye" Condition="1.0" />
+        <Entry SpellRef="EntanglingRoots" Condition="1.0" />
+        <Entry SpellRef="StormOfLeaves" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -2963,23 +2989,21 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="GUARD_Tsurumarujō_0" DisplayName="Guard at Tsurumaru-jō" Description="The aggressive guard Guard at Tsurumaru-jō protects Tsurumaru-jō with unwavering dedication." Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+  <Character RefName="GUARD_Tsurumarujō_0" DisplayName="Guard at Tsurumaru-jō" Description="Guard at Tsurumaru-jō, a aggressive sentinel standing watch at Tsurumaru-jō." Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.63" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Halberd" Condition="1.0" />
-        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
-        <Entry EquipmentRef="HandAxe" Condition="1.0" />
-        <Entry EquipmentRef="RopeBelt" Condition="1.0" />
+        <Entry EquipmentRef="SteelHelm" Condition="1.0" />
+        <Entry EquipmentRef="LeatherArmor" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="GreaterStaminaPotion" Quantity="1" />
-        <Entry ConsumableRef="Water" Quantity="3" />
-        <Entry ConsumableRef="FeastPlatter" Quantity="2" />
-        <Entry ConsumableRef="ThrowingAxe" Quantity="3" />
+        <Entry ConsumableRef="CookedMeat" Quantity="2" />
+        <Entry ConsumableRef="Torch" Quantity="3" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="CrushingBlow" Condition="1.0" />
+        <Entry SpellRef="WarCry" Condition="1.0" />
+        <Entry SpellRef="Charge" Condition="1.0" />
+        <Entry SpellRef="ShieldBash" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>
@@ -2997,21 +3021,23 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujō_0" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="HOSTILE_Isoteien_1" DisplayName="Bandit near Iso-teien" Description="A aggressive predator known as Bandit near Iso-teien haunts Iso-teien." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+  <Character RefName="HOSTILE_Isoteien_1" DisplayName="Bandit near Iso-teien" Description="At Iso-teien, the aggressive Bandit near Iso-teien poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.43" Stamina="1.0" Mana="0.9" Strength="0.09" Defense="0.05" Speed="0.05" Magic="0.05" Credits="10" />
     <Capabilities>
       <Equipment>
-        <Entry EquipmentRef="Greatsword" Condition="1.0" />
-        <Entry EquipmentRef="LeatherBoots" Condition="1.0" />
+        <Entry EquipmentRef="WoodenShield" Condition="1.0" />
+        <Entry EquipmentRef="TowerShield" Condition="1.0" />
       </Equipment>
       <Consumables>
-        <Entry ConsumableRef="EnduranceElixir" Quantity="1" />
-        <Entry ConsumableRef="GreaterManaPotion" Quantity="3" />
-        <Entry ConsumableRef="ManaPotion" Quantity="2" />
+        <Entry ConsumableRef="Cheese" Quantity="3" />
+        <Entry ConsumableRef="GreaterManaPotion" Quantity="4" />
+        <Entry ConsumableRef="SuperiorHealingPotion" Quantity="2" />
+        <Entry ConsumableRef="RejuvenationPotion" Quantity="1" />
       </Consumables>
       <Spells>
-        <Entry SpellRef="BloodFrenzy" Condition="1.0" />
         <Entry SpellRef="RecklessAssault" Condition="1.0" />
+        <Entry SpellRef="BerserkerRage" Condition="1.0" />
+        <Entry SpellRef="UnstoppableForce" Condition="1.0" />
       </Spells>
     </Capabilities>
     <Interactable>

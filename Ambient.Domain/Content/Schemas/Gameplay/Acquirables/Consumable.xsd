@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="StackableAcquirable.xsd" />
-    <xs:include schemaLocation="CharacterEffects.xsd" />
+    <xs:include schemaLocation="Attributes.xsd" />
     <xs:include schemaLocation="../Usability.xsd" />
     <xs:simpleType name="ConsumableRef">
         <xs:restriction base="xs:string">
@@ -12,7 +12,7 @@
         <xs:complexContent>
             <xs:extension base="StackableAcquirable">
                 <xs:sequence>
-                    <xs:element name="Effects" type="CharacterEffects" />
+                    <xs:element name="Effects" type="Attributes" />
                 </xs:sequence>
                 <xs:attributeGroup ref="UseAttributes" />
                 <!-- Status effects applied on use -->

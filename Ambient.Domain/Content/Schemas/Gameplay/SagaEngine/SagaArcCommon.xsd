@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../Actors/Characters/Characters.xsd" />
     <xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
-    <xs:include schemaLocation="../Acquirables/CharacterEffects.xsd" />
+    <xs:include schemaLocation="../Acquirables/Attributes.xsd" />
     <xs:include schemaLocation="../Acquirables/RewardEffects.xsd" />
     <xs:include schemaLocation="../Acquirables/ItemCollection.xsd" />
     <xs:include schemaLocation="../CommonTypes.xsd" />

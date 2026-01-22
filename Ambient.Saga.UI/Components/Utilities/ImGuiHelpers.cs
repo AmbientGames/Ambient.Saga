@@ -84,10 +84,10 @@ public static class ImGuiHelpers
 
     #region Label + Value Rendering
     /// <summary>
-    /// Renders a CharacterEffects display showing stat modifiers with +/- formatting
-    /// Matches WPF CharacterEffectsDisplay.xaml (aka VitalEffectsDisplay) functionality
+    /// Renders an Attributes display showing stat modifiers with +/- formatting
+    /// Matches WPF AttributesDisplay.xaml functionality
     /// </summary>
-    public static void RenderCharacterEffects(CharacterEffects? effects, string title = "Effects:")
+    public static void RenderAttributes(Attributes? effects, string title = "Effects:")
     {
         if (effects == null) return;
 
@@ -101,17 +101,18 @@ public static class ImGuiHelpers
             ImGui.TableSetupColumn("Label", ImGuiTableColumnFlags.WidthFixed);
             ImGui.TableSetupColumn("Value", ImGuiTableColumnFlags.WidthStretch);
 
+            // Resources
             RenderEffectLine("Health:", effects.Health);
             RenderEffectLine("Stamina:", effects.Stamina);
             RenderEffectLine("Mana:", effects.Mana);
+            // State
             RenderEffectLine("Temperature:", effects.Temperature);
-            RenderEffectLine("Hunger:", effects.Hunger);
-            RenderEffectLine("Thirst:", effects.Thirst);
-            RenderEffectLine("Insulation:", effects.Insulation);
+            // Attributes
             RenderEffectLine("Strength:", effects.Strength);
             RenderEffectLine("Defense:", effects.Defense);
-            RenderEffectLine("Speed:", effects.Speed);
             RenderEffectLine("Magic:", effects.Magic);
+            RenderEffectLine("Speed:", effects.Speed);
+            RenderEffectLine("Endurance:", effects.Endurance);
 
             ImGui.EndTable();
         }

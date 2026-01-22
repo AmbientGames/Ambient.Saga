@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <WorldConfiguration
-    xmlns="Ambient.Domain"
+    xmlns="Ambient.Core.Domain"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="Ambient.Domain ../../../../../../../Ambient.Domain/Content/Schemas/WorldDefinition.xsd"
     RefName="Kagoshima"
     DisplayName="Kagoshima, Japan"
     Description="Seaside city with active volcano Sakurajima"
@@ -11,6 +10,11 @@
     Namespace="ambient_games"
     SpawnLatitude="31.5994"
     SpawnLongitude="130.5637"
+    ChunkHeight="512"
+    Seed="0.5739283232"
+    BlockScaleFactor="1.0"
+    Gravity="20.0"
+    ShortNightsAndWinter="true"
     DisplayOrder="1">
     <HeightMapSettings
         FileName="Kagoshima.tif"

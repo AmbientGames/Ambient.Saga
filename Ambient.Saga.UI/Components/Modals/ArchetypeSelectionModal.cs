@@ -261,10 +261,10 @@ public class ArchetypeSelectionModal
                 hasAnyBias = true;
             }
 
-            // Environmental (default is 0)
-            if (bias.Insulation != 0)
+            // Endurance (default is 0)
+            if (bias.Endurance != 0)
             {
-                RenderModifierLine("Insulation", bias.Insulation);
+                RenderModifierLine("Endurance", bias.Endurance);
                 hasAnyBias = true;
             }
 
@@ -292,7 +292,7 @@ public class ArchetypeSelectionModal
                 ImGui.TableSetupColumn("Col1", ImGuiTableColumnFlags.WidthFixed, 120);
                 ImGui.TableSetupColumn("Col2", ImGuiTableColumnFlags.WidthFixed, 120);
 
-                // Row 1: Vitals
+                // Resources
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
                 ImGui.Text($"Health: {stats.Health:P0}");
@@ -303,18 +303,12 @@ public class ArchetypeSelectionModal
                 ImGui.TableNextColumn();
                 ImGui.Text($"Mana: {stats.Mana:P0}");
                 ImGui.TableNextColumn();
-                ImGui.Text($"Hunger: {stats.Hunger:P0}");
+                ImGui.Text($"Temp: {stats.Temperature:F1}C");
 
+                // Attributes
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
-                ImGui.Text($"Thirst: {stats.Thirst:P0}");
-                ImGui.TableNextColumn();
-                ImGui.Text(""); // Empty
-
-                // Row 2: Combat
-                ImGui.TableNextRow();
-                ImGui.TableNextColumn();
-                ImGui.TextColored(new Vector4(1, 0.8f, 0.6f, 1), "Combat:");
+                ImGui.TextColored(new Vector4(1, 0.8f, 0.6f, 1), "Attributes:");
                 ImGui.TableNextColumn();
                 ImGui.Text("");
 
@@ -326,9 +320,15 @@ public class ArchetypeSelectionModal
 
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
-                ImGui.Text($"Speed: {stats.Speed:P0}");
-                ImGui.TableNextColumn();
                 ImGui.Text($"Magic: {stats.Magic:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text($"Speed: {stats.Speed:P0}");
+
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text($"Endurance: {stats.Endurance:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text("");
 
                 // Row 3: Progression
                 ImGui.TableNextRow();

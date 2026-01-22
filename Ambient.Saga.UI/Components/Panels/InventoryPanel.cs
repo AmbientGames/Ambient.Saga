@@ -62,7 +62,7 @@ public class InventoryPanel
                             // Effects
                             if (equipItem.Effects != null)
                             {
-                                ImGuiHelpers.RenderCharacterEffects(equipItem.Effects);
+                                ImGuiHelpers.RenderAttributes(equipItem.Effects);
                             }
                         }
 
@@ -109,7 +109,7 @@ public class InventoryPanel
                             // Effects
                             if (consumableItem.Effects != null)
                             {
-                                ImGuiHelpers.RenderCharacterEffects(consumableItem.Effects);
+                                ImGuiHelpers.RenderAttributes(consumableItem.Effects);
                             }
                         }
 
@@ -156,7 +156,7 @@ public class InventoryPanel
                             // Effects
                             if (spellItem.Effects != null)
                             {
-                                ImGuiHelpers.RenderCharacterEffects(spellItem.Effects);
+                                ImGuiHelpers.RenderAttributes(spellItem.Effects);
                             }
                         }
 

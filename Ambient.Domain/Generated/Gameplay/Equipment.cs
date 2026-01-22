@@ -22,9 +22,9 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class Equipment : DegradableAcquirable {
         
-        private CharacterEffects effectsField;
+        private Attributes effectsField;
         
-        private CharacterEffects minimumStatsField;
+        private Attributes minimumStatsField;
         
         private string slotRefField;
         
@@ -56,7 +56,7 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        public CharacterEffects Effects {
+        public Attributes Effects {
             get {
                 return this.effectsField;
             }
@@ -66,7 +66,7 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        public CharacterEffects MinimumStats {
+        public Attributes MinimumStats {
             get {
                 return this.minimumStatsField;
             }

@@ -131,7 +131,7 @@ public class WorldInfoPanel
                         }
                         if (equip.Effects != null)
                         {
-                            ImGuiHelpers.RenderCharacterEffects(equip.Effects);
+                            ImGuiHelpers.RenderAttributes(equip.Effects);
                         }
                         ImGui.TreePop();
                     }
@@ -156,7 +156,7 @@ public class WorldInfoPanel
                         }
                         if (consumable.Effects != null)
                         {
-                            ImGuiHelpers.RenderCharacterEffects(consumable.Effects);
+                            ImGuiHelpers.RenderAttributes(consumable.Effects);
                         }
                         ImGui.TreePop();
                     }
@@ -181,7 +181,7 @@ public class WorldInfoPanel
                         }
                         if (spell.Effects != null)
                         {
-                            ImGuiHelpers.RenderCharacterEffects(spell.Effects);
+                            ImGuiHelpers.RenderAttributes(spell.Effects);
                         }
                         ImGui.TreePop();
                     }

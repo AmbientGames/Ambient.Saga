@@ -837,19 +837,21 @@ public class SagaInteractionService
 
         // Apply each stat modification (additive for now)
         // RewardEffects has direct properties, not nested ModifiableCharacterStats
+        // Resources
         avatar.Stats.Health += effects.Health;
         avatar.Stats.Stamina += effects.Stamina;
         avatar.Stats.Mana += effects.Mana;
-        avatar.Stats.Hunger += effects.Hunger;
-        avatar.Stats.Thirst += effects.Thirst;
+        // State
         avatar.Stats.Temperature += effects.Temperature;
-        avatar.Stats.Insulation += effects.Insulation;
-        avatar.Stats.Credits += effects.Credits;
-        avatar.Stats.Experience += effects.Experience;
+        // Attributes
         avatar.Stats.Strength += effects.Strength;
         avatar.Stats.Defense += effects.Defense;
-        avatar.Stats.Speed += effects.Speed;
         avatar.Stats.Magic += effects.Magic;
+        avatar.Stats.Speed += effects.Speed;
+        avatar.Stats.Endurance += effects.Endurance;
+        // Progression
+        avatar.Stats.Credits += effects.Credits;
+        avatar.Stats.Experience += effects.Experience;
 
         // Clamp vitals to valid ranges (0.0 - 1.0 for normalized stats)
         avatar.Stats.Health = Math.Clamp(avatar.Stats.Health, 0.0f, 1.0f);

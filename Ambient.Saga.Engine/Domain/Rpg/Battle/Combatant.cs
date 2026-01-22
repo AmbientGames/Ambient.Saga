@@ -28,7 +28,7 @@ public class Combatant
     public string? AffinityRef { get; set; }
 
     // Archetype bias - small stat multipliers (±10%) from base archetype
-    public CharacterEffects? ArchetypeBias { get; init; }
+    public Attributes? ArchetypeBias { get; init; }
 
     // Reference to capabilities for spell/equipment access
     public ItemCollection? Capabilities { get; set; }

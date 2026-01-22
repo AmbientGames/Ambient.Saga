@@ -114,12 +114,10 @@ public class AvatarInfoModal
             ImGui.Spacing();
             ImGui.Separator();
 
-            // Survival Stats
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Survival:");
+            // State & Endurance
+            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "State:");
             RenderStatBar("Temperature", avatar.Stats.Temperature, new Vector4(1, 0.6f, 0.2f, 1));
-            RenderStatBar("Hunger", avatar.Stats.Hunger, new Vector4(0.8f, 0.6f, 0.3f, 1));
-            RenderStatBar("Thirst", avatar.Stats.Thirst, new Vector4(0.3f, 0.7f, 1, 1));
-            RenderStatBar("Insulation", avatar.Stats.Insulation, new Vector4(0.5f, 0.8f, 0.8f, 1));
+            RenderStatBar("Endurance", avatar.Stats.Endurance, new Vector4(0.5f, 0.8f, 0.8f, 1));
 
             ImGui.Spacing();
             ImGui.Separator();
@@ -174,7 +172,7 @@ public class AvatarInfoModal
                     if (item?.Effects != null && ImGui.IsItemHovered())
                     {
                         ImGui.BeginTooltip();
-                        ImGuiHelpers.RenderCharacterEffects(item.Effects);
+                        ImGuiHelpers.RenderAttributes(item.Effects);
                         ImGui.EndTooltip();
                     }
                 }

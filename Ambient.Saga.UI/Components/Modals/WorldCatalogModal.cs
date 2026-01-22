@@ -113,7 +113,7 @@ public class WorldCatalogModal
                 if (item.Effects != null)
                 {
                     ImGui.Spacing();
-                    ImGuiHelpers.RenderCharacterEffects(item.Effects);
+                    ImGuiHelpers.RenderAttributes(item.Effects);
                 }
                 if (item.StatusEffectRef != null)
                 {
@@ -148,7 +148,7 @@ public class WorldCatalogModal
                 if (item.Effects != null)
                 {
                     ImGui.Spacing();
-                    ImGuiHelpers.RenderCharacterEffects(item.Effects);
+                    ImGuiHelpers.RenderAttributes(item.Effects);
                 }
                 if (item.CleansesStatusEffects)
                 {
@@ -188,7 +188,7 @@ public class WorldCatalogModal
                 if (item.Effects != null)
                 {
                     ImGui.Spacing();
-                    ImGuiHelpers.RenderCharacterEffects(item.Effects);
+                    ImGuiHelpers.RenderAttributes(item.Effects);
                 }
                 ImGui.Unindent();
             }
@@ -544,7 +544,7 @@ public class WorldCatalogModal
                 if (stance.Effects != null)
                 {
                     ImGui.Spacing();
-                    ImGuiHelpers.RenderCharacterEffects(stance.Effects);
+                    ImGuiHelpers.RenderAttributes(stance.Effects);
                 }
                 ImGui.Unindent();
             }

@@ -149,16 +149,14 @@ public class StartDialogueCommandTests : IDisposable
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 1000,
-                Experience = 0,
                 Strength = 0.10f,
                 Defense = 0.10f,
+                Magic = 0.10f,
                 Speed = 0.10f,
-                Magic = 0.10f
+                Endurance = 0f,
+                Credits = 1000,
+                Experience = 0
             },
             SpawnCapabilities = new ItemCollection
             {
@@ -175,16 +173,14 @@ public class StartDialogueCommandTests : IDisposable
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 100,
-                Experience = 0,
                 Strength = 0.08f,
                 Defense = 0.08f,
+                Magic = 0.08f,
                 Speed = 0.08f,
-                Magic = 0.08f
+                Endurance = 0f,
+                Credits = 100,
+                Experience = 0
             },
             RespawnCapabilities = new ItemCollection
             {

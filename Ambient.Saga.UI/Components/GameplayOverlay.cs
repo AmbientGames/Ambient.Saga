@@ -121,9 +121,10 @@ public class GameplayOverlay
 
     /// <summary>
     /// Create a GameplayOverlay with default input and HUD rendering.
+    /// Uses SectionedHudRenderer for modular, extensible HUD.
     /// </summary>
     public GameplayOverlay(ModalManager modalManager)
-        : this(modalManager, new DefaultInputHandler(), new DefaultHudRenderer())
+        : this(modalManager, new DefaultInputHandler(), new SectionedHudRenderer())
     {
     }
 

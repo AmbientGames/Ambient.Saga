@@ -61,11 +61,11 @@
   <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Local Knowledge" Description="Tips about hidden spots in Ise-Shima" />
   <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Tour Guide's Thanks" Description="A small gift from the grateful guide" />
   <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Admission Paid" Description="Valid ticket to enter the shrine grounds" />
-  <QuestToken RefName="TOKEN_Kazahinominomiya_COMPLETE" DisplayName="Emblem of Kazahinomi-no-Miya" Description="This seal bears the marks of Kazahinomi-no-Miya, evidence of your triumph." />
-  <QuestToken RefName="TOKEN_KōtaiJingūInnerShrine_COMPLETE" DisplayName="Kōtai Jingū (Inner Shrine) Mark" Description="A symbol of honor earned through perseverance at Kōtai Jingū (Inner Shrine)." />
-  <QuestToken RefName="TOKEN_Aramatsurinomiya_COMPLETE" DisplayName="Aramatsuri-no-Miya Mark" Description="Proof that you have overcome the trials of Aramatsuri-no-Miya." />
-  <QuestToken RefName="TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE" DisplayName="Mark of Toyōke Daijingū (Outer Shrine)" Description="A symbol of honor earned through perseverance at Toyōke Daijingū (Outer Shrine)." />
-  <QuestToken RefName="TOKEN_KazamiyaGekū_COMPLETE" DisplayName="Kazamiya (Gekū) Mark" Description="An emblem awarded to those who conquered the challenges of Kazamiya (Gekū)." />
-  <QuestToken RefName="TOKEN_Tsuchinomiya_COMPLETE" DisplayName="Emblem of Tsuchi-no-Miya" Description="This crest signifies your victory within Tsuchi-no-Miya." />
-  <QuestToken RefName="TOKEN_Takanomiya_COMPLETE" DisplayName="Taka-no-Miya Sigil" Description="This crest signifies your victory within Taka-no-Miya." />
+  <QuestToken RefName="TOKEN_Kazahinominomiya_COMPLETE" DisplayName="Kazahinomi-no-Miya Sigil" Description="A weathered token proving mastery of Kazahinomi-no-Miya." />
+  <QuestToken RefName="TOKEN_KōtaiJingūInnerShrine_COMPLETE" DisplayName="Emblem of Kōtai Jingū (Inner Shrine)" Description="An emblem awarded to those who conquered the challenges of Kōtai Jingū (Inner Shrine)." />
+  <QuestToken RefName="TOKEN_Aramatsurinomiya_COMPLETE" DisplayName="Aramatsuri-no-Miya Badge" Description="This badge commemorates your accomplishments at Aramatsuri-no-Miya." />
+  <QuestToken RefName="TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE" DisplayName="Toyōke Daijingū (Outer Shrine) Seal" Description="A symbol of honor earned through perseverance at Toyōke Daijingū (Outer Shrine)." />
+  <QuestToken RefName="TOKEN_KazamiyaGekū_COMPLETE" DisplayName="Mark of Kazamiya (Gekū)" Description="A weathered token proving mastery of Kazamiya (Gekū)." />
+  <QuestToken RefName="TOKEN_Tsuchinomiya_COMPLETE" DisplayName="Mark of Tsuchi-no-Miya" Description="This seal bears the marks of Tsuchi-no-Miya, evidence of your triumph." />
+  <QuestToken RefName="TOKEN_Takanomiya_COMPLETE" DisplayName="Emblem of Taka-no-Miya" Description="This badge commemorates your accomplishments at Taka-no-Miya." />
 </QuestTokens>

@@ -145,16 +145,14 @@ public class UpdateAvatarPositionCommandTests : IDisposable
                 Health = 1.0f,      // Normalized vitals (XML uses 1.0)
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 50,
-                Experience = 0,
                 Strength = 0.10f,   // Stat bonuses as decimals (XML uses 0.10)
                 Defense = 0.10f,
+                Magic = 0.10f,
                 Speed = 0.10f,
-                Magic = 0.10f
+                Endurance = 0f,
+                Credits = 50,
+                Experience = 0
             },
             SpawnCapabilities = new ItemCollection
             {
@@ -171,16 +169,14 @@ public class UpdateAvatarPositionCommandTests : IDisposable
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 25,
-                Experience = 0,
                 Strength = 0.08f,
                 Defense = 0.08f,
+                Magic = 0.08f,
                 Speed = 0.08f,
-                Magic = 0.08f
+                Endurance = 0f,
+                Credits = 25,
+                Experience = 0
             },
             RespawnCapabilities = new ItemCollection
             {

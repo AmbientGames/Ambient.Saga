@@ -788,7 +788,7 @@ public class BattleEngine
 
         // Apply weapon effects using EffectApplier
         var effects = EffectApplier.ApplyEffects(
-            weapon.Effects ?? new CharacterEffects(),
+            weapon.Effects ?? new Attributes(),
             weapon.AffinityRef,
             weaponCondition,
             attacker.AffinityRef,
@@ -971,7 +971,7 @@ public class BattleEngine
         // Apply spell effects using EffectApplier
         // Use spell's UseType to determine if offensive (damage) or defensive (healing/buff)
         var effects = EffectApplier.ApplyEffects(
-            spell.Effects ?? new CharacterEffects(),
+            spell.Effects ?? new Attributes(),
             spell.AffinityRef,
             spellCondition,
             attacker.AffinityRef,
@@ -1152,7 +1152,7 @@ public class BattleEngine
 
         // Apply consumable effects using consumable's UseType
         var effects = EffectApplier.ApplyEffects(
-            consumable.Effects ?? new CharacterEffects(),
+            consumable.Effects ?? new Attributes(),
             consumable.AffinityRef,
             1.0f,  // Consumables don't degrade
             user.AffinityRef,
@@ -1601,7 +1601,7 @@ public class BattleEngine
     /// Check if combatant meets minimum stat requirements for an item.
     /// Returns a failed CombatEvent if requirements not met, null if OK.
     /// </summary>
-    private CombatEvent? CheckMinimumStats(Combatant combatant, CharacterEffects minimumStats, string itemName)
+    private CombatEvent? CheckMinimumStats(Combatant combatant, Attributes minimumStats, string itemName)
     {
         // Check each stat that has a minimum requirement (values > 0 are requirements)
         if (minimumStats.Strength > 0 && combatant.Strength < minimumStats.Strength)
