@@ -181,7 +181,7 @@ public static class BattleTransactionHelper
                         }
                     }
 
-                    // Format: "RightHand:WoodenSword:1.00"
+                    // Format: "MainHand:WoodenSword:1.00"
                     LoadoutSlots.Add($"{slotName}:{equipmentRef}:{condition:F2}");
                 }
 

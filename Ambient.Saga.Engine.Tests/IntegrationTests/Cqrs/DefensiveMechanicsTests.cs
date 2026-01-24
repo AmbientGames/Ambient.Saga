@@ -84,7 +84,7 @@ public class DefensiveMechanicsTests
         var adjustResult = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:WoodenSword"
+            Parameter = "MainHand:WoodenSword"
         });
 
         _output.WriteLine($"Adjust result: {adjustResult.Message}");
@@ -123,7 +123,7 @@ public class DefensiveMechanicsTests
         var changeResult = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.ChangeLoadout,
-            Parameter = "RightHand:IronSword,LeftHand:WoodenShield"
+            Parameter = "MainHand:IronSword,OffHand:WoodenShield"
         });
 
         _output.WriteLine($"Change result: {changeResult.Message}");
@@ -167,7 +167,7 @@ public class DefensiveMechanicsTests
         engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:IronSword"
+            Parameter = "MainHand:IronSword"
         });
 
         // ASSERT: Now adjusting, not defending
@@ -294,7 +294,7 @@ public class DefensiveMechanicsTests
         engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:WoodenSword"
+            Parameter = "MainHand:WoodenSword"
         });
         Assert.True(player.IsAdjusting);
 
@@ -356,7 +356,7 @@ public class DefensiveMechanicsTests
         engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:IronSword"
+            Parameter = "MainHand:IronSword"
         });
         Assert.True(defender.IsAdjusting);
 

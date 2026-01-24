@@ -658,7 +658,7 @@ public class AvatarUpdateService : IAvatarUpdateService
     /// <summary>
     /// Parse LoadoutSlotSnapshot into CombatProfile dictionary.
     /// Format: "SlotName:EquipmentRef:Condition,SlotName:EquipmentRef:Condition,..."
-    /// Example: "RightHand:WoodenSword:0.85,Head:IronHelm:1.00"
+    /// Example: "MainHand:WoodenSword:0.85,Head:IronHelm:1.00"
     /// </summary>
     private Dictionary<string, string> ParseLoadoutSnapshot(string loadoutSnapshot)
     {
@@ -685,7 +685,7 @@ public class AvatarUpdateService : IAvatarUpdateService
     /// <summary>
     /// Update equipment condition from LoadoutSlotSnapshot.
     /// Format: "SlotName:EquipmentRef:Condition,SlotName:EquipmentRef:Condition,..."
-    /// Example: "RightHand:WoodenSword:0.85,Head:IronHelm:1.00"
+    /// Example: "MainHand:WoodenSword:0.85,Head:IronHelm:1.00"
     /// </summary>
     private void UpdateEquipmentConditionsFromSnapshot(AvatarEntity avatar, string loadoutSnapshot)
     {

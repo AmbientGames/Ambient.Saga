@@ -1793,6 +1793,109 @@ public partial class MainViewModel : ObservableObject
         Achievements?.RefreshAchievements();
     }
 
+    /// <summary>
+    /// Equips or unequips an item outside of battle.
+    /// </summary>
+    /// <param name="equipmentRef">Equipment reference to equip, or null/empty to unequip</param>
+    /// <param name="slotRef">Slot to equip into (if not provided, auto-detected from equipment definition)</param>
+    /// <returns>True if equip succeeded</returns>
+    public async Task<bool> EquipItemAsync(string? equipmentRef, string? slotRef = null)
+    {
+        if (PlayerAvatar == null || CurrentWorld == null)
+        {
+            AddToastMessage("Cannot equip: No avatar or world loaded", MessageType.Error);
+            return false;
+        }
+
+        try
+        {
+            // If no slot specified, get it from equipment definition
+            if (string.IsNullOrEmpty(slotRef) && !string.IsNullOrEmpty(equipmentRef))
+            {
+                var equipment = CurrentWorld.GetEquipmentByRefName(equipmentRef);
+                if (equipment == null)
+                {
+                    AddToastMessage($"Equipment '{equipmentRef}' not found", MessageType.Error);
+                    return false;
+                }
+                slotRef = equipment.SlotRef.ToString();
+            }
+
+            if (string.IsNullOrEmpty(slotRef))
+            {
+                AddToastMessage("Cannot equip: No slot specified", MessageType.Error);
+                return false;
+            }
+
+            // Use first saga in the world for transaction logging, or a default
+            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "PlayerLife";
+
+            var command = new EquipItemOutsideBattleCommand
+            {
+                AvatarId = PlayerAvatar.AvatarId,
+                SagaArcRef = sagaRef,
+                EquipmentRef = equipmentRef,
+                SlotRef = slotRef,
+                Avatar = PlayerAvatar
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result.Successful)
+            {
+                var action = string.IsNullOrEmpty(equipmentRef) ? "Unequipped" : "Equipped";
+                var itemName = string.IsNullOrEmpty(equipmentRef)
+                    ? slotRef
+                    : (CurrentWorld.GetEquipmentByRefName(equipmentRef)?.DisplayName ?? equipmentRef);
+                AddToastMessage($"{action} {itemName}", MessageType.Info);
+
+                // Update avatar from result if provided
+                if (result.UpdatedAvatar != null)
+                {
+                    // Copy updated state to PlayerAvatar
+                    PlayerAvatar.CombatProfile = result.UpdatedAvatar.CombatProfile;
+                }
+
+                NotifyPlayerAvatarChanged();
+                return true;
+            }
+            else
+            {
+                AddToastMessage($"Equip failed: {result.ErrorMessage}", MessageType.Error);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            AddToastMessage($"Error equipping item: {ex.Message}", MessageType.Error);
+            System.Diagnostics.Debug.WriteLine($"EquipItemAsync ERROR: {ex}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Gets the currently equipped item in a slot.
+    /// </summary>
+    public string? GetEquippedItemInSlot(string slotRef)
+    {
+        if (PlayerAvatar?.CombatProfile == null)
+            return null;
+
+        PlayerAvatar.CombatProfile.TryGetValue(slotRef, out var equipmentRef);
+        return equipmentRef;
+    }
+
+    /// <summary>
+    /// Checks if an item is currently equipped.
+    /// </summary>
+    public bool IsItemEquipped(string equipmentRef)
+    {
+        if (PlayerAvatar?.CombatProfile == null)
+            return false;
+
+        return PlayerAvatar.CombatProfile.ContainsValue(equipmentRef);
+    }
+
     [RelayCommand]
     private void ViewBlocks()
     {

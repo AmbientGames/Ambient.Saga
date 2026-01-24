@@ -1,60 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Equipment RefName="RustySword" DisplayName="Worn Wakizashi" Description="A short sword showing years of neglect" SlotRef="RightHand" Category="OneHanded" WholesalePrice="15" ModelRef="Wakizashi" UseType="Offensive">
+  <Equipment RefName="RustySword" DisplayName="Worn Wakizashi" Description="A short sword showing years of neglect" SlotRef="MainHand" Category="OneHanded" WholesalePrice="15" ModelRef="Wakizashi" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.05" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="IronSword" DisplayName="Wakizashi" Description="A traditional short sword worn as a sidearm" SlotRef="RightHand" Category="OneHanded" WholesalePrice="50" ModelRef="Wakizashi" UseType="Offensive">
+  <Equipment RefName="IronSword" DisplayName="Wakizashi" Description="A traditional short sword worn as a sidearm" SlotRef="MainHand" Category="OneHanded" WholesalePrice="50" ModelRef="Wakizashi" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.1" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SteelSword" DisplayName="Katana" Description="The soul of the samurai, a curved single-edged blade" SlotRef="RightHand" Category="OneHanded" WholesalePrice="120" ModelRef="Katana" UseType="Offensive">
+  <Equipment RefName="SteelSword" DisplayName="Katana" Description="The soul of the samurai, a curved single-edged blade" SlotRef="MainHand" Category="OneHanded" WholesalePrice="120" ModelRef="Katana" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.14" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="KnightsSword" DisplayName="Uchigatana" Description="A finely crafted sword for drawing and cutting in one motion" SlotRef="RightHand" Category="OneHanded" WholesalePrice="250" ModelRef="Uchigatana" UseType="Offensive">
+  <Equipment RefName="KnightsSword" DisplayName="Uchigatana" Description="A finely crafted sword for drawing and cutting in one motion" SlotRef="MainHand" Category="OneHanded" WholesalePrice="250" ModelRef="Uchigatana" UseType="Offensive">
     <Effects Health="1" Defense="0.05" Strength="0.18" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="RuneSword" DisplayName="Tachi" Description="An ancient curved sword inscribed with prayers" SlotRef="RightHand" Category="OneHanded" WholesalePrice="400" ModelRef="Tachi" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="RuneSword" DisplayName="Tachi" Description="An ancient curved sword inscribed with prayers" SlotRef="MainHand" Category="OneHanded" WholesalePrice="400" ModelRef="Tachi" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.2" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Flamebrand" DisplayName="Hi no Tsurugi" Description="A legendary blade that burns with sacred fire" SlotRef="RightHand" Category="OneHanded" WholesalePrice="600" ModelRef="FireKatana" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="Flamebrand" DisplayName="Hi no Tsurugi" Description="A legendary blade that burns with sacred fire" SlotRef="MainHand" Category="OneHanded" WholesalePrice="600" ModelRef="FireKatana" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.24" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="HandAxe" DisplayName="Ono" Description="A woodsman's axe adapted for combat" SlotRef="RightHand" Category="OneHanded" WholesalePrice="20" ModelRef="Ono" UseType="Offensive">
+  <Equipment RefName="HandAxe" DisplayName="Ono" Description="A woodsman's axe adapted for combat" SlotRef="MainHand" Category="OneHanded" WholesalePrice="20" ModelRef="Ono" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.06" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="BattleAxe" DisplayName="Masakari" Description="A heavy battle axe favored by warrior monks" SlotRef="RightHand" Category="OneHanded" WholesalePrice="80" ModelRef="Masakari" UseType="Offensive">
+  <Equipment RefName="BattleAxe" DisplayName="Masakari" Description="A heavy battle axe favored by warrior monks" SlotRef="MainHand" Category="OneHanded" WholesalePrice="80" ModelRef="Masakari" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.12" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="BerserkerAxe" DisplayName="Oni-Kiri" Description="A demon-slaying axe pulsing with fury" SlotRef="RightHand" Category="OneHanded" WholesalePrice="200" ModelRef="OniKiri" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="BerserkerAxe" DisplayName="Oni-Kiri" Description="A demon-slaying axe pulsing with fury" SlotRef="MainHand" Category="OneHanded" WholesalePrice="200" ModelRef="OniKiri" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="1" Defense="-0.05" Strength="0.18" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WoodenClub" DisplayName="Konsaibo" Description="A wooden club studded with iron" SlotRef="RightHand" Category="OneHanded" WholesalePrice="10" ModelRef="Konsaibo" UseType="Offensive">
+  <Equipment RefName="WoodenClub" DisplayName="Konsaibo" Description="A wooden club studded with iron" SlotRef="MainHand" Category="OneHanded" WholesalePrice="10" ModelRef="Konsaibo" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.04" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="IronMace" DisplayName="Tetsubo" Description="An iron club capable of crushing armor" SlotRef="RightHand" Category="OneHanded" WholesalePrice="60" ModelRef="Tetsubo" UseType="Offensive">
+  <Equipment RefName="IronMace" DisplayName="Tetsubo" Description="An iron club capable of crushing armor" SlotRef="MainHand" Category="OneHanded" WholesalePrice="60" ModelRef="Tetsubo" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.11" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WarHammer" DisplayName="Otsuchi" Description="A massive war hammer for siege work" SlotRef="RightHand" Category="OneHanded" WholesalePrice="150" ModelRef="Otsuchi" UseType="Offensive">
+  <Equipment RefName="WarHammer" DisplayName="Otsuchi" Description="A massive war hammer for siege work" SlotRef="MainHand" Category="OneHanded" WholesalePrice="150" ModelRef="Otsuchi" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.15" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="HolyMace" DisplayName="Nyoi" Description="A priest's sacred scepter of divine authority" SlotRef="RightHand" Category="OneHanded" WholesalePrice="280" ModelRef="Nyoi" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="HolyMace" DisplayName="Nyoi" Description="A priest's sacred scepter of divine authority" SlotRef="MainHand" Category="OneHanded" WholesalePrice="280" ModelRef="Nyoi" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.14" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Knife" DisplayName="Kozuka" Description="A utility knife carried in the sword scabbard" SlotRef="RightHand" Category="OneHanded" WholesalePrice="8" ModelRef="Kozuka" UseType="Offensive">
+  <Equipment RefName="Knife" DisplayName="Kozuka" Description="A utility knife carried in the sword scabbard" SlotRef="MainHand" Category="OneHanded" WholesalePrice="8" ModelRef="Kozuka" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.03" Speed="0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Dagger" DisplayName="Tanto" Description="A short blade for close combat" SlotRef="RightHand" Category="OneHanded" WholesalePrice="25" ModelRef="Tanto" UseType="Offensive">
+  <Equipment RefName="Dagger" DisplayName="Tanto" Description="A short blade for close combat" SlotRef="MainHand" Category="OneHanded" WholesalePrice="25" ModelRef="Tanto" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.05" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Stiletto" DisplayName="Yoroi-doshi" Description="An armor-piercing dagger for finishing foes" SlotRef="RightHand" Category="OneHanded" WholesalePrice="70" ModelRef="YoroiDoshi" UseType="Offensive">
+  <Equipment RefName="Stiletto" DisplayName="Yoroi-doshi" Description="An armor-piercing dagger for finishing foes" SlotRef="MainHand" Category="OneHanded" WholesalePrice="70" ModelRef="YoroiDoshi" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.07" Speed="0.08" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ShadowDagger" DisplayName="Shinobi-gatana" Description="A ninja's concealed blade" SlotRef="RightHand" Category="OneHanded" WholesalePrice="180" ModelRef="ShinobiGatana" AffinityRef="Umbral" UseType="Offensive">
+  <Equipment RefName="ShadowDagger" DisplayName="Shinobi-gatana" Description="A ninja's concealed blade" SlotRef="MainHand" Category="OneHanded" WholesalePrice="180" ModelRef="ShinobiGatana" AffinityRef="Umbral" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.1" Speed="0.12" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="VenomFang" DisplayName="Dokubari" Description="A needle coated in deadly poison" SlotRef="RightHand" Category="OneHanded" WholesalePrice="300" ModelRef="Dokubari" AffinityRef="Wild" UseType="Offensive">
+  <Equipment RefName="VenomFang" DisplayName="Dokubari" Description="A needle coated in deadly poison" SlotRef="MainHand" Category="OneHanded" WholesalePrice="300" ModelRef="Dokubari" AffinityRef="Wild" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.12" Speed="0.1" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="AssassinsBlade" DisplayName="Kage no Ha" Description="A shadow blade that drinks the light" SlotRef="RightHand" Category="OneHanded" WholesalePrice="500" ModelRef="KageNoHa" AffinityRef="Umbral" UseType="Offensive">
+  <Equipment RefName="AssassinsBlade" DisplayName="Kage no Ha" Description="A shadow blade that drinks the light" SlotRef="MainHand" Category="OneHanded" WholesalePrice="500" ModelRef="KageNoHa" AffinityRef="Umbral" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.15" Speed="0.15" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
   <Equipment RefName="LargeSword" DisplayName="Nodachi" Description="A field sword too long for indoor combat" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="80" ModelRef="Nodachi" UseType="Offensive">
@@ -141,40 +141,40 @@
   <Equipment RefName="ArchmageStaff" DisplayName="Takamagahara no Tsue" Description="A legendary staff connecting to the high plain of heaven" SlotRef="BothHands" Category="Staff" WholesalePrice="600" ModelRef="TakamagaharaTsue" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.28" Mana="0.15" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ApprenticeWand" DisplayName="Haraigushi" Description="A simple purification wand of paper streamers" SlotRef="RightHand" Category="Wand" WholesalePrice="30" ModelRef="Haraigushi" UseType="Offensive">
+  <Equipment RefName="ApprenticeWand" DisplayName="Haraigushi" Description="A simple purification wand of paper streamers" SlotRef="MainHand" Category="Wand" WholesalePrice="30" ModelRef="Haraigushi" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="OakWand" DisplayName="Gohei" Description="A wooden wand with sacred paper zigzags" SlotRef="RightHand" Category="Wand" WholesalePrice="60" ModelRef="Gohei" UseType="Offensive">
+  <Equipment RefName="OakWand" DisplayName="Gohei" Description="A wooden wand with sacred paper zigzags" SlotRef="MainHand" Category="Wand" WholesalePrice="60" ModelRef="Gohei" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="CrystalWand" DisplayName="Suisho Gohei" Description="A crystal-tipped ritual wand" SlotRef="RightHand" Category="Wand" WholesalePrice="150" ModelRef="SuishoGohei" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="CrystalWand" DisplayName="Suisho Gohei" Description="A crystal-tipped ritual wand" SlotRef="MainHand" Category="Wand" WholesalePrice="150" ModelRef="SuishoGohei" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.16" Mana="0.06" Stamina="1" />
   </Equipment>
-  <Equipment RefName="FireWand" DisplayName="Hi no Gohei" Description="A wand burning with sacred flame" SlotRef="RightHand" Category="Wand" WholesalePrice="180" ModelRef="HiGohei" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="FireWand" DisplayName="Hi no Gohei" Description="A wand burning with sacred flame" SlotRef="MainHand" Category="Wand" WholesalePrice="180" ModelRef="HiGohei" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.18" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="FrostWand" DisplayName="Kori no Gohei" Description="A wand frosted with spiritual cold" SlotRef="RightHand" Category="Wand" WholesalePrice="180" ModelRef="KoriGohei" AffinityRef="Water" UseType="Offensive">
+  <Equipment RefName="FrostWand" DisplayName="Kori no Gohei" Description="A wand frosted with spiritual cold" SlotRef="MainHand" Category="Wand" WholesalePrice="180" ModelRef="KoriGohei" AffinityRef="Water" UseType="Offensive">
     <Effects Health="1" Defense="0.04" Strength="0" Speed="0" Magic="0.16" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="VoidWand" DisplayName="Mu no Gohei" Description="A wand resonating with the void" SlotRef="RightHand" Category="Wand" WholesalePrice="350" ModelRef="MuGohei" AffinityRef="Void" UseType="Offensive">
+  <Equipment RefName="VoidWand" DisplayName="Mu no Gohei" Description="A wand resonating with the void" SlotRef="MainHand" Category="Wand" WholesalePrice="350" ModelRef="MuGohei" AffinityRef="Void" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.22" Mana="0.1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="PrayerBeads" DisplayName="Juzu" Description="Buddhist prayer beads for meditation and focus" SlotRef="RightHand" Category="Focus" WholesalePrice="40" ModelRef="Juzu" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="PrayerBeads" DisplayName="Juzu" Description="Buddhist prayer beads for meditation and focus" SlotRef="MainHand" Category="Focus" WholesalePrice="40" ModelRef="Juzu" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="0.04" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SummonerOrb" DisplayName="Magatama" Description="A curved jewel for binding spirits" SlotRef="RightHand" Category="Focus" WholesalePrice="100" ModelRef="Magatama" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="SummonerOrb" DisplayName="Magatama" Description="A curved jewel for binding spirits" SlotRef="MainHand" Category="Focus" WholesalePrice="100" ModelRef="Magatama" AffinityRef="Spirit" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="0.05" Stamina="1" />
   </Equipment>
-  <Equipment RefName="HolySymbol" DisplayName="Shimenawa" Description="A sacred rope marking divine presence" SlotRef="RightHand" Category="Focus" WholesalePrice="120" ModelRef="Shimenawa" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="HolySymbol" DisplayName="Shimenawa" Description="A sacred rope marking divine presence" SlotRef="MainHand" Category="Focus" WholesalePrice="120" ModelRef="Shimenawa" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="0.03" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="CrystalBall" DisplayName="Suiban" Description="A water basin for scrying the future" SlotRef="RightHand" Category="Focus" WholesalePrice="200" ModelRef="Suiban" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="CrystalBall" DisplayName="Suiban" Description="A water basin for scrying the future" SlotRef="MainHand" Category="Focus" WholesalePrice="200" ModelRef="Suiban" AffinityRef="Spirit" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.16" Mana="0.08" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SoulLantern" DisplayName="Chochin" Description="A paper lantern that reveals spirits" SlotRef="RightHand" Category="Focus" WholesalePrice="350" ModelRef="Chochin" AffinityRef="Void" UseType="Offensive">
+  <Equipment RefName="SoulLantern" DisplayName="Chochin" Description="A paper lantern that reveals spirits" SlotRef="MainHand" Category="Focus" WholesalePrice="350" ModelRef="Chochin" AffinityRef="Void" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.2" Mana="0.1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ReliquaryHeart" DisplayName="Yata no Kagami" Description="A replica of the sacred mirror of Amaterasu" SlotRef="RightHand" Category="Focus" WholesalePrice="500" ModelRef="YataKagami" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="ReliquaryHeart" DisplayName="Yata no Kagami" Description="A replica of the sacred mirror of Amaterasu" SlotRef="MainHand" Category="Focus" WholesalePrice="500" ModelRef="YataKagami" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="0.08" Defense="0" Strength="0" Speed="0" Magic="0.22" Mana="0.08" Stamina="1" />
   </Equipment>
   <Equipment RefName="TinWhistle" DisplayName="Shakuhachi" Description="A bamboo flute of haunting tones" SlotRef="BothHands" Category="Instrument" WholesalePrice="15" ModelRef="Shakuhachi" UseType="Offensive">
@@ -198,31 +198,31 @@
   <Equipment RefName="SirenHarp" DisplayName="Tennyo no Koto" Description="A celestial koto played by heavenly maidens" SlotRef="BothHands" Category="Instrument" WholesalePrice="500" ModelRef="TennyoKoto" AffinityRef="Spirit" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0.08" Magic="0.24" Mana="0.1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Buckler" DisplayName="Tedate" Description="A small hand shield for deflecting blows" SlotRef="LeftHand" Category="Shield" WholesalePrice="20" ModelRef="Tedate">
+  <Equipment RefName="Buckler" DisplayName="Tedate" Description="A small hand shield for deflecting blows" SlotRef="OffHand" Category="Shield" WholesalePrice="20" ModelRef="Tedate">
     <Effects Health="1" Defense="0.06" Strength="0" Speed="0.01" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WoodenShield" DisplayName="Mochitate" Description="A wooden shield for ashigaru troops" SlotRef="LeftHand" Category="Shield" WholesalePrice="35" ModelRef="Mochitate">
+  <Equipment RefName="WoodenShield" DisplayName="Mochitate" Description="A wooden shield for ashigaru troops" SlotRef="OffHand" Category="Shield" WholesalePrice="35" ModelRef="Mochitate">
     <Effects Health="0.03" Defense="0.1" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="IronShield" DisplayName="Tate" Description="A standing shield for battlefield defense" SlotRef="LeftHand" Category="Shield" WholesalePrice="80" ModelRef="Tate">
+  <Equipment RefName="IronShield" DisplayName="Tate" Description="A standing shield for battlefield defense" SlotRef="OffHand" Category="Shield" WholesalePrice="80" ModelRef="Tate">
     <Effects Health="0.05" Defense="0.14" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SteelShield" DisplayName="Tetsutate" Description="An iron-reinforced battle shield" SlotRef="LeftHand" Category="Shield" WholesalePrice="150" ModelRef="Tetsutate">
+  <Equipment RefName="SteelShield" DisplayName="Tetsutate" Description="An iron-reinforced battle shield" SlotRef="OffHand" Category="Shield" WholesalePrice="150" ModelRef="Tetsutate">
     <Effects Health="0.08" Defense="0.18" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="TowerShield" DisplayName="Odate" Description="A massive siege shield for arrow protection" SlotRef="LeftHand" Category="Shield" WholesalePrice="250" ModelRef="Odate">
+  <Equipment RefName="TowerShield" DisplayName="Odate" Description="A massive siege shield for arrow protection" SlotRef="OffHand" Category="Shield" WholesalePrice="250" ModelRef="Odate">
     <Effects Health="0.1" Defense="0.25" Strength="0" Speed="-0.1" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="KiteShield" DisplayName="Sashimono" Description="A banner shield displaying clan heraldry" SlotRef="LeftHand" Category="Shield" WholesalePrice="200" ModelRef="Sashimono">
+  <Equipment RefName="KiteShield" DisplayName="Sashimono" Description="A banner shield displaying clan heraldry" SlotRef="OffHand" Category="Shield" WholesalePrice="200" ModelRef="Sashimono">
     <Effects Health="0.08" Defense="0.2" Strength="0" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SpikedShield" DisplayName="Toge Tate" Description="A shield with protruding spikes" SlotRef="LeftHand" Category="Shield" WholesalePrice="180" ModelRef="TogeTate">
+  <Equipment RefName="SpikedShield" DisplayName="Toge Tate" Description="A shield with protruding spikes" SlotRef="OffHand" Category="Shield" WholesalePrice="180" ModelRef="TogeTate">
     <Effects Health="1" Defense="0.15" Strength="0.05" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="HolyShield" DisplayName="Shinsei Tate" Description="A sacred shield blessed by the kami" SlotRef="LeftHand" Category="Shield" WholesalePrice="350" ModelRef="ShinseiTate" AffinityRef="Holy">
+  <Equipment RefName="HolyShield" DisplayName="Shinsei Tate" Description="A sacred shield blessed by the kami" SlotRef="OffHand" Category="Shield" WholesalePrice="350" ModelRef="ShinseiTate" AffinityRef="Holy">
     <Effects Health="0.08" Defense="0.2" Strength="0" Speed="0" Magic="0.05" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="DragonShield" DisplayName="Ryu no Tate" Description="A shield bearing a dragon's protection" SlotRef="LeftHand" Category="Shield" WholesalePrice="500" ModelRef="RyuTate" AffinityRef="Fire">
+  <Equipment RefName="DragonShield" DisplayName="Ryu no Tate" Description="A shield bearing a dragon's protection" SlotRef="OffHand" Category="Shield" WholesalePrice="500" ModelRef="RyuTate" AffinityRef="Fire">
     <Effects Health="0.12" Defense="0.28" Strength="0" Speed="-0.08" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
   <Equipment RefName="ClothCap" DisplayName="Zukin" Description="A simple cloth hood" SlotRef="Head" Category="ArmorLight" WholesalePrice="10" ModelRef="Zukin">

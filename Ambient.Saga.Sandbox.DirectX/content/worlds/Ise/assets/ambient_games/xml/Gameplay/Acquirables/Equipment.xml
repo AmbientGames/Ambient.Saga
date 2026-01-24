@@ -1,60 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Equipment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <Equipment RefName="RustySword" DisplayName="Worn Shinai" Description="A practice bamboo sword borrowed from the kendo club" SlotRef="RightHand" Category="OneHanded" WholesalePrice="15" ModelRef="Shinai" UseType="Offensive">
+  <Equipment RefName="RustySword" DisplayName="Worn Shinai" Description="A practice bamboo sword borrowed from the kendo club" SlotRef="MainHand" Category="OneHanded" WholesalePrice="15" ModelRef="Shinai" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.05" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="IronSword" DisplayName="Shinai" Description="A regulation bamboo practice sword" SlotRef="RightHand" Category="OneHanded" WholesalePrice="50" ModelRef="Shinai" UseType="Offensive">
+  <Equipment RefName="IronSword" DisplayName="Shinai" Description="A regulation bamboo practice sword" SlotRef="MainHand" Category="OneHanded" WholesalePrice="50" ModelRef="Shinai" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.1" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SteelSword" DisplayName="Metal Bat" Description="An aluminum baseball bat from the sports shed" SlotRef="RightHand" Category="OneHanded" WholesalePrice="120" ModelRef="MetalBat" UseType="Offensive">
+  <Equipment RefName="SteelSword" DisplayName="Metal Bat" Description="An aluminum baseball bat from the sports shed" SlotRef="MainHand" Category="OneHanded" WholesalePrice="120" ModelRef="MetalBat" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.14" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="KnightsSword" DisplayName="Bokken" Description="A hardwood practice sword used in advanced kendo" SlotRef="RightHand" Category="OneHanded" WholesalePrice="250" ModelRef="Bokken" UseType="Offensive">
+  <Equipment RefName="KnightsSword" DisplayName="Bokken" Description="A hardwood practice sword used in advanced kendo" SlotRef="MainHand" Category="OneHanded" WholesalePrice="250" ModelRef="Bokken" UseType="Offensive">
     <Effects Health="1" Defense="0.05" Strength="0.18" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="RuneSword" DisplayName="Blessed Bokken" Description="A wooden sword blessed at the shrine, faintly glowing with spiritual energy" SlotRef="RightHand" Category="OneHanded" WholesalePrice="400" ModelRef="BlessedBokken" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="RuneSword" DisplayName="Blessed Bokken" Description="A wooden sword blessed at the shrine, faintly glowing with spiritual energy" SlotRef="MainHand" Category="OneHanded" WholesalePrice="400" ModelRef="BlessedBokken" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.2" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Flamebrand" DisplayName="Crimson Blade" Description="A spirit-forged katana that burns with inner fire" SlotRef="RightHand" Category="OneHanded" WholesalePrice="600" ModelRef="SpiritKatana" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="Flamebrand" DisplayName="Crimson Blade" Description="A spirit-forged katana that burns with inner fire" SlotRef="MainHand" Category="OneHanded" WholesalePrice="600" ModelRef="SpiritKatana" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.24" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="HandAxe" DisplayName="Golf Club" Description="A standard iron borrowed from someone's bag" SlotRef="RightHand" Category="OneHanded" WholesalePrice="20" ModelRef="GolfClub" UseType="Offensive">
+  <Equipment RefName="HandAxe" DisplayName="Golf Club" Description="A standard iron borrowed from someone's bag" SlotRef="MainHand" Category="OneHanded" WholesalePrice="20" ModelRef="GolfClub" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.06" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="BattleAxe" DisplayName="Heavy Driver" Description="A powerful golf driver that packs serious impact" SlotRef="RightHand" Category="OneHanded" WholesalePrice="80" ModelRef="GolfDriver" UseType="Offensive">
+  <Equipment RefName="BattleAxe" DisplayName="Heavy Driver" Description="A powerful golf driver that packs serious impact" SlotRef="MainHand" Category="OneHanded" WholesalePrice="80" ModelRef="GolfDriver" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.12" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="BerserkerAxe" DisplayName="Rage Driver" Description="An old driver infused with furious spiritual energy" SlotRef="RightHand" Category="OneHanded" WholesalePrice="200" ModelRef="RageDriver" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="BerserkerAxe" DisplayName="Rage Driver" Description="An old driver infused with furious spiritual energy" SlotRef="MainHand" Category="OneHanded" WholesalePrice="200" ModelRef="RageDriver" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="1" Defense="-0.05" Strength="0.18" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WoodenClub" DisplayName="Wooden Stick" Description="A sturdy branch found near the shrine grounds" SlotRef="RightHand" Category="OneHanded" WholesalePrice="10" ModelRef="WoodStick" UseType="Offensive">
+  <Equipment RefName="WoodenClub" DisplayName="Wooden Stick" Description="A sturdy branch found near the shrine grounds" SlotRef="MainHand" Category="OneHanded" WholesalePrice="10" ModelRef="WoodStick" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.04" Speed="0" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="IronMace" DisplayName="Pipe Wrench" Description="A heavy maintenance tool repurposed for defense" SlotRef="RightHand" Category="OneHanded" WholesalePrice="60" ModelRef="PipeWrench" UseType="Offensive">
+  <Equipment RefName="IronMace" DisplayName="Pipe Wrench" Description="A heavy maintenance tool repurposed for defense" SlotRef="MainHand" Category="OneHanded" WholesalePrice="60" ModelRef="PipeWrench" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.11" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WarHammer" DisplayName="Steel Pipe" Description="A length of construction pipe found at a work site" SlotRef="RightHand" Category="OneHanded" WholesalePrice="150" ModelRef="SteelPipe" UseType="Offensive">
+  <Equipment RefName="WarHammer" DisplayName="Steel Pipe" Description="A length of construction pipe found at a work site" SlotRef="MainHand" Category="OneHanded" WholesalePrice="150" ModelRef="SteelPipe" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.15" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="HolyMace" DisplayName="Purification Rod" Description="A sacred gohei wand channeling divine energy" SlotRef="RightHand" Category="OneHanded" WholesalePrice="280" ModelRef="Gohei" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="HolyMace" DisplayName="Purification Rod" Description="A sacred gohei wand channeling divine energy" SlotRef="MainHand" Category="OneHanded" WholesalePrice="280" ModelRef="Gohei" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.14" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Knife" DisplayName="Box Cutter" Description="A simple utility knife from the convenience store" SlotRef="RightHand" Category="OneHanded" WholesalePrice="8" ModelRef="BoxCutter" UseType="Offensive">
+  <Equipment RefName="Knife" DisplayName="Box Cutter" Description="A simple utility knife from the convenience store" SlotRef="MainHand" Category="OneHanded" WholesalePrice="8" ModelRef="BoxCutter" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.03" Speed="0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Dagger" DisplayName="Pocket Knife" Description="A folding knife carried for emergencies" SlotRef="RightHand" Category="OneHanded" WholesalePrice="25" ModelRef="PocketKnife" UseType="Offensive">
+  <Equipment RefName="Dagger" DisplayName="Pocket Knife" Description="A folding knife carried for emergencies" SlotRef="MainHand" Category="OneHanded" WholesalePrice="25" ModelRef="PocketKnife" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.05" Speed="0.05" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Stiletto" DisplayName="Letter Opener" Description="A sharp decorative blade from the gift shop" SlotRef="RightHand" Category="OneHanded" WholesalePrice="70" ModelRef="LetterOpener" UseType="Offensive">
+  <Equipment RefName="Stiletto" DisplayName="Letter Opener" Description="A sharp decorative blade from the gift shop" SlotRef="MainHand" Category="OneHanded" WholesalePrice="70" ModelRef="LetterOpener" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.07" Speed="0.08" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ShadowDagger" DisplayName="Kunai Replica" Description="A replica ninja knife that channels shadow energy" SlotRef="RightHand" Category="OneHanded" WholesalePrice="180" ModelRef="Kunai" AffinityRef="Umbral" UseType="Offensive">
+  <Equipment RefName="ShadowDagger" DisplayName="Kunai Replica" Description="A replica ninja knife that channels shadow energy" SlotRef="MainHand" Category="OneHanded" WholesalePrice="180" ModelRef="Kunai" AffinityRef="Umbral" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.1" Speed="0.12" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="VenomFang" DisplayName="Ritual Dagger" Description="An antique tantou coated in mysterious substances" SlotRef="RightHand" Category="OneHanded" WholesalePrice="300" ModelRef="Tantou" AffinityRef="Wild" UseType="Offensive">
+  <Equipment RefName="VenomFang" DisplayName="Ritual Dagger" Description="An antique tantou coated in mysterious substances" SlotRef="MainHand" Category="OneHanded" WholesalePrice="300" ModelRef="Tantou" AffinityRef="Wild" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.12" Speed="0.1" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="AssassinsBlade" DisplayName="Shadow Tantou" Description="A spirit-touched blade that moves like darkness" SlotRef="RightHand" Category="OneHanded" WholesalePrice="500" ModelRef="ShadowTantou" AffinityRef="Umbral" UseType="Offensive">
+  <Equipment RefName="AssassinsBlade" DisplayName="Shadow Tantou" Description="A spirit-touched blade that moves like darkness" SlotRef="MainHand" Category="OneHanded" WholesalePrice="500" ModelRef="ShadowTantou" AffinityRef="Umbral" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0.15" Speed="0.15" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
   <Equipment RefName="LargeSword" DisplayName="Nodachi Shinai" Description="An oversized practice sword for two-handed techniques" SlotRef="BothHands" Category="TwoHanded" WholesalePrice="80" ModelRef="LargeShinai" UseType="Offensive">
@@ -141,40 +141,40 @@
   <Equipment RefName="ArchmageStaff" DisplayName="Celestial Staff" Description="A legendary staff connecting to all kami" SlotRef="BothHands" Category="Staff" WholesalePrice="600" ModelRef="CelestialStaff" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.28" Mana="0.15" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ApprenticeWand" DisplayName="Mechanical Pencil" Description="A student's pencil that focuses minor energy" SlotRef="RightHand" Category="Wand" WholesalePrice="30" ModelRef="MechPencil" UseType="Offensive">
+  <Equipment RefName="ApprenticeWand" DisplayName="Mechanical Pencil" Description="A student's pencil that focuses minor energy" SlotRef="MainHand" Category="Wand" WholesalePrice="30" ModelRef="MechPencil" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="OakWand" DisplayName="Fountain Pen" Description="An elegant pen channeling refined power" SlotRef="RightHand" Category="Wand" WholesalePrice="60" ModelRef="FountainPen" UseType="Offensive">
+  <Equipment RefName="OakWand" DisplayName="Fountain Pen" Description="An elegant pen channeling refined power" SlotRef="MainHand" Category="Wand" WholesalePrice="60" ModelRef="FountainPen" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.1" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="CrystalWand" DisplayName="Crystal Stylus" Description="A gemstone-tipped stylus of focused energy" SlotRef="RightHand" Category="Wand" WholesalePrice="150" ModelRef="CrystalStylus" AffinityRef="Arcane" UseType="Offensive">
+  <Equipment RefName="CrystalWand" DisplayName="Crystal Stylus" Description="A gemstone-tipped stylus of focused energy" SlotRef="MainHand" Category="Wand" WholesalePrice="150" ModelRef="CrystalStylus" AffinityRef="Arcane" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.16" Mana="0.06" Stamina="1" />
   </Equipment>
-  <Equipment RefName="FireWand" DisplayName="Red Lighter" Description="A lighter flickering with supernatural flame" SlotRef="RightHand" Category="Wand" WholesalePrice="180" ModelRef="RedLighter" AffinityRef="Fire" UseType="Offensive">
+  <Equipment RefName="FireWand" DisplayName="Red Lighter" Description="A lighter flickering with supernatural flame" SlotRef="MainHand" Category="Wand" WholesalePrice="180" ModelRef="RedLighter" AffinityRef="Fire" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.18" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="FrostWand" DisplayName="Ice Pack Wand" Description="A frozen compress radiating chill power" SlotRef="RightHand" Category="Wand" WholesalePrice="180" ModelRef="IcePackWand" AffinityRef="Water" UseType="Offensive">
+  <Equipment RefName="FrostWand" DisplayName="Ice Pack Wand" Description="A frozen compress radiating chill power" SlotRef="MainHand" Category="Wand" WholesalePrice="180" ModelRef="IcePackWand" AffinityRef="Water" UseType="Offensive">
     <Effects Health="1" Defense="0.04" Strength="0" Speed="0" Magic="0.16" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="VoidWand" DisplayName="Black Stylus" Description="A void-touched implement of nothingness" SlotRef="RightHand" Category="Wand" WholesalePrice="350" ModelRef="BlackStylus" AffinityRef="Void" UseType="Offensive">
+  <Equipment RefName="VoidWand" DisplayName="Black Stylus" Description="A void-touched implement of nothingness" SlotRef="MainHand" Category="Wand" WholesalePrice="350" ModelRef="BlackStylus" AffinityRef="Void" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.22" Mana="0.1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="PrayerBeads" DisplayName="Juzu Beads" Description="Buddhist prayer beads carried by the shrine maiden" SlotRef="RightHand" Category="Focus" WholesalePrice="40" ModelRef="JuzuBeads" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="PrayerBeads" DisplayName="Juzu Beads" Description="Buddhist prayer beads carried by the shrine maiden" SlotRef="MainHand" Category="Focus" WholesalePrice="40" ModelRef="JuzuBeads" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.08" Mana="0.04" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SummonerOrb" DisplayName="Spirit Stone" Description="A magatama bead resonating with spirit energy" SlotRef="RightHand" Category="Focus" WholesalePrice="100" ModelRef="Magatama" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="SummonerOrb" DisplayName="Spirit Stone" Description="A magatama bead resonating with spirit energy" SlotRef="MainHand" Category="Focus" WholesalePrice="100" ModelRef="Magatama" AffinityRef="Spirit" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="0.05" Stamina="1" />
   </Equipment>
-  <Equipment RefName="HolySymbol" DisplayName="Omamori Charm" Description="A protective amulet from the grand shrine" SlotRef="RightHand" Category="Focus" WholesalePrice="120" ModelRef="Omamori" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="HolySymbol" DisplayName="Omamori Charm" Description="A protective amulet from the grand shrine" SlotRef="MainHand" Category="Focus" WholesalePrice="120" ModelRef="Omamori" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="0.03" Defense="0" Strength="0" Speed="0" Magic="0.12" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="CrystalBall" DisplayName="Spirit Phone" Description="A smartphone modified to detect supernatural phenomena" SlotRef="RightHand" Category="Focus" WholesalePrice="200" ModelRef="SpiritPhone" AffinityRef="Spirit" UseType="Offensive">
+  <Equipment RefName="CrystalBall" DisplayName="Spirit Phone" Description="A smartphone modified to detect supernatural phenomena" SlotRef="MainHand" Category="Focus" WholesalePrice="200" ModelRef="SpiritPhone" AffinityRef="Spirit" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.16" Mana="0.08" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SoulLantern" DisplayName="Paper Lantern" Description="A chochin lantern that traps wandering spirits" SlotRef="RightHand" Category="Focus" WholesalePrice="350" ModelRef="Chochin" AffinityRef="Void" UseType="Offensive">
+  <Equipment RefName="SoulLantern" DisplayName="Paper Lantern" Description="A chochin lantern that traps wandering spirits" SlotRef="MainHand" Category="Focus" WholesalePrice="350" ModelRef="Chochin" AffinityRef="Void" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0" Magic="0.2" Mana="0.1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="ReliquaryHeart" DisplayName="Sacred Mirror" Description="A replica of the sacred mirror of Amaterasu" SlotRef="RightHand" Category="Focus" WholesalePrice="500" ModelRef="SacredMirror" AffinityRef="Holy" UseType="Offensive">
+  <Equipment RefName="ReliquaryHeart" DisplayName="Sacred Mirror" Description="A replica of the sacred mirror of Amaterasu" SlotRef="MainHand" Category="Focus" WholesalePrice="500" ModelRef="SacredMirror" AffinityRef="Holy" UseType="Offensive">
     <Effects Health="0.08" Defense="0" Strength="0" Speed="0" Magic="0.22" Mana="0.08" Stamina="1" />
   </Equipment>
   <Equipment RefName="TinWhistle" DisplayName="Recorder" Description="A school music class recorder" SlotRef="BothHands" Category="Instrument" WholesalePrice="15" ModelRef="Recorder" UseType="Offensive">
@@ -198,31 +198,31 @@
   <Equipment RefName="SirenHarp" DisplayName="Celestial Koto" Description="A legendary koto whose music moves the heavens" SlotRef="BothHands" Category="Instrument" WholesalePrice="500" ModelRef="CelestialKoto" AffinityRef="Spirit" UseType="Offensive">
     <Effects Health="1" Defense="0" Strength="0" Speed="0.08" Magic="0.24" Mana="0.1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="Buckler" DisplayName="School Bag" Description="A sturdy bag held up for protection" SlotRef="LeftHand" Category="Shield" WholesalePrice="20" ModelRef="SchoolBag">
+  <Equipment RefName="Buckler" DisplayName="School Bag" Description="A sturdy bag held up for protection" SlotRef="OffHand" Category="Shield" WholesalePrice="20" ModelRef="SchoolBag">
     <Effects Health="1" Defense="0.06" Strength="0" Speed="0.01" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="WoodenShield" DisplayName="Cafeteria Tray" Description="A metal tray from the school cafeteria" SlotRef="LeftHand" Category="Shield" WholesalePrice="35" ModelRef="CafeTray">
+  <Equipment RefName="WoodenShield" DisplayName="Cafeteria Tray" Description="A metal tray from the school cafeteria" SlotRef="OffHand" Category="Shield" WholesalePrice="35" ModelRef="CafeTray">
     <Effects Health="0.03" Defense="0.1" Strength="0" Speed="-0.02" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="IronShield" DisplayName="Trash Can Lid" Description="A metal lid repurposed as a shield" SlotRef="LeftHand" Category="Shield" WholesalePrice="80" ModelRef="TrashLid">
+  <Equipment RefName="IronShield" DisplayName="Trash Can Lid" Description="A metal lid repurposed as a shield" SlotRef="OffHand" Category="Shield" WholesalePrice="80" ModelRef="TrashLid">
     <Effects Health="0.05" Defense="0.14" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SteelShield" DisplayName="Road Sign" Description="A stop sign pulled from the ground" SlotRef="LeftHand" Category="Shield" WholesalePrice="150" ModelRef="RoadSign">
+  <Equipment RefName="SteelShield" DisplayName="Road Sign" Description="A stop sign pulled from the ground" SlotRef="OffHand" Category="Shield" WholesalePrice="150" ModelRef="RoadSign">
     <Effects Health="0.08" Defense="0.18" Strength="0" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="TowerShield" DisplayName="Riot Shield" Description="Police riot gear found in storage" SlotRef="LeftHand" Category="Shield" WholesalePrice="250" ModelRef="RiotShield">
+  <Equipment RefName="TowerShield" DisplayName="Riot Shield" Description="Police riot gear found in storage" SlotRef="OffHand" Category="Shield" WholesalePrice="250" ModelRef="RiotShield">
     <Effects Health="0.1" Defense="0.25" Strength="0" Speed="-0.1" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="KiteShield" DisplayName="Skateboard" Description="A skateboard held defensively" SlotRef="LeftHand" Category="Shield" WholesalePrice="200" ModelRef="Skateboard">
+  <Equipment RefName="KiteShield" DisplayName="Skateboard" Description="A skateboard held defensively" SlotRef="OffHand" Category="Shield" WholesalePrice="200" ModelRef="Skateboard">
     <Effects Health="0.08" Defense="0.2" Strength="0" Speed="-0.04" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="SpikedShield" DisplayName="Spiked Board" Description="A board modified with protruding nails" SlotRef="LeftHand" Category="Shield" WholesalePrice="180" ModelRef="SpikedBoard">
+  <Equipment RefName="SpikedShield" DisplayName="Spiked Board" Description="A board modified with protruding nails" SlotRef="OffHand" Category="Shield" WholesalePrice="180" ModelRef="SpikedBoard">
     <Effects Health="1" Defense="0.15" Strength="0.05" Speed="-0.03" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="HolyShield" DisplayName="Sacred Shield" Description="A shimenawa-wrapped barrier of holy power" SlotRef="LeftHand" Category="Shield" WholesalePrice="350" ModelRef="SacredShield" AffinityRef="Holy">
+  <Equipment RefName="HolyShield" DisplayName="Sacred Shield" Description="A shimenawa-wrapped barrier of holy power" SlotRef="OffHand" Category="Shield" WholesalePrice="350" ModelRef="SacredShield" AffinityRef="Holy">
     <Effects Health="0.08" Defense="0.2" Strength="0" Speed="0" Magic="0.05" Mana="1" Stamina="1" />
   </Equipment>
-  <Equipment RefName="DragonShield" DisplayName="Dragon Aegis" Description="A spirit shield bearing a dragon's protection" SlotRef="LeftHand" Category="Shield" WholesalePrice="500" ModelRef="DragonAegis" AffinityRef="Fire">
+  <Equipment RefName="DragonShield" DisplayName="Dragon Aegis" Description="A spirit shield bearing a dragon's protection" SlotRef="OffHand" Category="Shield" WholesalePrice="500" ModelRef="DragonAegis" AffinityRef="Fire">
     <Effects Health="0.12" Defense="0.28" Strength="0" Speed="-0.08" Magic="0" Mana="1" Stamina="1" />
   </Equipment>
   <Equipment RefName="ClothCap" DisplayName="Baseball Cap" Description="A casual cap offering minimal protection" SlotRef="Head" Category="ArmorLight" WholesalePrice="10" ModelRef="BaseballCap">

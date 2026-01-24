@@ -33,7 +33,7 @@ public class Combatant
     // Reference to capabilities for spell/equipment access
     public ItemCollection? Capabilities { get; set; }
 
-    // Currently equipped items: slot name (e.g., "Head", "RightHand") -> equipment RefName
+    // Currently equipped items: slot name (e.g., "Head", "MainHand") -> equipment RefName
     public Dictionary<string, string> CombatProfile { get; set; } = new();
 
     // Combat state

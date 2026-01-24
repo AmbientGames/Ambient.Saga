@@ -9,9 +9,16 @@ namespace Ambient.Saga.UI.Components.Panels;
 /// Inventory panel showing what is available to the character.
 /// Includes equipment, consumables, spells, tools, blocks, materials, and quest tokens.
 /// Accessible via I key.
+///
+/// Equipment items have Equip/Unequip actions following the canonical RPG pattern:
+/// - Inventory = Action space (equip/unequip verbs)
+/// - Character panel = State space (read-only, shows equipped items)
 /// </summary>
 public class InventoryPanel
 {
+    // Track pending equip operations for async feedback
+    private HashSet<string> _pendingEquipOperations = new();
+
     public void Render(MainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1), "INVENTORY");
@@ -42,16 +49,50 @@ public class InventoryPanel
                 {
                     var equipItem = viewModel.CurrentWorld?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
                     var name = equipItem?.DisplayName ?? equip.EquipmentRef;
+                    var slotRef = equipItem?.SlotRef.ToString() ?? "Unknown";
+                    var isEquipped = viewModel.IsItemEquipped(equip.EquipmentRef);
+                    var isPending = _pendingEquipOperations.Contains(equip.EquipmentRef);
 
                     ImGui.Indent();
 
-                    // Expandable header for each equipment item
-                    var treeNodeOpen = ImGui.TreeNode($"{name} ({equip.Condition:P0})##{equip.EquipmentRef}");
+                    // Expandable header for each equipment item with equipped indicator
+                    var headerText = isEquipped
+                        ? $"{name} ({equip.Condition:P0}) [EQUIPPED]"
+                        : $"{name} ({equip.Condition:P0})";
+                    var treeNodeOpen = ImGui.TreeNode($"{headerText}##{equip.EquipmentRef}");
+
+                    // Equip/Unequip button on same line as header
+                    ImGui.SameLine(ImGui.GetWindowWidth() - 80);
+                    if (isPending)
+                    {
+                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "...");
+                    }
+                    else if (isEquipped)
+                    {
+                        if (ImGui.SmallButton($"Unequip##{equip.EquipmentRef}"))
+                        {
+                            // Unequip from the slot
+                            _pendingEquipOperations.Add(equip.EquipmentRef);
+                            _ = UnequipItemAsync(viewModel, equip.EquipmentRef, slotRef);
+                        }
+                    }
+                    else
+                    {
+                        if (ImGui.SmallButton($"Equip##{equip.EquipmentRef}"))
+                        {
+                            // Equip to the slot
+                            _pendingEquipOperations.Add(equip.EquipmentRef);
+                            _ = EquipItemAsync(viewModel, equip.EquipmentRef, slotRef);
+                        }
+                    }
 
                     if (treeNodeOpen)
                     {
                         if (equipItem != null)
                         {
+                            // Slot info
+                            ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1), $"Slot: {slotRef}");
+
                             // Description
                             if (!string.IsNullOrEmpty(equipItem.Description))
                             {
@@ -293,5 +334,30 @@ public class InventoryPanel
         }
 
         ImGui.EndChild();
+    }
+
+    private async Task EquipItemAsync(MainViewModel viewModel, string equipmentRef, string slotRef)
+    {
+        try
+        {
+            await viewModel.EquipItemAsync(equipmentRef, slotRef);
+        }
+        finally
+        {
+            _pendingEquipOperations.Remove(equipmentRef);
+        }
+    }
+
+    private async Task UnequipItemAsync(MainViewModel viewModel, string equipmentRef, string slotRef)
+    {
+        try
+        {
+            // Pass null/empty equipmentRef to unequip the slot
+            await viewModel.EquipItemAsync(null, slotRef);
+        }
+        finally
+        {
+            _pendingEquipOperations.Remove(equipmentRef);
+        }
     }
 }

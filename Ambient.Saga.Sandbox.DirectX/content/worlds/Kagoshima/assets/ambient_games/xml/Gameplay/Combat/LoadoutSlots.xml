@@ -8,6 +8,7 @@
   <LoadoutSlot RefName="Shoulders" DisplayName="Sode" Description="Shoulder guards and pauldrons" />
   <LoadoutSlot RefName="MainHand" DisplayName="Katana" Description="Primary weapon in dominant hand" />
   <LoadoutSlot RefName="OffHand" DisplayName="Wakizashi" Description="Secondary weapon, shield, or focus" />
+  <LoadoutSlot RefName="BothHands" DisplayName="Nodachi" Description="Two-handed weapon requiring both hands" />
   <LoadoutSlot RefName="Ring" DisplayName="Yubiwa" Description="Rings with magical properties" />
   <LoadoutSlot RefName="Amulet" DisplayName="Omamori" Description="Shrine amulets and protective charms" />
   <LoadoutSlot RefName="Belt" DisplayName="Obi" Description="Sash for carrying items and weapons" />

@@ -50,7 +50,7 @@ public class EquipmentChangeModal
         // Fallback to common slots if world doesn't define any
         if (slotNames.Count == 0)
         {
-            slotNames = new List<string> { "Head", "Chest", "Legs", "Feet", "LeftHand", "RightHand", "BothHands", "Hands", "Back", "Ring", "Amulet", "Belt" };
+            slotNames = new List<string> { "Head", "Chest", "Legs", "Feet", "OffHand", "MainHand", "BothHands", "Hands", "Back", "Ring", "Amulet", "Belt" };
         }
 
         foreach (var slotName in slotNames)

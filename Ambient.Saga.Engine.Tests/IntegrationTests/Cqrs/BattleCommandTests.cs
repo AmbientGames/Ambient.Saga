@@ -569,7 +569,7 @@ public class BattleCommandTests : IDisposable
             RefName = "IronSword",
             DisplayName = "Iron Sword",
             WholesalePrice = 50,
-            SlotRef = "RightHand"
+            SlotRef = "MainHand"
         };
 
         // Create Warrior archetype for BattleSetup

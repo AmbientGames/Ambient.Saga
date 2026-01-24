@@ -2307,8 +2307,9 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="EnchantedLute" Amount="1" />
-      <Action Type="GiveConsumable" RefName="FrostResistPotion" Amount="1" />
+      <Action Type="GiveEquipment" RefName="ArchmageStaff" Amount="1" />
+      <Action Type="GiveConsumable" RefName="HastePotion" Amount="1" />
+      <Action Type="GiveSpell" RefName="Agility" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2367,10 +2368,9 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="DragonTooth" Amount="1" />
-      <Action Type="GiveEquipment" RefName="HolyShield" Amount="1" />
-      <Action Type="GiveConsumable" RefName="GreaterManaPotion" Amount="1" />
-      <Action Type="GiveConsumable" RefName="MinorHealingPotion" Amount="1" />
+      <Action Type="GiveEquipment" RefName="WoodenClub" Amount="1" />
+      <Action Type="GiveConsumable" RefName="DarkEssence" Amount="1" />
+      <Action Type="GiveSpell" RefName="MightyStrength" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2429,10 +2429,9 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="WindBow" Amount="1" />
-      <Action Type="GiveConsumable" RefName="ScrollOfHealing" Amount="1" />
-      <Action Type="GiveConsumable" RefName="Javelin" Amount="1" />
-      <Action Type="GiveSpell" RefName="FrostNova" Amount="1" />
+      <Action Type="GiveEquipment" RefName="TravelCloak" Amount="1" />
+      <Action Type="GiveConsumable" RefName="Milk" Amount="1" />
+      <Action Type="GiveConsumable" RefName="SorceryPotion" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2460,22 +2459,10 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Leather Cord and Poisoned Dart. Please, take it.</Text>
-      <Choice Text="Thank you for the Leather Cord and Poisoned Dart!" NextNodeId="gift_accepted" />
-      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
-    </Node>
-    <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Leather Cord and Poisoned Dart serve you well on your journey!</Text>
-      <Action Type="GiveEquipment" RefName="LeatherCord" Amount="1" />
-      <Action Type="GiveConsumable" RefName="PoisonedDart" Amount="1" />
-      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
-    </Node>
     <Node NodeId="greeting">
       <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). The journey has been long.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>Welcome, friend! Many pass through here on their way to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1 or Aramatsurinomiya.</Text>
@@ -2640,22 +2627,10 @@
     </Node>
   </DialogueTree>
   <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
-    <Node NodeId="gift_offer">
-      <Text>I'd like to give you something... a Enchanted Lute and Minor Stamina Potion. Please, take it.</Text>
-      <Choice Text="Thank you for the Enchanted Lute and Minor Stamina Potion!" NextNodeId="gift_accepted" />
-      <Choice Text="That's very kind, but I couldn't." NextNodeId="end" />
-    </Node>
-    <Node NodeId="gift_accepted">
-      <Text>It's yours now. May the Enchanted Lute and Minor Stamina Potion serve you well on your journey!</Text>
-      <Action Type="GiveEquipment" RefName="EnchantedLute" Amount="1" />
-      <Action Type="GiveConsumable" RefName="MinorStaminaPotion" Amount="1" />
-      <Choice Text="Farewell, and thank you!" NextNodeId="end" />
-    </Node>
     <Node NodeId="greeting">
       <Text>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)? It's quite a sight to behold.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
-      <Choice Text="You look like you want to say something..." NextNodeId="gift_offer" />
     </Node>
     <Node NodeId="friendly">
       <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6 or ToyōkeDaijingūOuterShrine yet?</Text>
@@ -2701,10 +2676,9 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="Buckler" Amount="1" />
-      <Action Type="GiveEquipment" RefName="ExecutionerAxe" Amount="1" />
-      <Action Type="GiveConsumable" RefName="IronskinPotion" Amount="1" />
-      <Action Type="GiveConsumable" RefName="MinorHealingPotion" Amount="1" />
+      <Action Type="GiveEquipment" RefName="Knife" Amount="1" />
+      <Action Type="GiveConsumable" RefName="CurativePotion" Amount="1" />
+      <Action Type="GiveSpell" RefName="HuntersMark" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2823,11 +2797,10 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="FireStaff" Amount="1" />
-      <Action Type="GiveEquipment" RefName="KiteShield" Amount="1" />
-      <Action Type="GiveConsumable" RefName="FireBomb" Amount="1" />
-      <Action Type="GiveConsumable" RefName="ElixirOfArcana" Amount="1" />
-      <Action Type="GiveSpell" RefName="Curse" Amount="1" />
+      <Action Type="GiveEquipment" RefName="OakStaff" Amount="1" />
+      <Action Type="GiveEquipment" RefName="TravelCloak" Amount="1" />
+      <Action Type="GiveConsumable" RefName="ScrollOfLightning" Amount="1" />
+      <Action Type="GiveConsumable" RefName="FireResistPotion" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2886,9 +2859,11 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="AmuletOfMana" Amount="1" />
-      <Action Type="GiveEquipment" RefName="WarriorBelt" Amount="1" />
-      <Action Type="GiveConsumable" RefName="ScrollOfHaste" Amount="1" />
+      <Action Type="GiveEquipment" RefName="LeatherCord" Amount="1" />
+      <Action Type="GiveEquipment" RefName="HolyStaff" Amount="1" />
+      <Action Type="GiveConsumable" RefName="MinorManaPotion" Amount="1" />
+      <Action Type="GiveConsumable" RefName="CurativePotion" Amount="1" />
+      <Action Type="GiveSpell" RefName="MeteorStrike" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2947,10 +2922,10 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveEquipment" RefName="ArchmageStaff" Amount="1" />
-      <Action Type="GiveConsumable" RefName="ThrowingStar" Amount="1" />
-      <Action Type="GiveConsumable" RefName="ScrollOfHealing" Amount="1" />
-      <Action Type="GiveSpell" RefName="EagleEye" Amount="1" />
+      <Action Type="GiveEquipment" RefName="VoidWand" Amount="1" />
+      <Action Type="GiveEquipment" RefName="RingOfSorcery" Amount="1" />
+      <Action Type="GiveConsumable" RefName="ScrollOfHaste" Amount="1" />
+      <Action Type="GiveSpell" RefName="Distraction" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>

@@ -435,7 +435,7 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             DisplayName = "Iron Sword",
             WholesalePrice = 100,
             MerchantMarkupMultiplier = 1.5f,
-            SlotRef = "RightHand"
+            SlotRef = "MainHand"
         };
 
         var leatherArmor = new Equipment

@@ -55,6 +55,9 @@ public enum SagaTransactionType
     // Affinity management
     AffinityGranted,         // Character affinity granted to avatar
 
+    // Equipment management (outside battle)
+    EquipmentChanged,        // Equipment equipped/unequipped outside of battle
+
     // Loot and rewards
     LootAwarded,
     EffectApplied,

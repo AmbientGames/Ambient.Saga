@@ -8,6 +8,7 @@
   <LoadoutSlot RefName="Shoulders" DisplayName="Jacket" Description="Outer layer and shoulder protection" />
   <LoadoutSlot RefName="MainHand" DisplayName="Weapon" Description="Primary weapon or tool" />
   <LoadoutSlot RefName="OffHand" DisplayName="Off-Hand" Description="Shield, secondary weapon, or focus item" />
+  <LoadoutSlot RefName="BothHands" DisplayName="Two-Handed" Description="Large weapon or tool requiring both hands" />
   <LoadoutSlot RefName="Ring" DisplayName="Ring" Description="Finger accessories with special effects" />
   <LoadoutSlot RefName="Amulet" DisplayName="Charm" Description="Neck accessories and omamori amulets" />
   <LoadoutSlot RefName="Belt" DisplayName="Belt" Description="Waist accessories and tool holders" />
