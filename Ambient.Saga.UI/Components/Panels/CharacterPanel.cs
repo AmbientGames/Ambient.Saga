@@ -8,11 +8,11 @@ namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
 /// Character panel showing the current state of the avatar.
-/// Includes position, stats, archetype, affinities, party, and lifetime statistics.
+/// Includes position, stats, equipped items, archetype, affinities, party, and lifetime statistics.
 /// Accessible via C key.
 /// Inventory content has moved to InventoryPanel (I key).
 /// </summary>
-public class AvatarActionsPanel
+public class CharacterPanel
 {
     public void Render(MainViewModel viewModel, ModalManager modalManager)
     {
@@ -120,6 +120,12 @@ public class AvatarActionsPanel
             ImGui.TextColored(new Vector4(1, 0.5f, 0, 1), "No avatar created");
             ImGui.TextWrapped("Enter a world to select archetype");
         }
+
+        ImGui.Spacing();
+        ImGui.Separator();
+
+        // Equipped Items (read-only view of current loadout)
+        RenderEquippedItems(viewModel);
 
         ImGui.Spacing();
         ImGui.Separator();
@@ -306,5 +312,48 @@ public class AvatarActionsPanel
             : new Vector4(1, 0.4f, 0.4f, 1);  // Red for negative
         var sign = modifier > 0 ? "+" : "";
         ImGui.TextColored(color, $"  {statName}: {sign}{modifier:P0}");
+    }
+
+    private void RenderEquippedItems(MainViewModel viewModel)
+    {
+        if (viewModel.PlayerAvatar?.CombatProfile == null || viewModel.CurrentWorld == null)
+            return;
+
+        // Get loadout slots from world definition
+        var loadoutSlots = viewModel.CurrentWorld.Gameplay?.LoadoutSlots;
+        if (loadoutSlots == null || loadoutSlots.Length == 0)
+            return;
+
+        ImGui.TextColored(new Vector4(0.9f, 0.7f, 0.3f, 1), "Equipped Items:");
+        ImGui.Spacing();
+
+        var scale = UIConstants.DpiScale;
+        var hasEquippedItems = false;
+
+        foreach (var slot in loadoutSlots)
+        {
+            var slotName = slot.RefName;
+            var displayName = slot.DisplayName ?? slotName;
+            var equippedRef = viewModel.GetEquippedItemInSlot(slotName);
+
+            if (!string.IsNullOrEmpty(equippedRef))
+            {
+                hasEquippedItems = true;
+
+                // Get equipment details
+                var equipment = viewModel.CurrentWorld.GetEquipmentByRefName(equippedRef);
+                var itemName = equipment?.DisplayName ?? equippedRef;
+
+                ImGui.Text($"{displayName}:");
+                ImGui.SameLine(120 * scale);
+                ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), itemName);
+            }
+        }
+
+        if (!hasEquippedItems)
+        {
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No items equipped");
+            ImGui.TextWrapped("Use Inventory (I) to equip items");
+        }
     }
 }

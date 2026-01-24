@@ -84,7 +84,7 @@ public class GameplayOverlay
     // UI Components (panels)
     private readonly WorldInfoPanel _worldInfoPanel;
     private readonly MapViewPanel _mapViewPanel;
-    private readonly AvatarActionsPanel _avatarActionsPanel;
+    private readonly CharacterPanel _characterPanel;
     private readonly InventoryPanel _inventoryPanel;
     private readonly DevToolsPanel _devToolsPanel;
     private readonly JournalPanel _journalPanel;
@@ -159,7 +159,7 @@ public class GameplayOverlay
         // Initialize panels
         _worldInfoPanel = new WorldInfoPanel();
         _mapViewPanel = new MapViewPanel();
-        _avatarActionsPanel = new AvatarActionsPanel();
+        _characterPanel = new CharacterPanel();
         _inventoryPanel = new InventoryPanel();
         _devToolsPanel = new DevToolsPanel();
         _journalPanel = new JournalPanel();
@@ -330,7 +330,7 @@ public class GameplayOverlay
 
         if (ImGui.Begin("Character [C]", windowFlags))
         {
-            _avatarActionsPanel.Render(viewModel, _modalManager);
+            _characterPanel.Render(viewModel, _modalManager);
         }
         ImGui.End();
 
