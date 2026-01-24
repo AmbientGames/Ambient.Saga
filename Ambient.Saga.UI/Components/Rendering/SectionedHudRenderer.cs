@@ -6,24 +6,45 @@ using System.Numerics;
 namespace Ambient.Saga.UI.Components.Rendering;
 
 /// <summary>
-/// A modular HUD renderer that composes multiple IHudSection instances into a bottom bar.
+/// A modular HUD renderer that composes multiple IHudSection instances into a 5-region layout.
 ///
 /// Layout:
-/// ┌────────────────────────────────────────────────────────────────────┐
-/// │ [Left Section(s)] │ [Center Section(s)] │ [Right Section(s)]      │
-/// └────────────────────────────────────────────────────────────────────┘
+/// ┌─────────────────────────────────────────────────────────────┐
+/// │ [TopLeft]                                      [TopRight]   │
+/// │  Status effects,                               World info,  │
+/// │  body temp icon                                time/weather │
+/// │                                                             │
+/// │                        3D WORLD                             │
+/// │                                                             │
+/// ├─────────────────────────────────────────────────────────────┤
+/// │ [BottomLeft] │    [BottomCenter]      │ [BottomRight]       │
+/// │  HP/Stamina  │   Blocks hotbar (ext)  │  Interaction hints  │
+/// └─────────────────────────────────────────────────────────────┘
 ///
-/// Games can add custom sections for tools, blocks, health bars, etc.
-/// Default configuration shows status messages with hotkey hints as fallback.
+/// Key principles:
+/// - Corners = info (passive)
+/// - Bottom-center = actions (Schema extension slot for blocks/tools)
+/// - Bars for spendables, icons for states, numbers live in menus
 /// </summary>
 public class SectionedHudRenderer : IHudRenderer
 {
     private readonly List<IHudSection> _sections;
 
+    // Layout constants
+    private const float CornerPadding = 8f;
+    private const float TopLeftCornerWidth = 150f;
+    private const float TopLeftCornerHeight = 80f;
+    private const float TopRightCornerWidth = 280f;
+    private const float TopRightCornerHeight = 200f; // Taller to fit navigation + debug text
+
     /// <summary>
-    /// Create a SectionedHudRenderer with default sections (StatusSection in center).
+    /// Create a SectionedHudRenderer with default sections.
     /// </summary>
-    public SectionedHudRenderer() : this(new StatusSection())
+    public SectionedHudRenderer() : this(
+        new ResourceBarsSection(),      // BottomLeft: HP/Stamina/Mana
+        new StatusEffectsSection(),     // TopLeft: debuffs, body temp
+        new WorldInfoSection(),         // TopRight: time, weather
+        new InteractionHintsSection())  // BottomRight: context hints
     {
     }
 
@@ -78,11 +99,99 @@ public class SectionedHudRenderer : IHudRenderer
         var textHeight = ImGui.CalcTextSize("M").Y;
         var style = ImGui.GetStyle();
         var buttonHeight = textHeight + style.FramePadding.Y * 2;
-        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2 + 20f; // Extra height for resource bars
+
+        // Calculate bottom bar region widths
+        var availableWidth = displaySize.X - style.WindowPadding.X * 2;
+        var leftWidth = availableWidth * 0.25f;
+        var centerWidth = availableWidth * 0.50f;
+        var rightWidth = availableWidth * 0.25f;
+
+        // Create context
+        var context = new HudContext
+        {
+            ViewModel = viewModel,
+            ActivePanel = activePanel,
+            DisplaySize = displaySize,
+            HudHeight = hudHeight,
+            LeftRegionWidth = leftWidth,
+            CenterRegionWidth = centerWidth,
+            RightRegionWidth = rightWidth
+        };
+
+        // Group sections by region
+        var topLeftSections = _sections.Where(s => s.Region == HudRegion.TopLeft).OrderBy(s => s.Priority).ToList();
+        var topRightSections = _sections.Where(s => s.Region == HudRegion.TopRight).OrderBy(s => s.Priority).ToList();
+        var bottomLeftSections = _sections.Where(s => s.Region == HudRegion.BottomLeft).OrderBy(s => s.Priority).ToList();
+        var bottomCenterSections = _sections.Where(s => s.Region == HudRegion.BottomCenter).OrderBy(s => s.Priority).ToList();
+        var bottomRightSections = _sections.Where(s => s.Region == HudRegion.BottomRight).OrderBy(s => s.Priority).ToList();
+
+        // Render corner overlays
+        RenderTopLeftOverlay(context, topLeftSections);
+        RenderTopRightOverlay(context, topRightSections);
+
+        // Render bottom bar
+        RenderBottomBar(context, bottomLeftSections, bottomCenterSections, bottomRightSections, hudHeight);
+    }
+
+    private void RenderTopLeftOverlay(HudContext context, List<IHudSection> sections)
+    {
+        if (sections.Count == 0) return;
+
+        var windowFlags = ImGuiWindowFlags.NoTitleBar |
+                          ImGuiWindowFlags.NoResize |
+                          ImGuiWindowFlags.NoMove |
+                          ImGuiWindowFlags.NoScrollbar |
+                          ImGuiWindowFlags.NoCollapse |
+                          ImGuiWindowFlags.NoBackground |
+                          ImGuiWindowFlags.NoInputs;
+
+        ImGui.SetNextWindowPos(new Vector2(CornerPadding, CornerPadding));
+        ImGui.SetNextWindowSize(new Vector2(TopLeftCornerWidth, TopLeftCornerHeight));
+
+        if (ImGui.Begin("##TopLeftHud", windowFlags))
+        {
+            foreach (var section in sections)
+            {
+                section.Render(context);
+            }
+        }
+        ImGui.End();
+    }
+
+    private void RenderTopRightOverlay(HudContext context, List<IHudSection> sections)
+    {
+        if (sections.Count == 0) return;
+
+        var windowFlags = ImGuiWindowFlags.NoTitleBar |
+                          ImGuiWindowFlags.NoResize |
+                          ImGuiWindowFlags.NoMove |
+                          ImGuiWindowFlags.NoScrollbar |
+                          ImGuiWindowFlags.NoCollapse |
+                          ImGuiWindowFlags.NoBackground |
+                          ImGuiWindowFlags.NoInputs;
+
+        ImGui.SetNextWindowPos(new Vector2(context.DisplaySize.X - TopRightCornerWidth - CornerPadding, CornerPadding));
+        ImGui.SetNextWindowSize(new Vector2(TopRightCornerWidth, TopRightCornerHeight));
+
+        if (ImGui.Begin("##TopRightHud", windowFlags))
+        {
+            foreach (var section in sections)
+            {
+                section.Render(context);
+            }
+        }
+        ImGui.End();
+    }
+
+    private void RenderBottomBar(HudContext context, List<IHudSection> leftSections,
+        List<IHudSection> centerSections, List<IHudSection> rightSections, float hudHeight)
+    {
+        var style = ImGui.GetStyle();
 
         // Position at bottom of screen
-        ImGui.SetNextWindowPos(new Vector2(0, displaySize.Y - hudHeight));
-        ImGui.SetNextWindowSize(new Vector2(displaySize.X, hudHeight));
+        ImGui.SetNextWindowPos(new Vector2(0, context.DisplaySize.Y - hudHeight));
+        ImGui.SetNextWindowSize(new Vector2(context.DisplaySize.X, hudHeight));
 
         var windowFlags = ImGuiWindowFlags.NoTitleBar |
                           ImGuiWindowFlags.NoResize |
@@ -95,62 +204,38 @@ public class SectionedHudRenderer : IHudRenderer
 
         if (ImGui.Begin("##HudBar", windowFlags))
         {
-            // Calculate region widths (divide into thirds, adjustable based on content)
-            var availableWidth = displaySize.X - style.WindowPadding.X * 2;
-            var leftWidth = availableWidth * 0.3f;
-            var centerWidth = availableWidth * 0.4f;
-            var rightWidth = availableWidth * 0.3f;
-
-            // Create context
-            var context = new HudContext
-            {
-                ViewModel = viewModel,
-                ActivePanel = activePanel,
-                DisplaySize = displaySize,
-                HudHeight = hudHeight,
-                LeftRegionWidth = leftWidth,
-                CenterRegionWidth = centerWidth,
-                RightRegionWidth = rightWidth
-            };
-
-            // Group and sort sections by region and priority
-            var leftSections = _sections.Where(s => s.Region == HudRegion.Left).OrderBy(s => s.Priority).ToList();
-            var centerSections = _sections.Where(s => s.Region == HudRegion.Center).OrderBy(s => s.Priority).ToList();
-            var rightSections = _sections.Where(s => s.Region == HudRegion.Right).OrderBy(s => s.Priority).ToList();
-
-            // Render left sections
+            // Render left sections (resource bars)
+            ImGui.BeginGroup();
             foreach (var section in leftSections)
             {
                 section.Render(context);
-                ImGui.SameLine();
             }
+            ImGui.EndGroup();
 
-            // Calculate center position
+            // Render center sections (blocks extension slot)
             if (centerSections.Count > 0)
             {
-                // Position center sections in the middle
-                var centerStartX = leftWidth + style.WindowPadding.X;
+                var centerStartX = context.LeftRegionWidth + style.WindowPadding.X;
                 ImGui.SameLine(centerStartX);
-
+                ImGui.BeginGroup();
                 foreach (var section in centerSections)
                 {
                     section.Render(context);
-                    ImGui.SameLine();
                 }
+                ImGui.EndGroup();
             }
 
-            // Calculate right position
+            // Render right sections (interaction hints)
             if (rightSections.Count > 0)
             {
-                // Position right sections at the right side
-                var rightStartX = leftWidth + centerWidth + style.WindowPadding.X;
+                var rightStartX = context.LeftRegionWidth + context.CenterRegionWidth + style.WindowPadding.X;
                 ImGui.SameLine(rightStartX);
-
+                ImGui.BeginGroup();
                 foreach (var section in rightSections)
                 {
                     section.Render(context);
-                    ImGui.SameLine();
                 }
+                ImGui.EndGroup();
             }
         }
         ImGui.End();

@@ -4,15 +4,31 @@ namespace Ambient.Saga.UI.Components.Rendering;
 
 /// <summary>
 /// Defines the region where a HUD section should be rendered.
+/// Layout:
+/// ┌─────────────────────────────────────────────────────────────┐
+/// │ [TopLeft]                                      [TopRight]   │
+/// │  Status effects,                               World info,  │
+/// │  body temp icon                                time/weather │
+/// │                                                             │
+/// │                        3D WORLD                             │
+/// │                                                             │
+/// ├─────────────────────────────────────────────────────────────┤
+/// │ [BottomLeft] │    [BottomCenter]      │ [BottomRight]       │
+/// │  HP/Stamina  │   Blocks hotbar (ext)  │  Interaction hints  │
+/// └─────────────────────────────────────────────────────────────┘
 /// </summary>
 public enum HudRegion
 {
-    /// <summary>Left side of the HUD bar</summary>
-    Left,
-    /// <summary>Center of the HUD bar</summary>
-    Center,
-    /// <summary>Right side of the HUD bar</summary>
-    Right
+    /// <summary>Top-left corner overlay - status effects, debuffs, body temp</summary>
+    TopLeft,
+    /// <summary>Top-right corner overlay - world info, time, weather, minimap</summary>
+    TopRight,
+    /// <summary>Bottom bar left - resource bars (HP/Stamina/Mana)</summary>
+    BottomLeft,
+    /// <summary>Bottom bar center - extension slot for blocks/tools (Schema owns this)</summary>
+    BottomCenter,
+    /// <summary>Bottom bar right - interaction hints, context actions</summary>
+    BottomRight
 }
 
 /// <summary>
