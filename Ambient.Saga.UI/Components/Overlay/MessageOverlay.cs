@@ -97,7 +97,8 @@ public class MessageOverlay
     public float MessageSpacing { get; set; } = 4f;
 
     /// <summary>
-    /// Add a message to the overlay.
+    /// Add a message to the overlay. If an identical message already exists,
+    /// its duration is extended instead of adding a duplicate.
     /// </summary>
     /// <param name="text">Message text</param>
     /// <param name="type">Message type for styling</param>
@@ -110,6 +111,14 @@ public class MessageOverlay
 
         lock (_lock)
         {
+            // Check if identical message already exists
+            var existing = _messages.FindIndex(m => m.Text == text && m.Type == type);
+            if (existing >= 0)
+            {
+                // Replace with fresh timing (extends the message duration)
+                _messages.RemoveAt(existing);
+            }
+
             _messages.Add(new OverlayMessage
             {
                 Text = text,
