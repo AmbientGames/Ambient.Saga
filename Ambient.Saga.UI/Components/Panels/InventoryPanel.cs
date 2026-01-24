@@ -21,7 +21,7 @@ public class InventoryPanel
     // Track pending consumable use operations for async feedback
     private HashSet<string> _pendingUseOperations = new();
 
-    public void Render(MainViewModel viewModel)
+    public void Render(SagaMainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1), "INVENTORY");
         ImGui.Separator();
@@ -354,7 +354,7 @@ public class InventoryPanel
         ImGui.EndChild();
     }
 
-    private async Task EquipItemAsync(MainViewModel viewModel, string equipmentRef, string slotRef)
+    private async Task EquipItemAsync(SagaMainViewModel viewModel, string equipmentRef, string slotRef)
     {
         try
         {
@@ -366,7 +366,7 @@ public class InventoryPanel
         }
     }
 
-    private async Task UnequipItemAsync(MainViewModel viewModel, string equipmentRef, string slotRef)
+    private async Task UnequipItemAsync(SagaMainViewModel viewModel, string equipmentRef, string slotRef)
     {
         try
         {
@@ -379,7 +379,7 @@ public class InventoryPanel
         }
     }
 
-    private async Task UseConsumableAsync(MainViewModel viewModel, string consumableRef)
+    private async Task UseConsumableAsync(SagaMainViewModel viewModel, string consumableRef)
     {
         try
         {

@@ -93,7 +93,7 @@ public class SectionedHudRenderer : IHudRenderer
     /// </summary>
     public IReadOnlyList<IHudSection> Sections => _sections.AsReadOnly();
 
-    public void Render(MainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
     {
         // Calculate HUD dimensions
         var textHeight = ImGui.CalcTextSize("M").Y;

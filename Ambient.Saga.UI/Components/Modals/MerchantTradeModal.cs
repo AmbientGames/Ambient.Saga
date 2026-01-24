@@ -16,7 +16,7 @@ public class MerchantTradeModal
     private MerchantTradeViewModel? _tradeViewModel;
     private Guid _currentCharacterId = Guid.Empty;
 
-    public void Render(MainViewModel viewModel, CharacterViewModel character, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, CharacterViewModel character, ref bool isOpen)
     {
         if (!isOpen)
         {
@@ -267,7 +267,7 @@ public class MerchantTradeModal
         }
     }
 
-    private void InitializeViewModel(MainViewModel viewModel, CharacterViewModel character)
+    private void InitializeViewModel(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
             return;

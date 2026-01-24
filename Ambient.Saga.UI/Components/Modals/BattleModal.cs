@@ -59,7 +59,7 @@ public class BattleModal
     private bool _showStanceChange = false;
 
     // Cached references for modal callbacks
-    private MainViewModel? _cachedViewModel;
+    private SagaMainViewModel? _cachedViewModel;
     private CharacterViewModel? _cachedCharacter;
     private ModalManager? _cachedModalManager;
 
@@ -92,7 +92,7 @@ public class BattleModal
         }
     }
 
-    public void Render(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         if (!isOpen)
         {
@@ -160,7 +160,7 @@ public class BattleModal
         ImGui.TextColored(new Vector4(1.0f, 0.8f, 0.3f, 1.0f), loadingText);
     }
 
-    private void RenderActiveBattle(MainViewModel viewModel, CharacterViewModel character)
+    private void RenderActiveBattle(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (_currentState == null) return;
 
@@ -198,7 +198,7 @@ public class BattleModal
         }
     }
 
-    private void RenderActionButtons(MainViewModel viewModel, CharacterViewModel character)
+    private void RenderActionButtons(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (_currentState == null) return;
 
@@ -358,7 +358,7 @@ public class BattleModal
     /// Shows the tell text, countdown timer, and reaction buttons.
     /// Inspired by Expedition 33's active defense mechanics.
     /// </summary>
-    private void RenderReactionPanel(MainViewModel viewModel, CharacterViewModel character)
+    private void RenderReactionPanel(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         // Tell text - narrative preview of incoming attack
         ImGui.Spacing();
@@ -449,7 +449,7 @@ public class BattleModal
         }
     }
 
-    private void SelectReaction(PlayerDefenseType reaction, MainViewModel viewModel, CharacterViewModel character)
+    private void SelectReaction(PlayerDefenseType reaction, SagaMainViewModel viewModel, CharacterViewModel character)
     {
         _selectedReaction = reaction;
         _reactionResolved = true;
@@ -531,7 +531,7 @@ public class BattleModal
         return string.Format(template, enemyName);
     }
 
-    private async Task ResolveReactionAsync(MainViewModel viewModel, CharacterViewModel character, PlayerDefenseType reaction)
+    private async Task ResolveReactionAsync(SagaMainViewModel viewModel, CharacterViewModel character, PlayerDefenseType reaction)
     {
         if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
             return;
@@ -746,7 +746,7 @@ public class BattleModal
         ImGui.PopStyleColor();
     }
 
-    private void RenderBattleEnded(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
+    private void RenderBattleEnded(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
         if (_currentState == null) return;
 
@@ -860,7 +860,7 @@ public class BattleModal
         }
     }
 
-    private async Task InitializeBattleAsync(MainViewModel viewModel, CharacterViewModel character)
+    private async Task InitializeBattleAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
             return;
@@ -931,7 +931,7 @@ public class BattleModal
         }
     }
 
-    private async Task ExecuteTurnAsync(MainViewModel viewModel, CharacterViewModel character, CombatAction action)
+    private async Task ExecuteTurnAsync(SagaMainViewModel viewModel, CharacterViewModel character, CombatAction action)
     {
         if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
             return;
@@ -993,7 +993,7 @@ public class BattleModal
         }
     }
 
-    private async Task RefreshBattleStateAsync(MainViewModel viewModel, CharacterViewModel character)
+    private async Task RefreshBattleStateAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
             return;
@@ -1025,7 +1025,7 @@ public class BattleModal
     }
 
     // Modal opening methods
-    private void OpenSpellSelectionModal(MainViewModel viewModel)
+    private void OpenSpellSelectionModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1038,7 +1038,7 @@ public class BattleModal
         _showSpellSelection = true;
     }
 
-    private void OpenItemSelectionModal(MainViewModel viewModel)
+    private void OpenItemSelectionModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1051,7 +1051,7 @@ public class BattleModal
         _showItemSelection = true;
     }
 
-    private void OpenEquipmentChangeModal(MainViewModel viewModel)
+    private void OpenEquipmentChangeModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1118,7 +1118,7 @@ public class BattleModal
         }
     }
 
-    private void OpenAffinityChangeModal(MainViewModel viewModel)
+    private void OpenAffinityChangeModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1135,7 +1135,7 @@ public class BattleModal
         _showAffinityChange = true;
     }
 
-    private void OpenStanceChangeModal(MainViewModel viewModel)
+    private void OpenStanceChangeModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1147,7 +1147,7 @@ public class BattleModal
         _showStanceChange = true;
     }
 
-    private void OpenMidBattleDialogue(MainViewModel viewModel, CharacterViewModel character)
+    private void OpenMidBattleDialogue(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (_cachedModalManager == null) return;
 
@@ -1237,7 +1237,7 @@ public class BattleModal
     }
 
     // Render selection modals
-    private void RenderSelectionModals(MainViewModel viewModel)
+    private void RenderSelectionModals(SagaMainViewModel viewModel)
     {
         // Spell selection modal
         if (_showSpellSelection && _spellSelectionModal != null)

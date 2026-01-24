@@ -12,7 +12,7 @@ public class HudContext
     /// <summary>
     /// The main view model with world/avatar state.
     /// </summary>
-    public required MainViewModel ViewModel { get; init; }
+    public required SagaMainViewModel ViewModel { get; init; }
 
     /// <summary>
     /// Currently active panel (None, Map, Character, etc.)

@@ -22,7 +22,7 @@ public class DefaultHudRenderer : IHudRenderer
     private const float BarHeight = 14f;
     private const float BarSpacing = 8f;
 
-    public void Render(MainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
     {
         // Calculate HUD height - two rows: resource bars + hotkeys
         var textHeight = ImGui.CalcTextSize("M").Y;
@@ -56,7 +56,7 @@ public class DefaultHudRenderer : IHudRenderer
         ImGui.PopStyleColor();
     }
 
-    private void RenderResourceBars(MainViewModel viewModel)
+    private void RenderResourceBars(SagaMainViewModel viewModel)
     {
         var stats = viewModel.PlayerAvatar?.Stats;
         if (stats == null)
@@ -151,7 +151,7 @@ public class DefaultHudRenderer : IHudRenderer
         ImGui.TextColored(flashedColor, text);
     }
 
-    private void RenderHotkeyRow(MainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    private void RenderHotkeyRow(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
     {
         // Left side: Gameplay hotkey hints (compact)
         if (viewModel.HeightMapImage != null)

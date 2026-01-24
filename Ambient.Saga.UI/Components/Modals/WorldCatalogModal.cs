@@ -22,7 +22,7 @@ public class WorldCatalogModal
         "Dialogue Trees", "Status Effects", "Combat Stances", "Affinities"
     };
 
-    public void Render(MainViewModel viewModel, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ref bool isOpen)
     {
         if (!isOpen) return;
 
@@ -350,7 +350,7 @@ public class WorldCatalogModal
         }
     }
 
-    private void RenderQuestsCatalog(GameplayComponents gameplay, MainViewModel viewModel)
+    private void RenderQuestsCatalog(GameplayComponents gameplay, SagaMainViewModel viewModel)
     {
         if (gameplay.Quests == null || gameplay.Quests.Length == 0)
         {
@@ -399,7 +399,7 @@ public class WorldCatalogModal
         }
     }
 
-    private void RenderFactionsCatalog(GameplayComponents gameplay, MainViewModel viewModel)
+    private void RenderFactionsCatalog(GameplayComponents gameplay, SagaMainViewModel viewModel)
     {
         if (gameplay.Factions == null || gameplay.Factions.Length == 0)
         {

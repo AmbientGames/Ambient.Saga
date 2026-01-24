@@ -12,7 +12,7 @@ namespace Ambient.Saga.UI.Components.Panels;
 /// </summary>
 public class WorldInfoPanel
 {
-    public void Render(MainViewModel viewModel)
+    public void Render(SagaMainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "WORLD");
         ImGui.Separator();

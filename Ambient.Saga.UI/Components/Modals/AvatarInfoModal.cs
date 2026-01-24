@@ -14,7 +14,7 @@ public class AvatarInfoModal
 {
     private int _selectedTab = 0;
 
-    public void Render(MainViewModel viewModel, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ref bool isOpen)
     {
         if (!isOpen) return;
 
@@ -87,7 +87,7 @@ public class AvatarInfoModal
         }
     }
 
-    private void RenderStatsTab(AvatarBase avatar, MainViewModel viewModel)
+    private void RenderStatsTab(AvatarBase avatar, SagaMainViewModel viewModel)
     {
         ImGui.BeginChild("StatsScroll", new Vector2(0, 0), ImGuiChildFlags.None);
 
@@ -141,7 +141,7 @@ public class AvatarInfoModal
         ImGui.EndChild();
     }
 
-    private void RenderInventoryTab(AvatarBase avatar, MainViewModel viewModel)
+    private void RenderInventoryTab(AvatarBase avatar, SagaMainViewModel viewModel)
     {
         ImGui.BeginChild("InventoryScroll", new Vector2(0, 0), ImGuiChildFlags.None);
 
@@ -342,7 +342,7 @@ public class AvatarInfoModal
         ImGui.EndChild();
     }
 
-    private void RenderPartyTab(AvatarBase avatar, MainViewModel viewModel)
+    private void RenderPartyTab(AvatarBase avatar, SagaMainViewModel viewModel)
     {
         ImGui.BeginChild("PartyScroll", new Vector2(0, 0), ImGuiChildFlags.None);
 
@@ -395,7 +395,7 @@ public class AvatarInfoModal
         ImGui.EndChild();
     }
 
-    private void RenderSummonsTab(AvatarBase avatar, MainViewModel viewModel)
+    private void RenderSummonsTab(AvatarBase avatar, SagaMainViewModel viewModel)
     {
         ImGui.BeginChild("AffinitiesScroll", new Vector2(0, 0), ImGuiChildFlags.None);
 

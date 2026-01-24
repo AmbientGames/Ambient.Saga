@@ -37,7 +37,7 @@ public class BattleModalAdapter : IModal
     public void Render(object? context, ref bool isOpen)
     {
         CharacterViewModel? character = null;
-        MainViewModel? viewModel = null;
+        SagaMainViewModel? viewModel = null;
 
         if (context is CharacterModalContext ctx)
         {

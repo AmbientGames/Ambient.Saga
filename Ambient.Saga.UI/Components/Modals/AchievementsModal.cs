@@ -16,7 +16,7 @@ public class AchievementsModal
     private bool _showLocked = true;
     private string _filterText = "";
 
-    public void Render(MainViewModel viewModel, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ref bool isOpen)
     {
         if (!isOpen) return;
 

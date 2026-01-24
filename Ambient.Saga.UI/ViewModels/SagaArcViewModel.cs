@@ -15,7 +15,7 @@ namespace Ambient.Saga.Presentation.UI.ViewModels;
 /// Pure presentation ViewModel for a Saga.
 /// Only contains display properties - no game logic.
 /// </summary>
-public partial class SagaViewModel : ObservableObject
+public partial class SagaArcViewModel : ObservableObject
 {
     [ObservableProperty]
     private string _refName = string.Empty;
@@ -64,13 +64,13 @@ public partial class SagaViewModel : ObservableObject
     /// <summary>
     /// Creates ViewModel from domain Saga entity and its pre-expanded triggers.
     /// </summary>
-    public static SagaViewModel FromDomain(
+    public static SagaArcViewModel FromDomain(
         SagaArc sagaArc,
         List<SagaTrigger> expandedSagaTriggers,
         IHeightMapMetadata metadata,
         IWorld world)
     {
-        var vm = new SagaViewModel
+        var vm = new SagaArcViewModel
         {
             RefName = sagaArc.RefName,
             DisplayName = sagaArc.DisplayName,
@@ -128,12 +128,12 @@ public partial class SagaViewModel : ObservableObject
     /// Filters based on InitialState and discovery status.
     /// Returns both Saga ViewModels and flattened trigger list for XAML binding.
     /// </summary>
-    public static async Task<(List<SagaViewModel> Sagas, List<ProximityTriggerViewModel> AllSagaTriggers)> LoadFromWorldAsync(
+    public static async Task<(List<SagaArcViewModel> Sagas, List<ProximityTriggerViewModel> AllSagaTriggers)> LoadFromWorldAsync(
         IWorld world,
         AvatarBase? avatar = null,
         IWorldStateRepository? worldRepository = null)
     {
-        var sagas = new List<SagaViewModel>();
+        var sagas = new List<SagaArcViewModel>();
         var allSagaTriggers = new List<ProximityTriggerViewModel>();
         var isDebugMode = System.Diagnostics.Debugger.IsAttached;
 
@@ -227,7 +227,7 @@ public partial class SagaViewModel : ObservableObject
     /// Sets the feature dot color and opacity based on interaction status.
     /// </summary>
     private static Task SetFeatureStatusAsync(
-        SagaViewModel sagaVM,
+        SagaArcViewModel sagaVM,
         SagaArc sagaArc,
         AvatarBase? avatar,
         IWorld world,

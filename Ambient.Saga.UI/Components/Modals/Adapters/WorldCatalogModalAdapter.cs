@@ -13,7 +13,7 @@ public class WorldCatalogModalAdapter : IModal
 
     public bool CanOpen(object? context)
     {
-        return context is MainViewModel;
+        return context is SagaMainViewModel;
     }
 
     public void OnOpening(object? context)
@@ -23,7 +23,7 @@ public class WorldCatalogModalAdapter : IModal
 
     public void Render(object? context, ref bool isOpen)
     {
-        if (context is MainViewModel viewModel)
+        if (context is SagaMainViewModel viewModel)
         {
             _modal.Render(viewModel, ref isOpen);
         }

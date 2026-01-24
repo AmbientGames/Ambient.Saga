@@ -14,7 +14,7 @@ namespace Ambient.Saga.UI.Components.Panels;
 /// </summary>
 public class CharacterPanel
 {
-    public void Render(MainViewModel viewModel, ModalManager modalManager)
+    public void Render(SagaMainViewModel viewModel, ModalManager modalManager)
     {
         ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "CHARACTER");
         ImGui.Separator();
@@ -314,7 +314,7 @@ public class CharacterPanel
         ImGui.TextColored(color, $"  {statName}: {sign}{modifier:P0}");
     }
 
-    private void RenderEquippedItems(MainViewModel viewModel)
+    private void RenderEquippedItems(SagaMainViewModel viewModel)
     {
         if (viewModel.PlayerAvatar?.CombatProfile == null || viewModel.CurrentWorld == null)
             return;

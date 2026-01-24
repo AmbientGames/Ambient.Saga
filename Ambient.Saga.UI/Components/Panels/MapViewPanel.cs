@@ -28,7 +28,7 @@ public class MapViewPanel
     private float _pendingScrollY = -1;
     private double _pendingZoom = -1;
 
-    public void Render(MainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight, ModalManager modalManager)
+    public void Render(SagaMainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight, ModalManager modalManager)
     {
         var availableRegion = ImGui.GetContentRegionAvail();
 

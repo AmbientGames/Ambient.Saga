@@ -192,7 +192,7 @@ public class GameplayOverlay
     /// <param name="heightMapTexturePtr">DirectX texture pointer for heightmap</param>
     /// <param name="heightMapWidth">Heightmap width in pixels</param>
     /// <param name="heightMapHeight">Heightmap height in pixels</param>
-    public void Render(MainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight)
+    public void Render(SagaMainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight)
     {
         if (viewModel == null)
             return;
@@ -262,7 +262,7 @@ public class GameplayOverlay
     /// <summary>
     /// Render the Map panel (full screen with consistent margins).
     /// </summary>
-    private void RenderMapPanel(MainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight)
+    private void RenderMapPanel(SagaMainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight)
     {
         // Fire event for procedural map updates
         MapPanelRendering?.Invoke();
@@ -302,7 +302,7 @@ public class GameplayOverlay
     /// <summary>
     /// Render the Character panel (top-left, full height).
     /// </summary>
-    private void RenderCharacterPanel(MainViewModel viewModel)
+    private void RenderCharacterPanel(SagaMainViewModel viewModel)
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
@@ -340,7 +340,7 @@ public class GameplayOverlay
     /// <summary>
     /// Render the Inventory panel (top-left, full height).
     /// </summary>
-    private void RenderInventoryPanel(MainViewModel viewModel)
+    private void RenderInventoryPanel(SagaMainViewModel viewModel)
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
@@ -378,7 +378,7 @@ public class GameplayOverlay
     /// <summary>
     /// Render the World Info panel (top-left, full height).
     /// </summary>
-    private void RenderWorldInfoPanel(MainViewModel viewModel)
+    private void RenderWorldInfoPanel(SagaMainViewModel viewModel)
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;
@@ -417,7 +417,7 @@ public class GameplayOverlay
     /// Render the Dev Tools panel (top-left, full height).
     /// Only available when debugger is attached.
     /// </summary>
-    private void RenderDevToolsPanel(MainViewModel viewModel)
+    private void RenderDevToolsPanel(SagaMainViewModel viewModel)
     {
         // Double-check debugger is attached (safety check)
         if (!DevToolsPanel.IsAvailable)
@@ -464,7 +464,7 @@ public class GameplayOverlay
     /// Render the Journal panel (top-left, full height).
     /// Shows quests, bestiary, and world information.
     /// </summary>
-    private void RenderJournalPanel(MainViewModel viewModel)
+    private void RenderJournalPanel(SagaMainViewModel viewModel)
     {
         var io = ImGui.GetIO();
         var displaySize = io.DisplaySize;

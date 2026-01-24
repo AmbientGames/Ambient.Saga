@@ -15,7 +15,7 @@ public class AchievementsModalAdapter : IModal
     public bool CanOpen(object? context)
     {
         // Validate that we have a MainViewModel
-        return context is MainViewModel;
+        return context is SagaMainViewModel;
     }
 
     public void OnOpening(object? context)
@@ -27,7 +27,7 @@ public class AchievementsModalAdapter : IModal
 
     public void Render(object? context, ref bool isOpen)
     {
-        if (context is MainViewModel viewModel)
+        if (context is SagaMainViewModel viewModel)
         {
             // Delegate to existing modal
             _modal.Render(viewModel, ref isOpen);

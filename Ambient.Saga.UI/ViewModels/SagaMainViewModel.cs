@@ -31,7 +31,7 @@ using SpawnDevCharacterCommand = Ambient.Saga.Engine.Application.Commands.Saga.S
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 
-public partial class MainViewModel : ObservableObject
+public partial class SagaMainViewModel : ObservableObject
 {
     private readonly string _dataDirectory;
     private readonly string _schemaDirectory;
@@ -59,7 +59,7 @@ public partial class MainViewModel : ObservableObject
     private double zoomFactor = 1.0;
 
     [ObservableProperty]
-    private ObservableCollection<SagaViewModel> _sagas = new();
+    private ObservableCollection<SagaArcViewModel> _sagas = new();
 
     [ObservableProperty]
     private ObservableCollection<ProximityTriggerViewModel> _allTriggers = new();
@@ -295,7 +295,7 @@ public partial class MainViewModel : ObservableObject
     // Public accessor for mediator (used by modals)
     public MediatR.IMediator Mediator => _mediator;
 
-    public MainViewModel(
+    public SagaMainViewModel(
         WorldProvider worldProvider,
         SagaInstanceRepositoryProvider repositoryProvider,
         GameAvatarRepositoryProvider avatarRepositoryProvider,
@@ -908,7 +908,7 @@ public partial class MainViewModel : ObservableObject
         SessionReady?.Invoke(PlayerAvatar, elevationWaterMap);
 
         // Load Sagas and triggers from world with feature status
-        var (sagas, triggers) = await SagaViewModel.LoadFromWorldAsync(world, PlayerAvatar, _worldRepository);
+        var (sagas, triggers) = await SagaArcViewModel.LoadFromWorldAsync(world, PlayerAvatar, _worldRepository);
         Sagas.Clear();
         AllTriggers.Clear();
         foreach (var saga in sagas) Sagas.Add(saga);
@@ -1590,7 +1590,7 @@ public partial class MainViewModel : ObservableObject
                     CurrentWorld.SagaTriggersLookup.TryGetValue(ti.SagaRef, out var sagaTriggers) &&
                     CurrentWorld.HeightMapMetadata != null)
                 {
-                    var newSagaVM = SagaViewModel.FromDomain(
+                    var newSagaVM = SagaArcViewModel.FromDomain(
                         sagaArc,
                         sagaTriggers.OrderByDescending(t => t.EnterRadius).ToList(),
                         CurrentWorld.HeightMapMetadata,

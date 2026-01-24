@@ -42,7 +42,7 @@ public class WorldSelectionScreen
         _logger = logger;
     }
 
-    public void Render(MainViewModel viewModel, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ref bool isOpen)
     {
         if (!isOpen) return;
 

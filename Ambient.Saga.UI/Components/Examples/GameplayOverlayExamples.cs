@@ -45,7 +45,7 @@ public static class GameplayOverlayExamples
     /// <summary>
     /// Example 3: Polling-based pause menu detection (in game loop)
     /// </summary>
-    public static void RenderLoopWithPauseMenuPolling(GameplayOverlay overlay, ModalManager modalManager, MainViewModel viewModel)
+    public static void RenderLoopWithPauseMenuPolling(GameplayOverlay overlay, ModalManager modalManager, SagaMainViewModel viewModel)
     {
         // In your render loop:
         overlay.Render(viewModel, IntPtr.Zero, 1920, 1080);
@@ -241,7 +241,7 @@ public class ImmersiveInputHandler : IInputHandler
 /// </summary>
 public class NoHudRenderer : IHudRenderer
 {
-    public void Render(MainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
     {
         // Render nothing - completely immersive
     }
@@ -252,7 +252,7 @@ public class NoHudRenderer : IHudRenderer
 /// </summary>
 public class CompactHudRenderer : IHudRenderer
 {
-    public void Render(MainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
     {
         // Small corner HUD with just essentials
         ImGui.SetNextWindowPos(new Vector2(10, 10));

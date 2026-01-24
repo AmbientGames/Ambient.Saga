@@ -141,7 +141,7 @@ public class ModalManager
     public CharacterViewModel? SelectedCharacter { get; set; }
 
     // Quest context (for quest signpost interactions)
-    private MainViewModel? _questViewModel;
+    private SagaMainViewModel? _questViewModel;
     // Check if any modal is currently open
     public bool IsAnyModalOpen => _modalStack.HasModals;
 
@@ -205,7 +205,7 @@ public class ModalManager
         }
     }
 
-    public void Render(MainViewModel viewModel)
+    public void Render(SagaMainViewModel viewModel)
     {
         // ====================================================================
         // ALL MODALS NOW RENDERED VIA MODAL REGISTRY (see RegisterModalAdapters)
@@ -241,7 +241,7 @@ public class ModalManager
         _modalRegistry.RenderRegistered(fallbackContext: viewModel);
     }
 
-    public void OpenCharacterInteraction(CharacterViewModel character, MainViewModel viewModel)
+    public void OpenCharacterInteraction(CharacterViewModel character, SagaMainViewModel viewModel)
     {
         SelectedCharacter = character;
 
@@ -277,7 +277,7 @@ public class ModalManager
     }
 
 
-    public void OpenQuestSignpost(string questRef, string sagaRef, string signpostRef, MainViewModel viewModel)
+    public void OpenQuestSignpost(string questRef, string sagaRef, string signpostRef, SagaMainViewModel viewModel)
     {
         _questViewModel = viewModel;
 

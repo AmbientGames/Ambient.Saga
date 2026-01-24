@@ -38,17 +38,17 @@ public static class ModalAdapterExample
     /// <summary>
     /// Context for modals that need MainViewModel only
     /// </summary>
-    public record SimpleContext(MainViewModel ViewModel);
+    public record SimpleContext(SagaMainViewModel ViewModel);
 
     /// <summary>
     /// Context for modals that need MainViewModel and CharacterViewModel
     /// </summary>
-    public record CharacterContext(MainViewModel ViewModel, CharacterViewModel Character);
+    public record CharacterContext(SagaMainViewModel ViewModel, CharacterViewModel Character);
 
     /// <summary>
     /// Context for modals that need MainViewModel, CharacterViewModel, and ModalManager
     /// </summary>
-    public record FullContext(MainViewModel ViewModel, CharacterViewModel Character, ModalManager ModalManager);
+    public record FullContext(SagaMainViewModel ViewModel, CharacterViewModel Character, ModalManager ModalManager);
 
     /// <summary>
     /// Example: Adapter for a simple modal that only needs MainViewModel
@@ -65,7 +65,7 @@ public static class ModalAdapterExample
             {
                 _modal.Render(ctx.ViewModel, ref isOpen);
             }
-            else if (context is MainViewModel viewModel)
+            else if (context is SagaMainViewModel viewModel)
             {
                 // Also support direct MainViewModel for convenience
                 _modal.Render(viewModel, ref isOpen);

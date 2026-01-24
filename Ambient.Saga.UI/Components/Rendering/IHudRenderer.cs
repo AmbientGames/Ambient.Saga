@@ -15,5 +15,5 @@ public interface IHudRenderer
     /// <param name="viewModel">Main view model with world/avatar state</param>
     /// <param name="activePanel">Currently active panel</param>
     /// <param name="displaySize">Display size in pixels</param>
-    void Render(MainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize);
+    void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize);
 }

@@ -21,7 +21,7 @@ public class DialogueModal
     private bool _isLoading = false;
     private string? _errorMessage = null;
 
-    public void Render(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         if (!isOpen)
         {
@@ -57,7 +57,7 @@ public class DialogueModal
         ImGui.PopStyleVar(2);
     }
 
-    private void RenderDialogueContent(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
+    private void RenderDialogueContent(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         // Header with character info
         RenderCharacterHeader(viewModel, character);
@@ -97,7 +97,7 @@ public class DialogueModal
         RenderActiveDialogue(viewModel, character, modalManager, ref isOpen);
     }
 
-    private void RenderCharacterHeader(MainViewModel viewModel, CharacterViewModel character)
+    private void RenderCharacterHeader(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         // Character name with colored styling
         ImGui.PushFont(UIConstants.FontTitle);
@@ -232,7 +232,7 @@ public class DialogueModal
         }
     }
 
-    private void RenderActiveDialogue(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
+    private void RenderActiveDialogue(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         if (_currentState == null) return;
 
@@ -295,7 +295,7 @@ public class DialogueModal
         RenderBottomBar(ref isOpen);
     }
 
-    private void RenderChoices(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, float height)
+    private void RenderChoices(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, float height)
     {
         if (_currentState == null) return;
 
@@ -319,7 +319,7 @@ public class DialogueModal
         ImGui.EndChild();
     }
 
-    private void RenderChoice(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, DialogueChoiceOption choice, int index)
+    private void RenderChoice(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, DialogueChoiceOption choice, int index)
     {
         var canSelect = choice.IsAvailable && !_isLoading;
 
@@ -371,7 +371,7 @@ public class DialogueModal
         ImGui.Spacing();
     }
 
-    private void RenderContinueButton(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
+    private void RenderContinueButton(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
         ImGui.Spacing();
         ImGui.Spacing();
@@ -448,7 +448,7 @@ public class DialogueModal
 
     #region Async Operations
 
-    private async Task InitializeDialogueAndSetLoadingAsync(MainViewModel viewModel, CharacterViewModel character)
+    private async Task InitializeDialogueAndSetLoadingAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         try
         {
@@ -460,7 +460,7 @@ public class DialogueModal
         }
     }
 
-    private async Task SelectChoiceAndSetLoadingAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, string choiceId)
+    private async Task SelectChoiceAndSetLoadingAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, string choiceId)
     {
         System.Diagnostics.Debug.WriteLine($"[DialogueModal] === CHOICE CLICKED ===");
         System.Diagnostics.Debug.WriteLine($"[DialogueModal] ChoiceId: {choiceId}");
@@ -481,7 +481,7 @@ public class DialogueModal
         }
     }
 
-    private async Task AdvanceDialogueAndSetLoadingAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
+    private async Task AdvanceDialogueAndSetLoadingAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
         System.Diagnostics.Debug.WriteLine($"[DialogueModal] === CONTINUE CLICKED ===");
         System.Diagnostics.Debug.WriteLine($"[DialogueModal] Character: {character.DisplayName} ({character.CharacterRef})");
@@ -501,7 +501,7 @@ public class DialogueModal
         }
     }
 
-    private async Task InitializeDialogueAsync(MainViewModel viewModel, CharacterViewModel character)
+    private async Task InitializeDialogueAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (viewModel.CurrentWorld == null)
         {
@@ -554,7 +554,7 @@ public class DialogueModal
         }
     }
 
-    private async Task SelectChoiceAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, string choiceId)
+    private async Task SelectChoiceAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, string choiceId)
     {
         if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
             return;
@@ -620,7 +620,7 @@ public class DialogueModal
         }
     }
 
-    private async Task AdvanceDialogueAsync(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
+    private async Task AdvanceDialogueAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
         if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
             return;
@@ -691,7 +691,7 @@ public class DialogueModal
         }
     }
 
-    private async Task RefreshDialogueStateAsync(MainViewModel viewModel, CharacterViewModel character)
+    private async Task RefreshDialogueStateAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
         {

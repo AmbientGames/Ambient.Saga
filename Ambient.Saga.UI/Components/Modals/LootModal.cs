@@ -15,7 +15,7 @@ public class LootModal
     private bool _hasLooted = false;
     private bool _isLooting = false;
 
-    public void Render(MainViewModel viewModel, CharacterViewModel character, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, CharacterViewModel character, ref bool isOpen)
     {
         if (!isOpen)
         {
@@ -86,7 +86,7 @@ public class LootModal
         }
     }
 
-    private void RenderLootAvailable(MainViewModel viewModel, CharacterViewModel character, ref bool isOpen)
+    private void RenderLootAvailable(SagaMainViewModel viewModel, CharacterViewModel character, ref bool isOpen)
     {
         ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1), "Dropped Items:");
         ImGui.Spacing();
@@ -229,7 +229,7 @@ public class LootModal
         ImGui.PopStyleColor(3);
     }
 
-    private async Task LootCharacterAsync(MainViewModel viewModel, CharacterViewModel character)
+    private async Task LootCharacterAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
             return;

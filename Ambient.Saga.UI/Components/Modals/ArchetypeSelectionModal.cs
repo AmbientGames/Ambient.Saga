@@ -16,7 +16,7 @@ public class ArchetypeSelectionModal
     private AvatarArchetype? _selectedArchetype;
     private int _selectedIndex = -1;
 
-    public void Render(MainViewModel viewModel, ImGuiArchetypeSelector? selector, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ImGuiArchetypeSelector? selector, ref bool isOpen)
     {
         if (!isOpen) return;
 
@@ -210,7 +210,7 @@ public class ArchetypeSelectionModal
         // Clicking "Quit Game" will call CancelSelection and quit the application
     }
 
-    private void RenderArchetypeDetails(AvatarArchetype archetype, string currencyName, MainViewModel viewModel)
+    private void RenderArchetypeDetails(AvatarArchetype archetype, string currencyName, SagaMainViewModel viewModel)
     {
         // Archetype Bias (permanent stat modifiers)
         if (archetype.ArchetypeBias != null)

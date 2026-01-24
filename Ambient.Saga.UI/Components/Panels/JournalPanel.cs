@@ -29,7 +29,7 @@ public class JournalPanel
     private string _bestiaryFilter = "";
     private string _historyFilter = "";
 
-    public void Render(MainViewModel viewModel, ModalManager modalManager)
+    public void Render(SagaMainViewModel viewModel, ModalManager modalManager)
     {
         // Header
         ImGui.TextColored(new Vector4(0.9f, 0.85f, 0.6f, 1f), "JOURNAL");
@@ -83,7 +83,7 @@ public class JournalPanel
 
     #region Quests Tab
 
-    private void RenderQuestsTab(MainViewModel viewModel, ModalManager modalManager)
+    private void RenderQuestsTab(SagaMainViewModel viewModel, ModalManager modalManager)
     {
         ImGui.BeginChild("QuestsScroll", new Vector2(0, -ImGui.GetFrameHeightWithSpacing()), ImGuiChildFlags.None);
 
@@ -222,7 +222,7 @@ public class JournalPanel
 
     #region Bestiary Tab
 
-    private void RenderBestiaryTab(MainViewModel viewModel, ModalManager modalManager)
+    private void RenderBestiaryTab(SagaMainViewModel viewModel, ModalManager modalManager)
     {
         // Filter input
         ImGui.SetNextItemWidth(200);
@@ -279,7 +279,7 @@ public class JournalPanel
         ImGui.EndChild();
     }
 
-    private void RenderBestiaryEntry(CharacterViewModel character, MainViewModel viewModel, ModalManager modalManager)
+    private void RenderBestiaryEntry(CharacterViewModel character, SagaMainViewModel viewModel, ModalManager modalManager)
     {
         var bgColor = character.IsAlive
             ? new Vector4(0.1f, 0.1f, 0.15f, 0.3f)
@@ -366,7 +366,7 @@ public class JournalPanel
 
     #region Atlas Tab
 
-    private void RenderAtlasTab(MainViewModel viewModel)
+    private void RenderAtlasTab(SagaMainViewModel viewModel)
     {
         ImGui.BeginChild("AtlasScroll", new Vector2(0, 0), ImGuiChildFlags.None);
 
@@ -506,7 +506,7 @@ public class JournalPanel
 
     #region History Tab
 
-    private void RenderHistoryTab(MainViewModel viewModel)
+    private void RenderHistoryTab(SagaMainViewModel viewModel)
     {
         // Filter input
         ImGui.SetNextItemWidth(200);
@@ -726,7 +726,7 @@ public class JournalPanel
 
     #region Achievements Tab
 
-    private void RenderAchievementsTab(MainViewModel viewModel)
+    private void RenderAchievementsTab(SagaMainViewModel viewModel)
     {
         ImGui.BeginChild("AchievementsScroll", new Vector2(0, -ImGui.GetFrameHeightWithSpacing()), ImGuiChildFlags.None);
 

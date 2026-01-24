@@ -14,7 +14,7 @@ public class FactionReputationModal
 {
     private string _filterText = "";
 
-    public void Render(MainViewModel viewModel, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ref bool isOpen)
     {
         if (!isOpen) return;
 
@@ -59,7 +59,7 @@ public class FactionReputationModal
         }
     }
 
-    private void RenderFactionCard(Faction faction, MainViewModel viewModel)
+    private void RenderFactionCard(Faction faction, SagaMainViewModel viewModel)
     {
         // Get player's reputation with this faction (would come from avatar state)
         // For now, using starting reputation as placeholder
