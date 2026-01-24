@@ -67,6 +67,13 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<CharacterViewModel> _characters = new();
 
+    /// <summary>
+    /// Recent transactions from all active saga instances.
+    /// Populated during background processing for Journal History tab.
+    /// </summary>
+    [ObservableProperty]
+    private ObservableCollection<Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog.SagaTransaction> _recentTransactions = new();
+
     [ObservableProperty]
     private double _avatarPixelX;
 
@@ -907,11 +914,63 @@ public partial class MainViewModel : ObservableObject
         foreach (var saga in sagas) Sagas.Add(saga);
         foreach (var trigger in triggers) AllTriggers.Add(trigger);
 
+        // Load recent transactions for History tab
+        await LoadRecentTransactionsAsync();
+
         // Initialize avatar position at spawn if available
         InitializeAvatarPosition(world);
 
         // Start background processing for interaction checks (runs off UI thread)
         StartBackgroundProcessing();
+    }
+
+    /// <summary>
+    /// Loads recent transactions from all saga instances for the current avatar.
+    /// Called during world load and can be refreshed via RefreshRecentTransactionsAsync().
+    /// </summary>
+    private async Task LoadRecentTransactionsAsync()
+    {
+        RecentTransactions.Clear();
+
+        if (PlayerAvatar == null)
+            return;
+
+        try
+        {
+            var repository = _repositoryProvider.Repository;
+
+            // Get all saga instances for this avatar
+            var instances = await repository.GetAllInstancesForAvatarAsync(PlayerAvatar.AvatarId);
+
+            // Aggregate all transactions from all instances
+            var allTransactions = instances
+                .SelectMany(instance => instance.GetCommittedTransactions())
+                .OrderByDescending(t => t.GetCanonicalTimestamp())
+                .Take(100) // Limit to most recent 100 transactions
+                .ToList();
+
+            foreach (var transaction in allTransactions)
+            {
+                RecentTransactions.Add(transaction);
+            }
+        }
+        catch (InvalidOperationException)
+        {
+            // Repository not initialized yet - world not fully loaded
+            System.Diagnostics.Debug.WriteLine("Skipping transaction load - repository not initialized");
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Failed to load recent transactions: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Refreshes recent transactions. Call this after significant state changes.
+    /// </summary>
+    public async Task RefreshRecentTransactionsAsync()
+    {
+        await LoadRecentTransactionsAsync();
     }
 
     private async Task LoadHeightMapImageInternalAsync(IWorld world, string dataDirectory)
