@@ -113,10 +113,10 @@ Minimal survival-focused HUD.
 - Equipment (go to Inventory)
 - Quest info (go to Journal)
 
-- [ ] Redesign DefaultHudRenderer
-- [ ] Add temperature warning indicator
-- [ ] Add panel hotkey hints
-- [ ] Remove message area
+- [x] Redesign DefaultHudRenderer
+- [x] Add temperature warning indicator
+- [x] Add panel hotkey hints
+- [x] Remove message area
 - [ ] Test with survival mechanics
 
 ---
