@@ -1896,6 +1896,91 @@ public partial class MainViewModel : ObservableObject
         return PlayerAvatar.CombatProfile.ContainsValue(equipmentRef);
     }
 
+    /// <summary>
+    /// Uses a consumable item from the avatar's inventory.
+    /// Applies effects (health/stamina/mana restoration) and decrements quantity.
+    /// </summary>
+    /// <param name="consumableRef">Consumable reference to use</param>
+    /// <returns>True if consumable was used successfully</returns>
+    public async Task<bool> UseConsumableAsync(string consumableRef)
+    {
+        if (PlayerAvatar == null || CurrentWorld == null)
+        {
+            AddToastMessage("Cannot use consumable: No avatar or world loaded", MessageType.Error);
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(consumableRef))
+        {
+            AddToastMessage("Cannot use consumable: No item specified", MessageType.Error);
+            return false;
+        }
+
+        try
+        {
+            // Use first saga in the world for transaction logging, or a default
+            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "PlayerLife";
+
+            var command = new UseConsumableCommand
+            {
+                AvatarId = PlayerAvatar.AvatarId,
+                SagaArcRef = sagaRef,
+                ConsumableRef = consumableRef,
+                Avatar = PlayerAvatar
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result.Successful)
+            {
+                var consumable = CurrentWorld.GetConsumableByRefName(consumableRef);
+                var itemName = consumable?.DisplayName ?? consumableRef;
+
+                // Build effect message
+                var effectsList = result.Data?.TryGetValue("EffectsApplied", out var effects) == true
+                    ? effects as List<string>
+                    : null;
+                var effectMessage = effectsList?.Count > 0
+                    ? $" ({string.Join(", ", effectsList)})"
+                    : "";
+
+                AddToastMessage($"Used {itemName}{effectMessage}", MessageType.Info);
+
+                // Update avatar from result if provided
+                if (result.UpdatedAvatar != null)
+                {
+                    // Copy updated state to PlayerAvatar
+                    PlayerAvatar.Stats = result.UpdatedAvatar.Stats;
+                    PlayerAvatar.Capabilities = result.UpdatedAvatar.Capabilities;
+                }
+
+                NotifyPlayerAvatarChanged();
+                return true;
+            }
+            else
+            {
+                AddToastMessage($"Use failed: {result.ErrorMessage}", MessageType.Error);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            AddToastMessage($"Error using consumable: {ex.Message}", MessageType.Error);
+            System.Diagnostics.Debug.WriteLine($"UseConsumableAsync ERROR: {ex}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Gets the quantity of a consumable in the avatar's inventory.
+    /// </summary>
+    public int GetConsumableQuantity(string consumableRef)
+    {
+        var entry = PlayerAvatar?.Capabilities?.Consumables?
+            .FirstOrDefault(c => c.ConsumableRef == consumableRef);
+        return entry?.Quantity ?? 0;
+    }
+
     [RelayCommand]
     private void ViewBlocks()
     {

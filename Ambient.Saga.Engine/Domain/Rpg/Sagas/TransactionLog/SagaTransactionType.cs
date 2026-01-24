@@ -58,6 +58,9 @@ public enum SagaTransactionType
     // Equipment management (outside battle)
     EquipmentChanged,        // Equipment equipped/unequipped outside of battle
 
+    // Consumable usage (outside battle)
+    ConsumableUsed,          // Consumable item used (potion, food, etc.)
+
     // Loot and rewards
     LootAwarded,
     EffectApplied,

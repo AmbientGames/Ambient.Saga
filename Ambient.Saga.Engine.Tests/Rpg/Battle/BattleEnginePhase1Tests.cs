@@ -2096,17 +2096,16 @@ public class BattleEnginePhase1Tests
         var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Equip two-handed weapon in right hand
+        // Act - Equip two-handed weapon in BothHands slot
         var result = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "MainHand:GreatSword"
+            Parameter = "BothHands:GreatSword"
         });
 
-        // Assert - Both hands should have the same weapon
+        // Assert - BothHands slot should have the weapon
         Assert.True(result.Success);
-        Assert.Equal("GreatSword", player.CombatProfile["MainHand"]);
-        Assert.Equal("GreatSword", player.CombatProfile["OffHand"]);
+        Assert.Equal("GreatSword", player.CombatProfile["BothHands"]);
     }
 
     [Fact]
@@ -2129,21 +2128,22 @@ public class BattleEnginePhase1Tests
         var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Equip two-handed weapon (should clear shield)
+        // Act - Equip two-handed weapon to BothHands (should clear MainHand and OffHand)
         var result = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "MainHand:GreatSword"
+            Parameter = "BothHands:GreatSword"
         });
 
-        // Assert - Shield should be cleared, both hands have greatsword
+        // Assert - MainHand and OffHand should be cleared, BothHands has greatsword
         Assert.True(result.Success);
-        Assert.Equal("GreatSword", player.CombatProfile["MainHand"]);
-        Assert.Equal("GreatSword", player.CombatProfile["OffHand"]);
+        Assert.Equal("GreatSword", player.CombatProfile["BothHands"]);
+        Assert.False(player.CombatProfile.ContainsKey("MainHand"));
+        Assert.False(player.CombatProfile.ContainsKey("OffHand"));
     }
 
     [Fact]
-    public void TwoHandedWeapon_CannotEquipOneHandedWhenTwoHandedEquipped()
+    public void TwoHandedWeapon_EquippingOneHandedClearsBothHands()
     {
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
@@ -2154,24 +2154,24 @@ public class BattleEnginePhase1Tests
                 new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f },
                 new EquipmentEntry { EquipmentRef = "IronShield", Condition = 1.0f }
             });
-        player.CombatProfile["MainHand"] = "GreatSword";
-        player.CombatProfile["OffHand"] = "GreatSword"; // Two-handed equipped
+        player.CombatProfile["BothHands"] = "GreatSword"; // Two-handed equipped
 
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Try to equip shield in left hand (blocked by two-handed weapon)
+        // Act - Equip shield in OffHand (should clear BothHands)
         var result = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "OffHand:IronShield"
         });
 
-        // Assert - Should fail because two-handed weapon occupies both hands
-        Assert.False(result.Success);
-        Assert.Contains("two-handed", result.Message, StringComparison.OrdinalIgnoreCase);
+        // Assert - Should succeed and clear BothHands
+        Assert.True(result.Success);
+        Assert.Equal("IronShield", player.CombatProfile["OffHand"]);
+        Assert.False(player.CombatProfile.ContainsKey("BothHands"));
     }
 
     [Fact]
@@ -2337,12 +2337,12 @@ public class BattleEnginePhase1Tests
     {
         var baseWorld = CreateTestWorldWithPhase5OnDefendEquipment();
 
-        // Add two-handed great sword
+        // Add two-handed great sword - uses BothHands slot
         var greatSword = new Equipment
         {
             RefName = "GreatSword",
             DisplayName = "Great Sword",
-            SlotRef = "MainHand",
+            SlotRef = "BothHands",  // Two-handed weapons use BothHands slot
             Category = EquipmentCategoryType.TwoHanded,
             Effects = new Attributes { Strength = 0.3f }
         };

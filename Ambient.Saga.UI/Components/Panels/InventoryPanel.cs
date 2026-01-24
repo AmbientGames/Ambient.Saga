@@ -18,6 +18,8 @@ public class InventoryPanel
 {
     // Track pending equip operations for async feedback
     private HashSet<string> _pendingEquipOperations = new();
+    // Track pending consumable use operations for async feedback
+    private HashSet<string> _pendingUseOperations = new();
 
     public void Render(MainViewModel viewModel)
     {
@@ -122,7 +124,7 @@ public class InventoryPanel
         }
 
         // Consumables
-        if (ImGui.CollapsingHeader($"Consumables ({caps.Consumables?.Length ?? 0})"))
+        if (ImGui.CollapsingHeader($"Consumables ({caps.Consumables?.Length ?? 0})", ImGuiTreeNodeFlags.DefaultOpen))
         {
             if (caps.Consumables != null && caps.Consumables.Length > 0)
             {
@@ -130,11 +132,27 @@ public class InventoryPanel
                 {
                     var consumableItem = viewModel.CurrentWorld?.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == consumable.ConsumableRef);
                     var name = consumableItem?.DisplayName ?? consumable.ConsumableRef;
+                    var isPending = _pendingUseOperations.Contains(consumable.ConsumableRef);
 
                     ImGui.Indent();
 
                     // Expandable header for each consumable item
                     var treeNodeOpen = ImGui.TreeNode($"{name} x{consumable.Quantity}##{consumable.ConsumableRef}");
+
+                    // Use button on same line as header
+                    ImGui.SameLine(ImGui.GetWindowWidth() - 60);
+                    if (isPending)
+                    {
+                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "...");
+                    }
+                    else if (consumable.Quantity > 0)
+                    {
+                        if (ImGui.SmallButton($"Use##{consumable.ConsumableRef}"))
+                        {
+                            _pendingUseOperations.Add(consumable.ConsumableRef);
+                            _ = UseConsumableAsync(viewModel, consumable.ConsumableRef);
+                        }
+                    }
 
                     if (treeNodeOpen)
                     {
@@ -358,6 +376,18 @@ public class InventoryPanel
         finally
         {
             _pendingEquipOperations.Remove(equipmentRef);
+        }
+    }
+
+    private async Task UseConsumableAsync(MainViewModel viewModel, string consumableRef)
+    {
+        try
+        {
+            await viewModel.UseConsumableAsync(consumableRef);
+        }
+        finally
+        {
+            _pendingUseOperations.Remove(consumableRef);
         }
     }
 }

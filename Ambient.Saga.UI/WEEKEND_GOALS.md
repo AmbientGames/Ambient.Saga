@@ -117,7 +117,7 @@ Minimal survival-focused HUD.
 - [x] Add temperature warning indicator
 - [x] Add panel hotkey hints
 - [x] Remove message area
-- [ ] Test with survival mechanics
+- [x] Test with survival mechanics
 
 ---
 
@@ -151,18 +151,40 @@ public record EquipItemOutsideBattleCommand : IRequest<SagaCommandResult>
 - Show equipment slot dropdown when equipping
 - Preview stat changes before confirming
 
-- [ ] Create EquipItemOutsideBattleCommand
-- [ ] Create handler
-- [ ] Add transaction type
-- [ ] Update AvatarInfoModal with equip action
-- [ ] Add slot selection UI
-- [ ] Test equip/unequip flow
+- [x] Create EquipItemOutsideBattleCommand
+- [x] Create handler
+- [x] Add transaction type
+- [x] Update InventoryPanel with equip action (canonical RPG pattern: Inventory = verbs)
+- [x] BothHands slot implementation (mutual exclusivity with MainHand/OffHand)
+- [x] Test equip/unequip flow in-game
 
 ### 2.2 Inventory Panel Improvements (1 hour)
 
-- [ ] Show equipped indicator on items
-- [ ] Add "Unequip" action for equipped items
-- [ ] Group by category (weapons, armor, consumables)
+- [x] Show equipped indicator on items
+- [x] Add "Equip/Unequip" action for equipment items
+- [ ] Group by category (weapons, armor, consumables) - DEFERRED
+
+### 2.3 Consumables (NEW)
+
+Use consumables from inventory with quick-access from status bar.
+
+**Command:** `UseConsumableCommand`
+- Validate avatar owns the consumable
+- Apply effects (heal, buff, cure status)
+- Decrement quantity
+- Write transaction
+
+**UI:**
+- Inventory panel: "Use" button on consumables
+- Status bar: Quick slot for frequently used consumables (potions, antidotes)
+- Hotkey support for quick slots
+
+- [x] Create UseConsumableCommand
+- [x] Create UseConsumableHandler
+- [x] Add transaction type for consumable use
+- [x] Add "Use" button to InventoryPanel consumables
+- [ ] Design quick-access consumable slots on status bar - DEFERRED
+- [ ] Implement quick slot hotkeys - DEFERRED
 
 ---
 
