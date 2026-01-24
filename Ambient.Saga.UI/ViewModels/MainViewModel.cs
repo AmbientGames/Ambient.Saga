@@ -88,6 +88,20 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private bool _shouldCenterOnAvatar;
 
+    /// <summary>
+    /// HUD text displayed in top-left (navigation, weather, status info).
+    /// Set by game layer via GameHudService.GetNavigationInfo/GetStatusInfo.
+    /// </summary>
+    [ObservableProperty]
+    private string _hudTextLeft = string.Empty;
+
+    /// <summary>
+    /// HUD text displayed in top-right (debug info, FPS, etc.).
+    /// Set by game layer via GameHudService.GetDebugInfo.
+    /// </summary>
+    [ObservableProperty]
+    private string _hudTextRight = string.Empty;
+
     [ObservableProperty]
     private double _mousePixelX;
 

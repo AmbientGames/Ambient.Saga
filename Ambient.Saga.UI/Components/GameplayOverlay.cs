@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Presentation.UI.ViewModels;
+﻿using Ambient.Domain.Entities;
+using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
 using Ambient.Saga.UI.Components.Panels;
@@ -212,6 +213,9 @@ public class GameplayOverlay
         var io = ImGui.GetIO();
         _hudRenderer.Render(viewModel, _activePanel, io.DisplaySize);
 
+        // Render top-left HUD (health bar, temperature, navigation)
+        RenderTopLeftHud(viewModel, io.DisplaySize);
+
         // Drain any pending toast messages from the viewModel
         foreach (var (text, type, duration) in viewModel.DrainToastMessages())
         {
@@ -255,6 +259,92 @@ public class GameplayOverlay
 
         // Render all modals (always on top)
         _modalManager.Render(viewModel);
+    }
+
+    /// <summary>
+    /// Render top-left and top-right HUD overlay (health bar, temperature, HudTextLeft/Right).
+    /// Text content is set by game layer via MainViewModel.HudTextLeft/HudTextRight.
+    /// </summary>
+    private void RenderTopLeftHud(MainViewModel viewModel, Vector2 displaySize)
+    {
+        // Constants matching the 3D renderer positions
+        const float HealthBarWidth = 70f;
+        const float HealthBarHeight = 16f;
+        const float HealthBarX = 2f;
+        const float HealthBarY = 2f;
+        const float TempTextX = 80f;
+        const float TempTextY = 1f;
+        const float TextLeftX = 2f;
+        const float TextLeftY = 20f;
+
+        var stats = viewModel.PlayerAvatar?.Stats;
+        var yellowColor = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 1f, 0f, 1f));
+
+        // Top-left overlay window
+        ImGui.SetNextWindowPos(new Vector2(0, 0));
+        ImGui.SetNextWindowSize(new Vector2(400, 150));
+
+        var windowFlags = ImGuiWindowFlags.NoTitleBar |
+                          ImGuiWindowFlags.NoResize |
+                          ImGuiWindowFlags.NoMove |
+                          ImGuiWindowFlags.NoScrollbar |
+                          ImGuiWindowFlags.NoCollapse |
+                          ImGuiWindowFlags.NoBackground |
+                          ImGuiWindowFlags.NoInputs;
+
+        if (ImGui.Begin("##TopLeftHud", windowFlags))
+        {
+            var drawList = ImGui.GetWindowDrawList();
+            var windowPos = ImGui.GetWindowPos();
+
+            // Health bar at (2, 2)
+            var healthFraction = Math.Clamp(stats?.Health ?? 0f, 0f, 1f);
+            var barPos = new Vector2(windowPos.X + HealthBarX, windowPos.Y + HealthBarY);
+
+            drawList.AddRectFilled(barPos,
+                new Vector2(barPos.X + HealthBarWidth, barPos.Y + HealthBarHeight),
+                ImGui.ColorConvertFloat4ToU32(new Vector4(0.3f, 0.1f, 0.1f, 0.9f)), 2f);
+
+            if (healthFraction > 0)
+            {
+                drawList.AddRectFilled(barPos,
+                    new Vector2(barPos.X + HealthBarWidth * healthFraction, barPos.Y + HealthBarHeight),
+                    ImGui.ColorConvertFloat4ToU32(new Vector4(0.8f, 0.2f, 0.2f, 1f)), 2f);
+            }
+
+            drawList.AddRect(barPos,
+                new Vector2(barPos.X + HealthBarWidth, barPos.Y + HealthBarHeight),
+                ImGui.ColorConvertFloat4ToU32(new Vector4(0.5f, 0.5f, 0.5f, 0.8f)), 2f);
+
+            // Temperature at (80, 1)
+            var bodyTemp = stats?.Temperature ?? 37f;
+            drawList.AddText(new Vector2(windowPos.X + TempTextX, windowPos.Y + TempTextY),
+                yellowColor, $"{bodyTemp:0.0}°C");
+
+            // HudTextLeft at (2, 20)
+            if (!string.IsNullOrEmpty(viewModel.HudTextLeft))
+            {
+                drawList.AddText(new Vector2(windowPos.X + TextLeftX, windowPos.Y + TextLeftY),
+                    yellowColor, viewModel.HudTextLeft);
+            }
+        }
+        ImGui.End();
+
+        // Top-right overlay window for HudTextRight
+        if (!string.IsNullOrEmpty(viewModel.HudTextRight))
+        {
+            var textSize = ImGui.CalcTextSize(viewModel.HudTextRight);
+            ImGui.SetNextWindowPos(new Vector2(displaySize.X - textSize.X - 10, 0));
+            ImGui.SetNextWindowSize(new Vector2(textSize.X + 20, textSize.Y + 20));
+
+            if (ImGui.Begin("##TopRightHud", windowFlags))
+            {
+                var drawList = ImGui.GetWindowDrawList();
+                var windowPos = ImGui.GetWindowPos();
+                drawList.AddText(windowPos, yellowColor, viewModel.HudTextRight);
+            }
+            ImGui.End();
+        }
     }
 
     /// <summary>
