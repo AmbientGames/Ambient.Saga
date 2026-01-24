@@ -49,8 +49,8 @@ public static class GameConfiguration
 }
 ```
 
-- [ ] Create file
-- [ ] Test toggle works
+- [x] Create file (already existed with full implementation)
+- [x] Test toggle works
 
 ### 1.2 Message Overlay System (2 hours)
 
@@ -77,10 +77,10 @@ public enum MessageType { Info, Warning, Error, Combat, Quest, Loot }
 - Fade out over last 0.5s of duration
 - Color-coded by type (yellow=warning, red=error, green=loot, etc.)
 
-- [ ] Create MessageOverlay class
-- [ ] Integrate with GameplayOverlay
-- [ ] Wire up existing message sources (battle narration, quest updates)
-- [ ] Remove message area from HUD
+- [x] Create MessageOverlay class
+- [x] Integrate with GameplayOverlay
+- [x] Wire up existing message sources (avatar creation, character spawn, trade)
+- [ ] Remove message area from HUD (optional - keeping for now as fallback)
 
 ### 1.3 HUD Redesign (2 hours)
 

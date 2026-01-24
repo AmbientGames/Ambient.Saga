@@ -19,7 +19,9 @@ using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Models;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.UI.ViewModels;
+using Ambient.Saga.UI.Components.Overlay;
 using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.Concurrent;
 using CommunityToolkit.Mvvm.Input;
 using SharpDX;
 using SixLabors.ImageSharp.PixelFormats;
@@ -136,6 +138,61 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<string> _activityLog = new();
 
+    /// <summary>
+    /// Queue of pending toast messages for the message overlay.
+    /// GameplayOverlay drains this queue each frame.
+    /// </summary>
+    private readonly ConcurrentQueue<(string Text, MessageType Type, float Duration)> _pendingToastMessages = new();
+
+    /// <summary>
+    /// Add a toast message to be displayed by the message overlay.
+    /// </summary>
+    /// <param name="text">Message text</param>
+    /// <param name="type">Message type for styling (default: Info)</param>
+    /// <param name="duration">Display duration in seconds (default: 3)</param>
+    public void AddToastMessage(string text, MessageType type = MessageType.Info, float duration = 3f)
+    {
+        _pendingToastMessages.Enqueue((text, type, duration));
+    }
+
+    /// <summary>
+    /// Drain all pending toast messages. Called by GameplayOverlay each frame.
+    /// Also drains messages from PlayerAvatar.PendingMessages if avatar exists.
+    /// </summary>
+    /// <returns>List of pending messages (empty if none)</returns>
+    public IEnumerable<(string Text, MessageType Type, float Duration)> DrainToastMessages()
+    {
+        // Drain messages from the local queue (AddToastMessage calls)
+        while (_pendingToastMessages.TryDequeue(out var message))
+        {
+            yield return message;
+        }
+
+        // Also drain messages from the avatar's PendingMessages queue
+        if (PlayerAvatar?.PendingMessages != null)
+        {
+            while (PlayerAvatar.PendingMessages.TryTake(out var notification))
+            {
+                var text = !string.IsNullOrEmpty(notification.SourceDisplayName)
+                    ? $"{notification.SourceDisplayName}: {notification.Message}"
+                    : notification.Message ?? string.Empty;
+
+                // Map NotificationSeverity to MessageType
+                var type = notification.Severity switch
+                {
+                    NotificationSeverity.Warning => MessageType.Warning,
+                    NotificationSeverity.Error => MessageType.Error,
+                    NotificationSeverity.Combat => MessageType.Combat,
+                    NotificationSeverity.Quest => MessageType.Quest,
+                    NotificationSeverity.Loot => MessageType.Loot,
+                    _ => MessageType.Info
+                };
+
+                yield return (text, type, notification.Duration);
+            }
+        }
+    }
+
     [ObservableProperty]
     private bool _isSagaInteractionActive = false;
 
@@ -251,7 +308,11 @@ public partial class MainViewModel : ObservableObject
 
         // Subscribe to merchant trade events
         MerchantTrade.StatusMessageChanged += (sender, message) => StatusMessage = message;
-        MerchantTrade.ActivityMessageGenerated += (sender, message) => ActivityLog.Insert(0, message);
+        MerchantTrade.ActivityMessageGenerated += (sender, message) =>
+        {
+            ActivityLog.Insert(0, message);
+            AddToastMessage(message, MessageType.Loot, 3f);
+        };
 
         // Initialize avatar info view model
         AvatarInfo = new AvatarInfoViewModel();
@@ -1585,6 +1646,7 @@ public partial class MainViewModel : ObservableObject
             }
 
             StatusMessage = $"Welcome back! Avatar loaded.";
+            AddToastMessage("Welcome back!", MessageType.Info, 3f);
             return;
         }
 
@@ -1615,6 +1677,7 @@ public partial class MainViewModel : ObservableObject
         await SavePlayerAvatarAsync();
 
         StatusMessage = $"Avatar created: {selectedArchetype.DisplayName}";
+        AddToastMessage($"Welcome, {selectedArchetype.DisplayName}!", MessageType.Quest, 5f);
     }
 
     private async Task<AvatarArchetype?> ShowArchetypeSelectionDialogAsync()
@@ -2002,6 +2065,7 @@ public partial class MainViewModel : ObservableObject
             Characters.Add(characterVm);
             System.Diagnostics.Debug.WriteLine($"[DevTools] Spawned {testCharacter.DisplayName} at ({spawnX:F2}, {spawnZ:F2})");
             StatusMessage = $"Spawned {testCharacter.DisplayName}";
+            AddToastMessage($"{testCharacter.DisplayName} appeared!", MessageType.Combat, 3f);
 
             return characterVm;
         }

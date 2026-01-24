@@ -5,6 +5,7 @@ using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Components.Modals;
 using Ambient.Saga.UI.Components.Input;
 using Ambient.Saga.UI.Components.Rendering;
+using Ambient.Saga.UI.Components.Overlay;
 
 namespace Ambient.Saga.UI.Components;
 
@@ -94,6 +95,9 @@ public class GameplayOverlay
     private readonly IInputHandler _inputHandler;
     private readonly IHudRenderer _hudRenderer;
 
+    // Message overlay for floating toast-style notifications
+    private readonly MessageOverlay _messageOverlay;
+
     // Panel state - which panel is currently shown (game mode: one at a time)
     private ActivePanel _activePanel = ActivePanel.None;
 
@@ -120,6 +124,12 @@ public class GameplayOverlay
     public IInputHandler InputHandler => _inputHandler;
 
     /// <summary>
+    /// Gets the message overlay for adding floating toast-style notifications.
+    /// Use AddMessage() to display messages that stack from bottom-right and fade out.
+    /// </summary>
+    public MessageOverlay MessageOverlay => _messageOverlay;
+
+    /// <summary>
     /// Create a GameplayOverlay with default input and HUD rendering.
     /// Uses SectionedHudRenderer for modular, extensible HUD.
     /// </summary>
@@ -143,6 +153,7 @@ public class GameplayOverlay
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
         _inputHandler = inputHandler ?? new DefaultInputHandler();
         _hudRenderer = hudRenderer ?? new DefaultHudRenderer();
+        _messageOverlay = new MessageOverlay();
 
         // Initialize panels
         _worldInfoPanel = new WorldInfoPanel();
@@ -200,6 +211,20 @@ public class GameplayOverlay
         // Render the HUD through the injected renderer
         var io = ImGui.GetIO();
         _hudRenderer.Render(viewModel, _activePanel, io.DisplaySize);
+
+        // Drain any pending toast messages from the viewModel
+        foreach (var (text, type, duration) in viewModel.DrainToastMessages())
+        {
+            _messageOverlay.AddMessage(text, type, duration);
+        }
+
+        // Render message overlay (floating toasts above HUD)
+        // Calculate HUD height for positioning (matches DefaultHudRenderer calculation)
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
+        _messageOverlay.Render(io.DisplaySize, hudHeight);
 
         // Render the active panel (if any)
         switch (_activePanel)
