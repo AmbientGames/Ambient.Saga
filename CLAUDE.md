@@ -25,16 +25,14 @@ dotnet build Ambient.Saga.Engine/Ambient.Saga.Engine.csproj
 ## Architecture
 
 ```
-Ambient/                           # Core 3-layer architecture
-├── Domain/                        # Pure business logic, entities, value objects
-├── Application/                   # Contracts, use cases, orchestration
-└── Infrastructure/                # EF Core, LiteDB, external integrations
+Ambient.Domain/                    # Pure business logic, entities, value objects
+Ambient.Application/               # Contracts, use cases, orchestration
+Ambient.Infrastructure/            # EF Core, LiteDB, external integrations
 
-Ambient.Saga/                      # Game-specific systems
-├── Engine/                        # CQRS application (Commands, Queries, Handlers)
-├── Presentation.UI/               # ImGui game overlay (.NET 10-windows)
-├── Sandbox.WindowsUI/             # WinForms/WPF test application
-└── WorldForge/                    # Procedural world generation tools
+Ambient.Saga.Engine/               # CQRS application (Commands, Queries, Handlers)
+Ambient.Saga.UI/                   # ImGui game overlay
+Ambient.Saga.Rendering.DirectX/    # DirectX 11 rendering
+Ambient.Saga.Sandbox.DirectX/      # Development sandbox
 ```
 
 ### CQRS Pattern (MediatR)

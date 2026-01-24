@@ -17,6 +17,23 @@
       Magic     - Magical damage/effects
       Speed     - Turn order + movement
       Endurance - Stamina efficiency + temperature tolerance
+	  
+	  NOTE: this was proposed by AI. It should match above
+┌─────────────┬──────────────┬────────────────────────────────────────┐
+│    Stat     │     Type     │                 Role                   │
+├─────────────┼──────────────┼────────────────────────────────────────┤
+│ Health      │ Resource     │ Death at 0                             │
+│ Stamina     │ Resource     │ Action economy                         │
+│ Mana        │ Resource     │ Abilities                              │
+│ Body Temp   │ State        │ Condition triggers                     │
+├─────────────┼──────────────┼────────────────────────────────────────┤
+│ Strength    │ Attribute    │ Physical damage + carry                │
+│ Defense     │ Attribute    │ Physical damage reduction              │
+│ Magic       │ Attribute    │ Magical damage / effects               │
+│ Speed       │ Attribute    │ Turn order + movement                  │
+│ Endurance   │ Attribute    │ Stamina efficiency + temp tolerance    │
+└─────────────┴──────────────┴────────────────────────────────────────┘
+
     -->
     <xs:attributeGroup name="StatBlock">
         <!-- Resources -->

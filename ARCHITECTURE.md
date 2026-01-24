@@ -433,15 +433,11 @@ All entities follow this pattern:
 
 ```
 Ambient.Saga/
-├── Content/                     # Game content (schemas and world data)
-│   ├── Schemas/                 # XML Schema definitions
-│   └── Worlds/                  # World definition XML files
-│
 ├── Ambient.Domain/              # Pure domain logic, no dependencies
+│   ├── Content/Schemas/         # XSD schema definitions
 │   ├── Generated/               # Auto-generated from XSD schemas
 │   ├── Partials/                # Partial classes extending generated types
-│   ├── Scripts/                 # PowerShell generation scripts
-│   └── GameLogic/               # Core algorithms
+│   └── Scripts/                 # PowerShell generation scripts
 │
 ├── Ambient.Application/         # Contracts and interfaces
 │   └── Contracts/               # Repository interfaces
@@ -451,8 +447,8 @@ Ambient.Saga/
 │
 ├── Ambient.Saga.Engine/         # Game engine (main library)
 │   ├── Application/
-│   │   ├── Commands/            # CQRS commands (25 commands)
-│   │   ├── Queries/             # CQRS queries (17 queries)
+│   │   ├── Commands/            # CQRS commands
+│   │   ├── Queries/             # CQRS queries
 │   │   ├── Handlers/            # Command/query handlers
 │   │   ├── Behaviors/           # Pipeline behaviors
 │   │   └── Results/             # Response DTOs
@@ -468,8 +464,9 @@ Ambient.Saga/
 │   └── Infrastructure/
 │       └── Persistence/         # LiteDB repositories
 │
-├── Ambient.Saga.Presentation.UI/ # ImGui overlay (Windows)
-└── Ambient.Saga.Sandbox.WindowsUI/ # Development sandbox
+├── Ambient.Saga.UI/             # ImGui overlay
+├── Ambient.Saga.Rendering.DirectX/  # DirectX 11 rendering
+└── Ambient.Saga.Sandbox.DirectX/    # Development sandbox
 ```
 
 ---

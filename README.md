@@ -30,16 +30,14 @@ dotnet test
 ## Project Structure
 
 ```
-Ambient/                   # Core architecture layers
-   Domain/                 # Entities, value objects, game logic
-   Application/            # Contracts and orchestration
-   Infrastructure/         # EF Core, LiteDB, integrations
+Ambient.Domain/              # Entities, value objects, game logic
+Ambient.Application/         # Contracts and orchestration
+Ambient.Infrastructure/      # EF Core, LiteDB, integrations
 
-Ambient.Saga/              # Game systems
-   SagaEngine/             # CQRS application with MediatR
-   Presentation.UI/        # ImGui game overlay
-   Sandbox.WindowsUI/      # Development sandbox
-   StoryGenerator/         # Procedural generation tools
+Ambient.Saga.Engine/         # CQRS application with MediatR
+Ambient.Saga.UI/             # ImGui game overlay
+Ambient.Saga.Rendering.DirectX/  # DirectX 11 rendering
+Ambient.Saga.Sandbox.DirectX/    # Development sandbox
 ```
 
 ## License
