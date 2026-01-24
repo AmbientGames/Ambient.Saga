@@ -281,11 +281,6 @@ public class CompactHudRenderer : IHudRenderer
                 ImGui.Text($"Pos: ({viewModel.AvatarLatitude:F1}, {viewModel.AvatarLongitude:F1})");
             }
 
-            // Status
-            if (!string.IsNullOrEmpty(viewModel.StatusMessage))
-            {
-                ImGui.TextColored(new Vector4(1, 1, 0, 1), viewModel.StatusMessage);
-            }
         }
         ImGui.End();
 

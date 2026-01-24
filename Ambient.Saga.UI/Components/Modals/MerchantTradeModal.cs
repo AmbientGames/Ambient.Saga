@@ -326,10 +326,6 @@ public class MerchantTradeModal
                 viewModel.ActivityLog.Insert(0, msg);
             };
 
-            _tradeViewModel.StatusMessageChanged += (s, msg) =>
-            {
-                viewModel.StatusMessage = msg;
-            };
         }
         catch (Exception ex)
         {

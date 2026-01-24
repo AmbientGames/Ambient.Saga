@@ -53,19 +53,6 @@ public class DefaultHudRenderer : IHudRenderer
             ImGui.SameLine();
             RenderHotkeyHint("J", "Journal", activePanel == ActivePanel.Journal);
 
-            // Center: Status messages (primary status + loading indicator)
-            var centerX = displaySize.X / 2 - 100;
-            if (!string.IsNullOrEmpty(viewModel.StatusMessage))
-            {
-                ImGui.SameLine(centerX);
-                ImGui.Text(viewModel.StatusMessage);
-            }
-            else if (viewModel.IsLoading)
-            {
-                ImGui.SameLine(centerX);
-                ImGui.TextColored(new Vector4(1, 1, 0, 1), "Loading...");
-            }
-
             // Right side: Developer tools (F1=World Info, F12=Dev Tools)
             // Only shown when debugger is attached
             if (Debugger.IsAttached)

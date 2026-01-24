@@ -4,8 +4,8 @@ using System.Numerics;
 namespace Ambient.Saga.UI.Components.Rendering.Sections;
 
 /// <summary>
-/// Center HUD section that displays status messages.
-/// When no status message is active, shows hotkey hints as a fallback.
+/// Center HUD section that displays hotkey hints.
+/// Status messages are now routed through the toast notification system.
 /// </summary>
 public class StatusSection : IHudSection
 {
@@ -14,24 +14,8 @@ public class StatusSection : IHudSection
 
     public void Render(HudContext context)
     {
-        // Determine what to show
-        var hasStatusMessage = !string.IsNullOrEmpty(context.StatusMessage) && context.StatusMessage != "Ready";
-
-        if (context.IsLoading)
-        {
-            // Loading indicator
-            ImGui.TextColored(new Vector4(1, 1, 0, 1), "Loading...");
-        }
-        else if (hasStatusMessage)
-        {
-            // Active status message
-            ImGui.Text(context.StatusMessage);
-        }
-        else
-        {
-            // Fallback: show hotkey hints
-            RenderHotkeyHints(context);
-        }
+        // Show hotkey hints (status messages now use toast system)
+        RenderHotkeyHints(context);
     }
 
     private void RenderHotkeyHints(HudContext context)

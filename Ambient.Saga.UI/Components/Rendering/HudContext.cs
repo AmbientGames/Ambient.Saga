@@ -50,11 +50,6 @@ public class HudContext
     public bool HasMap => ViewModel.HeightMapImage != null;
 
     /// <summary>
-    /// Current status message (may be empty).
-    /// </summary>
-    public string StatusMessage => ViewModel.StatusMessage ?? string.Empty;
-
-    /// <summary>
     /// Whether the game is currently loading.
     /// </summary>
     public bool IsLoading => ViewModel.IsLoading;

@@ -42,8 +42,6 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private IWorldConfiguration? _selectedConfiguration;
 
-    [ObservableProperty]
-    private string _statusMessage = "Ready";
 
     [ObservableProperty]
     private bool _isLoading = false;
@@ -307,7 +305,7 @@ public partial class MainViewModel : ObservableObject
         MerchantTrade = new MerchantTradeViewModel(_sagaInteractionContext, _mediator);
 
         // Subscribe to merchant trade events
-        MerchantTrade.StatusMessageChanged += (sender, message) => StatusMessage = message;
+        MerchantTrade.StatusMessageChanged += (sender, message) => AddToastMessage(message, MessageType.Info, 3f);
         MerchantTrade.ActivityMessageGenerated += (sender, message) =>
         {
             ActivityLog.Insert(0, message);
@@ -716,7 +714,7 @@ public partial class MainViewModel : ObservableObject
         try
         {
             IsLoading = true;
-            StatusMessage = "Loading available configurations...";
+            AddToastMessage("Loading available configurations...", MessageType.Info);
 
             var configurations = await _mediator.Send(new LoadAvailableWorldConfigurationsQuery
             {
@@ -731,12 +729,11 @@ public partial class MainViewModel : ObservableObject
             }
 
             // Don't auto-select - user will select from dropdown
-            StatusMessage = $"Loaded {AvailableConfigurations.Count} world configurations";
+            AddToastMessage($"Loaded {AvailableConfigurations.Count} world configurations", MessageType.Quest);
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error loading configurations: {ex.Message}";
-            // MessageBox removed - UI layer should display StatusMessage
+            AddToastMessage($"Error loading configurations: {ex.Message}", MessageType.Error, 5f);
         }
         finally
         {
@@ -755,14 +752,14 @@ public partial class MainViewModel : ObservableObject
     {
         if (SelectedConfiguration == null)
         {
-            StatusMessage = "Please select a configuration to load.";
+            AddToastMessage("Please select a configuration to load.", MessageType.Warning);
             return;
         }
 
         try
         {
             IsLoading = true;
-            StatusMessage = $"Loading world configuration: {SelectedConfiguration.RefName}...";
+            AddToastMessage($"Loading world configuration: {SelectedConfiguration.RefName}...", MessageType.Info);
 
             IWorld world;
             try
@@ -781,7 +778,7 @@ public partial class MainViewModel : ObservableObject
                 {
                     System.Diagnostics.Debug.WriteLine($"[MainViewModel] World load failed, attempting content regeneration: {loadEx.Message}");
                     System.Diagnostics.Debug.WriteLine($"[MainViewModel] Using source directory: {SelectedConfiguration.SourceDirectory}");
-                    StatusMessage = "Regenerating world content...";
+                    AddToastMessage("Regenerating world content...", MessageType.Info);
 
                     var generatedFiles = await _worldContentGenerator.GenerateWorldContentAsync(
                         SelectedConfiguration, SelectedConfiguration.SourceDirectory);
@@ -789,7 +786,7 @@ public partial class MainViewModel : ObservableObject
                     if (generatedFiles.Count > 0)
                     {
                         System.Diagnostics.Debug.WriteLine($"[MainViewModel] Regenerated {generatedFiles.Count} files, retrying load...");
-                        StatusMessage = $"Regenerated {generatedFiles.Count} files, loading...";
+                        AddToastMessage($"Regenerated {generatedFiles.Count} files, loading...", MessageType.Info);
 
                         // Retry loading
                         world = await _mediator.Send(new LoadWorldQuery
@@ -816,11 +813,11 @@ public partial class MainViewModel : ObservableObject
             // Complete initialization with shared logic
             await InitializeWorldCoreAsync(world, _dataDirectory);
 
-            StatusMessage = $"Loaded: {SelectedConfiguration.RefName}";
+            AddToastMessage($"Loaded: {SelectedConfiguration.RefName}", MessageType.Quest);
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error loading configuration: {ex.Message}";
+            AddToastMessage($"Error loading configuration: {ex.Message}", MessageType.Error, 5f);
         }
         finally
         {
@@ -833,7 +830,7 @@ public partial class MainViewModel : ObservableObject
         try
         {
             IsLoading = true;
-            StatusMessage = $"Loading world configuration: {configurationRefName}...";
+            AddToastMessage($"Loading world configuration: {configurationRefName}...", MessageType.Info);
 
             var world = await _mediator.Send(new LoadWorldQuery
             {
@@ -848,11 +845,11 @@ public partial class MainViewModel : ObservableObject
             // Complete initialization with shared logic
             await InitializeWorldCoreAsync(world, _dataDirectory);
 
-            StatusMessage = $"Loaded: {configurationRefName}";
+            AddToastMessage($"Loaded: {configurationRefName}", MessageType.Quest);
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error loading configuration: {ex.Message}";
+            AddToastMessage($"Error loading configuration: {ex.Message}", MessageType.Error, 5f);
         }
         finally
         {
@@ -930,13 +927,13 @@ public partial class MainViewModel : ObservableObject
                 return;
             }
 
-            StatusMessage = "Loading height map image...";
+            AddToastMessage("Loading height map image...", MessageType.Info);
 
             // Load the TIFF using ImageSharp
             using var image = await SixLabors.ImageSharp.Image.LoadAsync<L16>(heightMapPath);
             
             // Preprocess height map with water detection
-            StatusMessage = "Processing height map for water detection...";
+            AddToastMessage("Processing height map for water detection...", MessageType.Info);
 
             var verticalShift = 0;
             if (world.WorldConfiguration.ClimateModel == ClimateModel.Earth)
@@ -1025,7 +1022,7 @@ public partial class MainViewModel : ObservableObject
                            $"Coverage: {metadata.Width:F4}° x {metadata.Height:F4}°\n" +
                            $"Saga Arcs: {sagaArcCount}";
 
-            StatusMessage = $"Procedural map generated ({sagaArcCount} saga arcs)";
+            AddToastMessage($"Procedural map generated ({sagaArcCount} saga arcs)", MessageType.Quest);
         }
         catch (Exception ex)
         {
@@ -1169,7 +1166,7 @@ public partial class MainViewModel : ObservableObject
             // Dispose existing database if any
             _worldDatabase?.Dispose();
 
-            StatusMessage = "Initializing world database...";
+            AddToastMessage("Initializing world database...", MessageType.Info);
 
             // Use factory to create all repositories (eliminates Infrastructure imports)
             var repositories = _repositoryFactory.CreateRepositories(
@@ -1205,11 +1202,11 @@ public partial class MainViewModel : ObservableObject
                 _steamAchievementService.ReplayAchievementsToSteam(avatarId);
             }
 
-            StatusMessage = $"Database initialized: {world.WorldConfiguration.RefName}.db";
+            AddToastMessage($"Database initialized: {world.WorldConfiguration.RefName}.db", MessageType.Quest);
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Database initialization failed: {ex.Message}";
+            AddToastMessage($"Database initialization failed: {ex.Message}", MessageType.Error, 5f);
         }
     }
 
@@ -1240,7 +1237,7 @@ public partial class MainViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Could not set initial avatar position: {ex.Message}";
+            AddToastMessage($"Could not set initial avatar position: {ex.Message}", MessageType.Error, 5f);
         }
     }
 
@@ -1412,7 +1409,7 @@ public partial class MainViewModel : ObservableObject
     [RelayCommand]
     private void SpawnCharacterAtAvatar(string characterRef)
     {
-        StatusMessage = "Manual character spawning disabled - characters spawn via Saga triggers only";
+        AddToastMessage("Manual character spawning disabled - characters spawn via Saga triggers only", MessageType.Warning);
         ActivityLog.Insert(0, "[!] Manual spawning not supported in event-sourced architecture");
     }
 
@@ -1440,11 +1437,11 @@ public partial class MainViewModel : ObservableObject
             // Notify external consumers (e.g., game) to teleport the 3D avatar
             AvatarTeleportRequested?.Invoke(clickLatitude, clickLongitude);
 
-            StatusMessage = $"Avatar moved to {clickLatitude:F6}°, {clickLongitude:F6}°";
+            AddToastMessage($"Avatar moved to {clickLatitude:F6}°, {clickLongitude:F6}°", MessageType.Info);
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error setting avatar position: {ex.Message}";
+            AddToastMessage($"Error setting avatar position: {ex.Message}", MessageType.Error, 5f);
         }
     }
 
@@ -1642,16 +1639,16 @@ public partial class MainViewModel : ObservableObject
             if (_steamAchievementService != null)
             {
                 _steamAchievementService.ReplayAchievementsToSteam(GetAvatarId());
-                StatusMessage = "Steam achievements synced";
+                AddToastMessage("Steam achievements synced", MessageType.Quest);
             }
 
-            StatusMessage = $"Welcome back! Avatar loaded.";
+            AddToastMessage("Welcome back! Avatar loaded.", MessageType.Quest);
             AddToastMessage("Welcome back!", MessageType.Info, 3f);
             return;
         }
 
         // No avatar exists - show archetype selection
-        StatusMessage = "Select your character archetype...";
+        AddToastMessage("Select your character archetype...", MessageType.Info);
 
         // Load available archetypes
         AvailableArchetypes.Clear();
@@ -1665,7 +1662,7 @@ public partial class MainViewModel : ObservableObject
 
         if (selectedArchetype == null)
         {
-            StatusMessage = "Avatar creation cancelled";
+            AddToastMessage("Avatar creation cancelled", MessageType.Warning);
             return;
         }
 
@@ -1676,7 +1673,7 @@ public partial class MainViewModel : ObservableObject
         // Save to database
         await SavePlayerAvatarAsync();
 
-        StatusMessage = $"Avatar created: {selectedArchetype.DisplayName}";
+        AddToastMessage($"Avatar created: {selectedArchetype.DisplayName}", MessageType.Quest);
         AddToastMessage($"Welcome, {selectedArchetype.DisplayName}!", MessageType.Quest, 5f);
     }
 
@@ -1765,7 +1762,7 @@ public partial class MainViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error saving avatar: {ex.Message}";
+            AddToastMessage($"Error saving avatar: {ex.Message}", MessageType.Error, 5f);
             System.Diagnostics.Debug.WriteLine($"DEBUG SavePlayerAvatar ERROR: {ex}");
         }
     }
@@ -1806,7 +1803,7 @@ public partial class MainViewModel : ObservableObject
     {
         if (CurrentWorld?.Gameplay?.Tools == null || CurrentWorld.Gameplay.Tools.Length == 0)
         {
-            StatusMessage = "No tools available";
+            AddToastMessage("No tools available", MessageType.Warning);
             return;
         }
 
@@ -1819,7 +1816,7 @@ public partial class MainViewModel : ObservableObject
     {
         if (CurrentWorld?.Gameplay?.BuildingMaterials == null || CurrentWorld.Gameplay.BuildingMaterials.Length == 0)
         {
-            StatusMessage = "No materials available";
+            AddToastMessage("No materials available", MessageType.Warning);
             return;
         }
 
@@ -1832,7 +1829,7 @@ public partial class MainViewModel : ObservableObject
     {
         if (CurrentWorld?.Gameplay?.Equipment == null || CurrentWorld.Gameplay.Equipment.Length == 0)
         {
-            StatusMessage = "No equipment available";
+            AddToastMessage("No equipment available", MessageType.Warning);
             return;
         }
 
@@ -1845,7 +1842,7 @@ public partial class MainViewModel : ObservableObject
     {
         if (CurrentWorld?.Gameplay?.Consumables == null || CurrentWorld.Gameplay.Consumables.Length == 0)
         {
-            StatusMessage = "No consumables available";
+            AddToastMessage("No consumables available", MessageType.Warning);
             return;
         }
 
@@ -1858,7 +1855,7 @@ public partial class MainViewModel : ObservableObject
     {
         if (CurrentWorld?.Gameplay?.Spells == null || CurrentWorld.Gameplay.Spells.Length == 0)
         {
-            StatusMessage = "No spells available";
+            AddToastMessage("No spells available", MessageType.Warning);
             return;
         }
 
@@ -1871,7 +1868,7 @@ public partial class MainViewModel : ObservableObject
     {
         if (CurrentWorld?.Gameplay?.Achievements == null || CurrentWorld.Gameplay.Achievements.Length == 0)
         {
-            StatusMessage = "No achievements available";
+            AddToastMessage("No achievements available", MessageType.Warning);
             return;
         }
 
@@ -1884,7 +1881,7 @@ public partial class MainViewModel : ObservableObject
     {
         if (CurrentWorld?.Gameplay?.Characters == null || CurrentWorld.Gameplay.Characters.Length == 0)
         {
-            StatusMessage = "No characters available";
+            AddToastMessage("No characters available", MessageType.Warning);
             return;
         }
 
@@ -1910,7 +1907,7 @@ public partial class MainViewModel : ObservableObject
         var character = CurrentWorld.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == characterVM.RefName);
         if (character == null)
         {
-            StatusMessage = $"Character template not found: {characterVM.RefName}";
+            AddToastMessage($"Character template not found: {characterVM.RefName}", MessageType.Warning);
             return;
         }
 
@@ -1938,7 +1935,7 @@ public partial class MainViewModel : ObservableObject
 
         if (_steamAchievementService == null)
         {
-            StatusMessage = "Steam service not available";
+            AddToastMessage("Steam service not available", MessageType.Warning);
             return;
         }
 
@@ -1953,7 +1950,7 @@ public partial class MainViewModel : ObservableObject
             if (!setSuccess)
             {
                 System.Diagnostics.Debug.WriteLine($"[Steam Test] ❌ FAILED to set achievement: {setError}");
-                StatusMessage = $"Failed to set achievement: {setError}";
+                AddToastMessage($"Failed to set achievement: {setError}", MessageType.Error);
                 return;
             }
 
@@ -1967,12 +1964,12 @@ public partial class MainViewModel : ObservableObject
             System.Diagnostics.Debug.WriteLine($"[Steam Test] (Watch for [Steam] Stats received callback with updated status)");
             System.Diagnostics.Debug.WriteLine($"[Steam Test] ========================================");
 
-            StatusMessage = $"Achievement {testAchievementId} set - waiting for Steam callback...";
+            AddToastMessage($"Achievement {testAchievementId} set - waiting for Steam callback...", MessageType.Info);
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[Steam Test] ❌ EXCEPTION: {ex.Message}");
-            StatusMessage = $"Test exception: {ex.Message}";
+            AddToastMessage($"Test exception: {ex.Message}", MessageType.Error, 5f);
         }
     }
 
@@ -1992,7 +1989,7 @@ public partial class MainViewModel : ObservableObject
         if (CurrentWorld == null || PlayerAvatar == null)
         {
             System.Diagnostics.Debug.WriteLine("[DevTools] Cannot spawn - no world or avatar loaded");
-            StatusMessage = "Load a world first";
+            AddToastMessage("Load a world first", MessageType.Warning);
             return null;
         }
 
@@ -2003,7 +2000,7 @@ public partial class MainViewModel : ObservableObject
             if (testCharacter == null)
             {
                 System.Diagnostics.Debug.WriteLine($"[DevTools] No suitable {characterType} character found in world");
-                StatusMessage = $"No {characterType} character found in world data";
+                AddToastMessage($"No {characterType} character found in world data", MessageType.Warning);
                 return null;
             }
 
@@ -2028,7 +2025,7 @@ public partial class MainViewModel : ObservableObject
             if (!result.Successful)
             {
                 System.Diagnostics.Debug.WriteLine($"[DevTools] Spawn failed: {result.ErrorMessage}");
-                StatusMessage = $"Spawn failed: {result.ErrorMessage}";
+                AddToastMessage($"Spawn failed: {result.ErrorMessage}", MessageType.Error);
                 return null;
             }
 
@@ -2064,7 +2061,7 @@ public partial class MainViewModel : ObservableObject
 
             Characters.Add(characterVm);
             System.Diagnostics.Debug.WriteLine($"[DevTools] Spawned {testCharacter.DisplayName} at ({spawnX:F2}, {spawnZ:F2})");
-            StatusMessage = $"Spawned {testCharacter.DisplayName}";
+            AddToastMessage($"Spawned {testCharacter.DisplayName}", MessageType.Combat);
             AddToastMessage($"{testCharacter.DisplayName} appeared!", MessageType.Combat, 3f);
 
             return characterVm;
@@ -2072,7 +2069,7 @@ public partial class MainViewModel : ObservableObject
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[DevTools] Error spawning character: {ex.Message}");
-            StatusMessage = $"Error: {ex.Message}";
+            AddToastMessage($"Error: {ex.Message}", MessageType.Error, 5f);
             return null;
         }
     }

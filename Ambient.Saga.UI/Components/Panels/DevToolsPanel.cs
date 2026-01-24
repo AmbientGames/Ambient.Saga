@@ -239,7 +239,7 @@ public class DevToolsPanel
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[DevTools] Error in SpawnAndOpenModalAsync: {ex.Message}");
-            viewModel.StatusMessage = $"Error: {ex.Message}";
+            viewModel.AddToastMessage($"Error: {ex.Message}", Overlay.MessageType.Error, 5f);
         }
     }
 }
