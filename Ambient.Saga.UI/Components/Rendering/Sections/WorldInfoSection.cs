@@ -5,10 +5,16 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 
 /// <summary>
 /// Top-right HUD section displaying world/simulation info.
-/// Shows time of day, weather, and debug info (HudTextRight from Schema).
+/// Shows navigation info (HudText1) and optional debug info (HudText2).
+/// Text is right-aligned with subtle background for readability over 3D content.
 /// </summary>
 public class WorldInfoSection : IHudSection
 {
+    private const float LineSpacing = 2f;
+    private const float SectionSpacing = 8f;
+    private const float BackgroundPadding = 4f;
+    private const float BackgroundRadius = 3f;
+
     public HudRegion Region => HudRegion.TopRight;
     public int Priority => 0;
 
@@ -18,52 +24,87 @@ public class WorldInfoSection : IHudSection
         var windowPos = ImGui.GetWindowPos();
         var windowSize = ImGui.GetWindowSize();
 
-        // Right-align text in this region
-        var textColor = ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 1f, 0f, 1f)); // Yellow
-        var dimColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.7f, 0.7f, 0.7f, 0.8f)); // Dim gray
-
         var currentY = windowPos.Y;
 
-        // HudText1 contains world/navigation info from Schema (direction, location, weather)
+        // HudText1 contains world/navigation info (direction, location, weather)
         if (!string.IsNullOrEmpty(context.ViewModel.HudText1))
         {
-            var lines = context.ViewModel.HudText1.Split('\n');
-            foreach (var line in lines)
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    currentY += ImGui.CalcTextSize("M").Y;
-                    continue;
-                }
-
-                var textSize = ImGui.CalcTextSize(line);
-                var textX = windowPos.X + windowSize.X - textSize.X;
-                drawList.AddText(new Vector2(textX, currentY), textColor, line);
-                currentY += textSize.Y + 2f;
-            }
+            currentY = RenderTextBlock(drawList, windowPos, windowSize, currentY,
+                context.ViewModel.HudText1,
+                new Vector4(1f, 0.95f, 0.7f, 1f),           // Warm yellow text
+                new Vector4(0.05f, 0.05f, 0.08f, 0.6f));    // Semi-transparent dark bg
         }
 
-        // HudText2 contains debug info from Schema (FPS, etc.) - optional
+        // HudText2 contains debug info (FPS, etc.) - optional, dimmer styling
         if (!string.IsNullOrEmpty(context.ViewModel.HudText2))
         {
-            // Add a small gap between world info and debug info
             if (!string.IsNullOrEmpty(context.ViewModel.HudText1))
-                currentY += 4f;
+                currentY += SectionSpacing;
 
-            var lines = context.ViewModel.HudText2.Split('\n');
-            foreach (var line in lines)
+            RenderTextBlock(drawList, windowPos, windowSize, currentY,
+                context.ViewModel.HudText2,
+                new Vector4(0.6f, 0.6f, 0.65f, 0.9f),       // Dim gray text
+                new Vector4(0.05f, 0.05f, 0.08f, 0.4f));    // More transparent bg
+        }
+    }
+
+    private float RenderTextBlock(ImDrawListPtr drawList, Vector2 windowPos, Vector2 windowSize,
+        float startY, string text, Vector4 textColor, Vector4 bgColor)
+    {
+        var lines = text.Split('\n');
+        var textColorU32 = ImGui.ColorConvertFloat4ToU32(textColor);
+        var bgColorU32 = ImGui.ColorConvertFloat4ToU32(bgColor);
+
+        // First pass: calculate block dimensions
+        var maxWidth = 0f;
+        var totalHeight = 0f;
+        var lineHeight = ImGui.CalcTextSize("M").Y;
+
+        foreach (var line in lines)
+        {
+            if (string.IsNullOrWhiteSpace(line))
             {
-                if (string.IsNullOrWhiteSpace(line))
-                {
-                    currentY += ImGui.CalcTextSize("M").Y;
-                    continue;
-                }
-
+                totalHeight += lineHeight * 0.5f; // Half-height for empty lines
+            }
+            else
+            {
                 var textSize = ImGui.CalcTextSize(line);
-                var textX = windowPos.X + windowSize.X - textSize.X;
-                drawList.AddText(new Vector2(textX, currentY), dimColor, line); // Dimmer for debug
-                currentY += textSize.Y + 2f;
+                maxWidth = Math.Max(maxWidth, textSize.X);
+                totalHeight += textSize.Y + LineSpacing;
             }
         }
+        totalHeight -= LineSpacing; // Remove trailing spacing
+
+        // Draw background rectangle (with padding)
+        if (maxWidth > 0 && totalHeight > 0)
+        {
+            var bgLeft = windowPos.X + windowSize.X - maxWidth - BackgroundPadding * 2;
+            var bgTop = startY - BackgroundPadding;
+            var bgRight = windowPos.X + windowSize.X;
+            var bgBottom = startY + totalHeight + BackgroundPadding;
+
+            drawList.AddRectFilled(
+                new Vector2(bgLeft, bgTop),
+                new Vector2(bgRight, bgBottom),
+                bgColorU32, BackgroundRadius);
+        }
+
+        // Second pass: render text lines
+        var currentY = startY;
+        foreach (var line in lines)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                currentY += lineHeight * 0.5f;
+                continue;
+            }
+
+            var textSize = ImGui.CalcTextSize(line);
+            var textX = windowPos.X + windowSize.X - textSize.X - BackgroundPadding;
+            drawList.AddText(new Vector2(textX, currentY), textColorU32, line);
+            currentY += textSize.Y + LineSpacing;
+        }
+
+        return currentY;
     }
 }
