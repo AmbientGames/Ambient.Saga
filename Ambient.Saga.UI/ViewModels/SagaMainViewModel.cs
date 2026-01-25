@@ -1774,10 +1774,16 @@ public partial class SagaMainViewModel : ObservableObject
             Z = 0
         };
 
-        // Use AvatarSpawner to initialize from archetype
+        // Use AvatarSpawner to initialize from archetype (schema-based capabilities)
         AvatarSpawner.SpawnFromModelAvatar(
             avatar,
             archetype);
+
+        // Apply gameplay items from providers (extensible item system)
+        if (world.GameplayItemProviders.Count > 0)
+        {
+            GameplayItemSpawner.ApplySpawnItems(avatar, world.GameplayItemProviders, archetype.RefName);
+        }
 
         SetAvatarDefaults(world, avatar);
 

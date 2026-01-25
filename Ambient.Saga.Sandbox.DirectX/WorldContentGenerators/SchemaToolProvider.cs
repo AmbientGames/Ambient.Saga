@@ -22,6 +22,12 @@ public class SchemaToolProvider : IGameplayItemProvider
     public string Name => "Tools";
 
     /// <inheritdoc />
+    public string? CurrentItemRef { get; set; }
+
+    /// <inheritdoc />
+    public IGameplayItem? CurrentItem => CurrentItemRef != null ? GetByRefName(CurrentItemRef) : null;
+
+    /// <inheritdoc />
     public IEnumerable<IGameplayItem> GetAll() => _items.Values;
 
     /// <inheritdoc />
@@ -34,6 +40,28 @@ public class SchemaToolProvider : IGameplayItemProvider
 
     /// <inheritdoc />
     public IEnumerable<string> GetCategories() => _categories.OrderBy(c => GetCategoryOrder(c));
+
+    /// <inheritdoc />
+    public bool ClearOnRespawn => true;
+
+    /// <inheritdoc />
+    public IEnumerable<StartingItem> GetSpawnItems(string? archetypeRef = null)
+    {
+        // All archetypes get the same starting tools
+        yield return new StartingItem("WoodPickaxe");
+        yield return new StartingItem("WoodAxe");
+        yield return new StartingItem("WoodShovel");
+        yield return new StartingItem("WoodSword");
+        yield return new StartingItem("WoodHoe");
+    }
+
+    /// <inheritdoc />
+    public IEnumerable<StartingItem> GetRespawnItems(string? archetypeRef = null)
+    {
+        // On respawn, get basic wooden tools (subset of spawn)
+        yield return new StartingItem("WoodPickaxe");
+        yield return new StartingItem("WoodSword");
+    }
 
     private static int GetCategoryOrder(string category) => category switch
     {

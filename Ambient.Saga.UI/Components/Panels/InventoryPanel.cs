@@ -1,4 +1,5 @@
 using Ambient.Domain.Hotbar;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -440,46 +441,89 @@ public class InventoryPanel
             }
         }
 
-        // Schema Items (from IGameplayItemProviders - demonstrates the new extensible pattern)
+        // Gameplay Items (from IGameplayItemProviders - owned items from GameplayInventory)
         var gameplayProviders = viewModel.CurrentWorld?.GameplayItemProviders;
-        if (gameplayProviders != null && gameplayProviders.Count > 0)
+        var avatar = viewModel.PlayerAvatar;
+        if (gameplayProviders != null && gameplayProviders.Count > 0 && avatar != null)
         {
             ImGui.Spacing();
             ImGui.Separator();
             ImGui.Spacing();
 
-            ImGui.TextColored(new Vector4(0.4f, 0.9f, 0.6f, 1), "Schema Items (Catalog)");
+            ImGui.TextColored(new Vector4(0.4f, 0.9f, 0.6f, 1), "Gameplay Items");
 
             foreach (var provider in gameplayProviders)
             {
-                var totalItems = provider.GetAll().Count();
-                if (ImGui.CollapsingHeader($"{provider.Name} ({totalItems})"))
+                var ownedItems = GameplayInventoryService.GetOwnedItemsWithDetails(avatar, provider).ToList();
+                var headerText = $"{provider.Name} ({ownedItems.Sum(x => x.Quantity)})";
+
+                // Show current selection indicator
+                if (provider.CurrentItem != null)
+                {
+                    headerText += $" - [{provider.CurrentItem.DisplayName}]";
+                }
+
+                if (ImGui.CollapsingHeader(headerText))
                 {
                     ImGui.Indent();
-                    foreach (var category in provider.GetCategories())
-                    {
-                        var itemsInCategory = provider.GetByCategory(category).ToList();
-                        if (ImGui.TreeNode($"{category} ({itemsInCategory.Count})##{provider.Name}_{category}"))
-                        {
-                            foreach (var item in itemsInCategory)
-                            {
-                                var maxTextWidth = GetAvailableTextWidth();
-                                var priceText = $" ({item.WholesalePrice}g)";
-                                var truncatedName = TruncateToFit(item.DisplayName, maxTextWidth - ImGui.CalcTextSize(priceText).X - 30f);
-                                ImGui.BulletText($"{truncatedName}{priceText}");
 
-                                if (truncatedName != item.DisplayName && ImGui.IsItemHovered())
-                                {
-                                    ImGui.SetTooltip($"{item.DisplayName}: {item.Description}");
-                                }
-                                else if (ImGui.IsItemHovered() && !string.IsNullOrEmpty(item.Description))
-                                {
-                                    ImGui.SetTooltip(item.Description);
-                                }
+                    if (ownedItems.Count == 0)
+                    {
+                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"No {provider.Name.ToLower()} owned");
+                    }
+                    else
+                    {
+                        foreach (var (item, quantity) in ownedItems)
+                        {
+                            ImGui.PushID($"{provider.Name}_{item.RefName}");
+
+                            var isSelected = provider.CurrentItemRef == item.RefName;
+                            var maxTextWidth = GetAvailableTextWidth();
+                            var quantityText = quantity > 1 ? $" x{quantity}" : "";
+                            var truncatedName = TruncateToFit(item.DisplayName, maxTextWidth - ImGui.CalcTextSize(quantityText).X - ButtonAreaWidth - 30f);
+
+                            // Highlight if this is the current selection
+                            if (isSelected)
+                            {
+                                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.3f, 1f, 0.3f, 1));
                             }
-                            ImGui.TreePop();
+
+                            ImGui.BulletText($"{truncatedName}{quantityText}");
+
+                            if (isSelected)
+                            {
+                                ImGui.PopStyleColor();
+                            }
+
+                            // Show tooltip with description
+                            if (ImGui.IsItemHovered() && !string.IsNullOrEmpty(item.Description))
+                            {
+                                ImGui.SetTooltip(item.Description);
+                            }
+
+                            // Select button
+                            ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+
+                            if (isSelected)
+                            {
+                                ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.5f, 0.2f, 1));
+                            }
+
+                            var selectButtonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
+                            if (ImGui.Button(isSelected ? "Active" : "Select", selectButtonSize))
+                            {
+                                provider.CurrentItemRef = item.RefName;
+                            }
+
+                            if (isSelected)
+                            {
+                                ImGui.PopStyleColor();
+                            }
+
+                            ImGui.PopID();
                         }
                     }
+
                     ImGui.Unindent();
                 }
             }

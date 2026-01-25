@@ -25,6 +25,12 @@ public class SchemaBlockProvider : IGameplayItemProvider
     public string Name => "Blocks";
 
     /// <inheritdoc />
+    public string? CurrentItemRef { get; set; }
+
+    /// <inheritdoc />
+    public IGameplayItem? CurrentItem => CurrentItemRef != null ? GetByRefName(CurrentItemRef) : null;
+
+    /// <inheritdoc />
     public IEnumerable<IGameplayItem> GetAll() => _items.Values;
 
     /// <inheritdoc />
@@ -37,6 +43,28 @@ public class SchemaBlockProvider : IGameplayItemProvider
 
     /// <inheritdoc />
     public IEnumerable<string> GetCategories() => _categories.OrderBy(c => c);
+
+    /// <inheritdoc />
+    public bool ClearOnRespawn => false; // Keep blocks on death - they're resources
+
+    /// <inheritdoc />
+    public IEnumerable<StartingItem> GetSpawnItems(string? archetypeRef = null)
+    {
+        // All archetypes get the same starting blocks
+        yield return new StartingItem("Dirt", 64);
+        yield return new StartingItem("Cobblestone", 32);
+        yield return new StartingItem("Stone", 16);
+        yield return new StartingItem("OakPlanks", 32);
+        yield return new StartingItem("OakLog", 16);
+    }
+
+    /// <inheritdoc />
+    public IEnumerable<StartingItem> GetRespawnItems(string? archetypeRef = null)
+    {
+        // On respawn, minimal blocks (inventory preserved due to ClearOnRespawn = false, but add some)
+        yield return new StartingItem("Dirt", 16);
+        yield return new StartingItem("Cobblestone", 8);
+    }
 
     private static IEnumerable<SchemaBlock> CreateSampleBlocks()
     {

@@ -22,6 +22,12 @@ public class SchemaBuildingMaterialProvider : IGameplayItemProvider
     public string Name => "Building Materials";
 
     /// <inheritdoc />
+    public string? CurrentItemRef { get; set; }
+
+    /// <inheritdoc />
+    public IGameplayItem? CurrentItem => CurrentItemRef != null ? GetByRefName(CurrentItemRef) : null;
+
+    /// <inheritdoc />
     public IEnumerable<IGameplayItem> GetAll() => _items.Values;
 
     /// <inheritdoc />
@@ -34,6 +40,23 @@ public class SchemaBuildingMaterialProvider : IGameplayItemProvider
 
     /// <inheritdoc />
     public IEnumerable<string> GetCategories() => _categories.OrderBy(c => c);
+
+    /// <inheritdoc />
+    public bool ClearOnRespawn => false; // Keep materials on death
+
+    /// <inheritdoc />
+    public IEnumerable<StartingItem> GetSpawnItems(string? archetypeRef = null)
+    {
+        // All archetypes get some starting building materials
+        yield return new StartingItem("Mortar", 16);
+    }
+
+    /// <inheritdoc />
+    public IEnumerable<StartingItem> GetRespawnItems(string? archetypeRef = null)
+    {
+        // Minimal materials on respawn
+        yield return new StartingItem("Mortar", 4);
+    }
 
     private static IEnumerable<SchemaBuildingMaterial> CreateMaterials()
     {

@@ -1,6 +1,11 @@
 namespace Ambient.Domain.Contracts;
 
 /// <summary>
+/// Represents a starting item with quantity for spawn/respawn.
+/// </summary>
+public record StartingItem(string RefName, int Quantity = 1);
+
+/// <summary>
 /// Provides gameplay item catalog and lookup functionality.
 /// Implemented by game-specific projects to provide their item types.
 ///
@@ -15,6 +20,17 @@ public interface IGameplayItemProvider
     /// Used in UI headers.
     /// </summary>
     string Name { get; }
+
+    /// <summary>
+    /// The currently selected item's RefName, or null if none selected.
+    /// Each provider tracks its own selection independently.
+    /// </summary>
+    string? CurrentItemRef { get; set; }
+
+    /// <summary>
+    /// Gets the currently selected item, or null if none selected.
+    /// </summary>
+    IGameplayItem? CurrentItem { get; }
 
     /// <summary>
     /// Gets all available items in the catalog.
@@ -39,4 +55,27 @@ public interface IGameplayItemProvider
     /// Used by UI to dynamically build category tabs/sections.
     /// </summary>
     IEnumerable<string> GetCategories();
+
+    /// <summary>
+    /// Gets the starting items for initial spawn.
+    /// Can vary by archetype if needed.
+    /// </summary>
+    /// <param name="archetypeRef">Optional archetype reference for conditional loadouts.</param>
+    /// <returns>Items with quantities to grant on spawn.</returns>
+    IEnumerable<StartingItem> GetSpawnItems(string? archetypeRef = null);
+
+    /// <summary>
+    /// Gets the items for respawn (after death).
+    /// Defaults to same as spawn if not overridden.
+    /// Can vary by archetype if needed.
+    /// </summary>
+    /// <param name="archetypeRef">Optional archetype reference for conditional loadouts.</param>
+    /// <returns>Items with quantities to grant on respawn.</returns>
+    IEnumerable<StartingItem> GetRespawnItems(string? archetypeRef = null);
+
+    /// <summary>
+    /// Whether to clear existing inventory on respawn before applying respawn items.
+    /// Default is true (start fresh on death).
+    /// </summary>
+    bool ClearOnRespawn { get; }
 }

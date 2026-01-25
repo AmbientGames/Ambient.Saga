@@ -59,6 +59,14 @@ public partial class AvatarBase : IAvatarBase
     public int ActiveHotbarSlot { get; set; } = -1;
 
     /// <summary>
+    /// Gameplay item inventory from IGameplayItemProviders.
+    /// Keyed by provider name, then by item RefName with quantity.
+    /// This is separate from Capabilities which uses the old schema-based system.
+    /// </summary>
+    [XmlIgnore]
+    public Dictionary<string, Dictionary<string, int>> GameplayInventory { get; set; } = new();
+
+    /// <summary>
     /// Creates a default empty hotbar with 9 slots.
     /// </summary>
     private static Hotbar.HotbarSlot[] CreateDefaultHotbar()
