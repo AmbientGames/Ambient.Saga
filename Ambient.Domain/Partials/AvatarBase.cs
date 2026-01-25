@@ -44,6 +44,34 @@ public partial class AvatarBase : IAvatarBase
     public string? CurrentBuildingMaterialRef { get; set; }
 
     /// <summary>
+    /// The currently selected block reference (session state).
+    /// </summary>
+    public string? CurrentBlockRef { get; set; }
+
+    /// <summary>
+    /// The hotbar slots (1-9 keys). Array of 9 slots for quick item access.
+    /// </summary>
+    public Hotbar.HotbarSlot[] Hotbar { get; set; } = CreateDefaultHotbar();
+
+    /// <summary>
+    /// The currently active hotbar slot index (0-8), or -1 if none selected.
+    /// </summary>
+    public int ActiveHotbarSlot { get; set; } = -1;
+
+    /// <summary>
+    /// Creates a default empty hotbar with 9 slots.
+    /// </summary>
+    private static Hotbar.HotbarSlot[] CreateDefaultHotbar()
+    {
+        var slots = new Hotbar.HotbarSlot[9];
+        for (int i = 0; i < 9; i++)
+        {
+            slots[i] = new Hotbar.HotbarSlot();
+        }
+        return slots;
+    }
+
+    /// <summary>
     /// Total play time in hours (runtime metric).
     /// </summary>
     public float PlayTimeHours { get; set; }

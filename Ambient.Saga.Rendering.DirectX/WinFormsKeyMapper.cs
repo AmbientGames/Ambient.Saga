@@ -50,6 +50,28 @@ public static class WinFormsKeyMapper
         Keys.F2 => ImGuiKey.F2,
         Keys.F12 => ImGuiKey.F12,
 
+        // Number keys 1-9 (hotbar slots)
+        Keys.D1 => ImGuiKey._1,
+        Keys.D2 => ImGuiKey._2,
+        Keys.D3 => ImGuiKey._3,
+        Keys.D4 => ImGuiKey._4,
+        Keys.D5 => ImGuiKey._5,
+        Keys.D6 => ImGuiKey._6,
+        Keys.D7 => ImGuiKey._7,
+        Keys.D8 => ImGuiKey._8,
+        Keys.D9 => ImGuiKey._9,
+
+        // Numpad keys 1-9 (also hotbar slots)
+        Keys.NumPad1 => ImGuiKey.Keypad1,
+        Keys.NumPad2 => ImGuiKey.Keypad2,
+        Keys.NumPad3 => ImGuiKey.Keypad3,
+        Keys.NumPad4 => ImGuiKey.Keypad4,
+        Keys.NumPad5 => ImGuiKey.Keypad5,
+        Keys.NumPad6 => ImGuiKey.Keypad6,
+        Keys.NumPad7 => ImGuiKey.Keypad7,
+        Keys.NumPad8 => ImGuiKey.Keypad8,
+        Keys.NumPad9 => ImGuiKey.Keypad9,
+
         _ => ImGuiKey.None
     };
 }

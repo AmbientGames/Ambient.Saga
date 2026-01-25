@@ -26,6 +26,12 @@ public interface IInputHandler
     /// Automatically resets to false after being read.
     /// </summary>
     bool WasPauseMenuRequested { get; }
+
+    /// <summary>
+    /// Event raised when a hotbar slot is activated (1-9 keys).
+    /// Parameter is the slot index (0-8).
+    /// </summary>
+    event Action<int>? HotbarSlotActivated;
 }
 
 /// <summary>

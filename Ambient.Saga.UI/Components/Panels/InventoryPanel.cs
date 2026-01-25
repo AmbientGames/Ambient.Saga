@@ -1,3 +1,4 @@
+using Ambient.Domain.Hotbar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -21,13 +22,26 @@ public class InventoryPanel
     // Track pending consumable use operations for async feedback
     private HashSet<string> _pendingUseOperations = new();
 
+    // Hotbar assignment state
+    private bool _showHotbarAssignPopup = false;
+    private HotbarItemType _assignItemType;
+    private string? _assignItemRef;
+    private string? _assignItemName;
+
+    // Layout constants
+    private const float AssignButtonWidth = 25f;  // "[+]" button
+    private const float ActionButtonWidth = 55f;  // "Equip"/"Unequip"/"Use" buttons (fixed width)
+    private const float ButtonSpacing = 5f;
+    private const float ButtonAreaWidth = AssignButtonWidth + ActionButtonWidth + ButtonSpacing * 2 + 10f; // Total reserved space
+
     public void Render(SagaMainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1), "INVENTORY");
         ImGui.Separator();
 
         // Scrollable inventory content
-        ImGui.BeginChild("InventoryScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
+        // AlwaysVerticalScrollbar reserves space for scrollbar so layout doesn't shift when content grows
+        ImGui.BeginChild("InventoryScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None, ImGuiWindowFlags.AlwaysVerticalScrollbar);
 
         if (viewModel.PlayerAvatar?.Capabilities == null)
         {
@@ -58,31 +72,43 @@ public class InventoryPanel
                     ImGui.Indent();
 
                     // Expandable header for each equipment item with equipped indicator
-                    var headerText = isEquipped
-                        ? $"{name} ({equip.Condition:P0}) [EQUIPPED]"
-                        : $"{name} ({equip.Condition:P0})";
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var statusSuffix = isEquipped ? " [EQUIPPED]" : "";
+                    var conditionText = $" ({equip.Condition:P0})";
+                    var fullHeaderText = $"{name}{conditionText}{statusSuffix}";
+                    var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(conditionText + statusSuffix).X - 30f);
+                    var headerText = $"{truncatedName}{conditionText}{statusSuffix}";
                     var treeNodeOpen = ImGui.TreeNode($"{headerText}##{equip.EquipmentRef}");
 
-                    // Equip/Unequip button on same line as header
-                    ImGui.SameLine(ImGui.GetWindowWidth() - 80);
+                    // Show full name on hover if truncated
+                    if (truncatedName != name && ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip(fullHeaderText);
+                    }
+
+                    // Hotbar assign button and Equip/Unequip button on same line as header
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.Equipment, equip.EquipmentRef, name);
+                    ImGui.SameLine();
+                    var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
                     if (isPending)
                     {
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "...");
+                        ImGui.BeginDisabled();
+                        ImGui.Button("...", buttonSize);
+                        ImGui.EndDisabled();
                     }
                     else if (isEquipped)
                     {
-                        if (ImGui.SmallButton($"Unequip##{equip.EquipmentRef}"))
+                        if (ImGui.Button($"Unequip##{equip.EquipmentRef}", buttonSize))
                         {
-                            // Unequip from the slot
                             _pendingEquipOperations.Add(equip.EquipmentRef);
                             _ = UnequipItemAsync(viewModel, equip.EquipmentRef, slotRef);
                         }
                     }
                     else
                     {
-                        if (ImGui.SmallButton($"Equip##{equip.EquipmentRef}"))
+                        if (ImGui.Button($"Equip##{equip.EquipmentRef}", buttonSize))
                         {
-                            // Equip to the slot
                             _pendingEquipOperations.Add(equip.EquipmentRef);
                             _ = EquipItemAsync(viewModel, equip.EquipmentRef, slotRef);
                         }
@@ -137,21 +163,40 @@ public class InventoryPanel
                     ImGui.Indent();
 
                     // Expandable header for each consumable item
-                    var treeNodeOpen = ImGui.TreeNode($"{name} x{consumable.Quantity}##{consumable.ConsumableRef}");
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var quantityText = $" x{consumable.Quantity}";
+                    var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{consumable.ConsumableRef}");
 
-                    // Use button on same line as header
-                    ImGui.SameLine(ImGui.GetWindowWidth() - 60);
+                    // Show full name on hover if truncated
+                    if (truncatedName != name && ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip($"{name}{quantityText}");
+                    }
+
+                    // Hotbar assign and Use button on same line as header
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.Consumable, consumable.ConsumableRef, name);
+                    ImGui.SameLine();
+                    var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
                     if (isPending)
                     {
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "...");
+                        ImGui.BeginDisabled();
+                        ImGui.Button("...", buttonSize);
+                        ImGui.EndDisabled();
                     }
                     else if (consumable.Quantity > 0)
                     {
-                        if (ImGui.SmallButton($"Use##{consumable.ConsumableRef}"))
+                        if (ImGui.Button($"Use##{consumable.ConsumableRef}", buttonSize))
                         {
                             _pendingUseOperations.Add(consumable.ConsumableRef);
                             _ = UseConsumableAsync(viewModel, consumable.ConsumableRef);
                         }
+                    }
+                    else
+                    {
+                        // Empty placeholder to maintain layout when quantity is 0
+                        ImGui.Dummy(buttonSize);
                     }
 
                     if (treeNodeOpen)
@@ -199,7 +244,20 @@ public class InventoryPanel
                     ImGui.Indent();
 
                     // Expandable header for each spell
-                    var treeNodeOpen = ImGui.TreeNode($"{name} ({spell.Condition:P0})##{spell.SpellRef}");
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var conditionText = $" ({spell.Condition:P0})";
+                    var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(conditionText).X - 30f);
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{conditionText}##{spell.SpellRef}");
+
+                    // Show full name on hover if truncated
+                    if (truncatedName != name && ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip($"{name}{conditionText}");
+                    }
+
+                    // Hotbar assign button
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.Spell, spell.SpellRef, name);
 
                     if (treeNodeOpen)
                     {
@@ -250,7 +308,16 @@ public class InventoryPanel
                     var toolDef = viewModel.CurrentWorld?.Gameplay?.Tools?.FirstOrDefault(t => t.RefName == tool.ToolRef);
                     var toolName = toolDef?.DisplayName ?? tool.ToolRef;
                     ImGui.Indent();
-                    ImGui.BulletText($"{toolName} ({tool.Condition:P0})");
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var conditionText = $" ({tool.Condition:P0})";
+                    var truncatedName = TruncateToFit(toolName, maxTextWidth - ImGui.CalcTextSize(conditionText).X - 30f);
+                    ImGui.BulletText($"{truncatedName}{conditionText}");
+                    if (truncatedName != toolName && ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip($"{toolName}{conditionText}");
+                    }
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.Tool, tool.ToolRef, toolName);
                     ImGui.Unindent();
                 }
             }
@@ -272,7 +339,16 @@ public class InventoryPanel
                     var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(block.BlockRef);
                     var blockName = blockDef?.DisplayName ?? block.BlockRef;
                     ImGui.Indent();
-                    ImGui.BulletText($"{blockName} x{block.Quantity}");
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var quantityText = $" x{block.Quantity}";
+                    var truncatedName = TruncateToFit(blockName, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
+                    ImGui.BulletText($"{truncatedName}{quantityText}");
+                    if (truncatedName != blockName && ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip($"{blockName}{quantityText}");
+                    }
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.Block, block.BlockRef, blockName);
                     ImGui.Unindent();
                 }
             }
@@ -297,7 +373,20 @@ public class InventoryPanel
                     ImGui.Indent();
 
                     // Expandable header for each material
-                    var treeNodeOpen = ImGui.TreeNode($"{name} x{material.Quantity}##{material.BuildingMaterialRef}");
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var quantityText = $" x{material.Quantity}";
+                    var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{material.BuildingMaterialRef}");
+
+                    // Show full name on hover if truncated
+                    if (truncatedName != name && ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip($"{name}{quantityText}");
+                    }
+
+                    // Hotbar assign button
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.BuildingMaterial, material.BuildingMaterialRef, name);
 
                     if (treeNodeOpen)
                     {
@@ -351,6 +440,9 @@ public class InventoryPanel
             }
         }
 
+        // Render hotbar assignment popup inside child window (same ID scope as OpenPopup calls)
+        RenderHotbarAssignPopup(viewModel);
+
         ImGui.EndChild();
     }
 
@@ -389,5 +481,143 @@ public class InventoryPanel
         {
             _pendingUseOperations.Remove(consumableRef);
         }
+    }
+
+    /// <summary>
+    /// Renders an "Assign" button that opens the hotbar slot selection popup.
+    /// </summary>
+    private void RenderHotbarAssignButton(HotbarItemType itemType, string refName, string displayName)
+    {
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.3f, 0.4f, 1f));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.4f, 0.5f, 1f));
+        if (ImGui.SmallButton($"[+]##{itemType}_{refName}"))
+        {
+            _showHotbarAssignPopup = true;
+            _assignItemType = itemType;
+            _assignItemRef = refName;
+            _assignItemName = displayName;
+            ImGui.OpenPopup("HotbarAssignPopup");
+        }
+        ImGui.PopStyleColor(2);
+
+        if (ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip("Assign to hotbar slot (1-9)");
+        }
+    }
+
+    /// <summary>
+    /// Renders the hotbar assignment popup. Call this once per frame.
+    /// </summary>
+    private void RenderHotbarAssignPopup(SagaMainViewModel viewModel)
+    {
+        if (!_showHotbarAssignPopup) return;
+
+        var avatar = viewModel.PlayerAvatar;
+        if (avatar == null) return;
+
+        // Center the popup
+        var popupSize = new Vector2(200, 0);
+        ImGui.SetNextWindowSize(popupSize, ImGuiCond.Always);
+
+        if (ImGui.BeginPopup("HotbarAssignPopup"))
+        {
+            ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.5f, 1f), $"Assign: {_assignItemName}");
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            // Show 9 slots
+            for (int i = 0; i < 9; i++)
+            {
+                var slot = avatar.Hotbar[i];
+                var slotLabel = slot.IsEmpty
+                    ? $"Slot {i + 1}: (empty)"
+                    : $"Slot {i + 1}: {GetSlotItemName(viewModel, slot)}";
+
+                if (ImGui.Selectable(slotLabel))
+                {
+                    // Assign the item to this slot
+                    avatar.Hotbar[i].Set(_assignItemType, _assignItemRef!);
+                    _showHotbarAssignPopup = false;
+                    ImGui.CloseCurrentPopup();
+                }
+            }
+
+            ImGui.Spacing();
+            ImGui.Separator();
+
+            if (ImGui.Button("Cancel", new Vector2(ImGuiSizes.Fill, 0)))
+            {
+                _showHotbarAssignPopup = false;
+                ImGui.CloseCurrentPopup();
+            }
+
+            ImGui.EndPopup();
+        }
+        else
+        {
+            // Popup was closed (clicked outside)
+            _showHotbarAssignPopup = false;
+        }
+    }
+
+    private string GetSlotItemName(SagaMainViewModel viewModel, HotbarSlot slot)
+    {
+        if (slot.IsEmpty || string.IsNullOrEmpty(slot.RefName))
+            return "(empty)";
+
+        var world = viewModel.CurrentWorld;
+        if (world == null)
+            return slot.RefName;
+
+        return slot.ItemType switch
+        {
+            HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.BuildingMaterial => world.TryGetBuildingMaterialByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Spell => world.Gameplay?.Spells?.FirstOrDefault(s => s.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
+            _ => slot.RefName
+        };
+    }
+
+    /// <summary>
+    /// Gets the maximum width available for item text, accounting for indentation and button area.
+    /// Uses GetContentRegionAvail() for accurate available space calculation.
+    /// </summary>
+    private float GetAvailableTextWidth()
+    {
+        var availableWidth = ImGui.GetContentRegionAvail().X;
+        return availableWidth - ButtonAreaWidth - 10f; // Small padding for safety
+    }
+
+    /// <summary>
+    /// Truncates text to fit within maxWidth, adding ellipsis if needed.
+    /// </summary>
+    private string TruncateToFit(string text, float maxWidth)
+    {
+        if (string.IsNullOrEmpty(text)) return text;
+
+        var fullSize = ImGui.CalcTextSize(text);
+        if (fullSize.X <= maxWidth) return text;
+
+        var ellipsis = "...";
+        var ellipsisWidth = ImGui.CalcTextSize(ellipsis).X;
+        var targetWidth = maxWidth - ellipsisWidth;
+
+        if (targetWidth <= 0) return ellipsis;
+
+        // Binary search would be more efficient, but this is simple and works
+        for (int len = text.Length - 1; len > 0; len--)
+        {
+            var truncated = text[..len];
+            if (ImGui.CalcTextSize(truncated).X <= targetWidth)
+            {
+                return truncated + ellipsis;
+            }
+        }
+
+        return ellipsis;
     }
 }

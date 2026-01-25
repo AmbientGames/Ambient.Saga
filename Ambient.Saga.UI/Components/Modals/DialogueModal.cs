@@ -125,7 +125,7 @@ public class DialogueModal
             // Description on its own line, wrapped
             if (!string.IsNullOrEmpty(characterTemplate.Description))
             {
-                ImGui.PushTextWrapPos(ImGui.GetWindowWidth() - 30);
+                ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X);
                 ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1.0f), characterTemplate.Description);
                 ImGui.PopTextWrapPos();
             }
@@ -259,7 +259,7 @@ public class DialogueModal
         {
             // Style dialogue text
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.95f, 0.95f, 0.9f, 1.0f));
-            ImGui.PushTextWrapPos(ImGui.GetWindowWidth() - 30);
+            ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X);
             ImGui.TextWrapped(text);
             ImGui.PopTextWrapPos();
             ImGui.PopStyleColor();

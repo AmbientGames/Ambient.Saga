@@ -40,11 +40,20 @@ public class DefaultInputHandler : IInputHandler
     private bool _escKeyWasPressed = false;
     private bool _pauseMenuRequestedThisFrame = false;
 
+    // Hotbar key states (1-9)
+    private readonly bool[] _hotbarKeysWerePressed = new bool[9];
+
     /// <summary>
     /// Event raised when ESC is pressed with no panels open.
     /// Subscribe to this to show your game's pause menu.
     /// </summary>
     public event Action? PauseMenuRequested;
+
+    /// <summary>
+    /// Event raised when a hotbar slot is activated (1-9 keys).
+    /// Parameter is the slot index (0-8).
+    /// </summary>
+    public event Action<int>? HotbarSlotActivated;
 
     /// <summary>
     /// Gets whether a pause menu was requested this frame.
@@ -145,5 +154,37 @@ public class DefaultInputHandler : IInputHandler
             }
         }
         _escKeyWasPressed = escKeyDown;
+
+        // Hotbar keys 1-9 (slot indices 0-8)
+        ProcessHotbarKeys();
+    }
+
+    private void ProcessHotbarKeys()
+    {
+        // Map ImGuiKey for number keys 1-9 (both regular and numpad)
+        var hotbarKeys = new[]
+        {
+            ImGuiKey._1, ImGuiKey._2, ImGuiKey._3,
+            ImGuiKey._4, ImGuiKey._5, ImGuiKey._6,
+            ImGuiKey._7, ImGuiKey._8, ImGuiKey._9
+        };
+
+        var numpadKeys = new[]
+        {
+            ImGuiKey.Keypad1, ImGuiKey.Keypad2, ImGuiKey.Keypad3,
+            ImGuiKey.Keypad4, ImGuiKey.Keypad5, ImGuiKey.Keypad6,
+            ImGuiKey.Keypad7, ImGuiKey.Keypad8, ImGuiKey.Keypad9
+        };
+
+        for (int i = 0; i < 9; i++)
+        {
+            // Check both regular number keys and numpad keys
+            bool keyDown = ImGui.IsKeyDown(hotbarKeys[i]) || ImGui.IsKeyDown(numpadKeys[i]);
+            if (keyDown && !_hotbarKeysWerePressed[i])
+            {
+                HotbarSlotActivated?.Invoke(i);
+            }
+            _hotbarKeysWerePressed[i] = keyDown;
+        }
     }
 }

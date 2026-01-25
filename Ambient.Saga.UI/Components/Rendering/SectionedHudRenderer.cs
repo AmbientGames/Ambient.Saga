@@ -44,7 +44,8 @@ public class SectionedHudRenderer : IHudRenderer
         new ResourceBarsSection(),      // BottomLeft: HP/Stamina/Mana
         new StatusEffectsSection(),     // TopLeft: debuffs, body temp
         new WorldInfoSection(),         // TopRight: time, weather
-        new InteractionHintsSection())  // BottomRight: context hints
+        new InteractionHintsSection(),  // BottomRight: context hints
+        new HotbarSection())            // BottomCenter: hotbar (1-9)
     {
     }
 

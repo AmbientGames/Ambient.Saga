@@ -6,7 +6,9 @@ using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Components.Modals;
 using Ambient.Saga.UI.Components.Input;
 using Ambient.Saga.UI.Components.Rendering;
+using Ambient.Saga.UI.Components.Rendering.Sections;
 using Ambient.Saga.UI.Components.Overlay;
+using Ambient.Saga.UI.Services;
 
 namespace Ambient.Saga.UI.Components;
 
@@ -99,6 +101,9 @@ public class GameplayOverlay
     // Message overlay for floating toast-style notifications
     private readonly MessageOverlay _messageOverlay;
 
+    // Hotbar service for slot activation
+    private HotbarService? _hotbarService;
+
     // Panel state - which panel is currently shown (game mode: one at a time)
     private ActivePanel _activePanel = ActivePanel.None;
 
@@ -163,6 +168,27 @@ public class GameplayOverlay
         _inventoryPanel = new InventoryPanel();
         _devToolsPanel = new DevToolsPanel();
         _journalPanel = new JournalPanel();
+
+        // Subscribe to hotbar slot activation from keyboard
+        _inputHandler.HotbarSlotActivated += OnHotbarSlotActivated;
+
+        // Subscribe to hotbar slot activation from mouse clicks (if using SectionedHudRenderer)
+        if (_hudRenderer is SectionedHudRenderer sectionedRenderer)
+        {
+            var hotbarSection = sectionedRenderer.Sections.OfType<HotbarSection>().FirstOrDefault();
+            if (hotbarSection != null)
+            {
+                hotbarSection.SlotActivated += OnHotbarSlotActivated;
+            }
+        }
+    }
+
+    private void OnHotbarSlotActivated(int slotIndex)
+    {
+        if (_hotbarService != null)
+        {
+            _ = _hotbarService.ActivateSlotAsync(slotIndex);
+        }
     }
 
     /// <summary>
@@ -196,6 +222,9 @@ public class GameplayOverlay
     {
         if (viewModel == null)
             return;
+
+        // Initialize hotbar service lazily (needs view model)
+        _hotbarService ??= new HotbarService(viewModel);
 
         // Process input through the injected handler
         var inputContext = new InputContext

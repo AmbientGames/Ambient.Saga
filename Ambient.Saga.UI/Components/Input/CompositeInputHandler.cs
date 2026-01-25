@@ -17,6 +17,7 @@ public class CompositeInputHandler : IInputHandler
     private readonly List<IInputHandler> _handlers = new();
 
     public event Action? PauseMenuRequested;
+    public event Action<int>? HotbarSlotActivated;
 
     public bool WasPauseMenuRequested => _handlers.Any(h => h.WasPauseMenuRequested);
 
@@ -32,6 +33,7 @@ public class CompositeInputHandler : IInputHandler
 
             // Forward events from child handlers
             handler.PauseMenuRequested += () => PauseMenuRequested?.Invoke();
+            handler.HotbarSlotActivated += slot => HotbarSlotActivated?.Invoke(slot);
         }
     }
 

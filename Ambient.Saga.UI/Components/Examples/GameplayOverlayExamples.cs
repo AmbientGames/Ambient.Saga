@@ -120,6 +120,7 @@ public class FunctionKeyInputHandler : IInputHandler
     private bool _pauseMenuRequestedThisFrame = false;
 
     public event Action? PauseMenuRequested;
+    public event Action<int>? HotbarSlotActivated;
 
     public bool WasPauseMenuRequested
     {
@@ -184,6 +185,7 @@ public class ImmersiveInputHandler : IInputHandler
     private bool _pauseMenuRequestedThisFrame = false;
 
     public event Action? PauseMenuRequested;
+    public event Action<int>? HotbarSlotActivated;
 
     public bool WasPauseMenuRequested
     {

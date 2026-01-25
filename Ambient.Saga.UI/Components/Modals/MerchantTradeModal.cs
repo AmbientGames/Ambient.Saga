@@ -191,15 +191,17 @@ public class MerchantTradeModal
                         ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"x{tradeItem.Quantity}");
                     }
 
-                    // Price
-                    ImGui.SameLine(ImGui.GetWindowWidth() - 220);
+                    // Price - position using content region for proper scrollbar handling
+                    var contentStart = ImGui.GetCursorPosX();
+                    var contentWidth = ImGui.GetContentRegionAvail().X;
+                    ImGui.SameLine(contentStart + contentWidth - 220);
                     ImGui.TextColored(new Vector4(1, 0.85f, 0.2f, 1), $"{tradeItem.Price:N0}");
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _tradeViewModel.CurrencyName);
 
                     // Buy/Sell button
                     var itemButtonHeight = ImGui.GetFrameHeight();
-                    ImGui.SameLine(ImGui.GetWindowWidth() - 80);
+                    ImGui.SameLine(contentStart + contentWidth - 80);
                     if (_tradeViewModel.TradeMode == "Buy")
                     {
                         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.35f, 0.2f, 1));
