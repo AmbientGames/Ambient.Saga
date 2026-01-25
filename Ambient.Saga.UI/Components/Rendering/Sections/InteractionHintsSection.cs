@@ -1,4 +1,6 @@
+using Ambient.Saga.UI.Configuration;
 using ImGuiNET;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Rendering.Sections;
@@ -15,30 +17,52 @@ public class InteractionHintsSection : IHudSection
     public void Render(HudContext context)
     {
         var separatorColor = new Vector4(0.3f, 0.3f, 0.3f, 1f);
+        var isDebug = Debugger.IsAttached;
 
         // Panel hotkey hints (always visible)
+        // Use abbreviated labels when debugger attached to make room for dev keys
         ImGui.BeginGroup();
 
         // Only show Map hint if world has a height map
         if (context.HasMap)
         {
-            RenderHotkeyHint("M", "Map", context.ActivePanel == ActivePanel.Map);
+            RenderHotkeyHint("M", isDebug ? string.Empty : "Map", context.ActivePanel == ActivePanel.Map);
             ImGui.SameLine();
             ImGui.TextColored(separatorColor, "|");
             ImGui.SameLine();
         }
 
-        RenderHotkeyHint("C", "Character", context.ActivePanel == ActivePanel.Character);
+        RenderHotkeyHint("C", isDebug ? string.Empty : "Character", context.ActivePanel == ActivePanel.Character);
         ImGui.SameLine();
         ImGui.TextColored(separatorColor, "|");
         ImGui.SameLine();
 
-        RenderHotkeyHint("I", "Inventory", context.ActivePanel == ActivePanel.Inventory);
+        RenderHotkeyHint("I", isDebug ? string.Empty : "Inventory", context.ActivePanel == ActivePanel.Inventory);
         ImGui.SameLine();
         ImGui.TextColored(separatorColor, "|");
         ImGui.SameLine();
 
-        RenderHotkeyHint("J", "Journal", context.ActivePanel == ActivePanel.Journal);
+        RenderHotkeyHint("J", isDebug ? string.Empty : "Journal", context.ActivePanel == ActivePanel.Journal);
+
+        // Developer keys (only when debugger attached)
+        if (isDebug)
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(separatorColor, "|");
+            ImGui.SameLine();
+
+            RenderHotkeyHint("F1", "World", context.ActivePanel == ActivePanel.WorldInfo);
+            ImGui.SameLine();
+            ImGui.TextColored(separatorColor, "|");
+            ImGui.SameLine();
+
+            RenderHotkeyHint("F2", "Info", GameConfiguration.ShowDeveloperInfo);
+            ImGui.SameLine();
+            ImGui.TextColored(separatorColor, "|");
+            ImGui.SameLine();
+
+            RenderHotkeyHint("F12", "Dev", context.ActivePanel == ActivePanel.DevTools);
+        }
 
         ImGui.EndGroup();
 

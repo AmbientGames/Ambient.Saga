@@ -45,8 +45,9 @@ public static class WinFormsKeyMapper
         Keys.I => ImGuiKey.I,
         Keys.J => ImGuiKey.J,
 
-        // Function keys (F1=World Info, F12=Dev Tools)
+        // Function keys (F1=World Info, F2=Toggle Dev Info, F12=Dev Tools)
         Keys.F1 => ImGuiKey.F1,
+        Keys.F2 => ImGuiKey.F2,
         Keys.F12 => ImGuiKey.F12,
 
         _ => ImGuiKey.None

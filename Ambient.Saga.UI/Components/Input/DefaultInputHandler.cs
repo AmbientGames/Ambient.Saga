@@ -1,10 +1,11 @@
 using System.Diagnostics;
+using Ambient.Saga.UI.Configuration;
 using ImGuiNET;
 
 namespace Ambient.Saga.UI.Components.Input;
 
 /// <summary>
-/// Default input handler for GameplayOverlay using M/C/I/J/F1/F12/ESC keys.
+/// Default input handler for GameplayOverlay using M/C/I/J/F1/F2/F12/ESC keys.
 /// This is the standard keyboard mapping but can be replaced with custom implementations.
 ///
 /// Key Bindings:
@@ -13,6 +14,7 @@ namespace Ambient.Saga.UI.Components.Input;
 /// - I: Toggle Inventory panel
 /// - J: Toggle Journal panel
 /// - F1: Toggle World Info panel (debugger only)
+/// - F2: Toggle Developer Info display (debugger only)
 /// - F12: Toggle Dev Tools panel (debugger only)
 /// - ESC: Close panels OR open pause menu (hierarchical behavior)
 /// 
@@ -33,6 +35,7 @@ public class DefaultInputHandler : IInputHandler
     private bool _iKeyWasPressed = false;
     private bool _jKeyWasPressed = false;
     private bool _f1KeyWasPressed = false;
+    private bool _f2KeyWasPressed = false;
     private bool _f12KeyWasPressed = false;
     private bool _escKeyWasPressed = false;
     private bool _pauseMenuRequestedThisFrame = false;
@@ -106,6 +109,14 @@ public class DefaultInputHandler : IInputHandler
             context.TogglePanelAction(ActivePanel.WorldInfo);
         }
         _f1KeyWasPressed = f1KeyDown;
+
+        // F2 key - Toggle Developer Info display (only when debugger attached)
+        bool f2KeyDown = ImGui.IsKeyDown(ImGuiKey.F2);
+        if (f2KeyDown && !_f2KeyWasPressed && Debugger.IsAttached)
+        {
+            GameConfiguration.ToggleDeveloperInfo();
+        }
+        _f2KeyWasPressed = f2KeyDown;
 
         // F12 key - Dev Tools (only when debugger attached)
         bool f12KeyDown = ImGui.IsKeyDown(ImGuiKey.F12);
