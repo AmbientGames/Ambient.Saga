@@ -17,8 +17,9 @@ public class DefaultHudRenderer : IHudRenderer
     private const float ColdThreshold = 35f;   // Hypothermia warning
     private const float HotThreshold = 39f;    // Hyperthermia warning
 
-    // Resource bar styling
-    private const float BarWidth = 120f;
+    // Resource bar styling - dynamic sizing
+    private const float MinBarWidth = 80f;
+    private const float MaxBarWidth = 150f;
     private const float BarHeight = 14f;
     private const float BarSpacing = 8f;
 
@@ -56,6 +57,9 @@ public class DefaultHudRenderer : IHudRenderer
         ImGui.PopStyleColor();
     }
 
+    // Cached bar width for current frame
+    private float _currentBarWidth = MaxBarWidth;
+
     private void RenderResourceBars(SagaMainViewModel viewModel)
     {
         var stats = viewModel.PlayerAvatar?.Stats;
@@ -64,6 +68,13 @@ public class DefaultHudRenderer : IHudRenderer
             ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No avatar");
             return;
         }
+
+        // Calculate bar width based on available space (3 bars + spacing + temperature)
+        var availableWidth = ImGui.GetContentRegionAvail().X;
+        var tempWarningWidth = 60f; // Reserve space for temperature warning
+        var totalSpacing = BarSpacing * 4; // Between bars and before temp
+        var barsWidth = availableWidth - tempWarningWidth - totalSpacing;
+        _currentBarWidth = Math.Clamp(barsWidth / 3f, MinBarWidth, MaxBarWidth);
 
         // Health bar (red)
         RenderResourceBar("HP", stats.Health, 1.0f,
@@ -95,35 +106,39 @@ public class DefaultHudRenderer : IHudRenderer
     {
         var pos = ImGui.GetCursorScreenPos();
         var drawList = ImGui.GetWindowDrawList();
+        var barWidth = _currentBarWidth;
 
         // Clamp value to 0-max range
         var fraction = Math.Clamp(current / max, 0f, 1f);
 
         // Background
-        drawList.AddRectFilled(pos, new Vector2(pos.X + BarWidth, pos.Y + BarHeight),
+        drawList.AddRectFilled(pos, new Vector2(pos.X + barWidth, pos.Y + BarHeight),
             ImGui.ColorConvertFloat4ToU32(bgColor), 3f);
 
         // Fill
         if (fraction > 0)
         {
-            drawList.AddRectFilled(pos, new Vector2(pos.X + BarWidth * fraction, pos.Y + BarHeight),
+            drawList.AddRectFilled(pos, new Vector2(pos.X + barWidth * fraction, pos.Y + BarHeight),
                 ImGui.ColorConvertFloat4ToU32(fillColor), 3f);
         }
 
         // Border
-        drawList.AddRect(pos, new Vector2(pos.X + BarWidth, pos.Y + BarHeight),
+        drawList.AddRect(pos, new Vector2(pos.X + barWidth, pos.Y + BarHeight),
             ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.4f, 0.8f)), 3f);
 
-        // Label centered in bar
+        // Label centered in bar (only if bar is wide enough)
         var labelText = $"{label} {(int)(fraction * 100)}%";
         var textSize = ImGui.CalcTextSize(labelText);
-        var textPos = new Vector2(
-            pos.X + (BarWidth - textSize.X) / 2,
-            pos.Y + (BarHeight - textSize.Y) / 2);
-        drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 1f, 1f, 0.9f)), labelText);
+        if (barWidth >= textSize.X + 8 && BarHeight >= textSize.Y)
+        {
+            var textPos = new Vector2(
+                pos.X + (barWidth - textSize.X) / 2,
+                pos.Y + (BarHeight - textSize.Y) / 2);
+            drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 1f, 1f, 0.9f)), labelText);
+        }
 
         // Advance cursor
-        ImGui.Dummy(new Vector2(BarWidth, BarHeight));
+        ImGui.Dummy(new Vector2(barWidth, BarHeight));
     }
 
     private enum TemperatureStatus { Normal, Cold, Hot }

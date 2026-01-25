@@ -95,11 +95,15 @@ public class SectionedHudRenderer : IHudRenderer
 
     public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
     {
-        // Calculate HUD dimensions
+        // Calculate HUD dimensions - ensure enough space for 3 resource bars
         var textHeight = ImGui.CalcTextSize("M").Y;
         var style = ImGui.GetStyle();
-        var buttonHeight = textHeight + style.FramePadding.Y * 2;
-        var hudHeight = buttonHeight + style.WindowPadding.Y * 2 + 20f; // Extra height for resource bars
+        var minBarHeight = 12f;  // Minimum height per bar
+        var barCount = 3;        // HP, ST, MP
+        var barSpacing = 4f;     // Spacing between bars
+        var verticalPadding = 8f; // Top and bottom padding
+        var minContentHeight = (minBarHeight * barCount) + (barSpacing * (barCount + 1)) + verticalPadding * 2;
+        var hudHeight = Math.Max(minContentHeight, textHeight + style.WindowPadding.Y * 2 + 30f);
 
         // Calculate bottom bar region widths
         var availableWidth = displaySize.X - style.WindowPadding.X * 2;
