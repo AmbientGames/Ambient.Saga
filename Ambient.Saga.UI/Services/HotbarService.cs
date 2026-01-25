@@ -28,15 +28,9 @@ public class HotbarService
 
         var slot = avatar.Hotbar[slotIndex];
 
-        // If slot is empty, just select it (for assignment purposes)
+        // If slot is empty, do nothing
         if (slot.IsEmpty)
-        {
-            avatar.ActiveHotbarSlot = slotIndex;
             return;
-        }
-
-        // Activate the slot
-        avatar.ActiveHotbarSlot = slotIndex;
 
         // Perform action based on item type
         await PerformSlotActionAsync(avatar, slot);
@@ -64,12 +58,6 @@ public class HotbarService
             return;
 
         avatar.Hotbar[slotIndex].Clear();
-
-        // If this was the active slot, deactivate
-        if (avatar.ActiveHotbarSlot == slotIndex)
-        {
-            avatar.ActiveHotbarSlot = -1;
-        }
     }
 
     private async Task PerformSlotActionAsync(AvatarBase avatar, HotbarSlot slot)
@@ -77,28 +65,39 @@ public class HotbarService
         if (slot.IsEmpty || string.IsNullOrEmpty(slot.RefName))
             return;
 
+        var world = _viewModel.CurrentWorld;
+
         switch (slot.ItemType)
         {
             case HotbarItemType.Tool:
                 avatar.CurrentToolRef = slot.RefName;
+                var toolDef = world?.Gameplay?.Tools?.FirstOrDefault(t => t.RefName == slot.RefName);
+                var toolName = toolDef?.DisplayName ?? slot.RefName;
+                _viewModel.AddToastMessage($"{toolName} equipped");
                 break;
 
             case HotbarItemType.Block:
                 avatar.CurrentBlockRef = slot.RefName;
+                var blockDef = world?.BlockProvider?.GetBlockByRefName(slot.RefName);
+                var blockName = blockDef?.DisplayName ?? slot.RefName;
+                _viewModel.AddToastMessage($"{blockName} selected");
                 break;
 
             case HotbarItemType.BuildingMaterial:
                 avatar.CurrentBuildingMaterialRef = slot.RefName;
+                var materialDef = world?.TryGetBuildingMaterialByRefName(slot.RefName);
+                var materialName = materialDef?.DisplayName ?? slot.RefName;
+                _viewModel.AddToastMessage($"{materialName} selected");
                 break;
 
             case HotbarItemType.Consumable:
-                // Use the consumable
+                // Use the consumable (toast is handled by UseConsumableAsync)
                 await _viewModel.UseConsumableAsync(slot.RefName);
                 break;
 
             case HotbarItemType.Equipment:
-                // Equip the item (standard hotbar behavior - unequip is done from inventory)
-                var equipDef = _viewModel.CurrentWorld?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName);
+                // Equip the item (toast is handled by EquipItemAsync)
+                var equipDef = world?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName);
                 if (equipDef != null)
                 {
                     var isEquipped = _viewModel.IsItemEquipped(slot.RefName);

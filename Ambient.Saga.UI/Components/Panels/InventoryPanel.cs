@@ -25,9 +25,11 @@ public class InventoryPanel
 
     // Hotbar assignment state
     private bool _showHotbarAssignPopup = false;
+    private bool _openHotbarPopupRequested = false;
     private HotbarItemType _assignItemType;
     private string? _assignItemRef;
     private string? _assignItemName;
+    private Vector2 _popupPosition;
 
     // Layout constants
     private const float AssignButtonWidth = 25f;  // "[+]" button
@@ -86,7 +88,7 @@ public class InventoryPanel
             ImGui.EndChild();
         }
 
-        // Render hotbar assignment popup (needs to be at root level for proper popup handling)
+        // Render hotbar popup at root level (after all child windows)
         RenderHotbarAssignPopup(viewModel);
     }
 
@@ -594,10 +596,11 @@ public class InventoryPanel
         if (ImGui.SmallButton($"[+]##{itemType}_{refName}"))
         {
             _showHotbarAssignPopup = true;
+            _openHotbarPopupRequested = true;
             _assignItemType = itemType;
             _assignItemRef = refName;
             _assignItemName = displayName;
-            ImGui.OpenPopup("HotbarAssignPopup");
+            _popupPosition = ImGui.GetMousePos();
         }
         ImGui.PopStyleColor(2);
 
@@ -608,7 +611,7 @@ public class InventoryPanel
     }
 
     /// <summary>
-    /// Renders the hotbar assignment popup. Call this once per frame.
+    /// Renders the hotbar assignment popup. Call this once per frame at root level.
     /// </summary>
     private void RenderHotbarAssignPopup(SagaMainViewModel viewModel)
     {
@@ -617,7 +620,15 @@ public class InventoryPanel
         var avatar = viewModel.PlayerAvatar;
         if (avatar == null) return;
 
-        // Center the popup
+        // Open popup if requested (deferred from button click)
+        if (_openHotbarPopupRequested)
+        {
+            ImGui.OpenPopup("HotbarAssignPopup");
+            _openHotbarPopupRequested = false;
+        }
+
+        // Position near where clicked
+        ImGui.SetNextWindowPos(_popupPosition, ImGuiCond.Appearing);
         var popupSize = new Vector2(200, 0);
         ImGui.SetNextWindowSize(popupSize, ImGuiCond.Always);
 
