@@ -1,3 +1,4 @@
+using Ambient.Domain;
 using Ambient.Domain.Hotbar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
@@ -53,101 +54,8 @@ public class InventoryPanel
 
         var caps = viewModel.PlayerAvatar.Capabilities;
 
-        // RPG Elements
-        ImGui.TextColored(new Vector4(1, 0.7f, 0.7f, 1), "RPG Elements");
-
-        // Equipment
-        if (ImGui.CollapsingHeader($"Equipment ({caps.Equipment?.Length ?? 0})", ImGuiTreeNodeFlags.DefaultOpen))
-        {
-            if (caps.Equipment != null && caps.Equipment.Length > 0)
-            {
-                foreach (var equip in caps.Equipment)
-                {
-                    var equipItem = viewModel.CurrentWorld?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
-                    var name = equipItem?.DisplayName ?? equip.EquipmentRef;
-                    var slotRef = equipItem?.SlotRef.ToString() ?? "Unknown";
-                    var isEquipped = viewModel.IsItemEquipped(equip.EquipmentRef);
-                    var isPending = _pendingEquipOperations.Contains(equip.EquipmentRef);
-
-                    ImGui.Indent();
-
-                    // Expandable header for each equipment item with equipped indicator
-                    var maxTextWidth = GetAvailableTextWidth();
-                    var statusSuffix = isEquipped ? " [EQUIPPED]" : "";
-                    var conditionText = $" ({equip.Condition:P0})";
-                    var fullHeaderText = $"{name}{conditionText}{statusSuffix}";
-                    var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(conditionText + statusSuffix).X - 30f);
-                    var headerText = $"{truncatedName}{conditionText}{statusSuffix}";
-                    var treeNodeOpen = ImGui.TreeNode($"{headerText}##{equip.EquipmentRef}");
-
-                    // Show full name on hover if truncated
-                    if (truncatedName != name && ImGui.IsItemHovered())
-                    {
-                        ImGui.SetTooltip(fullHeaderText);
-                    }
-
-                    // Hotbar assign button and Equip/Unequip button on same line as header
-                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
-                    RenderHotbarAssignButton(HotbarItemType.Equipment, equip.EquipmentRef, name);
-                    ImGui.SameLine();
-                    var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
-                    if (isPending)
-                    {
-                        ImGui.BeginDisabled();
-                        ImGui.Button("...", buttonSize);
-                        ImGui.EndDisabled();
-                    }
-                    else if (isEquipped)
-                    {
-                        if (ImGui.Button($"Unequip##{equip.EquipmentRef}", buttonSize))
-                        {
-                            _pendingEquipOperations.Add(equip.EquipmentRef);
-                            _ = UnequipItemAsync(viewModel, equip.EquipmentRef, slotRef);
-                        }
-                    }
-                    else
-                    {
-                        if (ImGui.Button($"Equip##{equip.EquipmentRef}", buttonSize))
-                        {
-                            _pendingEquipOperations.Add(equip.EquipmentRef);
-                            _ = EquipItemAsync(viewModel, equip.EquipmentRef, slotRef);
-                        }
-                    }
-
-                    if (treeNodeOpen)
-                    {
-                        if (equipItem != null)
-                        {
-                            // Slot info
-                            ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.6f, 1), $"Slot: {slotRef}");
-
-                            // Description
-                            if (!string.IsNullOrEmpty(equipItem.Description))
-                            {
-                                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), equipItem.Description);
-                                ImGui.Spacing();
-                            }
-
-                            // Effects
-                            if (equipItem.Effects != null)
-                            {
-                                ImGuiHelpers.RenderAttributes(equipItem.Effects);
-                            }
-                        }
-
-                        ImGui.TreePop();
-                    }
-
-                    ImGui.Unindent();
-                }
-            }
-            else
-            {
-                ImGui.Indent();
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No equipment");
-                ImGui.Unindent();
-            }
-        }
+        // Equipment - organized by slot
+        RenderEquipmentBySlot(viewModel, caps);
 
         // Consumables
         if (ImGui.CollapsingHeader($"Consumables ({caps.Consumables?.Length ?? 0})", ImGuiTreeNodeFlags.DefaultOpen))
@@ -477,6 +385,174 @@ public class InventoryPanel
         {
             _pendingUseOperations.Remove(consumableRef);
         }
+    }
+
+    /// <summary>
+    /// Renders equipment organized by loadout slot.
+    /// </summary>
+    private void RenderEquipmentBySlot(SagaMainViewModel viewModel, ItemCollection caps)
+    {
+        var world = viewModel.CurrentWorld;
+        if (world == null) return;
+
+        // Get all loadout slots from the world
+        var loadoutSlots = world.LoadoutSlotsLookup?.Values.ToList() ?? new List<LoadoutSlot>();
+        if (loadoutSlots.Count == 0)
+        {
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No equipment slots defined");
+            return;
+        }
+
+        // Build a lookup of equipment by slot
+        var equipmentBySlot = new Dictionary<string, List<(EquipmentEntry entry, Equipment? def)>>();
+        foreach (var slot in loadoutSlots)
+        {
+            equipmentBySlot[slot.RefName] = new List<(EquipmentEntry entry, Equipment? def)>();
+        }
+
+        // Group player's equipment by slot
+        if (caps.Equipment != null)
+        {
+            foreach (var equip in caps.Equipment)
+            {
+                var equipDef = world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
+                var slotRef = equipDef?.SlotRef ?? "Unknown";
+                if (equipmentBySlot.ContainsKey(slotRef))
+                {
+                    equipmentBySlot[slotRef].Add((equip, equipDef));
+                }
+            }
+        }
+
+        // Render each slot
+        foreach (var slot in loadoutSlots)
+        {
+            var slotEquipment = equipmentBySlot.GetValueOrDefault(slot.RefName, new List<(EquipmentEntry entry, Equipment? def)>());
+            var equippedItem = slotEquipment.FirstOrDefault(e => viewModel.IsItemEquipped(e.entry.EquipmentRef));
+            var hasEquipped = equippedItem.entry != null;
+
+            // Build header text
+            var slotDisplayName = slot.DisplayName ?? slot.RefName;
+            var headerText = hasEquipped
+                ? $"{slotDisplayName}: {equippedItem.def?.DisplayName ?? equippedItem.entry!.EquipmentRef}"
+                : $"{slotDisplayName}";
+
+            // Color the header based on equipped status
+            if (hasEquipped)
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 1f, 0.5f, 1f));
+            }
+
+            var isOpen = ImGui.CollapsingHeader($"{headerText}##{slot.RefName}");
+
+            if (hasEquipped)
+            {
+                ImGui.PopStyleColor();
+            }
+
+            // Show slot description on second line (helpful for non-English slot names)
+            if (!string.IsNullOrEmpty(slot.Description))
+            {
+                ImGui.Indent();
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), slot.Description);
+                ImGui.Unindent();
+            }
+
+            if (isOpen)
+            {
+                if (slotEquipment.Count == 0)
+                {
+                    ImGui.Indent();
+                    ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "(empty)");
+                    ImGui.Unindent();
+                }
+                else
+                {
+                    foreach (var (equip, equipDef) in slotEquipment)
+                    {
+                        RenderEquipmentItem(viewModel, equip, equipDef, slot.RefName);
+                    }
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Renders a single equipment item within a slot section.
+    /// </summary>
+    private void RenderEquipmentItem(SagaMainViewModel viewModel, EquipmentEntry equip, Equipment? equipItem, string slotRef)
+    {
+        var name = equipItem?.DisplayName ?? equip.EquipmentRef;
+        var isEquipped = viewModel.IsItemEquipped(equip.EquipmentRef);
+        var isPending = _pendingEquipOperations.Contains(equip.EquipmentRef);
+
+        ImGui.Indent();
+
+        // Expandable header for each equipment item with equipped indicator
+        var maxTextWidth = GetAvailableTextWidth();
+        var statusSuffix = isEquipped ? " [EQUIPPED]" : "";
+        var conditionText = $" ({equip.Condition:P0})";
+        var fullHeaderText = $"{name}{conditionText}{statusSuffix}";
+        var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(conditionText + statusSuffix).X - 30f);
+        var headerText = $"{truncatedName}{conditionText}{statusSuffix}";
+        var treeNodeOpen = ImGui.TreeNode($"{headerText}##{equip.EquipmentRef}");
+
+        // Show full name on hover if truncated
+        if (truncatedName != name && ImGui.IsItemHovered())
+        {
+            ImGui.SetTooltip(fullHeaderText);
+        }
+
+        // Hotbar assign button and Equip/Unequip button on same line as header
+        ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+        RenderHotbarAssignButton(HotbarItemType.Equipment, equip.EquipmentRef, name);
+        ImGui.SameLine();
+        var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
+        if (isPending)
+        {
+            ImGui.BeginDisabled();
+            ImGui.Button("...", buttonSize);
+            ImGui.EndDisabled();
+        }
+        else if (isEquipped)
+        {
+            if (ImGui.Button($"Unequip##{equip.EquipmentRef}", buttonSize))
+            {
+                _pendingEquipOperations.Add(equip.EquipmentRef);
+                _ = UnequipItemAsync(viewModel, equip.EquipmentRef, slotRef);
+            }
+        }
+        else
+        {
+            if (ImGui.Button($"Equip##{equip.EquipmentRef}", buttonSize))
+            {
+                _pendingEquipOperations.Add(equip.EquipmentRef);
+                _ = EquipItemAsync(viewModel, equip.EquipmentRef, slotRef);
+            }
+        }
+
+        if (treeNodeOpen)
+        {
+            if (equipItem != null)
+            {
+                // Description
+                if (!string.IsNullOrEmpty(equipItem.Description))
+                {
+                    ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), equipItem.Description);
+                    ImGui.Spacing();
+                }
+
+                // Effects
+                if (equipItem.Effects != null)
+                {
+                    ImGuiHelpers.RenderAttributes(equipItem.Effects);
+                }
+            }
+
+            ImGui.TreePop();
+        }
+
+        ImGui.Unindent();
     }
 
     /// <summary>
