@@ -16,11 +16,11 @@ public partial class MainWindow : Form
     private WorldMapUI? _worldMapUI;
     private bool _isRendering = false;
     private DateTime _lastFrameTime = DateTime.Now;
-    private MainViewModel _viewModel;
+    private SagaMainViewModel _viewModel;
     private Panel _mainPanel;
     private ModalManager _modalManager;
 
-    public MainWindow(MainViewModel viewModel, WorldMapUI worldMapUI, ModalManager modalManager)
+    public MainWindow(SagaMainViewModel viewModel, WorldMapUI worldMapUI, ModalManager modalManager)
     {
         _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         _worldMapUI = worldMapUI ?? throw new ArgumentNullException(nameof(worldMapUI));

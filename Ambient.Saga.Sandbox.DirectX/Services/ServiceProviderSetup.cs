@@ -66,7 +66,7 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
         {
             // Windows and ViewModels
             services.AddTransient<MainWindow>();
-            services.AddTransient<MainViewModel>();
+            services.AddTransient<SagaMainViewModel>();
 
             // Archetype selectors - keyed services for WPF and ImGui
             //services.AddKeyedSingleton<IArchetypeSelector, WpfArchetypeSelector>("wpf");

@@ -44,60 +44,104 @@ public class JournalPanel
         ImGui.Separator();
         ImGui.Spacing();
 
-        // Tab bar
-        if (ImGui.BeginTabBar("JournalTabs"))
-        {
-            if (ImGui.BeginTabItem("Quests"))
-            {
-                RenderQuestsTab(viewModel, modalManager);
-                ImGui.EndTabItem();
-            }
+        // Three-column layout
+        var availableWidth = ImGui.GetContentRegionAvail().X;
+        var availableHeight = ImGui.GetContentRegionAvail().Y;
+        var columnSpacing = 10f * UIConstants.DpiScale;
+        var columnWidth = (availableWidth - (columnSpacing * 2)) / 3f;
 
-            if (ImGui.BeginTabItem("Bestiary"))
-            {
-                RenderBestiaryTab(viewModel, modalManager);
-                ImGui.EndTabItem();
-            }
+        // Column 1: Quests
+        ImGui.BeginChild("JournalCol1", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+        RenderQuestsColumn(viewModel, modalManager);
+        ImGui.EndChild();
 
-            if (ImGui.BeginTabItem("Atlas"))
-            {
-                RenderAtlasTab(viewModel);
-                ImGui.EndTabItem();
-            }
+        ImGui.SameLine(0, columnSpacing);
 
-            if (ImGui.BeginTabItem("History"))
-            {
-                RenderHistoryTab(viewModel);
-                ImGui.EndTabItem();
-            }
+        // Column 2: Bestiary + Atlas
+        ImGui.BeginChild("JournalCol2", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+        RenderDiscoveryColumn(viewModel, modalManager);
+        ImGui.EndChild();
 
-            if (ImGui.BeginTabItem("Achievements"))
-            {
-                RenderAchievementsTab(viewModel);
-                ImGui.EndTabItem();
-            }
+        ImGui.SameLine(0, columnSpacing);
 
-            ImGui.EndTabBar();
-        }
+        // Column 3: History + Achievements
+        ImGui.BeginChild("JournalCol3", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+        RenderProgressColumn(viewModel);
+        ImGui.EndChild();
     }
 
-    #region Quests Tab
-
-    private void RenderQuestsTab(SagaMainViewModel viewModel, ModalManager modalManager)
+    private void RenderQuestsColumn(SagaMainViewModel viewModel, ModalManager modalManager)
     {
-        ImGui.BeginChild("QuestsScroll", new Vector2(0, -ImGui.GetFrameHeightWithSpacing()), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), "QUESTS");
+        ImGui.Separator();
+        ImGui.Spacing();
 
+        ImGui.BeginChild("QuestsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill - ImGui.GetFrameHeightWithSpacing()), ImGuiChildFlags.None);
+        RenderQuestsContent(viewModel, modalManager);
+        ImGui.EndChild();
+
+        RenderQuestsFooter();
+    }
+
+    private void RenderDiscoveryColumn(SagaMainViewModel viewModel, ModalManager modalManager)
+    {
+        var halfHeight = (ImGui.GetContentRegionAvail().Y - 10f * UIConstants.DpiScale) / 2f;
+
+        // Bestiary section
+        ImGui.BeginChild("BestiarySection", new Vector2(ImGuiSizes.Fill, halfHeight), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(0.8f, 0.6f, 0.9f, 1f), "BESTIARY");
+        ImGui.Separator();
+        ImGui.Spacing();
+        RenderBestiaryContent(viewModel, modalManager);
+        ImGui.EndChild();
+
+        ImGui.Spacing();
+
+        // Atlas section
+        ImGui.BeginChild("AtlasSection", new Vector2(ImGuiSizes.Fill, halfHeight), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1f), "ATLAS");
+        ImGui.Separator();
+        ImGui.Spacing();
+        RenderAtlasContent(viewModel);
+        ImGui.EndChild();
+    }
+
+    private void RenderProgressColumn(SagaMainViewModel viewModel)
+    {
+        var halfHeight = (ImGui.GetContentRegionAvail().Y - 10f * UIConstants.DpiScale) / 2f;
+
+        // History section
+        ImGui.BeginChild("HistorySection", new Vector2(ImGuiSizes.Fill, halfHeight), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(0.6f, 0.8f, 0.9f, 1f), "HISTORY");
+        ImGui.Separator();
+        ImGui.Spacing();
+        RenderHistoryContent(viewModel);
+        ImGui.EndChild();
+
+        ImGui.Spacing();
+
+        // Achievements section
+        ImGui.BeginChild("AchievementsSection", new Vector2(ImGuiSizes.Fill, halfHeight), ImGuiChildFlags.None);
+        ImGui.TextColored(new Vector4(1f, 0.84f, 0f, 1f), "ACHIEVEMENTS");
+        ImGui.Separator();
+        ImGui.Spacing();
+        RenderAchievementsContent(viewModel);
+        ImGui.EndChild();
+    }
+
+    #region Quests
+
+    private void RenderQuestsContent(SagaMainViewModel viewModel, ModalManager modalManager)
+    {
         if (viewModel.QuestLog == null)
         {
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No quest log available.");
-            ImGui.EndChild();
-            RenderQuestsFooter();
             return;
         }
 
         // Active Quests
         var activeCount = viewModel.QuestLog.ActiveQuests?.Count ?? 0;
-        ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), $"Active Quests ({activeCount})");
+        ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), $"Active ({activeCount})");
         ImGui.Spacing();
 
         if (activeCount > 0)
@@ -109,8 +153,8 @@ public class JournalPanel
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "  No active quests.");
-            ImGui.TextWrapped("  Explore the world to discover quests from NPCs and signposts.");
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "No active quests.");
+            ImGui.TextWrapped("Explore the world to discover quests.");
         }
 
         // Completed Quests (collapsible)
@@ -121,7 +165,7 @@ public class JournalPanel
             ImGui.Spacing();
 
             var completedCount = viewModel.QuestLog.CompletedQuests?.Count ?? 0;
-            ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Completed Quests ({completedCount})");
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Completed ({completedCount})");
             ImGui.Spacing();
 
             if (completedCount > 0)
@@ -133,12 +177,9 @@ public class JournalPanel
             }
             else
             {
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "  No completed quests yet.");
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "No completed quests yet.");
             }
         }
-
-        ImGui.EndChild();
-        RenderQuestsFooter();
     }
 
     private void RenderQuestEntry(QuestDisplayItem quest, bool isCompleted, ModalManager modalManager)
@@ -220,24 +261,22 @@ public class JournalPanel
 
     #endregion
 
-    #region Bestiary Tab
+    #region Bestiary
 
-    private void RenderBestiaryTab(SagaMainViewModel viewModel, ModalManager modalManager)
+    private void RenderBestiaryContent(SagaMainViewModel viewModel, ModalManager modalManager)
     {
         // Filter input
-        ImGui.SetNextItemWidth(200);
-        ImGui.InputTextWithHint("##BestiaryFilter", "Filter by name...", ref _bestiaryFilter, 100);
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 50);
+        ImGui.InputTextWithHint("##BestiaryFilter", "Filter...", ref _bestiaryFilter, 100);
         ImGui.SameLine();
-        if (ImGui.Button("Clear"))
+        if (ImGui.SmallButton("X##ClearBestiary"))
         {
             _bestiaryFilter = "";
         }
 
         ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
 
-        ImGui.BeginChild("BestiaryScroll", new Vector2(0, 0), ImGuiChildFlags.None);
+        ImGui.BeginChild("BestiaryScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
 
         if (viewModel.Characters == null || viewModel.Characters.Count == 0)
         {
@@ -255,7 +294,7 @@ public class JournalPanel
 
         if (!filteredCharacters.Any())
         {
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No characters match the filter.");
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No matches.");
             ImGui.EndChild();
             return;
         }
@@ -364,11 +403,11 @@ public class JournalPanel
 
     #endregion
 
-    #region Atlas Tab
+    #region Atlas
 
-    private void RenderAtlasTab(SagaMainViewModel viewModel)
+    private void RenderAtlasContent(SagaMainViewModel viewModel)
     {
-        ImGui.BeginChild("AtlasScroll", new Vector2(0, 0), ImGuiChildFlags.None);
+        ImGui.BeginChild("AtlasScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
 
         var world = viewModel.CurrentWorld;
 
@@ -383,15 +422,13 @@ public class JournalPanel
         if (locations == null || locations.Count == 0)
         {
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No locations discovered yet.");
-            ImGui.TextWrapped("  Explore the world to discover points of interest.");
+            ImGui.TextWrapped("Explore to discover points of interest.");
             ImGui.EndChild();
             return;
         }
 
         // Header
-        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1f), $"Discovered Locations ({locations.Count})");
-        ImGui.Spacing();
-        ImGui.Separator();
+        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1f), $"Locations ({locations.Count})");
         ImGui.Spacing();
 
         // Group by category
@@ -504,30 +541,28 @@ public class JournalPanel
 
     #endregion
 
-    #region History Tab
+    #region History
 
-    private void RenderHistoryTab(SagaMainViewModel viewModel)
+    private void RenderHistoryContent(SagaMainViewModel viewModel)
     {
         // Filter input
-        ImGui.SetNextItemWidth(200);
-        ImGui.InputTextWithHint("##HistoryFilter", "Filter by type...", ref _historyFilter, 100);
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 50);
+        ImGui.InputTextWithHint("##HistoryFilter", "Filter...", ref _historyFilter, 100);
         ImGui.SameLine();
-        if (ImGui.Button("Clear##History"))
+        if (ImGui.SmallButton("X##ClearHistory"))
         {
             _historyFilter = "";
         }
 
         ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
 
-        ImGui.BeginChild("HistoryScroll", new Vector2(0, 0), ImGuiChildFlags.None);
+        ImGui.BeginChild("HistoryScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
 
         var transactions = viewModel.RecentTransactions;
         if (transactions == null || transactions.Count == 0)
         {
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No events recorded yet.");
-            ImGui.TextWrapped("  Your actions will be logged here as you explore the world.");
+            ImGui.TextWrapped("Actions will be logged here.");
             ImGui.EndChild();
             return;
         }
@@ -540,10 +575,6 @@ public class JournalPanel
                 t.Type.ToString().Contains(_historyFilter, StringComparison.OrdinalIgnoreCase));
 
         var transactionList = filteredTransactions.ToList();
-
-        // Header
-        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1f), $"Recent Events ({transactionList.Count})");
-        ImGui.Spacing();
 
         // Display transactions in reverse chronological order (most recent first)
         foreach (var transaction in transactionList.OrderByDescending(t => t.GetCanonicalTimestamp()).Take(50))
@@ -724,23 +755,25 @@ public class JournalPanel
 
     #endregion
 
-    #region Achievements Tab
+    #region Achievements
 
-    private void RenderAchievementsTab(SagaMainViewModel viewModel)
+    private void RenderAchievementsContent(SagaMainViewModel viewModel)
     {
-        ImGui.BeginChild("AchievementsScroll", new Vector2(0, -ImGui.GetFrameHeightWithSpacing()), ImGuiChildFlags.None);
-
         if (viewModel.Achievements == null)
         {
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No achievements available.");
-            ImGui.EndChild();
-            RenderAchievementsFooter();
             return;
         }
 
         // Completion stats header
-        ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), $"Progress: {viewModel.Achievements.CompletionText}");
+        ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), viewModel.Achievements.CompletionText);
         ImGui.Spacing();
+
+        // Toggle for locked achievements
+        ImGui.Checkbox("Show Locked", ref _showLockedAchievements);
+        ImGui.Spacing();
+
+        ImGui.BeginChild("AchievementsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
 
         // Unlocked Achievements
         var unlockedCount = viewModel.Achievements.UnlockedAchievements?.Count ?? 0;
@@ -756,8 +789,7 @@ public class JournalPanel
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "  No achievements unlocked yet.");
-            ImGui.TextWrapped("  Complete objectives to earn achievements.");
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "No achievements unlocked yet.");
         }
 
         // Locked Achievements (collapsible)
@@ -780,12 +812,11 @@ public class JournalPanel
             }
             else
             {
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "  All achievements unlocked!");
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "All achievements unlocked!");
             }
         }
 
         ImGui.EndChild();
-        RenderAchievementsFooter();
     }
 
     private void RenderAchievementEntry(Ambient.Presentation.WindowsUI.RpgControls.ViewModels.AchievementDisplayItem achievement, bool isUnlocked)
@@ -862,12 +893,6 @@ public class JournalPanel
         ImGui.EndChild();
         ImGui.PopStyleColor();
         ImGui.Spacing();
-    }
-
-    private void RenderAchievementsFooter()
-    {
-        ImGui.Separator();
-        ImGui.Checkbox("Show Locked Achievements", ref _showLockedAchievements);
     }
 
     #endregion
