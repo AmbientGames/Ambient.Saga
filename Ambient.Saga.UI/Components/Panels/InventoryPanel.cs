@@ -31,11 +31,16 @@ public class InventoryPanel
     private string? _assignItemName;
     private Vector2 _popupPosition;
 
-    // Layout constants
-    private const float AssignButtonWidth = 25f;  // "[+]" button
-    private const float ActionButtonWidth = 55f;  // "Equip"/"Unequip"/"Use" buttons (fixed width)
-    private const float ButtonSpacing = 5f;
-    private const float ButtonAreaWidth = AssignButtonWidth + ActionButtonWidth + ButtonSpacing * 2 + 10f; // Total reserved space
+    // Layout base values (will be scaled by DpiScale)
+    private const float BaseAssignButtonWidth = 30f;  // "[+]" button
+    private const float BaseActionButtonWidth = 55f;  // "Equip"/"Unequip"/"Use" buttons (fixed width)
+    private const float BaseButtonSpacing = 4f;
+
+    // Scaled layout values
+    private static float AssignButtonWidth => BaseAssignButtonWidth * UIConstants.DpiScale;
+    private static float ActionButtonWidth => BaseActionButtonWidth * UIConstants.DpiScale;
+    private static float ButtonSpacing => BaseButtonSpacing * UIConstants.DpiScale;
+    private static float ButtonAreaWidth => AssignButtonWidth + ActionButtonWidth + ButtonSpacing + (8f * UIConstants.DpiScale);
 
     public void Render(SagaMainViewModel viewModel)
     {
@@ -65,12 +70,14 @@ public class InventoryPanel
 
         ImGui.SameLine(0, columnSpacing);
 
-        // Column 2: RPG Elements (Consumables, Spells, Quest Tokens)
+        // Column 2: RPG Elements (Consumables, Spells, Affinity, Stance, Quest Tokens)
         ImGui.BeginChild("RpgColumn", new Vector2(columnWidth, contentHeight), ImGuiChildFlags.None, ImGuiWindowFlags.None);
         ImGui.TextColored(new Vector4(0.7f, 1f, 0.7f, 1), "ITEMS & MAGIC");
         ImGui.Separator();
         RenderConsumables(viewModel, caps);
         RenderSpells(viewModel, caps);
+        RenderAffinity(viewModel, caps);
+        RenderStance(viewModel, caps);
         RenderQuestTokens(viewModel, caps);
         ImGui.EndChild();
 
@@ -119,7 +126,8 @@ public class InventoryPanel
                         ImGui.SetTooltip($"{name}{quantityText}");
                     }
 
-                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
                     RenderHotbarAssignButton(HotbarItemType.Consumable, consumable.ConsumableRef, name);
                     ImGui.SameLine();
                     var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
@@ -254,6 +262,142 @@ public class InventoryPanel
     }
 
     /// <summary>
+    /// Renders the Affinity section (Spirit).
+    /// </summary>
+    private void RenderAffinity(SagaMainViewModel viewModel, ItemCollection caps)
+    {
+        var world = viewModel.CurrentWorld;
+        var slot = world?.LoadoutSlotsLookup?.GetValueOrDefault("Affinity");
+        if (slot == null) return;
+
+        // Get equipment items for this slot
+        var affinityEquipment = new List<(EquipmentEntry entry, Equipment? def)>();
+        if (caps.Equipment != null)
+        {
+            foreach (var equip in caps.Equipment)
+            {
+                var equipDef = world?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
+                if (equipDef?.SlotRef == "Affinity")
+                {
+                    affinityEquipment.Add((equip, equipDef));
+                }
+            }
+        }
+
+        var equippedItem = affinityEquipment.FirstOrDefault(e => viewModel.IsItemEquipped(e.entry.EquipmentRef));
+        var hasEquipped = equippedItem.entry != null;
+
+        var slotDisplayName = slot.DisplayName ?? "Spirit";
+        var headerText = hasEquipped
+            ? $"{slotDisplayName}: {equippedItem.def?.DisplayName ?? equippedItem.entry!.EquipmentRef}"
+            : $"{slotDisplayName}";
+
+        if (hasEquipped)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 1f, 0.5f, 1f));
+        }
+
+        var isOpen = ImGui.CollapsingHeader($"{headerText}##Affinity");
+
+        if (hasEquipped)
+        {
+            ImGui.PopStyleColor();
+        }
+
+        if (!string.IsNullOrEmpty(slot.Description))
+        {
+            ImGui.Indent();
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), slot.Description);
+            ImGui.Unindent();
+        }
+
+        if (isOpen)
+        {
+            if (affinityEquipment.Count == 0)
+            {
+                ImGui.Indent();
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "(none available)");
+                ImGui.Unindent();
+            }
+            else
+            {
+                foreach (var (equip, equipDef) in affinityEquipment)
+                {
+                    RenderEquipmentItem(viewModel, equip, equipDef, "Affinity");
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Renders the Stance section (Battle Stance).
+    /// </summary>
+    private void RenderStance(SagaMainViewModel viewModel, ItemCollection caps)
+    {
+        var world = viewModel.CurrentWorld;
+        var slot = world?.LoadoutSlotsLookup?.GetValueOrDefault("Stance");
+        if (slot == null) return;
+
+        // Get equipment items for this slot
+        var stanceEquipment = new List<(EquipmentEntry entry, Equipment? def)>();
+        if (caps.Equipment != null)
+        {
+            foreach (var equip in caps.Equipment)
+            {
+                var equipDef = world?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
+                if (equipDef?.SlotRef == "Stance")
+                {
+                    stanceEquipment.Add((equip, equipDef));
+                }
+            }
+        }
+
+        var equippedItem = stanceEquipment.FirstOrDefault(e => viewModel.IsItemEquipped(e.entry.EquipmentRef));
+        var hasEquipped = equippedItem.entry != null;
+
+        var slotDisplayName = slot.DisplayName ?? "Battle Stance";
+        var headerText = hasEquipped
+            ? $"{slotDisplayName}: {equippedItem.def?.DisplayName ?? equippedItem.entry!.EquipmentRef}"
+            : $"{slotDisplayName}";
+
+        if (hasEquipped)
+        {
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 1f, 0.5f, 1f));
+        }
+
+        var isOpen = ImGui.CollapsingHeader($"{headerText}##Stance");
+
+        if (hasEquipped)
+        {
+            ImGui.PopStyleColor();
+        }
+
+        if (!string.IsNullOrEmpty(slot.Description))
+        {
+            ImGui.Indent();
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), slot.Description);
+            ImGui.Unindent();
+        }
+
+        if (isOpen)
+        {
+            if (stanceEquipment.Count == 0)
+            {
+                ImGui.Indent();
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "(none available)");
+                ImGui.Unindent();
+            }
+            else
+            {
+                foreach (var (equip, equipDef) in stanceEquipment)
+                {
+                    RenderEquipmentItem(viewModel, equip, equipDef, "Stance");
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Renders the Tools section.
     /// </summary>
     private void RenderTools(SagaMainViewModel viewModel, ItemCollection caps)
@@ -275,7 +419,8 @@ public class InventoryPanel
                     {
                         ImGui.SetTooltip($"{toolName}{conditionText}");
                     }
-                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
                     RenderHotbarAssignButton(HotbarItemType.Tool, tool.ToolRef, toolName);
                     ImGui.Unindent();
                 }
@@ -311,7 +456,8 @@ public class InventoryPanel
                     {
                         ImGui.SetTooltip($"{blockName}{quantityText}");
                     }
-                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
                     RenderHotbarAssignButton(HotbarItemType.Block, block.BlockRef, blockName);
                     ImGui.Unindent();
                 }
@@ -351,7 +497,8 @@ public class InventoryPanel
                         ImGui.SetTooltip($"{name}{quantityText}");
                     }
 
-                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
                     RenderHotbarAssignButton(HotbarItemType.BuildingMaterial, material.BuildingMaterialRef, name);
 
                     if (treeNodeOpen)
@@ -455,9 +602,13 @@ public class InventoryPanel
             }
         }
 
-        // Render each slot
+        // Render each slot (skip Affinity and Stance - they're rendered separately)
         foreach (var slot in loadoutSlots)
         {
+            // Skip Affinity and Stance slots - they're rendered in the RPG column
+            if (slot.RefName == "Affinity" || slot.RefName == "Stance")
+                continue;
+
             var slotEquipment = equipmentBySlot.GetValueOrDefault(slot.RefName, new List<(EquipmentEntry entry, Equipment? def)>());
             var equippedItem = slotEquipment.FirstOrDefault(e => viewModel.IsItemEquipped(e.entry.EquipmentRef));
             var hasEquipped = equippedItem.entry != null;
@@ -535,7 +686,8 @@ public class InventoryPanel
         }
 
         // Hotbar assign button and Equip/Unequip button on same line as header
-        ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+        ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
         RenderHotbarAssignButton(HotbarItemType.Equipment, equip.EquipmentRef, name);
         ImGui.SameLine();
         var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
@@ -591,9 +743,10 @@ public class InventoryPanel
     /// </summary>
     private void RenderHotbarAssignButton(HotbarItemType itemType, string refName, string displayName)
     {
+        var buttonSize = new Vector2(AssignButtonWidth, ImGui.GetFrameHeight());
         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.3f, 0.4f, 1f));
         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.4f, 0.5f, 1f));
-        if (ImGui.SmallButton($"[+]##{itemType}_{refName}"))
+        if (ImGui.Button($"[+]##{itemType}_{refName}", buttonSize))
         {
             _showHotbarAssignPopup = true;
             _openHotbarPopupRequested = true;
