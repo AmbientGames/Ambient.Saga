@@ -78,10 +78,6 @@ public class ModalManager
     /// </summary>
     private void RegisterModalAdapters()
     {
-        // Simple modals (MainViewModel only)
-        _modalRegistry.Register(new Adapters.AchievementsModalAdapter());
-        _modalRegistry.Register(new Adapters.WorldCatalogModalAdapter());
-
         // Character context modals
         _modalRegistry.Register(new Adapters.LootModalAdapter());
         _modalRegistry.Register(new Adapters.MerchantTradeModalAdapter());
@@ -121,8 +117,6 @@ public class ModalManager
     // Modal state - derived from stack (read-only)
     public bool ShowWorldSelection => _modalStack.Contains("WorldSelection");
     public bool ShowArchetypeSelection => _modalStack.Contains("ArchetypeSelection");
-    public bool ShowAchievements => _modalStack.Contains("Achievements");
-    public bool ShowWorldCatalog => _modalStack.Contains("WorldCatalog");
     public bool ShowMerchantTrade => _modalStack.Contains("MerchantTrade");
     public bool ShowBossBattle => _modalStack.Contains("BossBattle");
     public bool ShowQuest => _modalStack.Contains("Quest");
@@ -185,8 +179,6 @@ public class ModalManager
 
     public void OpenWorldSelection() => OpenModal("WorldSelection");
     public void OpenArchetypeSelection() => OpenModal("ArchetypeSelection");
-    public void OpenAchievements() => OpenModal("Achievements");
-    public void OpenWorldCatalog() => OpenModal("WorldCatalog");
     public void OpenPauseMenu() => OpenModal("PauseMenu");
     public void OpenSettings() => OpenModal("Settings");
     // Note: Journal panel (J key) now consolidates Quests and Characters info

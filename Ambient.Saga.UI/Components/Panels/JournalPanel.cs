@@ -25,9 +25,10 @@ namespace Ambient.Saga.UI.Components.Panels;
 public class JournalPanel
 {
     private bool _showCompletedQuests = false;
-    private bool _showLockedAchievements = false;
+    private bool _showLockedAchievements = true;
     private string _bestiaryFilter = "";
     private string _historyFilter = "";
+    private string _achievementFilter = "";
 
     public void Render(SagaMainViewModel viewModel, ModalManager modalManager)
     {
@@ -765,29 +766,48 @@ public class JournalPanel
             return;
         }
 
-        // Completion stats header
-        ImGui.TextColored(new Vector4(1f, 0.9f, 0.4f, 1f), viewModel.Achievements.CompletionText);
-        ImGui.Spacing();
+        // Overall progress bar
+        var totalCount = viewModel.Achievements.TotalAchievements;
+        var unlockedCount = viewModel.Achievements.UnlockedCount;
+        if (totalCount > 0)
+        {
+            var overallProgress = (float)unlockedCount / totalCount;
+            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(1, 0.843f, 0, 1));
+            ImGui.ProgressBar(overallProgress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), $"{unlockedCount}/{totalCount}");
+            ImGui.PopStyleColor();
+        }
 
-        // Toggle for locked achievements
-        ImGui.Checkbox("Show Locked", ref _showLockedAchievements);
+        // Filter and toggle row
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 100);
+        ImGui.InputTextWithHint("##AchievementFilter", "Filter...", ref _achievementFilter, 100);
+        ImGui.SameLine();
+        ImGui.Checkbox("Locked", ref _showLockedAchievements);
         ImGui.Spacing();
 
         ImGui.BeginChild("AchievementsScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
 
+        // Filter achievements
+        var filterActive = !string.IsNullOrWhiteSpace(_achievementFilter);
+
         // Unlocked Achievements
-        var unlockedCount = viewModel.Achievements.UnlockedAchievements?.Count ?? 0;
-        ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Unlocked ({unlockedCount})");
+        var unlockedAchievements = viewModel.Achievements.UnlockedAchievements?
+            .Where(a => !filterActive ||
+                (a.DisplayName?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (a.Description?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
+
+        var filteredUnlockedCount = unlockedAchievements?.Count ?? 0;
+        ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Unlocked ({filteredUnlockedCount})");
         ImGui.Spacing();
 
-        if (unlockedCount > 0)
+        if (filteredUnlockedCount > 0)
         {
-            foreach (var achievement in viewModel.Achievements.UnlockedAchievements!)
+            foreach (var achievement in unlockedAchievements!)
             {
                 RenderAchievementEntry(achievement, isUnlocked: true);
             }
         }
-        else
+        else if (!filterActive)
         {
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "No achievements unlocked yet.");
         }
@@ -799,18 +819,24 @@ public class JournalPanel
             ImGui.Separator();
             ImGui.Spacing();
 
-            var lockedCount = viewModel.Achievements.LockedAchievements?.Count ?? 0;
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), $"Locked ({lockedCount})");
+            var lockedAchievements = viewModel.Achievements.LockedAchievements?
+                .Where(a => !filterActive ||
+                    (a.DisplayName?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (a.Description?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false))
+                .ToList();
+
+            var filteredLockedCount = lockedAchievements?.Count ?? 0;
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), $"Locked ({filteredLockedCount})");
             ImGui.Spacing();
 
-            if (lockedCount > 0)
+            if (filteredLockedCount > 0)
             {
-                foreach (var achievement in viewModel.Achievements.LockedAchievements!)
+                foreach (var achievement in lockedAchievements!)
                 {
                     RenderAchievementEntry(achievement, isUnlocked: false);
                 }
             }
-            else
+            else if (!filterActive)
             {
                 ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), "All achievements unlocked!");
             }
@@ -848,7 +874,7 @@ public class JournalPanel
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "[Locked]");
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "-");
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1f), achievement.DisplayName ?? achievement.RefName);
         }
@@ -869,30 +895,87 @@ public class JournalPanel
         if (isUnlocked)
         {
             // Status text (unlocked date)
-            ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), achievement.StatusText);
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Unlocked: {achievement.UnlockedDate ?? "Unknown"}");
         }
         else
         {
-            // Criteria text
-            if (!string.IsNullOrEmpty(achievement.CriteriaText))
-            {
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1f), achievement.CriteriaText);
-            }
+            // Criteria text with full type support
+            var criteriaText = GetAchievementCriteriaText(achievement.CriteriaType, achievement.Threshold);
+            ImGui.TextColored(new Vector4(0.6f, 0.8f, 1f, 1f), criteriaText);
 
             // Progress bar
             var progress = achievement.ProgressPercentage / 100f;
-            ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight() * 0.7f), achievement.ProgressText);
+            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, new Vector4(0.3f, 0.6f, 1, 1));
+            ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight() * 0.7f), $"{achievement.CurrentValue:F0} / {achievement.Threshold:F0}");
+            ImGui.PopStyleColor();
         }
 
         // Developer: Additional metadata
         if (GameConfiguration.ShowDeveloperInfo)
         {
-            ImGui.TextColored(GameConfiguration.DevInfoColor, $"Progress: {achievement.CurrentValue:F0}/{achievement.Threshold:F0}");
+            ImGui.TextColored(GameConfiguration.DevInfoColor, $"Type: {achievement.CriteriaType} | Progress: {achievement.CurrentValue:F0}/{achievement.Threshold:F0}");
         }
 
         ImGui.EndChild();
         ImGui.PopStyleColor();
         ImGui.Spacing();
+    }
+
+    /// <summary>
+    /// Gets human-readable criteria text for all 28 achievement criteria types
+    /// </summary>
+    private static string GetAchievementCriteriaText(AchievementCriteriaType criteriaType, float threshold)
+    {
+        return criteriaType switch
+        {
+            // Progression
+            AchievementCriteriaType.PlayTimeHours => $"Play for {threshold:F0} hours",
+            AchievementCriteriaType.BlocksPlaced => $"Place {threshold:F0} blocks",
+            AchievementCriteriaType.BlocksDestroyed => $"Destroy {threshold:F0} blocks",
+            AchievementCriteriaType.DistanceTraveled => $"Travel {threshold:F0} meters",
+
+            // Combat
+            AchievementCriteriaType.CharactersDefeated => $"Defeat {threshold:F0} characters",
+            AchievementCriteriaType.CharactersDefeatedByType => $"Defeat {threshold:F0} of specific type",
+            AchievementCriteriaType.CharactersDefeatedByTag => $"Defeat {threshold:F0} with tag",
+            AchievementCriteriaType.CharactersDefeatedByRef => $"Defeat specific character",
+            AchievementCriteriaType.CriticalHitsDealt => $"Deal {threshold:F0} critical hits",
+            AchievementCriteriaType.CombosExecuted => $"Execute {threshold:F0} combos",
+
+            // Exploration
+            AchievementCriteriaType.SagaArcsDiscovered => $"Discover {threshold:F0} saga arcs",
+            AchievementCriteriaType.SagaArcsCompleted => $"Complete {threshold:F0} saga arcs",
+            AchievementCriteriaType.LandmarksDiscovered => $"Discover {threshold:F0} landmarks",
+            AchievementCriteriaType.SagaTriggersActivated => $"Activate {threshold:F0} triggers",
+
+            // Social
+            AchievementCriteriaType.DialogueTreesCompleted => $"Complete {threshold:F0} dialogues",
+            AchievementCriteriaType.DialogueNodesVisited => $"Visit {threshold:F0} dialogue nodes",
+            AchievementCriteriaType.UniqueCharactersMet => $"Meet {threshold:F0} characters",
+
+            // Traits
+            AchievementCriteriaType.TraitsAssigned => $"Assign {threshold:F0} traits",
+            AchievementCriteriaType.TraitsAssignedByType => $"Assign {threshold:F0} traits of type",
+            AchievementCriteriaType.TraitsAssignedToCharacterType => $"Assign to {threshold:F0} character types",
+
+            // Economy
+            AchievementCriteriaType.ItemsTraded => $"Trade {threshold:F0} items",
+            AchievementCriteriaType.LootAwarded => $"Collect {threshold:F0} loot items",
+            AchievementCriteriaType.QuestTokensEarned => $"Earn {threshold:F0} quest tokens",
+
+            // Quests
+            AchievementCriteriaType.QuestsCompleted => $"Complete {threshold:F0} quests",
+            AchievementCriteriaType.QuestsCompletedByRef => $"Complete specific quest",
+
+            // Reputation
+            AchievementCriteriaType.ReputationReached => $"Reach reputation {threshold:F0}",
+            AchievementCriteriaType.FactionsAtReputationLevel => $"Rep with {threshold:F0} factions",
+
+            // Status Effects
+            AchievementCriteriaType.StatusEffectsApplied => $"Apply {threshold:F0} effects",
+
+            _ => $"Reach {threshold:F0}"
+        };
     }
 
     #endregion

@@ -51,36 +51,7 @@ public static class ModalAdapterExample
     public record FullContext(SagaMainViewModel ViewModel, CharacterViewModel Character, ModalManager ModalManager);
 
     /// <summary>
-    /// Example: Adapter for a simple modal that only needs MainViewModel
-    /// </summary>
-    public class WorldCatalogModalAdapterExample : IModal
-    {
-        private readonly WorldCatalogModal _modal = new();
-
-        public string Name => "WorldCatalog";
-
-        public void Render(object? context, ref bool isOpen)
-        {
-            if (context is SimpleContext ctx)
-            {
-                _modal.Render(ctx.ViewModel, ref isOpen);
-            }
-            else if (context is SagaMainViewModel viewModel)
-            {
-                // Also support direct MainViewModel for convenience
-                _modal.Render(viewModel, ref isOpen);
-            }
-        }
-
-        // Optional: Add lifecycle hooks for cleanup
-        public void OnClosed()
-        {
-            // Any cleanup needed for modal
-        }
-    }
-
-    /// <summary>
-    /// Example: Adapter for a complex modal that needs multiple parameters
+    /// Example: Adapter for a modal that needs CharacterViewModel context
     /// </summary>
     public class LootModalAdapter : IModal
     {

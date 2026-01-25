@@ -372,7 +372,7 @@ public class GameplayOverlay
     }
 
     /// <summary>
-    /// Render the World Info panel (top-left, full height).
+    /// Render the World Info panel (full screen with consistent margins).
     /// </summary>
     private void RenderWorldInfoPanel(SagaMainViewModel viewModel)
     {
@@ -380,16 +380,15 @@ public class GameplayOverlay
         var displaySize = io.DisplaySize;
         var scale = UIConstants.DpiScale;
 
-        // Calculate HUD height dynamically (same as DefaultHudRenderer)
+        // Full screen with consistent margins (leaving room for HUD bar at bottom)
         var textHeight = ImGui.CalcTextSize("M").Y;
         var style = ImGui.GetStyle();
         var buttonHeight = textHeight + style.FramePadding.Y * 2;
         var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
 
-        // Panel top-left, full height
         var margin = 10f * scale;
-        var panelWidth = 350f * scale;
-        var panelHeight = displaySize.Y - hudHeight - (margin * 2); // Leave room for HUD bar + margins
+        var panelWidth = displaySize.X - (margin * 2);
+        var panelHeight = displaySize.Y - hudHeight - (margin * 3); // Leave room for HUD bar + margins
         var panelX = margin;
         var panelY = margin;
 
@@ -410,7 +409,7 @@ public class GameplayOverlay
     }
 
     /// <summary>
-    /// Render the Dev Tools panel (top-left, full height).
+    /// Render the Dev Tools panel (full screen with consistent margins).
     /// Only available when debugger is attached.
     /// </summary>
     private void RenderDevToolsPanel(SagaMainViewModel viewModel)
@@ -426,16 +425,15 @@ public class GameplayOverlay
         var displaySize = io.DisplaySize;
         var scale = UIConstants.DpiScale;
 
-        // Calculate HUD height dynamically (same as DefaultHudRenderer)
+        // Full screen with consistent margins (leaving room for HUD bar at bottom)
         var textHeight = ImGui.CalcTextSize("M").Y;
         var style = ImGui.GetStyle();
         var buttonHeight = textHeight + style.FramePadding.Y * 2;
         var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
 
-        // Panel top-left, full height
         var margin = 10f * scale;
-        var panelWidth = 350f * scale;
-        var panelHeight = displaySize.Y - hudHeight - (margin * 2); // Leave room for HUD bar + margins
+        var panelWidth = displaySize.X - (margin * 2);
+        var panelHeight = displaySize.Y - hudHeight - (margin * 3); // Leave room for HUD bar + margins
         var panelX = margin;
         var panelY = margin;
 
