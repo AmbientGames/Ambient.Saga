@@ -15,8 +15,6 @@ public enum HotbarItemType
     BuildingMaterial,
     /// <summary>A consumable item (uses when activated)</summary>
     Consumable,
-    /// <summary>A spell (marks ready/casts when activated)</summary>
-    Spell,
-    /// <summary>Equipment (equips/unequips when activated)</summary>
+    /// <summary>Equipment (equips when activated)</summary>
     Equipment
 }

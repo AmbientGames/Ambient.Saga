@@ -18,8 +18,7 @@ public class HotbarService
 
     /// <summary>
     /// Activates a hotbar slot by index (0-8).
-    /// If the slot is already active, deactivates it.
-    /// Otherwise, performs the appropriate action based on item type.
+    /// Performs the appropriate action based on item type.
     /// </summary>
     public async Task ActivateSlotAsync(int slotIndex)
     {
@@ -28,14 +27,6 @@ public class HotbarService
             return;
 
         var slot = avatar.Hotbar[slotIndex];
-
-        // If clicking the already-active slot, deactivate
-        if (avatar.ActiveHotbarSlot == slotIndex)
-        {
-            avatar.ActiveHotbarSlot = -1;
-            ClearCurrentSelections(avatar, slot.ItemType);
-            return;
-        }
 
         // If slot is empty, just select it (for assignment purposes)
         if (slot.IsEmpty)
@@ -90,32 +81,19 @@ public class HotbarService
         {
             case HotbarItemType.Tool:
                 avatar.CurrentToolRef = slot.RefName;
-                // Clear other "active" types when selecting a tool
-                avatar.CurrentBlockRef = null;
-                avatar.CurrentBuildingMaterialRef = null;
                 break;
 
             case HotbarItemType.Block:
                 avatar.CurrentBlockRef = slot.RefName;
-                avatar.CurrentToolRef = null;
-                avatar.CurrentBuildingMaterialRef = null;
                 break;
 
             case HotbarItemType.BuildingMaterial:
                 avatar.CurrentBuildingMaterialRef = slot.RefName;
-                avatar.CurrentToolRef = null;
-                avatar.CurrentBlockRef = null;
                 break;
 
             case HotbarItemType.Consumable:
                 // Use the consumable
                 await _viewModel.UseConsumableAsync(slot.RefName);
-                break;
-
-            case HotbarItemType.Spell:
-                // Mark spell as ready (could set a "ready spell" state)
-                // For now, just log it - the spell system may need integration
-                System.Diagnostics.Debug.WriteLine($"[Hotbar] Spell ready: {slot.RefName}");
                 break;
 
             case HotbarItemType.Equipment:
@@ -130,23 +108,6 @@ public class HotbarService
                         await _viewModel.EquipItemAsync(slot.RefName, slotRef);
                     }
                 }
-                break;
-        }
-    }
-
-    private void ClearCurrentSelections(AvatarBase avatar, HotbarItemType itemType)
-    {
-        // Clear the appropriate current ref based on item type
-        switch (itemType)
-        {
-            case HotbarItemType.Tool:
-                avatar.CurrentToolRef = null;
-                break;
-            case HotbarItemType.Block:
-                avatar.CurrentBlockRef = null;
-                break;
-            case HotbarItemType.BuildingMaterial:
-                avatar.CurrentBuildingMaterialRef = null;
                 break;
         }
     }

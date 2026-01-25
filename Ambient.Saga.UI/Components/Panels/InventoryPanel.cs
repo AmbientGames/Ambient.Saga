@@ -255,10 +255,6 @@ public class InventoryPanel
                         ImGui.SetTooltip($"{name}{conditionText}");
                     }
 
-                    // Hotbar assign button
-                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
-                    RenderHotbarAssignButton(HotbarItemType.Spell, spell.SpellRef, name);
-
                     if (treeNodeOpen)
                     {
                         if (spellItem != null)
@@ -576,7 +572,6 @@ public class InventoryPanel
             HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.BuildingMaterial => world.TryGetBuildingMaterialByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Spell => world.Gameplay?.Spells?.FirstOrDefault(s => s.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName
         };
