@@ -248,6 +248,9 @@ public class CharacterPanel
             ImGui.Separator();
         }
 
+        // Faction Reputation
+        RenderFactionSection(viewModel);
+
         // Lifetime Statistics
         if (viewModel.PlayerAvatar != null)
         {
@@ -355,5 +358,162 @@ public class CharacterPanel
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No items equipped");
             ImGui.TextWrapped("Use Inventory (I) to equip items");
         }
+    }
+
+    private void RenderFactionSection(SagaMainViewModel viewModel)
+    {
+        var factions = viewModel.CurrentWorld?.Gameplay?.Factions;
+        if (factions == null || factions.Length == 0)
+            return;
+
+        ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "Faction Reputation:");
+        ImGui.Spacing();
+
+        // Render each faction as a collapsible entry
+        foreach (var faction in factions)
+        {
+            RenderFactionEntry(faction, viewModel);
+        }
+
+        ImGui.Spacing();
+        ImGui.Separator();
+    }
+
+    private void RenderFactionEntry(Ambient.Domain.Faction faction, SagaMainViewModel viewModel)
+    {
+        // Get player's reputation with this faction
+        var currentRep = faction.StartingReputation; // TODO: Get actual player reputation from avatar
+        var repLevel = GetReputationLevel(currentRep);
+        var (levelColor, levelName) = GetReputationDisplay(repLevel);
+
+        // Collapsible header with faction name and current standing
+        var headerText = $"{faction.DisplayName} - {levelName}";
+
+        ImGui.PushStyleColor(ImGuiCol.Text, levelColor);
+        var isOpen = ImGui.TreeNode($"{headerText}##{faction.RefName}");
+        ImGui.PopStyleColor();
+
+        if (isOpen)
+        {
+            ImGui.Indent();
+
+            // Category
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"[{faction.Category}]");
+
+            // Description
+            if (!string.IsNullOrEmpty(faction.Description))
+            {
+                ImGui.TextWrapped(faction.Description);
+            }
+
+            // Reputation progress bar
+            var (minRep, maxRep) = GetReputationRange(repLevel);
+            var progress = maxRep > minRep ? (float)(currentRep - minRep) / (maxRep - minRep) : 0.5f;
+            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, levelColor);
+            ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight() * 0.8f), $"{currentRep:N0}");
+            ImGui.PopStyleColor();
+
+            // Relationships
+            if (faction.Relationships?.Length > 0)
+            {
+                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Relationships:");
+                foreach (var rel in faction.Relationships.Take(3))
+                {
+                    var relColor = rel.RelationshipType == Ambient.Domain.FactionRelationshipRelationshipType.Allied
+                        ? new Vector4(0.5f, 1, 0.5f, 1)
+                        : new Vector4(1, 0.5f, 0.5f, 1);
+                    var relFaction = viewModel.CurrentWorld?.Gameplay?.Factions?.FirstOrDefault(f => f.RefName == rel.FactionRef);
+                    var relFactionName = relFaction?.DisplayName ?? rel.FactionRef;
+                    ImGui.TextColored(relColor, $"  {relFactionName} ({rel.RelationshipType})");
+                }
+            }
+
+            // Rewards summary
+            if (faction.ReputationRewards?.Length > 0)
+            {
+                var availableRewards = faction.ReputationRewards.Count(r => IsRewardUnlocked(r, repLevel));
+                var lockedRewards = faction.ReputationRewards.Length - availableRewards;
+
+                if (availableRewards > 0)
+                {
+                    ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Unlocked: {availableRewards}");
+                    ImGui.SameLine();
+                }
+                if (lockedRewards > 0)
+                {
+                    ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), $"Locked: {lockedRewards}");
+                }
+            }
+
+            ImGui.Unindent();
+            ImGui.TreePop();
+        }
+    }
+
+    private static Ambient.Domain.ReputationLevel GetReputationLevel(int reputation)
+    {
+        return reputation switch
+        {
+            < -21000 => Ambient.Domain.ReputationLevel.Hated,
+            < -6000 => Ambient.Domain.ReputationLevel.Hostile,
+            < -3000 => Ambient.Domain.ReputationLevel.Unfriendly,
+            < 3000 => Ambient.Domain.ReputationLevel.Neutral,
+            < 9000 => Ambient.Domain.ReputationLevel.Friendly,
+            < 21000 => Ambient.Domain.ReputationLevel.Honored,
+            < 42000 => Ambient.Domain.ReputationLevel.Revered,
+            _ => Ambient.Domain.ReputationLevel.Exalted
+        };
+    }
+
+    private static (int min, int max) GetReputationRange(Ambient.Domain.ReputationLevel level)
+    {
+        return level switch
+        {
+            Ambient.Domain.ReputationLevel.Hated => (-42000, -21000),
+            Ambient.Domain.ReputationLevel.Hostile => (-21000, -6000),
+            Ambient.Domain.ReputationLevel.Unfriendly => (-6000, -3000),
+            Ambient.Domain.ReputationLevel.Neutral => (-3000, 3000),
+            Ambient.Domain.ReputationLevel.Friendly => (3000, 9000),
+            Ambient.Domain.ReputationLevel.Honored => (9000, 21000),
+            Ambient.Domain.ReputationLevel.Revered => (21000, 42000),
+            Ambient.Domain.ReputationLevel.Exalted => (42000, 84000),
+            _ => (0, 1)
+        };
+    }
+
+    private static (Vector4 color, string name) GetReputationDisplay(Ambient.Domain.ReputationLevel level)
+    {
+        return level switch
+        {
+            Ambient.Domain.ReputationLevel.Hated => (new Vector4(0.8f, 0, 0, 1), "Hated"),
+            Ambient.Domain.ReputationLevel.Hostile => (new Vector4(1, 0.3f, 0.3f, 1), "Hostile"),
+            Ambient.Domain.ReputationLevel.Unfriendly => (new Vector4(1, 0.5f, 0.3f, 1), "Unfriendly"),
+            Ambient.Domain.ReputationLevel.Neutral => (new Vector4(1, 1, 0.5f, 1), "Neutral"),
+            Ambient.Domain.ReputationLevel.Friendly => (new Vector4(0.5f, 1, 0.5f, 1), "Friendly"),
+            Ambient.Domain.ReputationLevel.Honored => (new Vector4(0.3f, 0.8f, 0.3f, 1), "Honored"),
+            Ambient.Domain.ReputationLevel.Revered => (new Vector4(0.3f, 0.6f, 1, 1), "Revered"),
+            Ambient.Domain.ReputationLevel.Exalted => (new Vector4(0.8f, 0.5f, 1, 1), "Exalted"),
+            _ => (new Vector4(0.5f, 0.5f, 0.5f, 1), "Unknown")
+        };
+    }
+
+    private static bool IsRewardUnlocked(Ambient.Domain.ReputationReward reward, Ambient.Domain.ReputationLevel currentLevel)
+    {
+        var levelOrder = new[]
+        {
+            Ambient.Domain.ReputationLevel.Hated,
+            Ambient.Domain.ReputationLevel.Hostile,
+            Ambient.Domain.ReputationLevel.Unfriendly,
+            Ambient.Domain.ReputationLevel.Neutral,
+            Ambient.Domain.ReputationLevel.Friendly,
+            Ambient.Domain.ReputationLevel.Honored,
+            Ambient.Domain.ReputationLevel.Revered,
+            Ambient.Domain.ReputationLevel.Exalted
+        };
+
+        var currentIndex = Array.IndexOf(levelOrder, currentLevel);
+        var requiredIndex = Array.IndexOf(levelOrder, reward.RequiredLevel);
+
+        return currentIndex >= requiredIndex;
     }
 }

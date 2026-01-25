@@ -82,7 +82,6 @@ public class ModalManager
         _modalRegistry.Register(new Adapters.AchievementsModalAdapter());
         _modalRegistry.Register(new Adapters.AvatarInfoModalAdapter());
         _modalRegistry.Register(new Adapters.WorldCatalogModalAdapter());
-        _modalRegistry.Register(new Adapters.FactionReputationModalAdapter());
 
         // Character context modals
         _modalRegistry.Register(new Adapters.LootModalAdapter());
@@ -132,7 +131,6 @@ public class ModalManager
     public bool ShowQuestDetail => _modalStack.Contains("QuestDetail");
     public bool ShowDialogue => _modalStack.Contains("Dialogue");
     public bool ShowLoot => _modalStack.Contains("Loot");
-    public bool ShowFactionReputation => _modalStack.Contains("FactionReputation");
     public bool ShowPauseMenu => _modalStack.Contains("PauseMenu");
     public bool ShowSettings => _modalStack.Contains("Settings");
     public bool ShowJournal => _modalStack.Contains("Journal");
@@ -192,7 +190,6 @@ public class ModalManager
     public void OpenAvatarInfo() => OpenModal("AvatarInfo");
     public void OpenAchievements() => OpenModal("Achievements");
     public void OpenWorldCatalog() => OpenModal("WorldCatalog");
-    public void OpenFactionReputation() => OpenModal("FactionReputation");
     public void OpenPauseMenu() => OpenModal("PauseMenu");
     public void OpenSettings() => OpenModal("Settings");
     // Note: Journal panel (J key) now consolidates Quests and Characters info
@@ -213,7 +210,7 @@ public class ModalManager
         // The following modals have been migrated to the registry pattern:
         // - WorldSelection, ArchetypeSelection, AvatarInfo, Characters
         // - Achievements, WorldCatalog, MerchantTrade, BossBattle
-        // - Quest, QuestLog, QuestDetail, Dialogue, Loot, FactionReputation
+        // - Quest, QuestLog, QuestDetail, Dialogue, Loot
         //
         // Only PauseMenu and Settings remain with manual rendering due to
         // special requirements (PauseMenu uses ModalStack directly, Settings
