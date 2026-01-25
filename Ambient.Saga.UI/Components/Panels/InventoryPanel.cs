@@ -37,27 +37,64 @@ public class InventoryPanel
 
     public void Render(SagaMainViewModel viewModel)
     {
-        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1), "INVENTORY");
-        ImGui.Separator();
-
-        // Scrollable inventory content
-        // AlwaysVerticalScrollbar reserves space for scrollbar so layout doesn't shift when content grows
-        ImGui.BeginChild("InventoryScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None, ImGuiWindowFlags.AlwaysVerticalScrollbar);
-
         if (viewModel.PlayerAvatar?.Capabilities == null)
         {
             ImGui.TextColored(new Vector4(1, 0.5f, 0, 1), "No avatar created");
             ImGui.TextWrapped("Enter a world to select archetype");
-            ImGui.EndChild();
             return;
         }
 
         var caps = viewModel.PlayerAvatar.Capabilities;
+        var hasBlockProvider = viewModel.CurrentWorld?.BlockProvider != null;
+        var columnCount = hasBlockProvider ? 3 : 2;
 
-        // Equipment - organized by slot
+        // Calculate column width
+        var availableWidth = ImGui.GetContentRegionAvail().X;
+        var columnSpacing = 10f;
+        var columnWidth = (availableWidth - (columnSpacing * (columnCount - 1))) / columnCount;
+        var contentHeight = ImGui.GetContentRegionAvail().Y;
+
+        // Column 1: Equipment
+        ImGui.BeginChild("EquipmentColumn", new Vector2(columnWidth, contentHeight), ImGuiChildFlags.None, ImGuiWindowFlags.None);
+        ImGui.TextColored(new Vector4(1, 0.7f, 0.7f, 1), "EQUIPMENT");
+        ImGui.Separator();
         RenderEquipmentBySlot(viewModel, caps);
+        ImGui.EndChild();
 
-        // Consumables
+        ImGui.SameLine(0, columnSpacing);
+
+        // Column 2: RPG Elements (Consumables, Spells, Quest Tokens)
+        ImGui.BeginChild("RpgColumn", new Vector2(columnWidth, contentHeight), ImGuiChildFlags.None, ImGuiWindowFlags.None);
+        ImGui.TextColored(new Vector4(0.7f, 1f, 0.7f, 1), "ITEMS & MAGIC");
+        ImGui.Separator();
+        RenderConsumables(viewModel, caps);
+        RenderSpells(viewModel, caps);
+        RenderQuestTokens(viewModel, caps);
+        ImGui.EndChild();
+
+        // Column 3: Block-related (only if BlockProvider exists)
+        if (hasBlockProvider)
+        {
+            ImGui.SameLine(0, columnSpacing);
+
+            ImGui.BeginChild("BlocksColumn", new Vector2(columnWidth, contentHeight), ImGuiChildFlags.None, ImGuiWindowFlags.None);
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1), "BUILDING");
+            ImGui.Separator();
+            RenderTools(viewModel, caps);
+            RenderBlocks(viewModel, caps);
+            RenderMaterials(viewModel, caps);
+            ImGui.EndChild();
+        }
+
+        // Render hotbar assignment popup (needs to be at root level for proper popup handling)
+        RenderHotbarAssignPopup(viewModel);
+    }
+
+    /// <summary>
+    /// Renders the Consumables section.
+    /// </summary>
+    private void RenderConsumables(SagaMainViewModel viewModel, ItemCollection caps)
+    {
         if (ImGui.CollapsingHeader($"Consumables ({caps.Consumables?.Length ?? 0})", ImGuiTreeNodeFlags.DefaultOpen))
         {
             if (caps.Consumables != null && caps.Consumables.Length > 0)
@@ -70,19 +107,16 @@ public class InventoryPanel
 
                     ImGui.Indent();
 
-                    // Expandable header for each consumable item
                     var maxTextWidth = GetAvailableTextWidth();
                     var quantityText = $" x{consumable.Quantity}";
                     var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
                     var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{consumable.ConsumableRef}");
 
-                    // Show full name on hover if truncated
                     if (truncatedName != name && ImGui.IsItemHovered())
                     {
                         ImGui.SetTooltip($"{name}{quantityText}");
                     }
 
-                    // Hotbar assign and Use button on same line as header
                     ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
                     RenderHotbarAssignButton(HotbarItemType.Consumable, consumable.ConsumableRef, name);
                     ImGui.SameLine();
@@ -103,7 +137,6 @@ public class InventoryPanel
                     }
                     else
                     {
-                        // Empty placeholder to maintain layout when quantity is 0
                         ImGui.Dummy(buttonSize);
                     }
 
@@ -111,20 +144,16 @@ public class InventoryPanel
                     {
                         if (consumableItem != null)
                         {
-                            // Description
                             if (!string.IsNullOrEmpty(consumableItem.Description))
                             {
                                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), consumableItem.Description);
                                 ImGui.Spacing();
                             }
-
-                            // Effects
                             if (consumableItem.Effects != null)
                             {
                                 ImGuiHelpers.RenderAttributes(consumableItem.Effects);
                             }
                         }
-
                         ImGui.TreePop();
                     }
 
@@ -138,8 +167,13 @@ public class InventoryPanel
                 ImGui.Unindent();
             }
         }
+    }
 
-        // Spells
+    /// <summary>
+    /// Renders the Spells section.
+    /// </summary>
+    private void RenderSpells(SagaMainViewModel viewModel, ItemCollection caps)
+    {
         if (ImGui.CollapsingHeader($"Spells ({caps.Spells?.Length ?? 0})"))
         {
             if (caps.Spells != null && caps.Spells.Length > 0)
@@ -151,13 +185,11 @@ public class InventoryPanel
 
                     ImGui.Indent();
 
-                    // Expandable header for each spell
                     var maxTextWidth = GetAvailableTextWidth();
                     var conditionText = $" ({spell.Condition:P0})";
                     var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(conditionText).X - 30f);
                     var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{conditionText}##{spell.SpellRef}");
 
-                    // Show full name on hover if truncated
                     if (truncatedName != name && ImGui.IsItemHovered())
                     {
                         ImGui.SetTooltip($"{name}{conditionText}");
@@ -167,20 +199,16 @@ public class InventoryPanel
                     {
                         if (spellItem != null)
                         {
-                            // Description
                             if (!string.IsNullOrEmpty(spellItem.Description))
                             {
                                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), spellItem.Description);
                                 ImGui.Spacing();
                             }
-
-                            // Effects
                             if (spellItem.Effects != null)
                             {
                                 ImGuiHelpers.RenderAttributes(spellItem.Effects);
                             }
                         }
-
                         ImGui.TreePop();
                     }
 
@@ -194,15 +222,40 @@ public class InventoryPanel
                 ImGui.Unindent();
             }
         }
+    }
 
-        ImGui.Spacing();
-        ImGui.Separator();
-        ImGui.Spacing();
+    /// <summary>
+    /// Renders the Quest Tokens section.
+    /// </summary>
+    private void RenderQuestTokens(SagaMainViewModel viewModel, ItemCollection caps)
+    {
+        if (caps.QuestTokens != null && caps.QuestTokens.Length > 0)
+        {
+            if (ImGui.CollapsingHeader($"Quest Tokens ({caps.QuestTokens.Length})"))
+            {
+                foreach (var token in caps.QuestTokens)
+                {
+                    var tokenDef = viewModel.CurrentWorld?.Gameplay?.QuestTokens?.FirstOrDefault(t => t.RefName == token.QuestTokenRef);
+                    var name = tokenDef?.DisplayName ?? token.QuestTokenRef;
 
-        // Gameplay Elements
-        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Gameplay Elements");
+                    ImGui.Indent();
+                    ImGui.BulletText(name);
+                    if (tokenDef != null && !string.IsNullOrEmpty(tokenDef.Description))
+                    {
+                        ImGui.SameLine();
+                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"- {tokenDef.Description}");
+                    }
+                    ImGui.Unindent();
+                }
+            }
+        }
+    }
 
-        // Tools
+    /// <summary>
+    /// Renders the Tools section.
+    /// </summary>
+    private void RenderTools(SagaMainViewModel viewModel, ItemCollection caps)
+    {
         if (ImGui.CollapsingHeader($"Tools ({caps.Tools?.Length ?? 0})"))
         {
             if (caps.Tools != null && caps.Tools.Length > 0)
@@ -232,8 +285,13 @@ public class InventoryPanel
                 ImGui.Unindent();
             }
         }
+    }
 
-        // Blocks
+    /// <summary>
+    /// Renders the Blocks section.
+    /// </summary>
+    private void RenderBlocks(SagaMainViewModel viewModel, ItemCollection caps)
+    {
         if (ImGui.CollapsingHeader($"Blocks ({caps.Blocks?.Length ?? 0})"))
         {
             if (caps.Blocks != null && caps.Blocks.Length > 0)
@@ -263,8 +321,13 @@ public class InventoryPanel
                 ImGui.Unindent();
             }
         }
+    }
 
-        // Materials
+    /// <summary>
+    /// Renders the Materials section.
+    /// </summary>
+    private void RenderMaterials(SagaMainViewModel viewModel, ItemCollection caps)
+    {
         if (ImGui.CollapsingHeader($"Materials ({caps.BuildingMaterials?.Length ?? 0})"))
         {
             if (caps.BuildingMaterials != null && caps.BuildingMaterials.Length > 0)
@@ -276,19 +339,16 @@ public class InventoryPanel
 
                     ImGui.Indent();
 
-                    // Expandable header for each material
                     var maxTextWidth = GetAvailableTextWidth();
                     var quantityText = $" x{material.Quantity}";
                     var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
                     var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{material.BuildingMaterialRef}");
 
-                    // Show full name on hover if truncated
                     if (truncatedName != name && ImGui.IsItemHovered())
                     {
                         ImGui.SetTooltip($"{name}{quantityText}");
                     }
 
-                    // Hotbar assign button
                     ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
                     RenderHotbarAssignButton(HotbarItemType.BuildingMaterial, material.BuildingMaterialRef, name);
 
@@ -296,18 +356,14 @@ public class InventoryPanel
                     {
                         if (materialItem != null)
                         {
-                            // Description
                             if (!string.IsNullOrEmpty(materialItem.Description))
                             {
                                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), materialItem.Description);
                                 ImGui.Spacing();
                             }
-
-                            // Pricing information
                             ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Price: {materialItem.WholesalePrice}");
                             ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {materialItem.MerchantMarkupMultiplier}x");
                         }
-
                         ImGui.TreePop();
                     }
 
@@ -321,33 +377,6 @@ public class InventoryPanel
                 ImGui.Unindent();
             }
         }
-
-        // Quest Tokens
-        if (caps.QuestTokens != null && caps.QuestTokens.Length > 0)
-        {
-            if (ImGui.CollapsingHeader($"Quest Tokens ({caps.QuestTokens.Length})"))
-            {
-                foreach (var token in caps.QuestTokens)
-                {
-                    var tokenDef = viewModel.CurrentWorld?.Gameplay?.QuestTokens?.FirstOrDefault(t => t.RefName == token.QuestTokenRef);
-                    var name = tokenDef?.DisplayName ?? token.QuestTokenRef;
-
-                    ImGui.Indent();
-                    ImGui.BulletText(name);
-                    if (tokenDef != null && !string.IsNullOrEmpty(tokenDef.Description))
-                    {
-                        ImGui.SameLine();
-                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"- {tokenDef.Description}");
-                    }
-                    ImGui.Unindent();
-                }
-            }
-        }
-
-        // Render hotbar assignment popup inside child window (same ID scope as OpenPopup calls)
-        RenderHotbarAssignPopup(viewModel);
-
-        ImGui.EndChild();
     }
 
     private async Task EquipItemAsync(SagaMainViewModel viewModel, string equipmentRef, string slotRef)
