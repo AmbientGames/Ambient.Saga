@@ -164,34 +164,80 @@ public class WorldInfoPanel
             }
         }
 
-        // Note: Tools and BuildingMaterials are now handled by IGameplayItemProvider in Core.
-        // These catalogs should be displayed by the consuming application's custom UI.
-
-        // Display items from IGameplayItemProviders
-        var providers = viewModel.CurrentWorld?.GameplayItemProviders;
-        if (providers != null)
+        // Tools
+        var tools = gameplay?.Tools;
+        if (tools != null)
         {
-            foreach (var provider in providers)
+            var filtered = tools.Where(t => MatchesFilter(t.DisplayName) || MatchesFilter(t.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Tools ({filtered.Length})"))
             {
-                var allItems = provider.GetAll().ToArray();
-                var filtered = allItems.Where(i => MatchesFilter(i.DisplayName) || MatchesFilter(i.RefName)).ToArray();
-                if (filtered.Length > 0 && ImGui.CollapsingHeader($"{provider.Name} ({filtered.Length})"))
+                foreach (var item in filtered)
                 {
-                    foreach (var item in filtered)
+                    if (ImGui.TreeNode($"{item.DisplayName}##{item.RefName}"))
                     {
-                        if (ImGui.TreeNode($"{item.DisplayName}##{item.RefName}"))
+                        if (!string.IsNullOrEmpty(item.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description);
+                        ImGui.Text($"Rarity: {item.Rarity} | Price: {item.WholesalePrice}");
+                        ImGui.Text($"Durability Loss: {item.DurabilityLoss:P2} per use");
+                        if (item.EffectiveSubstances?.Length > 0)
                         {
-                            if (!string.IsNullOrEmpty(item.Description))
-                                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description);
-                            ImGui.Text($"Category: {item.Category}");
-                            ImGui.TreePop();
+                            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Effective against:");
+                            foreach (var eff in item.EffectiveSubstances)
+                                ImGui.BulletText($"{eff.SubstanceRef} ({eff.EffectivenessMultiplier:P0})");
                         }
+                        ImGui.TreePop();
                     }
                 }
             }
         }
 
-        // Note: Blocks are now handled by IGameplayItemProvider (displayed in the loop above)
+        // Building Materials
+        var materials = gameplay?.BuildingMaterials;
+        if (materials != null)
+        {
+            var filtered = materials.Where(m => MatchesFilter(m.DisplayName) || MatchesFilter(m.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Materials ({filtered.Length})"))
+            {
+                foreach (var item in filtered)
+                {
+                    if (ImGui.TreeNode($"{item.DisplayName}##{item.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(item.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description);
+                        ImGui.Text($"Rarity: {item.Rarity} | Price: {item.WholesalePrice}");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Blocks
+        var blocks = viewModel.CurrentWorld!.BlockProvider?.GetAllBlocks().ToList();
+        if (blocks != null && blocks.Count > 0)
+        {
+            var filtered = blocks.Where(b => MatchesFilter(b.DisplayName) || MatchesFilter(b.RefName)).ToList();
+            if (filtered.Count > 0 && ImGui.CollapsingHeader($"Blocks ({filtered.Count})"))
+            {
+                var grouped = filtered.GroupBy(b => b.SubstanceRef ?? "Other").OrderBy(g => g.Key);
+                foreach (var group in grouped)
+                {
+                    if (ImGui.TreeNode($"{group.Key} ({group.Count()})"))
+                    {
+                        foreach (var block in group)
+                        {
+                            if (ImGui.TreeNode($"{block.DisplayName}##{block.RefName}"))
+                            {
+                                if (!string.IsNullOrEmpty(block.Description))
+                                    ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), block.Description);
+                                ImGui.Text($"Price: {block.WholesalePrice} (x{block.MerchantMarkupMultiplier} markup)");
+                                ImGui.TreePop();
+                            }
+                        }
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
     }
 
     #endregion

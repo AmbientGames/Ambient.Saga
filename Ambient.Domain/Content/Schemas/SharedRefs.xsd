@@ -10,6 +10,16 @@
 			<xs:minLength value="1" />
 		</xs:restriction>
 	</xs:simpleType>
+	<xs:simpleType name="BlockRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SubstanceRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
 	<xs:simpleType name="ClimateModel">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Earth" />

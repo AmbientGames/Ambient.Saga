@@ -1700,10 +1700,11 @@ public partial class SagaMainViewModel : ObservableObject
             PlayerAvatar = existingAvatar;
 
             // Debug output to verify what was loaded
+            var toolCount = PlayerAvatar.Capabilities?.Tools?.Length ?? 0;
             var equipmentCount = PlayerAvatar.Capabilities?.Equipment?.Length ?? 0;
             var consumableCount = PlayerAvatar.Capabilities?.Consumables?.Length ?? 0;
             var health = PlayerAvatar.Stats?.Health ?? 0;
-            System.Diagnostics.Debug.WriteLine($"DEBUG LoadAvatar: Loaded avatar with Equipment={equipmentCount}, Consumables={consumableCount}, Health={health}");
+            System.Diagnostics.Debug.WriteLine($"DEBUG LoadAvatar: Loaded avatar with Tools={toolCount}, Equipment={equipmentCount}, Consumables={consumableCount}, Health={health}");
 
             AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
 
@@ -1773,16 +1774,10 @@ public partial class SagaMainViewModel : ObservableObject
             Z = 0
         };
 
-        // Use AvatarSpawner to initialize from archetype (schema-based capabilities)
+        // Use AvatarSpawner to initialize from archetype
         AvatarSpawner.SpawnFromModelAvatar(
             avatar,
             archetype);
-
-        // Apply gameplay items from providers (extensible item system)
-        if (world.GameplayItemProviders.Count > 0)
-        {
-            GameplayItemSpawner.ApplySpawnItems(avatar, world.GameplayItemProviders, archetype.RefName);
-        }
 
         SetAvatarDefaults(world, avatar);
 
@@ -1827,11 +1822,12 @@ public partial class SagaMainViewModel : ObservableObject
         try
         {
             // Debug output to verify avatar state before saving
+            var toolCount = PlayerAvatar.Capabilities?.Tools?.Length ?? 0;
             var equipmentCount = PlayerAvatar.Capabilities?.Equipment?.Length ?? 0;
             var consumableCount = PlayerAvatar.Capabilities?.Consumables?.Length ?? 0;
             var health = PlayerAvatar.Stats?.Health ?? 0;
 
-            System.Diagnostics.Debug.WriteLine($"DEBUG SavePlayerAvatar: Equipment={equipmentCount}, Consumables={consumableCount}, Health={health}");
+            System.Diagnostics.Debug.WriteLine($"DEBUG SavePlayerAvatar: Tools={toolCount}, Equipment={equipmentCount}, Consumables={consumableCount}, Health={health}");
 
             await _worldRepository.SaveAvatarAsync(PlayerAvatar);
 
@@ -2066,29 +2062,27 @@ public partial class SagaMainViewModel : ObservableObject
     [RelayCommand]
     private void ViewTools()
     {
-        // Tools are now handled by IGameplayItemProvider - display via that system
-        var toolsProvider = CurrentWorld?.GameplayItemProviders.FirstOrDefault(p => p.Name.Contains("Tool"));
-        if (toolsProvider == null || !toolsProvider.GetAll().Any())
+        if (CurrentWorld?.Gameplay?.Tools == null || CurrentWorld.Gameplay.Tools.Length == 0)
         {
             AddToastMessage("No tools available", MessageType.Warning);
             return;
         }
 
-        // Dialog implementation should use IGameplayItemProvider
+        //var dialog = new Views.ToolsInventoryDialog(CurrentWorld.Gameplay.Tools);
+        //dialog.ShowDialog();
     }
 
     [RelayCommand]
     private void ViewMaterials()
     {
-        // BuildingMaterials are now handled by IGameplayItemProvider - display via that system
-        var materialsProvider = CurrentWorld?.GameplayItemProviders.FirstOrDefault(p => p.Name.Contains("Material"));
-        if (materialsProvider == null || !materialsProvider.GetAll().Any())
+        if (CurrentWorld?.Gameplay?.BuildingMaterials == null || CurrentWorld.Gameplay.BuildingMaterials.Length == 0)
         {
             AddToastMessage("No materials available", MessageType.Warning);
             return;
         }
 
-        // Dialog implementation should use IGameplayItemProvider
+        //var dialog = new Views.MaterialsInventoryDialog(CurrentWorld.Gameplay.BuildingMaterials);
+        //dialog.ShowDialog();
     }
 
     [RelayCommand]

@@ -3,42 +3,21 @@
 /// <summary>
 /// Abstraction for querying player and world state during dialogue.
 /// Implementations should provide access to inventory, achievements, quest progress, etc.
-/// Uses a provider-based pattern for items - providers can be Saga-owned (Equipment, Consumables,
-/// Spells, QuestTokens) or application-defined via IGameplayItemProvider (e.g., "Tools (Core)", "Blocks (Core)").
 /// </summary>
 public interface IDialogueStateProvider
 {
-    // ===== PROVIDER-BASED ITEM ACCESS =====
-    // These methods handle all item types through a unified provider pattern.
-    // Built-in Saga providers: "Equipment", "Consumables", "Spells", "QuestTokens"
-    // External providers registered via IGameplayItemProvider: e.g., "Tools (Core)", "Blocks (Core)"
+    // ===== QUEST TOKENS =====
+    bool HasQuestToken(string questTokenRef);
 
-    /// <summary>
-    /// Checks if avatar has an item from the specified provider.
-    /// For quantity-based items (Consumables), checks quantity > 0.
-    /// For presence-based items (Equipment, Spells, QuestTokens), checks existence.
-    /// </summary>
-    bool HasItem(string provider, string refName);
+    // ===== STACKABLE ITEMS (quantity matters) =====
+    int GetConsumableQuantity(string consumableRef);
+    int GetMaterialQuantity(string materialRef);
+    float GetBlockQuantity(string blockRef);
 
-    /// <summary>
-    /// Gets the quantity of an item from the specified provider.
-    /// For presence-based items, returns 1 if present, 0 if not.
-    /// </summary>
-    int GetItemQuantity(string provider, string refName);
-
-    /// <summary>
-    /// Gives an item to the avatar from the specified provider.
-    /// For quantity-based items, adds to quantity.
-    /// For presence-based items, adds if not already present.
-    /// </summary>
-    void GiveItem(string provider, string refName, int quantity = 1);
-
-    /// <summary>
-    /// Takes an item from the avatar for the specified provider.
-    /// For quantity-based items, reduces quantity.
-    /// For presence-based items, removes if present.
-    /// </summary>
-    void TakeItem(string provider, string refName, int quantity = 1);
+    // ===== DEGRADABLE ITEMS (existence matters) =====
+    bool HasEquipment(string equipmentRef);
+    bool HasTool(string toolRef);
+    bool HasSpell(string spellRef);
 
     // ===== PLAYER STATE =====
     bool HasAchievement(string achievementRef);
@@ -62,7 +41,24 @@ public interface IDialogueStateProvider
     string GetFactionReputationLevel(string factionRef);  // Returns ReputationLevel as string
     void ChangeReputation(string factionRef, int amount);
 
-    // ===== CURRENCY & ACHIEVEMENTS =====
+    // ===== INVENTORY MODIFICATION =====
+    void AddConsumable(string consumableRef, int amount);
+    void RemoveConsumable(string consumableRef, int amount);
+    void AddMaterial(string materialRef, int amount);
+    void RemoveMaterial(string materialRef, int amount);
+    void AddBlock(string blockRef, int amount);
+    void RemoveBlock(string blockRef, int amount);
+
+    void AddEquipment(string equipmentRef);
+    void RemoveEquipment(string equipmentRef);
+    void AddTool(string toolRef);
+    void RemoveTool(string toolRef);
+    void AddSpell(string spellRef);
+    void RemoveSpell(string spellRef);
+
+    void AddQuestToken(string questTokenRef);
+    void RemoveQuestToken(string questTokenRef);
+
     void TransferCurrency(int amount);
     void UnlockAchievement(string achievementRef);
 

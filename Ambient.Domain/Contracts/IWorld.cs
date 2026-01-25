@@ -19,15 +19,7 @@ public interface IWorld
     /// Optional block provider for games that include block/voxel systems.
     /// Set by the application to provide block lookup functionality.
     /// </summary>
-    [Obsolete("Use GameplayItemProvider instead for a more flexible approach.")]
     IBlockProvider? BlockProvider { get; set; }
-
-    /// <summary>
-    /// Optional gameplay item providers for games that include extensible item systems.
-    /// Games can register multiple providers (e.g., one for blocks, one for seeds, one for vehicles).
-    /// Each provider defines its own categories.
-    /// </summary>
-    IList<IGameplayItemProvider> GameplayItemProviders { get; }
 
     bool IsProcedural { get; set; }
     double VerticalShift { get; set; }
@@ -39,6 +31,8 @@ public interface IWorld
     int HeightMapSpawnPixelY { get; set; }
     double HeightMapLongitudeScale { get; set; }
 
+    Dictionary<string, Tool> ToolsLookup { get; set; }
+    Dictionary<string, BuildingMaterial> BuildingMaterialsLookup { get; set; }
     Dictionary<string, Consumable> ConsumablesLookup { get; set; }
     Dictionary<string, Spell> SpellsLookup { get; set; }
     Dictionary<string, Character> CharactersLookup { get; set; }
@@ -59,6 +53,13 @@ public interface IWorld
     GameplayComponents Gameplay { get; }
     long UtcStartTick { get; set; }
     IWorldTemplate WorldTemplate { get; set; }
+
+    // remove these - the usage is an abomination:
+    public Tool GetToolByRefName(string toolRefName);
+    public Tool? TryGetToolByRefName(string toolRefName);
+
+    public BuildingMaterial GetBuildingMaterialByRefName(string buildingMaterialRefName);
+    public BuildingMaterial? TryGetBuildingMaterialByRefName(string buildingMaterialRefName);
 
     public Consumable GetConsumableByRefName(string consumableRefName);
     public Consumable? TryGetConsumableByRefName(string consumableRefName);

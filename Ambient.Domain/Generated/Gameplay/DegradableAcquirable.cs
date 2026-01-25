@@ -15,6 +15,7 @@
 namespace Ambient.Domain {
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(Tool))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Equipment))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(Spell))]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.8.3928.0")]

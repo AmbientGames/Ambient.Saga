@@ -64,25 +64,37 @@ public class GameplayTests : IAsyncLifetime
         Assert.NotNull(_world?.Gameplay.Characters);
     }
 
-    // NOTE: Tools/BuildingMaterials tests removed - these types are now provided by IGameplayItemProvider in Core,
-    // not by Saga's GameplayComponents. TryGetToolByRefName/TryGetBuildingMaterialByRefName are no longer on IWorld.
-    //[Fact]
-    //public void Tools_ShouldHaveValidRefNames()
-    //{
-    //    // Test removed: Tools are now in IGameplayItemProvider, not Saga.
-    //}
+    [Fact]
+    public void Tools_ShouldHaveValidRefNames()
+    {
+        Assert.NotNull(_world?.Gameplay.Tools);
+        foreach (var tool in _world.Gameplay.Tools!)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(tool.RefName), "Tool RefName should not be null or empty");
+            var lookedUpTool = _world.TryGetToolByRefName(tool.RefName);
+            Assert.NotNull(lookedUpTool);
+            Assert.Equal(tool.RefName, lookedUpTool.RefName);
+        }
+    }
 
-    //[Fact]
-    //public void Materials_ShouldNotBeNull()
-    //{
-    //    // Test removed: BuildingMaterials are now in IGameplayItemProvider, not Saga.
-    //}
+    [Fact]
+    public void Materials_ShouldNotBeNull()
+    {
+        Assert.NotNull(_world?.Gameplay.BuildingMaterials);
+    }
 
-    //[Fact]
-    //public void Materials_ShouldHaveValidRefNames()
-    //{
-    //    // Test removed: BuildingMaterials are now in IGameplayItemProvider, not Saga.
-    //}
+    [Fact]
+    public void Materials_ShouldHaveValidRefNames()
+    {
+        Assert.NotNull(_world?.Gameplay.BuildingMaterials);
+        foreach (var material in _world.Gameplay.BuildingMaterials!)
+        {
+            Assert.False(string.IsNullOrWhiteSpace(material.RefName), "BuildingMaterial RefName should not be null or empty");
+            var lookedUpMaterial = _world.TryGetBuildingMaterialByRefName(material.RefName);
+            Assert.NotNull(lookedUpMaterial);
+            Assert.Equal(material.RefName, lookedUpMaterial.RefName);
+        }
+    }
 
     [Fact]
     public void DialogueTrees_ShouldNotBeNull()
@@ -213,9 +225,35 @@ public class GameplayTests : IAsyncLifetime
                 }
             }
 
-            // NOTE: Tool/Block/BuildingMaterial validation removed - these types are now in IGameplayItemProvider in Core,
-            // not in Saga. ItemCollection no longer has Tools/Blocks/BuildingMaterials properties.
-            // Validation for these types is handled by the IGameplayItemProvider implementation.
+            // Validate Tool references
+            if (character.Capabilities?.Tools != null)
+            {
+                foreach (var entry in character.Capabilities.Tools)
+                {
+                    var tool = _world.TryGetToolByRefName(entry.ToolRef);
+                    Assert.NotNull(tool);
+                }
+            }
+
+            //// Validate Block references
+            //if (character.Capabilities?.Blocks != null)
+            //{
+            //    foreach (var entry in character.Capabilities.Blocks)
+            //    {
+            //        var block = _world.TryGetBlockByRefName(entry.BlockRef);
+            //        Assert.NotNull(block);
+            //    }
+            //}
+
+            // Validate Material references
+            if (character.Capabilities?.BuildingMaterials != null)
+            {
+                foreach (var entry in character.Capabilities.BuildingMaterials)
+                {
+                    var material = _world.TryGetBuildingMaterialByRefName(entry.BuildingMaterialRef);
+                    Assert.NotNull(material);
+                }
+            }
         }
     }
 
@@ -349,8 +387,34 @@ public class GameplayTests : IAsyncLifetime
             }
         }
 
-        // NOTE: Tool/Block/BuildingMaterial validation removed - these types are now in IGameplayItemProvider in Core,
-        // not in Saga. ItemCollection no longer has Tools/Blocks/BuildingMaterials properties.
-        // Validation for these types is handled by the IGameplayItemProvider implementation.
+        // Validate Tool references
+        if (capabilities.Tools != null)
+        {
+            foreach (var entry in capabilities.Tools)
+            {
+                var tool = _world!.TryGetToolByRefName(entry.ToolRef);
+                Assert.NotNull(tool);
+            }
+        }
+
+        //// Validate Block references
+        //if (capabilities.Blocks != null)
+        //{
+        //    foreach (var entry in capabilities.Blocks)
+        //    {
+        //        var block = _world!.TryGetBlockByRefName(entry.BlockRef);
+        //        Assert.NotNull(block);
+        //    }
+        //}
+
+        // Validate Material references
+        if (capabilities.BuildingMaterials != null)
+        {
+            foreach (var entry in capabilities.BuildingMaterials)
+            {
+                var material = _world!.TryGetBuildingMaterialByRefName(entry.BuildingMaterialRef);
+                Assert.NotNull(material);
+            }
+        }
     }
 }

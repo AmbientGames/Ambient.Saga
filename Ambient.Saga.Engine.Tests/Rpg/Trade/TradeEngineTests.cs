@@ -53,8 +53,29 @@ public class TradeEngineTests
             }
         };
 
-        // NOTE: Blocks/Tools/BuildingMaterials are now provided by IGameplayItemProvider in Core,
-        // not by Saga's GameplayComponents. The Tool type no longer exists in Saga.
+        //// Create test blocks
+        //world.DerivedBlockList = new[]
+        //{
+        //    new DerivedBlock
+        //    {
+        //        RefName = "stone_block",
+        //        DisplayName = "Stone Block",
+        //        WholesalePrice = 10,
+        //        MerchantMarkupMultiplier = 1.1f
+        //    }
+        //};
+
+        // Create test tools
+        world.Gameplay.Tools = new[]
+        {
+            new Tool
+            {
+                RefName = "pickaxe",
+                DisplayName = "Pickaxe",
+                WholesalePrice = 75,
+                MerchantMarkupMultiplier = 1.3f
+            }
+        };
 
         // Create test spells
         world.Gameplay.Spells = new[]
@@ -80,7 +101,8 @@ public class TradeEngineTests
         avatar.Capabilities = new ItemCollection();
         avatar.Capabilities.Equipment = Array.Empty<EquipmentEntry>();
         avatar.Capabilities.Consumables = Array.Empty<ConsumableEntry>();
-        // NOTE: Blocks/Tools/BuildingMaterials removed from ItemCollection - now in IGameplayItemProvider in Core
+        avatar.Capabilities.Blocks = Array.Empty<BlockEntry>();
+        avatar.Capabilities.Tools = Array.Empty<ToolEntry>();
         avatar.Capabilities.Spells = Array.Empty<SpellEntry>();
         return avatar;
     }
@@ -97,7 +119,14 @@ public class TradeEngineTests
         {
             new ConsumableEntry { ConsumableRef = "health_potion", Quantity = 10 }
         };
-        // NOTE: Blocks/Tools removed from ItemCollection - now in IGameplayItemProvider in Core
+        inventory.Blocks = new[]
+        {
+            new BlockEntry { BlockRef = "stone_block", Quantity = 100 }
+        };
+        inventory.Tools = new[]
+        {
+            new ToolEntry { ToolRef = "pickaxe", Condition = 1.0f }
+        };
         inventory.Spells = new[]
         {
             new SpellEntry { SpellRef = "fireball", Condition = 1.0f }
@@ -236,13 +265,18 @@ public class TradeEngineTests
     //    Assert.Equal(100, items[0].Quantity);
     //}
 
-    // NOTE: Tools test removed - Tools are now provided by IGameplayItemProvider in Core, not Saga.
-    // ItemCollection no longer has a Tools property.
-    //[Fact]
-    //public void GetAvailableItems_Tools_ReturnsItemsWithCondition()
-    //{
-    //    // Test removed: Tools are now in IGameplayItemProvider, not Saga.
-    //}
+    [Fact]
+    public void GetAvailableItems_Tools_ReturnsItemsWithCondition()
+    {
+        var inventory = CreateMerchantInventory();
+
+        var items = _engine.GetAvailableItems(inventory, "Tools", isBuying: true);
+
+        Assert.Single(items);
+        Assert.Equal("pickaxe", items[0].Item.RefName);
+        Assert.Equal(97, items[0].Price); // 75 * 1.3 = 97.5, truncated to 97
+        Assert.Equal(1.0f, items[0].Condition);
+    }
 
     [Fact]
     public void GetAvailableItems_Spells_ReturnsItemsWithCondition()

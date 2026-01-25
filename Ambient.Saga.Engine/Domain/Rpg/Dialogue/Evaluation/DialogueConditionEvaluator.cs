@@ -23,9 +23,25 @@ public class DialogueConditionEvaluator
     {
         return condition.Type switch
         {
-            // Provider-based item conditions (unified pattern)
-            DialogueConditionType.HasItem => EvaluateHasItem(condition),
-            DialogueConditionType.LacksItem => !_stateProvider.HasItem(condition.Provider ?? "", condition.RefName),
+            // Quest tokens
+            DialogueConditionType.HasQuestToken => _stateProvider.HasQuestToken(condition.RefName),
+            DialogueConditionType.LacksQuestToken => !_stateProvider.HasQuestToken(condition.RefName),
+
+            // Stackable items
+            DialogueConditionType.HasConsumable => EvaluateQuantity(_stateProvider.GetConsumableQuantity(condition.RefName), condition),
+            DialogueConditionType.LacksConsumable => _stateProvider.GetConsumableQuantity(condition.RefName) == 0,
+            DialogueConditionType.HasMaterial => EvaluateQuantity(_stateProvider.GetMaterialQuantity(condition.RefName), condition),
+            DialogueConditionType.LacksMaterial => _stateProvider.GetMaterialQuantity(condition.RefName) == 0,
+            DialogueConditionType.HasBlock => EvaluateQuantity((int)_stateProvider.GetBlockQuantity(condition.RefName), condition),
+            DialogueConditionType.LacksBlock => _stateProvider.GetBlockQuantity(condition.RefName) == 0,
+
+            // Degradable items
+            DialogueConditionType.HasEquipment => _stateProvider.HasEquipment(condition.RefName),
+            DialogueConditionType.LacksEquipment => !_stateProvider.HasEquipment(condition.RefName),
+            DialogueConditionType.HasTool => _stateProvider.HasTool(condition.RefName),
+            DialogueConditionType.LacksTool => !_stateProvider.HasTool(condition.RefName),
+            DialogueConditionType.HasSpell => _stateProvider.HasSpell(condition.RefName),
+            DialogueConditionType.LacksSpell => !_stateProvider.HasSpell(condition.RefName),
 
             // Player state
             DialogueConditionType.HasAchievement => _stateProvider.HasAchievement(condition.RefName),
@@ -58,21 +74,6 @@ public class DialogueConditionEvaluator
 
             _ => throw new NotSupportedException($"Unknown condition type: {condition.Type}")
         };
-    }
-
-    private bool EvaluateHasItem(DialogueCondition condition)
-    {
-        var provider = condition.Provider ?? "";
-        var quantity = _stateProvider.GetItemQuantity(provider, condition.RefName);
-
-        // If Value is specified, compare quantity
-        if (!string.IsNullOrEmpty(condition.Value))
-        {
-            return EvaluateQuantity(quantity, condition);
-        }
-
-        // Otherwise just check if present (quantity > 0)
-        return quantity > 0;
     }
 
     /// <summary>

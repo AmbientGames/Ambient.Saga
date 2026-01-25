@@ -1,4 +1,3 @@
-using Ambient.Domain.Contracts;
 using Ambient.Domain.Hotbar;
 using ImGuiNET;
 using System.Numerics;
@@ -161,26 +160,14 @@ public class HotbarSection : IHudSection
 
         return slot.ItemType switch
         {
-            // Saga-owned types
+            HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.BuildingMaterial => world.TryGetBuildingMaterialByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Spell => world.Gameplay?.Spells?.FirstOrDefault(s => s.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
-            // External provider types - lookup via IGameplayItemProvider
-            HotbarItemType.Tool or HotbarItemType.Block or HotbarItemType.BuildingMaterial =>
-                LookupExternalItemDisplayName(world, slot.RefName),
             _ => slot.RefName
         };
-    }
-
-    private static string LookupExternalItemDisplayName(IWorld world, string refName)
-    {
-        foreach (var provider in world.GameplayItemProviders)
-        {
-            var item = provider.GetByRefName(refName);
-            if (item != null)
-                return item.DisplayName;
-        }
-        return refName;
     }
 
     private static string TruncateText(string text, float maxWidth)

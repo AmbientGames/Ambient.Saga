@@ -100,8 +100,38 @@ public class TradeEngine
                 }
                 break;
 
-            // Note: Blocks and Tools are now handled by IGameplayItemProvider in Core.
-            // Trading of these items should be done through the application's own trade UI.
+            case "Blocks":
+                if (inventory.Blocks != null && _world.BlockProvider != null)
+                {
+                    foreach (var entry in inventory.Blocks)
+                    {
+                        if (entry == null || string.IsNullOrEmpty(entry.BlockRef))
+                            continue;
+
+                        var block = _world.BlockProvider.GetBlockByRefName(entry.BlockRef);
+                        if (block != null)
+                        {
+                            var price = isBuying ? CalculateBuyPrice(block, true, characterTraits) : CalculateSellPrice(block);
+                            items.Add(new TradeItemInfo(block, price, quantity: (int)entry.Quantity, condition: null));
+                        }
+                    }
+                }
+                break;
+
+            case "Tools":
+                if (inventory.Tools != null)
+                {
+                    foreach (var entry in inventory.Tools)
+                    {
+                        var tool = _world.Gameplay.Tools?.FirstOrDefault(t => t.RefName == entry.ToolRef);
+                        if (tool != null)
+                        {
+                            var price = isBuying ? CalculateBuyPrice(tool, true, characterTraits) : CalculateSellPrice(tool);
+                            items.Add(new TradeItemInfo(tool, price, quantity: null, condition: entry.Condition));
+                        }
+                    }
+                }
+                break;
 
             case "Spells":
                 if (inventory.Spells != null)
@@ -124,7 +154,6 @@ public class TradeEngine
 
     /// <summary>
     /// Get count of items in a specific category.
-    /// Note: Blocks and Tools are now handled by IGameplayItemProvider.
     /// </summary>
     public int GetCategoryItemCount(ItemCollection? inventory, string category)
     {
@@ -134,6 +163,8 @@ public class TradeEngine
         {
             "Equipment" => inventory.Equipment?.Length ?? 0,
             "Consumables" => inventory.Consumables?.Length ?? 0,
+            "Blocks" => inventory.Blocks?.Length ?? 0,
+            "Tools" => inventory.Tools?.Length ?? 0,
             "Spells" => inventory.Spells?.Length ?? 0,
             _ => 0
         };
@@ -183,12 +214,12 @@ public class TradeEngine
 
     private TradeResult TransferItem(ItemCollection source, ItemCollection dest, TradeItemInfo item, bool fromSeller)
     {
-        // Note: Blocks and Tools are now handled by IGameplayItemProvider.
-        // Trading of these items should be done through the application's own trade UI.
         return item.Item switch
         {
             Equipment equipment => TransferEquipment(source, dest, equipment.RefName, item.Condition),
             Consumable consumable => TransferConsumable(source, dest, consumable.RefName, item.Quantity ?? 1),
+            IBlock block => TransferBlock(source, dest, block.RefName, item.Quantity ?? 1),
+            Tool tool => TransferTool(source, dest, tool.RefName, item.Condition),
             Spell spell => TransferSpell(source, dest, spell.RefName, item.Condition),
             _ => TradeResult.Failed("Unknown item type")
         };
@@ -233,6 +264,49 @@ public class TradeEngine
         else
             destList.Add(new ConsumableEntry { ConsumableRef = refName, Quantity = quantity });
         dest.Consumables = destList.ToArray();
+
+        return TradeResult.Succeeded("Transfer complete");
+    }
+
+    private TradeResult TransferBlock(ItemCollection source, ItemCollection dest, string refName, int quantity)
+    {
+        // Find and reduce/remove from source
+        var sourceList = source.Blocks?.ToList() ?? new List<BlockEntry>();
+        var sourceStack = sourceList.FirstOrDefault(s => s.BlockRef == refName);
+        if (sourceStack == null || sourceStack.Quantity < quantity)
+            return TradeResult.Failed("Insufficient quantity in source inventory");
+
+        sourceStack.Quantity -= quantity;
+        if (sourceStack.Quantity <= 0)
+            sourceList.Remove(sourceStack);
+        source.Blocks = sourceList.ToArray();
+
+        // Add to destination
+        var destList = dest.Blocks?.ToList() ?? new List<BlockEntry>();
+        var destStack = destList.FirstOrDefault(s => s.BlockRef == refName);
+        if (destStack != null)
+            destStack.Quantity += quantity;
+        else
+            destList.Add(new BlockEntry { BlockRef = refName, Quantity = quantity });
+        dest.Blocks = destList.ToArray();
+
+        return TradeResult.Succeeded("Transfer complete");
+    }
+
+    private TradeResult TransferTool(ItemCollection source, ItemCollection dest, string refName, float? condition)
+    {
+        // Find and remove from source
+        var sourceList = source.Tools?.ToList() ?? new List<ToolEntry>();
+        var sourceItem = sourceList.FirstOrDefault(s => s.ToolRef == refName);
+        if (sourceItem == null) return TradeResult.Failed("Item not found in source inventory");
+
+        sourceList.Remove(sourceItem);
+        source.Tools = sourceList.ToArray();
+
+        // Add to destination
+        var destList = dest.Tools?.ToList() ?? new List<ToolEntry>();
+        destList.Add(new ToolEntry { ToolRef = refName, Condition = condition ?? sourceItem.Condition });
+        dest.Tools = destList.ToArray();
 
         return TradeResult.Succeeded("Transfer complete");
     }

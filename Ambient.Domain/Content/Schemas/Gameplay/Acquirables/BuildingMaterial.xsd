@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="StackableAcquirable.xsd" />
+    <xs:include schemaLocation="EffectiveSubstances.xsd" />
+    <xs:simpleType name="BuildingMaterialRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="BuildingMaterial">
+        <xs:complexContent>
+            <xs:extension base="StackableAcquirable">
+                <xs:sequence>
+                    <xs:element name="CompatibleSubstances" type="CompatibleSubstances" minOccurs="1" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="BuildingMaterialCatalog">
+        <xs:sequence>
+            <xs:element name="BuildingMaterial" type="BuildingMaterial" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

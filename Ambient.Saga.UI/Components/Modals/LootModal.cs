@@ -140,8 +140,41 @@ public class LootModal
                 ImGui.Spacing();
             }
 
-            // Note: BuildingMaterials and Tools are now handled by IGameplayItemProvider in Core.
-            // Loot display for these types should be implemented by the consuming application.
+            if (characterTemplate.Capabilities.BuildingMaterials?.Length > 0)
+            {
+                ImGui.Spacing();
+                ImGui.TextColored(new Vector4(0.8f, 0.6f, 0.4f, 1), "Materials:");
+                foreach (var material in characterTemplate.Capabilities.BuildingMaterials)
+                {
+                    var materialDef = viewModel.CurrentWorld?.TryGetBuildingMaterialByRefName(material.BuildingMaterialRef);
+                    var displayName = materialDef?.DisplayName ?? material.BuildingMaterialRef;
+                    ImGui.Indent(15 * UIConstants.DpiScale);
+                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), displayName);
+                    ImGui.SameLine();
+                    ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"x{material.Quantity}");
+                    ImGui.Unindent(15 * UIConstants.DpiScale);
+                    hasAnyLoot = true;
+                }
+                ImGui.Spacing();
+            }
+
+            if (characterTemplate.Capabilities.Tools?.Length > 0)
+            {
+                ImGui.Spacing();
+                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.9f, 1), "Tools:");
+                foreach (var tool in characterTemplate.Capabilities.Tools)
+                {
+                    var toolDef = viewModel.CurrentWorld?.TryGetToolByRefName(tool.ToolRef);
+                    var displayName = toolDef?.DisplayName ?? tool.ToolRef;
+                    ImGui.Indent(15 * UIConstants.DpiScale);
+                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), displayName);
+                    ImGui.SameLine();
+                    ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"({tool.Condition:P0})");
+                    ImGui.Unindent(15 * UIConstants.DpiScale);
+                    hasAnyLoot = true;
+                }
+                ImGui.Spacing();
+            }
 
             if (!hasAnyLoot)
             {

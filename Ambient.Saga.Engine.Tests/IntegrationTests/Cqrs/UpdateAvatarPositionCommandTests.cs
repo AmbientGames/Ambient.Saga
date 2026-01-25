@@ -159,7 +159,9 @@ public class UpdateAvatarPositionCommandTests : IDisposable
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                // NOTE: Blocks/Tools/BuildingMaterials removed from ItemCollection - now in IGameplayItemProvider in Core
+                Blocks = Array.Empty<BlockEntry>(),
+                Tools = Array.Empty<ToolEntry>(),
+                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
                 QuestTokens = Array.Empty<QuestTokenEntry>()
             },
             RespawnStats = new CharacterStats
@@ -181,7 +183,9 @@ public class UpdateAvatarPositionCommandTests : IDisposable
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                // NOTE: Blocks/Tools/BuildingMaterials removed from ItemCollection - now in IGameplayItemProvider in Core
+                Blocks = Array.Empty<BlockEntry>(),
+                Tools = Array.Empty<ToolEntry>(),
+                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
                 QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };

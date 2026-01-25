@@ -79,7 +79,8 @@ public class TestWorldFactory : IWorldFactory
         world.EquipmentLookup = new Dictionary<string, Equipment>();
         world.ConsumablesLookup = new Dictionary<string, Consumable>();
         world.QuestTokensLookup = new Dictionary<string, QuestToken>();
-        // NOTE: BuildingMaterials/Tools are now in IGameplayItemProvider in Core, not Saga
+        world.BuildingMaterialsLookup = new Dictionary<string, BuildingMaterial>();
+        world.ToolsLookup = new Dictionary<string, Tool>();
         world.SpellsLookup = new Dictionary<string, Spell>();
         world.AchievementsLookup = new Dictionary<string, Achievement>();
         world.QuestsLookup = new Dictionary<string, Quest>();
@@ -102,7 +103,8 @@ public class TestWorldFactory : IWorldFactory
         avatar.Capabilities = new ItemCollection();
         avatar.Capabilities.Equipment = Array.Empty<EquipmentEntry>();
         avatar.Capabilities.Consumables = Array.Empty<ConsumableEntry>();
-        // NOTE: Blocks/Tools removed from ItemCollection - now in IGameplayItemProvider in Core
+        avatar.Capabilities.Blocks = Array.Empty<BlockEntry>();
+        avatar.Capabilities.Tools = Array.Empty<ToolEntry>();
         avatar.Capabilities.Spells = Array.Empty<SpellEntry>();
         return avatar;
     }

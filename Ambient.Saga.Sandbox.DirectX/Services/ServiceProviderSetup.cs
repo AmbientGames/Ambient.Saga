@@ -83,11 +83,6 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             // Block provider (mock implementation with sample blocks for UI demonstration)
             services.AddSingleton<IBlockProvider, MockBlockProvider>();
 
-            // Gameplay item providers (new abstraction pattern - games can register multiple)
-            services.AddSingleton<IGameplayItemProvider, SchemaToolProvider>();
-            services.AddSingleton<IGameplayItemProvider, SchemaBlockProvider>();
-            services.AddSingleton<IGameplayItemProvider, SchemaBuildingMaterialProvider>();
-
             // World creation services (theme discovery and world file generation)
             services.AddSingleton<IThemeProvider>(sp =>
             {
@@ -173,10 +168,8 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
 
             // World provider - will be configured by MainViewModel when world loads
             // Returns null until world is loaded - handlers must check for null
-            // Inject BlockProvider (legacy) and GameplayItemProviders (new pattern)
-            services.AddSingleton(sp => new WorldProvider(
-                sp.GetRequiredService<IBlockProvider>(),
-                sp.GetServices<IGameplayItemProvider>()));
+            // Inject BlockProvider to enable block trading and catalog features
+            services.AddSingleton(sp => new WorldProvider(sp.GetRequiredService<IBlockProvider>()));
             services.AddSingleton(sp => sp.GetRequiredService<WorldProvider>().World);
 
             // IGameAvatarRepository factory - will be configured by MainViewModel when world loads

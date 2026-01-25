@@ -737,8 +737,74 @@ public class SagaInteractionService
             avatar.Capabilities.Consumables = existingConsumables.ToArray();
         }
 
-        // Note: Blocks, Tools, and BuildingMaterials are now handled by IGameplayItemProvider in Core.
-        // Loot containing these types should be handled by the consuming application.
+        // Blocks
+        if (loot.Blocks != null && loot.Blocks.Length > 0)
+        {
+            var existingBlocks = avatar.Capabilities.Blocks?.ToList() ?? new List<BlockEntry>();
+            foreach (var block in loot.Blocks)
+            {
+                var existing = existingBlocks.FirstOrDefault(b => b.BlockRef == block.BlockRef);
+                if (existing != null)
+                {
+                    // Stack existing block
+                    existing.Quantity += block.Quantity;
+                }
+                else
+                {
+                    // Add new block
+                    existingBlocks.Add(new BlockEntry
+                    {
+                        BlockRef = block.BlockRef,
+                        Quantity = block.Quantity
+                    });
+                }
+            }
+            avatar.Capabilities.Blocks = existingBlocks.ToArray();
+        }
+
+        // Tools (not stackable - condition tracks durability)
+        if (loot.Tools != null && loot.Tools.Length > 0)
+        {
+            var existingTools = avatar.Capabilities.Tools?.ToList() ?? new List<ToolEntry>();
+            foreach (var tool in loot.Tools)
+            {
+                // Only add if avatar doesn't already have this tool
+                if (!existingTools.Any(t => t.ToolRef == tool.ToolRef))
+                {
+                    existingTools.Add(new ToolEntry
+                    {
+                        ToolRef = tool.ToolRef,
+                        Condition = 1.0f // Full condition
+                    });
+                }
+            }
+            avatar.Capabilities.Tools = existingTools.ToArray();
+        }
+
+        // Building Materials
+        if (loot.BuildingMaterials != null && loot.BuildingMaterials.Length > 0)
+        {
+            var existingMaterials = avatar.Capabilities.BuildingMaterials?.ToList() ?? new List<BuildingMaterialEntry>();
+            foreach (var material in loot.BuildingMaterials)
+            {
+                var existing = existingMaterials.FirstOrDefault(m => m.BuildingMaterialRef == material.BuildingMaterialRef);
+                if (existing != null)
+                {
+                    // Stack existing material
+                    existing.Quantity += material.Quantity;
+                }
+                else
+                {
+                    // Add new material
+                    existingMaterials.Add(new BuildingMaterialEntry
+                    {
+                        BuildingMaterialRef = material.BuildingMaterialRef,
+                        Quantity = material.Quantity
+                    });
+                }
+            }
+            avatar.Capabilities.BuildingMaterials = existingMaterials.ToArray();
+        }
 
         // Spells
         if (loot.Spells != null && loot.Spells.Length > 0)

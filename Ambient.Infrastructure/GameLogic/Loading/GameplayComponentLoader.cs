@@ -61,6 +61,8 @@ public class GameplayComponentLoader : IGameplayComponentLoader
         world.Gameplay.CharacterAffinities = (await LoadXmlAsync<CharacterAffinities>(worldRef, library, ns, xsdFilePath, "Gameplay", "Actors", "CharacterAffinities.xml")).Affinity ?? [];
         world.Gameplay.CombatStances = (await LoadXmlAsync<CombatStances>(worldRef, library, ns, xsdFilePath, "Gameplay", "Actors", "CombatStances.xml")).CombatStance ?? [];
         world.Gameplay.LoadoutSlots = (await LoadXmlAsync<LoadoutSlots>(worldRef, library, ns, xsdFilePath, "Gameplay", "Combat", "LoadoutSlots.xml")).LoadoutSlot ?? [];
+        world.Gameplay.Tools = (await LoadXmlAsync<ToolCatalog>(worldRef, library, ns, xsdFilePath, "Gameplay", "Acquirables", "Tools.xml")).Tool ?? [];
+        world.Gameplay.BuildingMaterials = (await LoadXmlAsync<BuildingMaterialCatalog>(worldRef, library, ns, xsdFilePath, "Gameplay", "Acquirables", "BuildingMaterials.xml")).BuildingMaterial ?? [];
         world.Gameplay.DialogueTrees = (await LoadXmlAsync<DialogueTrees>(worldRef, library, ns, xsdFilePath, "Gameplay", "Actors", "Dialogue.xml")).DialogueTree ?? [];
         world.Gameplay.AvatarArchetypes = (await LoadXmlAsync<AvatarArchetypes>(worldRef, library, ns, xsdFilePath, "Gameplay", "Actors", "AvatarArchetypes.xml")).AvatarArchetype ?? [];
         world.Gameplay.Achievements = (await LoadXmlAsync<Achievements>(worldRef, library, ns, xsdFilePath, "Gameplay", "Achievements", "Achievements.xml")).Achievement ?? [];
@@ -91,6 +93,8 @@ public class GameplayComponentLoader : IGameplayComponentLoader
     {
         BuildLookup(world.Gameplay.Consumables, world.ConsumablesLookup);
         BuildLookup(world.Gameplay.Spells, world.SpellsLookup);
+        BuildLookup(world.Gameplay.Tools, world.ToolsLookup);
+        BuildLookup(world.Gameplay.BuildingMaterials, world.BuildingMaterialsLookup);
         BuildLookup(world.Gameplay.Characters, world.CharactersLookup);
         BuildLookup(world.Gameplay.CharacterAffinities, world.CharacterAffinitiesLookup);
         BuildLookup(world.Gameplay.CombatStances, world.CombatStancesLookup);

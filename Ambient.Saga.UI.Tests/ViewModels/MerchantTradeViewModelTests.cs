@@ -197,6 +197,18 @@ public class MerchantTradeViewModelTests
             }
         };
 
+        // Create test tools
+        world.Gameplay.Tools = new[]
+        {
+            new Tool
+            {
+                RefName = "pickaxe",
+                DisplayName = "Pickaxe",
+                WholesalePrice = 75,
+                MerchantMarkupMultiplier = 1.3f
+            }
+        };
+
         // Create test spells
         world.Gameplay.Spells = new[]
         {
@@ -227,6 +239,8 @@ public class MerchantTradeViewModelTests
             {
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
+                Blocks = Array.Empty<BlockEntry>(),
+                Tools = Array.Empty<ToolEntry>(),
                 Spells = Array.Empty<SpellEntry>()
             }
         };
@@ -249,6 +263,14 @@ public class MerchantTradeViewModelTests
                     Consumables = new[]
                     {
                         new ConsumableEntry { ConsumableRef = "health_potion", Quantity = 10 }
+                    },
+                    Blocks = new[]
+                    {
+                        new BlockEntry { BlockRef = "stone_block", Quantity = 100 }
+                    },
+                    Tools = new[]
+                    {
+                        new ToolEntry { ToolRef = "pickaxe", Condition = 1.0f }
                     },
                     Spells = new[]
                     {
@@ -334,6 +356,22 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
+    public void HasBlocks_WithMerchantInventory_ReturnsTrue()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+
+        Assert.True(viewModel.HasBlocks);
+    }
+
+    [Fact]
+    public void HasTools_WithMerchantInventory_ReturnsTrue()
+    {
+        var viewModel = new MerchantTradeViewModel(_context, _mediator);
+
+        Assert.True(viewModel.HasTools);
+    }
+
+    [Fact]
     public void HasSpells_WithMerchantInventory_ReturnsTrue()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
@@ -355,9 +393,11 @@ public class MerchantTradeViewModelTests
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
 
         var categories = viewModel.AvailableCategories;
-        Assert.Equal(3, categories.Count);
+        Assert.Equal(5, categories.Count);
         Assert.Contains("Equipment", categories);
         Assert.Contains("Consumables", categories);
+        Assert.Contains("Blocks", categories);
+        Assert.Contains("Tools", categories);
         Assert.Contains("Spells", categories);
     }
 

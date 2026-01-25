@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <DialogueTrees xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <DialogueTree RefName="BanditChief_QuestStart" DisplayName="Class Rep's Request" StartNodeId="greeting_hub" Description="The class rep asks for help dealing with troublemakers">
     <Node NodeId="greeting_hub">
@@ -51,7 +51,7 @@
     <Node NodeId="accept_end">
       <Text>Thank the gods. Be careful out there - they're more organized than common thugs.</Text>
       <Action Type="AcceptQuest" RefName="BanditChief_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="BanditChief_Bounty" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="BanditChief_Bounty" Amount="1" />
     </Node>
     <Node NodeId="decline_end">
       <Text>I understand. If you change your mind, please return. People are suffering.</Text>
@@ -78,7 +78,7 @@
     <Node NodeId="intimidate_success_end">
       <Text>Wait! Don't hurt me! Here, take this map - it shows where the hideout is!</Text>
       <Text>Just let me go, please!</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="BanditChief_HideoutMap" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="BanditChief_HideoutMap" Amount="1" />
       <Action Type="TransferCurrency" Amount="15" />
     </Node>
     <Node NodeId="intimidate_failed">
@@ -114,7 +114,7 @@
       <Text>Surrender? ME?</Text>
       <Text>...Perhaps I was wrong about you. You have strength AND honor.</Text>
       <Text>Very well. I yield. Take what you will - just spare my life.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="BanditChief_ChiefsBadge" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="BanditChief_ChiefsBadge" Amount="1" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" Amount="1" />
       <Action Type="SetCharacterState" RefName="Friendly" CharacterRef="BanditChief_Boss" Amount="1" />
     </Node>
@@ -131,10 +131,10 @@
       <Choice Text="[Already rescued]" NextNodeId="rescue_hub_return_end" />
     </Node>
     <Node NodeId="rescue_hub">
-      <Condition Type="LacksItem" Provider="QuestTokens" RefName="BanditChief_RescueStarted" />
+      <Condition Type="LacksQuestToken" RefName="BanditChief_RescueStarted" />
       <Text>Oh thank the gods! I thought I was done for!</Text>
       <Text>Those monsters were going to ransom me - or worse.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="BanditChief_RescueStarted" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="BanditChief_RescueStarted" Amount="1" />
       <Choice Text="You're safe now. Get out of here." NextNodeId="grateful_end" />
       <Choice Text="Did you see anything useful?" NextNodeId="information" />
     </Node>
@@ -144,7 +144,7 @@
     <Node NodeId="grateful_end">
       <Text>Thank you, thank you! Here, take this - it's all I have left, but you've earned it.</Text>
       <Action Type="TransferCurrency" Amount="50" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="BanditChief_StolenGoods" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="BanditChief_StolenGoods" Amount="1" />
     </Node>
     <Node NodeId="information">
       <Text>The Chief keeps the best loot in a chest in the back. Combination is 4-7-2.</Text>
@@ -154,7 +154,7 @@
   </DialogueTree>
   <DialogueTree RefName="BanditChief_TurnIn" DisplayName="Problem Solved" StartNodeId="victory" Description="Reporting back to the class rep">
     <Node NodeId="victory">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="BanditChief_ChiefsBadge" />
+      <Condition Type="HasQuestToken" RefName="BanditChief_ChiefsBadge" />
       <Text>Is that... the Chief's badge? You actually did it!</Text>
       <Text>This calls for celebration! The roads are safe again!</Text>
       <Choice Text="Here to collect my reward." NextNodeId="reward_complete" />
@@ -162,8 +162,8 @@
     <Node NodeId="reward_complete">
       <Text>Of course, of course! You've more than earned it.</Text>
       <Text>The bounty is paid. You have the gratitude of our entire community.</Text>
-      <Action Type="TakeItem" Provider="QuestTokens" RefName="BanditChief_ChiefsBadge" Amount="1" />
-      <Action Type="TakeItem" Provider="QuestTokens" RefName="BanditChief_Bounty" Amount="1" />
+      <Action Type="TakeQuestToken" RefName="BanditChief_ChiefsBadge" Amount="1" />
+      <Action Type="TakeQuestToken" RefName="BanditChief_Bounty" Amount="1" />
       <Action Type="CompleteQuest" RefName="BanditChief_Quest" Amount="1" />
     </Node>
   </DialogueTree>
@@ -175,7 +175,7 @@
       <Choice Text="[Affinity already granted]" NextNodeId="already_granted_end" />
     </Node>
     <Node NodeId="first_meeting">
-      <Condition Type="LacksItem" Provider="QuestTokens" RefName="ElementalSage_TrialToken" />
+      <Condition Type="LacksQuestToken" RefName="ElementalSage_TrialToken" />
       <Text>A seeker approaches. Few find this place, fewer still are worthy.</Text>
       <Text>I am the keeper of the Fire affinity - the essence of passion, destruction, and renewal.</Text>
       <Choice Text="Can you teach me?" NextNodeId="explain_trial" />
@@ -199,7 +199,7 @@
       <Text>So be it. The Guardian awaits in the chamber below.</Text>
       <Text>Defeat it, and return to me. Let your determination forge the path.</Text>
       <Action Type="AcceptQuest" RefName="ElementalSage_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="ElementalSage_TrialToken" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="ElementalSage_TrialToken" Amount="1" />
     </Node>
     <Node NodeId="prepare_end">
       <Text>Wisdom knows its limits. Return when you are ready, seeker.</Text>
@@ -208,8 +208,8 @@
       <Text>Few are ready for such power. Perhaps another time, wanderer.</Text>
     </Node>
     <Node NodeId="trial_complete">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="ElementalSage_TrialComplete" />
-      <Condition Type="LacksItem" Provider="QuestTokens" RefName="ElementalSage_AffinityGranted" />
+      <Condition Type="HasQuestToken" RefName="ElementalSage_TrialComplete" />
+      <Condition Type="LacksQuestToken" RefName="ElementalSage_AffinityGranted" />
       <Text>*The sage's flames burn brighter*</Text>
       <Text>You have proven yourself! The Guardian's defeat shows your spirit is strong.</Text>
       <Text>Now, receive my gift - the Fire affinity shall be yours.</Text>
@@ -220,20 +220,20 @@
       <Text>Feel the fire within you now. It will burn those of the Wild, but beware the quenching tide.</Text>
       <Text>Go forth, flame-bearer. May your passion light the way.</Text>
       <Action Type="GrantAffinity" RefName="Fire" CharacterRef="ElementalSage_Sage" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="ElementalSage_AffinityGranted" Amount="1" />
-      <Action Type="TakeItem" Provider="QuestTokens" RefName="ElementalSage_TrialComplete" Amount="1" />
-      <Action Type="TakeItem" Provider="QuestTokens" RefName="ElementalSage_TrialToken" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="ElementalSage_AffinityGranted" Amount="1" />
+      <Action Type="TakeQuestToken" RefName="ElementalSage_TrialComplete" Amount="1" />
+      <Action Type="TakeQuestToken" RefName="ElementalSage_TrialToken" Amount="1" />
       <Action Type="CompleteQuest" RefName="ElementalSage_Quest" Amount="1" />
     </Node>
     <Node NodeId="already_granted_end">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="ElementalSage_AffinityGranted" />
+      <Condition Type="HasQuestToken" RefName="ElementalSage_AffinityGranted" />
       <Text>The flame burns within you already, child of fire.</Text>
       <Text>Use your gift wisely. The world needs more who understand true passion.</Text>
     </Node>
   </DialogueTree>
   <DialogueTree RefName="ElementalSage_GuardianEncounter" DisplayName="The Fox's Test" StartNodeId="guardian_challenge" Description="Facing the kitsune guardian's challenge">
     <Node NodeId="guardian_challenge">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="ElementalSage_TrialToken" />
+      <Condition Type="HasQuestToken" RefName="ElementalSage_TrialToken" />
       <Text>*A construct of living flame rises before you*</Text>
       <Text>PROVE YOUR WORTH, SEEKER. ONLY THE STRONG MAY CLAIM THE FIRE.</Text>
       <Choice Text="Face me!" NextNodeId="begin_combat" />
@@ -291,7 +291,7 @@
     <Node NodeId="accept">
       <Text>Thank you. Be careful - the prophet has many devoted followers.</Text>
       <Action Type="AcceptQuest" RefName="FalseProphet_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_Rumor" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_Rumor" Amount="1" />
     </Node>
     <Node NodeId="consider_end">
       <Text>Please don't wait too long. Every day, more fall under their spell.</Text>
@@ -299,7 +299,7 @@
   </DialogueTree>
   <DialogueTree RefName="FalseProphet_ScholarMeet" DisplayName="The Investigator" StartNodeId="meet" Description="Meeting the student detective on the case">
     <Node NodeId="meet">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="FalseProphet_Rumor" />
+      <Condition Type="HasQuestToken" RefName="FalseProphet_Rumor" />
       <Text>Ah, another skeptic? Good. I was beginning to feel like the only sane person left.</Text>
       <Text>I've been documenting the prophet's so-called miracles. None hold up to scrutiny.</Text>
       <Choice Text="What have you found?" NextNodeId="evidence" />
@@ -314,13 +314,13 @@
     <Node NodeId="followers">
       <Text>Some. The devoted ones are... unsettling. They repeat the same phrases.</Text>
       <Text>But I've found a former follower willing to talk. In secret.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_FollowerAccount" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_FollowerAccount" Amount="1" />
       <Choice Text="Where can I find them?" NextNodeId="former_location_end" />
     </Node>
     <Node NodeId="leads_end">
       <Text>The prophet's private quarters. They claim to own nothing, but I've heard rumors of hidden wealth.</Text>
       <Text>Also, speak to the former follower I mentioned. They know things.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_FollowerAccount" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_FollowerAccount" Amount="1" />
     </Node>
     <Node NodeId="danger_end">
       <Text>Once. They smiled and welcomed my 'curiosity.' Then their guards followed me home.</Text>
@@ -333,7 +333,7 @@
   </DialogueTree>
   <DialogueTree RefName="FalseProphet_FormerTalk" DisplayName="The Skeptic" StartNodeId="hiding" Description="Talking to someone who stopped believing">
     <Node NodeId="hiding">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="FalseProphet_FollowerAccount" />
+      <Condition Type="HasQuestToken" RefName="FalseProphet_FollowerAccount" />
       <Text>*startles* Who- oh. The scholar sent you?</Text>
       <Text>*looks around nervously* I shouldn't be talking about this.</Text>
       <Choice Text="I'm trying to help people. Please." NextNodeId="convince" />
@@ -353,7 +353,7 @@
       <Text>I saw behind the curtain. Literally. The 'miracles' are staged. Props, timing, drugs in the food.</Text>
       <Text>I stole this before I fled. *holds up a fake glowing stone*</Text>
       <Text>This is what makes the 'divine light' appear. Chemicals.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_FakeRelic" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_FakeRelic" Amount="1" />
       <Choice Text="Is the prophet aware it's all fake?" NextNodeId="prophet_knowledge" />
     </Node>
     <Node NodeId="prophet_knowledge">
@@ -423,7 +423,7 @@
       <Text>I would hate for anything unfortunate to happen to you.</Text>
     </Node>
     <Node NodeId="show_proof">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="FalseProphet_FakeRelic" />
+      <Condition Type="HasQuestToken" RefName="FalseProphet_FakeRelic" />
       <Text>*you hold up the fake relic*</Text>
       <Text>*the prophet's face flickers - surprise, then calculation*</Text>
       <Choice Text="Your 'miracles' are chemicals and tricks." NextNodeId="confrontation" />
@@ -451,14 +451,14 @@
     <Node NodeId="find_ledgers">
       <Text>*Hidden behind a false wall panel, you find stacks of financial records*</Text>
       <Text>*Donations, bribes, property purchases... the prophet is wealthy beyond measure*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_FinancialRecords" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_FinancialRecords" Amount="1" />
       <Choice Text="Take the evidence and go." NextNodeId="escape" />
       <Choice Text="Keep searching." NextNodeId="find_secret" />
     </Node>
     <Node NodeId="find_secret">
       <Text>*In a locked chest, you find correspondence. Dark correspondence.*</Text>
       <Text>*The prophet has been consorting with... something. Promising souls in exchange for power.*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_DarkSecret" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_DarkSecret" Amount="1" />
       <Choice Text="This changes everything." NextNodeId="escape" />
     </Node>
     <Node NodeId="escape">
@@ -513,12 +513,12 @@
     <Node NodeId="find_alternative_end">
       <Text>The scholar... they might know ancient rites. Together, perhaps...</Text>
       <Text>*the prophet kneels* I will submit to judgment after. If I survive.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_Redeemed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_Redeemed" Amount="1" />
     </Node>
     <Node NodeId="sacrifice_end">
       <Text>Then I will make amends. Tell them... tell them I was a fool who tried to do good.</Text>
       <Text>*The prophet begins a ritual, light consuming them*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_Exposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_Exposed" Amount="1" />
     </Node>
     <Node NodeId="condemn">
       <Text>*The crowd surges forward angrily*</Text>
@@ -528,24 +528,24 @@
     </Node>
     <Node NodeId="demand_return_end">
       <Text>*The prophet sighs* Very well. The ill-gotten wealth will be returned to the people.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_Exposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_Exposed" Amount="1" />
     </Node>
     <Node NodeId="crowd_justice_end">
       <Text>*The crowd's mood is dark but uncertain*</Text>
       <Text>*An elder speaks* They should stand trial. Proper justice.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_Exposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_Exposed" Amount="1" />
     </Node>
     <Node NodeId="mob_justice_end">
       <Text>*The crowd advances*</Text>
       <Text>*The prophet doesn't resist*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_Exposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_Exposed" Amount="1" />
       <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" Amount="1" />
     </Node>
     <Node NodeId="mercy_end">
       <Text>*You stand between the prophet and the crowd*</Text>
       <Text>*Slowly, the anger fades to shame*</Text>
       <Text>*An elder nods* You're right. We're better than this.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_Exposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_Exposed" Amount="1" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" Amount="1" />
     </Node>
   </DialogueTree>
@@ -563,7 +563,7 @@
     <Node NodeId="battle_surrender">
       <Text>*The prophet drops their weapon*</Text>
       <Text>Then I yield. Do what you must.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="FalseProphet_Exposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="FalseProphet_Exposed" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="FalseProphet_Prophet" Amount="1" />
     </Node>
     <Node NodeId="battle_continue">
@@ -638,13 +638,13 @@
       <Text>Excellent! May fortune smile upon your search.</Text>
       <Text>A word of advice - the local historian knows the old symbols. Might be worth a visit.</Text>
       <Action Type="AcceptQuest" RefName="HiddenCache_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_OldMap" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_OldMap" Amount="1" />
     </Node>
     <Node NodeId="purchase_discount">
       <Text>You drive a hard bargain! Here you go.</Text>
       <Text>The historian in town might help decipher those markings.</Text>
       <Action Type="AcceptQuest" RefName="HiddenCache_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_OldMap" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_OldMap" Amount="1" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="25" Amount="1" />
     </Node>
     <Node NodeId="leave_end">
@@ -653,7 +653,7 @@
   </DialogueTree>
   <DialogueTree RefName="HiddenCache_ScholarHelp" DisplayName="History Club Help" StartNodeId="consult" Description="Getting information from the history enthusiast">
     <Node NodeId="consult">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="HiddenCache_OldMap" />
+      <Condition Type="HasQuestToken" RefName="HiddenCache_OldMap" />
       <Text>May I help you with something?</Text>
       <Choice Text="Can you read these symbols?" NextNodeId="examine_map" />
       <Choice Text="Just passing through." NextNodeId="farewell_end" />
@@ -672,7 +672,7 @@
     <Node NodeId="first_location_end">
       <Text>This first symbol... it represents the 'stone that weeps'. Old texts mention a rock formation.</Text>
       <Text>There's a waterfall in the eastern hills. Look for a cleft in the rock behind it.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_FirstClue" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_FirstClue" Amount="1" />
     </Node>
     <Node NodeId="farewell_end">
       <Text>Safe travels, friend.</Text>
@@ -680,7 +680,7 @@
   </DialogueTree>
   <DialogueTree RefName="HiddenCache_HermitMeet" DisplayName="The Old Priest" StartNodeId="encounter" Description="Meeting the retired shrine keeper">
     <Node NodeId="encounter">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="HiddenCache_FirstClue" />
+      <Condition Type="HasQuestToken" RefName="HiddenCache_FirstClue" />
       <Text>*A weathered figure blocks your path*</Text>
       <Text>Outsider. You seek the old places. I've watched others try.</Text>
       <Choice Text="Do you know where I'm going?" NextNodeId="knows" />
@@ -695,12 +695,12 @@
     <Node NodeId="guardian_warning_end">
       <Text>Machines of the old ones. They feel no pain, no mercy. Built to protect forever.</Text>
       <Text>The key disables them. Without it, they will destroy you.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_SecondClue" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_SecondClue" Amount="1" />
     </Node>
     <Node NodeId="give_clue_end">
       <Text>Here. The way is marked by signs only the patient can see.</Text>
       <Text>*hands you a crude drawing*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_SecondClue" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_SecondClue" Amount="1" />
     </Node>
     <Node NodeId="hostile_end">
       <Text>Hmph. Pride goeth before destruction. Find your own way, then.</Text>
@@ -708,7 +708,7 @@
   </DialogueTree>
   <DialogueTree RefName="HiddenCache_RivalMeet" DisplayName="Another Seeker" StartNodeId="confrontation" Description="Encountering another student on the same trail">
     <Node NodeId="confrontation">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="HiddenCache_SecondClue" />
+      <Condition Type="HasQuestToken" RefName="HiddenCache_SecondClue" />
       <Text>Well, well. Looks like I'm not the only one following that map's trail.</Text>
       <Text>I've been tracking this cache for months. You're not taking it from me.</Text>
       <Choice Text="There's enough for both of us." NextNodeId="cooperate" />
@@ -724,13 +724,13 @@
     <Node NodeId="partnership_end">
       <Text>Alright, partner. I've found the third marker - it's near the old oak grove.</Text>
       <Text>But there's something guarding the approach. We'll need to work together.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_ThirdClue" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_ThirdClue" Amount="1" />
     </Node>
     <Node NodeId="race_end">
       <Text>A race then! May the best treasure hunter win.</Text>
       <Text>But don't come crying when I beat you to it.</Text>
       <Text>*In their haste, they drop a worn note showing the final location*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_ThirdClue" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_ThirdClue" Amount="1" />
     </Node>
     <Node NodeId="fight">
       <Text>So that's how it is? Fine - I didn't want to share anyway!</Text>
@@ -750,7 +750,7 @@
   </DialogueTree>
   <DialogueTree RefName="HiddenCache_Discovery" DisplayName="The Secret Shrine" StartNodeId="arrival" Description="Discovering the hidden sacred site">
     <Node NodeId="arrival">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="HiddenCache_AncientKey" />
+      <Condition Type="HasQuestToken" RefName="HiddenCache_AncientKey" />
       <Text>*The ancient door responds to the key, grinding open for the first time in centuries*</Text>
       <Text>*Inside, you see the glint of gold and the shapes of ancient objects*</Text>
       <Choice Text="Search the cache thoroughly." NextNodeId="search" />
@@ -759,18 +759,18 @@
     <Node NodeId="search">
       <Text>*Among the treasure, you find ancient writings...*</Text>
       <Text>*They speak of a great war and those who hid these treasures to preserve them*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_SecretRevealed" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_TreasureFound" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_SecretRevealed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_TreasureFound" Amount="1" />
       <Choice Text="Take the treasure and the knowledge." NextNodeId="complete" />
     </Node>
     <Node NodeId="quick_grab">
       <Text>*You grab handfuls of coins and several valuable-looking items*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_TreasureFound" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_TreasureFound" Amount="1" />
       <Choice Text="Time to leave." NextNodeId="complete_quick" />
     </Node>
     <Node NodeId="complete">
       <Text>*You emerge with treasure and knowledge of a forgotten age*</Text>
-      <Action Type="GiveItem" Provider="Equipment" RefName="GoldRing" Amount="1" />
+      <Action Type="GiveEquipment" RefName="GoldRing" Amount="1" />
       <Action Type="CompleteQuest" RefName="HiddenCache_Quest" Amount="1" />
     </Node>
     <Node NodeId="complete_quick">
@@ -792,17 +792,17 @@
     <Node NodeId="dodge_attempt_fast_end">
       <Text>*You roll aside as darts whistle past where you were standing*</Text>
       <Text>That was close. The mechanism seems spent now.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_TrapDisarmed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_TrapDisarmed" Amount="1" />
     </Node>
     <Node NodeId="dodge_attempt_slow_end">
       <Text>*You're not quite fast enough - a dart grazes your arm*</Text>
       <Text>Painful, but not lethal. The trap is exhausted now.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_TrapDisarmed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_TrapDisarmed" Amount="1" />
     </Node>
     <Node NodeId="disable_attempt_end">
       <Text>*You spot the mechanism's core - a series of counterweights*</Text>
       <Text>*Carefully, you jam a stone into the gears*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="HiddenCache_TrapDisarmed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="HiddenCache_TrapDisarmed" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_Story" DisplayName="The Artisan's Tale" StartNodeId="tale" Description="Hearing about the legendary craftsman">
@@ -833,7 +833,7 @@
       <Text>The mountains beyond the great valley. There's a village at the base.</Text>
       <Text>The elders there know the old paths. But be warned - the journey is a trial itself.</Text>
       <Action Type="AcceptQuest" RefName="LostTechnique_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_Rumor" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_Rumor" Amount="1" />
     </Node>
     <Node NodeId="dismiss_end">
       <Text>As you wish. But some stories seek those who need to hear them.</Text>
@@ -841,7 +841,7 @@
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_FailedMeet" DisplayName="The Frustrated One" StartNodeId="encounter" Description="Meeting someone who gave up on learning">
     <Node NodeId="encounter">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="LostTechnique_Rumor" />
+      <Condition Type="HasQuestToken" RefName="LostTechnique_Rumor" />
       <Text>*a scarred figure blocks your path*</Text>
       <Text>You're going to the mountain. I can see it in your eyes. Don't.</Text>
       <Choice Text="You've been there?" NextNodeId="warning" />
@@ -887,7 +887,7 @@
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_ElderMeet" DisplayName="Grandmother's Wisdom" StartNodeId="village" Description="The village elder shares memories of old traditions">
     <Node NodeId="village">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="LostTechnique_Rumor" />
+      <Condition Type="HasQuestToken" RefName="LostTechnique_Rumor" />
       <Text>You seek the master on the mountain. *nods slowly* We see your kind, from time to time.</Text>
       <Choice Text="Can you show me the path?" NextNodeId="path" />
       <Choice Text="What can you tell me about the master?" NextNodeId="master_info" />
@@ -895,7 +895,7 @@
     <Node NodeId="path">
       <Text>The path is marked by white stones. Follow them to the summit.</Text>
       <Text>But the mountain tests those who climb. A guardian waits at the halfway point.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_MasterLocation" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_MasterLocation" Amount="1" />
       <Choice Text="How do I defeat the guardian?" NextNodeId="guardian_advice_end" />
       <Choice Text="Thank you for your help." NextNodeId="farewell_end" />
     </Node>
@@ -914,7 +914,7 @@
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_RivalMeet" DisplayName="Fellow Student" StartNodeId="cross_paths" Description="Meeting another eager learner">
     <Node NodeId="cross_paths">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="LostTechnique_MasterLocation" />
+      <Condition Type="HasQuestToken" RefName="LostTechnique_MasterLocation" />
       <Text>*another traveler approaches from the opposite direction*</Text>
       <Text>You're going to the master too? Ha! Then we're rivals.</Text>
       <Choice Text="There's room for both of us to learn." NextNodeId="friendly" />
@@ -959,7 +959,7 @@
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_MasterMeet" DisplayName="Meeting the Master" StartNodeId="arrival" Description="Finally meeting the legendary artisan">
     <Node NodeId="arrival">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="LostTechnique_MasterLocation" />
+      <Condition Type="HasQuestToken" RefName="LostTechnique_MasterLocation" />
       <Text>*an elderly figure sits in meditation, seemingly unaware of your approach*</Text>
       <Text>*without looking up* You have come far. But distance traveled means nothing.</Text>
       <Choice Text="I seek to learn the Lost Technique." NextNodeId="direct" />
@@ -997,19 +997,19 @@
       <Text>*smiles slightly* The deepest answer, and the hardest path.</Text>
       <Text>Very well. I will test you. Three trials - body, mind, and spirit.</Text>
       <Text>Speak to me again when you are ready for the first trial.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_Accepted" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_Accepted" Amount="1" />
     </Node>
     <Node NodeId="agree_test_end">
       <Text>Words are wind. Actions speak truth. You will face three trials.</Text>
       <Text>Pass them, and I will teach you. Fail, and you leave - forever.</Text>
       <Text>Speak to me again when you are ready for the first trial.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_Accepted" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_Accepted" Amount="1" />
     </Node>
     <Node NodeId="second_chance_end">
       <Text>*studies you carefully* Honesty in admitting error. That is something.</Text>
       <Text>I will give you one chance. Three trials. Do not disappoint me again.</Text>
       <Text>Speak to me again when you are ready for the first trial.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_Accepted" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_Accepted" Amount="1" />
     </Node>
     <Node NodeId="attack_master">
       <Text>*sighs* How predictable.</Text>
@@ -1019,7 +1019,7 @@
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_TrialBody" DisplayName="Hands-On Test" StartNodeId="begin_trial" Description="Proving your physical dexterity">
     <Node NodeId="begin_trial">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="LostTechnique_Accepted" />
+      <Condition Type="HasQuestToken" RefName="LostTechnique_Accepted" />
       <Text>The first trial tests your body. You will spar with me.</Text>
       <Text>This is not about winning. It is about showing what you are capable of.</Text>
       <Choice Text="I am ready." NextNodeId="spar" />
@@ -1048,24 +1048,24 @@
     <Node NodeId="respect_end">
       <Text>Courage. Good. But know when perseverance becomes stubbornness.</Text>
       <Text>Enough. You have passed the first trial.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_TrialOne" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_TrialOne" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="LostTechnique_Master" Amount="1" />
     </Node>
     <Node NodeId="yield_end">
       <Text>Wisdom to know your limits. That is also strength.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_TrialOne" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_TrialOne" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="LostTechnique_Master" Amount="1" />
     </Node>
     <Node NodeId="impressed_end">
       <Text>*slight nod* Better than most. You have trained well.</Text>
       <Text>Enough. You have passed the first trial.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_TrialOne" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_TrialOne" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="LostTechnique_Master" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_TrialMind" DisplayName="Knowledge Test" StartNodeId="begin_mind" Description="Demonstrating understanding of the craft">
     <Node NodeId="begin_mind">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="LostTechnique_TrialOne" />
+      <Condition Type="HasQuestToken" RefName="LostTechnique_TrialOne" />
       <Text>The second trial tests your mind. You will sit in meditation until I release you.</Text>
       <Text>You may face visions. Temptations. Doubts. Do not move. Do not speak.</Text>
       <Choice Text="How long will this take?" NextNodeId="duration" />
@@ -1094,23 +1094,23 @@
     <Node NodeId="pass_mind_end">
       <Text>*The master's voice breaks through* You may open your eyes.</Text>
       <Text>*A full day has passed* You have passed the second trial. Your mind is disciplined.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_TrialTwo" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_TrialTwo" Amount="1" />
     </Node>
     <Node NodeId="fail_mind">
-      <Condition Type="LacksItem" Provider="QuestTokens" RefName="LostTechnique_TrialTwo" />
+      <Condition Type="LacksQuestToken" RefName="LostTechnique_TrialTwo" />
       <Text>*The master sighs* You have failed. Your mind controls you, not the other way around.</Text>
       <Text>*pauses* However, I see genuine effort. Rest tonight, and try again tomorrow.</Text>
       <Choice Text="Thank you for another chance." NextNodeId="retry_meditation" />
     </Node>
     <Node NodeId="retry_meditation">
-      <Condition Type="LacksItem" Provider="QuestTokens" RefName="LostTechnique_TrialTwo" />
+      <Condition Type="LacksQuestToken" RefName="LostTechnique_TrialTwo" />
       <Text>*The next day arrives. You take your position once more.*</Text>
       <Choice Text="*Focus on your breathing*" NextNodeId="focus" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_TrialSpirit" DisplayName="Heart Test" StartNodeId="begin_spirit" Description="Showing true appreciation for the tradition">
     <Node NodeId="begin_spirit">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="LostTechnique_TrialTwo" />
+      <Condition Type="HasQuestToken" RefName="LostTechnique_TrialTwo" />
       <Text>The final trial tests your spirit. This is the hardest trial of all.</Text>
       <Text>I will ask you a question. There is no right answer - only YOUR answer.</Text>
       <Choice Text="I am ready to answer." NextNodeId="question" />
@@ -1127,24 +1127,24 @@
       <Text>*nods* Decisive. Perhaps too quick to judge - but there is clarity in your resolve.</Text>
       <Text>You know yourself. That is what this trial measures.</Text>
       <Text>You have passed the final trial. You are ready to learn.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_TrialThree" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_TrialThree" Amount="1" />
     </Node>
     <Node NodeId="answer_spare_end">
       <Text>*considers* Compassion can be weakness - or the greatest strength.</Text>
       <Text>You have chosen a harder path. But you have chosen with conviction.</Text>
       <Text>You have passed the final trial. You are ready to learn.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_TrialThree" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_TrialThree" Amount="1" />
     </Node>
     <Node NodeId="answer_choice_end">
       <Text>*eyes widen slightly* Unexpected. You would burden them with choice, as I burden you.</Text>
       <Text>That is wisdom beyond your years. You understand that the technique is just a tool.</Text>
       <Text>You have passed the final trial. You are ready to learn.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_TrialThree" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_TrialThree" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="LostTechnique_Learning" DisplayName="The Lesson" StartNodeId="begin_teaching" Description="Receiving instruction from the master">
     <Node NodeId="begin_teaching">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="LostTechnique_TrialThree" />
+      <Condition Type="HasQuestToken" RefName="LostTechnique_TrialThree" />
       <Text>You have passed all three trials. You are worthy.</Text>
       <Text>The technique cannot be taught with words. It must be felt.</Text>
       <Choice Text="Show me." NextNodeId="demonstrate" />
@@ -1163,15 +1163,15 @@
       <Text>*Finally, it happens. Body, mind, and spirit align. For one perfect moment, you ARE the technique.*</Text>
       <Text>*The master watches, a rare smile on their face*</Text>
       <Text>You have learned. Now, you must master. That will take a lifetime.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_Mastery" Amount="1" />
-      <Action Type="GiveItem" Provider="Spells" RefName="PerfectStrike" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_Mastery" Amount="1" />
+      <Action Type="GiveSpell" RefName="PerfectStrike" Amount="1" />
       <Choice Text="Thank you, Master." NextNodeId="farewell" />
     </Node>
     <Node NodeId="farewell">
       <Text>Thank me by living well. By using what you've learned with wisdom.</Text>
       <Text>*hands you a small token* Take this. You are now part of the lineage.</Text>
       <Text>When I am gone, you will be the last. Perhaps one day, you will teach another.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="LostTechnique_LineageToken" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="LostTechnique_LineageToken" Amount="1" />
       <Action Type="CompleteQuest" RefName="LostTechnique_Quest" Amount="1" />
     </Node>
   </DialogueTree>
@@ -1216,13 +1216,13 @@
     <Node NodeId="mention_witness">
       <Text>The neighbor mentioned seeing someone unfamiliar lurking around yesterday.</Text>
       <Text>Perhaps they can tell you more?</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_Evidence_WitnessAccount" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_Evidence_WitnessAccount" Amount="1" />
       <Choice Text="I'll speak to them." NextNodeId="accept_quest" />
     </Node>
     <Node NodeId="examine_scene">
       <Text>Yes, please. Look around carefully - perhaps you'll find something I missed.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_Evidence_Footprints" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_Evidence_TornCloth" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_Evidence_Footprints" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_Evidence_TornCloth" Amount="1" />
       <Choice Text="I found muddy footprints and torn cloth. This gives me a lead." NextNodeId="accept_quest" />
     </Node>
     <Node NodeId="accept_quest">
@@ -1236,7 +1236,7 @@
       <Text>Please hurry. Every moment that passes, the thief could sell it to someone else.</Text>
     </Node>
     <Node NodeId="report_evidence_check_end">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefIdentified" />
+      <Condition Type="HasQuestToken" RefName="MissingHeirloom_ThiefIdentified" />
       <Text>You know who took it? That's wonderful news! Please, recover it if you can.</Text>
     </Node>
     <Node NodeId="report_evidence_generic_end">
@@ -1271,14 +1271,14 @@
     <Node NodeId="direction">
       <Text>They ran toward the outskirts. There's an abandoned building out there...</Text>
       <Text>I've heard rumors that unsavory types use it as a hideout.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefLocation" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefIdentified" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_ThiefLocation" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_ThiefIdentified" Amount="1" />
       <Choice Text="Thank you. I'll investigate." NextNodeId="farewell_end" />
     </Node>
     <Node NodeId="description">
       <Text>They were of medium build, moved quickly. The cloth of their sleeve was torn.</Text>
       <Text>I remember thinking it looked freshly ripped.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefIdentified" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_ThiefIdentified" Amount="1" />
       <Choice Text="The torn cloth matches evidence from the scene!" NextNodeId="direction" />
     </Node>
     <Node NodeId="farewell_end">
@@ -1292,7 +1292,7 @@
       <Choice Text="[Thief Unknown]" NextNodeId="confront_unknown" />
     </Node>
     <Node NodeId="confront_identified">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefIdentified" />
+      <Condition Type="HasQuestToken" RefName="MissingHeirloom_ThiefIdentified" />
       <Text>Wait! Don't come any closer! How did you find me?</Text>
       <Choice Text="Give back what you stole. Now." NextNodeId="demand" />
       <Choice Text="Why did you do it?" NextNodeId="explain_motive" />
@@ -1328,8 +1328,8 @@
     <Node NodeId="peaceful_resolution_end">
       <Text>You... you would do that? After what I've done?</Text>
       <Text>Here. Take it. I'm sorry. I'm so sorry.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_Heirloom" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefConfession" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_Heirloom" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_ThiefConfession" Amount="1" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" Amount="1" />
     </Node>
     <Node NodeId="bargain_start_willing">
@@ -1346,7 +1346,7 @@
     <Node NodeId="reveal_fence_end">
       <Text>The dealer works out of the market district. Look for the shady stall near the back.</Text>
       <Text>Be careful - they don't take kindly to accusations.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefConfession" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_ThiefConfession" Amount="1" />
     </Node>
     <Node NodeId="bargain_fail">
       <Text>Then we have nothing more to discuss.</Text>
@@ -1372,7 +1372,7 @@
     <Node NodeId="reveal_after_battle_end">
       <Text>I sold it to a dealer in the market. The shady one near the back.</Text>
       <Text>Please, let me go. I have a family.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefConfession" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_ThiefConfession" Amount="1" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" Amount="1" />
       <Action Type="SetCharacterState" RefName="Friendly" CharacterRef="MissingHeirloom_Thief" Amount="1" />
     </Node>
@@ -1387,7 +1387,7 @@
       <Choice Text="[Default]" NextNodeId="approach_default" />
     </Node>
     <Node NodeId="approach_with_confession">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="MissingHeirloom_ThiefConfession" />
+      <Condition Type="HasQuestToken" RefName="MissingHeirloom_ThiefConfession" />
       <Text>What do you want? I run a legitimate business here.</Text>
       <Choice Text="You bought stolen goods. I want them back." NextNodeId="accuse" />
       <Choice Text="I'm looking for a particular item." NextNodeId="inquire" />
@@ -1429,7 +1429,7 @@
     </Node>
     <Node NodeId="purchase_end">
       <Text>Pleasure doing business. And remember - you never saw me.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="MissingHeirloom_Heirloom" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="MissingHeirloom_Heirloom" Amount="1" />
     </Node>
     <Node NodeId="fight">
       <Text>You'll regret that decision!</Text>
@@ -1439,7 +1439,7 @@
   </DialogueTree>
   <DialogueTree RefName="MissingHeirloom_Return" DisplayName="Charm Returned" StartNodeId="return" Description="Giving the precious omamori back to its owner">
     <Node NodeId="return">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="MissingHeirloom_Heirloom" />
+      <Condition Type="HasQuestToken" RefName="MissingHeirloom_Heirloom" />
       <Text>Is that... could it be? You found it!</Text>
       <Choice Text="Here. Your family's treasure is safe." NextNodeId="receive_hub" />
     </Node>
@@ -1453,14 +1453,14 @@
       <Text>Words cannot express my gratitude. You've restored our family's honor.</Text>
       <Text>And you showed mercy to the thief? You are truly noble.</Text>
       <Text>Please accept this additional reward for your compassion.</Text>
-      <Action Type="TakeItem" Provider="QuestTokens" RefName="MissingHeirloom_Heirloom" Amount="1" />
+      <Action Type="TakeQuestToken" RefName="MissingHeirloom_Heirloom" Amount="1" />
       <Action Type="TransferCurrency" Amount="50" />
       <Action Type="CompleteQuest" RefName="MissingHeirloom_Quest" Amount="1" />
     </Node>
     <Node NodeId="receive_standard">
       <Text>Thank you! Thank you! Our family is whole again.</Text>
       <Text>Please, accept this reward for your service.</Text>
-      <Action Type="TakeItem" Provider="QuestTokens" RefName="MissingHeirloom_Heirloom" Amount="1" />
+      <Action Type="TakeQuestToken" RefName="MissingHeirloom_Heirloom" Amount="1" />
       <Action Type="CompleteQuest" RefName="MissingHeirloom_Quest" Amount="1" />
     </Node>
   </DialogueTree>
@@ -1514,7 +1514,7 @@
       <Text>Thank you, thank you! I'll gather everyone immediately.</Text>
       <Text>The young ones will help carry supplies. Our healer can tend any wounds.</Text>
       <Action Type="AcceptQuest" RefName="RefugeeEscort_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_GroupAssembled" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_GroupAssembled" Amount="1" />
     </Node>
     <Node NodeId="decline_end">
       <Text>I... I understand. May the gods watch over you, then.</Text>
@@ -1522,12 +1522,12 @@
     <Node NodeId="depart_end">
       <Text>May fortune guide our steps. Stay close, everyone!</Text>
       <Text>*The group sets off. After hours of travel, you reach the first waypoint.*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_FirstWaypoint" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_AllSurvived" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_FirstWaypoint" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_AllSurvived" Amount="1" />
     </Node>
     <Node NodeId="need_supplies_end">
       <Text>You're right. I'll have our healer gather what medicine we have left.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_SuppliesGathered" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_SuppliesGathered" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="RefugeeEscort_FighterJoin" DisplayName="Kohai Volunteers" StartNodeId="volunteer_hub" Description="A brave underclassman offers to help search">
@@ -1581,12 +1581,12 @@
     <Node NodeId="comfort_end">
       <Text>*sniff* I was so scared... I thought the bad people got me...</Text>
       <Text>Thank you for coming. I'll stay close, I promise.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_ChildRescued" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_ChildRescued" Amount="1" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" Amount="1" />
     </Node>
     <Node NodeId="hurry_end">
       <Text>*The child nods, terrified, and follows you silently*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_ChildRescued" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_ChildRescued" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="RefugeeEscort_StrangerReveal" DisplayName="Transfer's Secret" StartNodeId="confrontation" Description="The mysterious transfer student opens up">
@@ -1608,7 +1608,7 @@
     </Node>
     <Node NodeId="witness">
       <Text>*The scout leaves. The stranger returns, unaware they were seen*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
       <Choice Text="[Wait until morning, then expose them]" NextNodeId="expose_later" />
     </Node>
     <Node NodeId="expose_later">
@@ -1626,31 +1626,31 @@
     </Node>
     <Node NodeId="banish_end">
       <Text>I know. I'm sorry. I'll go...</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="RefugeeEscort_Stranger" Amount="1" />
     </Node>
     <Node NodeId="banish_merciful_end">
       <Text>Thank you for understanding. I... I hope you survive this.</Text>
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="RefugeeEscort_Stranger" Amount="1" />
     </Node>
     <Node NodeId="redemption_end">
       <Text>Fight? Against them? *pause* ...You're right. I owe these people that much.</Text>
       <Text>I know their tactics. I can help. Let me make amends.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_SafePassage" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_SafePassage" Amount="1" />
     </Node>
     <Node NodeId="suspicious_end">
       <Text>Of course. I... I wouldn't dream of betraying the group.</Text>
     </Node>
     <Node NodeId="fight_both">
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="RefugeeEscort_Stranger" Amount="1" />
       <Action Type="StartCombat" CharacterRef="RefugeeEscort_Stranger" Amount="1" />
     </Node>
     <Node NodeId="fight_stranger">
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_BetrayerExposed" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="RefugeeEscort_Stranger" Amount="1" />
       <Action Type="StartCombat" CharacterRef="RefugeeEscort_Stranger" Amount="1" />
     </Node>
@@ -1678,25 +1678,25 @@
       <Choice Text="[Some losses]" NextNodeId="asylum_some_lost_end" />
     </Node>
     <Node NodeId="asylum_all_survived_end">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="RefugeeEscort_AllSurvived" />
+      <Condition Type="HasQuestToken" RefName="RefugeeEscort_AllSurvived" />
       <Text>*The guard looks at the tired but complete group*</Text>
       <Text>You brought them all this far? Impressive. Enter, refugees. You're safe now.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_JourneyComplete" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_JourneyComplete" Amount="1" />
     </Node>
     <Node NodeId="asylum_some_lost_end">
       <Text>Refugees? *looks at the weary group* Very well. You may enter.</Text>
       <Text>Report to the refugee office in the town center.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_JourneyComplete" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_JourneyComplete" Amount="1" />
     </Node>
     <Node NodeId="lie_end">
       <Text>Travelers with twenty people, half of them children? Don't insult my intelligence.</Text>
       <Text>Refugees are permitted. Just tell the truth next time.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RefugeeEscort_JourneyComplete" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RefugeeEscort_JourneyComplete" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="RefugeeEscort_Complete" DisplayName="Everyone Accounted For" StartNodeId="gratitude" Description="All students safely reunited">
     <Node NodeId="gratitude">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="RefugeeEscort_JourneyComplete" />
+      <Condition Type="HasQuestToken" RefName="RefugeeEscort_JourneyComplete" />
       <Text>We... we made it. We're actually safe.</Text>
       <Text>I don't know how to thank you. You gave us our lives back.</Text>
       <Choice Text="Take care of each other." NextNodeId="farewell_hub" />
@@ -1713,11 +1713,11 @@
       <Choice Text="[Some losses]" NextNodeId="farewell_losses" />
     </Node>
     <Node NodeId="farewell_all_survived">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="RefugeeEscort_AllSurvived" />
+      <Condition Type="HasQuestToken" RefName="RefugeeEscort_AllSurvived" />
       <Text>Every single one of us survived because of you. That's a miracle.</Text>
       <Text>Please, take this. It's all we have, but you deserve so much more.</Text>
       <Action Type="TransferCurrency" Amount="100" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="TravelCloak" Amount="1" />
+      <Action Type="GiveEquipment" RefName="TravelCloak" Amount="1" />
       <Action Type="CompleteQuest" RefName="RefugeeEscort_Quest" Amount="1" />
     </Node>
     <Node NodeId="farewell_losses">
@@ -1772,7 +1772,7 @@
       <Text>Wise choice. Here's your guild charter - proof of membership.</Text>
       <Text>The spy in the market can sell you information about our rivals. Start there.</Text>
       <Action Type="AcceptQuest" RefName="RivalGuild_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_GuildCharter" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_GuildCharter" Amount="1" />
     </Node>
     <Node NodeId="consider_end">
       <Text>Don't take too long. Opportunities like this don't wait.</Text>
@@ -1788,7 +1788,7 @@
       <Choice Text="[Without charter]" NextNodeId="meeting_no_charter" />
     </Node>
     <Node NodeId="meeting_with_charter">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="RivalGuild_GuildCharter" />
+      <Condition Type="HasQuestToken" RefName="RivalGuild_GuildCharter" />
       <Text>*speaks quietly* You're from the guild. I have what you need.</Text>
       <Text>But information has a price. 50 credits for their patrol routes.</Text>
       <Choice Text="[Pay 50] Here's your money." NextNodeId="pay_full_end" />
@@ -1805,7 +1805,7 @@
     <Node NodeId="pay_full_end">
       <Text>*hands over a folded paper* Their warehouse on the docks. That's where they're vulnerable.</Text>
       <Text>Strike at midnight when the guard changes.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_IntelGathered" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_IntelGathered" Amount="1" />
     </Node>
     <Node NodeId="negotiate_hub">
       <Text>*The spy considers your offer*</Text>
@@ -1824,7 +1824,7 @@
     </Node>
     <Node NodeId="pay_discount_end">
       <Text>*hands over the information* The warehouse. Midnight. Good luck.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_IntelGathered" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_IntelGathered" Amount="1" />
     </Node>
     <Node NodeId="leave_end">
       <Text>Your choice. But don't blame me when you walk into a trap.</Text>
@@ -1832,7 +1832,7 @@
   </DialogueTree>
   <DialogueTree RefName="RivalGuild_Sabotage" DisplayName="Clever Strategy" StartNodeId="arrive" Description="Planning to outmaneuver the rival club">
     <Node NodeId="arrive">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="RivalGuild_IntelGathered" />
+      <Condition Type="HasQuestToken" RefName="RivalGuild_IntelGathered" />
       <Text>*You approach the rival's warehouse under cover of darkness*</Text>
       <Choice Text="Scout the perimeter first." NextNodeId="scout" />
       <Choice Text="Find a way inside." NextNodeId="infiltrate" />
@@ -1868,19 +1868,19 @@
     <Node NodeId="sabotage_supplies">
       <Text>*You puncture oil barrels, cut ropes, and contaminate their goods*</Text>
       <Text>*This will cost them dearly*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_SabotageComplete" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_SabotageComplete" Amount="1" />
       <Choice Text="Time to leave." NextNodeId="escape_end" />
     </Node>
     <Node NodeId="steal_documents">
       <Text>*You find their shipping schedules and client lists*</Text>
       <Text>*This intelligence is invaluable*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_SabotageComplete" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_SabotageComplete" Amount="1" />
       <Choice Text="Take them and go." NextNodeId="escape_end" />
     </Node>
     <Node NodeId="both">
       <Text>*You work quickly, sabotaging supplies AND grabbing documents*</Text>
       <Text>*But you hear footsteps approaching*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_SabotageComplete" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_SabotageComplete" Amount="1" />
       <Choice Text="[Fight] Stand your ground." NextNodeId="caught" />
       <Choice Text="[Flee] Time to run!" NextNodeId="escape_chase_end" />
     </Node>
@@ -1923,13 +1923,13 @@
     </Node>
     <Node NodeId="battle_accept_peace">
       <Text>Then we have an accord. May it last.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_PeaceTreaty" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_PeaceTreaty" Amount="1" />
       <Action Type="SetCharacterState" CharacterRef="RivalGuild_RivalLeader" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="RivalGuild_Confrontation" DisplayName="Final Round" StartNodeId="confront" Description="The decisive moment of the contest">
     <Node NodeId="confront">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="RivalGuild_SabotageComplete" />
+      <Condition Type="HasQuestToken" RefName="RivalGuild_SabotageComplete" />
       <Text>*The rival guild leader stands before you, sword drawn*</Text>
       <Text>You've caused enough damage. This ends now.</Text>
       <Choice Text="You're right. It does." NextNodeId="fight" />
@@ -1955,7 +1955,7 @@
     <Node NodeId="partnership_end">
       <Text>*considers* It's... not the worst idea. But my guild master would never agree.</Text>
       <Text>Unless you can convince yours?</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_PeaceTreaty" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_PeaceTreaty" Amount="1" />
     </Node>
     <Node NodeId="peace_offer">
       <Text>Territory lines? *strokes chin* That... could work.</Text>
@@ -1971,7 +1971,7 @@
     <Node NodeId="peaceful_resolution_end">
       <Text>Then we have an accord. *extends hand*</Text>
       <Text>May this peace hold longer than the last.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_PeaceTreaty" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_PeaceTreaty" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="RivalGuild_Report" DisplayName="Victory Celebration" StartNodeId="report_hub" Description="Reporting the results to your club captain">
@@ -1981,13 +1981,13 @@
       <Choice Text="[Report peace treaty]" NextNodeId="report_peace" />
     </Node>
     <Node NodeId="report_combat">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="RivalGuild_LeaderDefeated" />
+      <Condition Type="HasQuestToken" RefName="RivalGuild_LeaderDefeated" />
       <Text>I heard what happened. You've destroyed our rivals completely.</Text>
       <Text>With their leader gone, their guild will crumble. Well done.</Text>
       <Choice Text="It's what you paid me for." NextNodeId="reward_combat" />
     </Node>
     <Node NodeId="report_peace">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="RivalGuild_PeaceTreaty" />
+      <Condition Type="HasQuestToken" RefName="RivalGuild_PeaceTreaty" />
       <Text>A peace treaty? I wasn't expecting that approach.</Text>
       <Text>*considers* But territory without bloodshed? Perhaps it's wiser.</Text>
       <Choice Text="A war benefits no one." NextNodeId="reward_peace" />
@@ -1996,7 +1996,7 @@
       <Text>And you exceeded expectations. Here's your payment - plus a bonus.</Text>
       <Text>You've earned a place among our inner circle.</Text>
       <Action Type="TransferCurrency" Amount="300" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="RivalGuild_Dominance" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="RivalGuild_Dominance" Amount="1" />
       <Action Type="CompleteQuest" RefName="RivalGuild_Quest" Amount="1" />
     </Node>
     <Node NodeId="reward_peace">
@@ -2072,7 +2072,7 @@
       <Text>Excellent! Let me gather my things and we can depart immediately.</Text>
       <Text>Here, take some of the lighter goods - just in case we get separated.</Text>
       <Action Type="AcceptQuest" RefName="WanderingMerchant_Quest" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_TradeGoods" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_TradeGoods" Amount="1" />
     </Node>
     <Node NodeId="decline_end">
       <Text>I understand. The roads are indeed dangerous. Perhaps I'll wait for a caravan.</Text>
@@ -2093,7 +2093,7 @@
     </Node>
     <Node NodeId="pay_toll_end">
       <Text>Thank you for your cooperation. Safe travels.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_RoadToll" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_RoadToll" Amount="1" />
     </Node>
     <Node NodeId="negotiate_toll_hub">
       <Text>*The guard considers your request*</Text>
@@ -2112,7 +2112,7 @@
     </Node>
     <Node NodeId="discount_toll_end">
       <Text>Pleasure doing business. Move along.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_RoadToll" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_RoadToll" Amount="1" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" Amount="1" />
     </Node>
     <Node NodeId="intimidate_hub">
@@ -2122,12 +2122,12 @@
     </Node>
     <Node NodeId="intimidate_success_end">
       <Text>I... on second thought, merchants are exempt today. Move along.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_RoadToll" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_RoadToll" Amount="1" />
     </Node>
     <Node NodeId="refuse_end">
       <Text>Your choice. But the detour adds a full day to your journey.</Text>
       <Text>*You find an alternate path around the checkpoint*</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_RoadToll" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_RoadToll" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="WanderingMerchant_Ambush" DisplayName="Pushy Vendors" StartNodeId="ambush" Description="Navigating past aggressive souvenir sellers">
@@ -2163,7 +2163,7 @@
   </DialogueTree>
   <DialogueTree RefName="WanderingMerchant_DeliveryOne" DisplayName="Helping Tourists" StartNodeId="arrival" Description="Assisting lost visitors along the way">
     <Node NodeId="arrival">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="WanderingMerchant_TradeGoods" />
+      <Condition Type="HasQuestToken" RefName="WanderingMerchant_TradeGoods" />
       <Text>Ah, fresh goods from the capital! Let me see what you've brought.</Text>
       <Text>Excellent quality. I'll take the lot.</Text>
       <Choice Text="What's your offer?" NextNodeId="negotiate_sale_hub" />
@@ -2190,18 +2190,18 @@
     <Node NodeId="complete_sale_best_end">
       <Text>Pleasure doing business. You're quite the negotiator!</Text>
       <Action Type="TransferCurrency" Amount="160" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_FirstDelivery" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_FirstDelivery" Amount="1" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="30" Amount="1" />
     </Node>
     <Node NodeId="complete_sale_good_end">
       <Text>A fair deal for both of us. Come back anytime.</Text>
       <Action Type="TransferCurrency" Amount="150" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_FirstDelivery" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_FirstDelivery" Amount="1" />
     </Node>
     <Node NodeId="complete_sale_basic_end">
       <Text>Good. The goods are mine now. Safe travels.</Text>
       <Action Type="TransferCurrency" Amount="120" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_FirstDelivery" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_FirstDelivery" Amount="1" />
     </Node>
   </DialogueTree>
   <DialogueTree RefName="WanderingMerchant_Innkeeper" DisplayName="At the Ryokan" StartNodeId="welcome" Description="Stopping at the traditional inn">
@@ -2213,7 +2213,7 @@
     <Node NodeId="road_info">
       <Text>The northern pass is clear, but bandits have been spotted on the southern route.</Text>
       <Text>If you're headed that way, stick to the main road. Strength in visibility.</Text>
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_TradeSecret" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_TradeSecret" Amount="1" />
       <Choice Text="Thanks for the tip." NextNodeId="farewell_end" />
     </Node>
     <Node NodeId="farewell_end">
@@ -2222,7 +2222,7 @@
   </DialogueTree>
   <DialogueTree RefName="WanderingMerchant_DeliveryTwo" DisplayName="Tour Reunited" StartNodeId="guild_arrival" Description="Returning the guide to their group">
     <Node NodeId="guild_arrival">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="WanderingMerchant_FirstDelivery" />
+      <Condition Type="HasQuestToken" RefName="WanderingMerchant_FirstDelivery" />
       <Text>The traveling merchant and escort, I presume? We've been expecting you.</Text>
       <Text>Your reputation precedes you. Let's discuss terms.</Text>
       <Choice Text="What are you offering?" NextNodeId="guild_offer" />
@@ -2238,7 +2238,7 @@
       <Choice Text="[Without intel]" NextNodeId="guild_negotiate_basic" />
     </Node>
     <Node NodeId="guild_negotiate_with_intel">
-      <Condition Type="HasItem" Provider="QuestTokens" RefName="WanderingMerchant_TradeSecret" />
+      <Condition Type="HasQuestToken" RefName="WanderingMerchant_TradeSecret" />
       <Text>Hmm. I've heard about your journey. The hazards you overcame are impressive.</Text>
       <Text>300 credits. And the guild will remember your name.</Text>
       <Choice Text="That's more like it." NextNodeId="guild_best" />
@@ -2251,27 +2251,27 @@
     <Node NodeId="guild_accept">
       <Text>Efficient. I like that. Here's your payment.</Text>
       <Action Type="TransferCurrency" Amount="250" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_SecondDelivery" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_SecondDelivery" Amount="1" />
       <Choice Text="The merchant has something for me as well." NextNodeId="merchant_payment" />
     </Node>
     <Node NodeId="guild_better">
       <Text>A fair compromise. Payment transferred.</Text>
       <Action Type="TransferCurrency" Amount="270" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_SecondDelivery" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_SecondDelivery" Amount="1" />
       <Choice Text="Now about my share..." NextNodeId="merchant_payment" />
     </Node>
     <Node NodeId="guild_best">
       <Text>Well earned. The guild values competence.</Text>
       <Action Type="TransferCurrency" Amount="300" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_SecondDelivery" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_SecondDelivery" Amount="1" />
       <Choice Text="A pleasure. Now, the merchant owes me my share." NextNodeId="merchant_payment" />
     </Node>
     <Node NodeId="merchant_payment">
       <Text>Ah yes! You've more than earned it. Here's your share - and a little extra for keeping us safe.</Text>
       <Text>If you ever need work, look me up. It's been an honor traveling with you.</Text>
       <Action Type="TransferCurrency" Amount="100" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_MerchantBond" Amount="1" />
-      <Action Type="GiveItem" Provider="QuestTokens" RefName="WanderingMerchant_JourneyComplete" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_MerchantBond" Amount="1" />
+      <Action Type="GiveQuestToken" RefName="WanderingMerchant_JourneyComplete" Amount="1" />
       <Action Type="CompleteQuest" RefName="WanderingMerchant_Quest" Amount="1" />
     </Node>
   </DialogueTree>
@@ -2307,9 +2307,9 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="ArchmageStaff" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="HastePotion" Amount="1" />
-      <Action Type="GiveItem" Provider="Spells" RefName="Agility" Amount="1" />
+      <Action Type="GiveEquipment" RefName="ArchmageStaff" Amount="1" />
+      <Action Type="GiveConsumable" RefName="HastePotion" Amount="1" />
+      <Action Type="GiveSpell" RefName="Agility" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2325,7 +2325,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to KotaiJinguInnerShrine or Aramatsurinomiya.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to KōtaiJingūInnerShrine or Aramatsurinomiya.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2336,20 +2336,20 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_BOSS_KotaiJinguInnerShrine" DisplayName="Guardian of Kotai Jingu (Inner Shrine) Dialogue" Description="Dialogue tree for Guardian of Kotai Jingu (Inner Shrine)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine) Dialogue" Description="Dialogue tree for Guardian of Kōtai Jingū (Inner Shrine)" StartNodeId="greeting">
     <Node NodeId="battle">
-      <Text>You dare challenge Guardian of Kotai Jingu (Inner Shrine)? So be it! Prepare yourself!</Text>
-      <Action Type="StartBossBattle" CharacterRef="BOSS_KotaiJinguInnerShrine" />
+      <Text>You dare challenge Guardian of Kōtai Jingū (Inner Shrine)? So be it! Prepare yourself!</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_KōtaiJingūInnerShrine" />
     </Node>
     <Node NodeId="battle_opening">
-      <Text>Foolish traveler! Guardian of Kotai Jingu (Inner Shrine) has defended Kotai Jingu (Inner Shrine) for years. You will be no different from the others!</Text>
+      <Text>Foolish traveler! Guardian of Kōtai Jingū (Inner Shrine) has defended Kōtai Jingū (Inner Shrine) for years. You will be no different from the others!</Text>
       <Action Type="ChangeStance" RefName="Offensive" />
     </Node>
     <Node NodeId="battle_first_blood">
       <Text>You're more skilled than I anticipated... Good. This will be interesting!</Text>
     </Node>
     <Node NodeId="battle_berserk">
-      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Kotai Jingu (Inner Shrine) with everything I have!</Text>
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Kōtai Jingū (Inner Shrine) with everything I have!</Text>
       <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
       <Action Type="ChangeStance" RefName="Offensive" />
       <Action Type="ChangeAffinity" RefName="Fire" />
@@ -2368,19 +2368,19 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="WoodenClub" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="DarkEssence" Amount="1" />
-      <Action Type="GiveItem" Provider="Spells" RefName="MightyStrength" Amount="1" />
+      <Action Type="GiveEquipment" RefName="WoodenClub" Amount="1" />
+      <Action Type="GiveConsumable" RefName="DarkEssence" Amount="1" />
+      <Action Type="GiveSpell" RefName="MightyStrength" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
       <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
     </Node>
     <Node NodeId="battle_defeated">
-      <Text>I fall... but Kotai Jingu (Inner Shrine) will remember my sacrifice...</Text>
+      <Text>I fall... but Kōtai Jingū (Inner Shrine) will remember my sacrifice...</Text>
     </Node>
     <Node NodeId="greeting">
-      <Text>Halt! I am the guardian of Kotai Jingu (Inner Shrine). None may pass without proving their worth!</Text>
+      <Text>Halt! I am the guardian of Kōtai Jingū (Inner Shrine). None may pass without proving their worth!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I challenge you!" NextNodeId="battle" />
@@ -2390,7 +2390,7 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Kotai Jingu (Inner Shrine) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Kōtai Jingū (Inner Shrine) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -2429,9 +2429,9 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="TravelCloak" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="Milk" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="SorceryPotion" Amount="1" />
+      <Action Type="GiveEquipment" RefName="TravelCloak" Amount="1" />
+      <Action Type="GiveConsumable" RefName="Milk" Amount="1" />
+      <Action Type="GiveConsumable" RefName="SorceryPotion" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2447,7 +2447,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to KotaiJinguInnerShrine or Kazahinominomiya.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to KōtaiJingūInnerShrine or Kazahinominomiya.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2458,97 +2458,97 @@
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_0" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (1). The journey has been long.</Text>
+      <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1). The journey has been long.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_1 or Aramatsurinomiya.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1 or Aramatsurinomiya.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (1), holds many secrets. Those who listen carefully learn much.</Text>
+      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1), holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_1" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (2) is beautiful this time of year, isn't it?</Text>
+      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2) is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_2 or Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_0 is worth a visit if you have time.</Text>
+      <Text>Nice to see a fellow traveler! Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (2), holds many secrets. Those who listen carefully learn much.</Text>
+      <Text>This place, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2), holds many secrets. Those who listen carefully learn much.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_2" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (3) is beautiful this time of year, isn't it?</Text>
+      <Text>Hello there! Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3) is beautiful this time of year, isn't it?</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>A pleasure to meet you! If you haven't been to Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3 or Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_1, I recommend it.</Text>
+      <Text>A pleasure to meet you! If you haven't been to Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1, I recommend it.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (3)! There are tales of this place that would fill a library.</Text>
+      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3)! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" DisplayName="Trail Hazard Dialogue" Description="Dialogue tree for Trail Hazard" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trail Hazard Dialogue" Description="Dialogue tree for Trail Hazard" StartNodeId="greeting">
     <Node NodeId="greeting">
       <Text>*blocks your path aggressively*</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_4 or Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_2.</Text>
+      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (4)! There are tales of this place that would fill a library.</Text>
+      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_4" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (5). The journey has been long.</Text>
+      <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5). The journey has been long.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5 or Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3 yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3 yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (5) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5" DisplayName="Traveling Merchant Dialogue" Description="Dialogue tree for Traveling Merchant" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveling Merchant Dialogue" Description="Dialogue tree for Traveling Merchant" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>Looking to buy or sell? Either way, you've come to the right place!</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -2566,7 +2566,7 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
@@ -2579,85 +2579,85 @@
       <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" />
     </Node>
     <Node NodeId="open_trade">
       <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (6). I have wares to offer - take a look!</Text>
+      <Text>Welcome, traveler! You've reached Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6). I have wares to offer - take a look!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_4 or Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_6.</Text>
+      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (6)! There are tales of this place that would fill a library.</Text>
+      <Text>Ah, Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6)! There are tales of this place that would fill a library.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_6" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (7). The journey has been long.</Text>
+      <Text>A fellow traveler! I've been resting here at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7). The journey has been long.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_7 or Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5.</Text>
+      <Text>Good to meet you! There's much to see around here, especially Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (7) is known far and wide. Its reputation draws many curious souls.</Text>
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7) is known far and wide. Its reputation draws many curious souls.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Take care out there!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_7" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler Dialogue" Description="Dialogue tree for Fellow Traveler" StartNodeId="greeting">
     <Node NodeId="greeting">
-      <Text>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (8)? It's quite a sight to behold.</Text>
+      <Text>Greetings, friend. Are you also visiting Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8)? It's quite a sight to behold.</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
     </Node>
     <Node NodeId="friendly">
-      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_6 or ToyokeDaijinguOuterShrine yet?</Text>
+      <Text>It's good to meet a friendly face! Have you visited Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6 or ToyōkeDaijingūOuterShrine yet?</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (8) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>May the road rise to meet you!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" DisplayName="Guardian of Toyoke Daijingu (Outer Shrine) Dialogue" Description="Dialogue tree for Guardian of Toyoke Daijingu (Outer Shrine)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine) Dialogue" Description="Dialogue tree for Guardian of Toyōke Daijingū (Outer Shrine)" StartNodeId="greeting">
     <Node NodeId="battle">
-      <Text>You dare challenge Guardian of Toyoke Daijingu (Outer Shrine)? So be it! Prepare yourself!</Text>
-      <Action Type="StartBossBattle" CharacterRef="BOSS_ToyokeDaijinguOuterShrine" />
+      <Text>You dare challenge Guardian of Toyōke Daijingū (Outer Shrine)? So be it! Prepare yourself!</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_ToyōkeDaijingūOuterShrine" />
     </Node>
     <Node NodeId="battle_opening">
-      <Text>You've come far to reach Toyoke Daijingu (Outer Shrine). But Guardian of Toyoke Daijingu (Outer Shrine) will ensure you go no further!</Text>
+      <Text>You've come far to reach Toyōke Daijingū (Outer Shrine). But Guardian of Toyōke Daijingū (Outer Shrine) will ensure you go no further!</Text>
       <Action Type="ChangeStance" RefName="Offensive" />
     </Node>
     <Node NodeId="battle_first_blood">
       <Text>You're more skilled than I anticipated... Good. This will be interesting!</Text>
     </Node>
     <Node NodeId="battle_berserk">
-      <Text>You've pushed me too far! Now you'll see why they call me the guardian of Toyoke Daijingu (Outer Shrine)!</Text>
+      <Text>You've pushed me too far! Now you'll see why they call me the guardian of Toyōke Daijingū (Outer Shrine)!</Text>
       <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
       <Action Type="ChangeStance" RefName="Offensive" />
       <Action Type="ChangeAffinity" RefName="Fire" />
@@ -2676,9 +2676,9 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="Knife" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="CurativePotion" Amount="1" />
-      <Action Type="GiveItem" Provider="Spells" RefName="HuntersMark" Amount="1" />
+      <Action Type="GiveEquipment" RefName="Knife" Amount="1" />
+      <Action Type="GiveConsumable" RefName="CurativePotion" Amount="1" />
+      <Action Type="GiveSpell" RefName="HuntersMark" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2688,24 +2688,24 @@
       <Text>The guardian falls... But remember... what I protected here...</Text>
     </Node>
     <Node NodeId="greeting">
-      <Text>Turn back now, traveler. Toyoke Daijingu (Outer Shrine) is under my protection, and I will not yield!</Text>
+      <Text>Turn back now, traveler. Toyōke Daijingū (Outer Shrine) is under my protection, and I will not yield!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0 or Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_7 is worth a visit if you have time.</Text>
+      <Text>Nice to see a fellow traveler! ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0 or Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7 is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Toyoke Daijingu (Outer Shrine)? Settle in - there's much to tell.</Text>
+      <Text>You want to know about Toyōke Daijingū (Outer Shrine)? Settle in - there's much to tell.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Safe travels, adventurer!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0" DisplayName="Traveling Merchant Dialogue" Description="Dialogue tree for Traveling Merchant" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Traveling Merchant Dialogue" Description="Dialogue tree for Traveling Merchant" StartNodeId="greeting">
     <Node NodeId="trade_greeting">
       <Text>Ah, interested in trading? My selection is the best you'll find for miles!</Text>
       <Choice Text="Let me see your wares (open trade)" NextNodeId="open_trade" />
@@ -2723,7 +2723,7 @@
       <Text>You drive a hard bargain! Alright, 30% off - but don't tell anyone!</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="30" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="35" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" />
     </Node>
     <Node NodeId="bargain_hard_fail">
       <Text>That's insulting! Do I look like a fool to you? Come back when you're serious.</Text>
@@ -2736,49 +2736,49 @@
       <Text>Fair enough - 15% off for a fellow trader. You know your way around a deal.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="15" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="20" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" />
     </Node>
     <Node NodeId="bargain_medium_fail">
       <Text>I can't go that low, but I'll give you 5% off as a courtesy.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="5" />
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" />
     </Node>
     <Node NodeId="open_trade">
       <Text>Here's what I have available. Take your time browsing.</Text>
-      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0" />
+      <Action Type="OpenMerchantTrade" CharacterRef="MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" />
     </Node>
     <Node NodeId="greeting">
-      <Text>Welcome, traveler! You've reached Waypoint between Toyoke Daijingu (Outer Shrine) and Kazamiya (Geku) (1). I have wares to offer - take a look!</Text>
+      <Text>Welcome, traveler! You've reached Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1). I have wares to offer - take a look!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I'd like to trade" NextNodeId="trade_greeting" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Nice to see a fellow traveler! KazamiyaGeku or ToyokeDaijinguOuterShrine is worth a visit if you have time.</Text>
+      <Text>Nice to see a fellow traveler! KazamiyaGekū or ToyōkeDaijingūOuterShrine is worth a visit if you have time.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>You want to know about Waypoint between Toyoke Daijingu (Outer Shrine) and Kazamiya (Geku) (1)? Settle in - there's much to tell.</Text>
+      <Text>You want to know about Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)? Settle in - there's much to tell.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
       <Text>Until we meet again!</Text>
     </Node>
   </DialogueTree>
-  <DialogueTree RefName="DIALOGUE_BOSS_KazamiyaGeku" DisplayName="Guardian of Kazamiya (Geku) Dialogue" Description="Dialogue tree for Guardian of Kazamiya (Geku)" StartNodeId="greeting">
+  <DialogueTree RefName="DIALOGUE_BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū) Dialogue" Description="Dialogue tree for Guardian of Kazamiya (Gekū)" StartNodeId="greeting">
     <Node NodeId="battle">
-      <Text>You dare challenge Guardian of Kazamiya (Geku)? So be it! Prepare yourself!</Text>
-      <Action Type="StartBossBattle" CharacterRef="BOSS_KazamiyaGeku" />
+      <Text>You dare challenge Guardian of Kazamiya (Gekū)? So be it! Prepare yourself!</Text>
+      <Action Type="StartBossBattle" CharacterRef="BOSS_KazamiyaGekū" />
     </Node>
     <Node NodeId="battle_opening">
-      <Text>You've come far to reach Kazamiya (Geku). But Guardian of Kazamiya (Geku) will ensure you go no further!</Text>
+      <Text>You've come far to reach Kazamiya (Gekū). But Guardian of Kazamiya (Gekū) will ensure you go no further!</Text>
       <Action Type="ChangeStance" RefName="Offensive" />
     </Node>
     <Node NodeId="battle_first_blood">
       <Text>You're more skilled than I anticipated... Good. This will be interesting!</Text>
     </Node>
     <Node NodeId="battle_berserk">
-      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Kazamiya (Geku) with everything I have!</Text>
+      <Text>Enough holding back! WITNESS MY TRUE POWER! I will defend Kazamiya (Gekū) with everything I have!</Text>
       <Action Type="AssignTrait" Trait="Aggression" TraitValue="100" />
       <Action Type="ChangeStance" RefName="Offensive" />
       <Action Type="ChangeAffinity" RefName="Fire" />
@@ -2797,20 +2797,20 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="OakStaff" Amount="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="TravelCloak" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="ScrollOfLightning" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="FireResistPotion" Amount="1" />
+      <Action Type="GiveEquipment" RefName="OakStaff" Amount="1" />
+      <Action Type="GiveEquipment" RefName="TravelCloak" Amount="1" />
+      <Action Type="GiveConsumable" RefName="ScrollOfLightning" Amount="1" />
+      <Action Type="GiveConsumable" RefName="FireResistPotion" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
       <Action Type="AssignTrait" Trait="Ruthless" TraitValue="1" />
     </Node>
     <Node NodeId="battle_defeated">
-      <Text>At last... I can rest... Kazamiya (Geku)... is in your hands now...</Text>
+      <Text>At last... I can rest... Kazamiya (Gekū)... is in your hands now...</Text>
     </Node>
     <Node NodeId="greeting">
-      <Text>Another challenger approaches Kazamiya (Geku). Very well... show me what you're made of!</Text>
+      <Text>Another challenger approaches Kazamiya (Gekū). Very well... show me what you're made of!</Text>
       <Choice Text="Hello, friend!" NextNodeId="friendly" />
       <Choice Text="Tell me about this place." NextNodeId="info" />
       <Choice Text="I challenge you!" NextNodeId="battle" />
@@ -2820,7 +2820,7 @@
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
-      <Text>Kazamiya (Geku) has quite a history. Many travelers pass through here seeking adventure.</Text>
+      <Text>Kazamiya (Gekū) has quite a history. Many travelers pass through here seeking adventure.</Text>
       <Choice Text="Thanks for the information!" NextNodeId="end" />
     </Node>
     <Node NodeId="end">
@@ -2859,11 +2859,11 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="LeatherCord" Amount="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="HolyStaff" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="MinorManaPotion" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="CurativePotion" Amount="1" />
-      <Action Type="GiveItem" Provider="Spells" RefName="MeteorStrike" Amount="1" />
+      <Action Type="GiveEquipment" RefName="LeatherCord" Amount="1" />
+      <Action Type="GiveEquipment" RefName="HolyStaff" Amount="1" />
+      <Action Type="GiveConsumable" RefName="MinorManaPotion" Amount="1" />
+      <Action Type="GiveConsumable" RefName="CurativePotion" Amount="1" />
+      <Action Type="GiveSpell" RefName="MeteorStrike" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2879,7 +2879,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to KazamiyaGeku or Takanomiya.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to KazamiyaGekū or Takanomiya.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">
@@ -2922,10 +2922,10 @@
       <Text>You... you spare me? Very well. Take this as a token of my defeat. Perhaps we shall meet again.</Text>
       <Action Type="EndBattle" RefName="Victory" />
       <Action Type="AssignTrait" Trait="Merciful" TraitValue="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="VoidWand" Amount="1" />
-      <Action Type="GiveItem" Provider="Equipment" RefName="RingOfSorcery" Amount="1" />
-      <Action Type="GiveItem" Provider="Consumables" RefName="ScrollOfHaste" Amount="1" />
-      <Action Type="GiveItem" Provider="Spells" RefName="Distraction" Amount="1" />
+      <Action Type="GiveEquipment" RefName="VoidWand" Amount="1" />
+      <Action Type="GiveEquipment" RefName="RingOfSorcery" Amount="1" />
+      <Action Type="GiveConsumable" RefName="ScrollOfHaste" Amount="1" />
+      <Action Type="GiveSpell" RefName="Distraction" Amount="1" />
     </Node>
     <Node NodeId="battle_no_mercy">
       <Text>Then let this be my final stand! I will not go quietly!</Text>
@@ -2941,7 +2941,7 @@
       <Choice Text="I challenge you!" NextNodeId="battle" />
     </Node>
     <Node NodeId="friendly">
-      <Text>Welcome, friend! Many pass through here on their way to Tsuchinomiya or KazamiyaGeku.</Text>
+      <Text>Welcome, friend! Many pass through here on their way to Tsuchinomiya or KazamiyaGekū.</Text>
       <Choice Text="I should be going. Farewell!" NextNodeId="end" />
     </Node>
     <Node NodeId="info">

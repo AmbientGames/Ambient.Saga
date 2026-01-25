@@ -3,6 +3,8 @@
     <xs:include schemaLocation="Acquirables/Consumable.xsd" />
     <xs:include schemaLocation="Acquirables/Spell.xsd" />
     <xs:include schemaLocation="Acquirables/Equipment.xsd" />
+    <xs:include schemaLocation="Acquirables/Tool.xsd" />
+    <xs:include schemaLocation="Acquirables/BuildingMaterial.xsd" />
     <xs:include schemaLocation="Acquirables/QuestToken.xsd" />
     <xs:include schemaLocation="Actors/Characters/Characters.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/CharacterAffinities.xsd" />
@@ -83,6 +85,18 @@
             <xs:field xpath="@RefName" />
         </xs:key>
     </xs:element>
+    <xs:element name="Tools" type="ToolCatalog">
+        <xs:key name="UniqueToolRefName">
+            <xs:selector xpath="Tool" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
+    <xs:element name="BuildingMaterials" type="BuildingMaterialCatalog">
+        <xs:key name="UniqueMaterialRefName">
+            <xs:selector xpath="BuildingMaterial" />
+            <xs:field xpath="@RefName" />
+        </xs:key>
+    </xs:element>
     <xs:element name="Achievements" type="Achievements">
         <xs:key name="UniqueAchievementRefName">
             <xs:selector xpath="Achievement" />
@@ -126,6 +140,8 @@
             <xs:element ref="LoadoutSlots" />
             <xs:element ref="StatusEffects" />
             <xs:element ref="AttackTells" minOccurs="0" />
+            <xs:element ref="Tools" />
+            <xs:element ref="BuildingMaterials" />
             <xs:element ref="Achievements" />
             <xs:element ref="Factions" />
             <xs:element ref="QuestTokens" />

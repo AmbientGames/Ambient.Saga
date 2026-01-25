@@ -42,17 +42,14 @@ public class DialogueActionExecutor
     {
         switch (action.Type)
         {
-            // Provider-based item actions - IDEMPOTENT (only give/take on first visit)
-            // Uses Provider attribute to identify the item source (Equipment, Consumables, Spells, QuestTokens, or external)
-            case DialogueActionType.GiveItem:
+            // Quest tokens - IDEMPOTENT (only give on first visit)
+            case DialogueActionType.GiveQuestToken:
                 if (shouldAwardRewards)
                 {
-                    var quantity = action.Amount > 0 ? action.Amount : 1;
-                    _stateProvider.GiveItem(action.Provider ?? "", action.RefName, quantity);
+                    _stateProvider.AddQuestToken(action.RefName);
 
                     // Create transaction for persistence and achievement tracking
-                    // Special handling for QuestTokens to maintain compatibility with achievement tracking
-                    if (_sagaContext != null && string.Equals(action.Provider, "QuestTokens", StringComparison.OrdinalIgnoreCase))
+                    if (_sagaContext != null)
                     {
                         var transaction = DialogueTransactionHelper.CreateQuestTokenAwardedTransaction(
                             _sagaContext.AvatarId,
@@ -64,13 +61,61 @@ public class DialogueActionExecutor
                     }
                 }
                 break;
-
-            case DialogueActionType.TakeItem:
+            case DialogueActionType.TakeQuestToken:
                 if (shouldAwardRewards)
-                {
-                    var quantity = action.Amount > 0 ? action.Amount : 1;
-                    _stateProvider.TakeItem(action.Provider ?? "", action.RefName, quantity);
-                }
+                    _stateProvider.RemoveQuestToken(action.RefName);
+                break;
+
+            // Stackable items - IDEMPOTENT (only give on first visit)
+            case DialogueActionType.GiveConsumable:
+                if (shouldAwardRewards)
+                    _stateProvider.AddConsumable(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.TakeConsumable:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveConsumable(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.GiveMaterial:
+                if (shouldAwardRewards)
+                    _stateProvider.AddMaterial(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.TakeMaterial:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveMaterial(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.GiveBlock:
+                if (shouldAwardRewards)
+                    _stateProvider.AddBlock(action.RefName, action.Amount);
+                break;
+            case DialogueActionType.TakeBlock:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveBlock(action.RefName, action.Amount);
+                break;
+
+            // Degradable items - IDEMPOTENT (only give on first visit)
+            case DialogueActionType.GiveEquipment:
+                if (shouldAwardRewards)
+                    _stateProvider.AddEquipment(action.RefName);
+                break;
+            case DialogueActionType.TakeEquipment:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveEquipment(action.RefName);
+                break;
+            case DialogueActionType.GiveTool:
+                if (shouldAwardRewards)
+                    _stateProvider.AddTool(action.RefName);
+                break;
+            case DialogueActionType.TakeTool:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveTool(action.RefName);
+                break;
+            case DialogueActionType.GiveSpell:
+                if (shouldAwardRewards)
+                    _stateProvider.AddSpell(action.RefName);
+                break;
+            case DialogueActionType.TakeSpell:
+                if (shouldAwardRewards)
+                    _stateProvider.RemoveSpell(action.RefName);
                 break;
 
             // Currency - IDEMPOTENT (only transfer on first visit)

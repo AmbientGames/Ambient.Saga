@@ -1,6 +1,4 @@
-using Ambient.Domain.Contracts;
 using Ambient.Domain.Hotbar;
-using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -293,89 +291,150 @@ public class InventoryPanel
             }
         }
 
-        // Gameplay Elements (from IGameplayItemProviders - owned items from GameplayInventory)
-        var gameplayProviders = viewModel.CurrentWorld?.GameplayItemProviders;
-        var avatar = viewModel.PlayerAvatar;
-        if (gameplayProviders != null && gameplayProviders.Count > 0 && avatar != null)
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        // Gameplay Elements
+        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Gameplay Elements");
+
+        // Tools
+        if (ImGui.CollapsingHeader($"Tools ({caps.Tools?.Length ?? 0})"))
         {
-            ImGui.Spacing();
-            ImGui.Separator();
-            ImGui.Spacing();
-
-            ImGui.TextColored(new Vector4(0.4f, 0.9f, 0.6f, 1), "Gameplay Elements");
-
-            foreach (var provider in gameplayProviders)
+            if (caps.Tools != null && caps.Tools.Length > 0)
             {
-                var ownedItems = GameplayInventoryService.GetOwnedItemsWithDetails(avatar, provider).ToList();
-                var headerText = $"{provider.Name} ({ownedItems.Sum(x => x.Quantity)})";
-
-                // Show current selection indicator
-                if (provider.CurrentItem != null)
+                foreach (var tool in caps.Tools)
                 {
-                    headerText += $" - [{provider.CurrentItem.DisplayName}]";
+                    var toolDef = viewModel.CurrentWorld?.Gameplay?.Tools?.FirstOrDefault(t => t.RefName == tool.ToolRef);
+                    var toolName = toolDef?.DisplayName ?? tool.ToolRef;
+                    ImGui.Indent();
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var conditionText = $" ({tool.Condition:P0})";
+                    var truncatedName = TruncateToFit(toolName, maxTextWidth - ImGui.CalcTextSize(conditionText).X - 30f);
+                    ImGui.BulletText($"{truncatedName}{conditionText}");
+                    if (truncatedName != toolName && ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip($"{toolName}{conditionText}");
+                    }
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.Tool, tool.ToolRef, toolName);
+                    ImGui.Unindent();
                 }
+            }
+            else
+            {
+                ImGui.Indent();
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No tools");
+                ImGui.Unindent();
+            }
+        }
 
-                if (ImGui.CollapsingHeader(headerText))
+        // Blocks
+        if (ImGui.CollapsingHeader($"Blocks ({caps.Blocks?.Length ?? 0})"))
+        {
+            if (caps.Blocks != null && caps.Blocks.Length > 0)
+            {
+                foreach (var block in caps.Blocks)
                 {
+                    var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(block.BlockRef);
+                    var blockName = blockDef?.DisplayName ?? block.BlockRef;
+                    ImGui.Indent();
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var quantityText = $" x{block.Quantity}";
+                    var truncatedName = TruncateToFit(blockName, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
+                    ImGui.BulletText($"{truncatedName}{quantityText}");
+                    if (truncatedName != blockName && ImGui.IsItemHovered())
+                    {
+                        ImGui.SetTooltip($"{blockName}{quantityText}");
+                    }
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.Block, block.BlockRef, blockName);
+                    ImGui.Unindent();
+                }
+            }
+            else
+            {
+                ImGui.Indent();
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No blocks");
+                ImGui.Unindent();
+            }
+        }
+
+        // Materials
+        if (ImGui.CollapsingHeader($"Materials ({caps.BuildingMaterials?.Length ?? 0})"))
+        {
+            if (caps.BuildingMaterials != null && caps.BuildingMaterials.Length > 0)
+            {
+                foreach (var material in caps.BuildingMaterials)
+                {
+                    var materialItem = viewModel.CurrentWorld?.TryGetBuildingMaterialByRefName(material.BuildingMaterialRef);
+                    var name = materialItem?.DisplayName ?? material.BuildingMaterialRef;
+
                     ImGui.Indent();
 
-                    if (ownedItems.Count == 0)
+                    // Expandable header for each material
+                    var maxTextWidth = GetAvailableTextWidth();
+                    var quantityText = $" x{material.Quantity}";
+                    var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{material.BuildingMaterialRef}");
+
+                    // Show full name on hover if truncated
+                    if (truncatedName != name && ImGui.IsItemHovered())
                     {
-                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"No {provider.Name.ToLower()} owned");
+                        ImGui.SetTooltip($"{name}{quantityText}");
                     }
-                    else
+
+                    // Hotbar assign button
+                    ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
+                    RenderHotbarAssignButton(HotbarItemType.BuildingMaterial, material.BuildingMaterialRef, name);
+
+                    if (treeNodeOpen)
                     {
-                        foreach (var (item, quantity) in ownedItems)
+                        if (materialItem != null)
                         {
-                            ImGui.PushID($"{provider.Name}_{item.RefName}");
-
-                            var isSelected = provider.CurrentItemRef == item.RefName;
-                            var maxTextWidth = GetAvailableTextWidth();
-                            var quantityText = quantity > 1 ? $" x{quantity}" : "";
-                            var truncatedName = TruncateToFit(item.DisplayName, maxTextWidth - ImGui.CalcTextSize(quantityText).X - ButtonAreaWidth - 30f);
-
-                            // Highlight if this is the current selection
-                            if (isSelected)
+                            // Description
+                            if (!string.IsNullOrEmpty(materialItem.Description))
                             {
-                                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.3f, 1f, 0.3f, 1));
+                                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), materialItem.Description);
+                                ImGui.Spacing();
                             }
 
-                            ImGui.BulletText($"{truncatedName}{quantityText}");
-
-                            if (isSelected)
-                            {
-                                ImGui.PopStyleColor();
-                            }
-
-                            // Show tooltip with description
-                            if (ImGui.IsItemHovered() && !string.IsNullOrEmpty(item.Description))
-                            {
-                                ImGui.SetTooltip(item.Description);
-                            }
-
-                            // Select button
-                            ImGui.SameLine(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X - ButtonAreaWidth);
-
-                            if (isSelected)
-                            {
-                                ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.5f, 0.2f, 1));
-                            }
-
-                            var selectButtonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
-                            if (ImGui.Button(isSelected ? "Active" : "Select", selectButtonSize))
-                            {
-                                provider.CurrentItemRef = item.RefName;
-                            }
-
-                            if (isSelected)
-                            {
-                                ImGui.PopStyleColor();
-                            }
-
-                            ImGui.PopID();
+                            // Pricing information
+                            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Price: {materialItem.WholesalePrice}");
+                            ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {materialItem.MerchantMarkupMultiplier}x");
                         }
+
+                        ImGui.TreePop();
                     }
 
+                    ImGui.Unindent();
+                }
+            }
+            else
+            {
+                ImGui.Indent();
+                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No materials");
+                ImGui.Unindent();
+            }
+        }
+
+        // Quest Tokens
+        if (caps.QuestTokens != null && caps.QuestTokens.Length > 0)
+        {
+            if (ImGui.CollapsingHeader($"Quest Tokens ({caps.QuestTokens.Length})"))
+            {
+                foreach (var token in caps.QuestTokens)
+                {
+                    var tokenDef = viewModel.CurrentWorld?.Gameplay?.QuestTokens?.FirstOrDefault(t => t.RefName == token.QuestTokenRef);
+                    var name = tokenDef?.DisplayName ?? token.QuestTokenRef;
+
+                    ImGui.Indent();
+                    ImGui.BulletText(name);
+                    if (tokenDef != null && !string.IsNullOrEmpty(tokenDef.Description))
+                    {
+                        ImGui.SameLine();
+                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"- {tokenDef.Description}");
+                    }
                     ImGui.Unindent();
                 }
             }
@@ -513,31 +572,14 @@ public class InventoryPanel
 
         return slot.ItemType switch
         {
-            // Saga-owned types
+            HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.BuildingMaterial => world.TryGetBuildingMaterialByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Spell => world.Gameplay?.Spells?.FirstOrDefault(s => s.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
-            // External provider types (Tool, Block, BuildingMaterial) - lookup via IGameplayItemProvider
-            HotbarItemType.Tool => LookupExternalItemDisplayName(world, "Tools", slot.RefName),
-            HotbarItemType.Block => LookupExternalItemDisplayName(world, "Blocks", slot.RefName),
-            HotbarItemType.BuildingMaterial => LookupExternalItemDisplayName(world, "BuildingMaterials", slot.RefName),
             _ => slot.RefName
         };
-    }
-
-    /// <summary>
-    /// Looks up a display name for an external item type via IGameplayItemProvider.
-    /// </summary>
-    private string LookupExternalItemDisplayName(IWorld world, string providerNameHint, string refName)
-    {
-        // Try to find a provider that has this item
-        foreach (var provider in world.GameplayItemProviders)
-        {
-            var item = provider.GetByRefName(refName);
-            if (item != null)
-                return item.DisplayName;
-        }
-        return refName;
     }
 
     /// <summary>

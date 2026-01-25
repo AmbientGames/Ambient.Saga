@@ -24,58 +24,37 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public int Credits { get; set; }
     public int Health { get; set; } = 100;
 
-    // Provider-based item access (unified pattern)
-    private readonly Dictionary<string, Dictionary<string, int>> _providerItems = new()
-    {
-        ["Equipment"] = new(),
-        ["Consumables"] = new(),
-        ["Spells"] = new(),
-        ["QuestTokens"] = new()
-    };
+    // Quest tokens
+    public bool HasQuestToken(string questTokenRef) => _questTokens.Contains(questTokenRef);
+    public void AddQuestToken(string questTokenRef) => _questTokens.Add(questTokenRef);
+    public void RemoveQuestToken(string questTokenRef) => _questTokens.Remove(questTokenRef);
 
-    public bool HasItem(string provider, string refName) => GetItemQuantity(provider, refName) > 0;
+    // Stackable items
+    public int GetConsumableQuantity(string consumableRef) => _consumables.GetValueOrDefault(consumableRef, 0);
+    public void AddConsumable(string consumableRef, int amount) => _consumables[consumableRef] = GetConsumableQuantity(consumableRef) + amount;
+    public void RemoveConsumable(string consumableRef, int amount) => _consumables[consumableRef] = Math.Max(0, GetConsumableQuantity(consumableRef) - amount);
 
-    public int GetItemQuantity(string provider, string refName)
-    {
-        if (_providerItems.TryGetValue(provider, out var items))
-            return items.GetValueOrDefault(refName, 0);
-        return 0;
-    }
+    public int GetMaterialQuantity(string materialRef) => _materials.GetValueOrDefault(materialRef, 0);
+    public void AddMaterial(string materialRef, int amount) => _materials[materialRef] = GetMaterialQuantity(materialRef) + amount;
+    public void RemoveMaterial(string materialRef, int amount) => _materials[materialRef] = Math.Max(0, GetMaterialQuantity(materialRef) - amount);
 
-    public void GiveItem(string provider, string refName, int quantity = 1)
-    {
-        if (!_providerItems.ContainsKey(provider))
-            _providerItems[provider] = new();
+    // Blocks
+    public float GetBlockQuantity(string blockRef) => _blocks.GetValueOrDefault(blockRef, 0);
+    public void AddBlock(string blockRef, int amount) => _blocks[blockRef] = (int)GetBlockQuantity(blockRef) + amount;
+    public void RemoveBlock(string blockRef, int amount) => _blocks[blockRef] = Math.Max(0, (int)GetBlockQuantity(blockRef) - amount);
 
-        var items = _providerItems[provider];
-        items[refName] = items.GetValueOrDefault(refName, 0) + quantity;
-    }
+    // Degradable items
+    public bool HasEquipment(string equipmentRef) => _equipment.Contains(equipmentRef);
+    public void AddEquipment(string equipmentRef) => _equipment.Add(equipmentRef);
+    public void RemoveEquipment(string equipmentRef) => _equipment.Remove(equipmentRef);
 
-    public void TakeItem(string provider, string refName, int quantity = 1)
-    {
-        if (_providerItems.TryGetValue(provider, out var items))
-        {
-            var current = items.GetValueOrDefault(refName, 0);
-            items[refName] = Math.Max(0, current - quantity);
-        }
-    }
+    public bool HasTool(string toolRef) => _tools.Contains(toolRef);
+    public void AddTool(string toolRef) => _tools.Add(toolRef);
+    public void RemoveTool(string toolRef) => _tools.Remove(toolRef);
 
-    // Legacy test helpers - map to provider pattern
-    public bool HasQuestToken(string questTokenRef) => HasItem("QuestTokens", questTokenRef);
-    public void AddQuestToken(string questTokenRef) => GiveItem("QuestTokens", questTokenRef);
-    public void RemoveQuestToken(string questTokenRef) => TakeItem("QuestTokens", questTokenRef);
-
-    public int GetConsumableQuantity(string consumableRef) => GetItemQuantity("Consumables", consumableRef);
-    public void AddConsumable(string consumableRef, int amount) => GiveItem("Consumables", consumableRef, amount);
-    public void RemoveConsumable(string consumableRef, int amount) => TakeItem("Consumables", consumableRef, amount);
-
-    public bool HasEquipment(string equipmentRef) => HasItem("Equipment", equipmentRef);
-    public void AddEquipment(string equipmentRef) => GiveItem("Equipment", equipmentRef);
-    public void RemoveEquipment(string equipmentRef) => TakeItem("Equipment", equipmentRef);
-
-    public bool HasSpell(string spellRef) => HasItem("Spells", spellRef);
-    public void AddSpell(string spellRef) => GiveItem("Spells", spellRef);
-    public void RemoveSpell(string spellRef) => TakeItem("Spells", spellRef);
+    public bool HasSpell(string spellRef) => _spells.Contains(spellRef);
+    public void AddSpell(string spellRef) => _spells.Add(spellRef);
+    public void RemoveSpell(string spellRef) => _spells.Remove(spellRef);
 
     // Player state
     public bool HasAchievement(string achievementRef) => _achievements.Contains(achievementRef);

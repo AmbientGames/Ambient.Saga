@@ -14,15 +14,7 @@ public partial class World : IWorld
     /// Set by the application to provide block lookup functionality.
     /// </summary>
     [XmlIgnore]
-    [Obsolete("Use GameplayItemProvider instead for a more flexible approach.")]
     public IBlockProvider? BlockProvider { get; set; }
-
-    /// <summary>
-    /// Optional gameplay item providers for games that include extensible item systems.
-    /// Games can register multiple providers (e.g., one for blocks, one for seeds, one for vehicles).
-    /// </summary>
-    [XmlIgnore]
-    public IList<IGameplayItemProvider> GameplayItemProviders { get; } = new List<IGameplayItemProvider>();
     /// <summary>
     /// World identifier property.
     /// </summary>
@@ -38,6 +30,8 @@ public partial class World : IWorld
     [XmlIgnore] public bool IsProcedural { get; set; } = true;
     [XmlIgnore] public GameplayComponents Gameplay => WorldTemplate.Gameplay;
 
+    [XmlIgnore] public Dictionary<string, Tool> ToolsLookup { get; set; } = new Dictionary<string, Tool>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public Dictionary<string, BuildingMaterial> BuildingMaterialsLookup { get; set; } = new Dictionary<string, BuildingMaterial>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Consumable> ConsumablesLookup { get; set; } = new Dictionary<string, Consumable>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Spell> SpellsLookup { get; set; } = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Character> CharactersLookup { get; set; } = new Dictionary<string, Character>(StringComparer.OrdinalIgnoreCase);
@@ -69,6 +63,60 @@ public partial class World : IWorld
         // these are mostly for tests, it seems
         WorldConfiguration = new WorldConfiguration();
         WorldTemplate = new WorldTemplate();
+    }
+
+    /// <summary>
+    /// Looks up a Tool object by its RefName using the efficient ToolsLookup dictionary.
+    /// </summary>
+    /// <param name="toolRefName">The RefName of the tool to find</param>
+    /// <returns>The Tool object with the specified RefName</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the tool is not found</exception>
+    public Tool GetToolByRefName(string toolRefName)
+    {
+        if (ToolsLookup.TryGetValue(toolRefName, out var tool))
+        {
+            return tool;
+        }
+
+        throw new InvalidOperationException($"Tool with RefName '{toolRefName}' not found in Tools catalog");
+    }
+
+    /// <summary>
+    /// Tries to look up a Tool object by its RefName. Returns null if not found.
+    /// </summary>
+    /// <param name="toolRefName">The RefName of the tool to find</param>
+    /// <returns>The Tool object with the specified RefName, or null if not found</returns>
+    public Tool? TryGetToolByRefName(string toolRefName)
+    {
+        ToolsLookup.TryGetValue(toolRefName, out var tool);
+        return tool;
+    }
+
+    /// <summary>
+    /// Looks up a Material object by its RefName using the efficient MaterialsLookup dictionary.
+    /// </summary>
+    /// <param name="buildingMaterialRefName">The RefName of the material to find</param>
+    /// <returns>The Material object with the specified RefName</returns>
+    /// <exception cref="InvalidOperationException">Thrown if the material is not found</exception>
+    public BuildingMaterial GetBuildingMaterialByRefName(string buildingMaterialRefName)
+    {
+        if (BuildingMaterialsLookup.TryGetValue(buildingMaterialRefName, out var material))
+        {
+            return material;
+        }
+
+        throw new InvalidOperationException($"Material with RefName '{buildingMaterialRefName}' not found in Materials catalog");
+    }
+
+    /// <summary>
+    /// Tries to look up a Material object by its RefName. Returns null if not found.
+    /// </summary>
+    /// <param name="buildingMaterialRefName">The RefName of the material to find</param>
+    /// <returns>The Material object with the specified RefName, or null if not found</returns>
+    public BuildingMaterial? TryGetBuildingMaterialByRefName(string buildingMaterialRefName)
+    {
+        BuildingMaterialsLookup.TryGetValue(buildingMaterialRefName, out var material);
+        return material;
     }
 
     /// <summary>
