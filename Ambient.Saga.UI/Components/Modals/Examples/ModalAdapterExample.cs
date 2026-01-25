@@ -53,11 +53,11 @@ public static class ModalAdapterExample
     /// <summary>
     /// Example: Adapter for a simple modal that only needs MainViewModel
     /// </summary>
-    public class AvatarInfoModalAdapter : IModal
+    public class WorldCatalogModalAdapterExample : IModal
     {
-        private readonly AvatarInfoModal _modal = new();
+        private readonly WorldCatalogModal _modal = new();
 
-        public string Name => "AvatarInfo";
+        public string Name => "WorldCatalog";
 
         public void Render(object? context, ref bool isOpen)
         {
@@ -75,7 +75,7 @@ public static class ModalAdapterExample
         // Optional: Add lifecycle hooks for cleanup
         public void OnClosed()
         {
-            // Any cleanup needed for AvatarInfoModal
+            // Any cleanup needed for modal
         }
     }
 

@@ -80,7 +80,6 @@ public class ModalManager
     {
         // Simple modals (MainViewModel only)
         _modalRegistry.Register(new Adapters.AchievementsModalAdapter());
-        _modalRegistry.Register(new Adapters.AvatarInfoModalAdapter());
         _modalRegistry.Register(new Adapters.WorldCatalogModalAdapter());
 
         // Character context modals
@@ -122,7 +121,6 @@ public class ModalManager
     // Modal state - derived from stack (read-only)
     public bool ShowWorldSelection => _modalStack.Contains("WorldSelection");
     public bool ShowArchetypeSelection => _modalStack.Contains("ArchetypeSelection");
-    public bool ShowAvatarInfo => _modalStack.Contains("AvatarInfo");
     public bool ShowAchievements => _modalStack.Contains("Achievements");
     public bool ShowWorldCatalog => _modalStack.Contains("WorldCatalog");
     public bool ShowMerchantTrade => _modalStack.Contains("MerchantTrade");
@@ -187,7 +185,6 @@ public class ModalManager
 
     public void OpenWorldSelection() => OpenModal("WorldSelection");
     public void OpenArchetypeSelection() => OpenModal("ArchetypeSelection");
-    public void OpenAvatarInfo() => OpenModal("AvatarInfo");
     public void OpenAchievements() => OpenModal("Achievements");
     public void OpenWorldCatalog() => OpenModal("WorldCatalog");
     public void OpenPauseMenu() => OpenModal("PauseMenu");
@@ -208,7 +205,7 @@ public class ModalManager
         // ALL MODALS NOW RENDERED VIA MODAL REGISTRY (see RegisterModalAdapters)
         // ====================================================================
         // The following modals have been migrated to the registry pattern:
-        // - WorldSelection, ArchetypeSelection, AvatarInfo, Characters
+        // - WorldSelection, ArchetypeSelection, Characters
         // - Achievements, WorldCatalog, MerchantTrade, BossBattle
         // - Quest, QuestLog, QuestDetail, Dialogue, Loot
         //

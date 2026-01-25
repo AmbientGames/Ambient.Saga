@@ -8,7 +8,10 @@ namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
 /// Character panel showing the current state of the avatar.
-/// Includes position, stats, equipped items, archetype, affinities, party, and lifetime statistics.
+/// Full-screen panel with three columns:
+/// - Column 1: Position, Vitals (with progress bars), Archetype
+/// - Column 2: Equipped Items, Affinities, Party Members
+/// - Column 3: Faction Reputation, Lifetime Statistics
 /// Accessible via C key.
 /// Inventory content has moved to InventoryPanel (I key).
 /// </summary>
@@ -19,9 +22,33 @@ public class CharacterPanel
         ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "CHARACTER");
         ImGui.Separator();
 
-        // Scrollable character info content
-        ImGui.BeginChild("CharacterInfoScroll", new Vector2(ImGuiSizes.Fill, ImGuiSizes.Fill), ImGuiChildFlags.None);
+        // Calculate column widths for 3-column layout
+        var availableWidth = ImGui.GetContentRegionAvail().X;
+        var spacing = ImGui.GetStyle().ItemSpacing.X;
+        var columnWidth = (availableWidth - spacing * 2) / 3;
 
+        // Column 1: Position, Stats, Archetype
+        ImGui.BeginChild("CharacterCol1", new Vector2(columnWidth, ImGuiSizes.Fill), ImGuiChildFlags.None);
+        RenderColumn1_StatsAndArchetype(viewModel);
+        ImGui.EndChild();
+
+        ImGui.SameLine();
+
+        // Column 2: Equipment, Affinities, Party
+        ImGui.BeginChild("CharacterCol2", new Vector2(columnWidth, ImGuiSizes.Fill), ImGuiChildFlags.None);
+        RenderColumn2_EquipmentAndCompanions(viewModel);
+        ImGui.EndChild();
+
+        ImGui.SameLine();
+
+        // Column 3: Factions, Statistics
+        ImGui.BeginChild("CharacterCol3", new Vector2(columnWidth, ImGuiSizes.Fill), ImGuiChildFlags.None);
+        RenderColumn3_FactionsAndStats(viewModel);
+        ImGui.EndChild();
+    }
+
+    private void RenderColumn1_StatsAndArchetype(SagaMainViewModel viewModel)
+    {
         // Position
         ImGui.TextColored(new Vector4(1, 1, 0, 1), "Position:");
         if (viewModel.HasAvatarPosition)
@@ -46,22 +73,38 @@ public class CharacterPanel
             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credit";
             var pluralCurrency = vitals.Credits == 1 ? currencyName : currencyName + "s";
 
-            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Stats:");
-
-            // Resources
-            RenderStatLine("Health:", vitals.Health.ToString());
-            RenderStatLine("Stamina:", vitals.Stamina.ToString());
-            RenderStatLine("Mana:", vitals.Mana.ToString());
-            // State
-            RenderStatLine("Temperature:", $"{vitals.Temperature:F1}C");
-            // Attributes
-            RenderStatLine("Strength:", vitals.Strength.ToString());
-            RenderStatLine("Defense:", vitals.Defense.ToString());
-            RenderStatLine("Magic:", vitals.Magic.ToString());
-            RenderStatLine("Speed:", vitals.Speed.ToString());
-            RenderStatLine("Endurance:", vitals.Endurance.ToString());
-            // Progression
+            // Progression (Level & Experience)
+            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Progression:");
+            RenderStatLine("Level:", $"{vitals.Level}");
+            RenderStatLine("Experience:", $"{vitals.Experience:N0}");
             RenderStatLine($"{pluralCurrency}:", $"{vitals.Credits:N0}");
+
+            ImGui.Spacing();
+            ImGui.Separator();
+
+            // Vitals with progress bars
+            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Vitals:");
+            RenderStatBar("Health", vitals.Health, new Vector4(1, 0.3f, 0.3f, 1));
+            RenderStatBar("Stamina", vitals.Stamina, new Vector4(0.3f, 1, 0.3f, 1));
+            RenderStatBar("Mana", vitals.Mana, new Vector4(0.3f, 0.5f, 1, 1));
+
+            ImGui.Spacing();
+            ImGui.Separator();
+
+            // Combat Stats
+            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Combat:");
+            RenderStatBar("Strength", vitals.Strength / 100.0, new Vector4(1, 0.5f, 0.2f, 1));
+            RenderStatBar("Defense", vitals.Defense / 100.0, new Vector4(0.6f, 0.6f, 0.6f, 1));
+            RenderStatBar("Speed", vitals.Speed / 100.0, new Vector4(1, 1, 0.3f, 1));
+            RenderStatBar("Magic", vitals.Magic / 100.0, new Vector4(0.7f, 0.3f, 1, 1));
+
+            ImGui.Spacing();
+            ImGui.Separator();
+
+            // State
+            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "State:");
+            RenderStatBar("Temperature", (vitals.Temperature + 40) / 80.0, new Vector4(1, 0.6f, 0.2f, 1)); // -40 to 40 range
+            RenderStatBar("Endurance", vitals.Endurance / 100.0, new Vector4(0.5f, 0.8f, 0.8f, 1));
 
             // Archetype info with bias
             if (!string.IsNullOrEmpty(viewModel.PlayerAvatar.ArchetypeRef))
@@ -120,10 +163,10 @@ public class CharacterPanel
             ImGui.TextColored(new Vector4(1, 0.5f, 0, 1), "No avatar created");
             ImGui.TextWrapped("Enter a world to select archetype");
         }
+    }
 
-        ImGui.Spacing();
-        ImGui.Separator();
-
+    private void RenderColumn2_EquipmentAndCompanions(SagaMainViewModel viewModel)
+    {
         // Equipped Items (read-only view of current loadout)
         RenderEquippedItems(viewModel);
 
@@ -152,12 +195,12 @@ public class CharacterPanel
                 var name = affinityDef?.DisplayName ?? affinity.AffinityRef;
                 var isActive = affinity.AffinityRef == activeAffinity;
 
-                ImGui.Indent();
-
                 var treeNodeOpen = ImGui.TreeNode($"{(isActive ? "* " : "")}{name}##aff_{affinity.AffinityRef}");
 
                 if (treeNodeOpen)
                 {
+                    ImGui.Indent();
+
                     // Source character
                     if (!string.IsNullOrEmpty(affinity.CapturedFromCharacterRef))
                     {
@@ -184,7 +227,6 @@ public class CharacterPanel
                         {
                             ImGui.Spacing();
                             ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Matchups:");
-                            ImGui.Indent(10 * UIConstants.DpiScale);
                             foreach (var matchup in affinityDef.Matchup)
                             {
                                 var targetAffinityDef = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == matchup.TargetAffinityRef);
@@ -192,16 +234,14 @@ public class CharacterPanel
                                 var color = matchup.Multiplier > 1.0
                                     ? new Vector4(0.2f, 1, 0.2f, 1)  // Green for strong
                                     : new Vector4(1, 0.5f, 0.2f, 1); // Orange for weak
-                                ImGui.TextColored(color, $"vs {targetName}: {matchup.Multiplier}x");
+                                ImGui.TextColored(color, $"  vs {targetName}: {matchup.Multiplier}x");
                             }
-                            ImGui.Unindent(10 * UIConstants.DpiScale);
                         }
                     }
 
+                    ImGui.Unindent();
                     ImGui.TreePop();
                 }
-
-                ImGui.Unindent();
             }
 
             ImGui.Spacing();
@@ -219,12 +259,12 @@ public class CharacterPanel
                 var memberChar = viewModel.CurrentWorld?.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == member.CharacterRef);
                 var memberName = memberChar?.DisplayName ?? member.CharacterRef;
 
-                ImGui.Indent();
-
                 var treeNodeOpen = ImGui.TreeNode($"{memberName}##party_{member.CharacterRef}");
 
                 if (treeNodeOpen)
                 {
+                    ImGui.Indent();
+
                     if (memberChar != null && !string.IsNullOrEmpty(memberChar.Description))
                     {
                         ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), memberChar.Description);
@@ -238,16 +278,35 @@ public class CharacterPanel
                         ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), $"Affinity: {affinityName}");
                     }
 
+                    // Show member stats if available
+                    if (memberChar?.Stats != null)
+                    {
+                        ImGui.Text($"HP: {memberChar.Stats.Health:P0} | STR: {memberChar.Stats.Strength:F0} | DEF: {memberChar.Stats.Defense:F0}");
+                    }
+
+                    ImGui.Unindent();
                     ImGui.TreePop();
                 }
-
-                ImGui.Unindent();
             }
 
-            ImGui.Spacing();
-            ImGui.Separator();
+            // Party faction info
+            if (!string.IsNullOrEmpty(viewModel.PlayerAvatar.Party.SlotFactionRef))
+            {
+                ImGui.Spacing();
+                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Party Faction: {viewModel.PlayerAvatar.Party.SlotFactionRef}");
+            }
         }
+        else
+        {
+            ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), "Party Members:");
+            ImGui.Spacing();
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No party members");
+            ImGui.TextWrapped("Party members can join through dialogue interactions.");
+        }
+    }
 
+    private void RenderColumn3_FactionsAndStats(SagaMainViewModel viewModel)
+    {
         // Faction Reputation
         RenderFactionSection(viewModel);
 
@@ -293,11 +352,26 @@ public class CharacterPanel
                 ImGui.TableNextColumn();
                 ImGui.Text($"{avatar.BlocksDestroyed:N0}");
 
+                // Quest stats
+                var completedQuests = avatar.Quests?.Count(q => q.IsCompleted) ?? 0;
+                var totalQuests = avatar.Quests?.Length ?? 0;
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text("Quests:");
+                ImGui.TableNextColumn();
+                ImGui.Text($"{completedQuests} / {totalQuests} completed");
+
+                // Achievement stats
+                var unlockedAchievements = avatar.Achievements?.Length ?? 0;
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text("Achievements:");
+                ImGui.TableNextColumn();
+                ImGui.Text($"{unlockedAchievements} unlocked");
+
                 ImGui.EndTable();
             }
         }
-
-        ImGui.EndChild();
     }
 
     private void RenderStatLine(string label, string value)
@@ -315,6 +389,17 @@ public class CharacterPanel
             : new Vector4(1, 0.4f, 0.4f, 1);  // Red for negative
         var sign = modifier > 0 ? "+" : "";
         ImGui.TextColored(color, $"  {statName}: {sign}{modifier:P0}");
+    }
+
+    private void RenderStatBar(string label, double value, Vector4 color)
+    {
+        var scale = UIConstants.DpiScale;
+        ImGui.AlignTextToFramePadding();
+        ImGui.Text($"{label}:");
+        ImGui.SameLine(100 * scale);
+        ImGui.PushStyleColor(ImGuiCol.PlotHistogram, color);
+        ImGui.ProgressBar((float)value, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), $"{value * 100:F0}%");
+        ImGui.PopStyleColor();
     }
 
     private void RenderEquippedItems(SagaMainViewModel viewModel)
