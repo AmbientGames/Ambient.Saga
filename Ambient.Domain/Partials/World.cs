@@ -14,7 +14,15 @@ public partial class World : IWorld
     /// Set by the application to provide block lookup functionality.
     /// </summary>
     [XmlIgnore]
+    [Obsolete("Use GameplayItemProvider instead for a more flexible approach.")]
     public IBlockProvider? BlockProvider { get; set; }
+
+    /// <summary>
+    /// Optional gameplay item providers for games that include extensible item systems.
+    /// Games can register multiple providers (e.g., one for blocks, one for seeds, one for vehicles).
+    /// </summary>
+    [XmlIgnore]
+    public IList<IGameplayItemProvider> GameplayItemProviders { get; } = new List<IGameplayItemProvider>();
     /// <summary>
     /// World identifier property.
     /// </summary>

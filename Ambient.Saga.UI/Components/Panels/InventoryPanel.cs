@@ -440,6 +440,51 @@ public class InventoryPanel
             }
         }
 
+        // Schema Items (from IGameplayItemProviders - demonstrates the new extensible pattern)
+        var gameplayProviders = viewModel.CurrentWorld?.GameplayItemProviders;
+        if (gameplayProviders != null && gameplayProviders.Count > 0)
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            ImGui.TextColored(new Vector4(0.4f, 0.9f, 0.6f, 1), "Schema Items (Catalog)");
+
+            foreach (var provider in gameplayProviders)
+            {
+                var totalItems = provider.GetAll().Count();
+                if (ImGui.CollapsingHeader($"{provider.Name} ({totalItems})"))
+                {
+                    ImGui.Indent();
+                    foreach (var category in provider.GetCategories())
+                    {
+                        var itemsInCategory = provider.GetByCategory(category).ToList();
+                        if (ImGui.TreeNode($"{category} ({itemsInCategory.Count})##{provider.Name}_{category}"))
+                        {
+                            foreach (var item in itemsInCategory)
+                            {
+                                var maxTextWidth = GetAvailableTextWidth();
+                                var priceText = $" ({item.WholesalePrice}g)";
+                                var truncatedName = TruncateToFit(item.DisplayName, maxTextWidth - ImGui.CalcTextSize(priceText).X - 30f);
+                                ImGui.BulletText($"{truncatedName}{priceText}");
+
+                                if (truncatedName != item.DisplayName && ImGui.IsItemHovered())
+                                {
+                                    ImGui.SetTooltip($"{item.DisplayName}: {item.Description}");
+                                }
+                                else if (ImGui.IsItemHovered() && !string.IsNullOrEmpty(item.Description))
+                                {
+                                    ImGui.SetTooltip(item.Description);
+                                }
+                            }
+                            ImGui.TreePop();
+                        }
+                    }
+                    ImGui.Unindent();
+                }
+            }
+        }
+
         // Render hotbar assignment popup inside child window (same ID scope as OpenPopup calls)
         RenderHotbarAssignPopup(viewModel);
 
