@@ -77,7 +77,7 @@ public class LootModal
         ImGui.Spacing();
         ImGui.Spacing();
 
-        var buttonWidth = 120f;
+        var buttonWidth = 120f * UIConstants.DpiScale;
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
         if (ImGui.Button("Close", new Vector2(buttonWidth, buttonHeight)))
@@ -110,8 +110,10 @@ public class LootModal
                 ImGui.TextColored(new Vector4(0.6f, 0.7f, 1, 1), "Equipment:");
                 foreach (var equipment in characterTemplate.Capabilities.Equipment)
                 {
+                    var equipDef = viewModel.CurrentWorld?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equipment.EquipmentRef);
+                    var displayName = equipDef?.DisplayName ?? equipment.EquipmentRef;
                     ImGui.Indent(15 * UIConstants.DpiScale);
-                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), equipment.EquipmentRef);
+                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), displayName);
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"({equipment.Condition:P0})");
                     ImGui.Unindent(15 * UIConstants.DpiScale);
@@ -126,8 +128,10 @@ public class LootModal
                 ImGui.TextColored(new Vector4(0.4f, 1, 0.6f, 1), "Consumables:");
                 foreach (var consumable in characterTemplate.Capabilities.Consumables)
                 {
+                    var consumableDef = viewModel.CurrentWorld?.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == consumable.ConsumableRef);
+                    var displayName = consumableDef?.DisplayName ?? consumable.ConsumableRef;
                     ImGui.Indent(15 * UIConstants.DpiScale);
-                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), consumable.ConsumableRef);
+                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), displayName);
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"x{consumable.Quantity}");
                     ImGui.Unindent(15 * UIConstants.DpiScale);
@@ -142,8 +146,10 @@ public class LootModal
                 ImGui.TextColored(new Vector4(0.8f, 0.6f, 0.4f, 1), "Materials:");
                 foreach (var material in characterTemplate.Capabilities.BuildingMaterials)
                 {
+                    var materialDef = viewModel.CurrentWorld?.TryGetBuildingMaterialByRefName(material.BuildingMaterialRef);
+                    var displayName = materialDef?.DisplayName ?? material.BuildingMaterialRef;
                     ImGui.Indent(15 * UIConstants.DpiScale);
-                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), material.BuildingMaterialRef);
+                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), displayName);
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"x{material.Quantity}");
                     ImGui.Unindent(15 * UIConstants.DpiScale);
@@ -158,8 +164,10 @@ public class LootModal
                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.9f, 1), "Tools:");
                 foreach (var tool in characterTemplate.Capabilities.Tools)
                 {
+                    var toolDef = viewModel.CurrentWorld?.TryGetToolByRefName(tool.ToolRef);
+                    var displayName = toolDef?.DisplayName ?? tool.ToolRef;
                     ImGui.Indent(15 * UIConstants.DpiScale);
-                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), tool.ToolRef);
+                    ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.85f, 1), displayName);
                     ImGui.SameLine();
                     ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"({tool.Condition:P0})");
                     ImGui.Unindent(15 * UIConstants.DpiScale);
@@ -192,9 +200,10 @@ public class LootModal
         ImGui.Spacing();
 
         // Action buttons centered
-        var buttonWidth = 130f;
+        var buttonWidth = 130f * UIConstants.DpiScale;
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
-        var totalWidth = buttonWidth * 2 + 20;
+        var buttonSpacing = 20f * UIConstants.DpiScale;
+        var totalWidth = buttonWidth * 2 + buttonSpacing;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) * 0.5f);
 
         if (_isLooting)

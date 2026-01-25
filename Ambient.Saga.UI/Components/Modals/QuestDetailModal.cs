@@ -512,10 +512,13 @@ public class QuestDetailModal
 
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
+        var wideButtonWidth = 150f * UIConstants.DpiScale;
+        var narrowButtonWidth = 100f * UIConstants.DpiScale;
+
         if (_questProgress?.IsComplete == true)
         {
             // Completed quest - just close
-            if (ImGui.Button("Close", new Vector2(150, buttonHeight)))
+            if (ImGui.Button("Close", new Vector2(wideButtonWidth, buttonHeight)))
             {
                 isOpen = false;
             }
@@ -528,7 +531,7 @@ public class QuestDetailModal
                 ImGui.BeginDisabled();
             }
 
-            if (ImGui.Button("Abandon Quest", new Vector2(150, buttonHeight)))
+            if (ImGui.Button("Abandon Quest", new Vector2(wideButtonWidth, buttonHeight)))
             {
                 AbandonQuest(viewModel);
             }
@@ -541,7 +544,7 @@ public class QuestDetailModal
             }
 
             ImGui.SameLine();
-            if (ImGui.Button("Close", new Vector2(100, buttonHeight)))
+            if (ImGui.Button("Close", new Vector2(narrowButtonWidth, buttonHeight)))
             {
                 isOpen = false;
             }
