@@ -63,6 +63,18 @@ public class CharacterPanel
             ImGui.TextWrapped("Click on map to move");
         }
 
+        // Home Location (spawn point)
+        if (viewModel.PlayerAvatar != null)
+        {
+            var home = viewModel.PlayerAvatar.HomeLocation;
+            if (home.X != 0 || home.Y != 0)
+            {
+                ImGui.Spacing();
+                ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1), "Home:");
+                ImGui.Text($"  Lat: {home.Y:F6}, Lon: {home.X:F6}");
+            }
+        }
+
         ImGui.Spacing();
         ImGui.Separator();
 
@@ -103,8 +115,15 @@ public class CharacterPanel
 
             // State
             ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "State:");
-            RenderStatBar("Temperature", (vitals.Temperature + 40) / 80.0, new Vector4(1, 0.6f, 0.2f, 1)); // -40 to 40 range
+            RenderTemperatureStat(vitals.Temperature);
             RenderStatBar("Endurance", vitals.Endurance / 100.0, new Vector4(0.5f, 0.8f, 0.8f, 1));
+
+            // Invulnerability status
+            if (viewModel.PlayerAvatar.IsInvulnerable)
+            {
+                ImGui.Spacing();
+                ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "[INVULNERABLE]");
+            }
 
             // Archetype info with bias
             if (!string.IsNullOrEmpty(viewModel.PlayerAvatar.ArchetypeRef))
@@ -167,6 +186,12 @@ public class CharacterPanel
 
     private void RenderColumn2_EquipmentAndCompanions(SagaMainViewModel viewModel)
     {
+        // Current Selection (Tool & Material)
+        RenderCurrentSelection(viewModel);
+
+        ImGui.Spacing();
+        ImGui.Separator();
+
         // Equipped Items (read-only view of current loadout)
         RenderEquippedItems(viewModel);
 
@@ -402,6 +427,76 @@ public class CharacterPanel
         ImGui.PopStyleColor();
     }
 
+    // Temperature thresholds (body temp in Celsius - 37 is normal)
+    private const float NormalTemperature = 37f;
+    private const float ColdThreshold = 35f;   // Hypothermia warning
+    private const float HotThreshold = 39f;    // Hyperthermia warning
+    private const float CriticalColdThreshold = 32f;  // Severe hypothermia
+    private const float CriticalHotThreshold = 42f;   // Severe hyperthermia
+
+    private void RenderTemperatureStat(float temperature)
+    {
+        var scale = UIConstants.DpiScale;
+        ImGui.AlignTextToFramePadding();
+        ImGui.Text("Temperature:");
+        ImGui.SameLine(100 * scale);
+
+        // Determine status and color based on deviation from normal
+        string statusText;
+        Vector4 barColor;
+        Vector4 textColor;
+
+        if (temperature < CriticalColdThreshold)
+        {
+            statusText = "CRITICAL";
+            barColor = new Vector4(0.2f, 0.4f, 1f, 1f);      // Deep blue
+            textColor = new Vector4(0.4f, 0.6f, 1f, 1f);
+        }
+        else if (temperature < ColdThreshold)
+        {
+            statusText = "Cold";
+            barColor = new Vector4(0.4f, 0.7f, 1f, 1f);      // Light blue
+            textColor = new Vector4(0.5f, 0.8f, 1f, 1f);
+        }
+        else if (temperature > CriticalHotThreshold)
+        {
+            statusText = "CRITICAL";
+            barColor = new Vector4(1f, 0.2f, 0.2f, 1f);      // Deep red
+            textColor = new Vector4(1f, 0.4f, 0.4f, 1f);
+        }
+        else if (temperature > HotThreshold)
+        {
+            statusText = "Hot";
+            barColor = new Vector4(1f, 0.5f, 0.2f, 1f);      // Orange
+            textColor = new Vector4(1f, 0.6f, 0.3f, 1f);
+        }
+        else
+        {
+            statusText = "Normal";
+            barColor = new Vector4(0.3f, 0.8f, 0.3f, 1f);    // Green
+            textColor = new Vector4(0.5f, 0.9f, 0.5f, 1f);
+        }
+
+        // Calculate progress bar value: deviation from normal
+        // Bar shows distance from thresholds: 0 = at threshold, 1 = at normal
+        // Invert so that normal = full bar, threshold = empty bar
+        float progress;
+        if (temperature < NormalTemperature)
+        {
+            // Cold side: CriticalCold (0%) -> Normal (100%)
+            progress = Math.Clamp((temperature - CriticalColdThreshold) / (NormalTemperature - CriticalColdThreshold), 0f, 1f);
+        }
+        else
+        {
+            // Hot side: Normal (100%) -> CriticalHot (0%)
+            progress = Math.Clamp(1f - (temperature - NormalTemperature) / (CriticalHotThreshold - NormalTemperature), 0f, 1f);
+        }
+
+        ImGui.PushStyleColor(ImGuiCol.PlotHistogram, barColor);
+        ImGui.ProgressBar(progress, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()), $"{temperature:F1}°C ({statusText})");
+        ImGui.PopStyleColor();
+    }
+
     private void RenderEquippedItems(SagaMainViewModel viewModel)
     {
         if (viewModel.PlayerAvatar?.CombatProfile == null || viewModel.CurrentWorld == null)
@@ -442,6 +537,63 @@ public class CharacterPanel
         {
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No items equipped");
             ImGui.TextWrapped("Use Inventory (I) to equip items");
+        }
+    }
+
+    private void RenderCurrentSelection(SagaMainViewModel viewModel)
+    {
+        if (viewModel.PlayerAvatar == null || viewModel.CurrentWorld == null)
+            return;
+
+        var hasSelection = false;
+        var scale = UIConstants.DpiScale;
+
+        // Current Tool (only show if lookup succeeds)
+        var currentToolRef = viewModel.PlayerAvatar.CurrentToolRef;
+        if (!string.IsNullOrEmpty(currentToolRef))
+        {
+            var tool = viewModel.CurrentWorld.TryGetToolByRefName(currentToolRef);
+            if (tool != null)
+            {
+                if (!hasSelection)
+                {
+                    ImGui.TextColored(new Vector4(0.8f, 0.9f, 0.5f, 1), "Current Selection:");
+                    ImGui.Spacing();
+                    hasSelection = true;
+                }
+
+                ImGui.Text("Tool:");
+                ImGui.SameLine(120 * scale);
+                ImGui.TextColored(new Vector4(0.5f, 1, 0.8f, 1), tool.DisplayName ?? tool.RefName);
+            }
+        }
+
+        // Current Building Material (only show if lookup succeeds)
+        var currentMaterialRef = viewModel.PlayerAvatar.CurrentBuildingMaterialRef;
+        if (!string.IsNullOrEmpty(currentMaterialRef))
+        {
+            var material = viewModel.CurrentWorld.TryGetBuildingMaterialByRefName(currentMaterialRef);
+            if (material != null)
+            {
+                if (!hasSelection)
+                {
+                    ImGui.TextColored(new Vector4(0.8f, 0.9f, 0.5f, 1), "Current Selection:");
+                    ImGui.Spacing();
+                    hasSelection = true;
+                }
+
+                ImGui.Text("Material:");
+                ImGui.SameLine(120 * scale);
+                ImGui.TextColored(new Vector4(0.9f, 0.7f, 0.5f, 1), material.DisplayName ?? material.RefName);
+            }
+        }
+
+        // Only show header if nothing selected
+        if (!hasSelection)
+        {
+            ImGui.TextColored(new Vector4(0.8f, 0.9f, 0.5f, 1), "Current Selection:");
+            ImGui.Spacing();
+            ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No tool or material selected");
         }
     }
 
