@@ -85,17 +85,8 @@ internal sealed class LootCharacterHandler : IRequestHandler<LootCharacterComman
                 .Select(s => $"{s.SpellRef}:{s.Condition:F2}")
                 .ToList() ?? new List<string>();
 
-            var lootedBlocks = character.CurrentInventory?.Blocks?
-                .Select(b => $"{b.BlockRef}:{b.Quantity}")
-                .ToList() ?? new List<string>();
-
-            var lootedTools = character.CurrentInventory?.Tools?
-                .Select(t => $"{t.ToolRef}:{t.Condition:F2}")
-                .ToList() ?? new List<string>();
-
-            var lootedMaterials = character.CurrentInventory?.BuildingMaterials?
-                .Select(m => $"{m.BuildingMaterialRef}:{m.Quantity}")
-                .ToList() ?? new List<string>();
+            // Note: Blocks, Tools, and BuildingMaterials are now handled by IGameplayItemProvider in Core.
+            // Loot for these types should be handled by the consuming application.
 
             var lootedCredits = character.CurrentStats?.Credits ?? 0;
 
@@ -115,9 +106,7 @@ internal sealed class LootCharacterHandler : IRequestHandler<LootCharacterComman
                     ["Equipment"] = string.Join(",", lootedEquipment),
                     ["Consumables"] = string.Join(",", lootedConsumables),
                     ["Spells"] = string.Join(",", lootedSpells),
-                    ["Blocks"] = string.Join(",", lootedBlocks),
-                    ["Tools"] = string.Join(",", lootedTools),
-                    ["BuildingMaterials"] = string.Join(",", lootedMaterials),
+                    // Note: Blocks, Tools, and BuildingMaterials are now handled by IGameplayItemProvider
                     ["Credits"] = lootedCredits.ToString()
                 }
             };

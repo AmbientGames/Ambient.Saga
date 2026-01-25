@@ -1,3 +1,4 @@
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Sandbox.DirectX.WorldContentGenerators;
@@ -115,5 +116,33 @@ public class SchemaBlockProvider : IGameplayItemProvider
         yield return new SchemaBlock("IronOre", "Iron Ore", "Ore", "Raw iron ore for smelting into iron.", 20, 1.4f);
         yield return new SchemaBlock("ManganeseOre", "Manganese Ore", "Ore", "Rare ore used in steel alloys.", 50, 1.6f);
         yield return new SchemaBlock("ChromiumOre", "Chromium Ore", "Ore", "Precious ore for advanced metallurgy.", 75, 1.8f);
+    }
+
+    /// <inheritdoc />
+    public int GetAvatarItemQuantity(AvatarBase avatar, string refName)
+    {
+        if (avatar.GameplayInventory.TryGetValue(Name, out var items))
+            return items.GetValueOrDefault(refName, 0);
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public void GiveAvatarItem(AvatarBase avatar, string refName, int quantity = 1)
+    {
+        if (!avatar.GameplayInventory.ContainsKey(Name))
+            avatar.GameplayInventory[Name] = new Dictionary<string, int>();
+
+        var items = avatar.GameplayInventory[Name];
+        items[refName] = items.GetValueOrDefault(refName, 0) + quantity;
+    }
+
+    /// <inheritdoc />
+    public void TakeAvatarItem(AvatarBase avatar, string refName, int quantity = 1)
+    {
+        if (avatar.GameplayInventory.TryGetValue(Name, out var items))
+        {
+            var current = items.GetValueOrDefault(refName, 0);
+            items[refName] = Math.Max(0, current - quantity);
+        }
     }
 }

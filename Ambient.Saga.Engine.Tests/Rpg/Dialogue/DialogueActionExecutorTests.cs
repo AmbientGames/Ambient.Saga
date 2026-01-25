@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Execution;
 
@@ -22,7 +22,8 @@ public class DialogueActionExecutorTests
     {
         var action = new DialogueAction
         {
-            Type = DialogueActionType.GiveQuestToken,
+            Type = DialogueActionType.GiveItem,
+            Provider = "QuestTokens",
             RefName = "dragon_quest"
         };
 
@@ -38,7 +39,8 @@ public class DialogueActionExecutorTests
 
         var action = new DialogueAction
         {
-            Type = DialogueActionType.TakeQuestToken,
+            Type = DialogueActionType.TakeItem,
+            Provider = "QuestTokens",
             RefName = "dragon_quest"
         };
 
@@ -56,7 +58,8 @@ public class DialogueActionExecutorTests
     {
         var action = new DialogueAction
         {
-            Type = DialogueActionType.GiveConsumable,
+            Type = DialogueActionType.GiveItem,
+            Provider = "Consumables",
             RefName = "health_potion",
             Amount = 5
         };
@@ -73,7 +76,8 @@ public class DialogueActionExecutorTests
 
         var action = new DialogueAction
         {
-            Type = DialogueActionType.TakeConsumable,
+            Type = DialogueActionType.TakeItem,
+            Provider = "Consumables",
             RefName = "health_potion",
             Amount = 3
         };
@@ -81,70 +85,6 @@ public class DialogueActionExecutorTests
         _executor.Execute(action, "test_tree", "node1", "test_character", true);
 
         Assert.Equal(7, _state.GetConsumableQuantity("health_potion"));
-    }
-
-    [Fact]
-    public void GiveMaterial_AddsQuantityToPlayer()
-    {
-        var action = new DialogueAction
-        {
-            Type = DialogueActionType.GiveMaterial,
-            RefName = "iron_ore",
-            Amount = 20
-        };
-
-        _executor.Execute(action, "test_tree", "node1", "test_character", true);
-
-        Assert.Equal(20, _state.GetMaterialQuantity("iron_ore"));
-    }
-
-    [Fact]
-    public void TakeMaterial_RemovesQuantityFromPlayer()
-    {
-        _state.AddMaterial("iron_ore", 50);
-
-        var action = new DialogueAction
-        {
-            Type = DialogueActionType.TakeMaterial,
-            RefName = "iron_ore",
-            Amount = 15
-        };
-
-        _executor.Execute(action, "test_tree", "node1", "test_character", true);
-
-        Assert.Equal(35, _state.GetMaterialQuantity("iron_ore"));
-    }
-
-    [Fact]
-    public void GiveBlock_AddsBlockToPlayer()
-    {
-        var action = new DialogueAction
-        {
-            Type = DialogueActionType.GiveBlock,
-            RefName = "stone_block",
-            Amount = 64
-        };
-
-        _executor.Execute(action, "test_tree", "node1", "test_character", true);
-
-        Assert.Equal(64, _state.GetBlockQuantity("stone_block"));
-    }
-
-    [Fact]
-    public void TakeBlock_RemovesBlockFromPlayer()
-    {
-        _state.AddBlock("stone_block", 100);
-
-        var action = new DialogueAction
-        {
-            Type = DialogueActionType.TakeBlock,
-            RefName = "stone_block",
-            Amount = 25
-        };
-
-        _executor.Execute(action, "test_tree", "node1", "test_character", true);
-
-        Assert.Equal(75, _state.GetBlockQuantity("stone_block"));
     }
 
     #endregion
@@ -156,7 +96,8 @@ public class DialogueActionExecutorTests
     {
         var action = new DialogueAction
         {
-            Type = DialogueActionType.GiveEquipment,
+            Type = DialogueActionType.GiveItem,
+            Provider = "Equipment",
             RefName = "iron_sword"
         };
 
@@ -172,7 +113,8 @@ public class DialogueActionExecutorTests
 
         var action = new DialogueAction
         {
-            Type = DialogueActionType.TakeEquipment,
+            Type = DialogueActionType.TakeItem,
+            Provider = "Equipment",
             RefName = "iron_sword"
         };
 
@@ -182,25 +124,12 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void GiveTool_AddsToolToPlayer()
-    {
-        var action = new DialogueAction
-        {
-            Type = DialogueActionType.GiveTool,
-            RefName = "pickaxe"
-        };
-
-        _executor.Execute(action, "test_tree", "node1", "test_character", true);
-
-        Assert.True(_state.HasTool("pickaxe"));
-    }
-
-    [Fact]
     public void GiveSpell_AddsSpellToPlayer()
     {
         var action = new DialogueAction
         {
-            Type = DialogueActionType.GiveSpell,
+            Type = DialogueActionType.GiveItem,
+            Provider = "Spells",
             RefName = "fireball"
         };
 
@@ -210,29 +139,14 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void TakeTool_RemovesToolFromPlayer()
-    {
-        _state.AddTool("pickaxe");
-
-        var action = new DialogueAction
-        {
-            Type = DialogueActionType.TakeTool,
-            RefName = "pickaxe"
-        };
-
-        _executor.Execute(action, "test_tree", "node1", "test_character", true);
-
-        Assert.False(_state.HasTool("pickaxe"));
-    }
-
-    [Fact]
     public void TakeSpell_RemovesSpellFromPlayer()
     {
         _state.AddSpell("fireball");
 
         var action = new DialogueAction
         {
-            Type = DialogueActionType.TakeSpell,
+            Type = DialogueActionType.TakeItem,
+            Provider = "Spells",
             RefName = "fireball"
         };
 
@@ -398,7 +312,8 @@ public class DialogueActionExecutorTests
         {
             new DialogueAction
             {
-                Type = DialogueActionType.GiveQuestToken,
+                Type = DialogueActionType.GiveItem,
+                Provider = "QuestTokens",
                 RefName = "quest1"
             },
             new DialogueAction
@@ -408,7 +323,8 @@ public class DialogueActionExecutorTests
             },
             new DialogueAction
             {
-                Type = DialogueActionType.GiveConsumable,
+                Type = DialogueActionType.GiveItem,
+                Provider = "Consumables",
                 RefName = "health_potion",
                 Amount = 5
             }
@@ -796,7 +712,8 @@ public class DialogueActionExecutorTests
         {
             new DialogueAction
             {
-                Type = DialogueActionType.GiveQuestToken,
+                Type = DialogueActionType.GiveItem,
+                Provider = "QuestTokens",
                 RefName = "companion_recruited"
             },
             new DialogueAction

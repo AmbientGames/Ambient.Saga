@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Evaluation;
 
 namespace Ambient.Saga.Engine.Tests.Rpg.Dialogue;
@@ -23,7 +23,8 @@ public class DialogueConditionEvaluatorTests
 
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.HasQuestToken,
+            Type = DialogueConditionType.HasItem,
+            Provider = "QuestTokens",
             RefName = "dragon_quest"
         };
 
@@ -35,7 +36,8 @@ public class DialogueConditionEvaluatorTests
     {
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.LacksQuestToken,
+            Type = DialogueConditionType.LacksItem,
+            Provider = "QuestTokens",
             RefName = "dragon_quest"
         };
 
@@ -53,7 +55,8 @@ public class DialogueConditionEvaluatorTests
 
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.HasConsumable,
+            Type = DialogueConditionType.HasItem,
+            Provider = "Consumables",
             RefName = "health_potion"
         };
 
@@ -67,7 +70,8 @@ public class DialogueConditionEvaluatorTests
 
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.HasConsumable,
+            Type = DialogueConditionType.HasItem,
+            Provider = "Consumables",
             RefName = "health_potion",
             Operator = ComparisonOperator.GreaterThanOrEqual,
             Value = "3"
@@ -81,24 +85,9 @@ public class DialogueConditionEvaluatorTests
     {
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.LacksConsumable,
+            Type = DialogueConditionType.LacksItem,
+            Provider = "Consumables",
             RefName = "health_potion"
-        };
-
-        Assert.True(_evaluator.Evaluate(condition));
-    }
-
-    [Fact]
-    public void HasMaterial_WithQuantityCheck_EvaluatesCorrectly()
-    {
-        _state.AddMaterial("iron_ore", 10);
-
-        var condition = new DialogueCondition
-        {
-            Type = DialogueConditionType.HasMaterial,
-            RefName = "iron_ore",
-            Operator = ComparisonOperator.GreaterThan,
-            Value = "5"
         };
 
         Assert.True(_evaluator.Evaluate(condition));
@@ -115,7 +104,8 @@ public class DialogueConditionEvaluatorTests
 
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.HasEquipment,
+            Type = DialogueConditionType.HasItem,
+            Provider = "Equipment",
             RefName = "iron_sword"
         };
 
@@ -127,22 +117,9 @@ public class DialogueConditionEvaluatorTests
     {
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.LacksEquipment,
+            Type = DialogueConditionType.LacksItem,
+            Provider = "Equipment",
             RefName = "iron_sword"
-        };
-
-        Assert.True(_evaluator.Evaluate(condition));
-    }
-
-    [Fact]
-    public void HasTool_WhenPlayerHasTool_ReturnsTrue()
-    {
-        _state.AddTool("pickaxe");
-
-        var condition = new DialogueCondition
-        {
-            Type = DialogueConditionType.HasTool,
-            RefName = "pickaxe"
         };
 
         Assert.True(_evaluator.Evaluate(condition));
@@ -155,7 +132,8 @@ public class DialogueConditionEvaluatorTests
 
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.HasSpell,
+            Type = DialogueConditionType.HasItem,
+            Provider = "Spells",
             RefName = "fireball"
         };
 
@@ -286,7 +264,8 @@ public class DialogueConditionEvaluatorTests
             },
             new DialogueCondition
             {
-                Type = DialogueConditionType.HasQuestToken,
+                Type = DialogueConditionType.HasItem,
+                Provider = "QuestTokens",
                 RefName = "main_quest"
             }
         };
@@ -310,7 +289,8 @@ public class DialogueConditionEvaluatorTests
             },
             new DialogueCondition
             {
-                Type = DialogueConditionType.HasQuestToken,
+                Type = DialogueConditionType.HasItem,
+                Provider = "QuestTokens",
                 RefName = "main_quest"
             }
         };
@@ -334,7 +314,8 @@ public class DialogueConditionEvaluatorTests
             },
             new DialogueCondition
             {
-                Type = DialogueConditionType.HasQuestToken,
+                Type = DialogueConditionType.HasItem,
+                Provider = "QuestTokens",
                 RefName = "main_quest"
             }
         };
@@ -515,7 +496,8 @@ public class DialogueConditionEvaluatorTests
             },
             new DialogueCondition
             {
-                Type = DialogueConditionType.HasQuestToken,
+                Type = DialogueConditionType.HasItem,
+                Provider = "QuestTokens",
                 RefName = "saved_the_village"
             }
         };

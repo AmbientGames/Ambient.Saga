@@ -45,44 +45,6 @@ public static class ItemCollectionExtensions
 
     #endregion
 
-    #region Tools (Condition-based)
-
-    public static bool TryGetTool(this ItemCollection collection, string toolRef, [NotNullWhen(true)] out ToolEntry? tool)
-    {
-        if (collection?.Tools == null)
-        {
-            tool = null;
-            return false;
-        }
-        tool = Array.Find(collection.Tools, t => t.ToolRef == toolRef);
-        return tool != null;
-    }
-
-    public static ToolEntry? GetTool(this ItemCollection collection, string toolRef)
-    {
-        return collection?.Tools?.FirstOrDefault(t => t.ToolRef == toolRef);
-    }
-
-    public static ToolEntry GetOrAddTool(this ItemCollection collection, string toolRef)
-    {
-        if (collection.Tools == null)
-        {
-            collection.Tools = Array.Empty<ToolEntry>();
-        }
-
-        var existing = Array.Find(collection.Tools, t => t.ToolRef == toolRef);
-        if (existing != null) return existing;
-
-        var newTool = new ToolEntry { ToolRef = toolRef, Condition = 1.0f };
-        var tools = collection.Tools;
-        Array.Resize(ref tools, tools.Length + 1);
-        tools[tools.Length - 1] = newTool;
-        collection.Tools = tools;
-        return newTool;
-    }
-
-    #endregion
-
     #region Spells (Condition-based)
 
     public static bool TryGetSpell(this ItemCollection collection, string spellRef, [NotNullWhen(true)] out SpellEntry? spell)
@@ -155,82 +117,6 @@ public static class ItemCollectionExtensions
         consumables[consumables.Length - 1] = newConsumable;
         collection.Consumables = consumables;
         return newConsumable;
-    }
-
-    #endregion
-
-    #region Blocks (Quantity-based)
-
-    public static bool TryGetBlock(this ItemCollection collection, string blockRef, [NotNullWhen(true)] out BlockEntry? block)
-    {
-        if (collection?.Blocks == null)
-        {
-            block = null;
-            return false;
-        }
-        block = Array.Find(collection.Blocks, b => b.BlockRef == blockRef);
-        return block != null;
-    }
-
-    public static BlockEntry? GetBlock(this ItemCollection collection, string blockRef)
-    {
-        return collection?.Blocks?.FirstOrDefault(b => b.BlockRef == blockRef);
-    }
-
-    public static BlockEntry GetOrAddBlock(this ItemCollection collection, string blockRef)
-    {
-        if (collection.Blocks == null)
-        {
-            collection.Blocks = Array.Empty<BlockEntry>();
-        }
-
-        var existing = Array.Find(collection.Blocks, b => b.BlockRef == blockRef);
-        if (existing != null) return existing;
-
-        var newBlock = new BlockEntry { BlockRef = blockRef, Quantity = 0 };
-        var blocks = collection.Blocks;
-        Array.Resize(ref blocks, blocks.Length + 1);
-        blocks[blocks.Length - 1] = newBlock;
-        collection.Blocks = blocks;
-        return newBlock;
-    }
-
-    #endregion
-
-    #region BuildingMaterials (Quantity-based)
-
-    public static bool TryGetBuildingMaterial(this ItemCollection collection, string materialRef, [NotNullWhen(true)] out BuildingMaterialEntry? material)
-    {
-        if (collection?.BuildingMaterials == null)
-        {
-            material = null;
-            return false;
-        }
-        material = Array.Find(collection.BuildingMaterials, m => m.BuildingMaterialRef == materialRef);
-        return material != null;
-    }
-
-    public static BuildingMaterialEntry? GetBuildingMaterial(this ItemCollection collection, string materialRef)
-    {
-        return collection?.BuildingMaterials?.FirstOrDefault(m => m.BuildingMaterialRef == materialRef);
-    }
-
-    public static BuildingMaterialEntry GetOrAddBuildingMaterial(this ItemCollection collection, string materialRef)
-    {
-        if (collection.BuildingMaterials == null)
-        {
-            collection.BuildingMaterials = Array.Empty<BuildingMaterialEntry>();
-        }
-
-        var existing = Array.Find(collection.BuildingMaterials, m => m.BuildingMaterialRef == materialRef);
-        if (existing != null) return existing;
-
-        var newMaterial = new BuildingMaterialEntry { BuildingMaterialRef = materialRef, Quantity = 0 };
-        var materials = collection.BuildingMaterials;
-        Array.Resize(ref materials, materials.Length + 1);
-        materials[materials.Length - 1] = newMaterial;
-        collection.BuildingMaterials = materials;
-        return newMaterial;
     }
 
     #endregion

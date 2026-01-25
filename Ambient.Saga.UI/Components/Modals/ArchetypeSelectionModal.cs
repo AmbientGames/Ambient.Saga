@@ -404,43 +404,8 @@ public class ArchetypeSelectionModal
                 hasAnyItems = true;
             }
 
-            if (caps.Tools != null && caps.Tools.Length > 0)
-            {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Tools:");
-                foreach (var item in caps.Tools)
-                {
-                    var toolDef = viewModel.CurrentWorld?.Gameplay?.Tools?.FirstOrDefault(t => t.RefName == item.ToolRef);
-                    var toolName = toolDef?.DisplayName ?? item.ToolRef;
-                    ImGui.BulletText($"{toolName} ({item.Condition:P0})");
-                }
-                ImGui.Spacing();
-                hasAnyItems = true;
-            }
-
-            if (caps.Blocks != null && caps.Blocks.Length > 0)
-            {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Blocks:");
-                foreach (var item in caps.Blocks)
-                {
-                    var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(item.BlockRef);
-                    var blockName = blockDef?.DisplayName ?? item.BlockRef;
-                    ImGui.BulletText($"{blockName} x{item.Quantity}");
-                }
-                ImGui.Spacing();
-                hasAnyItems = true;
-            }
-
-            if (caps.BuildingMaterials != null && caps.BuildingMaterials.Length > 0)
-            {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Building Materials:");
-                foreach (var item in caps.BuildingMaterials)
-                {
-                    var materialDef = viewModel.CurrentWorld?.TryGetBuildingMaterialByRefName(item.BuildingMaterialRef);
-                    var materialName = materialDef?.DisplayName ?? item.BuildingMaterialRef;
-                    ImGui.BulletText($"{materialName} x{item.Quantity}");
-                }
-                hasAnyItems = true;
-            }
+            // Note: Tools, Blocks, and BuildingMaterials are now handled by IGameplayItemProvider.
+            // Starting items from these providers should be displayed by the consuming application.
 
             if (!hasAnyItems)
             {

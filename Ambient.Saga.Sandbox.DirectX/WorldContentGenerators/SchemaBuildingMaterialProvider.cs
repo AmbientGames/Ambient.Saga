@@ -1,3 +1,4 @@
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Sandbox.DirectX.WorldContentGenerators;
@@ -63,5 +64,33 @@ public class SchemaBuildingMaterialProvider : IGameplayItemProvider
         // Adhesives
         yield return new SchemaBuildingMaterial("Mortar", "Mortar", "Adhesive", "Traditional cement-based adhesive for stone and brick construction.", 15, 1.3f);
         yield return new SchemaBuildingMaterial("SuperGlue", "Super Glue", "Adhesive", "Industrial-strength adhesive. Bonds almost anything permanently.", 50, 1.6f);
+    }
+
+    /// <inheritdoc />
+    public int GetAvatarItemQuantity(AvatarBase avatar, string refName)
+    {
+        if (avatar.GameplayInventory.TryGetValue(Name, out var items))
+            return items.GetValueOrDefault(refName, 0);
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public void GiveAvatarItem(AvatarBase avatar, string refName, int quantity = 1)
+    {
+        if (!avatar.GameplayInventory.ContainsKey(Name))
+            avatar.GameplayInventory[Name] = new Dictionary<string, int>();
+
+        var items = avatar.GameplayInventory[Name];
+        items[refName] = items.GetValueOrDefault(refName, 0) + quantity;
+    }
+
+    /// <inheritdoc />
+    public void TakeAvatarItem(AvatarBase avatar, string refName, int quantity = 1)
+    {
+        if (avatar.GameplayInventory.TryGetValue(Name, out var items))
+        {
+            var current = items.GetValueOrDefault(refName, 0);
+            items[refName] = Math.Max(0, current - quantity);
+        }
     }
 }

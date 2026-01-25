@@ -5,8 +5,6 @@
     <xs:include schemaLocation="Inventories/QuestInventory.xsd" />
     <xs:include schemaLocation="Inventories/PartyInventory.xsd" />
 	<xs:include schemaLocation="Inventories/AffinityInventory.xsd" />
-	<xs:include schemaLocation="../../Acquirables/Tool.xsd" />
-    <xs:include schemaLocation="../../Acquirables/BuildingMaterial.xsd" />
     <xs:include schemaLocation="AvatarArchetype.xsd" />
     <xs:include schemaLocation="../Characters/Catalogs/CharacterAffinities.xsd" />
     <xs:complexType name="AvatarBase">
@@ -19,7 +17,8 @@
 					<xs:element name="Party" type="PartyInventory" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="ArchetypeRef" type="ArchetypeRef" use="optional" />
-                <!-- Runtime/session fields moved to partial class: ActiveAffinityRef, CurrentToolRef, CurrentBuildingMaterialRef, PlayTimeHours, BlocksPlaced, BlocksDestroyed, DistanceTraveled -->
+                <!-- Runtime/session fields moved to partial class: ActiveAffinityRef, PlayTimeHours, BlocksPlaced, BlocksDestroyed, DistanceTraveled -->
+                <!-- Item selection (CurrentItemRef) is now handled per-provider via IGameplayItemProvider -->
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

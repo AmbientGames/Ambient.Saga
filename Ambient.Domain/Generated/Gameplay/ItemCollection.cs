@@ -28,12 +28,6 @@ namespace Ambient.Domain {
         
         private SpellEntry[] spellsField;
         
-        private BlockEntry[] blocksField;
-        
-        private ToolEntry[] toolsField;
-        
-        private BuildingMaterialEntry[] buildingMaterialsField;
-        
         private QuestTokenEntry[] questTokensField;
         
         /// <remarks/>
@@ -66,39 +60,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.spellsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Entry", IsNullable=false)]
-        public BlockEntry[] Blocks {
-            get {
-                return this.blocksField;
-            }
-            set {
-                this.blocksField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Entry", IsNullable=false)]
-        public ToolEntry[] Tools {
-            get {
-                return this.toolsField;
-            }
-            set {
-                this.toolsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Entry", IsNullable=false)]
-        public BuildingMaterialEntry[] BuildingMaterials {
-            get {
-                return this.buildingMaterialsField;
-            }
-            set {
-                this.buildingMaterialsField = value;
             }
         }
         

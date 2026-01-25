@@ -97,49 +97,8 @@ public class AvatarUpdateService : IAvatarUpdateService
             return avatar;
         }
 
-        // Try blocks
-        var existingBlock = avatar.Capabilities.Blocks?.FirstOrDefault(b => b.BlockRef == itemRef);
-        if (existingBlock != null || isBuying)
-        {
-            var block = avatar.Capabilities.GetOrAddBlock(itemRef);
-            if (isBuying)
-            {
-                block.Quantity += quantity;
-            }
-            else // selling
-            {
-                block.Quantity -= quantity;
-                if (block.Quantity <= 0)
-                {
-                    var blocks = avatar.Capabilities.Blocks?.ToList() ?? new List<BlockEntry>();
-                    blocks.RemoveAll(b => b.BlockRef == itemRef);
-                    avatar.Capabilities.Blocks = blocks.ToArray();
-                }
-            }
-            return avatar;
-        }
-
-        // Try building materials
-        var existingMaterial = avatar.Capabilities.BuildingMaterials?.FirstOrDefault(m => m.BuildingMaterialRef == itemRef);
-        if (existingMaterial != null || isBuying)
-        {
-            var material = avatar.Capabilities.GetOrAddBuildingMaterial(itemRef);
-            if (isBuying)
-            {
-                material.Quantity += quantity;
-            }
-            else // selling
-            {
-                material.Quantity -= quantity;
-                if (material.Quantity <= 0)
-                {
-                    var materials = avatar.Capabilities.BuildingMaterials?.ToList() ?? new List<BuildingMaterialEntry>();
-                    materials.RemoveAll(m => m.BuildingMaterialRef == itemRef);
-                    avatar.Capabilities.BuildingMaterials = materials.ToArray();
-                }
-            }
-            return avatar;
-        }
+        // Note: Blocks and BuildingMaterials are now handled by IGameplayItemProvider.
+        // They should not appear in Saga trade transactions.
 
         // Try equipment (single item trade, quantity should be 1)
         var existingEquipment = avatar.Capabilities.Equipment?.FirstOrDefault(e => e.EquipmentRef == itemRef);
@@ -158,22 +117,7 @@ public class AvatarUpdateService : IAvatarUpdateService
             return avatar;
         }
 
-        // Try tools (single item trade, quantity should be 1)
-        var existingTool = avatar.Capabilities.Tools?.FirstOrDefault(t => t.ToolRef == itemRef);
-        if (existingTool != null)
-        {
-            if (isBuying)
-            {
-                // Already have it, skip (or could upgrade condition logic here)
-            }
-            else // selling
-            {
-                var tools = avatar.Capabilities.Tools?.ToList() ?? new List<ToolEntry>();
-                tools.RemoveAll(t => t.ToolRef == itemRef);
-                avatar.Capabilities.Tools = tools.ToArray();
-            }
-            return avatar;
-        }
+        // Note: Tools are now handled by IGameplayItemProvider.
 
         // Try spells (single item trade, quantity should be 1)
         var existingSpell = avatar.Capabilities.Spells?.FirstOrDefault(s => s.SpellRef == itemRef);
@@ -398,53 +342,8 @@ public class AvatarUpdateService : IAvatarUpdateService
             }
         }
 
-        // Parse and transfer blocks
-        if (transaction.Data.TryGetValue("Blocks", out var blocksData) && !string.IsNullOrEmpty(blocksData))
-        {
-            var blockEntries = blocksData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in blockEntries)
-            {
-                var parts = entry.Split(':');
-                if (parts.Length >= 2 && int.TryParse(parts[1], out var quantity))
-                {
-                    var blockRef = parts[0];
-                    var block = avatar.Capabilities.GetOrAddBlock(blockRef);
-                    block.Quantity += quantity;
-                }
-            }
-        }
-
-        // Parse and transfer tools
-        if (transaction.Data.TryGetValue("Tools", out var toolsData) && !string.IsNullOrEmpty(toolsData))
-        {
-            var toolEntries = toolsData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in toolEntries)
-            {
-                var parts = entry.Split(':');
-                if (parts.Length >= 2 && float.TryParse(parts[1], out var condition))
-                {
-                    var toolRef = parts[0];
-                    var tool = avatar.Capabilities.GetOrAddTool(toolRef);
-                    tool.Condition = Math.Max(tool.Condition, condition); // Keep best condition if duplicate
-                }
-            }
-        }
-
-        // Parse and transfer building materials
-        if (transaction.Data.TryGetValue("BuildingMaterials", out var materialsData) && !string.IsNullOrEmpty(materialsData))
-        {
-            var materialEntries = materialsData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in materialEntries)
-            {
-                var parts = entry.Split(':');
-                if (parts.Length >= 2 && int.TryParse(parts[1], out var quantity))
-                {
-                    var materialRef = parts[0];
-                    var material = avatar.Capabilities.GetOrAddBuildingMaterial(materialRef);
-                    material.Quantity += quantity;
-                }
-            }
-        }
+        // Note: Blocks, Tools, and BuildingMaterials are now handled by IGameplayItemProvider.
+        // Loot transactions for these types should be handled by the application.
 
         // Transfer credits
         if (transaction.Data.TryGetValue("Credits", out var creditsData) && int.TryParse(creditsData, out var credits))
@@ -544,110 +443,9 @@ public class AvatarUpdateService : IAvatarUpdateService
         return avatar;
     }
 
-    /// <inheritdoc/>
-    public async Task<AvatarEntity> UpdateAvatarForMiningAsync(
-        AvatarEntity avatar,
-        Dictionary<string, int> blocksMined,
-        CancellationToken ct = default)
-    {
-        // Initialize Capabilities if needed
-        if (avatar.Capabilities == null)
-        {
-            avatar.Capabilities = new ItemCollection();
-        }
-
-        // Add mined blocks to inventory
-        foreach (var kvp in blocksMined)
-        {
-            var blockRef = kvp.Key;
-            var quantity = kvp.Value;
-
-            var block = avatar.Capabilities.GetOrAddBlock(blockRef);
-            block.Quantity += quantity;
-        }
-
-        return avatar;
-    }
-
-    /// <inheritdoc/>
-    public async Task<AvatarEntity> UpdateAvatarForBuildingAsync(
-        AvatarEntity avatar,
-        Dictionary<string, int> materialsConsumed,
-        CancellationToken ct = default)
-    {
-        // Initialize Capabilities if needed
-        if (avatar.Capabilities == null)
-        {
-            avatar.Capabilities = new ItemCollection();
-        }
-
-        // Remove consumed materials from inventory
-        foreach (var kvp in materialsConsumed)
-        {
-            var materialRef = kvp.Key;
-            var quantity = kvp.Value;
-
-            // Try blocks first
-            var existingBlock = avatar.Capabilities.Blocks?.FirstOrDefault(b => b.BlockRef == materialRef);
-            if (existingBlock != null)
-            {
-                existingBlock.Quantity -= quantity;
-                if (existingBlock.Quantity <= 0)
-                {
-                    var blocks = avatar.Capabilities.Blocks?.ToList() ?? new List<BlockEntry>();
-                    blocks.RemoveAll(b => b.BlockRef == materialRef);
-                    avatar.Capabilities.Blocks = blocks.ToArray();
-                }
-                continue;
-            }
-
-            // Try building materials
-            var existingMaterial = avatar.Capabilities.BuildingMaterials?.FirstOrDefault(m => m.BuildingMaterialRef == materialRef);
-            if (existingMaterial != null)
-            {
-                existingMaterial.Quantity -= quantity;
-                if (existingMaterial.Quantity <= 0)
-                {
-                    var materials = avatar.Capabilities.BuildingMaterials?.ToList() ?? new List<BuildingMaterialEntry>();
-                    materials.RemoveAll(m => m.BuildingMaterialRef == materialRef);
-                    avatar.Capabilities.BuildingMaterials = materials.ToArray();
-                }
-            }
-        }
-
-        return avatar;
-    }
-
-    /// <inheritdoc/>
-    public async Task<AvatarEntity> UpdateAvatarForToolWearAsync(
-        AvatarEntity avatar,
-        string toolRef,
-        float newCondition,
-        CancellationToken ct = default)
-    {
-        // Initialize Capabilities if needed
-        if (avatar.Capabilities == null)
-        {
-            avatar.Capabilities = new ItemCollection();
-        }
-
-        // Find and update tool condition
-        var tool = avatar.Capabilities.Tools?.FirstOrDefault(t => t.ToolRef == toolRef);
-        if (tool != null)
-        {
-            tool.Condition = Math.Max(0f, Math.Min(1f, newCondition)); // Clamp to 0-1
-
-            // Remove tool if condition is 0 (broken)
-            if (tool.Condition <= 0f)
-            {
-                var tools = avatar.Capabilities.Tools?.ToList() ?? new List<ToolEntry>();
-                tools.RemoveAll(t => t.ToolRef == toolRef);
-                avatar.Capabilities.Tools = tools.ToArray();
-            }
-        }
-
-        return avatar;
-    }
+    // Note: Mining, Building, and ToolWear methods have been removed.
+    // Blocks, Tools, and BuildingMaterials are now handled by IGameplayItemProvider in Core.
+    // These operations should be implemented by the consuming application.
 
     /// <inheritdoc/>
     public async Task PersistAvatarAsync(AvatarEntity avatar, CancellationToken ct = default)

@@ -222,9 +222,6 @@ public class SagaE2EStoryTests : IDisposable
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                Blocks = Array.Empty<BlockEntry>(),
-                Tools = Array.Empty<ToolEntry>(),
-                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
                 QuestTokens = Array.Empty<QuestTokenEntry>()
             },
             RespawnStats = new CharacterStats
@@ -246,9 +243,6 @@ public class SagaE2EStoryTests : IDisposable
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                Blocks = Array.Empty<BlockEntry>(),
-                Tools = Array.Empty<ToolEntry>(),
-                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
                 QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };

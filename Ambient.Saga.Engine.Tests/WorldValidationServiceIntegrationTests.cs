@@ -87,42 +87,14 @@ public class WorldValidationServiceIntegrationTests
         Assert.True(validationPassed);
     }
 
-    [Fact]
-    public async Task ValidateReferentialIntegrity_DefaultWorld_BlockRewardsInDialogueAreValid()
-    {
-        // Arrange - Load the actual world configuration
-        var world = await _worldLoader.LoadWorldByConfigurationAsync(_dataDirectory, _definitionDirectory, TestWorldConfiguration);
-
-        // Act - Run validation
-        WorldValidationService.ValidateReferentialIntegrity(world);
-
-        // Assert - Check that if any dialogue gives blocks, those characters have blocks
-        if (world.Gameplay.Characters != null && world.Gameplay.DialogueTrees != null)
-        {
-            foreach (var character in world.Gameplay.Characters)
-            {
-                var dialogueTreeRef = character.Interactable?.DialogueTreeRef;
-                if (string.IsNullOrEmpty(dialogueTreeRef)) continue;
-
-                if (world.DialogueTreesLookup.TryGetValue(dialogueTreeRef, out var dialogueTree))
-                {
-                    // Check if any nodes give blocks
-                    var givesBlocks = dialogueTree.Node?.Any(n =>
-                        n.Action?.Any(a => a.Type == DialogueActionType.GiveBlock) == true) == true;
-
-                    if (givesBlocks)
-                    {
-                        // Character has dialogue that gives blocks - validation should have already checked loot pool
-                        // This assertion just documents the expectation
-                        Assert.NotNull(character.Interactable?.Loot?.Blocks);
-                    }
-                }
-            }
-        }
-
-        // If we get here, all block rewards are valid
-        Assert.True(true);
-    }
+    // NOTE: Test removed - Blocks/Tools/BuildingMaterials are now provided by IGameplayItemProvider in Core,
+    // not by Saga's GameplayComponents. DialogueActionType.GiveBlock no longer exists (use GiveItem instead).
+    // Block validation is now handled by the IGameplayItemProvider implementation.
+    //[Fact]
+    //public async Task ValidateReferentialIntegrity_DefaultWorld_BlockRewardsInDialogueAreValid()
+    //{
+    //    // Test removed: Blocks are now in IGameplayItemProvider, not Saga.
+    //}
 
     /// <summary>
     /// Loads and validates ALL world configurations defined in WorldConfigurations.xml.

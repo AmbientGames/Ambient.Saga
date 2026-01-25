@@ -1,3 +1,4 @@
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Sandbox.DirectX.WorldContentGenerators;
@@ -109,5 +110,33 @@ public class SchemaToolProvider : IGameplayItemProvider
         yield return new SchemaTool("DiamondShovel", "Diamond Shovel", "Diamond", "The finest shovel. Excavates rapidly.", 400, 2.0f);
         yield return new SchemaTool("DiamondSword", "Diamond Sword", "Diamond", "The finest sword. Devastating damage.", 450, 2.0f);
         yield return new SchemaTool("DiamondHoe", "Diamond Hoe", "Diamond", "The finest hoe. Why though?", 400, 2.0f);
+    }
+
+    /// <inheritdoc />
+    public int GetAvatarItemQuantity(AvatarBase avatar, string refName)
+    {
+        if (avatar.GameplayInventory.TryGetValue(Name, out var items))
+            return items.GetValueOrDefault(refName, 0);
+        return 0;
+    }
+
+    /// <inheritdoc />
+    public void GiveAvatarItem(AvatarBase avatar, string refName, int quantity = 1)
+    {
+        if (!avatar.GameplayInventory.ContainsKey(Name))
+            avatar.GameplayInventory[Name] = new Dictionary<string, int>();
+
+        var items = avatar.GameplayInventory[Name];
+        items[refName] = items.GetValueOrDefault(refName, 0) + quantity;
+    }
+
+    /// <inheritdoc />
+    public void TakeAvatarItem(AvatarBase avatar, string refName, int quantity = 1)
+    {
+        if (avatar.GameplayInventory.TryGetValue(Name, out var items))
+        {
+            var current = items.GetValueOrDefault(refName, 0);
+            items[refName] = Math.Max(0, current - quantity);
+        }
     }
 }

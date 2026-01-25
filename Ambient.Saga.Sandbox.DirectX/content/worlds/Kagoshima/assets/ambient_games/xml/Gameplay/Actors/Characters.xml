@@ -901,7 +901,6 @@
           <Entry SpellRef="Invisibility" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_Tsurumarujō</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="BossFight" Value="1" />
@@ -910,12 +909,6 @@
       <Trait Name="LastStand" Value="15" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
   <Character RefName="MERCHANT_TsurumarujōSpoke1Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a mysterious trader offering goods at Tsurumaru-jō Spoke 1 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;]}">
@@ -951,7 +944,6 @@
           <Entry SpellRef="Stun" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke1Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -976,19 +968,10 @@
         <Entry SpellRef="EntanglingRoots" Condition="1.0" />
       </Spells>
     </Capabilities>
-    <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2</DialogueTreeRef>
-    </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
   <Character RefName="MERCHANT_TsurumarujōSpoke1Ring3" DisplayName="Traveling Merchant" Description="At Tsurumaru-jō Spoke 1 Ring 3, Traveling Merchant offers merchandise with a resolute approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;IsoteienSpoke5Ring4&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
@@ -1025,7 +1008,6 @@
           <Entry SpellRef="ArcaneMissile" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke1Ring3</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1050,7 +1032,6 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
@@ -1083,7 +1064,6 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />

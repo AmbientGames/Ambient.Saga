@@ -24,6 +24,8 @@ namespace Ambient.Domain {
         
         private DialogueActionType typeField;
         
+        private string providerField;
+        
         private string refNameField;
         
         private string characterRefField;
@@ -52,6 +54,17 @@ namespace Ambient.Domain {
             }
             set {
                 this.typeField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Provider {
+            get {
+                return this.providerField;
+            }
+            set {
+                this.providerField = value;
             }
         }
         

@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
 
@@ -229,7 +229,8 @@ public class DialogueEngineTests
                     {
                         new DialogueCondition
                         {
-                            Type = DialogueConditionType.HasQuestToken,
+                            Type = DialogueConditionType.HasItem,
+                            Provider = "QuestTokens",
                             RefName = "required_quest"
                         }
                     },
@@ -274,7 +275,8 @@ public class DialogueEngineTests
                         },
                         new DialogueCondition
                         {
-                            Type = DialogueConditionType.HasQuestToken,
+                            Type = DialogueConditionType.HasItem,
+                            Provider = "QuestTokens",
                             RefName = "quest" // Player has this
                         }
                     },
@@ -313,7 +315,8 @@ public class DialogueEngineTests
                     {
                         new DialogueAction
                         {
-                            Type = DialogueActionType.GiveConsumable,
+                            Type = DialogueActionType.GiveItem,
+                            Provider = "Consumables",
                             RefName = "health_potion",
                             Amount = 3
                         },
@@ -450,7 +453,8 @@ public class DialogueEngineTests
                     {
                         new DialogueCondition
                         {
-                            Type = DialogueConditionType.HasMaterial,
+                            Type = DialogueConditionType.HasItem,
+                            Provider = "Consumables",
                             RefName = "iron_ore",
                             Operator = ComparisonOperator.GreaterThanOrEqual,
                             Value = "10"
@@ -461,7 +465,8 @@ public class DialogueEngineTests
                     {
                         new DialogueAction
                         {
-                            Type = DialogueActionType.TakeMaterial,
+                            Type = DialogueActionType.TakeItem,
+                            Provider = "Consumables",
                             RefName = "iron_ore",
                             Amount = 10
                         },
@@ -486,8 +491,8 @@ public class DialogueEngineTests
             }
         };
 
-        // Setup: Player has materials
-        _state.AddMaterial("iron_ore", 15);
+        // Setup: Player has consumables (using Consumables provider for iron_ore in this test)
+        _state.AddConsumable("iron_ore", 15);
         _state.Credits = 100;
 
         // Start dialogue
@@ -499,7 +504,7 @@ public class DialogueEngineTests
         Assert.Equal("check_quest", node2!.NodeId);
 
         // Verify actions executed
-        Assert.Equal(5, _state.GetMaterialQuantity("iron_ore")); // 15 - 10
+        Assert.Equal(5, _state.GetConsumableQuantity("iron_ore")); // 15 - 10
         Assert.Equal(600, _state.GetCredits()); // 100 + 500
         Assert.True(_state.HasAchievement("quest_complete"));
 

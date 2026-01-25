@@ -79,43 +79,9 @@ public interface IAvatarUpdateService
         Guid effectTransactionId,
         CancellationToken ct = default);
 
-    /// <summary>
-    /// Updates avatar block inventory after mining (adds mined blocks).
-    /// </summary>
-    /// <param name="avatar">The avatar to update</param>
-    /// <param name="blocksMined">Dictionary of BlockRef -> quantity mined</param>
-    /// <param name="ct">Cancellation token</param>
-    /// <returns>The updated avatar</returns>
-    Task<AvatarEntity> UpdateAvatarForMiningAsync(
-        AvatarEntity avatar,
-        Dictionary<string, int> blocksMined,
-        CancellationToken ct = default);
-
-    /// <summary>
-    /// Updates avatar block/material inventory after building (removes consumed materials).
-    /// </summary>
-    /// <param name="avatar">The avatar to update</param>
-    /// <param name="materialsConsumed">Dictionary of MaterialRef -> quantity consumed</param>
-    /// <param name="ct">Cancellation token</param>
-    /// <returns>The updated avatar</returns>
-    Task<AvatarEntity> UpdateAvatarForBuildingAsync(
-        AvatarEntity avatar,
-        Dictionary<string, int> materialsConsumed,
-        CancellationToken ct = default);
-
-    /// <summary>
-    /// Updates avatar tool condition after use.
-    /// </summary>
-    /// <param name="avatar">The avatar to update</param>
-    /// <param name="toolRef">The tool reference</param>
-    /// <param name="newCondition">The new tool condition (0.0 - 1.0)</param>
-    /// <param name="ct">Cancellation token</param>
-    /// <returns>The updated avatar</returns>
-    Task<AvatarEntity> UpdateAvatarForToolWearAsync(
-        AvatarEntity avatar,
-        string toolRef,
-        float newCondition,
-        CancellationToken ct = default);
+    // Note: Mining, Building, and ToolWear methods have been removed.
+    // Blocks, Tools, and BuildingMaterials are now handled by IGameplayItemProvider in Core.
+    // These operations should be implemented by the consuming application.
 
     /// <summary>
     /// Persists avatar to repository.

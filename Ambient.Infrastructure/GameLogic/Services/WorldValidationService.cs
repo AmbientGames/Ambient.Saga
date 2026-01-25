@@ -64,7 +64,8 @@ public static class WorldValidationService
 
     /// <summary>
     /// Validates all item references in an ItemCollection (inventory).
-    /// Checks Equipment, Consumables, Tools, Spells, Blocks, BuildingMaterials, and QuestTokens.
+    /// Checks Equipment, Consumables, Spells, and QuestTokens.
+    /// Note: Tools, Blocks, BuildingMaterials are now handled by Core via IGameplayItemProvider.
     /// </summary>
     private static void ValidateItemCollection(IWorld world, List<string> errors, string context, ItemCollection itemCollection, string collectionName)
     {
@@ -96,18 +97,6 @@ public static class WorldValidationService
             }
         }
 
-        // Validate Tool references
-        if (itemCollection.Tools != null)
-        {
-            foreach (var entry in itemCollection.Tools)
-            {
-                if (!string.IsNullOrEmpty(entry.ToolRef))
-                {
-                    ValidateReference(world.ToolsLookup, entry.ToolRef, fullContext, "Tools.ToolRef", "Tools", errors);
-                }
-            }
-        }
-
         // Validate Spell references
         if (itemCollection.Spells != null)
         {
@@ -116,18 +105,6 @@ public static class WorldValidationService
                 if (!string.IsNullOrEmpty(entry.SpellRef))
                 {
                     ValidateReference(world.SpellsLookup, entry.SpellRef, fullContext, "Spells.SpellRef", "Spells", errors);
-                }
-            }
-        }
-
-        // Validate BuildingMaterial references
-        if (itemCollection.BuildingMaterials != null)
-        {
-            foreach (var entry in itemCollection.BuildingMaterials)
-            {
-                if (!string.IsNullOrEmpty(entry.BuildingMaterialRef))
-                {
-                    ValidateReference(world.BuildingMaterialsLookup, entry.BuildingMaterialRef, fullContext, "BuildingMaterials.BuildingMaterialRef", "BuildingMaterials", errors);
                 }
             }
         }
@@ -671,37 +648,18 @@ public static class WorldValidationService
 
         switch (condition.Type)
         {
-            // Quest tokens
-            case DialogueConditionType.HasQuestToken:
-            case DialogueConditionType.LacksQuestToken:
-                ValidateConditionRefName(world.QuestTokensLookup, condition.RefName, conditionContext, "QuestTokens", errors, required: true);
-                break;
-
-            // Stackable items
-            case DialogueConditionType.HasConsumable:
-            case DialogueConditionType.LacksConsumable:
-                ValidateConditionRefName(world.ConsumablesLookup, condition.RefName, conditionContext, "Consumables", errors, required: true);
-                break;
-
-            case DialogueConditionType.HasMaterial:
-            case DialogueConditionType.LacksMaterial:
-                ValidateConditionRefName(world.BuildingMaterialsLookup, condition.RefName, conditionContext, "Materials", errors, required: true);
-                break;
-
-            // Degradable items
-            case DialogueConditionType.HasEquipment:
-            case DialogueConditionType.LacksEquipment:
-                ValidateConditionRefName(world.EquipmentLookup, condition.RefName, conditionContext, "Equipment", errors, required: true);
-                break;
-
-            case DialogueConditionType.HasTool:
-            case DialogueConditionType.LacksTool:
-                ValidateConditionRefName(world.ToolsLookup, condition.RefName, conditionContext, "Tools", errors, required: true);
-                break;
-
-            case DialogueConditionType.HasSpell:
-            case DialogueConditionType.LacksSpell:
-                ValidateConditionRefName(world.SpellsLookup, condition.RefName, conditionContext, "Spells", errors, required: true);
+            // Generic item conditions (use Provider + RefName)
+            case DialogueConditionType.HasItem:
+            case DialogueConditionType.LacksItem:
+                // Provider and RefName are validated at runtime by the provider system
+                if (string.IsNullOrEmpty(condition.Provider))
+                {
+                    errors.Add($"{conditionContext}: Provider is required for HasItem/LacksItem conditions");
+                }
+                if (string.IsNullOrEmpty(condition.RefName))
+                {
+                    errors.Add($"{conditionContext}: RefName is required for HasItem/LacksItem conditions");
+                }
                 break;
 
             // Player state
@@ -797,46 +755,18 @@ public static class WorldValidationService
 
         switch (action.Type)
         {
-            // Quest tokens
-            case DialogueActionType.GiveQuestToken:
-            case DialogueActionType.TakeQuestToken:
-                ValidateActionRefName(world.QuestTokensLookup, action.RefName, actionContext, "QuestTokens", errors, required: true);
-                break;
-
-            // Stackable items (Amount attribute applies)
-            case DialogueActionType.GiveConsumable:
-            case DialogueActionType.TakeConsumable:
-                ValidateActionRefName(world.ConsumablesLookup, action.RefName, actionContext, "Consumables", errors, required: true);
-                ValidateActionAmount(action.Amount, actionContext, errors, allowZero: false);
-                break;
-
-            case DialogueActionType.GiveMaterial:
-            case DialogueActionType.TakeMaterial:
-                ValidateActionRefName(world.BuildingMaterialsLookup, action.RefName, actionContext, "Materials", errors, required: true);
-                ValidateActionAmount(action.Amount, actionContext, errors, allowZero: false);
-                break;
-
-            case DialogueActionType.GiveBlock:
-            case DialogueActionType.TakeBlock:
-                // note, not possible to validate the block is valid
-                //ValidateActionRefName(world.BlocksLookup, action.RefName, actionContext, "Blocks", errors, required: true);
-                ValidateActionAmount(action.Amount, actionContext, errors, allowZero: false);
-                break;
-
-            // Degradable items (Amount ignored, but validate RefName)
-            case DialogueActionType.GiveEquipment:
-            case DialogueActionType.TakeEquipment:
-                ValidateActionRefName(world.EquipmentLookup, action.RefName, actionContext, "Equipment", errors, required: true);
-                break;
-
-            case DialogueActionType.GiveTool:
-            case DialogueActionType.TakeTool:
-                ValidateActionRefName(world.ToolsLookup, action.RefName, actionContext, "Tools", errors, required: true);
-                break;
-
-            case DialogueActionType.GiveSpell:
-            case DialogueActionType.TakeSpell:
-                ValidateActionRefName(world.SpellsLookup, action.RefName, actionContext, "Spells", errors, required: true);
+            // Generic item actions (use Provider + RefName)
+            case DialogueActionType.GiveItem:
+            case DialogueActionType.TakeItem:
+                // Provider and RefName are validated at runtime by the provider system
+                if (string.IsNullOrEmpty(action.Provider))
+                {
+                    errors.Add($"{actionContext}: Provider is required for GiveItem/TakeItem actions");
+                }
+                if (string.IsNullOrEmpty(action.RefName))
+                {
+                    errors.Add($"{actionContext}: RefName is required for GiveItem/TakeItem actions");
+                }
                 break;
 
             // Currency
@@ -1019,16 +949,11 @@ public static class WorldValidationService
     /// - Character.Interactable.Loot = Items the character GIVES/DROPS to players (rewards, shop inventory)
     /// - Dialogue rewards come from Loot, not Capabilities (game balance: boss can use powerful gear without dropping it)
     ///
-    /// Validates "Give" actions only - "Take" actions are validated at runtime against player inventory.
+    /// Validates "GiveItem" actions only - "TakeItem" actions are validated at runtime against player inventory.
+    /// Note: GiveItem with external providers (Tools, Blocks, BuildingMaterials) cannot be validated at compile time
+    /// since the item definitions are provided by the consumer application.
     ///
     /// Checks:
-    /// - GiveEquipment: Character.Interactable.Loot.Equipment contains EquipmentRef
-    /// - GiveConsumable: Character.Interactable.Loot.Consumables has sufficient Quantity
-    /// - GiveMaterial: Character.Interactable.Loot.BuildingMaterials has sufficient Quantity
-    /// - GiveBlock: Character.Interactable.Loot.Blocks has sufficient Quantity
-    /// - GiveTool: Character.Interactable.Loot.Tools contains ToolRef
-    /// - GiveSpell: Character.Interactable.Loot.Spells contains SpellRef
-    /// - GiveQuestToken: Character.Interactable.Loot.QuestTokens contains QuestTokenRef
     /// - TransferCurrency (positive): Character.Stats.Credits >= Amount
     /// </summary>
     private static void ValidateDialogueInventoryReferences(IWorld world, List<string> errors)
@@ -1048,7 +973,7 @@ public static class WorldValidationService
 
             var characterContext = $"Character '{character.RefName}'";
 
-            // Check all dialogue nodes for "Give" actions (not "Take" - those validate player inventory at runtime)
+            // Check all dialogue nodes for TransferCurrency actions
             if (dialogueTree.Node != null)
             {
                 foreach (var node in dialogueTree.Node)
@@ -1061,38 +986,9 @@ public static class WorldValidationService
 
                         switch (action.Type)
                         {
-                            case DialogueActionType.GiveEquipment:
-                                ValidateCharacterHasEquipment(character, action.RefName, nodeContext, errors);
-                                break;
-
-                            case DialogueActionType.GiveConsumable:
-                                ValidateCharacterHasConsumable(character, action.RefName, action.Amount, nodeContext, errors);
-                                break;
-
-                            case DialogueActionType.GiveMaterial:
-                                ValidateCharacterHasMaterial(character, action.RefName, action.Amount, nodeContext, errors);
-                                break;
-
-                            case DialogueActionType.GiveBlock:
-                                ValidateCharacterHasBlock(character, action.RefName, action.Amount, nodeContext, errors);
-                                break;
-
-                            case DialogueActionType.GiveTool:
-                                ValidateCharacterHasTool(character, action.RefName, nodeContext, errors);
-                                break;
-
-                            case DialogueActionType.GiveSpell:
-                                ValidateCharacterHasSpell(character, action.RefName, nodeContext, errors);
-                                break;
-
-                            case DialogueActionType.GiveQuestToken:
-                                // Quest tokens are abstract progress markers, not physical items
-                                // They don't need to be in a character's loot pool - they're created by dialogue
-                                // Only validate that the quest token exists in world definitions
-                                if (!string.IsNullOrEmpty(action.RefName) && !world.QuestTokensLookup.ContainsKey(action.RefName))
-                                {
-                                    errors.Add($"{nodeContext}: Dialogue gives QuestToken '{action.RefName}' which does not exist in QuestTokens definitions");
-                                }
+                            case DialogueActionType.GiveItem:
+                                // GiveItem validation is deferred to runtime since items are provided by external providers
+                                // We can only validate that Provider and RefName are specified (done in ValidateDialogueAction)
                                 break;
 
                             case DialogueActionType.TransferCurrency:
@@ -1106,73 +1002,6 @@ public static class WorldValidationService
                     }
                 }
             }
-        }
-    }
-
-    private static void ValidateCharacterHasEquipment(Character character, string equipmentRef, string context, List<string> errors)
-    {
-        if (string.IsNullOrEmpty(equipmentRef)) return;
-
-        var hasEquipment = character.Interactable?.Loot?.Equipment?.Any(e => e.EquipmentRef == equipmentRef) == true;
-        if (!hasEquipment)
-        {
-            errors.Add($"{context}: Dialogue promises '{equipmentRef}' but character loot pool (Interactable.Loot.Equipment) does not contain it");
-        }
-    }
-
-    private static void ValidateCharacterHasConsumable(Character character, string consumableRef, int amount, string context, List<string> errors)
-    {
-        if (string.IsNullOrEmpty(consumableRef)) return;
-
-        var consumable = character.Interactable?.Loot?.Consumables?.FirstOrDefault(c => c.ConsumableRef == consumableRef);
-        if (consumable == null)
-        {
-            errors.Add($"{context}: Dialogue promises {amount} '{consumableRef}' but character loot pool (Interactable.Loot.Consumables) does not contain it");
-        }
-        else if (consumable.Quantity < amount)
-        {
-            errors.Add($"{context}: Dialogue promises {amount} '{consumableRef}' but character loot only has {consumable.Quantity}");
-        }
-    }
-
-    private static void ValidateCharacterHasMaterial(Character character, string materialRef, int amount, string context, List<string> errors)
-    {
-        if (string.IsNullOrEmpty(materialRef)) return;
-
-        var material = character.Interactable?.Loot?.BuildingMaterials?.FirstOrDefault(m => m.BuildingMaterialRef == materialRef);
-        if (material == null)
-        {
-            errors.Add($"{context}: Dialogue promises {amount} '{materialRef}' but character loot pool (Interactable.Loot.BuildingMaterials) does not contain it");
-        }
-        else if (material.Quantity < amount)
-        {
-            errors.Add($"{context}: Dialogue promises {amount} '{materialRef}' but character loot only has {material.Quantity}");
-        }
-    }
-
-    private static void ValidateCharacterHasBlock(Character character, string blockRef, int amount, string context, List<string> errors)
-    {
-        if (string.IsNullOrEmpty(blockRef)) return;
-
-        var block = character.Interactable?.Loot?.Blocks?.FirstOrDefault(b => b.BlockRef == blockRef);
-        if (block == null)
-        {
-            errors.Add($"{context}: Dialogue promises {amount} '{blockRef}' but character loot pool (Interactable.Loot.Blocks) does not contain it");
-        }
-        else if (block.Quantity < amount)
-        {
-            errors.Add($"{context}: Dialogue promises {amount} '{blockRef}' but character loot only has {block.Quantity}");
-        }
-    }
-
-    private static void ValidateCharacterHasTool(Character character, string toolRef, string context, List<string> errors)
-    {
-        if (string.IsNullOrEmpty(toolRef)) return;
-
-        var hasTool = character.Interactable?.Loot?.Tools?.Any(t => t.ToolRef == toolRef) == true;
-        if (!hasTool)
-        {
-            errors.Add($"{context}: Dialogue promises '{toolRef}' but character loot pool (Interactable.Loot.Tools) does not contain it");
         }
     }
 
@@ -1474,10 +1303,12 @@ public static class WorldValidationService
 
                     var nodeContext = $"DialogueTree '{dialogueTree.RefName}' Node '{node.NodeId}'";
 
-                    // Track token grants
+                    // Track token grants (GiveItem with QuestTokens provider)
                     foreach (var action in node.Action)
                     {
-                        if (action.Type == DialogueActionType.GiveQuestToken && !string.IsNullOrEmpty(action.RefName))
+                        if (action.Type == DialogueActionType.GiveItem &&
+                            string.Equals(action.Provider, "QuestTokens", StringComparison.OrdinalIgnoreCase) &&
+                            !string.IsNullOrEmpty(action.RefName))
                         {
                             if (!tokenGrants.ContainsKey(action.RefName))
                                 tokenGrants[action.RefName] = new List<string>();

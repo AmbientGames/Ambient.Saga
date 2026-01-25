@@ -132,13 +132,8 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                     if (hasItem) itemType = "equipment";
                 }
 
-                // Check tools
-                if (!hasItem && command.Avatar.Capabilities?.Tools != null)
-                {
-                    hasItem = command.Avatar.Capabilities.Tools
-                        .Any(t => t.ToolRef == command.ItemRef);
-                    if (hasItem) itemType = "tool";
-                }
+                // Note: Tools and Blocks are now handled by IGameplayItemProvider in Core.
+                // Trading of these items should be done through the application's own trade UI.
 
                 // Check spells
                 if (!hasItem && command.Avatar.Capabilities?.Spells != null)
@@ -146,18 +141,6 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                     hasItem = command.Avatar.Capabilities.Spells
                         .Any(s => s.SpellRef == command.ItemRef);
                     if (hasItem) itemType = "spell";
-                }
-
-                // Check blocks
-                if (!hasItem && command.Avatar.Capabilities?.Blocks != null)
-                {
-                    var block = command.Avatar.Capabilities.Blocks
-                        .FirstOrDefault(b => b.BlockRef == command.ItemRef);
-                    if (block != null && block.Quantity >= command.Quantity)
-                    {
-                        hasItem = true;
-                        itemType = "block";
-                    }
                 }
 
                 if (!hasItem)

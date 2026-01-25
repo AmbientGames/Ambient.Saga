@@ -21,46 +21,10 @@ namespace Ambient.Domain {
     public enum DialogueConditionType {
         
         /// <remarks/>
-        HasQuestToken,
+        HasItem,
         
         /// <remarks/>
-        LacksQuestToken,
-        
-        /// <remarks/>
-        HasConsumable,
-        
-        /// <remarks/>
-        LacksConsumable,
-        
-        /// <remarks/>
-        HasMaterial,
-        
-        /// <remarks/>
-        LacksMaterial,
-        
-        /// <remarks/>
-        HasEquipment,
-        
-        /// <remarks/>
-        LacksEquipment,
-        
-        /// <remarks/>
-        HasTool,
-        
-        /// <remarks/>
-        LacksTool,
-        
-        /// <remarks/>
-        HasSpell,
-        
-        /// <remarks/>
-        LacksSpell,
-        
-        /// <remarks/>
-        HasBlock,
-        
-        /// <remarks/>
-        LacksBlock,
+        LacksItem,
         
         /// <remarks/>
         HasAchievement,

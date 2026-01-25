@@ -17,7 +17,7 @@ public interface IGameplayItemProvider
 {
     /// <summary>
     /// Display name for this provider (e.g., "Blocks", "Seeds", "Vehicles").
-    /// Used in UI headers.
+    /// Used in UI headers and for Provider attribute matching in dialogue conditions/actions.
     /// </summary>
     string Name { get; }
 
@@ -78,4 +78,36 @@ public interface IGameplayItemProvider
     /// Default is true (start fresh on death).
     /// </summary>
     bool ClearOnRespawn { get; }
+
+    // ===== AVATAR INVENTORY MANAGEMENT =====
+    // These methods allow the dialogue system to manage items through the provider.
+
+    /// <summary>
+    /// Gets the quantity of a specific item in the avatar's inventory.
+    /// For presence-based items, returns 1 if present, 0 if not.
+    /// </summary>
+    /// <param name="avatar">The avatar to check.</param>
+    /// <param name="refName">The item reference name.</param>
+    /// <returns>Quantity of the item (0 if not present).</returns>
+    int GetAvatarItemQuantity(AvatarBase avatar, string refName);
+
+    /// <summary>
+    /// Gives an item to the avatar's inventory.
+    /// For quantity-based items, adds to quantity.
+    /// For presence-based items, adds if not already present.
+    /// </summary>
+    /// <param name="avatar">The avatar to give the item to.</param>
+    /// <param name="refName">The item reference name.</param>
+    /// <param name="quantity">Quantity to give (default 1).</param>
+    void GiveAvatarItem(AvatarBase avatar, string refName, int quantity = 1);
+
+    /// <summary>
+    /// Takes an item from the avatar's inventory.
+    /// For quantity-based items, reduces quantity.
+    /// For presence-based items, removes if present.
+    /// </summary>
+    /// <param name="avatar">The avatar to take the item from.</param>
+    /// <param name="refName">The item reference name.</param>
+    /// <param name="quantity">Quantity to take (default 1).</param>
+    void TakeAvatarItem(AvatarBase avatar, string refName, int quantity = 1);
 }

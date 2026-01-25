@@ -1,10 +1,15 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 
 namespace Ambient.Saga.Engine.Tests.Rpg.Dialogue;
 
+/// <summary>
+/// Tests for DirectDialogueStateProvider using the new provider-based API.
+/// NOTE: Tools and BuildingMaterials are now provided by IGameplayItemProvider in Core,
+/// not by Saga. Tests for those types have been removed.
+/// </summary>
 public class DirectDialogueStateProviderTests
 {
     private readonly IWorld _world;
@@ -13,16 +18,14 @@ public class DirectDialogueStateProviderTests
 
     public DirectDialogueStateProviderTests()
     {
-        _world = new World();
+        _world = CreateMinimalWorld();
         _avatar = new AvatarBase
         {
             Capabilities = new ItemCollection
             {
                 QuestTokens = Array.Empty<QuestTokenEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
-                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
                 Equipment = Array.Empty<EquipmentEntry>(),
-                Tools = Array.Empty<ToolEntry>(),
                 Spells = Array.Empty<SpellEntry>()
             },
             Achievements = Array.Empty<AchievementEntry>(),
@@ -31,350 +34,284 @@ public class DirectDialogueStateProviderTests
         _provider = new DirectDialogueStateProvider(_world, _avatar);
     }
 
-    #region Quest Tokens
+    private static World CreateMinimalWorld()
+    {
+        var world = new World
+        {
+            WorldTemplate = new WorldTemplate
+            {
+                Gameplay = new GameplayComponents
+                {
+                    Characters = Array.Empty<Character>(),
+                    DialogueTrees = Array.Empty<DialogueTree>(),
+                    Equipment = Array.Empty<Equipment>(),
+                    Consumables = Array.Empty<Consumable>(),
+                    QuestTokens = Array.Empty<QuestToken>(),
+                    Factions = Array.Empty<Faction>(),
+                    SagaArcs = Array.Empty<SagaArc>()
+                }
+            }
+        };
+        return world;
+    }
+
+    #region Quest Tokens (via Provider API)
 
     [Fact]
-    public void HasQuestToken_InitiallyEmpty_ReturnsFalse()
+    public void HasItem_QuestTokens_InitiallyEmpty_ReturnsFalse()
     {
-        Assert.False(_provider.HasQuestToken("quest_001"));
+        Assert.False(_provider.HasItem("QuestTokens", "quest_001"));
     }
 
     [Fact]
-    public void AddQuestToken_AddsNewToken()
+    public void GiveItem_QuestTokens_AddsNewToken()
     {
-        _provider.AddQuestToken("quest_001");
+        _provider.GiveItem("QuestTokens", "quest_001");
 
-        Assert.True(_provider.HasQuestToken("quest_001"));
+        Assert.True(_provider.HasItem("QuestTokens", "quest_001"));
         Assert.Single(_avatar.Capabilities.QuestTokens);
         Assert.Equal("quest_001", _avatar.Capabilities.QuestTokens[0].QuestTokenRef);
     }
 
     [Fact]
-    public void AddQuestToken_DoesNotAddDuplicates()
+    public void GiveItem_QuestTokens_DoesNotAddDuplicates()
     {
-        _provider.AddQuestToken("quest_001");
-        _provider.AddQuestToken("quest_001");
+        _provider.GiveItem("QuestTokens", "quest_001");
+        _provider.GiveItem("QuestTokens", "quest_001");
 
         Assert.Single(_avatar.Capabilities.QuestTokens);
     }
 
     [Fact]
-    public void RemoveQuestToken_RemovesExistingToken()
+    public void TakeItem_QuestTokens_RemovesExistingToken()
     {
-        _provider.AddQuestToken("quest_001");
-        _provider.RemoveQuestToken("quest_001");
+        _provider.GiveItem("QuestTokens", "quest_001");
+        _provider.TakeItem("QuestTokens", "quest_001");
 
-        Assert.False(_provider.HasQuestToken("quest_001"));
+        Assert.False(_provider.HasItem("QuestTokens", "quest_001"));
         Assert.Empty(_avatar.Capabilities.QuestTokens);
     }
 
     [Fact]
-    public void RemoveQuestToken_NonExistent_DoesNothing()
+    public void TakeItem_QuestTokens_NonExistent_DoesNothing()
     {
-        _provider.RemoveQuestToken("quest_999");
+        _provider.TakeItem("QuestTokens", "quest_999");
         Assert.Empty(_avatar.Capabilities.QuestTokens);
     }
 
     [Fact]
     public void QuestTokens_MultipleTokens_WorksCorrectly()
     {
-        _provider.AddQuestToken("quest_001");
-        _provider.AddQuestToken("quest_002");
-        _provider.AddQuestToken("quest_003");
+        _provider.GiveItem("QuestTokens", "quest_001");
+        _provider.GiveItem("QuestTokens", "quest_002");
+        _provider.GiveItem("QuestTokens", "quest_003");
 
-        Assert.True(_provider.HasQuestToken("quest_001"));
-        Assert.True(_provider.HasQuestToken("quest_002"));
-        Assert.True(_provider.HasQuestToken("quest_003"));
+        Assert.True(_provider.HasItem("QuestTokens", "quest_001"));
+        Assert.True(_provider.HasItem("QuestTokens", "quest_002"));
+        Assert.True(_provider.HasItem("QuestTokens", "quest_003"));
         Assert.Equal(3, _avatar.Capabilities.QuestTokens.Length);
 
-        _provider.RemoveQuestToken("quest_002");
+        _provider.TakeItem("QuestTokens", "quest_002");
 
-        Assert.True(_provider.HasQuestToken("quest_001"));
-        Assert.False(_provider.HasQuestToken("quest_002"));
-        Assert.True(_provider.HasQuestToken("quest_003"));
+        Assert.True(_provider.HasItem("QuestTokens", "quest_001"));
+        Assert.False(_provider.HasItem("QuestTokens", "quest_002"));
+        Assert.True(_provider.HasItem("QuestTokens", "quest_003"));
         Assert.Equal(2, _avatar.Capabilities.QuestTokens.Length);
     }
 
     #endregion
 
-    #region Consumables (Stackable)
+    #region Consumables (Stackable via Provider API)
 
     [Fact]
-    public void GetConsumableQuantity_InitiallyEmpty_ReturnsZero()
+    public void GetItemQuantity_Consumables_InitiallyEmpty_ReturnsZero()
     {
-        Assert.Equal(0, _provider.GetConsumableQuantity("health_potion"));
+        Assert.Equal(0, _provider.GetItemQuantity("Consumables", "health_potion"));
     }
 
     [Fact]
-    public void AddConsumable_CreatesNewEntry()
+    public void GiveItem_Consumables_CreatesNewEntry()
     {
-        _provider.AddConsumable("health_potion", 5);
+        _provider.GiveItem("Consumables", "health_potion", 5);
 
-        Assert.Equal(5, _provider.GetConsumableQuantity("health_potion"));
+        Assert.Equal(5, _provider.GetItemQuantity("Consumables", "health_potion"));
         Assert.Single(_avatar.Capabilities.Consumables);
     }
 
     [Fact]
-    public void AddConsumable_ExistingItem_StacksQuantity()
+    public void GiveItem_Consumables_ExistingItem_StacksQuantity()
     {
-        _provider.AddConsumable("health_potion", 5);
-        _provider.AddConsumable("health_potion", 3);
+        _provider.GiveItem("Consumables", "health_potion", 5);
+        _provider.GiveItem("Consumables", "health_potion", 3);
 
-        Assert.Equal(8, _provider.GetConsumableQuantity("health_potion"));
+        Assert.Equal(8, _provider.GetItemQuantity("Consumables", "health_potion"));
         Assert.Single(_avatar.Capabilities.Consumables);
     }
 
     [Fact]
-    public void AddConsumable_ZeroOrNegative_DoesNothing()
+    public void GiveItem_Consumables_ZeroOrNegative_DoesNothing()
     {
-        _provider.AddConsumable("health_potion", 0);
-        _provider.AddConsumable("mana_potion", -5);
+        _provider.GiveItem("Consumables", "health_potion", 0);
+        _provider.GiveItem("Consumables", "mana_potion", -5);
 
-        Assert.Equal(0, _provider.GetConsumableQuantity("health_potion"));
-        Assert.Equal(0, _provider.GetConsumableQuantity("mana_potion"));
+        Assert.Equal(0, _provider.GetItemQuantity("Consumables", "health_potion"));
+        Assert.Equal(0, _provider.GetItemQuantity("Consumables", "mana_potion"));
         Assert.Empty(_avatar.Capabilities.Consumables);
     }
 
     [Fact]
-    public void RemoveConsumable_ReducesQuantity()
+    public void TakeItem_Consumables_ReducesQuantity()
     {
-        _provider.AddConsumable("health_potion", 10);
-        _provider.RemoveConsumable("health_potion", 3);
+        _provider.GiveItem("Consumables", "health_potion", 10);
+        _provider.TakeItem("Consumables", "health_potion", 3);
 
-        Assert.Equal(7, _provider.GetConsumableQuantity("health_potion"));
+        Assert.Equal(7, _provider.GetItemQuantity("Consumables", "health_potion"));
         Assert.Single(_avatar.Capabilities.Consumables);
     }
 
     [Fact]
-    public void RemoveConsumable_ReducesToZero_RemovesEntry()
+    public void TakeItem_Consumables_ReducesToZero_RemovesEntry()
     {
-        _provider.AddConsumable("health_potion", 5);
-        _provider.RemoveConsumable("health_potion", 5);
+        _provider.GiveItem("Consumables", "health_potion", 5);
+        _provider.TakeItem("Consumables", "health_potion", 5);
 
-        Assert.Equal(0, _provider.GetConsumableQuantity("health_potion"));
+        Assert.Equal(0, _provider.GetItemQuantity("Consumables", "health_potion"));
         Assert.Empty(_avatar.Capabilities.Consumables);
     }
 
     [Fact]
-    public void RemoveConsumable_MoreThanAvailable_ClampsToZeroAndRemoves()
+    public void TakeItem_Consumables_MoreThanAvailable_ClampsToZeroAndRemoves()
     {
-        _provider.AddConsumable("health_potion", 3);
-        _provider.RemoveConsumable("health_potion", 10);
+        _provider.GiveItem("Consumables", "health_potion", 3);
+        _provider.TakeItem("Consumables", "health_potion", 10);
 
-        Assert.Equal(0, _provider.GetConsumableQuantity("health_potion"));
+        Assert.Equal(0, _provider.GetItemQuantity("Consumables", "health_potion"));
         Assert.Empty(_avatar.Capabilities.Consumables);
     }
 
     [Fact]
-    public void RemoveConsumable_NonExistent_DoesNothing()
+    public void TakeItem_Consumables_NonExistent_DoesNothing()
     {
-        _provider.RemoveConsumable("health_potion", 5);
+        _provider.TakeItem("Consumables", "health_potion", 5);
         Assert.Empty(_avatar.Capabilities.Consumables);
     }
 
     #endregion
 
-    #region Materials (Stackable)
-
-    [Fact]
-    public void GetMaterialQuantity_InitiallyEmpty_ReturnsZero()
-    {
-        Assert.Equal(0, _provider.GetMaterialQuantity("iron_ore"));
-    }
-
-    [Fact]
-    public void AddMaterial_CreatesNewEntry()
-    {
-        _provider.AddMaterial("iron_ore", 10);
-
-        Assert.Equal(10, _provider.GetMaterialQuantity("iron_ore"));
-        Assert.Single(_avatar.Capabilities.BuildingMaterials);
-    }
-
-    [Fact]
-    public void AddMaterial_ExistingItem_StacksQuantity()
-    {
-        _provider.AddMaterial("iron_ore", 10);
-        _provider.AddMaterial("iron_ore", 5);
-
-        Assert.Equal(15, _provider.GetMaterialQuantity("iron_ore"));
-        Assert.Single(_avatar.Capabilities.BuildingMaterials);
-    }
-
-    [Fact]
-    public void RemoveMaterial_ReducesQuantity()
-    {
-        _provider.AddMaterial("iron_ore", 20);
-        _provider.RemoveMaterial("iron_ore", 7);
-
-        Assert.Equal(13, _provider.GetMaterialQuantity("iron_ore"));
-        Assert.Single(_avatar.Capabilities.BuildingMaterials);
-    }
-
-    [Fact]
-    public void RemoveMaterial_ReducesToZero_RemovesEntry()
-    {
-        _provider.AddMaterial("iron_ore", 10);
-        _provider.RemoveMaterial("iron_ore", 10);
-
-        Assert.Equal(0, _provider.GetMaterialQuantity("iron_ore"));
-        Assert.Empty(_avatar.Capabilities.BuildingMaterials);
-    }
-
-    [Fact]
-    public void Materials_MultipleTypes_WorkIndependently()
-    {
-        _provider.AddMaterial("iron_ore", 10);
-        _provider.AddMaterial("gold_ore", 5);
-        _provider.AddMaterial("copper_ore", 15);
-
-        Assert.Equal(10, _provider.GetMaterialQuantity("iron_ore"));
-        Assert.Equal(5, _provider.GetMaterialQuantity("gold_ore"));
-        Assert.Equal(15, _provider.GetMaterialQuantity("copper_ore"));
-        Assert.Equal(3, _avatar.Capabilities.BuildingMaterials.Length);
-    }
-
+    // NOTE: Materials tests removed - BuildingMaterials are now provided by IGameplayItemProvider in Core,
+    // not by Saga. ItemCollection no longer has BuildingMaterials property.
+    // DirectDialogueStateProvider no longer has AddMaterial/RemoveMaterial/GetMaterialQuantity methods.
+    #region Materials (Stackable) - REMOVED
+    // Tests removed: Materials are now in IGameplayItemProvider, not Saga.
     #endregion
 
-    #region Equipment (Degradable)
+    #region Equipment (Degradable via Provider API)
 
     [Fact]
-    public void HasEquipment_InitiallyEmpty_ReturnsFalse()
+    public void HasItem_Equipment_InitiallyEmpty_ReturnsFalse()
     {
-        Assert.False(_provider.HasEquipment("iron_sword"));
+        Assert.False(_provider.HasItem("Equipment", "iron_sword"));
     }
 
     [Fact]
-    public void AddEquipment_AddsNewItem_WithFullCondition()
+    public void GiveItem_Equipment_AddsNewItem_WithFullCondition()
     {
-        _provider.AddEquipment("iron_sword");
+        _provider.GiveItem("Equipment", "iron_sword");
 
-        Assert.True(_provider.HasEquipment("iron_sword"));
+        Assert.True(_provider.HasItem("Equipment", "iron_sword"));
         Assert.Single(_avatar.Capabilities.Equipment);
         Assert.Equal(1.0f, _avatar.Capabilities.Equipment[0].Condition);
     }
 
     [Fact]
-    public void AddEquipment_DoesNotAddDuplicates()
+    public void GiveItem_Equipment_DoesNotAddDuplicates()
     {
-        _provider.AddEquipment("iron_sword");
-        _provider.AddEquipment("iron_sword");
+        _provider.GiveItem("Equipment", "iron_sword");
+        _provider.GiveItem("Equipment", "iron_sword");
 
         Assert.Single(_avatar.Capabilities.Equipment);
     }
 
     [Fact]
-    public void RemoveEquipment_RemovesExistingItem()
+    public void TakeItem_Equipment_RemovesExistingItem()
     {
-        _provider.AddEquipment("iron_sword");
-        _provider.RemoveEquipment("iron_sword");
+        _provider.GiveItem("Equipment", "iron_sword");
+        _provider.TakeItem("Equipment", "iron_sword");
 
-        Assert.False(_provider.HasEquipment("iron_sword"));
+        Assert.False(_provider.HasItem("Equipment", "iron_sword"));
         Assert.Empty(_avatar.Capabilities.Equipment);
     }
 
     [Fact]
-    public void RemoveEquipment_NonExistent_DoesNothing()
+    public void TakeItem_Equipment_NonExistent_DoesNothing()
     {
-        _provider.RemoveEquipment("iron_sword");
+        _provider.TakeItem("Equipment", "iron_sword");
         Assert.Empty(_avatar.Capabilities.Equipment);
     }
 
     [Fact]
     public void Equipment_MultipleItems_WorksCorrectly()
     {
-        _provider.AddEquipment("iron_sword");
-        _provider.AddEquipment("steel_armor");
-        _provider.AddEquipment("leather_boots");
+        _provider.GiveItem("Equipment", "iron_sword");
+        _provider.GiveItem("Equipment", "steel_armor");
+        _provider.GiveItem("Equipment", "leather_boots");
 
-        Assert.True(_provider.HasEquipment("iron_sword"));
-        Assert.True(_provider.HasEquipment("steel_armor"));
-        Assert.True(_provider.HasEquipment("leather_boots"));
+        Assert.True(_provider.HasItem("Equipment", "iron_sword"));
+        Assert.True(_provider.HasItem("Equipment", "steel_armor"));
+        Assert.True(_provider.HasItem("Equipment", "leather_boots"));
         Assert.Equal(3, _avatar.Capabilities.Equipment.Length);
 
-        _provider.RemoveEquipment("steel_armor");
+        _provider.TakeItem("Equipment", "steel_armor");
 
-        Assert.True(_provider.HasEquipment("iron_sword"));
-        Assert.False(_provider.HasEquipment("steel_armor"));
-        Assert.True(_provider.HasEquipment("leather_boots"));
+        Assert.True(_provider.HasItem("Equipment", "iron_sword"));
+        Assert.False(_provider.HasItem("Equipment", "steel_armor"));
+        Assert.True(_provider.HasItem("Equipment", "leather_boots"));
         Assert.Equal(2, _avatar.Capabilities.Equipment.Length);
     }
 
     #endregion
 
-    #region Tools (Degradable)
-
-    [Fact]
-    public void HasTool_InitiallyEmpty_ReturnsFalse()
-    {
-        Assert.False(_provider.HasTool("pickaxe"));
-    }
-
-    [Fact]
-    public void AddTool_AddsNewItem_WithFullCondition()
-    {
-        _provider.AddTool("pickaxe");
-
-        Assert.True(_provider.HasTool("pickaxe"));
-        Assert.Single(_avatar.Capabilities.Tools);
-        Assert.Equal(1.0f, _avatar.Capabilities.Tools[0].Condition);
-    }
-
-    [Fact]
-    public void AddTool_DoesNotAddDuplicates()
-    {
-        _provider.AddTool("pickaxe");
-        _provider.AddTool("pickaxe");
-
-        Assert.Single(_avatar.Capabilities.Tools);
-    }
-
-    [Fact]
-    public void RemoveTool_RemovesExistingItem()
-    {
-        _provider.AddTool("pickaxe");
-        _provider.RemoveTool("pickaxe");
-
-        Assert.False(_provider.HasTool("pickaxe"));
-        Assert.Empty(_avatar.Capabilities.Tools);
-    }
-
+    // NOTE: Tools tests removed - Tools are now provided by IGameplayItemProvider in Core,
+    // not by Saga. ItemCollection no longer has Tools property.
+    // DirectDialogueStateProvider no longer has AddTool/RemoveTool/HasTool methods.
+    #region Tools (Degradable) - REMOVED
+    // Tests removed: Tools are now in IGameplayItemProvider, not Saga.
     #endregion
 
-    #region Spells (Degradable)
+    #region Spells (Degradable via Provider API)
 
     [Fact]
-    public void HasSpell_InitiallyEmpty_ReturnsFalse()
+    public void HasItem_Spells_InitiallyEmpty_ReturnsFalse()
     {
-        Assert.False(_provider.HasSpell("fireball"));
+        Assert.False(_provider.HasItem("Spells", "fireball"));
     }
 
     [Fact]
-    public void AddSpell_AddsNewSpell_WithFullCondition()
+    public void GiveItem_Spells_AddsNewSpell_WithFullCondition()
     {
-        _provider.AddSpell("fireball");
+        _provider.GiveItem("Spells", "fireball");
 
-        Assert.True(_provider.HasSpell("fireball"));
+        Assert.True(_provider.HasItem("Spells", "fireball"));
         Assert.Single(_avatar.Capabilities.Spells);
         Assert.Equal(1.0f, _avatar.Capabilities.Spells[0].Condition);
     }
 
     [Fact]
-    public void AddSpell_DoesNotAddDuplicates()
+    public void GiveItem_Spells_DoesNotAddDuplicates()
     {
-        _provider.AddSpell("fireball");
-        _provider.AddSpell("fireball");
+        _provider.GiveItem("Spells", "fireball");
+        _provider.GiveItem("Spells", "fireball");
 
         Assert.Single(_avatar.Capabilities.Spells);
     }
 
     [Fact]
-    public void RemoveSpell_RemovesExistingSpell()
+    public void TakeItem_Spells_RemovesExistingSpell()
     {
-        _provider.AddSpell("fireball");
-        _provider.RemoveSpell("fireball");
+        _provider.GiveItem("Spells", "fireball");
+        _provider.TakeItem("Spells", "fireball");
 
-        Assert.False(_provider.HasSpell("fireball"));
+        Assert.False(_provider.HasItem("Spells", "fireball"));
         Assert.Empty(_avatar.Capabilities.Spells);
     }
 
@@ -571,35 +508,32 @@ public class DirectDialogueStateProviderTests
     [Fact]
     public void CompleteQuestScenario_AllOperationsTogether()
     {
-        // Scenario: Player completes a quest that requires materials and rewards them
+        // Scenario: Player completes a quest that requires consumables and gives rewards
+        // NOTE: Material-related operations removed - BuildingMaterials now in IGameplayItemProvider
 
-        // Check requirements: Player has quest token and materials
-        _provider.AddQuestToken("quest_active");
-        _provider.AddMaterial("iron_ore", 10);
-        _provider.AddMaterial("gold_ore", 5);
+        // Check requirements: Player has quest token and consumables
+        _provider.GiveItem("QuestTokens", "quest_active");
+        _provider.GiveItem("Consumables", "quest_item", 10);
         _avatar.Stats.Credits = 50;
 
-        Assert.True(_provider.HasQuestToken("quest_active"));
-        Assert.Equal(10, _provider.GetMaterialQuantity("iron_ore"));
-        Assert.Equal(5, _provider.GetMaterialQuantity("gold_ore"));
+        Assert.True(_provider.HasItem("QuestTokens", "quest_active"));
+        Assert.Equal(10, _provider.GetItemQuantity("Consumables", "quest_item"));
 
-        // Quest completion: Take materials, give rewards
-        _provider.RemoveMaterial("iron_ore", 10);
-        _provider.RemoveMaterial("gold_ore", 5);
-        _provider.RemoveQuestToken("quest_active");
+        // Quest completion: Take quest items, give rewards
+        _provider.TakeItem("Consumables", "quest_item", 10);
+        _provider.TakeItem("QuestTokens", "quest_active");
 
         _provider.TransferCurrency(200);
-        _provider.AddConsumable("health_potion", 3);
-        _provider.AddEquipment("legendary_sword");
+        _provider.GiveItem("Consumables", "health_potion", 3);
+        _provider.GiveItem("Equipment", "legendary_sword");
         _provider.UnlockAchievement("quest_master");
 
         // Verify final state
-        Assert.False(_provider.HasQuestToken("quest_active"));
-        Assert.Equal(0, _provider.GetMaterialQuantity("iron_ore"));
-        Assert.Equal(0, _provider.GetMaterialQuantity("gold_ore"));
+        Assert.False(_provider.HasItem("QuestTokens", "quest_active"));
+        Assert.Equal(0, _provider.GetItemQuantity("Consumables", "quest_item"));
         Assert.Equal(250, _provider.GetCredits());
-        Assert.Equal(3, _provider.GetConsumableQuantity("health_potion"));
-        Assert.True(_provider.HasEquipment("legendary_sword"));
+        Assert.Equal(3, _provider.GetItemQuantity("Consumables", "health_potion"));
+        Assert.True(_provider.HasItem("Equipment", "legendary_sword"));
         Assert.True(_provider.HasAchievement("quest_master"));
     }
 
@@ -611,22 +545,23 @@ public class DirectDialogueStateProviderTests
 
         // Buy consumables
         _provider.TransferCurrency(-100);
-        _provider.AddConsumable("health_potion", 5);
+        _provider.GiveItem("Consumables", "health_potion", 5);
 
         // Buy equipment
         _provider.TransferCurrency(-200);
-        _provider.AddEquipment("iron_armor");
+        _provider.GiveItem("Equipment", "iron_armor");
 
-        // Sell some materials
-        _provider.AddMaterial("wolf_pelt", 10);
-        _provider.RemoveMaterial("wolf_pelt", 10);
+        // Sell some consumables (simulating trade)
+        // NOTE: Material trading removed - BuildingMaterials now in IGameplayItemProvider
+        _provider.GiveItem("Consumables", "wolf_pelt", 10);
+        _provider.TakeItem("Consumables", "wolf_pelt", 10);
         _provider.TransferCurrency(50);
 
         // Verify final state
         Assert.Equal(250, _provider.GetCredits());
-        Assert.Equal(5, _provider.GetConsumableQuantity("health_potion"));
-        Assert.True(_provider.HasEquipment("iron_armor"));
-        Assert.Equal(0, _provider.GetMaterialQuantity("wolf_pelt"));
+        Assert.Equal(5, _provider.GetItemQuantity("Consumables", "health_potion"));
+        Assert.True(_provider.HasItem("Equipment", "iron_armor"));
+        Assert.Equal(0, _provider.GetItemQuantity("Consumables", "wolf_pelt"));
     }
 
     #endregion

@@ -71,32 +71,26 @@ public static class DialogueTransactionHelper
         // This allows SagaStateMachine to check if rewards were already given
         if (dialogueNode.Action != null && dialogueNode.Action.Length > 0)
         {
-            var itemsAwarded = new List<string>();
+            var itemsAwarded = new List<string>(); // Format: "Provider:RefName:Quantity"
             var traitsAssigned = new List<string>();
-            var questTokens = new List<string>();
             var currencyTransferred = 0;
 
             foreach (var action in dialogueNode.Action)
             {
                 switch (action.Type)
                 {
-                    case DialogueActionType.GiveEquipment:
-                    case DialogueActionType.GiveTool:
-                    case DialogueActionType.GiveSpell:
-                    case DialogueActionType.GiveConsumable:
-                    case DialogueActionType.GiveMaterial:
+                    case DialogueActionType.GiveItem:
                         if (!string.IsNullOrEmpty(action.RefName))
-                            itemsAwarded.Add(action.RefName);
+                        {
+                            var provider = action.Provider ?? "";
+                            var quantity = action.Amount > 0 ? action.Amount : 1;
+                            itemsAwarded.Add($"{provider}:{action.RefName}:{quantity}");
+                        }
                         break;
 
                     case DialogueActionType.AssignTrait:
                         if (action.TraitSpecified)
                             traitsAssigned.Add(action.Trait.ToString());
-                        break;
-
-                    case DialogueActionType.GiveQuestToken:
-                        if (!string.IsNullOrEmpty(action.RefName))
-                            questTokens.Add(action.RefName);
                         break;
 
                     case DialogueActionType.TransferCurrency:
@@ -111,9 +105,6 @@ public static class DialogueTransactionHelper
 
             if (traitsAssigned.Count > 0)
                 transaction.Data["TraitsAssigned"] = string.Join(",", traitsAssigned);
-
-            if (questTokens.Count > 0)
-                transaction.Data["QuestTokensAwarded"] = string.Join(",", questTokens);
 
             if (currencyTransferred != 0)
                 transaction.Data["CurrencyTransferred"] = currencyTransferred.ToString();

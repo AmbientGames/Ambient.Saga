@@ -9,6 +9,8 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 /// <summary>
 /// Direct implementation of IDialogueStateProvider that manipulates World and Avatar state directly.
 /// This provider can be used by any UI framework (WPF, Console, Web, etc.) that has access to domain objects.
+/// Uses a provider-based pattern for item access - built-in providers handle Saga-owned types,
+/// while IGameplayItemProvider handles external types from the consuming application.
 /// </summary>
 public class DirectDialogueStateProvider : IDialogueStateProvider
 {
@@ -19,6 +21,12 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     private readonly Func<string, SagaState?>? _getSagaStateFunc;
     private readonly string? _avatarId;
     private string? _currentCharacterRef;
+
+    // Built-in Saga provider names
+    private const string EquipmentProvider = "Equipment";
+    private const string ConsumablesProvider = "Consumables";
+    private const string SpellsProvider = "Spells";
+    private const string QuestTokensProvider = "QuestTokens";
 
     public DirectDialogueStateProvider(
         IWorld w,
@@ -43,40 +51,226 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
         _currentCharacterRef = characterRef;
     }
 
-    // Quest Tokens
-    public bool HasQuestToken(string r) => _a.Capabilities?.QuestTokens?.Any(e => e.QuestTokenRef == r) ?? false;
-    public void AddQuestToken(string r) { if (_a.Capabilities?.QuestTokens != null && !HasQuestToken(r)) { var list = _a.Capabilities.QuestTokens.ToList(); list.Add(new QuestTokenEntry { QuestTokenRef = r }); _a.Capabilities.QuestTokens = list.ToArray(); } }
-    public void RemoveQuestToken(string r) { if (_a.Capabilities?.QuestTokens != null) _a.Capabilities.QuestTokens = _a.Capabilities.QuestTokens.Where(e => e.QuestTokenRef != r).ToArray(); }
+    // ===== PROVIDER-BASED ITEM ACCESS =====
 
-    // Consumables (stackable)
-    public int GetConsumableQuantity(string r) => _a.Capabilities?.Consumables?.FirstOrDefault(e => e.ConsumableRef == r)?.Quantity ?? 0;
-    public void AddConsumable(string r, int amt) { if (_a.Capabilities?.Consumables != null && amt > 0) { var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Consumables.ToList(); list.Add(new ConsumableEntry { ConsumableRef = r, Quantity = amt }); _a.Capabilities.Consumables = list.ToArray(); } } }
-    public void RemoveConsumable(string r, int amt) { if (_a.Capabilities?.Consumables != null && amt > 0) { var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Consumables = _a.Capabilities.Consumables.Where(x => x.ConsumableRef != r).ToArray(); } } }
+    /// <inheritdoc/>
+    public bool HasItem(string provider, string refName)
+    {
+        return GetItemQuantity(provider, refName) > 0;
+    }
 
-    // Materials (stackable)
-    public int GetMaterialQuantity(string r) => _a.Capabilities?.BuildingMaterials?.FirstOrDefault(e => e.BuildingMaterialRef == r)?.Quantity ?? 0;
-    public void AddMaterial(string r, int amt) { if (_a.Capabilities?.BuildingMaterials != null && amt > 0) { var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.BuildingMaterials.ToList(); list.Add(new BuildingMaterialEntry { BuildingMaterialRef = r, Quantity = amt }); _a.Capabilities.BuildingMaterials = list.ToArray(); } } }
-    public void RemoveMaterial(string r, int amt) { if (_a.Capabilities?.BuildingMaterials != null && amt > 0) { var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.BuildingMaterials = _a.Capabilities.BuildingMaterials.Where(x => x.BuildingMaterialRef != r).ToArray(); } } }
+    /// <inheritdoc/>
+    public int GetItemQuantity(string provider, string refName)
+    {
+        if (_a.Capabilities == null) return 0;
 
-    // Blocks (stackable voxel blocks)
-    public float GetBlockQuantity(string r) => _a.Capabilities?.Blocks?.FirstOrDefault(e => e.BlockRef == r)?.Quantity ?? 0;
-    public void AddBlock(string r, int amt) { if (_a.Capabilities != null && amt > 0) { _a.Capabilities.Blocks ??= Array.Empty<BlockEntry>(); var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Blocks.ToList(); list.Add(new BlockEntry { BlockRef = r, Quantity = amt }); _a.Capabilities.Blocks = list.ToArray(); } } }
-    public void RemoveBlock(string r, int amt) { if (_a.Capabilities?.Blocks != null && amt > 0) { var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Blocks = _a.Capabilities.Blocks.Where(x => x.BlockRef != r).ToArray(); } } }
+        // Handle built-in Saga providers
+        switch (provider)
+        {
+            case EquipmentProvider:
+                return _a.Capabilities.Equipment?.Any(e => e.EquipmentRef == refName) == true ? 1 : 0;
 
-    // Equipment (degradable)
-    public bool HasEquipment(string r) => _a.Capabilities?.Equipment?.Any(e => e.EquipmentRef == r) ?? false;
-    public void AddEquipment(string r) { if (_a.Capabilities?.Equipment != null && !HasEquipment(r)) { var list = _a.Capabilities.Equipment.ToList(); list.Add(new EquipmentEntry { EquipmentRef = r, Condition = 1.0f }); _a.Capabilities.Equipment = list.ToArray(); } }
-    public void RemoveEquipment(string r) { if (_a.Capabilities?.Equipment != null) { var e = _a.Capabilities.Equipment.FirstOrDefault(x => x.EquipmentRef == r); if (e != null) { var list = _a.Capabilities.Equipment.ToList(); list.Remove(e); _a.Capabilities.Equipment = list.ToArray(); } } }
+            case ConsumablesProvider:
+                return _a.Capabilities.Consumables?.FirstOrDefault(e => e.ConsumableRef == refName)?.Quantity ?? 0;
 
-    // Tools (degradable)
-    public bool HasTool(string r) => _a.Capabilities?.Tools?.Any(e => e.ToolRef == r) ?? false;
-    public void AddTool(string r) { if (_a.Capabilities?.Tools != null && !HasTool(r)) { var list = _a.Capabilities.Tools.ToList(); list.Add(new ToolEntry { ToolRef = r, Condition = 1.0f }); _a.Capabilities.Tools = list.ToArray(); } }
-    public void RemoveTool(string r) { if (_a.Capabilities?.Tools != null) { var e = _a.Capabilities.Tools.FirstOrDefault(x => x.ToolRef == r); if (e != null) { var list = _a.Capabilities.Tools.ToList(); list.Remove(e); _a.Capabilities.Tools = list.ToArray(); } } }
+            case SpellsProvider:
+                return _a.Capabilities.Spells?.Any(e => e.SpellRef == refName) == true ? 1 : 0;
 
-    // Spells (degradable)
-    public bool HasSpell(string r) => _a.Capabilities?.Spells?.Any(e => e.SpellRef == r) ?? false;
-    public void AddSpell(string r) { if (_a.Capabilities?.Spells != null && !HasSpell(r)) { var list = _a.Capabilities.Spells.ToList(); list.Add(new SpellEntry { SpellRef = r, Condition = 1.0f }); _a.Capabilities.Spells = list.ToArray(); } }
-    public void RemoveSpell(string r) { if (_a.Capabilities?.Spells != null) { var e = _a.Capabilities.Spells.FirstOrDefault(x => x.SpellRef == r); if (e != null) { var list = _a.Capabilities.Spells.ToList(); list.Remove(e); _a.Capabilities.Spells = list.ToArray(); } } }
+            case QuestTokensProvider:
+                return _a.Capabilities.QuestTokens?.Any(e => e.QuestTokenRef == refName) == true ? 1 : 0;
+
+            default:
+                // Try IGameplayItemProvider for external providers
+                return GetExternalItemQuantity(provider, refName);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void GiveItem(string provider, string refName, int quantity = 1)
+    {
+        if (_a.Capabilities == null || quantity <= 0) return;
+
+        switch (provider)
+        {
+            case EquipmentProvider:
+                GiveEquipment(refName);
+                break;
+
+            case ConsumablesProvider:
+                GiveConsumable(refName, quantity);
+                break;
+
+            case SpellsProvider:
+                GiveSpell(refName);
+                break;
+
+            case QuestTokensProvider:
+                GiveQuestToken(refName);
+                break;
+
+            default:
+                // External providers - delegate to IGameplayItemProvider
+                GiveExternalItem(provider, refName, quantity);
+                break;
+        }
+    }
+
+    /// <inheritdoc/>
+    public void TakeItem(string provider, string refName, int quantity = 1)
+    {
+        if (_a.Capabilities == null || quantity <= 0) return;
+
+        switch (provider)
+        {
+            case EquipmentProvider:
+                TakeEquipment(refName);
+                break;
+
+            case ConsumablesProvider:
+                TakeConsumable(refName, quantity);
+                break;
+
+            case SpellsProvider:
+                TakeSpell(refName);
+                break;
+
+            case QuestTokensProvider:
+                TakeQuestToken(refName);
+                break;
+
+            default:
+                // External providers - delegate to IGameplayItemProvider
+                TakeExternalItem(provider, refName, quantity);
+                break;
+        }
+    }
+
+    // ===== BUILT-IN SAGA PROVIDERS (private helpers) =====
+
+    private void GiveEquipment(string r)
+    {
+        if (_a.Capabilities?.Equipment != null && !(_a.Capabilities.Equipment.Any(e => e.EquipmentRef == r)))
+        {
+            var list = _a.Capabilities.Equipment.ToList();
+            list.Add(new EquipmentEntry { EquipmentRef = r, Condition = 1.0f });
+            _a.Capabilities.Equipment = list.ToArray();
+        }
+    }
+
+    private void TakeEquipment(string r)
+    {
+        if (_a.Capabilities?.Equipment != null)
+        {
+            var e = _a.Capabilities.Equipment.FirstOrDefault(x => x.EquipmentRef == r);
+            if (e != null)
+            {
+                var list = _a.Capabilities.Equipment.ToList();
+                list.Remove(e);
+                _a.Capabilities.Equipment = list.ToArray();
+            }
+        }
+    }
+
+    private void GiveConsumable(string r, int amt)
+    {
+        if (_a.Capabilities != null && amt > 0)
+        {
+            _a.Capabilities.Consumables ??= Array.Empty<ConsumableEntry>();
+            var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r);
+            if (e != null)
+                e.Quantity += amt;
+            else
+            {
+                var list = _a.Capabilities.Consumables.ToList();
+                list.Add(new ConsumableEntry { ConsumableRef = r, Quantity = amt });
+                _a.Capabilities.Consumables = list.ToArray();
+            }
+        }
+    }
+
+    private void TakeConsumable(string r, int amt)
+    {
+        if (_a.Capabilities?.Consumables != null && amt > 0)
+        {
+            var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r);
+            if (e != null)
+            {
+                e.Quantity = Math.Max(0, e.Quantity - amt);
+                if (e.Quantity == 0)
+                    _a.Capabilities.Consumables = _a.Capabilities.Consumables.Where(x => x.ConsumableRef != r).ToArray();
+            }
+        }
+    }
+
+    private void GiveSpell(string r)
+    {
+        if (_a.Capabilities != null && !(_a.Capabilities.Spells?.Any(e => e.SpellRef == r) ?? false))
+        {
+            _a.Capabilities.Spells ??= Array.Empty<SpellEntry>();
+            var list = _a.Capabilities.Spells.ToList();
+            list.Add(new SpellEntry { SpellRef = r, Condition = 1.0f });
+            _a.Capabilities.Spells = list.ToArray();
+        }
+    }
+
+    private void TakeSpell(string r)
+    {
+        if (_a.Capabilities?.Spells != null)
+        {
+            var e = _a.Capabilities.Spells.FirstOrDefault(x => x.SpellRef == r);
+            if (e != null)
+            {
+                var list = _a.Capabilities.Spells.ToList();
+                list.Remove(e);
+                _a.Capabilities.Spells = list.ToArray();
+            }
+        }
+    }
+
+    private void GiveQuestToken(string r)
+    {
+        if (_a.Capabilities != null && !(_a.Capabilities.QuestTokens?.Any(e => e.QuestTokenRef == r) ?? false))
+        {
+            _a.Capabilities.QuestTokens ??= Array.Empty<QuestTokenEntry>();
+            var list = _a.Capabilities.QuestTokens.ToList();
+            list.Add(new QuestTokenEntry { QuestTokenRef = r });
+            _a.Capabilities.QuestTokens = list.ToArray();
+        }
+    }
+
+    private void TakeQuestToken(string r)
+    {
+        if (_a.Capabilities?.QuestTokens != null)
+            _a.Capabilities.QuestTokens = _a.Capabilities.QuestTokens.Where(e => e.QuestTokenRef != r).ToArray();
+    }
+
+    // ===== EXTERNAL PROVIDERS (IGameplayItemProvider) =====
+
+    private int GetExternalItemQuantity(string provider, string refName)
+    {
+        // Find matching IGameplayItemProvider
+        var itemProvider = _w.GameplayItemProviders.FirstOrDefault(p => p.Name == provider);
+        if (itemProvider == null) return 0;
+
+        // Get quantity from the provider's avatar inventory access
+        return itemProvider.GetAvatarItemQuantity(_a, refName);
+    }
+
+    private void GiveExternalItem(string provider, string refName, int quantity)
+    {
+        var itemProvider = _w.GameplayItemProviders.FirstOrDefault(p => p.Name == provider);
+        if (itemProvider == null) return;
+
+        itemProvider.GiveAvatarItem(_a, refName, quantity);
+    }
+
+    private void TakeExternalItem(string provider, string refName, int quantity)
+    {
+        var itemProvider = _w.GameplayItemProviders.FirstOrDefault(p => p.Name == provider);
+        if (itemProvider == null) return;
+
+        itemProvider.TakeAvatarItem(_a, refName, quantity);
+    }
 
     // Achievements
     public bool HasAchievement(string r) => _a.Achievements?.Any(e => e.AchievementRef == r) ?? false;

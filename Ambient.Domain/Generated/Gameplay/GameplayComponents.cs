@@ -45,10 +45,6 @@ namespace Ambient.Domain {
         
         private AttackTell[] attackTellsField;
         
-        private Tool[] toolsField;
-        
-        private BuildingMaterial[] buildingMaterialsField;
-        
         private Achievement[] achievementsField;
         
         private Faction[] factionsField;
@@ -177,28 +173,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.attackTellsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public Tool[] Tools {
-            get {
-                return this.toolsField;
-            }
-            set {
-                this.toolsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
-        public BuildingMaterial[] BuildingMaterials {
-            get {
-                return this.buildingMaterialsField;
-            }
-            set {
-                this.buildingMaterialsField = value;
             }
         }
         

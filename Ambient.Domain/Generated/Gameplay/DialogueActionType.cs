@@ -21,46 +21,10 @@ namespace Ambient.Domain {
     public enum DialogueActionType {
         
         /// <remarks/>
-        GiveQuestToken,
+        GiveItem,
         
         /// <remarks/>
-        TakeQuestToken,
-        
-        /// <remarks/>
-        GiveConsumable,
-        
-        /// <remarks/>
-        TakeConsumable,
-        
-        /// <remarks/>
-        GiveMaterial,
-        
-        /// <remarks/>
-        TakeMaterial,
-        
-        /// <remarks/>
-        GiveBlock,
-        
-        /// <remarks/>
-        TakeBlock,
-        
-        /// <remarks/>
-        GiveEquipment,
-        
-        /// <remarks/>
-        TakeEquipment,
-        
-        /// <remarks/>
-        GiveTool,
-        
-        /// <remarks/>
-        TakeTool,
-        
-        /// <remarks/>
-        GiveSpell,
-        
-        /// <remarks/>
-        TakeSpell,
+        TakeItem,
         
         /// <remarks/>
         TransferCurrency,

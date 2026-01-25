@@ -84,11 +84,13 @@ public class LoadingTests : IAsyncLifetime
         Assert.NotNull(_world?.Gameplay.AvatarArchetypes);
     }
 
-    [Fact]
-    public void Tools_ShouldNotBeNull()
-    {
-        Assert.NotNull(_world?.Gameplay.Tools);
-    }
+    // NOTE: Tools test removed - Tools are now provided by IGameplayItemProvider in Core, not Saga.
+    // GameplayComponents no longer has a Tools property.
+    //[Fact]
+    //public void Tools_ShouldNotBeNull()
+    //{
+    //    // Test removed: Tools are now in IGameplayItemProvider, not Saga.
+    //}
 
     [Fact]
     public void DialogueTrees_ShouldNotBeNull()

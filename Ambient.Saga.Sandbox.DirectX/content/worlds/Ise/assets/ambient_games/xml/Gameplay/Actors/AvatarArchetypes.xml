@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <AvatarArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <AvatarArchetype RefName="Warrior" DisplayName="Team Captain" Description="The dependable class representative and kendo club captain. Their affinity manifests as a samurai guardian spirit, channeling unwavering determination and protective instincts." AffinityRef="Iron">
     <SpawnStats Health="1.05" Stamina="0.95" Mana="0.95" Temperature="37" Strength="0.105" Defense="0.105" Magic="0.095" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
@@ -82,30 +82,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="1.05" Stamina="0.95" Mana="0.95" Temperature="37" Strength="0.084" Defense="0.084" Magic="0.076" Speed="0.076" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -187,30 +163,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="Barbarian" DisplayName="Delinquent" Description="The rebellious student with a heart of gold hidden beneath a tough exterior. Their affinity takes the form of an oni, raw emotion given devastating physical form." AffinityRef="Fire">
@@ -292,30 +244,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.9" Stamina="1" Mana="0.95" Temperature="37" Strength="0.08800001" Defense="0.072" Magic="0.076" Speed="0.080000006" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -396,30 +324,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="Rogue" DisplayName="Transfer Student" Description="The mysterious new student who arrived mid-semester. Nobody knows their past, and their affinity is a kitsune - cunning, quick, and full of secrets." AffinityRef="Umbral">
@@ -503,30 +407,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.9" Stamina="1.1" Mana="1" Temperature="37" Strength="0.076" Defense="0.072" Magic="0.080000006" Speed="0.08800001" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -607,30 +487,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="Ranger" DisplayName="Photography Club" Description="Always observing from the sidelines, camera in hand. Their keen perception awakened a tengu affinity, granting supernatural awareness and precision strikes from afar." AffinityRef="Wild">
@@ -713,30 +569,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.95" Stamina="1.05" Mana="1" Temperature="37" Strength="0.080000006" Defense="0.076" Magic="0.080000006" Speed="0.084" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -816,30 +648,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="Mage" DisplayName="Honor Student" Description="Top of the class with perfect grades, but socially awkward. Their brilliant mind manifests a affinity of pure elemental force - an onmyoji spirit wielding the classical elements." AffinityRef="Arcane">
@@ -921,30 +729,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.072" Defense="0.072" Magic="0.08800001" Speed="0.080000006" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -1025,30 +809,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="Wizard" DisplayName="Occult Club" Description="President of the occult research club, always talking about spirits and curses. Turns out they were right all along. Their affinity is an ancient yokai sage of forbidden knowledge." AffinityRef="Arcane">
@@ -1131,30 +891,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.95" Stamina="0.95" Mana="1.1" Temperature="37" Strength="0.072" Defense="0.076" Magic="0.08800001" Speed="0.076" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -1236,30 +972,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="Cleric" DisplayName="Shrine Maiden" Description="A part-time miko at a local shrine, drawn to Ise by fate. Their deep spiritual connection awakens a divine affinity - a manifestation of Amaterasu's blessing." AffinityRef="Holy">
@@ -1343,30 +1055,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="1.05" Stamina="0.95" Mana="1.05" Temperature="37" Strength="0.076" Defense="0.084" Magic="0.084" Speed="0.076" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -1449,30 +1137,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="Bard" DisplayName="Idol Trainee" Description="Dreams of becoming a famous idol while balancing school. Their charisma and voice manifest a celestial affinity that inspires allies and charms enemies with supernatural melodies." AffinityRef="Spirit">
@@ -1555,30 +1219,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.95" Stamina="1.05" Mana="1.05" Temperature="37" Strength="0.076" Defense="0.076" Magic="0.084" Speed="0.084" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -1661,30 +1301,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
   <AvatarArchetype RefName="Summoner" DisplayName="Shrine Heir" Description="Child of a kannushi priest, raised among rituals and traditions. They can forge contracts with shikigami spirits, commanding multiple affinity-like entities in battle." AffinityRef="Void">
@@ -1768,30 +1384,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </SpawnCapabilities>
     <RespawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.072" Defense="0.072" Magic="0.08800001" Speed="0.080000006" Endurance="0" Credits="800" Experience="0" />
     <RespawnCapabilities>
@@ -1872,30 +1464,6 @@
         <Entry SpellRef="WaterWalk" Condition="1" />
         <Entry SpellRef="FeatherFall" Condition="1" />
       </Spells>
-      <Blocks>
-        <Entry BlockRef="Cache" Quantity="1" />
-        <Entry BlockRef="Lamp" Quantity="10" />
-        <Entry BlockRef="WoodStove" Quantity="1" />
-        <Entry BlockRef="BlastFurnace" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK2" Quantity="1" />
-        <Entry BlockRef="BlastFurnaceMK3" Quantity="1" />
-        <Entry BlockRef="CharcoalKiln" Quantity="1" />
-        <Entry BlockRef="SawMill" Quantity="1" />
-        <Entry BlockRef="Oak" Quantity="20" />
-        <Entry BlockRef="Coal" Quantity="20" />
-        <Entry BlockRef="IronOre" Quantity="20" />
-        <Entry BlockRef="ManganeseOre" Quantity="5" />
-        <Entry BlockRef="ChromiumOre" Quantity="5" />
-      </Blocks>
-      <Tools>
-        <Entry ToolRef="Multitool" Condition="1" />
-        <Entry ToolRef="Pickaxe" Condition="1" />
-        <Entry ToolRef="Axe" Condition="1" />
-        <Entry ToolRef="Spade" Condition="1" />
-      </Tools>
-      <BuildingMaterials>
-        <Entry BuildingMaterialRef="Mortar" Quantity="10" />
-      </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
 </AvatarArchetypes>

@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../../EntityBase.xsd" />
-    <xs:include schemaLocation="../../Acquirables/QuestToken.xsd" />
-    <xs:include schemaLocation="../../Acquirables/Equipment.xsd" />
-    <xs:include schemaLocation="../../Acquirables/Tool.xsd" />
-    <xs:include schemaLocation="../../Acquirables/Consumable.xsd" />
-    <xs:include schemaLocation="../../Acquirables/BuildingMaterial.xsd" />
-    <xs:include schemaLocation="../../Acquirables/Spell.xsd" />
     <xs:include schemaLocation="../../Achievements/Achievement.xsd" />
     <xs:include schemaLocation="../../Quests/Quest.xsd" />
     <xs:include schemaLocation="../../CommonTypes.xsd" />
@@ -22,20 +16,17 @@
     </xs:simpleType>
     <xs:simpleType name="DialogueConditionType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="HasQuestToken" />
-            <xs:enumeration value="LacksQuestToken" />
-            <xs:enumeration value="HasConsumable" />
-            <xs:enumeration value="LacksConsumable" />
-            <xs:enumeration value="HasMaterial" />
-            <xs:enumeration value="LacksMaterial" />
-            <xs:enumeration value="HasEquipment" />
-            <xs:enumeration value="LacksEquipment" />
-            <xs:enumeration value="HasTool" />
-            <xs:enumeration value="LacksTool" />
-            <xs:enumeration value="HasSpell" />
-            <xs:enumeration value="LacksSpell" />
-            <xs:enumeration value="HasBlock" />
-            <xs:enumeration value="LacksBlock" />
+            <!-- Generic item conditions (use Provider + RefName) -->
+            <xs:enumeration value="HasItem">
+                <xs:annotation>
+                    <xs:documentation>Check if avatar has item from provider (uses Provider + RefName + optional Value for quantity)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="LacksItem">
+                <xs:annotation>
+                    <xs:documentation>Check if avatar lacks item from provider (uses Provider + RefName)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
             <xs:enumeration value="HasAchievement" />
             <xs:enumeration value="QuestActive" />
             <xs:enumeration value="QuestCompleted" />
@@ -84,20 +75,17 @@
     </xs:simpleType>
     <xs:simpleType name="DialogueActionType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="GiveQuestToken" />
-            <xs:enumeration value="TakeQuestToken" />
-            <xs:enumeration value="GiveConsumable" />
-            <xs:enumeration value="TakeConsumable" />
-            <xs:enumeration value="GiveMaterial" />
-            <xs:enumeration value="TakeMaterial" />
-            <xs:enumeration value="GiveBlock" />
-            <xs:enumeration value="TakeBlock" />
-            <xs:enumeration value="GiveEquipment" />
-            <xs:enumeration value="TakeEquipment" />
-            <xs:enumeration value="GiveTool" />
-            <xs:enumeration value="TakeTool" />
-            <xs:enumeration value="GiveSpell" />
-            <xs:enumeration value="TakeSpell" />
+            <!-- Generic item actions (use Provider + RefName + Amount) -->
+            <xs:enumeration value="GiveItem">
+                <xs:annotation>
+                    <xs:documentation>Give item to avatar from provider (uses Provider + RefName + Amount for quantity)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="TakeItem">
+                <xs:annotation>
+                    <xs:documentation>Take item from avatar (uses Provider + RefName + Amount for quantity)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
             <xs:enumeration value="TransferCurrency"></xs:enumeration>
             <xs:enumeration value="UnlockAchievement" />
             <xs:enumeration value="AcceptQuest"></xs:enumeration>
@@ -250,6 +238,11 @@
 	</xs:simpleType>
 	<xs:complexType name="DialogueCondition">
         <xs:attribute name="Type" type="DialogueConditionType" use="required" />
+        <xs:attribute name="Provider" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Provider name for HasItem/LacksItem conditions (e.g., "Equipment", "Consumables", "Tools (Core)")</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="RefName" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="Operator" type="ComparisonOperator" use="optional" default="Equals" />
         <xs:attribute name="Value" type="xs:string" use="optional"></xs:attribute>
@@ -263,6 +256,11 @@
     </xs:complexType>
     <xs:complexType name="DialogueAction">
         <xs:attribute name="Type" type="DialogueActionType" use="required" />
+        <xs:attribute name="Provider" type="xs:string" use="optional">
+            <xs:annotation>
+                <xs:documentation>Provider name for GiveItem/TakeItem actions (e.g., "Equipment", "Consumables", "Tools (Core)")</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
         <xs:attribute name="RefName" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="CharacterRef" type="xs:string" use="optional"></xs:attribute>
         <xs:attribute name="Amount" type="xs:int" use="optional" default="1"></xs:attribute>

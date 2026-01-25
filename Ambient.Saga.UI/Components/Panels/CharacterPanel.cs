@@ -548,12 +548,10 @@ public class CharacterPanel
         var hasSelection = false;
         var scale = UIConstants.DpiScale;
 
-        // Current Tool (only show if lookup succeeds)
-        var currentToolRef = viewModel.PlayerAvatar.CurrentToolRef;
-        if (!string.IsNullOrEmpty(currentToolRef))
+        // Current selections from IGameplayItemProviders
+        foreach (var provider in viewModel.CurrentWorld.GameplayItemProviders)
         {
-            var tool = viewModel.CurrentWorld.TryGetToolByRefName(currentToolRef);
-            if (tool != null)
+            if (provider.CurrentItem != null)
             {
                 if (!hasSelection)
                 {
@@ -562,29 +560,9 @@ public class CharacterPanel
                     hasSelection = true;
                 }
 
-                ImGui.Text("Tool:");
+                ImGui.Text($"{provider.Name}:");
                 ImGui.SameLine(120 * scale);
-                ImGui.TextColored(new Vector4(0.5f, 1, 0.8f, 1), tool.DisplayName ?? tool.RefName);
-            }
-        }
-
-        // Current Building Material (only show if lookup succeeds)
-        var currentMaterialRef = viewModel.PlayerAvatar.CurrentBuildingMaterialRef;
-        if (!string.IsNullOrEmpty(currentMaterialRef))
-        {
-            var material = viewModel.CurrentWorld.TryGetBuildingMaterialByRefName(currentMaterialRef);
-            if (material != null)
-            {
-                if (!hasSelection)
-                {
-                    ImGui.TextColored(new Vector4(0.8f, 0.9f, 0.5f, 1), "Current Selection:");
-                    ImGui.Spacing();
-                    hasSelection = true;
-                }
-
-                ImGui.Text("Material:");
-                ImGui.SameLine(120 * scale);
-                ImGui.TextColored(new Vector4(0.9f, 0.7f, 0.5f, 1), material.DisplayName ?? material.RefName);
+                ImGui.TextColored(new Vector4(0.5f, 1, 0.8f, 1), provider.CurrentItem.DisplayName);
             }
         }
 

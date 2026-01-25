@@ -296,10 +296,9 @@ public class MerchantTradeModal
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Loot Contents:");
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Equipment: {loot.Equipment?.Length ?? 0} items");
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Consumables: {loot.Consumables?.Length ?? 0} items");
-                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Blocks: {loot.Blocks?.Length ?? 0} items");
-                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Tools: {loot.Tools?.Length ?? 0} items");
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Spells: {loot.Spells?.Length ?? 0} items");
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   QuestTokens: {loot.QuestTokens?.Length ?? 0} items (not tradeable)");
+                // Note: Blocks and Tools are now handled by IGameplayItemProvider
             }
             else
             {

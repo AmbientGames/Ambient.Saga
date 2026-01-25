@@ -39,8 +39,6 @@ public interface IWorld
     int HeightMapSpawnPixelY { get; set; }
     double HeightMapLongitudeScale { get; set; }
 
-    Dictionary<string, Tool> ToolsLookup { get; set; }
-    Dictionary<string, BuildingMaterial> BuildingMaterialsLookup { get; set; }
     Dictionary<string, Consumable> ConsumablesLookup { get; set; }
     Dictionary<string, Spell> SpellsLookup { get; set; }
     Dictionary<string, Character> CharactersLookup { get; set; }
@@ -61,13 +59,6 @@ public interface IWorld
     GameplayComponents Gameplay { get; }
     long UtcStartTick { get; set; }
     IWorldTemplate WorldTemplate { get; set; }
-
-    // remove these - the usage is an abomination:
-    public Tool GetToolByRefName(string toolRefName);
-    public Tool? TryGetToolByRefName(string toolRefName);
-
-    public BuildingMaterial GetBuildingMaterialByRefName(string buildingMaterialRefName);
-    public BuildingMaterial? TryGetBuildingMaterialByRefName(string buildingMaterialRefName);
 
     public Consumable GetConsumableByRefName(string consumableRefName);
     public Consumable? TryGetConsumableByRefName(string consumableRefName);
