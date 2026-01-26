@@ -94,21 +94,21 @@ public class SectionedHudRenderer : IHudRenderer
     /// </summary>
     public IReadOnlyList<IHudSection> Sections => _sections.AsReadOnly();
 
-    // Fixed content height matching hotbar slot height
-    private const float ContentHeight = 40f;
+    // Fixed layout sizes based on hotbar content
+    private const float LeftRegionFixedWidth = 160f;
+    private const float RightRegionFixedWidth = 160f;
+    private static float CenterRegionFixedWidth => HotbarSection.TotalWidth;
+    private static float BarFixedWidth => LeftRegionFixedWidth + CenterRegionFixedWidth + RightRegionFixedWidth;
+    private static float ContentHeight => HotbarSection.SlotHeight;
 
     public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false)
     {
-        // HUD height is fixed to match hotbar slot height (no extra padding)
-        var style = ImGui.GetStyle();
+        // All sizes are fixed, not based on display size
         var hudHeight = ContentHeight;
-
-        // Calculate bottom bar region widths (bar is half screen width, centered)
-        var barWidth = displaySize.X * 0.5f;
-        var availableWidth = barWidth - style.WindowPadding.X * 2;
-        var leftWidth = availableWidth * 0.25f;
-        var centerWidth = availableWidth * 0.50f;
-        var rightWidth = availableWidth * 0.25f;
+        var barWidth = BarFixedWidth;
+        var leftWidth = LeftRegionFixedWidth;
+        var centerWidth = CenterRegionFixedWidth;
+        var rightWidth = RightRegionFixedWidth;
 
         // Create context
         var context = new HudContext

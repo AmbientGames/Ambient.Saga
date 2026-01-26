@@ -10,10 +10,15 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 /// </summary>
 public class HotbarSection : IHudSection
 {
-    // Slot styling
-    private const float SlotWidth = 70f;
-    private const float SlotHeight = 40f;
-    private const float SlotSpacing = 4f;
+    // Slot styling - public so layout can use fixed sizes
+    public const float SlotWidth = 70f;
+    public const float SlotHeight = 40f;
+    public const float SlotSpacing = 4f;
+    public const int SlotCount = 9;
+
+    // Calculated total width: (SlotWidth * SlotCount) + (SlotSpacing * (SlotCount - 1))
+    public static float TotalWidth => (SlotWidth * SlotCount) + (SlotSpacing * (SlotCount - 1));
+
     private const float SlotRounding = 4f;
     private const float KeyBadgeSize = 16f;
 
