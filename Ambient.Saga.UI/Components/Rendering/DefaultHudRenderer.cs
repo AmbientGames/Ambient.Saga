@@ -23,7 +23,7 @@ public class DefaultHudRenderer : IHudRenderer
     private const float BarHeight = 14f;
     private const float BarSpacing = 8f;
 
-    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false)
     {
         // Calculate HUD height - two rows: resource bars + hotkeys
         var textHeight = ImGui.CalcTextSize("M").Y;

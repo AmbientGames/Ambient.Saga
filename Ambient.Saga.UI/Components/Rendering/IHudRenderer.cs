@@ -15,5 +15,6 @@ public interface IHudRenderer
     /// <param name="viewModel">Main view model with world/avatar state</param>
     /// <param name="activePanel">Currently active panel</param>
     /// <param name="displaySize">Display size in pixels</param>
-    void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize);
+    /// <param name="hasActiveToastMessages">Whether toast messages are currently being displayed (hides world info)</param>
+    void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false);
 }

@@ -30,6 +30,11 @@ public class HudContext
     public required float HudHeight { get; init; }
 
     /// <summary>
+    /// Total width of the bottom HUD bar in pixels.
+    /// </summary>
+    public required float BarWidth { get; init; }
+
+    /// <summary>
     /// Width available for the left region.
     /// </summary>
     public required float LeftRegionWidth { get; init; }
@@ -53,4 +58,10 @@ public class HudContext
     /// Whether the game is currently loading.
     /// </summary>
     public bool IsLoading => ViewModel.IsLoading;
+
+    /// <summary>
+    /// Whether there are active toast messages being displayed.
+    /// When true, WorldInfoSection should not render (toasts take over top-right).
+    /// </summary>
+    public bool HasActiveToastMessages { get; init; }
 }

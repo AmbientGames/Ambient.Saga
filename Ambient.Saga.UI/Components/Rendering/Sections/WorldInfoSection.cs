@@ -20,6 +20,10 @@ public class WorldInfoSection : IHudSection
 
     public void Render(HudContext context)
     {
+        // Don't render when toast messages are active - they take over this space
+        if (context.HasActiveToastMessages)
+            return;
+
         var drawList = ImGui.GetWindowDrawList();
         var windowPos = ImGui.GetWindowPos();
         var windowSize = ImGui.GetWindowSize();

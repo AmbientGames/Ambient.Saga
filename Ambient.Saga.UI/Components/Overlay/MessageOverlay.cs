@@ -176,10 +176,10 @@ public class MessageOverlay
         }
         maxWidth += style.WindowPadding.X * 2;
 
-        // Position window
+        // Position window in top-right corner
         var windowPos = new Vector2(
             displaySize.X - maxWidth - EdgePadding,
-            displaySize.Y - hudHeight - totalHeight - EdgePadding
+            EdgePadding
         );
 
         ImGui.SetNextWindowPos(windowPos);

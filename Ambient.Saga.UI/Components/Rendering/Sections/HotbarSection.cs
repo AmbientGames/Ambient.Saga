@@ -66,7 +66,8 @@ public class HotbarSection : IHudSection
         var offsetX = (availableWidth - totalWidth) / 2f;
 
         var currentX = startPos.X + offsetX;
-        var slotY = startPos.Y + (context.HudHeight - SlotHeight - style.WindowPadding.Y * 2) / 2f;
+        // Position slots at the bottom of the HUD area
+        var slotY = startPos.Y + context.HudHeight - SlotHeight - style.WindowPadding.Y * 2;
 
         // Render each slot
         for (int i = 0; i < 9; i++)

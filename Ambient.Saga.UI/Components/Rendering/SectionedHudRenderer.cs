@@ -94,20 +94,18 @@ public class SectionedHudRenderer : IHudRenderer
     /// </summary>
     public IReadOnlyList<IHudSection> Sections => _sections.AsReadOnly();
 
-    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
-    {
-        // Calculate HUD dimensions - ensure enough space for 3 resource bars
-        var textHeight = ImGui.CalcTextSize("M").Y;
-        var style = ImGui.GetStyle();
-        var minBarHeight = 12f;  // Minimum height per bar
-        var barCount = 3;        // HP, ST, MP
-        var barSpacing = 4f;     // Spacing between bars
-        var verticalPadding = 8f; // Top and bottom padding
-        var minContentHeight = (minBarHeight * barCount) + (barSpacing * (barCount + 1)) + verticalPadding * 2;
-        var hudHeight = Math.Max(minContentHeight, textHeight + style.WindowPadding.Y * 2 + 30f);
+    // Fixed content height matching hotbar slot height
+    private const float ContentHeight = 40f;
 
-        // Calculate bottom bar region widths
-        var availableWidth = displaySize.X - style.WindowPadding.X * 2;
+    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false)
+    {
+        // HUD height is fixed to match hotbar slot height plus minimal padding
+        var style = ImGui.GetStyle();
+        var hudHeight = ContentHeight + style.WindowPadding.Y * 2;
+
+        // Calculate bottom bar region widths (bar is half screen width, centered)
+        var barWidth = displaySize.X * 0.5f;
+        var availableWidth = barWidth - style.WindowPadding.X * 2;
         var leftWidth = availableWidth * 0.25f;
         var centerWidth = availableWidth * 0.50f;
         var rightWidth = availableWidth * 0.25f;
@@ -119,9 +117,11 @@ public class SectionedHudRenderer : IHudRenderer
             ActivePanel = activePanel,
             DisplaySize = displaySize,
             HudHeight = hudHeight,
+            BarWidth = barWidth,
             LeftRegionWidth = leftWidth,
             CenterRegionWidth = centerWidth,
-            RightRegionWidth = rightWidth
+            RightRegionWidth = rightWidth,
+            HasActiveToastMessages = hasActiveToastMessages
         };
 
         // Group sections by region
@@ -194,18 +194,18 @@ public class SectionedHudRenderer : IHudRenderer
     {
         var style = ImGui.GetStyle();
 
-        // Position at bottom of screen
-        ImGui.SetNextWindowPos(new Vector2(0, context.DisplaySize.Y - hudHeight));
-        ImGui.SetNextWindowSize(new Vector2(context.DisplaySize.X, hudHeight));
+        // Position at bottom of screen, centered horizontally
+        var barX = (context.DisplaySize.X - context.BarWidth) / 2f;
+        ImGui.SetNextWindowPos(new Vector2(barX, context.DisplaySize.Y - hudHeight));
+        ImGui.SetNextWindowSize(new Vector2(context.BarWidth, hudHeight));
 
         var windowFlags = ImGuiWindowFlags.NoTitleBar |
                           ImGuiWindowFlags.NoResize |
                           ImGuiWindowFlags.NoMove |
                           ImGuiWindowFlags.NoScrollbar |
                           ImGuiWindowFlags.NoCollapse |
-                          ImGuiWindowFlags.NoBringToFrontOnFocus;
-
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.1f, 0.1f, 0.15f, 0.9f));
+                          ImGuiWindowFlags.NoBringToFrontOnFocus |
+                          ImGuiWindowFlags.NoBackground;
 
         if (ImGui.Begin("##HudBar", windowFlags))
         {
@@ -244,7 +244,5 @@ public class SectionedHudRenderer : IHudRenderer
             }
         }
         ImGui.End();
-
-        ImGui.PopStyleColor();
     }
 }

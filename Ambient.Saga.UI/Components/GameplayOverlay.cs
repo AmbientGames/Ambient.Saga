@@ -240,8 +240,10 @@ public class GameplayOverlay
 
         // Render the HUD through the injected renderer
         // SectionedHudRenderer handles all 5 regions: TopLeft, TopRight, BottomLeft, BottomCenter, BottomRight
+        // Pass toast state so WorldInfoSection hides when toasts are active
         var io = ImGui.GetIO();
-        _hudRenderer.Render(viewModel, _activePanel, io.DisplaySize);
+        var hasActiveToasts = _messageOverlay.MessageCount > 0;
+        _hudRenderer.Render(viewModel, _activePanel, io.DisplaySize, hasActiveToasts);
 
         // Drain any pending toast messages from the viewModel
         foreach (var (text, type, duration) in viewModel.DrainToastMessages())

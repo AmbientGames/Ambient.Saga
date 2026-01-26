@@ -29,9 +29,11 @@ public class InteractionHintsSection : IHudSection
         var totalWidth = CalculateTotalWidth(context, isDebug);
         var availableWidth = context.RightRegionWidth - style.WindowPadding.X;
 
-        // Start position (right-aligned within region)
+        // Start position (right-aligned within region, positioned at bottom)
         var currentX = startPos.X + Math.Max(0, availableWidth - totalWidth);
-        var centerY = startPos.Y + (context.HudHeight - style.WindowPadding.Y * 2) / 2;
+        // Position at bottom of HUD area (vertically centered within the 40px content height)
+        var contentHeight = 40f;
+        var centerY = startPos.Y + context.HudHeight - style.WindowPadding.Y * 2 - contentHeight / 2;
 
         // Gameplay hotkeys
         if (context.HasMap)

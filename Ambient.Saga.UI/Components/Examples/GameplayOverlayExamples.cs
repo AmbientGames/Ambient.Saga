@@ -243,7 +243,7 @@ public class ImmersiveInputHandler : IInputHandler
 /// </summary>
 public class NoHudRenderer : IHudRenderer
 {
-    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false)
     {
         // Render nothing - completely immersive
     }
@@ -254,7 +254,7 @@ public class NoHudRenderer : IHudRenderer
 /// </summary>
 public class CompactHudRenderer : IHudRenderer
 {
-    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize)
+    public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false)
     {
         // Small corner HUD with just essentials
         ImGui.SetNextWindowPos(new Vector2(10, 10));
