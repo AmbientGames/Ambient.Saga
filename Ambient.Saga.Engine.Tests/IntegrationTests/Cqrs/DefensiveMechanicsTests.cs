@@ -505,7 +505,7 @@ public class DefensiveMechanicsTests
             RefName = name,
             DisplayName = name,
             Health = 1.0f,
-            Energy = 1.0f,
+            Stamina = 1.0f,
             Strength = strength,
             Defense = defense,
             Speed = speed,

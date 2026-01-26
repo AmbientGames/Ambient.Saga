@@ -322,7 +322,7 @@ public class BattleEngine
             RefName = _enemy.RefName,
             DisplayName = _enemy.DisplayName,
             Health = _enemy.Health,
-            Energy = _enemy.Energy,
+            Stamina = _enemy.Stamina,
             Strength = GetEffectiveStrength(_enemy),
             Defense = GetEffectiveDefense(_enemy),
             Speed = GetEffectiveSpeed(_enemy),
@@ -418,7 +418,7 @@ public class BattleEngine
             RefName = opponent.RefName,
             DisplayName = opponent.DisplayName,
             Health = opponent.Health,
-            Energy = opponent.Energy,
+            Stamina = opponent.Stamina,
             Strength = GetEffectiveStrength(opponent),
             Defense = GetEffectiveDefense(opponent),
             Speed = GetEffectiveSpeed(opponent),
@@ -1010,7 +1010,7 @@ public class BattleEngine
 
         // Check if attacker has enough Energy (using Energy for both Mana and Stamina)
         var totalCost = manaCost + staminaCost;
-        if (attacker.Energy < totalCost)
+        if (attacker.Stamina < totalCost)
         {
             CombatLog.Add($"{attacker.DisplayName} doesn't have enough energy to cast {spell.DisplayName}!");
             return new CombatEvent
@@ -1021,7 +1021,7 @@ public class BattleEngine
         }
 
         // Apply energy cost
-        attacker.Energy = Math.Max(0, attacker.Energy - (float)totalCost);
+        attacker.Stamina = Math.Max(0, attacker.Stamina - (float)totalCost);
 
         // Total damage = base + effect damage
         var totalDamage = Math.Max(BASE_DAMAGE_MINIMUM, (float)(baseDamage + Math.Abs(effectDamage)));
@@ -1183,13 +1183,13 @@ public class BattleEngine
                 if (effect.AppliedToAttacker)
                 {
                     // Cost to user
-                    user.Energy = Math.Max(0, user.Energy + (float)effect.Change);
+                    user.Stamina = Math.Max(0, user.Stamina + (float)effect.Change);
                 }
                 else
                 {
                     // Restore to target
                     var energyRestore = (float)effect.Change;
-                    effectTarget.Energy = Math.Min(Combatant.MAX_STAT, effectTarget.Energy + energyRestore);
+                    effectTarget.Stamina = Math.Min(Combatant.MAX_STAT, effectTarget.Stamina + energyRestore);
                 }
             }
         }
@@ -1427,7 +1427,7 @@ public class BattleEngine
 
         // Restore some energy when defending (10% of max)
         var energyRestore = 0.1f;
-        combatant.Energy = Math.Min(Combatant.MAX_STAT, combatant.Energy + energyRestore);
+        combatant.Stamina = Math.Min(Combatant.MAX_STAT, combatant.Stamina + energyRestore);
         CombatLog.Add($"{combatant.DisplayName} recovers {energyRestore * 100:F0}% energy!");
 
         // PHASE 5: Apply OnDefend status effects from equipped items
@@ -1652,7 +1652,7 @@ public class BattleEngine
 
         // Check energy (Mana/Stamina mapped to Energy in battle)
         var requiredEnergy = Math.Max(minimumStats.Mana, minimumStats.Stamina);
-        if (requiredEnergy > 0 && combatant.Energy < requiredEnergy)
+        if (requiredEnergy > 0 && combatant.Stamina < requiredEnergy)
         {
             CombatLog.Add($"{combatant.DisplayName} lacks the Energy to use {itemName}!");
             return new CombatEvent
@@ -2073,9 +2073,9 @@ public class BattleEngine
         if (outcome.Effects != null && outcome.Effects.Stamina > 0)
         {
             var staminaGain = outcome.Effects.Stamina;
-            var previousEnergy = pending.Target.Energy;
-            pending.Target.Energy = Math.Min(Combatant.MAX_STAT, pending.Target.Energy + staminaGain);
-            staminaGained = pending.Target.Energy - previousEnergy;
+            var previousEnergy = pending.Target.Stamina;
+            pending.Target.Stamina = Math.Min(Combatant.MAX_STAT, pending.Target.Stamina + staminaGain);
+            staminaGained = pending.Target.Stamina - previousEnergy;
 
             if (staminaGained > 0)
             {

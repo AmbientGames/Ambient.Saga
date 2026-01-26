@@ -353,7 +353,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             RefName = battleStartedTx.Data["PlayerCombatantId"],
             DisplayName = "Player",  // Will be overridden by UI
             Health = float.Parse(battleStartedTx.Data["PlayerHealth"]),
-            Energy = float.Parse(battleStartedTx.Data["PlayerEnergy"]),
+            Stamina = float.Parse(battleStartedTx.Data["PlayerEnergy"]),
             Strength = float.Parse(battleStartedTx.Data["PlayerStrength"]),
             Defense = float.Parse(battleStartedTx.Data["PlayerDefense"]),
             Speed = float.Parse(battleStartedTx.Data["PlayerSpeed"]),
@@ -367,7 +367,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             RefName = battleStartedTx.Data["EnemyCharacterRef"],
             DisplayName = "Enemy",  // Will be overridden by UI
             Health = float.Parse(battleStartedTx.Data["EnemyHealth"]),
-            Energy = float.Parse(battleStartedTx.Data["EnemyEnergy"]),
+            Stamina = float.Parse(battleStartedTx.Data["EnemyEnergy"]),
             Strength = float.Parse(battleStartedTx.Data["EnemyStrength"]),
             Defense = float.Parse(battleStartedTx.Data["EnemyDefense"]),
             Speed = float.Parse(battleStartedTx.Data["EnemySpeed"]),
@@ -419,7 +419,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
 
             // Actor's energy is updated
-            combatant.Energy = actorEnergyAfter;
+            combatant.Stamina = actorEnergyAfter;
 
             // Target's health is updated
             var target = isPlayerTurn ? enemyCombatant : playerCombatant;

@@ -43,7 +43,7 @@ public static class BattleTransactionHelper
 
                 // Player stats
                 ["PlayerHealth"] = player.Health.ToString("F3"),
-                ["PlayerEnergy"] = player.Energy.ToString("F3"),
+                ["PlayerEnergy"] = player.Stamina.ToString("F3"),
                 ["PlayerStrength"] = player.Strength.ToString("F3"),
                 ["PlayerDefense"] = player.Defense.ToString("F3"),
                 ["PlayerSpeed"] = player.Speed.ToString("F3"),
@@ -52,7 +52,7 @@ public static class BattleTransactionHelper
 
                 // Enemy stats
                 ["EnemyHealth"] = enemy.Health.ToString("F3"),
-                ["EnemyEnergy"] = enemy.Energy.ToString("F3"),
+                ["EnemyEnergy"] = enemy.Stamina.ToString("F3"),
                 ["EnemyStrength"] = enemy.Strength.ToString("F3"),
                 ["EnemyDefense"] = enemy.Defense.ToString("F3"),
                 ["EnemySpeed"] = enemy.Speed.ToString("F3"),

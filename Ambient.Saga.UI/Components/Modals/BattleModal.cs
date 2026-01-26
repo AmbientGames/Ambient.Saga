@@ -545,7 +545,7 @@ public class BattleModal
         bool wasOptimal = false;
         bool timedOut = reaction == PlayerDefenseType.None && _reactionTimeRemaining <= 0;
         float playerHealthAfter = _currentState?.PlayerCombatant?.Health ?? 1.0f;
-        float playerEnergyAfter = _currentState?.PlayerCombatant?.Energy ?? 1.0f;
+        float playerEnergyAfter = _currentState?.PlayerCombatant?.Stamina ?? 1.0f;
         float enemyHealthAfter = _currentState?.EnemyCombatant?.Health ?? 1.0f;
 
         // If we have a BattleEngine, resolve the reaction properly
@@ -565,7 +565,7 @@ public class BattleModal
                 var player = _battleEngine.GetPlayer();
                 var enemy = _battleEngine.GetEnemy();
                 playerHealthAfter = player.Health;
-                playerEnergyAfter = player.Energy;
+                playerEnergyAfter = player.Stamina;
                 enemyHealthAfter = enemy.Health;
 
                 System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction resolved: damage={finalDamage}, counter={counterDamage}, optimal={wasOptimal}");
@@ -652,7 +652,7 @@ public class BattleModal
         // Vital stats with colored progress bars
         ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1.0f), "Vitals:");
         RenderStatBar("Health", combatant.Health, Combatant.MAX_STAT, new Vector4(0.8f, 0.2f, 0.2f, 1.0f));
-        RenderStatBar("Energy", combatant.Energy, Combatant.MAX_STAT, new Vector4(0.2f, 0.5f, 0.8f, 1.0f));
+        RenderStatBar("Energy", combatant.Stamina, Combatant.MAX_STAT, new Vector4(0.2f, 0.5f, 0.8f, 1.0f));
 
         ImGui.Spacing();
         ImGui.Separator();

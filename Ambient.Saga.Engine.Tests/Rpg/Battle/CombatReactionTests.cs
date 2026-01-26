@@ -376,7 +376,7 @@ public class CombatReactionTests
             RefName = name,
             DisplayName = name,
             Health = 1.0f,
-            Energy = 1.0f,
+            Stamina = 1.0f,
             Strength = 0.2f,
             Defense = 0.1f,
             Speed = 0.15f,

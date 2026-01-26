@@ -386,7 +386,7 @@ public class BattleEngineCompanionTests
             RefName = name,
             DisplayName = name,
             Health = health,
-            Energy = 100,
+            Stamina = 100,
             Strength = strength,
             Defense = 5,
             Speed = 10,
