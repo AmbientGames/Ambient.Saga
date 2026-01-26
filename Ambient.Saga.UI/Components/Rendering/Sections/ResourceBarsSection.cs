@@ -28,14 +28,13 @@ public class ResourceBarsSection : IHudSection
 
         var drawList = ImGui.GetWindowDrawList();
         var startPos = ImGui.GetCursorScreenPos();
-        var style = ImGui.GetStyle();
 
         // Calculate how many bars and total height
         var barCount = stats.Mana > 0 ? 3 : 2;
         var totalBarsHeight = (BarHeight * barCount) + (BarSpacing * (barCount - 1));
 
-        // Position at bottom of HUD area
-        var baseY = startPos.Y + context.HudHeight - style.WindowPadding.Y * 2 - totalBarsHeight;
+        // Center bars vertically within the content area
+        var baseY = startPos.Y + (context.HudHeight - totalBarsHeight) / 2f;
         var currentY = baseY;
 
         // Health bar (red)

@@ -23,17 +23,14 @@ public class InteractionHintsSection : IHudSection
         var isDebug = Debugger.IsAttached;
         var drawList = ImGui.GetWindowDrawList();
         var startPos = ImGui.GetCursorScreenPos();
-        var style = ImGui.GetStyle();
 
         // Calculate total width needed to right-align
         var totalWidth = CalculateTotalWidth(context, isDebug);
-        var availableWidth = context.RightRegionWidth - style.WindowPadding.X;
+        var availableWidth = context.RightRegionWidth;
 
-        // Start position (right-aligned within region, positioned at bottom)
+        // Start position (right-aligned within region, vertically centered in HUD)
         var currentX = startPos.X + Math.Max(0, availableWidth - totalWidth);
-        // Position at bottom of HUD area (vertically centered within the 40px content height)
-        var contentHeight = 40f;
-        var centerY = startPos.Y + context.HudHeight - style.WindowPadding.Y * 2 - contentHeight / 2;
+        var centerY = startPos.Y + context.HudHeight / 2;
 
         // Gameplay hotkeys
         if (context.HasMap)
@@ -74,7 +71,7 @@ public class InteractionHintsSection : IHudSection
         }
 
         // Reserve space
-        ImGui.Dummy(new Vector2(totalWidth, context.HudHeight - style.WindowPadding.Y * 2));
+        ImGui.Dummy(new Vector2(totalWidth, context.HudHeight));
     }
 
     private float CalculateTotalWidth(HudContext context, bool isDebug)

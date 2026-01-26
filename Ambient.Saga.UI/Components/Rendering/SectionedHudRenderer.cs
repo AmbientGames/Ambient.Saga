@@ -99,9 +99,9 @@ public class SectionedHudRenderer : IHudRenderer
 
     public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false)
     {
-        // HUD height is fixed to match hotbar slot height plus minimal padding
+        // HUD height is fixed to match hotbar slot height (no extra padding)
         var style = ImGui.GetStyle();
-        var hudHeight = ContentHeight + style.WindowPadding.Y * 2;
+        var hudHeight = ContentHeight;
 
         // Calculate bottom bar region widths (bar is half screen width, centered)
         var barWidth = displaySize.X * 0.5f;
@@ -192,8 +192,6 @@ public class SectionedHudRenderer : IHudRenderer
     private void RenderBottomBar(HudContext context, List<IHudSection> leftSections,
         List<IHudSection> centerSections, List<IHudSection> rightSections, float hudHeight)
     {
-        var style = ImGui.GetStyle();
-
         // Position at bottom of screen, centered horizontally
         var barX = (context.DisplaySize.X - context.BarWidth) / 2f;
         ImGui.SetNextWindowPos(new Vector2(barX, context.DisplaySize.Y - hudHeight));
@@ -207,6 +205,9 @@ public class SectionedHudRenderer : IHudRenderer
                           ImGuiWindowFlags.NoBringToFrontOnFocus |
                           ImGuiWindowFlags.NoBackground;
 
+        // Remove window padding so content sits at exact bottom
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
+
         if (ImGui.Begin("##HudBar", windowFlags))
         {
             // Render left sections (resource bars)
@@ -217,11 +218,10 @@ public class SectionedHudRenderer : IHudRenderer
             }
             ImGui.EndGroup();
 
-            // Render center sections (blocks extension slot)
+            // Render center sections (hotbar) - no gap
             if (centerSections.Count > 0)
             {
-                var centerStartX = context.LeftRegionWidth + style.WindowPadding.X;
-                ImGui.SameLine(centerStartX);
+                ImGui.SameLine(context.LeftRegionWidth);
                 ImGui.BeginGroup();
                 foreach (var section in centerSections)
                 {
@@ -230,11 +230,10 @@ public class SectionedHudRenderer : IHudRenderer
                 ImGui.EndGroup();
             }
 
-            // Render right sections (interaction hints)
+            // Render right sections (interaction hints) - no gap
             if (rightSections.Count > 0)
             {
-                var rightStartX = context.LeftRegionWidth + context.CenterRegionWidth + style.WindowPadding.X;
-                ImGui.SameLine(rightStartX);
+                ImGui.SameLine(context.LeftRegionWidth + context.CenterRegionWidth);
                 ImGui.BeginGroup();
                 foreach (var section in rightSections)
                 {
@@ -244,5 +243,7 @@ public class SectionedHudRenderer : IHudRenderer
             }
         }
         ImGui.End();
+
+        ImGui.PopStyleVar();
     }
 }

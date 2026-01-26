@@ -58,7 +58,6 @@ public class HotbarSection : IHudSection
 
         var drawList = ImGui.GetWindowDrawList();
         var startPos = ImGui.GetCursorScreenPos();
-        var style = ImGui.GetStyle();
 
         // Calculate total hotbar width and center it
         var totalWidth = (SlotWidth * 9) + (SlotSpacing * 8);
@@ -66,8 +65,8 @@ public class HotbarSection : IHudSection
         var offsetX = (availableWidth - totalWidth) / 2f;
 
         var currentX = startPos.X + offsetX;
-        // Position slots at the bottom of the HUD area
-        var slotY = startPos.Y + context.HudHeight - SlotHeight - style.WindowPadding.Y * 2;
+        // Position slots at the cursor position (content area matches slot height)
+        var slotY = startPos.Y;
 
         // Render each slot
         for (int i = 0; i < 9; i++)
