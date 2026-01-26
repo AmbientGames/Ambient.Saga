@@ -205,8 +205,9 @@ public class SectionedHudRenderer : IHudRenderer
                           ImGuiWindowFlags.NoBringToFrontOnFocus |
                           ImGuiWindowFlags.NoBackground;
 
-        // Remove window padding so content sits at exact bottom
+        // Remove window padding and border so content area matches window size exactly
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, Vector2.Zero);
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 0f);
 
         if (ImGui.Begin("##HudBar", windowFlags))
         {
@@ -244,6 +245,6 @@ public class SectionedHudRenderer : IHudRenderer
         }
         ImGui.End();
 
-        ImGui.PopStyleVar();
+        ImGui.PopStyleVar(2);
     }
 }
