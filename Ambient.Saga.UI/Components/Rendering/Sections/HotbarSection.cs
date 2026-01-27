@@ -1,4 +1,5 @@
 using Ambient.Domain.Hotbar;
+using Ambient.Saga.UI;
 using ImGuiNET;
 using System.Numerics;
 
@@ -10,17 +11,22 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 /// </summary>
 public class HotbarSection : IHudSection
 {
-    // Slot styling - public so layout can use fixed sizes
-    public const float SlotWidth = 70f;
-    public const float SlotHeight = 40f;
-    public const float SlotSpacing = 4f;
+    // Base slot styling at 96 DPI (1.0 scale) - public so layout can use fixed sizes
+    public const float SlotWidthBase = 70f;
+    public const float SlotHeightBase = 40f;
+    public const float SlotSpacingBase = 4f;
     public const int SlotCount = 9;
 
-    // Calculated total width: (SlotWidth * SlotCount) + (SlotSpacing * (SlotCount - 1))
+    // DPI-scaled dimensions for rendering
+    public static float SlotWidth => SlotWidthBase * UIConstants.DpiScale;
+    public static float SlotHeight => SlotHeightBase * UIConstants.DpiScale;
+    public static float SlotSpacing => SlotSpacingBase * UIConstants.DpiScale;
+
+    // Calculated total width (DPI-scaled)
     public static float TotalWidth => (SlotWidth * SlotCount) + (SlotSpacing * (SlotCount - 1));
 
-    private const float SlotRounding = 4f;
-    private const float KeyBadgeSize = 16f;
+    private static float SlotRounding => 4f * UIConstants.DpiScale;
+    private static float KeyBadgeSize => 16f * UIConstants.DpiScale;
 
     // Colors
     private static readonly Vector4 SlotBgColor = new(0.15f, 0.15f, 0.2f, 0.9f);
@@ -104,13 +110,16 @@ public class HotbarSection : IHudSection
 
         // Border
         var borderColor = isSelected ? SlotBorderSelectedColor : SlotBorderColor;
-        drawList.AddRect(pos, slotRect, ImGui.ColorConvertFloat4ToU32(borderColor), SlotRounding, ImDrawFlags.None, isSelected ? 2f : 1f);
+        var borderThickness = (isSelected ? 2f : 1f) * UIConstants.DpiScale;
+        drawList.AddRect(pos, slotRect, ImGui.ColorConvertFloat4ToU32(borderColor), SlotRounding, ImDrawFlags.None, borderThickness);
 
         // Key number badge (top-left corner)
         var keyText = (index + 1).ToString();
-        var keyBadgePos = new Vector2(pos.X + 2, pos.Y + 2);
+        var badgeOffset = 2f * UIConstants.DpiScale;
+        var keyBadgePos = new Vector2(pos.X + badgeOffset, pos.Y + badgeOffset);
         var keyBadgeRect = new Vector2(keyBadgePos.X + KeyBadgeSize, keyBadgePos.Y + KeyBadgeSize);
-        drawList.AddRectFilled(keyBadgePos, keyBadgeRect, ImGui.ColorConvertFloat4ToU32(KeyBadgeBgColor), 3f);
+        var keyBadgeRounding = 3f * UIConstants.DpiScale;
+        drawList.AddRectFilled(keyBadgePos, keyBadgeRect, ImGui.ColorConvertFloat4ToU32(KeyBadgeBgColor), keyBadgeRounding);
 
         var keyTextSize = ImGui.CalcTextSize(keyText);
         var keyTextPos = new Vector2(
@@ -125,13 +134,15 @@ public class HotbarSection : IHudSection
             var textColor = ItemTypeColors.GetValueOrDefault(slot.ItemType, ItemTextColor);
 
             // Truncate text if too long
-            var maxTextWidth = SlotWidth - 8;
+            var textPadding = 8f * UIConstants.DpiScale;
+            var maxTextWidth = SlotWidth - textPadding;
             var truncatedName = TruncateText(displayName, maxTextWidth);
 
             var textSize = ImGui.CalcTextSize(truncatedName);
+            var textVerticalPadding = 4f * UIConstants.DpiScale;
             var textPos = new Vector2(
                 pos.X + (SlotWidth - textSize.X) / 2,
-                pos.Y + KeyBadgeSize + 4 + (SlotHeight - KeyBadgeSize - 4 - textSize.Y) / 2);
+                pos.Y + KeyBadgeSize + textVerticalPadding + (SlotHeight - KeyBadgeSize - textVerticalPadding - textSize.Y) / 2);
 
             drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(textColor), truncatedName);
         }

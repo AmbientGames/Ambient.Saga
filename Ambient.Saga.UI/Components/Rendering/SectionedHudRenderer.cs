@@ -1,4 +1,5 @@
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI;
 using Ambient.Saga.UI.Components.Rendering.Sections;
 using ImGuiNET;
 using System.Numerics;
@@ -30,12 +31,19 @@ public class SectionedHudRenderer : IHudRenderer
 {
     private readonly List<IHudSection> _sections;
 
-    // Layout constants
-    private const float CornerPadding = 8f;
-    private const float TopLeftCornerWidth = 150f;
-    private const float TopLeftCornerHeight = 80f;
-    private const float TopRightCornerWidth = 280f;
-    private const float TopRightCornerHeight = 200f; // Taller to fit navigation + debug text
+    // Base layout constants at 96 DPI (1.0 scale)
+    private const float CornerPaddingBase = 8f;
+    private const float TopLeftCornerWidthBase = 150f;
+    private const float TopLeftCornerHeightBase = 80f;
+    private const float TopRightCornerWidthBase = 280f;
+    private const float TopRightCornerHeightBase = 200f; // Taller to fit navigation + debug text
+
+    // DPI-scaled corner dimensions
+    private static float CornerPadding => CornerPaddingBase * UIConstants.DpiScale;
+    private static float TopLeftCornerWidth => TopLeftCornerWidthBase * UIConstants.DpiScale;
+    private static float TopLeftCornerHeight => TopLeftCornerHeightBase * UIConstants.DpiScale;
+    private static float TopRightCornerWidth => TopRightCornerWidthBase * UIConstants.DpiScale;
+    private static float TopRightCornerHeight => TopRightCornerHeightBase * UIConstants.DpiScale;
 
     /// <summary>
     /// Create a SectionedHudRenderer with default sections.
@@ -94,9 +102,13 @@ public class SectionedHudRenderer : IHudRenderer
     /// </summary>
     public IReadOnlyList<IHudSection> Sections => _sections.AsReadOnly();
 
-    // Fixed layout sizes based on hotbar content
-    private const float LeftRegionFixedWidth = 160f;
-    private const float RightRegionFixedWidth = 160f;
+    // Base layout sizes at 96 DPI (1.0 scale) - scaled at runtime for DPI awareness
+    private const float LeftRegionWidthBase = 160f;
+    private const float RightRegionWidthBase = 160f;
+
+    // DPI-scaled layout sizes
+    private static float LeftRegionFixedWidth => LeftRegionWidthBase * UIConstants.DpiScale;
+    private static float RightRegionFixedWidth => RightRegionWidthBase * UIConstants.DpiScale;
     private static float CenterRegionFixedWidth => HotbarSection.TotalWidth;
     private static float BarFixedWidth => LeftRegionFixedWidth + CenterRegionFixedWidth + RightRegionFixedWidth;
     private static float ContentHeight => HotbarSection.SlotHeight;
