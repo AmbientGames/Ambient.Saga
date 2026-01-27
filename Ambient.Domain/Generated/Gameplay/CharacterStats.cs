@@ -50,7 +50,7 @@ namespace Ambient.Domain {
             this.healthField = ((float)(1F));
             this.staminaField = ((float)(1F));
             this.manaField = ((float)(1F));
-            this.temperatureField = ((float)(37F));
+            this.temperatureField = ((float)(0F));
             this.strengthField = ((float)(0F));
             this.defenseField = ((float)(0F));
             this.magicField = ((float)(0F));
@@ -99,7 +99,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "37")]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
         public float Temperature {
             get {
                 return this.temperatureField;
