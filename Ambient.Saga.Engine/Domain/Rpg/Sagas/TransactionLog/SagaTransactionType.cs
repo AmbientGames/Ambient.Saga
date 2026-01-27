@@ -61,6 +61,12 @@ public enum SagaTransactionType
     // Consumable usage (outside battle)
     ConsumableUsed,          // Consumable item used (potion, food, etc.)
 
+    // Tool maintenance
+    ToolSharpened,           // Tool condition restored (costs currency)
+
+    // Travel
+    AvatarTeleported,        // Avatar teleported to new location (costs currency)
+
     // Loot and rewards
     LootAwarded,
     EffectApplied,

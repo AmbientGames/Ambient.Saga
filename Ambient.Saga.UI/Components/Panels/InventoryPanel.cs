@@ -22,6 +22,8 @@ public class InventoryPanel
     private HashSet<string> _pendingEquipOperations = new();
     // Track pending consumable use operations for async feedback
     private HashSet<string> _pendingUseOperations = new();
+    // Track pending sharpen operations for async feedback
+    private HashSet<string> _pendingSharpenOperations = new();
 
     // Hotbar assignment state
     private bool _showHotbarAssignPopup = false;
@@ -397,8 +399,11 @@ public class InventoryPanel
         }
     }
 
+    // Hardcoded sharpen cost (can be made configurable later)
+    private const int SharpenCost = 50;
+
     /// <summary>
-    /// Renders the Tools section.
+    /// Renders the Tools section with expandable details.
     /// </summary>
     private void RenderTools(SagaMainViewModel viewModel, ItemCollection caps)
     {
@@ -411,17 +416,118 @@ public class InventoryPanel
                     var toolDef = viewModel.CurrentWorld?.Gameplay?.Tools?.FirstOrDefault(t => t.RefName == tool.ToolRef);
                     var toolName = toolDef?.DisplayName ?? tool.ToolRef;
                     ImGui.Indent();
+
                     var maxTextWidth = GetAvailableTextWidth();
                     var conditionText = $" ({tool.Condition:P0})";
                     var truncatedName = TruncateToFit(toolName, maxTextWidth - ImGui.CalcTextSize(conditionText).X - 30f);
-                    ImGui.BulletText($"{truncatedName}{conditionText}");
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{conditionText}##{tool.ToolRef}");
+
                     if (truncatedName != toolName && ImGui.IsItemHovered())
                     {
                         ImGui.SetTooltip($"{toolName}{conditionText}");
                     }
+
+                    // Buttons on same line as header
                     ImGui.SameLine();
                     ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
                     RenderHotbarAssignButton(HotbarItemType.Tool, tool.ToolRef, toolName);
+                    ImGui.SameLine();
+
+                    // Equip button
+                    var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
+                    var isEquipped = viewModel.PlayerAvatar?.CurrentToolRef == tool.ToolRef;
+                    if (isEquipped)
+                    {
+                        ImGui.BeginDisabled();
+                        ImGui.Button("Equipped", buttonSize);
+                        ImGui.EndDisabled();
+                    }
+                    else
+                    {
+                        if (ImGui.Button($"Equip##{tool.ToolRef}", buttonSize))
+                        {
+                            if (viewModel.PlayerAvatar != null)
+                            {
+                                viewModel.PlayerAvatar.CurrentToolRef = tool.ToolRef;
+                                viewModel.AddToastMessage($"{toolName} equipped");
+                            }
+                        }
+                    }
+
+                    if (treeNodeOpen)
+                    {
+                        // Tool details
+                        if (toolDef != null)
+                        {
+                            if (!string.IsNullOrEmpty(toolDef.Description))
+                            {
+                                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), toolDef.Description);
+                                ImGui.Spacing();
+                            }
+
+                            // Effective substances
+                            if (toolDef.EffectiveSubstances != null && toolDef.EffectiveSubstances.Length > 0)
+                            {
+                                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1), "Effective on:");
+                                foreach (var substance in toolDef.EffectiveSubstances)
+                                {
+                                    var multiplierText = substance.EffectivenessMultiplier != 1f
+                                        ? $" (×{substance.EffectivenessMultiplier:F1})"
+                                        : "";
+                                    ImGui.BulletText($"{substance.SubstanceRef}{multiplierText}");
+                                }
+                                ImGui.Spacing();
+                            }
+
+                            // Durability info
+                            ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), $"Wear rate: {toolDef.DurabilityLoss:P1}/use");
+                            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Value: {toolDef.WholesalePrice}");
+                        }
+
+                        // Condition bar
+                        ImGui.Spacing();
+                        var conditionColor = tool.Condition > 0.5f
+                            ? new Vector4(0.3f, 0.8f, 0.3f, 1)
+                            : tool.Condition > 0.25f
+                                ? new Vector4(0.9f, 0.7f, 0.2f, 1)
+                                : new Vector4(0.9f, 0.3f, 0.2f, 1);
+                        ImGui.TextColored(conditionColor, $"Condition: {tool.Condition:P0}");
+
+                        // Sharpen button (only if damaged)
+                        if (tool.Condition < 1f)
+                        {
+                            ImGui.Spacing();
+                            var playerCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
+                            var canAfford = playerCredits >= SharpenCost;
+                            var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits";
+                            var isPendingSharpen = _pendingSharpenOperations.Contains(tool.ToolRef);
+
+                            if (isPendingSharpen)
+                            {
+                                ImGui.BeginDisabled();
+                                ImGui.Button("...", new Vector2(0, 0));
+                                ImGui.EndDisabled();
+                            }
+                            else
+                            {
+                                ImGui.BeginDisabled(!canAfford);
+                                if (ImGui.Button($"Sharpen ({SharpenCost} {currencyName})##{tool.ToolRef}"))
+                                {
+                                    _pendingSharpenOperations.Add(tool.ToolRef);
+                                    _ = SharpenToolAsync(viewModel, tool.ToolRef);
+                                }
+                                ImGui.EndDisabled();
+
+                                if (!canAfford && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+                                {
+                                    ImGui.SetTooltip($"Not enough {currencyName} (need {SharpenCost}, have {playerCredits:F0})");
+                                }
+                            }
+                        }
+
+                        ImGui.TreePop();
+                    }
+
                     ImGui.Unindent();
                 }
             }
@@ -435,7 +541,7 @@ public class InventoryPanel
     }
 
     /// <summary>
-    /// Renders the Blocks section.
+    /// Renders the Blocks section with expandable details.
     /// </summary>
     private void RenderBlocks(SagaMainViewModel viewModel, ItemCollection caps)
     {
@@ -448,17 +554,72 @@ public class InventoryPanel
                     var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(block.BlockRef);
                     var blockName = blockDef?.DisplayName ?? block.BlockRef;
                     ImGui.Indent();
+
                     var maxTextWidth = GetAvailableTextWidth();
                     var quantityText = $" x{block.Quantity}";
                     var truncatedName = TruncateToFit(blockName, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
-                    ImGui.BulletText($"{truncatedName}{quantityText}");
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{block.BlockRef}");
+
                     if (truncatedName != blockName && ImGui.IsItemHovered())
                     {
                         ImGui.SetTooltip($"{blockName}{quantityText}");
                     }
+
+                    // Buttons on same line as header
                     ImGui.SameLine();
                     ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
                     RenderHotbarAssignButton(HotbarItemType.Block, block.BlockRef, blockName);
+                    ImGui.SameLine();
+
+                    // Select button
+                    var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
+                    var isSelected = viewModel.PlayerAvatar?.CurrentBlockRef == block.BlockRef;
+                    if (isSelected)
+                    {
+                        ImGui.BeginDisabled();
+                        ImGui.Button("Selected", buttonSize);
+                        ImGui.EndDisabled();
+                    }
+                    else
+                    {
+                        if (ImGui.Button($"Select##{block.BlockRef}", buttonSize))
+                        {
+                            if (viewModel.PlayerAvatar != null)
+                            {
+                                viewModel.PlayerAvatar.CurrentBlockRef = block.BlockRef;
+                                viewModel.AddToastMessage($"{blockName} selected");
+                            }
+                        }
+                    }
+
+                    if (treeNodeOpen)
+                    {
+                        // Block details
+                        if (blockDef != null)
+                        {
+                            if (!string.IsNullOrEmpty(blockDef.Description))
+                            {
+                                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), blockDef.Description);
+                                ImGui.Spacing();
+                            }
+
+                            // Substance
+                            if (!string.IsNullOrEmpty(blockDef.SubstanceRef))
+                            {
+                                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1), $"Substance: {blockDef.SubstanceRef}");
+                            }
+
+                            // Value
+                            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Value: {blockDef.WholesalePrice}");
+                            if (blockDef.MerchantMarkupMultiplier != 1f)
+                            {
+                                ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {blockDef.MerchantMarkupMultiplier:F1}x");
+                            }
+                        }
+
+                        ImGui.TreePop();
+                    }
+
                     ImGui.Unindent();
                 }
             }
@@ -472,7 +633,7 @@ public class InventoryPanel
     }
 
     /// <summary>
-    /// Renders the Materials section.
+    /// Renders the Materials section with expandable details.
     /// </summary>
     private void RenderMaterials(SagaMainViewModel viewModel, ItemCollection caps)
     {
@@ -497,9 +658,32 @@ public class InventoryPanel
                         ImGui.SetTooltip($"{name}{quantityText}");
                     }
 
+                    // Buttons on same line as header
                     ImGui.SameLine();
                     ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
                     RenderHotbarAssignButton(HotbarItemType.BuildingMaterial, material.BuildingMaterialRef, name);
+                    ImGui.SameLine();
+
+                    // Select button
+                    var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
+                    var isSelected = viewModel.PlayerAvatar?.CurrentBuildingMaterialRef == material.BuildingMaterialRef;
+                    if (isSelected)
+                    {
+                        ImGui.BeginDisabled();
+                        ImGui.Button("Selected", buttonSize);
+                        ImGui.EndDisabled();
+                    }
+                    else
+                    {
+                        if (ImGui.Button($"Select##{material.BuildingMaterialRef}", buttonSize))
+                        {
+                            if (viewModel.PlayerAvatar != null)
+                            {
+                                viewModel.PlayerAvatar.CurrentBuildingMaterialRef = material.BuildingMaterialRef;
+                                viewModel.AddToastMessage($"{name} selected");
+                            }
+                        }
+                    }
 
                     if (treeNodeOpen)
                     {
@@ -510,8 +694,23 @@ public class InventoryPanel
                                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), materialItem.Description);
                                 ImGui.Spacing();
                             }
-                            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Price: {materialItem.WholesalePrice}");
-                            ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {materialItem.MerchantMarkupMultiplier}x");
+
+                            // Compatible substances
+                            if (materialItem.CompatibleSubstances != null && materialItem.CompatibleSubstances.Length > 0)
+                            {
+                                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1f, 1), "Works on:");
+                                foreach (var substance in materialItem.CompatibleSubstances)
+                                {
+                                    ImGui.BulletText(substance.SubstanceRef);
+                                }
+                                ImGui.Spacing();
+                            }
+
+                            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Value: {materialItem.WholesalePrice}");
+                            if (materialItem.MerchantMarkupMultiplier != 1f)
+                            {
+                                ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {materialItem.MerchantMarkupMultiplier:F1}x");
+                            }
                         }
                         ImGui.TreePop();
                     }
@@ -562,6 +761,18 @@ public class InventoryPanel
         finally
         {
             _pendingUseOperations.Remove(consumableRef);
+        }
+    }
+
+    private async Task SharpenToolAsync(SagaMainViewModel viewModel, string toolRef)
+    {
+        try
+        {
+            await viewModel.SharpenToolAsync(toolRef, SharpenCost);
+        }
+        finally
+        {
+            _pendingSharpenOperations.Remove(toolRef);
         }
     }
 

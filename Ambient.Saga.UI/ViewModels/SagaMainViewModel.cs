@@ -2031,6 +2031,137 @@ public partial class SagaMainViewModel : ObservableObject
     }
 
     /// <summary>
+    /// Sharpens a tool, restoring its condition to 100%.
+    /// Deducts currency from the avatar.
+    /// </summary>
+    /// <param name="toolRef">Tool reference to sharpen</param>
+    /// <param name="cost">Cost in currency</param>
+    /// <returns>True if tool was sharpened successfully</returns>
+    public async Task<bool> SharpenToolAsync(string toolRef, int cost)
+    {
+        if (PlayerAvatar == null || CurrentWorld == null)
+        {
+            AddToastMessage("Cannot sharpen tool: No avatar or world loaded", MessageType.Error);
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(toolRef))
+        {
+            AddToastMessage("Cannot sharpen tool: No tool specified", MessageType.Error);
+            return false;
+        }
+
+        try
+        {
+            // Use first saga in the world for transaction logging, or a default
+            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "PlayerLife";
+
+            var command = new SharpenToolCommand
+            {
+                AvatarId = PlayerAvatar.AvatarId,
+                SagaArcRef = sagaRef,
+                ToolRef = toolRef,
+                Cost = cost,
+                Avatar = PlayerAvatar
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result.Successful)
+            {
+                var tool = CurrentWorld.ToolsLookup?.GetValueOrDefault(toolRef);
+                var toolName = tool?.DisplayName ?? toolRef;
+                var currencyName = CurrentWorld.WorldConfiguration?.CurrencyName ?? "Credits";
+
+                AddToastMessage($"{toolName} sharpened to full condition (-{cost} {currencyName})", MessageType.Info);
+
+                // Update avatar from result if provided
+                if (result.UpdatedAvatar != null)
+                {
+                    PlayerAvatar.Stats = result.UpdatedAvatar.Stats;
+                    PlayerAvatar.Capabilities = result.UpdatedAvatar.Capabilities;
+                }
+
+                NotifyPlayerAvatarChanged();
+                return true;
+            }
+            else
+            {
+                AddToastMessage($"Sharpen failed: {result.ErrorMessage}", MessageType.Error);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            AddToastMessage($"Error sharpening tool: {ex.Message}", MessageType.Error);
+            System.Diagnostics.Debug.WriteLine($"SharpenToolAsync ERROR: {ex}");
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Teleports the avatar to a new location.
+    /// Deducts currency from the avatar.
+    /// </summary>
+    /// <param name="destinationLat">Destination latitude</param>
+    /// <param name="destinationLon">Destination longitude</param>
+    /// <param name="cost">Cost in currency</param>
+    /// <returns>True if teleport was successful</returns>
+    public async Task<bool> TeleportAvatarAsync(double destinationLat, double destinationLon, int cost)
+    {
+        if (PlayerAvatar == null || CurrentWorld == null)
+        {
+            AddToastMessage("Cannot teleport: No avatar or world loaded", MessageType.Error);
+            return false;
+        }
+
+        try
+        {
+            // Use first saga in the world for transaction logging, or a default
+            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "PlayerLife";
+
+            var command = new TeleportAvatarCommand
+            {
+                AvatarId = PlayerAvatar.AvatarId,
+                SagaArcRef = sagaRef,
+                DestinationLatitude = destinationLat,
+                DestinationLongitude = destinationLon,
+                Cost = cost,
+                Avatar = PlayerAvatar
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result.Successful)
+            {
+                var currencyName = CurrentWorld.WorldConfiguration?.CurrencyName ?? "Credits";
+                AddToastMessage($"Teleported! (-{cost} {currencyName})", MessageType.Info);
+
+                // Update avatar from result if provided
+                if (result.UpdatedAvatar != null)
+                {
+                    PlayerAvatar.Stats = result.UpdatedAvatar.Stats;
+                    PlayerAvatar.Capabilities = result.UpdatedAvatar.Capabilities;
+                }
+
+                NotifyPlayerAvatarChanged();
+                return true;
+            }
+            else
+            {
+                AddToastMessage($"Teleport failed: {result.ErrorMessage}", MessageType.Error);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            AddToastMessage($"Error teleporting: {ex.Message}", MessageType.Error);
+            System.Diagnostics.Debug.WriteLine($"TeleportAvatarAsync ERROR: {ex}");
+            return false;
+        }
+    }
+
+    /// <summary>
     /// Gets the quantity of a consumable in the avatar's inventory.
     /// </summary>
     public int GetConsumableQuantity(string consumableRef)
