@@ -121,9 +121,10 @@ public class BattleModal
         // Center the window using helper
         ImGuiHelpers.SetupModalWindow(1100, 750);
 
-        // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(16, 16));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        // Style the window (DPI-scaled)
+        var scale = UIConstants.DpiScale;
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(16 * scale, 16 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
@@ -227,7 +228,7 @@ public class BattleModal
             var turnText = _waitingForEnemyTurn ? "Enemy is thinking..." : "Enemy's turn...";
             var textSize = ImGui.CalcTextSize(turnText);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-            ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 25);
+            ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 25 * UIConstants.DpiScale);
             ImGui.TextColored(new Vector4(1.0f, 0.4f, 0.4f, 1.0f), turnText);
         }
         else

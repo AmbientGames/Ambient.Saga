@@ -1,3 +1,4 @@
+using Ambient.Saga.UI;
 using ImGuiNET;
 using System.Numerics;
 
@@ -17,9 +18,21 @@ public class StatusEffectsSection : IHudSection
     private const float CriticalCold = 32f;       // Severe hypothermia
     private const float CriticalHot = 42f;        // Severe hyperthermia
 
-    // Temperature gauge styling
-    private const float GaugeWidth = 80f;
-    private const float GaugeHeight = 8f;
+    // Temperature gauge styling base values at 96 DPI (1.0 scale)
+    private const float GaugeWidthBase = 80f;
+    private const float GaugeHeightBase = 8f;
+    private const float GaugeSpacingBase = 16f;
+    private const float GaugeLabelSpacingBase = 2f;
+    private const float TempTextSpacingBase = 4f;
+    private const float GaugeRoundingBase = 2f;
+
+    // DPI-scaled values
+    private static float GaugeWidth => GaugeWidthBase * UIConstants.DpiScale;
+    private static float GaugeHeight => GaugeHeightBase * UIConstants.DpiScale;
+    private static float GaugeSpacing => GaugeSpacingBase * UIConstants.DpiScale;
+    private static float GaugeLabelSpacing => GaugeLabelSpacingBase * UIConstants.DpiScale;
+    private static float TempTextSpacing => TempTextSpacingBase * UIConstants.DpiScale;
+    private static float GaugeRounding => GaugeRoundingBase * UIConstants.DpiScale;
 
     public HudRegion Region => HudRegion.TopLeft;
     public int Priority => 0;
@@ -36,7 +49,7 @@ public class StatusEffectsSection : IHudSection
 
         // Body temperature indicator - visual gauge
         RenderTemperatureGauge(drawList, windowPos.X, currentY, stats.Temperature);
-        currentY += GaugeHeight + 16f;
+        currentY += GaugeHeight + GaugeSpacing;
 
         // Status effects (debuffs/buffs) - placeholder for future expansion
         // When status effects are implemented, they would render here as icons
@@ -108,13 +121,13 @@ public class StatusEffectsSection : IHudSection
         drawList.AddText(new Vector2(x, y), ImGui.ColorConvertFloat4ToU32(statusColor), labelText);
 
         // Draw gauge below label
-        var gaugeY = y + labelSize.Y + 2f;
+        var gaugeY = y + labelSize.Y + GaugeLabelSpacing;
 
         // Background
         drawList.AddRectFilled(
             new Vector2(x, gaugeY),
             new Vector2(x + GaugeWidth, gaugeY + GaugeHeight),
-            ImGui.ColorConvertFloat4ToU32(bgColor), 2f);
+            ImGui.ColorConvertFloat4ToU32(bgColor), GaugeRounding);
 
         // Fill (inverted - full when healthy, empty when critical)
         if (fillFraction > 0)
@@ -122,20 +135,20 @@ public class StatusEffectsSection : IHudSection
             drawList.AddRectFilled(
                 new Vector2(x, gaugeY),
                 new Vector2(x + GaugeWidth * fillFraction, gaugeY + GaugeHeight),
-                ImGui.ColorConvertFloat4ToU32(statusColor), 2f);
+                ImGui.ColorConvertFloat4ToU32(statusColor), GaugeRounding);
         }
 
         // Border
         drawList.AddRect(
             new Vector2(x, gaugeY),
             new Vector2(x + GaugeWidth, gaugeY + GaugeHeight),
-            ImGui.ColorConvertFloat4ToU32(new Vector4(0.5f, 0.5f, 0.5f, 0.6f)), 2f);
+            ImGui.ColorConvertFloat4ToU32(new Vector4(0.5f, 0.5f, 0.5f, 0.6f)), GaugeRounding);
 
         // Temperature value (small, to the right of gauge)
         var tempText = $"{bodyTemp:0.0}°";
         var tempSize = ImGui.CalcTextSize(tempText);
         drawList.AddText(
-            new Vector2(x + GaugeWidth + 4f, gaugeY + (GaugeHeight - tempSize.Y) / 2),
+            new Vector2(x + GaugeWidth + TempTextSpacing, gaugeY + (GaugeHeight - tempSize.Y) / 2),
             ImGui.ColorConvertFloat4ToU32(statusColor with { W = 0.8f }),
             tempText);
     }

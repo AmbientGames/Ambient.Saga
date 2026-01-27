@@ -95,6 +95,7 @@ public class ArchetypeSelectionModal
                         }
 
                         // Draw background - selection (green) or hover (subtle)
+                        var dpiScale = UIConstants.DpiScale;
                         if (isSelected || isHovered)
                         {
                             var drawList = ImGui.GetWindowDrawList();
@@ -105,21 +106,23 @@ public class ArchetypeSelectionModal
                                 cursorScreenPos,
                                 new Vector2(cursorScreenPos.X + availWidth, cursorScreenPos.Y + cardHeight),
                                 ImGui.GetColorU32(bgColor),
-                                4.0f);
+                                4.0f * dpiScale);
                         }
 
-                        // Draw archetype info overlaid on the button area
-                        ImGui.SetCursorPos(new Vector2(startPos.X + 8, startPos.Y + 4));
+                        // Draw archetype info overlaid on the button area (DPI-scaled padding)
+                        var textPadding = 8f * dpiScale;
+                        var topPadding = 4f * dpiScale;
+                        ImGui.SetCursorPos(new Vector2(startPos.X + textPadding, startPos.Y + topPadding));
 
                         ImGui.TextColored(new Vector4(1, 1, 1, 1), archetype.DisplayName ?? archetype.RefName);
 
-                        ImGui.SetCursorPosX(startPos.X + 8);
+                        ImGui.SetCursorPosX(startPos.X + textPadding);
                         var affinity = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(archetype.AffinityRef ?? "");
                         var affinityName = affinity?.DisplayName ?? archetype.AffinityRef ?? "None";
                         ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), $"Affinity: {affinityName}");
 
-                        ImGui.SetCursorPosX(startPos.X + 8);
-                        ImGui.PushTextWrapPos(startPos.X + ImGui.GetContentRegionAvail().X - 8);
+                        ImGui.SetCursorPosX(startPos.X + textPadding);
+                        ImGui.PushTextWrapPos(startPos.X + ImGui.GetContentRegionAvail().X - textPadding);
                         ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), archetype.Description ?? "");
                         ImGui.PopTextWrapPos();
 

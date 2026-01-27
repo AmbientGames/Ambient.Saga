@@ -1,3 +1,4 @@
+using Ambient.Saga.UI;
 using Ambient.Saga.UI.Configuration;
 using ImGuiNET;
 using System.Diagnostics;
@@ -12,8 +13,19 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 /// </summary>
 public class InteractionHintsSection : IHudSection
 {
-    private const float KeySpacing = 2f;
-    private const float GroupSpacing = 8f;
+    // Base values at 96 DPI (1.0 scale)
+    private const float KeySpacingBase = 2f;
+    private const float GroupSpacingBase = 8f;
+    private const float KeyPaddingBase = 4f;
+    private const float KeyHeightOffsetBase = 6f;
+    private const float KeyRoundingBase = 3f;
+
+    // DPI-scaled values
+    private static float KeySpacing => KeySpacingBase * UIConstants.DpiScale;
+    private static float GroupSpacing => GroupSpacingBase * UIConstants.DpiScale;
+    private static float KeyPadding => KeyPaddingBase * UIConstants.DpiScale;
+    private static float KeyHeightOffset => KeyHeightOffsetBase * UIConstants.DpiScale;
+    private static float KeyRounding => KeyRoundingBase * UIConstants.DpiScale;
 
     public HudRegion Region => HudRegion.BottomRight;
     public int Priority => 0;
@@ -54,11 +66,11 @@ public class InteractionHintsSection : IHudSection
 
             // Separator line
             var sepColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.4f, 0.6f));
-            var keyHeight = ImGui.CalcTextSize("M").Y + 6f;
+            var keyHeight = ImGui.CalcTextSize("M").Y + KeyHeightOffset;
             drawList.AddLine(
                 new Vector2(currentX, centerY - keyHeight / 2),
                 new Vector2(currentX, centerY + keyHeight / 2),
-                sepColor, 1f);
+                sepColor, UIConstants.DpiScale);
             currentX += GroupSpacing;
 
             currentX = RenderCompactKey(drawList, currentX, centerY, "F1", context.ActivePanel == ActivePanel.WorldInfo, isDev: true);
@@ -77,24 +89,24 @@ public class InteractionHintsSection : IHudSection
     private float CalculateTotalWidth(HudContext context, bool isDebug)
     {
         var width = 0f;
-        var keyPadding = 8f; // Horizontal padding per key
+        var keyHorizontalPadding = KeyPadding * 2; // Horizontal padding per key (left + right)
 
         // Gameplay keys
         if (context.HasMap)
         {
-            width += ImGui.CalcTextSize("M").X + keyPadding + KeySpacing;
+            width += ImGui.CalcTextSize("M").X + keyHorizontalPadding + KeySpacing;
         }
-        width += ImGui.CalcTextSize("C").X + keyPadding + KeySpacing;
-        width += ImGui.CalcTextSize("I").X + keyPadding + KeySpacing;
-        width += ImGui.CalcTextSize("J").X + keyPadding;
+        width += ImGui.CalcTextSize("C").X + keyHorizontalPadding + KeySpacing;
+        width += ImGui.CalcTextSize("I").X + keyHorizontalPadding + KeySpacing;
+        width += ImGui.CalcTextSize("J").X + keyHorizontalPadding;
 
         // Dev keys
         if (isDebug)
         {
-            width += GroupSpacing * 2 + 1f; // Separator
-            width += ImGui.CalcTextSize("F1").X + keyPadding + KeySpacing;
-            width += ImGui.CalcTextSize("F2").X + keyPadding + KeySpacing;
-            width += ImGui.CalcTextSize("F12").X + keyPadding;
+            width += GroupSpacing * 2 + UIConstants.DpiScale; // Separator
+            width += ImGui.CalcTextSize("F1").X + keyHorizontalPadding + KeySpacing;
+            width += ImGui.CalcTextSize("F2").X + keyHorizontalPadding + KeySpacing;
+            width += ImGui.CalcTextSize("F12").X + keyHorizontalPadding;
         }
 
         return width;
@@ -103,9 +115,8 @@ public class InteractionHintsSection : IHudSection
     private float RenderCompactKey(ImDrawListPtr drawList, float x, float centerY, string key, bool isActive, bool isDev = false)
     {
         var textSize = ImGui.CalcTextSize(key);
-        var padding = 4f;
-        var keyWidth = textSize.X + padding * 2;
-        var keyHeight = textSize.Y + padding;
+        var keyWidth = textSize.X + KeyPadding * 2;
+        var keyHeight = textSize.Y + KeyPadding;
 
         var keyRect = new Vector2(x, centerY - keyHeight / 2);
         var keyRectEnd = new Vector2(x + keyWidth, centerY + keyHeight / 2);
@@ -132,13 +143,13 @@ public class InteractionHintsSection : IHudSection
         }
 
         // Draw rounded rectangle background
-        drawList.AddRectFilled(keyRect, keyRectEnd, ImGui.ColorConvertFloat4ToU32(bgColor), 3f);
+        drawList.AddRectFilled(keyRect, keyRectEnd, ImGui.ColorConvertFloat4ToU32(bgColor), KeyRounding);
 
         // Draw subtle border
         var borderColor = isActive
             ? new Vector4(0.5f, 0.7f, 0.5f, 0.5f)
             : new Vector4(0.35f, 0.35f, 0.35f, 0.4f);
-        drawList.AddRect(keyRect, keyRectEnd, ImGui.ColorConvertFloat4ToU32(borderColor), 3f);
+        drawList.AddRect(keyRect, keyRectEnd, ImGui.ColorConvertFloat4ToU32(borderColor), KeyRounding);
 
         // Draw key text centered
         var textPos = new Vector2(

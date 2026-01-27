@@ -1,3 +1,4 @@
+using Ambient.Saga.UI;
 using ImGuiNET;
 using System.Numerics;
 
@@ -10,12 +11,21 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 /// </summary>
 public class ResourceBarsSection : IHudSection
 {
-    // Bar styling - compact to fit within 40px height
-    private const float LabelWidth = 24f;
-    private const float BarWidth = 80f;
-    private const float BarHeight = 10f;
-    private const float BarSpacing = 2f;
-    private const float ContentHeight = 40f;
+    // Bar styling base values at 96 DPI (1.0 scale)
+    private const float LabelWidthBase = 24f;
+    private const float BarWidthBase = 80f;
+    private const float BarHeightBase = 10f;
+    private const float BarSpacingBase = 2f;
+    private const float ContentHeightBase = 40f;
+    private const float BarRoundingBase = 3f;
+
+    // DPI-scaled values
+    private static float LabelWidth => LabelWidthBase * UIConstants.DpiScale;
+    private static float BarWidth => BarWidthBase * UIConstants.DpiScale;
+    private static float BarHeight => BarHeightBase * UIConstants.DpiScale;
+    private static float BarSpacing => BarSpacingBase * UIConstants.DpiScale;
+    private static float ContentHeight => ContentHeightBase * UIConstants.DpiScale;
+    private static float BarRounding => BarRoundingBase * UIConstants.DpiScale;
 
     public HudRegion Region => HudRegion.BottomLeft;
     public int Priority => 0;
@@ -80,7 +90,7 @@ public class ResourceBarsSection : IHudSection
         drawList.AddRectFilled(
             new Vector2(barX, y),
             new Vector2(barX + barWidth, y + barHeight),
-            ImGui.ColorConvertFloat4ToU32(bgColor), 3f);
+            ImGui.ColorConvertFloat4ToU32(bgColor), BarRounding);
 
         // Fill
         if (fraction > 0)
@@ -88,14 +98,14 @@ public class ResourceBarsSection : IHudSection
             drawList.AddRectFilled(
                 new Vector2(barX, y),
                 new Vector2(barX + barWidth * fraction, y + barHeight),
-                ImGui.ColorConvertFloat4ToU32(fillColor), 3f);
+                ImGui.ColorConvertFloat4ToU32(fillColor), BarRounding);
         }
 
         // Border
         drawList.AddRect(
             new Vector2(barX, y),
             new Vector2(barX + barWidth, y + barHeight),
-            ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.4f, 0.8f)), 3f);
+            ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.4f, 0.8f)), BarRounding);
 
         // Percentage text (only if bar is wide enough)
         var percentText = $"{(int)(fraction * 100)}%";

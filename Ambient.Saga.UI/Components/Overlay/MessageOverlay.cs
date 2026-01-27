@@ -1,6 +1,7 @@
 using System.Numerics;
-using ImGuiNET;
+using Ambient.Saga.UI;
 using Ambient.Saga.UI.Configuration;
+using ImGuiNET;
 
 namespace Ambient.Saga.UI.Components.Overlay;
 
@@ -206,13 +207,14 @@ public class MessageOverlay
                 var textSize = ImGui.CalcTextSize(msg.Text);
                 var cursorPos = ImGui.GetCursorScreenPos();
 
-                // Draw background rect
+                // Draw background rect (DPI-scaled padding and rounding)
                 var drawList = ImGui.GetWindowDrawList();
+                var scale = UIConstants.DpiScale;
                 drawList.AddRectFilled(
-                    cursorPos - new Vector2(2, 1),
-                    cursorPos + textSize + new Vector2(4, 2),
+                    cursorPos - new Vector2(2 * scale, 1 * scale),
+                    cursorPos + textSize + new Vector2(4 * scale, 2 * scale),
                     ImGui.ColorConvertFloat4ToU32(bgColor),
-                    3f // Corner rounding
+                    3f * scale // Corner rounding
                 );
 
                 ImGui.TextColored(color, msg.Text);

@@ -1,3 +1,4 @@
+using Ambient.Saga.UI;
 using ImGuiNET;
 using System.Numerics;
 
@@ -10,10 +11,17 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 /// </summary>
 public class WorldInfoSection : IHudSection
 {
-    private const float LineSpacing = 2f;
-    private const float SectionSpacing = 8f;
-    private const float BackgroundPadding = 4f;
-    private const float BackgroundRadius = 3f;
+    // Base values at 96 DPI (1.0 scale)
+    private const float LineSpacingBase = 2f;
+    private const float SectionSpacingBase = 8f;
+    private const float BackgroundPaddingBase = 4f;
+    private const float BackgroundRadiusBase = 3f;
+
+    // DPI-scaled values
+    private static float LineSpacing => LineSpacingBase * UIConstants.DpiScale;
+    private static float SectionSpacing => SectionSpacingBase * UIConstants.DpiScale;
+    private static float BackgroundPadding => BackgroundPaddingBase * UIConstants.DpiScale;
+    private static float BackgroundRadius => BackgroundRadiusBase * UIConstants.DpiScale;
 
     public HudRegion Region => HudRegion.TopRight;
     public int Priority => 0;

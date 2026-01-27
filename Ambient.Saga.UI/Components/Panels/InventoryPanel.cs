@@ -780,9 +780,9 @@ public class InventoryPanel
             _openHotbarPopupRequested = false;
         }
 
-        // Position near where clicked
+        // Position near where clicked (DPI-scaled popup width)
         ImGui.SetNextWindowPos(_popupPosition, ImGuiCond.Appearing);
-        var popupSize = new Vector2(200, 0);
+        var popupSize = new Vector2(200 * UIConstants.DpiScale, 0);
         ImGui.SetNextWindowSize(popupSize, ImGuiCond.Always);
 
         if (ImGui.BeginPopup("HotbarAssignPopup"))
