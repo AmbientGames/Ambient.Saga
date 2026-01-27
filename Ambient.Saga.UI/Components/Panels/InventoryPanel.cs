@@ -943,6 +943,15 @@ public class InventoryPanel
                 }
             }
 
+            // Condition display with color coding
+            ImGui.Spacing();
+            var conditionColor = equip.Condition > 0.5f
+                ? new Vector4(0.3f, 0.8f, 0.3f, 1)
+                : equip.Condition > 0.25f
+                    ? new Vector4(0.9f, 0.7f, 0.2f, 1)
+                    : new Vector4(0.9f, 0.3f, 0.2f, 1);
+            ImGui.TextColored(conditionColor, $"Condition: {equip.Condition:P0}");
+
             ImGui.TreePop();
         }
 
