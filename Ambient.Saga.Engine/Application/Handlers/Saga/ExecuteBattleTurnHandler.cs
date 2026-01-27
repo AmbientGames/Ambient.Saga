@@ -480,7 +480,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         instance.AddTransaction(battleEndedTx);
         newTransactions.Add(battleEndedTx);
 
-        // If player won, create CharacterDefeated transaction
+        // If player won, create CharacterDefeated transaction and grant affinity
         if (playerVictory)
         {
             var data = new Dictionary<string, string>
@@ -510,6 +510,38 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
             instance.AddTransaction(characterDefeatedTx);
             newTransactions.Add(characterDefeatedTx);
+
+            // Grant enemy's affinity to player if they have one and player doesn't already have it
+            if (!string.IsNullOrEmpty(enemyCharacter.AffinityRef))
+            {
+                var playerHasAffinity = command.Avatar.Affinities?
+                    .Any(a => a.AffinityRef == enemyCharacter.AffinityRef) ?? false;
+
+                if (!playerHasAffinity)
+                {
+                    // Add affinity to avatar
+                    var affinities = command.Avatar.Affinities?.ToList() ?? new List<Affinity>();
+                    affinities.Add(new Affinity
+                    {
+                        AffinityRef = enemyCharacter.AffinityRef,
+                        CapturedFromCharacterRef = enemyCharacter.RefName,
+                        AcquiredDate = DateTime.UtcNow.ToString("O")
+                    });
+                    command.Avatar.Affinities = affinities.ToArray();
+
+                    // Create AffinityGranted transaction
+                    var affinityTx = DialogueTransactionHelper.CreateAffinityGrantedTransaction(
+                        command.AvatarId.ToString(),
+                        enemyCharacter.AffinityRef,
+                        enemyCharacter.RefName,
+                        instance.InstanceId);
+
+                    instance.AddTransaction(affinityTx);
+                    newTransactions.Add(affinityTx);
+
+                    System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Granted affinity '{enemyCharacter.AffinityRef}' from defeated '{enemyCharacter.RefName}'");
+                }
+            }
         }
     }
 }

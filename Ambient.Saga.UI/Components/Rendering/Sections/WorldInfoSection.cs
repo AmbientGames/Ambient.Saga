@@ -45,8 +45,8 @@ public class WorldInfoSection : IHudSection
         }
 
         // HudText2 contains debug info (FPS, etc.) - optional, dimmer styling
-        // Skip HudText2 when toast messages are active (toasts replace this area)
-        if (!context.HasActiveToastMessages && !string.IsNullOrEmpty(context.ViewModel.HudText2))
+        // Always show HudText2 (unlimited height for debug, may overlap toasts)
+        if (!string.IsNullOrEmpty(context.ViewModel.HudText2))
         {
             if (!string.IsNullOrEmpty(context.ViewModel.HudText1))
                 currentY += SectionSpacing;

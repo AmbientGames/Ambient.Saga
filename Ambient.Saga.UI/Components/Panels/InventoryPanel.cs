@@ -264,69 +264,145 @@ public class InventoryPanel
     }
 
     /// <summary>
-    /// Renders the Affinity section (Spirit).
+    /// Renders the Affinity section showing collected affinities from defeated enemies.
+    /// Allows setting the active affinity for combat.
     /// </summary>
     private void RenderAffinity(SagaMainViewModel viewModel, ItemCollection caps)
     {
         var world = viewModel.CurrentWorld;
-        var slot = world?.LoadoutSlotsLookup?.GetValueOrDefault("Affinity");
-        if (slot == null) return;
+        var avatar = viewModel.PlayerAvatar;
+        var collectedAffinities = avatar?.Affinities ?? Array.Empty<Ambient.Domain.Affinity>();
+        var activeAffinityRef = avatar?.ActiveAffinityRef;
 
-        // Get equipment items for this slot
-        var affinityEquipment = new List<(EquipmentEntry entry, Equipment? def)>();
-        if (caps.Equipment != null)
+        // Get display name for active affinity
+        var activeAffinityName = "(None)";
+        if (!string.IsNullOrEmpty(activeAffinityRef))
         {
-            foreach (var equip in caps.Equipment)
-            {
-                var equipDef = world?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
-                if (equipDef?.SlotRef == "Affinity")
-                {
-                    affinityEquipment.Add((equip, equipDef));
-                }
-            }
+            var activeDef = world?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == activeAffinityRef);
+            activeAffinityName = activeDef?.DisplayName ?? activeAffinityRef;
         }
 
-        var equippedItem = affinityEquipment.FirstOrDefault(e => viewModel.IsItemEquipped(e.entry.EquipmentRef));
-        var hasEquipped = equippedItem.entry != null;
+        var hasActive = !string.IsNullOrEmpty(activeAffinityRef);
+        var headerText = hasActive
+            ? $"Spirit: {activeAffinityName}"
+            : "Spirit: (None Set)";
 
-        var slotDisplayName = slot.DisplayName ?? "Spirit";
-        var headerText = hasEquipped
-            ? $"{slotDisplayName}: {equippedItem.def?.DisplayName ?? equippedItem.entry!.EquipmentRef}"
-            : $"{slotDisplayName}";
-
-        if (hasEquipped)
+        // Highlight header if affinity is active
+        if (hasActive)
         {
-            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 1f, 0.5f, 1f));
+            ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.8f, 0.5f, 1f, 1f)); // Purple for spirit/affinity
         }
 
-        var isOpen = ImGui.CollapsingHeader($"{headerText}##Affinity");
+        var isOpen = ImGui.CollapsingHeader($"{headerText}##Affinity", ImGuiTreeNodeFlags.DefaultOpen);
 
-        if (hasEquipped)
+        if (hasActive)
         {
             ImGui.PopStyleColor();
         }
 
-        if (!string.IsNullOrEmpty(slot.Description))
-        {
-            ImGui.Indent();
-            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), slot.Description);
-            ImGui.Unindent();
-        }
+        ImGui.Indent();
+        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Elemental affinity for combat advantage");
+        ImGui.Unindent();
 
         if (isOpen)
         {
-            if (affinityEquipment.Count == 0)
+            if (collectedAffinities.Length == 0)
             {
                 ImGui.Indent();
-                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "(none available)");
+                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "(Defeat enemies to capture their affinities)");
                 ImGui.Unindent();
             }
             else
             {
-                foreach (var (equip, equipDef) in affinityEquipment)
+                ImGui.Indent();
+                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Collected: {collectedAffinities.Length}");
+                ImGui.Spacing();
+
+                foreach (var affinity in collectedAffinities)
                 {
-                    RenderEquipmentItem(viewModel, equip, equipDef, "Affinity");
+                    var affinityDef = world?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == affinity.AffinityRef);
+                    var name = affinityDef?.DisplayName ?? affinity.AffinityRef;
+                    var isActive = affinity.AffinityRef == activeAffinityRef;
+
+                    // TreeNode for each affinity
+                    var nodeFlags = isActive ? ImGuiTreeNodeFlags.Selected : ImGuiTreeNodeFlags.None;
+                    var nodeLabel = isActive ? $"* {name} [ACTIVE]" : name;
+
+                    if (isActive)
+                    {
+                        ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 1f, 0.5f, 1f));
+                    }
+
+                    var treeOpen = ImGui.TreeNodeEx($"{nodeLabel}##{affinity.AffinityRef}", nodeFlags);
+
+                    if (isActive)
+                    {
+                        ImGui.PopStyleColor();
+                    }
+
+                    // Set Active button on same line
+                    ImGui.SameLine();
+                    ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ActionButtonWidth - ImGui.GetStyle().WindowPadding.X - ImGui.GetStyle().IndentSpacing);
+
+                    if (isActive)
+                    {
+                        ImGui.BeginDisabled();
+                        ImGui.Button("Active", new Vector2(ActionButtonWidth, ImGui.GetFrameHeight()));
+                        ImGui.EndDisabled();
+                    }
+                    else
+                    {
+                        if (ImGui.Button($"Set##{affinity.AffinityRef}", new Vector2(ActionButtonWidth, ImGui.GetFrameHeight())))
+                        {
+                            // Set as active affinity
+                            if (avatar != null)
+                            {
+                                avatar.ActiveAffinityRef = affinity.AffinityRef;
+                                viewModel.AddToastMessage($"{name} is now your active affinity");
+                            }
+                        }
+                    }
+
+                    if (treeOpen)
+                    {
+                        // Source
+                        if (!string.IsNullOrEmpty(affinity.CapturedFromCharacterRef))
+                        {
+                            var sourceChar = world?.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == affinity.CapturedFromCharacterRef);
+                            var sourceName = sourceChar?.DisplayName ?? affinity.CapturedFromCharacterRef;
+                            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Captured from: {sourceName}");
+                        }
+
+                        // Description
+                        if (affinityDef != null && !string.IsNullOrEmpty(affinityDef.Description))
+                        {
+                            ImGui.TextWrapped(affinityDef.Description);
+                        }
+
+                        // Matchups (strengths/weaknesses)
+                        if (affinityDef?.Matchup != null && affinityDef.Matchup.Length > 0)
+                        {
+                            ImGui.Spacing();
+                            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Combat Matchups:");
+                            foreach (var matchup in affinityDef.Matchup)
+                            {
+                                var targetDef = world?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == matchup.TargetAffinityRef);
+                                var targetName = targetDef?.DisplayName ?? matchup.TargetAffinityRef;
+                                var color = matchup.Multiplier > 1.0f
+                                    ? new Vector4(0.3f, 1f, 0.3f, 1)   // Green for strong
+                                    : matchup.Multiplier < 1.0f
+                                        ? new Vector4(1f, 0.4f, 0.4f, 1) // Red for weak
+                                        : new Vector4(0.7f, 0.7f, 0.7f, 1); // Gray for neutral
+                                var label = matchup.Multiplier > 1.0f ? "Strong" : matchup.Multiplier < 1.0f ? "Weak" : "Neutral";
+                                ImGui.TextColored(color, $"  vs {targetName}: {matchup.Multiplier:F1}x ({label})");
+                            }
+                        }
+
+                        ImGui.TreePop();
+                    }
                 }
+
+                ImGui.Unindent();
             }
         }
     }
