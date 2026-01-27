@@ -135,7 +135,8 @@ public class MessageOverlay
     /// </summary>
     /// <param name="displaySize">Screen size for positioning</param>
     /// <param name="hudHeight">Height of HUD bar to avoid overlapping (0 if no HUD)</param>
-    public void Render(Vector2 displaySize, float hudHeight = 0f)
+    /// <param name="topOffset">Offset from top of screen (to position below HudText1)</param>
+    public void Render(Vector2 displaySize, float hudHeight = 0f, float topOffset = 0f)
     {
         var now = DateTime.UtcNow;
 
@@ -177,10 +178,10 @@ public class MessageOverlay
         }
         maxWidth += style.WindowPadding.X * 2;
 
-        // Position window in top-right corner
+        // Position window in top-right corner, below HudText1 if offset provided
         var windowPos = new Vector2(
             displaySize.X - maxWidth - EdgePadding,
-            EdgePadding
+            EdgePadding + topOffset
         );
 
         ImGui.SetNextWindowPos(windowPos);

@@ -13,7 +13,7 @@ public class WorldInfoSection : IHudSection
 {
     // Base values at 96 DPI (1.0 scale)
     private const float LineSpacingBase = 2f;
-    private const float SectionSpacingBase = 8f;
+    private const float SectionSpacingBase = 16f; // Gap between HudText1 and HudText2/Toast
     private const float BackgroundPaddingBase = 4f;
     private const float BackgroundRadiusBase = 3f;
 
@@ -28,10 +28,6 @@ public class WorldInfoSection : IHudSection
 
     public void Render(HudContext context)
     {
-        // Don't render when toast messages are active - they take over this space
-        if (context.HasActiveToastMessages)
-            return;
-
         var drawList = ImGui.GetWindowDrawList();
         var windowPos = ImGui.GetWindowPos();
         var windowSize = ImGui.GetWindowSize();
@@ -39,6 +35,7 @@ public class WorldInfoSection : IHudSection
         var currentY = windowPos.Y;
 
         // HudText1 contains world/navigation info (direction, location, weather)
+        // Always render HudText1 even when toasts are active
         if (!string.IsNullOrEmpty(context.ViewModel.HudText1))
         {
             currentY = RenderTextBlock(drawList, windowPos, windowSize, currentY,
@@ -48,7 +45,8 @@ public class WorldInfoSection : IHudSection
         }
 
         // HudText2 contains debug info (FPS, etc.) - optional, dimmer styling
-        if (!string.IsNullOrEmpty(context.ViewModel.HudText2))
+        // Skip HudText2 when toast messages are active (toasts replace this area)
+        if (!context.HasActiveToastMessages && !string.IsNullOrEmpty(context.ViewModel.HudText2))
         {
             if (!string.IsNullOrEmpty(context.ViewModel.HudText1))
                 currentY += SectionSpacing;

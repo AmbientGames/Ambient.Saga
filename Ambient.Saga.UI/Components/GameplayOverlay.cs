@@ -257,7 +257,19 @@ public class GameplayOverlay
         var style = ImGui.GetStyle();
         var buttonHeight = textHeight + style.FramePadding.Y * 2;
         var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
-        _messageOverlay.Render(io.DisplaySize, hudHeight);
+
+        // Calculate top offset for toasts (position below HudText1 with gap)
+        // HudText1 height = lines * lineHeight + padding, plus gap to HudText2 area
+        var toastTopOffset = 0f;
+        if (!string.IsNullOrEmpty(viewModel.HudText1))
+        {
+            var hudText1Lines = viewModel.HudText1.Split('\n').Length;
+            var lineHeight = ImGui.GetTextLineHeightWithSpacing();
+            var backgroundPadding = 4f * UIConstants.DpiScale;
+            var sectionGap = 16f * UIConstants.DpiScale; // Gap between HudText1 and HudText2/Toast
+            toastTopOffset = (hudText1Lines * lineHeight) + (backgroundPadding * 2) + sectionGap;
+        }
+        _messageOverlay.Render(io.DisplaySize, hudHeight, toastTopOffset);
 
         // Render the active panel (if any)
         switch (_activePanel)
