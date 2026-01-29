@@ -188,8 +188,11 @@ public class SectionedHudRenderer : IHudRenderer
                           ImGuiWindowFlags.NoBackground |
                           ImGuiWindowFlags.NoInputs;
 
+        // Calculate height to extend from top padding down to just above the bottom HUD bar
+        var topRightHeight = context.DisplaySize.Y - CornerPadding - context.HudHeight - CornerPadding;
+
         ImGui.SetNextWindowPos(new Vector2(context.DisplaySize.X - TopRightCornerWidth - CornerPadding, CornerPadding));
-        ImGui.SetNextWindowSize(new Vector2(TopRightCornerWidth, TopRightCornerHeight));
+        ImGui.SetNextWindowSize(new Vector2(TopRightCornerWidth, topRightHeight));
 
         if (ImGui.Begin("##TopRightHud", windowFlags))
         {
