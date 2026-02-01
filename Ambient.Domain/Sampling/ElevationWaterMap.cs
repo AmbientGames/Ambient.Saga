@@ -141,10 +141,21 @@ public class ElevationWaterMap
 
     /// <summary>
     /// Flattens terrain at specified locations using int array (supports negative elevations).
+    /// Uses a two-pass algorithm to prevent cascading elevation peaks:
+    /// 1. First pass: Calculate target elevation for each location using ORIGINAL data
+    /// 2. Sort locations by target elevation (highest first)
+    /// 3. Second pass: Apply flattens using a max-elevation map to handle overlaps
     /// </summary>
     private static void FlattenLocationsInt(int[,] elevationData, int width, int height, IEnumerable<FlattenLocation> locations, int minimumElevation)
     {
-        foreach (var location in locations)
+        var locationList = locations.ToList();
+        if (locationList.Count == 0)
+            return;
+
+        // First pass: Calculate target elevations using original unmodified data
+        var locationsWithTargets = new List<(FlattenLocation location, int targetElevation)>();
+
+        foreach (var location in locationList)
         {
             var cx = location.X;
             var cy = location.Y;
@@ -155,7 +166,7 @@ public class ElevationWaterMap
             if (cx < sampleRadius || cx >= width - sampleRadius || cy < sampleRadius || cy >= height - sampleRadius)
                 continue;
 
-            // Calculate average from circular area of sampleRadius
+            // Calculate average from circular area of sampleRadius using ORIGINAL data
             long sum = 0;
             int count = 0;
             var sampleRadiusSquared = sampleRadius * sampleRadius;
@@ -164,7 +175,6 @@ public class ElevationWaterMap
             {
                 for (var dx = -sampleRadius; dx <= sampleRadius; dx++)
                 {
-                    // Check if within circular area
                     if (dx * dx + dy * dy > sampleRadiusSquared)
                         continue;
 
@@ -182,20 +192,38 @@ public class ElevationWaterMap
             if (count == 0)
                 continue;
 
-            var averageElevation = (int)(sum / count + location.ElevationOffset);
+            var targetElevation = (int)(sum / count + location.ElevationOffset);
+            if (targetElevation < minimumElevation)
+                targetElevation = minimumElevation;
 
-            // Clamp to minimum elevation
-            if (averageElevation < minimumElevation)
-                averageElevation = minimumElevation;
+            locationsWithTargets.Add((location, targetElevation));
+        }
 
-            // Apply average to circular area of radius
+        if (locationsWithTargets.Count == 0)
+            return;
+
+        // Sort by target elevation (highest first) so higher plateaus are established first
+        locationsWithTargets.Sort((a, b) => b.targetElevation.CompareTo(a.targetElevation));
+
+        // Create an "elevation increase" map tracking the maximum target elevation at each pixel
+        // Use int.MinValue as sentinel for "no flatten operation affects this pixel"
+        var maxElevationMap = new int[width, height];
+        for (var y = 0; y < height; y++)
+            for (var x = 0; x < width; x++)
+                maxElevationMap[x, y] = int.MinValue;
+
+        // Second pass: Build the max elevation map
+        foreach (var (location, targetElevation) in locationsWithTargets)
+        {
+            var cx = location.X;
+            var cy = location.Y;
+            var radius = location.Radius;
             var radiusSquared = radius * radius;
 
             for (var dy = -radius; dy <= radius; dy++)
             {
                 for (var dx = -radius; dx <= radius; dx++)
                 {
-                    // Check if within circular area
                     if (dx * dx + dy * dy > radiusSquared)
                         continue;
 
@@ -204,8 +232,25 @@ public class ElevationWaterMap
 
                     if (nx >= 0 && nx < width && ny >= 0 && ny < height)
                     {
-                        elevationData[nx, ny] = averageElevation;
+                        // Take the maximum target elevation at overlapping points
+                        // This prevents lower structures from cutting into higher plateaus
+                        if (targetElevation > maxElevationMap[nx, ny])
+                        {
+                            maxElevationMap[nx, ny] = targetElevation;
+                        }
                     }
+                }
+            }
+        }
+
+        // Third pass: Apply the max elevation map to the actual elevation data
+        for (var y = 0; y < height; y++)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                if (maxElevationMap[x, y] != int.MinValue)
+                {
+                    elevationData[x, y] = maxElevationMap[x, y];
                 }
             }
         }
@@ -214,10 +259,18 @@ public class ElevationWaterMap
     /// <summary>
     /// Flattens terrain at specified locations by averaging a circular neighborhood.
     /// Creates natural plateaus with configurable elevation offsets and radii.
+    /// Uses the same two-pass algorithm as FlattenLocationsInt to prevent cascading peaks.
     /// </summary>
     private static void FlattenLocations(ushort[,] elevationData, int width, int height, IEnumerable<FlattenLocation> locations)
     {
-        foreach (var location in locations)
+        var locationList = locations.ToList();
+        if (locationList.Count == 0)
+            return;
+
+        // First pass: Calculate target elevations using original unmodified data
+        var locationsWithTargets = new List<(FlattenLocation location, ushort targetElevation)>();
+
+        foreach (var location in locationList)
         {
             var cx = location.X;
             var cy = location.Y;
@@ -228,7 +281,7 @@ public class ElevationWaterMap
             if (cx < sampleRadius || cx >= width - sampleRadius || cy < sampleRadius || cy >= height - sampleRadius)
                 continue;
 
-            // Calculate average from circular area of sampleRadius
+            // Calculate average from circular area of sampleRadius using ORIGINAL data
             long sum = 0;
             int count = 0;
             var sampleRadiusSquared = sampleRadius * sampleRadius;
@@ -237,7 +290,6 @@ public class ElevationWaterMap
             {
                 for (var dx = -sampleRadius; dx <= sampleRadius; dx++)
                 {
-                    // Check if within circular area
                     if (dx * dx + dy * dy > sampleRadiusSquared)
                         continue;
 
@@ -255,16 +307,34 @@ public class ElevationWaterMap
             if (count == 0)
                 continue;
 
-            var averageElevation = (ushort)(sum / count + location.ElevationOffset);
+            var targetElevation = (ushort)(sum / count + location.ElevationOffset);
+            locationsWithTargets.Add((location, targetElevation));
+        }
 
-            // Apply average to circular area of radius
+        if (locationsWithTargets.Count == 0)
+            return;
+
+        // Sort by target elevation (highest first)
+        locationsWithTargets.Sort((a, b) => b.targetElevation.CompareTo(a.targetElevation));
+
+        // Create max elevation map
+        var maxElevationMap = new int[width, height];
+        for (var y = 0; y < height; y++)
+            for (var x = 0; x < width; x++)
+                maxElevationMap[x, y] = -1; // Sentinel for "no flatten operation"
+
+        // Second pass: Build the max elevation map
+        foreach (var (location, targetElevation) in locationsWithTargets)
+        {
+            var cx = location.X;
+            var cy = location.Y;
+            var radius = location.Radius;
             var radiusSquared = radius * radius;
 
             for (var dy = -radius; dy <= radius; dy++)
             {
                 for (var dx = -radius; dx <= radius; dx++)
                 {
-                    // Check if within circular area
                     if (dx * dx + dy * dy > radiusSquared)
                         continue;
 
@@ -273,8 +343,23 @@ public class ElevationWaterMap
 
                     if (nx >= 0 && nx < width && ny >= 0 && ny < height)
                     {
-                        elevationData[nx, ny] = averageElevation;
+                        if (targetElevation > maxElevationMap[nx, ny])
+                        {
+                            maxElevationMap[nx, ny] = targetElevation;
+                        }
                     }
+                }
+            }
+        }
+
+        // Third pass: Apply the max elevation map
+        for (var y = 0; y < height; y++)
+        {
+            for (var x = 0; x < width; x++)
+            {
+                if (maxElevationMap[x, y] >= 0)
+                {
+                    elevationData[x, y] = (ushort)maxElevationMap[x, y];
                 }
             }
         }

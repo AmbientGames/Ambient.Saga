@@ -60,10 +60,11 @@ public class HeightMapProcessor
 
     public static IEnumerable<FlattenLocation> GetFlattenLocations(IWorld world)
     {
-        const int StructureElevationOffset = 10 / 3;
-        const double StructureRadius = .833333;
-        const int DefaultElevationOffset = 10 / 6;
-        const double DefaultRadius = .5;
+        // all offsets are in blocks
+        const int StructureElevationOffset = 2;
+        const double StructureRadius = 30;
+        const int DefaultElevationOffset = 1;
+        const double DefaultRadius = 10;
 
         // Check if we have the necessary data
         if (world.SagaArcLookup == null || world.SagaArcLookup.Count == 0)
@@ -81,7 +82,7 @@ public class HeightMapProcessor
             // Determine elevation offset and radius based on feature type
             // Categories with large structures need more terrain flattening
             var elevationOffset = DefaultElevationOffset / world.WorldConfiguration.HeightMapSettings.VerticalScale;
-            var radius = DefaultRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale;
+            var radius = DefaultRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale / world.WorldConfiguration.HeightMapSettings.MapResolutionInMeters;
 
             var isLargeStructure = sagaArc.Category is
                 Domain.SagaArcCategory.Stronghold or
@@ -94,7 +95,7 @@ public class HeightMapProcessor
             if (isLargeStructure)
             {
                 elevationOffset = StructureElevationOffset / world.WorldConfiguration.HeightMapSettings.VerticalScale;
-                radius = StructureRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale;
+                radius = StructureRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale / world.WorldConfiguration.HeightMapSettings.MapResolutionInMeters;
             }
 
             // Ensure within bounds (accounting for sample radius which is radius + 1)
