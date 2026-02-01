@@ -113,7 +113,7 @@ public class ElevationWaterMap
             }
         }
 
-        var waterMask = DetectWater(elevationDataUshort, image.Width, image.Height, map.SeaLevel, minWaterAreaSize, map.MinElevation, map.MaxElevation, adjustMinWaterAreaSizeByElevation);
+        var waterMask = DetectWater(elevationDataUshort, image.Width, image.Height, map.SeaLevel, minWaterAreaSize, map.MinElevation, map.MaxElevation, adjustMinWaterAreaSizeByElevation, flattenLocations);
 
         // Pack elevation and water data into bit-packed format
         for (var y = 0; y < image.Height; y++)
@@ -256,114 +256,114 @@ public class ElevationWaterMap
         }
     }
 
-    /// <summary>
-    /// Flattens terrain at specified locations by averaging a circular neighborhood.
-    /// Creates natural plateaus with configurable elevation offsets and radii.
-    /// Uses the same two-pass algorithm as FlattenLocationsInt to prevent cascading peaks.
-    /// </summary>
-    private static void FlattenLocations(ushort[,] elevationData, int width, int height, IEnumerable<FlattenLocation> locations)
-    {
-        var locationList = locations.ToList();
-        if (locationList.Count == 0)
-            return;
+    ///// <summary>
+    ///// Flattens terrain at specified locations by averaging a circular neighborhood.
+    ///// Creates natural plateaus with configurable elevation offsets and radii.
+    ///// Uses the same two-pass algorithm as FlattenLocationsInt to prevent cascading peaks.
+    ///// </summary>
+    //private static void FlattenLocations(ushort[,] elevationData, int width, int height, IEnumerable<FlattenLocation> locations)
+    //{
+    //    var locationList = locations.ToList();
+    //    if (locationList.Count == 0)
+    //        return;
 
-        // First pass: Calculate target elevations using original unmodified data
-        var locationsWithTargets = new List<(FlattenLocation location, ushort targetElevation)>();
+    //    // First pass: Calculate target elevations using original unmodified data
+    //    var locationsWithTargets = new List<(FlattenLocation location, ushort targetElevation)>();
 
-        foreach (var location in locationList)
-        {
-            var cx = location.X;
-            var cy = location.Y;
-            var radius = location.Radius;
-            var sampleRadius = radius + 1;
+    //    foreach (var location in locationList)
+    //    {
+    //        var cx = location.X;
+    //        var cy = location.Y;
+    //        var radius = location.Radius;
+    //        var sampleRadius = radius + 1;
 
-            // Skip if center is too close to bounds
-            if (cx < sampleRadius || cx >= width - sampleRadius || cy < sampleRadius || cy >= height - sampleRadius)
-                continue;
+    //        // Skip if center is too close to bounds
+    //        if (cx < sampleRadius || cx >= width - sampleRadius || cy < sampleRadius || cy >= height - sampleRadius)
+    //            continue;
 
-            // Calculate average from circular area of sampleRadius using ORIGINAL data
-            long sum = 0;
-            int count = 0;
-            var sampleRadiusSquared = sampleRadius * sampleRadius;
+    //        // Calculate average from circular area of sampleRadius using ORIGINAL data
+    //        long sum = 0;
+    //        int count = 0;
+    //        var sampleRadiusSquared = sampleRadius * sampleRadius;
 
-            for (var dy = -sampleRadius; dy <= sampleRadius; dy++)
-            {
-                for (var dx = -sampleRadius; dx <= sampleRadius; dx++)
-                {
-                    if (dx * dx + dy * dy > sampleRadiusSquared)
-                        continue;
+    //        for (var dy = -sampleRadius; dy <= sampleRadius; dy++)
+    //        {
+    //            for (var dx = -sampleRadius; dx <= sampleRadius; dx++)
+    //            {
+    //                if (dx * dx + dy * dy > sampleRadiusSquared)
+    //                    continue;
 
-                    var nx = cx + dx;
-                    var ny = cy + dy;
+    //                var nx = cx + dx;
+    //                var ny = cy + dy;
 
-                    if (nx >= 0 && nx < width && ny >= 0 && ny < height)
-                    {
-                        sum += elevationData[nx, ny];
-                        count++;
-                    }
-                }
-            }
+    //                if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+    //                {
+    //                    sum += elevationData[nx, ny];
+    //                    count++;
+    //                }
+    //            }
+    //        }
 
-            if (count == 0)
-                continue;
+    //        if (count == 0)
+    //            continue;
 
-            var targetElevation = (ushort)(sum / count + location.ElevationOffset);
-            locationsWithTargets.Add((location, targetElevation));
-        }
+    //        var targetElevation = (ushort)(sum / count + location.ElevationOffset);
+    //        locationsWithTargets.Add((location, targetElevation));
+    //    }
 
-        if (locationsWithTargets.Count == 0)
-            return;
+    //    if (locationsWithTargets.Count == 0)
+    //        return;
 
-        // Sort by target elevation (highest first)
-        locationsWithTargets.Sort((a, b) => b.targetElevation.CompareTo(a.targetElevation));
+    //    // Sort by target elevation (highest first)
+    //    locationsWithTargets.Sort((a, b) => b.targetElevation.CompareTo(a.targetElevation));
 
-        // Create max elevation map
-        var maxElevationMap = new int[width, height];
-        for (var y = 0; y < height; y++)
-            for (var x = 0; x < width; x++)
-                maxElevationMap[x, y] = -1; // Sentinel for "no flatten operation"
+    //    // Create max elevation map
+    //    var maxElevationMap = new int[width, height];
+    //    for (var y = 0; y < height; y++)
+    //        for (var x = 0; x < width; x++)
+    //            maxElevationMap[x, y] = -1; // Sentinel for "no flatten operation"
 
-        // Second pass: Build the max elevation map
-        foreach (var (location, targetElevation) in locationsWithTargets)
-        {
-            var cx = location.X;
-            var cy = location.Y;
-            var radius = location.Radius;
-            var radiusSquared = radius * radius;
+    //    // Second pass: Build the max elevation map
+    //    foreach (var (location, targetElevation) in locationsWithTargets)
+    //    {
+    //        var cx = location.X;
+    //        var cy = location.Y;
+    //        var radius = location.Radius;
+    //        var radiusSquared = radius * radius;
 
-            for (var dy = -radius; dy <= radius; dy++)
-            {
-                for (var dx = -radius; dx <= radius; dx++)
-                {
-                    if (dx * dx + dy * dy > radiusSquared)
-                        continue;
+    //        for (var dy = -radius; dy <= radius; dy++)
+    //        {
+    //            for (var dx = -radius; dx <= radius; dx++)
+    //            {
+    //                if (dx * dx + dy * dy > radiusSquared)
+    //                    continue;
 
-                    var nx = cx + dx;
-                    var ny = cy + dy;
+    //                var nx = cx + dx;
+    //                var ny = cy + dy;
 
-                    if (nx >= 0 && nx < width && ny >= 0 && ny < height)
-                    {
-                        if (targetElevation > maxElevationMap[nx, ny])
-                        {
-                            maxElevationMap[nx, ny] = targetElevation;
-                        }
-                    }
-                }
-            }
-        }
+    //                if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+    //                {
+    //                    if (targetElevation > maxElevationMap[nx, ny])
+    //                    {
+    //                        maxElevationMap[nx, ny] = targetElevation;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
 
-        // Third pass: Apply the max elevation map
-        for (var y = 0; y < height; y++)
-        {
-            for (var x = 0; x < width; x++)
-            {
-                if (maxElevationMap[x, y] >= 0)
-                {
-                    elevationData[x, y] = (ushort)maxElevationMap[x, y];
-                }
-            }
-        }
-    }
+    //    // Third pass: Apply the max elevation map
+    //    for (var y = 0; y < height; y++)
+    //    {
+    //        for (var x = 0; x < width; x++)
+    //        {
+    //            if (maxElevationMap[x, y] >= 0)
+    //            {
+    //                elevationData[x, y] = (ushort)maxElevationMap[x, y];
+    //            }
+    //        }
+    //    }
+    //}
 
     /// <summary>
     /// Gets the elevation at the specified coordinates.
@@ -408,15 +408,45 @@ public class ElevationWaterMap
         return ((ushort)(packed & ElevationMask), (packed & WaterBitMask) != 0);
     }
 
-    private static bool[,] DetectWater(ushort[,] elevationData, int width, int height, ushort seaLevel, int minWaterAreaSize, ushort minElevation, ushort maxElevation, bool adjustMinWaterAreaSizeByElevation)
+    private static bool[,] DetectWater(ushort[,] elevationData, int width, int height, ushort seaLevel, int minWaterAreaSize, ushort minElevation, ushort maxElevation, bool adjustMinWaterAreaSizeByElevation, IEnumerable<FlattenLocation>? flattenLocations)
     {
         var waterMask = new bool[width, height];
         var visited = new bool[width, height];
         var flatAreas = new List<List<(int x, int y)>>();
 
+        // Build exclusion mask for flattened structure areas (they're flat but not water!)
+        var excludeFromWater = new bool[width, height];
+        if (flattenLocations != null)
+        {
+            foreach (var location in flattenLocations)
+            {
+                var cx = location.X;
+                var cy = location.Y;
+                var radius = location.Radius;
+                var radiusSquared = radius * radius;
+
+                for (var dy = -radius; dy <= radius; dy++)
+                {
+                    for (var dx = -radius; dx <= radius; dx++)
+                    {
+                        if (dx * dx + dy * dy > radiusSquared)
+                            continue;
+
+                        var nx = cx + dx;
+                        var ny = cy + dy;
+
+                        if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+                        {
+                            excludeFromWater[nx, ny] = true;
+                        }
+                    }
+                }
+            }
+        }
+
         // Find all flat areas using flood fill with elevation-based size threshold
         var elevationRange = maxElevation - minElevation;
-        
+
         for (var y = 0; y < height; y++)
         {
             for (var x = 0; x < width; x++)
@@ -426,6 +456,11 @@ public class ElevationWaterMap
                     var area = FloodFillFlatArea(elevationData, visited, x, y, width, height);
                     if (area.Count > 2)
                     {
+                        // Skip if any part of this flat area overlaps with a flattened structure location
+                        var overlapsStructure = area.Any(p => excludeFromWater[p.x, p.y]);
+                        if (overlapsStructure)
+                            continue;
+
                         // Calculate elevation-based minimum size - smaller areas allowed at higher elevations
                         var avgElevation = area.Average(p => elevationData[p.x, p.y]);
                         var elevationFactor = elevationRange > 0 ? (double)(avgElevation - minElevation) / elevationRange : 0;

@@ -1008,11 +1008,7 @@ public partial class SagaMainViewModel : ObservableObject
             // Preprocess height map with water detection
             AddToastMessage("Processing height map for water detection...", MessageType.Info);
 
-            var verticalShift = 0;
-            if (world.WorldConfiguration.ClimateModel == ClimateModel.Earth)
-            {
-                verticalShift = (int)world.WorldConfiguration.HeightMapSettings.VerticalShift;
-            }
+            var verticalShift = (int)world.WorldConfiguration.HeightMapSettings.VerticalShift;
 
             var flattenLocations = HeightMapProcessor.GetFlattenLocations(world);
             var processedMap = await Task.Run(() => HeightMapProcessor.ProcessHeightMap(image, 40, true, flattenLocations, verticalShift));
