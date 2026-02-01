@@ -155,9 +155,9 @@ public partial class AvatarBase : IAvatarBase
     public Dictionary<string, float> BlockOwnership { get; set; } = new Dictionary<string, float>();
 
     /// <summary>
-    /// Usage statistics for blocks by the avatar.
+    /// Usage statistics for blocks placed by the avatar (fractional based on saturation).
     /// </summary>
-    public int[] BlockUsage { get; set; } = new int[WorldMaximums.MaxBlocks];
+    public float[] BlockUsage { get; set; } = new float[WorldMaximums.MaxBlocks];
 
     /// <summary>
     /// The avatar's spawn position.

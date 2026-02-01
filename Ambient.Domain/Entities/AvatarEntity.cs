@@ -25,9 +25,9 @@ public class AvatarEntity : AvatarBase, IBaseEntity
     public int SequenceNumber { get; set; }
 
     /// <summary>
-    /// Statistics for blocks collected by the avatar.
+    /// Statistics for blocks collected by the avatar (fractional based on saturation).
     /// </summary>
-    public int[] BlockCollectedStatistics = new int[WorldMaximums.MaxBlocks];
+    public float[] BlockCollectedStatistics = new float[WorldMaximums.MaxBlocks];
 
     /// <summary>
     /// The timestamp of the avatar's last activity.
