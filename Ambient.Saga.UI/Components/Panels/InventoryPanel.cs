@@ -618,23 +618,37 @@ public class InventoryPanel
 
     /// <summary>
     /// Renders the Blocks section with expandable details.
+    /// Uses runtime BlockOwnership dictionary (actual inventory) instead of archetype Capabilities.
     /// </summary>
     private void RenderBlocks(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        if (ImGui.CollapsingHeader($"Blocks ({caps.Blocks?.Length ?? 0})"))
+        // Get actual block inventory from runtime BlockOwnership dictionary
+        var blockOwnership = viewModel.PlayerAvatar?.BlockOwnership ?? new Dictionary<string, float>();
+        var blockCount = blockOwnership.Count(kvp => kvp.Value >= 1);
+
+        if (ImGui.CollapsingHeader($"Blocks ({blockCount})"))
         {
-            if (caps.Blocks != null && caps.Blocks.Length > 0)
+            if (blockOwnership.Any(kvp => kvp.Value >= 1))
             {
-                foreach (var block in caps.Blocks)
+                // Sort by display name for consistent ordering
+                var sortedBlocks = blockOwnership
+                    .Where(kvp => kvp.Value >= 1)  // Only show blocks with at least 1 whole block
+                    .OrderBy(kvp => viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(kvp.Key)?.DisplayName ?? kvp.Key)
+                    .ToList();
+
+                foreach (var kvp in sortedBlocks)
                 {
-                    var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(block.BlockRef);
-                    var blockName = blockDef?.DisplayName ?? block.BlockRef;
+                    var blockRef = kvp.Key;
+                    var quantity = (int)kvp.Value;  // Truncate to whole blocks for display
+
+                    var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(blockRef);
+                    var blockName = blockDef?.DisplayName ?? blockRef;
                     ImGui.Indent();
 
                     var maxTextWidth = GetAvailableTextWidth();
-                    var quantityText = $" x{block.Quantity}";
+                    var quantityText = $" x{quantity}";
                     var truncatedName = TruncateToFit(blockName, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
-                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{block.BlockRef}");
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{blockRef}");
 
                     if (truncatedName != blockName && ImGui.IsItemHovered())
                     {
@@ -644,12 +658,12 @@ public class InventoryPanel
                     // Buttons on same line as header
                     ImGui.SameLine();
                     ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
-                    RenderHotbarAssignButton(HotbarItemType.Block, block.BlockRef, blockName);
+                    RenderHotbarAssignButton(HotbarItemType.Block, blockRef, blockName);
                     ImGui.SameLine();
 
                     // Select button
                     var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
-                    var isSelected = viewModel.PlayerAvatar?.CurrentBlockRef == block.BlockRef;
+                    var isSelected = viewModel.PlayerAvatar?.CurrentBlockRef == blockRef;
                     if (isSelected)
                     {
                         ImGui.BeginDisabled();
@@ -658,11 +672,11 @@ public class InventoryPanel
                     }
                     else
                     {
-                        if (ImGui.Button($"Select##{block.BlockRef}", buttonSize))
+                        if (ImGui.Button($"Select##{blockRef}", buttonSize))
                         {
                             if (viewModel.PlayerAvatar != null)
                             {
-                                viewModel.PlayerAvatar.CurrentBlockRef = block.BlockRef;
+                                viewModel.PlayerAvatar.CurrentBlockRef = blockRef;
                                 viewModel.AddToastMessage($"{blockName} selected");
                             }
                         }
