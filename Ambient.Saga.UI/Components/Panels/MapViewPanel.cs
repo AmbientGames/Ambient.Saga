@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Numerics;
 using Ambient.Saga.UI.ViewModels;
 using Ambient.Saga.UI.Components.Modals;
+using Ambient.Saga.UI.Components.Utilities;
 using Ambient.Saga.UI;
 
 namespace Ambient.Saga.UI.Components.Panels;
@@ -309,7 +310,7 @@ public class MapViewPanel
                     }
 
                     _showTeleportConfirm = true;
-                    ImGui.OpenPopup("TeleportConfirm");
+                    ImGui.OpenPopup("Fast Travel");
                 }
             }
 
@@ -666,10 +667,11 @@ public class MapViewPanel
         if (!_showTeleportConfirm) return;
 
         var scale = UIConstants.DpiScale;
-        ImGui.SetNextWindowSize(new Vector2(320 * scale, 180 * scale), ImGuiCond.Always);
+        ImGuiHelpers.CenterNextWindow();
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 15 * scale));
 
-        if (ImGui.BeginPopupModal("TeleportConfirm", ref _showTeleportConfirm,
-            ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove))
+        if (ImGui.BeginPopupModal("Fast Travel", ref _showTeleportConfirm,
+            ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize))
         {
             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits";
             var playerCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
@@ -728,6 +730,8 @@ public class MapViewPanel
 
             ImGui.EndPopup();
         }
+
+        ImGui.PopStyleVar();
     }
 
     private async Task TeleportAvatarAsync(SagaMainViewModel viewModel, double lat, double lon, double pixelX, double pixelY, int cost)
