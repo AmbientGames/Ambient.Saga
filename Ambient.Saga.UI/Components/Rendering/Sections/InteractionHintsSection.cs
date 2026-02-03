@@ -14,6 +14,8 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 public class InteractionHintsSection : IHudSection
 {
     // Base values at 96 DPI (1.0 scale)
+    // Match ResourceBarsSection total width: LabelWidth(24) + BarWidth(96) = 120
+    private const float TotalWidthBase = 120f;
     private const float KeySpacingBase = 2f;
     private const float GroupSpacingBase = 8f;
     private const float KeyPaddingBase = 4f;
@@ -21,6 +23,7 @@ public class InteractionHintsSection : IHudSection
     private const float KeyRoundingBase = 3f;
 
     // DPI-scaled values
+    private static float TotalWidth => TotalWidthBase * UIConstants.DpiScale;
     private static float KeySpacing => KeySpacingBase * UIConstants.DpiScale;
     private static float GroupSpacing => GroupSpacingBase * UIConstants.DpiScale;
     private static float KeyPadding => KeyPaddingBase * UIConstants.DpiScale;
@@ -37,11 +40,14 @@ public class InteractionHintsSection : IHudSection
         var startPos = ImGui.GetCursorScreenPos();
 
         // Calculate total width needed to right-align
-        var totalWidth = CalculateTotalWidth(context, isDebug);
-        var availableWidth = context.RightRegionWidth;
+        var contentWidth = CalculateTotalWidth(context, isDebug);
 
-        // Start position (right-aligned within region, vertically centered in HUD)
-        var currentX = startPos.X + Math.Max(0, availableWidth - totalWidth);
+        // Use fixed width to match ResourceBarsSection, right-align content within it
+        var sectionWidth = isDebug ? contentWidth : TotalWidth;
+
+        // Start position (right-aligned within section, vertically centered in HUD)
+        // Nudge 2 pixels left to better align with resource bars on the other side
+        var currentX = startPos.X + Math.Max(0, sectionWidth - contentWidth) - (2f * UIConstants.DpiScale);
         var centerY = startPos.Y + context.HudHeight / 2;
 
         // Gameplay hotkeys
@@ -82,8 +88,8 @@ public class InteractionHintsSection : IHudSection
             RenderCompactKey(drawList, currentX, centerY, "F12", context.ActivePanel == ActivePanel.DevTools, isDev: true);
         }
 
-        // Reserve space
-        ImGui.Dummy(new Vector2(totalWidth, context.HudHeight));
+        // Reserve space (use fixed width to match ResourceBarsSection)
+        ImGui.Dummy(new Vector2(sectionWidth, context.HudHeight));
     }
 
     private float CalculateTotalWidth(HudContext context, bool isDebug)

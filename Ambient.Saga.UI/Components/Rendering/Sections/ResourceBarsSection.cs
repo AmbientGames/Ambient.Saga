@@ -13,7 +13,7 @@ public class ResourceBarsSection : IHudSection
 {
     // Bar styling base values at 96 DPI (1.0 scale)
     private const float LabelWidthBase = 24f;
-    private const float BarWidthBase = 80f;
+    private const float BarWidthBase = 96f;  // 20% wider than original 80
     private const float BarHeightBase = 10f;
     private const float BarSpacingBase = 2f;
     private const float ContentHeightBase = 40f;
