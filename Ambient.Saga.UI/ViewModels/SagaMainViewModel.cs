@@ -246,6 +246,15 @@ public partial class SagaMainViewModel : ObservableObject
     // Event for when avatar teleport is requested (e.g., map click)
     public event Action<double, double>? AvatarTeleportRequested;
 
+    // Awaitable signal for when world configurations have been discovered
+    private readonly TaskCompletionSource<int> _configurationsLoadedTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    /// <summary>
+    /// Returns a Task that completes when configurations have been loaded, with the count as result.
+    /// Safe to call multiple times; returns the same completed task after first load.
+    /// </summary>
+    public Task<int> WaitForConfigurationsAsync() => _configurationsLoadedTcs.Task;
+
     /// <summary>
     /// Requests the application to quit.
     /// Called by modals/screens when user wants to exit without completing mandatory actions.
@@ -749,8 +758,9 @@ public partial class SagaMainViewModel : ObservableObject
                 AvailableConfigurations.Add(config);
             }
 
-            // Don't auto-select - user will select from dropdown
             AddToastMessage($"Loaded {AvailableConfigurations.Count} world configurations", MessageType.Quest);
+
+            _configurationsLoadedTcs.TrySetResult(AvailableConfigurations.Count);
         }
         catch (Exception ex)
         {
