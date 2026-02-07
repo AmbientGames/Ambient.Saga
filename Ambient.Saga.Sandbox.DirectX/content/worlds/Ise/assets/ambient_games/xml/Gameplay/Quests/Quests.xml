@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<?xml version="1.0" encoding="utf-8"?>
+<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Quest RefName="BanditChief_Quest" DisplayName="The Rival School" Description="Stand up to bullies from a rival school causing trouble on the trip.">
     <Stages StartStage="clear_scouts">
       <Stage RefName="clear_scouts" DisplayName="Clear the Roads" NextStage="assault">
@@ -371,16 +371,16 @@
   </Quest>
   <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="The Grand Journey" Description="An epic quest connecting 7 legendary locations across the realm.">
     <Stages StartStage="OFFICIAL_MAIN_CHAIN_STAGE_01">
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="Visit Kōtai Jingū (Inner Shrine)" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="Visit Kotai Jingu (Inner Shrine)" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Kōtai Jingū (Inner Shrine)" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Kotai Jingu (Inner Shrine)" />
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kazahinomi-no-Miya" CharacterRef="BOSS_Kazahinominomiya" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="Visit Toyōke Daijingū (Outer Shrine)" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_03">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="Visit Toyoke Daijingu (Outer Shrine)" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_03">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Toyōke Daijingū (Outer Shrine)" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Toyōke Daijingū (Outer Shrine)" CharacterRef="BOSS_ToyōkeDaijingūOuterShrine" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Toyoke Daijingu (Outer Shrine)" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Toyoke Daijingu (Outer Shrine)" CharacterRef="BOSS_ToyokeDaijinguOuterShrine" />
         </Objectives>
       </Stage>
       <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="Visit Aramatsuri-no-Miya" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_04">
@@ -404,13 +404,13 @@
       <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_06" DisplayName="Visit Tsuchi-no-Miya" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_07">
         <Objectives>
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_06_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Tsuchi-no-Miya" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_06_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kazamiya (Gekū)" CharacterRef="BOSS_KazamiyaGekū" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_06_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kazamiya (Geku)" CharacterRef="BOSS_KazamiyaGeku" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_07" DisplayName="Visit Kazamiya (Gekū)">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_07" DisplayName="Visit Kazamiya (Geku)">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_07_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Kazamiya (Gekū)" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_07_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kazamiya (Gekū)" CharacterRef="BOSS_KazamiyaGekū" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_07_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Kazamiya (Geku)" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_07_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kazamiya (Geku)" CharacterRef="BOSS_KazamiyaGeku" />
         </Objectives>
       </Stage>
     </Stages>
@@ -421,21 +421,21 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="REGIONAL_KōtaiJingūInnerShrine" DisplayName="Explore the Kōtai Jingū (Inner Shrine) Region" Description="Discover 3 locations in the Kōtai Jingū (Inner Shrine) area.">
-    <Stages StartStage="REGIONAL_KōtaiJingūInnerShrine_STAGE_01">
-      <Stage RefName="REGIONAL_KōtaiJingūInnerShrine_STAGE_01" DisplayName="Explore Kōtai Jingū (Inner Shrine)" NextStage="REGIONAL_KōtaiJingūInnerShrine_STAGE_02">
+  <Quest RefName="REGIONAL_KotaiJinguInnerShrine" DisplayName="Explore the Kotai Jingu (Inner Shrine) Region" Description="Discover 3 locations in the Kotai Jingu (Inner Shrine) area.">
+    <Stages StartStage="REGIONAL_KotaiJinguInnerShrine_STAGE_01">
+      <Stage RefName="REGIONAL_KotaiJinguInnerShrine_STAGE_01" DisplayName="Explore Kotai Jingu (Inner Shrine)" NextStage="REGIONAL_KotaiJinguInnerShrine_STAGE_02">
         <Objectives>
-          <Objective RefName="REGIONAL_KōtaiJingūInnerShrine_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_KotaiJinguInnerShrine_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_KōtaiJingūInnerShrine_STAGE_02" DisplayName="Explore Aramatsuri-no-Miya" NextStage="REGIONAL_KōtaiJingūInnerShrine_STAGE_03">
+      <Stage RefName="REGIONAL_KotaiJinguInnerShrine_STAGE_02" DisplayName="Explore Aramatsuri-no-Miya" NextStage="REGIONAL_KotaiJinguInnerShrine_STAGE_03">
         <Objectives>
-          <Objective RefName="REGIONAL_KōtaiJingūInnerShrine_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_KotaiJinguInnerShrine_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_KōtaiJingūInnerShrine_STAGE_03" DisplayName="Explore Kazahinomi-no-Miya">
+      <Stage RefName="REGIONAL_KotaiJinguInnerShrine_STAGE_03" DisplayName="Explore Kazahinomi-no-Miya">
         <Objectives>
-          <Objective RefName="REGIONAL_KōtaiJingūInnerShrine_STAGE_03_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_KotaiJinguInnerShrine_STAGE_03_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
     </Stages>
@@ -445,26 +445,26 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="REGIONAL_ToyōkeDaijingūOuterShrine" DisplayName="Explore the Toyōke Daijingū (Outer Shrine) Region" Description="Discover 4 locations in the Toyōke Daijingū (Outer Shrine) area.">
-    <Stages StartStage="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_01">
-      <Stage RefName="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_01" DisplayName="Explore Toyōke Daijingū (Outer Shrine)" NextStage="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_02">
+  <Quest RefName="REGIONAL_ToyokeDaijinguOuterShrine" DisplayName="Explore the Toyoke Daijingu (Outer Shrine) Region" Description="Discover 4 locations in the Toyoke Daijingu (Outer Shrine) area.">
+    <Stages StartStage="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_01">
+      <Stage RefName="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_01" DisplayName="Explore Toyoke Daijingu (Outer Shrine)" NextStage="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_02">
         <Objectives>
-          <Objective RefName="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_02" DisplayName="Explore Taka-no-Miya" NextStage="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_03">
+      <Stage RefName="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_02" DisplayName="Explore Taka-no-Miya" NextStage="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_03">
         <Objectives>
-          <Objective RefName="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_03" DisplayName="Explore Tsuchi-no-Miya" NextStage="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_04">
+      <Stage RefName="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_03" DisplayName="Explore Tsuchi-no-Miya" NextStage="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_04">
         <Objectives>
-          <Objective RefName="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_03_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_03_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_04" DisplayName="Explore Kazamiya (Gekū)">
+      <Stage RefName="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_04" DisplayName="Explore Kazamiya (Geku)">
         <Objectives>
-          <Objective RefName="REGIONAL_ToyōkeDaijingūOuterShrine_STAGE_04_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_ToyokeDaijinguOuterShrine_STAGE_04_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
     </Stages>
@@ -474,35 +474,16 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_KazamiyaGekū" DisplayName="Journey to Kazamiya (Gekū)" Description="Travel 1km from Toyōke Daijingū (Outer Shrine) to Kazamiya (Gekū).">
-    <Stages StartStage="CONNECT_ToyōkeDaijingūOuterShrine_TO_KazamiyaGekū_START">
-      <Stage RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_KazamiyaGekū_START" DisplayName="Depart from Toyōke Daijingū (Outer Shrine)" NextStage="CONNECT_ToyōkeDaijingūOuterShrine_TO_KazamiyaGekū_END">
+  <Quest RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_KazamiyaGeku" DisplayName="Journey to Kazamiya (Geku)" Description="Travel 1km from Toyoke Daijingu (Outer Shrine) to Kazamiya (Geku).">
+    <Stages StartStage="CONNECT_ToyokeDaijinguOuterShrine_TO_KazamiyaGeku_START">
+      <Stage RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_KazamiyaGeku_START" DisplayName="Depart from Toyoke Daijingu (Outer Shrine)" NextStage="CONNECT_ToyokeDaijinguOuterShrine_TO_KazamiyaGeku_END">
         <Objectives>
-          <Objective RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_KazamiyaGekū_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_KazamiyaGeku_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_KazamiyaGekū_END" DisplayName="Arrive at Kazamiya (Gekū)">
+      <Stage RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_KazamiyaGeku_END" DisplayName="Arrive at Kazamiya (Geku)">
         <Objectives>
-          <Objective RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_KazamiyaGekū_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
-        </Objectives>
-      </Stage>
-    </Stages>
-    <Rewards>
-      <Reward Condition="OnSuccess">
-        <Currency Amount="200" />
-      </Reward>
-    </Rewards>
-  </Quest>
-  <Quest RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_Tsuchinomiya" DisplayName="Journey to Tsuchi-no-Miya" Description="Travel 1km from Toyōke Daijingū (Outer Shrine) to Tsuchi-no-Miya.">
-    <Stages StartStage="CONNECT_ToyōkeDaijingūOuterShrine_TO_Tsuchinomiya_START">
-      <Stage RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_Tsuchinomiya_START" DisplayName="Depart from Toyōke Daijingū (Outer Shrine)" NextStage="CONNECT_ToyōkeDaijingūOuterShrine_TO_Tsuchinomiya_END">
-        <Objectives>
-          <Objective RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_Tsuchinomiya_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
-        </Objectives>
-      </Stage>
-      <Stage RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_Tsuchinomiya_END" DisplayName="Arrive at Tsuchi-no-Miya">
-        <Objectives>
-          <Objective RefName="CONNECT_ToyōkeDaijingūOuterShrine_TO_Tsuchinomiya_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_KazamiyaGeku_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
     </Stages>
@@ -512,7 +493,26 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="MAIN_QUEST_02" DisplayName="Epic Quest: Journey 2" Description="An epic challenging adventure through Kazamiya (Gekū), Tsuchi-no-Miya, Taka-no-Miya, testing all your skills.">
+  <Quest RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_Tsuchinomiya" DisplayName="Journey to Tsuchi-no-Miya" Description="Travel 1km from Toyoke Daijingu (Outer Shrine) to Tsuchi-no-Miya.">
+    <Stages StartStage="CONNECT_ToyokeDaijinguOuterShrine_TO_Tsuchinomiya_START">
+      <Stage RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_Tsuchinomiya_START" DisplayName="Depart from Toyoke Daijingu (Outer Shrine)" NextStage="CONNECT_ToyokeDaijinguOuterShrine_TO_Tsuchinomiya_END">
+        <Objectives>
+          <Objective RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_Tsuchinomiya_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_Tsuchinomiya_END" DisplayName="Arrive at Tsuchi-no-Miya">
+        <Objectives>
+          <Objective RefName="CONNECT_ToyokeDaijinguOuterShrine_TO_Tsuchinomiya_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="MAIN_QUEST_02" DisplayName="Epic Quest: Journey 2" Description="An epic challenging adventure through Kazamiya (Geku), Tsuchi-no-Miya, Taka-no-Miya, testing all your skills.">
     <Prerequisites>
       <Prerequisite QuestRef="MAIN_QUEST_01" MinimumLevel="33" />
     </Prerequisites>
@@ -554,11 +554,11 @@
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_KōtaiJingūInnerShrine" DisplayName="Bounty: Guardian of Kōtai Jingū (Inner Shrine)" Description="Defeat Guardian of Kōtai Jingū (Inner Shrine) and claim the bounty.">
+  <Quest RefName="BOUNTY_KotaiJinguInnerShrine" DisplayName="Bounty: Guardian of Kotai Jingu (Inner Shrine)" Description="Defeat Guardian of Kotai Jingu (Inner Shrine) and claim the bounty.">
     <Stages StartStage="DEFEAT">
       <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kōtai Jingū (Inner Shrine)" CharacterRef="BOSS_KōtaiJingūInnerShrine" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kotai Jingu (Inner Shrine)" CharacterRef="BOSS_KotaiJinguInnerShrine" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -588,11 +588,11 @@
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_ToyōkeDaijingūOuterShrine" DisplayName="Bounty: Guardian of Toyōke Daijingū (Outer Shrine)" Description="Defeat Guardian of Toyōke Daijingū (Outer Shrine) and claim the bounty.">
+  <Quest RefName="BOUNTY_ToyokeDaijinguOuterShrine" DisplayName="Bounty: Guardian of Toyoke Daijingu (Outer Shrine)" Description="Defeat Guardian of Toyoke Daijingu (Outer Shrine) and claim the bounty.">
     <Stages StartStage="DEFEAT">
       <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Toyōke Daijingū (Outer Shrine)" CharacterRef="BOSS_ToyōkeDaijingūOuterShrine" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Toyoke Daijingu (Outer Shrine)" CharacterRef="BOSS_ToyokeDaijinguOuterShrine" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -605,11 +605,11 @@
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_KazamiyaGekū" DisplayName="Bounty: Guardian of Kazamiya (Gekū)" Description="Defeat Guardian of Kazamiya (Gekū) and claim the bounty.">
+  <Quest RefName="BOUNTY_KazamiyaGeku" DisplayName="Bounty: Guardian of Kazamiya (Geku)" Description="Defeat Guardian of Kazamiya (Geku) and claim the bounty.">
     <Stages StartStage="DEFEAT">
       <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kazamiya (Gekū)" CharacterRef="BOSS_KazamiyaGekū" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Kazamiya (Geku)" CharacterRef="BOSS_KazamiyaGeku" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -653,8 +653,8 @@
     <Stages StartStage="GATHER_COMPONENT_1">
       <Stage RefName="GATHER_COMPONENT_1" DisplayName="Retrieve Component 1" NextStage="GATHER_COMPONENT_2">
         <Objectives>
-          <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Kōtai Jingū (Inner Shrine)" SagaArcRef="KōtaiJingūInnerShrine" />
-          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Kōtai Jingū (Inner Shrine)" CharacterTag="boss" />
+          <Objective RefName="REACH_LOCATION_1" Type="LocationReached" Threshold="1" DisplayName="Travel to Kotai Jingu (Inner Shrine)" SagaArcRef="KotaiJinguInnerShrine" />
+          <Objective RefName="DEFEAT_GUARDIAN_1" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Kotai Jingu (Inner Shrine)" CharacterTag="boss" />
           <Objective RefName="COLLECT_COMPONENT_1" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="HoodedCowl" />
         </Objectives>
         <Rewards>
@@ -689,8 +689,8 @@
       </Stage>
       <Stage RefName="GATHER_COMPONENT_3" DisplayName="Retrieve Component 3">
         <Objectives>
-          <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Toyōke Daijingū (Outer Shrine)" SagaArcRef="ToyōkeDaijingūOuterShrine" />
-          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Toyōke Daijingū (Outer Shrine)" CharacterTag="boss" />
+          <Objective RefName="REACH_LOCATION_3" Type="LocationReached" Threshold="1" DisplayName="Travel to Toyoke Daijingu (Outer Shrine)" SagaArcRef="ToyokeDaijinguOuterShrine" />
+          <Objective RefName="DEFEAT_GUARDIAN_3" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the guardian at Toyoke Daijingu (Outer Shrine)" CharacterTag="boss" />
           <Objective RefName="COLLECT_COMPONENT_3" Type="ItemCollected" Threshold="1" DisplayName="Collect the sacred component" ItemRef="OakStaff" />
         </Objectives>
         <Rewards>
@@ -746,7 +746,7 @@
     <Stages StartStage="FIND_SHRINE">
       <Stage RefName="FIND_SHRINE" DisplayName="Locate the Hidden Shrine" NextStage="UNLOCK_SHRINE">
         <Objectives>
-          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Kōtai Jingū (Inner Shrine)" SagaArcRef="KōtaiJingūInnerShrine" Hidden="true" />
+          <Objective RefName="DISCOVER_LOCATION" Type="LocationReached" Threshold="1" DisplayName="Find the shrine at Kotai Jingu (Inner Shrine)" SagaArcRef="KotaiJinguInnerShrine" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="UNLOCK_SHRINE" DisplayName="Unlock the Shrine's Secrets">

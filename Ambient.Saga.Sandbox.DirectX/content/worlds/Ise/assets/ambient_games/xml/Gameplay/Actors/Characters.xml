@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<?xml version="1.0" encoding="utf-8"?>
+<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Character RefName="BanditChief_QuestGiver" DisplayName="Class Representative" Description="Your class rep who wants everyone to have a good trip">
     <Stats Health="0.80" Stamina="0.7" Mana="0.2" Strength="0.12" Defense="0.15" Speed="0.10" Magic="0.05" Credits="80" />
     <Capabilities>
@@ -917,7 +917,7 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Kazahinominomiya" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="BOSS_KōtaiJingūInnerShrine" DisplayName="Guardian of Kōtai Jingū (Inner Shrine)" Description="At Kōtai Jingū (Inner Shrine), the enigmatic warrior Guardian of Kōtai Jingū (Inner Shrine) awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
+  <Character RefName="BOSS_KotaiJinguInnerShrine" DisplayName="Guardian of Kotai Jingu (Inner Shrine)" Description="At Kotai Jingu (Inner Shrine), the enigmatic warrior Guardian of Kotai Jingu (Inner Shrine) awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
     <Stats Health="0.81" Stamina="1.0" Mana="1.1" Strength="0.07" Defense="0.05" Speed="0.05" Magic="0.06" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -954,7 +954,7 @@
           <Entry SpellRef="MightyStrength" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_KōtaiJingūInnerShrine</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_BOSS_KotaiJinguInnerShrine</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="BossFight" Value="1" />
@@ -963,12 +963,12 @@
       <Trait Name="LastStand" Value="15" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KōtaiJingūInnerShrine" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KotaiJinguInnerShrine" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
   <Character RefName="BOSS_Aramatsurinomiya" DisplayName="Guardian of Aramatsuri-no-Miya" Description="The determined Guardian of Aramatsuri-no-Miya rules over Aramatsuri-no-Miya with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;K\u014DtaiJing\u016BInnerShrine&quot;,&quot;Kazahinominomiya&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;]}">
@@ -1024,28 +1024,28 @@
       <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Aramatsurinomiya" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0" DisplayName="Fellow Traveler" Description="A enigmatic local named Fellow Traveler can be found at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (1)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya&quot;,&quot;K\u014DtaiJing\u016BInnerShrine&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_0" DisplayName="Fellow Traveler" Description="A enigmatic local named Fellow Traveler can be found at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (1)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya&quot;,&quot;K\u014DtaiJing\u016BInnerShrine&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_0</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_0</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (2)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_1" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (2)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (3), known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (3), known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_1&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (4)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;]}">
+  <Character RefName="HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (4)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1062,28 +1062,28 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_3" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_3" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4" DisplayName="Fellow Traveler" Description="The mysterious Fellow Traveler calls Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (5) home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_4" DisplayName="Fellow Traveler" Description="The mysterious Fellow Traveler calls Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (5) home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_3&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (6), known for being resolute in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;]}">
+  <Character RefName="MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (6), known for being resolute in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_4&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1119,7 +1119,7 @@
           <Entry SpellRef="DivineLight" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_5</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1127,21 +1127,21 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6" DisplayName="Fellow Traveler" Description="Fellow Traveler, a weathered resident of Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (7)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_6" DisplayName="Fellow Traveler" Description="Fellow Traveler, a weathered resident of Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (7)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_5&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_6</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_6</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyōke Daijingū (Outer Shrine) (8), Fellow Traveler goes about their day with seasoned demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
+  <Character RefName="NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_7" DisplayName="Fellow Traveler" Description="At Waypoint between Aramatsuri-no-Miya and Toyoke Daijingu (Outer Shrine) (8), Fellow Traveler goes about their day with seasoned demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_6&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyōkeDaijingūOuterShrine_7</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Aramatsurinomiya_to_ToyokeDaijinguOuterShrine_7</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="BOSS_ToyōkeDaijingūOuterShrine" DisplayName="Guardian of Toyōke Daijingū (Outer Shrine)" Description="The determined Guardian of Toyōke Daijingū (Outer Shrine) rules over Toyōke Daijingū (Outer Shrine) with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;KazamiyaGek\u016B&quot;]}">
+  <Character RefName="BOSS_ToyokeDaijinguOuterShrine" DisplayName="Guardian of Toyoke Daijingu (Outer Shrine)" Description="The determined Guardian of Toyoke Daijingu (Outer Shrine) rules over Toyoke Daijingu (Outer Shrine) with an iron will." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;,&quot;Aramatsurinomiya_to_Toy\u014DkeDaijing\u016BOuterShrine_7&quot;,&quot;KazamiyaGek\u016B&quot;]}">
     <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -1177,7 +1177,7 @@
           <Entry SpellRef="HuntersMark" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_BOSS_ToyokeDaijinguOuterShrine</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="BossFight" Value="1" />
@@ -1186,15 +1186,15 @@
       <Trait Name="LastStand" Value="15" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_ToyōkeDaijingūOuterShrine" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_ToyokeDaijinguOuterShrine" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0" DisplayName="Traveling Merchant" Description="The resolute merchant Traveling Merchant has set up shop at Waypoint between Toyōke Daijingū (Outer Shrine) and Kazamiya (Gekū) (1)." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Tsuchinomiya&quot;]}">
+  <Character RefName="MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0" DisplayName="Traveling Merchant" Description="The resolute merchant Traveling Merchant has set up shop at Waypoint between Toyoke Daijingu (Outer Shrine) and Kazamiya (Geku) (1)." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine&quot;,&quot;Tsuchinomiya&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1225,7 +1225,7 @@
           <Entry SpellRef="Vanish" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_ToyōkeDaijingūOuterShrine_to_KazamiyaGekū_0</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_ToyokeDaijinguOuterShrine_to_KazamiyaGeku_0</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1233,7 +1233,7 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="BOSS_KazamiyaGekū" DisplayName="Guardian of Kazamiya (Gekū)" Description="Guardian of Kazamiya (Gekū) stands as the ultimate challenge at Kazamiya (Gekū), their seasoned nature apparent to all." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
+  <Character RefName="BOSS_KazamiyaGeku" DisplayName="Guardian of Kazamiya (Geku)" Description="Guardian of Kazamiya (Geku) stands as the ultimate challenge at Kazamiya (Geku), their seasoned nature apparent to all." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsuchinomiya&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">
     <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -1267,7 +1267,7 @@
           <Entry ConsumableRef="FireResistPotion" Quantity="2" />
         </Consumables>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_KazamiyaGekū</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_BOSS_KazamiyaGeku</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="BossFight" Value="1" />
@@ -1276,12 +1276,12 @@
       <Trait Name="LastStand" Value="15" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGekū" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_KazamiyaGeku" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
   <Character RefName="BOSS_Tsuchinomiya" DisplayName="Guardian of Tsuchi-no-Miya" Description="At Tsuchi-no-Miya, the weathered warrior Guardian of Tsuchi-no-Miya awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;KazamiyaGek\u016B&quot;,&quot;Takanomiya&quot;,&quot;Toy\u014DkeDaijing\u016BOuterShrine_to_KazamiyaGek\u016B_0&quot;]}">

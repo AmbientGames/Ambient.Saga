@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<?xml version="1.0" encoding="utf-8"?>
+<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <QuestToken RefName="BanditChief_HideoutMap" DisplayName="Meetup Location" Description="Information about where the rival students hang out" />
   <QuestToken RefName="BanditChief_ChiefsBadge" DisplayName="Rival's Apology" Description="The rival leader's written apology for causing trouble" />
   <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Returned Items" Description="Belongings taken from other students during the harassment" />
@@ -62,10 +62,10 @@
   <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Tour Guide's Thanks" Description="A small gift from the grateful guide" />
   <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Admission Paid" Description="Valid ticket to enter the shrine grounds" />
   <QuestToken RefName="TOKEN_Kazahinominomiya_COMPLETE" DisplayName="Kazahinomi-no-Miya Emblem" Description="Proof that you have overcome the trials of Kazahinomi-no-Miya." />
-  <QuestToken RefName="TOKEN_KōtaiJingūInnerShrine_COMPLETE" DisplayName="Kōtai Jingū (Inner Shrine) Crest" Description="This seal bears the marks of Kōtai Jingū (Inner Shrine), evidence of your triumph." />
+  <QuestToken RefName="TOKEN_KotaiJinguInnerShrine_COMPLETE" DisplayName="Kotai Jingu (Inner Shrine) Crest" Description="This seal bears the marks of Kotai Jingu (Inner Shrine), evidence of your triumph." />
   <QuestToken RefName="TOKEN_Aramatsurinomiya_COMPLETE" DisplayName="Mark of Aramatsuri-no-Miya" Description="Proof that you have overcome the trials of Aramatsuri-no-Miya." />
-  <QuestToken RefName="TOKEN_ToyōkeDaijingūOuterShrine_COMPLETE" DisplayName="Toyōke Daijingū (Outer Shrine) Seal" Description="This crest signifies your victory within Toyōke Daijingū (Outer Shrine)." />
-  <QuestToken RefName="TOKEN_KazamiyaGekū_COMPLETE" DisplayName="Emblem of Kazamiya (Gekū)" Description="A symbol of honor earned through perseverance at Kazamiya (Gekū)." />
+  <QuestToken RefName="TOKEN_ToyokeDaijinguOuterShrine_COMPLETE" DisplayName="Toyoke Daijingu (Outer Shrine) Seal" Description="This crest signifies your victory within Toyoke Daijingu (Outer Shrine)." />
+  <QuestToken RefName="TOKEN_KazamiyaGeku_COMPLETE" DisplayName="Emblem of Kazamiya (Geku)" Description="A symbol of honor earned through perseverance at Kazamiya (Geku)." />
   <QuestToken RefName="TOKEN_Tsuchinomiya_COMPLETE" DisplayName="Tsuchi-no-Miya Seal" Description="This seal bears the marks of Tsuchi-no-Miya, evidence of your triumph." />
   <QuestToken RefName="TOKEN_Takanomiya_COMPLETE" DisplayName="Emblem of Taka-no-Miya" Description="This badge commemorates your accomplishments at Taka-no-Miya." />
 </QuestTokens>

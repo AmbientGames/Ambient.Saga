@@ -320,7 +320,7 @@ public partial class SagaMainViewModel : ObservableObject
         // Set up directories similar to the unit tests
         var baseDirectory = AppContext.BaseDirectory;
         _dataDirectory = Path.Combine(baseDirectory, "Content", "Worlds");
-        _schemaDirectory = Path.Combine(baseDirectory, "Content", "Schemas");
+        _schemaDirectory = Path.Combine(baseDirectory, "Content", "xsd");
 
         // Initialize merchant trade view model with the context
         MerchantTrade = new MerchantTradeViewModel(_sagaInteractionContext, _mediator);

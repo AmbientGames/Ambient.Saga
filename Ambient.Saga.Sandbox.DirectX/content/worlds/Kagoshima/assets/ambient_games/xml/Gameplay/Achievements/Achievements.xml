@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<?xml version="1.0" encoding="utf-8"?>
+<Achievements xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Achievement RefName="ACH_COMPLETE_KAGOSHIMA" DisplayName="Legend of Kagoshima" Description="Write your name in the annals of Kagoshima's history by completing the main quest.">
     <Criteria Type="SagaArcsCompleted" Threshold="3" />
   </Achievement>

@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<?xml version="1.0" encoding="utf-8"?>
+<Quests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Quest RefName="BanditChief_Quest" DisplayName="The Mountain Bandits" Description="Hunt down the bandit leader terrorizing the mountain roads.">
     <Stages StartStage="clear_scouts">
       <Stage RefName="clear_scouts" DisplayName="Clear the Roads" NextStage="assault">
@@ -371,10 +371,10 @@
   </Quest>
   <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="The Grand Journey" Description="An epic quest connecting 3 legendary locations across the realm.">
     <Stages StartStage="OFFICIAL_MAIN_CHAIN_STAGE_01">
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="Visit Tsurumaru-jō" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_01" DisplayName="Visit Tsurumaru-jo" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_02">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Tsurumaru-jō" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jō" CharacterRef="BOSS_Tsurumarujō" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Tsurumaru-jo" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_01_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jo" CharacterRef="BOSS_Tsurumarujo" />
         </Objectives>
       </Stage>
       <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_02" DisplayName="Visit Iso-teien" NextStage="OFFICIAL_MAIN_CHAIN_STAGE_03">
@@ -383,10 +383,10 @@
           <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_02_OBJ_TALK" Type="DialogueCompleted" Threshold="1" DisplayName="Speak with Trader at Iso-teien" CharacterRef="MERCHANT_Isoteien" />
         </Objectives>
       </Stage>
-      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="Visit Terukuni Daimyōjin-sha">
+      <Stage RefName="OFFICIAL_MAIN_CHAIN_STAGE_03" DisplayName="Visit Terukuni Daimyojin-sha">
         <Objectives>
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Terukuni Daimyōjin-sha" />
-          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyōjin-sha" CharacterRef="BOSS_TerukuniDaimyōjinsha" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_DISCOVER" Type="LocationReached" Threshold="1" DisplayName="Reach Terukuni Daimyojin-sha" />
+          <Objective RefName="OFFICIAL_MAIN_CHAIN_STAGE_03_OBJ_TALK" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyojin-sha" CharacterRef="BOSS_TerukuniDaimyojinsha" />
         </Objectives>
       </Stage>
     </Stages>
@@ -397,16 +397,16 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="REGIONAL_Tsurumarujō1" DisplayName="Explore the Tsurumaru-jō Region" Description="Discover 2 locations in the Tsurumaru-jō area.">
-    <Stages StartStage="REGIONAL_Tsurumarujō1_STAGE_01">
-      <Stage RefName="REGIONAL_Tsurumarujō1_STAGE_01" DisplayName="Explore Tsurumaru-jō" NextStage="REGIONAL_Tsurumarujō1_STAGE_02">
+  <Quest RefName="REGIONAL_Tsurumarujo1" DisplayName="Explore the Tsurumaru-jo Region" Description="Discover 2 locations in the Tsurumaru-jo area.">
+    <Stages StartStage="REGIONAL_Tsurumarujo1_STAGE_01">
+      <Stage RefName="REGIONAL_Tsurumarujo1_STAGE_01" DisplayName="Explore Tsurumaru-jo" NextStage="REGIONAL_Tsurumarujo1_STAGE_02">
         <Objectives>
-          <Objective RefName="REGIONAL_Tsurumarujō1_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_Tsurumarujo1_STAGE_01_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="REGIONAL_Tsurumarujō1_STAGE_02" DisplayName="Explore Terukuni Daimyōjin-sha">
+      <Stage RefName="REGIONAL_Tsurumarujo1_STAGE_02" DisplayName="Explore Terukuni Daimyojin-sha">
         <Objectives>
-          <Objective RefName="REGIONAL_Tsurumarujō1_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="REGIONAL_Tsurumarujo1_STAGE_02_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
     </Stages>
@@ -416,35 +416,16 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1" DisplayName="Journey to Terukuni Daimyōjin-sha" Description="Travel 1km from Tsurumaru-jō to Terukuni Daimyōjin-sha.">
-    <Stages StartStage="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_START">
-      <Stage RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_START" DisplayName="Depart from Tsurumaru-jō" NextStage="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_END">
+  <Quest RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1" DisplayName="Journey to Terukuni Daimyojin-sha" Description="Travel 1km from Tsurumaru-jo to Terukuni Daimyojin-sha.">
+    <Stages StartStage="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_START">
+      <Stage RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_START" DisplayName="Depart from Tsurumaru-jo" NextStage="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_END">
         <Objectives>
-          <Objective RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
-      <Stage RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_END" DisplayName="Arrive at Terukuni Daimyōjin-sha">
+      <Stage RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_END" DisplayName="Arrive at Terukuni Daimyojin-sha">
         <Objectives>
-          <Objective RefName="CONNECT_Tsurumarujō1_TO_TerukuniDaimyōjinsha1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
-        </Objectives>
-      </Stage>
-    </Stages>
-    <Rewards>
-      <Reward Condition="OnSuccess">
-        <Currency Amount="200" />
-      </Reward>
-    </Rewards>
-  </Quest>
-  <Quest RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1" DisplayName="Journey to Tsurumaru-jō" Description="Travel 1km from Terukuni Daimyōjin-sha to Tsurumaru-jō.">
-    <Stages StartStage="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_START">
-      <Stage RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_START" DisplayName="Depart from Terukuni Daimyōjin-sha" NextStage="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_END">
-        <Objectives>
-          <Objective RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
-        </Objectives>
-      </Stage>
-      <Stage RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_END" DisplayName="Arrive at Tsurumaru-jō">
-        <Objectives>
-          <Objective RefName="CONNECT_TerukuniDaimyōjinsha1_TO_Tsurumarujō1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+          <Objective RefName="CONNECT_Tsurumarujo1_TO_TerukuniDaimyojinsha1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
         </Objectives>
       </Stage>
     </Stages>
@@ -454,7 +435,26 @@
       </Reward>
     </Rewards>
   </Quest>
-  <Quest RefName="MAIN_QUEST_01" DisplayName="Gathering Quest: Beginning 1" Description="Gather resources and aid the people of Iso-teien, Tsurumaru-jō, Terukuni Daimyōjin-sha.">
+  <Quest RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1" DisplayName="Journey to Tsurumaru-jo" Description="Travel 1km from Terukuni Daimyojin-sha to Tsurumaru-jo.">
+    <Stages StartStage="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_START">
+      <Stage RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_START" DisplayName="Depart from Terukuni Daimyojin-sha" NextStage="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_END">
+        <Objectives>
+          <Objective RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_START_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+      <Stage RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_END" DisplayName="Arrive at Tsurumaru-jo">
+        <Objectives>
+          <Objective RefName="CONNECT_TerukuniDaimyojinsha1_TO_Tsurumarujo1_END_OBJ" Type="LocationReached" Threshold="1" DisplayName="" />
+        </Objectives>
+      </Stage>
+    </Stages>
+    <Rewards>
+      <Reward Condition="OnSuccess">
+        <Currency Amount="200" />
+      </Reward>
+    </Rewards>
+  </Quest>
+  <Quest RefName="MAIN_QUEST_01" DisplayName="Gathering Quest: Beginning 1" Description="Gather resources and aid the people of Iso-teien, Tsurumaru-jo, Terukuni Daimyojin-sha.">
     <Stages StartStage="COLLECT_ITEMS">
       <Stage RefName="COLLECT_ITEMS" DisplayName="Gather Resources" NextStage="DELIVER">
         <Objectives>
@@ -464,7 +464,7 @@
       </Stage>
       <Stage RefName="DELIVER" DisplayName="Deliver Resources">
         <Objectives>
-          <Objective RefName="REACH_DROPOFF" Type="LocationReached" Threshold="1" DisplayName="Deliver to collection point" SagaArcRef="TerukuniDaimyōjinsha1" />
+          <Objective RefName="REACH_DROPOFF" Type="LocationReached" Threshold="1" DisplayName="Deliver to collection point" SagaArcRef="TerukuniDaimyojinsha1" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -477,11 +477,11 @@
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_Tsurumarujō" DisplayName="Bounty: Guardian of Tsurumaru-jō" Description="Defeat Guardian of Tsurumaru-jō and claim the bounty.">
+  <Quest RefName="BOUNTY_Tsurumarujo" DisplayName="Bounty: Guardian of Tsurumaru-jo" Description="Defeat Guardian of Tsurumaru-jo and claim the bounty.">
     <Stages StartStage="DEFEAT">
       <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jō" CharacterRef="BOSS_Tsurumarujō" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Tsurumaru-jo" CharacterRef="BOSS_Tsurumarujo" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -494,11 +494,11 @@
       </Stage>
     </Stages>
   </Quest>
-  <Quest RefName="BOUNTY_TerukuniDaimyōjinsha" DisplayName="Bounty: Guardian of Terukuni Daimyōjin-sha" Description="Defeat Guardian of Terukuni Daimyōjin-sha and claim the bounty.">
+  <Quest RefName="BOUNTY_TerukuniDaimyojinsha" DisplayName="Bounty: Guardian of Terukuni Daimyojin-sha" Description="Defeat Guardian of Terukuni Daimyojin-sha and claim the bounty.">
     <Stages StartStage="DEFEAT">
       <Stage RefName="DEFEAT" DisplayName="Defeat the Target">
         <Objectives>
-          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyōjin-sha" CharacterRef="BOSS_TerukuniDaimyōjinsha" />
+          <Objective RefName="DEFEAT_BOSS" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat Guardian of Terukuni Daimyojin-sha" CharacterRef="BOSS_TerukuniDaimyojinsha" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -547,7 +547,7 @@
     <Stages StartStage="DISCOVER_WORKSHOP">
       <Stage RefName="DISCOVER_WORKSHOP" DisplayName="Discover the Hidden Workshop" NextStage="CRAFT_MASTERPIECE">
         <Objectives>
-          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Tsurumaru-jō" SagaArcRef="Tsurumarujō1" Hidden="true" />
+          <Objective RefName="FIND_WORKSHOP" Type="LocationReached" Threshold="1" DisplayName="Find the legendary workshop at Tsurumaru-jo" SagaArcRef="Tsurumarujo1" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Craft the Ultimate Masterpiece">
@@ -607,7 +607,7 @@
     <Stages StartStage="START_CHALLENGE">
       <Stage RefName="START_CHALLENGE" DisplayName="Begin the Time Trial" NextStage="COMPLETE_TRIAL">
         <Objectives>
-          <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Terukuni Daimyōjin-sha" SagaArcRef="TerukuniDaimyōjinsha1" />
+          <Objective RefName="REACH_START" Type="LocationReached" Threshold="1" DisplayName="Reach the challenge arena at Terukuni Daimyojin-sha" SagaArcRef="TerukuniDaimyojinsha1" />
         </Objectives>
       </Stage>
       <Stage RefName="COMPLETE_TRIAL" DisplayName="Complete All Challenges">

@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\Schemas\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+<?xml version="1.0" encoding="utf-8"?>
+<Characters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
   <Character RefName="BanditChief_QuestGiver" DisplayName="Village Headman" Description="The desperate leader of a village plagued by bandits">
     <Stats Health="0.80" Stamina="0.7" Mana="0.2" Strength="0.12" Defense="0.15" Speed="0.10" Magic="0.05" Credits="80" />
     <Capabilities>
@@ -38,7 +38,7 @@
       <Tag>BanditScout</Tag>
     </Tags>
   </Character>
-  <Character RefName="BanditChief_Enforcer" DisplayName="Bandit Tōryō" Description="A scarred enforcer who maintains order among the sanzoku through fear and blade">
+  <Character RefName="BanditChief_Enforcer" DisplayName="Bandit Toryo" Description="A scarred enforcer who maintains order among the sanzoku through fear and blade">
     <Stats Health="0.90" Stamina="0.8" Mana="0.1" Strength="0.15" Defense="0.12" Speed="0.10" Magic="0.03" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -228,7 +228,7 @@
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="FalseProphet_Guard" DisplayName="Temple Sōhei" Description="A warrior monk sworn to protect the holy wanderer with their life">
+  <Character RefName="FalseProphet_Guard" DisplayName="Temple Sohei" Description="A warrior monk sworn to protect the holy wanderer with their life">
     <Stats Health="0.90" Stamina="0.8" Mana="0.2" Strength="0.16" Defense="0.14" Speed="0.10" Magic="0.05" Credits="70" />
     <Capabilities>
       <Equipment>
@@ -560,7 +560,7 @@
       <Trait Name="Friendly" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="RefugeeEscort_Stranger" DisplayName="Mysterious Rōnin" Description="A silent warrior who joined the refugees with no explanation of their past">
+  <Character RefName="RefugeeEscort_Stranger" DisplayName="Mysterious Ronin" Description="A silent warrior who joined the refugees with no explanation of their past">
     <Stats Health="0.80" Stamina="0.7" Mana="0.3" Strength="0.12" Defense="0.10" Speed="0.14" Magic="0.08" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -741,7 +741,7 @@
       <Trait Name="WillingToBargain" Value="80" />
     </Traits>
   </Character>
-  <Character RefName="RivalGuild_Arbiter" DisplayName="Domain Magistrate" Description="A stern official who mediates trade disputes according to the daimyō's law">
+  <Character RefName="RivalGuild_Arbiter" DisplayName="Domain Magistrate" Description="A stern official who mediates trade disputes according to the daimyo's law">
     <Stats Health="0.60" Stamina="0.5" Mana="0.6" Strength="0.05" Defense="0.08" Speed="0.06" Magic="0.12" Credits="200" />
     <Capabilities>
       <Equipment>
@@ -863,7 +863,7 @@
       <Trait Name="WillTrade" Value="1" />
     </Traits>
   </Character>
-  <Character RefName="BOSS_Tsurumarujō" DisplayName="Guardian of Tsurumaru-jō" Description="A powerful foe known as Guardian of Tsurumaru-jō, whose stoic demeanor intimidates all who approach Tsurumaru-jō." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;]}">
+  <Character RefName="BOSS_Tsurumarujo" DisplayName="Guardian of Tsurumaru-jo" Description="A powerful foe known as Guardian of Tsurumaru-jo, whose stoic demeanor intimidates all who approach Tsurumaru-jo." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;]}">
     <Stats Health="0.94" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -901,7 +901,7 @@
           <Entry SpellRef="Invisibility" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_Tsurumarujō</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_BOSS_Tsurumarujo</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="BossFight" Value="1" />
@@ -910,15 +910,15 @@
       <Trait Name="LastStand" Value="15" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujō" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke1Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a mysterious trader offering goods at Tsurumaru-jō Spoke 1 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke1Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a mysterious trader offering goods at Tsurumaru-jo Spoke 1 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -951,7 +951,7 @@
           <Entry SpellRef="Stun" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke1Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke1Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -959,7 +959,7 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke1Ring2" DisplayName="Trail Hazard" Description="At Tsurumaru-jō Spoke 1 Ring 2, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke1Ring2" DisplayName="Trail Hazard" Description="At Tsurumaru-jo Spoke 1 Ring 2, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -977,21 +977,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring2</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring2" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke1Ring3" DisplayName="Traveling Merchant" Description="At Tsurumaru-jō Spoke 1 Ring 3, Traveling Merchant offers merchandise with a resolute approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;IsoteienSpoke5Ring4&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke1Ring3" DisplayName="Traveling Merchant" Description="At Tsurumaru-jo Spoke 1 Ring 3, Traveling Merchant offers merchandise with a resolute approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;IsoteienSpoke5Ring4&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1025,7 +1025,7 @@
           <Entry SpellRef="ArcaneMissile" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke1Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke1Ring3</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1033,7 +1033,7 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke1Ring4" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jō Spoke 1 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke1Ring4" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jo Spoke 1 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring5&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1050,21 +1050,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring4</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring4" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring4" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring4" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring4" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring4" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke1Ring5" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jō Spoke 1 Ring 5." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;IsoteienSpoke5Ring4&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke1Ring5" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jo Spoke 1 Ring 5." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;IsoteienSpoke5Ring4&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1083,21 +1083,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring5</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke1Ring5" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring5" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring5" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring5" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring5" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring5" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke1Ring5" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke2Ring1" DisplayName="Traveling Merchant" Description="At Tsurumaru-jō Spoke 2 Ring 1, Traveling Merchant offers merchandise with a stoic approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke2Ring1" DisplayName="Traveling Merchant" Description="At Tsurumaru-jo Spoke 2 Ring 1, Traveling Merchant offers merchandise with a stoic approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1128,7 +1128,7 @@
           <Entry SpellRef="Fortitude" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke2Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke2Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1136,7 +1136,7 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke2Ring2" DisplayName="Trail Hazard" Description="At Tsurumaru-jō Spoke 2 Ring 2, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke2Ring2" DisplayName="Trail Hazard" Description="At Tsurumaru-jo Spoke 2 Ring 2, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1155,21 +1155,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke2Ring2</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring2" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke2Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke2Ring2" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke2Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke2Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke2Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke2Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke2Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke2Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler, a enigmatic resident of Tsurumaru-jō Spoke 2 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke2Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler, a enigmatic resident of Tsurumaru-jo Spoke 2 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
@@ -1178,10 +1178,10 @@
           <Entry ConsumableRef="Juice" Quantity="1" />
         </Consumables>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke2Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke2Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke2Ring4" DisplayName="Traveling Merchant" Description="A weathered vendor named Traveling Merchant sells wares at Tsurumaru-jō Spoke 2 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;,&quot;Tsurumaruj\u014DSpoke2Ring5&quot;,&quot;Tsurumaruj\u014DSpoke2Ring3&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke2Ring4" DisplayName="Traveling Merchant" Description="A weathered vendor named Traveling Merchant sells wares at Tsurumaru-jo Spoke 2 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;,&quot;Tsurumaruj\u014DSpoke2Ring5&quot;,&quot;Tsurumaruj\u014DSpoke2Ring3&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1212,7 +1212,7 @@
           <Entry SpellRef="Whirlwind" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke2Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke2Ring4</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1220,14 +1220,14 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke2Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jō Spoke 2 Ring 5, known for their determined temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke4Ring2&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke2Ring4&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke2Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jo Spoke 2 Ring 5, known for their determined temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke4Ring2&quot;,&quot;IsoteienSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke2Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke2Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke2Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke3Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Tsurumaru-jō Spoke 3 Ring 1, known for being seasoned in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014DSpoke2Ring1&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke3Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Tsurumaru-jo Spoke 3 Ring 1, known for being seasoned in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014DSpoke2Ring1&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1255,7 +1255,7 @@
           <Entry SpellRef="FlameWall" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke3Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke3Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1263,21 +1263,21 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke3Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a weathered resident of Tsurumaru-jō Spoke 3 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke3Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a weathered resident of Tsurumaru-jo Spoke 3 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke3Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke3Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke3Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Tsurumaru-jō Spoke 3 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring4&quot;,&quot;Tsurumaruj\u014DSpoke3Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke3Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Tsurumaru-jo Spoke 3 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring4&quot;,&quot;Tsurumaruj\u014DSpoke3Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke3Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke3Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke3Ring4" DisplayName="Trail Hazard" Description="At Tsurumaru-jō Spoke 3 Ring 4, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke3Ring4" DisplayName="Trail Hazard" Description="At Tsurumaru-jo Spoke 3 Ring 4, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1298,21 +1298,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke3Ring4</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring4" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring4" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring4" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring4" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring4" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke3Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke3Ring4" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke3Ring4" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke3Ring4" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke3Ring4" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke3Ring4" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke3Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke3Ring5" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Tsurumaru-jō Spoke 3 Ring 5, known for being vigilant in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke3Ring5" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Tsurumaru-jo Spoke 3 Ring 5, known for being vigilant in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke3Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1342,7 +1342,7 @@
           <Entry SpellRef="HuntersMark" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke3Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke3Ring5</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1350,7 +1350,7 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring1" DisplayName="Traveling Merchant" Description="A seasoned vendor named Traveling Merchant sells wares at Tsurumaru-jō Spoke 4 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke4Ring1" DisplayName="Traveling Merchant" Description="A seasoned vendor named Traveling Merchant sells wares at Tsurumaru-jo Spoke 4 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1382,7 +1382,7 @@
           <Entry SpellRef="Slow" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke4Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1390,7 +1390,7 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke4Ring2" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jō Spoke 4 Ring 2." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke4Ring2" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jo Spoke 4 Ring 2." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1410,21 +1410,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke4Ring2</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring2" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke4Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke4Ring2" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke4Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke4Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke4Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke4Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke4Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring3" DisplayName="Traveling Merchant" Description="At Tsurumaru-jō Spoke 4 Ring 3, Traveling Merchant offers merchandise with a enigmatic approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring2&quot;,&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke4Ring3" DisplayName="Traveling Merchant" Description="At Tsurumaru-jo Spoke 4 Ring 3, Traveling Merchant offers merchandise with a enigmatic approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring2&quot;,&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1454,7 +1454,7 @@
           <Entry SpellRef="ConjureFlames" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke4Ring3</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1462,7 +1462,7 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke4Ring4" DisplayName="Traveling Merchant" Description="The mysterious merchant Traveling Merchant has set up shop at Tsurumaru-jō Spoke 4 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;Tsurumaruj\u014DSpoke4Ring3&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke4Ring4" DisplayName="Traveling Merchant" Description="The mysterious merchant Traveling Merchant has set up shop at Tsurumaru-jo Spoke 4 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;,&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;Tsurumaruj\u014DSpoke4Ring3&quot;]}">
     <Stats Health="0.22" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1496,7 +1496,7 @@
           <Entry SpellRef="Lullaby" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke4Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke4Ring4</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1504,14 +1504,14 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke4Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Tsurumaru-jō Spoke 4 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring5&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke4Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Tsurumaru-jo Spoke 4 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke4Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke4Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke5Ring1" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jō Spoke 5 Ring 1." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014Djinsha&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke5Ring1" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Tsurumaru-jo Spoke 5 Ring 1." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014Djinsha&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1531,28 +1531,28 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke5Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring1" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring1" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring1" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring1" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring1" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke5Ring1" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke5Ring1" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke5Ring1" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke5Ring1" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke5Ring1" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke5Ring1" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke5Ring1" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke5Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Tsurumaru-jō Spoke 5 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring1&quot;,&quot;TerukuniDaimy\u014Djinsha&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke5Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a determined resident of Tsurumaru-jo Spoke 5 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring1&quot;,&quot;TerukuniDaimy\u014Djinsha&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke5Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke5Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke5Ring3" DisplayName="Traveling Merchant" Description="The enigmatic merchant Traveling Merchant has set up shop at Tsurumaru-jō Spoke 5 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring2&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke5Ring3" DisplayName="Traveling Merchant" Description="The enigmatic merchant Traveling Merchant has set up shop at Tsurumaru-jo Spoke 5 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring2&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1584,7 +1584,7 @@
           <Entry SpellRef="WarStomp" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke5Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke5Ring3</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1592,21 +1592,21 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke5Ring4" DisplayName="Fellow Traveler" Description="At Tsurumaru-jō Spoke 5 Ring 4, Fellow Traveler goes about their day with mysterious demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring3&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke5Ring4" DisplayName="Fellow Traveler" Description="At Tsurumaru-jo Spoke 5 Ring 4, Fellow Traveler goes about their day with mysterious demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke5Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke5Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke5Ring5" DisplayName="Fellow Traveler" Description="The vigilant Fellow Traveler calls Tsurumaru-jō Spoke 5 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke5Ring4&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke5Ring5" DisplayName="Fellow Traveler" Description="The vigilant Fellow Traveler calls Tsurumaru-jo Spoke 5 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke5Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke5Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke5Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TsurumarujōSpoke6Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a vigilant trader offering goods at Tsurumaru-jō Spoke 6 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
+  <Character RefName="MERCHANT_TsurumarujoSpoke6Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a vigilant trader offering goods at Tsurumaru-jo Spoke 6 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -1643,7 +1643,7 @@
           <Entry SpellRef="Doom" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujōSpoke6Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TsurumarujoSpoke6Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -1651,14 +1651,14 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke6Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jō Spoke 6 Ring 2, known for their vigilant temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke6Ring1&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke6Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jo Spoke 6 Ring 2, known for their vigilant temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;,&quot;Tsurumaruj\u014DSpoke6Ring1&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke6Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke6Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke6Ring3" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Tsurumaru-jō Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring2&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke6Ring3" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Tsurumaru-jo Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring2&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1675,21 +1675,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring3</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring3" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring3" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring3" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring3" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring3" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring3" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring3" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring3" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring3" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring3" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring3" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring3" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="HOSTILE_TsurumarujōSpoke6Ring4" DisplayName="Trail Hazard" Description="At Tsurumaru-jō Spoke 6 Ring 4, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring3&quot;,&quot;Tsurumaruj\u014DSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;]}">
+  <Character RefName="HOSTILE_TsurumarujoSpoke6Ring4" DisplayName="Trail Hazard" Description="At Tsurumaru-jo Spoke 6 Ring 4, the aggressive Trail Hazard poses a constant danger." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring3&quot;,&quot;Tsurumaruj\u014DSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -1708,21 +1708,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring4</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring4" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring4" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring4" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring4" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring4" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujōSpoke6Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring4" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring4" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring4" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring4" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring4" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TsurumarujoSpoke6Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TsurumarujōSpoke6Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jō Spoke 6 Ring 5, known for their mysterious temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;]}">
+  <Character RefName="NPC_TsurumarujoSpoke6Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Tsurumaru-jo Spoke 6 Ring 5, known for their mysterious temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
@@ -1734,7 +1734,7 @@
           <Entry ConsumableRef="Pie" Quantity="1" />
         </Consumables>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujōSpoke6Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TsurumarujoSpoke6Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
   <Character RefName="MERCHANT_Isoteien" DisplayName="Trader at Iso-teien" Description="Trader at Iso-teien plies their trade at Iso-teien, known for being determined in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, business-minded, knowledgeable about area&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke6Ring1&quot;,&quot;IsoteienSpoke6Ring2&quot;,&quot;IsoteienSpoke6Ring3&quot;]}">
@@ -2268,7 +2268,7 @@
       <DialogueTreeRef>DIALOGUE_NPC_IsoteienSpoke6Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="BOSS_TerukuniDaimyōjinsha" DisplayName="Guardian of Terukuni Daimyōjin-sha" Description="At Terukuni Daimyōjin-sha, the determined warrior Guardian of Terukuni Daimyōjin-sha awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;Tsurumaruj\u014DSpoke5Ring2&quot;]}">
+  <Character RefName="BOSS_TerukuniDaimyojinsha" DisplayName="Guardian of Terukuni Daimyojin-sha" Description="At Terukuni Daimyojin-sha, the determined warrior Guardian of Terukuni Daimyojin-sha awaits those bold enough to face them." Metadata="{&quot;personality&quot;:&quot;Intimidating, protective, tests worthiness&quot;,&quot;narrativeRole&quot;:&quot;antagonist&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;Tsurumaruj\u014DSpoke5Ring2&quot;]}">
     <Stats Health="1.05" Stamina="1.0" Mana="1.1" Strength="0.09" Defense="0.07" Speed="0.06" Magic="0.07" Credits="50" />
     <Capabilities>
       <Equipment>
@@ -2304,7 +2304,7 @@
           <Entry SpellRef="Charge" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_BOSS_TerukuniDaimyōjinsha</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_BOSS_TerukuniDaimyojinsha</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="BossFight" Value="1" />
@@ -2313,22 +2313,22 @@
       <Trait Name="LastStand" Value="15" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyōjinsha" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyōjinsha" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyōjinsha" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyōjinsha" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyōjinsha" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyōjinsha" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring1" DisplayName="Fellow Traveler" Description="The determined Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 1 Ring 1 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke1Ring1" DisplayName="Fellow Traveler" Description="The determined Fellow Traveler calls Terukuni Daimyojin-sha Spoke 1 Ring 1 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke1Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a seasoned resident of Terukuni Daimyōjin-sha Spoke 1 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke1Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke1Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler, a seasoned resident of Terukuni Daimyojin-sha Spoke 1 Ring 2." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke1Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
@@ -2337,17 +2337,17 @@
           <Entry ConsumableRef="AcidBomb" Quantity="1" />
         </Consumables>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke1Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke1Ring3" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 1 Ring 3, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke1Ring3" DisplayName="Fellow Traveler" Description="At Terukuni Daimyojin-sha Spoke 1 Ring 3, Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring2&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke1Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke1Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Terukuni Daimyōjin-sha Spoke 1 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring3&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
+  <Character RefName="HOSTILE_TerukuniDaimyojinshaSpoke1Ring4" DisplayName="Trail Hazard" Description="A aggressive predator known as Trail Hazard haunts Terukuni Daimyojin-sha Spoke 1 Ring 4." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke1Ring3&quot;,&quot;Tsurumaruj\u014DSpoke1Ring2&quot;,&quot;IsoteienSpoke5Ring5&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -2366,21 +2366,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring4</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring4" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring4" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring4" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring4" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring4" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring4" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Terukuni Daimyōjin-sha Spoke 1 Ring 5 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
+  <Character RefName="HOSTILE_TerukuniDaimyojinshaSpoke1Ring5" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Terukuni Daimyojin-sha Spoke 1 Ring 5 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring4&quot;,&quot;Tsurumaruj\u014DSpoke1Ring3&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -2399,21 +2399,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring5</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke1Ring5" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring5" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring5" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring5" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring5" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring5" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke1Ring5" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke2Ring1" DisplayName="Traveling Merchant" Description="At Terukuni Daimyōjin-sha Spoke 2 Ring 1, Traveling Merchant offers merchandise with a determined approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014D&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;Tsurumaruj\u014DSpoke4Ring1&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyojinshaSpoke2Ring1" DisplayName="Traveling Merchant" Description="At Terukuni Daimyojin-sha Spoke 2 Ring 1, Traveling Merchant offers merchandise with a determined approach to business." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014D&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;,&quot;Tsurumaruj\u014DSpoke4Ring1&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -2444,7 +2444,7 @@
           <Entry SpellRef="Dominate" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke2Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyojinshaSpoke2Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -2452,14 +2452,14 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 2 Ring 2, known for their stoic temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke2Ring2" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyojin-sha Spoke 2 Ring 2, known for their stoic temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke2Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring3" DisplayName="Fellow Traveler" Description="A mysterious local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 2 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;,&quot;Tsurumaruj\u014DSpoke2Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke2Ring3" DisplayName="Fellow Traveler" Description="A mysterious local named Fellow Traveler can be found at Terukuni Daimyojin-sha Spoke 2 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;,&quot;Tsurumaruj\u014DSpoke2Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
@@ -2471,10 +2471,10 @@
           <Entry ConsumableRef="HastePotion" Quantity="1" />
         </Consumables>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke2Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring4" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 2 Ring 4, Fellow Traveler goes about their day with vigilant demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke2Ring4" DisplayName="Fellow Traveler" Description="At Terukuni Daimyojin-sha Spoke 2 Ring 4, Fellow Traveler goes about their day with vigilant demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
@@ -2483,17 +2483,17 @@
           <Entry ConsumableRef="SoulShard" Quantity="2" />
         </Consumables>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke2Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke2Ring5" DisplayName="Fellow Traveler" Description="The determined Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 2 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring4&quot;,&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke2Ring5" DisplayName="Fellow Traveler" Description="The determined Fellow Traveler calls Terukuni Daimyojin-sha Spoke 2 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring4&quot;,&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke2Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke2Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke3Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a vigilant trader offering goods at Terukuni Daimyōjin-sha Spoke 3 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring1&quot;,&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyojinshaSpoke3Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a vigilant trader offering goods at Terukuni Daimyojin-sha Spoke 3 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring1&quot;,&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;Tsurumaruj\u014D1_to_TerukuniDaimy\u014Djinsha1_0&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -2527,7 +2527,7 @@
           <Entry SpellRef="Distraction" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke3Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyojinshaSpoke3Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -2535,14 +2535,14 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring2" DisplayName="Fellow Traveler" Description="The weathered Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 3 Ring 2 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke3Ring2" DisplayName="Fellow Traveler" Description="The weathered Fellow Traveler calls Terukuni Daimyojin-sha Spoke 3 Ring 2 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke3Ring2</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant, a determined trader offering goods at Terukuni Daimyōjin-sha Spoke 3 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;,&quot;Tsurumaruj\u014DSpoke3Ring3&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyojinshaSpoke3Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant, a determined trader offering goods at Terukuni Daimyojin-sha Spoke 3 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring2&quot;,&quot;Tsurumaruj\u014DSpoke3Ring3&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -2577,7 +2577,7 @@
           <Entry SpellRef="NaturalRemedy" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke3Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyojinshaSpoke3Ring3</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -2585,21 +2585,21 @@
       <Trait Name="WillingToBargain" Value="50" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 3 Ring 4, known for their determined temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke3Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyojin-sha Spoke 3 Ring 4, known for their determined temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring3&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke3Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke3Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 3 Ring 5, known for their mysterious temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;,&quot;Tsurumaruj\u014DSpoke3Ring5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke3Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyojin-sha Spoke 3 Ring 5, known for their mysterious temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke3Ring4&quot;,&quot;Tsurumaruj\u014DSpoke3Ring5&quot;,&quot;Tsurumaruj\u014DSpoke3Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke3Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke3Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a stoic trader offering goods at Terukuni Daimyōjin-sha Spoke 4 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014Djinsha&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyojinshaSpoke4Ring1" DisplayName="Traveling Merchant" Description="Traveling Merchant, a stoic trader offering goods at Terukuni Daimyojin-sha Spoke 4 Ring 1." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke3Ring1&quot;,&quot;TerukuniDaimy\u014Djinsha&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -2630,7 +2630,7 @@
           <Entry SpellRef="Restoration" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke4Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyojinshaSpoke4Ring1</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -2638,7 +2638,7 @@
       <Trait Name="WillingToBargain" Value="20" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring2" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Terukuni Daimyōjin-sha Spoke 4 Ring 2, known for being resolute in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyojinshaSpoke4Ring2" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Terukuni Daimyojin-sha Spoke 4 Ring 2, known for being resolute in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -2670,7 +2670,7 @@
           <Entry SpellRef="CorrosiveTouch" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke4Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyojinshaSpoke4Ring2</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -2678,7 +2678,7 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="MERCHANT_TerukuniDaimyōjinshaSpoke4Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Terukuni Daimyōjin-sha Spoke 4 Ring 3, known for being seasoned in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;]}">
+  <Character RefName="MERCHANT_TerukuniDaimyojinshaSpoke4Ring3" DisplayName="Traveling Merchant" Description="Traveling Merchant plies their trade at Terukuni Daimyojin-sha Spoke 4 Ring 3, known for being seasoned in their dealings." Metadata="{&quot;personality&quot;:&quot;Friendly, opportunistic, well-traveled&quot;,&quot;narrativeRole&quot;:&quot;merchant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;]}">
     <Stats Health="0.23" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="1000" />
     <Capabilities>
       <Equipment>
@@ -2711,7 +2711,7 @@
           <Entry SpellRef="TimeWarp" Condition="1.0" />
         </Spells>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyōjinshaSpoke4Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_MERCHANT_TerukuniDaimyojinshaSpoke4Ring3</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="WillTrade" Value="1" />
@@ -2719,14 +2719,14 @@
       <Trait Name="WillingToBargain" Value="70" />
     </Traits>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke4Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler, a stoic resident of Terukuni Daimyōjin-sha Spoke 4 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke4Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler, a stoic resident of Terukuni Daimyojin-sha Spoke 4 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring3&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke4Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke4Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke4Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Terukuni Daimyōjin-sha Spoke 4 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;,&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke4Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler, a resolute resident of Terukuni Daimyojin-sha Spoke 4 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke4Ring4&quot;,&quot;Tsurumaruj\u014DSpoke4Ring5&quot;,&quot;Tsurumaruj\u014DSpoke4Ring4&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
@@ -2738,17 +2738,17 @@
           <Entry ConsumableRef="ManaGem" Quantity="1" />
         </Consumables>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke4Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke4Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring1" DisplayName="Fellow Traveler" Description="At Terukuni Daimyōjin-sha Spoke 5 Ring 1, Fellow Traveler goes about their day with seasoned demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke5Ring1" DisplayName="Fellow Traveler" Description="At Terukuni Daimyojin-sha Spoke 5 Ring 1, Fellow Traveler goes about their day with seasoned demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke4Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke5Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Terukuni Daimyōjin-sha Spoke 5 Ring 2 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;]}">
+  <Character RefName="HOSTILE_TerukuniDaimyojinshaSpoke5Ring2" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Terukuni Daimyojin-sha Spoke 5 Ring 2 with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring3&quot;,&quot;Tsurumaruj\u014DSpoke5Ring4&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring1&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -2767,35 +2767,35 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke5Ring2</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke5Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke5Ring2" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke5Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke5Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke5Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke5Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke5Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 5 Ring 3, known for their seasoned temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke5Ring3" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyojin-sha Spoke 5 Ring 3, known for their seasoned temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke5Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 5 Ring 4, known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring5&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke5Ring4" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyojin-sha Spoke 5 Ring 4, known for their resolute temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring5&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke5Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke5Ring5" DisplayName="Fellow Traveler" Description="The stoic Fellow Traveler calls Terukuni Daimyōjin-sha Spoke 5 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke5Ring5" DisplayName="Fellow Traveler" Description="The stoic Fellow Traveler calls Terukuni Daimyojin-sha Spoke 5 Ring 5 home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke5Ring4&quot;,&quot;Tsurumaruj\u014DSpoke5Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke5Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
@@ -2807,17 +2807,17 @@
           <Entry ConsumableRef="SmellingSalts" Quantity="2" />
         </Consumables>
       </Loot>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke5Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke5Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring1" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyōjin-sha Spoke 6 Ring 1, known for their weathered temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke6Ring1" DisplayName="Fellow Traveler" Description="Fellow Traveler lives at Terukuni Daimyojin-sha Spoke 6 Ring 1, known for their weathered temperament." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke5Ring2&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke1Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke6Ring1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Terukuni Daimyōjin-sha Spoke 6 Ring 2." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke6Ring2&quot;]}">
+  <Character RefName="HOSTILE_TerukuniDaimyojinshaSpoke6Ring2" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Terukuni Daimyojin-sha Spoke 6 Ring 2." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring1&quot;,&quot;Tsurumaruj\u014DSpoke6Ring2&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -2836,42 +2836,42 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke6Ring2</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyōjinshaSpoke6Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke6Ring2" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke6Ring2" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke6Ring2" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke6Ring2" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke6Ring2" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_TerukuniDaimyojinshaSpoke6Ring2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring3" DisplayName="Fellow Traveler" Description="A stoic local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;,&quot;Tsurumaruj\u014DSpoke6Ring3&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke6Ring3" DisplayName="Fellow Traveler" Description="A stoic local named Fellow Traveler can be found at Terukuni Daimyojin-sha Spoke 6 Ring 3." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;,&quot;Tsurumaruj\u014DSpoke6Ring3&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke6Ring3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring4" DisplayName="Fellow Traveler" Description="A weathered local named Fellow Traveler can be found at Terukuni Daimyōjin-sha Spoke 6 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke6Ring4" DisplayName="Fellow Traveler" Description="A weathered local named Fellow Traveler can be found at Terukuni Daimyojin-sha Spoke 6 Ring 4." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring5&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke6Ring3&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke6Ring4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_TerukuniDaimyōjinshaSpoke6Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler, a seasoned resident of Terukuni Daimyōjin-sha Spoke 6 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;,&quot;Tsurumaruj\u014DSpoke6Ring5&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;]}">
+  <Character RefName="NPC_TerukuniDaimyojinshaSpoke6Ring5" DisplayName="Fellow Traveler" Description="Fellow Traveler, a seasoned resident of Terukuni Daimyojin-sha Spoke 6 Ring 5." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke6Ring4&quot;,&quot;Tsurumaruj\u014DSpoke6Ring5&quot;,&quot;Tsurumaruj\u014DSpoke6Ring4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyōjinshaSpoke6Ring5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_TerukuniDaimyojinshaSpoke6Ring5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_Isoteien1_to_Tsurumarujō1_0" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Waypoint between Iso-teien and Tsurumaru-jō (1)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring1&quot;,&quot;IsoteienSpoke6Ring3&quot;,&quot;IsoteienSpoke6Ring2&quot;]}">
+  <Character RefName="HOSTILE_Isoteien1_to_Tsurumarujo1_0" DisplayName="Trail Hazard" Description="Trail Hazard, a aggressive creature lurking near Waypoint between Iso-teien and Tsurumaru-jo (1)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring1&quot;,&quot;IsoteienSpoke6Ring3&quot;,&quot;IsoteienSpoke6Ring2&quot;]}">
     <Stats Health="0.35" Stamina="1.0" Mana="0.9" Strength="0.07" Defense="0.04" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -2888,28 +2888,28 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_0</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_0" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_0" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_0" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_0" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_0" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_0" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_0" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_1" DisplayName="Fellow Traveler" Description="At Waypoint between Iso-teien and Tsurumaru-jō (2), Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring2&quot;,&quot;IsoteienSpoke5Ring1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;]}">
+  <Character RefName="NPC_Isoteien1_to_Tsurumarujo1_1" DisplayName="Fellow Traveler" Description="At Waypoint between Iso-teien and Tsurumaru-jo (2), Fellow Traveler goes about their day with enigmatic demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring2&quot;,&quot;IsoteienSpoke5Ring1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;]}">
     <Stats Health="0.30" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_1</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujo1_1</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_Isoteien1_to_Tsurumarujō1_2" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Waypoint between Iso-teien and Tsurumaru-jō (3)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_3&quot;]}">
+  <Character RefName="HOSTILE_Isoteien1_to_Tsurumarujo1_2" DisplayName="Trail Hazard" Description="The aggressive beast Trail Hazard prowls the area around Waypoint between Iso-teien and Tsurumaru-jo (3)." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;IsoteienSpoke5Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_1&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_3&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -2927,42 +2927,42 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_2</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_2</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_2" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_2" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_2" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_2" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_2" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujō1_2" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_2" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_2" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_2" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_2" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_2" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Isoteien1_to_Tsurumarujo1_2" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_3" DisplayName="Fellow Traveler" Description="At Waypoint between Iso-teien and Tsurumaru-jō (4), Fellow Traveler goes about their day with resolute demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;]}">
+  <Character RefName="NPC_Isoteien1_to_Tsurumarujo1_3" DisplayName="Fellow Traveler" Description="At Waypoint between Iso-teien and Tsurumaru-jo (4), Fellow Traveler goes about their day with resolute demeanor." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_2&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_4&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_3</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujo1_3</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_4" DisplayName="Fellow Traveler" Description="A enigmatic local named Fellow Traveler can be found at Waypoint between Iso-teien and Tsurumaru-jō (5)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;]}">
+  <Character RefName="NPC_Isoteien1_to_Tsurumarujo1_4" DisplayName="Fellow Traveler" Description="A enigmatic local named Fellow Traveler can be found at Waypoint between Iso-teien and Tsurumaru-jo (5)." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring2&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring3&quot;,&quot;Isoteien1_to_Tsurumaruj\u014D1_5&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_4</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujo1_4</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="NPC_Isoteien1_to_Tsurumarujō1_5" DisplayName="Fellow Traveler" Description="The mysterious Fellow Traveler calls Waypoint between Iso-teien and Tsurumaru-jō (6) home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring1&quot;]}">
+  <Character RefName="NPC_Isoteien1_to_Tsurumarujo1_5" DisplayName="Fellow Traveler" Description="The mysterious Fellow Traveler calls Waypoint between Iso-teien and Tsurumaru-jo (6) home." Metadata="{&quot;personality&quot;:&quot;Friendly, weary, helpful&quot;,&quot;narrativeRole&quot;:&quot;informant&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;Tsurumaruj\u014DSpoke2Ring1&quot;,&quot;TerukuniDaimy\u014DjinshaSpoke2Ring2&quot;,&quot;Tsurumaruj\u014DSpoke1Ring1&quot;]}">
     <Stats Health="0.27" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities />
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujō1_5</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_NPC_Isoteien1_to_Tsurumarujo1_5</DialogueTreeRef>
     </Interactable>
   </Character>
-  <Character RefName="HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Waypoint between Tsurumaru-jō and Terukuni Daimyōjin-sha (1) with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D&quot;]}">
+  <Character RefName="HOSTILE_Tsurumarujo1_to_TerukuniDaimyojinsha1_0" DisplayName="Trail Hazard" Description="Trail Hazard threatens travelers near Waypoint between Tsurumaru-jo and Terukuni Daimyojin-sha (1) with aggressive aggression." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[&quot;TerukuniDaimy\u014DjinshaSpoke2Ring1&quot;,&quot;Tsurumaruj\u014DSpoke5Ring1&quot;,&quot;Tsurumaruj\u014D&quot;]}">
     <Stats Health="0.36" Stamina="1.0" Mana="1.0" Strength="0.06" Defense="0.05" Speed="0.04" Magic="0.04" Credits="10" />
     <Capabilities>
       <Equipment>
@@ -2982,21 +2982,21 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_HOSTILE_Tsurumarujo1_to_TerukuniDaimyojinsha1_0</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujō1_to_TerukuniDaimyōjinsha1_0" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujo1_to_TerukuniDaimyojinsha1_0" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujo1_to_TerukuniDaimyojinsha1_0" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujo1_to_TerukuniDaimyojinsha1_0" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujo1_to_TerukuniDaimyojinsha1_0" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujo1_to_TerukuniDaimyojinsha1_0" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_HOSTILE_Tsurumarujo1_to_TerukuniDaimyojinsha1_0" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
-  <Character RefName="GUARD_Tsurumarujō_0" DisplayName="Guard at Tsurumaru-jō" Description="A aggressive warrior named Guard at Tsurumaru-jō patrols Tsurumaru-jō." Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
+  <Character RefName="GUARD_Tsurumarujo_0" DisplayName="Guard at Tsurumaru-jo" Description="A aggressive warrior named Guard at Tsurumaru-jo patrols Tsurumaru-jo." Metadata="{&quot;personality&quot;:&quot;Vigilant, loyal, aggressive when threatened&quot;,&quot;narrativeRole&quot;:&quot;defender&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
     <Stats Health="0.63" Stamina="1.0" Mana="0.9" Strength="0.08" Defense="0.06" Speed="0.05" Magic="0.05" Credits="20" />
     <Capabilities>
       <Equipment>
@@ -3016,18 +3016,18 @@
       </Spells>
     </Capabilities>
     <Interactable>
-      <DialogueTreeRef>DIALOGUE_GUARD_Tsurumarujō_0</DialogueTreeRef>
+      <DialogueTreeRef>DIALOGUE_GUARD_Tsurumarujo_0</DialogueTreeRef>
     </Interactable>
     <Traits>
       <Trait Name="Hostile" Value="1" />
     </Traits>
     <BattleDialogue>
-      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujō_0" StartNodeId="battle_opening" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujō_0" StartNodeId="battle_first_blood" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujō_0" StartNodeId="battle_berserk" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujō_0" StartNodeId="battle_retreat" OnceOnly="true" />
-      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujō_0" StartNodeId="battle_last_stand" OnceOnly="true" />
-      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujō_0" StartNodeId="battle_defeated" OnceOnly="true" />
+      <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujo_0" StartNodeId="battle_opening" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujo_0" StartNodeId="battle_first_blood" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.50" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujo_0" StartNodeId="battle_berserk" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.30" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujo_0" StartNodeId="battle_retreat" OnceOnly="true" />
+      <Trigger Condition="HealthBelow" Value="0.15" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujo_0" StartNodeId="battle_last_stand" OnceOnly="true" />
+      <Trigger Condition="OnDefeat" Value="0" DialogueTreeRef="DIALOGUE_GUARD_Tsurumarujo_0" StartNodeId="battle_defeated" OnceOnly="true" />
     </BattleDialogue>
   </Character>
   <Character RefName="HOSTILE_Isoteien_1" DisplayName="Bandit near Iso-teien" Description="A aggressive predator known as Bandit near Iso-teien haunts Iso-teien." Metadata="{&quot;personality&quot;:&quot;Aggressive, territorial, dangerous&quot;,&quot;narrativeRole&quot;:&quot;enemy&quot;,&quot;mentionsSagaArcRefs&quot;:[]}">
