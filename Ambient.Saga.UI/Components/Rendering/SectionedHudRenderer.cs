@@ -35,7 +35,7 @@ public class SectionedHudRenderer : IHudRenderer
     private const float CornerPaddingBase = 8f;
     private const float TopLeftCornerWidthBase = 150f;
     private const float TopLeftCornerHeightBase = 80f;
-    private const float TopRightCornerWidthBase = 280f;
+    private const float TopRightCornerWidthBase = 420f;
     private const float TopRightCornerHeightBase = 200f; // Taller to fit navigation + debug text
 
     // DPI-scaled corner dimensions
