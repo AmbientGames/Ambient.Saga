@@ -23,6 +23,8 @@ public interface IWorldConfiguration
 
     ClimateModel ClimateModel { get; set; }
 
+    bool AllowTeleporting { get; set; }
+
     int DisplayOrder { get; set; }
 
     /// <summary>

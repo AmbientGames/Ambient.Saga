@@ -43,6 +43,8 @@ namespace Ambient.Domain {
         
         private ClimateModel climateModelField;
         
+        private bool allowTeleportingField;
+        
         private int displayOrderField;
         
         public WorldConfiguration() {
@@ -51,6 +53,7 @@ namespace Ambient.Domain {
             this.startDateField = new System.DateTime(103680000000000);
             this.secondsInHourField = 60;
             this.climateModelField = ClimateModel.Earth;
+            this.allowTeleportingField = false;
             this.displayOrderField = 100;
         }
         
@@ -167,6 +170,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.climateModelField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool AllowTeleporting {
+            get {
+                return this.allowTeleportingField;
+            }
+            set {
+                this.allowTeleportingField = value;
             }
         }
         

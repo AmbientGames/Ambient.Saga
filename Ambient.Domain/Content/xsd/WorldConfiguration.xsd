@@ -34,6 +34,7 @@
                 <xs:attribute name="SpawnLongitude" type="xs:double" use="required" />
                 <xs:attribute name="SecondsInHour" type="xs:int" default="60" />
 				<xs:attribute name="ClimateModel" type="ClimateModel" default="Earth" />
+				<xs:attribute name="AllowTeleporting" type="xs:boolean" default="false" />
 				<xs:attribute name="DisplayOrder" type="xs:int" default="100" />
 			</xs:extension>
         </xs:complexContent>

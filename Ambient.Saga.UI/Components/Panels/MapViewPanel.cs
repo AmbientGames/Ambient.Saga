@@ -295,7 +295,8 @@ public class MapViewPanel
                     _pendingTeleportPixelX = pixelX;
                     _pendingTeleportPixelY = pixelY;
 
-                    if (viewModel.CurrentWorld?.HeightMapMetadata != null)
+                    if (viewModel.CurrentWorld?.HeightMapMetadata != null
+                        && ((viewModel.CurrentWorld.WorldConfiguration?.AllowTeleporting ?? false) || System.Diagnostics.Debugger.IsAttached))
                     {
                         _pendingTeleportLat = CoordinateConverter.HeightMapPixelYToLatitude(pixelY, viewModel.CurrentWorld.HeightMapMetadata);
                         _pendingTeleportLon = CoordinateConverter.HeightMapPixelXToLongitude(pixelX, viewModel.CurrentWorld.HeightMapMetadata);
@@ -307,10 +308,10 @@ public class MapViewPanel
                             viewModel.CurrentWorld);
                         var distanceKm = distance / 1000.0;
                         _pendingTeleportCost = Math.Max(MinTeleportCost, (int)Math.Round(distanceKm * TeleportCostPerKm));
-                    }
 
-                    _showTeleportConfirm = true;
-                    ImGui.OpenPopup("Fast Travel");
+                        _showTeleportConfirm = true;
+                        ImGui.OpenPopup("Fast Travel");
+                    }
                 }
             }
 
