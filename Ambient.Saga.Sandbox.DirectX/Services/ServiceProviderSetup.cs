@@ -1,11 +1,9 @@
 using Ambient.Application.Contracts;
-using Ambient.Application.WorldCreation;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Enums;
 using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Loading;
 using Ambient.Infrastructure.Logging;
-using Ambient.Infrastructure.WorldCreation;
 using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -82,16 +80,6 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
 
             // Block provider (mock implementation with sample blocks for UI demonstration)
             services.AddSingleton<IBlockProvider, MockBlockProvider>();
-
-            // World creation services (theme discovery and world file generation)
-            services.AddSingleton<IThemeProvider>(sp =>
-            {
-                var gameSettings = sp.GetRequiredService<IGameSettings>();
-                return new ThemeProvider(
-                    gameSettings.GetAppDataContentPath(),
-                    AppDomain.CurrentDomain.BaseDirectory);
-            });
-            services.AddSingleton<IWorldCreationService, WorldCreationService>();
 
             // Modal manager for ImGui archetype selector (with circular dependency resolution)
             services.AddSingleton(sp =>
