@@ -1,4 +1,5 @@
 using Ambient.Domain;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.UI;
 using Ambient.Saga.UI.Components.Utilities;
@@ -453,6 +454,26 @@ public class ArchetypeSelectionModal
         else
         {
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No starting items");
+        }
+
+        // Carry Weight
+        var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
+        if (worldConfig != null)
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var maxWeight = CarryWeightCalculator.GetMaxCarryWeight(archetype);
+            var currentWeight = CarryWeightCalculator.CalculateTotalWeight(archetype.SpawnCapabilities, worldConfig);
+            var weightUnit = worldConfig.WeightUnitName ?? "kg";
+
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Carry Weight");
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var fraction = maxWeight > 0 ? (float)currentWeight / maxWeight : 0f;
+            ImGui.ProgressBar(fraction, new Vector2(-1, 0), $"{currentWeight:N0} / {maxWeight:N0} {weightUnit}");
         }
     }
 
