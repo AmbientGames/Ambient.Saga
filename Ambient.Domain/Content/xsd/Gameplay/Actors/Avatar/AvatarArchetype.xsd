@@ -21,6 +21,7 @@
                     <xs:element name="RespawnCapabilities" type="ItemCollection" minOccurs="1" maxOccurs="1" />
                 </xs:sequence>
                 <xs:attribute name="AffinityRef" type="CharacterAffinityRef" use="optional" />
+                <xs:attribute name="MaxCarryWeight" type="xs:int" use="optional" default="50000" />
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

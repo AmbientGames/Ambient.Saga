@@ -49,7 +49,7 @@ public class StubAvatarUpdateService : IAvatarUpdateService
         return Task.FromResult(avatar);
     }
 
-    public Task<AvatarEntity> UpdateAvatarForMiningAsync(AvatarEntity avatar, Dictionary<string, int> blocksMined, CancellationToken ct = default)
+    public Task<AvatarEntity> UpdateAvatarForMiningAsync(AvatarEntity avatar, Dictionary<string, int> blocksMined, AvatarArchetype? archetype, IWorldConfiguration worldConfig, CancellationToken ct = default)
     {
         return Task.FromResult(avatar);
     }

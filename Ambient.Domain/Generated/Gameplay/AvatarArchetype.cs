@@ -34,6 +34,12 @@ namespace Ambient.Domain {
         
         private string affinityRefField;
         
+        private int maxCarryWeightField;
+        
+        public AvatarArchetype() {
+            this.maxCarryWeightField = 50000;
+        }
+        
         /// <remarks/>
         public Attributes ArchetypeBias {
             get {
@@ -92,6 +98,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.affinityRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(50000)]
+        public int MaxCarryWeight {
+            get {
+                return this.maxCarryWeightField;
+            }
+            set {
+                this.maxCarryWeightField = value;
             }
         }
     }

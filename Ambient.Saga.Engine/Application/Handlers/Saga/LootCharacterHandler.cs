@@ -1,5 +1,7 @@
-﻿using Ambient.Domain.Contracts;
+﻿using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
@@ -98,6 +100,26 @@ internal sealed class LootCharacterHandler : IRequestHandler<LootCharacterComman
                 .ToList() ?? new List<string>();
 
             var lootedCredits = character.CurrentStats?.Credits ?? 0;
+
+            // Carry weight check — all-or-nothing
+            var config = _world.WorldConfiguration;
+            var lootWeight = 0;
+            lootWeight += lootedEquipment.Count * config.EquipmentWeight;
+            lootWeight += lootedConsumables.Sum(c => { var parts = c.Split(':'); return parts.Length >= 2 && int.TryParse(parts[1], out var qty) ? qty : 0; }) * config.ConsumableWeight;
+            lootWeight += lootedSpells.Count * config.SpellWeight;
+            lootWeight += lootedBlocks.Sum(b => { var parts = b.Split(':'); return parts.Length >= 2 && int.TryParse(parts[1], out var qty) ? qty : 0; }) * config.BlockWeight;
+            lootWeight += lootedTools.Count * config.ToolWeight;
+            lootWeight += lootedMaterials.Sum(m => { var parts = m.Split(':'); return parts.Length >= 2 && int.TryParse(parts[1], out var qty) ? qty : 0; }) * config.BuildingMaterialWeight;
+
+            var archetypeRef = command.Avatar.ArchetypeRef;
+            AvatarArchetype? archetype = null;
+            if (!string.IsNullOrEmpty(archetypeRef))
+                _world.AvatarArchetypesLookup.TryGetValue(archetypeRef, out archetype);
+
+            if (CarryWeightCalculator.WouldExceedCapacity(command.Avatar.Capabilities, archetype, config, lootWeight))
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, "Too heavy to carry this loot");
+            }
 
             // Create LootAwarded transaction with complete inventory data
             var transaction = new SagaTransaction

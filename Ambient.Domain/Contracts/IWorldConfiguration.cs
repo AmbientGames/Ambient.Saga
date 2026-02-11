@@ -27,6 +27,14 @@ public interface IWorldConfiguration
 
     int DisplayOrder { get; set; }
 
+    string WeightUnitName { get; set; }
+    int BlockWeight { get; set; }
+    int EquipmentWeight { get; set; }
+    int ToolWeight { get; set; }
+    int SpellWeight { get; set; }
+    int ConsumableWeight { get; set; }
+    int BuildingMaterialWeight { get; set; }
+
     /// <summary>
     /// The directory where this configuration was loaded from (e.g., the xml folder containing WorldConfiguration.xml).
     /// Used for locating GenerationConfiguration.xml and outputting generated content.

@@ -47,6 +47,20 @@ namespace Ambient.Domain {
         
         private int displayOrderField;
         
+        private string weightUnitNameField;
+        
+        private int blockWeightField;
+        
+        private int equipmentWeightField;
+        
+        private int toolWeightField;
+        
+        private int spellWeightField;
+        
+        private int consumableWeightField;
+        
+        private int buildingMaterialWeightField;
+        
         public WorldConfiguration() {
             this.contentPackLibraryField = "default";
             this.currencyNameField = "Credit";
@@ -55,6 +69,13 @@ namespace Ambient.Domain {
             this.climateModelField = ClimateModel.Earth;
             this.allowTeleportingField = false;
             this.displayOrderField = 100;
+            this.weightUnitNameField = "kg";
+            this.blockWeightField = 1000;
+            this.equipmentWeightField = 2000;
+            this.toolWeightField = 1500;
+            this.spellWeightField = 100;
+            this.consumableWeightField = 250;
+            this.buildingMaterialWeightField = 500;
         }
         
         /// <remarks/>
@@ -194,6 +215,90 @@ namespace Ambient.Domain {
             }
             set {
                 this.displayOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute("kg")]
+        public string WeightUnitName {
+            get {
+                return this.weightUnitNameField;
+            }
+            set {
+                this.weightUnitNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(1000)]
+        public int BlockWeight {
+            get {
+                return this.blockWeightField;
+            }
+            set {
+                this.blockWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(2000)]
+        public int EquipmentWeight {
+            get {
+                return this.equipmentWeightField;
+            }
+            set {
+                this.equipmentWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(1500)]
+        public int ToolWeight {
+            get {
+                return this.toolWeightField;
+            }
+            set {
+                this.toolWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(100)]
+        public int SpellWeight {
+            get {
+                return this.spellWeightField;
+            }
+            set {
+                this.spellWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(250)]
+        public int ConsumableWeight {
+            get {
+                return this.consumableWeightField;
+            }
+            set {
+                this.consumableWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(500)]
+        public int BuildingMaterialWeight {
+            get {
+                return this.buildingMaterialWeightField;
+            }
+            set {
+                this.buildingMaterialWeightField = value;
             }
         }
     }

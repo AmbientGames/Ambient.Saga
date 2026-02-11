@@ -36,6 +36,13 @@
 				<xs:attribute name="ClimateModel" type="ClimateModel" default="Earth" />
 				<xs:attribute name="AllowTeleporting" type="xs:boolean" default="false" />
 				<xs:attribute name="DisplayOrder" type="xs:int" default="100" />
+				<xs:attribute name="WeightUnitName" type="xs:string" default="kg" />
+				<xs:attribute name="BlockWeight" type="xs:int" default="1000" />
+				<xs:attribute name="EquipmentWeight" type="xs:int" default="2000" />
+				<xs:attribute name="ToolWeight" type="xs:int" default="1500" />
+				<xs:attribute name="SpellWeight" type="xs:int" default="100" />
+				<xs:attribute name="ConsumableWeight" type="xs:int" default="250" />
+				<xs:attribute name="BuildingMaterialWeight" type="xs:int" default="500" />
 			</xs:extension>
         </xs:complexContent>
     </xs:complexType>
