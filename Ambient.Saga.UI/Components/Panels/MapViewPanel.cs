@@ -654,7 +654,8 @@ public class MapViewPanel
             ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Mouse:");
             ImGui.Text($"Lat: {viewModel.MouseLatitude:F4}");
             ImGui.Text($"Lon: {viewModel.MouseLongitude:F4}");
-            ImGui.Text($"Elev: {viewModel.MouseElevation}m");
+            if (viewModel.HasElevationData)
+                ImGui.Text($"Elev: {viewModel.MouseElevation}m");
         }
 
         ImGui.EndChild(); // End LegendPanel

@@ -9,10 +9,14 @@ public static class ProceduralMapGenerator
 {
     public const int MapSize = 1024;
 
-    public static (GeoTiffMetadata metadata, HeightMapImageData imageData)? CreateFromWorld(IWorld world, double latitudeDegreesToUnits = 250, double longitudeDegreesToUnits = 250, double unitsPerCell = 16)
+    public static (GeoTiffMetadata metadata, HeightMapImageData imageData)? CreateFromWorld(IWorld world)
     {
+        var proceduralSettings = world.WorldConfiguration.ProceduralSettings;
+        var latDegreesToUnits = proceduralSettings?.LatitudeDegreesToUnits ?? 250;
+        var lonDegreesToUnits = proceduralSettings?.LongitudeDegreesToUnits ?? 250;
+
         var imageData = CreateBlankBGRA32MapImage();
-        var metadata = CreateMetadata(world, 250, 250, 16);
+        var metadata = CreateMetadata(world, latDegreesToUnits, lonDegreesToUnits, 16);
 
         return (metadata, imageData);
     }

@@ -125,6 +125,9 @@ public partial class SagaMainViewModel : ObservableObject
     private int _mouseElevation;
 
     [ObservableProperty]
+    private bool _hasElevationData;
+
+    [ObservableProperty]
     private bool _hasMousePosition;
 
     [ObservableProperty]
@@ -1024,7 +1027,8 @@ public partial class SagaMainViewModel : ObservableObject
             var processedMap = await Task.Run(() => HeightMapProcessor.ProcessHeightMap(image, 40, true, flattenLocations, verticalShift));
             world.WorldConfiguration.HeightMapSettings.ElevationWaterMap = processedMap.ElevationWaterMap;
             _processedHeightMap = processedMap;
-            
+            HasElevationData = true;
+
             // Convert to platform-agnostic image data for display with water-aware coloring
             var imageData = await ConvertProcessedMapToImageDataAsync(processedMap);
             HeightMapImage = imageData;
