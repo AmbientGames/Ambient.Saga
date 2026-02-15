@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="DegradableAcquirable.xsd" />
     <xs:include schemaLocation="../Usability.xsd" />
@@ -9,8 +9,10 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <!-- Spell category for archetype loadout matching -->
     <xs:simpleType name="SpellCategoryType">
+        <xs:annotation>
+            <xs:documentation>Spell category for archetype loadout matching and UI grouping.</xs:documentation>
+        </xs:annotation>
         <xs:restriction base="xs:string">
             <!-- Combat roles -->
             <xs:enumeration value="Damage" />
@@ -43,24 +45,38 @@
     </xs:simpleType>
 
     <xs:complexType name="Spell">
+        <xs:annotation>
+            <xs:documentation>Castable ability with stat effects, optional status effects, and optional cleanse.</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
             <xs:extension base="DegradableAcquirable">
                 <xs:sequence>
-                    <xs:element name="Effects" type="Attributes" minOccurs="1" maxOccurs="1" />
-                    <!-- Minimum stats required to cast this spell -->
-                    <xs:element name="MinimumStats" type="Attributes" minOccurs="0" />
+                    <xs:element name="Effects" type="Attributes" minOccurs="1" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Stat modifiers applied when this spell is cast.</xs:documentation></xs:annotation>
+                    </xs:element>
+                    <xs:element name="MinimumStats" type="Attributes" minOccurs="0">
+                        <xs:annotation><xs:documentation>Minimum stat values required to cast this spell.</xs:documentation></xs:annotation>
+                    </xs:element>
                 </xs:sequence>
                 <xs:attributeGroup ref="UseAttributes" />
-                <!-- Spell category for archetype loadout matching -->
-                <xs:attribute name="Category" type="SpellCategoryType" use="required" />
-                <!-- Equipment category that must be equipped to cast (e.g., Staff, Wand, Focus) -->
-                <xs:attribute name="RequiresEquipped" type="EquipmentCategoryType" use="optional" />
-                <!-- Status effects applied on cast -->
-                <xs:attribute name="StatusEffectRef" type="xs:string" use="optional" />
-                <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="1.0" />
-                <!-- Cleanse status effects -->
-                <xs:attribute name="CleansesStatusEffects" type="xs:boolean" use="optional" default="false" />
-                <xs:attribute name="CleanseTargetSelf" type="xs:boolean" use="optional" default="true" />
+                <xs:attribute name="Category" type="SpellCategoryType" use="required">
+                    <xs:annotation><xs:documentation>Spell category for archetype loadout matching.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="RequiresEquipped" type="EquipmentCategoryType" use="optional">
+                    <xs:annotation><xs:documentation>Equipment category that must be equipped to cast (e.g. Staff, Wand, Focus).</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="StatusEffectRef" type="xs:string" use="optional">
+                    <xs:annotation><xs:documentation>Status effect applied on cast. References a StatusEffect RefName.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="1.0">
+                    <xs:annotation><xs:documentation>Probability (0.0-1.0) of applying the status effect on cast.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="CleansesStatusEffects" type="xs:boolean" use="optional" default="false">
+                    <xs:annotation><xs:documentation>When true, removes all active status effects from the target.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="CleanseTargetSelf" type="xs:boolean" use="optional" default="true">
+                    <xs:annotation><xs:documentation>When true, cleanse targets the caster. When false, targets the opponent.</xs:documentation></xs:annotation>
+                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

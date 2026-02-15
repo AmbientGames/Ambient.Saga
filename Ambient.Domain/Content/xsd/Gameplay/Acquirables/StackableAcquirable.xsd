@@ -1,7 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="Acquirable.xsd" />
     <xs:complexType name="StackableAcquirable">
+        <xs:annotation>
+            <xs:documentation>Items tracked by quantity (integer count). Used by Consumables and BuildingMaterials.</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
             <xs:extension base="Acquirable"></xs:extension>
         </xs:complexContent>

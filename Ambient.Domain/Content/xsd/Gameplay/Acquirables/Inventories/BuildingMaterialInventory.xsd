@@ -1,11 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../BuildingMaterial.xsd" />
     <xs:complexType name="BuildingMaterialEntry">
+        <xs:annotation>
+            <xs:documentation>A single building material in inventory, tracked by quantity.</xs:documentation>
+        </xs:annotation>
         <xs:attribute name="BuildingMaterialRef" type="BuildingMaterialRef" use="required" />
         <xs:attribute name="Quantity" type="xs:int" default="1" />
     </xs:complexType>
     <xs:complexType name="BuildingMaterialInventory">
+        <xs:annotation>
+            <xs:documentation>Collection of building materials for voxel construction.</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="Entry" type="BuildingMaterialEntry" maxOccurs="unbounded" />
         </xs:sequence>

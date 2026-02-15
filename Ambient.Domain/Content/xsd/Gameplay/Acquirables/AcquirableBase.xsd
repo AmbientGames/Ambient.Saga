@@ -1,7 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../EntityBase.xsd" />
     <xs:complexType name="AcquirableBase">
+        <xs:annotation>
+            <xs:documentation>Base type for all acquirable items. Inherits RefName, DisplayName, Description from EntityBase.</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
             <xs:extension base="EntityBase" />
         </xs:complexContent>

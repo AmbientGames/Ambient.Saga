@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="DegradableAcquirable.xsd" />
     <xs:include schemaLocation="../Usability.xsd" />
@@ -10,26 +10,44 @@
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="Equipment">
+        <xs:annotation>
+            <xs:documentation>Wearable/wieldable item that modifies character stats when equipped.</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
             <xs:extension base="DegradableAcquirable">
                 <xs:sequence>
-                    <xs:element name="Effects" type="Attributes" />
-                    <!-- Minimum stats required to equip this item -->
-                    <xs:element name="MinimumStats" type="Attributes" minOccurs="0" />
+                    <xs:element name="Effects" type="Attributes">
+                        <xs:annotation><xs:documentation>Stat modifiers applied while this item is equipped.</xs:documentation></xs:annotation>
+                    </xs:element>
+                    <xs:element name="MinimumStats" type="Attributes" minOccurs="0">
+                        <xs:annotation><xs:documentation>Minimum stat values required to equip this item.</xs:documentation></xs:annotation>
+                    </xs:element>
                 </xs:sequence>
-                <xs:attribute name="SlotRef" type="LoadoutSlotRef" use="required" />
-                <!-- Equipment category (what class of item this is) -->
-                <xs:attribute name="Category" type="EquipmentCategoryType" use="required" />
+                <xs:attribute name="SlotRef" type="LoadoutSlotRef" use="required">
+                    <xs:annotation><xs:documentation>Loadout slot this item occupies (e.g. MainHand, OffHand, Head).</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Category" type="EquipmentCategoryType" use="required">
+                    <xs:annotation><xs:documentation>Equipment category for archetype loadout matching.</xs:documentation></xs:annotation>
+                </xs:attribute>
                 <xs:attributeGroup ref="UseAttributes" />
-                <!-- Status effects applied on hit/critical hit -->
-                <xs:attribute name="StatusEffectRef" type="xs:string" use="optional" />
-                <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="0.0" />
-                <xs:attribute name="StatusEffectOnCritOnly" type="xs:boolean" use="optional" default="false" />
-                <!-- PHASE 5: Status effects applied when defending (e.g., shield grants buff) -->
-                <xs:attribute name="OnDefendStatusEffectRef" type="xs:string" use="optional" />
-                <xs:attribute name="OnDefendStatusEffectChance" type="xs:float" use="optional" default="1.0" />
-                <!-- Critical hit chance modifier (0.0 to 1.0, added to base crit chance) -->
-                <xs:attribute name="CriticalHitBonus" type="xs:float" use="optional" default="0.0" />
+                <xs:attribute name="StatusEffectRef" type="xs:string" use="optional">
+                    <xs:annotation><xs:documentation>Status effect applied on hit. References a StatusEffect RefName.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="0.0">
+                    <xs:annotation><xs:documentation>Probability (0.0-1.0) of applying the status effect on hit.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="StatusEffectOnCritOnly" type="xs:boolean" use="optional" default="false">
+                    <xs:annotation><xs:documentation>When true, the status effect only triggers on critical hits.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="OnDefendStatusEffectRef" type="xs:string" use="optional">
+                    <xs:annotation><xs:documentation>Status effect applied when defending (e.g. shield grants buff).</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="OnDefendStatusEffectChance" type="xs:float" use="optional" default="1.0">
+                    <xs:annotation><xs:documentation>Probability (0.0-1.0) of applying the defend status effect.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="CriticalHitBonus" type="xs:float" use="optional" default="0.0">
+                    <xs:annotation><xs:documentation>Added to base critical hit chance (0.0-1.0).</xs:documentation></xs:annotation>
+                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

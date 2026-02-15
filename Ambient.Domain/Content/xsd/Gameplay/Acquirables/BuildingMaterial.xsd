@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="StackableAcquirable.xsd" />
     <xs:include schemaLocation="EffectiveSubstances.xsd" />
@@ -8,10 +8,15 @@
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="BuildingMaterial">
+        <xs:annotation>
+            <xs:documentation>Stackable item used for voxel construction. Compatible with specific block substances.</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
             <xs:extension base="StackableAcquirable">
                 <xs:sequence>
-                    <xs:element name="CompatibleSubstances" type="CompatibleSubstances" minOccurs="1" />
+                    <xs:element name="CompatibleSubstances" type="CompatibleSubstances" minOccurs="1">
+                        <xs:annotation><xs:documentation>Block substances this material can be placed as.</xs:documentation></xs:annotation>
+                    </xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

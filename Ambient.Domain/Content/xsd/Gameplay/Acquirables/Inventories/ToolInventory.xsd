@@ -1,12 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../Tool.xsd" />
     <xs:include schemaLocation="../../CommonTypes.xsd" />
     <xs:complexType name="ToolEntry">
+        <xs:annotation>
+            <xs:documentation>A single tool in inventory, tracked by condition (durability).</xs:documentation>
+        </xs:annotation>
         <xs:attribute name="ToolRef" type="ToolRef" use="required" />
         <xs:attribute name="Condition" type="Condition01Float" default="1.0" />
     </xs:complexType>
     <xs:complexType name="ToolInventory">
+        <xs:annotation>
+            <xs:documentation>Collection of tools (picks, axes, spades) in a character's inventory.</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="Entry" type="ToolEntry" maxOccurs="unbounded" />
         </xs:sequence>

@@ -1,11 +1,17 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../QuestToken.xsd" />
     <xs:include schemaLocation="../../CommonTypes.xsd" />
     <xs:complexType name="QuestTokenEntry">
+        <xs:annotation>
+            <xs:documentation>A quest token in inventory. Presence indicates the character holds this key item.</xs:documentation>
+        </xs:annotation>
         <xs:attribute name="QuestTokenRef" type="QuestTokenRef" use="required" />
     </xs:complexType>
     <xs:complexType name="QuestTokenInventory">
+        <xs:annotation>
+            <xs:documentation>Collection of quest tokens (key items, quest objectives).</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="Entry" type="QuestTokenEntry" maxOccurs="unbounded" />
         </xs:sequence>

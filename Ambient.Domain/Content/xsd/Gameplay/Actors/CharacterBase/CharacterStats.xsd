@@ -1,7 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="CharacterStatsAttributes.xsd" />
     <xs:complexType name="CharacterStats">
+        <xs:annotation>
+            <xs:documentation>Full character stat sheet combining StatBlock (resources + attributes) and ProgressBlock (level, credits, experience).</xs:documentation>
+        </xs:annotation>
         <xs:attributeGroup ref="StatBlock" />
         <xs:attributeGroup ref="ProgressBlock" />
     </xs:complexType>

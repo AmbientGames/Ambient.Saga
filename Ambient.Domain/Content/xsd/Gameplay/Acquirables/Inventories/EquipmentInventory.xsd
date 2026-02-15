@@ -1,12 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../Equipment.xsd" />
     <xs:include schemaLocation="../../CommonTypes.xsd" />
     <xs:complexType name="EquipmentEntry">
+        <xs:annotation>
+            <xs:documentation>A single equipment item in inventory, tracked by condition (durability).</xs:documentation>
+        </xs:annotation>
         <xs:attribute name="EquipmentRef" type="EquipmentRef" use="required" />
         <xs:attribute name="Condition" type="Condition01Float" default="1.0" />
     </xs:complexType>
     <xs:complexType name="EquipmentInventory">
+        <xs:annotation>
+            <xs:documentation>Collection of equipment items (weapons, armour, shields) in a character's inventory.</xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="Entry" type="EquipmentEntry" maxOccurs="unbounded" />
         </xs:sequence>
