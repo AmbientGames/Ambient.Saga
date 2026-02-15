@@ -1,48 +1,103 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="EntityBase.xsd" />
     <xs:simpleType name="WorldConfigurationRef">
+        <xs:annotation><xs:documentation>Reference to a WorldConfiguration by RefName.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string">
             <xs:minLength value="1" />
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="HeightMapSettings">
-		<xs:attribute name="FileName" type="xs:string" use="required" />
-		<xs:attribute name="HorizontalScale" type="xs:double" use="required" />
-        <xs:attribute name="VerticalScale" type="xs:double" use="required" />
-        <xs:attribute name="VerticalShift" type="xs:double" use="required" />
+        <xs:annotation><xs:documentation>Terrain generation from a real-world elevation data file. The height map is scaled and shifted to produce world terrain.</xs:documentation></xs:annotation>
+		<xs:attribute name="FileName" type="xs:string" use="required">
+            <xs:annotation><xs:documentation>Path to the height map image file (e.g. a GeoTIFF or PNG elevation raster).</xs:documentation></xs:annotation>
+        </xs:attribute>
+		<xs:attribute name="HorizontalScale" type="xs:double" use="required">
+            <xs:annotation><xs:documentation>World units per height map pixel horizontally. Controls the physical size of the terrain.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="VerticalScale" type="xs:double" use="required">
+            <xs:annotation><xs:documentation>Multiplier applied to raw elevation values. Controls terrain height exaggeration.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="VerticalShift" type="xs:double" use="required">
+            <xs:annotation><xs:documentation>Vertical offset added to all elevation values after scaling. Adjusts base terrain altitude.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="ProceduralSettings">
-        <xs:attribute name="LatitudeDegreesToUnits" type="xs:double" default="250" />
-        <xs:attribute name="LongitudeDegreesToUnits" type="xs:double" default="250" />
+        <xs:annotation><xs:documentation>Terrain generation using procedural noise. Produces terrain without external elevation data.</xs:documentation></xs:annotation>
+        <xs:attribute name="LatitudeDegreesToUnits" type="xs:double" default="250">
+            <xs:annotation><xs:documentation>World units per degree of latitude. Controls the north-south scale of the world.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="LongitudeDegreesToUnits" type="xs:double" default="250">
+            <xs:annotation><xs:documentation>World units per degree of longitude. Controls the east-west scale of the world.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="WorldConfiguration">
+        <xs:annotation>
+            <xs:documentation>Top-level world settings. Defines terrain source, spawn point, time, climate, currency, and item weights. Each world has exactly one WorldConfiguration in WorldConfiguration.xml.</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
             <xs:extension base="EntityBase">
                 <xs:sequence>
                     <xs:choice>
+                        <xs:annotation><xs:documentation>Terrain source: either a height map file or procedural generation. Exactly one must be specified.</xs:documentation></xs:annotation>
                         <xs:element name="HeightMapSettings" type="HeightMapSettings" />
                         <xs:element name="ProceduralSettings" type="ProceduralSettings" />
                     </xs:choice>
                 </xs:sequence>
-				<xs:attribute name="ContentPackLibrary" type="xs:string" default="default" />
-				<xs:attribute name="ContentPackTheme" type="xs:string" />
-				<xs:attribute name="Namespace" type="xs:string" use="required" />
-                <xs:attribute name="CurrencyName" type="xs:string" default="Credit" />
-                <xs:attribute name="StartDate" type="xs:date" default="0001-05-01" />
-                <xs:attribute name="SpawnLatitude" type="xs:double" use="required" />
-                <xs:attribute name="SpawnLongitude" type="xs:double" use="required" />
-                <xs:attribute name="SecondsInHour" type="xs:int" default="60" />
-				<xs:attribute name="ClimateModel" type="ClimateModel" default="Earth" />
-				<xs:attribute name="AllowTeleporting" type="xs:boolean" default="false" />
-				<xs:attribute name="DisplayOrder" type="xs:int" default="100" />
-				<xs:attribute name="WeightUnitName" type="xs:string" default="kg" />
-				<xs:attribute name="BlockWeight" type="xs:int" default="1000" />
-				<xs:attribute name="EquipmentWeight" type="xs:int" default="2000" />
-				<xs:attribute name="ToolWeight" type="xs:int" default="1500" />
-				<xs:attribute name="SpellWeight" type="xs:int" default="100" />
-				<xs:attribute name="ConsumableWeight" type="xs:int" default="250" />
-				<xs:attribute name="BuildingMaterialWeight" type="xs:int" default="500" />
+				<xs:attribute name="ContentPackLibrary" type="xs:string" default="default">
+                    <xs:annotation><xs:documentation>Content pack library to load assets from.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="ContentPackTheme" type="xs:string">
+                    <xs:annotation><xs:documentation>Visual theme within the content pack library.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="Namespace" type="xs:string" use="required">
+                    <xs:annotation><xs:documentation>Unique namespace identifier for this world. Used to scope content and prevent naming collisions.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="CurrencyName" type="xs:string" default="Credit">
+                    <xs:annotation><xs:documentation>Display name for the in-game currency shown in UI.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="StartDate" type="xs:date" default="0001-05-01">
+                    <xs:annotation><xs:documentation>Initial in-game calendar date when a new world begins. Affects seasons and day length.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="SpawnLatitude" type="xs:double" use="required">
+                    <xs:annotation><xs:documentation>Latitude coordinate where players spawn. Affects starting climate and terrain.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="SpawnLongitude" type="xs:double" use="required">
+                    <xs:annotation><xs:documentation>Longitude coordinate where players spawn.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="SecondsInHour" type="xs:int" default="60">
+                    <xs:annotation><xs:documentation>Real-time seconds per in-game hour. 60 = one real minute per game hour; 24 real minutes per game day.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="ClimateModel" type="ClimateModel" default="Earth">
+                    <xs:annotation><xs:documentation>Climate simulation model. Earth = Earth-like temperature and weather patterns; Mars = colder, thinner atmosphere.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="AllowTeleporting" type="xs:boolean" default="false">
+                    <xs:annotation><xs:documentation>Whether players can teleport to distant locations. False = players must travel on foot.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="DisplayOrder" type="xs:int" default="100">
+                    <xs:annotation><xs:documentation>Sort order for this world in the world selection UI. Lower values appear first.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="WeightUnitName" type="xs:string" default="kg">
+                    <xs:annotation><xs:documentation>Display name for the weight unit shown in inventory UI.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="BlockWeight" type="xs:int" default="1000">
+                    <xs:annotation><xs:documentation>Weight of a single block item in the inventory weight system.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="EquipmentWeight" type="xs:int" default="2000">
+                    <xs:annotation><xs:documentation>Weight of a single equipment item.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="ToolWeight" type="xs:int" default="1500">
+                    <xs:annotation><xs:documentation>Weight of a single tool item.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="SpellWeight" type="xs:int" default="100">
+                    <xs:annotation><xs:documentation>Weight of a single spell item.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="ConsumableWeight" type="xs:int" default="250">
+                    <xs:annotation><xs:documentation>Weight of a single consumable item.</xs:documentation></xs:annotation>
+                </xs:attribute>
+				<xs:attribute name="BuildingMaterialWeight" type="xs:int" default="500">
+                    <xs:annotation><xs:documentation>Weight of a single building material item.</xs:documentation></xs:annotation>
+                </xs:attribute>
 			</xs:extension>
         </xs:complexContent>
     </xs:complexType>
