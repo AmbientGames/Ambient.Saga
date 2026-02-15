@@ -5,7 +5,7 @@
     <xs:include schemaLocation="../Acquirables/Attributes.xsd" />
 
     <!--
-    Combat Tell/Reaction System
+    Attack Tell/Reaction System
     ============================
     Inspired by Expedition 33's active defense mechanics.
 

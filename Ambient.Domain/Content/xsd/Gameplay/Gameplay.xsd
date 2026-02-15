@@ -10,7 +10,7 @@
     <xs:include schemaLocation="Actors/Characters/Catalogs/CharacterAffinities.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/CombatStances.xsd" />
     <xs:include schemaLocation="Actors/Characters/Catalogs/StatusEffects.xsd" />
-    <xs:include schemaLocation="Combat/CombatTells.xsd" />
+    <xs:include schemaLocation="Combat/AttackTells.xsd" />
     <xs:include schemaLocation="LoadoutSlots.xsd" />
     <xs:include schemaLocation="Actors/Avatar/AvatarBase.xsd" />
     <xs:include schemaLocation="Actors/Avatar/AvatarArchetype.xsd" />
