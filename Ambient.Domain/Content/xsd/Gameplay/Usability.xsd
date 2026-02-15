@@ -1,42 +1,49 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="CommonTypes.xsd" />
 
-    <!-- How an item is used in combat -->
     <xs:simpleType name="ItemUseType">
+        <xs:annotation><xs:documentation>How an item is used in combat. Offensive items deal damage; Defensive items absorb or mitigate damage.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string">
             <xs:enumeration value="Offensive" />
             <xs:enumeration value="Defensive" />
         </xs:restriction>
     </xs:simpleType>
 
-    <!-- What class of equipment this is -->
     <xs:simpleType name="EquipmentCategoryType">
+        <xs:annotation><xs:documentation>Equipment classification. Determines animations, stat scaling, and loadout slot compatibility.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string">
-			<!-- Weapons -->
-			<xs:enumeration value="OneHanded" />
-			<xs:enumeration value="TwoHanded" />
-			<xs:enumeration value="Unarmed" />
-			<!-- Casting Implements -->
-			<xs:enumeration value="Staff" />
-			<xs:enumeration value="Wand" />
-			<xs:enumeration value="Tome" />
-			<xs:enumeration value="Focus" />
-			<xs:enumeration value="Instrument" />
-			<!-- Defensive -->
-			<xs:enumeration value="Shield" />
-			<!-- Armor -->
-			<xs:enumeration value="ArmorLight" />
-			<xs:enumeration value="ArmorMedium" />
-			<xs:enumeration value="ArmorHeavy" />
-			<xs:enumeration value="ArmorRobes" />
-			<!-- Accessories (rings, amulets, belts, cloaks) -->
-			<xs:enumeration value="Accessory" />
-		</xs:restriction>
-	</xs:simpleType>
+            <!-- Weapons -->
+            <xs:enumeration value="OneHanded" />
+            <xs:enumeration value="TwoHanded" />
+            <xs:enumeration value="Unarmed" />
+            <!-- Casting Implements -->
+            <xs:enumeration value="Staff" />
+            <xs:enumeration value="Wand" />
+            <xs:enumeration value="Tome" />
+            <xs:enumeration value="Focus" />
+            <xs:enumeration value="Instrument" />
+            <!-- Defensive -->
+            <xs:enumeration value="Shield" />
+            <!-- Armor -->
+            <xs:enumeration value="ArmorLight" />
+            <xs:enumeration value="ArmorMedium" />
+            <xs:enumeration value="ArmorHeavy" />
+            <xs:enumeration value="ArmorRobes" />
+            <!-- Accessories (rings, amulets, belts, cloaks) -->
+            <xs:enumeration value="Accessory" />
+        </xs:restriction>
+    </xs:simpleType>
 
-<xs:attributeGroup name="UseAttributes">
-        <xs:attribute name="DurabilityLoss" type="NonNegativeFloat" use="optional" default="0.01" />
-        <xs:attribute name="UseType" type="ItemUseType" use="optional" default="Defensive" />
+    <xs:attributeGroup name="UseAttributes">
+        <xs:annotation>
+            <xs:documentation>Combat use attributes for degradable equipment. Controls durability loss per use and offensive/defensive classification.</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="DurabilityLoss" type="NonNegativeFloat" use="optional" default="0.01">
+            <xs:annotation><xs:documentation>Condition lost per use in combat. 0.01 = 1% per use. Item breaks at 0.0 condition.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UseType" type="ItemUseType" use="optional" default="Defensive">
+            <xs:annotation><xs:documentation>Whether this item is used offensively (deals damage) or defensively (absorbs damage).</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:attributeGroup>
 </xs:schema>

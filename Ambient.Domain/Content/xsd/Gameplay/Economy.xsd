@@ -1,18 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:simpleType name="WholesalePrice">
+        <xs:annotation><xs:documentation>Non-negative integer price. The base price of an item before merchant markup.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:int">
             <xs:minInclusive value="0" />
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="MarkupMultiplier">
+        <xs:annotation><xs:documentation>Non-negative float multiplier applied to the wholesale price when a merchant sells an item.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:float">
             <xs:minInclusive value="0.0" />
         </xs:restriction>
     </xs:simpleType>
 
     <xs:attributeGroup name="TradePricingAttributes">
-        <xs:attribute name="WholesalePrice" type="WholesalePrice" use="optional" default="2147483647" />
-        <xs:attribute name="MerchantMarkupMultiplier" type="MarkupMultiplier" use="optional" default="1.5" />
+        <xs:annotation>
+            <xs:documentation>Trade pricing for acquirable items. WholesalePrice is the base cost; MerchantMarkupMultiplier scales the price when sold by merchants. Default WholesalePrice of max-int marks an item as untradeable.</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="WholesalePrice" type="WholesalePrice" use="optional" default="2147483647">
+            <xs:annotation><xs:documentation>Base price in credits. Default of 2147483647 (max int) indicates the item cannot be traded.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="MerchantMarkupMultiplier" type="MarkupMultiplier" use="optional" default="1.5">
+            <xs:annotation><xs:documentation>Multiplier applied to WholesalePrice when a merchant sells this item. 1.5 = 50% markup.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:attributeGroup>
 </xs:schema>

@@ -1,19 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
     <xs:include schemaLocation="../../SharedRefs.xsd" />
     <xs:complexType name="EffectiveSubstance">
-        <xs:attribute name="SubstanceRef" type="SubstanceRef" use="required" />
-        <xs:attribute name="EffectivenessMultiplier" type="xs:float" use="optional" default="1.0" />
+        <xs:annotation><xs:documentation>A substance that a tool is effective against, with an effectiveness multiplier. Higher multiplier = faster mining/harvesting.</xs:documentation></xs:annotation>
+        <xs:attribute name="SubstanceRef" type="SubstanceRef" use="required">
+            <xs:annotation><xs:documentation>Reference to a Substance defined in Substances.xml.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EffectivenessMultiplier" type="xs:float" use="optional" default="1.0">
+            <xs:annotation><xs:documentation>Multiplier for tool effectiveness against this substance. Values above 1.0 increase speed; below 1.0 decrease it.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="EffectiveSubstances">
+        <xs:annotation><xs:documentation>Collection of substances a tool is effective against. Used on Tools to define which block materials the tool can efficiently harvest.</xs:documentation></xs:annotation>
         <xs:sequence>
             <xs:element name="Substance" type="EffectiveSubstance" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="CompatibleSubstance">
-        <xs:attribute name="SubstanceRef" type="SubstanceRef" use="required" />
+        <xs:annotation><xs:documentation>A substance that a building material can be placed on or attached to.</xs:documentation></xs:annotation>
+        <xs:attribute name="SubstanceRef" type="SubstanceRef" use="required">
+            <xs:annotation><xs:documentation>Reference to a Substance defined in Substances.xml.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
     <xs:complexType name="CompatibleSubstances">
+        <xs:annotation><xs:documentation>Collection of substances a building material is compatible with. Defines which existing block materials this material can be placed against.</xs:documentation></xs:annotation>
         <xs:sequence>
             <xs:element name="Substance" type="CompatibleSubstance" maxOccurs="unbounded" />
         </xs:sequence>
