@@ -44,6 +44,9 @@
                         <xs:element name="ProceduralSettings" type="ProceduralSettings" />
                     </xs:choice>
                 </xs:sequence>
+				<xs:attribute name="SchemaVersion" type="xs:int" use="optional" default="1">
+                    <xs:annotation><xs:documentation>Schema version for this world configuration. Used by the loader to detect and upgrade older world files. Current version is 2.</xs:documentation></xs:annotation>
+                </xs:attribute>
 				<xs:attribute name="ContentPackLibrary" type="xs:string" default="default">
                     <xs:annotation><xs:documentation>Content pack library to load assets from.</xs:documentation></xs:annotation>
                 </xs:attribute>

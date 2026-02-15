@@ -25,6 +25,8 @@ namespace Ambient.Domain {
         
         private object itemField;
         
+        private int schemaVersionField;
+        
         private string contentPackLibraryField;
         
         private string contentPackThemeField;
@@ -62,6 +64,7 @@ namespace Ambient.Domain {
         private float buildingMaterialWeightField;
         
         public WorldConfiguration() {
+            this.schemaVersionField = 1;
             this.contentPackLibraryField = "default";
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
@@ -87,6 +90,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.itemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(1)]
+        public int SchemaVersion {
+            get {
+                return this.schemaVersionField;
+            }
+            set {
+                this.schemaVersionField = value;
             }
         }
         

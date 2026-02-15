@@ -3,6 +3,7 @@
     xmlns="Ambient.Domain"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="Ambient.Domain ../../../../../../../Ambient.Domain/Content/xsd/WorldDefinition.xsd"
+    SchemaVersion="2"
     RefName="Kagoshima"
     DisplayName="Kagoshima, Japan"
     Description="Seaside city with active volcano Sakurajima"
