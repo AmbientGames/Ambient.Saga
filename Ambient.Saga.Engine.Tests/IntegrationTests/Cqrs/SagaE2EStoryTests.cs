@@ -94,8 +94,8 @@ public class SagaE2EStoryTests : IDisposable
         {
             RefName = "KagoshimaCastle",
             DisplayName = "Kagoshima Castle",
-            LatitudeZ = 31.5955,
-            LongitudeX = 130.5569
+            Latitude = 31.5955,
+            Longitude = 130.5569
         };
 
         var merchantTrigger = new SagaTrigger

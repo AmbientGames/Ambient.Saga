@@ -489,16 +489,16 @@ public class BattleCommandTests : IDisposable
         {
             RefName = "WeakBossSaga",
             DisplayName = "Weak Boss Arena",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var multiEnemySaga = new SagaArc
         {
             RefName = "MultiEnemySaga",
             DisplayName = "Multi-Enemy Arena",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var weakBossTrigger = new SagaTrigger

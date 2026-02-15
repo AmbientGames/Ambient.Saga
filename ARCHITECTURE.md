@@ -278,7 +278,7 @@ await mediator.Send(new StartDialogueCommand
 Sagas are geographic story containers that spawn characters and enable quests:
 
 ```xml
-<SagaArc RefName="forest_adventure" LatitudeZ="35.67" LongitudeX="139.65">
+<SagaArc RefName="forest_adventure" Latitude="35.67" Longitude="139.65">
     <Triggers>
         <Trigger RefName="forest_merchant" Type="Discovery">
             <Character CharacterRef="wandering_merchant" />

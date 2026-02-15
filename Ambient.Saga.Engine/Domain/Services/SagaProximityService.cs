@@ -40,8 +40,8 @@ public static class SagaProximityService
         foreach (var sagaArc in world.Gameplay.SagaArcs)
         {
             // Convert Saga GPS to model coordinates
-            var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
-            var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
+            var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.Longitude, world);
+            var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.Latitude, world);
 
             // Calculate distance in meters (must convert X and Z separately due to latitude correction)
             var deltaModelX = modelX - sagaModelX;

@@ -127,8 +127,8 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
     {
         // Convert GPS coordinates to Saga-relative coordinates
         // Saga center is at (0, 0) in Saga-relative space
-        var x = CoordinateConverter.LongitudeToSagaRelativeX(longitude, sagaArc.LongitudeX, _world);
-        var z = CoordinateConverter.LatitudeToSagaRelativeZ(latitude, sagaArc.LatitudeZ, _world);
+        var x = CoordinateConverter.LongitudeToSagaRelativeX(longitude, sagaArc.Longitude, _world);
+        var z = CoordinateConverter.LatitudeToSagaRelativeZ(latitude, sagaArc.Latitude, _world);
 
         return (x, z);
     }

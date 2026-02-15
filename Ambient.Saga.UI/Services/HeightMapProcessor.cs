@@ -76,8 +76,8 @@ public class HeightMapProcessor
         foreach (var sagaArc in world.SagaArcLookup.Values)
         {
             // Convert GPS coordinates to heightmap pixel coordinates
-            var pixelX = (int)Ambient.Domain.GameLogic.Gameplay.WorldManagers.CoordinateConverter.HeightMapLongitudeToPixelX(sagaArc.LongitudeX, world.HeightMapMetadata);
-            var pixelY = (int)Ambient.Domain.GameLogic.Gameplay.WorldManagers.CoordinateConverter.HeightMapLatitudeToPixelY(sagaArc.LatitudeZ, world.HeightMapMetadata);
+            var pixelX = (int)Ambient.Domain.GameLogic.Gameplay.WorldManagers.CoordinateConverter.HeightMapLongitudeToPixelX(sagaArc.Longitude, world.HeightMapMetadata);
+            var pixelY = (int)Ambient.Domain.GameLogic.Gameplay.WorldManagers.CoordinateConverter.HeightMapLatitudeToPixelY(sagaArc.Latitude, world.HeightMapMetadata);
 
             // Determine elevation offset and radius based on feature type
             // Categories with large structures need more terrain flattening

@@ -42,8 +42,8 @@
 					<xs:element name="SagaTrigger" type="SagaTrigger" minOccurs="1" maxOccurs="unbounded" />
 				</xs:sequence>
 
-				<xs:attribute name="LatitudeZ" type="xs:double" use="required" />
-				<xs:attribute name="LongitudeX" type="xs:double" use="required" />
+				<xs:attribute name="Latitude" type="xs:double" use="required" />
+				<xs:attribute name="Longitude" type="xs:double" use="required" />
 				<xs:attribute name="Category" type="SagaArcCategory" use="required" />
 				<xs:attribute name="Kind" type="SagaArcKind" use="optional" default="Default" />
 

@@ -24,10 +24,10 @@ public partial class SagaArcViewModel : ObservableObject
     private string _displayName = string.Empty;
 
     [ObservableProperty]
-    private double _latitudeZ;
+    private double _latitude;
 
     [ObservableProperty]
-    private double _longitudeX;
+    private double _longitude;
 
     [ObservableProperty]
     private double _pixelX;
@@ -74,18 +74,18 @@ public partial class SagaArcViewModel : ObservableObject
         {
             RefName = sagaArc.RefName,
             DisplayName = sagaArc.DisplayName,
-            LatitudeZ = sagaArc.LatitudeZ,
-            LongitudeX = sagaArc.LongitudeX,
+            Latitude = sagaArc.Latitude,
+            Longitude = sagaArc.Longitude,
             Category = sagaArc.Category
         };
 
         // Convert geographic coordinates to pixel coordinates for rendering
-        vm.PixelX = CoordinateConverter.HeightMapLongitudeToPixelX(sagaArc.LongitudeX, metadata);
-        vm.PixelY = CoordinateConverter.HeightMapLatitudeToPixelY(sagaArc.LatitudeZ, metadata);
+        vm.PixelX = CoordinateConverter.HeightMapLongitudeToPixelX(sagaArc.Longitude, metadata);
+        vm.PixelY = CoordinateConverter.HeightMapLatitudeToPixelY(sagaArc.Latitude, metadata);
 
         // Convert geographic coordinates to model coordinates for hit detection
-        var modelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
-        var modelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
+        var modelX = CoordinateConverter.LongitudeToModelX(sagaArc.Longitude, world);
+        var modelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.Latitude, world);
 
         // Create proximity trigger ViewModels with Z-order priority (inner rings on top)
         // Triggers are already sorted outer→inner by domain service
@@ -254,8 +254,8 @@ public partial class SagaArcViewModel : ObservableObject
         IWorldStateRepository worldRepository)
     {
         // Convert Saga GPS to model coordinates for query
-        var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.LongitudeX, world);
-        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.LatitudeZ, world);
+        var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.Longitude, world);
+        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.Latitude, world);
 
         // Query application service for trigger status at Saga center
         var interactions = await SagaProximityService.QueryAllInteractionsAtPositionAsync(

@@ -304,8 +304,8 @@ public class SagaStateMachine
         var triggerRef = tx.GetData<string>("SagaTriggerRef");
 
         // Try new Saga-relative format first (X, Z), fallback to old GPS format (LongitudeX, LatitudeZ)
-        var x = tx.TryGetData<double>("X", out var xVal) ? xVal : tx.GetData<double>("LongitudeX");
-        var z = tx.TryGetData<double>("Z", out var zVal) ? zVal : tx.GetData<double>("LatitudeZ");
+        var x = tx.TryGetData<double>("X", out var xVal) ? xVal : tx.GetData<double>("Longitude");
+        var z = tx.TryGetData<double>("Z", out var zVal) ? zVal : tx.GetData<double>("Latitude");
         var spawnHeight = tx.TryGetData<double>("SpawnHeight", out var heightVal) ? heightVal : tx.GetData<double>("Y");
 
         if (characterInstanceId == Guid.Empty || string.IsNullOrEmpty(characterRef))

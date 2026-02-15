@@ -377,8 +377,8 @@ public class QuestPrerequisitesTests : IDisposable
         {
             RefName = "TEST_SAGA",
             DisplayName = "Test Saga",
-            LatitudeZ = 35.0,
-            LongitudeX = 135.0
+            Latitude = 35.0,
+            Longitude = 135.0
         };
 
         var world = new World

@@ -132,11 +132,11 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
             // Convert character's Saga-relative position to world GPS coordinates
             var characterWorldLon = CoordinateConverter.SagaRelativeXToLongitude(
                 characterState.CurrentLongitudeX,
-                sagaTemplate.LongitudeX,
+                sagaTemplate.Longitude,
                 _world);
             var characterWorldLat = CoordinateConverter.SagaRelativeZToLatitude(
                 characterState.CurrentLatitudeZ,
-                sagaTemplate.LatitudeZ,
+                sagaTemplate.Latitude,
                 _world);
 
             //System.Diagnostics.Debug.WriteLine($"[BuildInteractableCharacters] Character '{characterState.CharacterRef}' at world ({characterWorldLat:F6}, {characterWorldLon:F6})");
@@ -298,8 +298,8 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
 
     private static (double x, double z) ConvertToSagaRelative(double latitude, double longitude, SagaArc sagaArc, IWorld world)
     {
-        var x = CoordinateConverter.LongitudeToSagaRelativeX(longitude, sagaArc.LongitudeX, world);
-        var z = CoordinateConverter.LatitudeToSagaRelativeZ(latitude, sagaArc.LatitudeZ, world);
+        var x = CoordinateConverter.LongitudeToSagaRelativeX(longitude, sagaArc.Longitude, world);
+        var z = CoordinateConverter.LatitudeToSagaRelativeZ(latitude, sagaArc.Latitude, world);
         return (x, z);
     }
 }

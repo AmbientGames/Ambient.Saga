@@ -506,11 +506,11 @@ public partial class SagaMainViewModel : ObservableObject
                     // Convert from Saga-relative coordinates (X/Z in meters) to world GPS coordinates
                     var worldLon = CoordinateConverter.SagaRelativeXToLongitude(
                         characterState.CurrentLongitudeX,
-                        sagaTemplate.LongitudeX,
+                        sagaTemplate.Longitude,
                         CurrentWorld);
                     var worldLat = CoordinateConverter.SagaRelativeZToLatitude(
                         characterState.CurrentLatitudeZ,
-                        sagaTemplate.LatitudeZ,
+                        sagaTemplate.Latitude,
                         CurrentWorld);
 
                     //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Converted to world GPS: ({worldLon:F6}, {worldLat:F6})");
@@ -1450,8 +1450,8 @@ public partial class SagaMainViewModel : ObservableObject
             if (saga != null)
             {
                 // Convert Saga GPS to model coordinates for query
-                var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.LongitudeX, CurrentWorld);
-                var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, CurrentWorld);
+                var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.Longitude, CurrentWorld);
+                var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.Latitude, CurrentWorld);
 
                 // Re-query feature status via CQRS
                 var interactions = await _mediator.Send(new QueryInteractionsAtPositionQuery

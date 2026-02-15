@@ -172,8 +172,8 @@ public class LoadingTests : IAsyncLifetime
             Assert.NotNull(saga.RefName);
             Assert.NotNull(saga.DisplayName);
             // Coordinates can be 0, so just check they're defined
-            Assert.True(saga.LatitudeZ != double.MinValue);
-            Assert.True(saga.LongitudeX != double.MinValue);
+            Assert.True(saga.Latitude != double.MinValue);
+            Assert.True(saga.Longitude != double.MinValue);
         }
     }
 

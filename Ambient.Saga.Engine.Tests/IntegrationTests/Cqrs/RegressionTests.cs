@@ -367,8 +367,8 @@ public class RegressionTests : IDisposable
         {
             RefName = "DuplicationTestSaga",
             DisplayName = "Duplication Test Saga",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var trigger = new SagaTrigger
@@ -388,8 +388,8 @@ public class RegressionTests : IDisposable
         {
             RefName = "RaceTestSaga",
             DisplayName = "Race Test Saga",
-            LatitudeZ = 36.0,
-            LongitudeX = 140.0
+            Latitude = 36.0,
+            Longitude = 140.0
         };
 
         var world = new World

@@ -131,8 +131,8 @@ public class TradeItemCommandTests : IDisposable
         {
             RefName = "VillageMerchant",
             DisplayName = "Village Merchant",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var world = new World

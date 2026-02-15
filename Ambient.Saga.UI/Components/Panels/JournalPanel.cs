@@ -483,7 +483,7 @@ public class JournalPanel
         }
 
         // GPS coordinates
-        ImGui.TextColored(new Vector4(0.6f, 0.7f, 0.8f, 1f), $"GPS: ({location.LatitudeZ:F4}, {location.LongitudeX:F4})");
+        ImGui.TextColored(new Vector4(0.6f, 0.7f, 0.8f, 1f), $"GPS: ({location.Latitude:F4}, {location.Longitude:F4})");
 
         // Developer: Additional metadata
         if (GameConfiguration.ShowDeveloperInfo)

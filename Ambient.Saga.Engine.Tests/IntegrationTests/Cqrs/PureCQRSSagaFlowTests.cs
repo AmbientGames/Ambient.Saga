@@ -104,8 +104,8 @@ public class PureCQRSSagaFlowTests : IDisposable
         {
             RefName = "TownSquare",
             DisplayName = "Town Square",
-            LatitudeZ = 35.6762,
-            LongitudeX = 139.6503
+            Latitude = 35.6762,
+            Longitude = 139.6503
         };
 
         var merchantTrigger = new SagaTrigger
