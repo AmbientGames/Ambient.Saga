@@ -6,21 +6,35 @@
     <xs:include schemaLocation="../CharacterBase/CharacterStats.xsd" />
     <xs:include schemaLocation="../Characters/Catalogs/CharacterAffinities.xsd" />
     <xs:simpleType name="ArchetypeRef">
+        <xs:annotation><xs:documentation>String reference key used to look up an AvatarArchetype by RefName.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string">
             <xs:minLength value="1" />
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="AvatarArchetype">
+        <xs:annotation><xs:documentation>A character class template that defines starting stats, equipment, and respawn configuration for player avatars.</xs:documentation></xs:annotation>
         <xs:complexContent>
             <xs:extension base="EntityBase">
                 <xs:sequence>
-                    <xs:element name="ArchetypeBias" type="Attributes" minOccurs="0" maxOccurs="1" />
-                    <xs:element name="SpawnStats" type="CharacterStats" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="SpawnCapabilities" type="ItemCollection" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="RespawnStats" type="CharacterStats" minOccurs="1" maxOccurs="1" />
-                    <xs:element name="RespawnCapabilities" type="ItemCollection" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="ArchetypeBias" type="Attributes" minOccurs="0" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Stat multipliers that bias this archetype toward a playstyle (e.g. higher Strength for melee, higher Intelligence for magic).</xs:documentation></xs:annotation>
+                    </xs:element>
+                    <xs:element name="SpawnStats" type="CharacterStats" minOccurs="1" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Base character stats assigned when the avatar is first created.</xs:documentation></xs:annotation>
+                    </xs:element>
+                    <xs:element name="SpawnCapabilities" type="ItemCollection" minOccurs="1" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Starting equipment and items granted when the avatar is first created.</xs:documentation></xs:annotation>
+                    </xs:element>
+                    <xs:element name="RespawnStats" type="CharacterStats" minOccurs="1" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Character stats restored when the avatar respawns after defeat.</xs:documentation></xs:annotation>
+                    </xs:element>
+                    <xs:element name="RespawnCapabilities" type="ItemCollection" minOccurs="1" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Equipment and items granted when the avatar respawns after defeat.</xs:documentation></xs:annotation>
+                    </xs:element>
                 </xs:sequence>
-                <xs:attribute name="AffinityRef" type="CharacterAffinityRef" use="optional" />
+                <xs:attribute name="AffinityRef" type="CharacterAffinityRef" use="optional">
+                    <xs:annotation><xs:documentation>Reference to an elemental or magical affinity that gives this archetype innate resistances or bonuses.</xs:documentation></xs:annotation>
+                </xs:attribute>
                 <xs:attribute name="MaxCarryWeight" type="xs:float" use="optional" default="40.0">
                     <xs:annotation><xs:documentation>Maximum inventory carry weight for this archetype, in WeightUnitName units (default kg). A strong adventurer can carry about 50 kg.</xs:documentation></xs:annotation>
                 </xs:attribute>
@@ -28,6 +42,7 @@
         </xs:complexContent>
     </xs:complexType>
     <xs:complexType name="AvatarArchetypes">
+        <xs:annotation><xs:documentation>Collection of all avatar archetype (class) definitions available for character creation.</xs:documentation></xs:annotation>
         <xs:sequence>
             <xs:element name="AvatarArchetype" type="AvatarArchetype" maxOccurs="unbounded" />
         </xs:sequence>

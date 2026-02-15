@@ -4,115 +4,153 @@
     <xs:include schemaLocation="../Usability.xsd" />
     <xs:include schemaLocation="../Acquirables/Attributes.xsd" />
 
-    <!--
-    Attack Tell/Reaction System
-    ============================
-    Inspired by Expedition 33's active defense mechanics.
-
-    When an enemy attacks, they telegraph their intent with narrative "tells".
-    The player has a brief window to choose a defensive reaction.
-    Choosing the optimal defense yields bonuses; wrong choices take full damage.
-
-    This creates agency during enemy turns without requiring real-time reflexes.
-    -->
-
-    <!-- Defense reaction types available to players -->
     <xs:simpleType name="DefenseReactionType">
+        <xs:annotation><xs:documentation>The defensive action a player can choose when an enemy telegraphs an attack.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string">
-            <!-- Active dodging - best against lunges, charges, targeted attacks -->
-            <xs:enumeration value="Dodge" />
-            <!-- Shield/arm block - best against physical strikes, projectiles -->
-            <xs:enumeration value="Block" />
-            <!-- Timed deflection - best against weapon attacks, enables counter -->
-            <xs:enumeration value="Parry" />
-            <!-- Hunker down - best against AoE, breath attacks, magic -->
-            <xs:enumeration value="Brace" />
-            <!-- No reaction (ran out of time or chose not to react) -->
-            <xs:enumeration value="None" />
+            <xs:enumeration value="Dodge">
+                <xs:annotation><xs:documentation>Active evasion; most effective against lunges, charges, and targeted attacks.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Block">
+                <xs:annotation><xs:documentation>Shield or arm block; most effective against physical strikes and projectiles.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Parry">
+                <xs:annotation><xs:documentation>Timed weapon deflection; most effective against melee weapon attacks and can enable a counter-attack.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Brace">
+                <xs:annotation><xs:documentation>Hunker down and absorb; most effective against area-of-effect, breath weapons, and magic.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="None">
+                <xs:annotation><xs:documentation>No defensive reaction taken, either by choice or because the reaction window expired.</xs:documentation></xs:annotation>
+            </xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 
-    <!-- Attack pattern categories that determine tells and optimal defenses -->
     <xs:simpleType name="AttackPatternType">
+        <xs:annotation><xs:documentation>Category of attack animation and mechanic that determines the tell narrative and which defense is optimal.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string">
-            <!-- Physical melee -->
-            <xs:enumeration value="Slash" />      <!-- Horizontal/diagonal weapon swing -->
-            <xs:enumeration value="Thrust" />     <!-- Forward stab/lunge -->
-            <xs:enumeration value="Overhead" />   <!-- Vertical downward strike -->
-            <xs:enumeration value="Sweep" />      <!-- Low attack at legs -->
-            <xs:enumeration value="Flurry" />     <!-- Rapid multi-hit combo -->
-            <!-- Physical ranged -->
-            <xs:enumeration value="Projectile" /> <!-- Arrow, thrown weapon -->
-            <xs:enumeration value="Charge" />     <!-- Rush/tackle attack -->
-            <!-- Creature attacks -->
-            <xs:enumeration value="Bite" />       <!-- Jaw attack -->
-            <xs:enumeration value="Claw" />       <!-- Slashing appendage -->
-            <xs:enumeration value="Tail" />       <!-- Tail whip/slam -->
-            <xs:enumeration value="Breath" />     <!-- Breath weapon (fire, frost, etc.) -->
-            <xs:enumeration value="Spit" />       <!-- Ranged creature attack -->
-            <!-- Magic -->
-            <xs:enumeration value="Bolt" />       <!-- Direct targeted spell -->
-            <xs:enumeration value="Wave" />       <!-- Cone/area spell -->
-            <xs:enumeration value="Burst" />      <!-- AoE centered spell -->
-            <xs:enumeration value="Drain" />      <!-- Life/mana drain -->
-            <!-- Special -->
-            <xs:enumeration value="Grapple" />    <!-- Grab/hold attack -->
-            <xs:enumeration value="Feint" />      <!-- Deceptive attack -->
+            <xs:enumeration value="Slash">
+                <xs:annotation><xs:documentation>Horizontal or diagonal weapon swing; a standard melee attack.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Thrust">
+                <xs:annotation><xs:documentation>Forward stab or lunge with a pointed weapon.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Overhead">
+                <xs:annotation><xs:documentation>Vertical downward strike, typically slow but powerful.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Sweep">
+                <xs:annotation><xs:documentation>Low attack aimed at the legs, can knock the target off balance.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Flurry">
+                <xs:annotation><xs:documentation>Rapid multi-hit combo that is difficult to parry individually.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Projectile">
+                <xs:annotation><xs:documentation>Ranged physical attack such as an arrow or thrown weapon.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Charge">
+                <xs:annotation><xs:documentation>Rush or tackle attack that closes distance and impacts the target.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bite">
+                <xs:annotation><xs:documentation>Creature jaw attack, often with a chance to apply poison or bleed.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Claw">
+                <xs:annotation><xs:documentation>Slashing appendage strike from a creature's claws or talons.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Tail">
+                <xs:annotation><xs:documentation>Tail whip or slam, typically a wide sweeping creature attack.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Breath">
+                <xs:annotation><xs:documentation>Breath weapon such as fire, frost, or acid in a cone area.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Spit">
+                <xs:annotation><xs:documentation>Ranged creature attack that launches a projectile like venom or acid.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Bolt">
+                <xs:annotation><xs:documentation>Direct targeted magical projectile aimed at a single target.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Wave">
+                <xs:annotation><xs:documentation>Cone or arc-shaped area spell that fans out from the caster.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Burst">
+                <xs:annotation><xs:documentation>Area-of-effect spell centered on a point, damaging all nearby targets.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Drain">
+                <xs:annotation><xs:documentation>Life or mana drain that siphons resources from the target to the attacker.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Grapple">
+                <xs:annotation><xs:documentation>Grab or hold attack that immobilizes the target for subsequent strikes.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Feint">
+                <xs:annotation><xs:documentation>Deceptive attack that disguises the real strike direction, punishing incorrect defense choices.</xs:documentation></xs:annotation>
+            </xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
 
-    <!-- Outcome modifiers based on defense choice -->
     <xs:complexType name="DefenseOutcome">
+        <xs:annotation><xs:documentation>Defines the consequences of choosing a specific defensive reaction against an attack tell.</xs:documentation></xs:annotation>
         <xs:sequence>
-            <!-- Stat effects applied on this defense (uses standard StatBlock pattern) -->
-            <!-- Example: <Effects Stamina="0.1"/> grants 10% stamina for skilled defense -->
-            <xs:element name="Effects" type="Attributes" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Effects" type="Attributes" minOccurs="0" maxOccurs="1">
+                <xs:annotation><xs:documentation>Stat modifiers applied when this defense is chosen (e.g. Stamina="0.1" grants 10% stamina for a skilled defense).</xs:documentation></xs:annotation>
+            </xs:element>
         </xs:sequence>
-        <xs:attribute name="Reaction" type="DefenseReactionType" use="required" />
-        <!-- Damage multiplier (0.0 = no damage, 1.0 = full damage, 0.5 = half) -->
-        <xs:attribute name="DamageMultiplier" type="xs:float" use="optional" default="1.0" />
-        <!-- Counter-attack enabled -->
-        <xs:attribute name="EnablesCounter" type="xs:boolean" use="optional" default="false" />
-        <!-- Counter damage multiplier (if EnablesCounter is true) -->
-        <xs:attribute name="CounterMultiplier" type="xs:float" use="optional" default="0.5" />
-        <!-- Status effect immunity (avoid poison, stun, etc.) -->
-        <xs:attribute name="PreventsStatusEffect" type="xs:boolean" use="optional" default="false" />
-        <!-- Narrative response text -->
-        <xs:attribute name="ResponseText" type="xs:string" use="optional" />
+        <xs:attribute name="Reaction" type="DefenseReactionType" use="required">
+            <xs:annotation><xs:documentation>The defensive reaction this outcome applies to.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DamageMultiplier" type="xs:float" use="optional" default="1.0">
+            <xs:annotation><xs:documentation>Multiplier applied to incoming damage (0.0 = no damage, 0.5 = half, 1.0 = full).</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EnablesCounter" type="xs:boolean" use="optional" default="false">
+            <xs:annotation><xs:documentation>Whether this defense grants the player an immediate counter-attack opportunity.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CounterMultiplier" type="xs:float" use="optional" default="0.5">
+            <xs:annotation><xs:documentation>Damage multiplier for the counter-attack, applied only when EnablesCounter is true.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="PreventsStatusEffect" type="xs:boolean" use="optional" default="false">
+            <xs:annotation><xs:documentation>Whether this defense prevents status effects (poison, stun, etc.) that the attack would normally inflict.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ResponseText" type="xs:string" use="optional">
+            <xs:annotation><xs:documentation>Narrative text displayed to the player describing the outcome of their defensive choice.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
-    <!-- An attack tell - the narrative preview and defense matrix -->
     <xs:complexType name="AttackTell">
+        <xs:annotation><xs:documentation>An enemy attack telegraph that describes the incoming attack and maps each possible player defense to an outcome.</xs:documentation></xs:annotation>
         <xs:sequence>
-            <!-- Defense outcomes for each reaction type -->
-            <xs:element name="Outcome" type="DefenseOutcome" minOccurs="1" maxOccurs="5" />
+            <xs:element name="Outcome" type="DefenseOutcome" minOccurs="1" maxOccurs="5">
+                <xs:annotation><xs:documentation>One outcome entry per possible defensive reaction, defining damage and effects for that choice.</xs:documentation></xs:annotation>
+            </xs:element>
         </xs:sequence>
-        <!-- Reference name for this tell pattern -->
-        <xs:attribute name="RefName" type="xs:string" use="required" />
-        <!-- The attack pattern type -->
-        <xs:attribute name="Pattern" type="AttackPatternType" use="required" />
-        <!-- Narrative text shown to player (the "tell") -->
-        <xs:attribute name="TellText" type="xs:string" use="required" />
-        <!-- Time window in milliseconds for player to react (0 = no time limit) -->
-        <xs:attribute name="ReactionWindowMs" type="xs:int" use="optional" default="3000" />
-        <!-- The optimal defense reaction for this attack -->
-        <xs:attribute name="OptimalDefense" type="DefenseReactionType" use="required" />
-        <!-- Secondary good defense (partial success) -->
-        <xs:attribute name="SecondaryDefense" type="DefenseReactionType" use="optional" />
-        <!-- Space-separated list of weapon categories that can use this attack (e.g., "OneHanded TwoHanded") -->
-        <!-- If empty/not specified, available to all weapon types -->
-        <xs:attribute name="WeaponCategories" type="xs:string" use="optional" />
+        <xs:attribute name="RefName" type="xs:string" use="required">
+            <xs:annotation><xs:documentation>Unique reference name for this attack tell pattern.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Pattern" type="AttackPatternType" use="required">
+            <xs:annotation><xs:documentation>The attack pattern category that determines animation and default tell behavior.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="TellText" type="xs:string" use="required">
+            <xs:annotation><xs:documentation>Narrative text shown to the player describing the enemy's telegraphed attack.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ReactionWindowMs" type="xs:int" use="optional" default="3000">
+            <xs:annotation><xs:documentation>Time in milliseconds the player has to choose a defense before defaulting to None (0 = no time limit).</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="OptimalDefense" type="DefenseReactionType" use="required">
+            <xs:annotation><xs:documentation>The best defensive reaction for this attack, yielding minimum damage and possible counter-attack.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SecondaryDefense" type="DefenseReactionType" use="optional">
+            <xs:annotation><xs:documentation>A second-best defensive reaction that partially mitigates damage but is less effective than the optimal choice.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="WeaponCategories" type="xs:string" use="optional">
+            <xs:annotation><xs:documentation>Space-separated list of weapon categories that can use this attack (e.g. "OneHanded TwoHanded"); if omitted, all weapon types can use it.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
-    <!-- Catalog of attack tells for a character/creature type -->
     <xs:complexType name="AttackTells">
+        <xs:annotation><xs:documentation>Collection of attack tell definitions for a character or creature type.</xs:documentation></xs:annotation>
         <xs:sequence>
             <xs:element name="AttackTell" type="AttackTell" maxOccurs="unbounded" />
         </xs:sequence>
     </xs:complexType>
 
-    <!-- Reference type for attack tells -->
     <xs:simpleType name="AttackTellRef">
+        <xs:annotation><xs:documentation>String reference key used to look up an AttackTell by RefName.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string">
             <xs:minLength value="1" />
         </xs:restriction>

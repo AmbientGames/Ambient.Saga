@@ -3,18 +3,23 @@
     <xs:include schemaLocation="../../../../EntityBase.xsd" />
     <xs:include schemaLocation="../../../Acquirables/Attributes.xsd" />
     <xs:simpleType name="CombatStanceRef">
+        <xs:annotation><xs:documentation>String reference key used to look up a CombatStance by RefName.</xs:documentation></xs:annotation>
         <xs:restriction base="xs:string" />
     </xs:simpleType>
     <xs:complexType name="CombatStance">
+        <xs:annotation><xs:documentation>A combat posture a character can adopt during battle, applying stat modifiers that trade offensive and defensive capabilities.</xs:documentation></xs:annotation>
         <xs:complexContent>
             <xs:extension base="EntityBase">
                 <xs:sequence>
-                    <xs:element name="Effects" type="Attributes" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="Effects" type="Attributes" minOccurs="0" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Stat modifiers applied while this stance is active (e.g. increased Attack at the cost of reduced Defense).</xs:documentation></xs:annotation>
+                    </xs:element>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
     <xs:complexType name="CombatStances">
+        <xs:annotation><xs:documentation>Collection of all combat stance definitions available in the world.</xs:documentation></xs:annotation>
         <xs:sequence>
             <xs:element name="CombatStance" type="CombatStance" maxOccurs="unbounded" />
         </xs:sequence>
