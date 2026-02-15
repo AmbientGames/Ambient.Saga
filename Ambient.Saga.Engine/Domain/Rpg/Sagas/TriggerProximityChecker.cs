@@ -24,25 +24,6 @@ public static class TriggerProximityChecker
     {
         return enterRadius + DefaultHysteresisMargin;
     }
-    /// <summary>
-    /// Checks if a point is within the trigger's activation radius.
-    /// </summary>
-    /// <param name="triggerX">Trigger center X coordinate</param>
-    /// <param name="triggerY">Trigger center Y coordinate</param>
-    /// <param name="enterRadius">Trigger activation radius</param>
-    /// <param name="pointX">Point to check X coordinate</param>
-    /// <param name="pointY">Point to check Y coordinate</param>
-    /// <returns>True if the point is within the trigger's activation radius</returns>
-    public static bool IsWithinTriggerRadius(
-        double triggerX,
-        double triggerY,
-        double enterRadius,
-        double pointX,
-        double pointY)
-    {
-        var distance = CalculateDistance(triggerX, triggerY, pointX, pointY);
-        return distance <= enterRadius;
-    }
 
     /// <summary>
     /// Calculates the Euclidean distance between two points.
