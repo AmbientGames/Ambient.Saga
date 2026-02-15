@@ -4,23 +4,21 @@ namespace Ambient.Domain.GameLogic.Gameplay.Avatar;
 
 public static class CarryWeightCalculator
 {
-    private const int DefaultMaxCarryWeight = 50000;
-
-    public static int GetMaxCarryWeight(AvatarArchetype? archetype)
+    public static float GetMaxCarryWeight(AvatarArchetype archetype)
     {
-        return archetype?.MaxCarryWeight ?? DefaultMaxCarryWeight;
+        return archetype.MaxCarryWeight;
     }
 
-    public static int CalculateTotalWeight(ItemCollection? capabilities, IWorldConfiguration config)
+    public static float CalculateTotalWeight(ItemCollection? capabilities, IWorldConfiguration config)
     {
         if (capabilities == null) return 0;
 
-        var total = 0;
+        var total = 0f;
 
         if (capabilities.Blocks != null)
         {
             foreach (var b in capabilities.Blocks)
-                total += (int)b.Quantity * config.BlockWeight;
+                total += b.Quantity * config.BlockWeight;
         }
 
         if (capabilities.Equipment != null)
@@ -35,13 +33,13 @@ public static class CarryWeightCalculator
         if (capabilities.Consumables != null)
         {
             foreach (var c in capabilities.Consumables)
-                total += (int)c.Quantity * config.ConsumableWeight;
+                total += c.Quantity * config.ConsumableWeight;
         }
 
         if (capabilities.BuildingMaterials != null)
         {
             foreach (var m in capabilities.BuildingMaterials)
-                total += (int)m.Quantity * config.BuildingMaterialWeight;
+                total += m.Quantity * config.BuildingMaterialWeight;
         }
 
         // QuestTokens are always weightless
@@ -49,19 +47,19 @@ public static class CarryWeightCalculator
         return total;
     }
 
-    public static int GetRemainingCapacity(ItemCollection? capabilities, AvatarArchetype? archetype, IWorldConfiguration config)
+    public static float GetRemainingCapacity(ItemCollection? capabilities, AvatarArchetype archetype, IWorldConfiguration config)
     {
         var max = GetMaxCarryWeight(archetype);
         var current = CalculateTotalWeight(capabilities, config);
         return max - current;
     }
 
-    public static bool WouldExceedCapacity(ItemCollection? capabilities, AvatarArchetype? archetype, IWorldConfiguration config, int additionalWeight)
+    public static bool WouldExceedCapacity(ItemCollection? capabilities, AvatarArchetype archetype, IWorldConfiguration config, float additionalWeight)
     {
         return GetRemainingCapacity(capabilities, archetype, config) < additionalWeight;
     }
 
-    public static int GetCategoryWeight(string categoryName, IWorldConfiguration config)
+    public static float GetCategoryWeight(string categoryName, IWorldConfiguration config)
     {
         return categoryName switch
         {

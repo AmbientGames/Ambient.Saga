@@ -7,16 +7,16 @@ public class CarryWeightCalculatorTests
 {
     private static IWorldConfiguration DefaultConfig() => new StubWorldConfiguration
     {
-        BlockWeight = 1000,
-        EquipmentWeight = 2000,
-        ToolWeight = 1500,
-        SpellWeight = 100,
-        ConsumableWeight = 250,
-        BuildingMaterialWeight = 500,
+        BlockWeight = 1.0f,
+        EquipmentWeight = 2.0f,
+        ToolWeight = 1.5f,
+        SpellWeight = 0.1f,
+        ConsumableWeight = 0.25f,
+        BuildingMaterialWeight = 0.5f,
         WeightUnitName = "kg"
     };
 
-    private static AvatarArchetype ArchetypeWithCapacity(int maxCarryWeight) => new()
+    private static AvatarArchetype ArchetypeWithCapacity(float maxCarryWeight) => new()
     {
         MaxCarryWeight = maxCarryWeight
     };
@@ -26,26 +26,19 @@ public class CarryWeightCalculatorTests
     #region GetMaxCarryWeight
 
     [Fact]
-    public void GetMaxCarryWeight_NullArchetype_ReturnsDefault50000()
-    {
-        var result = CarryWeightCalculator.GetMaxCarryWeight(null);
-        Assert.Equal(50000, result);
-    }
-
-    [Fact]
     public void GetMaxCarryWeight_ArchetypeWithValue_ReturnsArchetypeValue()
     {
-        var archetype = ArchetypeWithCapacity(60000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var result = CarryWeightCalculator.GetMaxCarryWeight(archetype);
-        Assert.Equal(60000, result);
+        Assert.Equal(50.0f, result);
     }
 
     [Theory]
-    [InlineData(35000)]
-    [InlineData(40000)]
-    [InlineData(55000)]
-    [InlineData(60000)]
-    public void GetMaxCarryWeight_VariousValues_ReturnsCorrectly(int expected)
+    [InlineData(20.0f)]
+    [InlineData(35.0f)]
+    [InlineData(45.0f)]
+    [InlineData(50.0f)]
+    public void GetMaxCarryWeight_VariousValues_ReturnsCorrectly(float expected)
     {
         var archetype = ArchetypeWithCapacity(expected);
         Assert.Equal(expected, CarryWeightCalculator.GetMaxCarryWeight(archetype));
@@ -82,8 +75,8 @@ public class CarryWeightCalculatorTests
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());
-        // 10 * 1000 + 5 * 1000 = 15000
-        Assert.Equal(15000, result);
+        // 10 * 1.0 + 5 * 1.0 = 15.0 kg
+        Assert.Equal(15.0f, result);
     }
 
     [Fact]
@@ -100,8 +93,8 @@ public class CarryWeightCalculatorTests
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());
-        // 3 items * 2000 = 6000
-        Assert.Equal(6000, result);
+        // 3 items * 2.0 = 6.0 kg
+        Assert.Equal(6.0f, result);
     }
 
     [Fact]
@@ -117,8 +110,8 @@ public class CarryWeightCalculatorTests
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());
-        // 2 * 1500 = 3000
-        Assert.Equal(3000, result);
+        // 2 * 1.5 = 3.0 kg
+        Assert.Equal(3.0f, result);
     }
 
     [Fact]
@@ -136,8 +129,8 @@ public class CarryWeightCalculatorTests
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());
-        // 4 * 100 = 400
-        Assert.Equal(400, result);
+        // 4 * 0.1 = 0.4 kg
+        Assert.Equal(0.4f, result);
     }
 
     [Fact]
@@ -153,8 +146,8 @@ public class CarryWeightCalculatorTests
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());
-        // 5 * 250 + 10 * 250 = 3750
-        Assert.Equal(3750, result);
+        // 5 * 0.25 + 10 * 0.25 = 3.75 kg
+        Assert.Equal(3.75f, result);
     }
 
     [Fact]
@@ -169,8 +162,8 @@ public class CarryWeightCalculatorTests
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());
-        // 20 * 500 = 10000
-        Assert.Equal(10000, result);
+        // 20 * 0.5 = 10.0 kg
+        Assert.Equal(10.0f, result);
     }
 
     [Fact]
@@ -205,15 +198,15 @@ public class CarryWeightCalculatorTests
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());
-        // Blocks: 5*1000 = 5000
-        // Equipment: 1*2000 = 2000
-        // Tools: 1*1500 = 1500
-        // Spells: 1*100 = 100
-        // Consumables: 3*250 = 750
-        // Materials: 2*500 = 1000
+        // Blocks: 5*1.0 = 5.0
+        // Equipment: 1*2.0 = 2.0
+        // Tools: 1*1.5 = 1.5
+        // Spells: 1*0.1 = 0.1
+        // Consumables: 3*0.25 = 0.75
+        // Materials: 2*0.5 = 1.0
         // QuestTokens: 0
-        // Total: 10350
-        Assert.Equal(10350, result);
+        // Total: 10.35 kg
+        Assert.Equal(10.35f, result);
     }
 
     #endregion
@@ -223,43 +216,43 @@ public class CarryWeightCalculatorTests
     [Fact]
     public void GetRemainingCapacity_EmptyInventory_ReturnsFullCapacity()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var result = CarryWeightCalculator.GetRemainingCapacity(EmptyCapabilities(), archetype, DefaultConfig());
-        Assert.Equal(50000, result);
+        Assert.Equal(50.0f, result);
     }
 
     [Fact]
     public void GetRemainingCapacity_NullCapabilities_ReturnsFullCapacity()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var result = CarryWeightCalculator.GetRemainingCapacity(null, archetype, DefaultConfig());
-        Assert.Equal(50000, result);
+        Assert.Equal(50.0f, result);
     }
 
     [Fact]
     public void GetRemainingCapacity_PartiallyLoaded_ReturnsCorrectRemaining()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var capabilities = new ItemCollection
         {
-            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 20 } } // 20000 weight
+            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 20 } } // 20.0 kg
         };
 
         var result = CarryWeightCalculator.GetRemainingCapacity(capabilities, archetype, DefaultConfig());
-        Assert.Equal(30000, result);
+        Assert.Equal(30.0f, result);
     }
 
     [Fact]
     public void GetRemainingCapacity_Overloaded_ReturnsNegative()
     {
-        var archetype = ArchetypeWithCapacity(5000);
+        var archetype = ArchetypeWithCapacity(5.0f);
         var capabilities = new ItemCollection
         {
-            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 10 } } // 10000 weight
+            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 10 } } // 10.0 kg
         };
 
         var result = CarryWeightCalculator.GetRemainingCapacity(capabilities, archetype, DefaultConfig());
-        Assert.Equal(-5000, result);
+        Assert.Equal(-5.0f, result);
     }
 
     #endregion
@@ -269,76 +262,65 @@ public class CarryWeightCalculatorTests
     [Fact]
     public void WouldExceedCapacity_UnderLimit_ReturnsFalse()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var capabilities = EmptyCapabilities();
 
-        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 1000);
+        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 1.0f);
         Assert.False(result);
     }
 
     [Fact]
     public void WouldExceedCapacity_ExactlyAtLimit_ReturnsFalse()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var capabilities = EmptyCapabilities();
 
-        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 50000);
+        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 50.0f);
         Assert.False(result);
     }
 
     [Fact]
     public void WouldExceedCapacity_OverLimit_ReturnsTrue()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var capabilities = EmptyCapabilities();
 
-        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 50001);
+        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 50.1f);
         Assert.True(result);
     }
 
     [Fact]
     public void WouldExceedCapacity_ExistingItemsPlusNew_ExceedsLimit()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var capabilities = new ItemCollection
         {
-            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 45 } } // 45000 weight
+            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 45 } } // 45.0 kg
         };
 
-        // Adding 6000 more would exceed 50000
-        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 6000);
+        // Adding 6.0 more would exceed 50.0
+        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 6.0f);
         Assert.True(result);
     }
 
     [Fact]
     public void WouldExceedCapacity_ExistingItemsPlusNew_StillUnderLimit()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var capabilities = new ItemCollection
         {
-            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 45 } } // 45000 weight
+            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 45 } } // 45.0 kg
         };
 
-        // Adding 5000 exactly fills capacity
-        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 5000);
+        // Adding 5.0 exactly fills capacity
+        var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 5.0f);
         Assert.False(result);
-    }
-
-    [Fact]
-    public void WouldExceedCapacity_NullArchetype_UsesDefaultCapacity()
-    {
-        var capabilities = EmptyCapabilities();
-
-        // Default is 50000, adding 49999 should be fine
-        Assert.False(CarryWeightCalculator.WouldExceedCapacity(capabilities, null, DefaultConfig(), 49999));
-        // Adding 50001 should exceed
-        Assert.True(CarryWeightCalculator.WouldExceedCapacity(capabilities, null, DefaultConfig(), 50001));
     }
 
     [Fact]
     public void WouldExceedCapacity_ZeroAdditionalWeight_ReturnsFalse()
     {
-        var archetype = ArchetypeWithCapacity(50000);
+        var archetype = ArchetypeWithCapacity(50.0f);
         var capabilities = EmptyCapabilities();
 
         var result = CarryWeightCalculator.WouldExceedCapacity(capabilities, archetype, DefaultConfig(), 0);
@@ -350,13 +332,13 @@ public class CarryWeightCalculatorTests
     #region GetCategoryWeight
 
     [Theory]
-    [InlineData("block", 1000)]
-    [InlineData("equipment", 2000)]
-    [InlineData("tool", 1500)]
-    [InlineData("spell", 100)]
-    [InlineData("consumable", 250)]
-    [InlineData("buildingmaterial", 500)]
-    public void GetCategoryWeight_KnownCategories_ReturnsCorrectWeight(string category, int expected)
+    [InlineData("block", 1.0f)]
+    [InlineData("equipment", 2.0f)]
+    [InlineData("tool", 1.5f)]
+    [InlineData("spell", 0.1f)]
+    [InlineData("consumable", 0.25f)]
+    [InlineData("buildingmaterial", 0.5f)]
+    public void GetCategoryWeight_KnownCategories_ReturnsCorrectWeight(string category, float expected)
     {
         var result = CarryWeightCalculator.GetCategoryWeight(category, DefaultConfig());
         Assert.Equal(expected, result);
@@ -381,12 +363,12 @@ public class CarryWeightCalculatorTests
     {
         var config = new StubWorldConfiguration
         {
-            BlockWeight = 500,     // Half default
-            EquipmentWeight = 100, // Very light equipment
-            ConsumableWeight = 50,
-            ToolWeight = 200,
-            SpellWeight = 10,
-            BuildingMaterialWeight = 300,
+            BlockWeight = 0.5f,
+            EquipmentWeight = 0.1f,
+            ConsumableWeight = 0.05f,
+            ToolWeight = 0.2f,
+            SpellWeight = 0.01f,
+            BuildingMaterialWeight = 0.3f,
             WeightUnitName = "lbs"
         };
 
@@ -397,47 +379,47 @@ public class CarryWeightCalculatorTests
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, config);
-        // 10*500 + 1*100 = 5100
-        Assert.Equal(5100, result);
+        // 10*0.5 + 1*0.1 = 5.1
+        Assert.Equal(5.1f, result);
     }
 
     [Fact]
     public void WouldExceedCapacity_LowCapacityMage_BlockedEarlier()
     {
-        var mageArchetype = ArchetypeWithCapacity(35000);
+        var mageArchetype = ArchetypeWithCapacity(25.0f);
         var capabilities = new ItemCollection
         {
-            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 30 } }, // 30000
+            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 20 } }, // 20.0 kg
             Equipment = new[]
             {
                 new EquipmentEntry { EquipmentRef = "Staff", Condition = 1f },
                 new EquipmentEntry { EquipmentRef = "Robe", Condition = 1f }
-            } // 4000
+            } // 4.0 kg
         };
-        // Total: 34000 out of 35000 — remaining = 1000
+        // Total: 24.0 out of 25.0 — remaining = 1.0
 
-        // Adding 1000 exactly fills capacity — not exceeded
-        Assert.False(CarryWeightCalculator.WouldExceedCapacity(capabilities, mageArchetype, DefaultConfig(), 1000));
+        // Adding 1.0 exactly fills capacity — not exceeded
+        Assert.False(CarryWeightCalculator.WouldExceedCapacity(capabilities, mageArchetype, DefaultConfig(), 1.0f));
 
-        // Adding 1001 exceeds
-        Assert.True(CarryWeightCalculator.WouldExceedCapacity(capabilities, mageArchetype, DefaultConfig(), 1001));
+        // Adding 1.1 exceeds
+        Assert.True(CarryWeightCalculator.WouldExceedCapacity(capabilities, mageArchetype, DefaultConfig(), 1.1f));
 
-        // Adding a spell (100) is fine
-        Assert.False(CarryWeightCalculator.WouldExceedCapacity(capabilities, mageArchetype, DefaultConfig(), 100));
+        // Adding a spell (0.1) is fine
+        Assert.False(CarryWeightCalculator.WouldExceedCapacity(capabilities, mageArchetype, DefaultConfig(), 0.1f));
     }
 
     [Fact]
     public void WouldExceedCapacity_HighCapacityWarrior_CanCarryMore()
     {
-        var warriorArchetype = ArchetypeWithCapacity(60000);
+        var warriorArchetype = ArchetypeWithCapacity(50.0f);
         var capabilities = new ItemCollection
         {
-            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 50 } } // 50000
+            Blocks = new[] { new BlockEntry { BlockRef = "Stone", Quantity = 40 } } // 40.0 kg
         };
 
-        // Warrior still has 10000 capacity left
-        Assert.False(CarryWeightCalculator.WouldExceedCapacity(capabilities, warriorArchetype, DefaultConfig(), 10000));
-        Assert.True(CarryWeightCalculator.WouldExceedCapacity(capabilities, warriorArchetype, DefaultConfig(), 10001));
+        // Warrior still has 10.0 kg capacity left
+        Assert.False(CarryWeightCalculator.WouldExceedCapacity(capabilities, warriorArchetype, DefaultConfig(), 10.0f));
+        Assert.True(CarryWeightCalculator.WouldExceedCapacity(capabilities, warriorArchetype, DefaultConfig(), 10.1f));
     }
 
     #endregion
@@ -465,12 +447,12 @@ public class CarryWeightCalculatorTests
         public bool AllowTeleporting { get; set; }
         public int DisplayOrder { get; set; }
         public string WeightUnitName { get; set; } = "kg";
-        public int BlockWeight { get; set; } = 1000;
-        public int EquipmentWeight { get; set; } = 2000;
-        public int ToolWeight { get; set; } = 1500;
-        public int SpellWeight { get; set; } = 100;
-        public int ConsumableWeight { get; set; } = 250;
-        public int BuildingMaterialWeight { get; set; } = 500;
+        public float BlockWeight { get; set; } = 1.0f;
+        public float EquipmentWeight { get; set; } = 2.0f;
+        public float ToolWeight { get; set; } = 1.5f;
+        public float SpellWeight { get; set; } = 0.1f;
+        public float ConsumableWeight { get; set; } = 0.25f;
+        public float BuildingMaterialWeight { get; set; } = 0.5f;
         public string? SourceDirectory { get; set; }
     }
 }

@@ -94,7 +94,7 @@ public interface IAvatarUpdateService
     Task<AvatarEntity> UpdateAvatarForMiningAsync(
         AvatarEntity avatar,
         Dictionary<string, int> blocksMined,
-        AvatarArchetype? archetype,
+        AvatarArchetype archetype,
         IWorldConfiguration worldConfig,
         CancellationToken ct = default);
 

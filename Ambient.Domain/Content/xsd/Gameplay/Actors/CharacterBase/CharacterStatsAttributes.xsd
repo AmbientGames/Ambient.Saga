@@ -25,7 +25,7 @@
         </xs:attribute>
         <!-- Attributes -->
         <xs:attribute name="Strength" type="xs:float" use="optional" default="0.0">
-            <xs:annotation><xs:documentation>Physical damage output and carry capacity.</xs:documentation></xs:annotation>
+            <xs:annotation><xs:documentation>Physical damage output.</xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attribute name="Defense" type="xs:float" use="optional" default="0.0">
             <xs:annotation><xs:documentation>Physical damage reduction.</xs:documentation></xs:annotation>

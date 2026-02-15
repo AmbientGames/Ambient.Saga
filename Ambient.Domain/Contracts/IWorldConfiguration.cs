@@ -28,12 +28,12 @@ public interface IWorldConfiguration
     int DisplayOrder { get; set; }
 
     string WeightUnitName { get; set; }
-    int BlockWeight { get; set; }
-    int EquipmentWeight { get; set; }
-    int ToolWeight { get; set; }
-    int SpellWeight { get; set; }
-    int ConsumableWeight { get; set; }
-    int BuildingMaterialWeight { get; set; }
+    float BlockWeight { get; set; }
+    float EquipmentWeight { get; set; }
+    float ToolWeight { get; set; }
+    float SpellWeight { get; set; }
+    float ConsumableWeight { get; set; }
+    float BuildingMaterialWeight { get; set; }
 
     /// <summary>
     /// The directory where this configuration was loaded from (e.g., the xml folder containing WorldConfiguration.xml).

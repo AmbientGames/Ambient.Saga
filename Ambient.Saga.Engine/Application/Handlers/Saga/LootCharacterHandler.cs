@@ -103,18 +103,20 @@ internal sealed class LootCharacterHandler : IRequestHandler<LootCharacterComman
 
             // Carry weight check — all-or-nothing
             var config = _world.WorldConfiguration;
-            var lootWeight = 0;
+
+            var archetypeRef = command.Avatar.ArchetypeRef;
+            if (string.IsNullOrEmpty(archetypeRef) || !_world.AvatarArchetypesLookup.TryGetValue(archetypeRef, out var archetype))
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, "Avatar has no valid archetype");
+            }
+
+            var lootWeight = 0f;
             lootWeight += lootedEquipment.Count * config.EquipmentWeight;
             lootWeight += lootedConsumables.Sum(c => { var parts = c.Split(':'); return parts.Length >= 2 && int.TryParse(parts[1], out var qty) ? qty : 0; }) * config.ConsumableWeight;
             lootWeight += lootedSpells.Count * config.SpellWeight;
             lootWeight += lootedBlocks.Sum(b => { var parts = b.Split(':'); return parts.Length >= 2 && int.TryParse(parts[1], out var qty) ? qty : 0; }) * config.BlockWeight;
             lootWeight += lootedTools.Count * config.ToolWeight;
             lootWeight += lootedMaterials.Sum(m => { var parts = m.Split(':'); return parts.Length >= 2 && int.TryParse(parts[1], out var qty) ? qty : 0; }) * config.BuildingMaterialWeight;
-
-            var archetypeRef = command.Avatar.ArchetypeRef;
-            AvatarArchetype? archetype = null;
-            if (!string.IsNullOrEmpty(archetypeRef))
-                _world.AvatarArchetypesLookup.TryGetValue(archetypeRef, out archetype);
 
             if (CarryWeightCalculator.WouldExceedCapacity(command.Avatar.Capabilities, archetype, config, lootWeight))
             {

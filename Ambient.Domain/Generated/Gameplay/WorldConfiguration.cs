@@ -49,17 +49,17 @@ namespace Ambient.Domain {
         
         private string weightUnitNameField;
         
-        private int blockWeightField;
+        private float blockWeightField;
         
-        private int equipmentWeightField;
+        private float equipmentWeightField;
         
-        private int toolWeightField;
+        private float toolWeightField;
         
-        private int spellWeightField;
+        private float spellWeightField;
         
-        private int consumableWeightField;
+        private float consumableWeightField;
         
-        private int buildingMaterialWeightField;
+        private float buildingMaterialWeightField;
         
         public WorldConfiguration() {
             this.contentPackLibraryField = "default";
@@ -70,12 +70,12 @@ namespace Ambient.Domain {
             this.allowTeleportingField = false;
             this.displayOrderField = 100;
             this.weightUnitNameField = "kg";
-            this.blockWeightField = 1000;
-            this.equipmentWeightField = 2000;
-            this.toolWeightField = 1500;
-            this.spellWeightField = 100;
-            this.consumableWeightField = 250;
-            this.buildingMaterialWeightField = 500;
+            this.blockWeightField = ((float)(1F));
+            this.equipmentWeightField = ((float)(2F));
+            this.toolWeightField = ((float)(1.5F));
+            this.spellWeightField = ((float)(0.1F));
+            this.consumableWeightField = ((float)(0.25F));
+            this.buildingMaterialWeightField = ((float)(0.5F));
         }
         
         /// <remarks/>
@@ -232,8 +232,8 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(1000)]
-        public int BlockWeight {
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
+        public float BlockWeight {
             get {
                 return this.blockWeightField;
             }
@@ -244,8 +244,8 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(2000)]
-        public int EquipmentWeight {
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "2")]
+        public float EquipmentWeight {
             get {
                 return this.equipmentWeightField;
             }
@@ -256,8 +256,8 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(1500)]
-        public int ToolWeight {
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1.5")]
+        public float ToolWeight {
             get {
                 return this.toolWeightField;
             }
@@ -268,8 +268,8 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(100)]
-        public int SpellWeight {
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0.1")]
+        public float SpellWeight {
             get {
                 return this.spellWeightField;
             }
@@ -280,8 +280,8 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(250)]
-        public int ConsumableWeight {
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0.25")]
+        public float ConsumableWeight {
             get {
                 return this.consumableWeightField;
             }
@@ -292,8 +292,8 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(500)]
-        public int BuildingMaterialWeight {
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0.5")]
+        public float BuildingMaterialWeight {
             get {
                 return this.buildingMaterialWeightField;
             }

@@ -550,7 +550,7 @@ public class AvatarUpdateService : IAvatarUpdateService
     public async Task<AvatarEntity> UpdateAvatarForMiningAsync(
         AvatarEntity avatar,
         Dictionary<string, int> blocksMined,
-        AvatarArchetype? archetype,
+        AvatarArchetype archetype,
         IWorldConfiguration worldConfig,
         CancellationToken ct = default)
     {
@@ -569,7 +569,7 @@ public class AvatarUpdateService : IAvatarUpdateService
 
             // Check how many blocks we can still carry
             var remaining = CarryWeightCalculator.GetRemainingCapacity(avatar.Capabilities, archetype, worldConfig);
-            var canCarry = blockWeight > 0 ? remaining / blockWeight : quantity;
+            var canCarry = blockWeight > 0 ? (int)(remaining / blockWeight) : quantity;
             if (canCarry <= 0) break;
 
             var toAdd = Math.Min(quantity, canCarry);

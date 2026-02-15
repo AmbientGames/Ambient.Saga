@@ -109,9 +109,10 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
 
                 // Carry weight check
                 var archetypeRef = command.Avatar.ArchetypeRef;
-                AvatarArchetype? archetype = null;
-                if (!string.IsNullOrEmpty(archetypeRef))
-                    _world.AvatarArchetypesLookup.TryGetValue(archetypeRef, out archetype);
+                if (string.IsNullOrEmpty(archetypeRef) || !_world.AvatarArchetypesLookup.TryGetValue(archetypeRef, out var archetype))
+                {
+                    return SagaCommandResult.Failure(instance.InstanceId, "Avatar has no valid archetype");
+                }
 
                 var categoryWeight = DetermineItemCategoryWeight(command.ItemRef, command.Avatar.Capabilities);
                 var additionalWeight = categoryWeight * command.Quantity;
@@ -298,7 +299,7 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
         }
     }
 
-    private int DetermineItemCategoryWeight(string itemRef, ItemCollection? capabilities)
+    private float DetermineItemCategoryWeight(string itemRef, ItemCollection? capabilities)
     {
         var config = _world.WorldConfiguration;
 
