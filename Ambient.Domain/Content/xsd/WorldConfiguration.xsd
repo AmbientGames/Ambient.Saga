@@ -101,6 +101,9 @@
 				<xs:attribute name="BuildingMaterialWeight" type="xs:float" default="0.5">
                     <xs:annotation><xs:documentation>Weight of a single building material item, in WeightUnitName units.</xs:documentation></xs:annotation>
                 </xs:attribute>
+				<xs:attribute name="CompletionQuestRef" type="xs:string" use="optional">
+                    <xs:annotation><xs:documentation>RefName of the quest whose completion ends the game. When this quest is completed, the application exits. Omit for worlds with no win condition.</xs:documentation></xs:annotation>
+                </xs:attribute>
 			</xs:extension>
         </xs:complexContent>
     </xs:complexType>

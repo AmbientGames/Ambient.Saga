@@ -575,6 +575,14 @@ public class DialogueModal
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Command result: Successful={result.Successful}, Error={result.ErrorMessage}");
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Result.Data keys: {string.Join(", ", result.Data.Keys)}");
 
+            // Check for game completion
+            if (result.Data.ContainsKey("GameComplete"))
+            {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Exiting application.");
+                Environment.Exit(0);
+                return;
+            }
+
             // Check for pending system events (battle, trade transitions)
             if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
@@ -644,6 +652,14 @@ public class DialogueModal
             {
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Advance FAILED: {result.ErrorMessage}");
                 _errorMessage = result.ErrorMessage;
+                return;
+            }
+
+            // Check for game completion
+            if (result.Data.ContainsKey("GameComplete"))
+            {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Exiting application.");
+                Environment.Exit(0);
                 return;
             }
 

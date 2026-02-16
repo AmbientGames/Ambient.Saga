@@ -184,6 +184,13 @@ public class SagaE2EStoryTests : IDisposable
             }
         };
 
+        // Register archetype so carry weight checks can find it
+        var warriorArchetype = new AvatarArchetype
+        {
+            RefName = "Warrior",
+            DisplayName = "Warrior"
+        };
+
         // Populate lookups
         world.SagaArcLookup[sagaArc.RefName] = sagaArc;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger> { merchantTrigger, bossTrigger };
@@ -191,6 +198,7 @@ public class SagaE2EStoryTests : IDisposable
         world.CharactersLookup[boss.RefName] = boss;
         world.DialogueTreesLookup[merchantDialogue.RefName] = merchantDialogue;
         world.DialogueTreesLookup[bossDialogue.RefName] = bossDialogue;
+        world.AvatarArchetypesLookup[warriorArchetype.RefName] = warriorArchetype;
 
         return world;
     }

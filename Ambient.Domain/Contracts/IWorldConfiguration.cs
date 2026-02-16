@@ -40,4 +40,10 @@ public interface IWorldConfiguration
     /// Used for locating GenerationConfiguration.xml and outputting generated content.
     /// </summary>
     string? SourceDirectory { get; set; }
+
+    /// <summary>
+    /// Quest whose completion ends the game. When this quest is completed via CompleteQuestCommand,
+    /// the application exits. Leave null/empty for worlds with no win condition.
+    /// </summary>
+    string? CompletionQuestRef { get; set; }
 }

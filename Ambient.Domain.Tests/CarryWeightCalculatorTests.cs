@@ -454,5 +454,6 @@ public class CarryWeightCalculatorTests
         public float ConsumableWeight { get; set; } = 0.25f;
         public float BuildingMaterialWeight { get; set; } = 0.5f;
         public string? SourceDirectory { get; set; }
+        public string? CompletionQuestRef { get; set; }
     }
 }

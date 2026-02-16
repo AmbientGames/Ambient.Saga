@@ -1,9 +1,11 @@
 ﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
+using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
 
@@ -18,15 +20,18 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IWorld _world;
+    private readonly IMediator _mediator;
 
     public SelectDialogueChoiceHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
-        IWorld world)
+        IWorld world,
+        IMediator mediator)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
         _world = world;
+        _mediator = mediator;
     }
 
     public async Task<SagaCommandResult> Handle(SelectDialogueChoiceCommand command, CancellationToken ct)
@@ -156,6 +161,57 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                 }
             }
 
+            // Dispatch quest events directly (business logic, not UI transitions)
+            bool gameComplete = false;
+            if (pendingEvents.Exists(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent)
+                && command.Avatar is AvatarEntity avatarEntity)
+            {
+                for (int i = pendingEvents.Count - 1; i >= 0; i--)
+                {
+                    var evt = pendingEvents[i];
+                    switch (evt)
+                    {
+                        case AcceptQuestEvent acceptEvt:
+                            await _mediator.Send(new AcceptQuestCommand
+                            {
+                                AvatarId = command.AvatarId,
+                                SagaArcRef = acceptEvt.SagaRef,
+                                QuestRef = acceptEvt.QuestRef,
+                                QuestGiverRef = acceptEvt.QuestGiverRef,
+                                Avatar = avatarEntity
+                            }, ct);
+                            pendingEvents.RemoveAt(i);
+                            break;
+
+                        case CompleteQuestEvent completeEvt:
+                            var questResult = await _mediator.Send(new CompleteQuestCommand
+                            {
+                                AvatarId = command.AvatarId,
+                                SagaArcRef = completeEvt.SagaRef,
+                                QuestRef = completeEvt.QuestRef,
+                                QuestReceiverRef = characterState.CharacterRef,
+                                Avatar = avatarEntity,
+                                DialogueDriven = true
+                            }, ct);
+                            if (questResult.Data.ContainsKey("GameComplete"))
+                                gameComplete = true;
+                            pendingEvents.RemoveAt(i);
+                            break;
+
+                        case AbandonQuestEvent abandonEvt:
+                            await _mediator.Send(new AbandonQuestCommand
+                            {
+                                AvatarId = command.AvatarId,
+                                SagaArcRef = abandonEvt.SagaRef,
+                                QuestRef = abandonEvt.QuestRef,
+                                Avatar = avatarEntity
+                            }, ct);
+                            pendingEvents.RemoveAt(i);
+                            break;
+                    }
+                }
+            }
+
             // Get newly created transactions
             var newTransactions = instance.Transactions.Skip(transactionsBefore).ToList();
 
@@ -190,6 +246,10 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             if (pendingEvents.Count > 0)
             {
                 resultData["PendingEvents"] = pendingEvents;
+            }
+            if (gameComplete)
+            {
+                resultData["GameComplete"] = true;
             }
 
             return SagaCommandResult.Success(

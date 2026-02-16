@@ -76,7 +76,7 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
 
             // NEW: Check if quest is ready for completion (all stages done)
             // In the new multi-stage system, CurrentStage will be empty when all stages are complete
-            if (!string.IsNullOrEmpty(questState.CurrentStage))
+            if (!command.DialogueDriven && !string.IsNullOrEmpty(questState.CurrentStage))
             {
                 return SagaCommandResult.Failure(
                     instance.InstanceId,
@@ -164,11 +164,19 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
                 await _avatarUpdateService.PersistAvatarAsync(command.Avatar, ct);
             }
 
-            // Return success (pure CQRS - no state data)
+            // Check if this quest completion ends the game
+            var completionRef = _world.WorldConfiguration?.CompletionQuestRef;
+            Dictionary<string, object>? resultData = null;
+            if (!string.IsNullOrEmpty(completionRef) && command.QuestRef == completionRef)
+            {
+                resultData = new Dictionary<string, object> { ["GameComplete"] = true };
+            }
+
             return SagaCommandResult.Success(
                 instance.InstanceId,
                 new List<Guid> { transaction.TransactionId },
-                sequenceNumbers.First());
+                sequenceNumbers.First(),
+                resultData);
         }
         catch (Exception ex)
         {

@@ -211,7 +211,7 @@
     <!-- Quest Objective -->
     <xs:complexType name="QuestObjective">
         <xs:annotation>
-            <xs:documentation>A single trackable goal within a quest stage, evaluated against the transaction log.</xs:documentation>
+            <xs:documentation>A single trackable goal within a quest stage. Evaluated by QuestProgressEvaluator against the transaction log, but automatic objective progression is not yet wired — ProgressQuestObjectiveCommand has no callers. Objectives currently serve as metadata describing what the player should do. Actual quest advancement is driven by dialogue actions (AcceptQuest, CompleteQuest).</xs:documentation>
         </xs:annotation>
         <xs:attribute name="RefName" type="QuestObjectiveRef" use="required">
             <xs:annotation>
@@ -349,6 +349,7 @@
                         </xs:attribute>
                     </xs:complexType>
                 </xs:element>
+                <!-- ChooseQuestBranchHandler exists but the UI branch selection buttons are not yet connected -->
                 <xs:element name="Branches">
                     <xs:complexType>
                         <xs:sequence>
@@ -356,7 +357,7 @@
                         </xs:sequence>
                         <xs:attribute name="Exclusive" type="xs:boolean" use="optional" default="true">
                             <xs:annotation>
-                                <xs:documentation>If true, only one branch can be chosen and the others become unavailable.</xs:documentation>
+                                <xs:documentation>If true, only one branch can be chosen and the others become unavailable. Note: ChooseQuestBranchHandler exists but the UI branch selection is not yet connected.</xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
                     </xs:complexType>
@@ -614,7 +615,7 @@
                         </xs:complexType>
                     </xs:element>
 
-                    <!-- Global fail conditions -->
+                    <!-- Global fail conditions (CheckFailConditions is implemented but not called at runtime — fail conditions are not enforced) -->
                     <xs:element name="FailConditions" minOccurs="0" maxOccurs="1">
                         <xs:complexType>
                             <xs:sequence>

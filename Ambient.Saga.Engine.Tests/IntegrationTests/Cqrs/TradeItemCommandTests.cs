@@ -151,6 +151,25 @@ public class TradeItemCommandTests : IDisposable
         world.CharactersLookup[merchant.RefName] = merchant;
         world.SagaTriggersLookup[sagaarc.RefName] = new List<SagaTrigger>();
 
+        // Register archetype so carry weight checks can find it
+        var warriorArchetype = new AvatarArchetype
+        {
+            RefName = "Warrior",
+            DisplayName = "Warrior",
+            SpawnStats = new CharacterStats { Health = 1.0f, Stamina = 1.0f, Strength = 0.10f },
+            SpawnCapabilities = new ItemCollection
+            {
+                Equipment = Array.Empty<EquipmentEntry>(),
+                Consumables = Array.Empty<ConsumableEntry>(),
+                Spells = Array.Empty<SpellEntry>(),
+                Blocks = Array.Empty<BlockEntry>(),
+                Tools = Array.Empty<ToolEntry>(),
+                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
+                QuestTokens = Array.Empty<QuestTokenEntry>()
+            }
+        };
+        world.AvatarArchetypesLookup[warriorArchetype.RefName] = warriorArchetype;
+
         return world;
     }
 

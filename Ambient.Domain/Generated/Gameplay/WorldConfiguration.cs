@@ -63,6 +63,8 @@ namespace Ambient.Domain {
         
         private float buildingMaterialWeightField;
         
+        private string completionQuestRefField;
+        
         public WorldConfiguration() {
             this.schemaVersionField = 1;
             this.contentPackLibraryField = "default";
@@ -314,6 +316,17 @@ namespace Ambient.Domain {
             }
             set {
                 this.buildingMaterialWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string CompletionQuestRef {
+            get {
+                return this.completionQuestRefField;
+            }
+            set {
+                this.completionQuestRefField = value;
             }
         }
     }
