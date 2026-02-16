@@ -568,26 +568,6 @@ public class CharacterPanel
             }
         }
 
-        // Current Building Material (only show if lookup succeeds)
-        var currentMaterialRef = viewModel.PlayerAvatar.CurrentBuildingMaterialRef;
-        if (!string.IsNullOrEmpty(currentMaterialRef))
-        {
-            var material = viewModel.CurrentWorld.TryGetBuildingMaterialByRefName(currentMaterialRef);
-            if (material != null)
-            {
-                if (!hasSelection)
-                {
-                    ImGui.TextColored(new Vector4(0.8f, 0.9f, 0.5f, 1), "Current Selection:");
-                    ImGui.Spacing();
-                    hasSelection = true;
-                }
-
-                ImGui.Text("Material:");
-                ImGui.SameLine(120 * scale);
-                ImGui.TextColored(new Vector4(0.9f, 0.7f, 0.5f, 1), material.DisplayName ?? material.RefName);
-            }
-        }
-
         // Only show header if nothing selected
         if (!hasSelection)
         {

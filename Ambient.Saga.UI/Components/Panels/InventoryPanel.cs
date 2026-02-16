@@ -748,33 +748,6 @@ public class InventoryPanel
                         ImGui.SetTooltip($"{name}{quantityText}");
                     }
 
-                    // Buttons on same line as header
-                    ImGui.SameLine();
-                    ImGui.SetCursorPosX(ImGui.GetWindowWidth() - ButtonAreaWidth - ImGui.GetStyle().WindowPadding.X);
-                    RenderHotbarAssignButton(HotbarItemType.BuildingMaterial, material.BuildingMaterialRef, name);
-                    ImGui.SameLine();
-
-                    // Select button
-                    var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
-                    var isSelected = viewModel.PlayerAvatar?.CurrentBuildingMaterialRef == material.BuildingMaterialRef;
-                    if (isSelected)
-                    {
-                        ImGui.BeginDisabled();
-                        ImGui.Button("Selected", buttonSize);
-                        ImGui.EndDisabled();
-                    }
-                    else
-                    {
-                        if (ImGui.Button($"Select##{material.BuildingMaterialRef}", buttonSize))
-                        {
-                            if (viewModel.PlayerAvatar != null)
-                            {
-                                viewModel.PlayerAvatar.CurrentBuildingMaterialRef = material.BuildingMaterialRef;
-                                viewModel.AddToastMessage($"{name} selected");
-                            }
-                        }
-                    }
-
                     if (treeNodeOpen)
                     {
                         if (materialItem != null)
@@ -1149,7 +1122,6 @@ public class InventoryPanel
         {
             HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.BuildingMaterial => world.TryGetBuildingMaterialByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName

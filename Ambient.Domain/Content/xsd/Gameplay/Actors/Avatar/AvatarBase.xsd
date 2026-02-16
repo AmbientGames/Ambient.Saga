@@ -19,7 +19,7 @@
 					<xs:element name="Party" type="PartyInventory" minOccurs="0" />
                 </xs:sequence>
                 <xs:attribute name="ArchetypeRef" type="ArchetypeRef" use="optional" />
-                <!-- Runtime/session fields moved to partial class: ActiveAffinityRef, CurrentToolRef, CurrentBuildingMaterialRef, PlayTimeHours, BlocksPlaced, BlocksDestroyed, DistanceTraveled -->
+                <!-- Runtime/session fields moved to partial class: ActiveAffinityRef, CurrentToolRef, PlayTimeHours, BlocksPlaced, BlocksDestroyed, DistanceTraveled -->
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

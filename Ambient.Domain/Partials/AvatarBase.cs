@@ -39,11 +39,6 @@ public partial class AvatarBase : IAvatarBase
     public string? CurrentToolRef { get; set; }
 
     /// <summary>
-    /// The currently selected building material reference (session state).
-    /// </summary>
-    public string? CurrentBuildingMaterialRef { get; set; }
-
-    /// <summary>
     /// The currently selected block reference (session state).
     /// </summary>
     public string? CurrentBlockRef { get; set; }

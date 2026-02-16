@@ -83,13 +83,6 @@ public class HotbarService
                 _viewModel.AddToastMessage($"{blockName} selected");
                 break;
 
-            case HotbarItemType.BuildingMaterial:
-                avatar.CurrentBuildingMaterialRef = slot.RefName;
-                var materialDef = world?.TryGetBuildingMaterialByRefName(slot.RefName);
-                var materialName = materialDef?.DisplayName ?? slot.RefName;
-                _viewModel.AddToastMessage($"{materialName} selected");
-                break;
-
             case HotbarItemType.Consumable:
                 // Use the consumable (toast is handled by UseConsumableAsync)
                 await _viewModel.UseConsumableAsync(slot.RefName);

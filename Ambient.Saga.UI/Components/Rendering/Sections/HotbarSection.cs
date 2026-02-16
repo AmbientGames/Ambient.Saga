@@ -45,7 +45,6 @@ public class HotbarSection : IHudSection
         { HotbarItemType.Empty, new Vector4(0.4f, 0.4f, 0.4f, 0.6f) },
         { HotbarItemType.Tool, new Vector4(0.7f, 0.7f, 0.9f, 1f) },
         { HotbarItemType.Block, new Vector4(0.6f, 0.5f, 0.4f, 1f) },
-        { HotbarItemType.BuildingMaterial, new Vector4(0.8f, 0.6f, 0.4f, 1f) },
         { HotbarItemType.Consumable, new Vector4(0.4f, 0.9f, 0.5f, 1f) },
         { HotbarItemType.Equipment, new Vector4(0.5f, 0.7f, 1f, 1f) }
     };
@@ -177,7 +176,6 @@ public class HotbarSection : IHudSection
         {
             HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.BuildingMaterial => world.TryGetBuildingMaterialByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName
