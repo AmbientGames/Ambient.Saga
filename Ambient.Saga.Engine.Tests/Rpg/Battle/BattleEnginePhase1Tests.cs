@@ -32,7 +32,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f,
             spells: new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } });
-        player.CombatProfile["RightHand"] = "IronSword"; // Not a staff
+        player.CombatProfile["MainHand"] = "IronSword"; // Not a staff
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
@@ -56,7 +56,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } });
-        player.CombatProfile["RightHand"] = "OakStaff"; // Staff equipped
+        player.CombatProfile["MainHand"] = "OakStaff"; // Staff equipped
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
@@ -74,12 +74,12 @@ public class BattleEnginePhase1Tests
     }
 
     [Fact]
-    public void ExecuteSpellAttack_RequiresWand_SucceedsWithWandInLeftHand()
+    public void ExecuteSpellAttack_RequiresWand_SucceedsWithWandInOffHand()
     {
         // Arrange
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "LightningBolt", Condition = 1.0f } });
-        player.CombatProfile["LeftHand"] = "MagicWand"; // Wand in left hand
+        player.CombatProfile["OffHand"] = "MagicWand"; // Wand in left hand
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
@@ -207,7 +207,7 @@ public class BattleEnginePhase1Tests
             // With CriticalHitBonus weapon
             var playerWithBonus = CreateCombatantWithCapabilities("Player", health: 1.0f, speed: 0.1f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "CriticalSword", Condition = 1.0f } }); // Low speed = low base crit
-            playerWithBonus.CombatProfile["RightHand"] = "CriticalSword"; // +30% crit bonus
+            playerWithBonus.CombatProfile["MainHand"] = "CriticalSword"; // +30% crit bonus
 
             var enemy1 = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
             var engine1 = new BattleEngine(playerWithBonus, enemy1, world: _world, randomSeed: i);
@@ -222,7 +222,7 @@ public class BattleEnginePhase1Tests
             // Without CriticalHitBonus weapon
             var playerWithoutBonus = CreateCombatantWithCapabilities("Player", health: 1.0f, speed: 0.1f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
-            playerWithoutBonus.CombatProfile["RightHand"] = "IronSword"; // No crit bonus
+            playerWithoutBonus.CombatProfile["MainHand"] = "IronSword"; // No crit bonus
 
             var enemy2 = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
             var engine2 = new BattleEngine(playerWithoutBonus, enemy2, world: _world, randomSeed: i);
@@ -253,7 +253,7 @@ public class BattleEnginePhase1Tests
         {
             var player = CreateCombatantWithCapabilities("Player", health: 1.0f, speed: 0.3f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "HighCritSword", Condition = 1.0f } });
-            player.CombatProfile["RightHand"] = "HighCritSword"; // +45% crit bonus
+            player.CombatProfile["MainHand"] = "HighCritSword"; // +45% crit bonus
 
             var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
             var engine = new BattleEngine(player, enemy, world: _world, randomSeed: i);
@@ -282,7 +282,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "PoisonDagger", Condition = 1.0f } });
-        player.CombatProfile["RightHand"] = "PoisonDagger"; // Has StatusEffectRef = "Poison"
+        player.CombatProfile["MainHand"] = "PoisonDagger"; // Has StatusEffectRef = "Poison"
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
@@ -356,7 +356,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "PoisonDagger", Condition = 1.0f } });
-        player.CombatProfile["RightHand"] = "PoisonDagger";
+        player.CombatProfile["MainHand"] = "PoisonDagger";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
@@ -386,7 +386,7 @@ public class BattleEnginePhase1Tests
         {
             var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "LowChancePoison", Condition = 1.0f } });
-            player.CombatProfile["RightHand"] = "LowChancePoison"; // 50% chance
+            player.CombatProfile["MainHand"] = "LowChancePoison"; // 50% chance
             var enemy = CreateCombatant("Enemy", health: 1.0f);
 
             var engine = new BattleEngine(player, enemy, world: _world, randomSeed: i);
@@ -717,7 +717,7 @@ public class BattleEnginePhase1Tests
             RefName = name,
             DisplayName = name,
             Health = health,
-            Energy = energy,
+            Stamina = energy,
             Strength = strength,
             Defense = defense,
             Speed = speed,
@@ -737,7 +737,7 @@ public class BattleEnginePhase1Tests
             RefName = name,
             DisplayName = name,
             Health = health,
-            Energy = energy,
+            Stamina = energy,
             Strength = strength,
             Defense = defense,
             Speed = speed,
@@ -764,7 +764,7 @@ public class BattleEnginePhase1Tests
             DisplayName = "Iron Sword",
             Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0f,
-            Effects = new CharacterEffects { Health = -0.1f }
+            Effects = new Attributes { Health = -0.1f }
         };
 
         var criticalSword = new Equipment
@@ -773,7 +773,7 @@ public class BattleEnginePhase1Tests
             DisplayName = "Critical Sword",
             Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0.3f, // +30% crit chance
-            Effects = new CharacterEffects { Health = -0.1f }
+            Effects = new Attributes { Health = -0.1f }
         };
 
         var oakStaff = new Equipment
@@ -781,7 +781,7 @@ public class BattleEnginePhase1Tests
             RefName = "OakStaff",
             DisplayName = "Oak Staff",
             Category = EquipmentCategoryType.Staff,
-            Effects = new CharacterEffects { Health = -0.05f }
+            Effects = new Attributes { Health = -0.05f }
         };
 
         var magicWand = new Equipment
@@ -789,7 +789,7 @@ public class BattleEnginePhase1Tests
             RefName = "MagicWand",
             DisplayName = "Magic Wand",
             Category = EquipmentCategoryType.Wand,
-            Effects = new CharacterEffects { Health = -0.05f }
+            Effects = new Attributes { Health = -0.05f }
         };
 
         var poisonDagger = new Equipment
@@ -799,7 +799,7 @@ public class BattleEnginePhase1Tests
             Category = EquipmentCategoryType.OneHanded,
             StatusEffectRef = "Poison",
             StatusEffectChance = 1.0f, // 100% chance for testing
-            Effects = new CharacterEffects { Health = -0.1f }
+            Effects = new Attributes { Health = -0.1f }
         };
 
         var lowChancePoison = new Equipment
@@ -809,7 +809,7 @@ public class BattleEnginePhase1Tests
             Category = EquipmentCategoryType.OneHanded,
             StatusEffectRef = "Poison",
             StatusEffectChance = 0.5f, // 50% chance
-            Effects = new CharacterEffects { Health = -0.1f }
+            Effects = new Attributes { Health = -0.1f }
         };
 
         var highCritSword = new Equipment
@@ -818,7 +818,7 @@ public class BattleEnginePhase1Tests
             DisplayName = "High Crit Sword",
             Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0.55f, // 55% crit bonus - should cap at 50% total
-            Effects = new CharacterEffects { Health = -0.1f }
+            Effects = new Attributes { Health = -0.1f }
         };
 
         // Create spells
@@ -829,7 +829,7 @@ public class BattleEnginePhase1Tests
             RequiresEquipped = EquipmentCategoryType.Staff,
             RequiresEquippedSpecified = true,
             UseType = ItemUseType.Offensive,
-            Effects = new CharacterEffects { Health = -0.2f }
+            Effects = new Attributes { Health = -0.2f }
         };
 
         var lightningBolt = new Spell
@@ -839,7 +839,7 @@ public class BattleEnginePhase1Tests
             RequiresEquipped = EquipmentCategoryType.Wand,
             RequiresEquippedSpecified = true,
             UseType = ItemUseType.Offensive,
-            Effects = new CharacterEffects { Health = -0.15f }
+            Effects = new Attributes { Health = -0.15f }
         };
 
         var heal = new Spell
@@ -847,7 +847,7 @@ public class BattleEnginePhase1Tests
             RefName = "Heal",
             DisplayName = "Heal",
             UseType = ItemUseType.Defensive,
-            Effects = new CharacterEffects { Health = 0.2f }
+            Effects = new Attributes { Health = 0.2f }
         };
 
         var advancedFireball = new Spell
@@ -855,8 +855,8 @@ public class BattleEnginePhase1Tests
             RefName = "AdvancedFireball",
             DisplayName = "Advanced Fireball",
             UseType = ItemUseType.Offensive,
-            MinimumStats = new CharacterEffects { Magic = 0.5f },
-            Effects = new CharacterEffects { Health = -0.3f }
+            MinimumStats = new Attributes { Magic = 0.5f },
+            Effects = new Attributes { Health = -0.3f }
         };
 
         var powerStrike = new Spell
@@ -864,8 +864,8 @@ public class BattleEnginePhase1Tests
             RefName = "PowerStrike",
             DisplayName = "Power Strike",
             UseType = ItemUseType.Offensive,
-            MinimumStats = new CharacterEffects { Strength = 0.4f },
-            Effects = new CharacterEffects { Health = -0.25f }
+            MinimumStats = new Attributes { Strength = 0.4f },
+            Effects = new Attributes { Health = -0.25f }
         };
 
         var frostBolt = new Spell
@@ -875,7 +875,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Offensive,
             StatusEffectRef = "Frozen",
             StatusEffectChance = 1.0f,
-            Effects = new CharacterEffects { Health = -0.1f }
+            Effects = new Attributes { Health = -0.1f }
         };
 
         var defenseBuff = new Spell
@@ -885,7 +885,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Defensive,
             StatusEffectRef = "DefenseUp",
             StatusEffectChance = 1.0f,
-            Effects = new CharacterEffects()
+            Effects = new Attributes()
         };
 
         var cleanse = new Spell
@@ -895,7 +895,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Defensive,
             CleansesStatusEffects = true,
             CleanseTargetSelf = true,
-            Effects = new CharacterEffects()
+            Effects = new Attributes()
         };
 
         // Create status effects
@@ -994,7 +994,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.1f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "HeavySword", Condition = 1.0f } }); // Low strength
-        player.CombatProfile["RightHand"] = "HeavySword";
+        player.CombatProfile["MainHand"] = "HeavySword";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithHeavySword = CreateTestWorldWithHeavyWeapon();
@@ -1019,7 +1019,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.6f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "HeavySword", Condition = 1.0f } }); // High strength
-        player.CombatProfile["RightHand"] = "HeavySword";
+        player.CombatProfile["MainHand"] = "HeavySword";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithHeavySword = CreateTestWorldWithHeavyWeapon();
@@ -1043,7 +1043,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, defense: 0.1f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "GuardianBlade", Condition = 1.0f } }); // Low defense
-        player.CombatProfile["RightHand"] = "GuardianBlade";
+        player.CombatProfile["MainHand"] = "GuardianBlade";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithGuardianBlade = CreateTestWorldWithHeavyWeapon();
@@ -1068,7 +1068,7 @@ public class BattleEnginePhase1Tests
         // Arrange - Player with minimal stats using basic weapon
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.1f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
-        player.CombatProfile["RightHand"] = "IronSword"; // No MinimumStats requirement
+        player.CombatProfile["MainHand"] = "IronSword"; // No MinimumStats requirement
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
@@ -1091,7 +1091,7 @@ public class BattleEnginePhase1Tests
         // Arrange - A magic-infused weapon that requires high magic stat
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.1f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "EnchantedBlade", Condition = 1.0f } }); // Low magic
-        player.CombatProfile["RightHand"] = "EnchantedBlade";
+        player.CombatProfile["MainHand"] = "EnchantedBlade";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithEnchantedBlade = CreateTestWorldWithHeavyWeapon();
@@ -1123,8 +1123,8 @@ public class BattleEnginePhase1Tests
             RefName = "HeavySword",
             DisplayName = "Heavy Sword",
             Category = EquipmentCategoryType.TwoHanded,
-            MinimumStats = new CharacterEffects { Strength = 0.5f },
-            Effects = new CharacterEffects { Health = -0.2f }
+            MinimumStats = new Attributes { Strength = 0.5f },
+            Effects = new Attributes { Health = -0.2f }
         };
 
         // Add guardian blade with Defense requirement
@@ -1133,8 +1133,8 @@ public class BattleEnginePhase1Tests
             RefName = "GuardianBlade",
             DisplayName = "Guardian Blade",
             Category = EquipmentCategoryType.OneHanded,
-            MinimumStats = new CharacterEffects { Defense = 0.4f },
-            Effects = new CharacterEffects { Health = -0.15f }
+            MinimumStats = new Attributes { Defense = 0.4f },
+            Effects = new Attributes { Health = -0.15f }
         };
 
         // Add enchanted blade with Magic requirement
@@ -1143,8 +1143,8 @@ public class BattleEnginePhase1Tests
             RefName = "EnchantedBlade",
             DisplayName = "Enchanted Blade",
             Category = EquipmentCategoryType.OneHanded,
-            MinimumStats = new CharacterEffects { Magic = 0.4f },
-            Effects = new CharacterEffects { Health = -0.18f }
+            MinimumStats = new Attributes { Magic = 0.4f },
+            Effects = new Attributes { Health = -0.18f }
         };
 
         baseWorld.Gameplay.Equipment = baseWorld.Gameplay.Equipment.Concat(new[] { heavySword, guardianBlade, enchantedBlade }).ToArray();
@@ -1636,7 +1636,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Offensive,
             StatusEffectRef = "Poison",
             StatusEffectChance = 1.0f,
-            Effects = new CharacterEffects { Health = -0.05f }
+            Effects = new Attributes { Health = -0.05f }
         };
 
         // Add defensive consumable with status effect (buff)
@@ -1647,7 +1647,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Defensive,
             StatusEffectRef = "StrengthBuff",
             StatusEffectChance = 1.0f,
-            Effects = new CharacterEffects { Health = 0.1f }
+            Effects = new Attributes { Health = 0.1f }
         };
 
         // Add cleansing consumable
@@ -1658,7 +1658,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Defensive,
             CleansesStatusEffects = true,
             CleanseTargetSelf = true,
-            Effects = new CharacterEffects { Health = 0.05f }
+            Effects = new Attributes { Health = 0.05f }
         };
 
         // Add unreliable poison vial with 50% chance
@@ -1669,7 +1669,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Offensive,
             StatusEffectRef = "Poison",
             StatusEffectChance = 0.5f, // 50% chance
-            Effects = new CharacterEffects { Health = -0.03f }
+            Effects = new Attributes { Health = -0.03f }
         };
 
         // Add basic health potion with no status effect
@@ -1678,7 +1678,7 @@ public class BattleEnginePhase1Tests
             RefName = "BasicHealthPotion",
             DisplayName = "Basic Health Potion",
             UseType = ItemUseType.Defensive,
-            Effects = new CharacterEffects { Health = 0.2f }
+            Effects = new Attributes { Health = 0.2f }
         };
 
         // Add strength buff status effect
@@ -1758,7 +1758,7 @@ public class BattleEnginePhase1Tests
 
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
-        player.CombatProfile["RightHand"] = "IronSword";
+        player.CombatProfile["MainHand"] = "IronSword";
         var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
 
         // Apply Vulnerable status effect to enemy
@@ -1865,7 +1865,7 @@ public class BattleEnginePhase1Tests
 
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "IronShield", Condition = 1.0f } });
-        player.CombatProfile["LeftHand"] = "IronShield";
+        player.CombatProfile["OffHand"] = "IronShield";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: worldWithOnDefend, randomSeed: 42);
@@ -1894,7 +1894,7 @@ public class BattleEnginePhase1Tests
 
         var player = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
-        player.CombatProfile["RightHand"] = "IronSword"; // Sword has no OnDefend effect
+        player.CombatProfile["MainHand"] = "IronSword"; // Sword has no OnDefend effect
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: worldWithOnDefend, randomSeed: 42);
@@ -1923,7 +1923,7 @@ public class BattleEnginePhase1Tests
         {
             var testPlayer = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "UnreliableShield", Condition = 1.0f } });
-            testPlayer.CombatProfile["LeftHand"] = "UnreliableShield";
+            testPlayer.CombatProfile["OffHand"] = "UnreliableShield";
             var testEnemy = CreateCombatant("Enemy", health: 1.0f);
 
             var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithOnDefend, randomSeed: i);
@@ -2014,7 +2014,7 @@ public class BattleEnginePhase1Tests
             RefName = "FreeSpell",
             DisplayName = "Free Spell",
             RequiresEquippedSpecified = false,
-            Effects = new CharacterEffects { Health = -0.1f }
+            Effects = new Attributes { Health = -0.1f }
         };
 
         baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects.Concat(new[] { vulnerable }).ToArray();
@@ -2050,11 +2050,11 @@ public class BattleEnginePhase1Tests
         {
             RefName = "IronShield",
             DisplayName = "Iron Shield",
-            SlotRef = "LeftHand",
+            SlotRef = "OffHand",
             Category = EquipmentCategoryType.Shield,
             OnDefendStatusEffectRef = "IronWill",
             OnDefendStatusEffectChance = 1.0f,
-            Effects = new CharacterEffects { Defense = 0.15f }
+            Effects = new Attributes { Defense = 0.15f }
         };
 
         // Add Unreliable Shield with 50% OnDefend chance
@@ -2062,11 +2062,11 @@ public class BattleEnginePhase1Tests
         {
             RefName = "UnreliableShield",
             DisplayName = "Unreliable Shield",
-            SlotRef = "LeftHand",
+            SlotRef = "OffHand",
             Category = EquipmentCategoryType.Shield,
             OnDefendStatusEffectRef = "IronWill",
             OnDefendStatusEffectChance = 0.5f, // 50% chance
-            Effects = new CharacterEffects { Defense = 0.1f }
+            Effects = new Attributes { Defense = 0.1f }
         };
 
         baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects.Concat(new[] { ironWill }).ToArray();
@@ -2096,17 +2096,16 @@ public class BattleEnginePhase1Tests
         var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Equip two-handed weapon in right hand
+        // Act - Equip two-handed weapon in BothHands slot
         var result = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:GreatSword"
+            Parameter = "BothHands:GreatSword"
         });
 
-        // Assert - Both hands should have the same weapon
+        // Assert - BothHands slot should have the weapon
         Assert.True(result.Success);
-        Assert.Equal("GreatSword", player.CombatProfile["RightHand"]);
-        Assert.Equal("GreatSword", player.CombatProfile["LeftHand"]);
+        Assert.Equal("GreatSword", player.CombatProfile["BothHands"]);
     }
 
     [Fact]
@@ -2121,29 +2120,30 @@ public class BattleEnginePhase1Tests
                 new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f },
                 new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
             });
-        player.CombatProfile["RightHand"] = "IronSword"; // One-handed sword in right
-        player.CombatProfile["LeftHand"] = "IronShield"; // Shield in left
+        player.CombatProfile["MainHand"] = "IronSword"; // One-handed sword in right
+        player.CombatProfile["OffHand"] = "IronShield"; // Shield in left
 
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Equip two-handed weapon (should clear shield)
+        // Act - Equip two-handed weapon to BothHands (should clear MainHand and OffHand)
         var result = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:GreatSword"
+            Parameter = "BothHands:GreatSword"
         });
 
-        // Assert - Shield should be cleared, both hands have greatsword
+        // Assert - MainHand and OffHand should be cleared, BothHands has greatsword
         Assert.True(result.Success);
-        Assert.Equal("GreatSword", player.CombatProfile["RightHand"]);
-        Assert.Equal("GreatSword", player.CombatProfile["LeftHand"]);
+        Assert.Equal("GreatSword", player.CombatProfile["BothHands"]);
+        Assert.False(player.CombatProfile.ContainsKey("MainHand"));
+        Assert.False(player.CombatProfile.ContainsKey("OffHand"));
     }
 
     [Fact]
-    public void TwoHandedWeapon_CannotEquipOneHandedWhenTwoHandedEquipped()
+    public void TwoHandedWeapon_EquippingOneHandedClearsBothHands()
     {
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
@@ -2154,24 +2154,24 @@ public class BattleEnginePhase1Tests
                 new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f },
                 new EquipmentEntry { EquipmentRef = "IronShield", Condition = 1.0f }
             });
-        player.CombatProfile["RightHand"] = "GreatSword";
-        player.CombatProfile["LeftHand"] = "GreatSword"; // Two-handed equipped
+        player.CombatProfile["BothHands"] = "GreatSword"; // Two-handed equipped
 
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Try to equip shield in left hand (blocked by two-handed weapon)
+        // Act - Equip shield in OffHand (should clear BothHands)
         var result = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "LeftHand:IronShield"
+            Parameter = "OffHand:IronShield"
         });
 
-        // Assert - Should fail because two-handed weapon occupies both hands
-        Assert.False(result.Success);
-        Assert.Contains("two-handed", result.Message, StringComparison.OrdinalIgnoreCase);
+        // Assert - Should succeed and clear BothHands
+        Assert.True(result.Success);
+        Assert.Equal("IronShield", player.CombatProfile["OffHand"]);
+        Assert.False(player.CombatProfile.ContainsKey("BothHands"));
     }
 
     [Fact]
@@ -2337,14 +2337,14 @@ public class BattleEnginePhase1Tests
     {
         var baseWorld = CreateTestWorldWithPhase5OnDefendEquipment();
 
-        // Add two-handed great sword
+        // Add two-handed great sword - uses BothHands slot
         var greatSword = new Equipment
         {
             RefName = "GreatSword",
             DisplayName = "Great Sword",
-            SlotRef = "RightHand",
+            SlotRef = "BothHands",  // Two-handed weapons use BothHands slot
             Category = EquipmentCategoryType.TwoHanded,
-            Effects = new CharacterEffects { Strength = 0.3f }
+            Effects = new Attributes { Strength = 0.3f }
         };
 
         baseWorld.Gameplay.Equipment = baseWorld.Gameplay.Equipment.Concat(new[] { greatSword }).ToArray();

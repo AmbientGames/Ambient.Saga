@@ -31,7 +31,7 @@ public class QuestDetailModal
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    public async Task OpenAsync(string questRef, string sagaRef, MainViewModel viewModel)
+    public async Task OpenAsync(string questRef, string sagaRef, SagaMainViewModel viewModel)
     {
         _currentQuestRef = questRef;
         _currentSagaRef = sagaRef;
@@ -79,7 +79,7 @@ public class QuestDetailModal
         }
     }
 
-    public void Render(MainViewModel viewModel, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ref bool isOpen)
     {
         if (!isOpen || _questTemplate == null) return;
 
@@ -119,7 +119,7 @@ public class QuestDetailModal
         }
     }
 
-    private void RenderQuestContent(MainViewModel viewModel, ref bool isOpen)
+    private void RenderQuestContent(SagaMainViewModel viewModel, ref bool isOpen)
     {
         // Reserve space for action buttons at bottom
         var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2.5f;
@@ -379,7 +379,7 @@ public class QuestDetailModal
         }
     }
 
-    private void RenderRewards(MainViewModel viewModel)
+    private void RenderRewards(SagaMainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "Rewards:");
         ImGui.Spacing();
@@ -432,7 +432,7 @@ public class QuestDetailModal
         ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
-    private void RenderFailConditions(MainViewModel viewModel)
+    private void RenderFailConditions(SagaMainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "Failure Conditions:");
         ImGui.Spacing();
@@ -456,7 +456,7 @@ public class QuestDetailModal
         ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
-    private string GetCharacterDiedText(string? characterRef, MainViewModel viewModel)
+    private string GetCharacterDiedText(string? characterRef, SagaMainViewModel viewModel)
     {
         if (string.IsNullOrEmpty(characterRef)) return "If character dies";
         var charDef = viewModel.CurrentWorld?.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == characterRef);
@@ -464,7 +464,7 @@ public class QuestDetailModal
         return $"If {charName} dies";
     }
 
-    private void RenderPrerequisites(MainViewModel viewModel)
+    private void RenderPrerequisites(SagaMainViewModel viewModel)
     {
         ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Prerequisites:");
         ImGui.Spacing();
@@ -506,16 +506,19 @@ public class QuestDetailModal
         ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
-    private void RenderActionButtons(MainViewModel viewModel, ref bool isOpen)
+    private void RenderActionButtons(SagaMainViewModel viewModel, ref bool isOpen)
     {
         ImGui.Spacing();
 
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
+        var wideButtonWidth = 150f * UIConstants.DpiScale;
+        var narrowButtonWidth = 100f * UIConstants.DpiScale;
+
         if (_questProgress?.IsComplete == true)
         {
             // Completed quest - just close
-            if (ImGui.Button("Close", new Vector2(150, buttonHeight)))
+            if (ImGui.Button("Close", new Vector2(wideButtonWidth, buttonHeight)))
             {
                 isOpen = false;
             }
@@ -528,7 +531,7 @@ public class QuestDetailModal
                 ImGui.BeginDisabled();
             }
 
-            if (ImGui.Button("Abandon Quest", new Vector2(150, buttonHeight)))
+            if (ImGui.Button("Abandon Quest", new Vector2(wideButtonWidth, buttonHeight)))
             {
                 AbandonQuest(viewModel);
             }
@@ -541,14 +544,14 @@ public class QuestDetailModal
             }
 
             ImGui.SameLine();
-            if (ImGui.Button("Close", new Vector2(100, buttonHeight)))
+            if (ImGui.Button("Close", new Vector2(narrowButtonWidth, buttonHeight)))
             {
                 isOpen = false;
             }
         }
     }
 
-    private void AbandonQuest(MainViewModel viewModel)
+    private void AbandonQuest(SagaMainViewModel viewModel)
     {
         if (_isAbandoning || viewModel.PlayerAvatar == null) return;
 
@@ -556,7 +559,7 @@ public class QuestDetailModal
         _ = AbandonQuestAsync(viewModel);
     }
 
-    private async Task AbandonQuestAsync(MainViewModel viewModel)
+    private async Task AbandonQuestAsync(SagaMainViewModel viewModel)
     {
         try
         {

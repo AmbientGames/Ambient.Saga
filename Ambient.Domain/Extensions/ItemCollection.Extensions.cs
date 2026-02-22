@@ -210,6 +210,39 @@ public static class ItemCollectionExtensions
         return material != null;
     }
 
+    /// <summary>
+    /// Finds the first building material in the player's inventory that is compatible with the given substance
+    /// and has quantity remaining.
+    /// </summary>
+    public static bool TryGetCompatibleBuildingMaterial(
+        this ItemCollection collection,
+        string substanceRefName,
+        BuildingMaterial[] buildingMaterialDefinitions,
+        [NotNullWhen(true)] out BuildingMaterialEntry? material)
+    {
+        material = null;
+        if (collection?.BuildingMaterials == null || buildingMaterialDefinitions == null)
+            return false;
+
+        foreach (var entry in collection.BuildingMaterials)
+        {
+            if (entry.Quantity <= 0)
+                continue;
+
+            var definition = Array.Find(buildingMaterialDefinitions, d => d.RefName == entry.BuildingMaterialRef);
+            if (definition?.CompatibleSubstances == null)
+                continue;
+
+            if (Array.Exists(definition.CompatibleSubstances, s => s.SubstanceRef == substanceRefName))
+            {
+                material = entry;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public static BuildingMaterialEntry? GetBuildingMaterial(this ItemCollection collection, string materialRef)
     {
         return collection?.BuildingMaterials?.FirstOrDefault(m => m.BuildingMaterialRef == materialRef);

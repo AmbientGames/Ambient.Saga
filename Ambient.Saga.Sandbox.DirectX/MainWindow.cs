@@ -4,7 +4,7 @@ using ImGuiNET;
 using Steamworks;
 using Ambient.Saga.UI.Services;
 using Ambient.Saga.Sandbox.DirectX.Services;
-using Ambient.Saga.Sandbox.DirectX;
+using Ambient.Saga.Rendering.DirectX;
 using Ambient.Saga.UI.Components.Modals;
 
 namespace Ambient.Saga.Sandbox.WindowsUI;
@@ -16,11 +16,11 @@ public partial class MainWindow : Form
     private WorldMapUI? _worldMapUI;
     private bool _isRendering = false;
     private DateTime _lastFrameTime = DateTime.Now;
-    private MainViewModel _viewModel;
+    private SagaMainViewModel _viewModel;
     private Panel _mainPanel;
     private ModalManager _modalManager;
 
-    public MainWindow(MainViewModel viewModel, WorldMapUI worldMapUI, ModalManager modalManager)
+    public MainWindow(SagaMainViewModel viewModel, WorldMapUI worldMapUI, ModalManager modalManager)
     {
         _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         _worldMapUI = worldMapUI ?? throw new ArgumentNullException(nameof(worldMapUI));
@@ -69,27 +69,37 @@ public partial class MainWindow : Form
 
         // Wire up keyboard events for ImGui input
         this.KeyPreview = true;
+        var pressedKeys = new HashSet<Keys>();
         this.KeyDown += (s, e) =>
         {
-            var imguiKey = MapKeyToImGui(e.KeyCode);
+            // Ignore key repeats - only send first press
+            if (pressedKeys.Contains(e.KeyCode))
+                return;
+            pressedKeys.Add(e.KeyCode);
+
+            // Send modifier keys first
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, e.Control);
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, e.Shift);
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, e.Alt);
+
+            // Send the actual key
+            var imguiKey = WinFormsKeyMapper.MapKeyToImGui(e.KeyCode);
             if (imguiKey != ImGuiNET.ImGuiKey.None)
                 _imguiRenderer?.UpdateKeyState(imguiKey, true);
-
-            // Handle modifier keys
-            if (e.Control) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, true);
-            if (e.Shift) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, true);
-            if (e.Alt) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, true);
         };
         this.KeyUp += (s, e) =>
         {
-            var imguiKey = MapKeyToImGui(e.KeyCode);
+            pressedKeys.Remove(e.KeyCode);
+
+            // Send modifier key states
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, e.Control);
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, e.Shift);
+            _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, e.Alt);
+
+            // Send the actual key release
+            var imguiKey = WinFormsKeyMapper.MapKeyToImGui(e.KeyCode);
             if (imguiKey != ImGuiNET.ImGuiKey.None)
                 _imguiRenderer?.UpdateKeyState(imguiKey, false);
-
-            // Handle modifier keys
-            if (!e.Control) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModCtrl, false);
-            if (!e.Shift) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModShift, false);
-            if (!e.Alt) _imguiRenderer?.UpdateKeyState(ImGuiNET.ImGuiKey.ModAlt, false);
         };
         this.KeyPress += (s, e) =>
         {
@@ -115,6 +125,9 @@ public partial class MainWindow : Form
 
         // Subscribe to dialogue requests from MainViewModel
         _viewModel.DialogueRequested += OnDialogueRequested;
+
+        // Open world selection screen at startup
+        _modalManager.OpenWorldSelection();
 
         // Start render loop
         _isRendering = true;
@@ -213,34 +226,4 @@ public partial class MainWindow : Form
 
     [System.Runtime.InteropServices.DllImport("user32.dll")]
     private static extern bool PeekMessage(out NativeMessage message, IntPtr window, uint filterMin, uint filterMax, uint remove);
-
-    private static ImGuiKey MapKeyToImGui(Keys key) => key switch
-    {
-        Keys.Tab => ImGuiKey.Tab,
-        Keys.Left => ImGuiKey.LeftArrow,
-        Keys.Right => ImGuiKey.RightArrow,
-        Keys.Up => ImGuiKey.UpArrow,
-        Keys.Down => ImGuiKey.DownArrow,
-        Keys.PageUp => ImGuiKey.PageUp,
-        Keys.PageDown => ImGuiKey.PageDown,
-        Keys.Home => ImGuiKey.Home,
-        Keys.End => ImGuiKey.End,
-        Keys.Insert => ImGuiKey.Insert,
-        Keys.Delete => ImGuiKey.Delete,
-        Keys.Back => ImGuiKey.Backspace,
-        Keys.Space => ImGuiKey.Space,
-        Keys.Enter => ImGuiKey.Enter,
-        Keys.Escape => ImGuiKey.Escape,
-        // Text editing keys
-        Keys.A => ImGuiKey.A,
-        Keys.C => ImGuiKey.C,
-        Keys.V => ImGuiKey.V,
-        Keys.X => ImGuiKey.X,
-        Keys.Y => ImGuiKey.Y,
-        Keys.Z => ImGuiKey.Z,
-        // Panel hotkeys (M=Map, C=Character, I=World Info)
-        Keys.M => ImGuiKey.M,
-        Keys.I => ImGuiKey.I,
-        _ => ImGuiKey.None
-    };
 }

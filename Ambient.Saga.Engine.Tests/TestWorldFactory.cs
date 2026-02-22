@@ -1,6 +1,7 @@
 using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Domain.Enums;
 using Ambient.Domain.Partials;
 using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Loading;
@@ -19,7 +20,7 @@ public class TestWorldFactory : IWorldFactory
     /// Creates test game settings with default values for testing.
     /// </summary>
     public static IGameSettings CreateTestGameSettings() =>
-        new GameSettings("AmbientGames", "Saga");
+        new GameSettings(PublisherDefaults.PublisherFolder, "Saga");
 
     /// <summary>
     /// Creates a content path resolver for tests.

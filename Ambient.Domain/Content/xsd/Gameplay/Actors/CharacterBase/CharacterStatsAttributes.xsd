@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:attributeGroup name="StatBlock">
+        <xs:annotation>
+            <xs:documentation>
+                Core stat attributes shared by characters, equipment, spells, and consumables.
+                Resources: Health, Stamina, Mana (depletable pools).
+                State: Temperature (environmental/buff-driven body state).
+                Attributes: Strength, Defense, Magic, Speed, Endurance (base + modifiers).
+            </xs:documentation>
+        </xs:annotation>
+        <!-- Resources -->
+        <xs:attribute name="Health" type="xs:float" use="optional" default="1.0">
+            <xs:annotation><xs:documentation>Hit points. Character dies at 0.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Stamina" type="xs:float" use="optional" default="1.0">
+            <xs:annotation><xs:documentation>Action economy pool. Consumed by physical actions.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Mana" type="xs:float" use="optional" default="1.0">
+            <xs:annotation><xs:documentation>Magic resource pool. Consumed by spells and abilities.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <!-- State -->
+        <xs:attribute name="Temperature" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Body temperature state. On characters, driven by environmental simulation (altitude, latitude, weather). On equipment/spells/consumables, a small insulation or warming/cooling buff modifier.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <!-- Attributes -->
+        <xs:attribute name="Strength" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Physical damage output.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Defense" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Physical damage reduction.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Magic" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Magical damage and spell effectiveness.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Speed" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Turn order priority and movement rate.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Endurance" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Stamina efficiency and temperature tolerance.</xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+    <xs:attributeGroup name="ProgressBlock">
+        <xs:annotation>
+            <xs:documentation>
+                Progression attributes for characters and rewards.
+                Tracks level, currency, and experience accumulation.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Level" type="xs:int" use="optional" default="1">
+            <xs:annotation><xs:documentation>Character level. Determines stat scaling and content gating.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Credits" type="xs:float" use="optional" default="0">
+            <xs:annotation><xs:documentation>In-game currency balance.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Experience" type="xs:float" use="optional" default="0">
+            <xs:annotation><xs:documentation>Experience points toward next level.</xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+</xs:schema>

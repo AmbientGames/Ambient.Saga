@@ -16,7 +16,7 @@ public class Combatant
 
     // Current state (0-1 normalized range)
     public float Health { get; set; }
-    public float Energy { get; set; }
+    public float Stamina { get; set; }
 
     // Combat stats (0-1 normalized range)
     public float Strength { get; init; }
@@ -28,12 +28,12 @@ public class Combatant
     public string? AffinityRef { get; set; }
 
     // Archetype bias - small stat multipliers (±10%) from base archetype
-    public CharacterEffects? ArchetypeBias { get; init; }
+    public Attributes? ArchetypeBias { get; init; }
 
     // Reference to capabilities for spell/equipment access
     public ItemCollection? Capabilities { get; set; }
 
-    // Currently equipped items: slot name (e.g., "Head", "RightHand") -> equipment RefName
+    // Currently equipped items: slot name (e.g., "Head", "MainHand") -> equipment RefName
     public Dictionary<string, string> CombatProfile { get; set; } = new();
 
     // Combat state
@@ -46,7 +46,7 @@ public class Combatant
     // Helper properties
     public bool IsAlive => Health > 0;
     public float HealthPercent => Health / MAX_STAT * 100f;
-    public float EnergyPercent => Energy / MAX_STAT * 100f;
+    public float EnergyPercent => Stamina / MAX_STAT * 100f;
 
     /// <summary>
     /// Create a combatant from an AvatarBase.
@@ -61,7 +61,7 @@ public class Combatant
             RefName = avatar.ArchetypeRef ?? "Player",
             DisplayName = avatar.ArchetypeRef ?? "Player",
             Health = avatar.Stats.Health,
-            Energy = avatar.Stats.Stamina,
+            Stamina = avatar.Stats.Stamina,
             Strength = avatar.Stats.Strength,
             Defense = avatar.Stats.Defense,
             Speed = avatar.Stats.Speed,
@@ -88,7 +88,7 @@ public class Combatant
             RefName = character.RefName,
             DisplayName = character.DisplayName,
             Health = character.Stats.Health,
-            Energy = character.Stats.Stamina,
+            Stamina = character.Stats.Stamina,
             Strength = character.Stats.Strength,
             Defense = character.Stats.Defense,
             Speed = character.Stats.Speed,

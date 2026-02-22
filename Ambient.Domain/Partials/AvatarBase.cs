@@ -39,9 +39,32 @@ public partial class AvatarBase : IAvatarBase
     public string? CurrentToolRef { get; set; }
 
     /// <summary>
-    /// The currently selected building material reference (session state).
+    /// The currently selected block reference (session state).
     /// </summary>
-    public string? CurrentBuildingMaterialRef { get; set; }
+    public string? CurrentBlockRef { get; set; }
+
+    /// <summary>
+    /// The hotbar slots (1-9 keys). Array of 9 slots for quick item access.
+    /// </summary>
+    public Hotbar.HotbarSlot[] Hotbar { get; set; } = CreateDefaultHotbar();
+
+    /// <summary>
+    /// The currently active hotbar slot index (0-8), or -1 if none selected.
+    /// </summary>
+    public int ActiveHotbarSlot { get; set; } = -1;
+
+    /// <summary>
+    /// Creates a default empty hotbar with 9 slots.
+    /// </summary>
+    private static Hotbar.HotbarSlot[] CreateDefaultHotbar()
+    {
+        var slots = new Hotbar.HotbarSlot[9];
+        for (int i = 0; i < 9; i++)
+        {
+            slots[i] = new Hotbar.HotbarSlot();
+        }
+        return slots;
+    }
 
     /// <summary>
     /// Total play time in hours (runtime metric).
@@ -127,9 +150,9 @@ public partial class AvatarBase : IAvatarBase
     public Dictionary<string, float> BlockOwnership { get; set; } = new Dictionary<string, float>();
 
     /// <summary>
-    /// Usage statistics for blocks by the avatar.
+    /// Usage statistics for blocks placed by the avatar (fractional based on saturation).
     /// </summary>
-    public int[] BlockUsage { get; set; } = new int[WorldMaximums.MaxBlocks];
+    public float[] BlockUsage { get; set; } = new float[WorldMaximums.MaxBlocks];
 
     /// <summary>
     /// The avatar's spawn position.

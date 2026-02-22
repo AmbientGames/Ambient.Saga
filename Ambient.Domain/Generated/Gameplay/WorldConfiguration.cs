@@ -25,6 +25,8 @@ namespace Ambient.Domain {
         
         private object itemField;
         
+        private int schemaVersionField;
+        
         private string contentPackLibraryField;
         
         private string contentPackThemeField;
@@ -43,15 +45,42 @@ namespace Ambient.Domain {
         
         private ClimateModel climateModelField;
         
+        private bool allowTeleportingField;
+        
         private int displayOrderField;
         
+        private string weightUnitNameField;
+        
+        private float blockWeightField;
+        
+        private float equipmentWeightField;
+        
+        private float toolWeightField;
+        
+        private float spellWeightField;
+        
+        private float consumableWeightField;
+        
+        private float buildingMaterialWeightField;
+        
+        private string completionQuestRefField;
+        
         public WorldConfiguration() {
+            this.schemaVersionField = 1;
             this.contentPackLibraryField = "default";
             this.currencyNameField = "Credit";
             this.startDateField = new System.DateTime(103680000000000);
             this.secondsInHourField = 60;
             this.climateModelField = ClimateModel.Earth;
+            this.allowTeleportingField = false;
             this.displayOrderField = 100;
+            this.weightUnitNameField = "kg";
+            this.blockWeightField = ((float)(1F));
+            this.equipmentWeightField = ((float)(2F));
+            this.toolWeightField = ((float)(1.5F));
+            this.spellWeightField = ((float)(0.1F));
+            this.consumableWeightField = ((float)(0.25F));
+            this.buildingMaterialWeightField = ((float)(0.5F));
         }
         
         /// <remarks/>
@@ -63,6 +92,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.itemField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(1)]
+        public int SchemaVersion {
+            get {
+                return this.schemaVersionField;
+            }
+            set {
+                this.schemaVersionField = value;
             }
         }
         
@@ -172,6 +213,18 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool AllowTeleporting {
+            get {
+                return this.allowTeleportingField;
+            }
+            set {
+                this.allowTeleportingField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(100)]
         public int DisplayOrder {
             get {
@@ -179,6 +232,101 @@ namespace Ambient.Domain {
             }
             set {
                 this.displayOrderField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute("kg")]
+        public string WeightUnitName {
+            get {
+                return this.weightUnitNameField;
+            }
+            set {
+                this.weightUnitNameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1")]
+        public float BlockWeight {
+            get {
+                return this.blockWeightField;
+            }
+            set {
+                this.blockWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "2")]
+        public float EquipmentWeight {
+            get {
+                return this.equipmentWeightField;
+            }
+            set {
+                this.equipmentWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "1.5")]
+        public float ToolWeight {
+            get {
+                return this.toolWeightField;
+            }
+            set {
+                this.toolWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0.1")]
+        public float SpellWeight {
+            get {
+                return this.spellWeightField;
+            }
+            set {
+                this.spellWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0.25")]
+        public float ConsumableWeight {
+            get {
+                return this.consumableWeightField;
+            }
+            set {
+                this.consumableWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0.5")]
+        public float BuildingMaterialWeight {
+            get {
+                return this.buildingMaterialWeightField;
+            }
+            set {
+                this.buildingMaterialWeightField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string CompletionQuestRef {
+            get {
+                return this.completionQuestRefField;
+            }
+            set {
+                this.completionQuestRefField = value;
             }
         }
     }

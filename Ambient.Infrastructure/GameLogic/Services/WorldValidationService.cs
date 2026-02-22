@@ -15,6 +15,7 @@ public static class WorldValidationService
         ValidateCharacterReferences(world, errors);
         ValidateCharacterAffinityReferences(world, errors);
         ValidateCombatStanceReferences(world, errors);
+        ValidateEquipmentSlotReferences(world, errors);
         ValidateDialogueReferences(world, errors);
         ValidateDialogueInventoryReferences(world, errors);
         ValidateAchievementReferences(world, errors);
@@ -396,6 +397,26 @@ public static class WorldValidationService
             if (combatStance.Effects.Magic < 0.1f || combatStance.Effects.Magic > 3.0f)
             {
                 errors.Add($"{combatStanceContext}: Magic {combatStance.Effects.Magic} is outside reasonable range (0.1 - 3.0)");
+            }
+        }
+    }
+
+    private static void ValidateEquipmentSlotReferences(IWorld world, List<string> errors)
+    {
+        if (world.Gameplay.Equipment == null) return;
+
+        foreach (var equipment in world.Gameplay.Equipment)
+        {
+            var equipmentContext = $"Equipment '{equipment.RefName}'";
+
+            // Validate SlotRef references a valid LoadoutSlot
+            if (!string.IsNullOrEmpty(equipment.SlotRef))
+            {
+                ValidateReference(world.LoadoutSlotsLookup, equipment.SlotRef, equipmentContext, "SlotRef", "LoadoutSlots", errors);
+            }
+            else
+            {
+                errors.Add($"{equipmentContext}: SlotRef is required but not specified");
             }
         }
     }

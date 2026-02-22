@@ -30,7 +30,7 @@ public class QuestModal
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    public void Open(string questRef, string sagaRef, string questGiverRef, MainViewModel viewModel)
+    public void Open(string questRef, string sagaRef, string questGiverRef, SagaMainViewModel viewModel)
     {
         _currentQuestRef = questRef;
         _currentSagaRef = sagaRef;
@@ -47,7 +47,7 @@ public class QuestModal
         _ = LoadQuestStateAsync(questRef, sagaRef, viewModel);
     }
 
-    private async Task LoadQuestStateAsync(string questRef, string sagaRef, MainViewModel viewModel)
+    private async Task LoadQuestStateAsync(string questRef, string sagaRef, SagaMainViewModel viewModel)
     {
         try
         {
@@ -60,7 +60,7 @@ public class QuestModal
         }
     }
 
-    public void Render(MainViewModel viewModel, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ref bool isOpen)
     {
         if (!isOpen || _currentQuest == null) return;
 
@@ -173,7 +173,7 @@ public class QuestModal
         ImGui.Unindent(10 * UIConstants.DpiScale);
     }
 
-    private void RenderActionButtons(MainViewModel viewModel, ref bool isOpen)
+    private void RenderActionButtons(SagaMainViewModel viewModel, ref bool isOpen)
     {
         var buttonWidth = 140f;
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
@@ -260,7 +260,7 @@ public class QuestModal
         }
     }
 
-    private void AcceptQuest(MainViewModel viewModel)
+    private void AcceptQuest(SagaMainViewModel viewModel)
     {
         if (_isAccepting || viewModel.PlayerAvatar == null) return;
 
@@ -268,7 +268,7 @@ public class QuestModal
         _ = AcceptQuestAsync(viewModel);
     }
 
-    private async Task AcceptQuestAsync(MainViewModel viewModel)
+    private async Task AcceptQuestAsync(SagaMainViewModel viewModel)
     {
         try
         {
@@ -314,7 +314,7 @@ public class QuestModal
     /// <summary>
     /// Checks if the quest is currently active for the avatar (event-sourced from transaction log).
     /// </summary>
-    private async Task<bool> IsQuestActiveAsync(string questRef, string sagaRef, MainViewModel viewModel)
+    private async Task<bool> IsQuestActiveAsync(string questRef, string sagaRef, SagaMainViewModel viewModel)
     {
         if (viewModel.PlayerAvatar == null) return false;
 
@@ -337,7 +337,7 @@ public class QuestModal
     /// <summary>
     /// Checks if the quest has been completed by the avatar (event-sourced from transaction log).
     /// </summary>
-    private async Task<bool> IsQuestCompletedAsync(string questRef, string sagaRef, MainViewModel viewModel)
+    private async Task<bool> IsQuestCompletedAsync(string questRef, string sagaRef, SagaMainViewModel viewModel)
     {
         if (viewModel.PlayerAvatar == null) return false;
 

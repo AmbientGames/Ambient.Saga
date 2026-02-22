@@ -36,6 +36,11 @@ public class BattleEngine
     private const float SPELL_DAMAGE_MULTIPLIER = 3.0f;   // Spells scale with Magic
     private const float BASE_DAMAGE_MINIMUM = 0.05f;      // Minimum 5% damage from weapon/spell attacks
 
+    // Hand slot constants - these three slots have special mutual exclusivity rules
+    private const string MainHandSlot = "MainHand";
+    private const string OffHandSlot = "OffHand";
+    private const string BothHandsSlot = "BothHands";
+
     private readonly Combatant _player;
     private readonly List<Combatant> _companions;  // Party members (excluding player)
     private readonly Combatant _enemy;
@@ -317,7 +322,7 @@ public class BattleEngine
             RefName = _enemy.RefName,
             DisplayName = _enemy.DisplayName,
             Health = _enemy.Health,
-            Energy = _enemy.Energy,
+            Stamina = _enemy.Stamina,
             Strength = GetEffectiveStrength(_enemy),
             Defense = GetEffectiveDefense(_enemy),
             Speed = GetEffectiveSpeed(_enemy),
@@ -413,7 +418,7 @@ public class BattleEngine
             RefName = opponent.RefName,
             DisplayName = opponent.DisplayName,
             Health = opponent.Health,
-            Energy = opponent.Energy,
+            Stamina = opponent.Stamina,
             Strength = GetEffectiveStrength(opponent),
             Defense = GetEffectiveDefense(opponent),
             Speed = GetEffectiveSpeed(opponent),
@@ -723,12 +728,13 @@ public class BattleEngine
             };
         }
 
-        // VERIFY: Weapon must be equipped in a slot (RightHand or LeftHand)
+        // VERIFY: Weapon must be equipped in a slot (MainHand, OffHand, or BothHands)
         var isEquipped = false;
         if (attacker.CombatProfile != null)
         {
-            isEquipped = attacker.CombatProfile.TryGetValue("RightHand", out var rightHandItem) && rightHandItem == weapon.RefName
-                      || attacker.CombatProfile.TryGetValue("LeftHand", out var leftHandItem) && leftHandItem == weapon.RefName;
+            isEquipped = attacker.CombatProfile.TryGetValue(MainHandSlot, out var mainHandItem) && mainHandItem == weapon.RefName
+                      || attacker.CombatProfile.TryGetValue(OffHandSlot, out var offHandItem) && offHandItem == weapon.RefName
+                      || attacker.CombatProfile.TryGetValue(BothHandsSlot, out var bothHandsItem) && bothHandsItem == weapon.RefName;
         }
 
         if (!isEquipped)
@@ -788,7 +794,7 @@ public class BattleEngine
 
         // Apply weapon effects using EffectApplier
         var effects = EffectApplier.ApplyEffects(
-            weapon.Effects ?? new CharacterEffects(),
+            weapon.Effects ?? new Attributes(),
             weapon.AffinityRef,
             weaponCondition,
             attacker.AffinityRef,
@@ -920,8 +926,8 @@ public class BattleEngine
             var requiredCategory = spell.RequiresEquipped;
             var hasRequiredEquipment = false;
 
-            // Check both hand slots for the required equipment category
-            foreach (var slot in new[] { "RightHand", "LeftHand" })
+            // Check all hand slots for the required equipment category
+            foreach (var slot in new[] { MainHandSlot, OffHandSlot, BothHandsSlot })
             {
                 if (attacker.CombatProfile.TryGetValue(slot, out var equippedRef) && !string.IsNullOrEmpty(equippedRef))
                 {
@@ -971,7 +977,7 @@ public class BattleEngine
         // Apply spell effects using EffectApplier
         // Use spell's UseType to determine if offensive (damage) or defensive (healing/buff)
         var effects = EffectApplier.ApplyEffects(
-            spell.Effects ?? new CharacterEffects(),
+            spell.Effects ?? new Attributes(),
             spell.AffinityRef,
             spellCondition,
             attacker.AffinityRef,
@@ -1004,7 +1010,7 @@ public class BattleEngine
 
         // Check if attacker has enough Energy (using Energy for both Mana and Stamina)
         var totalCost = manaCost + staminaCost;
-        if (attacker.Energy < totalCost)
+        if (attacker.Stamina < totalCost)
         {
             CombatLog.Add($"{attacker.DisplayName} doesn't have enough energy to cast {spell.DisplayName}!");
             return new CombatEvent
@@ -1015,7 +1021,7 @@ public class BattleEngine
         }
 
         // Apply energy cost
-        attacker.Energy = Math.Max(0, attacker.Energy - (float)totalCost);
+        attacker.Stamina = Math.Max(0, attacker.Stamina - (float)totalCost);
 
         // Total damage = base + effect damage
         var totalDamage = Math.Max(BASE_DAMAGE_MINIMUM, (float)(baseDamage + Math.Abs(effectDamage)));
@@ -1152,7 +1158,7 @@ public class BattleEngine
 
         // Apply consumable effects using consumable's UseType
         var effects = EffectApplier.ApplyEffects(
-            consumable.Effects ?? new CharacterEffects(),
+            consumable.Effects ?? new Attributes(),
             consumable.AffinityRef,
             1.0f,  // Consumables don't degrade
             user.AffinityRef,
@@ -1177,13 +1183,13 @@ public class BattleEngine
                 if (effect.AppliedToAttacker)
                 {
                     // Cost to user
-                    user.Energy = Math.Max(0, user.Energy + (float)effect.Change);
+                    user.Stamina = Math.Max(0, user.Stamina + (float)effect.Change);
                 }
                 else
                 {
                     // Restore to target
                     var energyRestore = (float)effect.Change;
-                    effectTarget.Energy = Math.Min(Combatant.MAX_STAT, effectTarget.Energy + energyRestore);
+                    effectTarget.Stamina = Math.Min(Combatant.MAX_STAT, effectTarget.Stamina + energyRestore);
                 }
             }
         }
@@ -1255,7 +1261,7 @@ public class BattleEngine
             };
         }
 
-        // Parse single change: "Slot:Value" (e.g., "RightHand:IronSword" or "Stance:Defensive" or "Affinity:Fire")
+        // Parse single change: "Slot:Value" (e.g., "MainHand:IronSword" or "Stance:Defensive" or "Affinity:Fire")
         var parts = parameter.Split(':');
         if (parts.Length != 2)
         {
@@ -1277,8 +1283,8 @@ public class BattleEngine
         if (actor.CombatProfile == null)
             actor.CombatProfile = new Dictionary<string, string>();
 
-        // PHASE 6: Use two-handed weapon validation for hand slots
-        if (slot == "RightHand" || slot == "LeftHand")
+        // Use hand slot validation for mutual exclusivity (BothHands <-> MainHand/OffHand)
+        if (slot == MainHandSlot || slot == OffHandSlot || slot == BothHandsSlot)
         {
             if (!TryApplyHandSlotEquipment(actor, slot, value, out var errorMessage))
             {
@@ -1336,7 +1342,7 @@ public class BattleEngine
         }
 
         // Parse multiple changes: "Slot:Value,Slot:Value,Slot:Value"
-        // Example: "RightHand:IronSword,Affinity:Fire,Stance:Defensive"
+        // Example: "MainHand:IronSword,Affinity:Fire,Stance:Defensive"
         var changes = parameter.Split(',');
         var appliedChanges = 0;
 
@@ -1362,8 +1368,8 @@ public class BattleEngine
                 CombatLog.Add($"  → {slot} set to {value}");
                 appliedChanges++;
             }
-            // PHASE 6: Use two-handed weapon validation for hand slots
-            else if (slot == "RightHand" || slot == "LeftHand")
+            // Use hand slot validation for mutual exclusivity (BothHands <-> MainHand/OffHand)
+            else if (slot == MainHandSlot || slot == OffHandSlot || slot == BothHandsSlot)
             {
                 if (TryApplyHandSlotEquipment(actor, slot, value, out _))
                 {
@@ -1421,7 +1427,7 @@ public class BattleEngine
 
         // Restore some energy when defending (10% of max)
         var energyRestore = 0.1f;
-        combatant.Energy = Math.Min(Combatant.MAX_STAT, combatant.Energy + energyRestore);
+        combatant.Stamina = Math.Min(Combatant.MAX_STAT, combatant.Stamina + energyRestore);
         CombatLog.Add($"{combatant.DisplayName} recovers {energyRestore * 100:F0}% energy!");
 
         // PHASE 5: Apply OnDefend status effects from equipped items
@@ -1601,7 +1607,7 @@ public class BattleEngine
     /// Check if combatant meets minimum stat requirements for an item.
     /// Returns a failed CombatEvent if requirements not met, null if OK.
     /// </summary>
-    private CombatEvent? CheckMinimumStats(Combatant combatant, CharacterEffects minimumStats, string itemName)
+    private CombatEvent? CheckMinimumStats(Combatant combatant, Attributes minimumStats, string itemName)
     {
         // Check each stat that has a minimum requirement (values > 0 are requirements)
         if (minimumStats.Strength > 0 && combatant.Strength < minimumStats.Strength)
@@ -1646,7 +1652,7 @@ public class BattleEngine
 
         // Check energy (Mana/Stamina mapped to Energy in battle)
         var requiredEnergy = Math.Max(minimumStats.Mana, minimumStats.Stamina);
-        if (requiredEnergy > 0 && combatant.Energy < requiredEnergy)
+        if (requiredEnergy > 0 && combatant.Stamina < requiredEnergy)
         {
             CombatLog.Add($"{combatant.DisplayName} lacks the Energy to use {itemName}!");
             return new CombatEvent
@@ -1910,85 +1916,53 @@ public class BattleEngine
     }
 
     /// <summary>
-    /// PHASE 6: Check if equipment is a two-handed weapon.
-    /// Two-handed weapons occupy both RightHand and LeftHand slots.
+    /// Check if equipment is a two-handed weapon.
+    /// Two-handed weapons have SlotRef="BothHands" and block MainHand/OffHand when equipped.
     /// </summary>
     public bool IsTwoHandedWeapon(Equipment? equipment)
     {
         if (equipment == null) return false;
-        return equipment.Category == EquipmentCategoryType.TwoHanded;
+        return equipment.SlotRef == BothHandsSlot;
     }
 
     /// <summary>
-    /// PHASE 6: Validates and applies equipment to a hand slot, handling two-handed weapon rules.
+    /// Validates and applies equipment to a hand slot, handling BothHands/MainHand/OffHand mutual exclusivity.
+    /// - Equipping to BothHands: clears MainHand and OffHand
+    /// - Equipping to MainHand or OffHand: clears BothHands
     /// Returns true if the equipment was successfully applied, false if validation failed.
     /// </summary>
     private bool TryApplyHandSlotEquipment(Combatant actor, string slot, string equipmentRef, out string? errorMessage)
     {
         errorMessage = null;
 
-        // Only process hand slots for two-handed validation
-        if (slot != "RightHand" && slot != "LeftHand")
+        // Only process hand slots for mutual exclusivity
+        if (slot != MainHandSlot && slot != OffHandSlot && slot != BothHandsSlot)
         {
             actor.CombatProfile[slot] = equipmentRef;
             return true;
         }
 
-        if (_world == null)
+        var equipment = _world?.TryGetEquipmentByRefName(equipmentRef);
+
+        // Handle BothHands slot - clears MainHand and OffHand
+        if (slot == BothHandsSlot)
         {
-            actor.CombatProfile[slot] = equipmentRef;
+            if (actor.CombatProfile.Remove(MainHandSlot))
+                CombatLog.Add($"  → {MainHandSlot} cleared for two-handed weapon");
+            if (actor.CombatProfile.Remove(OffHandSlot))
+                CombatLog.Add($"  → {OffHandSlot} cleared for two-handed weapon");
+
+            actor.CombatProfile[BothHandsSlot] = equipmentRef;
+            CombatLog.Add($"  → Two-handed weapon {equipment?.DisplayName ?? equipmentRef} equipped");
             return true;
         }
 
-        var equipment = _world.TryGetEquipmentByRefName(equipmentRef);
-
-        // If equipping a two-handed weapon
-        if (IsTwoHandedWeapon(equipment))
+        // Handle MainHand or OffHand slot - clears BothHands if occupied
+        if (actor.CombatProfile.TryGetValue(BothHandsSlot, out var bothHandsRef) && !string.IsNullOrEmpty(bothHandsRef))
         {
-            // Check if the OTHER hand has something equipped
-            var otherSlot = slot == "RightHand" ? "LeftHand" : "RightHand";
-            if (actor.CombatProfile.TryGetValue(otherSlot, out var otherEquipRef) && !string.IsNullOrEmpty(otherEquipRef))
-            {
-                // Clear the other hand - two-handed weapons occupy both
-                actor.CombatProfile[otherSlot] = string.Empty;
-                CombatLog.Add($"  → {equipment?.DisplayName ?? equipmentRef} requires both hands - {otherSlot} cleared");
-            }
-
-            // Equip in both hands
-            actor.CombatProfile["RightHand"] = equipmentRef;
-            actor.CombatProfile["LeftHand"] = equipmentRef;
-            CombatLog.Add($"  → Two-handed weapon {equipment?.DisplayName ?? equipmentRef} equipped in both hands");
-            return true;
-        }
-
-        // PHASE 6 FIX: First check if EITHER hand has a two-handed weapon - must block one-handed equip
-        var otherHandSlot = slot == "RightHand" ? "LeftHand" : "RightHand";
-
-        // Check current slot for two-handed weapon
-        var currentSlotEquip = actor.CombatProfile.TryGetValue(slot, out var currentRef) ? currentRef : null;
-        if (!string.IsNullOrEmpty(currentSlotEquip))
-        {
-            var currentEquipment = _world.TryGetEquipmentByRefName(currentSlotEquip);
-            if (IsTwoHandedWeapon(currentEquipment))
-            {
-                // Current slot has two-handed weapon - block one-handed equip
-                errorMessage = $"Cannot equip {equipment?.DisplayName ?? equipmentRef} - {currentEquipment?.DisplayName ?? currentSlotEquip} is a two-handed weapon occupying both hands";
-                CombatLog.Add($"  → {errorMessage}");
-                return false;
-            }
-        }
-
-        // Check other hand for two-handed weapon
-        if (actor.CombatProfile.TryGetValue(otherHandSlot, out var otherHandRef) && !string.IsNullOrEmpty(otherHandRef))
-        {
-            var otherEquip = _world.TryGetEquipmentByRefName(otherHandRef);
-            if (IsTwoHandedWeapon(otherEquip))
-            {
-                // Can't equip in this slot - other hand has a two-handed weapon
-                errorMessage = $"Cannot equip {equipment?.DisplayName ?? equipmentRef} - {otherEquip?.DisplayName ?? otherHandRef} is a two-handed weapon occupying both hands";
-                CombatLog.Add($"  → {errorMessage}");
-                return false;
-            }
+            var twoHandedEquip = _world?.TryGetEquipmentByRefName(bothHandsRef);
+            actor.CombatProfile.Remove(BothHandsSlot);
+            CombatLog.Add($"  → {twoHandedEquip?.DisplayName ?? bothHandsRef} unequipped to free hands");
         }
 
         // Normal one-handed equip
@@ -2099,9 +2073,9 @@ public class BattleEngine
         if (outcome.Effects != null && outcome.Effects.Stamina > 0)
         {
             var staminaGain = outcome.Effects.Stamina;
-            var previousEnergy = pending.Target.Energy;
-            pending.Target.Energy = Math.Min(Combatant.MAX_STAT, pending.Target.Energy + staminaGain);
-            staminaGained = pending.Target.Energy - previousEnergy;
+            var previousEnergy = pending.Target.Stamina;
+            pending.Target.Stamina = Math.Min(Combatant.MAX_STAT, pending.Target.Stamina + staminaGain);
+            staminaGained = pending.Target.Stamina - previousEnergy;
 
             if (staminaGained > 0)
             {
@@ -2208,15 +2182,15 @@ public class BattleEngine
 
     /// <summary>
     /// Get the weapon category for a combatant's equipped weapon.
-    /// Checks common weapon slots (RightHand, LeftHand, MainHand).
+    /// Checks hand slots: BothHands first (two-handed), then MainHand, OffHand.
     /// </summary>
     private string? GetEquippedWeaponCategory(Combatant combatant)
     {
         if (_world == null || combatant.CombatProfile == null)
             return null;
 
-        // Check common weapon slot names in priority order
-        var weaponSlots = new[] { "RightHand", "MainHand", "LeftHand", "Weapon" };
+        // Check hand slots in priority order - BothHands first for two-handed weapons
+        var weaponSlots = new[] { BothHandsSlot, MainHandSlot, OffHandSlot };
 
         foreach (var slot in weaponSlots)
         {

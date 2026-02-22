@@ -1,4 +1,6 @@
-﻿using Ambient.Domain.Entities;
+﻿using Ambient.Domain;
+using Ambient.Domain.Contracts;
+using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
@@ -81,14 +83,19 @@ public interface IAvatarUpdateService
 
     /// <summary>
     /// Updates avatar block inventory after mining (adds mined blocks).
+    /// Skips blocks that would exceed carry weight capacity.
     /// </summary>
     /// <param name="avatar">The avatar to update</param>
     /// <param name="blocksMined">Dictionary of BlockRef -> quantity mined</param>
+    /// <param name="archetype">The avatar's archetype (for max carry weight)</param>
+    /// <param name="worldConfig">The world configuration (for category weights)</param>
     /// <param name="ct">Cancellation token</param>
     /// <returns>The updated avatar</returns>
     Task<AvatarEntity> UpdateAvatarForMiningAsync(
         AvatarEntity avatar,
         Dictionary<string, int> blocksMined,
+        AvatarArchetype archetype,
+        IWorldConfiguration worldConfig,
         CancellationToken ct = default);
 
     /// <summary>

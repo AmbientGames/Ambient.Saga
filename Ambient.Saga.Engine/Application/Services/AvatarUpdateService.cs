@@ -1,7 +1,9 @@
 ﻿using Ambient.Application.Contracts;
 using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Domain.Extensions;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -548,6 +550,8 @@ public class AvatarUpdateService : IAvatarUpdateService
     public async Task<AvatarEntity> UpdateAvatarForMiningAsync(
         AvatarEntity avatar,
         Dictionary<string, int> blocksMined,
+        AvatarArchetype archetype,
+        IWorldConfiguration worldConfig,
         CancellationToken ct = default)
     {
         // Initialize Capabilities if needed
@@ -556,14 +560,21 @@ public class AvatarUpdateService : IAvatarUpdateService
             avatar.Capabilities = new ItemCollection();
         }
 
-        // Add mined blocks to inventory
+        // Add mined blocks to inventory, skipping blocks that would exceed capacity
+        var blockWeight = worldConfig.BlockWeight;
         foreach (var kvp in blocksMined)
         {
             var blockRef = kvp.Key;
             var quantity = kvp.Value;
 
+            // Check how many blocks we can still carry
+            var remaining = CarryWeightCalculator.GetRemainingCapacity(avatar.Capabilities, archetype, worldConfig);
+            var canCarry = blockWeight > 0 ? (int)(remaining / blockWeight) : quantity;
+            if (canCarry <= 0) break;
+
+            var toAdd = Math.Min(quantity, canCarry);
             var block = avatar.Capabilities.GetOrAddBlock(blockRef);
-            block.Quantity += quantity;
+            block.Quantity += toAdd;
         }
 
         return avatar;
@@ -658,7 +669,7 @@ public class AvatarUpdateService : IAvatarUpdateService
     /// <summary>
     /// Parse LoadoutSlotSnapshot into CombatProfile dictionary.
     /// Format: "SlotName:EquipmentRef:Condition,SlotName:EquipmentRef:Condition,..."
-    /// Example: "RightHand:WoodenSword:0.85,Head:IronHelm:1.00"
+    /// Example: "MainHand:WoodenSword:0.85,Head:IronHelm:1.00"
     /// </summary>
     private Dictionary<string, string> ParseLoadoutSnapshot(string loadoutSnapshot)
     {
@@ -685,7 +696,7 @@ public class AvatarUpdateService : IAvatarUpdateService
     /// <summary>
     /// Update equipment condition from LoadoutSlotSnapshot.
     /// Format: "SlotName:EquipmentRef:Condition,SlotName:EquipmentRef:Condition,..."
-    /// Example: "RightHand:WoodenSword:0.85,Head:IronHelm:1.00"
+    /// Example: "MainHand:WoodenSword:0.85,Head:IronHelm:1.00"
     /// </summary>
     private void UpdateEquipmentConditionsFromSnapshot(AvatarEntity avatar, string loadoutSnapshot)
     {

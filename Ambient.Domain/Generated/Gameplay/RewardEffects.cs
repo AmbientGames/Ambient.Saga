@@ -30,19 +30,15 @@ namespace Ambient.Domain {
         
         private float temperatureField;
         
-        private float hungerField;
-        
-        private float thirstField;
-        
-        private float insulationField;
-        
         private float strengthField;
         
         private float defenseField;
         
+        private float magicField;
+        
         private float speedField;
         
-        private float magicField;
+        private float enduranceField;
         
         private int levelField;
         
@@ -54,14 +50,12 @@ namespace Ambient.Domain {
             this.healthField = ((float)(1F));
             this.staminaField = ((float)(1F));
             this.manaField = ((float)(1F));
-            this.temperatureField = ((float)(37F));
-            this.hungerField = ((float)(0F));
-            this.thirstField = ((float)(0F));
-            this.insulationField = ((float)(0F));
+            this.temperatureField = ((float)(0F));
             this.strengthField = ((float)(0F));
             this.defenseField = ((float)(0F));
-            this.speedField = ((float)(0F));
             this.magicField = ((float)(0F));
+            this.speedField = ((float)(0F));
+            this.enduranceField = ((float)(0F));
             this.levelField = 1;
             this.creditsField = ((float)(0F));
             this.experienceField = ((float)(0F));
@@ -105,49 +99,13 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "37")]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
         public float Temperature {
             get {
                 return this.temperatureField;
             }
             set {
                 this.temperatureField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float Hunger {
-            get {
-                return this.hungerField;
-            }
-            set {
-                this.hungerField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float Thirst {
-            get {
-                return this.thirstField;
-            }
-            set {
-                this.thirstField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float Insulation {
-            get {
-                return this.insulationField;
-            }
-            set {
-                this.insulationField = value;
             }
         }
         
@@ -178,6 +136,18 @@ namespace Ambient.Domain {
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
+        public float Magic {
+            get {
+                return this.magicField;
+            }
+            set {
+                this.magicField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
         public float Speed {
             get {
                 return this.speedField;
@@ -190,12 +160,12 @@ namespace Ambient.Domain {
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         [System.ComponentModel.DefaultValueAttribute(typeof(float), "0")]
-        public float Magic {
+        public float Endurance {
             get {
-                return this.magicField;
+                return this.enduranceField;
             }
             set {
-                this.magicField = value;
+                this.enduranceField = value;
             }
         }
         

@@ -31,6 +31,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Ambient.Domain\Ambient.Domain.csproj" />
+		<ProjectReference Include="..\Ambient.Saga.Rendering.DirectX\Ambient.Saga.Rendering.DirectX.csproj" />
 		<ProjectReference Include="..\Ambient.Saga.UI\Ambient.Saga.UI.csproj" />
 	</ItemGroup>
 

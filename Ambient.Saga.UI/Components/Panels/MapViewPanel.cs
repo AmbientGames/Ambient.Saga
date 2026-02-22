@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Numerics;
 using Ambient.Saga.UI.ViewModels;
 using Ambient.Saga.UI.Components.Modals;
+using Ambient.Saga.UI.Components.Utilities;
 using Ambient.Saga.UI;
 
 namespace Ambient.Saga.UI.Components.Panels;
@@ -20,7 +21,9 @@ public class MapViewPanel
     private const float MinZoom = 0.1f;
     private const float MaxZoom = 400.0f;
     private const float ZoomMultiplier = 1.15f; // Exponential zoom: 15% change per scroll tick
-    private const int CenterViewCells = 10; // Number of cells to show when centering on avatar
+    private const int CenterViewCells = 20; // Number of cells to show when centering on avatar
+    private const int TeleportCostPerKm = 10; // Cost per 1000 blocks/meters of distance
+    private const int MinTeleportCost = 5; // Minimum cost for any teleport
 
     // Track if we need to center on avatar (initial load or button press)
     private bool _needsInitialCenter = true;
@@ -28,7 +31,16 @@ public class MapViewPanel
     private float _pendingScrollY = -1;
     private double _pendingZoom = -1;
 
-    public void Render(MainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight, ModalManager modalManager)
+    // Teleport confirmation state
+    private bool _showTeleportConfirm = false;
+    private bool _pendingTeleport = false;
+    private double _pendingTeleportPixelX;
+    private double _pendingTeleportPixelY;
+    private double _pendingTeleportLat;
+    private double _pendingTeleportLon;
+    private int _pendingTeleportCost;
+
+    public void Render(SagaMainViewModel viewModel, nint heightMapTexturePtr, int heightMapWidth, int heightMapHeight, ModalManager modalManager)
     {
         var availableRegion = ImGui.GetContentRegionAvail();
 
@@ -257,8 +269,8 @@ public class MapViewPanel
                 ImGui.SetScrollY(ImGui.GetScrollY() - delta.Y);
             }
 
-            // Handle left-click to position avatar
-            if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
+            // Handle left-click to initiate teleport (shows confirmation)
+            if (ImGui.IsItemClicked(ImGuiMouseButton.Left) && !_showTeleportConfirm)
             {
                 // Get mouse position relative to full image (including scroll)
                 var mousePos = ImGui.GetMousePos();
@@ -279,10 +291,32 @@ public class MapViewPanel
                     var pixelX = normalizedX * heightMapWidth;
                     var pixelY = normalizedY * heightMapHeight;
 
-                    // Move avatar to clicked position (converts pixel to lat/lon internally)
-                    viewModel.SetAvatarPositionFromPixels(pixelX, pixelY);
+                    // Store pending teleport and calculate lat/lon for display
+                    _pendingTeleportPixelX = pixelX;
+                    _pendingTeleportPixelY = pixelY;
+
+                    if (viewModel.CurrentWorld?.HeightMapMetadata != null
+                        && ((viewModel.CurrentWorld.WorldConfiguration?.AllowTeleporting ?? false) || System.Diagnostics.Debugger.IsAttached))
+                    {
+                        _pendingTeleportLat = CoordinateConverter.HeightMapPixelYToLatitude(pixelY, viewModel.CurrentWorld.HeightMapMetadata);
+                        _pendingTeleportLon = CoordinateConverter.HeightMapPixelXToLongitude(pixelX, viewModel.CurrentWorld.HeightMapMetadata);
+
+                        // Calculate distance-based cost
+                        var distance = CoordinateConverter.CalculateDistance(
+                            viewModel.AvatarLatitude, viewModel.AvatarLongitude,
+                            _pendingTeleportLat, _pendingTeleportLon,
+                            viewModel.CurrentWorld);
+                        var distanceKm = distance / 1000.0;
+                        _pendingTeleportCost = Math.Max(MinTeleportCost, (int)Math.Round(distanceKm * TeleportCostPerKm));
+
+                        _showTeleportConfirm = true;
+                        ImGui.OpenPopup("Fast Travel");
+                    }
                 }
             }
+
+            // Teleport confirmation popup
+            RenderTeleportConfirmPopup(viewModel);
 
             // Overlay sagas, characters, and avatar on the heightmap
             var drawList = ImGui.GetWindowDrawList();
@@ -620,9 +654,102 @@ public class MapViewPanel
             ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "Mouse:");
             ImGui.Text($"Lat: {viewModel.MouseLatitude:F4}");
             ImGui.Text($"Lon: {viewModel.MouseLongitude:F4}");
-            ImGui.Text($"Elev: {viewModel.MouseElevation}m");
+            if (viewModel.HasElevationData)
+                ImGui.Text($"Elev: {viewModel.MouseElevation}m");
         }
 
         ImGui.EndChild(); // End LegendPanel
+    }
+
+    /// <summary>
+    /// Renders the teleport confirmation popup.
+    /// </summary>
+    private void RenderTeleportConfirmPopup(SagaMainViewModel viewModel)
+    {
+        if (!_showTeleportConfirm) return;
+
+        var scale = UIConstants.DpiScale;
+        ImGuiHelpers.CenterNextWindow();
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 15 * scale));
+
+        if (ImGui.BeginPopupModal("Fast Travel", ref _showTeleportConfirm,
+            ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize))
+        {
+            var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits";
+            var playerCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
+            var canAfford = playerCredits >= _pendingTeleportCost;
+
+            ImGui.TextWrapped("Teleport to this location?");
+            ImGui.Spacing();
+
+            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"Destination: {_pendingTeleportLat:F4}°, {_pendingTeleportLon:F4}°");
+            ImGui.Spacing();
+
+            ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Cost: {_pendingTeleportCost} {currencyName}");
+            ImGui.TextColored(canAfford ? new Vector4(0.5f, 1, 0.5f, 1) : new Vector4(1, 0.4f, 0.4f, 1),
+                $"Your balance: {playerCredits:F0} {currencyName}");
+
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var buttonWidth = 100 * scale;
+            var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
+            var totalWidth = buttonWidth * 2 + ImGui.GetStyle().ItemSpacing.X;
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) / 2);
+
+            if (_pendingTeleport)
+            {
+                ImGui.BeginDisabled();
+                ImGui.Button("...", new Vector2(buttonWidth, buttonHeight));
+                ImGui.EndDisabled();
+            }
+            else
+            {
+                ImGui.BeginDisabled(!canAfford);
+                if (ImGui.Button("Teleport", new Vector2(buttonWidth, buttonHeight)))
+                {
+                    _pendingTeleport = true;
+                    _ = TeleportAvatarAsync(viewModel, _pendingTeleportLat, _pendingTeleportLon, _pendingTeleportPixelX, _pendingTeleportPixelY, _pendingTeleportCost);
+                    _showTeleportConfirm = false;
+                    ImGui.CloseCurrentPopup();
+                }
+                ImGui.EndDisabled();
+
+                if (!canAfford && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+                {
+                    ImGui.SetTooltip($"Not enough {currencyName}");
+                }
+            }
+
+            ImGui.SameLine();
+
+            if (ImGui.Button("Cancel", new Vector2(buttonWidth, buttonHeight)))
+            {
+                _showTeleportConfirm = false;
+                ImGui.CloseCurrentPopup();
+            }
+
+            ImGui.EndPopup();
+        }
+
+        ImGui.PopStyleVar();
+    }
+
+    private async Task TeleportAvatarAsync(SagaMainViewModel viewModel, double lat, double lon, double pixelX, double pixelY, int cost)
+    {
+        try
+        {
+            var success = await viewModel.TeleportAvatarAsync(lat, lon, cost);
+            if (success)
+            {
+                // Update the avatar position on the map
+                viewModel.SetAvatarPositionFromPixels(pixelX, pixelY);
+            }
+        }
+        finally
+        {
+            _pendingTeleport = false;
+        }
     }
 }

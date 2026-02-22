@@ -215,7 +215,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             RefName = battleStartedTx.Data["PlayerCombatantId"],
             DisplayName = "Player",
             Health = float.Parse(battleStartedTx.Data["PlayerHealth"]),
-            Energy = float.Parse(battleStartedTx.Data["PlayerEnergy"]),
+            Stamina = float.Parse(battleStartedTx.Data["PlayerEnergy"]),
             Strength = float.Parse(battleStartedTx.Data["PlayerStrength"]),
             Defense = float.Parse(battleStartedTx.Data["PlayerDefense"]),
             Speed = float.Parse(battleStartedTx.Data["PlayerSpeed"]),
@@ -231,7 +231,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             RefName = enemyCharacterRef,
             DisplayName = enemyCharacter?.DisplayName ?? "Enemy",
             Health = float.Parse(battleStartedTx.Data["EnemyHealth"]),
-            Energy = float.Parse(battleStartedTx.Data["EnemyEnergy"]),
+            Stamina = float.Parse(battleStartedTx.Data["EnemyEnergy"]),
             Strength = float.Parse(battleStartedTx.Data["EnemyStrength"]),
             Defense = float.Parse(battleStartedTx.Data["EnemyDefense"]),
             Speed = float.Parse(battleStartedTx.Data["EnemySpeed"]),
@@ -288,7 +288,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
 
                 playerCombatant.Health = targetHealthAfter;
-                playerCombatant.Energy = actorEnergyAfter;
+                playerCombatant.Stamina = actorEnergyAfter;
 
                 // Apply counter damage to enemy if present
                 if (turnTx.Data.TryGetValue("EnemyHealthAfter", out var enemyHealthStr))
@@ -306,7 +306,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 var targetHealthAfter = float.Parse(turnTx.Data["TargetHealthAfter"]);
                 var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
 
-                combatant.Energy = actorEnergyAfter;
+                combatant.Stamina = actorEnergyAfter;
                 target.Health = targetHealthAfter;
 
                 // Update equipment/affinity from snapshots

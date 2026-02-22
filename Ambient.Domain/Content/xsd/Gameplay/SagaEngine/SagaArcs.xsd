@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+	<xs:include schemaLocation="../../EntityBase.xsd" />
+	<xs:include schemaLocation="SagaArcCommon.xsd" />
+
+	<xs:simpleType name="SagaArcCategory">
+		<xs:annotation>
+			<xs:documentation>Classifies a point of interest by its functional role in the world.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Facility">
+				<xs:annotation>
+					<xs:documentation>A functional building such as a shop, forge, or hospital.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Stronghold">
+				<xs:annotation>
+					<xs:documentation>A fortified location such as a castle, fortress, or military outpost.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Religious">
+				<xs:annotation>
+					<xs:documentation>A place of worship such as a shrine, temple, or monastery.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Ruin">
+				<xs:annotation>
+					<xs:documentation>An abandoned or destroyed structure that may contain loot or lore.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Landmark">
+				<xs:annotation>
+					<xs:documentation>A notable geographic or man-made feature used for navigation or discovery.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Infrastructure">
+				<xs:annotation>
+					<xs:documentation>A transportation or utility structure such as a bridge, road, or dam.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Passage">
+				<xs:annotation>
+					<xs:documentation>A traversable route such as a cave entrance, tunnel, or mountain pass.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Waypoint">
+				<xs:annotation>
+					<xs:documentation>A minor navigational marker or rest stop along a travel route.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Camp">
+				<xs:annotation>
+					<xs:documentation>A temporary or semi-permanent encampment for rest, trade, or staging.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="QuestHub">
+				<xs:annotation>
+					<xs:documentation>A location that serves as a central point for accepting and turning in quests.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Service">
+				<xs:annotation>
+					<xs:documentation>A location offering player services such as healing, repair, or fast travel.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Default">
+				<xs:annotation>
+					<xs:documentation>A generic point of interest with no specific category assigned.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SagaArcKind">
+		<xs:annotation>
+			<xs:documentation>A free-form sub-classification within a SagaArcCategory, such as Shrine, Airport, or Bridge.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<!-- Examples: Shrine, Temple, Airport, Bridge, BaseCamp, Viewpoint -->
+			<!-- Allow letters/digits with optional separators to keep it filesystem-friendly -->
+			<xs:pattern value="[A-Za-z][A-Za-z0-9]*(?:[._-][A-Za-z0-9]+)*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="SagaArcInitialState">
+		<xs:annotation>
+			<xs:documentation>Controls whether a SagaArc is revealed on the map before the player discovers it.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Hidden">
+				<xs:annotation>
+					<xs:documentation>The point of interest is invisible on the map until the player enters its DiscoverRadius.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Visible">
+				<xs:annotation>
+					<xs:documentation>The point of interest is shown on the map from the start of the game.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="SagaArc">
+		<xs:annotation>
+			<xs:documentation>A geo-located point of interest in the world that contains one or more proximity triggers for spawning NPCs.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EntityBase">
+				<xs:sequence>
+					<xs:element name="SagaTrigger" type="SagaTrigger" minOccurs="1" maxOccurs="unbounded" />
+				</xs:sequence>
+
+				<xs:attribute name="Latitude" type="xs:double" use="required">
+					<xs:annotation>
+						<xs:documentation>Geographic latitude of this point of interest in decimal degrees.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Longitude" type="xs:double" use="required">
+					<xs:annotation>
+						<xs:documentation>Geographic longitude of this point of interest in decimal degrees.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Category" type="SagaArcCategory" use="required">
+					<xs:annotation>
+						<xs:documentation>The functional classification of this point of interest.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Kind" type="SagaArcKind" use="optional" default="Default">
+					<xs:annotation>
+						<xs:documentation>A more specific sub-type within the chosen Category.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+
+				<!-- Deterministic POI interaction envelope -->
+				<xs:attribute name="DiscoverRadius" type="xs:double" use="optional" default="200">
+					<xs:annotation>
+						<xs:documentation>Distance in meters at which the player discovers this point of interest and it becomes visible on the map.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="InitialState" type="SagaArcInitialState" use="optional" default="Hidden">
+					<xs:annotation>
+						<xs:documentation>Whether this point of interest is visible or hidden on the map before discovery.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="SagaArcs">
+		<xs:annotation>
+			<xs:documentation>A collection of SagaArc definitions representing all points of interest in a world.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SagaArc" type="SagaArc" maxOccurs="unbounded">
+				<xs:unique name="UniqueSagaTriggerRefPerSaga">
+					<xs:selector xpath="SagaTrigger" />
+					<xs:field xpath="@RefName" />
+				</xs:unique>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

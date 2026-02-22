@@ -353,7 +353,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             RefName = battleStartedTx.Data["PlayerCombatantId"],
             DisplayName = "Player",  // Will be overridden by UI
             Health = float.Parse(battleStartedTx.Data["PlayerHealth"]),
-            Energy = float.Parse(battleStartedTx.Data["PlayerEnergy"]),
+            Stamina = float.Parse(battleStartedTx.Data["PlayerEnergy"]),
             Strength = float.Parse(battleStartedTx.Data["PlayerStrength"]),
             Defense = float.Parse(battleStartedTx.Data["PlayerDefense"]),
             Speed = float.Parse(battleStartedTx.Data["PlayerSpeed"]),
@@ -367,7 +367,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             RefName = battleStartedTx.Data["EnemyCharacterRef"],
             DisplayName = "Enemy",  // Will be overridden by UI
             Health = float.Parse(battleStartedTx.Data["EnemyHealth"]),
-            Energy = float.Parse(battleStartedTx.Data["EnemyEnergy"]),
+            Stamina = float.Parse(battleStartedTx.Data["EnemyEnergy"]),
             Strength = float.Parse(battleStartedTx.Data["EnemyStrength"]),
             Defense = float.Parse(battleStartedTx.Data["EnemyDefense"]),
             Speed = float.Parse(battleStartedTx.Data["EnemySpeed"]),
@@ -419,7 +419,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
 
             // Actor's energy is updated
-            combatant.Energy = actorEnergyAfter;
+            combatant.Stamina = actorEnergyAfter;
 
             // Target's health is updated
             var target = isPlayerTurn ? enemyCombatant : playerCombatant;
@@ -480,7 +480,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         instance.AddTransaction(battleEndedTx);
         newTransactions.Add(battleEndedTx);
 
-        // If player won, create CharacterDefeated transaction
+        // If player won, create CharacterDefeated transaction and grant affinity
         if (playerVictory)
         {
             var data = new Dictionary<string, string>
@@ -510,6 +510,38 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
             instance.AddTransaction(characterDefeatedTx);
             newTransactions.Add(characterDefeatedTx);
+
+            // Grant enemy's affinity to player if they have one and player doesn't already have it
+            if (!string.IsNullOrEmpty(enemyCharacter.AffinityRef))
+            {
+                var playerHasAffinity = command.Avatar.Affinities?
+                    .Any(a => a.AffinityRef == enemyCharacter.AffinityRef) ?? false;
+
+                if (!playerHasAffinity)
+                {
+                    // Add affinity to avatar
+                    var affinities = command.Avatar.Affinities?.ToList() ?? new List<Affinity>();
+                    affinities.Add(new Affinity
+                    {
+                        AffinityRef = enemyCharacter.AffinityRef,
+                        CapturedFromCharacterRef = enemyCharacter.RefName,
+                        AcquiredDate = DateTime.UtcNow.ToString("O")
+                    });
+                    command.Avatar.Affinities = affinities.ToArray();
+
+                    // Create AffinityGranted transaction
+                    var affinityTx = DialogueTransactionHelper.CreateAffinityGrantedTransaction(
+                        command.AvatarId.ToString(),
+                        enemyCharacter.AffinityRef,
+                        enemyCharacter.RefName,
+                        instance.InstanceId);
+
+                    instance.AddTransaction(affinityTx);
+                    newTransactions.Add(affinityTx);
+
+                    System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Granted affinity '{enemyCharacter.AffinityRef}' from defeated '{enemyCharacter.RefName}'");
+                }
+            }
         }
     }
 }

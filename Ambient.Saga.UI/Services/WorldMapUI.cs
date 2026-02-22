@@ -20,7 +20,7 @@ namespace Ambient.Saga.UI.Services;
 /// </summary>
 public class WorldMapUI
 {
-    private MainViewModel _viewModel;
+    private SagaMainViewModel _viewModel;
 
     // UI Components
     private GameplayOverlay _gameplayOverlay;
@@ -45,7 +45,7 @@ public class WorldMapUI
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
     }
 
-    public void Initialize(MainViewModel viewModel, ITextureProvider textureProvider)
+    public void Initialize(SagaMainViewModel viewModel, ITextureProvider textureProvider)
     {
         _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         _textureProvider = textureProvider ?? throw new ArgumentNullException(nameof(textureProvider));
@@ -61,9 +61,6 @@ public class WorldMapUI
 
         // Subscribe to quit request from viewModel (raised by WorldSelectionScreen)
         _viewModel.RequestQuit += OnQuitRequestedFromViewModel;
-
-        // Show world selection at startup (Sandbox-specific flow)
-        _modalManager.OpenWorldSelection();
 
         // Subscribe to heightmap changes
         _viewModel.PropertyChanged += OnViewModelPropertyChanged;
@@ -93,18 +90,10 @@ public class WorldMapUI
 
     private void OnViewModelPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(MainViewModel.HeightMapImage))
+        if (e.PropertyName == nameof(SagaMainViewModel.HeightMapImage))
         {
             // Defer texture update to avoid disposing texture during render frame
             _pendingTextureUpdate = true;
-        }
-        else if (e.PropertyName == nameof(MainViewModel.CurrentWorld))
-        {
-            // World loaded - hide selection screen and show main UI
-            if (_viewModel.CurrentWorld != null)
-            {
-                _modalManager.CloseModal("WorldSelection");
-            }
         }
     }
 

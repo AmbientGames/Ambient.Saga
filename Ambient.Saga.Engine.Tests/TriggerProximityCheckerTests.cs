@@ -57,77 +57,7 @@ public class TriggerProximityCheckerTests
         Assert.Equal(expectedDistance, distance, precision: 10);
     }
 
-    [Fact]
-    public void IsWithinTriggerRadius_PointOnRadius_ReturnsTrue()
-    {
-        // Arrange
-        var triggerX = 0.0;
-        var triggerY = 0.0;
-        var enterRadius = 10.0;
-        var pointX = 10.0;
-        var pointY = 0.0;
-
-        // Act
-        var isWithin = TriggerProximityChecker.IsWithinTriggerRadius(
-            triggerX, triggerY, enterRadius, pointX, pointY);
-
-        // Assert
-        Assert.True(isWithin);
-    }
-
-    [Fact]
-    public void IsWithinTriggerRadius_PointInsideRadius_ReturnsTrue()
-    {
-        // Arrange
-        var triggerX = 0.0;
-        var triggerY = 0.0;
-        var enterRadius = 10.0;
-        var pointX = 5.0;
-        var pointY = 5.0; // Distance = ~7.07, within 10.0
-
-        // Act
-        var isWithin = TriggerProximityChecker.IsWithinTriggerRadius(
-            triggerX, triggerY, enterRadius, pointX, pointY);
-
-        // Assert
-        Assert.True(isWithin);
-    }
-
-    [Fact]
-    public void IsWithinTriggerRadius_PointOutsideRadius_ReturnsFalse()
-    {
-        // Arrange
-        var triggerX = 0.0;
-        var triggerY = 0.0;
-        var enterRadius = 10.0;
-        var pointX = 8.0;
-        var pointY = 8.0; // Distance = ~11.31, outside 10.0
-
-        // Act
-        var isWithin = TriggerProximityChecker.IsWithinTriggerRadius(
-            triggerX, triggerY, enterRadius, pointX, pointY);
-
-        // Assert
-        Assert.False(isWithin);
-    }
-
-    [Theory]
-    [InlineData(0.0, 0.0, 10.0, 0.0, 0.0, true)]   // Center point
-    [InlineData(0.0, 0.0, 10.0, 6.0, 8.0, true)]   // Distance = 10.0, exactly on radius
-    [InlineData(0.0, 0.0, 10.0, 7.0, 7.2, false)]  // Distance = ~10.04, just outside
-    [InlineData(100.0, 100.0, 25.0, 120.0, 100.0, true)]  // Offset center, horizontal
-    [InlineData(100.0, 100.0, 25.0, 100.0, 126.0, false)] // Offset center, vertical outside
-    public void IsWithinTriggerRadius_VariousScenarios_ReturnsExpectedResult(
-        double triggerX, double triggerY, double enterRadius,
-        double pointX, double pointY, bool expectedResult)
-    {
-        // Act
-        var isWithin = TriggerProximityChecker.IsWithinTriggerRadius(
-            triggerX, triggerY, enterRadius, pointX, pointY);
-
-        // Assert
-        Assert.Equal(expectedResult, isWithin);
-    }
+ 
 
     [Fact]
     public void IsWithinTriggerRadiusSquared_PointInsideRadius_ReturnsTrue()
@@ -220,37 +150,5 @@ public class TriggerProximityCheckerTests
         // distance - enterRadius = 20 - 10 = 10 (positive means outside)
         Assert.True(distance > 0, "Distance from edge should be positive when outside radius");
         Assert.Equal(10.0, distance, precision: 10);
-    }
-
-    [Theory]
-    [InlineData(10.0f)]
-    [InlineData(25.0f)]
-    [InlineData(45.0f)]
-    public void Hysteresis_PreventsTriggerFlickering(float enterRadius)
-    {
-        // Arrange
-        var triggerX = 0.0;
-        var triggerY = 0.0;
-        var exitRadius = TriggerProximityChecker.GetExitRadius(enterRadius);
-
-        // Point just inside enter radius
-        var pointX = enterRadius - 1.0;
-        var pointY = 0.0;
-
-        // Act & Assert - Point should be within enter radius
-        var withinEnter = TriggerProximityChecker.IsWithinTriggerRadius(
-            triggerX, triggerY, enterRadius, pointX, pointY);
-        Assert.True(withinEnter, "Point should trigger on enter");
-
-        // Move point slightly outward (between enter and exit radius)
-        pointX = enterRadius + 2.0; // 2m outside enter radius, but inside exit radius
-
-        var withinExit = TriggerProximityChecker.IsWithinTriggerRadius(
-            triggerX, triggerY, exitRadius, pointX, pointY);
-        Assert.True(withinExit, "Point should still be within exit radius (hysteresis)");
-
-        var outsideEnter = !TriggerProximityChecker.IsWithinTriggerRadius(
-            triggerX, triggerY, enterRadius, pointX, pointY);
-        Assert.True(outsideEnter, "Point should be outside enter radius");
     }
 }

@@ -22,10 +22,10 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class CombatStance : EntityBase {
         
-        private CharacterEffects effectsField;
+        private Attributes effectsField;
         
         /// <remarks/>
-        public CharacterEffects Effects {
+        public Attributes Effects {
             get {
                 return this.effectsField;
             }

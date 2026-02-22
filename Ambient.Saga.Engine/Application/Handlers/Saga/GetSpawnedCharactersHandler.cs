@@ -84,7 +84,7 @@ internal sealed class GetSpawnedCharactersHandler : IRequestHandler<GetSpawnedCh
 
             foreach (var ch in result)
             {
-                //System.Diagnostics.Debug.WriteLine($"  - {ch.CharacterRef} at ({ch.CurrentLongitudeX:F6}, {ch.CurrentLatitudeZ:F6}), IsSpawned={ch.IsSpawned}, IsAlive={ch.IsAlive}");
+                //System.Diagnostics.Debug.WriteLine($"  - {ch.CharacterRef} at ({ch.CurrentLongitude:F6}, {ch.CurrentLatitude:F6}), IsSpawned={ch.IsSpawned}, IsAlive={ch.IsAlive}");
             }
 
             return result;

@@ -94,8 +94,8 @@ public class SagaE2EStoryTests : IDisposable
         {
             RefName = "KagoshimaCastle",
             DisplayName = "Kagoshima Castle",
-            LatitudeZ = 31.5955,
-            LongitudeX = 130.5569
+            Latitude = 31.5955,
+            Longitude = 130.5569
         };
 
         var merchantTrigger = new SagaTrigger
@@ -184,6 +184,13 @@ public class SagaE2EStoryTests : IDisposable
             }
         };
 
+        // Register archetype so carry weight checks can find it
+        var warriorArchetype = new AvatarArchetype
+        {
+            RefName = "Warrior",
+            DisplayName = "Warrior"
+        };
+
         // Populate lookups
         world.SagaArcLookup[sagaArc.RefName] = sagaArc;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger> { merchantTrigger, bossTrigger };
@@ -191,6 +198,7 @@ public class SagaE2EStoryTests : IDisposable
         world.CharactersLookup[boss.RefName] = boss;
         world.DialogueTreesLookup[merchantDialogue.RefName] = merchantDialogue;
         world.DialogueTreesLookup[bossDialogue.RefName] = bossDialogue;
+        world.AvatarArchetypesLookup[warriorArchetype.RefName] = warriorArchetype;
 
         return world;
     }
@@ -208,16 +216,14 @@ public class SagaE2EStoryTests : IDisposable
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 500,  // Start with 500 credits
-                Experience = 0,
                 Strength = 0.10f,
                 Defense = 0.10f,
+                Magic = 0.10f,
                 Speed = 0.10f,
-                Magic = 0.10f
+                Endurance = 0f,
+                Credits = 500,  // Start with 500 credits
+                Experience = 0
             },
             SpawnCapabilities = new ItemCollection
             {
@@ -234,16 +240,14 @@ public class SagaE2EStoryTests : IDisposable
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 100,
-                Experience = 0,
                 Strength = 0.08f,
                 Defense = 0.08f,
+                Magic = 0.08f,
                 Speed = 0.08f,
-                Magic = 0.08f
+                Endurance = 0f,
+                Credits = 100,
+                Experience = 0
             },
             RespawnCapabilities = new ItemCollection
             {

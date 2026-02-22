@@ -59,7 +59,7 @@ public class BattleModal
     private bool _showStanceChange = false;
 
     // Cached references for modal callbacks
-    private MainViewModel? _cachedViewModel;
+    private SagaMainViewModel? _cachedViewModel;
     private CharacterViewModel? _cachedCharacter;
     private ModalManager? _cachedModalManager;
 
@@ -92,7 +92,7 @@ public class BattleModal
         }
     }
 
-    public void Render(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         if (!isOpen)
         {
@@ -121,9 +121,10 @@ public class BattleModal
         // Center the window using helper
         ImGuiHelpers.SetupModalWindow(1100, 750);
 
-        // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(16, 16));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        // Style the window (DPI-scaled)
+        var scale = UIConstants.DpiScale;
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(16 * scale, 16 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
@@ -160,7 +161,7 @@ public class BattleModal
         ImGui.TextColored(new Vector4(1.0f, 0.8f, 0.3f, 1.0f), loadingText);
     }
 
-    private void RenderActiveBattle(MainViewModel viewModel, CharacterViewModel character)
+    private void RenderActiveBattle(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (_currentState == null) return;
 
@@ -198,7 +199,7 @@ public class BattleModal
         }
     }
 
-    private void RenderActionButtons(MainViewModel viewModel, CharacterViewModel character)
+    private void RenderActionButtons(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (_currentState == null) return;
 
@@ -227,7 +228,7 @@ public class BattleModal
             var turnText = _waitingForEnemyTurn ? "Enemy is thinking..." : "Enemy's turn...";
             var textSize = ImGui.CalcTextSize(turnText);
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-            ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 25);
+            ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 25 * UIConstants.DpiScale);
             ImGui.TextColored(new Vector4(1.0f, 0.4f, 0.4f, 1.0f), turnText);
         }
         else
@@ -358,7 +359,7 @@ public class BattleModal
     /// Shows the tell text, countdown timer, and reaction buttons.
     /// Inspired by Expedition 33's active defense mechanics.
     /// </summary>
-    private void RenderReactionPanel(MainViewModel viewModel, CharacterViewModel character)
+    private void RenderReactionPanel(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         // Tell text - narrative preview of incoming attack
         ImGui.Spacing();
@@ -449,7 +450,7 @@ public class BattleModal
         }
     }
 
-    private void SelectReaction(PlayerDefenseType reaction, MainViewModel viewModel, CharacterViewModel character)
+    private void SelectReaction(PlayerDefenseType reaction, SagaMainViewModel viewModel, CharacterViewModel character)
     {
         _selectedReaction = reaction;
         _reactionResolved = true;
@@ -531,7 +532,7 @@ public class BattleModal
         return string.Format(template, enemyName);
     }
 
-    private async Task ResolveReactionAsync(MainViewModel viewModel, CharacterViewModel character, PlayerDefenseType reaction)
+    private async Task ResolveReactionAsync(SagaMainViewModel viewModel, CharacterViewModel character, PlayerDefenseType reaction)
     {
         if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
             return;
@@ -545,7 +546,7 @@ public class BattleModal
         bool wasOptimal = false;
         bool timedOut = reaction == PlayerDefenseType.None && _reactionTimeRemaining <= 0;
         float playerHealthAfter = _currentState?.PlayerCombatant?.Health ?? 1.0f;
-        float playerEnergyAfter = _currentState?.PlayerCombatant?.Energy ?? 1.0f;
+        float playerEnergyAfter = _currentState?.PlayerCombatant?.Stamina ?? 1.0f;
         float enemyHealthAfter = _currentState?.EnemyCombatant?.Health ?? 1.0f;
 
         // If we have a BattleEngine, resolve the reaction properly
@@ -565,7 +566,7 @@ public class BattleModal
                 var player = _battleEngine.GetPlayer();
                 var enemy = _battleEngine.GetEnemy();
                 playerHealthAfter = player.Health;
-                playerEnergyAfter = player.Energy;
+                playerEnergyAfter = player.Stamina;
                 enemyHealthAfter = enemy.Health;
 
                 System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction resolved: damage={finalDamage}, counter={counterDamage}, optimal={wasOptimal}");
@@ -652,7 +653,7 @@ public class BattleModal
         // Vital stats with colored progress bars
         ImGui.TextColored(new Vector4(0.9f, 0.9f, 0.6f, 1.0f), "Vitals:");
         RenderStatBar("Health", combatant.Health, Combatant.MAX_STAT, new Vector4(0.8f, 0.2f, 0.2f, 1.0f));
-        RenderStatBar("Energy", combatant.Energy, Combatant.MAX_STAT, new Vector4(0.2f, 0.5f, 0.8f, 1.0f));
+        RenderStatBar("Energy", combatant.Stamina, Combatant.MAX_STAT, new Vector4(0.2f, 0.5f, 0.8f, 1.0f));
 
         ImGui.Spacing();
         ImGui.Separator();
@@ -746,7 +747,7 @@ public class BattleModal
         ImGui.PopStyleColor();
     }
 
-    private void RenderBattleEnded(MainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
+    private void RenderBattleEnded(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
         if (_currentState == null) return;
 
@@ -860,7 +861,7 @@ public class BattleModal
         }
     }
 
-    private async Task InitializeBattleAsync(MainViewModel viewModel, CharacterViewModel character)
+    private async Task InitializeBattleAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
             return;
@@ -931,7 +932,7 @@ public class BattleModal
         }
     }
 
-    private async Task ExecuteTurnAsync(MainViewModel viewModel, CharacterViewModel character, CombatAction action)
+    private async Task ExecuteTurnAsync(SagaMainViewModel viewModel, CharacterViewModel character, CombatAction action)
     {
         if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
             return;
@@ -993,7 +994,7 @@ public class BattleModal
         }
     }
 
-    private async Task RefreshBattleStateAsync(MainViewModel viewModel, CharacterViewModel character)
+    private async Task RefreshBattleStateAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
             return;
@@ -1025,7 +1026,7 @@ public class BattleModal
     }
 
     // Modal opening methods
-    private void OpenSpellSelectionModal(MainViewModel viewModel)
+    private void OpenSpellSelectionModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1038,7 +1039,7 @@ public class BattleModal
         _showSpellSelection = true;
     }
 
-    private void OpenItemSelectionModal(MainViewModel viewModel)
+    private void OpenItemSelectionModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1051,7 +1052,7 @@ public class BattleModal
         _showItemSelection = true;
     }
 
-    private void OpenEquipmentChangeModal(MainViewModel viewModel)
+    private void OpenEquipmentChangeModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1118,7 +1119,7 @@ public class BattleModal
         }
     }
 
-    private void OpenAffinityChangeModal(MainViewModel viewModel)
+    private void OpenAffinityChangeModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1135,7 +1136,7 @@ public class BattleModal
         _showAffinityChange = true;
     }
 
-    private void OpenStanceChangeModal(MainViewModel viewModel)
+    private void OpenStanceChangeModal(SagaMainViewModel viewModel)
     {
         if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
 
@@ -1147,7 +1148,7 @@ public class BattleModal
         _showStanceChange = true;
     }
 
-    private void OpenMidBattleDialogue(MainViewModel viewModel, CharacterViewModel character)
+    private void OpenMidBattleDialogue(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (_cachedModalManager == null) return;
 
@@ -1237,7 +1238,7 @@ public class BattleModal
     }
 
     // Render selection modals
-    private void RenderSelectionModals(MainViewModel viewModel)
+    private void RenderSelectionModals(SagaMainViewModel viewModel)
     {
         // Spell selection modal
         if (_showSpellSelection && _spellSelectionModal != null)

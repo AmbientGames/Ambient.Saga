@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../../../EntityBase.xsd" />
+    <xs:simpleType name="CharacterAffinityRef">
+        <xs:annotation><xs:documentation>Reference to a CharacterAffinity by RefName. Used on characters and equipment to assign an elemental/magical affinity.</xs:documentation></xs:annotation>
+        <xs:restriction base="xs:string" />
+    </xs:simpleType>
+    <xs:complexType name="AffinityMatchup">
+        <xs:annotation><xs:documentation>Defines how this affinity interacts with a specific target affinity. The Multiplier scales damage dealt to targets of that affinity.</xs:documentation></xs:annotation>
+        <xs:attribute name="TargetAffinityRef" type="CharacterAffinityRef" use="required">
+            <xs:annotation><xs:documentation>The affinity this matchup targets. Must match a CharacterAffinity RefName.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Multiplier" type="xs:float" use="required">
+            <xs:annotation><xs:documentation>Damage multiplier against the target affinity. Above 1.0 = strong against; below 1.0 = weak against.</xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="CharacterAffinity">
+        <xs:annotation><xs:documentation>An elemental or magical affinity (e.g. Fire, Ice, Nature). Characters and equipment can have an affinity, which affects damage via matchup multipliers.</xs:documentation></xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="EntityBase">
+                <xs:sequence>
+                    <xs:element name="Matchup" type="AffinityMatchup" minOccurs="0" maxOccurs="unbounded" />
+                </xs:sequence>
+                <xs:attribute name="NeutralMultiplier" type="xs:float" use="optional" default="1.0">
+                    <xs:annotation><xs:documentation>Damage multiplier used against affinities not listed in the matchup table. Default 1.0 = no bonus or penalty.</xs:documentation></xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="CharacterAffinities">
+        <xs:annotation><xs:documentation>Catalog of all affinities available in the world. Defined in CharacterAffinities.xml.</xs:documentation></xs:annotation>
+        <xs:sequence>
+            <xs:element name="Affinity" type="CharacterAffinity" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

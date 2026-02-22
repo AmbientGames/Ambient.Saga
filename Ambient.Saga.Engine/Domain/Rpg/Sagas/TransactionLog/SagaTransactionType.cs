@@ -55,6 +55,18 @@ public enum SagaTransactionType
     // Affinity management
     AffinityGranted,         // Character affinity granted to avatar
 
+    // Equipment management (outside battle)
+    EquipmentChanged,        // Equipment equipped/unequipped outside of battle
+
+    // Consumable usage (outside battle)
+    ConsumableUsed,          // Consumable item used (potion, food, etc.)
+
+    // Tool maintenance
+    ToolSharpened,           // Tool condition restored (costs currency)
+
+    // Travel
+    AvatarTeleported,        // Avatar teleported to new location (costs currency)
+
     // Loot and rewards
     LootAwarded,
     EffectApplied,

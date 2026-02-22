@@ -33,23 +33,23 @@ public class CombatAI : ICombatAI
         // Demo: Change equipment every other turn (turn 2, 4, 6...)
         if (_turnCount % 2 == 0 && me.Capabilities?.Equipment != null)
         {
-            // Find all available right-hand weapons
-            var rightHandWeapons = new List<string>();
+            // Find all available main-hand weapons
+            var mainHandWeapons = new List<string>();
             foreach (var entry in me.Capabilities.Equipment)
             {
                 var equipment = _world.GetEquipmentByRefName(entry.EquipmentRef);
-                if (equipment != null && equipment.SlotRef == "RightHand")
+                if (equipment != null && equipment.SlotRef == "MainHand")
                 {
-                    rightHandWeapons.Add(entry.EquipmentRef);
+                    mainHandWeapons.Add(entry.EquipmentRef);
                 }
             }
 
             // If we have at least 2 weapons, change to a different one
-            if (rightHandWeapons.Count > 1)
+            if (mainHandWeapons.Count > 1)
             {
                 // Cycle through weapons
                 var currentIndex = _turnCount / 2 - 1; // Turn 2 -> index 0, turn 4 -> index 1, etc.
-                var weaponRef = rightHandWeapons[currentIndex % rightHandWeapons.Count];
+                var weaponRef = mainHandWeapons[currentIndex % mainHandWeapons.Count];
 
                 return new CombatAction
                 {

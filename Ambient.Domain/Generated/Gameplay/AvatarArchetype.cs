@@ -22,7 +22,7 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class AvatarArchetype : EntityBase {
         
-        private CharacterEffects archetypeBiasField;
+        private Attributes archetypeBiasField;
         
         private CharacterStats spawnStatsField;
         
@@ -34,8 +34,14 @@ namespace Ambient.Domain {
         
         private string affinityRefField;
         
+        private float maxCarryWeightField;
+        
+        public AvatarArchetype() {
+            this.maxCarryWeightField = ((float)(40F));
+        }
+        
         /// <remarks/>
-        public CharacterEffects ArchetypeBias {
+        public Attributes ArchetypeBias {
             get {
                 return this.archetypeBiasField;
             }
@@ -92,6 +98,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.affinityRefField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "40")]
+        public float MaxCarryWeight {
+            get {
+                return this.maxCarryWeightField;
+            }
+            set {
+                this.maxCarryWeightField = value;
             }
         }
     }

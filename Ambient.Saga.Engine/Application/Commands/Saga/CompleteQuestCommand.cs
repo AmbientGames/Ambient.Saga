@@ -39,4 +39,10 @@ public record CompleteQuestCommand : IRequest<SagaCommandResult>
     /// Avatar entity completing the quest (for state updates and persistence)
     /// </summary>
     public required AvatarEntity Avatar { get; init; }
+
+    /// <summary>
+    /// When true, skips stage completion check. Used for dialogue-driven quest completion
+    /// where the dialogue author explicitly triggers completion via CompleteQuest action.
+    /// </summary>
+    public bool DialogueDriven { get; init; }
 }

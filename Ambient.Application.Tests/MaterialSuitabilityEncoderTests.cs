@@ -9,21 +9,9 @@ namespace Ambient.Application.Tests
         [InlineData("Carbon", 2u)]
         [InlineData("Stone", 4u)]
         [InlineData("Metal", 8u)]
-        [InlineData("Steel", 16u)]
-        [InlineData("SteelReinforcedConcrete", 32u)]
-        [InlineData("Plant", 64u)]
-        [InlineData("Wood", 128u)]
-        [InlineData("Other", 256u)]
-        [InlineData("Custom0", 512u)]
-        [InlineData("Custom1", 1024u)]
-        [InlineData("Custom2", 2048u)]
-        [InlineData("Custom3", 4096u)]
-        [InlineData("Custom4", 8192u)]
-        [InlineData("Custom5", 16384u)]
-        [InlineData("Custom6", 32768u)]
-        [InlineData("Custom7", 65536u)]
-        [InlineData("Custom8", 131072u)]
-        [InlineData("Custom9", 262144u)]
+        [InlineData("Plant", 16u)]
+        [InlineData("Wood", 32u)]
+        [InlineData("Other", 64u)]
         public void Encode_KnownMaterial_ReturnsCorrectBitValue(string material, uint expectedBits)
         {
             // Act
@@ -55,9 +43,7 @@ namespace Ambient.Application.Tests
         {
             // Arrange
             string[] allMaterials = {
-                "Aggregate", "Carbon", "Stone", "Metal", "Steel", "SteelReinforcedConcrete",
-                "Plant", "Wood", "Other", "Custom0", "Custom1", "Custom2", "Custom3",
-                "Custom4", "Custom5", "Custom6", "Custom7", "Custom8", "Custom9"
+                "Aggregate", "Carbon", "Stone", "Metal", "Plant", "Wood", "Other"
             };
 
             var encodedValues = new HashSet<uint>();
@@ -103,15 +89,13 @@ namespace Ambient.Application.Tests
         public void Encode_BitwiseOperations_WorkCorrectly()
         {
             // Arrange
-            uint steel = SubstanceSuitabilityEncoder.Encode("Steel");
             uint carbon = SubstanceSuitabilityEncoder.Encode("Carbon");
             uint plant = SubstanceSuitabilityEncoder.Encode("Plant");
 
             // Act
-            uint combined = steel | carbon | plant;
+            uint combined = carbon | plant;
 
             // Assert - Test that we can check for individual materials in the combined value
-            Assert.True((combined & steel) != 0, "Steel should be present in combined value");
             Assert.True((combined & carbon) != 0, "Carbon should be present in combined value");
             Assert.True((combined & plant) != 0, "Plant should be present in combined value");
             

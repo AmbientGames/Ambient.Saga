@@ -34,10 +34,10 @@
     </ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\Ambient.Saga.Sandbox.DirectX\Content\**\*">
-			<Link>Content\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			<TargetPath>Content\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+		<SandboxContent Include="..\Ambient.Saga.Sandbox.DirectX\content\**\*" />
 	</ItemGroup>
+
+	<Target Name="CopySandboxContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">
+		<Copy SourceFiles="@(SandboxContent)" DestinationFiles="@(SandboxContent->'$(TargetDir)content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
+	</Target>
 </Project>

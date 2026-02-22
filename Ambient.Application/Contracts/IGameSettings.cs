@@ -36,6 +36,36 @@ public interface IGameSettings
     /// Returns: %APPDATA%/{PublisherFolder}/{GameName}/content
     /// </summary>
     string GetAppDataContentPath();
+
+    /// <summary>
+    /// Gets the base Documents path for user-facing content.
+    /// Returns: Documents/{PublisherFolder}/{GameName}
+    /// </summary>
+    string GetDocumentsBasePath();
+
+    /// <summary>
+    /// Gets the worlds path within Documents.
+    /// Returns: Documents/{PublisherFolder}/{GameName}/worlds
+    /// </summary>
+    string GetWorldsPath();
+
+    /// <summary>
+    /// Gets the LocalAppData path for app-internal data (logs, saves, cache).
+    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{GameName}
+    /// </summary>
+    string GetLocalAppDataPath();
+
+    /// <summary>
+    /// Gets the logs path.
+    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{GameName}/logs
+    /// </summary>
+    string GetLogsPath();
+
+    /// <summary>
+    /// Gets the saves path.
+    /// Returns: %LOCALAPPDATA%/{PublisherFolder}/{GameName}/saves
+    /// </summary>
+    string GetSavesPath();
 }
 
 /// <summary>
@@ -65,5 +95,36 @@ public class GameSettings : IGameSettings
     public string GetAppDataContentPath()
     {
         return Path.Combine(GetAppDataBasePath(), "content");
+    }
+
+    public string GetDocumentsBasePath()
+    {
+        return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+            PublisherFolder,
+            GameName);
+    }
+
+    public string GetWorldsPath()
+    {
+        return Path.Combine(GetDocumentsBasePath(), "worlds");
+    }
+
+    public string GetLocalAppDataPath()
+    {
+        return Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            PublisherFolder,
+            GameName);
+    }
+
+    public string GetLogsPath()
+    {
+        return Path.Combine(GetLocalAppDataPath(), "logs");
+    }
+
+    public string GetSavesPath()
+    {
+        return Path.Combine(GetLocalAppDataPath(), "saves");
     }
 }

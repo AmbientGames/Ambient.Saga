@@ -1,27 +1,26 @@
 using Ambient.Application.Contracts;
-using Ambient.Application.WorldCreation;
+using Ambient.Domain.Contracts;
+using Ambient.Domain.Enums;
+using Ambient.Infrastructure.GameLogic;
+using Ambient.Infrastructure.GameLogic.Loading;
+using Ambient.Infrastructure.Logging;
 using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Services;
-using Ambient.Infrastructure.GameLogic;
-using Ambient.Infrastructure.GameLogic.Loading;
-using Ambient.Infrastructure.Logging;
-using Ambient.Infrastructure.WorldCreation;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.Sandbox.DirectX;
+using Ambient.Saga.Sandbox.DirectX.WorldContentGenerators;
+using Ambient.Saga.Sandbox.WindowsUI;
 using Ambient.Saga.UI.Components.Modals;
 using Ambient.Saga.UI.Services;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Steamworks;
-using Ambient.Domain.Contracts;
-using Ambient.Saga.Sandbox.DirectX;
-using Ambient.Saga.Sandbox.DirectX.WorldContentGenerators;
-using Ambient.Saga.Sandbox.WindowsUI;
 
 namespace Ambient.Saga.Sandbox.DirectX.Services
 {
@@ -46,7 +45,7 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             var services = new ServiceCollection();
 
             // Create game settings first - needed for logging path configuration
-            var gameSettings = new GameSettings("AmbientGames", "Saga");
+            var gameSettings = new GameSettings(PublisherDefaults.PublisherFolder, "Saga");
 
             // Configure application services
             ConfigureAppServices(services);
@@ -65,7 +64,7 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
         {
             // Windows and ViewModels
             services.AddTransient<MainWindow>();
-            services.AddTransient<MainViewModel>();
+            services.AddTransient<SagaMainViewModel>();
 
             // Archetype selectors - keyed services for WPF and ImGui
             //services.AddKeyedSingleton<IArchetypeSelector, WpfArchetypeSelector>("wpf");
@@ -81,16 +80,6 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
 
             // Block provider (mock implementation with sample blocks for UI demonstration)
             services.AddSingleton<IBlockProvider, MockBlockProvider>();
-
-            // World creation services (theme discovery and world file generation)
-            services.AddSingleton<IThemeProvider>(sp =>
-            {
-                var gameSettings = sp.GetRequiredService<IGameSettings>();
-                return new ThemeProvider(
-                    gameSettings.GetAppDataContentPath(),
-                    AppDomain.CurrentDomain.BaseDirectory);
-            });
-            services.AddSingleton<IWorldCreationService, WorldCreationService>();
 
             // Modal manager for ImGui archetype selector (with circular dependency resolution)
             services.AddSingleton(sp =>

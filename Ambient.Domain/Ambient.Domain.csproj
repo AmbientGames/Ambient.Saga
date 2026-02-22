@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Content\Schemas\**\*">
+        <Content Include="Content\xsd\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>

@@ -3,6 +3,7 @@ using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
+using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Evaluation;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
 
@@ -156,14 +157,30 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
                 dialogueText.AddRange(currentNode.Text);
             }
 
-            // Build available choices
+            // Build available choices (filtered by target node conditions)
             var choices = new List<DialogueChoiceOption>();
             if (currentNode.Choice != null)
             {
                 var playerCredits = stateProvider.GetCredits();
+                var conditionEvaluator = new DialogueConditionEvaluator(stateProvider);
 
                 foreach (var choice in currentNode.Choice)
                 {
+                    // Check if target node's conditions pass - if not, skip this choice entirely
+                    var targetNode = dialogueTree.Node?.FirstOrDefault(n => n.NodeId == choice.NextNodeId);
+                    if (targetNode != null && targetNode.Condition != null && targetNode.Condition.Length > 0)
+                    {
+                        var targetConditionsPass = conditionEvaluator.EvaluateAll(
+                            targetNode.Condition,
+                            targetNode.ConditionLogic);
+
+                        if (!targetConditionsPass)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Filtering out choice '{choice.Text}' -> {choice.NextNodeId} (conditions not met)");
+                            continue; // Skip this choice - target node conditions not met
+                        }
+                    }
+
                     // Check if choice is available (can afford cost if specified)
                     var hasCost = choice.CostSpecified && choice.Cost > 0;
                     var isAvailable = !hasCost || choice.Cost <= playerCredits;

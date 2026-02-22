@@ -331,7 +331,7 @@ public class CombatReactionTests
                 {
                     Reaction = PlayerDefenseType.Parry,
                     DamageMultiplier = 0.0f,
-                    Effects = new Ambient.Domain.CharacterEffects { Stamina = 0.1f },
+                    Effects = new Ambient.Domain.Attributes { Stamina = 0.1f },
                     EnablesCounter = true,
                     CounterMultiplier = 0.5f,
                     ResponseText = "Perfect parry! You deflect the blade and counter!"
@@ -340,7 +340,7 @@ public class CombatReactionTests
                 {
                     Reaction = PlayerDefenseType.Dodge,
                     DamageMultiplier = 0.25f,
-                    Effects = new Ambient.Domain.CharacterEffects { Stamina = 0.05f },
+                    Effects = new Ambient.Domain.Attributes { Stamina = 0.05f },
                     EnablesCounter = false,
                     ResponseText = "You roll aside, but the blade grazes you."
                 },
@@ -376,7 +376,7 @@ public class CombatReactionTests
             RefName = name,
             DisplayName = name,
             Health = 1.0f,
-            Energy = 1.0f,
+            Stamina = 1.0f,
             Strength = 0.2f,
             Defense = 0.1f,
             Speed = 0.15f,

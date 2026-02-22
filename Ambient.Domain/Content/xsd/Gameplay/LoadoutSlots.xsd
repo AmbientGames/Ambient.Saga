@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../EntityBase.xsd" />
+
+    <xs:simpleType name="LoadoutSlotRef">
+        <xs:annotation><xs:documentation>Reference to a LoadoutSlot by RefName. Used on Equipment to specify which slot the item occupies (e.g. MainHand, OffHand, Chest).</xs:documentation></xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="LoadoutSlot">
+        <xs:annotation><xs:documentation>An equipment slot that a character can equip items into. Defined with a RefName and DisplayName inherited from EntityBase.</xs:documentation></xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="EntityBase">
+			</xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="LoadoutSlots">
+        <xs:annotation><xs:documentation>Catalog of all equipment slots available. Defined in LoadoutSlots.xml. Equipment references these slots via SlotRef.</xs:documentation></xs:annotation>
+        <xs:sequence>
+            <xs:element name="LoadoutSlot" type="LoadoutSlot" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

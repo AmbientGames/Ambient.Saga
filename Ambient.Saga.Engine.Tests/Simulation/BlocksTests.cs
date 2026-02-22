@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.Contracts;
 using Ambient.Infrastructure.GameLogic;
 using Ambient.Infrastructure.GameLogic.Loading;
 
@@ -14,8 +14,8 @@ public class BlocksTests : IAsyncLifetime
 
     public BlocksTests()
     {
-        // Content/Schemas is copied to output directory by Ambient.Domain
-        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "Schemas");
+        // Content/xsd is copied to output directory by Ambient.Domain
+        _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "xsd");
 
         // Content/Worlds is at solution root (shared by all Sandboxes)
         _dataDirectory = FindWorldsDirectory();

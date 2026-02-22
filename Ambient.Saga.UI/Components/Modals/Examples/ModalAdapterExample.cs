@@ -38,49 +38,20 @@ public static class ModalAdapterExample
     /// <summary>
     /// Context for modals that need MainViewModel only
     /// </summary>
-    public record SimpleContext(MainViewModel ViewModel);
+    public record SimpleContext(SagaMainViewModel ViewModel);
 
     /// <summary>
     /// Context for modals that need MainViewModel and CharacterViewModel
     /// </summary>
-    public record CharacterContext(MainViewModel ViewModel, CharacterViewModel Character);
+    public record CharacterContext(SagaMainViewModel ViewModel, CharacterViewModel Character);
 
     /// <summary>
     /// Context for modals that need MainViewModel, CharacterViewModel, and ModalManager
     /// </summary>
-    public record FullContext(MainViewModel ViewModel, CharacterViewModel Character, ModalManager ModalManager);
+    public record FullContext(SagaMainViewModel ViewModel, CharacterViewModel Character, ModalManager ModalManager);
 
     /// <summary>
-    /// Example: Adapter for a simple modal that only needs MainViewModel
-    /// </summary>
-    public class AvatarInfoModalAdapter : IModal
-    {
-        private readonly AvatarInfoModal _modal = new();
-
-        public string Name => "AvatarInfo";
-
-        public void Render(object? context, ref bool isOpen)
-        {
-            if (context is SimpleContext ctx)
-            {
-                _modal.Render(ctx.ViewModel, ref isOpen);
-            }
-            else if (context is MainViewModel viewModel)
-            {
-                // Also support direct MainViewModel for convenience
-                _modal.Render(viewModel, ref isOpen);
-            }
-        }
-
-        // Optional: Add lifecycle hooks for cleanup
-        public void OnClosed()
-        {
-            // Any cleanup needed for AvatarInfoModal
-        }
-    }
-
-    /// <summary>
-    /// Example: Adapter for a complex modal that needs multiple parameters
+    /// Example: Adapter for a modal that needs CharacterViewModel context
     /// </summary>
     public class LootModalAdapter : IModal
     {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+	<xs:include schemaLocation="SharedRefs.xsd" />
+	<xs:complexType name="EntityBase">
+		<xs:annotation>
+			<xs:documentation>Base type for all content entities. Provides identity and optional presentation references.</xs:documentation>
+		</xs:annotation>
+        <xs:attribute name="RefName" type="xs:string" use="required">
+            <xs:annotation><xs:documentation>Unique string identifier. Used for all cross-references between content files.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DisplayName" type="xs:string" use="required">
+            <xs:annotation><xs:documentation>Human-readable name shown in the UI.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Description" type="xs:string" use="optional">
+            <xs:annotation><xs:documentation>Flavour text or tooltip description.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Metadata" type="xs:string" use="optional">
+            <xs:annotation><xs:documentation>Arbitrary metadata string for extensibility.</xs:documentation></xs:annotation>
+        </xs:attribute>
+		<xs:attribute name="ModelRef" type="ModelRef" use="optional">
+			<xs:annotation><xs:documentation>3D model reference. Points to a Model RefName in Models.xml.</xs:documentation></xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="TextureRef" type="TextureRef" use="optional">
+			<xs:annotation><xs:documentation>Texture reference. Points to an AssetTexture RefName in AssetTextures.xml.</xs:documentation></xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

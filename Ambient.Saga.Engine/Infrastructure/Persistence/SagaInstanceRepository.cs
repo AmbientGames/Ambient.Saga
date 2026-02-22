@@ -1,6 +1,7 @@
 ﻿using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using LiteDB;
+using System.Collections.Concurrent;
 
 namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 
@@ -20,7 +21,9 @@ public class SagaInstanceRepository : ISagaInstanceRepository
     private readonly ILiteDatabase _database;
     private readonly ILiteCollection<SagaInstance> _instances;
     private readonly ILiteCollection<SagaTransactionRecord> _transactions;
-    private readonly object _createLock = new object(); // Lock for GetOrCreate operations
+
+    // Per-instance locks to avoid global blocking - different sagas don't block each other
+    private readonly ConcurrentDictionary<string, object> _instanceLocks = new();
 
     public SagaInstanceRepository(ILiteDatabase database)
     {
@@ -50,8 +53,11 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     public Task<SagaInstance> GetOrCreateInstanceAsync(Guid avatarId, string sagaRef, CancellationToken ct = default)
     {
-        // CRITICAL FIX: Lock to prevent race condition where two threads both create instances
-        lock (_createLock)
+        // Use per-instance lock to prevent race condition without blocking other sagas
+        var lockKey = $"{avatarId}|{sagaRef}";
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
         {
             // Try to find existing instance
             var instance = _instances
@@ -135,9 +141,11 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     public Task<List<long>> AddTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
     {
-        // CRITICAL FIX: Use lock to prevent sequence number collisions when multiple threads
-        // are adding transactions concurrently to the same saga instance
-        lock (_createLock)
+        // Use per-instance lock to prevent sequence number collisions without blocking other instances
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
         {
             var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
             if (instance == null)

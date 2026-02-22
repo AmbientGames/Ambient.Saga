@@ -367,8 +367,8 @@ public class RegressionTests : IDisposable
         {
             RefName = "DuplicationTestSaga",
             DisplayName = "Duplication Test Saga",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var trigger = new SagaTrigger
@@ -388,8 +388,8 @@ public class RegressionTests : IDisposable
         {
             RefName = "RaceTestSaga",
             DisplayName = "Race Test Saga",
-            LatitudeZ = 36.0,
-            LongitudeX = 140.0
+            Latitude = 36.0,
+            Longitude = 140.0
         };
 
         var world = new World
@@ -442,16 +442,14 @@ public class RegressionTests : IDisposable
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 100,
-                Experience = 0,
                 Strength = 0.10f,
                 Defense = 0.10f,
+                Magic = 0.10f,
                 Speed = 0.10f,
-                Magic = 0.10f
+                Endurance = 0f,
+                Credits = 100,
+                Experience = 0
             },
             SpawnCapabilities = new ItemCollection
             {
@@ -465,19 +463,21 @@ public class RegressionTests : IDisposable
             },
             RespawnStats = new CharacterStats
             {
+                // Resources
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
+                // State
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 50,
-                Experience = 0,
+                // Attributes
                 Strength = 0.08f,
                 Defense = 0.08f,
+                Magic = 0.08f,
                 Speed = 0.08f,
-                Magic = 0.08f
+                Endurance = 0f,
+                // Progression
+                Credits = 50,
+                Experience = 0
             },
             RespawnCapabilities = new ItemCollection
             {

@@ -213,16 +213,16 @@ public class FullSagaFlowE2ETests : IDisposable
         {
             RefName = "MerchantCastleSaga",
             DisplayName = "Merchant Castle",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var guardSaga = new SagaArc
         {
             RefName = "GuardPatrolSaga",
             DisplayName = "Guard Patrol",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var merchantTrigger = new SagaTrigger

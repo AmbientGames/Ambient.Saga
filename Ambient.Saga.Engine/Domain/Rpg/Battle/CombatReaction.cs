@@ -64,7 +64,7 @@ public class DefenseOutcome
     /// <summary>Damage multiplier (0.0 = no damage, 1.0 = full damage)</summary>
     public float DamageMultiplier { get; init; } = 1.0f;
     /// <summary>Stat effects applied for successful defense (e.g., Stamina recovery)</summary>
-    public CharacterEffects? Effects { get; init; }
+    public Attributes? Effects { get; init; }
     /// <summary>Counter-attack enabled</summary>
     public bool EnablesCounter { get; init; }
     /// <summary>Counter damage multiplier (if EnablesCounter is true)</summary>
@@ -174,7 +174,7 @@ public class ReactionResult
     public required string NarrativeText { get; init; }
     public int? CounterDamage { get; init; }
     /// <summary>Effects applied from skilled defense (if any)</summary>
-    public CharacterEffects? EffectsApplied { get; init; }
+    public Attributes? EffectsApplied { get; init; }
     /// <summary>Actual stamina gained from defense effects (may be less if already full)</summary>
     public float StaminaGained { get; init; }
     public bool WasOptimal { get; init; }

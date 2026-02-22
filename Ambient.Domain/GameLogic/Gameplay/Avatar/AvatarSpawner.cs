@@ -1,4 +1,5 @@
 ﻿using Ambient.Domain.Enums;
+using Ambient.Domain.Extensions;
 using System.Reflection;
 
 namespace Ambient.Domain.GameLogic.Gameplay.Avatar;
@@ -46,7 +47,7 @@ public static class AvatarSpawner
         avatar.Capabilities.BuildingMaterials = archetype.RespawnCapabilities.BuildingMaterials?.ToArray() ?? [];
         avatar.Capabilities.QuestTokens = archetype.RespawnCapabilities.QuestTokens?.ToArray() ?? [];
 
-        avatar.BlockOwnership.Clear();
+        avatar.ClearBlockOwnership();
         SetAvailableBlocks(avatar, avatar.Capabilities.Blocks);
     }
 
@@ -55,7 +56,7 @@ public static class AvatarSpawner
         foreach (var block in blocks)
         {
             if (block?.BlockRef == null) continue;
-            avatar.BlockOwnership[block.BlockRef] = block.Quantity; // last one wins, same as before
+            avatar.SetBlockOwnership(block.BlockRef, block.Quantity); // last one wins, same as before
         }
     }
 }

@@ -46,12 +46,12 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
                 // Convert character's Saga-relative position to world GPS coordinates
                 var characterWorldLat = CoordinateConverter.SagaRelativeZToLatitude(
                     character.State.CurrentLatitudeZ,
-                    sagaKvp.Value.LatitudeZ,
+                    sagaKvp.Value.Latitude,
                     _world);
 
                 var characterWorldLon = CoordinateConverter.SagaRelativeXToLongitude(
                     character.State.CurrentLongitudeX,
-                    sagaKvp.Value.LongitudeX,
+                    sagaKvp.Value.Longitude,
                     _world);
 
                 // Calculate distance (character coordinates are already in world GPS from GetAvailableInteractionsHandler)

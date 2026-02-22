@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../../SharedRefs.xsd" />
+    <xs:complexType name="BlockEntry">
+        <xs:annotation>
+            <xs:documentation>A single block type in inventory, tracked by quantity (float for partial blocks from mining).</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="BlockRef" type="BlockRef" use="required" />
+        <xs:attribute name="Quantity" type="xs:float" use="required" />
+    </xs:complexType>
+    <xs:complexType name="BlockInventory">
+        <xs:annotation>
+            <xs:documentation>Collection of mined/harvested block items.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Entry" type="BlockEntry" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

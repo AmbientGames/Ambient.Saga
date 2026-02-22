@@ -72,6 +72,10 @@ public class ContentPathResolver : IContentPathResolver
     /// </summary>
     public string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
     {
+        if (category != "Waypoint" && category != "QuestHub")
+        {
+            System.Diagnostics.Debug.WriteLine($"{category}-{kind}");
+        }
         var rng = random ?? new Random();
         string[] extensions = ["*.litematic", "*.schematic", "*.xml"];
 
@@ -107,16 +111,16 @@ public class ContentPathResolver : IContentPathResolver
     private string? ResolveModelDirectoryPath(string library, string ns, params string[] categoryPath)
     {
         var subPath = new[] { "models" }.Concat(categoryPath).ToArray();
-        var relativePath = BuildRelativePath("packs/libraries", library, ns, subPath);
 
-        // Check %APPDATA% location first
-        var appDataPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            _gameSettings.PublisherFolder, _gameSettings.GameName, relativePath);
-        if (Directory.Exists(appDataPath))
-            return appDataPath;
+        // Check Documents location first (user-created libraries)
+        var documentsPath = Path.Combine(
+            _gameSettings.GetDocumentsBasePath(),
+            "packs/libraries", library, "assets", ns, Path.Combine(subPath));
+        if (Directory.Exists(documentsPath))
+            return documentsPath;
 
         // Fall back to install location
+        var relativePath = BuildRelativePath("packs/libraries", library, ns, subPath);
         var installPath = Path.Combine(_gameSettings.InstallPath, relativePath);
         if (Directory.Exists(installPath))
             return installPath;
@@ -124,14 +128,15 @@ public class ContentPathResolver : IContentPathResolver
         // Fall back to default pack
         if (library != DefaultPack || ns != DefaultNamespace)
         {
+            // Check Documents default
+            var defaultDocumentsPath = Path.Combine(
+                _gameSettings.GetDocumentsBasePath(),
+                "packs/libraries", DefaultPack, "assets", DefaultNamespace, Path.Combine(subPath));
+            if (Directory.Exists(defaultDocumentsPath))
+                return defaultDocumentsPath;
+
+            // Check install default
             var defaultRelativePath = BuildRelativePath("packs/libraries", DefaultPack, DefaultNamespace, subPath);
-
-            var defaultAppDataPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                _gameSettings.PublisherFolder, _gameSettings.GameName, defaultRelativePath);
-            if (Directory.Exists(defaultAppDataPath))
-                return defaultAppDataPath;
-
             var defaultInstallPath = Path.Combine(_gameSettings.InstallPath, defaultRelativePath);
             if (Directory.Exists(defaultInstallPath))
                 return defaultInstallPath;
@@ -157,29 +162,23 @@ public class ContentPathResolver : IContentPathResolver
 
     /// <summary>
     /// Resolves XML content path with world-specific override support.
-    /// Resolution order: {worldRef}_generated -> world -> library -> default library
+    /// Resolution order: world -> library -> default library
     /// </summary>
     public string? ResolveXmlPath(string worldRef, string library, string ns, params string[] relativePath)
     {
         var xmlSubPath = new[] { "xml" }.Concat(relativePath).ToArray();
 
-        // 1. Check generated world folder first (highest priority - procedurally generated content)
-        var generatedWorldRef = worldRef.ToLowerInvariant() + "_generated";
-        var generatedPath = ResolveWorldPath(generatedWorldRef, ns, xmlSubPath);
-        if (generatedPath != null)
-            return generatedPath;
-
-        // 2. Check world-specific location
+        // 1. Check world-specific location
         var worldPath = ResolveWorldPath(worldRef, ns, xmlSubPath);
         if (worldPath != null)
             return worldPath;
 
-        // 3. Check library location
+        // 2. Check library location
         var libraryPath = ResolvePath("packs/libraries", library, ns, xmlSubPath);
         if (libraryPath != null)
             return libraryPath;
 
-        // 4. Fall back to default library (if not already checked)
+        // 3. Fall back to default library (if not already checked)
         if (library != DefaultPack || ns != DefaultNamespace)
         {
             var defaultPath = ResolvePath("packs/libraries", DefaultPack, DefaultNamespace, xmlSubPath);
@@ -192,17 +191,16 @@ public class ContentPathResolver : IContentPathResolver
 
     private string? ResolveWorldPath(string worldRef, string ns, string[] subPath)
     {
-        var relativePath = Path.Combine("content", "worlds", worldRef, "assets", ns, Path.Combine(subPath));
+        var worldRelativePath = Path.Combine(worldRef, "assets", ns, Path.Combine(subPath));
 
-        // Check %APPDATA% location first
-        var appDataPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            _gameSettings.PublisherFolder, _gameSettings.GameName, relativePath);
-        if (File.Exists(appDataPath))
-            return appDataPath;
+        // Check Documents location first (user-created worlds)
+        var documentsPath = Path.Combine(_gameSettings.GetWorldsPath(), worldRelativePath);
+        if (File.Exists(documentsPath))
+            return documentsPath;
 
         // Fall back to install location
-        var installPath = Path.Combine(_gameSettings.InstallPath, relativePath);
+        var installRelativePath = Path.Combine("content", "worlds", worldRef, "assets", ns, Path.Combine(subPath));
+        var installPath = Path.Combine(_gameSettings.InstallPath, installRelativePath);
         if (File.Exists(installPath))
             return installPath;
 
@@ -211,16 +209,16 @@ public class ContentPathResolver : IContentPathResolver
 
     private string? ResolvePath(string packType, string pack, string ns, params string[] subPath)
     {
-        var relativePath = BuildRelativePath(packType, pack, ns, subPath);
-
-        // Check %APPDATA% location first
-        var appDataPath = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-            _gameSettings.PublisherFolder, _gameSettings.GameName, relativePath);
-        if (File.Exists(appDataPath))
-            return appDataPath;
+        // Check Documents location first (user-created libraries)
+        // Path: Documents/{Publisher}/{Game}/packs/libraries/{pack}/assets/{ns}/...
+        var documentsLibraryPath = Path.Combine(
+            _gameSettings.GetDocumentsBasePath(),
+            packType, pack, "assets", ns, Path.Combine(subPath));
+        if (File.Exists(documentsLibraryPath))
+            return documentsLibraryPath;
 
         // Fall back to install location
+        var relativePath = BuildRelativePath(packType, pack, ns, subPath);
         var installPath = Path.Combine(_gameSettings.InstallPath, relativePath);
         if (File.Exists(installPath))
             return installPath;
@@ -228,14 +226,15 @@ public class ContentPathResolver : IContentPathResolver
         // Fall back to default pack with ambient_games namespace
         if (pack != DefaultPack || ns != DefaultNamespace)
         {
+            // Check Documents default
+            var defaultDocumentsPath = Path.Combine(
+                _gameSettings.GetDocumentsBasePath(),
+                packType, DefaultPack, "assets", DefaultNamespace, Path.Combine(subPath));
+            if (File.Exists(defaultDocumentsPath))
+                return defaultDocumentsPath;
+
+            // Check install default
             var defaultRelativePath = BuildRelativePath(packType, DefaultPack, DefaultNamespace, subPath);
-
-            var defaultAppDataPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                _gameSettings.PublisherFolder, _gameSettings.GameName, defaultRelativePath);
-            if (File.Exists(defaultAppDataPath))
-                return defaultAppDataPath;
-
             var defaultInstallPath = Path.Combine(_gameSettings.InstallPath, defaultRelativePath);
             if (File.Exists(defaultInstallPath))
                 return defaultInstallPath;

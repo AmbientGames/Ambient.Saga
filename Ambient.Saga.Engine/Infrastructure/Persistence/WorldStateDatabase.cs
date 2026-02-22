@@ -59,6 +59,16 @@ internal class WorldStateDatabase : IDisposable
                 return new Vector3(x, y, z);
             });
 
+        // SharpDX Int3 needs custom serialization (struct with fields, not properties)
+        mapper.RegisterType<Int3>(
+            serialize: v => new BsonDocument
+            {
+                ["X"] = v.X,
+                ["Y"] = v.Y,
+                ["Z"] = v.Z
+            },
+            deserialize: bson => new Int3(bson["X"].AsInt32, bson["Y"].AsInt32, bson["Z"].AsInt32));
+
         // Ensure nested objects are serialized (LiteDB should handle this by default, but being explicit)
         mapper.IncludeNonPublic = false; // Only serialize public properties
         mapper.SerializeNullValues = false; // Don't waste space on nulls

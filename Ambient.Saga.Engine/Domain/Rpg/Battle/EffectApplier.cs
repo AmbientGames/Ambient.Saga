@@ -37,7 +37,7 @@ public static class EffectApplier
     /// <param name="itemTypeName">Name of item type (for result source tracking)</param>
     /// <returns>List of stat changes to apply</returns>
     public static EffectResult[] ApplyEffects(
-        CharacterEffects effects,
+        Attributes effects,
         string? itemAffinity,
         float condition,
         string? attackerAffinity,
@@ -63,17 +63,18 @@ public static class EffectApplier
 
         // Apply each character stat effect (no reflection!)
         // Per XSD: Negative = costs to caster, Positive = effects on target (inverted if Offensive)
+        // Resources
         AddEffectResult(results, "Health", effects.Health, condition, affinityMultiplier, isOffensive, itemTypeName);
         AddEffectResult(results, "Stamina", effects.Stamina, condition, affinityMultiplier, isOffensive, itemTypeName);
         AddEffectResult(results, "Mana", effects.Mana, condition, affinityMultiplier, isOffensive, itemTypeName);
+        // State
+        AddEffectResult(results, "Temperature", effects.Temperature, condition, affinityMultiplier, isOffensive, itemTypeName);
+        // Attributes
         AddEffectResult(results, "Strength", effects.Strength, condition, affinityMultiplier, isOffensive, itemTypeName);
         AddEffectResult(results, "Defense", effects.Defense, condition, affinityMultiplier, isOffensive, itemTypeName);
-        AddEffectResult(results, "Speed", effects.Speed, condition, affinityMultiplier, isOffensive, itemTypeName);
         AddEffectResult(results, "Magic", effects.Magic, condition, affinityMultiplier, isOffensive, itemTypeName);
-        AddEffectResult(results, "Temperature", effects.Temperature, condition, affinityMultiplier, isOffensive, itemTypeName);
-        AddEffectResult(results, "Hunger", effects.Hunger, condition, affinityMultiplier, isOffensive, itemTypeName);
-        AddEffectResult(results, "Thirst", effects.Thirst, condition, affinityMultiplier, isOffensive, itemTypeName);
-        AddEffectResult(results, "Insulation", effects.Insulation, condition, affinityMultiplier, isOffensive, itemTypeName);
+        AddEffectResult(results, "Speed", effects.Speed, condition, affinityMultiplier, isOffensive, itemTypeName);
+        AddEffectResult(results, "Endurance", effects.Endurance, condition, affinityMultiplier, isOffensive, itemTypeName);
 
         return results.ToArray();
     }

@@ -78,25 +78,19 @@ public class ModalManager
     /// </summary>
     private void RegisterModalAdapters()
     {
-        // Simple modals (MainViewModel only)
-        _modalRegistry.Register(new Adapters.AchievementsModalAdapter());
-        _modalRegistry.Register(new Adapters.AvatarInfoModalAdapter());
-        _modalRegistry.Register(new Adapters.WorldCatalogModalAdapter());
-        _modalRegistry.Register(new Adapters.FactionReputationModalAdapter());
-
         // Character context modals
         _modalRegistry.Register(new Adapters.LootModalAdapter());
         _modalRegistry.Register(new Adapters.MerchantTradeModalAdapter());
 
         // Complex modals (need ModalManager reference)
-        _modalRegistry.Register(new Adapters.CharactersModalAdapter(this));
         _modalRegistry.Register(new Adapters.DialogueModalAdapter(this));
         _modalRegistry.Register(new Adapters.BattleModalAdapter(this));
-        _modalRegistry.Register(new Adapters.QuestLogModalAdapter(this));
 
         // Quest modals (need IMediator)
         _modalRegistry.Register(new Adapters.QuestModalAdapter(_mediator));
         _modalRegistry.Register(new Adapters.QuestDetailModalAdapter(_mediator));
+
+        // Note: Journal is now a panel (not a modal), accessed via J key
 
         // Special modals
         var worldSelectionLogger = _loggerFactory?.CreateLogger<WorldSelectionScreen>();
@@ -123,26 +117,21 @@ public class ModalManager
     // Modal state - derived from stack (read-only)
     public bool ShowWorldSelection => _modalStack.Contains("WorldSelection");
     public bool ShowArchetypeSelection => _modalStack.Contains("ArchetypeSelection");
-    public bool ShowAvatarInfo => _modalStack.Contains("AvatarInfo");
-    public bool ShowCharacters => _modalStack.Contains("Characters");
-    public bool ShowAchievements => _modalStack.Contains("Achievements");
-    public bool ShowWorldCatalog => _modalStack.Contains("WorldCatalog");
     public bool ShowMerchantTrade => _modalStack.Contains("MerchantTrade");
     public bool ShowBossBattle => _modalStack.Contains("BossBattle");
     public bool ShowQuest => _modalStack.Contains("Quest");
-    public bool ShowQuestLog => _modalStack.Contains("QuestLog");
     public bool ShowQuestDetail => _modalStack.Contains("QuestDetail");
     public bool ShowDialogue => _modalStack.Contains("Dialogue");
     public bool ShowLoot => _modalStack.Contains("Loot");
-    public bool ShowFactionReputation => _modalStack.Contains("FactionReputation");
     public bool ShowPauseMenu => _modalStack.Contains("PauseMenu");
     public bool ShowSettings => _modalStack.Contains("Settings");
+    public bool ShowJournal => _modalStack.Contains("Journal");
 
     // Selected character for interactions
     public CharacterViewModel? SelectedCharacter { get; set; }
 
     // Quest context (for quest signpost interactions)
-    private MainViewModel? _questViewModel;
+    private SagaMainViewModel? _questViewModel;
     // Check if any modal is currently open
     public bool IsAnyModalOpen => _modalStack.HasModals;
 
@@ -190,14 +179,9 @@ public class ModalManager
 
     public void OpenWorldSelection() => OpenModal("WorldSelection");
     public void OpenArchetypeSelection() => OpenModal("ArchetypeSelection");
-    public void OpenAvatarInfo() => OpenModal("AvatarInfo");
-    public void OpenCharacters() => OpenModal("Characters");
-    public void OpenAchievements() => OpenModal("Achievements");
-    public void OpenWorldCatalog() => OpenModal("WorldCatalog");
-    public void OpenFactionReputation() => OpenModal("FactionReputation");
-    public void OpenQuestLog() => OpenModal("QuestLog");
     public void OpenPauseMenu() => OpenModal("PauseMenu");
     public void OpenSettings() => OpenModal("Settings");
+    // Note: Journal panel (J key) now consolidates Quests and Characters info
 
     public void Update(float deltaTime)
     {
@@ -207,15 +191,15 @@ public class ModalManager
         }
     }
 
-    public void Render(MainViewModel viewModel)
+    public void Render(SagaMainViewModel viewModel)
     {
         // ====================================================================
         // ALL MODALS NOW RENDERED VIA MODAL REGISTRY (see RegisterModalAdapters)
         // ====================================================================
         // The following modals have been migrated to the registry pattern:
-        // - WorldSelection, ArchetypeSelection, AvatarInfo, Characters
+        // - WorldSelection, ArchetypeSelection, Characters
         // - Achievements, WorldCatalog, MerchantTrade, BossBattle
-        // - Quest, QuestLog, QuestDetail, Dialogue, Loot, FactionReputation
+        // - Quest, QuestLog, QuestDetail, Dialogue, Loot
         //
         // Only PauseMenu and Settings remain with manual rendering due to
         // special requirements (PauseMenu uses ModalStack directly, Settings
@@ -243,7 +227,7 @@ public class ModalManager
         _modalRegistry.RenderRegistered(fallbackContext: viewModel);
     }
 
-    public void OpenCharacterInteraction(CharacterViewModel character, MainViewModel viewModel)
+    public void OpenCharacterInteraction(CharacterViewModel character, SagaMainViewModel viewModel)
     {
         SelectedCharacter = character;
 
@@ -279,7 +263,7 @@ public class ModalManager
     }
 
 
-    public void OpenQuestSignpost(string questRef, string sagaRef, string signpostRef, MainViewModel viewModel)
+    public void OpenQuestSignpost(string questRef, string sagaRef, string signpostRef, SagaMainViewModel viewModel)
     {
         _questViewModel = viewModel;
 

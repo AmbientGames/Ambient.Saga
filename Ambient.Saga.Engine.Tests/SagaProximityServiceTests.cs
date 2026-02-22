@@ -22,8 +22,8 @@ public class SagaProximityServiceTests
         world.SagaTriggersLookup[saga.RefName] = new List<SagaTrigger> { sagaTrigger };
 
         // Avatar at saga center (should be within 10m trigger)
-        var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.LongitudeX, world);
-        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
+        var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.Longitude, world);
+        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.Latitude, world);
 
         // Act
         var results = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
@@ -35,64 +35,6 @@ public class SagaProximityServiceTests
         Assert.Contains(results, r => r.EntityRef == sagaTrigger.RefName);
     }
 
-    //[Fact]
-    //public void QueryAllInteractionsAtPosition_FindsFeature_Within5Meters()
-    //{
-    //    // Arrange
-    //    var world = CreateTestWorld();
-    //    var saga = CreateTestSagaWithFeature("TestSaga", 31.5, 130.5, ItemChoiceType2.LandmarkRef, "TestLandmark");
-
-    //    world.WorldTemplate.Gameplay.SagaArcs = new[] { saga };
-    //    world.SagaTriggersLookup[saga.RefName] = new List<SagaTrigger>(); // No triggers
-    //    world.LandmarksLookup["TestLandmark"] = new Landmark
-    //    {
-    //        RefName = "TestLandmark",
-    //        DisplayName = "Test Landmark"
-    //    };
-
-    //    // Avatar at saga center (should be within 5m feature radius)
-    //    var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.LongitudeX, world);
-    //    var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
-
-    //    // Act
-    //    var results = SagaProximityService.QueryAllInteractionsAtPosition(
-    //        sagaModelX, sagaModelZ, null, world);
-
-    //    // Assert
-    //    Assert.NotEmpty(results);
-    //    Assert.Contains(results, r => r.Type == SagaInteractionType.Feature);
-    //    Assert.Contains(results, r => r.EntityRef == "TestLandmark");
-    //}
-
-    //[Fact]
-    //public void QueryAllInteractionsAtPosition_PrioritizesFeatureOverTrigger()
-    //{
-    //    // Arrange
-    //    var world = CreateTestWorld();
-    //    var saga = CreateTestSagaWithFeature("TestSaga", 31.5, 130.5, ItemChoiceType2.StructureRef, "TestStructure");
-    //    var sagaTrigger = CreateTestSagaTrigger("TestTrigger", enterRadius: 10f);
-
-    //    world.WorldTemplate.Gameplay.SagaArcs = new[] { saga };
-    //    world.SagaTriggersLookup[saga.RefName] = new List<SagaTrigger> { sagaTrigger };
-    //    world.StructuresLookup["TestStructure"] = new Structure
-    //    {
-    //        RefName = "TestStructure",
-    //        DisplayName = "Test Structure"
-    //    };
-
-    //    // Avatar at saga center (within both feature and trigger)
-    //    var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.LongitudeX, world);
-    //    var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
-
-    //    // Act
-    //    var results = SagaProximityService.QueryAllInteractionsAtPosition(
-    //        sagaModelX, sagaModelZ, null, world);
-
-    //    // Assert
-    //    Assert.True(results.Count >= 2, "Should find both feature and trigger");
-    //    Assert.Equal(SagaInteractionType.Feature, results[0].Type); // Feature should be first (priority 2)
-    //    Assert.Equal(SagaInteractionType.SagaTrigger, results[1].Type); // Trigger should be second (priority 3)
-    //}
 
     [Fact]
     public async Task QueryAllInteractionsAtPosition_LockedTrigger_WhenMissingQuestToken()
@@ -114,8 +56,8 @@ public class SagaProximityServiceTests
             }
         };
 
-        var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.LongitudeX, world);
-        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
+        var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.Longitude, world);
+        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.Latitude, world);
 
         // Act
         var results = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
@@ -147,8 +89,8 @@ public class SagaProximityServiceTests
             }
         };
 
-        var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.LongitudeX, world);
-        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.LatitudeZ, world);
+        var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.Longitude, world);
+        var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.Latitude, world);
 
         // Act
         var results = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
@@ -197,8 +139,8 @@ public class SagaProximityServiceTests
         {
             RefName = refName,
             DisplayName = $"Test {refName}",
-            LatitudeZ = latitude,
-            LongitudeX = longitude
+            Latitude = latitude,
+            Longitude = longitude
         };
     }
 

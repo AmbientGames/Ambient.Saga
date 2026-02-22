@@ -84,7 +84,7 @@ public class DefensiveMechanicsTests
         var adjustResult = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:WoodenSword"
+            Parameter = "MainHand:WoodenSword"
         });
 
         _output.WriteLine($"Adjust result: {adjustResult.Message}");
@@ -123,7 +123,7 @@ public class DefensiveMechanicsTests
         var changeResult = engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.ChangeLoadout,
-            Parameter = "RightHand:IronSword,LeftHand:WoodenShield"
+            Parameter = "MainHand:IronSword,OffHand:WoodenShield"
         });
 
         _output.WriteLine($"Change result: {changeResult.Message}");
@@ -167,7 +167,7 @@ public class DefensiveMechanicsTests
         engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:IronSword"
+            Parameter = "MainHand:IronSword"
         });
 
         // ASSERT: Now adjusting, not defending
@@ -294,7 +294,7 @@ public class DefensiveMechanicsTests
         engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:WoodenSword"
+            Parameter = "MainHand:WoodenSword"
         });
         Assert.True(player.IsAdjusting);
 
@@ -356,7 +356,7 @@ public class DefensiveMechanicsTests
         engine.ExecutePlayerDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
-            Parameter = "RightHand:IronSword"
+            Parameter = "MainHand:IronSword"
         });
         Assert.True(defender.IsAdjusting);
 
@@ -421,7 +421,7 @@ public class DefensiveMechanicsTests
             RefName = "IronSword",
             DisplayName = "Iron Sword",
             WholesalePrice = 50,
-            Effects = new CharacterEffects { Health = -0.10f },  // 10% damage
+            Effects = new Attributes { Health = -0.10f },  // 10% damage
             AffinityRef = "Physical"
         };
 
@@ -430,7 +430,7 @@ public class DefensiveMechanicsTests
             RefName = "WoodenSword",
             DisplayName = "Wooden Sword",
             WholesalePrice = 10,
-            Effects = new CharacterEffects { Health = -0.05f },  // 5% damage
+            Effects = new Attributes { Health = -0.05f },  // 5% damage
             AffinityRef = "Physical"
         };
 
@@ -439,7 +439,7 @@ public class DefensiveMechanicsTests
             RefName = "WoodenShield",
             DisplayName = "Wooden Shield",
             WholesalePrice = 20,
-            Effects = new CharacterEffects { Defense = 0.05f }
+            Effects = new Attributes { Defense = 0.05f }
         };
 
         var fireball = new Spell
@@ -447,7 +447,7 @@ public class DefensiveMechanicsTests
             RefName = "Fireball",
             DisplayName = "Fireball",
             UseType = ItemUseType.Offensive,
-            Effects = new CharacterEffects { Health = -0.15f },  // 15% damage
+            Effects = new Attributes { Health = -0.15f },  // 15% damage
             AffinityRef = "Fire"
         };
 
@@ -455,7 +455,7 @@ public class DefensiveMechanicsTests
         {
             RefName = "HealthPotion",
             DisplayName = "Health Potion",
-            Effects = new CharacterEffects { Health = 0.25f }  // 25% heal
+            Effects = new Attributes { Health = 0.25f }  // 25% heal
         };
 
         var physicalAffinity = new CharacterAffinity
@@ -505,7 +505,7 @@ public class DefensiveMechanicsTests
             RefName = name,
             DisplayName = name,
             Health = 1.0f,
-            Energy = 1.0f,
+            Stamina = 1.0f,
             Strength = strength,
             Defense = defense,
             Speed = speed,

@@ -32,7 +32,7 @@ public class DevToolsPanel
     /// </summary>
     public static bool IsAvailable => Debugger.IsAttached;
 
-    public void Render(MainViewModel viewModel, ModalManager modalManager)
+    public void Render(SagaMainViewModel viewModel, ModalManager modalManager)
     {
         if (!IsAvailable)
             return;
@@ -222,7 +222,7 @@ public class DevToolsPanel
     /// Helper to spawn a dev character and open the appropriate modal.
     /// </summary>
     private static async Task SpawnAndOpenModalAsync(
-        MainViewModel viewModel,
+        SagaMainViewModel viewModel,
         ModalManager modalManager,
         DevCharacterType characterType,
         string modalName)
@@ -239,7 +239,7 @@ public class DevToolsPanel
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[DevTools] Error in SpawnAndOpenModalAsync: {ex.Message}");
-            viewModel.StatusMessage = $"Error: {ex.Message}";
+            viewModel.AddToastMessage($"Error: {ex.Message}", Overlay.MessageType.Error, 5f);
         }
     }
 }

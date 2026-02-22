@@ -22,6 +22,7 @@ public class ArrowKeyInputHandler : IInputHandler
     private bool _pauseMenuRequestedThisFrame = false;
 
     public event Action? PauseMenuRequested;
+    public event Action<int>? HotbarSlotActivated;
 
     public bool WasPauseMenuRequested
     {

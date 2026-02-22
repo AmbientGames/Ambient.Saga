@@ -361,8 +361,8 @@ public class SagaTransactionLogE2ETests : IDisposable
         {
             RefName = sagaRef,
             DisplayName = "Test Saga",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var stateMachine = new SagaStateMachine(saga, new List<SagaTrigger> { trigger }, _world);
@@ -601,8 +601,8 @@ public class SagaTransactionLogE2ETests : IDisposable
         {
             RefName = "TestSaga",
             DisplayName = "Test Saga",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var trigger = new SagaTrigger

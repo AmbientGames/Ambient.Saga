@@ -49,7 +49,7 @@ public class StubAvatarUpdateService : IAvatarUpdateService
         return Task.FromResult(avatar);
     }
 
-    public Task<AvatarEntity> UpdateAvatarForMiningAsync(AvatarEntity avatar, Dictionary<string, int> blocksMined, CancellationToken ct = default)
+    public Task<AvatarEntity> UpdateAvatarForMiningAsync(AvatarEntity avatar, Dictionary<string, int> blocksMined, AvatarArchetype archetype, IWorldConfiguration worldConfig, CancellationToken ct = default)
     {
         return Task.FromResult(avatar);
     }
@@ -131,8 +131,8 @@ public class TradeItemCommandTests : IDisposable
         {
             RefName = "VillageMerchant",
             DisplayName = "Village Merchant",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         var world = new World
@@ -150,6 +150,25 @@ public class TradeItemCommandTests : IDisposable
         world.SagaArcLookup[sagaarc.RefName] = sagaarc;
         world.CharactersLookup[merchant.RefName] = merchant;
         world.SagaTriggersLookup[sagaarc.RefName] = new List<SagaTrigger>();
+
+        // Register archetype so carry weight checks can find it
+        var warriorArchetype = new AvatarArchetype
+        {
+            RefName = "Warrior",
+            DisplayName = "Warrior",
+            SpawnStats = new CharacterStats { Health = 1.0f, Stamina = 1.0f, Strength = 0.10f },
+            SpawnCapabilities = new ItemCollection
+            {
+                Equipment = Array.Empty<EquipmentEntry>(),
+                Consumables = Array.Empty<ConsumableEntry>(),
+                Spells = Array.Empty<SpellEntry>(),
+                Blocks = Array.Empty<BlockEntry>(),
+                Tools = Array.Empty<ToolEntry>(),
+                BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
+                QuestTokens = Array.Empty<QuestTokenEntry>()
+            }
+        };
+        world.AvatarArchetypesLookup[warriorArchetype.RefName] = warriorArchetype;
 
         return world;
     }

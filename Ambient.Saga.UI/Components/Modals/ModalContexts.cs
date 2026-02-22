@@ -10,20 +10,20 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// <summary>
 /// Context for modals that need MainViewModel and CharacterViewModel.
 /// </summary>
-public record CharacterContext(MainViewModel ViewModel, CharacterViewModel Character);
+public record CharacterContext(SagaMainViewModel ViewModel, CharacterViewModel Character);
 
 /// <summary>
 /// Context for modals that need MainViewModel, CharacterViewModel, and ModalManager.
 /// Used for modals that can transition to other modals.
 /// </summary>
-public record CharacterModalContext(MainViewModel ViewModel, CharacterViewModel Character, ModalManager ModalManager);
+public record CharacterModalContext(SagaMainViewModel ViewModel, CharacterViewModel Character, ModalManager ModalManager);
 
 /// <summary>
 /// Context for quest-related modals.
 /// </summary>
-public record QuestContext(string QuestRef, string SagaRef, string SignpostRef, MainViewModel ViewModel);
+public record QuestContext(string QuestRef, string SagaRef, string SignpostRef, SagaMainViewModel ViewModel);
 
 /// <summary>
 /// Context for quest detail modal.
 /// </summary>
-public record QuestDetailContext(string QuestRef, string SagaRef, MainViewModel ViewModel);
+public record QuestDetailContext(string QuestRef, string SagaRef, SagaMainViewModel ViewModel);

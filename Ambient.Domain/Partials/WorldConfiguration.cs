@@ -18,4 +18,5 @@ public partial class WorldConfiguration : IWorldConfiguration
     /// Set by WorldConfigurationLoader after deserialization.
     /// </summary>
     [XmlIgnore] public string? SourceDirectory { get; set; }
+
 }

@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="../../EntityBase.xsd" />
+    <xs:include schemaLocation="../../Refs.xsd" />
+	<xs:include schemaLocation="../Acquirables/Equipment.xsd" />
+	<xs:include schemaLocation="../Acquirables/Consumable.xsd" />
+	<xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
+
+	<xs:simpleType name="ReputationLevel">
+        <xs:annotation><xs:documentation>Tiered reputation standing a character can have with a faction, mapped to numeric reputation point ranges.</xs:documentation></xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Hated">
+                <xs:annotation><xs:documentation>Lowest reputation tier (-42000 to -21000); the faction will attack on sight.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Hostile">
+                <xs:annotation><xs:documentation>Strongly negative reputation (-21000 to -6000); the faction refuses all interaction.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Unfriendly">
+                <xs:annotation><xs:documentation>Mildly negative reputation (-6000 to -3000); limited services available at increased cost.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Neutral">
+                <xs:annotation><xs:documentation>Default standing (-3000 to 3000); standard pricing and access.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Friendly">
+                <xs:annotation><xs:documentation>Positive reputation (3000 to 9000); minor discounts and additional dialogue options.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Honored">
+                <xs:annotation><xs:documentation>High reputation (9000 to 21000); significant discounts and access to faction quests.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Revered">
+                <xs:annotation><xs:documentation>Very high reputation (21000 to 42000); exclusive rewards and faction-specific abilities.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="Exalted">
+                <xs:annotation><xs:documentation>Maximum reputation tier (42000+); all faction benefits unlocked including unique items.</xs:documentation></xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="FactionRelationship">
+        <xs:annotation><xs:documentation>Defines a diplomatic relationship between two factions, controlling reputation spillover.</xs:documentation></xs:annotation>
+        <xs:attribute name="FactionRef" type="FactionRef" use="required">
+            <xs:annotation><xs:documentation>Reference to the other faction in this relationship.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RelationshipType" use="required">
+            <xs:annotation><xs:documentation>The diplomatic stance between the two factions.</xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="Allied">
+                        <xs:annotation><xs:documentation>Factions cooperate; gaining reputation with one grants positive spillover to the other.</xs:documentation></xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Enemy">
+                        <xs:annotation><xs:documentation>Factions are at war; gaining reputation with one causes negative spillover to the other.</xs:documentation></xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="Rival">
+                        <xs:annotation><xs:documentation>Factions compete but are not hostile; spillover is reduced compared to Enemy.</xs:documentation></xs:annotation>
+                    </xs:enumeration>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="SpilloverPercent" type="xs:float" use="optional" default="0.25">
+            <xs:annotation><xs:documentation>Fraction of reputation change that spills over to the related faction (e.g. 0.25 = 25%).</xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="ReputationReward">
+        <xs:annotation><xs:documentation>A set of items unlocked for purchase or granted when the player reaches a specific reputation level with a faction.</xs:documentation></xs:annotation>
+		<xs:sequence>
+			<xs:element name="Equipment" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation><xs:documentation>An equipment item available as a reputation reward.</xs:documentation></xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="EquipmentRef" type="EquipmentRef" use="required">
+						<xs:annotation><xs:documentation>Reference to the equipment item definition.</xs:documentation></xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="Quantity" type="xs:int" use="optional" default="1">
+						<xs:annotation><xs:documentation>Number of this equipment item granted or available.</xs:documentation></xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="DiscountPercent" type="xs:float" use="optional" default="0">
+						<xs:annotation><xs:documentation>Price discount percentage when purchasing this item from the faction vendor.</xs:documentation></xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Consumable" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation><xs:documentation>A consumable item available as a reputation reward.</xs:documentation></xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="ConsumableRef" type="ConsumableRef" use="required">
+						<xs:annotation><xs:documentation>Reference to the consumable item definition.</xs:documentation></xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="Quantity" type="xs:int" use="optional" default="1">
+						<xs:annotation><xs:documentation>Number of this consumable item granted or available.</xs:documentation></xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="DiscountPercent" type="xs:float" use="optional" default="0">
+						<xs:annotation><xs:documentation>Price discount percentage when purchasing this item from the faction vendor.</xs:documentation></xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="QuestToken" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation><xs:documentation>A quest token granted as a reputation reward, often unlocking faction-specific quests.</xs:documentation></xs:annotation>
+				<xs:complexType>
+					<xs:attribute name="QuestTokenRef" type="QuestTokenRef" use="required">
+						<xs:annotation><xs:documentation>Reference to the quest token definition.</xs:documentation></xs:annotation>
+					</xs:attribute>
+					<xs:attribute name="Quantity" type="xs:int" use="optional" default="1">
+						<xs:annotation><xs:documentation>Number of this quest token granted.</xs:documentation></xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="RequiredLevel" type="ReputationLevel" use="required">
+			<xs:annotation><xs:documentation>The minimum reputation level the player must reach to unlock this reward.</xs:documentation></xs:annotation>
+		</xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="Faction">
+        <xs:annotation><xs:documentation>A named faction that characters can gain or lose reputation with, unlocking rewards and affecting NPC behavior.</xs:documentation></xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="EntityBase">
+                <xs:sequence>
+                    <xs:element name="Relationships" minOccurs="0" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Collection of diplomatic relationships this faction has with other factions.</xs:documentation></xs:annotation>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Relationship" type="FactionRelationship" minOccurs="1" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+
+                    <xs:element name="ReputationRewards" minOccurs="0" maxOccurs="1">
+                        <xs:annotation><xs:documentation>Items and tokens unlocked at specific reputation tiers with this faction.</xs:documentation></xs:annotation>
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="Reward" type="ReputationReward" minOccurs="1" maxOccurs="unbounded" />
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+
+                <xs:attribute name="StartingReputation" type="xs:int" use="optional" default="0">
+                    <xs:annotation><xs:documentation>Initial reputation points for new characters; 0 places them in the Neutral tier.</xs:documentation></xs:annotation>
+                </xs:attribute>
+
+				<xs:attribute name="Category" use="optional">
+					<xs:annotation><xs:documentation>Organizational category used to group factions in the UI.</xs:documentation></xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="City">
+								<xs:annotation><xs:documentation>A city-state or town government faction.</xs:documentation></xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Guild">
+								<xs:annotation><xs:documentation>A professional or adventuring guild.</xs:documentation></xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Military">
+								<xs:annotation><xs:documentation>An army, militia, or other military organization.</xs:documentation></xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Religious">
+								<xs:annotation><xs:documentation>A temple, cult, or religious order.</xs:documentation></xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Criminal">
+								<xs:annotation><xs:documentation>A thieves' guild, pirate crew, or criminal syndicate.</xs:documentation></xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Merchant">
+								<xs:annotation><xs:documentation>A trade company, caravan, or merchant consortium.</xs:documentation></xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Nature">
+								<xs:annotation><xs:documentation>A druidic circle, ranger lodge, or nature-aligned group.</xs:documentation></xs:annotation>
+							</xs:enumeration>
+							<xs:enumeration value="Other">
+								<xs:annotation><xs:documentation>A faction that does not fit any standard category.</xs:documentation></xs:annotation>
+							</xs:enumeration>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Factions">
+        <xs:annotation><xs:documentation>Collection of all faction definitions in the world.</xs:documentation></xs:annotation>
+        <xs:sequence>
+            <xs:element name="Faction" type="Faction" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+	<xs:simpleType name="ModelRef">
+		<xs:annotation><xs:documentation>Reference to a Model by RefName. Used on equipment and characters to assign a 3D model.</xs:documentation></xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TextureRef">
+		<xs:annotation><xs:documentation>Reference to a BlockTexture by RefName. Used on blocks and texture set entries.</xs:documentation></xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BlockRef">
+		<xs:annotation><xs:documentation>Reference to a Block by RefName. Used in tree definitions, process recipes, and quest objectives.</xs:documentation></xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="SubstanceRef">
+		<xs:annotation><xs:documentation>Reference to a Substance by RefName. Used on blocks, tools, and building materials to specify material type.</xs:documentation></xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+	<xs:simpleType name="ClimateModel">
+		<xs:annotation><xs:documentation>Climate simulation model for the world. Earth = Earth-like temperature and weather; Mars = colder, thinner atmosphere.</xs:documentation></xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Earth" />
+			<xs:enumeration value="Mars" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

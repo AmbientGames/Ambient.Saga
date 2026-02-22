@@ -22,7 +22,7 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class DefenseOutcome {
         
-        private CharacterEffects effectsField;
+        private Attributes effectsField;
         
         private DefenseReactionType reactionField;
         
@@ -44,7 +44,7 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        public CharacterEffects Effects {
+        public Attributes Effects {
             get {
                 return this.effectsField;
             }

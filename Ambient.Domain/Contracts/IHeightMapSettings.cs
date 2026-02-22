@@ -1,4 +1,6 @@
-﻿namespace Ambient.Domain.Contracts;
+﻿using Ambient.Domain.Sampling;
+
+namespace Ambient.Domain.Contracts;
 
 public interface IHeightMapSettings
 {
@@ -7,4 +9,5 @@ public interface IHeightMapSettings
     double HorizontalScale { get; set; }
     double VerticalScale { get; set; }
     double VerticalShift { get; set; }
+    ElevationWaterMap? ElevationWaterMap { get; set; }
 }

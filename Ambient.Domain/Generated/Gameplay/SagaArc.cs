@@ -24,9 +24,9 @@ namespace Ambient.Domain {
         
         private SagaTrigger[] sagaTriggerField;
         
-        private double latitudeZField;
+        private double latitudeField;
         
-        private double longitudeXField;
+        private double longitudeField;
         
         private SagaArcCategory categoryField;
         
@@ -55,23 +55,23 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double LatitudeZ {
+        public double Latitude {
             get {
-                return this.latitudeZField;
+                return this.latitudeField;
             }
             set {
-                this.latitudeZField = value;
+                this.latitudeField = value;
             }
         }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        public double LongitudeX {
+        public double Longitude {
             get {
-                return this.longitudeXField;
+                return this.longitudeField;
             }
             set {
-                this.longitudeXField = value;
+                this.longitudeField = value;
             }
         }
         

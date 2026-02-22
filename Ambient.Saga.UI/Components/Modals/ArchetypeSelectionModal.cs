@@ -1,4 +1,5 @@
 using Ambient.Domain;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.UI;
 using Ambient.Saga.UI.Components.Utilities;
@@ -16,7 +17,7 @@ public class ArchetypeSelectionModal
     private AvatarArchetype? _selectedArchetype;
     private int _selectedIndex = -1;
 
-    public void Render(MainViewModel viewModel, ImGuiArchetypeSelector? selector, ref bool isOpen)
+    public void Render(SagaMainViewModel viewModel, ImGuiArchetypeSelector? selector, ref bool isOpen)
     {
         if (!isOpen) return;
 
@@ -95,6 +96,7 @@ public class ArchetypeSelectionModal
                         }
 
                         // Draw background - selection (green) or hover (subtle)
+                        var dpiScale = UIConstants.DpiScale;
                         if (isSelected || isHovered)
                         {
                             var drawList = ImGui.GetWindowDrawList();
@@ -105,21 +107,23 @@ public class ArchetypeSelectionModal
                                 cursorScreenPos,
                                 new Vector2(cursorScreenPos.X + availWidth, cursorScreenPos.Y + cardHeight),
                                 ImGui.GetColorU32(bgColor),
-                                4.0f);
+                                4.0f * dpiScale);
                         }
 
-                        // Draw archetype info overlaid on the button area
-                        ImGui.SetCursorPos(new Vector2(startPos.X + 8, startPos.Y + 4));
+                        // Draw archetype info overlaid on the button area (DPI-scaled padding)
+                        var textPadding = 8f * dpiScale;
+                        var topPadding = 4f * dpiScale;
+                        ImGui.SetCursorPos(new Vector2(startPos.X + textPadding, startPos.Y + topPadding));
 
                         ImGui.TextColored(new Vector4(1, 1, 1, 1), archetype.DisplayName ?? archetype.RefName);
 
-                        ImGui.SetCursorPosX(startPos.X + 8);
+                        ImGui.SetCursorPosX(startPos.X + textPadding);
                         var affinity = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(archetype.AffinityRef ?? "");
                         var affinityName = affinity?.DisplayName ?? archetype.AffinityRef ?? "None";
                         ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), $"Affinity: {affinityName}");
 
-                        ImGui.SetCursorPosX(startPos.X + 8);
-                        ImGui.PushTextWrapPos(startPos.X + ImGui.GetContentRegionAvail().X - 8);
+                        ImGui.SetCursorPosX(startPos.X + textPadding);
+                        ImGui.PushTextWrapPos(startPos.X + ImGui.GetContentRegionAvail().X - textPadding);
                         ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), archetype.Description ?? "");
                         ImGui.PopTextWrapPos();
 
@@ -210,7 +214,7 @@ public class ArchetypeSelectionModal
         // Clicking "Quit Game" will call CancelSelection and quit the application
     }
 
-    private void RenderArchetypeDetails(AvatarArchetype archetype, string currencyName, MainViewModel viewModel)
+    private void RenderArchetypeDetails(AvatarArchetype archetype, string currencyName, SagaMainViewModel viewModel)
     {
         // Archetype Bias (permanent stat modifiers)
         if (archetype.ArchetypeBias != null)
@@ -261,10 +265,10 @@ public class ArchetypeSelectionModal
                 hasAnyBias = true;
             }
 
-            // Environmental (default is 0)
-            if (bias.Insulation != 0)
+            // Endurance (default is 0)
+            if (bias.Endurance != 0)
             {
-                RenderModifierLine("Insulation", bias.Insulation);
+                RenderModifierLine("Endurance", bias.Endurance);
                 hasAnyBias = true;
             }
 
@@ -292,7 +296,7 @@ public class ArchetypeSelectionModal
                 ImGui.TableSetupColumn("Col1", ImGuiTableColumnFlags.WidthFixed, 120);
                 ImGui.TableSetupColumn("Col2", ImGuiTableColumnFlags.WidthFixed, 120);
 
-                // Row 1: Vitals
+                // Resources
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
                 ImGui.Text($"Health: {stats.Health:P0}");
@@ -303,18 +307,12 @@ public class ArchetypeSelectionModal
                 ImGui.TableNextColumn();
                 ImGui.Text($"Mana: {stats.Mana:P0}");
                 ImGui.TableNextColumn();
-                ImGui.Text($"Hunger: {stats.Hunger:P0}");
+                ImGui.Text($"Temp: {stats.Temperature:F1}C");
 
+                // Attributes
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
-                ImGui.Text($"Thirst: {stats.Thirst:P0}");
-                ImGui.TableNextColumn();
-                ImGui.Text(""); // Empty
-
-                // Row 2: Combat
-                ImGui.TableNextRow();
-                ImGui.TableNextColumn();
-                ImGui.TextColored(new Vector4(1, 0.8f, 0.6f, 1), "Combat:");
+                ImGui.TextColored(new Vector4(1, 0.8f, 0.6f, 1), "Attributes:");
                 ImGui.TableNextColumn();
                 ImGui.Text("");
 
@@ -326,9 +324,15 @@ public class ArchetypeSelectionModal
 
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
-                ImGui.Text($"Speed: {stats.Speed:P0}");
-                ImGui.TableNextColumn();
                 ImGui.Text($"Magic: {stats.Magic:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text($"Speed: {stats.Speed:P0}");
+
+                ImGui.TableNextRow();
+                ImGui.TableNextColumn();
+                ImGui.Text($"Endurance: {stats.Endurance:P0}");
+                ImGui.TableNextColumn();
+                ImGui.Text("");
 
                 // Row 3: Progression
                 ImGui.TableNextRow();
@@ -450,6 +454,26 @@ public class ArchetypeSelectionModal
         else
         {
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No starting items");
+        }
+
+        // Carry Weight
+        var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
+        if (worldConfig != null)
+        {
+            ImGui.Spacing();
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var maxWeight = CarryWeightCalculator.GetMaxCarryWeight(archetype);
+            var currentWeight = CarryWeightCalculator.CalculateTotalWeight(archetype.SpawnCapabilities, worldConfig);
+            var weightUnit = worldConfig.WeightUnitName ?? "kg";
+
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Carry Weight");
+            ImGui.Separator();
+            ImGui.Spacing();
+
+            var fraction = maxWeight > 0 ? (float)currentWeight / maxWeight : 0f;
+            ImGui.ProgressBar(fraction, new Vector2(-1, 0), $"{currentWeight:N0} / {maxWeight:N0} {weightUnit}");
         }
     }
 

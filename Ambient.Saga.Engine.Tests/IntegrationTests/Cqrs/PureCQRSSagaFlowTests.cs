@@ -104,8 +104,8 @@ public class PureCQRSSagaFlowTests : IDisposable
         {
             RefName = "TownSquare",
             DisplayName = "Town Square",
-            LatitudeZ = 35.6762,
-            LongitudeX = 139.6503
+            Latitude = 35.6762,
+            Longitude = 139.6503
         };
 
         var merchantTrigger = new SagaTrigger
@@ -217,16 +217,14 @@ public class PureCQRSSagaFlowTests : IDisposable
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 1000,
-                Experience = 0,
                 Strength = 0.15f,
                 Defense = 0.12f,
+                Magic = 0.05f,
                 Speed = 0.10f,
-                Magic = 0.05f
+                Endurance = 0f,
+                Credits = 1000,
+                Experience = 0
             },
             SpawnCapabilities = new ItemCollection
             {
@@ -243,16 +241,14 @@ public class PureCQRSSagaFlowTests : IDisposable
                 Health = 1.0f,
                 Stamina = 1.0f,
                 Mana = 1.0f,
-                Hunger = 0f,
-                Thirst = 0f,
                 Temperature = 37f,
-                Insulation = 0f,
-                Credits = 100,
-                Experience = 0,
                 Strength = 0.10f,
                 Defense = 0.08f,
+                Magic = 0.03f,
                 Speed = 0.08f,
-                Magic = 0.03f
+                Endurance = 0f,
+                Credits = 100,
+                Experience = 0
             },
             RespawnCapabilities = new ItemCollection
             {

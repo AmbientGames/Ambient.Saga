@@ -1,6 +1,7 @@
 ﻿using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using Ambient.Domain.Sampling;
+using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.UI.Services;
 
@@ -15,22 +16,22 @@ public class HeightMapProcessor
         public required ushort MaxElevation { get; init; }
         public required int Width { get; init; }
         public required int Height { get; init; }
+        public ElevationWaterMap ElevationWaterMap { get; internal set; }
     }
-
     /// <summary>
     /// Preprocesses height map to detect water areas using the shared ElevationWaterMap logic.
     /// </summary>
     /// <param name="image">Height map image</param>
     /// <param name="minWaterAreaSize">Minimum size of area to be considered water</param>
     /// <returns>Processed height map with water detection</returns>
-    public static ProcessedHeightMap ProcessHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation, int verticalShift)
+    public static ProcessedHeightMap ProcessHeightMap(Image<L16> image, int minWaterAreaSize, bool adjustMinWaterAreaSizeByElevation, IEnumerable<FlattenLocation>? flattenLocations, int verticalShift)
     {
         // Use the shared ElevationWaterMap logic
-        var elevationMap = ElevationWaterMap.FromHeightMap(image, minWaterAreaSize, adjustMinWaterAreaSizeByElevation, null, verticalShift);
+        var elevationWaterMap = ElevationWaterMap.FromHeightMap(image, minWaterAreaSize, adjustMinWaterAreaSizeByElevation, flattenLocations, verticalShift);
 
         // Convert back to the legacy format for compatibility
-        var width = elevationMap.Width;
-        var height = elevationMap.Height;
+        var width = elevationWaterMap.Width;
+        var height = elevationWaterMap.Height;
         var waterMask = new bool[width, height];
         var elevationData = new ushort[width, height];
 
@@ -38,7 +39,7 @@ public class HeightMapProcessor
         {
             for (var x = 0; x < width; x++)
             {
-                var (elevation, isWater) = elevationMap.GetData(x, y);
+                var (elevation, isWater) = elevationWaterMap.GetData(x, y);
                 elevationData[x, y] = elevation;
                 waterMask[x, y] = isWater;
             }
@@ -46,14 +47,65 @@ public class HeightMapProcessor
 
         return new ProcessedHeightMap
         {
+            ElevationWaterMap = elevationWaterMap,
             WaterMask = waterMask,
             ElevationData = elevationData,
-            SeaLevel = elevationMap.SeaLevel,
-            MinElevation = elevationMap.MinElevation,
-            MaxElevation = elevationMap.MaxElevation,
+            SeaLevel = elevationWaterMap.SeaLevel,
+            MinElevation = elevationWaterMap.MinElevation,
+            MaxElevation = elevationWaterMap.MaxElevation,
             Width = width,
             Height = height
         };
+    }
+
+    public static IEnumerable<FlattenLocation> GetFlattenLocations(IWorld world)
+    {
+        // all offsets are in blocks
+        const int StructureElevationOffset = 2;
+        const double StructureRadius = 30;
+        const int DefaultElevationOffset = 1;
+        const double DefaultRadius = 10;
+
+        // Check if we have the necessary data
+        if (world.SagaArcLookup == null || world.SagaArcLookup.Count == 0)
+            yield break;
+
+        if (world.HeightMapMetadata == null)
+            yield break;
+
+        foreach (var sagaArc in world.SagaArcLookup.Values)
+        {
+            // Convert GPS coordinates to heightmap pixel coordinates
+            var pixelX = (int)Ambient.Domain.GameLogic.Gameplay.WorldManagers.CoordinateConverter.HeightMapLongitudeToPixelX(sagaArc.Longitude, world.HeightMapMetadata);
+            var pixelY = (int)Ambient.Domain.GameLogic.Gameplay.WorldManagers.CoordinateConverter.HeightMapLatitudeToPixelY(sagaArc.Latitude, world.HeightMapMetadata);
+
+            // Determine elevation offset and radius based on feature type
+            // Categories with large structures need more terrain flattening
+            var elevationOffset = DefaultElevationOffset / world.WorldConfiguration.HeightMapSettings.VerticalScale;
+            var radius = DefaultRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale / world.WorldConfiguration.HeightMapSettings.MapResolutionInMeters;
+
+            var isLargeStructure = sagaArc.Category is
+                Domain.SagaArcCategory.Stronghold or
+                Domain.SagaArcCategory.Facility or
+                Domain.SagaArcCategory.Religious or
+                Domain.SagaArcCategory.Ruin or
+                Domain.SagaArcCategory.Service or
+                Domain.SagaArcCategory.Camp;
+
+            if (isLargeStructure)
+            {
+                elevationOffset = StructureElevationOffset / world.WorldConfiguration.HeightMapSettings.VerticalScale;
+                radius = StructureRadius / world.WorldConfiguration.HeightMapSettings.HorizontalScale / world.WorldConfiguration.HeightMapSettings.MapResolutionInMeters;
+            }
+
+            // Ensure within bounds (accounting for sample radius which is radius + 1)
+            var sampleRadius = radius + 1;
+            if (pixelX < sampleRadius || pixelX >= world.HeightMapMetadata.ImageWidth - sampleRadius ||
+                pixelY < sampleRadius || pixelY >= world.HeightMapMetadata.ImageHeight - sampleRadius)
+                continue;
+
+            yield return new FlattenLocation(pixelX, pixelY, (int)Math.Round(elevationOffset), (int)Math.Round(radius));
+        }
     }
 
     /// <summary>
@@ -68,9 +120,9 @@ public class HeightMapProcessor
             var depthFromSeaLevel = Math.Max(0, processedMap.SeaLevel - elevation);
             
             // Deeper water = darker blue
-            if (depthFromSeaLevel > 10)
+            if (depthFromSeaLevel >= 1)
             {
-                return (0, 0, 100); // Deep water - dark blue
+                return (20, 110, 210); // Deep water - slightly darker blue
             }
             else
             {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+	<xs:include schemaLocation="../../../EntityBase.xsd" />
+	<xs:include schemaLocation="../../LoadoutSlots.xsd" />
+	<xs:include schemaLocation="../../Acquirables/ItemCollection.xsd" />
+	<xs:include schemaLocation="../../Acquirables/Attributes.xsd" />
+	<xs:include schemaLocation="CharacterStats.xsd" />
+	<xs:include schemaLocation="../Characters/Catalogs/CharacterAffinities.xsd" />
+	<xs:complexType name="CharacterBase">
+		<xs:annotation>
+			<xs:documentation>Base type for all characters (NPCs, enemies, bosses, avatar archetypes). Combines identity, stats, and inventory.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="EntityBase">
+				<xs:sequence>
+					<xs:element name="ArchetypeBias" type="Attributes" minOccurs="0" maxOccurs="1">
+						<xs:annotation><xs:documentation>Stat modifiers that bias this character toward an archetype playstyle (e.g. higher Strength for warriors).</xs:documentation></xs:annotation>
+					</xs:element>
+					<xs:element name="Stats" type="CharacterStats">
+						<xs:annotation><xs:documentation>Base stats for this character (resources, attributes, and progression).</xs:documentation></xs:annotation>
+					</xs:element>
+					<xs:element name="Capabilities" type="ItemCollection">
+						<xs:annotation><xs:documentation>Starting inventory: equipment, consumables, spells, tools, blocks, building materials, quest tokens.</xs:documentation></xs:annotation>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="AffinityRef" type="CharacterAffinityRef" use="optional">
+					<xs:annotation><xs:documentation>Elemental/magical affinity. References a CharacterAffinity RefName.</xs:documentation></xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="X" type="xs:double" default="0.0">
+					<xs:annotation><xs:documentation>Spawn X coordinate in world space.</xs:documentation></xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Y" type="xs:double" default="0.0">
+					<xs:annotation><xs:documentation>Spawn Y coordinate (altitude) in world space.</xs:documentation></xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="Z" type="xs:double" default="0.0">
+					<xs:annotation><xs:documentation>Spawn Z coordinate in world space.</xs:documentation></xs:annotation>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+</xs:schema>

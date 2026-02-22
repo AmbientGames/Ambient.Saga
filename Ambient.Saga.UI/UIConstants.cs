@@ -13,12 +13,15 @@ namespace Ambient.Saga.UI;
 public static class UIConstants
 {
     // Base sizes at 100% DPI (96 DPI)
+    // Hierarchy: Title (30) > Heading (24) > Body (20) > Small (16)
     private const float FontSizeBody = 20f;
     private const float FontSizeTitle = 30f;
+    private const float FontSizeHeading = 24f;
     private const float FontSizeSmall = 16f;
 
     public static ImFontPtr FontBody { get; private set; }
     public static ImFontPtr FontTitle { get; private set; }
+    public static ImFontPtr FontHeading { get; private set; }
     public static ImFontPtr FontSmall { get; private set; }
 
     /// <summary>
@@ -58,6 +61,7 @@ public static class UIConstants
         {
             FontBody = io.Fonts.AddFontDefault();
             FontTitle = FontBody;
+            FontHeading = FontBody;
             FontSmall = FontBody;
             return;
         }
@@ -71,6 +75,14 @@ public static class UIConstants
             segoeUI;
 
         FontTitle = io.Fonts.AddFontFromFileTTF(titlePath, FontSizeTitle * dpiScale);
+
+        // Heading prefers Semibold for visual distinction from body
+        string headingPath =
+            File.Exists(segoeUISemibold) ? segoeUISemibold :
+            File.Exists(segoeUIBold) ? segoeUIBold :
+            segoeUI;
+
+        FontHeading = io.Fonts.AddFontFromFileTTF(headingPath, FontSizeHeading * dpiScale);
 
         FontSmall = io.Fonts.AddFontFromFileTTF(segoeUI, FontSizeSmall * dpiScale);
     }

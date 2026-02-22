@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="StackableAcquirable.xsd" />
+    <xs:include schemaLocation="Attributes.xsd" />
+    <xs:include schemaLocation="../Usability.xsd" />
+    <xs:simpleType name="ConsumableRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Consumable">
+        <xs:annotation>
+            <xs:documentation>Single-use stackable item that applies stat effects and optionally a status effect on use.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="StackableAcquirable">
+                <xs:sequence>
+                    <xs:element name="Effects" type="Attributes">
+                        <xs:annotation><xs:documentation>Stat modifiers applied when this item is consumed.</xs:documentation></xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attributeGroup ref="UseAttributes" />
+                <xs:attribute name="StatusEffectRef" type="xs:string" use="optional">
+                    <xs:annotation><xs:documentation>Status effect applied on use. References a StatusEffect RefName.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="1.0">
+                    <xs:annotation><xs:documentation>Probability (0.0-1.0) of applying the status effect on use.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="CleansesStatusEffects" type="xs:boolean" use="optional" default="false">
+                    <xs:annotation><xs:documentation>When true, removes all active status effects from the target.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="CleanseTargetSelf" type="xs:boolean" use="optional" default="true">
+                    <xs:annotation><xs:documentation>When true, cleanse targets the user. When false, targets the opponent.</xs:documentation></xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="ConsumableCatalog">
+        <xs:sequence>
+            <xs:element name="Consumable" type="Consumable" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

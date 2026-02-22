@@ -22,8 +22,8 @@ public class SagaStateMachineTests
         {
             RefName = "TestSaga",
             DisplayName = "Test Saga",
-            LatitudeZ = 35.0,
-            LongitudeX = 139.0
+            Latitude = 35.0,
+            Longitude = 139.0
         };
 
         // Create test triggers
@@ -138,8 +138,8 @@ public class SagaStateMachineTests
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "TestBoss",
                 ["SagaTriggerRef"] = "approach",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -189,8 +189,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "TestBoss",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -252,8 +252,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "TestBoss",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -411,8 +411,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "Boss",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -455,8 +455,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "Boss",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -504,8 +504,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "Boss",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -606,8 +606,8 @@ public class SagaStateMachineTests
                 ["CharacterInstanceId"] = bossId.ToString(),
                 ["CharacterRef"] = "TestBoss",
                 ["SagaTriggerRef"] = "approach",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -797,8 +797,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "HostileEnemy",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -841,8 +841,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "AggressiveEnemy",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -888,8 +888,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "BossFightEnemy",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -926,8 +926,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "TestBoss",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });
@@ -971,8 +971,8 @@ public class SagaStateMachineTests
             {
                 ["CharacterInstanceId"] = characterId.ToString(),
                 ["CharacterRef"] = "FriendlyMerchant",
-                ["LatitudeZ"] = "35.0",
-                ["LongitudeX"] = "139.0",
+                ["Latitude"] = "35.0",
+                ["Longitude"] = "139.0",
                 ["Y"] = "50.0"
             }
         });

@@ -74,9 +74,11 @@ public sealed record GeneratedLocationEntry(
 /// Request parameters for generating locations.
 /// </summary>
 public sealed record LocationGenerationRequest(
-    string RegionName,
-    string Theme,
-    string WorldType,  // "real" or "procedural"
+    string WorldName,
+    string? Suggestions,
+    string ThemeRef,        // Theme folder name (e.g., "feudal_japan")
+    string ThemeDisplayName, // Human-readable (e.g., "Feudal Japan (Edo period)")
+    string WorldType,       // "real" or "procedural"
     double MinLatitude,
     double MaxLatitude,
     double MinLongitude,

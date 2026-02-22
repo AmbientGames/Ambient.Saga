@@ -23,11 +23,27 @@ public interface IWorldConfiguration
 
     ClimateModel ClimateModel { get; set; }
 
+    bool AllowTeleporting { get; set; }
+
     int DisplayOrder { get; set; }
+
+    string WeightUnitName { get; set; }
+    float BlockWeight { get; set; }
+    float EquipmentWeight { get; set; }
+    float ToolWeight { get; set; }
+    float SpellWeight { get; set; }
+    float ConsumableWeight { get; set; }
+    float BuildingMaterialWeight { get; set; }
 
     /// <summary>
     /// The directory where this configuration was loaded from (e.g., the xml folder containing WorldConfiguration.xml).
     /// Used for locating GenerationConfiguration.xml and outputting generated content.
     /// </summary>
     string? SourceDirectory { get; set; }
+
+    /// <summary>
+    /// Quest whose completion ends the game. When this quest is completed via CompleteQuestCommand,
+    /// the application exits. Leave null/empty for worlds with no win condition.
+    /// </summary>
+    string? CompletionQuestRef { get; set; }
 }

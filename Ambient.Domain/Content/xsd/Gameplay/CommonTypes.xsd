@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:simpleType name="Condition01Float">
+        <xs:annotation><xs:documentation>Float constrained to 0.0-1.0. Used for item condition (durability), where 1.0 is pristine and 0.0 is broken.</xs:documentation></xs:annotation>
+        <xs:restriction base="xs:float">
+            <xs:minInclusive value="0.0" />
+            <xs:maxInclusive value="1.0" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NonNegativeInt">
+        <xs:annotation><xs:documentation>Integer that must be zero or positive. Used for quantities, stack counts, and other non-negative whole numbers.</xs:documentation></xs:annotation>
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NonNegativeFloat">
+        <xs:annotation><xs:documentation>Float that must be zero or positive. Used for durability loss, multipliers, and other non-negative decimal values.</xs:documentation></xs:annotation>
+        <xs:restriction base="xs:float">
+            <xs:minInclusive value="0.0" />
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

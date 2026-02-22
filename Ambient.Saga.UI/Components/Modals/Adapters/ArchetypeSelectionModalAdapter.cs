@@ -20,7 +20,7 @@ public class ArchetypeSelectionModalAdapter : IModal
 
     public bool CanOpen(object? context)
     {
-        return context is MainViewModel;
+        return context is SagaMainViewModel;
     }
 
     public void OnOpening(object? context)
@@ -30,7 +30,7 @@ public class ArchetypeSelectionModalAdapter : IModal
 
     public void Render(object? context, ref bool isOpen)
     {
-        if (context is MainViewModel viewModel)
+        if (context is SagaMainViewModel viewModel)
         {
             _modal.Render(viewModel, _archetypeSelector, ref isOpen);
         }

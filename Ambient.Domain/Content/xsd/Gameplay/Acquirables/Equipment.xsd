@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="Ambient.Domain" xmlns="Ambient.Domain" elementFormDefault="qualified">
+    <xs:include schemaLocation="DegradableAcquirable.xsd" />
+    <xs:include schemaLocation="../Usability.xsd" />
+    <xs:include schemaLocation="../LoadoutSlots.xsd" />
+    <xs:include schemaLocation="Attributes.xsd" />
+    <xs:simpleType name="EquipmentRef">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="Equipment">
+        <xs:annotation>
+            <xs:documentation>Wearable/wieldable item that modifies character stats when equipped.</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="DegradableAcquirable">
+                <xs:sequence>
+                    <xs:element name="Effects" type="Attributes">
+                        <xs:annotation><xs:documentation>Stat modifiers applied while this item is equipped.</xs:documentation></xs:annotation>
+                    </xs:element>
+                    <xs:element name="MinimumStats" type="Attributes" minOccurs="0">
+                        <xs:annotation><xs:documentation>Minimum stat values required to equip this item.</xs:documentation></xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+                <xs:attribute name="SlotRef" type="LoadoutSlotRef" use="required">
+                    <xs:annotation><xs:documentation>Loadout slot this item occupies (e.g. MainHand, OffHand, Head).</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Category" type="EquipmentCategoryType" use="required">
+                    <xs:annotation><xs:documentation>Equipment category for archetype loadout matching.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attributeGroup ref="UseAttributes" />
+                <xs:attribute name="StatusEffectRef" type="xs:string" use="optional">
+                    <xs:annotation><xs:documentation>Status effect applied on hit. References a StatusEffect RefName.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="StatusEffectChance" type="xs:float" use="optional" default="0.0">
+                    <xs:annotation><xs:documentation>Probability (0.0-1.0) of applying the status effect on hit.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="StatusEffectOnCritOnly" type="xs:boolean" use="optional" default="false">
+                    <xs:annotation><xs:documentation>When true, the status effect only triggers on critical hits.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="OnDefendStatusEffectRef" type="xs:string" use="optional">
+                    <xs:annotation><xs:documentation>Status effect applied when defending (e.g. shield grants buff).</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="OnDefendStatusEffectChance" type="xs:float" use="optional" default="1.0">
+                    <xs:annotation><xs:documentation>Probability (0.0-1.0) of applying the defend status effect.</xs:documentation></xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="CriticalHitBonus" type="xs:float" use="optional" default="0.0">
+                    <xs:annotation><xs:documentation>Added to base critical hit chance (0.0-1.0).</xs:documentation></xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="EquipmentCatalog">
+        <xs:sequence>
+            <xs:element name="Equipment" type="Equipment" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

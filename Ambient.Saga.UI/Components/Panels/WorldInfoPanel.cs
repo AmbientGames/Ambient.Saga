@@ -1,4 +1,4 @@
-﻿using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
 using Ambient.Saga.UI.Components.Utilities;
@@ -6,556 +6,554 @@ using Ambient.Saga.UI.Components.Utilities;
 namespace Ambient.Saga.UI.Components.Panels;
 
 /// <summary>
-/// Left panel showing map controls, feature legend, and world catalog.
-/// GAME-REUSABLE: This panel is designed to be dropped into the actual game.
-/// World selection has been moved to WorldSelectionScreen (Sandbox-specific).
+/// Full-screen panel showing world catalog with all gameplay elements.
+/// Organized into three columns for better navigation.
+/// Accessible via F1 key (debug mode only).
 /// </summary>
 public class WorldInfoPanel
 {
-    public void Render(MainViewModel viewModel)
+    private string _searchFilter = "";
+
+    public void Render(SagaMainViewModel viewModel)
     {
-        ImGui.TextColored(new Vector4(1, 1, 0.5f, 1), "WORLD");
+        // Header with world name
+        var worldName = viewModel.CurrentWorld?.WorldConfiguration?.DisplayName ?? "Unknown World";
+        ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"WORLD CATALOG - {worldName}");
         ImGui.Separator();
 
-        // Height map info
-        if (!string.IsNullOrEmpty(viewModel.HeightMapInfo))
+        // Search filter
+        ImGui.SetNextItemWidth(300);
+        ImGui.InputTextWithHint("##WorldSearch", "Search catalog...", ref _searchFilter, 100);
+        ImGui.SameLine();
+        if (ImGui.SmallButton("Clear"))
         {
-            ImGui.Spacing();
-            ImGui.TextWrapped(viewModel.HeightMapInfo);
-            ImGui.Spacing();
-            ImGui.Separator();
+            _searchFilter = "";
         }
 
-        // World Catalog (detailed expandable sections like WPF)
+        // Height map info (compact)
+        if (!string.IsNullOrEmpty(viewModel.HeightMapInfo))
+        {
+            ImGui.SameLine();
+            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"| {viewModel.HeightMapInfo}");
+        }
+
+        ImGui.Spacing();
+        ImGui.Separator();
+
+        // World Catalog in columns
         if (viewModel.CurrentWorld != null)
         {
-            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "World Catalog:");
-            ImGui.Spacing();
+            // Calculate column widths for 3-column layout
+            var availableWidth = ImGui.GetContentRegionAvail().X;
+            var availableHeight = ImGui.GetContentRegionAvail().Y;
+            var spacing = ImGui.GetStyle().ItemSpacing.X;
+            var columnWidth = (availableWidth - spacing * 2) / 3;
 
-            // Gameplay Elements
-            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Gameplay Elements");
+            // Column 1: Items (Equipment, Consumables, Spells, Tools, Materials, Blocks)
+            ImGui.BeginChild("WorldCol1", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+            RenderItemsColumn(viewModel);
+            ImGui.EndChild();
 
-            // Blocks (collapsible with detailed expandable items)
-            var blocks = viewModel.CurrentWorld.BlockProvider?.GetAllBlocks().ToList();
-            if (blocks != null && blocks.Count > 0 && ImGui.CollapsingHeader($"Blocks ({blocks.Count})"))
+            ImGui.SameLine();
+
+            // Column 2: Characters & Combat
+            ImGui.BeginChild("WorldCol2", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+            RenderCombatColumn(viewModel);
+            ImGui.EndChild();
+
+            ImGui.SameLine();
+
+            // Column 3: World Systems
+            ImGui.BeginChild("WorldCol3", new Vector2(columnWidth, availableHeight), ImGuiChildFlags.None);
+            RenderSystemsColumn(viewModel);
+            ImGui.EndChild();
+        }
+        else
+        {
+            ImGui.TextColored(new Vector4(1, 0.5f, 0, 1), "No world loaded");
+            ImGui.Text("Load a world to browse its catalog.");
+        }
+    }
+
+    private bool MatchesFilter(string? text)
+    {
+        if (string.IsNullOrEmpty(_searchFilter)) return true;
+        return text?.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ?? false;
+    }
+
+    #region Column 1: Items & Equipment
+
+    private void RenderItemsColumn(SagaMainViewModel viewModel)
+    {
+        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "ITEMS & EQUIPMENT");
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        var gameplay = viewModel.CurrentWorld!.Gameplay;
+
+        // Equipment
+        var equipment = gameplay?.Equipment;
+        if (equipment != null)
+        {
+            var filtered = equipment.Where(e => MatchesFilter(e.DisplayName) || MatchesFilter(e.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Equipment ({filtered.Length})"))
             {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                // Group blocks by substance for better organization
-                var blocksBySubstance = blocks
-                    .GroupBy(b => b.SubstanceRef ?? "Other")
-                    .OrderBy(g => g.Key);
+                foreach (var item in filtered)
+                {
+                    if (ImGui.TreeNode($"{item.DisplayName} [{item.SlotRef}]##{item.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(item.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description);
+                        ImGui.Text($"Category: {item.Category} | Rarity: {item.Rarity}");
+                        ImGui.Text($"Price: {item.WholesalePrice} (x{item.MerchantMarkupMultiplier} markup)");
+                        if (item.Effects != null)
+                            ImGuiHelpers.RenderAttributes(item.Effects);
+                        if (item.StatusEffectRef != null)
+                            ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), $"Applies: {item.StatusEffectRef} ({item.StatusEffectChance:P0})");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
 
-                foreach (var group in blocksBySubstance)
+        // Consumables
+        var consumables = gameplay?.Consumables;
+        if (consumables != null)
+        {
+            var filtered = consumables.Where(c => MatchesFilter(c.DisplayName) || MatchesFilter(c.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Consumables ({filtered.Length})"))
+            {
+                foreach (var item in filtered)
+                {
+                    if (ImGui.TreeNode($"{item.DisplayName}##{item.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(item.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description);
+                        ImGui.Text($"Rarity: {item.Rarity} | Price: {item.WholesalePrice}");
+                        if (item.Effects != null)
+                            ImGuiHelpers.RenderAttributes(item.Effects);
+                        if (item.CleansesStatusEffects)
+                            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Cleanses status effects");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Spells
+        var spells = gameplay?.Spells;
+        if (spells != null)
+        {
+            var filtered = spells.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Spells ({filtered.Length})"))
+            {
+                foreach (var item in filtered)
+                {
+                    if (ImGui.TreeNode($"{item.DisplayName} [{item.Category}]##{item.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(item.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description);
+                        ImGui.Text($"Rarity: {item.Rarity} | Price: {item.WholesalePrice}");
+                        if (item.RequiresEquipped != null)
+                            ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), $"Requires: {item.RequiresEquipped}");
+                        if (item.Effects != null)
+                            ImGuiHelpers.RenderAttributes(item.Effects);
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Tools
+        var tools = gameplay?.Tools;
+        if (tools != null)
+        {
+            var filtered = tools.Where(t => MatchesFilter(t.DisplayName) || MatchesFilter(t.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Tools ({filtered.Length})"))
+            {
+                foreach (var item in filtered)
+                {
+                    if (ImGui.TreeNode($"{item.DisplayName}##{item.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(item.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description);
+                        ImGui.Text($"Rarity: {item.Rarity} | Price: {item.WholesalePrice}");
+                        ImGui.Text($"Durability Loss: {item.DurabilityLoss:P2} per use");
+                        if (item.EffectiveSubstances?.Length > 0)
+                        {
+                            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Effective against:");
+                            foreach (var eff in item.EffectiveSubstances)
+                                ImGui.BulletText($"{eff.SubstanceRef} ({eff.EffectivenessMultiplier:P0})");
+                        }
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Building Materials
+        var materials = gameplay?.BuildingMaterials;
+        if (materials != null)
+        {
+            var filtered = materials.Where(m => MatchesFilter(m.DisplayName) || MatchesFilter(m.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Materials ({filtered.Length})"))
+            {
+                foreach (var item in filtered)
+                {
+                    if (ImGui.TreeNode($"{item.DisplayName}##{item.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(item.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), item.Description);
+                        ImGui.Text($"Rarity: {item.Rarity} | Price: {item.WholesalePrice}");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Blocks
+        var blocks = viewModel.CurrentWorld!.BlockProvider?.GetAllBlocks().ToList();
+        if (blocks != null && blocks.Count > 0)
+        {
+            var filtered = blocks.Where(b => MatchesFilter(b.DisplayName) || MatchesFilter(b.RefName)).ToList();
+            if (filtered.Count > 0 && ImGui.CollapsingHeader($"Blocks ({filtered.Count})"))
+            {
+                var grouped = filtered.GroupBy(b => b.SubstanceRef ?? "Other").OrderBy(g => g.Key);
+                foreach (var group in grouped)
                 {
                     if (ImGui.TreeNode($"{group.Key} ({group.Count()})"))
                     {
                         foreach (var block in group)
                         {
-                            var treeNodeOpen = ImGui.TreeNode($"{block.DisplayName}##{block.RefName}");
-                            if (treeNodeOpen)
+                            if (ImGui.TreeNode($"{block.DisplayName}##{block.RefName}"))
                             {
                                 if (!string.IsNullOrEmpty(block.Description))
-                                {
                                     ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), block.Description);
-                                    ImGui.Spacing();
-                                }
-                                ImGui.Text($"Substance: {block.SubstanceRef ?? "None"}");
-                                ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Price: {block.WholesalePrice}");
-                                ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {block.MerchantMarkupMultiplier}x");
-                                if (!string.IsNullOrEmpty(block.TextureRef))
-                                {
-                                    ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Texture: {block.TextureRef}");
-                                }
+                                ImGui.Text($"Price: {block.WholesalePrice} (x{block.MerchantMarkupMultiplier} markup)");
                                 ImGui.TreePop();
                             }
                         }
                         ImGui.TreePop();
                     }
                 }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
             }
-
-            // Tools (collapsible with basic list)
-            var tools = viewModel.CurrentWorld.Gameplay?.Tools;
-            if (tools != null && ImGui.CollapsingHeader($"Tools ({tools.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var tool in tools)
-                {
-                    ImGui.BulletText(tool.DisplayName ?? tool.RefName);
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Materials (collapsible with detailed expandable items)
-            var materials = viewModel.CurrentWorld.Gameplay?.BuildingMaterials;
-            if (materials != null && ImGui.CollapsingHeader($"Materials ({materials.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var material in materials)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{material.DisplayName ?? material.RefName}##{material.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(material.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), material.Description);
-                        }
-                        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Price: {material.WholesalePrice}");
-                        ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {material.MerchantMarkupMultiplier}x");
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            ImGui.Spacing();
-
-            // RPG Elements
-            ImGui.TextColored(new Vector4(1, 0.7f, 0.7f, 1), "RPG Elements");
-
-            // Equipment (collapsible with detailed expandable items)
-            var equipment = viewModel.CurrentWorld.Gameplay?.Equipment;
-            if (equipment != null && ImGui.CollapsingHeader($"Equipment ({equipment.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var equip in equipment)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{equip.DisplayName ?? equip.RefName}##{equip.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(equip.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), equip.Description);
-                            ImGui.Spacing();
-                        }
-                        if (equip.Effects != null)
-                        {
-                            ImGuiHelpers.RenderCharacterEffects(equip.Effects);
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Consumables (collapsible with detailed expandable items)
-            var consumables = viewModel.CurrentWorld.Gameplay?.Consumables;
-            if (consumables != null && ImGui.CollapsingHeader($"Consumables ({consumables.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var consumable in consumables)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{consumable.DisplayName ?? consumable.RefName}##{consumable.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(consumable.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), consumable.Description);
-                            ImGui.Spacing();
-                        }
-                        if (consumable.Effects != null)
-                        {
-                            ImGuiHelpers.RenderCharacterEffects(consumable.Effects);
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Spells (collapsible with detailed expandable items)
-            var spells = viewModel.CurrentWorld.Gameplay?.Spells;
-            if (spells != null && ImGui.CollapsingHeader($"Spells ({spells.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var spell in spells)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{spell.DisplayName ?? spell.RefName}##{spell.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(spell.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), spell.Description);
-                            ImGui.Spacing();
-                        }
-                        if (spell.Effects != null)
-                        {
-                            ImGuiHelpers.RenderCharacterEffects(spell.Effects);
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Character Archetypes (collapsible with detailed expandable items)
-            var archetypes = viewModel.CurrentWorld.Gameplay?.AvatarArchetypes;
-            if (archetypes != null && ImGui.CollapsingHeader($"Character Archetypes ({archetypes.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var archetype in archetypes)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{archetype.DisplayName ?? archetype.RefName}##{archetype.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(archetype.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), archetype.Description);
-                            ImGui.Spacing();
-                        }
-                        var affinityDef = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(archetype.AffinityRef ?? "");
-                        var affinityName = affinityDef?.DisplayName ?? archetype.AffinityRef ?? "None";
-                        ImGui.Text($"Affinity: {affinityName}");
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Characters (NPC/boss templates)
-            var characters = viewModel.CurrentWorld.Gameplay?.Characters;
-            if (characters != null && ImGui.CollapsingHeader($"Characters ({characters.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var character in characters)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{character.DisplayName ?? character.RefName}##{character.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(character.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), character.Description);
-                            ImGui.Spacing();
-                        }
-                        if (character.Interactable != null && !string.IsNullOrEmpty(character.Interactable.DialogueTreeRef))
-                        {
-                            ImGui.Text($"Dialogue: {character.Interactable.DialogueTreeRef}");
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Character Affinities (combat types)
-            var affinities = viewModel.CurrentWorld.Gameplay?.CharacterAffinities;
-            if (affinities != null && ImGui.CollapsingHeader($"Character Affinities ({affinities.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var affinity in affinities)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{affinity.DisplayName ?? affinity.RefName}##{affinity.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(affinity.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), affinity.Description);
-                            ImGui.Spacing();
-                        }
-                        if (affinity.Matchup != null && affinity.Matchup.Length > 0)
-                        {
-                            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Matchups:");
-                            ImGui.Indent(10 * UIConstants.DpiScale);
-                            foreach (var matchup in affinity.Matchup)
-                            {
-                                var color = matchup.Multiplier > 1.0
-                                    ? new Vector4(0.2f, 1, 0.2f, 1)  // Green for strong
-                                    : new Vector4(1, 0.5f, 0.2f, 1); // Orange for weak
-                                ImGui.TextColored(color, $"vs {matchup.TargetAffinityRef}: {matchup.Multiplier}x");
-                            }
-                            ImGui.Unindent(10 * UIConstants.DpiScale);
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Quests (quest templates)
-            var quests = viewModel.CurrentWorld.Gameplay?.Quests;
-            if (quests != null && ImGui.CollapsingHeader($"Quests ({quests.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var quest in quests)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{quest.DisplayName ?? quest.RefName}##{quest.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(quest.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), quest.Description);
-                            ImGui.Spacing();
-                        }
-                        if (quest.Stages?.Stage != null && quest.Stages.Stage.Length > 0)
-                        {
-                            ImGui.Text($"Stages: {quest.Stages.Stage.Length}");
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Dialogue Trees
-            var dialogueTrees = viewModel.CurrentWorld.Gameplay?.DialogueTrees;
-            if (dialogueTrees != null && ImGui.CollapsingHeader($"Dialogue Trees ({dialogueTrees.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var tree in dialogueTrees)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{tree.DisplayName ?? tree.RefName}##{tree.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        ImGui.Text($"Start Node: {tree.StartNodeId}");
-                        if (tree.Node != null && tree.Node.Length > 0)
-                        {
-                            ImGui.Text($"Nodes: {tree.Node.Length}");
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Combat Stances
-            var stances = viewModel.CurrentWorld.Gameplay?.CombatStances;
-            if (stances != null && ImGui.CollapsingHeader($"Combat Stances ({stances.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var stance in stances)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{stance.DisplayName ?? stance.RefName}##{stance.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(stance.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), stance.Description);
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Loadout Slots
-            var loadoutSlots = viewModel.CurrentWorld.Gameplay?.LoadoutSlots;
-            if (loadoutSlots != null && ImGui.CollapsingHeader($"Loadout Slots ({loadoutSlots.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var slot in loadoutSlots)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{slot.DisplayName ?? slot.RefName}##{slot.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(slot.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), slot.Description);
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Status Effects
-            var statusEffects = viewModel.CurrentWorld.Gameplay?.StatusEffects;
-            if (statusEffects != null && ImGui.CollapsingHeader($"Status Effects ({statusEffects.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var effect in statusEffects)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{effect.DisplayName ?? effect.RefName}##{effect.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(effect.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), effect.Description);
-                            ImGui.Spacing();
-                        }
-
-                        // Effect type and duration
-                        ImGui.Text($"Type: {effect.Type}");
-                        ImGui.Text($"Duration: {effect.DurationTurns} turns");
-
-                        // Show modifiers if any are non-zero
-                        var hasModifiers = effect.StrengthModifier != 0 || effect.DefenseModifier != 0 ||
-                                           effect.SpeedModifier != 0 || effect.MagicModifier != 0 ||
-                                           effect.AccuracyModifier != 0 || effect.DamagePerTurn != 0;
-
-                        if (hasModifiers)
-                        {
-                            ImGui.Spacing();
-                            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Modifiers:");
-                            ImGui.Indent(10 * UIConstants.DpiScale);
-                            if (effect.StrengthModifier != 0)
-                                ImGui.TextColored(effect.StrengthModifier > 0 ? new Vector4(0.2f, 1, 0.2f, 1) : new Vector4(1, 0.3f, 0.3f, 1),
-                                    $"Strength: {effect.StrengthModifier:+0.#;-0.#}");
-                            if (effect.DefenseModifier != 0)
-                                ImGui.TextColored(effect.DefenseModifier > 0 ? new Vector4(0.2f, 1, 0.2f, 1) : new Vector4(1, 0.3f, 0.3f, 1),
-                                    $"Defense: {effect.DefenseModifier:+0.#;-0.#}");
-                            if (effect.SpeedModifier != 0)
-                                ImGui.TextColored(effect.SpeedModifier > 0 ? new Vector4(0.2f, 1, 0.2f, 1) : new Vector4(1, 0.3f, 0.3f, 1),
-                                    $"Speed: {effect.SpeedModifier:+0.#;-0.#}");
-                            if (effect.MagicModifier != 0)
-                                ImGui.TextColored(effect.MagicModifier > 0 ? new Vector4(0.2f, 1, 0.2f, 1) : new Vector4(1, 0.3f, 0.3f, 1),
-                                    $"Magic: {effect.MagicModifier:+0.#;-0.#}");
-                            if (effect.AccuracyModifier != 0)
-                                ImGui.TextColored(effect.AccuracyModifier > 0 ? new Vector4(0.2f, 1, 0.2f, 1) : new Vector4(1, 0.3f, 0.3f, 1),
-                                    $"Accuracy: {effect.AccuracyModifier:+0.#;-0.#}");
-                            if (effect.DamagePerTurn != 0)
-                                ImGui.TextColored(new Vector4(1, 0.5f, 0.2f, 1), $"Damage/Turn: {effect.DamagePerTurn}");
-                            ImGui.Unindent(10 * UIConstants.DpiScale);
-                        }
-
-                        // Additional info
-                        ImGui.Spacing();
-                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Max Stacks: {effect.MaxStacks} | Cleansable: {(effect.Cleansable ? "Yes" : "No")}");
-
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            ImGui.Spacing();
-
-            // Social/Political Systems
-            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Social & Political");
-
-            // Factions
-            var factions = viewModel.CurrentWorld.Gameplay?.Factions;
-            if (factions != null && ImGui.CollapsingHeader($"Factions ({factions.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var faction in factions)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{faction.DisplayName ?? faction.RefName}##{faction.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(faction.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), faction.Description);
-                            ImGui.Spacing();
-                        }
-
-                        // Category
-                        ImGui.Text($"Category: {faction.Category}");
-
-                        // Starting reputation
-                        ImGui.Text($"Starting Rep: {faction.StartingReputation}");
-
-                        // Relationships with other factions
-                        if (faction.Relationships != null && faction.Relationships.Length > 0)
-                        {
-                            ImGui.Spacing();
-                            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Relationships:");
-                            ImGui.Indent(10 * UIConstants.DpiScale);
-                            foreach (var rel in faction.Relationships)
-                            {
-                                var relFaction = factions.FirstOrDefault(f => f.RefName == rel.FactionRef);
-                                var relName = relFaction?.DisplayName ?? rel.FactionRef;
-                                var relColor = rel.RelationshipType.ToString() switch
-                                {
-                                    "Allied" => new Vector4(0.2f, 1, 0.2f, 1),
-                                    "Friendly" => new Vector4(0.5f, 0.9f, 0.5f, 1),
-                                    "Rival" => new Vector4(1, 0.7f, 0.2f, 1),
-                                    "Enemy" => new Vector4(1, 0.3f, 0.3f, 1),
-                                    _ => new Vector4(0.7f, 0.7f, 0.7f, 1)
-                                };
-                                ImGui.TextColored(relColor, $"{relName}: {rel.RelationshipType} ({rel.SpilloverPercent:P0} spillover)");
-                            }
-                            ImGui.Unindent(10 * UIConstants.DpiScale);
-                        }
-
-                        // Reputation rewards
-                        if (faction.ReputationRewards != null && faction.ReputationRewards.Length > 0)
-                        {
-                            ImGui.Spacing();
-                            ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "Reputation Rewards:");
-                            ImGui.Indent(10 * UIConstants.DpiScale);
-                            foreach (var reward in faction.ReputationRewards)
-                            {
-                                var rewardItems = new List<string>();
-                                if (reward.Equipment != null)
-                                    foreach (var eq in reward.Equipment)
-                                        rewardItems.Add($"Equipment: {eq.EquipmentRef}");
-                                if (reward.Consumable != null)
-                                    foreach (var c in reward.Consumable)
-                                        rewardItems.Add($"Consumable: {c.ConsumableRef} x{c.Quantity}");
-                                if (reward.QuestToken != null)
-                                    foreach (var qt in reward.QuestToken)
-                                        rewardItems.Add($"Token: {qt.QuestTokenRef}");
-
-                                var rewardText = rewardItems.Count > 0 ? string.Join(", ", rewardItems) : "Unlocks rewards";
-                                ImGui.Text($"At {reward.RequiredLevel}: {rewardText}");
-                            }
-                            ImGui.Unindent(10 * UIConstants.DpiScale);
-                        }
-
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            ImGui.Spacing();
-
-            // Progression Systems
-            ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "Progression");
-
-            // Quest Tokens (currency/collectibles for quests)
-            var questTokens = viewModel.CurrentWorld.Gameplay?.QuestTokens;
-            if (questTokens != null && ImGui.CollapsingHeader($"Quest Tokens ({questTokens.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var token in questTokens)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{token.DisplayName ?? token.RefName}##{token.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(token.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), token.Description);
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
-            // Achievements (collapsible with detailed expandable items)
-            var achievements = viewModel.CurrentWorld.Gameplay?.Achievements;
-            if (achievements != null && ImGui.CollapsingHeader($"Achievements ({achievements.Length})"))
-            {
-                ImGui.Indent(10 * UIConstants.DpiScale);
-                foreach (var achievement in achievements)
-                {
-                    var treeNodeOpen = ImGui.TreeNode($"{achievement.DisplayName ?? achievement.RefName}##{achievement.RefName}");
-                    if (treeNodeOpen)
-                    {
-                        if (!string.IsNullOrEmpty(achievement.Description))
-                        {
-                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), achievement.Description);
-                            ImGui.Spacing();
-                        }
-                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"Steam ID: {achievement.RefName}");
-
-                        if (achievement.Criteria != null)
-                        {
-                            ImGui.Spacing();
-                            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Unlock Criteria:");
-                            ImGui.Indent(10 * UIConstants.DpiScale);
-                            ImGui.Text($"Type: {achievement.Criteria.Type}");
-                            ImGui.Text($"Threshold: {achievement.Criteria.Threshold:F0}");
-                            ImGui.Unindent(10 * UIConstants.DpiScale);
-                        }
-                        ImGui.TreePop();
-                    }
-                }
-                ImGui.Unindent(10 * UIConstants.DpiScale);
-            }
-
         }
     }
+
+    #endregion
+
+    #region Column 2: Characters & Combat
+
+    private void RenderCombatColumn(SagaMainViewModel viewModel)
+    {
+        ImGui.TextColored(new Vector4(1, 0.7f, 0.7f, 1), "CHARACTERS & COMBAT");
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        var gameplay = viewModel.CurrentWorld!.Gameplay;
+
+        // Characters
+        var characters = gameplay?.Characters;
+        if (characters != null)
+        {
+            var filtered = characters.Where(c => MatchesFilter(c.DisplayName) || MatchesFilter(c.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Characters ({filtered.Length})"))
+            {
+                foreach (var character in filtered)
+                {
+                    if (ImGui.TreeNode($"{character.DisplayName}##{character.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(character.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), character.Description);
+                        if (character.Stats != null)
+                        {
+                            ImGui.Text($"HP: {character.Stats.Health:F0} | STR: {character.Stats.Strength:F0} | DEF: {character.Stats.Defense:F0}");
+                            ImGui.Text($"SPD: {character.Stats.Speed:F0} | MAG: {character.Stats.Magic:F0}");
+                        }
+                        if (character.Traits?.Length > 0)
+                        {
+                            ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), "Traits:");
+                            foreach (var trait in character.Traits)
+                                ImGui.BulletText($"{trait.Name}: {trait.Value}");
+                        }
+                        if (character.Interactable?.DialogueTreeRef != null)
+                            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Dialogue: {character.Interactable.DialogueTreeRef}");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Archetypes
+        var archetypes = gameplay?.AvatarArchetypes;
+        if (archetypes != null)
+        {
+            var filtered = archetypes.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Archetypes ({filtered.Length})"))
+            {
+                foreach (var archetype in filtered)
+                {
+                    if (ImGui.TreeNode($"{archetype.DisplayName}##{archetype.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(archetype.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), archetype.Description);
+                        var affinityDef = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(archetype.AffinityRef ?? "");
+                        ImGui.Text($"Affinity: {affinityDef?.DisplayName ?? archetype.AffinityRef ?? "None"}");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Affinities
+        var affinities = gameplay?.CharacterAffinities;
+        if (affinities != null)
+        {
+            var filtered = affinities.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Affinities ({filtered.Length})"))
+            {
+                foreach (var affinity in filtered)
+                {
+                    if (ImGui.TreeNode($"{affinity.DisplayName}##{affinity.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(affinity.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), affinity.Description);
+                        ImGui.Text($"Neutral: {affinity.NeutralMultiplier}x");
+                        if (affinity.Matchup?.Length > 0)
+                        {
+                            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Matchups:");
+                            foreach (var m in affinity.Matchup)
+                            {
+                                var color = m.Multiplier > 1 ? new Vector4(0.5f, 1, 0.5f, 1) : new Vector4(1, 0.5f, 0.5f, 1);
+                                ImGui.TextColored(color, $"  vs {m.TargetAffinityRef}: {m.Multiplier}x");
+                            }
+                        }
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Combat Stances
+        var stances = gameplay?.CombatStances;
+        if (stances != null)
+        {
+            var filtered = stances.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Combat Stances ({filtered.Length})"))
+            {
+                foreach (var stance in filtered)
+                {
+                    if (ImGui.TreeNode($"{stance.DisplayName}##{stance.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(stance.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), stance.Description);
+                        if (stance.Effects != null)
+                            ImGuiHelpers.RenderAttributes(stance.Effects);
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Status Effects
+        var effects = gameplay?.StatusEffects;
+        if (effects != null)
+        {
+            var filtered = effects.Where(e => MatchesFilter(e.DisplayName) || MatchesFilter(e.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Status Effects ({filtered.Length})"))
+            {
+                foreach (var effect in filtered)
+                {
+                    var catColor = effect.Category switch
+                    {
+                        Ambient.Domain.StatusEffectCategory.Buff => new Vector4(0.5f, 1, 0.5f, 1),
+                        Ambient.Domain.StatusEffectCategory.Debuff => new Vector4(1, 0.5f, 0.5f, 1),
+                        _ => new Vector4(0.7f, 0.7f, 0.7f, 1)
+                    };
+                    if (ImGui.TreeNode($"{effect.DisplayName} [{effect.Category}]##{effect.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(effect.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), effect.Description);
+                        ImGui.Text($"Type: {effect.Type} | Duration: {effect.DurationTurns} turns");
+                        ImGui.Text($"Max Stacks: {effect.MaxStacks} | Cleansable: {(effect.Cleansable ? "Yes" : "No")}");
+                        if (effect.DamagePerTurn != 0)
+                            ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), $"Damage/Turn: {effect.DamagePerTurn}");
+                        if (effect.StrengthModifier != 0) ImGui.Text($"STR: {effect.StrengthModifier:+0;-0}");
+                        if (effect.DefenseModifier != 0) ImGui.Text($"DEF: {effect.DefenseModifier:+0;-0}");
+                        if (effect.SpeedModifier != 0) ImGui.Text($"SPD: {effect.SpeedModifier:+0;-0}");
+                        if (effect.MagicModifier != 0) ImGui.Text($"MAG: {effect.MagicModifier:+0;-0}");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Loadout Slots
+        var slots = gameplay?.LoadoutSlots;
+        if (slots != null)
+        {
+            var filtered = slots.Where(s => MatchesFilter(s.DisplayName) || MatchesFilter(s.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Loadout Slots ({filtered.Length})"))
+            {
+                foreach (var slot in filtered)
+                {
+                    if (ImGui.TreeNode($"{slot.DisplayName}##{slot.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(slot.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), slot.Description);
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+    }
+
+    #endregion
+
+    #region Column 3: World Systems
+
+    private void RenderSystemsColumn(SagaMainViewModel viewModel)
+    {
+        ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "WORLD SYSTEMS");
+        ImGui.Separator();
+        ImGui.Spacing();
+
+        var gameplay = viewModel.CurrentWorld!.Gameplay;
+
+        // Quests
+        var quests = gameplay?.Quests;
+        if (quests != null)
+        {
+            var filtered = quests.Where(q => MatchesFilter(q.DisplayName) || MatchesFilter(q.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Quests ({filtered.Length})"))
+            {
+                foreach (var quest in filtered)
+                {
+                    if (ImGui.TreeNode($"{quest.DisplayName}##{quest.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(quest.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), quest.Description);
+                        var stageCount = quest.Stages?.Stage?.Length ?? 0;
+                        ImGui.Text($"Stages: {stageCount}");
+                        if (quest.Prerequisites?.Length > 0)
+                        {
+                            ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), "Prerequisites:");
+                            foreach (var prereq in quest.Prerequisites)
+                            {
+                                if (prereq.QuestRef != null)
+                                {
+                                    var pq = viewModel.CurrentWorld?.TryGetQuestByRefName(prereq.QuestRef);
+                                    ImGui.BulletText($"Quest: {pq?.DisplayName ?? prereq.QuestRef}");
+                                }
+                                if (prereq.MinimumLevel > 0)
+                                    ImGui.BulletText($"Level: {prereq.MinimumLevel}");
+                            }
+                        }
+                        if (quest.Rewards?.Length > 0)
+                            ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), $"Rewards: {quest.Rewards.Length} entries");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Factions
+        var factions = gameplay?.Factions;
+        if (factions != null)
+        {
+            var filtered = factions.Where(f => MatchesFilter(f.DisplayName) || MatchesFilter(f.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Factions ({filtered.Length})"))
+            {
+                foreach (var faction in filtered)
+                {
+                    if (ImGui.TreeNode($"{faction.DisplayName} [{faction.Category}]##{faction.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(faction.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), faction.Description);
+                        ImGui.Text($"Starting Rep: {faction.StartingReputation}");
+                        if (faction.Relationships?.Length > 0)
+                        {
+                            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Relationships:");
+                            foreach (var rel in faction.Relationships)
+                            {
+                                var rf = factions.FirstOrDefault(f => f.RefName == rel.FactionRef);
+                                var color = rel.RelationshipType == Ambient.Domain.FactionRelationshipRelationshipType.Allied
+                                    ? new Vector4(0.5f, 1, 0.5f, 1) : new Vector4(1, 0.5f, 0.5f, 1);
+                                ImGui.TextColored(color, $"  {rf?.DisplayName ?? rel.FactionRef}: {rel.RelationshipType}");
+                            }
+                        }
+                        if (faction.ReputationRewards?.Length > 0)
+                            ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Rewards: {faction.ReputationRewards.Length} tiers");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Dialogue Trees
+        var dialogues = gameplay?.DialogueTrees;
+        if (dialogues != null)
+        {
+            var filtered = dialogues.Where(d => MatchesFilter(d.DisplayName) || MatchesFilter(d.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Dialogue Trees ({filtered.Length})"))
+            {
+                foreach (var tree in filtered)
+                {
+                    var nodeCount = tree.Node?.Length ?? 0;
+                    if (ImGui.TreeNode($"{tree.DisplayName} ({nodeCount} nodes)##{tree.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(tree.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), tree.Description);
+                        ImGui.Text($"Start: {tree.StartNodeId}");
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Quest Tokens
+        var tokens = gameplay?.QuestTokens;
+        if (tokens != null)
+        {
+            var filtered = tokens.Where(t => MatchesFilter(t.DisplayName) || MatchesFilter(t.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Quest Tokens ({filtered.Length})"))
+            {
+                foreach (var token in filtered)
+                {
+                    if (ImGui.TreeNode($"{token.DisplayName}##{token.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(token.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), token.Description);
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+
+        // Achievements
+        var achievements = gameplay?.Achievements;
+        if (achievements != null)
+        {
+            var filtered = achievements.Where(a => MatchesFilter(a.DisplayName) || MatchesFilter(a.RefName)).ToArray();
+            if (filtered.Length > 0 && ImGui.CollapsingHeader($"Achievements ({filtered.Length})"))
+            {
+                foreach (var ach in filtered)
+                {
+                    if (ImGui.TreeNode($"{ach.DisplayName}##{ach.RefName}"))
+                    {
+                        if (!string.IsNullOrEmpty(ach.Description))
+                            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), ach.Description);
+                        if (ach.Criteria != null)
+                        {
+                            ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), $"Criteria: {ach.Criteria.Type}");
+                            ImGui.Text($"Threshold: {ach.Criteria.Threshold:F0}");
+                        }
+                        ImGui.TreePop();
+                    }
+                }
+            }
+        }
+    }
+
+    #endregion
 }
