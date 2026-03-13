@@ -252,6 +252,15 @@ public static class CoordinateConverter
         return modelX < xMin || modelX > xMax || modelZ < zMin || modelZ > zMax;
     }
 
+    /// <summary>
+    /// Clamps model coordinates to stay within the world's playable boundaries.
+    /// </summary>
+    public static (double X, double Z) ClampToBounds(double modelX, double modelZ, IWorld world)
+    {
+        var (xMin, xMax, zMin, zMax) = GetWorldBounds(world);
+        return (Math.Clamp(modelX, xMin, xMax), Math.Clamp(modelZ, zMin, zMax));
+    }
+
     // ============================================================================
     // Saga-Relative Coordinate Conversions
     // ============================================================================
