@@ -1,5 +1,4 @@
 ﻿using Ambient.Domain.Enums;
-using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Domain.ValueObjects;
 using SharpDX;
 using System.Collections.Concurrent;
@@ -21,6 +20,19 @@ public interface IAvatarBase
 /// </summary>
 public partial class AvatarBase : IAvatarBase
 {
+    public AvatarBase(string displayName)
+    {
+        DisplayName = displayName;
+        TimeStampUtc = DateTime.UtcNow;
+    }
+
+    public AvatarBase()
+    {
+        TimeStampUtc = DateTime.UtcNow;
+    }
+
+    public DateTime TimeStampUtc { get; set; }
+
     /// <summary>
     /// The standard eye height for avatars in game units.
     /// </summary>
@@ -145,7 +157,7 @@ public partial class AvatarBase : IAvatarBase
     ///// <summary>
     ///// Saturation levels for blocks owned by the avatar.
     ///// </summary>
-    //public int[] BlockOwnershipSaturation { get; set; } = new int[WorldMaximums.MaxBlocks];
+    //public int[] BlockOwnership { get; set; } = new int[WorldMaximums.MaxBlocks];
     [XmlIgnore]
     public Dictionary<string, float> BlockOwnership { get; set; } = new Dictionary<string, float>();
 
@@ -183,6 +195,8 @@ public partial class AvatarBase : IAvatarBase
     /// The ID of the world the avatar is in.
     /// </summary>
     public Guid WorldId { get; set; }
+
+    public ulong SteamId { get; set; }
 
     /// <summary>
     /// Decrements the block placement credit for a given block type.
