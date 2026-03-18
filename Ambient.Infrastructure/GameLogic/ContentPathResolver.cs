@@ -14,6 +14,12 @@ public interface IContentPathResolver
     string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null);
     string? ResolveModelRefByCategoryKind(string library, string ns, string category, string? kind, Random? random = null);
     string? ResolveXmlPath(string worldRef, string library, string ns, params string[] relativePath);
+
+    /// <summary>
+    /// Registers an override base path for a world (e.g., a temp extraction directory).
+    /// The resolver checks this path first before Documents/Install.
+    /// </summary>
+    void RegisterWorldPath(string worldRef, string basePath) { }
 }
 
 /// <summary>
@@ -23,6 +29,7 @@ public class ContentPathResolver : IContentPathResolver
 {
     private readonly IGameSettings _gameSettings;
     private readonly ILogger<ContentPathResolver>? _logger;
+    private readonly Dictionary<string, string> _worldPathOverrides = new(StringComparer.OrdinalIgnoreCase);
 
     private const string DefaultPack = "default";
     private const string DefaultNamespace = "ambient_games";
@@ -33,6 +40,12 @@ public class ContentPathResolver : IContentPathResolver
         _logger = logger;
         _logger?.LogInformation("ContentPathResolver initialized with PublisherFolder={Publisher}, GameName={Game}",
             gameSettings.PublisherFolder, gameSettings.GameName);
+    }
+
+    public void RegisterWorldPath(string worldRef, string basePath)
+    {
+        _worldPathOverrides[worldRef] = basePath;
+        System.Diagnostics.Debug.WriteLine($"[ContentPathResolver] Registered override for '{worldRef}': {basePath}");
     }
 
     public string? ResolveTexturePath(string library, string ns, string textureName)
@@ -191,6 +204,14 @@ public class ContentPathResolver : IContentPathResolver
 
     private string? ResolveWorldPath(string worldRef, string ns, string[] subPath)
     {
+        // Check override path first (e.g., downloaded server world in temp)
+        if (_worldPathOverrides.TryGetValue(worldRef, out var overridePath))
+        {
+            var overrideFilePath = Path.Combine(overridePath, "assets", ns, Path.Combine(subPath));
+            if (File.Exists(overrideFilePath))
+                return overrideFilePath;
+        }
+
         var worldRelativePath = Path.Combine(worldRef, "assets", ns, Path.Combine(subPath));
 
         // Check Documents location first (user-created worlds)
