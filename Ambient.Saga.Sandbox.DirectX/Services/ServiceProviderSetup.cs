@@ -75,6 +75,9 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
                 "imgui",
                 (sp, key) => sp.GetRequiredService<ImGuiArchetypeSelector>());
 
+            // Avatar creation — offline for Saga sandbox
+            services.AddSingleton<Ambient.Domain.Contracts.IAvatarCreationService, Ambient.Infrastructure.GameLogic.Services.AvatarCreationServiceOffline>();
+
             // World content generator (mock implementation)
             services.AddSingleton<IWorldContentGenerator, MockWorldContentGenerator>();
 

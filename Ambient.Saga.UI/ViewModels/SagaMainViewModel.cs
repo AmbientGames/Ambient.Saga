@@ -302,6 +302,7 @@ public partial class SagaMainViewModel : ObservableObject
     private readonly IWorldContentGenerator _worldContentGenerator;
     //private readonly Services.IArchetypeSelector _wpfArchetypeSelector;
     private readonly IArchetypeSelector _imguiArchetypeSelector;
+    private readonly IAvatarCreationService _avatarCreationService;
     //private bool _useImGuiMode = false;
 
     // Public accessor for mediator (used by modals)
@@ -316,6 +317,7 @@ public partial class SagaMainViewModel : ObservableObject
         IContentPathResolver contentPathResolver,
         MediatR.IMediator mediator,
         IWorldContentGenerator worldContentGenerator,
+        IAvatarCreationService avatarCreationService,
         [Microsoft.Extensions.DependencyInjection.FromKeyedServicesAttribute("imgui")] IArchetypeSelector imguiArchetypeSelector)
     {
         _worldProvider = worldProvider ?? throw new ArgumentNullException(nameof(worldProvider));
@@ -326,6 +328,7 @@ public partial class SagaMainViewModel : ObservableObject
         _contentPathResolver = contentPathResolver ?? throw new ArgumentNullException(nameof(contentPathResolver));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         _worldContentGenerator = worldContentGenerator ?? throw new ArgumentNullException(nameof(worldContentGenerator));
+        _avatarCreationService = avatarCreationService ?? throw new ArgumentNullException(nameof(avatarCreationService));
         //_wpfArchetypeSelector = wpfArchetypeSelector ?? throw new ArgumentNullException(nameof(wpfArchetypeSelector));
         _imguiArchetypeSelector = imguiArchetypeSelector ?? throw new ArgumentNullException(nameof(imguiArchetypeSelector));
 
@@ -1749,8 +1752,8 @@ public partial class SagaMainViewModel : ObservableObject
             return;
         }
 
-        // Create new avatar from archetype
-        PlayerAvatar = CreateAvatarFromArchetype(selectedArchetype, world);
+        // Create new avatar from archetype via injected service (offline or online)
+        PlayerAvatar = await _avatarCreationService.CreateAvatarAsync(selectedArchetype, world);
         AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
 
         // Save to database
@@ -1769,48 +1772,6 @@ public partial class SagaMainViewModel : ObservableObject
         return await selector.SelectArchetypeAsync(AvailableArchetypes, currencyName);
     }
 
-    private AvatarEntity CreateAvatarFromArchetype(AvatarArchetype archetype, IWorld world)
-    {
-        var avatar = new AvatarEntity
-        {
-            AvatarId = Guid.NewGuid(), // Generate unique ID for this avatar
-            ArchetypeRef = archetype.RefName,
-            PlayTimeHours = 0,
-            BlocksPlaced = 0,
-            BlocksDestroyed = 0,
-            DistanceTraveled = 0,
-            X = 0,
-            Y = 100,
-            Z = 0
-        };
-
-        // Use AvatarSpawner to initialize from archetype
-        AvatarSpawner.SpawnFromModelAvatar(
-            avatar,
-            archetype);
-
-        SetAvatarDefaults(world, avatar);
-
-        return avatar;
-    }
-
-    private static void SetAvatarDefaults(IWorld world, AvatarEntity avatar)
-    {
-        if (world.IsProcedural)
-        {
-            var modelZ = CoordinateConverter.LatitudeToModelZ(world.WorldConfiguration.SpawnLatitude, world);
-            avatar.HomeLocation = new Vector3(0, 0, (float)modelZ);
-        }
-        else
-        {
-            var modelX = CoordinateConverter.LongitudeToModelX(world.WorldConfiguration.SpawnLongitude, world);
-            var modelZ = CoordinateConverter.LatitudeToModelZ(world.WorldConfiguration.SpawnLatitude, world);
-            avatar.HomeLocation = new Vector3((float)modelX, 0, (float)modelZ);
-        }
-
-        avatar.Position = avatar.HomeLocation;
-        avatar.IsInvulnerable = true;
-    }
 
     /// <summary>
     /// Gets the current avatar ID as a string.
