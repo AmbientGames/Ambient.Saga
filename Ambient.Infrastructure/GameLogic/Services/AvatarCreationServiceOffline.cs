@@ -13,11 +13,12 @@ namespace Ambient.Infrastructure.GameLogic.Services;
 /// </summary>
 public class AvatarCreationServiceOffline : IAvatarCreationService
 {
-    public Task<AvatarEntity> CreateAvatarAsync(AvatarArchetype archetype, IWorld world)
+    public Task<AvatarEntity> CreateAvatarAsync(Guid avatarId, AvatarArchetype archetype, IWorld world)
     {
         var avatar = new AvatarEntity
         {
-            AvatarId = Guid.NewGuid(),
+            Id = avatarId,
+            AvatarId = avatarId,
             ArchetypeRef = archetype.RefName,
             PlayTimeHours = 0,
             BlocksPlaced = 0,

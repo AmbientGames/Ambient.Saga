@@ -9,5 +9,5 @@ namespace Ambient.Domain.Contracts;
 /// </summary>
 public interface IAvatarCreationService
 {
-    Task<AvatarEntity> CreateAvatarAsync(AvatarArchetype archetype, IWorld world);
+    Task<AvatarEntity> CreateAvatarAsync(Guid avatarId, AvatarArchetype archetype, IWorld world);
 }
