@@ -244,7 +244,8 @@ public partial class SagaMainViewModel : ObservableObject
     public event Action<AvatarEntity, ElevationWaterMap?>? SessionReady;
 
     // Event for when world definition is loaded (before avatar selection)
-    public event Action<IWorld>? WorldLoaded;
+    // Provides worldRef (for avatar/database lookup) and worldPath (where the XML definition resides on disk)
+    public event Action<string, string>? WorldLoaded;
 
     // Event for when avatar teleport is requested (e.g., map click)
     public event Action<double, double>? AvatarTeleportRequested;
@@ -911,7 +912,10 @@ public partial class SagaMainViewModel : ObservableObject
         InitializeWorldDatabase(world);
 
         // Signal that world definition is loaded (before avatar selection)
-        WorldLoaded?.Invoke(world);
+        // Provides the RefName (for avatar/database lookup) and the directory containing world folders
+        // (so Schema can load the world directly without routing through the transport layer)
+        var worldRef = world.WorldConfiguration?.RefName ?? string.Empty;
+        WorldLoaded?.Invoke(worldRef, _dataDirectory);
 
         // Load or create avatar (shows archetype selection dialog for new worlds)
         await LoadOrCreateAvatarAsync(world);
@@ -1753,7 +1757,9 @@ public partial class SagaMainViewModel : ObservableObject
         }
 
         // Create new avatar from archetype via injected service (offline or online)
-        PlayerAvatar = await _avatarCreationService.CreateAvatarAsync(selectedArchetype, world);
+        // Generate the avatar GUID here so it's consistent across local DB and any consumer of saga
+        var avatarId = Guid.NewGuid();
+        PlayerAvatar = await _avatarCreationService.CreateAvatarAsync(avatarId, selectedArchetype, world);
         AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
 
         // Save to database
