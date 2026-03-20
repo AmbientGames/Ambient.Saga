@@ -912,10 +912,11 @@ public partial class SagaMainViewModel : ObservableObject
         InitializeWorldDatabase(world);
 
         // Signal that world definition is loaded (before avatar selection)
-        // Provides the RefName (for avatar/database lookup) and the directory containing world folders
-        // (so Schema can load the world directly without routing through the transport layer)
+        // Provides the RefName (for avatar/database lookup) and the SourceDirectory
+        // (where the world's XML definition resides on disk)
         var worldRef = world.WorldConfiguration?.RefName ?? string.Empty;
-        WorldLoaded?.Invoke(worldRef, _dataDirectory);
+        var worldPath = world.WorldConfiguration?.SourceDirectory ?? string.Empty;
+        WorldLoaded?.Invoke(worldRef, worldPath);
 
         // Load or create avatar (shows archetype selection dialog for new worlds)
         await LoadOrCreateAvatarAsync(world);
