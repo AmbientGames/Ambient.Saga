@@ -911,6 +911,9 @@ public partial class SagaMainViewModel : ObservableObject
         // Initialize LiteDB persistence and CQRS providers for this world
         InitializeWorldDatabase(world);
 
+        // Load or create avatar (shows archetype selection dialog for new worlds)
+        await LoadOrCreateAvatarAsync(world);
+
         // Signal that world definition is loaded (before avatar selection)
         // Provides the RefName (for avatar/database lookup) and the SourceDirectory
         // (where the world's XML definition resides on disk)
@@ -918,8 +921,6 @@ public partial class SagaMainViewModel : ObservableObject
         var worldPath = world.WorldConfiguration?.SourceDirectory ?? string.Empty;
         WorldLoaded?.Invoke(worldRef, worldPath);
 
-        // Load or create avatar (shows archetype selection dialog for new worlds)
-        await LoadOrCreateAvatarAsync(world);
 
         // Load and display height map if available
         await LoadHeightMapImageInternalAsync(world, dataDirectory);
