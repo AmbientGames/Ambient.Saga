@@ -110,6 +110,7 @@ public partial class AvatarBase : IAvatarBase
     /// </summary>
     [NonSerialized]
     [XmlIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
     public BlockingCollection<NotificationMessage> PendingMessages = new();
 
     /// <summary>
@@ -117,6 +118,7 @@ public partial class AvatarBase : IAvatarBase
     /// </summary>
     [NonSerialized]
     [XmlIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
     public int UdpMessageIdProcessed;
 
     /// <summary>
