@@ -46,6 +46,13 @@ public interface ISagaInstanceRepository
     Task RollbackTransactionsAsync(Guid instanceId, List<Guid> transactionIds, CancellationToken ct = default);
 
     /// <summary>
+    /// Import transactions from the server, preserving their sequence numbers and status.
+    /// Used during pull/recovery — does not reassign sequences or override status.
+    /// Skips transactions that already exist locally (by TransactionId).
+    /// </summary>
+    Task<int> ImportTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default);
+
+    /// <summary>
     /// Get all Saga instances for an avatar.
     /// </summary>
     Task<List<SagaInstance>> GetAllInstancesForAvatarAsync(Guid avatarId, CancellationToken ct = default);

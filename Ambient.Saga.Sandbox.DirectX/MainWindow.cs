@@ -126,6 +126,9 @@ public partial class MainWindow : Form
         // Subscribe to dialogue requests from MainViewModel
         _viewModel.DialogueRequested += OnDialogueRequested;
 
+        // Offline sandbox — no server pull needed, enable saga processing immediately on session ready
+        _viewModel.SessionReady += (_, _) => _viewModel.IsReadyForSagaProcessing = true;
+
         // Open world selection screen at startup
         _modalManager.OpenWorldSelection();
 

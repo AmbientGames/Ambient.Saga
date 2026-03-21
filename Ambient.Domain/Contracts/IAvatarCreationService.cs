@@ -10,4 +10,10 @@ namespace Ambient.Domain.Contracts;
 public interface IAvatarCreationService
 {
     Task<AvatarEntity> CreateAvatarAsync(Guid avatarId, AvatarArchetype archetype, IWorld world);
+
+    /// <summary>
+    /// Checks if this player already has an avatar for the given world (e.g. played on another device).
+    /// Returns the seeded avatar if found, null otherwise. Offline always returns null.
+    /// </summary>
+    Task<AvatarEntity?> FindExistingAvatarAsync(IWorld world) => Task.FromResult<AvatarEntity?>(null);
 }

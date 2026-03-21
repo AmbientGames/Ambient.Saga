@@ -178,6 +178,32 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         }
     }
 
+    public Task<int> ImportTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            var imported = 0;
+
+            foreach (var transaction in transactions)
+            {
+                // Skip if already exists locally (idempotent)
+                var existing = _transactions.FindOne(x => x.TransactionId == transaction.TransactionId);
+                if (existing != null)
+                    continue;
+
+                // Preserve sequence number and status from server — do not reassign
+                var record = SagaTransactionRecord.FromTransaction(transaction, instanceId);
+                _transactions.Insert(record);
+                imported++;
+            }
+
+            return Task.FromResult(imported);
+        }
+    }
+
     public Task<List<SagaTransaction>> GetTransactionsAsync(Guid instanceId, CancellationToken ct = default)
     {
         var transactionRecords = _transactions

@@ -93,6 +93,9 @@ public partial class SagaMainViewModel : ObservableObject
     private bool _hasAvatarPosition;
 
     [ObservableProperty]
+    private bool _isReadyForSagaProcessing;
+
+    [ObservableProperty]
     private bool _shouldCenterOnAvatar;
 
     /// <summary>
@@ -926,6 +929,7 @@ public partial class SagaMainViewModel : ObservableObject
         await LoadHeightMapImageInternalAsync(world, dataDirectory);
 
         // Signal session is ready with avatar and height map (for game initialization)
+        // Subscribers must set IsReadyForSagaProcessing = true when ready
         var elevationWaterMap = world.WorldConfiguration?.HeightMapSettings?.ElevationWaterMap;
         SessionReady?.Invoke(PlayerAvatar, elevationWaterMap);
 
@@ -1398,7 +1402,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     private async Task ProcessAvatarMovementAsync(ProximityTriggerViewModel trigger)
     {
-        if (CurrentWorld == null || PlayerAvatar == null)
+        if (CurrentWorld == null || PlayerAvatar == null || !IsReadyForSagaProcessing)
             return;
 
         try
@@ -1739,7 +1743,18 @@ public partial class SagaMainViewModel : ObservableObject
             return;
         }
 
-        // No avatar exists - show archetype selection
+        // No local avatar — check if one exists on the server (played on another device)
+        var recoveredAvatar = await _avatarCreationService.FindExistingAvatarAsync(world);
+        if (recoveredAvatar != null)
+        {
+            PlayerAvatar = recoveredAvatar;
+            AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
+            await SavePlayerAvatarAsync();
+            AddToastMessage("Avatar recovered from server.", MessageType.Quest);
+            return;
+        }
+
+        // No avatar exists anywhere - show archetype selection
         AddToastMessage("Select your character archetype...", MessageType.Info);
 
         // Load available archetypes
