@@ -329,6 +329,7 @@ internal class SagaTransactionRecord
     public DateTime? ServerTimestamp { get; set; }
     public TransactionStatus Status { get; set; }
     public SagaTransactionType Type { get; set; }
+    public string? ExtensionTypeName { get; set; }
     public Dictionary<string, string> Data { get; set; } = new();
     public Guid? ReversesTransactionId { get; set; }
     public string? ReversalReason { get; set; }
@@ -347,6 +348,7 @@ internal class SagaTransactionRecord
             ServerTimestamp = transaction.ServerTimestamp,
             Status = transaction.Status,
             Type = transaction.Type,
+            ExtensionTypeName = transaction.ExtensionTypeName,
             Data = new Dictionary<string, string>(transaction.Data),
             ReversesTransactionId = transaction.ReversesTransactionId,
             ReversalReason = transaction.ReversalReason,
@@ -366,6 +368,7 @@ internal class SagaTransactionRecord
             ServerTimestamp = ServerTimestamp,
             Status = Status,
             Type = Type,
+            ExtensionTypeName = ExtensionTypeName,
             Data = new Dictionary<string, string>(Data),
             ReversesTransactionId = ReversesTransactionId,
             ReversalReason = ReversalReason,
