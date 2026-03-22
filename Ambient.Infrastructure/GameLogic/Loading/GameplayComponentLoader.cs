@@ -75,7 +75,7 @@ public class GameplayComponentLoader : IGameplayComponentLoader
 
     private async Task<T> LoadXmlAsync<T>(string worldRef, string library, string ns, string? xsdFilePath, params string[] relativePath)
     {
-        var resolvedPath = _contentPathResolver.ResolveXmlPath(worldRef, library, ns, relativePath);
+       var resolvedPath = _contentPathResolver.ResolveXmlPath(worldRef, library, ns, relativePath);
         if (resolvedPath == null)
         {
             throw new FileNotFoundException($"XML content not found: {string.Join("/", relativePath)}");
