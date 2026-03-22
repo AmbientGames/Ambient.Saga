@@ -3,23 +3,23 @@
     <xs:include schemaLocation="../../../EntityBase.xsd" />
     <xs:simpleType name="SystemSubstance">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Aggregate" />
-            <xs:enumeration value="Carbon" />
-            <xs:enumeration value="Stone" />
-            <xs:enumeration value="Metal" />
-            <xs:enumeration value="Plant" />
-            <xs:enumeration value="Wood" />
-            <xs:enumeration value="Other" />
-			<xs:enumeration value="Steel_FROMBLOCKPARTY"/>
-			<xs:enumeration value="SteelReinforcedConcrete_FROMBLOCKPARTY"/>
-			<xs:enumeration value="Ore_FROMBLOCKPARTY"/>
-			<xs:enumeration value="Glass_FROMBLOCKPARTY"/>
-			<xs:enumeration value="Fiber_FROMBLOCKPARTY"/>
-			<xs:enumeration value="Liquid_FROMBLOCKPARTY"/>
-            <xs:enumeration value="Reserved13" />
-            <xs:enumeration value="Reserved14" />
-            <xs:enumeration value="Reserved15" />
-        </xs:restriction>
+			<xs:enumeration value="Aggregate" />
+			<xs:enumeration value="Carbon" />
+			<xs:enumeration value="Stone" />
+			<xs:enumeration value="Metal" />
+			<xs:enumeration value="Plant" />
+			<xs:enumeration value="Wood" />
+			<xs:enumeration value="Other" />
+			<xs:enumeration value="Steel"/>
+			<xs:enumeration value="Concrete"/>
+			<xs:enumeration value="Ore"/>
+			<xs:enumeration value="Glass"/>
+			<xs:enumeration value="Fiber"/>
+			<xs:enumeration value="Liquid"/>
+			<xs:enumeration value="Reserved13" />
+			<xs:enumeration value="Reserved14" />
+			<xs:enumeration value="Reserved15" />
+		</xs:restriction>
     </xs:simpleType>
     <xs:complexType name="Substance">
         <xs:complexContent>
