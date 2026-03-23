@@ -218,7 +218,7 @@ public class WorldInfoPanel
             var filtered = blocks.Where(b => MatchesFilter(b.DisplayName) || MatchesFilter(b.RefName)).ToList();
             if (filtered.Count > 0 && ImGui.CollapsingHeader($"Blocks ({filtered.Count})"))
             {
-                var grouped = filtered.GroupBy(b => b.SubstanceRef ?? "Other").OrderBy(g => g.Key);
+                var grouped = filtered.GroupBy(b => b.SubstanceRef ?? "Miscellaneous").OrderBy(g => g.Key);
                 foreach (var group in grouped)
                 {
                     if (ImGui.TreeNode($"{group.Key} ({group.Count()})"))
