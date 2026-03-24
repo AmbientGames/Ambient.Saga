@@ -6,6 +6,7 @@
 			<xs:enumeration value="Stone" />
 			<xs:enumeration value="Concrete"/>
 			<xs:enumeration value="Wood" />
+			<xs:enumeration value="Structural"/>
 			<xs:enumeration value="Decorative"/>
 			<xs:enumeration value="Metal" />
 			<xs:enumeration value="Alloy"/>
@@ -14,7 +15,6 @@
 			<xs:enumeration value="Liquid"/>
 			<xs:enumeration value="Ore"/>
 			<xs:enumeration value="Carbon" />
-			<xs:enumeration value="Reserved11" />
 			<xs:enumeration value="Reserved12" />
 			<xs:enumeration value="Reserved13" />
 			<xs:enumeration value="Reserved14" />
