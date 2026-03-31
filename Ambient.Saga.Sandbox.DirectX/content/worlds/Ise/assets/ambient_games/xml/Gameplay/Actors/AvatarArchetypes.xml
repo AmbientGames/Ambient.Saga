@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AvatarArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <AvatarArchetype RefName="Warrior" DisplayName="Team Captain" Description="The dependable class representative and kendo club captain. Their affinity manifests as a samurai guardian spirit, channeling unwavering determination and protective instincts." AffinityRef="Iron" MaxCarryWeight="45">
+  <AvatarArchetype RefName="Warrior" DisplayName="Team Captain" Description="The dependable class representative and kendo club captain. Their affinity manifests as a samurai guardian spirit, channeling unwavering determination and protective instincts." AffinityRef="Iron" Weight="80">
     <SpawnStats Health="1.05" Stamina="0.95" Mana="0.95" Temperature="37" Strength="0.105" Defense="0.105" Magic="0.095" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -213,7 +213,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Barbarian" DisplayName="Delinquent" Description="The rebellious student with a heart of gold hidden beneath a tough exterior. Their affinity takes the form of an oni, raw emotion given devastating physical form." AffinityRef="Fire" MaxCarryWeight="50">
+  <AvatarArchetype RefName="Barbarian" DisplayName="Delinquent" Description="The rebellious student with a heart of gold hidden beneath a tough exterior. Their affinity takes the form of an oni, raw emotion given devastating physical form." AffinityRef="Fire" Weight="95">
     <SpawnStats Health="0.9" Stamina="1" Mana="0.95" Temperature="37" Strength="0.11000001" Defense="0.089999996" Magic="0.095" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -422,7 +422,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Rogue" DisplayName="Transfer Student" Description="The mysterious new student who arrived mid-semester. Nobody knows their past, and their affinity is a kitsune - cunning, quick, and full of secrets." AffinityRef="Umbral" MaxCarryWeight="30">
+  <AvatarArchetype RefName="Rogue" DisplayName="Transfer Student" Description="The mysterious new student who arrived mid-semester. Nobody knows their past, and their affinity is a kitsune - cunning, quick, and full of secrets." AffinityRef="Umbral" Weight="65">
     <SpawnStats Health="0.9" Stamina="1.1" Mana="1" Temperature="37" Strength="0.095" Defense="0.089999996" Magic="0.1" Speed="0.11000001" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -633,7 +633,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Ranger" DisplayName="Photography Club" Description="Always observing from the sidelines, camera in hand. Their keen perception awakened a tengu affinity, granting supernatural awareness and precision strikes from afar." AffinityRef="Wild" MaxCarryWeight="40">
+  <AvatarArchetype RefName="Ranger" DisplayName="Photography Club" Description="Always observing from the sidelines, camera in hand. Their keen perception awakened a tengu affinity, granting supernatural awareness and precision strikes from afar." AffinityRef="Wild" Weight="75">
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1" Temperature="37" Strength="0.1" Defense="0.095" Magic="0.1" Speed="0.105" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -842,7 +842,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Mage" DisplayName="Honor Student" Description="Top of the class with perfect grades, but socially awkward. Their brilliant mind manifests a affinity of pure elemental force - an onmyoji spirit wielding the classical elements." AffinityRef="Arcane" MaxCarryWeight="25">
+  <AvatarArchetype RefName="Mage" DisplayName="Honor Student" Description="Top of the class with perfect grades, but socially awkward. Their brilliant mind manifests a affinity of pure elemental force - an onmyoji spirit wielding the classical elements." AffinityRef="Arcane" Weight="60">
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.089999996" Magic="0.11000001" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -1051,7 +1051,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Wizard" DisplayName="Occult Club" Description="President of the occult research club, always talking about spirits and curses. Turns out they were right all along. Their affinity is an ancient yokai sage of forbidden knowledge." AffinityRef="Arcane" MaxCarryWeight="20">
+  <AvatarArchetype RefName="Wizard" DisplayName="Occult Club" Description="President of the occult research club, always talking about spirits and curses. Turns out they were right all along. Their affinity is an ancient yokai sage of forbidden knowledge." AffinityRef="Arcane" Weight="55">
     <SpawnStats Health="0.95" Stamina="0.95" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.095" Magic="0.11000001" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -1262,7 +1262,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Cleric" DisplayName="Shrine Maiden" Description="A part-time miko at a local shrine, drawn to Ise by fate. Their deep spiritual connection awakens a divine affinity - a manifestation of Amaterasu's blessing." AffinityRef="Holy" MaxCarryWeight="35">
+  <AvatarArchetype RefName="Cleric" DisplayName="Shrine Maiden" Description="A part-time miko at a local shrine, drawn to Ise by fate. Their deep spiritual connection awakens a divine affinity - a manifestation of Amaterasu's blessing." AffinityRef="Holy" Weight="70">
     <SpawnStats Health="1.05" Stamina="0.95" Mana="1.05" Temperature="37" Strength="0.095" Defense="0.105" Magic="0.105" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -1475,7 +1475,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Bard" DisplayName="Idol Trainee" Description="Dreams of becoming a famous idol while balancing school. Their charisma and voice manifest a celestial affinity that inspires allies and charms enemies with supernatural melodies." AffinityRef="Spirit" MaxCarryWeight="30">
+  <AvatarArchetype RefName="Bard" DisplayName="Idol Trainee" Description="Dreams of becoming a famous idol while balancing school. Their charisma and voice manifest a celestial affinity that inspires allies and charms enemies with supernatural melodies." AffinityRef="Spirit" Weight="65">
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1.05" Temperature="37" Strength="0.095" Defense="0.095" Magic="0.105" Speed="0.105" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -1687,7 +1687,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Summoner" DisplayName="Shrine Heir" Description="Child of a kannushi priest, raised among rituals and traditions. They can forge contracts with shikigami spirits, commanding multiple affinity-like entities in battle." AffinityRef="Void" MaxCarryWeight="25">
+  <AvatarArchetype RefName="Summoner" DisplayName="Shrine Heir" Description="Child of a kannushi priest, raised among rituals and traditions. They can forge contracts with shikigami spirits, commanding multiple affinity-like entities in battle." AffinityRef="Void" Weight="60">
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.089999996" Magic="0.11000001" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>

@@ -81,7 +81,7 @@
                     <xs:annotation><xs:documentation>Sort order for this world in the world selection UI. Lower values appear first.</xs:documentation></xs:annotation>
                 </xs:attribute>
 				<xs:attribute name="WeightUnitName" type="xs:string" default="kg">
-                    <xs:annotation><xs:documentation>Display name for the weight unit shown in inventory UI. All weight values (BlockWeight, EquipmentWeight, MaxCarryWeight, etc.) are floats in this unit — e.g. BlockWeight="1.0" with WeightUnitName="kg" means 1.0 kg.</xs:documentation></xs:annotation>
+                    <xs:annotation><xs:documentation>Display name for the weight unit shown in inventory UI. All weight values (BlockWeight, EquipmentWeight, archetype Weight, etc.) are floats in this unit — e.g. BlockWeight="1.0" with WeightUnitName="kg" means 1.0 kg.</xs:documentation></xs:annotation>
                 </xs:attribute>
 				<xs:attribute name="BlockWeight" type="xs:float" default="1.0">
                     <xs:annotation><xs:documentation>Weight of a single block item, in WeightUnitName units.</xs:documentation></xs:annotation>

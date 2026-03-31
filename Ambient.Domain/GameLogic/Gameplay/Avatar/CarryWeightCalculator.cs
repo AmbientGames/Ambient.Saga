@@ -4,9 +4,15 @@ namespace Ambient.Domain.GameLogic.Gameplay.Avatar;
 
 public static class CarryWeightCalculator
 {
+    /// <summary>
+    /// Multiplier applied to Weight * Strength to derive maximum carry capacity.
+    /// </summary>
+    private const float CarryWeightMultiplier = 5f;
+
     public static float GetMaxCarryWeight(AvatarArchetype archetype)
     {
-        return archetype.MaxCarryWeight;
+        var strength = archetype.SpawnStats?.Strength ?? 0.1f;
+        return archetype.Weight * strength * CarryWeightMultiplier;
     }
 
     public static float CalculateTotalWeight(ItemCollection? capabilities, IWorldConfiguration config)

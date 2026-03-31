@@ -1,4 +1,5 @@
 using Ambient.Domain;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Domain.Hotbar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
@@ -54,6 +55,30 @@ public class InventoryPanel
         }
 
         var caps = viewModel.PlayerAvatar.Capabilities;
+
+        // Carry weight bar
+        var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
+        var archetype = viewModel.CurrentWorld?.Gameplay?.AvatarArchetypes?
+            .FirstOrDefault(a => a.RefName == viewModel.PlayerAvatar.ArchetypeRef);
+        if (worldConfig != null && archetype != null)
+        {
+            var weightUnit = worldConfig.WeightUnitName ?? "kg";
+            var maxCarry = CarryWeightCalculator.GetMaxCarryWeight(archetype);
+            var currentCarry = CarryWeightCalculator.CalculateTotalWeight(caps, worldConfig);
+            var fraction = maxCarry > 0 ? currentCarry / maxCarry : 0f;
+
+            var carryColor = fraction > 0.9f
+                ? new Vector4(1, 0.3f, 0.3f, 1)
+                : fraction > 0.7f
+                    ? new Vector4(1, 0.8f, 0.3f, 1)
+                    : new Vector4(0.5f, 0.8f, 1, 1);
+            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, carryColor);
+            ImGui.ProgressBar(fraction, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()),
+                $"Carrying: {currentCarry:N1} / {maxCarry:N1} {weightUnit}");
+            ImGui.PopStyleColor();
+            ImGui.Spacing();
+        }
+
         var hasBlockProvider = viewModel.CurrentWorld?.BlockProvider != null;
         var columnCount = hasBlockProvider ? 3 : 2;
 

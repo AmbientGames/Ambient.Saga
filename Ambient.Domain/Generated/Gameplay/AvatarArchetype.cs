@@ -34,10 +34,10 @@ namespace Ambient.Domain {
         
         private string affinityRefField;
         
-        private float maxCarryWeightField;
+        private float weightField;
         
         public AvatarArchetype() {
-            this.maxCarryWeightField = ((float)(40F));
+            this.weightField = ((float)(70F));
         }
         
         /// <remarks/>
@@ -103,13 +103,13 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(typeof(float), "40")]
-        public float MaxCarryWeight {
+        [System.ComponentModel.DefaultValueAttribute(typeof(float), "70")]
+        public float Weight {
             get {
-                return this.maxCarryWeightField;
+                return this.weightField;
             }
             set {
-                this.maxCarryWeightField = value;
+                this.weightField = value;
             }
         }
     }

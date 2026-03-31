@@ -1,3 +1,4 @@
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -150,6 +151,32 @@ public class CharacterPanel
                         ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), "Affinity:");
                         ImGui.SameLine();
                         ImGui.Text(affinityName);
+                    }
+
+                    // Weight & Carry Capacity
+                    var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
+                    if (worldConfig != null)
+                    {
+                        var weightUnit = worldConfig.WeightUnitName ?? "kg";
+                        var maxCarry = CarryWeightCalculator.GetMaxCarryWeight(archetype);
+                        var currentCarry = CarryWeightCalculator.CalculateTotalWeight(
+                            viewModel.PlayerAvatar.Capabilities, worldConfig);
+                        var fraction = maxCarry > 0 ? currentCarry / maxCarry : 0f;
+
+                        ImGui.Spacing();
+                        RenderStatLine("Weight:", $"{archetype.Weight:N0} {weightUnit}");
+
+                        var carryColor = fraction > 0.9f
+                            ? new Vector4(1, 0.3f, 0.3f, 1)
+                            : fraction > 0.7f
+                                ? new Vector4(1, 0.8f, 0.3f, 1)
+                                : new Vector4(0.5f, 0.8f, 1, 1);
+                        ImGui.PushStyleColor(ImGuiCol.PlotHistogram, carryColor);
+                        ImGui.Text("Carry:");
+                        ImGui.SameLine(100 * UIConstants.DpiScale);
+                        ImGui.ProgressBar(fraction, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()),
+                            $"{currentCarry:N1} / {maxCarry:N1} {weightUnit}");
+                        ImGui.PopStyleColor();
                     }
 
                     // Archetype bias (permanent stat modifiers)

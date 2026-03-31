@@ -62,7 +62,8 @@
       "Bash(dotnet restore:*)",
       "WebSearch",
       "Bash(rm:*)",
-      "Bash(rmdir:*)"
+      "Bash(rmdir:*)",
+      "Bash(dotnet test:*)"
     ],
     "deny": [],
     "ask": []

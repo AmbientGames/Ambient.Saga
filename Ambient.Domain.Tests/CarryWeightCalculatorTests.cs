@@ -16,10 +16,21 @@ public class CarryWeightCalculatorTests
         WeightUnitName = "kg"
     };
 
-    private static AvatarArchetype ArchetypeWithCapacity(float maxCarryWeight) => new()
+    /// <summary>
+    /// Creates an archetype whose derived max carry weight equals the given value.
+    /// Formula: Weight * Strength * 5. Using Weight=weight, Strength=strength.
+    /// </summary>
+    private static AvatarArchetype ArchetypeWithCapacity(float maxCarryWeight)
     {
-        MaxCarryWeight = maxCarryWeight
-    };
+        // Reverse-engineer Weight from desired carry capacity using a fixed Strength of 0.1:
+        // maxCarryWeight = Weight * 0.1 * 5 → Weight = maxCarryWeight / 0.5 = maxCarryWeight * 2
+        var weight = maxCarryWeight * 2f;
+        return new AvatarArchetype
+        {
+            Weight = weight,
+            SpawnStats = new CharacterStats { Strength = 0.1f }
+        };
+    }
 
     private static ItemCollection EmptyCapabilities() => new();
 

@@ -456,7 +456,7 @@ public class ArchetypeSelectionModal
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No starting items");
         }
 
-        // Carry Weight
+        // Weight & Carry Capacity
         var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
         if (worldConfig != null)
         {
@@ -464,16 +464,20 @@ public class ArchetypeSelectionModal
             ImGui.Separator();
             ImGui.Spacing();
 
+            var weightUnit = worldConfig.WeightUnitName ?? "kg";
             var maxWeight = CarryWeightCalculator.GetMaxCarryWeight(archetype);
             var currentWeight = CarryWeightCalculator.CalculateTotalWeight(archetype.SpawnCapabilities, worldConfig);
-            var weightUnit = worldConfig.WeightUnitName ?? "kg";
 
-            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Carry Weight");
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Physical");
             ImGui.Separator();
             ImGui.Spacing();
 
+            ImGui.Text($"Weight: {archetype.Weight:N0} {weightUnit}");
+            ImGui.Text($"Max Carry: {maxWeight:N1} {weightUnit}");
+            ImGui.Spacing();
+
             var fraction = maxWeight > 0 ? (float)currentWeight / maxWeight : 0f;
-            ImGui.ProgressBar(fraction, new Vector2(-1, 0), $"{currentWeight:N0} / {maxWeight:N0} {weightUnit}");
+            ImGui.ProgressBar(fraction, new Vector2(-1, 0), $"{currentWeight:N1} / {maxWeight:N1} {weightUnit}");
         }
     }
 
