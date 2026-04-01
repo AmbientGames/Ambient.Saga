@@ -253,6 +253,9 @@ public partial class SagaMainViewModel : ObservableObject
     // Event for when avatar teleport is requested (e.g., map click)
     public event Action<double, double>? AvatarTeleportRequested;
 
+    // Event for when the game is completed (CompletionQuestRef quest finished). Consumer decides behavior.
+    public event Action<string>? GameCompleted;
+
     // Awaitable signal for when world configurations have been discovered
     private readonly TaskCompletionSource<int> _configurationsLoadedTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -269,6 +272,15 @@ public partial class SagaMainViewModel : ObservableObject
     public void RaiseRequestQuit()
     {
         RequestQuit?.Invoke();
+    }
+
+    /// <summary>
+    /// Signals that the completion quest has been finished.
+    /// Called by DialogueModal when the GameComplete flag is detected.
+    /// </summary>
+    public void RaiseGameCompleted(string questRef)
+    {
+        GameCompleted?.Invoke(questRef);
     }
 
     private ProximityTriggerViewModel? _previousTrigger;

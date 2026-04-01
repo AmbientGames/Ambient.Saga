@@ -169,7 +169,7 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
             Dictionary<string, object>? resultData = null;
             if (!string.IsNullOrEmpty(completionRef) && command.QuestRef == completionRef)
             {
-                resultData = new Dictionary<string, object> { ["GameComplete"] = true };
+                resultData = new Dictionary<string, object> { ["GameComplete"] = true, ["CompletionQuestRef"] = completionRef };
             }
 
             return SagaCommandResult.Success(

@@ -163,6 +163,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             // Dispatch quest events directly (business logic, not UI transitions)
             bool gameComplete = false;
+            string? completionQuestRef = null;
             if (pendingEvents.Exists(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent)
                 && command.Avatar is AvatarEntity avatarEntity)
             {
@@ -194,7 +195,10 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                                 DialogueDriven = true
                             }, ct);
                             if (questResult.Data.ContainsKey("GameComplete"))
+                            {
                                 gameComplete = true;
+                                completionQuestRef = questResult.Data.TryGetValue("CompletionQuestRef", out var qref) ? qref as string : null;
+                            }
                             pendingEvents.RemoveAt(i);
                             break;
 
@@ -250,6 +254,8 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             if (gameComplete)
             {
                 resultData["GameComplete"] = true;
+                if (completionQuestRef != null)
+                    resultData["CompletionQuestRef"] = completionQuestRef;
             }
 
             return SagaCommandResult.Success(

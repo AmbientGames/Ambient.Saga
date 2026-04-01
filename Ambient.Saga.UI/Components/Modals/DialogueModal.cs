@@ -578,8 +578,9 @@ public class DialogueModal
             // Check for game completion
             if (result.Data.ContainsKey("GameComplete"))
             {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Exiting application.");
-                Environment.Exit(0);
+                var questRef = result.Data.TryGetValue("CompletionQuestRef", out var qref) ? qref as string ?? string.Empty : string.Empty;
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Quest: {questRef}");
+                viewModel.RaiseGameCompleted(questRef);
                 return;
             }
 
@@ -658,8 +659,9 @@ public class DialogueModal
             // Check for game completion
             if (result.Data.ContainsKey("GameComplete"))
             {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Exiting application.");
-                Environment.Exit(0);
+                var questRef = result.Data.TryGetValue("CompletionQuestRef", out var qref) ? qref as string ?? string.Empty : string.Empty;
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Quest: {questRef}");
+                viewModel.RaiseGameCompleted(questRef);
                 return;
             }
 
