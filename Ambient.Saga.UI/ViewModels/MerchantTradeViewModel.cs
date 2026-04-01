@@ -15,6 +15,7 @@ public partial class MerchantTradeViewModel : ObservableObject
     // Events for notifying the host about state changes
     public event EventHandler<string>? StatusMessageChanged;
     public event EventHandler<string>? ActivityMessageGenerated;
+    public event Action<string, int>? OwnerRevenueEarned;
 
     private readonly SagaInteractionContext _context;
     private readonly IMediator _mediator;
@@ -260,6 +261,13 @@ public partial class MerchantTradeViewModel : ObservableObject
             var message = $"Bought {tradeItem.Item.DisplayName} for {tradeItem.Price} {PluralCurrencyName}";
             ActivityMessageGenerated?.Invoke(this, message);
             StatusMessageChanged?.Invoke(this, "Trade successful!");
+
+            // Signal owner revenue if this was a purchase from a player-owned merchant
+            if (result.Data.TryGetValue("OwnerAvatarId", out var ownerIdObj) && ownerIdObj is string ownerId
+                && result.Data.TryGetValue("OwnerRevenue", out var revenueObj) && revenueObj is int revenue)
+            {
+                OwnerRevenueEarned?.Invoke(ownerId, revenue);
+            }
 
             // Use the updated avatar returned by Saga Engine (self-contained)
             System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] UpdatedAvatar: {(result.UpdatedAvatar != null ? "present" : "NULL")}");

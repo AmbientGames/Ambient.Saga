@@ -256,6 +256,10 @@ public partial class SagaMainViewModel : ObservableObject
     // Event for when the game is completed (CompletionQuestRef quest finished). Consumer decides behavior.
     public event Action<string>? GameCompleted;
 
+    // Event for when a non-owner buys from a player-owned merchant. Consumer credits the owner.
+    // Parameters: ownerAvatarId, revenue amount
+    public event Action<string, int>? OwnerRevenueEarned;
+
     // Awaitable signal for when world configurations have been discovered
     private readonly TaskCompletionSource<int> _configurationsLoadedTcs = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
@@ -281,6 +285,15 @@ public partial class SagaMainViewModel : ObservableObject
     public void RaiseGameCompleted(string questRef)
     {
         GameCompleted?.Invoke(questRef);
+    }
+
+    /// <summary>
+    /// Signals that a player-owned merchant earned revenue from a sale.
+    /// Called by MerchantTradeViewModel after a successful trade.
+    /// </summary>
+    public void RaiseOwnerRevenueEarned(string ownerAvatarId, int revenue)
+    {
+        OwnerRevenueEarned?.Invoke(ownerAvatarId, revenue);
     }
 
     private ProximityTriggerViewModel? _previousTrigger;

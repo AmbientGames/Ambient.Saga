@@ -289,6 +289,13 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 ["TransactionType"] = command.IsBuying ? "Purchase" : "Sale"
             };
 
+            // If a non-owner bought from an owned arc, signal that the owner should receive revenue
+            if (command.IsBuying && !isOwner && !string.IsNullOrEmpty(sagaTemplate.OwnerAvatarId) && totalPrice > 0)
+            {
+                resultData["OwnerAvatarId"] = sagaTemplate.OwnerAvatarId;
+                resultData["OwnerRevenue"] = totalPrice;
+            }
+
             return SagaCommandResult.Success(
                 instance.InstanceId,
                 new List<Guid> { transaction.TransactionId },

@@ -328,6 +328,11 @@ public class MerchantTradeModal
                 viewModel.ActivityLog.Insert(0, msg);
             };
 
+            _tradeViewModel.OwnerRevenueEarned += (ownerAvatarId, revenue) =>
+            {
+                viewModel.RaiseOwnerRevenueEarned(ownerAvatarId, revenue);
+            };
+
         }
         catch (Exception ex)
         {
