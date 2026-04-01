@@ -191,6 +191,14 @@ public class InventoryPanel
                                 ImGuiHelpers.RenderAttributes(consumableItem.Effects);
                             }
                         }
+
+                        // Drop button
+                        ImGui.Spacing();
+                        if (RenderDropButton($"drop_con_{consumable.ConsumableRef}"))
+                        {
+                            DiscardConsumable(viewModel, consumable.ConsumableRef, name);
+                        }
+
                         ImGui.TreePop();
                     }
 
@@ -246,6 +254,14 @@ public class InventoryPanel
                                 ImGuiHelpers.RenderAttributes(spellItem.Effects);
                             }
                         }
+
+                        // Drop button
+                        ImGui.Spacing();
+                        if (RenderDropButton($"drop_sp_{spell.SpellRef}"))
+                        {
+                            DiscardSpell(viewModel, spell.SpellRef, spellItem?.DisplayName ?? spell.SpellRef);
+                        }
+
                         ImGui.TreePop();
                     }
 
@@ -626,6 +642,22 @@ public class InventoryPanel
                             }
                         }
 
+                        // Drop button (disabled if currently equipped)
+                        ImGui.Spacing();
+                        var isCurrentTool = viewModel.PlayerAvatar?.CurrentToolRef == tool.ToolRef;
+                        if (isCurrentTool)
+                        {
+                            ImGui.BeginDisabled();
+                            RenderDropButton($"drop_tl_{tool.ToolRef}");
+                            ImGui.EndDisabled();
+                            if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+                                ImGui.SetTooltip("Unequip before dropping");
+                        }
+                        else if (RenderDropButton($"drop_tl_{tool.ToolRef}"))
+                        {
+                            DiscardTool(viewModel, tool.ToolRef, toolName);
+                        }
+
                         ImGui.TreePop();
                     }
 
@@ -732,6 +764,13 @@ public class InventoryPanel
                             }
                         }
 
+                        // Drop button
+                        ImGui.Spacing();
+                        if (RenderDropButton($"drop_blk_{blockRef}"))
+                        {
+                            DiscardBlock(viewModel, blockRef, blockName);
+                        }
+
                         ImGui.TreePop();
                     }
 
@@ -800,6 +839,15 @@ public class InventoryPanel
                                 ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {materialItem.MerchantMarkupMultiplier:F1}x");
                             }
                         }
+
+                        // Drop button
+                        ImGui.Spacing();
+                        if (RenderDropButton($"drop_mat_{material.BuildingMaterialRef}"))
+                        {
+                            DiscardMaterial(viewModel, material.BuildingMaterialRef,
+                                materialItem?.DisplayName ?? material.BuildingMaterialRef);
+                        }
+
                         ImGui.TreePop();
                     }
 
@@ -1040,6 +1088,21 @@ public class InventoryPanel
                     : new Vector4(0.9f, 0.3f, 0.2f, 1);
             ImGui.TextColored(conditionColor, $"Condition: {equip.Condition:P0}");
 
+            // Drop button (disabled if equipped)
+            ImGui.Spacing();
+            if (isEquipped)
+            {
+                ImGui.BeginDisabled();
+                RenderDropButton($"drop_eq_{equip.EquipmentRef}");
+                ImGui.EndDisabled();
+                if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+                    ImGui.SetTooltip("Unequip before dropping");
+            }
+            else if (RenderDropButton($"drop_eq_{equip.EquipmentRef}"))
+            {
+                DiscardEquipment(viewModel, equip.EquipmentRef, name);
+            }
+
             ImGui.TreePop();
         }
 
@@ -1151,6 +1214,67 @@ public class InventoryPanel
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName
         };
+    }
+
+    private bool RenderDropButton(string id)
+    {
+        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.2f, 0.2f, 1));
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.25f, 0.25f, 1));
+        var clicked = ImGui.Button($"Drop##{id}");
+        ImGui.PopStyleColor(3);
+        return clicked;
+    }
+
+    private void DiscardEquipment(SagaMainViewModel viewModel, string equipmentRef, string displayName)
+    {
+        var caps = viewModel.PlayerAvatar?.Capabilities;
+        if (caps?.Equipment == null) return;
+        caps.Equipment = caps.Equipment.Where(e => e.EquipmentRef != equipmentRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardConsumable(SagaMainViewModel viewModel, string consumableRef, string displayName)
+    {
+        var caps = viewModel.PlayerAvatar?.Capabilities;
+        if (caps?.Consumables == null) return;
+        caps.Consumables = caps.Consumables.Where(c => c.ConsumableRef != consumableRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardSpell(SagaMainViewModel viewModel, string spellRef, string displayName)
+    {
+        var caps = viewModel.PlayerAvatar?.Capabilities;
+        if (caps?.Spells == null) return;
+        caps.Spells = caps.Spells.Where(s => s.SpellRef != spellRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardTool(SagaMainViewModel viewModel, string toolRef, string displayName)
+    {
+        var caps = viewModel.PlayerAvatar?.Capabilities;
+        if (caps?.Tools == null) return;
+        caps.Tools = caps.Tools.Where(t => t.ToolRef != toolRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardBlock(SagaMainViewModel viewModel, string blockRef, string displayName)
+    {
+        // Remove from BlockOwnership (runtime display source)
+        viewModel.PlayerAvatar?.BlockOwnership?.Remove(blockRef);
+        // Remove from Capabilities (carry weight source)
+        var caps = viewModel.PlayerAvatar?.Capabilities;
+        if (caps?.Blocks != null)
+            caps.Blocks = caps.Blocks.Where(b => b.BlockRef != blockRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardMaterial(SagaMainViewModel viewModel, string materialRef, string displayName)
+    {
+        var caps = viewModel.PlayerAvatar?.Capabilities;
+        if (caps?.BuildingMaterials == null) return;
+        caps.BuildingMaterials = caps.BuildingMaterials.Where(m => m.BuildingMaterialRef != materialRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
     }
 
     /// <summary>

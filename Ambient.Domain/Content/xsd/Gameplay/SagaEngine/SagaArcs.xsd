@@ -142,6 +142,11 @@
 						<xs:documentation>Whether this point of interest is visible or hidden on the map before discovery.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
+				<xs:attribute name="OwnerAvatarId" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>Avatar ID of the player who owns this saga arc. Owner can trade freely with characters (no cost), characters will not be hostile to owner. Used for player-created arcs such as shopkeepers.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

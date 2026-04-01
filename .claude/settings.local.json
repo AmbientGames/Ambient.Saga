@@ -63,7 +63,12 @@
       "WebSearch",
       "Bash(rm:*)",
       "Bash(rmdir:*)",
-      "Bash(dotnet test:*)"
+      "Bash(dotnet test:*)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(sed -i 's/MaxCarryWeight=\"\"45\"\"/Weight=\"\"80\"\"/g; s/MaxCarryWeight=\"\"50\"\"/Weight=\"\"95\"\"/g; s/MaxCarryWeight=\"\"30\"\"/Weight=\"\"65\"\"/g; s/MaxCarryWeight=\"\"40\"\"/Weight=\"\"75\"\"/g; s/MaxCarryWeight=\"\"25\"\"/Weight=\"\"60\"\"/g; s/MaxCarryWeight=\"\"20\"\"/Weight=\"\"55\"\"/g; s/MaxCarryWeight=\"\"35\"\"/Weight=\"\"70\"\"/g' \"$f\")",
+      "Bash(echo \"Updated: $f\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

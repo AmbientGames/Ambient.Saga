@@ -95,10 +95,13 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 return SagaCommandResult.Failure(instance.InstanceId, "Cannot trade with defeated character");
             }
 
-            var totalPrice = command.PricePerItem * command.Quantity;
+            // Owner trades for free (depositing/withdrawing from own shopkeeper)
+            var isOwner = !string.IsNullOrEmpty(sagaTemplate.OwnerAvatarId)
+                          && command.AvatarId.ToString() == sagaTemplate.OwnerAvatarId;
+            var totalPrice = isOwner ? 0 : command.PricePerItem * command.Quantity;
 
-            // Validate avatar has sufficient credits for buying
-            if (command.IsBuying)
+            // Validate avatar has sufficient credits for buying (owners trade free)
+            if (command.IsBuying && !isOwner)
             {
                 var avatarCredits = command.Avatar.Stats?.Credits ?? 0;
                 if (avatarCredits < totalPrice)

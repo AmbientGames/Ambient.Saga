@@ -36,6 +36,8 @@ namespace Ambient.Domain {
         
         private SagaArcInitialState initialStateField;
         
+        private string ownerAvatarIdField;
+        
         public SagaArc() {
             this.kindField = "Default";
             this.discoverRadiusField = 200D;
@@ -119,6 +121,17 @@ namespace Ambient.Domain {
             }
             set {
                 this.initialStateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string OwnerAvatarId {
+            get {
+                return this.ownerAvatarIdField;
+            }
+            set {
+                this.ownerAvatarIdField = value;
             }
         }
     }
