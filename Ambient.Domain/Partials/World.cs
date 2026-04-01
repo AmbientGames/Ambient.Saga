@@ -497,4 +497,28 @@ public partial class World : IWorld
         return attackTell;
     }
 
+    /// <inheritdoc />
+    public bool RegisterSagaArc(SagaArc arc)
+    {
+        if (arc == null || string.IsNullOrEmpty(arc.RefName))
+            return false;
+
+        // Don't overwrite existing arcs
+        if (SagaArcLookup.ContainsKey(arc.RefName))
+            return false;
+
+        // Validate triggers
+        var triggers = arc.SagaTrigger?.ToList() ?? new List<SagaTrigger>();
+        foreach (var trigger in triggers)
+        {
+            if (trigger.Spawn == null || trigger.Spawn.Length == 0)
+                return false;
+        }
+
+        // Register into runtime dictionaries
+        SagaArcLookup[arc.RefName] = arc;
+        SagaTriggersLookup[arc.RefName] = triggers;
+
+        return true;
+    }
 }

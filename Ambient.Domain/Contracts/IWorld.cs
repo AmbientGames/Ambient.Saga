@@ -102,4 +102,12 @@ public interface IWorld
 
     public AttackTell GetAttackTellByRefName(string attackTellRefName);
     public AttackTell? TryGetAttackTellByRefName(string attackTellRefName);
+
+    /// <summary>
+    /// Registers a saga arc into the runtime dictionaries so it is processed
+    /// identically to XML-defined arcs. Used by consumers to inject server-sourced
+    /// arcs (e.g. player shopkeepers) at runtime.
+    /// Returns false if the arc's RefName already exists (no overwrite).
+    /// </summary>
+    bool RegisterSagaArc(SagaArc arc);
 }
