@@ -39,6 +39,6 @@ public static class WorldConfigurationService
 
     public static void InitializeWorldTiming(IWorld world)
     {
-        world.UtcStartTick = DateTime.UtcNow.Ticks - 10 * world.WorldConfiguration.SecondsInHour * TimeSpan.TicksPerSecond;
+        world.UtcStartTick = DateTime.UtcNow.Ticks;
     }
 }

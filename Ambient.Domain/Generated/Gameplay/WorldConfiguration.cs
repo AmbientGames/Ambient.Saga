@@ -69,7 +69,7 @@ namespace Ambient.Domain {
             this.schemaVersionField = 1;
             this.contentPackLibraryField = "default";
             this.currencyNameField = "Credit";
-            this.startDateField = new System.DateTime(103680000000000);
+            this.startDateField = new System.DateTime(103968000000000);
             this.secondsInHourField = 60;
             this.climateModelField = ClimateModel.Earth;
             this.allowTeleportingField = false;
@@ -154,8 +154,8 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute(DataType="date")]
-        [System.ComponentModel.DefaultValueAttribute(typeof(System.DateTime), "0001-05-01")]
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(typeof(System.DateTime), "0001-05-01T08:00:00")]
         public System.DateTime StartDate {
             get {
                 return this.startDateField;

@@ -59,8 +59,8 @@
                 <xs:attribute name="CurrencyName" type="xs:string" default="Credit">
                     <xs:annotation><xs:documentation>Display name for the in-game currency shown in UI.</xs:documentation></xs:annotation>
                 </xs:attribute>
-                <xs:attribute name="StartDate" type="xs:date" default="0001-05-01">
-                    <xs:annotation><xs:documentation>Initial in-game calendar date when a new world begins. Affects seasons and day length.</xs:documentation></xs:annotation>
+                <xs:attribute name="StartDate" type="xs:dateTime" default="0001-05-01T08:00:00">
+                    <xs:annotation><xs:documentation>Initial in-game date and time when a new world begins. Affects seasons, day length, and starting time of day.</xs:documentation></xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="SpawnLatitude" type="xs:double" use="required">
                     <xs:annotation><xs:documentation>Latitude coordinate where players spawn. Affects starting climate and terrain.</xs:documentation></xs:annotation>
