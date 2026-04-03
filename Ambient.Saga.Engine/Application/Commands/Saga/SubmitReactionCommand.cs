@@ -46,17 +46,17 @@ public class SubmitReactionCommand : IRequest<SagaCommandResult>
     /// <summary>
     /// Base damage from the attack before reaction modifiers
     /// </summary>
-    public int BaseDamage { get; init; }
+    public float BaseDamage { get; init; }
 
     /// <summary>
     /// Final damage taken after reaction modifier applied
     /// </summary>
-    public int FinalDamage { get; init; }
+    public float FinalDamage { get; init; }
 
     /// <summary>
     /// Counter damage dealt to attacker (if reaction enabled counter)
     /// </summary>
-    public int? CounterDamage { get; init; }
+    public float? CounterDamage { get; init; }
 
     /// <summary>
     /// Stamina gained from skilled defense (0-1 normalized)

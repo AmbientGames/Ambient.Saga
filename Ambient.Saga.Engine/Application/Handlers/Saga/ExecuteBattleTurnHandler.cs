@@ -83,6 +83,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             var enemyMind = new CombatAI(_world, randomSeed);
 
             // Reconstruct battle engine
+            // Note: tells are NOT registered during replay — they're only used for the live enemy turn
             var battleEngine = new BattleEngine(playerCombatant, enemyCombatant, enemyMind, _world, randomSeed);
             battleEngine.SetPlayerAffinities(playerAffinityRefs);
 
@@ -255,8 +256,44 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 // Execute enemy's response turn (if battle hasn't ended)
                 if (battleEngine.State == BattleState.EnemyTurn)
                 {
+                    // Register tells for the live enemy turn (not during replay)
+                    battleEngine.RegisterTellsFromWorld(_world);
+
                     System.Diagnostics.Debug.WriteLine("[ExecuteBattleTurn] Executing enemy response");
                     var enemyEvent = battleEngine.ExecuteEnemyTurn();
+
+                    if (battleEngine.State == BattleState.AwaitingReaction && battleEngine.PendingAttack != null)
+                    {
+                        // Enemy attack produced a tell — return tell info, no damage transaction yet
+                        var pending = battleEngine.PendingAttack;
+                        System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Enemy attack tell: {pending.Tell.TellText}");
+
+                        // Persist player turn transactions so far, then return tell info
+                        var tellSeqNumbers = await _instanceRepository.AddTransactionsAsync(instance.InstanceId, newTransactions, ct);
+                        var tellCommitted = await _instanceRepository.CommitTransactionsAsync(
+                            instance.InstanceId,
+                            newTransactions.Select(t => t.TransactionId).ToList(),
+                            ct);
+
+                        if (!tellCommitted)
+                            return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
+
+                        await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+
+                        return SagaCommandResult.Success(
+                            instance.InstanceId,
+                            newTransactions.Select(t => t.TransactionId).ToList(),
+                            tellSeqNumbers.First(),
+                            new Dictionary<string, object>
+                            {
+                                ["AwaitingReaction"] = true,
+                                ["TellRefName"] = pending.Tell.RefName,
+                                ["TellText"] = pending.Tell.TellText,
+                                ["ReactionWindowMs"] = pending.Tell.ReactionWindowMs,
+                                ["BaseDamage"] = pending.BaseDamage,
+                                ["OptimalDefense"] = pending.Tell.OptimalDefense.ToString()
+                            });
+                    }
 
                     turnNumber++;
                     var enemyAfterAction = battleEngine.GetEnemy();

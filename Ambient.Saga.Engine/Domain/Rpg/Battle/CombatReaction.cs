@@ -146,7 +146,7 @@ public class PendingAttack
     public required Combatant Attacker { get; init; }
     public required Combatant Target { get; init; }
     public required AttackTell Tell { get; init; }
-    public required int BaseDamage { get; init; }
+    public required float BaseDamage { get; init; }
     public DateTime TellShownAt { get; init; } = DateTime.UtcNow;
 
     /// <summary>
@@ -170,9 +170,9 @@ public class ReactionResult
 {
     public required PlayerDefenseType ChosenReaction { get; init; }
     public required DefenseOutcome Outcome { get; init; }
-    public required int FinalDamage { get; init; }
+    public required float FinalDamage { get; init; }
     public required string NarrativeText { get; init; }
-    public int? CounterDamage { get; init; }
+    public float? CounterDamage { get; init; }
     /// <summary>Effects applied from skilled defense (if any)</summary>
     public Attributes? EffectsApplied { get; init; }
     /// <summary>Actual stamina gained from defense effects (may be less if already full)</summary>

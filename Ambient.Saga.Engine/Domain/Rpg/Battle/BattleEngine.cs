@@ -177,7 +177,36 @@ public class BattleEngine
         var snapshot = CreateBattleSnapshot(forEnemy: true);
         var decision = _enemyMind.DecideTurn(snapshot);
 
-        // Execute the AI's decision against selected target
+        // If the AI chose an attack and tells are available, enter the reaction phase
+        // instead of dealing damage immediately — gives the player a chance to react.
+        if (_attackTells.Count > 0 && IsAttackAction(decision.ActionType))
+        {
+            var tell = GetRandomTellForEnemy(_enemy);
+            if (tell != null)
+            {
+                // Calculate what the damage WOULD be without defense
+                var baseDamage = CalculateBaseDamageForTell(_enemy, target, decision);
+
+                if (BeginAttackWithTell(_enemy, target, tell.RefName, baseDamage))
+                {
+                    // Battle is now in AwaitingReaction state — return the tell event
+                    return new CombatEvent
+                    {
+                        ActionType = BattleActionType.Attack,
+                        ActorName = _enemy.DisplayName,
+                        TargetName = target.DisplayName,
+                        Damage = baseDamage,
+                        Success = true,
+                        IsDefending = true, // Signals awaiting reaction
+                        Message = tell.TellText,
+                        TurnNumber = _turnNumber,
+                        IsPlayerTurn = false
+                    };
+                }
+            }
+        }
+
+        // No tells available or tell failed — execute directly as before
         var action = ExecuteDecision(_enemy, target, decision);
         RecordAction(action);
 
@@ -843,14 +872,13 @@ public class BattleEngine
             CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({vulnerabilityMultiplier:F1}x damage taken)");
         }
 
-        // Apply damage
-        defender.Health = Math.Max(0, defender.Health - totalDamage);
-
-        // Log affinity bonus if applicable
+        // Apply affinity multiplier to total damage
         var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
             weapon.AffinityRef ?? attacker.AffinityRef,
             defender.AffinityRef,
             _world);
+
+        totalDamage *= affinityMultiplier;
 
         if (affinityMultiplier > 1.0f)
         {
@@ -860,6 +888,9 @@ public class BattleEngine
         {
             CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
         }
+
+        // Apply damage
+        defender.Health = Math.Max(0, defender.Health - totalDamage);
 
         CombatLog.Add($"{attacker.DisplayName} attacks with {weapon.DisplayName} for {totalDamage * 100:F1}% damage!");
         CombatLog.Add($"{defender.DisplayName} HP: {defender.HealthPercent:F1}%");
@@ -1046,14 +1077,13 @@ public class BattleEngine
             CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({spellVulnerabilityMultiplier:F1}x damage taken)");
         }
 
-        // Apply damage
-        defender.Health = Math.Max(0, defender.Health - totalDamage);
-
-        // Log affinity bonus if applicable
+        // Apply affinity multiplier to total damage
         var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
             spell.AffinityRef ?? attacker.AffinityRef,
             defender.AffinityRef,
             _world);
+
+        totalDamage *= affinityMultiplier;
 
         if (affinityMultiplier > 1.0f)
         {
@@ -1063,6 +1093,9 @@ public class BattleEngine
         {
             CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
         }
+
+        // Apply damage
+        defender.Health = Math.Max(0, defender.Health - totalDamage);
 
         CombatLog.Add($"{attacker.DisplayName} casts {spell.DisplayName} for {totalDamage * 100:F1}% damage!");
         if (totalCost > 0)
@@ -1971,6 +2004,35 @@ public class BattleEngine
         return true;
     }
 
+    /// <summary>
+    /// Whether the action type is an attack that should trigger tells.
+    /// </summary>
+    private static bool IsAttackAction(ActionType actionType) =>
+        actionType is ActionType.Attack;
+
+    /// <summary>
+    /// Calculate the base damage an enemy attack WOULD deal without any defense modifiers.
+    /// Used by the tell system so the player knows the stakes before choosing a reaction.
+    /// </summary>
+    private float CalculateBaseDamageForTell(Combatant attacker, Combatant target, CombatAction decision)
+    {
+        // Use weapon attack formula if the AI chose a weapon
+        if (!string.IsNullOrEmpty(decision.Parameter) && _world != null)
+        {
+            var weapon = _world.TryGetEquipmentByRefName(decision.Parameter);
+            if (weapon != null)
+            {
+                var effectiveStrength = GetEffectiveStrength(attacker);
+                return effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
+            }
+        }
+
+        // Fallback: basic attack formula
+        var strength = GetEffectiveStrength(attacker);
+        var defense = GetEffectiveDefense(target);
+        return Math.Max(0.01f, strength - defense / 2f);
+    }
+
     #region Combat Reaction System (Expedition 33-inspired)
 
     /// <summary>
@@ -1983,6 +2045,24 @@ public class BattleEngine
     }
 
     /// <summary>
+    /// Register all attack tells from world data.
+    /// Call after construction but before StartBattle to enable the reaction system.
+    /// </summary>
+    public void RegisterTellsFromWorld(IWorld world)
+    {
+        if (world?.Gameplay?.AttackTells == null)
+            return;
+
+        foreach (var tell in world.Gameplay.AttackTells)
+        {
+            if (!string.IsNullOrEmpty(tell.RefName))
+            {
+                RegisterAttackTell(CombatReactionMapper.FromDomain(tell));
+            }
+        }
+    }
+
+    /// <summary>
     /// Begin an attack with a telegraph, entering the reaction phase.
     /// Call this instead of directly executing an attack to enable player reactions.
     /// </summary>
@@ -1991,7 +2071,7 @@ public class BattleEngine
     /// <param name="tellRefName">Reference name of the attack tell to use</param>
     /// <param name="baseDamage">The base damage before reaction modifiers</param>
     /// <returns>True if reaction phase started, false if tell not found or invalid state</returns>
-    public bool BeginAttackWithTell(Combatant attacker, Combatant target, string tellRefName, int baseDamage)
+    public bool BeginAttackWithTell(Combatant attacker, Combatant target, string tellRefName, float baseDamage)
     {
         if (!_attackTells.TryGetValue(tellRefName, out var tell))
         {
@@ -2038,10 +2118,10 @@ public class BattleEngine
         }
 
         var outcome = pending.Tell.GetOutcome(reaction);
-        var finalDamage = (int)Math.Round(pending.BaseDamage * outcome.DamageMultiplier);
+        var finalDamage = pending.BaseDamage * outcome.DamageMultiplier;
 
         // Apply damage
-        pending.Target.Health -= finalDamage;
+        pending.Target.Health = Math.Max(0, pending.Target.Health - finalDamage);
 
         // Build narrative
         var narrativeText = outcome.ResponseText;
@@ -2049,23 +2129,23 @@ public class BattleEngine
         {
             narrativeText = reaction switch
             {
-                PlayerDefenseType.Dodge => finalDamage == 0 ? "You evade the attack!" : $"You dodge but take {finalDamage} damage.",
-                PlayerDefenseType.Block => $"You block, taking {finalDamage} damage.",
-                PlayerDefenseType.Parry => outcome.EnablesCounter ? "You parry and prepare to counter!" : $"You deflect, taking {finalDamage} damage.",
-                PlayerDefenseType.Brace => $"You brace for impact, taking {finalDamage} damage.",
-                _ => $"You take {finalDamage} damage!"
+                PlayerDefenseType.Dodge => finalDamage == 0 ? "You evade the attack!" : $"You dodge but take {finalDamage * 100:F1}% damage.",
+                PlayerDefenseType.Block => $"You block, taking {finalDamage * 100:F1}% damage.",
+                PlayerDefenseType.Parry => outcome.EnablesCounter ? "You parry and prepare to counter!" : $"You deflect, taking {finalDamage * 100:F1}% damage.",
+                PlayerDefenseType.Brace => $"You brace for impact, taking {finalDamage * 100:F1}% damage.",
+                _ => $"You take {finalDamage * 100:F1}% damage!"
             };
         }
 
         CombatLog.Add($"{narrativeText}");
 
         // Handle counter-attack
-        int? counterDamage = null;
+        float? counterDamage = null;
         if (outcome.EnablesCounter && pending.Target.IsAlive)
         {
-            counterDamage = (int)Math.Round(pending.BaseDamage * outcome.CounterMultiplier);
-            pending.Attacker.Health -= counterDamage.Value;
-            CombatLog.Add($"Counter-attack hits {pending.Attacker.DisplayName} for {counterDamage} damage!");
+            counterDamage = pending.BaseDamage * outcome.CounterMultiplier;
+            pending.Attacker.Health = Math.Max(0, pending.Attacker.Health - counterDamage.Value);
+            CombatLog.Add($"Counter-attack hits {pending.Attacker.DisplayName} for {counterDamage.Value * 100:F1}% damage!");
         }
 
         // Apply defense effects (e.g., stamina recovery from skilled defense)

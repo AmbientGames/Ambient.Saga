@@ -31,7 +31,7 @@ public class BattleModal
     private bool _inReactionPhase = false;
     private string? _currentTellText = null;
     private string? _currentTellRefName = null;  // Reference name of the attack tell
-    private int _currentBaseDamage = 0;  // Base damage from the pending attack
+    private float _currentBaseDamage = 0;  // Base damage from the pending attack
     private float _reactionTimeRemaining = 0f;
     private float _reactionTimeTotal = 0f;  // Total window time (from tell or default)
     private const float DEFAULT_REACTION_WINDOW_SECONDS = 5.0f;  // Fallback if tell doesn't specify
@@ -540,8 +540,8 @@ public class BattleModal
         System.Diagnostics.Debug.WriteLine($"[BattleModal] Resolving reaction: {reaction}");
 
         // Default values if BattleEngine not available
-        int finalDamage = _currentBaseDamage;
-        int? counterDamage = null;
+        float finalDamage = _currentBaseDamage;
+        float? counterDamage = null;
         float staminaGained = 0f;
         bool wasOptimal = false;
         bool timedOut = reaction == PlayerDefenseType.None && _reactionTimeRemaining <= 0;
