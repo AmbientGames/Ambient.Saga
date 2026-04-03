@@ -365,13 +365,31 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     public Task RollbackTransactionsAsync(Guid instanceId, List<Guid> transactionIds, CancellationToken ct = default)
     {
-        foreach (var transactionId in transactionIds)
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
         {
-            var record = _transactions.FindOne(x => x.TransactionId == transactionId);
-            if (record != null && record.InstanceId == instanceId)
+            _database.BeginTrans();
+
+            try
             {
-                record.Status = TransactionStatus.Rejected;
-                _transactions.Update(record);
+                foreach (var transactionId in transactionIds)
+                {
+                    var record = _transactions.FindOne(x => x.TransactionId == transactionId);
+                    if (record != null && record.InstanceId == instanceId)
+                    {
+                        record.Status = TransactionStatus.Rejected;
+                        _transactions.Update(record);
+                    }
+                }
+
+                _database.Commit();
+            }
+            catch
+            {
+                _database.Rollback();
+                throw;
             }
         }
 
