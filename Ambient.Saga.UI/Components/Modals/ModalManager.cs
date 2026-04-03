@@ -37,6 +37,12 @@ public class ModalManager
     public event Action? QuitRequested;
 
     /// <summary>
+    /// Fired when the player is defeated in a saga battle.
+    /// Games subscribe to handle defeat differently from environmental death.
+    /// </summary>
+    public event Action? BattleDefeatRequested;
+
+    /// <summary>
     /// Requests the application to quit.
     /// Called when the user needs to exit (e.g., cancels mandatory archetype selection).
     /// </summary>
@@ -84,7 +90,9 @@ public class ModalManager
 
         // Complex modals (need ModalManager reference)
         _modalRegistry.Register(new Adapters.DialogueModalAdapter(this));
-        _modalRegistry.Register(new Adapters.BattleModalAdapter(this));
+        var battleAdapter = new Adapters.BattleModalAdapter(this);
+        battleAdapter.PlayerDefeated += () => BattleDefeatRequested?.Invoke();
+        _modalRegistry.Register(battleAdapter);
 
         // Quest modals (need IMediator)
         _modalRegistry.Register(new Adapters.QuestModalAdapter(_mediator));

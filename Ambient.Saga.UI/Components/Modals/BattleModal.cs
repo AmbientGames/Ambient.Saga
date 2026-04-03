@@ -19,6 +19,12 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class BattleModal
 {
+    /// <summary>
+    /// Fired when the player is defeated in battle. Games subscribe to handle defeat
+    /// differently from environmental death (e.g. teleport home, keep inventory).
+    /// </summary>
+    public event Action? PlayerDefeated;
+
     private BattleStateResult? _currentState;
     private bool _isInitialized = false;
     private Guid _lastCharacterInstanceId;
@@ -857,6 +863,10 @@ public class BattleModal
 
         if (ImGui.Button("Close", new Vector2(buttonWidth, endButtonHeight)))
         {
+            if (_currentState?.PlayerVictory == false)
+            {
+                PlayerDefeated?.Invoke();
+            }
             modalManager.CloseModal("BossBattle");
         }
     }
