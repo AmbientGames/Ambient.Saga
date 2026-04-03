@@ -318,7 +318,7 @@ public partial class SagaMainViewModel : ObservableObject
     // Background processing for interaction checks (runs off the UI thread)
     private CancellationTokenSource? _backgroundProcessingCts;
     private Task? _backgroundProcessingTask;
-    private const int InteractionCheckIntervalMs = 5000;
+    private const int InteractionCheckIntervalMs = 1000;
     private readonly Dictionary<string, long> _lastKnownSequences = new();
     private readonly Dictionary<string, List<CharacterState>> _cachedCharacterStates = new();
 
