@@ -815,6 +815,24 @@ public class BattleEngine
         var effectiveStrength = GetEffectiveStrength(attacker);
         var baseDamage = effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
 
+        // Apply affinity multiplier to base damage only
+        // (effect damage already includes affinity from EffectApplier)
+        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
+            weapon.AffinityRef ?? attacker.AffinityRef,
+            defender.AffinityRef,
+            _world);
+
+        baseDamage *= affinityMultiplier;
+
+        if (affinityMultiplier > 1.0f)
+        {
+            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
+        }
+        else if (affinityMultiplier < 1.0f)
+        {
+            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
+        }
+
         // Critical hit calculation - base chance from speed + weapon CriticalHitBonus
         var effectiveSpeed = GetEffectiveSpeed(attacker);
         var baseCritChance = Math.Min(0.3f, effectiveSpeed / 100f);
@@ -870,23 +888,6 @@ public class BattleEngine
         {
             totalDamage *= vulnerabilityMultiplier;
             CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({vulnerabilityMultiplier:F1}x damage taken)");
-        }
-
-        // Apply affinity multiplier to total damage
-        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
-            weapon.AffinityRef ?? attacker.AffinityRef,
-            defender.AffinityRef,
-            _world);
-
-        totalDamage *= affinityMultiplier;
-
-        if (affinityMultiplier > 1.0f)
-        {
-            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
-        }
-        else if (affinityMultiplier < 1.0f)
-        {
-            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
         }
 
         // Apply damage
@@ -1005,6 +1006,24 @@ public class BattleEngine
         var effectiveMagic = GetEffectiveMagic(attacker);
         var baseDamage = effectiveMagic * SPELL_DAMAGE_MULTIPLIER;
 
+        // Apply affinity multiplier to base damage only
+        // (effect damage already includes affinity from EffectApplier)
+        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
+            spell.AffinityRef ?? attacker.AffinityRef,
+            defender.AffinityRef,
+            _world);
+
+        baseDamage *= affinityMultiplier;
+
+        if (affinityMultiplier > 1.0f)
+        {
+            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
+        }
+        else if (affinityMultiplier < 1.0f)
+        {
+            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
+        }
+
         // Apply spell effects using EffectApplier
         // Use spell's UseType to determine if offensive (damage) or defensive (healing/buff)
         var effects = EffectApplier.ApplyEffects(
@@ -1075,23 +1094,6 @@ public class BattleEngine
         {
             totalDamage *= spellVulnerabilityMultiplier;
             CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({spellVulnerabilityMultiplier:F1}x damage taken)");
-        }
-
-        // Apply affinity multiplier to total damage
-        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
-            spell.AffinityRef ?? attacker.AffinityRef,
-            defender.AffinityRef,
-            _world);
-
-        totalDamage *= affinityMultiplier;
-
-        if (affinityMultiplier > 1.0f)
-        {
-            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
-        }
-        else if (affinityMultiplier < 1.0f)
-        {
-            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
         }
 
         // Apply damage
