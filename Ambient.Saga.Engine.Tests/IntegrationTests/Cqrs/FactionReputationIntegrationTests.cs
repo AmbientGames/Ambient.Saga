@@ -67,7 +67,7 @@ public class FactionReputationIntegrationTests : IDisposable
             Data = new Dictionary<string, string>
             {
                 ["FactionRef"] = "KNIGHTS_OF_VALOR",
-                ["ReputationChange"] = "100"
+                ["Amount"] = "100"
             }
         };
 
@@ -362,7 +362,7 @@ public class FactionReputationIntegrationTests : IDisposable
             Data = new Dictionary<string, string>
             {
                 ["FactionRef"] = "TEST_FACTION",
-                ["ReputationChange"] = "1000"
+                ["Amount"] = "1000"
             }
         });
 
@@ -377,7 +377,7 @@ public class FactionReputationIntegrationTests : IDisposable
             Data = new Dictionary<string, string>
             {
                 ["FactionRef"] = "TEST_FACTION",
-                ["ReputationChange"] = "500"
+                ["Amount"] = "500"
             }
         });
 
@@ -392,7 +392,7 @@ public class FactionReputationIntegrationTests : IDisposable
             Data = new Dictionary<string, string>
             {
                 ["FactionRef"] = "TEST_FACTION",
-                ["ReputationChange"] = "-300"
+                ["Amount"] = "-300"
             }
         });
 

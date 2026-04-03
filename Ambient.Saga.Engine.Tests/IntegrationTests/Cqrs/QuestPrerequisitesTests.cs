@@ -744,7 +744,7 @@ public class QuestPrerequisitesTests : IDisposable
             Data = new Dictionary<string, string>
             {
                 ["FactionRef"] = "ADVENTURERS_GUILD",
-                ["ReputationChange"] = "15000" // Well above Honored threshold (9000)
+                ["Amount"] = "15000" // Well above Honored threshold (9000)
             }
         };
         var transactions = new List<SagaTransaction> { reputationTx };
@@ -785,7 +785,7 @@ public class QuestPrerequisitesTests : IDisposable
             Data = new Dictionary<string, string>
             {
                 ["FactionRef"] = "ADVENTURERS_GUILD",
-                ["ReputationChange"] = "5000" // Only Friendly, not Honored
+                ["Amount"] = "5000" // Only Friendly, not Honored
             }
         };
         var transactions = new List<SagaTransaction> { reputationTx };
