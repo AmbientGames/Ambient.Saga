@@ -942,9 +942,12 @@ public class SagaStateMachine
             }
             return false;
         }
-        catch
+        catch (Exception ex)
         {
             // Snapshot deserialization failed — Replay() will fall back to full replay
+            System.Diagnostics.Debug.WriteLine(
+                $"[SagaStateMachine] Snapshot deserialization failed for transaction {snapshotTx.TransactionId} " +
+                $"(seq {snapshotTx.SequenceNumber}): {ex.Message}");
             return false;
         }
     }
