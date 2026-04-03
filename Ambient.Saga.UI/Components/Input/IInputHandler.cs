@@ -76,4 +76,9 @@ public class InputContext
     /// Gets the ImGui IO for checking key states.
     /// </summary>
     public ImGuiIOPtr IO => ImGui.GetIO();
+
+    /// <summary>
+    /// Custom panels registered by the game. The input handler processes these alongside built-in keys.
+    /// </summary>
+    public IReadOnlyList<CustomPanelRegistration> CustomPanels { get; init; } = Array.Empty<CustomPanelRegistration>();
 }

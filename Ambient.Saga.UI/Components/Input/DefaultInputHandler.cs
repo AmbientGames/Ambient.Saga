@@ -43,6 +43,9 @@ public class DefaultInputHandler : IInputHandler
     // Hotbar key states (1-9)
     private readonly bool[] _hotbarKeysWerePressed = new bool[9];
 
+    // Custom panel key states (tracked by ImGuiKey value)
+    private readonly Dictionary<ImGuiKey, bool> _customKeyStates = new();
+
     /// <summary>
     /// Event raised when ESC is pressed with no panels open.
     /// Subscribe to this to show your game's pause menu.
@@ -157,6 +160,25 @@ public class DefaultInputHandler : IInputHandler
 
         // Hotbar keys 1-9 (slot indices 0-8)
         ProcessHotbarKeys();
+
+        // Custom panel keys registered by the game
+        ProcessCustomPanelKeys(context);
+    }
+
+    private void ProcessCustomPanelKeys(InputContext context)
+    {
+        foreach (var panel in context.CustomPanels)
+        {
+            var keyDown = ImGui.IsKeyDown(panel.Key);
+            _customKeyStates.TryGetValue(panel.Key, out var wasPressed);
+
+            if (keyDown && !wasPressed)
+            {
+                panel.OnToggle();
+            }
+
+            _customKeyStates[panel.Key] = keyDown;
+        }
     }
 
     private void ProcessHotbarKeys()

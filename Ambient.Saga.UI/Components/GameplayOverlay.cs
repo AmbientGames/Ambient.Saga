@@ -101,6 +101,9 @@ public class GameplayOverlay
     // Message overlay for floating toast-style notifications
     private readonly MessageOverlay _messageOverlay;
 
+    // Custom panels registered by the game
+    private readonly List<CustomPanelRegistration> _customPanels = new();
+
     // Hotbar service for slot activation
     private HotbarService? _hotbarService;
 
@@ -203,11 +206,32 @@ public class GameplayOverlay
     }
 
     /// <summary>
-    /// Close all panels.
+    /// Close all panels (including custom panels).
     /// </summary>
     public void CloseAllPanels()
     {
         _activePanel = ActivePanel.None;
+    }
+
+    /// <summary>
+    /// Registers a custom panel key binding. The key hint appears in the HUD alongside M/C/I/J.
+    /// The game provides the toggle callback and active state check.
+    /// </summary>
+    /// <param name="key">ImGui key that activates this panel</param>
+    /// <param name="keyLabel">Display label for the key hint (e.g. "F")</param>
+    /// <param name="onToggle">Called when the key is pressed</param>
+    /// <param name="isActive">Returns whether this panel is currently active (for highlighting)</param>
+    public void RegisterCustomPanel(ImGuiKey key, string keyLabel, Action onToggle, Func<bool> isActive)
+    {
+        _customPanels.Add(new CustomPanelRegistration
+        {
+            Key = key,
+            KeyLabel = keyLabel,
+            OnToggle = onToggle,
+            IsActive = isActive
+        });
+
+        _hudRenderer.SetCustomPanels(_customPanels);
     }
 
     /// <summary>
@@ -234,7 +258,8 @@ public class GameplayOverlay
             ActivePanel = _activePanel,
             HasMap = viewModel.HeightMapImage != null,
             TogglePanelAction = TogglePanel,
-            CloseAllPanelsAction = CloseAllPanels
+            CloseAllPanelsAction = CloseAllPanels,
+            CustomPanels = _customPanels
         };
         _inputHandler.ProcessInput(inputContext);
 
