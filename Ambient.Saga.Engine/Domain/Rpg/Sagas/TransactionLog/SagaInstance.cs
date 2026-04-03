@@ -84,6 +84,18 @@ public class SagaInstance
     public long GetNextSequenceNumber() => Transactions.Any() ? Transactions.Max(t => t.SequenceNumber) + 1 : 1;
 
     /// <summary>
+    /// Cached replay state. Invalidated when transactions are added.
+    /// </summary>
+    [LiteDB.BsonIgnore]
+    public SagaState? CachedState { get; set; }
+
+    /// <summary>
+    /// True when the transaction log has changed since the last replay.
+    /// </summary>
+    [LiteDB.BsonIgnore]
+    public bool IsDirty { get; set; } = true;
+
+    /// <summary>
     /// Adds a new transaction to the log.
     /// </summary>
     public void AddTransaction(SagaTransaction transaction)
@@ -95,6 +107,7 @@ public class SagaInstance
 
         Transactions.Add(transaction);
         LastModifiedAt = DateTime.UtcNow;
+        IsDirty = true;
     }
 
     /// <summary>

@@ -14,6 +14,7 @@ using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain.Services;
 using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Models;
@@ -296,6 +297,18 @@ public partial class SagaMainViewModel : ObservableObject
         OwnerRevenueEarned?.Invoke(ownerAvatarId, revenue);
     }
 
+    /// <summary>
+    /// Invalidates the cached character states for a saga arc, forcing a re-query on the next check.
+    /// Call after transactions (trade, combat, dialogue) or server sync.
+    /// </summary>
+    public void InvalidateCharacterCache(string? sagaRef = null)
+    {
+        if (sagaRef != null)
+            _cachedCharacterStates.Remove(sagaRef);
+        else
+            _cachedCharacterStates.Clear();
+    }
+
     private ProximityTriggerViewModel? _previousTrigger;
     private IDisposable? _worldDatabase;
     private IWorldStateRepository _worldRepository;
@@ -306,6 +319,8 @@ public partial class SagaMainViewModel : ObservableObject
     private CancellationTokenSource? _backgroundProcessingCts;
     private Task? _backgroundProcessingTask;
     private const int InteractionCheckIntervalMs = 5000;
+    private readonly Dictionary<string, long> _lastKnownSequences = new();
+    private readonly Dictionary<string, List<CharacterState>> _cachedCharacterStates = new();
 
     // Track current entity being looted (for recording triggers)
     private string? _currentEntityRef;
@@ -505,96 +520,75 @@ public partial class SagaMainViewModel : ObservableObject
 
             // Query spawned characters for ALL nearby Sagas (not just visible ones)
             // Characters should always be visible regardless of saga visibility
+            // Remove cached entries for arcs no longer nearby
+            var staleRefs = _cachedCharacterStates.Keys.Where(k => !nearbySagaRefs.Contains(k)).ToList();
+            foreach (var staleRef in staleRefs)
+                _cachedCharacterStates.Remove(staleRef);
+
             foreach (var sagaRef in nearbySagaRefs)
             {
                 // Get Saga template for center coordinates
                 if (!CurrentWorld.SagaArcLookup.TryGetValue(sagaRef, out var sagaTemplate))
                     continue;
 
-                var query = new GetSpawnedCharactersQuery
+                List<CharacterState> characterStates;
+
+                // Use cached character states if available (skip expensive replay)
+                if (_cachedCharacterStates.TryGetValue(sagaRef, out var cached))
                 {
-                    AvatarId = PlayerAvatar.AvatarId,
-                    SagaRef = sagaRef,
-                    SpawnedOnly = true,  // Only show spawned (not despawned)
-                    AliveOnly = false    // Show both alive and dead
-                };
+                    characterStates = cached;
+                }
+                else
+                {
+                    var query = new GetSpawnedCharactersQuery
+                    {
+                        AvatarId = PlayerAvatar.AvatarId,
+                        SagaRef = sagaRef,
+                        SpawnedOnly = true,
+                        AliveOnly = false
+                    };
 
-                var characterStates = await _mediator.Send(query);
+                    characterStates = await _mediator.Send(query);
+                    _cachedCharacterStates[sagaRef] = characterStates;
+                }
 
-                //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Saga '{sagaVm.RefName}' returned {characterStates.Count} characters");
-
-                // Add ALL spawned characters to render collection
+                // Add spawned characters to render collection
                 foreach (var characterState in characterStates)
                 {
-                    //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Processing character '{characterState.CharacterRef}' at Saga-relative ({characterState.CurrentLongitudeX:F6}, {characterState.CurrentLatitudeZ:F6})");
-
-                    // Get character template for display name
                     if (!CurrentWorld.CharactersLookup.TryGetValue(characterState.CharacterRef, out var characterTemplate))
-                    {
-                        System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Character template '{characterState.CharacterRef}' not found in lookup");
                         continue;
-                    }
 
-                    // Convert from Saga-relative coordinates (X/Z in meters) to world GPS coordinates
                     var worldLon = CoordinateConverter.SagaRelativeXToLongitude(
-                        characterState.CurrentLongitudeX,
-                        sagaTemplate.Longitude,
-                        CurrentWorld);
+                        characterState.CurrentLongitudeX, sagaTemplate.Longitude, CurrentWorld);
                     var worldLat = CoordinateConverter.SagaRelativeZToLatitude(
-                        characterState.CurrentLatitudeZ,
-                        sagaTemplate.Latitude,
-                        CurrentWorld);
-
-                    //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Converted to world GPS: ({worldLon:F6}, {worldLat:F6})");
-
-                    // Convert GPS to pixel coordinates (for map display)
-                    var pixelX = CoordinateConverter.HeightMapLongitudeToPixelX(
-                        worldLon,
-                        CurrentWorld.HeightMapMetadata);
-                    var pixelY = CoordinateConverter.HeightMapLatitudeToPixelY(
-                        worldLat,
-                        CurrentWorld.HeightMapMetadata);
-
-                    // Convert GPS to model/world coordinates (for 3D game engines)
-                    var modelX = CoordinateConverter.LongitudeToModelX(worldLon, CurrentWorld);
-                    var modelZ = CoordinateConverter.LatitudeToModelZ(worldLat, CurrentWorld);
-                    var modelY = characterState.CurrentY; // Y elevation from character state
-
-                    //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Character '{characterTemplate.DisplayName}' pixel coords: ({pixelX:F0}, {pixelY:F0})");
+                        characterState.CurrentLatitudeZ, sagaTemplate.Latitude, CurrentWorld);
 
                     var characterVm = new CharacterViewModel
                     {
                         CharacterInstanceId = characterState.CharacterInstanceId,
                         CharacterRef = characterState.CharacterRef,
                         DisplayName = characterTemplate.DisplayName,
-                        CharacterType = "Character", // Could determine from context
-                        // Map display coordinates
-                        PixelX = pixelX,
-                        PixelY = pixelY,
-                        // GPS world coordinates
+                        CharacterType = "Character",
+                        PixelX = CoordinateConverter.HeightMapLongitudeToPixelX(worldLon, CurrentWorld.HeightMapMetadata),
+                        PixelY = CoordinateConverter.HeightMapLatitudeToPixelY(worldLat, CurrentWorld.HeightMapMetadata),
                         Latitude = worldLat,
                         Longitude = worldLon,
                         Elevation = characterState.CurrentY,
-                        // 3D model coordinates
-                        ModelX = modelX,
-                        ModelY = modelY,
-                        ModelZ = modelZ,
-                        // Character state
+                        ModelX = CoordinateConverter.LongitudeToModelX(worldLon, CurrentWorld),
+                        ModelY = characterState.CurrentY,
+                        ModelZ = CoordinateConverter.LatitudeToModelZ(worldLat, CurrentWorld),
                         IsAlive = characterState.IsAlive,
-                        CanDialogue = true, // Sandbox - assume all interactions available
+                        CanDialogue = true,
                         CanTrade = true,
                         CanAttack = characterState.IsAlive,
                         SagaRef = sagaRef
                     };
 
-                    // Color based on alive/dead
                     characterVm.MarkerColor = characterState.IsAlive
-                        ? new System.Numerics.Vector4(1f, 0.65f, 0f, 1f) // Orange
-                        : new System.Numerics.Vector4(0.5f, 0.5f, 0.5f, 1f); // Gray
+                        ? new System.Numerics.Vector4(1f, 0.65f, 0f, 1f)
+                        : new System.Numerics.Vector4(0.5f, 0.5f, 0.5f, 1f);
 
                     Characters.Add(characterVm);
-
-                    //System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Added '{characterTemplate.DisplayName}' to collection - Total: {Characters.Count}");
                 }
             }
 

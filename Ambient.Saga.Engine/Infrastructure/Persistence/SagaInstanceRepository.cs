@@ -25,6 +25,9 @@ public class SagaInstanceRepository : ISagaInstanceRepository
     // Per-instance locks to avoid global blocking - different sagas don't block each other
     private readonly ConcurrentDictionary<string, object> _instanceLocks = new();
 
+    // In-memory instance cache — preserves CachedState/IsDirty across calls
+    private readonly ConcurrentDictionary<string, SagaInstance> _instanceCache = new();
+
     public SagaInstanceRepository(ILiteDatabase database)
     {
         _database = database ?? throw new ArgumentNullException(nameof(database));
@@ -59,22 +62,38 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
         lock (instanceLock)
         {
-            // Try to find existing instance
+            // Return cached instance if available and clean (no new transactions to load)
+            if (_instanceCache.TryGetValue(lockKey, out var cachedInstance) && !cachedInstance.IsDirty)
+                return Task.FromResult(cachedInstance);
+
+            // Try to find existing instance in DB
             var instance = _instances
                 .Find(x => x.OwnerAvatarId == avatarId && x.SagaRef == sagaRef)
                 .FirstOrDefault();
 
             if (instance != null)
             {
+                // Preserve cached state if we already have this instance
+                if (_instanceCache.TryGetValue(lockKey, out var existing) && existing.InstanceId == instance.InstanceId)
+                {
+                    instance.CachedState = existing.CachedState;
+                    instance.IsDirty = existing.IsDirty;
+                }
+
                 // Load transactions for this instance
                 var transactionRecords = _transactions
                     .Find(x => x.InstanceId == instance.InstanceId)
                     .OrderBy(x => x.SequenceNumber)
                     .ToList();
 
-                // CRITICAL FIX: Thread-safe transaction loading - replace list instead of Clear+AddRange
-                // This prevents concurrent modification exceptions if another thread is reading transactions
-                instance.Transactions = transactionRecords.Select(r => r.ToTransaction()).ToList();
+                var newTransactions = transactionRecords.Select(r => r.ToTransaction()).ToList();
+
+                // Mark dirty only if transaction count changed
+                if (instance.CachedState != null && newTransactions.Count != instance.Transactions.Count)
+                    instance.IsDirty = true;
+
+                instance.Transactions = newTransactions;
+                _instanceCache[lockKey] = instance;
 
                 return Task.FromResult(instance);
             }

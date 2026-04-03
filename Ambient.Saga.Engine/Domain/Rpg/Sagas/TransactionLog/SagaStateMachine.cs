@@ -29,10 +29,17 @@ public class SagaStateMachine
 
     /// <summary>
     /// Replays all committed transactions to derive the current state.
+    /// Returns cached state if the transaction log hasn't changed since last replay.
     /// </summary>
     public SagaState ReplayToNow(SagaInstance instance)
     {
-        return Replay(instance.GetCommittedTransactions());
+        if (!instance.IsDirty && instance.CachedState != null)
+            return instance.CachedState;
+
+        var state = Replay(instance.GetCommittedTransactions());
+        instance.CachedState = state;
+        instance.IsDirty = false;
+        return state;
     }
 
     /// <summary>
