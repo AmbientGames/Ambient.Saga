@@ -30,6 +30,7 @@ public class ContentPathResolver : IContentPathResolver
     private readonly IGameSettings _gameSettings;
     private readonly ILogger<ContentPathResolver>? _logger;
     private readonly Dictionary<string, string> _worldPathOverrides = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, string?> _modelPathCache = new(StringComparer.OrdinalIgnoreCase);
 
     private const string DefaultPack = "default";
     private const string DefaultNamespace = "ambient_games";
@@ -85,31 +86,39 @@ public class ContentPathResolver : IContentPathResolver
     /// </summary>
     public string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
     {
-        if (category != "Waypoint" && category != "QuestHub")
-        {
-            System.Diagnostics.Debug.WriteLine($"{category}-{kind}");
-        }
+        // Cache key: resolved model path is deterministic for same category/kind/library/ns
+        var cacheKey = $"{library}|{ns}|{category}|{kind ?? ""}";
+        if (_modelPathCache.TryGetValue(cacheKey, out var cached))
+            return cached;
+
         var rng = random ?? new Random();
         string[] extensions = ["*.litematic", "*.schematic", "*.xml"];
+
+        string? result = null;
 
         // 1. Try models/{Category}/{Kind}/ first
         if (!string.IsNullOrEmpty(kind) && kind != "Default")
         {
             var kindPath = ResolveModelDirectoryPath(library, ns, category, kind);
-            var modelPath = SelectRandomModelFromDirectory(kindPath, extensions, rng);
-            if (modelPath != null)
-                return modelPath;
+            result = SelectRandomModelFromDirectory(kindPath, extensions, rng);
         }
 
         // 2. Try models/{Category}/
-        var categoryPath = ResolveModelDirectoryPath(library, ns, category);
-        var categoryModelPath = SelectRandomModelFromDirectory(categoryPath, extensions, rng);
-        if (categoryModelPath != null)
-            return categoryModelPath;
+        if (result == null)
+        {
+            var categoryPath = ResolveModelDirectoryPath(library, ns, category);
+            result = SelectRandomModelFromDirectory(categoryPath, extensions, rng);
+        }
 
         // 3. Fall back to models/Default/
-        var defaultPath = ResolveModelDirectoryPath(library, ns, "Default");
-        return SelectRandomModelFromDirectory(defaultPath, extensions, rng);
+        if (result == null)
+        {
+            var defaultPath = ResolveModelDirectoryPath(library, ns, "Default");
+            result = SelectRandomModelFromDirectory(defaultPath, extensions, rng);
+        }
+
+        _modelPathCache[cacheKey] = result;
+        return result;
     }
 
     /// <summary>
