@@ -2018,28 +2018,53 @@ public class BattleEngine
     /// </summary>
     private float CalculateBaseDamageForTell(Combatant attacker, Combatant target, CombatAction decision)
     {
+        float baseDamage;
+        string? affinityRef = attacker.AffinityRef;
+
         if (!string.IsNullOrEmpty(decision.Parameter) && _world != null)
         {
             // Use spell formula if the AI chose a spell
             if (decision.ActionType == ActionType.CastSpell)
             {
                 var effectiveMagic = GetEffectiveMagic(attacker);
-                return effectiveMagic * SPELL_DAMAGE_MULTIPLIER;
+                baseDamage = effectiveMagic * SPELL_DAMAGE_MULTIPLIER;
+                var spell = _world.GetSpellByRefName(decision.Parameter);
+                affinityRef = spell?.AffinityRef ?? attacker.AffinityRef;
             }
-
-            // Use weapon attack formula if the AI chose a weapon
-            var weapon = _world.TryGetEquipmentByRefName(decision.Parameter);
-            if (weapon != null)
+            else
             {
-                var effectiveStrength = GetEffectiveStrength(attacker);
-                return effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
+                // Use weapon attack formula if the AI chose a weapon
+                var weapon = _world.TryGetEquipmentByRefName(decision.Parameter);
+                if (weapon != null)
+                {
+                    var effectiveStrength = GetEffectiveStrength(attacker);
+                    baseDamage = effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
+                    affinityRef = weapon.AffinityRef ?? attacker.AffinityRef;
+                }
+                else
+                {
+                    // Fallback: basic attack formula
+                    var strength = GetEffectiveStrength(attacker);
+                    var defense = GetEffectiveDefense(target);
+                    baseDamage = Math.Max(0.01f, strength - defense / 2f);
+                }
             }
         }
+        else
+        {
+            // Fallback: basic attack formula
+            var strength = GetEffectiveStrength(attacker);
+            var defense = GetEffectiveDefense(target);
+            baseDamage = Math.Max(0.01f, strength - defense / 2f);
+        }
 
-        // Fallback: basic attack formula
-        var strength = GetEffectiveStrength(attacker);
-        var defense = GetEffectiveDefense(target);
-        return Math.Max(0.01f, strength - defense / 2f);
+        // Apply affinity so the preview matches actual damage
+        if (_world != null)
+        {
+            baseDamage *= EffectApplier.CalculateAffinityMultiplier(
+                affinityRef, target.AffinityRef, _world);
+        }
+        return baseDamage;
     }
 
     #region Combat Reaction System (Expedition 33-inspired)
