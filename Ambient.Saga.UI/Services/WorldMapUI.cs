@@ -157,6 +157,12 @@ public class WorldMapUI
     public bool IsAnyPanelOpen => _gameplayOverlay?.ActivePanel != ActivePanel.None;
 
     /// <summary>
+    /// Gets the gameplay overlay for registering custom panels, input handlers, etc.
+    /// Available after Initialize() is called.
+    /// </summary>
+    public GameplayOverlay? GameplayOverlay => _gameplayOverlay;
+
+    /// <summary>
     /// Fired each frame when the map panel is being rendered.
     /// Use this to update procedural map data when the map is visible.
     /// </summary>
