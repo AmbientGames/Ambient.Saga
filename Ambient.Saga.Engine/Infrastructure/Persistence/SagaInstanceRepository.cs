@@ -207,6 +207,58 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         }
     }
 
+    public Task<(List<long> SequenceNumbers, bool Committed)> AddAndCommitTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+            if (instance == null)
+                throw new InvalidOperationException($"Saga instance {instanceId} not found");
+
+            try
+            {
+                _database.BeginTrans();
+
+                try
+                {
+                    var maxSequence = _transactions
+                        .Find(x => x.InstanceId == instanceId)
+                        .Select(x => x.SequenceNumber)
+                        .DefaultIfEmpty(0)
+                        .Max();
+
+                    var sequenceNumbers = new List<long>();
+
+                    foreach (var transaction in transactions)
+                    {
+                        transaction.SequenceNumber = ++maxSequence;
+                        transaction.Status = TransactionStatus.Committed;
+                        transaction.ServerTimestamp = DateTime.UtcNow;
+
+                        var record = SagaTransactionRecord.FromTransaction(transaction, instanceId);
+                        _transactions.Insert(record);
+                        sequenceNumbers.Add(transaction.SequenceNumber);
+                    }
+
+                    _database.Commit();
+                    return Task.FromResult((sequenceNumbers, true));
+                }
+                catch
+                {
+                    _database.Rollback();
+                    throw;
+                }
+            }
+            catch
+            {
+                return Task.FromResult((new List<long>(), false));
+            }
+        }
+    }
+
     public Task<int> ImportTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
     {
         var lockKey = instanceId.ToString();

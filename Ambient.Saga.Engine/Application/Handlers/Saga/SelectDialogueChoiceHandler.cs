@@ -231,11 +231,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             }
 
             // Persist and commit
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(instance.InstanceId, newTransactions, ct);
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                newTransactions.Select(t => t.TransactionId).ToList(),
-                ct);
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
 
             if (!committed)
             {

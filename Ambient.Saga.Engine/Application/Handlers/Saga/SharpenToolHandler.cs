@@ -99,15 +99,9 @@ internal sealed class SharpenToolHandler : IRequestHandler<SharpenToolCommand, S
             instance.AddTransaction(transaction);
 
             // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -150,13 +144,9 @@ internal sealed class SharpenToolHandler : IRequestHandler<SharpenToolCommand, S
                 };
 
                 instance.AddTransaction(reversalTransaction);
-                await _instanceRepository.AddTransactionsAsync(
+                await _instanceRepository.AddAndCommitTransactionsAsync(
                     instance.InstanceId,
                     new List<SagaTransaction> { reversalTransaction },
-                    ct);
-                await _instanceRepository.CommitTransactionsAsync(
-                    instance.InstanceId,
-                    new List<Guid> { reversalTransaction.TransactionId },
                     ct);
 
                 return SagaCommandResult.Failure(instance.InstanceId,

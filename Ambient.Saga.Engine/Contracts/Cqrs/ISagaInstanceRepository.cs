@@ -35,8 +35,17 @@ public interface ISagaInstanceRepository
     Task<List<SagaTransaction>> GetTransactionsAfterSequenceAsync(Guid instanceId, long afterSequence, CancellationToken ct = default);
 
     /// <summary>
+    /// Atomically add and commit transactions in a single locked operation.
+    /// Prevents race conditions between add and commit that could allow
+    /// interleaved writes from concurrent handlers on the same instance.
+    /// Returns the assigned sequence numbers and whether the commit succeeded.
+    /// </summary>
+    Task<(List<long> SequenceNumbers, bool Committed)> AddAndCommitTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default);
+
+    /// <summary>
     /// Mark transactions as committed (optimistic concurrency).
     /// Returns true if all transactions were committed, false if conflict detected.
+    /// Prefer AddAndCommitTransactionsAsync for new code to avoid race conditions.
     /// </summary>
     Task<bool> CommitTransactionsAsync(Guid instanceId, List<Guid> transactionIds, CancellationToken ct = default);
 

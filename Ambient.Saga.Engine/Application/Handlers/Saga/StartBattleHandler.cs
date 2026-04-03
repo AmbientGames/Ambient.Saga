@@ -154,16 +154,10 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                 }
             }
 
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            // Commit all transactions
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 transactions,
-                ct);
-
-            // Commit all transactions
-            var transactionIds = transactions.Select(t => t.TransactionId).ToList();
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                transactionIds,
                 ct);
 
             if (!committed)
@@ -178,7 +172,7 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
 
             return SagaCommandResult.Success(
                 instance.InstanceId,
-                transactionIds,
+                transactions.Select(t => t.TransactionId).ToList(),
                 sequenceNumbers.First(),
                 resultData);
         }

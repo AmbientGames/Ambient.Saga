@@ -77,16 +77,10 @@ internal sealed class SpawnDevCharacterHandler : IRequestHandler<SpawnDevCharact
 
             instance.AddTransaction(spawnTransaction);
 
-            // Persist transaction
-            await _instanceRepository.AddTransactionsAsync(
+            // Persist and commit transaction
+            var (_, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { spawnTransaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { spawnTransaction.TransactionId },
                 ct);
 
             if (!committed)

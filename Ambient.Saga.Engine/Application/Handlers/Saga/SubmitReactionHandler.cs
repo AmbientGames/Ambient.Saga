@@ -100,14 +100,9 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
             instance.AddTransaction(reactionTx);
 
             // Persist and commit
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { reactionTx },
-                ct);
-
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { reactionTx.TransactionId },
                 ct);
 
             if (!committed)

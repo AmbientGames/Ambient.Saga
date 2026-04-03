@@ -84,14 +84,8 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
                 return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), instance.Transactions.Count);
             }
 
-            // Persist transactions
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(instance.InstanceId, newTransactions, ct);
-
-            // Mark as committed (optimistic concurrency)
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                newTransactions.Select(t => t.TransactionId).ToList(),
-                ct);
+            // Persist and commit transactions
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
 
             if (!committed)
             {

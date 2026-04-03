@@ -269,11 +269,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                         System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Enemy attack tell: {pending.Tell.TellText}");
 
                         // Persist player turn transactions so far, then return tell info
-                        var tellSeqNumbers = await _instanceRepository.AddTransactionsAsync(instance.InstanceId, newTransactions, ct);
-                        var tellCommitted = await _instanceRepository.CommitTransactionsAsync(
-                            instance.InstanceId,
-                            newTransactions.Select(t => t.TransactionId).ToList(),
-                            ct);
+                        var (tellSeqNumbers, tellCommitted) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
 
                         if (!tellCommitted)
                             return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
@@ -338,11 +334,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
 
             // Persist and commit
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(instance.InstanceId, newTransactions, ct);
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                newTransactions.Select(t => t.TransactionId).ToList(),
-                ct);
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
 
             if (!committed)
             {
