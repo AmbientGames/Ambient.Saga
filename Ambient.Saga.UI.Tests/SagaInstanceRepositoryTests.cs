@@ -308,7 +308,6 @@ public class SagaInstanceRepositoryTests : IDisposable
             TransactionId = Guid.NewGuid(),
             Type = SagaTransactionType.CharacterSpawned,
             AvatarId = avatarId.ToString(),
-            ClientId = "TestClient",
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
@@ -327,7 +326,6 @@ public class SagaInstanceRepositoryTests : IDisposable
         Assert.Equal(transaction.TransactionId, tx.TransactionId);
         Assert.Equal(transaction.Type, tx.Type);
         Assert.Equal(transaction.AvatarId, tx.AvatarId);
-        Assert.Equal(transaction.ClientId, tx.ClientId);
         Assert.Equal("Merchant", tx.Data["CharacterRef"]);
     }
 
@@ -624,7 +622,6 @@ public class SagaInstanceRepositoryTests : IDisposable
             TransactionId = Guid.NewGuid(),
             Type = SagaTransactionType.ItemTraded,
             AvatarId = avatarId.ToString(),
-            ClientId = "TestClient-123",
             LocalTimestamp = new DateTime(2024, 1, 15, 10, 30, 0, DateTimeKind.Utc),
             Data = new Dictionary<string, string>
             {

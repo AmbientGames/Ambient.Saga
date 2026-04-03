@@ -73,6 +73,13 @@ public class SagaInstance
     public DateTime? ServerVersion { get; set; }
 
     /// <summary>
+    /// The highest sequence number confirmed by the server.
+    /// Transactions with SequenceNumber > this value have not been synced yet.
+    /// 0 means nothing has been synced.
+    /// </summary>
+    public long LastSyncedSequenceNumber { get; set; }
+
+    /// <summary>
     /// Whether this instance has pending (uncommitted) transactions.
     /// True if any transactions have Status = Pending.
     /// </summary>

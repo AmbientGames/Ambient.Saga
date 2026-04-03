@@ -446,7 +446,6 @@ internal class SagaTransactionRecord
     public Guid TransactionId { get; set; }
     public long SequenceNumber { get; set; }
     public string? AvatarId { get; set; }
-    public string ClientId { get; set; } = string.Empty;
     public DateTime LocalTimestamp { get; set; }
     public DateTime? ServerTimestamp { get; set; }
     public TransactionStatus Status { get; set; }
@@ -455,7 +454,6 @@ internal class SagaTransactionRecord
     public Dictionary<string, string> Data { get; set; } = new();
     public Guid? ReversesTransactionId { get; set; }
     public string? ReversalReason { get; set; }
-    public string? MergeStrategy { get; set; }
 
     public static SagaTransactionRecord FromTransaction(SagaTransaction transaction, Guid instanceId)
     {
@@ -465,7 +463,6 @@ internal class SagaTransactionRecord
             TransactionId = transaction.TransactionId,
             SequenceNumber = transaction.SequenceNumber,
             AvatarId = transaction.AvatarId,
-            ClientId = transaction.ClientId,
             LocalTimestamp = transaction.LocalTimestamp,
             ServerTimestamp = transaction.ServerTimestamp,
             Status = transaction.Status,
@@ -473,8 +470,7 @@ internal class SagaTransactionRecord
             ExtensionTypeName = transaction.ExtensionTypeName,
             Data = new Dictionary<string, string>(transaction.Data),
             ReversesTransactionId = transaction.ReversesTransactionId,
-            ReversalReason = transaction.ReversalReason,
-            MergeStrategy = transaction.MergeStrategy
+            ReversalReason = transaction.ReversalReason
         };
     }
 
@@ -485,7 +481,6 @@ internal class SagaTransactionRecord
             TransactionId = TransactionId,
             SequenceNumber = SequenceNumber,
             AvatarId = AvatarId,
-            ClientId = ClientId,
             LocalTimestamp = LocalTimestamp,
             ServerTimestamp = ServerTimestamp,
             Status = Status,
@@ -493,8 +488,7 @@ internal class SagaTransactionRecord
             ExtensionTypeName = ExtensionTypeName,
             Data = new Dictionary<string, string>(Data),
             ReversesTransactionId = ReversesTransactionId,
-            ReversalReason = ReversalReason,
-            MergeStrategy = MergeStrategy
+            ReversalReason = ReversalReason
         };
     }
 }
