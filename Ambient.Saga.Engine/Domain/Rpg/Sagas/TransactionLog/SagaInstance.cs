@@ -90,6 +90,14 @@ public class SagaInstance
     public SagaState? CachedState { get; set; }
 
     /// <summary>
+    /// The highest committed sequence number that CachedState was derived from.
+    /// Used to detect staleness when reloading transactions from the database.
+    /// -1 means no replay has been performed yet.
+    /// </summary>
+    [LiteDB.BsonIgnore]
+    public long CachedAtSequenceNumber { get; set; } = -1;
+
+    /// <summary>
     /// True when the transaction log has changed since the last replay.
     /// </summary>
     [LiteDB.BsonIgnore]

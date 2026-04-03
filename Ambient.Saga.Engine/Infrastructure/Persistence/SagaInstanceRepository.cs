@@ -73,26 +73,36 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
             if (instance != null)
             {
-                // Preserve cached state if we already have this instance
-                if (_instanceCache.TryGetValue(lockKey, out var existing) && existing.InstanceId == instance.InstanceId)
-                {
-                    instance.CachedState = existing.CachedState;
-                    instance.IsDirty = existing.IsDirty;
-                }
-
                 // Load transactions for this instance
                 var transactionRecords = _transactions
                     .Find(x => x.InstanceId == instance.InstanceId)
                     .OrderBy(x => x.SequenceNumber)
                     .ToList();
 
-                var newTransactions = transactionRecords.Select(r => r.ToTransaction()).ToList();
+                instance.Transactions = transactionRecords.Select(r => r.ToTransaction()).ToList();
 
-                // Mark dirty only if transaction count changed
-                if (instance.CachedState != null && newTransactions.Count != instance.Transactions.Count)
-                    instance.IsDirty = true;
+                // Check if our cached replay is still valid by comparing the highest
+                // committed sequence number against what the cache was built from.
+                if (_instanceCache.TryGetValue(lockKey, out var existing)
+                    && existing.InstanceId == instance.InstanceId
+                    && existing.CachedState != null)
+                {
+                    var maxCommittedSeq = instance.GetCommittedTransactions()
+                        .Select(t => t.SequenceNumber)
+                        .DefaultIfEmpty(0)
+                        .Max();
 
-                instance.Transactions = newTransactions;
+                    if (existing.CachedAtSequenceNumber == maxCommittedSeq)
+                    {
+                        // No new committed transactions since last replay — cache still valid
+                        instance.CachedState = existing.CachedState;
+                        instance.CachedAtSequenceNumber = existing.CachedAtSequenceNumber;
+                        instance.IsDirty = false;
+                    }
+                    // else: new committed transactions exist — IsDirty defaults to true
+                }
+                // else: no cached version — IsDirty defaults to true
+
                 _instanceCache[lockKey] = instance;
 
                 return Task.FromResult(instance);
@@ -219,6 +229,12 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                 imported++;
             }
 
+            // Mark any cached instance as dirty so the next read triggers a reload
+            if (imported > 0)
+            {
+                InvalidateInstanceCache(instanceId);
+            }
+
             return Task.FromResult(imported);
         }
     }
@@ -329,6 +345,23 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         }
 
         return Task.FromResult(instances);
+    }
+
+    /// <summary>
+    /// Marks any cached instance with the given ID as dirty so the next
+    /// GetOrCreateInstanceAsync call reloads from DB instead of returning stale state.
+    /// Used after external writes (sync import) that bypass AddTransaction.
+    /// </summary>
+    private void InvalidateInstanceCache(Guid instanceId)
+    {
+        foreach (var kvp in _instanceCache)
+        {
+            if (kvp.Value.InstanceId == instanceId)
+            {
+                kvp.Value.IsDirty = true;
+                break;
+            }
+        }
     }
 }
 

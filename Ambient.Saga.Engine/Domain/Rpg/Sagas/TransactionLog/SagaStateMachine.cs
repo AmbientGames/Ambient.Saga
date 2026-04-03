@@ -1,4 +1,6 @@
-﻿using Ambient.Domain;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 
@@ -36,8 +38,12 @@ public class SagaStateMachine
         if (!instance.IsDirty && instance.CachedState != null)
             return instance.CachedState;
 
-        var state = Replay(instance.GetCommittedTransactions());
+        var committed = instance.GetCommittedTransactions();
+        var state = Replay(committed);
         instance.CachedState = state;
+        instance.CachedAtSequenceNumber = committed.Count > 0
+            ? committed[^1].SequenceNumber // Already ordered by GetCommittedTransactions
+            : 0;
         instance.IsDirty = false;
         return state;
     }
@@ -69,14 +75,33 @@ public class SagaStateMachine
 
     /// <summary>
     /// Core replay logic - applies transactions in order to derive state.
+    /// If a StateSnapshot transaction exists, resumes from it instead of replaying from the beginning.
+    /// Falls back to full replay if the snapshot can't be deserialized.
     /// </summary>
     public SagaState Replay(List<SagaTransaction> transactions)
     {
-        var state = CreateInitialState();
+        var ordered = transactions.OrderBy(t => t.SequenceNumber).ToList();
 
-        foreach (var transaction in transactions.OrderBy(t => t.SequenceNumber))
+        // Find the latest snapshot to avoid replaying the entire log
+        SagaState? state = null;
+        var replayFrom = 0;
+
+        for (var i = ordered.Count - 1; i >= 0; i--)
         {
-            ApplyTransaction(state, transaction);
+            if (ordered[i].Type == SagaTransactionType.StateSnapshot
+                && TryDeserializeSnapshot(ordered[i], out var snapshotState))
+            {
+                state = snapshotState;
+                replayFrom = i + 1; // Apply only transactions after the snapshot
+                break;
+            }
+        }
+
+        state ??= CreateInitialState();
+
+        for (var i = replayFrom; i < ordered.Count; i++)
+        {
+            ApplyTransaction(state, ordered[i]);
         }
 
         state.TransactionCount = transactions.Count;
@@ -230,6 +255,10 @@ public class SagaStateMachine
 
             case SagaTransactionType.EntityInteracted:
                 ApplyEntityInteracted(state, tx);
+                break;
+
+            // Snapshots are consumed by Replay(), not applied individually
+            case SagaTransactionType.StateSnapshot:
                 break;
 
             // Extension types are handled by domain-specific appliers (e.g., Ambient.Core)
@@ -599,7 +628,7 @@ public class SagaStateMachine
     private void ApplyReputationChanged(SagaState state, SagaTransaction tx)
     {
         var factionRef = tx.GetData<string>("FactionRef");
-        var reputationChange = tx.GetData<int>("ReputationChange");
+        var reputationChange = tx.GetData<int>("Amount");
 
         if (string.IsNullOrEmpty(factionRef))
             return;
@@ -864,5 +893,59 @@ public class SagaStateMachine
         //
         // This design keeps Ambient.Saga abstract and allows domain packages
         // to extend the transaction system without modifying the base enum.
+    }
+
+    // ===== Snapshot Support =====
+
+    private static readonly JsonSerializerOptions SnapshotJsonOptions = new()
+    {
+        Converters = { new JsonStringEnumConverter() }
+    };
+
+    /// <summary>
+    /// Creates a StateSnapshot transaction that captures the current derived state.
+    /// When present in the transaction log, Replay() resumes from the snapshot
+    /// instead of replaying from the beginning — reducing both replay time and sync payload.
+    /// </summary>
+    public SagaTransaction CreateSnapshotTransaction(SagaInstance instance, string? avatarId = null)
+    {
+        var state = ReplayToNow(instance);
+
+        return new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.StateSnapshot,
+            AvatarId = avatarId,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                ["StateJson"] = JsonSerializer.Serialize(state, SnapshotJsonOptions),
+                ["AtSequenceNumber"] = instance.CachedAtSequenceNumber.ToString()
+            }
+        };
+    }
+
+    private static bool TryDeserializeSnapshot(SagaTransaction snapshotTx, out SagaState state)
+    {
+        state = null!;
+        var json = snapshotTx.GetData<string>("StateJson");
+        if (string.IsNullOrEmpty(json))
+            return false;
+
+        try
+        {
+            var deserialized = JsonSerializer.Deserialize<SagaState>(json, SnapshotJsonOptions);
+            if (deserialized != null)
+            {
+                state = deserialized;
+                return true;
+            }
+            return false;
+        }
+        catch
+        {
+            // Snapshot deserialization failed — Replay() will fall back to full replay
+            return false;
+        }
     }
 }
