@@ -2010,7 +2010,7 @@ public class BattleEngine
     /// Whether the action type is an attack that should trigger tells.
     /// </summary>
     private static bool IsAttackAction(ActionType actionType) =>
-        actionType is ActionType.Attack;
+        actionType is ActionType.Attack or ActionType.CastSpell;
 
     /// <summary>
     /// Calculate the base damage an enemy attack WOULD deal without any defense modifiers.
@@ -2018,9 +2018,16 @@ public class BattleEngine
     /// </summary>
     private float CalculateBaseDamageForTell(Combatant attacker, Combatant target, CombatAction decision)
     {
-        // Use weapon attack formula if the AI chose a weapon
         if (!string.IsNullOrEmpty(decision.Parameter) && _world != null)
         {
+            // Use spell formula if the AI chose a spell
+            if (decision.ActionType == ActionType.CastSpell)
+            {
+                var effectiveMagic = GetEffectiveMagic(attacker);
+                return effectiveMagic * SPELL_DAMAGE_MULTIPLIER;
+            }
+
+            // Use weapon attack formula if the AI chose a weapon
             var weapon = _world.TryGetEquipmentByRefName(decision.Parameter);
             if (weapon != null)
             {
