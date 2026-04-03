@@ -40,23 +40,6 @@ internal class WorldStateRepository : IWorldStateRepository
     #region Saga Operations (Delegated to CQRS Repository)
 
     /// <summary>
-    /// Gets or creates Saga instances for single-player.
-    /// Each avatar gets their own instance of each Saga.
-    /// </summary>
-    public async Task<List<SagaInstance>> GetOrCreateSagaInstancesAsync(string avatarId)
-    {
-        var instances = new List<SagaInstance>();
-        var avatarGuid = Guid.Parse(avatarId);
-
-        foreach (var sagaTemplate in _world.Gameplay.SagaArcs ?? [])
-        {
-            var instance = await _sagaRepository.GetOrCreateInstanceAsync(avatarGuid, sagaTemplate.RefName);
-            instances.Add(instance);
-        }
-        return instances;
-    }
-
-    /// <summary>
     /// Gets a Saga instance by template RefName for a specific avatar.
     /// </summary>
     public async Task<SagaInstance?> GetSagaInstanceAsync(string avatarId, string templateRef)
@@ -64,42 +47,6 @@ internal class WorldStateRepository : IWorldStateRepository
         var avatarGuid = Guid.Parse(avatarId);
         return await _sagaRepository.GetOrCreateInstanceAsync(avatarGuid, templateRef);
     }
-
-    /// <summary>
-    /// Adds a transaction to a Saga instance and saves it.
-    /// </summary>
-    public async Task AddSagaTransactionAsync(Guid instanceId, SagaTransaction transaction)
-    {
-        await _sagaRepository.AddTransactionsAsync(instanceId, new List<SagaTransaction> { transaction });
-    }
-
-    /// <summary>
-    /// Gets the current derived state of a Saga by replaying its transactions.
-    /// </summary>
-    public async Task<SagaState> GetSagaStateAsync(Guid instanceId)
-    {
-        var instance = await _sagaRepository.GetInstanceByIdAsync(instanceId);
-        if (instance == null)
-            throw new InvalidOperationException($"Saga instance {instanceId} not found");
-
-        var template = _world.Gameplay.SagaArcs?.FirstOrDefault(p => p.RefName == instance.SagaRef);
-        if (template == null)
-            throw new InvalidOperationException($"Saga template '{instance.SagaRef}' not found");
-
-        // Replay transactions to derive current state
-        var stateMachine = new SagaStateMachine(template, new List<SagaTrigger>(), _world);
-        return stateMachine.Replay(instance.Transactions);
-    }
-
-    #endregion
-
-    #region Character Queries (REMOVED - Use CQRS Queries Instead)
-
-    // NOTE: Character query methods removed from WorldStateRepository
-    // Use official CQRS queries instead:
-    //   - GetAvailableInteractionsQuery for nearby characters
-    //   - GetCharacterByIdQuery for specific character
-    //   - GetSpawnedCharactersQuery for all spawned characters
 
     #endregion
 
