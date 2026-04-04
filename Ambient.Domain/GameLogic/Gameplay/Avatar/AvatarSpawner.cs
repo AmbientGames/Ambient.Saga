@@ -19,6 +19,7 @@ public static class AvatarSpawner
         CharacterStatsCopier.CopyCharacterStats(archetype.SpawnStats, avatar.Stats);
 
         avatar.ArchetypeBias = archetype.ArchetypeBias;
+        avatar.BaseSpeedFactor = CarryWeightCalculator.GetBaseSpeedFactor(archetype);
 
         avatar.Capabilities = new ItemCollection();
         avatar.Capabilities.Blocks = archetype.SpawnCapabilities.Blocks?.ToArray() ?? [];

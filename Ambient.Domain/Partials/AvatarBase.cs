@@ -106,6 +106,14 @@ public partial class AvatarBase : IAvatarBase
     public static float StandardWalkSpeed = 4.3f;
 
     /// <summary>
+    /// Base speed factor from archetype body weight (0–1 range). Set once at avatar creation.
+    /// Lighter archetypes are inherently faster. Multiply by loadout factor at runtime for actual speed.
+    /// </summary>
+    [XmlIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
+    public float BaseSpeedFactor { get; set; } = 1f;
+
+    /// <summary>
     /// Thread-safe collection of pending notification messages for this avatar.
     /// </summary>
     [NonSerialized]
