@@ -1,6 +1,4 @@
 ﻿using Ambient.Domain.Enums;
-using Ambient.Domain.Extensions;
-using System.Reflection;
 
 namespace Ambient.Domain.GameLogic.Gameplay.Avatar;
 
@@ -29,8 +27,6 @@ public static class AvatarSpawner
         avatar.Capabilities.Spells = archetype.SpawnCapabilities.Spells?.ToArray() ?? [];
         avatar.Capabilities.BuildingMaterials = archetype.SpawnCapabilities.BuildingMaterials?.ToArray() ?? [];
         avatar.Capabilities.QuestTokens = archetype.SpawnCapabilities.QuestTokens?.ToArray() ?? [];
-
-        SetAvailableBlocks(avatar, avatar.Capabilities.Blocks);
     }
 
     /// <summary>
@@ -47,17 +43,6 @@ public static class AvatarSpawner
         avatar.Capabilities.Spells = archetype.RespawnCapabilities.Spells?.ToArray() ?? [];
         avatar.Capabilities.BuildingMaterials = archetype.RespawnCapabilities.BuildingMaterials?.ToArray() ?? [];
         avatar.Capabilities.QuestTokens = archetype.RespawnCapabilities.QuestTokens?.ToArray() ?? [];
-
-        avatar.ClearBlockOwnership();
-        SetAvailableBlocks(avatar, avatar.Capabilities.Blocks);
     }
 
-    private static void SetAvailableBlocks(AvatarBase avatar, BlockEntry[] blocks)
-    {
-        foreach (var block in blocks)
-        {
-            if (block?.BlockRef == null) continue;
-            avatar.SetBlockOwnership(block.BlockRef, block.Quantity); // last one wins, same as before
-        }
-    }
 }

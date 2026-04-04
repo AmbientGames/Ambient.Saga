@@ -679,8 +679,8 @@ public class InventoryPanel
     /// </summary>
     private void RenderBlocks(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        // Get actual block inventory from runtime BlockOwnership dictionary
-        var blockOwnership = viewModel.PlayerAvatar?.BlockOwnership ?? new Dictionary<string, float>();
+        // Get actual block inventory from BlockOwnership (backed by Capabilities.Blocks)
+        var blockOwnership = viewModel.PlayerAvatar?.BlockOwnership ?? (IDictionary<string, float>)new Dictionary<string, float>();
         var blockCount = blockOwnership.Count(kvp => kvp.Value >= 1);
 
         if (ImGui.CollapsingHeader($"Blocks ({blockCount})"))
@@ -1260,12 +1260,8 @@ public class InventoryPanel
 
     private void DiscardBlock(SagaMainViewModel viewModel, string blockRef, string displayName)
     {
-        // Remove from BlockOwnership (runtime display source)
+        // BlockOwnership is backed by Capabilities.Blocks — single remove handles both
         viewModel.PlayerAvatar?.BlockOwnership?.Remove(blockRef);
-        // Remove from Capabilities (carry weight source)
-        var caps = viewModel.PlayerAvatar?.Capabilities;
-        if (caps?.Blocks != null)
-            caps.Blocks = caps.Blocks.Where(b => b.BlockRef != blockRef).ToArray();
         viewModel.AddToastMessage($"Dropped {displayName}");
     }
 

@@ -1,4 +1,5 @@
 ﻿using Ambient.Domain.Enums;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Domain.ValueObjects;
 using SharpDX;
 using System.Collections.Concurrent;
@@ -164,17 +165,21 @@ public partial class AvatarBase : IAvatarBase
     /// </summary>
     public int ChunksOwned { get; set; }
 
-    ///// <summary>
-    ///// Saturation levels for blocks owned by the avatar.
-    ///// </summary>
-    //public int[] BlockOwnership { get; set; } = new int[WorldMaximums.MaxBlocks];
+    /// <summary>
+    /// IDictionary wrapper backed by Capabilities.Blocks — all reads/writes go through the BlockEntry[] array.
+    /// </summary>
     [XmlIgnore]
-    public Dictionary<string, float> BlockOwnership { get; set; } = new Dictionary<string, float>();
+    [System.Text.Json.Serialization.JsonIgnore]
+    public BlockInventoryDictionary BlockOwnership => _blockInventory ??= new BlockInventoryDictionary(
+        () => Capabilities?.Blocks,
+        blocks => { if (Capabilities != null) Capabilities.Blocks = blocks; });
+
+    [NonSerialized] private BlockInventoryDictionary? _blockInventory;
 
     /// <summary>
     /// Usage statistics for blocks placed by the avatar (fractional based on saturation).
     /// </summary>
-    public float[] BlockUsage { get; set; } = new float[WorldMaximums.MaxBlocks];
+    public float[] BlockUsageStatistics { get; set; } = new float[WorldMaximums.MaxBlocks];
 
     /// <summary>
     /// The avatar's spawn position.

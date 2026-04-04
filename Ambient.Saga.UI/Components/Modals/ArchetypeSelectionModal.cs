@@ -428,7 +428,7 @@ public class ArchetypeSelectionModal
                 {
                     var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(item.BlockRef);
                     var blockName = blockDef?.DisplayName ?? item.BlockRef;
-                    ImGui.BulletText($"{blockName} x{item.Quantity}");
+                    ImGui.BulletText($"{blockName} x{(int)item.Quantity}");
                 }
                 ImGui.Spacing();
                 hasAnyItems = true;
