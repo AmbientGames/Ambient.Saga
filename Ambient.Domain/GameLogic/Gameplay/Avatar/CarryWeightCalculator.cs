@@ -65,6 +65,64 @@ public static class CarryWeightCalculator
         return GetRemainingCapacity(capabilities, archetype, config) < additionalWeight;
     }
 
+    /// <summary>
+    /// Base speed factor from body weight alone (no loadout).
+    /// Lighter archetypes are inherently faster. Range: ~1.0 (lightest) to ~0.85 (heaviest).
+    /// Reference weight is 50kg — at or below this you're at full speed.
+    /// </summary>
+    public static float GetBaseSpeedFactor(AvatarArchetype archetype)
+    {
+        const float referenceWeight = 50f;
+        const float maxPenalty = 0.15f; // Heaviest loses 15% base speed
+        const float penaltyRange = 50f; // Weight range over which penalty applies (50–100kg)
+
+        var excess = Math.Max(0, archetype.Weight - referenceWeight);
+        var penalty = Math.Min(maxPenalty, excess / penaltyRange * maxPenalty);
+        return 1f - penalty;
+    }
+
+    /// <summary>
+    /// Speed multiplier from loadout weight only (not body weight).
+    /// Returns 1.0 at 0% load, 0.5 at 100% load, 0.3 if over capacity.
+    /// </summary>
+    public static float GetLoadoutSpeedFactor(float totalWeight, float maxWeight)
+    {
+        if (maxWeight <= 0) return 1f;
+
+        var loadRatio = totalWeight / maxWeight;
+
+        if (loadRatio > 1f)
+            return 0.3f;
+
+        return 1f - loadRatio * 0.5f;
+    }
+
+    /// <summary>
+    /// Combined speed at spawn: base body weight factor * loadout factor.
+    /// For display at archetype selection.
+    /// </summary>
+    public static float GetSpawnSpeedMultiplier(AvatarArchetype archetype, IWorldConfiguration config)
+    {
+        var baseFactor = GetBaseSpeedFactor(archetype);
+        var totalWeight = CalculateTotalWeight(archetype.SpawnCapabilities, config);
+        var maxWeight = GetMaxCarryWeight(archetype);
+        var loadoutFactor = GetLoadoutSpeedFactor(totalWeight, maxWeight);
+        return baseFactor * loadoutFactor;
+    }
+
+    /// <summary>
+    /// Combined speed in-game: base body weight factor * current loadout factor.
+    /// For movement speed calculation.
+    /// </summary>
+    public static float GetSpeedMultiplier(ItemCollection? capabilities, AvatarArchetype archetype, IWorldConfiguration config)
+    {
+        var baseFactor = GetBaseSpeedFactor(archetype);
+        var totalWeight = CalculateTotalWeight(capabilities, config);
+        var maxWeight = GetMaxCarryWeight(archetype);
+        var loadoutFactor = GetLoadoutSpeedFactor(totalWeight, maxWeight);
+        return baseFactor * loadoutFactor;
+    }
+
     public static float GetCategoryWeight(string categoryName, IWorldConfiguration config)
     {
         return categoryName switch

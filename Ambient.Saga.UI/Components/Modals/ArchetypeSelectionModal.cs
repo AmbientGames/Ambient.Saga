@@ -478,8 +478,27 @@ public class ArchetypeSelectionModal
 
             var fraction = maxWeight > 0 ? (float)currentWeight / maxWeight : 0f;
             ImGui.ProgressBar(fraction, new Vector2(-1, 0), $"{currentWeight:N1} / {maxWeight:N1} {weightUnit}");
+
+            ImGui.Spacing();
+
+            var baseSpeed = CarryWeightCalculator.GetBaseSpeedFactor(archetype);
+            var spawnSpeed = CarryWeightCalculator.GetSpawnSpeedMultiplier(archetype, worldConfig);
+
+            ImGui.Text("Base Speed:");
+            ImGui.SameLine();
+            ImGui.TextColored(SpeedColor(baseSpeed), $"{baseSpeed:P0}");
+
+            ImGui.Text("With Loadout:");
+            ImGui.SameLine();
+            ImGui.TextColored(SpeedColor(spawnSpeed), $"{spawnSpeed:P0}");
         }
     }
+
+    private static Vector4 SpeedColor(float speed) => speed >= 0.8f
+        ? new Vector4(0.2f, 1f, 0.2f, 1f)
+        : speed >= 0.5f
+            ? new Vector4(1f, 0.8f, 0.3f, 1f)
+            : new Vector4(1f, 0.4f, 0.4f, 1f);
 
     private void RenderModifierLine(string statName, float modifier)
     {
