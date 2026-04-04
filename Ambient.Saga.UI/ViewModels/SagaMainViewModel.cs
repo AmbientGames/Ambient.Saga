@@ -1446,6 +1446,9 @@ public partial class SagaMainViewModel : ObservableObject
                 // Pure CQRS: Command succeeded, no state data returned
                 ActivityLog.Insert(0, $"Entered {trigger.DisplayName}");
 
+                // Invalidate cached characters so the next tick picks up newly spawned ones
+                InvalidateCharacterCache(trigger.SagaRefName);
+
                 // Refresh trigger status so completed triggers disappear
                 await UpdateSagaFeatureStatus(trigger.SagaRefName);
             }
