@@ -13,4 +13,10 @@ public interface IWorldConfigurationLoader
     /// <param name="definitionDirectory">Definition directory containing XSD schemas. If null or schemas not found, validation is skipped.</param>
     /// <returns>Array of loaded WorldConfiguration objects</returns>
     Task<IWorldConfiguration[]> LoadAvailableWorldConfigurationsAsync(string dataDirectory, string? definitionDirectory);
+
+    /// <summary>
+    /// Ensures world content is available locally. For online worlds, downloads and extracts
+    /// content if needed and updates the configuration. For offline worlds, this is a no-op.
+    /// </summary>
+    Task ResolveWorldContentAsync(IWorldConfiguration config) => Task.CompletedTask;
 }
