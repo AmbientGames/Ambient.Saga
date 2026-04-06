@@ -43,8 +43,8 @@ public class DefaultInputHandler : IInputHandler
     // Hotbar key states (1-9)
     private readonly bool[] _hotbarKeysWerePressed = new bool[9];
 
-    // Custom panel key states (tracked by ImGuiKey value)
-    private readonly Dictionary<ImGuiKey, bool> _customKeyStates = new();
+    // Extended panel key state
+    private bool _extendedPanelKeyWasPressed = false;
 
     /// <summary>
     /// Event raised when ESC is pressed with no panels open.
@@ -138,20 +138,30 @@ public class DefaultInputHandler : IInputHandler
         }
         _f12KeyWasPressed = f12KeyDown;
 
+        // Extended panel key (game-registered via PanelManager)
+        var extPanel = context.PanelManager?.Panel;
+        if (extPanel != null && extPanel.IsAvailable)
+        {
+            bool extKeyDown = ImGui.IsKeyDown(extPanel.Key);
+            if (extKeyDown && !_extendedPanelKeyWasPressed)
+            {
+                context.TogglePanelAction(ActivePanel.Extended);
+            }
+            _extendedPanelKeyWasPressed = extKeyDown;
+        }
+
         // ESC key - Hierarchical behavior
-        // 1. If panel open ? Close panel
-        // 2. If no panels open ? Request pause menu
+        // 1. If panel open → close it
+        // 2. If nothing open → request pause menu
         bool escKeyDown = ImGui.IsKeyDown(ImGuiKey.Escape);
         if (escKeyDown && !_escKeyWasPressed)
         {
             if (context.ActivePanel != ActivePanel.None)
             {
-                // Close the currently open panel
                 context.CloseAllPanelsAction();
             }
             else
             {
-                // No panels open - request pause menu
                 _pauseMenuRequestedThisFrame = true;
                 PauseMenuRequested?.Invoke();
             }
@@ -160,25 +170,6 @@ public class DefaultInputHandler : IInputHandler
 
         // Hotbar keys 1-9 (slot indices 0-8)
         ProcessHotbarKeys();
-
-        // Custom panel keys registered by the game
-        ProcessCustomPanelKeys(context);
-    }
-
-    private void ProcessCustomPanelKeys(InputContext context)
-    {
-        foreach (var panel in context.CustomPanels)
-        {
-            var keyDown = ImGui.IsKeyDown(panel.Key);
-            _customKeyStates.TryGetValue(panel.Key, out var wasPressed);
-
-            if (keyDown && !wasPressed)
-            {
-                panel.OnToggle();
-            }
-
-            _customKeyStates[panel.Key] = keyDown;
-        }
     }
 
     private void ProcessHotbarKeys()

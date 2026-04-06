@@ -97,6 +97,9 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
                 return modalManager;
             });
 
+            services.AddSingleton<Ambient.Saga.UI.Components.Panels.PanelManager>();
+            services.AddSingleton<Ambient.Saga.UI.Components.GameplayOverlay>();
+
             // World Map UI for Tab 3
             services.AddTransient<WorldMapUI>();
         }

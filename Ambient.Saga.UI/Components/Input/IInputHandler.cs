@@ -1,3 +1,4 @@
+using Ambient.Saga.UI.Components.Panels;
 using ImGuiNET;
 
 namespace Ambient.Saga.UI.Components.Input;
@@ -78,7 +79,7 @@ public class InputContext
     public ImGuiIOPtr IO => ImGui.GetIO();
 
     /// <summary>
-    /// Custom panels registered by the game. The input handler processes these alongside built-in keys.
+    /// Panel manager for game-registered panels. The input handler processes these alongside built-in keys.
     /// </summary>
-    public IReadOnlyList<CustomPanelRegistration> CustomPanels { get; init; } = Array.Empty<CustomPanelRegistration>();
+    public PanelManager? PanelManager { get; init; }
 }

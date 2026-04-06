@@ -30,7 +30,7 @@ namespace Ambient.Saga.UI.Components.Rendering;
 public class SectionedHudRenderer : IHudRenderer
 {
     private readonly List<IHudSection> _sections;
-    private IReadOnlyList<Input.CustomPanelRegistration> _customPanels = Array.Empty<Input.CustomPanelRegistration>();
+    private Panels.PanelManager? _panelManager;
 
     // Base layout constants at 96 DPI (1.0 scale)
     private const float CornerPaddingBase = 8f;
@@ -114,9 +114,9 @@ public class SectionedHudRenderer : IHudRenderer
     private static float BarFixedWidth => LeftRegionFixedWidth + CenterRegionFixedWidth + RightRegionFixedWidth;
     private static float ContentHeight => HotbarSection.SlotHeight;
 
-    public void SetCustomPanels(IReadOnlyList<Input.CustomPanelRegistration> customPanels)
+    public void SetPanelManager(Panels.PanelManager panelManager)
     {
-        _customPanels = customPanels;
+        _panelManager = panelManager;
     }
 
     public void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false)
@@ -140,7 +140,7 @@ public class SectionedHudRenderer : IHudRenderer
             CenterRegionWidth = centerWidth,
             RightRegionWidth = rightWidth,
             HasActiveToastMessages = hasActiveToastMessages,
-            CustomPanels = _customPanels
+            PanelManager = _panelManager
         };
 
         // Group sections by region
