@@ -18,5 +18,5 @@ public interface IWorldConfigurationLoader
     /// Ensures world content is available locally. For online worlds, downloads and extracts
     /// content if needed and updates the configuration. For offline worlds, this is a no-op.
     /// </summary>
-    Task ResolveWorldContentAsync(IWorldConfiguration config) => Task.CompletedTask;
+    Task<IWorldConfiguration> ResolveWorldContentAsync(string refName) => Task.FromResult<IWorldConfiguration>(null!);
 }
