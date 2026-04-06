@@ -66,7 +66,7 @@ public static class GameplayOverlayExamples
     public static GameplayOverlay CreateFunctionKeyOverlay(ModalManager modalManager)
     {
         var functionKeyInput = new FunctionKeyInputHandler();
-        return new GameplayOverlay(modalManager, functionKeyInput);
+        return new GameplayOverlay(modalManager, inputHandler: functionKeyInput);
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ public static class GameplayOverlayExamples
         compositeInput.AddHandler(new ArrowKeyInputHandler());    // Arrow keys
         // compositeInput.AddHandler(new GamepadInputHandler());  // Add gamepad if available
         
-        return new GameplayOverlay(modalManager, compositeInput);
+        return new GameplayOverlay(modalManager, inputHandler: compositeInput);
     }
 
     /// <summary>
@@ -90,7 +90,7 @@ public static class GameplayOverlayExamples
         var noHud = new NoHudRenderer();
         var customInput = new ImmersiveInputHandler();
         
-        return new GameplayOverlay(modalManager, customInput, noHud);
+        return new GameplayOverlay(modalManager, inputHandler: customInput, hudRenderer: noHud);
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ public static class GameplayOverlayExamples
     {
         var compactHud = new CompactHudRenderer();
         
-        return new GameplayOverlay(modalManager, null, compactHud);
+        return new GameplayOverlay(modalManager, hudRenderer: compactHud);
     }
 }
 

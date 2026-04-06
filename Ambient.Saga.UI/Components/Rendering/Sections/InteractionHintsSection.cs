@@ -65,24 +65,12 @@ public class InteractionHintsSection : IHudSection
 
         currentX = RenderCompactKey(drawList, currentX, centerY, "J", context.ActivePanel == ActivePanel.Journal);
 
-        // Custom game-registered panels
-        if (context.CustomPanels.Count > 0)
+        // Extended panel (game-registered via PanelManager)
+        var extPanel = context.PanelManager?.Panel;
+        if (extPanel != null && extPanel.IsAvailable)
         {
-            currentX += GroupSpacing;
-
-            var sepColor = ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.4f, 0.6f));
-            var keyHeight = ImGui.CalcTextSize("M").Y + KeyHeightOffset;
-            drawList.AddLine(
-                new Vector2(currentX, centerY - keyHeight / 2),
-                new Vector2(currentX, centerY + keyHeight / 2),
-                sepColor, UIConstants.DpiScale);
-            currentX += GroupSpacing;
-
-            foreach (var panel in context.CustomPanels)
-            {
-                currentX = RenderCompactKey(drawList, currentX, centerY, panel.KeyLabel, panel.IsActive());
-                currentX += KeySpacing;
-            }
+            currentX += KeySpacing;
+            currentX = RenderCompactKey(drawList, currentX, centerY, extPanel.KeyLabel, context.ActivePanel == ActivePanel.Extended);
         }
 
         // Developer keys (only when debugger attached)
@@ -126,14 +114,11 @@ public class InteractionHintsSection : IHudSection
         width += ImGui.CalcTextSize("I").X + keyHorizontalPadding + KeySpacing;
         width += ImGui.CalcTextSize("J").X + keyHorizontalPadding;
 
-        // Custom panels
-        if (context.CustomPanels.Count > 0)
+        // Extended panel
+        var extPanel = context.PanelManager?.Panel;
+        if (extPanel != null && extPanel.IsAvailable)
         {
-            width += GroupSpacing * 2 + UIConstants.DpiScale; // Separator
-            foreach (var panel in context.CustomPanels)
-            {
-                width += ImGui.CalcTextSize(panel.KeyLabel).X + keyHorizontalPadding + KeySpacing;
-            }
+            width += ImGui.CalcTextSize(extPanel.KeyLabel).X + keyHorizontalPadding + KeySpacing;
         }
 
         // Dev keys

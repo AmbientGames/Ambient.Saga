@@ -1,5 +1,5 @@
 using Ambient.Saga.Presentation.UI.ViewModels;
-using Ambient.Saga.UI.Components.Input;
+using Ambient.Saga.UI.Components.Panels;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Rendering;
@@ -67,7 +67,7 @@ public class HudContext
     public bool HasActiveToastMessages { get; init; }
 
     /// <summary>
-    /// Custom panels registered by the game, for rendering key hints.
+    /// Panel manager for game-registered panels, for rendering key hints.
     /// </summary>
-    public IReadOnlyList<CustomPanelRegistration> CustomPanels { get; init; } = Array.Empty<CustomPanelRegistration>();
+    public PanelManager? PanelManager { get; init; }
 }
