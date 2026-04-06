@@ -265,8 +265,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         var avatar = new AvatarBase
         {
             ArchetypeRef = "Samurai",
-            DisplayName = name,
-            BlockOwnership = new Dictionary<string, float>()
+            DisplayName = name
         };
 
         AvatarSpawner.SpawnFromModelAvatar(

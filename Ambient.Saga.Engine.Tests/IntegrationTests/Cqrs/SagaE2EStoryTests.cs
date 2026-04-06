@@ -265,8 +265,7 @@ public class SagaE2EStoryTests : IDisposable
         {
             Id = Guid.NewGuid(),
             ArchetypeRef = "Warrior",
-            DisplayName = name,
-            BlockOwnership = new Dictionary<string, float>()
+            DisplayName = name
         };
 
         AvatarSpawner.SpawnFromModelAvatar(

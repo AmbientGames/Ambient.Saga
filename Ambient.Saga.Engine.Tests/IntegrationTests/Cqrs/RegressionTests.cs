@@ -494,8 +494,7 @@ public class RegressionTests : IDisposable
         var avatar = new AvatarBase
         {
             ArchetypeRef = "TestWarrior",
-            DisplayName = "Test Hero",
-            BlockOwnership = new Dictionary<string, float>()
+            DisplayName = "Test Hero"
         };
 
         AvatarSpawner.SpawnFromModelAvatar(avatar, archetype);

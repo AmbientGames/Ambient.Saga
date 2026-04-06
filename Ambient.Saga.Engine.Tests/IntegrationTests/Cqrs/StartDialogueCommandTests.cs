@@ -197,8 +197,7 @@ public class StartDialogueCommandTests : IDisposable
         var avatar = new AvatarBase
         {
             ArchetypeRef = "Merchant",
-            DisplayName = name,
-            BlockOwnership = new Dictionary<string, float>()
+            DisplayName = name
         };
 
         AvatarSpawner.SpawnFromModelAvatar(
