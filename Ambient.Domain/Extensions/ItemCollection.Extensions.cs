@@ -211,7 +211,7 @@ public static class ItemCollectionExtensions
     }
 
     /// <summary>
-    /// Finds the first building material in the player's inventory that is compatible with the given substance
+    /// Finds the first building material in the avatar's inventory that is compatible with the given substance
     /// and has quantity remaining.
     /// </summary>
     public static bool TryGetCompatibleBuildingMaterial(

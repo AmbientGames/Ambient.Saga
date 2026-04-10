@@ -220,7 +220,7 @@ public class AvatarUpdateService : IAvatarUpdateService
             throw new InvalidOperationException($"BattleStarted transaction '{battleStartedTransactionId}' not found or not committed");
         }
 
-        // Get ALL battle turn transactions (player AND enemy turns) for this battle
+        // Get ALL battle turn transactions (avatar AND enemy turns) for this battle
         var allBattleTurns = sagaInstance.GetCommittedTransactions()
             .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
                        t.Data.ContainsKey("BattleTransactionId") &&
@@ -246,7 +246,7 @@ public class AvatarUpdateService : IAvatarUpdateService
             avatar.Capabilities = new ItemCollection();
         }
 
-        // Track player's final health by looking at ALL turns where player was affected
+        // Track avatar's final health by looking at ALL turns where avatar was affected
         float? finalHealth = null;
         float? finalStamina = null;  // Battle uses "Energy" but avatar stores as "Stamina"
         string? finalAffinity = null;
@@ -258,20 +258,20 @@ public class AvatarUpdateService : IAvatarUpdateService
 
             if (isPlayerTurn)
             {
-                // Player's turn: Actor = Player, Target = Enemy
-                // Update player's stamina (battle transactions call it "Energy")
+                // Avatar's turn: Actor = Avatar, Target = Enemy
+                // Update avatar's stamina (battle transactions call it "Energy")
                 if (turn.Data.TryGetValue("ActorEnergyAfter", out var energyStr) && float.TryParse(energyStr, out var energy))
                 {
                     finalStamina = energy;  // Map Energy -> Stamina
                 }
 
-                // Update player's affinity if changed
+                // Update avatar's affinity if changed
                 if (turn.Data.TryGetValue("AffinitySnapshot", out var affinity) && !string.IsNullOrEmpty(affinity))
                 {
                     finalAffinity = affinity;
                 }
 
-                // Update player's combat profile (equipped slots) if changed
+                // Update avatar's combat profile (equipped slots) if changed
                 if (turn.Data.TryGetValue("LoadoutSlotSnapshot", out var loadoutSnapshot) && !string.IsNullOrEmpty(loadoutSnapshot))
                 {
                     finalCombatProfile = ParseLoadoutSnapshot(loadoutSnapshot);
@@ -285,8 +285,8 @@ public class AvatarUpdateService : IAvatarUpdateService
             }
             else
             {
-                // Enemy's turn: Actor = Enemy, Target = Player
-                // Player's health is recorded as TargetHealthAfter (enemy damaged player)
+                // Enemy's turn: Actor = Enemy, Target = Avatar
+                // Avatar's health is recorded as TargetHealthAfter (enemy damaged avatar)
                 if (turn.Data.TryGetValue("TargetHealthAfter", out var healthStr) && float.TryParse(healthStr, out var health))
                 {
                     finalHealth = health;

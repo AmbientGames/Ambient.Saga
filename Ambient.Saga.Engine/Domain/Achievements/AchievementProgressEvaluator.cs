@@ -6,7 +6,7 @@ namespace Ambient.Saga.Engine.Domain.Achievements;
 
 /// <summary>
 /// Service for evaluating achievement progress from event-sourced Saga transaction logs.
-/// Achievements track player milestones by querying immutable transaction history.
+/// Achievements track avatar milestones by querying immutable transaction history.
 /// Progress is computed on-demand, not stored incrementally.
 /// Server and client use this same logic to compute achievement progress.
 /// </summary>

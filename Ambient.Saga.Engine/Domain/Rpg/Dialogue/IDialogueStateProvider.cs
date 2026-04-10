@@ -1,7 +1,7 @@
 ﻿namespace Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 
 /// <summary>
-/// Abstraction for querying player and world state during dialogue.
+/// Abstraction for querying avatar and world state during dialogue.
 /// Implementations should provide access to inventory, achievements, quest progress, etc.
 /// </summary>
 public interface IDialogueStateProvider

@@ -6,7 +6,7 @@ namespace Ambient.Domain.Enums;
 public class WorldMaximums
 {
     /// <summary>
-    /// The maximum number of chunks that can be assigned to guest players.
+    /// The maximum number of chunks that can be assigned to guest avatars.
     /// </summary>
     public const int MaximumGuestChunkCount = 64;
 

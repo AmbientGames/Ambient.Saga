@@ -211,7 +211,7 @@ public static class DialogueTransactionHelper
         string itemRef,
         int quantity,
         int price,
-        bool isBuy, // true = player buying, false = player selling
+        bool isBuy, // true = avatar buying, false = avatar selling
         Guid sagaInstanceId)
     {
         return new SagaTransaction

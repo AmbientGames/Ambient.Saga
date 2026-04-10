@@ -21,7 +21,7 @@ public interface ITradeable
     int WholesalePrice { get; }
 
     /// <summary>
-    /// Merchant markup multiplier for selling this item to players.
+    /// Merchant markup multiplier for selling this item to avatars.
     /// </summary>
     float MerchantMarkupMultiplier { get; }
 }
