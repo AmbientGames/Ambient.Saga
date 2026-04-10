@@ -33,77 +33,77 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="HasQuestToken">
                 <xs:annotation>
-                    <xs:documentation>Player possesses the specified quest token.</xs:documentation>
+                    <xs:documentation>Avatar possesses the specified quest token.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="LacksQuestToken">
                 <xs:annotation>
-                    <xs:documentation>Player does not possess the specified quest token.</xs:documentation>
+                    <xs:documentation>Avatar does not possess the specified quest token.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="HasConsumable">
                 <xs:annotation>
-                    <xs:documentation>Player has the specified consumable item in inventory.</xs:documentation>
+                    <xs:documentation>Avatar has the specified consumable item in inventory.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="LacksConsumable">
                 <xs:annotation>
-                    <xs:documentation>Player does not have the specified consumable item.</xs:documentation>
+                    <xs:documentation>Avatar does not have the specified consumable item.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="HasMaterial">
                 <xs:annotation>
-                    <xs:documentation>Player has the specified building material in inventory.</xs:documentation>
+                    <xs:documentation>Avatar has the specified building material in inventory.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="LacksMaterial">
                 <xs:annotation>
-                    <xs:documentation>Player does not have the specified building material.</xs:documentation>
+                    <xs:documentation>Avatar does not have the specified building material.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="HasEquipment">
                 <xs:annotation>
-                    <xs:documentation>Player has the specified equipment item in inventory.</xs:documentation>
+                    <xs:documentation>Avatar has the specified equipment item in inventory.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="LacksEquipment">
                 <xs:annotation>
-                    <xs:documentation>Player does not have the specified equipment item.</xs:documentation>
+                    <xs:documentation>Avatar does not have the specified equipment item.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="HasTool">
                 <xs:annotation>
-                    <xs:documentation>Player has the specified tool in inventory.</xs:documentation>
+                    <xs:documentation>Avatar has the specified tool in inventory.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="LacksTool">
                 <xs:annotation>
-                    <xs:documentation>Player does not have the specified tool.</xs:documentation>
+                    <xs:documentation>Avatar does not have the specified tool.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="HasSpell">
                 <xs:annotation>
-                    <xs:documentation>Player has learned the specified spell.</xs:documentation>
+                    <xs:documentation>Avatar has learned the specified spell.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="LacksSpell">
                 <xs:annotation>
-                    <xs:documentation>Player has not learned the specified spell.</xs:documentation>
+                    <xs:documentation>Avatar has not learned the specified spell.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="HasBlock">
                 <xs:annotation>
-                    <xs:documentation>Player has the specified block type in inventory.</xs:documentation>
+                    <xs:documentation>Avatar has the specified block type in inventory.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="LacksBlock">
                 <xs:annotation>
-                    <xs:documentation>Player does not have the specified block type.</xs:documentation>
+                    <xs:documentation>Avatar does not have the specified block type.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="HasAchievement">
                 <xs:annotation>
-                    <xs:documentation>Player has unlocked the specified achievement.</xs:documentation>
+                    <xs:documentation>Avatar has unlocked the specified achievement.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="QuestActive">
@@ -123,12 +123,12 @@
             </xs:enumeration>
             <xs:enumeration value="Credits">
                 <xs:annotation>
-                    <xs:documentation>Player's credit balance meets the comparison threshold.</xs:documentation>
+                    <xs:documentation>Avatar's credit balance meets the comparison threshold.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="Health">
                 <xs:annotation>
-                    <xs:documentation>Player's current health meets the comparison threshold.</xs:documentation>
+                    <xs:documentation>Avatar's current health meets the comparison threshold.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="PlayerVisitCount">
@@ -148,12 +148,12 @@
             </xs:enumeration>
             <xs:enumeration value="ReputationLevel">
                 <xs:annotation>
-                    <xs:documentation>Player's reputation level with a faction meets the threshold.</xs:documentation>
+                    <xs:documentation>Avatar's reputation level with a faction meets the threshold.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="ReputationValue">
                 <xs:annotation>
-                    <xs:documentation>Player's raw reputation points with a faction meets the threshold.</xs:documentation>
+                    <xs:documentation>Avatar's raw reputation points with a faction meets the threshold.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="TraitComparison">
@@ -320,7 +320,7 @@
             </xs:enumeration>
             <xs:enumeration value="AcceptQuest">
                 <xs:annotation>
-                    <xs:documentation>Player accepts the specified quest, making it active.</xs:documentation>
+                    <xs:documentation>Avatar accepts the specified quest, making it active.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="CompleteQuest">
@@ -528,7 +528,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="BargainSkill">
 				<xs:annotation>
-					<xs:documentation>Player's bargaining ability (0-100, higher = better discounts)</xs:documentation>
+					<xs:documentation>Avatar's bargaining ability (0-100, higher = better discounts)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="NegotiatedDiscount">
@@ -554,18 +554,18 @@
 			</xs:enumeration>
 			<xs:enumeration value="Merciful">
 				<xs:annotation>
-					<xs:documentation>Player shows mercy in battle (spares defeated enemies)</xs:documentation>
+					<xs:documentation>Avatar shows mercy in battle (spares defeated enemies)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Ruthless">
 				<xs:annotation>
-					<xs:documentation>Player is ruthless in battle (finishes defeated enemies)</xs:documentation>
+					<xs:documentation>Avatar is ruthless in battle (finishes defeated enemies)</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<!-- Combat state traits -->
 			<xs:enumeration value="Disengaged">
 				<xs:annotation>
-					<xs:documentation>Player fled from combat with this character - prevents immediate re-aggro</xs:documentation>
+					<xs:documentation>Avatar fled from combat with this character - prevents immediate re-aggro</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Victorious">
@@ -575,7 +575,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="Spared">
 				<xs:annotation>
-					<xs:documentation>Player defeated but spared this character</xs:documentation>
+					<xs:documentation>Avatar defeated but spared this character</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 		</xs:restriction>
