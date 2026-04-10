@@ -16,7 +16,7 @@ public class StubWorldStateRepository : IWorldStateRepository
     private readonly Dictionary<string, SagaInstance> _sagaInstances = new();
     private readonly Dictionary<string, List<AchievementInstance>> _achievements = new();
     private readonly Dictionary<string, AvatarEntity> _avatars = new();
-    private readonly List<PlayerDiscovery> _discoveries = new();
+    private readonly List<AvatarDiscovery> _discoveries = new();
 
     public Task<SagaInstance?> GetSagaInstanceAsync(string avatarId, string templateRef)
     {
@@ -58,7 +58,7 @@ public class StubWorldStateRepository : IWorldStateRepository
         return Task.CompletedTask;
     }
 
-    public Task<PlayerDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null)
+    public Task<AvatarDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null)
     {
         var existing = _discoveries.FirstOrDefault(d =>
             d.AvatarId == avatarId && d.EntityType == entityType && d.EntityRef == entityRef);
@@ -66,7 +66,7 @@ public class StubWorldStateRepository : IWorldStateRepository
         if (existing != null)
             return Task.FromResult(existing);
 
-        var discovery = new PlayerDiscovery
+        var discovery = new AvatarDiscovery
         {
             AvatarId = avatarId,
             EntityType = entityType,
@@ -103,7 +103,7 @@ public class StubWorldStateRepository : IWorldStateRepository
         return Task.FromResult(exists);
     }
 
-    public Task<List<PlayerDiscovery>> GetPlayerDiscoveriesAsync(string avatarId)
+    public Task<List<AvatarDiscovery>> GetAvatarDiscoveriesAsync(string avatarId)
     {
         var discoveries = _discoveries.Where(d => d.AvatarId == avatarId).ToList();
         return Task.FromResult(discoveries);

@@ -4,7 +4,7 @@
 /// Tracks player discovery/interaction relationships with world entities.
 /// Used for multiplayer state management - prevents entity bloat while supporting queries.
 /// </summary>
-public class PlayerDiscovery
+public class AvatarDiscovery
 {
     /// <summary>
     /// Unique identifier for this discovery record.

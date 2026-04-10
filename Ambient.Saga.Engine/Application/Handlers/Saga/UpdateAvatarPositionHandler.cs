@@ -92,7 +92,7 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
                 return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
             }
 
-            // Record saga discovery in PlayerDiscovery table for UI visibility
+            // Record saga discovery in AvatarDiscovery table for UI visibility
             if (newTransactions.Any(t => t.Type == SagaTransactionType.SagaDiscovered))
             {
                 await _worldStateRepository.RecordDiscoveryAsync(

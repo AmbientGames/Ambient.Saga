@@ -14,7 +14,7 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class SpellSelectionModal
 {
-    private readonly Combatant _player;
+    private readonly Combatant _avatar;
     private readonly IWorld _world;
 
     // Event fired when user selects a spell
@@ -23,9 +23,9 @@ public class SpellSelectionModal
     // Event fired when user cancels
     public event Action? Cancelled;
 
-    public SpellSelectionModal(Combatant player, IWorld world)
+    public SpellSelectionModal(Combatant avatar, IWorld world)
     {
-        _player = player;
+        _avatar = avatar;
         _world = world;
     }
 
@@ -43,7 +43,7 @@ public class SpellSelectionModal
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
         // Check if player has any spells
-        if (_player.Capabilities?.Spells == null || _player.Capabilities.Spells.Length == 0)
+        if (_avatar.Capabilities?.Spells == null || _avatar.Capabilities.Spells.Length == 0)
         {
             ImGui.Text("No spells available!");
             ImGui.Spacing();
@@ -56,7 +56,7 @@ public class SpellSelectionModal
         }
 
         // Spell buttons - full width
-        foreach (var spellEntry in _player.Capabilities.Spells)
+        foreach (var spellEntry in _avatar.Capabilities.Spells)
         {
             if (spellEntry.Condition <= 0) continue; // Skip broken spells
 

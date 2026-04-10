@@ -45,7 +45,7 @@ public interface IWorldStateRepository
     /// <summary>
     /// Records a player discovery (lore, achievement, Saga, etc.).
     /// </summary>
-    Task<PlayerDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null);
+    Task<AvatarDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null);
 
     /// <summary>
     /// Records a trigger event for a player discovery.
@@ -65,5 +65,5 @@ public interface IWorldStateRepository
     /// <summary>
     /// Gets all discoveries for a specific player.
     /// </summary>
-    Task<List<PlayerDiscovery>> GetPlayerDiscoveriesAsync(string avatarId);
+    Task<List<AvatarDiscovery>> GetAvatarDiscoveriesAsync(string avatarId);
 }

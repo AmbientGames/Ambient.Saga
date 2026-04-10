@@ -14,7 +14,7 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class ItemSelectionModal
 {
-    private readonly Combatant _player;
+    private readonly Combatant _avatar;
     private readonly IWorld _world;
 
     // Event fired when user selects an item
@@ -23,9 +23,9 @@ public class ItemSelectionModal
     // Event fired when user cancels
     public event Action? Cancelled;
 
-    public ItemSelectionModal(Combatant player, IWorld world)
+    public ItemSelectionModal(Combatant avatar, IWorld world)
     {
-        _player = player;
+        _avatar = avatar;
         _world = world;
     }
 
@@ -43,7 +43,7 @@ public class ItemSelectionModal
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
         // Check if player has any items
-        if (_player.Capabilities?.Consumables == null || _player.Capabilities.Consumables.Length == 0)
+        if (_avatar.Capabilities?.Consumables == null || _avatar.Capabilities.Consumables.Length == 0)
         {
             ImGui.Text("No items available!");
             ImGui.Spacing();
@@ -56,7 +56,7 @@ public class ItemSelectionModal
         }
 
         // Item buttons - full width
-        foreach (var itemEntry in _player.Capabilities.Consumables)
+        foreach (var itemEntry in _avatar.Capabilities.Consumables)
         {
             if (itemEntry.Quantity <= 0) continue; // Skip empty items
 

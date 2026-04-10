@@ -16,9 +16,9 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class EquipmentChangeModal
 {
-    private readonly Combatant _player;
+    private readonly Combatant _avatar;
     private readonly IWorld _world;
-    private readonly List<string> _playerAffinityRefs;
+    private readonly List<string> _avatarAffinityRefs;
     private readonly Dictionary<string, int> _slotSelections = new();
     private readonly Dictionary<string, List<string>> _slotOptions = new();
     private readonly List<string> _affinityOptions = new();
@@ -32,11 +32,11 @@ public class EquipmentChangeModal
     // Event fired when user cancels
     public event Action? Cancelled;
 
-    public EquipmentChangeModal(Combatant player, IWorld world, List<string> playerAffinityRefs)
+    public EquipmentChangeModal(Combatant avatar, IWorld world, List<string> avatarAffinityRefs)
     {
-        _player = player;
+        _avatar = avatar;
         _world = world;
-        _playerAffinityRefs = playerAffinityRefs;
+        _avatarAffinityRefs = avatarAffinityRefs;
 
         InitializeDropdowns();
     }
@@ -60,15 +60,15 @@ public class EquipmentChangeModal
 
             // Get current equipment for this slot
             string? currentEquipmentRef = null;
-            if (_player.CombatProfile.TryGetValue(slotName, out var equipped))
+            if (_avatar.CombatProfile.TryGetValue(slotName, out var equipped))
             {
                 currentEquipmentRef = equipped;
             }
 
             // Get equipment the player actually HAS
-            if (_player.Capabilities?.Equipment != null)
+            if (_avatar.Capabilities?.Equipment != null)
             {
-                foreach (var entry in _player.Capabilities.Equipment)
+                foreach (var entry in _avatar.Capabilities.Equipment)
                 {
                     var equipment = _world.GetEquipmentByRefName(entry.EquipmentRef);
 
@@ -91,14 +91,14 @@ public class EquipmentChangeModal
         }
 
         // Initialize affinity dropdown
-        foreach (var affinityRef in _playerAffinityRefs)
+        foreach (var affinityRef in _avatarAffinityRefs)
         {
             var affinity = _world.TryGetCharacterAffinityByRefName(affinityRef);
             if (affinity != null)
             {
                 _affinityOptions.Add(affinity.RefName);
 
-                if (affinity.RefName == _player.AffinityRef)
+                if (affinity.RefName == _avatar.AffinityRef)
                 {
                     _affinitySelection = _affinityOptions.Count - 1;
                 }
@@ -110,7 +110,7 @@ public class EquipmentChangeModal
         if (allStances != null)
         {
             string? currentStanceRef = null;
-            _player.CombatProfile.TryGetValue("Stance", out currentStanceRef);
+            _avatar.CombatProfile.TryGetValue("Stance", out currentStanceRef);
 
             foreach (var stance in allStances)
             {
@@ -232,7 +232,7 @@ public class EquipmentChangeModal
         if (_affinitySelection >= 0 && _affinitySelection < _affinityOptions.Count)
         {
             var selectedAffinityRef = _affinityOptions[_affinitySelection];
-            if (selectedAffinityRef != _player.AffinityRef)
+            if (selectedAffinityRef != _avatar.AffinityRef)
             {
                 changes.Add($"Affinity:{selectedAffinityRef}");
                 Console.WriteLine($"Affinity change: {selectedAffinityRef}");
@@ -244,7 +244,7 @@ public class EquipmentChangeModal
         {
             var selectedStanceRef = _stanceOptions[_stanceSelection];
             string? currentStanceRef = null;
-            _player.CombatProfile.TryGetValue("Stance", out currentStanceRef);
+            _avatar.CombatProfile.TryGetValue("Stance", out currentStanceRef);
 
             if (selectedStanceRef != currentStanceRef)
             {
@@ -266,7 +266,7 @@ public class EquipmentChangeModal
 
             // Get current equipment
             string? currentEquipmentRef = null;
-            _player.CombatProfile.TryGetValue(slotName, out currentEquipmentRef);
+            _avatar.CombatProfile.TryGetValue(slotName, out currentEquipmentRef);
 
             // Check if it changed
             if (selectedEquipmentRef != currentEquipmentRef)

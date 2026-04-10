@@ -63,7 +63,7 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
         var sagaRepository = new SagaInstanceRepository(database);
         var avatarRepository = new GameAvatarRepository(database);
         var achievementRepository = new LiteDbRepository<AchievementInstance>(database, "Achievements");
-        var discoveryRepository = new PlayerDiscoveryRepository(database);
+        var discoveryRepository = new AvatarDiscoveryRepository(database);
 
         // Create WorldStateRepository with injected dependencies
         var worldStateRepository = new WorldStateRepository(

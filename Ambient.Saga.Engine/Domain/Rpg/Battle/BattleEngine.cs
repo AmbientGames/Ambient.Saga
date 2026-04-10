@@ -41,7 +41,7 @@ public class BattleEngine
     private const string OffHandSlot = "OffHand";
     private const string BothHandsSlot = "BothHands";
 
-    private readonly Combatant _player;
+    private readonly Combatant _avatar;
     private readonly List<Combatant> _companions;  // Party members (excluding player)
     private readonly Combatant _enemy;
     private readonly ICombatAI? _enemyMind;  // Tactical AI for enemy
@@ -71,7 +71,7 @@ public class BattleEngine
     /// <summary>
     /// All party members (player + companions) for UI display.
     /// </summary>
-    public IReadOnlyList<Combatant> Party => new[] { _player }.Concat(_companions).ToList().AsReadOnly();
+    public IReadOnlyList<Combatant> Party => new[] { _avatar }.Concat(_companions).ToList().AsReadOnly();
 
     /// <summary>
     /// Current companion taking their turn (null if not companion turn).
@@ -83,17 +83,17 @@ public class BattleEngine
     /// <summary>
     /// Create a new battle engine.
     /// </summary>
-    /// <param name="player">The player combatant</param>
+    /// <param name="avatar">The player combatant</param>
     /// <param name="enemy">The enemy combatant</param>
     /// <param name="enemyMind">AI brain for enemy tactical decisions (optional for player-vs-player)</param>
     /// <param name="world">World data for affinity matchups and item lookups (required for advanced combat)</param>
     /// <param name="randomSeed">Optional seed for deterministic behavior in tests</param>
     /// <param name="companions">Optional party companions who fight alongside the player</param>
     /// <param name="companionMind">AI brain for companion tactical decisions (uses enemyMind if not provided)</param>
-    public BattleEngine(Combatant player, Combatant enemy, ICombatAI? enemyMind = null, IWorld world = null, int? randomSeed = null,
+    public BattleEngine(Combatant avatar, Combatant enemy, ICombatAI? enemyMind = null, IWorld world = null, int? randomSeed = null,
         List<Combatant>? companions = null, ICombatAI? companionMind = null)
     {
-        _player = player ?? throw new ArgumentNullException(nameof(player));
+        _avatar = avatar ?? throw new ArgumentNullException(nameof(avatar));
         _enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));
         _companions = companions ?? new List<Combatant>();
         _enemyMind = enemyMind;
@@ -118,11 +118,11 @@ public class BattleEngine
         if (_companions.Count > 0)
         {
             var partyNames = string.Join(", ", _companions.Select(c => c.DisplayName));
-            CombatLog.Add($"{_player.DisplayName} (with {partyNames}) vs {_enemy.DisplayName}!");
+            CombatLog.Add($"{_avatar.DisplayName} (with {partyNames}) vs {_enemy.DisplayName}!");
         }
         else
         {
-            CombatLog.Add($"{_player.DisplayName} vs {_enemy.DisplayName}!");
+            CombatLog.Add($"{_avatar.DisplayName} vs {_enemy.DisplayName}!");
         }
 
         // Opponent always initiates the interaction
@@ -226,19 +226,19 @@ public class BattleEngine
     {
         // Build list of alive targets
         var aliveTargets = new List<Combatant>();
-        if (_player.IsAlive)
-            aliveTargets.Add(_player);
+        if (_avatar.IsAlive)
+            aliveTargets.Add(_avatar);
         aliveTargets.AddRange(_companions.Where(c => c.IsAlive));
 
         if (aliveTargets.Count == 0)
-            return _player;  // Shouldn't happen, but fallback
+            return _avatar;  // Shouldn't happen, but fallback
 
         if (aliveTargets.Count == 1)
             return aliveTargets[0];
 
         // Weight toward player (50% chance to target player, 50% split among companions)
-        if (_player.IsAlive && _random.NextDouble() < 0.5)
-            return _player;
+        if (_avatar.IsAlive && _random.NextDouble() < 0.5)
+            return _avatar;
 
         // Random from all alive targets
         return aliveTargets[_random.Next(aliveTargets.Count)];
@@ -378,10 +378,10 @@ public class BattleEngine
     {
         if (State != BattleState.PlayerTurn) return;
 
-        ProcessStatusEffects(_player);
+        ProcessStatusEffects(_avatar);
 
         // Check if player died from DoT
-        if (!_player.IsAlive)
+        if (!_avatar.IsAlive)
         {
             CheckBattleEnd();
         }
@@ -402,17 +402,17 @@ public class BattleEngine
         }
 
         // Check if player died from status effects before their action
-        if (!_player.IsAlive)
+        if (!_avatar.IsAlive)
         {
             CheckBattleEnd();
             return new CombatEvent
             {
                 Success = false,
-                Message = $"{_player.DisplayName} succumbed to status effects!"
+                Message = $"{_avatar.DisplayName} succumbed to status effects!"
             };
         }
 
-        var action = ExecuteDecision(_player, _enemy, decision);
+        var action = ExecuteDecision(_avatar, _enemy, decision);
         RecordAction(action);
 
         if (action.Success && State == BattleState.PlayerTurn)
@@ -437,8 +437,8 @@ public class BattleEngine
     /// </summary>
     private BattleView CreateBattleSnapshot(bool forEnemy)
     {
-        var self = forEnemy ? _enemy : _player;
-        var opponent = forEnemy ? _player : _enemy;
+        var self = forEnemy ? _enemy : _avatar;
+        var opponent = forEnemy ? _avatar : _enemy;
 
         // Create observable opponent (hide their capabilities/inventory)
         // Stats shown are effective stats (base * stance multipliers)
@@ -1552,11 +1552,11 @@ public class BattleEngine
         }
 
         // Player down = defeat (companions flee without leader)
-        if (_player.Health <= 0)
+        if (_avatar.Health <= 0)
         {
             State = BattleState.Defeat;
             CombatLog.Add("=== DEFEAT ===");
-            CombatLog.Add($"{_player.DisplayName} has been defeated...");
+            CombatLog.Add($"{_avatar.DisplayName} has been defeated...");
             if (_companions.Count > 0)
             {
                 CombatLog.Add("Your companions flee without their leader!");
@@ -1568,7 +1568,7 @@ public class BattleEngine
         if (State == BattleState.PlayerTurn)
         {
             // PHASE 6: Process EndOfTurn status effects for player before switching
-            ProcessEndOfTurnStatusEffects(_player);
+            ProcessEndOfTurnStatusEffects(_avatar);
 
             // After player, companions go (if any alive)
             var aliveCompanions = _companions.Where(c => c.IsAlive).ToList();
@@ -1595,7 +1595,7 @@ public class BattleEngine
             ProcessEndOfTurnStatusEffects(_enemy);
 
             State = BattleState.PlayerTurn;
-            CombatLog.Add($"--- {_player.DisplayName}'s turn ---");
+            CombatLog.Add($"--- {_avatar.DisplayName}'s turn ---");
             _turnNumber++;
         }
         // CompanionTurn advancement is handled in AdvanceCompanionTurn()
@@ -1604,7 +1604,7 @@ public class BattleEngine
     /// <summary>
     /// Get the current player combatant (for UI binding).
     /// </summary>
-    public Combatant GetPlayer() => _player;
+    public Combatant GetPlayer() => _avatar;
 
     /// <summary>
     /// Get companion combatants (for UI binding).

@@ -20,14 +20,14 @@ internal class WorldStateRepository : IWorldStateRepository
     private readonly ISagaInstanceRepository _sagaRepository;
     private readonly IGameAvatarRepository _avatarRepository;
     private readonly IRepository<AchievementInstance> _achievementRepository;
-    private readonly IPlayerDiscoveryRepository _discoveryRepository;
+    private readonly IAvatarDiscoveryRepository _discoveryRepository;
     private readonly IWorld _world;
 
     public WorldStateRepository(
         ISagaInstanceRepository sagaRepository,
         IGameAvatarRepository avatarRepository,
         IRepository<AchievementInstance> achievementRepository,
-        IPlayerDiscoveryRepository discoveryRepository,
+        IAvatarDiscoveryRepository discoveryRepository,
         IWorld world)
     {
         _sagaRepository = sagaRepository ?? throw new ArgumentNullException(nameof(sagaRepository));
@@ -124,14 +124,14 @@ internal class WorldStateRepository : IWorldStateRepository
     /// <summary>
     /// Records a player discovery (lore, achievement, Saga, etc.).
     /// </summary>
-    public async Task<PlayerDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null)
+    public async Task<AvatarDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null)
     {
-        var existing = await _discoveryRepository.FindOneAsync<PlayerDiscovery>(avatarId, entityType, entityRef);
+        var existing = await _discoveryRepository.FindOneAsync<AvatarDiscovery>(avatarId, entityType, entityRef);
 
         if (existing != null)
             return existing;
 
-        var discovery = new PlayerDiscovery
+        var discovery = new AvatarDiscovery
         {
             AvatarId = avatarId,
             EntityType = entityType,
@@ -151,7 +151,7 @@ internal class WorldStateRepository : IWorldStateRepository
     /// </summary>
     public async Task RecordTriggerAsync(string avatarId, string entityType, string entityRef)
     {
-        var discovery = await _discoveryRepository.FindOneAsync<PlayerDiscovery>(avatarId, entityType, entityRef);
+        var discovery = await _discoveryRepository.FindOneAsync<AvatarDiscovery>(avatarId, entityType, entityRef);
 
         if (discovery == null)
         {
@@ -167,7 +167,7 @@ internal class WorldStateRepository : IWorldStateRepository
     /// </summary>
     public async Task<DateTime?> GetLastTriggerTimeAsync(string avatarId, string entityType, string entityRef)
     {
-        var discovery = await _discoveryRepository.FindOneAsync<PlayerDiscovery>(avatarId, entityType, entityRef);
+        var discovery = await _discoveryRepository.FindOneAsync<AvatarDiscovery>(avatarId, entityType, entityRef);
         return discovery?.LastTriggeredAt;
     }
 
@@ -182,9 +182,9 @@ internal class WorldStateRepository : IWorldStateRepository
     /// <summary>
     /// Gets all discoveries for a specific player.
     /// </summary>
-    public async Task<List<PlayerDiscovery>> GetPlayerDiscoveriesAsync(string avatarId)
+    public async Task<List<AvatarDiscovery>> GetAvatarDiscoveriesAsync(string avatarId)
     {
-        return await _discoveryRepository.GetByAvatarIdAsync<PlayerDiscovery>(avatarId);
+        return await _discoveryRepository.GetByAvatarIdAsync<AvatarDiscovery>(avatarId);
     }
 
     #endregion

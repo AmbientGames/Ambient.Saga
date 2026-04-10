@@ -14,15 +14,15 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class StanceChangeModal
 {
-    private readonly Combatant _player;
+    private readonly Combatant _avatar;
     private readonly IWorld _world;
 
     public event Action<string>? StanceSelected;
     public event Action? Cancelled;
 
-    public StanceChangeModal(Combatant player, IWorld world)
+    public StanceChangeModal(Combatant avatar, IWorld world)
     {
-        _player = player;
+        _avatar = avatar;
         _world = world;
     }
 
@@ -131,8 +131,8 @@ public class StanceChangeModal
 
     private string? GetCurrentStance()
     {
-        if (_player.CombatProfile == null) return null;
-        _player.CombatProfile.TryGetValue("Stance", out var stanceRef);
+        if (_avatar.CombatProfile == null) return null;
+        _avatar.CombatProfile.TryGetValue("Stance", out var stanceRef);
         return stanceRef;
     }
 
