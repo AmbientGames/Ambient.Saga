@@ -4,7 +4,7 @@ using Ambient.Domain.Contracts;
 namespace Ambient.Saga.Engine.Domain.Rpg.Trade;
 
 /// <summary>
-/// Core trading engine that handles all trade logic between two participants (player/merchant, player/structure, etc.).
+/// Core trading engine that handles all trade logic between two participants (avatar/merchant, avatar/structure, etc.).
 /// Framework-agnostic - can be used by WPF, ImGui, or any UI framework.
 /// </summary>
 public class TradeEngine

@@ -24,7 +24,7 @@ public class BattleSetup
     public ItemCollection OpponentCapabilities { get; set; } = new ItemCollection();
     public CharacterStats? OpponentStatsOverride { get; set; } = null;
 
-    // Party companions (characters who fight alongside player)
+    // Party companions (characters who fight alongside avatar)
     public List<Character> CompanionCharacters { get; set; } = new List<Character>();
 
     public void SetupFromWorld(IWorld world)
@@ -52,7 +52,7 @@ public class BattleSetup
         if (SelectedOpponentCharacter == null)
             throw new InvalidOperationException("Opponent character not selected");
 
-        // Create player combatant from archetype
+        // Create avatar combatant from archetype
         var avatarStats = AvatarStatsOverride ?? SelectedAvatarArchetype.SpawnStats;
         if (avatarStats == null)
             throw new InvalidOperationException("Avatar archetype must have SpawnStats defined");
@@ -145,7 +145,7 @@ public class BattleSetup
         var battleEngine = new BattleEngine(playerCombatant, enemyCombatant, enemyMind, LoadedWorld,
             companions: companions.Count > 0 ? companions : null);
 
-        // Set player's available affinities
+        // Set avatar's available affinities
         battleEngine.SetAvatarAffinities(AvatarAffinityRefs);
 
         System.Diagnostics.Debug.WriteLine($"\n=== BATTLE ENGINE CREATED ===");

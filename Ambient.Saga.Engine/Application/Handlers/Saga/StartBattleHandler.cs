@@ -90,7 +90,7 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             var battleStartedTransaction = BattleTransactionHelper.CreateBattleStartedTransaction(
                 command.AvatarId.ToString(),
                 command.SagaArcRef,
-                Guid.NewGuid(),  // Player combatant ID
+                Guid.NewGuid(),  // Avatar combatant ID
                 command.EnemyCharacterInstanceId,
                 command.EnemyCombatant.RefName,
                 command.RandomSeed,

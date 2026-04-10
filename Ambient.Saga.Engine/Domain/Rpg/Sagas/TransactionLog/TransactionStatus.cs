@@ -14,7 +14,7 @@ public enum TransactionStatus
 
     /// <summary>
     /// Confirmed by server (or local-only committed).
-    /// This is canonical truth for the player's instance.
+    /// This is canonical truth for the avatar's instance.
     /// </summary>
     Committed,
 

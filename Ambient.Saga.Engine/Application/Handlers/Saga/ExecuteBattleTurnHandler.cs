@@ -15,7 +15,7 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
 /// <summary>
 /// Handler for ExecuteBattleTurnCommand.
-/// Replays battle state from transactions, executes one player turn + enemy response, creates new transactions.
+/// Replays battle state from transactions, executes one avatar turn + enemy response, creates new transactions.
 /// Similar to SelectDialogueChoiceHandler pattern.
 /// </summary>
 internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTurnCommand, SagaCommandResult>
@@ -125,7 +125,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
                 if (isPlayerTurn)
                 {
-                    // Reconstruct player action from transaction
+                    // Reconstruct avatar action from transaction
                     var actionType = Enum.Parse<ActionType>(turnTx.Data["DecisionType"]);
                     var itemRef = turnTx.Data.TryGetValue("ItemRefName", out var item) ? item : null;
                     var action = new CombatAction { ActionType = actionType, Parameter = itemRef };
@@ -138,14 +138,14 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 }
             }
 
-            // Now execute the new player turn
+            // Now execute the new avatar turn
             System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Executing player action: {command.PlayerAction.ActionType}");
             var playerEvent = battleEngine.ExecuteAvatarDecision(command.PlayerAction);
 
             var transactionsBefore = instance.Transactions.Count;
             var newTransactions = new List<SagaTransaction>();
 
-            // Create transaction for player's turn
+            // Create transaction for avatar's turn
             var turnNumber = executedTurns.Count + 1;
             var playerAfterAction = battleEngine.GetAvatar();
             var playerTurnTx = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
@@ -186,7 +186,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Assigned trait '{playerEvent.TraitToAssign}' to '{playerEvent.TraitTargetCharacterRef}'");
             }
 
-            // Check if battle ended after player's turn
+            // Check if battle ended after avatar's turn
             if (battleEngine.State == BattleState.Victory ||
                 battleEngine.State == BattleState.Defeat ||
                 battleEngine.State == BattleState.Fled)
@@ -268,7 +268,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                         var pending = battleEngine.PendingAttack;
                         System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Enemy attack tell: {pending.Tell.TellText}");
 
-                        // Persist player turn transactions so far, then return tell info
+                        // Persist avatar turn transactions so far, then return tell info
                         var (tellSeqNumbers, tellCommitted) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
 
                         if (!tellCommitted)
@@ -540,7 +540,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             instance.AddTransaction(characterDefeatedTx);
             newTransactions.Add(characterDefeatedTx);
 
-            // Grant enemy's affinity to player if they have one and player doesn't already have it
+            // Grant enemy's affinity to avatar if they have one and avatar doesn't already have it
             if (!string.IsNullOrEmpty(enemyCharacter.AffinityRef))
             {
                 var playerHasAffinity = command.Avatar.Affinities?

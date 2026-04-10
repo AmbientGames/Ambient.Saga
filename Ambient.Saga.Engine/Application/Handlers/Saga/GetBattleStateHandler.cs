@@ -61,7 +61,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             var (playerCombatant, enemyCombatant, randomSeed, playerAffinityRefs, enemyCharacterInstanceId) =
                 ReconstructCombatants(battleStartedTx, instance);
 
-            // Attach player's current capabilities (for equipment change modal)
+            // Attach avatar's current capabilities (for equipment change modal)
             // This comes from the live avatar, not the transaction log
             if (query.Avatar?.Capabilities != null)
             {
@@ -282,8 +282,8 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
 
             if (isReaction)
             {
-                // Reaction: player defends against enemy attack
-                // DamageDealt is damage TO player, CounterDamage is damage TO enemy
+                // Reaction: avatar defends against enemy attack
+                // DamageDealt is damage TO avatar, CounterDamage is damage TO enemy
                 var targetHealthAfter = float.Parse(turnTx.Data["TargetHealthAfter"]);
                 var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
 

@@ -45,7 +45,7 @@ public enum SagaTransactionType
 
     // Trading and economy
     ItemTraded,              // Tracks merchant trade transactions
-    ItemCrafted,             // Item crafted by player
+    ItemCrafted,             // Item crafted by avatar
     CurrencyChanged,         // Currency gained or lost
 
     // Party management
@@ -76,10 +76,10 @@ public enum SagaTransactionType
     QuestAccepted,           // Quest accepted from signpost/NPC
     QuestObjectiveCompleted, // Individual objective within a stage completed
     QuestStageAdvanced,      // Advanced to next stage (all objectives complete)
-    QuestBranchChosen,       // Player chose a branch in exclusive choice stage
+    QuestBranchChosen,       // Avatar chose a branch in exclusive choice stage
     QuestCompleted,          // Quest finished successfully (all stages complete)
     QuestFailed,             // Quest failed (fail condition triggered or wrong choice)
-    QuestAbandoned,          // Quest dropped by player
+    QuestAbandoned,          // Quest dropped by avatar
     QuestProgressed,         // DEPRECATED: Use QuestObjectiveCompleted instead
     CustomObjectiveCompleted, // Custom objective manually marked complete
 

@@ -8,7 +8,7 @@ namespace Ambient.Saga.Engine.Application.Commands.Saga;
 /// Command to record progress on a quest objective.
 ///
 /// This is called automatically when the system detects an objective has advanced
-/// (e.g., player defeats a dragon, completes dialogue, collects item).
+/// (e.g., avatar defeats a dragon, completes dialogue, collects item).
 ///
 /// The command checks if the objective threshold has been met, and if so,
 /// creates a QuestObjectiveCompleted transaction.

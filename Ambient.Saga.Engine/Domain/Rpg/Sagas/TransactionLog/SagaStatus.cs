@@ -13,7 +13,7 @@ public enum SagaStatus
 
     /// <summary>
     /// Saga has been discovered and is active.
-    /// Player can interact with triggers and entities.
+    /// Avatar can interact with triggers and entities.
     /// </summary>
     Active,
 

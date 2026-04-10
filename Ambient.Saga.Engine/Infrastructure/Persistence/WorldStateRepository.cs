@@ -119,10 +119,10 @@ internal class WorldStateRepository : IWorldStateRepository
 
     #endregion
 
-    #region Player Discovery Tracking
+    #region Avatar Discovery Tracking
 
     /// <summary>
-    /// Records a player discovery (lore, achievement, Saga, etc.).
+    /// Records an avatar discovery (lore, achievement, Saga, etc.).
     /// </summary>
     public async Task<AvatarDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null)
     {
@@ -147,7 +147,7 @@ internal class WorldStateRepository : IWorldStateRepository
     }
 
     /// <summary>
-    /// Records a trigger event for a player discovery.
+    /// Records a trigger event for an avatar discovery.
     /// </summary>
     public async Task RecordTriggerAsync(string avatarId, string entityType, string entityRef)
     {
@@ -163,7 +163,7 @@ internal class WorldStateRepository : IWorldStateRepository
     }
 
     /// <summary>
-    /// Gets the last trigger time for a specific player/entity combination.
+    /// Gets the last trigger time for a specific avatar/entity combination.
     /// </summary>
     public async Task<DateTime?> GetLastTriggerTimeAsync(string avatarId, string entityType, string entityRef)
     {
@@ -172,7 +172,7 @@ internal class WorldStateRepository : IWorldStateRepository
     }
 
     /// <summary>
-    /// Checks if a player has discovered a specific entity.
+    /// Checks if an avatar has discovered a specific entity.
     /// </summary>
     public async Task<bool> HasDiscoveredAsync(string avatarId, string entityType, string entityRef)
     {
@@ -180,7 +180,7 @@ internal class WorldStateRepository : IWorldStateRepository
     }
 
     /// <summary>
-    /// Gets all discoveries for a specific player.
+    /// Gets all discoveries for a specific avatar.
     /// </summary>
     public async Task<List<AvatarDiscovery>> GetAvatarDiscoveriesAsync(string avatarId)
     {

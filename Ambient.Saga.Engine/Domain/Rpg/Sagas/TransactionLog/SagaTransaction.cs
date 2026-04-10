@@ -23,7 +23,7 @@ public class SagaTransaction
     // ===== Source =====
 
     /// <summary>
-    /// Avatar ID that caused this transaction (if player-initiated).
+    /// Avatar ID that caused this transaction (if avatar-initiated).
     /// Null for system-initiated transactions (spawns, timeouts).
     /// </summary>
     public string? AvatarId { get; set; }

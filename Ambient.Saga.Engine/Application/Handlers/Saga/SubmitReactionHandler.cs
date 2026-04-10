@@ -82,7 +82,7 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
                     // Reaction-specific data
                     ["TellRefName"] = command.TellRefName ?? "",
                     ["BaseDamage"] = command.BaseDamage.ToString(),
-                    ["DamageDealt"] = command.FinalDamage.ToString("F3"), // Damage TO player
+                    ["DamageDealt"] = command.FinalDamage.ToString("F3"), // Damage TO avatar
                     ["HealingDone"] = "0",
                     ["CounterDamage"] = (command.CounterDamage ?? 0).ToString("F3"),
                     ["StaminaGained"] = command.StaminaGained.ToString("F3"),
@@ -90,7 +90,7 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
                     ["TimedOut"] = command.TimedOut.ToString(),
 
                     // State after reaction
-                    ["Target"] = command.Avatar.ArchetypeRef ?? "Player", // Player was target of enemy attack
+                    ["Target"] = command.Avatar.ArchetypeRef ?? "Player", // Avatar was target of enemy attack
                     ["TargetHealthAfter"] = command.PlayerHealthAfter.ToString("F3"),
                     ["ActorEnergyAfter"] = command.PlayerEnergyAfter.ToString("F3"),
                     ["EnemyHealthAfter"] = command.EnemyHealthAfter.ToString("F3")

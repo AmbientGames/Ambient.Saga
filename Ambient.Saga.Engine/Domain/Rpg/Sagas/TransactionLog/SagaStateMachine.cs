@@ -441,7 +441,7 @@ public class SagaStateMachine
 
         character.CurrentHealth = Math.Max(0, character.CurrentHealth - damage);
 
-        // Track damage by player
+        // Track damage by avatar
         if (!string.IsNullOrEmpty(tx.AvatarId))
         {
             if (!character.DamageByPlayer.ContainsKey(tx.AvatarId))
@@ -495,7 +495,7 @@ public class SagaStateMachine
 
     private void ApplyPlayerEntered(SagaState state, SagaTransaction tx)
     {
-        // Player entered Saga - may trigger discovery if first time
+        // Avatar entered Saga - may trigger discovery if first time
         if (state.Status == SagaStatus.Undiscovered && !string.IsNullOrEmpty(tx.AvatarId))
         {
             state.Status = SagaStatus.Active;
@@ -506,7 +506,7 @@ public class SagaStateMachine
 
     private void ApplyPlayerExited(SagaState state, SagaTransaction tx)
     {
-        // Player exited Saga - could trigger cleanup, despawns, etc.
+        // Avatar exited Saga - could trigger cleanup, despawns, etc.
         // Implementation depends on game design
     }
 

@@ -18,7 +18,7 @@ public class SagaState
     public SagaStatus Status { get; set; } = SagaStatus.Undiscovered;
 
     /// <summary>
-    /// When this Saga was first discovered by any player.
+    /// When this Saga was first discovered by any avatar.
     /// </summary>
     public DateTime? FirstDiscoveredAt { get; set; }
 
@@ -87,7 +87,7 @@ public class SagaState
     /// <summary>
     /// Faction reputation values for this avatar in this Saga.
     /// Key: FactionRef, Value: Reputation points (-42000 to +infinity)
-    /// Tracks player standing with all factions, computed from ReputationChanged transactions.
+    /// Tracks avatar standing with all factions, computed from ReputationChanged transactions.
     /// </summary>
     public Dictionary<string, int> FactionReputation { get; set; } = new();
 

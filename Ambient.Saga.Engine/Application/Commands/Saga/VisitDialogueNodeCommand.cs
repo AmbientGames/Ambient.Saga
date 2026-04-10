@@ -56,7 +56,7 @@ public record VisitDialogueNodeCommand : IRequest<SagaCommandResult>
     public string? QuestTokensAwarded { get; init; }
 
     /// <summary>
-    /// Currency transferred (positive = given to player, negative = taken from player)
+    /// Currency transferred (positive = given to avatar, negative = taken from avatar)
     /// </summary>
     public int CurrencyTransferred { get; init; } = 0;
 }

@@ -33,7 +33,7 @@ public class SagaTriggerState
 
     /// <summary>
     /// Set of avatar IDs that have triggered this.
-    /// Used for per-player trigger limits and progression tracking.
+    /// Used for per-avatar trigger limits and progression tracking.
     /// </summary>
     public HashSet<string> TriggeredByAvatars { get; set; } = new();
 

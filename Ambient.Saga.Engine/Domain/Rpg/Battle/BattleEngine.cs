@@ -42,7 +42,7 @@ public class BattleEngine
     private const string BothHandsSlot = "BothHands";
 
     private readonly Combatant _avatar;
-    private readonly List<Combatant> _companions;  // Party members (excluding player)
+    private readonly List<Combatant> _companions;  // Party members (excluding avatar)
     private readonly Combatant _enemy;
     private readonly ICombatAI? _enemyMind;  // Tactical AI for enemy
     private readonly ICombatAI? _companionMind;  // AI for companion turns
@@ -69,7 +69,7 @@ public class BattleEngine
     private readonly Dictionary<string, AttackTell> _attackTells = new();
 
     /// <summary>
-    /// All party members (player + companions) for UI display.
+    /// All party members (avatar + companions) for UI display.
     /// </summary>
     public IReadOnlyList<Combatant> Party => new[] { _avatar }.Concat(_companions).ToList().AsReadOnly();
 
@@ -83,12 +83,12 @@ public class BattleEngine
     /// <summary>
     /// Create a new battle engine.
     /// </summary>
-    /// <param name="avatar">The player combatant</param>
+    /// <param name="avatar">The avatar combatant</param>
     /// <param name="enemy">The enemy combatant</param>
     /// <param name="enemyMind">AI brain for enemy tactical decisions (optional for player-vs-player)</param>
     /// <param name="world">World data for affinity matchups and item lookups (required for advanced combat)</param>
     /// <param name="randomSeed">Optional seed for deterministic behavior in tests</param>
-    /// <param name="companions">Optional party companions who fight alongside the player</param>
+    /// <param name="companions">Optional party companions who fight alongside the avatar</param>
     /// <param name="companionMind">AI brain for companion tactical decisions (uses enemyMind if not provided)</param>
     public BattleEngine(Combatant avatar, Combatant enemy, ICombatAI? enemyMind = null, IWorld world = null, int? randomSeed = null,
         List<Combatant>? companions = null, ICombatAI? companionMind = null)
@@ -161,7 +161,7 @@ public class BattleEngine
             };
         }
 
-        // Select target from party (player + alive companions)
+        // Select target from party (avatar + alive companions)
         var target = SelectEnemyTarget();
 
         if (_enemyMind == null)
@@ -220,7 +220,7 @@ public class BattleEngine
 
     /// <summary>
     /// Select which party member the enemy will target.
-    /// Currently uses simple logic: random alive party member, weighted toward player.
+    /// Currently uses simple logic: random alive party member, weighted toward avatar.
     /// </summary>
     private Combatant SelectEnemyTarget()
     {
@@ -236,7 +236,7 @@ public class BattleEngine
         if (aliveTargets.Count == 1)
             return aliveTargets[0];
 
-        // Weight toward player (50% chance to target player, 50% split among companions)
+        // Weight toward avatar (50% chance to target avatar, 50% split among companions)
         if (_avatar.IsAlive && _random.NextDouble() < 0.5)
             return _avatar;
 
@@ -371,7 +371,7 @@ public class BattleEngine
     }
 
     /// <summary>
-    /// Process player status effects at the start of their turn.
+    /// Process avatar status effects at the start of their turn.
     /// Should be called by the UI/handler before presenting player options.
     /// </summary>
     public void ProcessAvatarTurnStart()
@@ -380,7 +380,7 @@ public class BattleEngine
 
         ProcessStatusEffects(_avatar);
 
-        // Check if player died from DoT
+        // Check if avatar died from DoT
         if (!_avatar.IsAlive)
         {
             CheckBattleEnd();
@@ -388,7 +388,7 @@ public class BattleEngine
     }
 
     /// <summary>
-    /// Execute a player decision (for AI-controlled players or UI-driven choices).
+    /// Execute an avatar decision (for AI-controlled avatars or UI-driven choices).
     /// </summary>
     public CombatEvent ExecuteAvatarDecision(CombatAction decision)
     {
@@ -401,7 +401,7 @@ public class BattleEngine
             };
         }
 
-        // Check if player died from status effects before their action
+        // Check if avatar died from status effects before their action
         if (!_avatar.IsAlive)
         {
             CheckBattleEnd();
@@ -1551,7 +1551,7 @@ public class BattleEngine
             return;
         }
 
-        // Player down = defeat (companions flee without leader)
+        // Avatar down = defeat (companions flee without leader)
         if (_avatar.Health <= 0)
         {
             State = BattleState.Defeat;
@@ -1564,13 +1564,13 @@ public class BattleEngine
             return;
         }
 
-        // Switch turns: Player -> Companions -> Enemy -> Player
+        // Switch turns: Avatar -> Companions -> Enemy -> Avatar
         if (State == BattleState.AvatarTurn)
         {
-            // PHASE 6: Process EndOfTurn status effects for player before switching
+            // PHASE 6: Process EndOfTurn status effects for avatar before switching
             ProcessEndOfTurnStatusEffects(_avatar);
 
-            // After player, companions go (if any alive)
+            // After avatar, companions go (if any alive)
             var aliveCompanions = _companions.Where(c => c.IsAlive).ToList();
             if (aliveCompanions.Count > 0)
             {
@@ -1602,7 +1602,7 @@ public class BattleEngine
     }
 
     /// <summary>
-    /// Get the current player combatant (for UI binding).
+    /// Get the current avatar combatant (for UI binding).
     /// </summary>
     public Combatant GetAvatar() => _avatar;
 
@@ -1627,7 +1627,7 @@ public class BattleEngine
     public int GetTurnNumber() => _turnNumber;
 
     /// <summary>
-    /// Set the player's available affinities for battle.
+    /// Set the avatar's available affinities for battle.
     /// </summary>
     public void SetAvatarAffinities(List<string> affinityRefs)
     {
@@ -2233,7 +2233,7 @@ public class BattleEngine
         // If battle didn't end, move to appropriate next state
         if (State == BattleState.AwaitingReaction)
         {
-            // Move to player turn after enemy attack resolves
+            // Move to avatar turn after enemy attack resolves
             State = BattleState.AvatarTurn;
             _turnNumber++;
         }

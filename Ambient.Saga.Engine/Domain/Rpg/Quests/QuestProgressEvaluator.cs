@@ -148,7 +148,7 @@ public static class QuestProgressEvaluator
     /// <param name="quest">The quest definition to check</param>
     /// <param name="transactions">Committed transactions to evaluate</param>
     /// <param name="currentTime">Current time for time-based fail conditions (optional)</param>
-    /// <param name="currentLocationRef">Player's current location for location-based fail conditions (optional)</param>
+    /// <param name="currentLocationRef">Avatar's current location for location-based fail conditions (optional)</param>
     public static (bool failed, string? reason) CheckFailConditions(
         Quest quest,
         List<SagaTransaction> transactions,
@@ -387,7 +387,7 @@ public static class QuestProgressEvaluator
         if (string.IsNullOrEmpty(failCondition.ItemRef))
             return false;
 
-        // Check if player had the item at some point (via LootAwarded or QuestTokenAwarded or ItemTraded Buy)
+        // Check if avatar had the item at some point (via LootAwarded or QuestTokenAwarded or ItemTraded Buy)
         var hadItem = transactions.Any(t =>
             (t.Type == SagaTransactionType.LootAwarded && t.GetData<string>("ItemRef") == failCondition.ItemRef) ||
             (t.Type == SagaTransactionType.QuestTokenAwarded && t.GetData<string>("QuestTokenRef") == failCondition.ItemRef) ||
@@ -413,10 +413,10 @@ public static class QuestProgressEvaluator
         if (string.IsNullOrEmpty(failCondition.LocationRef))
             return false;
 
-        // If we have a current location, directly check if player is no longer at required location
+        // If we have a current location, directly check if avatar is no longer at required location
         if (!string.IsNullOrEmpty(currentLocationRef))
         {
-            // Simple string comparison - player is not at the required location
+            // Simple string comparison - avatar is not at the required location
             return currentLocationRef != failCondition.LocationRef;
         }
 

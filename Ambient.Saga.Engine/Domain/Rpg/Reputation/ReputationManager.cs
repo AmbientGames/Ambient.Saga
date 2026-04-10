@@ -157,7 +157,7 @@ public static class ReputationManager
     }
 
     /// <summary>
-    /// Checks if a player has the required reputation level with a faction.
+    /// Checks if an avatar has the required reputation level with a faction.
     /// Used for quest prerequisites, dialogue branching, etc.
     /// </summary>
     /// <param name="currentReputation">Current reputation value</param>

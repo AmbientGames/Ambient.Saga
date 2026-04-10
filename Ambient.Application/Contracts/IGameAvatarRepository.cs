@@ -7,7 +7,7 @@ namespace Ambient.Application.Contracts;
 public interface IGameAvatarRepository
 {
     /// <summary>
-    /// Loads the player's avatar from database.
+    /// Loads the avatar from database.
     /// Returns null if no avatar exists.
     /// </summary>
     Task<TAvatar?> LoadAvatarAsync<TAvatar>() where TAvatar : class;

@@ -50,7 +50,7 @@ public static class TriggerAvailabilityChecker
 
     /// <summary>
     /// Gets the list of missing quest tokens required to activate this trigger.
-    /// Useful for UI to display what the player needs.
+    /// Useful for UI to display what the avatar needs.
     /// </summary>
     /// <param name="sagaTrigger">The trigger to check</param>
     /// <param name="avatar">The avatar attempting to activate the trigger</param>

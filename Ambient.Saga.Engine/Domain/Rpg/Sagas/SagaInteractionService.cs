@@ -282,7 +282,7 @@ public class SagaInteractionService
 
             if (isOutsideExitRadius)
             {
-                // Player has exited the trigger zone - create exit transaction
+                // Avatar has exited the trigger zone - create exit transaction
                 var exitTx = new SagaTransaction
                 {
                     TransactionId = Guid.NewGuid(),
@@ -456,8 +456,8 @@ public class SagaInteractionService
 
     /// <summary>
     /// Spawns characters around the avatar's position using deterministic seed.
-    /// - SpawnAndInitiate: 2m from player (inside ApproachRadius for immediate engagement)
-    /// - SpawnPassive: 10m from player at random angles (player must approach)
+    /// - SpawnAndInitiate: 2m from avatar (inside ApproachRadius for immediate engagement)
+    /// - SpawnPassive: 10m from avatar at random angles (avatar must approach)
     /// Respawns defeated characters if RespawnIntervalSeconds has elapsed.
     /// </summary>
     private void SpawnCharacters(

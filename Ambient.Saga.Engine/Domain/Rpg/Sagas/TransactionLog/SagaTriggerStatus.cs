@@ -7,7 +7,7 @@ public enum SagaTriggerStatus
 {
     /// <summary>
     /// Trigger exists but has not been activated yet.
-    /// Waiting for player to enter radius.
+    /// Waiting for avatar to enter radius.
     /// </summary>
     Inactive,
 

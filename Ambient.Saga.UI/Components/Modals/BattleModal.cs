@@ -189,7 +189,7 @@ public class BattleModal
 
             ImGui.TableNextRow();
 
-            // Left column: Player stats
+            // Left column: Avatar stats
             ImGui.TableNextColumn();
             RenderCombatantPanel(player, "Player");
 
@@ -1135,7 +1135,7 @@ public class BattleModal
 
         CleanupAffinityChangeModal();
 
-        // Get player's available affinities (from avatar capabilities or default world affinities)
+        // Get avatar's available affinities (from avatar capabilities or default world affinities)
         var playerAffinities = _currentState.PlayerAffinityRefs ??
             viewModel.CurrentWorld.Gameplay?.CharacterAffinities?.Select(a => a.RefName).ToList() ??
             new List<string>();

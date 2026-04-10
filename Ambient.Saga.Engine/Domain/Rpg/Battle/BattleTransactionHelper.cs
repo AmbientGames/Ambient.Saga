@@ -41,7 +41,7 @@ public static class BattleTransactionHelper
                 ["RandomSeed"] = randomSeed.ToString(),
                 ["SagaInstanceId"] = sagaInstanceId.ToString(),
 
-                // Player stats
+                // Avatar stats
                 ["PlayerHealth"] = player.Health.ToString("F3"),
                 ["PlayerEnergy"] = player.Stamina.ToString("F3"),
                 ["PlayerStrength"] = player.Strength.ToString("F3"),
@@ -61,7 +61,7 @@ public static class BattleTransactionHelper
             }
         };
 
-        // Record player's equipment inventory (what they own)
+        // Record avatar's equipment inventory (what they own)
         if (player.Capabilities?.Equipment != null)
         {
             var equipmentRefs = player.Capabilities.Equipment
@@ -71,7 +71,7 @@ public static class BattleTransactionHelper
                 transaction.Data["PlayerEquipment"] = string.Join(",", equipmentRefs);
         }
 
-        // Record player's initial equipped slots
+        // Record avatar's initial equipped slots
         if (player.CombatProfile != null && player.CombatProfile.Count > 0)
         {
             var equippedSlots = player.CombatProfile
@@ -80,7 +80,7 @@ public static class BattleTransactionHelper
             transaction.Data["PlayerEquippedSlots"] = string.Join(",", equippedSlots);
         }
 
-        // Record player's available affinities
+        // Record avatar's available affinities
         if (playerAffinityRefs != null && playerAffinityRefs.Count > 0)
         {
             transaction.Data["PlayerAffinities"] = string.Join(",", playerAffinityRefs);
