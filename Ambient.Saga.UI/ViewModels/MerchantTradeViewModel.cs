@@ -145,7 +145,7 @@ public partial class MerchantTradeViewModel : ObservableObject
 
         var inventory = _tradeMode == "Buy"
             ? _context.ActiveCharacter?.Interactable?.Loot  // Merchant inventory for buying
-            : _context.AvatarEntity?.Capabilities;  // Player inventory for selling
+            : _context.AvatarEntity?.Capabilities;  // Avatar inventory for selling
 
         return _tradeEngine.GetCategoryItemCount(inventory, category);
     }
@@ -262,7 +262,7 @@ public partial class MerchantTradeViewModel : ObservableObject
             ActivityMessageGenerated?.Invoke(this, message);
             StatusMessageChanged?.Invoke(this, "Trade successful!");
 
-            // Signal owner revenue if this was a purchase from a player-owned merchant
+            // Signal owner revenue if this was a purchase from an avatar-owned merchant
             if (result.Data.TryGetValue("OwnerAvatarId", out var ownerIdObj) && ownerIdObj is string ownerId
                 && result.Data.TryGetValue("OwnerRevenue", out var revenueObj) && revenueObj is int revenue)
             {

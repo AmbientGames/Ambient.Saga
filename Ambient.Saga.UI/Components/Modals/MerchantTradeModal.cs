@@ -59,7 +59,7 @@ public class MerchantTradeModal
             ImGui.Separator();
             ImGui.Spacing();
 
-            // Player money display at top
+            // Avatar money display at top
             if (_tradeViewModel.IsMerchant && _tradeViewModel.PlayerAvatar?.Stats != null)
             {
                 var moneyBarHeight = ImGui.GetFrameHeightWithSpacing() * 1.5f;

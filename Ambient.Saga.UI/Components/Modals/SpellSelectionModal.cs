@@ -42,7 +42,7 @@ public class SpellSelectionModal
 
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
-        // Check if player has any spells
+        // Check if avatar has any spells
         if (_avatar.Capabilities?.Spells == null || _avatar.Capabilities.Spells.Length == 0)
         {
             ImGui.Text("No spells available!");

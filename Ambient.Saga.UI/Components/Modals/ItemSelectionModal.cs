@@ -42,7 +42,7 @@ public class ItemSelectionModal
 
         var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
-        // Check if player has any items
+        // Check if avatar has any items
         if (_avatar.Capabilities?.Consumables == null || _avatar.Capabilities.Consumables.Length == 0)
         {
             ImGui.Text("No items available!");

@@ -65,7 +65,7 @@ public class EquipmentChangeModal
                 currentEquipmentRef = equipped;
             }
 
-            // Get equipment the player actually HAS
+            // Get equipment the avatar actually HAS
             if (_avatar.Capabilities?.Equipment != null)
             {
                 foreach (var entry in _avatar.Capabilities.Equipment)

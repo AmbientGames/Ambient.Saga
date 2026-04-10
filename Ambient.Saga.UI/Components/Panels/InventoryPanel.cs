@@ -935,7 +935,7 @@ public class InventoryPanel
             equipmentBySlot[slot.RefName] = new List<(EquipmentEntry entry, Equipment? def)>();
         }
 
-        // Group player's equipment by slot
+        // Group avatar's equipment by slot
         if (caps.Equipment != null)
         {
             foreach (var equip in caps.Equipment)

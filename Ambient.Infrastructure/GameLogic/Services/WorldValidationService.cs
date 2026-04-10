@@ -340,7 +340,7 @@ public static class WorldValidationService
             // Validate all inventory items in Capabilities (what character owns/uses)
             ValidateItemCollection(world, errors, characterContext, character.Capabilities, "Capabilities");
 
-            // Validate all inventory items in Loot (what character gives/drops to players)
+            // Validate all inventory items in Loot (what character gives/drops to avatars)
             ValidateItemCollection(world, errors, characterContext, character.Interactable?.Loot, "Interactable.Loot");
         }
     }
@@ -704,7 +704,7 @@ public static class WorldValidationService
                 ValidateConditionRefName(world.SpellsLookup, condition.RefName, conditionContext, "Spells", errors, required: true);
                 break;
 
-            // Player state
+            // Avatar state
             case DialogueConditionType.HasAchievement:
                 ValidateConditionRefName(world.AchievementsLookup, condition.RefName, conditionContext, "Achievements", errors, required: true);
                 break;
@@ -1016,10 +1016,10 @@ public static class WorldValidationService
     ///
     /// ARCHITECTURE NOTE:
     /// - Character.Capabilities = Items the character OWNS and USES (personal gear, not dropped)
-    /// - Character.Interactable.Loot = Items the character GIVES/DROPS to players (rewards, shop inventory)
+    /// - Character.Interactable.Loot = Items the character GIVES/DROPS to avatars (rewards, shop inventory)
     /// - Dialogue rewards come from Loot, not Capabilities (game balance: boss can use powerful gear without dropping it)
     ///
-    /// Validates "Give" actions only - "Take" actions are validated at runtime against player inventory.
+    /// Validates "Give" actions only - "Take" actions are validated at runtime against avatar inventory.
     ///
     /// Checks:
     /// - GiveEquipment: Character.Interactable.Loot.Equipment contains EquipmentRef
@@ -1048,7 +1048,7 @@ public static class WorldValidationService
 
             var characterContext = $"Character '{character.RefName}'";
 
-            // Check all dialogue nodes for "Give" actions (not "Take" - those validate player inventory at runtime)
+            // Check all dialogue nodes for "Give" actions (not "Take" - those validate avatar inventory at runtime)
             if (dialogueTree.Node != null)
             {
                 foreach (var node in dialogueTree.Node)
@@ -1096,7 +1096,7 @@ public static class WorldValidationService
                                 break;
 
                             case DialogueActionType.TransferCurrency:
-                                // Only validate positive transfers (giving to player)
+                                // Only validate positive transfers (giving to avatar)
                                 if (action.Amount > 0)
                                 {
                                     ValidateCharacterHasCurrency(character, action.Amount, nodeContext, errors);

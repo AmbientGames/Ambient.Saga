@@ -257,7 +257,7 @@ public partial class SagaMainViewModel : ObservableObject
     // Event for when the game is completed (CompletionQuestRef quest finished). Consumer decides behavior.
     public event Action<string>? GameCompleted;
 
-    // Event for when a non-owner buys from a player-owned merchant. Consumer credits the owner.
+    // Event for when a non-owner buys from an avatar-owned merchant. Consumer credits the owner.
     // Parameters: ownerAvatarId, revenue amount
     public event Action<string, int>? OwnerRevenueEarned;
 
@@ -289,7 +289,7 @@ public partial class SagaMainViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Signals that a player-owned merchant earned revenue from a sale.
+    /// Signals that an avatar-owned merchant earned revenue from a sale.
     /// Called by MerchantTradeViewModel after a successful trade.
     /// </summary>
     public void RaiseOwnerRevenueEarned(string ownerAvatarId, int revenue)

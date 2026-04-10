@@ -429,7 +429,7 @@ public class MerchantTradeViewModelTests
 
         viewModel.TradeMode = "Sell";
 
-        // In sell mode with empty player inventory, should return empty
+        // In sell mode with empty avatar inventory, should return empty
         Assert.Empty(viewModel.TradeInventory);
     }
 
@@ -448,7 +448,7 @@ public class MerchantTradeViewModelTests
     [Fact]
     public void TradeInventory_InSellMode_ReturnsPlayerItems()
     {
-        // Give player an item
+        // Give avatar an item
         _avatar.Capabilities.Equipment = new[]
         {
             new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }

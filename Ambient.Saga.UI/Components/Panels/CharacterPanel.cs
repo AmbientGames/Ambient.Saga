@@ -625,8 +625,8 @@ public class CharacterPanel
 
     private void RenderFactionEntry(Ambient.Domain.Faction faction, SagaMainViewModel viewModel)
     {
-        // Get player's reputation with this faction
-        var currentRep = faction.StartingReputation; // TODO: Get actual player reputation from avatar
+        // Get avatar's reputation with this faction
+        var currentRep = faction.StartingReputation; // TODO: Get actual avatar reputation
         var repLevel = GetReputationLevel(currentRep);
         var (levelColor, levelName) = GetReputationDisplay(repLevel);
 

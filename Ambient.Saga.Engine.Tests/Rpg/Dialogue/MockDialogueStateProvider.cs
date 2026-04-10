@@ -56,7 +56,7 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public void AddSpell(string spellRef) => _spells.Add(spellRef);
     public void RemoveSpell(string spellRef) => _spells.Remove(spellRef);
 
-    // Player state
+    // Avatar state
     public bool HasAchievement(string achievementRef) => _achievements.Contains(achievementRef);
     public void UnlockAchievement(string achievementRef) => _achievements.Add(achievementRef);
     public float GetCredits() => Credits;
