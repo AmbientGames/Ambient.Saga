@@ -571,9 +571,9 @@ public class DirectDialogueStateProviderTests
     [Fact]
     public void CompleteQuestScenario_AllOperationsTogether()
     {
-        // Scenario: Player completes a quest that requires materials and rewards them
+        // Scenario: Avatar completes a quest that requires materials and rewards them
 
-        // Check requirements: Player has quest token and materials
+        // Check requirements: Avatar has quest token and materials
         _provider.AddQuestToken("quest_active");
         _provider.AddMaterial("iron_ore", 10);
         _provider.AddMaterial("gold_ore", 5);

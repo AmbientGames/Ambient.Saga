@@ -6,7 +6,7 @@
     <!-- ============================================================================
          PARTY SYSTEM
 
-         Companions are NPCs who have joined the player's party.
+         Companions are NPCs who have joined the avatar's party.
          They are always present (not summoned on-demand like Summons).
 
          Party slots are limited and expand based on reputation with a

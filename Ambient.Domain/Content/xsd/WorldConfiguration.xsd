@@ -63,10 +63,10 @@
                     <xs:annotation><xs:documentation>Initial in-game date and time when a new world begins. Affects seasons, day length, and starting time of day.</xs:documentation></xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="SpawnLatitude" type="xs:double" use="required">
-                    <xs:annotation><xs:documentation>Latitude coordinate where players spawn. Affects starting climate and terrain.</xs:documentation></xs:annotation>
+                    <xs:annotation><xs:documentation>Latitude coordinate where avatars spawn. Affects starting climate and terrain.</xs:documentation></xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="SpawnLongitude" type="xs:double" use="required">
-                    <xs:annotation><xs:documentation>Longitude coordinate where players spawn.</xs:documentation></xs:annotation>
+                    <xs:annotation><xs:documentation>Longitude coordinate where avatars spawn.</xs:documentation></xs:annotation>
                 </xs:attribute>
                 <xs:attribute name="SecondsInHour" type="xs:int" default="60">
                     <xs:annotation><xs:documentation>Real-time seconds per in-game hour. 60 = one real minute per game hour; 24 real minutes per game day.</xs:documentation></xs:annotation>
@@ -75,7 +75,7 @@
                     <xs:annotation><xs:documentation>Climate simulation model. Earth = Earth-like temperature and weather patterns; Mars = colder, thinner atmosphere.</xs:documentation></xs:annotation>
                 </xs:attribute>
 				<xs:attribute name="AllowTeleporting" type="xs:boolean" default="false">
-                    <xs:annotation><xs:documentation>Whether players can teleport to distant locations. False = players must travel on foot.</xs:documentation></xs:annotation>
+                    <xs:annotation><xs:documentation>Whether avatars can teleport to distant locations. False = avatars must travel on foot.</xs:documentation></xs:annotation>
                 </xs:attribute>
 				<xs:attribute name="DisplayOrder" type="xs:int" default="100">
                     <xs:annotation><xs:documentation>Sort order for this world in the world selection UI. Lower values appear first.</xs:documentation></xs:annotation>

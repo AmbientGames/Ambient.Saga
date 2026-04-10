@@ -498,7 +498,7 @@ public class DialogueConditionEvaluatorTests
         // Scenario: Character offers to join if:
         // 1. Party slot is available
         // 2. They're not already in the party
-        // 3. Player has completed a quest (has token)
+        // 3. Avatar has completed a quest (has token)
         _state.MaxPartySlots = 2;
         _state.AddQuestToken("saved_the_village");
 

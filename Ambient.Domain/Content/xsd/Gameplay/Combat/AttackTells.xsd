@@ -99,7 +99,7 @@
             <xs:annotation><xs:documentation>Multiplier applied to incoming damage (0.0 = no damage, 0.5 = half, 1.0 = full).</xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attribute name="EnablesCounter" type="xs:boolean" use="optional" default="false">
-            <xs:annotation><xs:documentation>Whether this defense grants the player an immediate counter-attack opportunity.</xs:documentation></xs:annotation>
+            <xs:annotation><xs:documentation>Whether this defense grants the avatar an immediate counter-attack opportunity.</xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attribute name="CounterMultiplier" type="xs:float" use="optional" default="0.5">
             <xs:annotation><xs:documentation>Damage multiplier for the counter-attack, applied only when EnablesCounter is true.</xs:documentation></xs:annotation>
@@ -113,7 +113,7 @@
     </xs:complexType>
 
     <xs:complexType name="AttackTell">
-        <xs:annotation><xs:documentation>An enemy attack telegraph that describes the incoming attack and maps each possible player defense to an outcome.</xs:documentation></xs:annotation>
+        <xs:annotation><xs:documentation>An enemy attack telegraph that describes the incoming attack and maps each possible avatar defense to an outcome.</xs:documentation></xs:annotation>
         <xs:sequence>
             <xs:element name="Outcome" type="DefenseOutcome" minOccurs="1" maxOccurs="5">
                 <xs:annotation><xs:documentation>One outcome entry per possible defensive reaction, defining damage and effects for that choice.</xs:documentation></xs:annotation>

@@ -745,13 +745,13 @@ public class QuestProgressEvaluatorTests
 
         var transactions = new List<SagaTransaction>
         {
-            // Player obtained the item
+            // Avatar obtained the item
             CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
             {
                 ["ItemRef"] = "SACRED_ARTIFACT",
                 ["Quantity"] = "1"
             }),
-            // Player then sold it
+            // Avatar then sold it
             CreateTransaction(SagaTransactionType.ItemTraded, new Dictionary<string, string>
             {
                 ["ItemRef"] = "SACRED_ARTIFACT",
@@ -789,7 +789,7 @@ public class QuestProgressEvaluatorTests
 
         var transactions = new List<SagaTransaction>
         {
-            // Player obtained the item and kept it
+            // Avatar obtained the item and kept it
             CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
             {
                 ["ItemRef"] = "SACRED_ARTIFACT",
@@ -853,7 +853,7 @@ public class QuestProgressEvaluatorTests
 
         var transactions = new List<SagaTransaction>();
 
-        // Player is now at a different location
+        // Avatar is now at a different location
         var currentLocationRef = "MARKET_DISTRICT";
 
         // Act
@@ -885,7 +885,7 @@ public class QuestProgressEvaluatorTests
 
         var transactions = new List<SagaTransaction>();
 
-        // Player is still at the required location
+        // Avatar is still at the required location
         var currentLocationRef = "CASTLE_ENTRANCE";
 
         // Act

@@ -31,7 +31,7 @@
     </xs:complexType>
     <xs:complexType name="SagaTrigger">
         <xs:annotation>
-            <xs:documentation>A proximity-based trigger that spawns NPCs when the player enters its radius within a SagaArc.</xs:documentation>
+            <xs:documentation>A proximity-based trigger that spawns NPCs when the avatar enters its radius within a SagaArc.</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="EntityBase">

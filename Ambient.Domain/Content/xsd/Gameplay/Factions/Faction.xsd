@@ -63,7 +63,7 @@
     </xs:complexType>
 
     <xs:complexType name="ReputationReward">
-        <xs:annotation><xs:documentation>A set of items unlocked for purchase or granted when the player reaches a specific reputation level with a faction.</xs:documentation></xs:annotation>
+        <xs:annotation><xs:documentation>A set of items unlocked for purchase or granted when the avatar reaches a specific reputation level with a faction.</xs:documentation></xs:annotation>
 		<xs:sequence>
 			<xs:element name="Equipment" minOccurs="0" maxOccurs="unbounded">
 				<xs:annotation><xs:documentation>An equipment item available as a reputation reward.</xs:documentation></xs:annotation>
@@ -106,7 +106,7 @@
 			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="RequiredLevel" type="ReputationLevel" use="required">
-			<xs:annotation><xs:documentation>The minimum reputation level the player must reach to unlock this reward.</xs:documentation></xs:annotation>
+			<xs:annotation><xs:documentation>The minimum reputation level the avatar must reach to unlock this reward.</xs:documentation></xs:annotation>
 		</xs:attribute>
     </xs:complexType>
 

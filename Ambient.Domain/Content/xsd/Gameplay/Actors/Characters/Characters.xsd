@@ -19,7 +19,7 @@
             </xs:enumeration>
             <xs:enumeration value="PlayerHealthBelow">
                 <xs:annotation>
-                    <xs:documentation>Triggers when player's health drops below Value (0.0-1.0)</xs:documentation>
+                    <xs:documentation>Triggers when avatar's health drops below Value (0.0-1.0)</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="TurnNumber">

@@ -168,12 +168,12 @@
             </xs:enumeration>
             <xs:enumeration value="LocationLeft">
                 <xs:annotation>
-                    <xs:documentation>Quest fails if the player leaves a required area.</xs:documentation>
+                    <xs:documentation>Quest fails if the avatar leaves a required area.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="WrongChoiceMade">
                 <xs:annotation>
-                    <xs:documentation>Quest fails if the player selects a specific disqualifying dialogue choice.</xs:documentation>
+                    <xs:documentation>Quest fails if the avatar selects a specific disqualifying dialogue choice.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
         </xs:restriction>
@@ -392,7 +392,7 @@
     <!-- Quest Reward -->
     <xs:complexType name="QuestReward">
         <xs:annotation>
-            <xs:documentation>A bundle of rewards granted to the player when a reward condition is met.</xs:documentation>
+            <xs:documentation>A bundle of rewards granted to the avatar when a reward condition is met.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="Currency" minOccurs="0" maxOccurs="1">
@@ -518,7 +518,7 @@
         </xs:attribute>
         <xs:attribute name="LocationRef" type="xs:string" use="optional">
             <xs:annotation>
-                <xs:documentation>Location the player must stay within (used with LocationLeft).</xs:documentation>
+                <xs:documentation>Location the avatar must stay within (used with LocationLeft).</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="DialogueRef" type="xs:string" use="optional">
@@ -541,7 +541,7 @@
     <!-- Quest Prerequisite -->
     <xs:complexType name="QuestPrerequisite">
         <xs:annotation>
-            <xs:documentation>A condition that must be met before the player can accept this quest.</xs:documentation>
+            <xs:documentation>A condition that must be met before the avatar can accept this quest.</xs:documentation>
         </xs:annotation>
         <xs:attribute name="QuestRef" type="QuestRef" use="optional">
             <xs:annotation>
@@ -550,17 +550,17 @@
         </xs:attribute>
         <xs:attribute name="MinimumLevel" type="xs:int" use="optional">
             <xs:annotation>
-                <xs:documentation>Minimum player level required to accept this quest.</xs:documentation>
+                <xs:documentation>Minimum avatar level required to accept this quest.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="RequiredItemRef" type="xs:string" use="optional">
             <xs:annotation>
-                <xs:documentation>An item the player must possess to accept this quest.</xs:documentation>
+                <xs:documentation>An item the avatar must possess to accept this quest.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="RequiredAchievementRef" type="AchievementRef" use="optional">
             <xs:annotation>
-                <xs:documentation>An achievement the player must have unlocked to accept this quest.</xs:documentation>
+                <xs:documentation>An achievement the avatar must have unlocked to accept this quest.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="FactionRef" type="xs:string" use="optional">

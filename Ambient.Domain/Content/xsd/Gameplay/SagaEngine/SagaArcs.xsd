@@ -60,7 +60,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="Service">
 				<xs:annotation>
-					<xs:documentation>A location offering player services such as healing, repair, or fast travel.</xs:documentation>
+					<xs:documentation>A location offering avatar services such as healing, repair, or fast travel.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Default">
@@ -84,12 +84,12 @@
 
 	<xs:simpleType name="SagaArcInitialState">
 		<xs:annotation>
-			<xs:documentation>Controls whether a SagaArc is revealed on the map before the player discovers it.</xs:documentation>
+			<xs:documentation>Controls whether a SagaArc is revealed on the map before the avatar discovers it.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Hidden">
 				<xs:annotation>
-					<xs:documentation>The point of interest is invisible on the map until the player enters its DiscoverRadius.</xs:documentation>
+					<xs:documentation>The point of interest is invisible on the map until the avatar enters its DiscoverRadius.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Visible">
@@ -134,7 +134,7 @@
 				<!-- Deterministic POI interaction envelope -->
 				<xs:attribute name="DiscoverRadius" type="xs:double" use="optional" default="200">
 					<xs:annotation>
-						<xs:documentation>Distance in meters at which the player discovers this point of interest and it becomes visible on the map.</xs:documentation>
+						<xs:documentation>Distance in meters at which the avatar discovers this point of interest and it becomes visible on the map.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
 				<xs:attribute name="InitialState" type="SagaArcInitialState" use="optional" default="Hidden">

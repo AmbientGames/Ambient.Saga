@@ -475,11 +475,11 @@ public class TradeEngineTests
     [Fact]
     public void CompleteTradeScenario_BuyAndSell()
     {
-        // Player starts with 1000 credits
+        // Avatar starts with 1000 credits
         var player = CreateTestAvatar(credits: 1000);
         var merchant = CreateMerchantInventory();
 
-        // Player buys an iron sword for 150
+        // Avatar buys an iron sword for 150
         var equipment = _world.Gameplay.Equipment[0];
         var buyItemInfo = new TradeItemInfo(equipment, 150);
         var buyResult = _engine.BuyItem(player, merchant, buyItemInfo);
@@ -488,7 +488,7 @@ public class TradeEngineTests
         Assert.Equal(850, player.Stats.Credits);
         Assert.Single(player.Capabilities.Equipment);
 
-        // Player sells the sword back for 100 (wholesale price)
+        // Avatar sells the sword back for 100 (wholesale price)
         var sellItemInfo = new TradeItemInfo(equipment, 100, condition: 1.0f);
         var sellResult = _engine.SellItem(player, merchant, sellItemInfo);
 
