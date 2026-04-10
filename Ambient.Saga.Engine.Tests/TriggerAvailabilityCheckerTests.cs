@@ -344,13 +344,13 @@ public class TriggerAvailabilityCheckerTests
         Assert.False(TriggerAvailabilityChecker.CanActivate(middleTrigger, avatar));
         Assert.False(TriggerAvailabilityChecker.CanActivate(innerTrigger, avatar));
 
-        // Player completes outer trigger
+        // Avatar completes outer trigger
         avatar = CreateAvatarWithQuestTokens("Saga_outer_Completed");
         Assert.True(TriggerAvailabilityChecker.CanActivate(outerTrigger, avatar));
         Assert.True(TriggerAvailabilityChecker.CanActivate(middleTrigger, avatar));
         Assert.False(TriggerAvailabilityChecker.CanActivate(innerTrigger, avatar));
 
-        // Player completes middle trigger
+        // Avatar completes middle trigger
         avatar = CreateAvatarWithQuestTokens("Saga_outer_Completed", "Saga_middle_Completed");
         Assert.True(TriggerAvailabilityChecker.CanActivate(outerTrigger, avatar));
         Assert.True(TriggerAvailabilityChecker.CanActivate(middleTrigger, avatar));

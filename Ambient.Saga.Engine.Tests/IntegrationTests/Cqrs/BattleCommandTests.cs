@@ -26,7 +26,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// Uses BattleSetup helper to create properly configured StartBattleCommand objects.
 /// The battle system uses turn-based combat via:
 ///   - StartBattleCommand: Initializes battle, creates BattleStarted transaction
-///   - ExecuteBattleTurnCommand: Executes one player + one enemy turn
+///   - ExecuteBattleTurnCommand: Executes one avatar + one enemy turn
 ///
 /// TESTS:
 /// 1. StartBattle_CreatesValidTransactions - Verifies battle initialization ? UPDATED

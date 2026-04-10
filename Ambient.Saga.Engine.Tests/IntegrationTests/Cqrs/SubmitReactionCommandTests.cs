@@ -22,7 +22,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
 /// <summary>
 /// Integration tests for SubmitReactionCommand - the active defense system.
-/// Tests that player defensive reactions are properly recorded as transactions.
+/// Tests that avatar defensive reactions are properly recorded as transactions.
 /// </summary>
 [Collection("Sequential CQRS Tests")]
 public class SubmitReactionCommandTests : IDisposable

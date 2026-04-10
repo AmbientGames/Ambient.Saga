@@ -19,7 +19,7 @@ namespace Ambient.Saga.UI.Components.Panels;
 /// - Quests: Active/completed quest tracking
 /// - Bestiary: Encountered NPCs, merchants, enemies
 /// - Atlas: Discovered locations with GPS coordinates
-/// - History: Transaction log of player actions
+/// - History: Transaction log of avatar actions
 /// - Achievements: Unlocked/locked achievements with progress
 /// </summary>
 public class JournalPanel

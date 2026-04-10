@@ -19,7 +19,7 @@ public interface IDialogueStateProvider
     bool HasTool(string toolRef);
     bool HasSpell(string spellRef);
 
-    // ===== PLAYER STATE =====
+    // ===== AVATAR STATE =====
     bool HasAchievement(string achievementRef);
     float GetCredits();
     float GetHealth();
