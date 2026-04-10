@@ -83,7 +83,7 @@ public class BattleEngineCompanionTests
         // Assert - Enemy's turn should have been executed
         Assert.NotEmpty(engine.ActionHistory);
         Assert.Equal("Enemy", engine.ActionHistory[0].ActorName);
-        Assert.Equal(BattleState.PlayerTurn, engine.State);
+        Assert.Equal(BattleState.AvatarTurn, engine.State);
     }
 
     [Fact]
@@ -104,7 +104,7 @@ public class BattleEngineCompanionTests
         engine.StartBattle();  // Enemy moves first
 
         // Act - Player executes their turn
-        var playerResult = engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        var playerResult = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Should now be companion turn
         Assert.True(playerResult.Success);
@@ -127,7 +127,7 @@ public class BattleEngineCompanionTests
             companions: new List<Combatant> { companion });
 
         engine.StartBattle();
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Act - Execute companion's turn
         var companionResult = engine.ExecuteCompanionTurn();
@@ -153,7 +153,7 @@ public class BattleEngineCompanionTests
             companions: new List<Combatant> { companion });
 
         engine.StartBattle();  // Enemy turn
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });  // Player turn
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });  // Player turn
 
         // Act - Execute companion's turn
         var result = engine.ExecuteCompanionTurn();
@@ -294,7 +294,7 @@ public class BattleEngineCompanionTests
         weakCompanion.Health = 0;
 
         // Act - Continue battle
-        var playerResult = engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        var playerResult = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Battle should continue
         Assert.True(playerResult.Success);
@@ -318,7 +318,7 @@ public class BattleEngineCompanionTests
         engine.StartBattle();
 
         // Act - Player attacks weak enemy
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Battle should end in victory
         Assert.Equal(BattleState.Victory, engine.State);
@@ -344,7 +344,7 @@ public class BattleEngineCompanionTests
             companions: new List<Combatant> { deadCompanion, aliveCompanion });
 
         engine.StartBattle();
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Act - Execute companion turns
         var companionResult = engine.ExecuteCompanionTurn();
@@ -369,7 +369,7 @@ public class BattleEngineCompanionTests
             companions: new List<Combatant> { deadCompanion1, deadCompanion2 });
 
         engine.StartBattle();
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Should skip directly to enemy turn
         Assert.Equal(BattleState.EnemyTurn, engine.State);

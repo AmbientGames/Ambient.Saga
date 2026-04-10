@@ -146,7 +146,7 @@ public class BattleSetup
             companions: companions.Count > 0 ? companions : null);
 
         // Set player's available affinities
-        battleEngine.SetPlayerAffinities(AvatarAffinityRefs);
+        battleEngine.SetAvatarAffinities(AvatarAffinityRefs);
 
         System.Diagnostics.Debug.WriteLine($"\n=== BATTLE ENGINE CREATED ===");
         System.Diagnostics.Debug.WriteLine($"Player: {playerCombatant.DisplayName} (HP: {playerCombatant.Health:F2})");

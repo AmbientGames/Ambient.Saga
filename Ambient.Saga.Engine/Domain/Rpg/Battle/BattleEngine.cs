@@ -10,7 +10,7 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 public enum BattleState
 {
     NotStarted,
-    PlayerTurn,
+    AvatarTurn,
     CompanionTurn,
     EnemyTurn,
     /// <summary>
@@ -55,7 +55,7 @@ public class BattleEngine
 
     public BattleState State { get; private set; }
     public List<string> CombatLog { get; } = new();
-    public List<string> PlayerAffinityRefs { get; private set; } = new();
+    public List<string> AvatarAffinityRefs { get; private set; } = new();
     public IReadOnlyList<CombatEvent> ActionHistory => _actionHistory.AsReadOnly();
 
     /// <summary>
@@ -200,7 +200,7 @@ public class BattleEngine
                         IsDefending = true, // Signals awaiting reaction
                         Message = tell.TellText,
                         TurnNumber = _turnNumber,
-                        IsPlayerTurn = false
+                        IsAvatarTurn = false
                     };
                 }
             }
@@ -374,9 +374,9 @@ public class BattleEngine
     /// Process player status effects at the start of their turn.
     /// Should be called by the UI/handler before presenting player options.
     /// </summary>
-    public void ProcessPlayerTurnStart()
+    public void ProcessAvatarTurnStart()
     {
-        if (State != BattleState.PlayerTurn) return;
+        if (State != BattleState.AvatarTurn) return;
 
         ProcessStatusEffects(_avatar);
 
@@ -390,9 +390,9 @@ public class BattleEngine
     /// <summary>
     /// Execute a player decision (for AI-controlled players or UI-driven choices).
     /// </summary>
-    public CombatEvent ExecutePlayerDecision(CombatAction decision)
+    public CombatEvent ExecuteAvatarDecision(CombatAction decision)
     {
-        if (State != BattleState.PlayerTurn)
+        if (State != BattleState.AvatarTurn)
         {
             return new CombatEvent
             {
@@ -415,7 +415,7 @@ public class BattleEngine
         var action = ExecuteDecision(_avatar, _enemy, decision);
         RecordAction(action);
 
-        if (action.Success && State == BattleState.PlayerTurn)
+        if (action.Success && State == BattleState.AvatarTurn)
         {
             CheckBattleEnd();
         }
@@ -427,7 +427,7 @@ public class BattleEngine
     /// Get current battle snapshot for AI decision-making.
     /// Opponent's capabilities are hidden (set to null).
     /// </summary>
-    public BattleView GetPlayerSnapshot()
+    public BattleView GetAvatarSnapshot()
     {
         return CreateBattleSnapshot(forEnemy: false);
     }
@@ -1565,7 +1565,7 @@ public class BattleEngine
         }
 
         // Switch turns: Player -> Companions -> Enemy -> Player
-        if (State == BattleState.PlayerTurn)
+        if (State == BattleState.AvatarTurn)
         {
             // PHASE 6: Process EndOfTurn status effects for player before switching
             ProcessEndOfTurnStatusEffects(_avatar);
@@ -1594,7 +1594,7 @@ public class BattleEngine
             // PHASE 6: Process EndOfTurn status effects for enemy before switching
             ProcessEndOfTurnStatusEffects(_enemy);
 
-            State = BattleState.PlayerTurn;
+            State = BattleState.AvatarTurn;
             CombatLog.Add($"--- {_avatar.DisplayName}'s turn ---");
             _turnNumber++;
         }
@@ -1604,7 +1604,7 @@ public class BattleEngine
     /// <summary>
     /// Get the current player combatant (for UI binding).
     /// </summary>
-    public Combatant GetPlayer() => _avatar;
+    public Combatant GetAvatar() => _avatar;
 
     /// <summary>
     /// Get companion combatants (for UI binding).
@@ -1629,9 +1629,9 @@ public class BattleEngine
     /// <summary>
     /// Set the player's available affinities for battle.
     /// </summary>
-    public void SetPlayerAffinities(List<string> affinityRefs)
+    public void SetAvatarAffinities(List<string> affinityRefs)
     {
-        PlayerAffinityRefs = affinityRefs ?? new List<string>();
+        AvatarAffinityRefs = affinityRefs ?? new List<string>();
     }
 
     // ============================================================================
@@ -2134,7 +2134,7 @@ public class BattleEngine
     /// </summary>
     /// <param name="reaction">The defense reaction chosen by the player</param>
     /// <returns>The result of the reaction, or null if no pending attack</returns>
-    public ReactionResult? ResolveReaction(PlayerDefenseType reaction)
+    public ReactionResult? ResolveReaction(AvatarDefenseType reaction)
     {
         if (State != BattleState.AwaitingReaction || PendingAttack == null)
         {
@@ -2147,7 +2147,7 @@ public class BattleEngine
         // If timed out, force None reaction
         if (timedOut)
         {
-            reaction = PlayerDefenseType.None;
+            reaction = AvatarDefenseType.None;
             CombatLog.Add("Time's up!");
         }
 
@@ -2163,10 +2163,10 @@ public class BattleEngine
         {
             narrativeText = reaction switch
             {
-                PlayerDefenseType.Dodge => finalDamage == 0 ? "You evade the attack!" : $"You dodge but take {finalDamage * 100:F1}% damage.",
-                PlayerDefenseType.Block => $"You block, taking {finalDamage * 100:F1}% damage.",
-                PlayerDefenseType.Parry => outcome.EnablesCounter ? "You parry and prepare to counter!" : $"You deflect, taking {finalDamage * 100:F1}% damage.",
-                PlayerDefenseType.Brace => $"You brace for impact, taking {finalDamage * 100:F1}% damage.",
+                AvatarDefenseType.Dodge => finalDamage == 0 ? "You evade the attack!" : $"You dodge but take {finalDamage * 100:F1}% damage.",
+                AvatarDefenseType.Block => $"You block, taking {finalDamage * 100:F1}% damage.",
+                AvatarDefenseType.Parry => outcome.EnablesCounter ? "You parry and prepare to counter!" : $"You deflect, taking {finalDamage * 100:F1}% damage.",
+                AvatarDefenseType.Brace => $"You brace for impact, taking {finalDamage * 100:F1}% damage.",
                 _ => $"You take {finalDamage * 100:F1}% damage!"
             };
         }
@@ -2234,7 +2234,7 @@ public class BattleEngine
         if (State == BattleState.AwaitingReaction)
         {
             // Move to player turn after enemy attack resolves
-            State = BattleState.PlayerTurn;
+            State = BattleState.AvatarTurn;
             _turnNumber++;
         }
 
@@ -2253,7 +2253,7 @@ public class BattleEngine
 
         if (PendingAttack.IsExpired)
         {
-            return ResolveReaction(PlayerDefenseType.None);
+            return ResolveReaction(AvatarDefenseType.None);
         }
 
         return null;

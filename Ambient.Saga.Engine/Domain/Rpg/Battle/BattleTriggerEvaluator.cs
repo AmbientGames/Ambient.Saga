@@ -194,7 +194,7 @@ public class BattleTriggerContext
         bool stanceJustChanged = false,
         bool affinityJustChanged = false)
     {
-        var player = engine.GetPlayer();
+        var player = engine.GetAvatar();
         var enemy = engine.GetEnemy();
 
         return new BattleTriggerContext

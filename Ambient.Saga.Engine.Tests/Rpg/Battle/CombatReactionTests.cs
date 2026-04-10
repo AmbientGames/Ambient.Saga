@@ -18,10 +18,10 @@ public class CombatReactionTests
         var tell = CreateSlashAttackTell();
 
         // Act
-        var outcome = tell.GetOutcome(PlayerDefenseType.Parry);
+        var outcome = tell.GetOutcome(AvatarDefenseType.Parry);
 
         // Assert
-        Assert.Equal(PlayerDefenseType.Parry, outcome.Reaction);
+        Assert.Equal(AvatarDefenseType.Parry, outcome.Reaction);
         Assert.Equal(0.0f, outcome.DamageMultiplier);
         Assert.True(outcome.EnablesCounter);
     }
@@ -33,10 +33,10 @@ public class CombatReactionTests
         var tell = CreateSlashAttackTell();
 
         // Act
-        var outcome = tell.GetOutcome(PlayerDefenseType.Dodge);
+        var outcome = tell.GetOutcome(AvatarDefenseType.Dodge);
 
         // Assert
-        Assert.Equal(PlayerDefenseType.Dodge, outcome.Reaction);
+        Assert.Equal(AvatarDefenseType.Dodge, outcome.Reaction);
         Assert.Equal(0.25f, outcome.DamageMultiplier);
         Assert.False(outcome.EnablesCounter);
     }
@@ -50,18 +50,18 @@ public class CombatReactionTests
             RefName = "LimitedTell",
             Pattern = AttackPatternType.Slash,
             TellText = "Enemy swings!",
-            OptimalDefense = PlayerDefenseType.Parry,
-            Outcomes = new Dictionary<PlayerDefenseType, DefenseOutcome>
+            OptimalDefense = AvatarDefenseType.Parry,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
             {
-                [PlayerDefenseType.Parry] = new DefenseOutcome
+                [AvatarDefenseType.Parry] = new DefenseOutcome
                 {
-                    Reaction = PlayerDefenseType.Parry,
+                    Reaction = AvatarDefenseType.Parry,
                     DamageMultiplier = 0.0f,
                     ResponseText = "Perfect parry!"
                 },
-                [PlayerDefenseType.None] = new DefenseOutcome
+                [AvatarDefenseType.None] = new DefenseOutcome
                 {
-                    Reaction = PlayerDefenseType.None,
+                    Reaction = AvatarDefenseType.None,
                     DamageMultiplier = 1.0f,
                     ResponseText = "You fail to react!"
                 }
@@ -69,10 +69,10 @@ public class CombatReactionTests
         };
 
         // Act - Request Dodge which isn't in the dictionary
-        var outcome = tell.GetOutcome(PlayerDefenseType.Dodge);
+        var outcome = tell.GetOutcome(AvatarDefenseType.Dodge);
 
         // Assert - Should fall back to None outcome
-        Assert.Equal(PlayerDefenseType.None, outcome.Reaction);
+        Assert.Equal(AvatarDefenseType.None, outcome.Reaction);
         Assert.Equal(1.0f, outcome.DamageMultiplier);
     }
 
@@ -85,12 +85,12 @@ public class CombatReactionTests
             RefName = "MinimalTell",
             Pattern = AttackPatternType.Slash,
             TellText = "Enemy swings!",
-            OptimalDefense = PlayerDefenseType.Parry,
-            Outcomes = new Dictionary<PlayerDefenseType, DefenseOutcome>
+            OptimalDefense = AvatarDefenseType.Parry,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
             {
-                [PlayerDefenseType.Parry] = new DefenseOutcome
+                [AvatarDefenseType.Parry] = new DefenseOutcome
                 {
-                    Reaction = PlayerDefenseType.Parry,
+                    Reaction = AvatarDefenseType.Parry,
                     DamageMultiplier = 0.0f,
                     ResponseText = "Perfect parry!"
                 }
@@ -98,10 +98,10 @@ public class CombatReactionTests
         };
 
         // Act - Request Block which isn't in dictionary, and no None fallback
-        var outcome = tell.GetOutcome(PlayerDefenseType.Block);
+        var outcome = tell.GetOutcome(AvatarDefenseType.Block);
 
         // Assert - Should return default outcome
-        Assert.Equal(PlayerDefenseType.Block, outcome.Reaction);
+        Assert.Equal(AvatarDefenseType.Block, outcome.Reaction);
         Assert.Equal(1.0f, outcome.DamageMultiplier);
         Assert.Contains("fail to react", outcome.ResponseText);
     }
@@ -132,7 +132,7 @@ public class CombatReactionTests
         var tell = CreateSlashAttackTell();
 
         // Act - Parry is optimal for Slash
-        var outcome = tell.GetOutcome(PlayerDefenseType.Parry);
+        var outcome = tell.GetOutcome(AvatarDefenseType.Parry);
 
         // Assert
         Assert.Equal(0.0f, outcome.DamageMultiplier); // No damage
@@ -177,10 +177,10 @@ public class CombatReactionTests
             Pattern = AttackPatternType.Slash,
             TellText = "Quick slash!",
             ReactionWindowMs = 100, // Very short window
-            OptimalDefense = PlayerDefenseType.Parry,
-            Outcomes = new Dictionary<PlayerDefenseType, DefenseOutcome>
+            OptimalDefense = AvatarDefenseType.Parry,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
             {
-                [PlayerDefenseType.Parry] = new DefenseOutcome { Reaction = PlayerDefenseType.Parry }
+                [AvatarDefenseType.Parry] = new DefenseOutcome { Reaction = AvatarDefenseType.Parry }
             }
         };
         var attacker = CreateMockCombatant("Enemy");
@@ -210,10 +210,10 @@ public class CombatReactionTests
             Pattern = AttackPatternType.Slash,
             TellText = "Take your time...",
             ReactionWindowMs = 0, // No time limit
-            OptimalDefense = PlayerDefenseType.Parry,
-            Outcomes = new Dictionary<PlayerDefenseType, DefenseOutcome>
+            OptimalDefense = AvatarDefenseType.Parry,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
             {
-                [PlayerDefenseType.Parry] = new DefenseOutcome { Reaction = PlayerDefenseType.Parry }
+                [AvatarDefenseType.Parry] = new DefenseOutcome { Reaction = AvatarDefenseType.Parry }
             }
         };
         var attacker = CreateMockCombatant("Enemy");
@@ -238,14 +238,14 @@ public class CombatReactionTests
     #region AttackPatternType Coverage Tests
 
     [Theory]
-    [InlineData(AttackPatternType.Slash, PlayerDefenseType.Parry)]
-    [InlineData(AttackPatternType.Thrust, PlayerDefenseType.Dodge)]
-    [InlineData(AttackPatternType.Overhead, PlayerDefenseType.Block)]
-    [InlineData(AttackPatternType.Charge, PlayerDefenseType.Dodge)]
-    [InlineData(AttackPatternType.Breath, PlayerDefenseType.Brace)]
-    [InlineData(AttackPatternType.Burst, PlayerDefenseType.Brace)]
-    [InlineData(AttackPatternType.Projectile, PlayerDefenseType.Block)]
-    public void AttackPattern_HasLogicalOptimalDefense(AttackPatternType pattern, PlayerDefenseType expectedOptimal)
+    [InlineData(AttackPatternType.Slash, AvatarDefenseType.Parry)]
+    [InlineData(AttackPatternType.Thrust, AvatarDefenseType.Dodge)]
+    [InlineData(AttackPatternType.Overhead, AvatarDefenseType.Block)]
+    [InlineData(AttackPatternType.Charge, AvatarDefenseType.Dodge)]
+    [InlineData(AttackPatternType.Breath, AvatarDefenseType.Brace)]
+    [InlineData(AttackPatternType.Burst, AvatarDefenseType.Brace)]
+    [InlineData(AttackPatternType.Projectile, AvatarDefenseType.Block)]
+    public void AttackPattern_HasLogicalOptimalDefense(AttackPatternType pattern, AvatarDefenseType expectedOptimal)
     {
         // This test documents the expected optimal defense for each pattern type
         // Actual implementation would use these mappings
@@ -262,10 +262,10 @@ public class CombatReactionTests
         // Arrange & Act
         var result = new ReactionResult
         {
-            ChosenReaction = PlayerDefenseType.Parry,
+            ChosenReaction = AvatarDefenseType.Parry,
             Outcome = new DefenseOutcome
             {
-                Reaction = PlayerDefenseType.Parry,
+                Reaction = AvatarDefenseType.Parry,
                 DamageMultiplier = 0.0f,
                 EnablesCounter = true
             },
@@ -291,10 +291,10 @@ public class CombatReactionTests
         // Arrange & Act
         var result = new ReactionResult
         {
-            ChosenReaction = PlayerDefenseType.None,
+            ChosenReaction = AvatarDefenseType.None,
             Outcome = new DefenseOutcome
             {
-                Reaction = PlayerDefenseType.None,
+                Reaction = AvatarDefenseType.None,
                 DamageMultiplier = 1.0f
             },
             FinalDamage = 50,
@@ -323,44 +323,44 @@ public class CombatReactionTests
             Pattern = AttackPatternType.Slash,
             TellText = "The enemy draws back their blade for a wide slash!",
             ReactionWindowMs = 3000,
-            OptimalDefense = PlayerDefenseType.Parry,
-            SecondaryDefense = PlayerDefenseType.Dodge,
-            Outcomes = new Dictionary<PlayerDefenseType, DefenseOutcome>
+            OptimalDefense = AvatarDefenseType.Parry,
+            SecondaryDefense = AvatarDefenseType.Dodge,
+            Outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>
             {
-                [PlayerDefenseType.Parry] = new DefenseOutcome
+                [AvatarDefenseType.Parry] = new DefenseOutcome
                 {
-                    Reaction = PlayerDefenseType.Parry,
+                    Reaction = AvatarDefenseType.Parry,
                     DamageMultiplier = 0.0f,
                     Effects = new Ambient.Domain.Attributes { Stamina = 0.1f },
                     EnablesCounter = true,
                     CounterMultiplier = 0.5f,
                     ResponseText = "Perfect parry! You deflect the blade and counter!"
                 },
-                [PlayerDefenseType.Dodge] = new DefenseOutcome
+                [AvatarDefenseType.Dodge] = new DefenseOutcome
                 {
-                    Reaction = PlayerDefenseType.Dodge,
+                    Reaction = AvatarDefenseType.Dodge,
                     DamageMultiplier = 0.25f,
                     Effects = new Ambient.Domain.Attributes { Stamina = 0.05f },
                     EnablesCounter = false,
                     ResponseText = "You roll aside, but the blade grazes you."
                 },
-                [PlayerDefenseType.Block] = new DefenseOutcome
+                [AvatarDefenseType.Block] = new DefenseOutcome
                 {
-                    Reaction = PlayerDefenseType.Block,
+                    Reaction = AvatarDefenseType.Block,
                     DamageMultiplier = 0.5f,
                     EnablesCounter = false,
                     ResponseText = "You raise your guard, absorbing part of the blow."
                 },
-                [PlayerDefenseType.Brace] = new DefenseOutcome
+                [AvatarDefenseType.Brace] = new DefenseOutcome
                 {
-                    Reaction = PlayerDefenseType.Brace,
+                    Reaction = AvatarDefenseType.Brace,
                     DamageMultiplier = 0.75f,
                     EnablesCounter = false,
                     ResponseText = "You brace, but the horizontal slash finds its mark."
                 },
-                [PlayerDefenseType.None] = new DefenseOutcome
+                [AvatarDefenseType.None] = new DefenseOutcome
                 {
-                    Reaction = PlayerDefenseType.None,
+                    Reaction = AvatarDefenseType.None,
                     DamageMultiplier = 1.0f,
                     EnablesCounter = false,
                     ResponseText = "The slash connects fully!"

@@ -10,7 +10,7 @@ public static class CombatReactionMapper
 {
     public static AttackTell FromDomain(Ambient.Domain.AttackTell domainTell)
     {
-        var outcomes = new Dictionary<PlayerDefenseType, DefenseOutcome>();
+        var outcomes = new Dictionary<AvatarDefenseType, DefenseOutcome>();
 
         if (domainTell.Outcome != null)
         {
@@ -31,11 +31,11 @@ public static class CombatReactionMapper
         }
 
         // Ensure a None outcome exists (fallback for timeout)
-        if (!outcomes.ContainsKey(PlayerDefenseType.None))
+        if (!outcomes.ContainsKey(AvatarDefenseType.None))
         {
-            outcomes[PlayerDefenseType.None] = new DefenseOutcome
+            outcomes[AvatarDefenseType.None] = new DefenseOutcome
             {
-                Reaction = PlayerDefenseType.None,
+                Reaction = AvatarDefenseType.None,
                 DamageMultiplier = 1.0f,
                 ResponseText = "The attack connects fully!"
             };
@@ -56,14 +56,14 @@ public static class CombatReactionMapper
         };
     }
 
-    private static PlayerDefenseType MapDefenseReactionType(DefenseReactionType domainType) => domainType switch
+    private static AvatarDefenseType MapDefenseReactionType(DefenseReactionType domainType) => domainType switch
     {
-        DefenseReactionType.Dodge => PlayerDefenseType.Dodge,
-        DefenseReactionType.Block => PlayerDefenseType.Block,
-        DefenseReactionType.Parry => PlayerDefenseType.Parry,
-        DefenseReactionType.Brace => PlayerDefenseType.Brace,
-        DefenseReactionType.None => PlayerDefenseType.None,
-        _ => PlayerDefenseType.None
+        DefenseReactionType.Dodge => AvatarDefenseType.Dodge,
+        DefenseReactionType.Block => AvatarDefenseType.Block,
+        DefenseReactionType.Parry => AvatarDefenseType.Parry,
+        DefenseReactionType.Brace => AvatarDefenseType.Brace,
+        DefenseReactionType.None => AvatarDefenseType.None,
+        _ => AvatarDefenseType.None
     };
 
     private static AttackPatternType MapAttackPatternType(Ambient.Domain.AttackPatternType domainType) => domainType switch

@@ -98,7 +98,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 {
                     var lastTurn = turnTransactions.Last();
                     var wasPlayerTurn = bool.Parse(lastTurn.Data["IsPlayerTurn"]);
-                    battleState = wasPlayerTurn ? BattleState.EnemyTurn : BattleState.PlayerTurn;
+                    battleState = wasPlayerTurn ? BattleState.EnemyTurn : BattleState.AvatarTurn;
                 }
             }
 

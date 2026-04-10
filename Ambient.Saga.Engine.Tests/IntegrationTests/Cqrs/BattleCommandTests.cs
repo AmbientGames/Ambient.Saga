@@ -120,7 +120,7 @@ public class BattleCommandTests : IDisposable
         battleSetup.OpponentCapabilities = weakBoss.Capabilities ?? new ItemCollection();
 
         var battleEngine = battleSetup.CreateBattleEngine();
-        var playerCombatant = battleEngine.GetPlayer();
+        var playerCombatant = battleEngine.GetAvatar();
         var enemyCombatant = battleEngine.GetEnemy();
 
         var battleResult = await _mediator.Send(new StartBattleCommand

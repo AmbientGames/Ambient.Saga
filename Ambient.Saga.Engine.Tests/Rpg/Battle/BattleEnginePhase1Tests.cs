@@ -39,7 +39,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Try to cast spell that requires Staff
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Fireball" // Requires Staff
@@ -63,7 +63,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Fireball"
@@ -86,7 +86,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "LightningBolt" // Requires Wand
@@ -108,7 +108,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Cast spell with no equipment requirement
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Heal"
@@ -134,7 +134,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Try to cast spell requiring high magic
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "AdvancedFireball" // Requires 0.5 Magic
@@ -157,7 +157,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "AdvancedFireball"
@@ -179,7 +179,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "PowerStrike" // Requires 0.4 Strength
@@ -212,7 +212,7 @@ public class BattleEnginePhase1Tests
             var enemy1 = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
             var engine1 = new BattleEngine(playerWithBonus, enemy1, world: _world, randomSeed: i);
             engine1.StartBattle();
-            var result1 = engine1.ExecutePlayerDecision(new CombatAction
+            var result1 = engine1.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Attack,
                 Parameter = "CriticalSword"
@@ -227,7 +227,7 @@ public class BattleEnginePhase1Tests
             var enemy2 = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
             var engine2 = new BattleEngine(playerWithoutBonus, enemy2, world: _world, randomSeed: i);
             engine2.StartBattle();
-            var result2 = engine2.ExecutePlayerDecision(new CombatAction
+            var result2 = engine2.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Attack,
                 Parameter = "IronSword"
@@ -258,7 +258,7 @@ public class BattleEnginePhase1Tests
             var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
             var engine = new BattleEngine(player, enemy, world: _world, randomSeed: i);
             engine.StartBattle();
-            var result = engine.ExecutePlayerDecision(new CombatAction
+            var result = engine.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Attack,
                 Parameter = "HighCritSword"
@@ -289,7 +289,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "PoisonDagger"
@@ -314,7 +314,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "FrostBolt" // Has StatusEffectRef = "Frozen"
@@ -338,7 +338,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "DefenseBuff" // Defensive spell with status effect
@@ -363,12 +363,12 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Apply poison twice
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack, Parameter = "PoisonDagger" });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack, Parameter = "PoisonDagger" });
 
         // Need to go through turn cycle
         engine.ExecuteEnemyTurn();
 
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack, Parameter = "PoisonDagger" });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack, Parameter = "PoisonDagger" });
 
         // Assert - Should have stacked
         Assert.Single(enemy.ActiveStatusEffects);
@@ -392,7 +392,7 @@ public class BattleEnginePhase1Tests
             var engine = new BattleEngine(player, enemy, world: _world, randomSeed: i);
             engine.StartBattle();
 
-            engine.ExecutePlayerDecision(new CombatAction
+            engine.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Attack,
                 Parameter = "LowChancePoison"
@@ -573,7 +573,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Cast cleanse spell
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Cleanse"
@@ -607,7 +607,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Player attacks
-        var result = engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        var result = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Damage should be reduced (can't directly test modifier, but attack damage is affected)
         Assert.True(result.Success);
@@ -626,7 +626,7 @@ public class BattleEnginePhase1Tests
         var enemyWithoutDebuff = CreateCombatant("Enemy", health: 1.0f, defense: 0.5f);
         var engine1 = new BattleEngine(player, enemyWithoutDebuff, world: _world, randomSeed: 42);
         engine1.StartBattle();
-        engine1.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        engine1.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
         var damageWithoutDebuff = 1.0f - enemyWithoutDebuff.Health;
 
         // Add armor break debuff to enemy
@@ -641,7 +641,7 @@ public class BattleEnginePhase1Tests
         var player2 = CreateCombatant("Player", health: 1.0f, strength: 0.3f);
         var engine2 = new BattleEngine(player2, enemy, world: _world, randomSeed: 42);
         engine2.StartBattle();
-        engine2.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        engine2.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
         var damageWithDebuff = 1.0f - enemy.Health;
 
         // Assert - Damage should be higher with armor break
@@ -1002,7 +1002,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Try to attack with weapon requiring high strength
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "HeavySword" // Requires 0.5 Strength
@@ -1027,7 +1027,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "HeavySword"
@@ -1051,7 +1051,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "GuardianBlade" // Requires 0.4 Defense
@@ -1075,7 +1075,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "IronSword"
@@ -1099,7 +1099,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "EnchantedBlade" // Requires 0.4 Magic
@@ -1180,7 +1180,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Try to attack while stunned
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1212,7 +1212,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Try to cast spell while silenced
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Heal"
@@ -1244,7 +1244,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Attack should work while silenced
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1274,7 +1274,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Try to flee while rooted
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Flee
         });
@@ -1305,7 +1305,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Attack should work while rooted
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1349,7 +1349,7 @@ public class BattleEnginePhase1Tests
             var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithBlind, randomSeed: i);
             engine.StartBattle();
 
-            var result = engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+            var result = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
             if (result.Damage == 0 && result.Message.Contains("misses"))
             {
                 missCount++;
@@ -1491,7 +1491,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Use offensive consumable with status effect
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "PoisonVial"
@@ -1517,7 +1517,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Use defensive consumable with status effect
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "StrengthPotion"
@@ -1550,7 +1550,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Use antidote to cleanse
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "Antidote"
@@ -1578,7 +1578,7 @@ public class BattleEnginePhase1Tests
             var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithConsumable, randomSeed: i);
             engine.StartBattle();
 
-            var result = engine.ExecutePlayerDecision(new CombatAction
+            var result = engine.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.UseConsumable,
                 Parameter = "UnreliablePoisonVial"
@@ -1608,7 +1608,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "BasicHealthPotion"
@@ -1736,7 +1736,7 @@ public class BattleEnginePhase1Tests
         var initialHealth = enemy.Health;
 
         // Act - Player attacks vulnerable enemy
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1777,7 +1777,7 @@ public class BattleEnginePhase1Tests
         var initialHealth = enemy.Health;
 
         // Act - Player weapon attacks vulnerable enemy
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "IronSword"
@@ -1811,7 +1811,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Player casts spell on vulnerable enemy
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "FreeSpell"
@@ -1847,7 +1847,7 @@ public class BattleEnginePhase1Tests
         var initialHealth = enemy.Health;
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1872,7 +1872,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Player defends with shield that has OnDefend effect
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Defend
         });
@@ -1901,7 +1901,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Player defends without a shield
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Defend
         });
@@ -1929,7 +1929,7 @@ public class BattleEnginePhase1Tests
             var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithOnDefend, randomSeed: i);
             engine.StartBattle();
 
-            engine.ExecutePlayerDecision(new CombatAction
+            engine.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Defend
             });
@@ -2097,7 +2097,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Equip two-handed weapon in BothHands slot
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "BothHands:GreatSword"
@@ -2129,7 +2129,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Equip two-handed weapon to BothHands (should clear MainHand and OffHand)
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "BothHands:GreatSword"
@@ -2162,7 +2162,7 @@ public class BattleEnginePhase1Tests
         engine.StartBattle();
 
         // Act - Equip shield in OffHand (should clear BothHands)
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "OffHand:IronShield"

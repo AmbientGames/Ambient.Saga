@@ -41,7 +41,7 @@ public class BattleModal
     private float _reactionTimeRemaining = 0f;
     private float _reactionTimeTotal = 0f;  // Total window time (from tell or default)
     private const float DEFAULT_REACTION_WINDOW_SECONDS = 5.0f;  // Fallback if tell doesn't specify
-    private PlayerDefenseType? _selectedReaction = null;
+    private AvatarDefenseType? _selectedReaction = null;
     private bool _reactionResolved = false;
 
     // Last reaction result for command population
@@ -79,7 +79,7 @@ public class BattleModal
             {
                 // Time expired - auto-select None (no reaction)
                 _reactionTimeRemaining = 0f;
-                _selectedReaction = PlayerDefenseType.None;
+                _selectedReaction = AvatarDefenseType.None;
                 _reactionResolved = true;
                 System.Diagnostics.Debug.WriteLine("[BattleModal] Reaction window expired - no defense");
             }
@@ -209,7 +209,7 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        var isPlayerTurn = _currentState.BattleState == BattleState.PlayerTurn && !_waitingForEnemyTurn && !_inReactionPhase;
+        var isPlayerTurn = _currentState.BattleState == BattleState.AvatarTurn && !_waitingForEnemyTurn && !_inReactionPhase;
 
         // Header showing whose turn it is
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.15f, 0.8f));
@@ -408,7 +408,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.2f, 0.7f, 0.7f, 1.0f));
         if (ImGui.Button("Dodge", new Vector2(buttonWidth, reactionButtonHeight)))
         {
-            SelectReaction(PlayerDefenseType.Dodge, viewModel, character);
+            SelectReaction(AvatarDefenseType.Dodge, viewModel, character);
         }
         ImGui.PopStyleColor(3);
 
@@ -420,7 +420,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.45f, 0.75f, 1.0f));
         if (ImGui.Button("Block", new Vector2(buttonWidth, reactionButtonHeight)))
         {
-            SelectReaction(PlayerDefenseType.Block, viewModel, character);
+            SelectReaction(AvatarDefenseType.Block, viewModel, character);
         }
         ImGui.PopStyleColor(3);
 
@@ -432,7 +432,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.75f, 0.65f, 0.2f, 1.0f));
         if (ImGui.Button("Parry", new Vector2(buttonWidth, reactionButtonHeight)))
         {
-            SelectReaction(PlayerDefenseType.Parry, viewModel, character);
+            SelectReaction(AvatarDefenseType.Parry, viewModel, character);
         }
         ImGui.PopStyleColor(3);
 
@@ -444,7 +444,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.4f, 0.75f, 1.0f));
         if (ImGui.Button("Brace", new Vector2(buttonWidth, reactionButtonHeight)))
         {
-            SelectReaction(PlayerDefenseType.Brace, viewModel, character);
+            SelectReaction(AvatarDefenseType.Brace, viewModel, character);
         }
         ImGui.PopStyleColor(3);
 
@@ -456,7 +456,7 @@ public class BattleModal
         }
     }
 
-    private void SelectReaction(PlayerDefenseType reaction, SagaMainViewModel viewModel, CharacterViewModel character)
+    private void SelectReaction(AvatarDefenseType reaction, SagaMainViewModel viewModel, CharacterViewModel character)
     {
         _selectedReaction = reaction;
         _reactionResolved = true;
@@ -538,7 +538,7 @@ public class BattleModal
         return string.Format(template, enemyName);
     }
 
-    private async Task ResolveReactionAsync(SagaMainViewModel viewModel, CharacterViewModel character, PlayerDefenseType reaction)
+    private async Task ResolveReactionAsync(SagaMainViewModel viewModel, CharacterViewModel character, AvatarDefenseType reaction)
     {
         if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
             return;
@@ -550,7 +550,7 @@ public class BattleModal
         float? counterDamage = null;
         float staminaGained = 0f;
         bool wasOptimal = false;
-        bool timedOut = reaction == PlayerDefenseType.None && _reactionTimeRemaining <= 0;
+        bool timedOut = reaction == AvatarDefenseType.None && _reactionTimeRemaining <= 0;
         float playerHealthAfter = _currentState?.PlayerCombatant?.Health ?? 1.0f;
         float playerEnergyAfter = _currentState?.PlayerCombatant?.Stamina ?? 1.0f;
         float enemyHealthAfter = _currentState?.EnemyCombatant?.Health ?? 1.0f;
@@ -569,7 +569,7 @@ public class BattleModal
                 timedOut = reactionResult.TimedOut;
 
                 // Get updated combatant states from engine
-                var player = _battleEngine.GetPlayer();
+                var player = _battleEngine.GetAvatar();
                 var enemy = _battleEngine.GetEnemy();
                 playerHealthAfter = player.Health;
                 playerEnergyAfter = player.Stamina;
@@ -904,7 +904,7 @@ public class BattleModal
             var battleEngine = battleSetup.CreateBattleEngine();
 
             // Get combatants from engine (they're configured by BattleSetup)
-            var playerCombatant = battleEngine.GetPlayer();
+            var playerCombatant = battleEngine.GetAvatar();
             var enemyCombatant = battleEngine.GetEnemy();
 
             // Send StartBattleCommand

@@ -7,7 +7,7 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 /// Inspired by Expedition 33's active defense mechanics adapted for text-based play.
 /// Named PlayerDefenseType to avoid conflict with XSD-generated PlayerDefenseType.
 /// </summary>
-public enum PlayerDefenseType
+public enum AvatarDefenseType
 {
     /// <summary>Active dodging - best against lunges, charges, targeted attacks</summary>
     Dodge,
@@ -60,7 +60,7 @@ public enum AttackPatternType
 /// </summary>
 public class DefenseOutcome
 {
-    public PlayerDefenseType Reaction { get; init; }
+    public AvatarDefenseType Reaction { get; init; }
     /// <summary>Damage multiplier (0.0 = no damage, 1.0 = full damage)</summary>
     public float DamageMultiplier { get; init; } = 1.0f;
     /// <summary>Stat effects applied for successful defense (e.g., Stamina recovery)</summary>
@@ -88,25 +88,25 @@ public class AttackTell
     /// <summary>Time window in milliseconds for player to react (0 = no time limit)</summary>
     public int ReactionWindowMs { get; init; } = 3000;
     /// <summary>The optimal defense reaction for this attack</summary>
-    public required PlayerDefenseType OptimalDefense { get; init; }
+    public required AvatarDefenseType OptimalDefense { get; init; }
     /// <summary>Secondary good defense (partial success)</summary>
-    public PlayerDefenseType? SecondaryDefense { get; init; }
+    public AvatarDefenseType? SecondaryDefense { get; init; }
     /// <summary>Weapon categories this tell applies to (space-separated, e.g., "OneHanded TwoHanded")</summary>
     public string? WeaponCategories { get; init; }
     /// <summary>Outcomes for each defense reaction type</summary>
-    public required Dictionary<PlayerDefenseType, DefenseOutcome> Outcomes { get; init; }
+    public required Dictionary<AvatarDefenseType, DefenseOutcome> Outcomes { get; init; }
 
     /// <summary>
     /// Get the outcome for a specific defense reaction.
     /// Falls back to None outcome if reaction not found.
     /// </summary>
-    public DefenseOutcome GetOutcome(PlayerDefenseType reaction)
+    public DefenseOutcome GetOutcome(AvatarDefenseType reaction)
     {
         if (Outcomes.TryGetValue(reaction, out var outcome))
             return outcome;
 
         // Fallback to None outcome or default
-        if (Outcomes.TryGetValue(PlayerDefenseType.None, out var noneOutcome))
+        if (Outcomes.TryGetValue(AvatarDefenseType.None, out var noneOutcome))
             return noneOutcome;
 
         return new DefenseOutcome
@@ -168,7 +168,7 @@ public class PendingAttack
 /// </summary>
 public class ReactionResult
 {
-    public required PlayerDefenseType ChosenReaction { get; init; }
+    public required AvatarDefenseType ChosenReaction { get; init; }
     public required DefenseOutcome Outcome { get; init; }
     public required float FinalDamage { get; init; }
     public required string NarrativeText { get; init; }

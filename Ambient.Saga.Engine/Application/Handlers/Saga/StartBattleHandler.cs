@@ -78,7 +78,7 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                 command.RandomSeed,
                 companions: command.CompanionCombatants);
 
-            battleEngine.SetPlayerAffinities(command.PlayerAffinityRefs);
+            battleEngine.SetAvatarAffinities(command.PlayerAffinityRefs);
             battleEngine.RegisterTellsFromWorld(_world);
 
             if (command.CompanionCombatants?.Count > 0)

@@ -50,7 +50,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Player (defender) uses Defend action
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
 
         var defenderHealthBeforeAttack = defender.Health;
         _output.WriteLine($"Defender health before attack: {defenderHealthBeforeAttack * 100:F1}%");
@@ -81,7 +81,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Player (defender) uses AdjustLoadout action
-        var adjustResult = engine.ExecutePlayerDecision(new CombatAction
+        var adjustResult = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:WoodenSword"
@@ -120,7 +120,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Player (defender) uses ChangeLoadout action (multiple changes)
-        var changeResult = engine.ExecutePlayerDecision(new CombatAction
+        var changeResult = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.ChangeLoadout,
             Parameter = "MainHand:IronSword,OffHand:WoodenShield"
@@ -155,7 +155,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Start with Defend
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(combatant.IsDefending);
         Assert.False(combatant.IsAdjusting);
         _output.WriteLine("After Defend: IsDefending=true, IsAdjusting=false");
@@ -164,7 +164,7 @@ public class DefensiveMechanicsTests
         engine.ExecuteEnemyTurn();
 
         // ACT: Switch to AdjustLoadout
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:IronSword"
@@ -179,7 +179,7 @@ public class DefensiveMechanicsTests
         engine.ExecuteEnemyTurn();
 
         // Switch back to Defend
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(combatant.IsDefending);
         Assert.False(combatant.IsAdjusting);
         _output.WriteLine("After Defend again: IsDefending=true, IsAdjusting=false");
@@ -195,7 +195,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Defend first
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(player.IsDefending);
         _output.WriteLine("After Defend: IsDefending=true");
 
@@ -204,7 +204,7 @@ public class DefensiveMechanicsTests
 
         // ACT: Attack (offensive action)
         var weapon = _testWorld.GetEquipmentByRefName("IronSword")!;
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = weapon.RefName
@@ -228,7 +228,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Adjust loadout first
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "Affinity:Fire"
@@ -239,7 +239,7 @@ public class DefensiveMechanicsTests
         engine.ExecuteEnemyTurn();
 
         // ACT: Cast spell (offensive action)
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Fireball"
@@ -263,14 +263,14 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Defend first
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(player.IsDefending);
 
         // Skip enemy turn
         engine.ExecuteEnemyTurn();
 
         // ACT: Use consumable
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "HealthPotion"
@@ -291,7 +291,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Adjust loadout first
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:WoodenSword"
@@ -302,7 +302,7 @@ public class DefensiveMechanicsTests
         engine.ExecuteEnemyTurn();
 
         // ACT: Flee
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Flee });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Flee });
 
         // ASSERT: Defensive state cleared (even if flee fails)
         Assert.False(player.IsAdjusting);
@@ -323,7 +323,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Player (defender) uses Defend
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(defender.IsDefending);
 
         var defenderHealthBeforeSpell = defender.Health;
@@ -353,7 +353,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Player (defender) adjusts loadout
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:IronSword"
@@ -383,7 +383,7 @@ public class DefensiveMechanicsTests
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Turn 1: Defend
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(player.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks, reduced damage
@@ -391,7 +391,7 @@ public class DefensiveMechanicsTests
         _output.WriteLine($"Health after turn 1: {healthAfterTurn1 * 100:F1}%");
 
         // Turn 2: Defend again
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(player.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks again, reduced damage
@@ -399,7 +399,7 @@ public class DefensiveMechanicsTests
         _output.WriteLine($"Health after turn 2: {healthAfterTurn2 * 100:F1}%");
 
         // Turn 3: Defend AGAIN
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(player.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks again, reduced damage

@@ -85,7 +85,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             // Reconstruct battle engine
             // Note: tells are NOT registered during replay — they're only used for the live enemy turn
             var battleEngine = new BattleEngine(playerCombatant, enemyCombatant, enemyMind, _world, randomSeed);
-            battleEngine.SetPlayerAffinities(playerAffinityRefs);
+            battleEngine.SetAvatarAffinities(playerAffinityRefs);
 
             // Start battle and replay all turns to reach current state
             battleEngine.StartBattle();
@@ -130,7 +130,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                     var itemRef = turnTx.Data.TryGetValue("ItemRefName", out var item) ? item : null;
                     var action = new CombatAction { ActionType = actionType, Parameter = itemRef };
 
-                    battleEngine.ExecutePlayerDecision(action);
+                    battleEngine.ExecuteAvatarDecision(action);
                 }
                 else
                 {
@@ -140,14 +140,14 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
             // Now execute the new player turn
             System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Executing player action: {command.PlayerAction.ActionType}");
-            var playerEvent = battleEngine.ExecutePlayerDecision(command.PlayerAction);
+            var playerEvent = battleEngine.ExecuteAvatarDecision(command.PlayerAction);
 
             var transactionsBefore = instance.Transactions.Count;
             var newTransactions = new List<SagaTransaction>();
 
             // Create transaction for player's turn
             var turnNumber = executedTurns.Count + 1;
-            var playerAfterAction = battleEngine.GetPlayer();
+            var playerAfterAction = battleEngine.GetAvatar();
             var playerTurnTx = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
                 command.AvatarId.ToString(),
                 command.BattleInstanceId,
@@ -348,7 +348,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
             // Update avatar if battle ended
             AvatarEntity? updatedAvatar = null;
-            if (battleEngine.State != BattleState.PlayerTurn && battleEngine.State != BattleState.EnemyTurn)
+            if (battleEngine.State != BattleState.AvatarTurn && battleEngine.State != BattleState.EnemyTurn)
             {
                 updatedAvatar = await _avatarUpdateService.UpdateAvatarForBattleAsync(
                     command.Avatar,
@@ -493,8 +493,8 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         List<SagaTransaction> newTransactions)
     {
         var playerVictory = battleEngine.State == BattleState.Victory;
-        var victorName = playerVictory ? battleEngine.GetPlayer().DisplayName : battleEngine.GetEnemy().DisplayName;
-        var defeatedName = playerVictory ? battleEngine.GetEnemy().DisplayName : battleEngine.GetPlayer().DisplayName;
+        var victorName = playerVictory ? battleEngine.GetAvatar().DisplayName : battleEngine.GetEnemy().DisplayName;
+        var defeatedName = playerVictory ? battleEngine.GetEnemy().DisplayName : battleEngine.GetAvatar().DisplayName;
 
         // Create BattleEnded transaction
         var battleEndedTx = BattleTransactionHelper.CreateBattleEndedTransaction(

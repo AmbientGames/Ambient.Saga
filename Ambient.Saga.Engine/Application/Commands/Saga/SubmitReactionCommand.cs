@@ -29,7 +29,7 @@ public class SubmitReactionCommand : IRequest<SagaCommandResult>
     /// <summary>
     /// The player's chosen defensive reaction
     /// </summary>
-    public required PlayerDefenseType Reaction { get; init; }
+    public required AvatarDefenseType Reaction { get; init; }
 
     /// <summary>
     /// Avatar entity for updates

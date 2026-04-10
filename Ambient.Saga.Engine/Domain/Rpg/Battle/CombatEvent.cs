@@ -33,7 +33,7 @@ public class CombatEvent
     public int TurnNumber { get; init; }
     public ActionType DecisionType { get; init; }
     public string? ItemRefName { get; init; }  // Weapon/spell/consumable used
-    public bool IsPlayerTurn { get; init; }
+    public bool IsAvatarTurn { get; init; }
     public float TargetHealthAfter { get; init; }
     public float ActorEnergyAfter { get; init; }
     public string? EquipmentChanged { get; init; }  // For ChangeLoadout actions
