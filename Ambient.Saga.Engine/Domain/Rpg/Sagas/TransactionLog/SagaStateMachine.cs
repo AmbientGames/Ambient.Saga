@@ -341,8 +341,8 @@ public class SagaStateMachine
         var triggerRef = tx.GetData<string>(TransactionDataKeys.SagaTriggerRef);
 
         // Try new Saga-relative format first (X, Z), fallback to old GPS format (LongitudeX, LatitudeZ)
-        var x = tx.TryGetData<double>(TransactionDataKeys.X, out var xVal) ? xVal : tx.GetData<double>("Longitude");
-        var z = tx.TryGetData<double>(TransactionDataKeys.Z, out var zVal) ? zVal : tx.GetData<double>("Latitude");
+        var x = tx.TryGetData<double>(TransactionDataKeys.X, out var xVal) ? xVal : tx.GetData<double>(TransactionDataKeys.Longitude);
+        var z = tx.TryGetData<double>(TransactionDataKeys.Z, out var zVal) ? zVal : tx.GetData<double>(TransactionDataKeys.Latitude);
         var spawnHeight = tx.TryGetData<double>(TransactionDataKeys.SpawnHeight, out var heightVal) ? heightVal : tx.GetData<double>(TransactionDataKeys.Y);
 
         if (characterInstanceId == Guid.Empty || string.IsNullOrEmpty(characterRef))
@@ -463,7 +463,7 @@ public class SagaStateMachine
     private void ApplyCharacterHealed(SagaState state, SagaTransaction tx)
     {
         var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
-        var healing = tx.GetData<double>("Healing");
+        var healing = tx.GetData<double>(TransactionDataKeys.Healing);
 
         if (characterInstanceId == Guid.Empty || !state.Characters.TryGetValue(characterInstanceId.ToString(), out var character))
             return;
@@ -801,7 +801,7 @@ public class SagaStateMachine
 
         // Mark as failed
         questState.IsFailed = true;
-        questState.FailureReason = tx.GetData<string>("FailureReason");
+        questState.FailureReason = tx.GetData<string>(TransactionDataKeys.FailureReason);
         questState.CompletedAt = tx.GetCanonicalTimestamp();
 
         // Remove from active quests (not added to completed)
@@ -831,7 +831,7 @@ public class SagaStateMachine
             return;
 
         // For old simple quests, just update a generic progress counter
-        var progressAmount = tx.TryGetData<int>("ProgressAmount", out var amount) ? amount : 1;
+        var progressAmount = tx.TryGetData<int>(TransactionDataKeys.ProgressAmount, out var amount) ? amount : 1;
         var currentProgress = questState.ObjectiveProgress.GetValueOrDefault("_legacy_", 0);
         questState.ObjectiveProgress[TransactionDataKeys._legacy_] = currentProgress + progressAmount;
     }

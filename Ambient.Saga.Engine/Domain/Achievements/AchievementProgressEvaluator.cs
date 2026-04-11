@@ -197,7 +197,7 @@ public static class AchievementProgressEvaluator
     {
         return transactions
             .Where(t => t.Type == SagaTransactionType.LandmarkDiscovered)
-            .Select(t => t.GetData<string>("LandmarkRef"))
+            .Select(t => t.GetData<string>(TransactionDataKeys.LandmarkRef))
             .Distinct()
             .Count();
     }
@@ -409,7 +409,7 @@ public static class AchievementProgressEvaluator
         {
             query = query.Where(t =>
                 t.GetData<string>(TransactionDataKeys.StatusEffectRef)?.Contains(statusEffectType, StringComparison.OrdinalIgnoreCase) == true ||
-                t.GetData<string>("StatusEffectType") == statusEffectType);
+                t.GetData<string>(TransactionDataKeys.StatusEffectType) == statusEffectType);
         }
 
         return query.Count();

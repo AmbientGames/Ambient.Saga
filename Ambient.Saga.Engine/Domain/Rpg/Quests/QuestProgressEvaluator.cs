@@ -214,7 +214,7 @@ public static class QuestProgressEvaluator
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.CharacterDefeated &&
-            t.TryGetData<string>("CharacterType", out var type) &&
+            t.TryGetData<string>(TransactionDataKeys.CharacterType, out var type) &&
             type == objective.CharacterType);
     }
 
@@ -222,15 +222,15 @@ public static class QuestProgressEvaluator
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.DialogueCompleted &&
-            (string.IsNullOrEmpty(objective.DialogueRef) || t.GetData<string>("DialogueRef") == objective.DialogueRef));
+            (string.IsNullOrEmpty(objective.DialogueRef) || t.GetData<string>(TransactionDataKeys.DialogueRef) == objective.DialogueRef));
     }
 
     private static int CountDialogueChoiceSelected(QuestObjective objective, List<SagaTransaction> transactions)
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.DialogueNodeVisited &&
-            t.GetData<string>("DialogueRef") == objective.DialogueRef &&
-            t.TryGetData<string>("ChoiceRef", out var choice) &&
+            t.GetData<string>(TransactionDataKeys.DialogueRef) == objective.DialogueRef &&
+            t.TryGetData<string>(TransactionDataKeys.ChoiceRef, out var choice) &&
             choice == objective.ChoiceRef);
     }
 
@@ -238,8 +238,8 @@ public static class QuestProgressEvaluator
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.DialogueNodeVisited &&
-            t.GetData<string>("DialogueRef") == objective.DialogueRef &&
-            t.GetData<string>("NodeRef") == objective.NodeRef);
+            t.GetData<string>(TransactionDataKeys.DialogueRef) == objective.DialogueRef &&
+            t.GetData<string>(TransactionDataKeys.NodeRef) == objective.NodeRef);
     }
 
     private static int CountItemCollected(QuestObjective objective, List<SagaTransaction> transactions)
@@ -346,8 +346,8 @@ public static class QuestProgressEvaluator
 
         return transactions.Any(t =>
             t.Type == SagaTransactionType.DialogueNodeVisited &&
-            t.GetData<string>("DialogueRef") == failCondition.DialogueRef &&
-            t.TryGetData<string>("ChoiceRef", out var choice) &&
+            t.GetData<string>(TransactionDataKeys.DialogueRef) == failCondition.DialogueRef &&
+            t.TryGetData<string>(TransactionDataKeys.ChoiceRef, out var choice) &&
             choice == failCondition.ChoiceRef);
     }
 
@@ -432,7 +432,7 @@ public static class QuestProgressEvaluator
             return false; // No location data available
 
         // Check if the location claim indicates leaving the required area
-        var locationRef = lastLocationClaim.GetData<string>("LocationRef");
+        var locationRef = lastLocationClaim.GetData<string>(TransactionDataKeys.LocationRef);
         return !string.IsNullOrEmpty(locationRef) && locationRef != failCondition.LocationRef;
     }
 }

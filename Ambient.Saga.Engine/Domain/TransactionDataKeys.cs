@@ -25,6 +25,8 @@ public static class TransactionDataKeys
     public const string CharacterInstanceId = "CharacterInstanceId";
     public const string CharacterRef = "CharacterRef";
     public const string CharacterTag = "CharacterTag";
+    public const string CharacterType = "CharacterType";
+    public const string ChoiceRef = "ChoiceRef";
     public const string ChosenBranch = "ChosenBranch";
     public const string CleanseTargetSelf = "CleanseTargetSelf";
     public const string CleansesStatusEffects = "CleansesStatusEffects";
@@ -55,6 +57,7 @@ public static class TransactionDataKeys
     public const string DestinationLatitude = "DestinationLatitude";
     public const string DestinationLongitude = "DestinationLongitude";
     public const string DialogueNodeId = "DialogueNodeId";
+    public const string DialogueRef = "DialogueRef";
     public const string DialogueTreeRef = "DialogueTreeRef";
     public const string Direction = "Direction";
     public const string DiscoverRadius = "DiscoverRadius";
@@ -79,9 +82,11 @@ public static class TransactionDataKeys
     public const string ExitRadius = "ExitRadius";
     public const string Experience = "Experience";
     public const string FactionRef = "FactionRef";
+    public const string FailureReason = "FailureReason";
     public const string FeatureRef = "FeatureRef";
     public const string FromStage = "FromStage";
     public const string GameComplete = "GameComplete";
+    public const string Healing = "Healing";
     public const string HealingDone = "HealingDone";
     public const string Health = "Health";
     public const string IsBuying = "IsBuying";
@@ -92,7 +97,11 @@ public static class TransactionDataKeys
     public const string ItemRef = "ItemRef";
     public const string ItemRefName = "ItemRefName";
     public const string ItemsAwarded = "ItemsAwarded";
+    public const string LandmarkRef = "LandmarkRef";
+    public const string Latitude = "Latitude";
     public const string LoadoutSlotSnapshot = "LoadoutSlotSnapshot";
+    public const string LocationRef = "LocationRef";
+    public const string Longitude = "Longitude";
     public const string LootSource = "LootSource";
     public const string Magic = "Magic";
     public const string Mana = "Mana";
@@ -103,6 +112,7 @@ public static class TransactionDataKeys
     public const string NewStamina = "NewStamina";
     public const string NextStage = "NextStage";
     public const string NodeId = "NodeId";
+    public const string NodeRef = "NodeRef";
     public const string ObjectiveRef = "ObjectiveRef";
     public const string OptimalDefense = "OptimalDefense";
     public const string OriginalHealth = "OriginalHealth";
@@ -128,6 +138,7 @@ public static class TransactionDataKeys
     public const string PreviousInstanceId = "PreviousInstanceId";
     public const string Price = "Price";
     public const string PricePerItem = "PricePerItem";
+    public const string ProgressAmount = "ProgressAmount";
     public const string Quantity = "Quantity";
     public const string QuantityAfter = "QuantityAfter";
     public const string QuantityBefore = "QuantityBefore";
@@ -159,6 +170,7 @@ public static class TransactionDataKeys
     public const string StateJson = "StateJson";
     public const string StatusEffectChance = "StatusEffectChance";
     public const string StatusEffectRef = "StatusEffectRef";
+    public const string StatusEffectType = "StatusEffectType";
     public const string Strength = "Strength";
     public const string Target = "Target";
     public const string TargetHealthAfter = "TargetHealthAfter";
