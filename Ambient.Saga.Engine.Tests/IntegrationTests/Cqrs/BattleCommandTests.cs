@@ -128,9 +128,9 @@ public class BattleCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             EnemyCharacterInstanceId = bossInstanceId,
-            PlayerCombatant = playerCombatant,
+            AvatarCombatant = playerCombatant,
             EnemyCombatant = enemyCombatant,
-            PlayerAffinityRefs = new List<string> { "Physical" },
+            AvatarAffinityRefs = new List<string> { "Physical" },
             EnemyMind = new CombatAI(_world),
             RandomSeed = 12345,  // Fixed seed for determinism
             Avatar = avatar
@@ -151,12 +151,12 @@ public class BattleCommandTests : IDisposable
 
         var battleStarted = transactions.First(t => t.Type == SagaTransactionType.BattleStarted);
         Assert.Equal("12345", battleStarted.Data["RandomSeed"]);
-        Assert.True(battleStarted.Data.ContainsKey("PlayerHealth"));
+        Assert.True(battleStarted.Data.ContainsKey("AvatarHealth"));
         Assert.True(battleStarted.Data.ContainsKey("EnemyHealth"));
 
         _output.WriteLine($"? Battle started with {turnTransactions.Count} turn(s) executed");
         _output.WriteLine($"  Random Seed: {battleStarted.Data["RandomSeed"]}");
-        _output.WriteLine($"  Player HP: {battleStarted.Data["PlayerHealth"]}");
+        _output.WriteLine($"  Player HP: {battleStarted.Data["AvatarHealth"]}");
         _output.WriteLine($"  Enemy HP: {battleStarted.Data["EnemyHealth"]}");
     }
 
@@ -287,7 +287,7 @@ public class BattleCommandTests : IDisposable
 
         foreach (var despawn in despawns)
         {
-            Assert.Equal("Player exited trigger zone", despawn.Data["Reason"]);
+            Assert.Equal("Avatar exited trigger zone", despawn.Data["Reason"]);
             _output.WriteLine($"Living enemy despawned: {despawn.Data["CharacterRef"]}");
         }
     }
@@ -399,12 +399,12 @@ public class BattleCommandTests : IDisposable
 
         // Verify BattleStarted has complete snapshot
         Assert.True(battleStarted.Data.ContainsKey("RandomSeed"));
-        Assert.True(battleStarted.Data.ContainsKey("PlayerHealth"));
-        Assert.True(battleStarted.Data.ContainsKey("PlayerStrength"));
+        Assert.True(battleStarted.Data.ContainsKey("AvatarHealth"));
+        Assert.True(battleStarted.Data.ContainsKey("AvatarStrength"));
         Assert.True(battleStarted.Data.ContainsKey("EnemyHealth"));
 
         _output.WriteLine($"Battle Started - Seed: {battleStarted.Data["RandomSeed"]}");
-        _output.WriteLine($"  Player HP: {battleStarted.Data["PlayerHealth"]}");
+        _output.WriteLine($"  Player HP: {battleStarted.Data["AvatarHealth"]}");
         _output.WriteLine($"  Enemy HP: {battleStarted.Data["EnemyHealth"]}");
 
         // Verify each turn has required data

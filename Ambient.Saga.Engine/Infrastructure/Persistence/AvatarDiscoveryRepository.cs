@@ -9,7 +9,7 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 internal class AvatarDiscoveryRepository : IAvatarDiscoveryRepository
 {
     private readonly ILiteDatabase _database;
-    private const string CollectionName = "PlayerDiscoveries";
+    private const string CollectionName = "AvatarDiscoveries";
 
     public AvatarDiscoveryRepository(ILiteDatabase database)
     {

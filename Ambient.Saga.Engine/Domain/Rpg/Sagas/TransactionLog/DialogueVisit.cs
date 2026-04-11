@@ -9,7 +9,7 @@ public class DialogueVisit
     /// <summary>
     /// Unique key for this visit.
     /// Format: "{AvatarId}_{CharacterRef}_{NodeId}"
-    /// Example: "player123_MerchantNPC_reward_node"
+    /// Example: "Avatar123_MerchantNPC_reward_node"
     /// </summary>
     public string VisitKey { get; set; } = string.Empty;
 

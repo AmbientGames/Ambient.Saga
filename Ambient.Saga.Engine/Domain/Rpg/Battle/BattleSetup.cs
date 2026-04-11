@@ -150,7 +150,7 @@ public class BattleSetup
         battleEngine.SetAvatarAffinities(AvatarAffinityRefs);
 
         System.Diagnostics.Debug.WriteLine($"\n=== BATTLE ENGINE CREATED ===");
-        System.Diagnostics.Debug.WriteLine($"Player: {playerCombatant.DisplayName} (HP: {playerCombatant.Health:F2})");
+        System.Diagnostics.Debug.WriteLine($"Avatar: {playerCombatant.DisplayName} (HP: {playerCombatant.Health:F2})");
         if (companions.Count > 0)
         {
             System.Diagnostics.Debug.WriteLine($"Companions: {string.Join(", ", companions.Select(c => c.DisplayName))}");

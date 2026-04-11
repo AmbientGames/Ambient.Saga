@@ -64,7 +64,7 @@ public class MerchantTradeModal
             {
                 var moneyBarHeight = ImGui.GetFrameHeightWithSpacing() * 1.5f;
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.12f, 0.08f, 0.9f));
-                ImGui.BeginChild("PlayerMoney", new Vector2(ImGuiSizes.Fill, moneyBarHeight), ImGuiChildFlags.Borders);
+                ImGui.BeginChild("AvatarMoney", new Vector2(ImGuiSizes.Fill, moneyBarHeight), ImGuiChildFlags.Borders);
                 ImGui.Spacing();
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1), "Your Funds:");

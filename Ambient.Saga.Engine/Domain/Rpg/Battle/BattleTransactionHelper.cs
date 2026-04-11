@@ -36,20 +36,20 @@ public static class BattleTransactionHelper
             Data = new Dictionary<string, string>
             {
                 [TransactionDataKeys.SagaArcRef] = sagaRef,
-                [TransactionDataKeys.PlayerCombatantId] = playerCombatantId.ToString(),
+                [TransactionDataKeys.AvatarCombatantId] = playerCombatantId.ToString(),
                 [TransactionDataKeys.EnemyCombatantId] = enemyCombatantId.ToString(),
                 [TransactionDataKeys.EnemyCharacterRef] = enemyCharacterRef,
                 [TransactionDataKeys.RandomSeed] = randomSeed.ToString(),
                 [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString(),
 
                 // Avatar stats
-                [TransactionDataKeys.PlayerHealth] = player.Health.ToString("F3"),
-                [TransactionDataKeys.PlayerEnergy] = player.Stamina.ToString("F3"),
-                [TransactionDataKeys.PlayerStrength] = player.Strength.ToString("F3"),
-                [TransactionDataKeys.PlayerDefense] = player.Defense.ToString("F3"),
-                [TransactionDataKeys.PlayerSpeed] = player.Speed.ToString("F3"),
-                [TransactionDataKeys.PlayerMagic] = player.Magic.ToString("F3"),
-                [TransactionDataKeys.PlayerAffinity] = player.AffinityRef ?? "",
+                [TransactionDataKeys.AvatarHealth] = player.Health.ToString("F3"),
+                [TransactionDataKeys.AvatarEnergy] = player.Stamina.ToString("F3"),
+                [TransactionDataKeys.AvatarStrength] = player.Strength.ToString("F3"),
+                [TransactionDataKeys.AvatarDefense] = player.Defense.ToString("F3"),
+                [TransactionDataKeys.AvatarSpeed] = player.Speed.ToString("F3"),
+                [TransactionDataKeys.AvatarMagic] = player.Magic.ToString("F3"),
+                [TransactionDataKeys.AvatarAffinity] = player.AffinityRef ?? "",
 
                 // Enemy stats
                 [TransactionDataKeys.EnemyHealth] = enemy.Health.ToString("F3"),
@@ -69,7 +69,7 @@ public static class BattleTransactionHelper
                 .Select(e => $"{e.EquipmentRef}:{e.Condition:F2}")
                 .ToList();
             if (equipmentRefs.Count > 0)
-                transaction.Data[TransactionDataKeys.PlayerEquipment] = string.Join(",", equipmentRefs);
+                transaction.Data[TransactionDataKeys.AvatarEquipment] = string.Join(",", equipmentRefs);
         }
 
         // Record avatar's initial equipped slots
@@ -78,13 +78,13 @@ public static class BattleTransactionHelper
             var equippedSlots = player.CombatProfile
                 .Select(kvp => $"{kvp.Key}:{kvp.Value}")
                 .ToList();
-            transaction.Data[TransactionDataKeys.PlayerEquippedSlots] = string.Join(",", equippedSlots);
+            transaction.Data[TransactionDataKeys.AvatarEquippedSlots] = string.Join(",", equippedSlots);
         }
 
         // Record avatar's available affinities
         if (playerAffinityRefs != null && playerAffinityRefs.Count > 0)
         {
-            transaction.Data[TransactionDataKeys.PlayerAffinities] = string.Join(",", playerAffinityRefs);
+            transaction.Data[TransactionDataKeys.AvatarAffinities] = string.Join(",", playerAffinityRefs);
         }
 
         // Record enemy's equipment inventory (what they own)
@@ -221,7 +221,7 @@ public static class BattleTransactionHelper
             {
                 [TransactionDataKeys.BattleTransactionId] = battleTransactionId.ToString(),
                 [TransactionDataKeys.TotalTurns] = totalTurns.ToString(),
-                [TransactionDataKeys.PlayerVictory] = playerVictory.ToString(),
+                [TransactionDataKeys.AvatarVictory] = playerVictory.ToString(),
                 [TransactionDataKeys.Victor] = victorRefName,
                 [TransactionDataKeys.Defeated] = defeatedRefName,
                 [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()

@@ -378,17 +378,17 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         ReconstructBattleState(SagaTransaction battleStartedTx, SagaInstance instance)
     {
         // Parse initial state from BattleStarted transaction
-        var playerCombatant = new Combatant
+        var avatarCombatant = new Combatant
         {
-            RefName = battleStartedTx.Data[TransactionDataKeys.PlayerCombatantId],
+            RefName = battleStartedTx.Data[TransactionDataKeys.AvatarCombatantId],
             DisplayName = "Avatar",  // Will be overridden by UI
-            Health = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerHealth]),
-            Stamina = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerEnergy]),
-            Strength = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerStrength]),
-            Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerDefense]),
-            Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerSpeed]),
-            Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerMagic]),
-            AffinityRef = battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerAffinity, out var pAff) ? pAff : null,
+            Health = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarHealth]),
+            Stamina = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarEnergy]),
+            Strength = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarStrength]),
+            Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarDefense]),
+            Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarSpeed]),
+            Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarMagic]),
+            AffinityRef = battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarAffinity, out var pAff) ? pAff : null,
             CombatProfile = new Dictionary<string, string>()
         };
 
@@ -407,14 +407,14 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         };
 
         // Parse equipment and equipped slots
-        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerEquippedSlots, out var playerSlots))
+        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarEquippedSlots, out var playerSlots))
         {
             foreach (var slot in playerSlots.Split(','))
             {
                 var parts = slot.Split(':');
                 if (parts.Length >= 2)
                 {
-                    playerCombatant.CombatProfile[parts[0]] = parts[1];
+                    avatarCombatant.CombatProfile[parts[0]] = parts[1];
                 }
             }
         }
@@ -442,7 +442,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         foreach (var turnTx in turnTransactions)
         {
             var isPlayerTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
-            var combatant = isPlayerTurn ? playerCombatant : enemyCombatant;
+            var combatant = isPlayerTurn ? avatarCombatant : enemyCombatant;
 
             // Update health/energy from turn results
             var targetHealthAfter = float.Parse(turnTx.Data[TransactionDataKeys.TargetHealthAfter]);
@@ -452,7 +452,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             combatant.Stamina = actorEnergyAfter;
 
             // Target's health is updated
-            var target = isPlayerTurn ? enemyCombatant : playerCombatant;
+            var target = isPlayerTurn ? enemyCombatant : avatarCombatant;
             target.Health = targetHealthAfter;
 
             // Update equipment/affinity from snapshots
@@ -476,12 +476,12 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         }
 
         var randomSeed = int.Parse(battleStartedTx.Data[TransactionDataKeys.RandomSeed]);
-        var playerAffinityRefs = battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerAffinities, out var affinities)
+        var playerAffinityRefs = battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarAffinities, out var affinities)
             ? affinities.Split(',').ToList()
             : new List<string>();
         var enemyCharacterInstanceId = Guid.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyCombatantId]);
 
-        return (playerCombatant, enemyCombatant, randomSeed, playerAffinityRefs, enemyCharacterInstanceId);
+        return (avatarCombatant, enemyCombatant, randomSeed, playerAffinityRefs, enemyCharacterInstanceId);
     }
 
     private async Task CreateBattleEndTransactions(

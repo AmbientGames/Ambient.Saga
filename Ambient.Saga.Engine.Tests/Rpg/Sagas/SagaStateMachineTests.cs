@@ -101,7 +101,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.SagaDiscovered,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             LocalTimestamp = discoveryTime,
             ServerTimestamp = discoveryTime,
@@ -114,7 +114,7 @@ public class SagaStateMachineTests
         // Assert
         Assert.Equal(SagaStatus.Active, state.Status);
         Assert.Equal(discoveryTime, state.FirstDiscoveredAt);
-        Assert.Contains("Player1", state.DiscoveredByAvatars);
+        Assert.Contains("Avatar1", state.DiscoveredByAvatars);
     }
 
     [Fact]
@@ -148,7 +148,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.CharacterDefeated,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             ServerTimestamp = defeatTime,
             SequenceNumber = 2,
@@ -199,7 +199,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.CharacterDamaged,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             ServerTimestamp = DateTime.UtcNow.AddSeconds(1),
             SequenceNumber = 2,
@@ -214,7 +214,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.CharacterDamaged,
-            AvatarId = "Player2",
+            AvatarId = "Avatar2",
             Status = TransactionStatus.Committed,
             ServerTimestamp = DateTime.UtcNow.AddSeconds(2),
             SequenceNumber = 3,
@@ -232,8 +232,8 @@ public class SagaStateMachineTests
         var character = state.Characters[characterId.ToString()];
         Assert.Equal(0.2, character.CurrentHealth, precision: 2);  // 100% - 30% - 50% = 20%
         Assert.True(character.IsAlive);  // Still alive with 20% health
-        Assert.Equal(0.3, character.DamageByPlayer["Player1"]);
-        Assert.Equal(0.5, character.DamageByPlayer["Player2"]);
+        Assert.Equal(0.3, character.DamageByPlayer["Avatar1"]);
+        Assert.Equal(0.5, character.DamageByPlayer["Avatar2"]);
     }
 
     [Fact]
@@ -292,7 +292,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.TriggerActivated,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             ServerTimestamp = activationTime,
             SequenceNumber = 1,
@@ -308,7 +308,7 @@ public class SagaStateMachineTests
         Assert.Equal(1, trigger.ActivationCount);
         Assert.Equal(activationTime, trigger.FirstActivatedAt);
         Assert.Equal(activationTime, trigger.LastActivatedAt);
-        Assert.Contains("Player1", trigger.TriggeredByAvatars);
+        Assert.Contains("Avatar1", trigger.TriggeredByAvatars);
     }
 
     [Fact]
@@ -320,7 +320,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.TriggerActivated,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             SequenceNumber = 1,
             Data = new() { ["SagaTriggerRef"] = "approach" }
@@ -329,7 +329,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.TriggerActivated,
-            AvatarId = "Player2",
+            AvatarId = "Avatar2",
             Status = TransactionStatus.Committed,
             SequenceNumber = 2,
             Data = new() { ["SagaTriggerRef"] = "approach" }
@@ -341,8 +341,8 @@ public class SagaStateMachineTests
         // Assert
         var trigger = state.Triggers["approach"];
         Assert.Equal(2, trigger.ActivationCount);
-        Assert.Contains("Player1", trigger.TriggeredByAvatars);
-        Assert.Contains("Player2", trigger.TriggeredByAvatars);
+        Assert.Contains("Avatar1", trigger.TriggeredByAvatars);
+        Assert.Contains("Avatar2", trigger.TriggeredByAvatars);
     }
 
     [Fact]
@@ -380,7 +380,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.SagaCompleted,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             ServerTimestamp = completionTime,
             SequenceNumber = 1
@@ -392,7 +392,7 @@ public class SagaStateMachineTests
         // Assert
         Assert.Equal(SagaStatus.Completed, state.Status);
         Assert.Equal(completionTime, state.CompletedAt);
-        Assert.Contains("Player1", state.CompletedByAvatars);
+        Assert.Contains("Avatar1", state.CompletedByAvatars);
     }
 
     [Fact]
@@ -577,7 +577,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.SagaDiscovered,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             ServerTimestamp = baseTime,
             SequenceNumber = 1
@@ -587,7 +587,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.TriggerActivated,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             ServerTimestamp = baseTime.AddSeconds(5),
             SequenceNumber = 2,
@@ -616,7 +616,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.CharacterDamaged,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             ServerTimestamp = baseTime.AddSeconds(15),
             SequenceNumber = 4,
@@ -627,7 +627,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.PlayerEntered,
-            AvatarId = "Player2",
+            AvatarId = "Avatar2",
             Status = TransactionStatus.Committed,
             ServerTimestamp = baseTime.AddSeconds(20),
             SequenceNumber = 5
@@ -636,7 +636,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.CharacterDamaged,
-            AvatarId = "Player2",
+            AvatarId = "Avatar2",
             Status = TransactionStatus.Committed,
             ServerTimestamp = baseTime.AddSeconds(25),
             SequenceNumber = 6,
@@ -657,7 +657,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.SagaCompleted,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             ServerTimestamp = baseTime.AddSeconds(35),
             SequenceNumber = 8
@@ -668,8 +668,8 @@ public class SagaStateMachineTests
 
         // Assert
         Assert.Equal(SagaStatus.Completed, state.Status);
-        Assert.Contains("Player1", state.DiscoveredByAvatars);
-        Assert.Contains("Player1", state.CompletedByAvatars);
+        Assert.Contains("Avatar1", state.DiscoveredByAvatars);
+        Assert.Contains("Avatar1", state.CompletedByAvatars);
 
         var trigger = state.Triggers["approach"];
         Assert.Equal(SagaTriggerStatus.Active, trigger.Status);
@@ -678,8 +678,8 @@ public class SagaStateMachineTests
         var boss = state.Characters[bossId.ToString()];
         Assert.False(boss.IsAlive);
         Assert.Equal(0.0, boss.CurrentHealth);
-        Assert.Equal(0.4, boss.DamageByPlayer["Player1"]);
-        Assert.Equal(0.6, boss.DamageByPlayer["Player2"]);
+        Assert.Equal(0.4, boss.DamageByPlayer["Avatar1"]);
+        Assert.Equal(0.6, boss.DamageByPlayer["Avatar2"]);
         Assert.Equal("approach", boss.SpawnedByTriggerRef);
 
         Assert.Equal(8, state.TransactionCount);
@@ -695,7 +695,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.TriggerActivated,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             SequenceNumber = 1,
             Data = new() { ["SagaTriggerRef"] = "approach" }
@@ -704,7 +704,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.QuestTokenAwarded,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             SequenceNumber = 2,
             Data = new()
@@ -735,7 +735,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.QuestTokenAwarded,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             SequenceNumber = 1,
             Data = new() { ["QuestTokenRef"] = "Token1", ["SagaTriggerRef"] = "approach" }
@@ -744,7 +744,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.QuestTokenAwarded,
-            AvatarId = "Player1",
+            AvatarId = "Avatar1",
             Status = TransactionStatus.Committed,
             SequenceNumber = 2,
             Data = new() { ["QuestTokenRef"] = "Token2", ["SagaTriggerRef"] = "approach" }
@@ -753,7 +753,7 @@ public class SagaStateMachineTests
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.QuestTokenAwarded,
-            AvatarId = "Player2",
+            AvatarId = "Avatar2",
             Status = TransactionStatus.Committed,
             SequenceNumber = 3,
             Data = new() { ["QuestTokenRef"] = "Token1", ["SagaTriggerRef"] = "inner" }

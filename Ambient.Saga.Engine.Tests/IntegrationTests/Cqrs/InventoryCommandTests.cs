@@ -59,8 +59,8 @@ public class InventoryCommandTests : IDisposable
     {
         var sagaArc = new SagaArc
         {
-            RefName = "PlayerLife",
-            DisplayName = "Player Life",
+            RefName = "AvatarLife",
+            DisplayName = "Avatar Life",
             Latitude = 35.0,
             Longitude = 139.0
         };
@@ -223,7 +223,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = "IronSword",
             SlotRef = "MainHand"
         };
@@ -236,7 +236,7 @@ public class InventoryCommandTests : IDisposable
         Assert.NotEmpty(result.TransactionIds);
 
         // Verify EquipmentChanged transaction was created
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "PlayerLife");
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "AvatarLife");
         var equipTx = instance.GetCommittedTransactions()
             .FirstOrDefault(t => t.Type == SagaTransactionType.EquipmentChanged);
 
@@ -257,7 +257,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = "IronHelmet",
             SlotRef = "Head"
         };
@@ -284,7 +284,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = null, // Unequip
             SlotRef = "MainHand"
         };
@@ -295,7 +295,7 @@ public class InventoryCommandTests : IDisposable
         // Assert
         Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
 
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "PlayerLife");
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "AvatarLife");
         var equipTx = instance.GetCommittedTransactions()
             .FirstOrDefault(t => t.Type == SagaTransactionType.EquipmentChanged);
 
@@ -317,7 +317,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = "GreatAxe",
             SlotRef = "BothHands"
         };
@@ -350,7 +350,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = "IronSword",
             SlotRef = "MainHand"
         };
@@ -381,7 +381,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = "IronSword",
             SlotRef = "InvalidSlot"
         };
@@ -406,7 +406,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = "IronSword", // SlotRef is MainHand
             SlotRef = "Head" // Wrong slot
         };
@@ -431,7 +431,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = "IronSword",
             SlotRef = "MainHand"
         };
@@ -456,7 +456,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             EquipmentRef = "IronSword",
             SlotRef = "MainHand"
         };
@@ -484,7 +484,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "HealthPotion"
         };
 
@@ -496,7 +496,7 @@ public class InventoryCommandTests : IDisposable
         Assert.NotEmpty(result.TransactionIds);
 
         // Verify ConsumableUsed transaction was created
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "PlayerLife");
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "AvatarLife");
         var useTx = instance.GetCommittedTransactions()
             .FirstOrDefault(t => t.Type == SagaTransactionType.ConsumableUsed);
 
@@ -518,7 +518,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "HealthPotion" // Restores 0.3 health
         };
 
@@ -543,7 +543,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "HealthPotion" // Would restore to 1.2, but capped
         };
 
@@ -569,7 +569,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "HealthPotion"
         };
 
@@ -600,7 +600,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "FullRestorePotion"
         };
 
@@ -631,7 +631,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "FullRestorePotion" // Restores all to 1.0
         };
 
@@ -658,7 +658,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "HealthPotion"
         };
 
@@ -685,7 +685,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "HealthPotion"
         };
 
@@ -714,7 +714,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "NonExistentPotion"
         };
 
@@ -739,7 +739,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "HealthPotion"
         });
 
@@ -753,7 +753,7 @@ public class InventoryCommandTests : IDisposable
         {
             AvatarId = avatarId,
             Avatar = avatar,
-            SagaArcRef = "PlayerLife",
+            SagaArcRef = "AvatarLife",
             ConsumableRef = "HealthPotion"
         });
 
@@ -761,7 +761,7 @@ public class InventoryCommandTests : IDisposable
         Assert.True(result1.Successful);
         Assert.True(result2.Successful);
 
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "PlayerLife");
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "AvatarLife");
         var useTransactions = instance.GetCommittedTransactions()
             .Where(t => t.Type == SagaTransactionType.ConsumableUsed)
             .ToList();

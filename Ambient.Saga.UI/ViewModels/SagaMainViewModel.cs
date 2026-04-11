@@ -1903,7 +1903,7 @@ public partial class SagaMainViewModel : ObservableObject
             }
 
             // Use first saga in the world for transaction logging, or a default
-            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "PlayerLife";
+            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "AvatarLife";
 
             var command = new EquipItemOutsideBattleCommand
             {
@@ -1994,7 +1994,7 @@ public partial class SagaMainViewModel : ObservableObject
         try
         {
             // Use first saga in the world for transaction logging, or a default
-            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "PlayerLife";
+            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "AvatarLife";
 
             var command = new UseConsumableCommand
             {
@@ -2070,7 +2070,7 @@ public partial class SagaMainViewModel : ObservableObject
         try
         {
             // Use first saga in the world for transaction logging, or a default
-            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "PlayerLife";
+            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "AvatarLife";
 
             var command = new SharpenToolCommand
             {
@@ -2134,7 +2134,7 @@ public partial class SagaMainViewModel : ObservableObject
         try
         {
             // Use first saga in the world for transaction logging, or a default
-            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "PlayerLife";
+            var sagaRef = CurrentWorld.Gameplay?.SagaArcs?.FirstOrDefault()?.RefName ?? "AvatarLife";
 
             var command = new TeleportAvatarCommand
             {

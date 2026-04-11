@@ -318,7 +318,7 @@ public class SagaInteractionService
                             {
                                 [TransactionDataKeys.CharacterInstanceId] = character.CharacterInstanceId.ToString(),
                                 [TransactionDataKeys.CharacterRef] = character.CharacterRef,
-                                [TransactionDataKeys.Reason] = "Player exited trigger zone",
+                                [TransactionDataKeys.Reason] = "Avatar exited trigger zone",
                                 [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName
                             }
                         };

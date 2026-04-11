@@ -72,14 +72,14 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
 
             // Create battle engine with deterministic seed and companions
             var battleEngine = new BattleEngine(
-                command.PlayerCombatant,
+                command.AvatarCombatant,
                 command.EnemyCombatant,
                 command.EnemyMind,
                 _world,
                 command.RandomSeed,
                 companions: command.CompanionCombatants);
 
-            battleEngine.SetAvatarAffinities(command.PlayerAffinityRefs);
+            battleEngine.SetAvatarAffinities(command.AvatarAffinityRefs);
             battleEngine.RegisterTellsFromWorld(_world);
 
             if (command.CompanionCombatants?.Count > 0)
@@ -95,9 +95,9 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                 command.EnemyCharacterInstanceId,
                 command.EnemyCombatant.RefName,
                 command.RandomSeed,
-                command.PlayerCombatant,
+                command.AvatarCombatant,
                 command.EnemyCombatant,
-                command.PlayerAffinityRefs,
+                command.AvatarAffinityRefs,
                 instance.InstanceId);
 
             instance.AddTransaction(battleStartedTransaction);

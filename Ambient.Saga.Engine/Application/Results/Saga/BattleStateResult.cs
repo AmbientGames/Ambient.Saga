@@ -31,7 +31,7 @@ public class BattleStateResult
     /// <summary>
     /// Player combatant current state
     /// </summary>
-    public Combatant? PlayerCombatant { get; set; }
+    public Combatant? AvatarCombatant { get; set; }
 
     /// <summary>
     /// Enemy combatant current state

@@ -172,7 +172,7 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        var player = _currentState.PlayerCombatant;
+        var player = _currentState.AvatarCombatant;
         var enemy = _currentState.EnemyCombatant;
 
         if (player == null || enemy == null) return;
@@ -552,8 +552,8 @@ public class BattleModal
         float staminaGained = 0f;
         bool wasOptimal = false;
         bool timedOut = reaction == AvatarDefenseType.None && _reactionTimeRemaining <= 0;
-        float playerHealthAfter = _currentState?.PlayerCombatant?.Health ?? 1.0f;
-        float playerEnergyAfter = _currentState?.PlayerCombatant?.Stamina ?? 1.0f;
+        float playerHealthAfter = _currentState?.AvatarCombatant?.Health ?? 1.0f;
+        float playerEnergyAfter = _currentState?.AvatarCombatant?.Stamina ?? 1.0f;
         float enemyHealthAfter = _currentState?.EnemyCombatant?.Health ?? 1.0f;
 
         // If we have a BattleEngine, resolve the reaction properly
@@ -914,9 +914,9 @@ public class BattleModal
                 AvatarId = viewModel.PlayerAvatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 EnemyCharacterInstanceId = character.CharacterInstanceId,
-                PlayerCombatant = playerCombatant,
+                AvatarCombatant = playerCombatant,
                 EnemyCombatant = enemyCombatant,
-                PlayerAffinityRefs = availableAffinities,
+                AvatarAffinityRefs = availableAffinities,
                 EnemyMind = new CombatAI(viewModel.CurrentWorld),
                 RandomSeed = new Random().Next(),
                 Avatar = viewModel.PlayerAvatar
@@ -1039,12 +1039,12 @@ public class BattleModal
     // Modal opening methods
     private void OpenSpellSelectionModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         // Clean up previous instance to avoid memory leaks
         CleanupSpellSelectionModal();
 
-        _spellSelectionModal = new SpellSelectionModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
+        _spellSelectionModal = new SpellSelectionModal(_currentState.AvatarCombatant, viewModel.CurrentWorld);
         _spellSelectionModal.SpellSelected += OnSpellSelected;
         _spellSelectionModal.Cancelled += OnModalCancelled;
         _showSpellSelection = true;
@@ -1052,12 +1052,12 @@ public class BattleModal
 
     private void OpenItemSelectionModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         // Clean up previous instance to avoid memory leaks
         CleanupItemSelectionModal();
 
-        _itemSelectionModal = new ItemSelectionModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
+        _itemSelectionModal = new ItemSelectionModal(_currentState.AvatarCombatant, viewModel.CurrentWorld);
         _itemSelectionModal.ItemSelected += OnItemSelected;
         _itemSelectionModal.Cancelled += OnModalCancelled;
         _showItemSelection = true;
@@ -1065,7 +1065,7 @@ public class BattleModal
 
     private void OpenEquipmentChangeModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         // Clean up previous instance to avoid memory leaks
         CleanupEquipmentChangeModal();
@@ -1073,7 +1073,7 @@ public class BattleModal
         // Get available affinities from world configuration
         var playerAffinityRefs = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
             .Select(a => a.RefName).ToList() ?? new List<string>();
-        _equipmentChangeModal = new EquipmentChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld, playerAffinityRefs);
+        _equipmentChangeModal = new EquipmentChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld, playerAffinityRefs);
         _equipmentChangeModal.EquipmentChanged += OnEquipmentChanged;
         _equipmentChangeModal.Cancelled += OnModalCancelled;
         _showEquipmentChange = true;
@@ -1132,7 +1132,7 @@ public class BattleModal
 
     private void OpenAffinityChangeModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         CleanupAffinityChangeModal();
 
@@ -1141,7 +1141,7 @@ public class BattleModal
             viewModel.CurrentWorld.Gameplay?.CharacterAffinities?.Select(a => a.RefName).ToList() ??
             new List<string>();
 
-        _affinityChangeModal = new AffinityChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld, playerAffinities);
+        _affinityChangeModal = new AffinityChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld, playerAffinities);
         _affinityChangeModal.AffinitySelected += OnAffinitySelected;
         _affinityChangeModal.Cancelled += OnModalCancelled;
         _showAffinityChange = true;
@@ -1149,11 +1149,11 @@ public class BattleModal
 
     private void OpenStanceChangeModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         CleanupStanceChangeModal();
 
-        _stanceChangeModal = new StanceChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
+        _stanceChangeModal = new StanceChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld);
         _stanceChangeModal.StanceSelected += OnStanceSelected;
         _stanceChangeModal.Cancelled += OnModalCancelled;
         _showStanceChange = true;
