@@ -91,7 +91,7 @@ public static class TransactionDataKeys
     public const string Health = "Health";
     public const string IsBuying = "IsBuying";
     public const string IsDevSpawn = "IsDevSpawn";
-    public const string IsPlayerTurn = "IsPlayerTurn";
+    public const string IsAvatarTurn = "IsAvatarTurn";
     public const string IsRespawn = "IsRespawn";
     public const string IsUnequipping = "IsUnequipping";
     public const string ItemRef = "ItemRef";

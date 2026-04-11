@@ -154,7 +154,7 @@ public class RegressionTests : IDisposable
             .Select(i => new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerEntered,
+                Type = SagaTransactionType.AvatarEntered,
                 AvatarId = avatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,

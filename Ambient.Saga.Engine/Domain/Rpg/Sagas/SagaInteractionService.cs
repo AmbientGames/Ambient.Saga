@@ -352,7 +352,7 @@ public class SagaInteractionService
             var enterTx = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerEntered,
+                Type = SagaTransactionType.AvatarEntered,
                 AvatarId = avatar.AvatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,

@@ -30,7 +30,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 30f, // Enemy at 30% health
-            PlayerHealthPercent = 80f,
+            AvatarHealthPercent = 80f,
             TurnNumber = 5
         };
 
@@ -61,7 +61,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 75f, // Enemy at 75% health
-            PlayerHealthPercent = 80f,
+            AvatarHealthPercent = 80f,
             TurnNumber = 5
         };
 
@@ -95,7 +95,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 95f, // Enemy at 95% health
-            PlayerHealthPercent = 80f,
+            AvatarHealthPercent = 80f,
             TurnNumber = 1
         };
 
@@ -125,7 +125,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 60f, // Enemy at 60% health
-            PlayerHealthPercent = 80f,
+            AvatarHealthPercent = 80f,
             TurnNumber = 5
         };
 
@@ -159,7 +159,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 80f,
-            PlayerHealthPercent = 15f, // Player at 15% health
+            AvatarHealthPercent = 15f, // Player at 15% health
             TurnNumber = 8
         };
 
@@ -195,7 +195,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 50f,
-            PlayerHealthPercent = 50f,
+            AvatarHealthPercent = 50f,
             TurnNumber = 10 // Exactly at turn 10
         };
 

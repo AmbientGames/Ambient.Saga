@@ -18,11 +18,11 @@ public static class BattleTransactionHelper
     public static SagaTransaction CreateBattleStartedTransaction(
         string avatarId,
         string sagaRef,
-        Guid playerCombatantId,
+        Guid avatarCombatantId,
         Guid enemyCombatantId,
         string enemyCharacterRef,
         int randomSeed,
-        Combatant player,
+        Combatant avatar,
         Combatant enemy,
         List<string> playerAffinityRefs,
         Guid sagaInstanceId)
@@ -36,20 +36,20 @@ public static class BattleTransactionHelper
             Data = new Dictionary<string, string>
             {
                 [TransactionDataKeys.SagaArcRef] = sagaRef,
-                [TransactionDataKeys.AvatarCombatantId] = playerCombatantId.ToString(),
+                [TransactionDataKeys.AvatarCombatantId] = avatarCombatantId.ToString(),
                 [TransactionDataKeys.EnemyCombatantId] = enemyCombatantId.ToString(),
                 [TransactionDataKeys.EnemyCharacterRef] = enemyCharacterRef,
                 [TransactionDataKeys.RandomSeed] = randomSeed.ToString(),
                 [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString(),
 
                 // Avatar stats
-                [TransactionDataKeys.AvatarHealth] = player.Health.ToString("F3"),
-                [TransactionDataKeys.AvatarEnergy] = player.Stamina.ToString("F3"),
-                [TransactionDataKeys.AvatarStrength] = player.Strength.ToString("F3"),
-                [TransactionDataKeys.AvatarDefense] = player.Defense.ToString("F3"),
-                [TransactionDataKeys.AvatarSpeed] = player.Speed.ToString("F3"),
-                [TransactionDataKeys.AvatarMagic] = player.Magic.ToString("F3"),
-                [TransactionDataKeys.AvatarAffinity] = player.AffinityRef ?? "",
+                [TransactionDataKeys.AvatarHealth] = avatar.Health.ToString("F3"),
+                [TransactionDataKeys.AvatarEnergy] = avatar.Stamina.ToString("F3"),
+                [TransactionDataKeys.AvatarStrength] = avatar.Strength.ToString("F3"),
+                [TransactionDataKeys.AvatarDefense] = avatar.Defense.ToString("F3"),
+                [TransactionDataKeys.AvatarSpeed] = avatar.Speed.ToString("F3"),
+                [TransactionDataKeys.AvatarMagic] = avatar.Magic.ToString("F3"),
+                [TransactionDataKeys.AvatarAffinity] = avatar.AffinityRef ?? "",
 
                 // Enemy stats
                 [TransactionDataKeys.EnemyHealth] = enemy.Health.ToString("F3"),
@@ -63,9 +63,9 @@ public static class BattleTransactionHelper
         };
 
         // Record avatar's equipment inventory (what they own)
-        if (player.Capabilities?.Equipment != null)
+        if (avatar.Capabilities?.Equipment != null)
         {
-            var equipmentRefs = player.Capabilities.Equipment
+            var equipmentRefs = avatar.Capabilities.Equipment
                 .Select(e => $"{e.EquipmentRef}:{e.Condition:F2}")
                 .ToList();
             if (equipmentRefs.Count > 0)
@@ -73,9 +73,9 @@ public static class BattleTransactionHelper
         }
 
         // Record avatar's initial equipped slots
-        if (player.CombatProfile != null && player.CombatProfile.Count > 0)
+        if (avatar.CombatProfile != null && avatar.CombatProfile.Count > 0)
         {
-            var equippedSlots = player.CombatProfile
+            var equippedSlots = avatar.CombatProfile
                 .Select(kvp => $"{kvp.Key}:{kvp.Value}")
                 .ToList();
             transaction.Data[TransactionDataKeys.AvatarEquippedSlots] = string.Join(",", equippedSlots);
@@ -142,7 +142,7 @@ public static class BattleTransactionHelper
                 [TransactionDataKeys.BattleTransactionId] = battleTransactionId.ToString(),
                 [TransactionDataKeys.TurnNumber] = turnNumber.ToString(),
                 [TransactionDataKeys.Actor] = actorRefName,
-                [TransactionDataKeys.IsPlayerTurn] = isPlayerTurn.ToString(),
+                [TransactionDataKeys.IsAvatarTurn] = isPlayerTurn.ToString(),
                 [TransactionDataKeys.DecisionType] = decisionType.ToString(),
                 [TransactionDataKeys.DamageDealt] = damageDealt.ToString("F3"),
                 [TransactionDataKeys.HealingDone] = healingDone.ToString("F3"),

@@ -69,7 +69,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
 
             // Reconstruct combatants from BattleStarted + all BattleTurnExecuted transactions
-            var (playerCombatant, enemyCombatant, randomSeed, playerAffinityRefs, enemyCharacterInstanceId) =
+            var (avatarCombatant, enemyCombatant, randomSeed, avatarAffinityRefs, enemyCharacterInstanceId) =
                 ReconstructBattleState(battleStartedTx, instance);
 
             // Get enemy AI (need to recreate with same seed for determinism)
@@ -85,8 +85,8 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
             // Reconstruct battle engine
             // Note: tells are NOT registered during replay — they're only used for the live enemy turn
-            var battleEngine = new BattleEngine(playerCombatant, enemyCombatant, enemyMind, _world, randomSeed);
-            battleEngine.SetAvatarAffinities(playerAffinityRefs);
+            var battleEngine = new BattleEngine(avatarCombatant, enemyCombatant, enemyMind, _world, randomSeed);
+            battleEngine.SetAvatarAffinities(avatarAffinityRefs);
 
             // Start battle and replay all turns to reach current state
             battleEngine.StartBattle();
@@ -122,7 +122,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             for (var i = 1; i < executedTurns.Count; i++)
             {
                 var turnTx = executedTurns[i];
-                var isAvatarTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
+                var isAvatarTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsAvatarTurn]);
 
                 if (isAvatarTurn)
                 {
@@ -140,8 +140,8 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
 
             // Now execute the new avatar turn
-            System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Executing player action: {command.PlayerAction.ActionType}");
-            var avatarEvent = battleEngine.ExecuteAvatarDecision(command.PlayerAction);
+            System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Executing player action: {command.AvatarAction.ActionType}");
+            var avatarEvent = battleEngine.ExecuteAvatarDecision(command.AvatarAction);
 
             var transactionsBefore = instance.Transactions.Count;
             var newTransactions = new List<SagaTransaction>();
@@ -154,9 +154,9 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 command.BattleInstanceId,
                 turnNumber,
                 avatarEvent.ActorName,
-                true,  // Is player turn
-                command.PlayerAction.ActionType,
-                command.PlayerAction.Parameter,
+                true,  // Is avatar turn
+                command.AvatarAction.ActionType,
+                command.AvatarAction.Parameter,
                 avatarEvent.Damage,
                 avatarEvent.Healing,
                 avatarEvent.TargetName,
@@ -169,7 +169,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             instance.AddTransaction(playerTurnTx);
             newTransactions.Add(playerTurnTx);
 
-            System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Player turn: {command.PlayerAction.ActionType}, dealt {avatarEvent.Damage:F2} damage");
+            System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Avatar turn: {command.AvatarAction.ActionType}, dealt {avatarEvent.Damage:F2} damage");
 
             // Handle trait assignment from combat event (e.g., Disengaged trait on successful flee)
             if (!string.IsNullOrEmpty(avatarEvent.TraitToAssign) && !string.IsNullOrEmpty(avatarEvent.TraitTargetCharacterRef))
@@ -441,8 +441,8 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
         foreach (var turnTx in turnTransactions)
         {
-            var isPlayerTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
-            var combatant = isPlayerTurn ? avatarCombatant : enemyCombatant;
+            var isAvatarTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsAvatarTurn]);
+            var combatant = isAvatarTurn ? avatarCombatant : enemyCombatant;
 
             // Update health/energy from turn results
             var targetHealthAfter = float.Parse(turnTx.Data[TransactionDataKeys.TargetHealthAfter]);
@@ -452,7 +452,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             combatant.Stamina = actorEnergyAfter;
 
             // Target's health is updated
-            var target = isPlayerTurn ? enemyCombatant : avatarCombatant;
+            var target = isAvatarTurn ? enemyCombatant : avatarCombatant;
             target.Health = targetHealthAfter;
 
             // Update equipment/affinity from snapshots
@@ -476,12 +476,12 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         }
 
         var randomSeed = int.Parse(battleStartedTx.Data[TransactionDataKeys.RandomSeed]);
-        var playerAffinityRefs = battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarAffinities, out var affinities)
+        var avatarAffinityRefs = battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarAffinities, out var affinities)
             ? affinities.Split(',').ToList()
             : new List<string>();
         var enemyCharacterInstanceId = Guid.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyCombatantId]);
 
-        return (avatarCombatant, enemyCombatant, randomSeed, playerAffinityRefs, enemyCharacterInstanceId);
+        return (avatarCombatant, enemyCombatant, randomSeed, avatarAffinityRefs, enemyCharacterInstanceId);
     }
 
     private async Task CreateBattleEndTransactions(
@@ -493,16 +493,16 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         Character enemyCharacter,
         List<SagaTransaction> newTransactions)
     {
-        var playerVictory = battleEngine.State == BattleState.Victory;
-        var victorName = playerVictory ? battleEngine.GetAvatar().DisplayName : battleEngine.GetEnemy().DisplayName;
-        var defeatedName = playerVictory ? battleEngine.GetEnemy().DisplayName : battleEngine.GetAvatar().DisplayName;
+        var avatarVictory = battleEngine.State == BattleState.Victory;
+        var victorName = avatarVictory ? battleEngine.GetAvatar().DisplayName : battleEngine.GetEnemy().DisplayName;
+        var defeatedName = avatarVictory ? battleEngine.GetEnemy().DisplayName : battleEngine.GetAvatar().DisplayName;
 
         // Create BattleEnded transaction
         var battleEndedTx = BattleTransactionHelper.CreateBattleEndedTransaction(
             command.AvatarId.ToString(),
             command.BattleInstanceId,
             totalTurns,
-            playerVictory,
+            avatarVictory,
             victorName,
             defeatedName,
             instance.InstanceId);
@@ -511,7 +511,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         newTransactions.Add(battleEndedTx);
 
         // If player won, create CharacterDefeated transaction and grant affinity
-        if (playerVictory)
+        if (avatarVictory)
         {
             var data = new Dictionary<string, string>
             {
@@ -544,10 +544,10 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             // Grant enemy's affinity to avatar if they have one and avatar doesn't already have it
             if (!string.IsNullOrEmpty(enemyCharacter.AffinityRef))
             {
-                var playerHasAffinity = command.Avatar.Affinities?
+                var avatarHasAffinity = command.Avatar.Affinities?
                     .Any(a => a.AffinityRef == enemyCharacter.AffinityRef) ?? false;
 
-                if (!playerHasAffinity)
+                if (!avatarHasAffinity)
                 {
                     // Add affinity to avatar
                     var affinities = command.Avatar.Affinities?.ToList() ?? new List<Affinity>();

@@ -120,7 +120,7 @@ public class BattleTriggerEvaluator
 
             // Player health threshold check
             BattleTriggerCondition.PlayerHealthBelow =>
-                context.PlayerHealthPercent < trigger.Value,
+                context.AvatarHealthPercent < trigger.Value,
 
             // Turn-based trigger (fires when turn number is reached)
             BattleTriggerCondition.TurnNumber =>
@@ -154,7 +154,7 @@ public class BattleTriggerContext
     /// <summary>
     /// Player's current health as a percentage (0-100)
     /// </summary>
-    public float PlayerHealthPercent { get; init; }
+    public float AvatarHealthPercent { get; init; }
 
     /// <summary>
     /// Enemy's current health as a percentage (0-100)
@@ -194,12 +194,12 @@ public class BattleTriggerContext
         bool stanceJustChanged = false,
         bool affinityJustChanged = false)
     {
-        var player = engine.GetAvatar();
+        var avatar = engine.GetAvatar();
         var enemy = engine.GetEnemy();
 
         return new BattleTriggerContext
         {
-            PlayerHealthPercent = player.HealthPercent,
+            AvatarHealthPercent = avatar.HealthPercent,
             EnemyHealthPercent = enemy.HealthPercent,
             TurnNumber = engine.GetTurnNumber(),
             StanceJustChanged = stanceJustChanged,

@@ -763,7 +763,7 @@ public class BattleModal
         ImGui.Spacing();
         ImGui.Spacing();
 
-        if (_currentState.PlayerVictory == true)
+        if (_currentState.AvatarVictory == true)
         {
             ImGui.PushFont(UIConstants.FontTitle);
             var text = "VICTORY!";
@@ -778,7 +778,7 @@ public class BattleModal
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - subSize.X) * 0.5f);
             ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1.0f), subText);
         }
-        else if (_currentState.PlayerVictory == false)
+        else if (_currentState.AvatarVictory == false)
         {
             ImGui.PushFont(UIConstants.FontTitle);
             var text = "DEFEAT";
@@ -843,11 +843,11 @@ public class BattleModal
         // Center the action buttons
         var buttonWidth = 150f;
         var endButtonHeight = ImGui.GetFrameHeight() * 1.4f;
-        var totalButtonWidth = _currentState.PlayerVictory == true ? buttonWidth * 2 + 20 : buttonWidth;
+        var totalButtonWidth = _currentState.AvatarVictory == true ? buttonWidth * 2 + 20 : buttonWidth;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalButtonWidth) * 0.5f);
 
         // Show loot button if player won
-        if (_currentState.PlayerVictory == true)
+        if (_currentState.AvatarVictory == true)
         {
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1.0f));
@@ -864,7 +864,7 @@ public class BattleModal
 
         if (ImGui.Button("Close", new Vector2(buttonWidth, endButtonHeight)))
         {
-            if (_currentState?.PlayerVictory == false)
+            if (_currentState?.AvatarVictory == false)
             {
                 PlayerDefeated?.Invoke();
             }
@@ -957,7 +957,7 @@ public class BattleModal
                 AvatarId = viewModel.PlayerAvatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 BattleInstanceId = _battleInstanceId,
-                PlayerAction = action,
+                AvatarAction = action,
                 Avatar = viewModel.PlayerAvatar
             };
 
@@ -1137,7 +1137,7 @@ public class BattleModal
         CleanupAffinityChangeModal();
 
         // Get avatar's available affinities (from avatar capabilities or default world affinities)
-        var playerAffinities = _currentState.PlayerAffinityRefs ??
+        var playerAffinities = _currentState.AvatarAffinityRefs ??
             viewModel.CurrentWorld.Gameplay?.CharacterAffinities?.Select(a => a.RefName).ToList() ??
             new List<string>();
 

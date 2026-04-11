@@ -232,8 +232,8 @@ public class SagaStateMachineTests
         var character = state.Characters[characterId.ToString()];
         Assert.Equal(0.2, character.CurrentHealth, precision: 2);  // 100% - 30% - 50% = 20%
         Assert.True(character.IsAlive);  // Still alive with 20% health
-        Assert.Equal(0.3, character.DamageByPlayer["Avatar1"]);
-        Assert.Equal(0.5, character.DamageByPlayer["Avatar2"]);
+        Assert.Equal(0.3, character.DamageByAvatar["Avatar1"]);
+        Assert.Equal(0.5, character.DamageByAvatar["Avatar2"]);
     }
 
     [Fact]
@@ -626,7 +626,7 @@ public class SagaStateMachineTests
         // Player2 enters and damages 60%
         instance.AddTransaction(new SagaTransaction
         {
-            Type = SagaTransactionType.PlayerEntered,
+            Type = SagaTransactionType.AvatarEntered,
             AvatarId = "Avatar2",
             Status = TransactionStatus.Committed,
             ServerTimestamp = baseTime.AddSeconds(20),
@@ -678,8 +678,8 @@ public class SagaStateMachineTests
         var boss = state.Characters[bossId.ToString()];
         Assert.False(boss.IsAlive);
         Assert.Equal(0.0, boss.CurrentHealth);
-        Assert.Equal(0.4, boss.DamageByPlayer["Avatar1"]);
-        Assert.Equal(0.6, boss.DamageByPlayer["Avatar2"]);
+        Assert.Equal(0.4, boss.DamageByAvatar["Avatar1"]);
+        Assert.Equal(0.6, boss.DamageByAvatar["Avatar2"]);
         Assert.Equal("approach", boss.SpawnedByTriggerRef);
 
         Assert.Equal(8, state.TransactionCount);

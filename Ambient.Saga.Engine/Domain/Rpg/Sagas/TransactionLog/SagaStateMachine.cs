@@ -177,7 +177,7 @@ public class SagaStateMachine
                 ApplyCharacterDespawned(state, tx);
                 break;
 
-            case SagaTransactionType.PlayerEntered:
+            case SagaTransactionType.AvatarEntered:
                 ApplyPlayerEntered(state, tx);
                 break;
 
@@ -445,11 +445,11 @@ public class SagaStateMachine
         // Track damage by avatar
         if (!string.IsNullOrEmpty(tx.AvatarId))
         {
-            if (!character.DamageByPlayer.ContainsKey(tx.AvatarId))
+            if (!character.DamageByAvatar.ContainsKey(tx.AvatarId))
             {
-                character.DamageByPlayer[tx.AvatarId] = 0;
+                character.DamageByAvatar[tx.AvatarId] = 0;
             }
-            character.DamageByPlayer[tx.AvatarId] += damage;
+            character.DamageByAvatar[tx.AvatarId] += damage;
         }
 
         // Auto-defeat if health reaches 0

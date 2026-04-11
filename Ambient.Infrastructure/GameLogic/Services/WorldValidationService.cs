@@ -715,7 +715,7 @@ public static class WorldValidationService
                 break;
 
             // Dialogue history
-            case DialogueConditionType.PlayerVisitCount:
+            case DialogueConditionType.AvatarVisitCount:
                 ValidateConditionRefName(world.DialogueTreesLookup, condition.RefName, conditionContext, "DialogueTrees", errors, required: true);
                 ValidateNumericConditionValue(condition, conditionContext, errors);
                 break;

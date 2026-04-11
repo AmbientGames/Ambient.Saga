@@ -14,7 +14,7 @@ public class BattleStateResult
     public bool IsActive { get; set; }
 
     /// <summary>
-    /// Current battle state (PlayerTurn, EnemyTurn, Victory, Defeat, Fled)
+    /// Current battle state (AvatarTurn, EnemyTurn, Victory, Defeat, Fled)
     /// </summary>
     public BattleState BattleState { get; set; }
 
@@ -29,7 +29,7 @@ public class BattleStateResult
     public int TurnNumber { get; set; }
 
     /// <summary>
-    /// Player combatant current state
+    /// Avatar combatant current state
     /// </summary>
     public Combatant? AvatarCombatant { get; set; }
 
@@ -44,9 +44,9 @@ public class BattleStateResult
     public List<string> BattleLog { get; set; } = new();
 
     /// <summary>
-    /// Whether player won the battle
+    /// Whether avatar won the battle
     /// </summary>
-    public bool? PlayerVictory { get; set; }
+    public bool? AvatarVictory { get; set; }
 
     /// <summary>
     /// Whether battle has ended
@@ -54,9 +54,9 @@ public class BattleStateResult
     public bool HasEnded { get; set; }
 
     /// <summary>
-    /// Player's available affinities for switching
+    /// Avatar's available affinities for switching
     /// </summary>
-    public List<string> PlayerAffinityRefs { get; set; } = new();
+    public List<string> AvatarAffinityRefs { get; set; } = new();
 
     /// <summary>
     /// Enemy character instance ID
@@ -71,7 +71,7 @@ public class BattleStateResult
     // Reaction phase fields (Expedition 33-inspired active defense)
 
     /// <summary>
-    /// Whether battle is awaiting player reaction to an incoming attack
+    /// Whether battle is awaiting avatar reaction to an incoming attack
     /// </summary>
     public bool IsAwaitingReaction { get; set; }
 
@@ -81,7 +81,7 @@ public class BattleStateResult
     public string? PendingTellText { get; set; }
 
     /// <summary>
-    /// Time remaining in milliseconds for player to react
+    /// Time remaining in milliseconds for avatar to react
     /// </summary>
     public int PendingReactionWindowMs { get; set; }
 

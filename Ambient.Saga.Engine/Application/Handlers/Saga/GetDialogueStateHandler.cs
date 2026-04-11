@@ -162,7 +162,7 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
             var choices = new List<DialogueChoiceOption>();
             if (currentNode.Choice != null)
             {
-                var playerCredits = stateProvider.GetCredits();
+                var avatarCredits = stateProvider.GetCredits();
                 var conditionEvaluator = new DialogueConditionEvaluator(stateProvider);
 
                 foreach (var choice in currentNode.Choice)
@@ -184,7 +184,7 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
 
                     // Check if choice is available (can afford cost if specified)
                     var hasCost = choice.CostSpecified && choice.Cost > 0;
-                    var isAvailable = !hasCost || choice.Cost <= playerCredits;
+                    var isAvailable = !hasCost || choice.Cost <= avatarCredits;
 
                     choices.Add(new DialogueChoiceOption
                     {

@@ -663,7 +663,7 @@ public class JournalPanel
             SagaTransactionType.BattleTurnExecuted => "Attack executed",
             SagaTransactionType.TriggerActivated => $"Entered: {triggerRef ?? "area"}",
             SagaTransactionType.TriggerCompleted => $"Left: {triggerRef ?? "area"}",
-            SagaTransactionType.PlayerEntered => "Arrived at location",
+            SagaTransactionType.AvatarEntered => "Arrived at location",
             SagaTransactionType.PlayerExited => "Departed location",
             SagaTransactionType.AffinityGranted => $"Learned about {characterRef ?? "character"}",
             SagaTransactionType.CurrencyChanged => "Currency changed",

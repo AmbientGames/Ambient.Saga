@@ -58,7 +58,7 @@ public class CharacterState
     /// Total damage dealt to this character by each avatar.
     /// Key: AvatarId, Value: Total damage
     /// </summary>
-    public Dictionary<string, double> DamageByPlayer { get; set; } = new();
+    public Dictionary<string, double> DamageByAvatar { get; set; } = new();
 
     /// <summary>
     /// Whether this character has been looted.

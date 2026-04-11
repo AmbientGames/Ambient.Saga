@@ -31,7 +31,7 @@ public enum SagaTransactionType
     ComboExecuted,          // Combo chain attack executed
 
     // Player interactions
-    PlayerEntered,
+    AvatarEntered,
     PlayerExited,
 
     // Entity interactions

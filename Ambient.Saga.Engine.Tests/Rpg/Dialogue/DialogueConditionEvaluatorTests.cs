@@ -222,7 +222,7 @@ public class DialogueConditionEvaluatorTests
 
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.PlayerVisitCount,
+            Type = DialogueConditionType.AvatarVisitCount,
             RefName = "merchant_dialogue",
             Operator = ComparisonOperator.Equals,
             Value = "2"

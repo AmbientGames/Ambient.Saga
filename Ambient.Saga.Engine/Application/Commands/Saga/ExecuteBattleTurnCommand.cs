@@ -34,9 +34,9 @@ public record ExecuteBattleTurnCommand : IRequest<SagaCommandResult>
     public required Guid BattleInstanceId { get; init; }
 
     /// <summary>
-    /// Player's combat action for this turn
+    /// Avatar's combat action for this turn
     /// </summary>
-    public required CombatAction PlayerAction { get; init; }
+    public required CombatAction AvatarAction { get; init; }
 
     /// <summary>
     /// Avatar entity participating in battle (for state updates if battle ends)

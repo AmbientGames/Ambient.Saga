@@ -77,7 +77,7 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
                     [TransactionDataKeys.ActionType] = "Reaction",
                     [TransactionDataKeys.DecisionType] = ActionType.Defend.ToString(), // Reactions are defensive actions
                     [TransactionDataKeys.ReactionType] = command.Reaction.ToString(),
-                    [TransactionDataKeys.IsPlayerTurn] = "true",
+                    [TransactionDataKeys.IsAvatarTurn] = "true",
                     [TransactionDataKeys.TurnNumber] = turnNumber.ToString(),
 
                     // Reaction-specific data
