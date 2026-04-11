@@ -74,14 +74,14 @@ public class SubmitReactionCommand : IRequest<SagaCommandResult>
     public bool TimedOut { get; init; }
 
     /// <summary>
-    /// Player health after damage applied
+    /// Avatar health after damage applied
     /// </summary>
-    public float PlayerHealthAfter { get; init; }
+    public float AvatarHealthAfter { get; init; }
 
     /// <summary>
-    /// Player energy after stamina effects applied
+    /// Avatar energy after stamina effects applied
     /// </summary>
-    public float PlayerEnergyAfter { get; init; }
+    public float AvatarEnergyAfter { get; init; }
 
     /// <summary>
     /// Enemy health after counter damage (if any)

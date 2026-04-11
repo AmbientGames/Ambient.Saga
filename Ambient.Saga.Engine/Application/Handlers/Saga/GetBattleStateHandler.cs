@@ -112,7 +112,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
 
             foreach (var turnTx in turnTransactions)
             {
-                var isPlayerTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsAvatarTurn]);
+                var isAvatarTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsAvatarTurn]);
 
                 // Check if this is a reaction transaction
                 var isReaction = turnTx.Data.TryGetValue(TransactionDataKeys.ActionType, out var actionTypeStr) && actionTypeStr == "Reaction";
@@ -150,8 +150,8 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 else
                 {
                     // Normal turn log entry
-                    var actor = isPlayerTurn ? avatarCombatant.DisplayName : enemyCombatant.DisplayName;
-                    var target = isPlayerTurn ? enemyCombatant.DisplayName : avatarCombatant.DisplayName;
+                    var actor = isAvatarTurn ? avatarCombatant.DisplayName : enemyCombatant.DisplayName;
+                    var target = isAvatarTurn ? enemyCombatant.DisplayName : avatarCombatant.DisplayName;
                     var actionType = Enum.Parse<ActionType>(turnTx.Data[TransactionDataKeys.DecisionType]);
                     var damage = float.Parse(turnTx.Data[TransactionDataKeys.DamageDealt]);
                     var healing = float.Parse(turnTx.Data[TransactionDataKeys.HealingDone]);

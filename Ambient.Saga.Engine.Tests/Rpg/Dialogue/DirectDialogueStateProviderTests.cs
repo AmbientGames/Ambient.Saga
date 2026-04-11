@@ -499,7 +499,7 @@ public class DirectDialogueStateProviderTests
     [Fact]
     public void GetPlayerVisitCount_NotVisited_ReturnsZero()
     {
-        Assert.Equal(0, _provider.GetPlayerVisitCount("merchant_dialogue"));
+        Assert.Equal(0, _provider.GetAvatarVisitCount("merchant_dialogue"));
     }
 
     [Fact]
@@ -507,7 +507,7 @@ public class DirectDialogueStateProviderTests
     {
         _provider.RecordNodeVisit("merchant_dialogue", "greeting");
 
-        Assert.Equal(1, _provider.GetPlayerVisitCount("merchant_dialogue"));
+        Assert.Equal(1, _provider.GetAvatarVisitCount("merchant_dialogue"));
     }
 
     [Fact]

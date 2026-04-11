@@ -599,8 +599,8 @@ public class BattleModal
                 StaminaGained = staminaGained,
                 WasOptimal = wasOptimal,
                 TimedOut = timedOut,
-                PlayerHealthAfter = playerHealthAfter,
-                PlayerEnergyAfter = playerEnergyAfter,
+                AvatarHealthAfter = playerHealthAfter,
+                AvatarEnergyAfter = playerEnergyAfter,
                 EnemyHealthAfter = enemyHealthAfter
             };
 

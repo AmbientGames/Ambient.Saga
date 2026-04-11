@@ -664,7 +664,7 @@ public class JournalPanel
             SagaTransactionType.TriggerActivated => $"Entered: {triggerRef ?? "area"}",
             SagaTransactionType.TriggerCompleted => $"Left: {triggerRef ?? "area"}",
             SagaTransactionType.AvatarEntered => "Arrived at location",
-            SagaTransactionType.PlayerExited => "Departed location",
+            SagaTransactionType.AvatarExited => "Departed location",
             SagaTransactionType.AffinityGranted => $"Learned about {characterRef ?? "character"}",
             SagaTransactionType.CurrencyChanged => "Currency changed",
             SagaTransactionType.ItemCrafted => $"Crafted {itemRef ?? "item"}",

@@ -178,11 +178,11 @@ public class SagaStateMachine
                 break;
 
             case SagaTransactionType.AvatarEntered:
-                ApplyPlayerEntered(state, tx);
+                ApplyAvatarEntered(state, tx);
                 break;
 
-            case SagaTransactionType.PlayerExited:
-                ApplyPlayerExited(state, tx);
+            case SagaTransactionType.AvatarExited:
+                ApplyAvatarExited(state, tx);
                 break;
 
             case SagaTransactionType.DialogueStarted:
@@ -247,11 +247,6 @@ public class SagaStateMachine
 
             case SagaTransactionType.QuestAbandoned:
                 ApplyQuestAbandoned(state, tx);
-                break;
-
-            case SagaTransactionType.QuestProgressed:
-                // DEPRECATED: Use QuestObjectiveCompleted instead
-                ApplyQuestProgressed(state, tx);
                 break;
 
             case SagaTransactionType.EntityInteracted:
@@ -494,7 +489,7 @@ public class SagaStateMachine
         character.DespawnedAt = tx.GetCanonicalTimestamp();
     }
 
-    private void ApplyPlayerEntered(SagaState state, SagaTransaction tx)
+    private void ApplyAvatarEntered(SagaState state, SagaTransaction tx)
     {
         // Avatar entered Saga - may trigger discovery if first time
         if (state.Status == SagaStatus.Undiscovered && !string.IsNullOrEmpty(tx.AvatarId))
@@ -505,7 +500,7 @@ public class SagaStateMachine
         }
     }
 
-    private void ApplyPlayerExited(SagaState state, SagaTransaction tx)
+    private void ApplyAvatarExited(SagaState state, SagaTransaction tx)
     {
         // Avatar exited Saga - could trigger cleanup, despawns, etc.
         // Implementation depends on game design
@@ -817,25 +812,6 @@ public class SagaStateMachine
         // Simply remove from active quests (not added to completed)
         state.ActiveQuests.Remove(questRef);
     }
-
-    private void ApplyQuestProgressed(SagaState state, SagaTransaction tx)
-    {
-        // DEPRECATED: This is for backward compatibility only
-        // New quests should use QuestObjectiveCompleted instead
-        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
-        if (string.IsNullOrEmpty(questRef))
-            return;
-
-        // Only progress if quest is active
-        if (!state.ActiveQuests.TryGetValue(questRef, out var questState))
-            return;
-
-        // For old simple quests, just update a generic progress counter
-        var progressAmount = tx.TryGetData<int>(TransactionDataKeys.ProgressAmount, out var amount) ? amount : 1;
-        var currentProgress = questState.ObjectiveProgress.GetValueOrDefault("_legacy_", 0);
-        questState.ObjectiveProgress[TransactionDataKeys._legacy_] = currentProgress + progressAmount;
-    }
-
     private void ApplyEntityInteracted(SagaState state, SagaTransaction tx)
     {
         var featureRef = tx.GetData<string>(TransactionDataKeys.FeatureRef);

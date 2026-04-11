@@ -70,7 +70,7 @@ public class DialogueEngineTests
 
         _engine.StartDialogue(tree);
 
-        Assert.Equal(1, _state.GetPlayerVisitCount("simple_dialogue"));
+        Assert.Equal(1, _state.GetAvatarVisitCount("simple_dialogue"));
         Assert.True(_state.WasNodeVisited("simple_dialogue", "start"));
     }
 

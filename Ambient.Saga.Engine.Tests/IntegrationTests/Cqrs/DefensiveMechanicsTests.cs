@@ -220,11 +220,11 @@ public class DefensiveMechanicsTests
     public void SpellAttack_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant adjusts loadout, then casts spell
-        var player = CreateCombatant("Avatar", magic: 0.15f);
-        player.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
+        var avatar = CreateCombatant("Avatar", magic: 0.15f);
+        avatar.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
 
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Adjust loadout first
@@ -233,7 +233,7 @@ public class DefensiveMechanicsTests
             ActionType = ActionType.AdjustLoadout,
             Parameter = "Affinity:Fire"
         });
-        Assert.True(player.IsAdjusting);
+        Assert.True(avatar.IsAdjusting);
 
         // Skip enemy turn
         engine.ExecuteEnemyTurn();
@@ -246,8 +246,8 @@ public class DefensiveMechanicsTests
         });
 
         // ASSERT: Defensive state cleared
-        Assert.False(player.IsAdjusting);
-        Assert.False(player.IsDefending);
+        Assert.False(avatar.IsAdjusting);
+        Assert.False(avatar.IsDefending);
         _output.WriteLine("After spell cast: defensive states cleared");
     }
 
@@ -377,33 +377,33 @@ public class DefensiveMechanicsTests
     public void MultipleDefensiveTurns_Persist()
     {
         // ARRANGE: Combatant defends multiple turns in a row
-        var player = CreateCombatant("Defender", defense: 0.15f);
+        var avatar = CreateCombatant("Defender", defense: 0.15f);
         var enemy = CreateCombatant("Attacker", strength: 0.20f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Turn 1: Defend
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        Assert.True(avatar.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks, reduced damage
-        var healthAfterTurn1 = player.Health;
+        var healthAfterTurn1 = avatar.Health;
         _output.WriteLine($"Health after turn 1: {healthAfterTurn1 * 100:F1}%");
 
         // Turn 2: Defend again
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        Assert.True(avatar.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks again, reduced damage
-        var healthAfterTurn2 = player.Health;
+        var healthAfterTurn2 = avatar.Health;
         _output.WriteLine($"Health after turn 2: {healthAfterTurn2 * 100:F1}%");
 
         // Turn 3: Defend AGAIN
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        Assert.True(avatar.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks again, reduced damage
-        var healthAfterTurn3 = player.Health;
+        var healthAfterTurn3 = avatar.Health;
         _output.WriteLine($"Health after turn 3: {healthAfterTurn3 * 100:F1}%");
 
         // ASSERT: All three turns had damage reduction

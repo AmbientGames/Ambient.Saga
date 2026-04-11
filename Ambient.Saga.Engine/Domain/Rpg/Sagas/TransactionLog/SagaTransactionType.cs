@@ -32,7 +32,7 @@ public enum SagaTransactionType
 
     // Player interactions
     AvatarEntered,
-    PlayerExited,
+    AvatarExited,
 
     // Entity interactions
     EntityInteracted,
@@ -80,7 +80,6 @@ public enum SagaTransactionType
     QuestCompleted,          // Quest finished successfully (all stages complete)
     QuestFailed,             // Quest failed (fail condition triggered or wrong choice)
     QuestAbandoned,          // Quest dropped by avatar
-    QuestProgressed,         // DEPRECATED: Use QuestObjectiveCompleted instead
     CustomObjectiveCompleted, // Custom objective manually marked complete
 
     // Structure interactions

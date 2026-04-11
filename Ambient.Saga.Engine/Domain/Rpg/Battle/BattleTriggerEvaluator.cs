@@ -135,10 +135,10 @@ public class BattleTriggerEvaluator
 
             // Battle outcome triggers - only fire at end of battle
             BattleTriggerCondition.OnVictory =>
-                context.BattleEnded && context.PlayerVictory,
+                context.BattleEnded && context.AvatarVictory,
 
             BattleTriggerCondition.OnDefeat =>
-                context.BattleEnded && !context.PlayerVictory,
+                context.BattleEnded && !context.AvatarVictory,
 
             _ => false
         };
@@ -184,7 +184,7 @@ public class BattleTriggerContext
     /// <summary>
     /// Whether the player won (only valid if BattleEnded is true)
     /// </summary>
-    public bool PlayerVictory { get; init; }
+    public bool AvatarVictory { get; init; }
 
     /// <summary>
     /// Create context from current battle engine state.
@@ -207,7 +207,7 @@ public class BattleTriggerContext
             BattleEnded = engine.State == BattleState.Victory ||
                          engine.State == BattleState.Defeat ||
                          engine.State == BattleState.Fled,
-            PlayerVictory = engine.State == BattleState.Victory
+            AvatarVictory = engine.State == BattleState.Victory
         };
     }
 }

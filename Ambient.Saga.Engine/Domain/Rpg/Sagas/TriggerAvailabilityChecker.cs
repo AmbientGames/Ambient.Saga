@@ -68,12 +68,12 @@ public static class TriggerAvailabilityChecker
             return Array.Empty<string>();
 
         var missing = new List<string>();
-        var playerTokens = avatar.Capabilities?.QuestTokens;
+        var avatarTokens = avatar.Capabilities?.QuestTokens;
 
         foreach (var requiredTokenRef in sagaTrigger.RequiresQuestTokenRef)
         {
-            var hasToken = playerTokens != null &&
-                Array.Exists(playerTokens, qt => qt.QuestTokenRef == requiredTokenRef);
+            var hasToken = avatarTokens != null &&
+                Array.Exists(avatarTokens, qt => qt.QuestTokenRef == requiredTokenRef);
 
             if (!hasToken)
                 missing.Add(requiredTokenRef);

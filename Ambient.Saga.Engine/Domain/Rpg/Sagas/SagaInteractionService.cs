@@ -287,7 +287,7 @@ public class SagaInteractionService
                 var exitTx = new SagaTransaction
                 {
                     TransactionId = Guid.NewGuid(),
-                    Type = SagaTransactionType.PlayerExited,
+                    Type = SagaTransactionType.AvatarExited,
                     AvatarId = avatar.AvatarId.ToString(),
                     Status = TransactionStatus.Pending,
                     LocalTimestamp = DateTime.UtcNow,

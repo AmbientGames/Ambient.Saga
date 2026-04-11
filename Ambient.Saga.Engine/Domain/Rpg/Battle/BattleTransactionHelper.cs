@@ -24,7 +24,7 @@ public static class BattleTransactionHelper
         int randomSeed,
         Combatant avatar,
         Combatant enemy,
-        List<string> playerAffinityRefs,
+        List<string> avatarAffinityRefs,
         Guid sagaInstanceId)
     {
         var transaction = new SagaTransaction
@@ -82,9 +82,9 @@ public static class BattleTransactionHelper
         }
 
         // Record avatar's available affinities
-        if (playerAffinityRefs != null && playerAffinityRefs.Count > 0)
+        if (avatarAffinityRefs != null && avatarAffinityRefs.Count > 0)
         {
-            transaction.Data[TransactionDataKeys.AvatarAffinities] = string.Join(",", playerAffinityRefs);
+            transaction.Data[TransactionDataKeys.AvatarAffinities] = string.Join(",", avatarAffinityRefs);
         }
 
         // Record enemy's equipment inventory (what they own)
@@ -206,7 +206,7 @@ public static class BattleTransactionHelper
         string avatarId,
         Guid battleTransactionId,
         int totalTurns,
-        bool playerVictory,
+        bool avatarVictory,
         string victorRefName,
         string defeatedRefName,
         Guid sagaInstanceId)
@@ -221,7 +221,7 @@ public static class BattleTransactionHelper
             {
                 [TransactionDataKeys.BattleTransactionId] = battleTransactionId.ToString(),
                 [TransactionDataKeys.TotalTurns] = totalTurns.ToString(),
-                [TransactionDataKeys.AvatarVictory] = playerVictory.ToString(),
+                [TransactionDataKeys.AvatarVictory] = avatarVictory.ToString(),
                 [TransactionDataKeys.Victor] = victorRefName,
                 [TransactionDataKeys.Defeated] = defeatedRefName,
                 [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()

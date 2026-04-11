@@ -25,7 +25,7 @@ public interface IDialogueStateProvider
     float GetHealth();
 
     // ===== DIALOGUE HISTORY =====
-    int GetPlayerVisitCount(string dialogueTreeRef);
+    int GetAvatarVisitCount(string dialogueTreeRef);
     bool WasNodeVisited(string dialogueTreeRef, string nodeId);
 
     // ===== WORLD STATE =====

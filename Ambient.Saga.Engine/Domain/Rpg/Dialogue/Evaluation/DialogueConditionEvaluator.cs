@@ -49,7 +49,7 @@ public class DialogueConditionEvaluator
             DialogueConditionType.Health => EvaluateNumeric(_stateProvider.GetHealth(), condition),
 
             // Dialogue history
-            DialogueConditionType.AvatarVisitCount => EvaluateNumeric(_stateProvider.GetPlayerVisitCount(condition.RefName), condition),
+            DialogueConditionType.AvatarVisitCount => EvaluateNumeric(_stateProvider.GetAvatarVisitCount(condition.RefName), condition),
             DialogueConditionType.NodeVisited => _stateProvider.WasNodeVisited(condition.RefName, condition.Value),
 
             // World state

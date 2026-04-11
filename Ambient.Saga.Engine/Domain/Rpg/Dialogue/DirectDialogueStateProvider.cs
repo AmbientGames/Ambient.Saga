@@ -89,7 +89,7 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     public void ModifyHealth(int amt) { if (_a.Stats != null) _a.Stats.Health = Math.Max(0, _a.Stats.Health + amt); }
 
     // Dialogue History
-    public int GetPlayerVisitCount(string t) => _visited.ContainsKey(t) ? 1 : 0;
+    public int GetAvatarVisitCount(string t) => _visited.ContainsKey(t) ? 1 : 0;
     public void RecordNodeVisit(string t, string n) { if (!_visited.ContainsKey(t)) _visited[t] = new HashSet<string>(); _visited[t].Add(n); }
     public bool WasNodeVisited(string t, string n) => _visited.ContainsKey(t) && _visited[t].Contains(n);
 

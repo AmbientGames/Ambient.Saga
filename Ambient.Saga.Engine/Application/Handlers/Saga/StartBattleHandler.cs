@@ -136,7 +136,7 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                         battleStartedTransaction.TransactionId,
                         1,  // Turn 1
                         enemyAction.ActorName,
-                        false,  // Not player turn
+                        false,  // Not avatar turn
                         enemyAction.DecisionType,
                         enemyAction.ItemRefName,
                         enemyAction.Damage,

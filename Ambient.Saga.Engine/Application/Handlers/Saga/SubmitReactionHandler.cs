@@ -92,8 +92,8 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
 
                     // State after reaction
                     [TransactionDataKeys.Target] = command.Avatar.ArchetypeRef, // Avatar was target of enemy attack
-                    [TransactionDataKeys.TargetHealthAfter] = command.PlayerHealthAfter.ToString("F3"),
-                    [TransactionDataKeys.ActorEnergyAfter] = command.PlayerEnergyAfter.ToString("F3"),
+                    [TransactionDataKeys.TargetHealthAfter] = command.AvatarHealthAfter.ToString("F3"),
+                    [TransactionDataKeys.ActorEnergyAfter] = command.AvatarEnergyAfter.ToString("F3"),
                     [TransactionDataKeys.EnemyHealthAfter] = command.EnemyHealthAfter.ToString("F3")
                 }
             };

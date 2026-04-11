@@ -373,7 +373,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = true,
-            PlayerVictory = true
+            AvatarVictory = true
         };
 
         // Act
@@ -402,7 +402,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = true,
-            PlayerVictory = false // Player lost
+            AvatarVictory = false // Player lost
         };
 
         // Act
@@ -429,7 +429,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = false, // Battle still ongoing
-            PlayerVictory = true
+            AvatarVictory = true
         };
 
         // Act
@@ -461,7 +461,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = true,
-            PlayerVictory = false
+            AvatarVictory = false
         };
 
         // Act

@@ -64,7 +64,7 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public void TransferCurrency(int amount) => Credits += amount;
 
     // Dialogue history
-    public int GetPlayerVisitCount(string dialogueTreeRef) => _visitCounts.GetValueOrDefault(dialogueTreeRef, 0);
+    public int GetAvatarVisitCount(string dialogueTreeRef) => _visitCounts.GetValueOrDefault(dialogueTreeRef, 0);
 
     public bool WasNodeVisited(string dialogueTreeRef, string nodeId)
     {
@@ -74,7 +74,7 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public void RecordNodeVisit(string dialogueTreeRef, string nodeId)
     {
         // Increment visit count for tree
-        _visitCounts[dialogueTreeRef] = GetPlayerVisitCount(dialogueTreeRef) + 1;
+        _visitCounts[dialogueTreeRef] = GetAvatarVisitCount(dialogueTreeRef) + 1;
 
         // Track specific node visit
         if (!_visitedNodes.ContainsKey(dialogueTreeRef))

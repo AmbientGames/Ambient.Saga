@@ -337,7 +337,7 @@ public class SagaTransactionLogE2ETests : IDisposable
             new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerExited,
+                Type = SagaTransactionType.AvatarExited,
                 AvatarId = avatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,

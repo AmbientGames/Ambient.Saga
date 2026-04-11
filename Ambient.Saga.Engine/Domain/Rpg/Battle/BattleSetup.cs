@@ -58,7 +58,7 @@ public class BattleSetup
         if (avatarStats == null)
             throw new InvalidOperationException("Avatar archetype must have SpawnStats defined");
 
-        var playerCombatant = new Combatant
+        var avatarCombatant = new Combatant
         {
             RefName = SelectedAvatarArchetype.RefName,
             DisplayName = SelectedAvatarArchetype.DisplayName,
@@ -73,12 +73,12 @@ public class BattleSetup
         };
 
         // Initialize EquippedItems by assigning equipment to slots
-        InitializeEquippedSlots(playerCombatant, LoadedWorld);
+        InitializeEquippedSlots(avatarCombatant, LoadedWorld);
 
         // Set starting stance
         if (!string.IsNullOrEmpty(AvatarStartingStanceRef))
         {
-            playerCombatant.CombatProfile[TransactionDataKeys.Stance] = AvatarStartingStanceRef;
+            avatarCombatant.CombatProfile[TransactionDataKeys.Stance] = AvatarStartingStanceRef;
             System.Diagnostics.Debug.WriteLine($"  Set starting stance: {AvatarStartingStanceRef}");
         }
 
@@ -143,14 +143,14 @@ public class BattleSetup
 
         // Create BattleEngine with CombatAI for opponent and companions
         var enemyMind = new CombatAI(LoadedWorld);
-        var battleEngine = new BattleEngine(playerCombatant, enemyCombatant, enemyMind, LoadedWorld,
+        var battleEngine = new BattleEngine(avatarCombatant, enemyCombatant, enemyMind, LoadedWorld,
             companions: companions.Count > 0 ? companions : null);
 
         // Set avatar's available affinities
         battleEngine.SetAvatarAffinities(AvatarAffinityRefs);
 
         System.Diagnostics.Debug.WriteLine($"\n=== BATTLE ENGINE CREATED ===");
-        System.Diagnostics.Debug.WriteLine($"Avatar: {playerCombatant.DisplayName} (HP: {playerCombatant.Health:F2})");
+        System.Diagnostics.Debug.WriteLine($"Avatar: {avatarCombatant.DisplayName} (HP: {avatarCombatant.Health:F2})");
         if (companions.Count > 0)
         {
             System.Diagnostics.Debug.WriteLine($"Companions: {string.Join(", ", companions.Select(c => c.DisplayName))}");
