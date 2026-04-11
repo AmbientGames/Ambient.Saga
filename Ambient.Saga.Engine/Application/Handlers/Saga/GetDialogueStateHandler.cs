@@ -73,7 +73,7 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
 
             // Find dialogue transactions for this character using CharacterRef (not CharacterInstanceId)
             var dialogueTransactions = instance.Transactions
-                .Where(t => t.Data.TryGetValue("CharacterRef", out var charRef) &&
+                .Where(t => t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var charRef) &&
                            charRef == characterRef)
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();

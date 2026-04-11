@@ -108,7 +108,7 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
             // Replay to current node by following visited nodes
             var visitedNodes = instance.Transactions
                 .Where(t => t.Type == SagaTransactionType.DialogueNodeVisited &&
-                           t.Data.TryGetValue("CharacterRef", out var charRef) &&
+                           t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var charRef) &&
                            charRef == characterState.CharacterRef)
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
@@ -187,10 +187,10 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
                                 Avatar = avatarEntity,
                                 DialogueDriven = true
                             }, ct);
-                            if (questResult.Data.ContainsKey("GameComplete"))
+                            if (questResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
                             {
                                 gameComplete = true;
-                                completionQuestRef = questResult.Data.TryGetValue("CompletionQuestRef", out var qref) ? qref as string : null;
+                                completionQuestRef = questResult.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string : null;
                             }
                             pendingEvents.RemoveAt(i);
                             break;

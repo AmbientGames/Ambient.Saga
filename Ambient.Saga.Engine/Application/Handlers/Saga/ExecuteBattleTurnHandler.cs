@@ -59,7 +59,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             // Check if battle already ended
             var battleEndedTx = instance.Transactions
                 .FirstOrDefault(t => t.Type == SagaTransactionType.BattleEnded &&
-                                    t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                                    t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                                     battleId == command.BattleInstanceId.ToString());
 
             if (battleEndedTx != null)
@@ -92,7 +92,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             battleEngine.StartBattle();
             var executedTurns = instance.Transactions
                 .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                           t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                           t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                            battleId == command.BattleInstanceId.ToString())
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
@@ -128,7 +128,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 {
                     // Reconstruct avatar action from transaction
                     var actionType = Enum.Parse<ActionType>(turnTx.Data[TransactionDataKeys.DecisionType]);
-                    var itemRef = turnTx.Data.TryGetValue("ItemRefName", out var item) ? item : null;
+                    var itemRef = turnTx.Data.TryGetValue(TransactionDataKeys.ItemRefName, out var item) ? item : null;
                     var action = new CombatAction { ActionType = actionType, Parameter = itemRef };
 
                     battleEngine.ExecuteAvatarDecision(action);
@@ -388,7 +388,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerDefense]),
             Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerSpeed]),
             Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerMagic]),
-            AffinityRef = battleStartedTx.Data.TryGetValue("PlayerAffinity", out var pAff) ? pAff : null,
+            AffinityRef = battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerAffinity, out var pAff) ? pAff : null,
             CombatProfile = new Dictionary<string, string>()
         };
 
@@ -402,12 +402,12 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyDefense]),
             Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemySpeed]),
             Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyMagic]),
-            AffinityRef = battleStartedTx.Data.TryGetValue("EnemyAffinity", out var eAff) ? eAff : null,
+            AffinityRef = battleStartedTx.Data.TryGetValue(TransactionDataKeys.EnemyAffinity, out var eAff) ? eAff : null,
             CombatProfile = new Dictionary<string, string>()
         };
 
         // Parse equipment and equipped slots
-        if (battleStartedTx.Data.TryGetValue("PlayerEquippedSlots", out var playerSlots))
+        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerEquippedSlots, out var playerSlots))
         {
             foreach (var slot in playerSlots.Split(','))
             {
@@ -419,7 +419,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
         }
 
-        if (battleStartedTx.Data.TryGetValue("EnemyEquippedSlots", out var enemySlots))
+        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.EnemyEquippedSlots, out var enemySlots))
         {
             foreach (var slot in enemySlots.Split(','))
             {
@@ -434,7 +434,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         // Apply all turn transactions to update combatant states
         var turnTransactions = instance.Transactions
             .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                       t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                       t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                        battleId == battleStartedTx.TransactionId.ToString())
             .OrderBy(t => t.SequenceNumber)
             .ToList();
@@ -456,7 +456,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             target.Health = targetHealthAfter;
 
             // Update equipment/affinity from snapshots
-            if (turnTx.Data.TryGetValue("LoadoutSlotSnapshot", out var loadoutSnapshot))
+            if (turnTx.Data.TryGetValue(TransactionDataKeys.LoadoutSlotSnapshot, out var loadoutSnapshot))
             {
                 combatant.CombatProfile.Clear();
                 foreach (var slot in loadoutSnapshot.Split(','))
@@ -469,14 +469,14 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 }
             }
 
-            if (turnTx.Data.TryGetValue("AffinitySnapshot", out var affinity))
+            if (turnTx.Data.TryGetValue(TransactionDataKeys.AffinitySnapshot, out var affinity))
             {
                 combatant.AffinityRef = affinity;
             }
         }
 
         var randomSeed = int.Parse(battleStartedTx.Data[TransactionDataKeys.RandomSeed]);
-        var playerAffinityRefs = battleStartedTx.Data.TryGetValue("PlayerAffinities", out var affinities)
+        var playerAffinityRefs = battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerAffinities, out var affinities)
             ? affinities.Split(',').ToList()
             : new List<string>();
         var enemyCharacterInstanceId = Guid.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyCombatantId]);

@@ -592,7 +592,7 @@ public class SagaInteractionService
         // Get all CharacterSpawned transactions for this trigger
         var spawnedByTrigger = instance.GetCommittedTransactions()
             .Where(t => t.Type == SagaTransactionType.CharacterSpawned &&
-                       t.Data.TryGetValue("SagaTriggerRef", out var triggerRef) &&
+                       t.Data.TryGetValue(TransactionDataKeys.SagaTriggerRef, out var triggerRef) &&
                        triggerRef == sagaTrigger.RefName)
             .ToList();
 
@@ -602,10 +602,10 @@ public class SagaInteractionService
         // Check each spawned character to see if it was defeated and can respawn
         foreach (var spawnTx in spawnedByTrigger)
         {
-            if (!spawnTx.Data.TryGetValue("CharacterRef", out var characterRef))
+            if (!spawnTx.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var characterRef))
                 continue;
 
-            if (!spawnTx.Data.TryGetValue("CharacterInstanceId", out var instanceIdStr) ||
+            if (!spawnTx.Data.TryGetValue(TransactionDataKeys.CharacterInstanceId, out var instanceIdStr) ||
                 !Guid.TryParse(instanceIdStr, out var characterInstanceId))
                 continue;
 
@@ -620,7 +620,7 @@ public class SagaInteractionService
             // Check if this character was defeated
             var defeatTx = instance.GetCommittedTransactions()
                 .FirstOrDefault(t => t.Type == SagaTransactionType.CharacterDefeated &&
-                                   t.Data.TryGetValue("CharacterInstanceId", out var defId) &&
+                                   t.Data.TryGetValue(TransactionDataKeys.CharacterInstanceId, out var defId) &&
                                    defId == characterInstanceId.ToString());
 
             if (defeatTx == null)
@@ -634,9 +634,9 @@ public class SagaInteractionService
             // Check if character was already respawned after this defeat
             var respawnedAfterDefeat = instance.GetCommittedTransactions()
                 .Any(t => t.Type == SagaTransactionType.CharacterSpawned &&
-                         t.Data.TryGetValue("CharacterRef", out var respawnRef) &&
+                         t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var respawnRef) &&
                          respawnRef == characterRef &&
-                         t.Data.TryGetValue("SagaTriggerRef", out var respawnTriggerRef) &&
+                         t.Data.TryGetValue(TransactionDataKeys.SagaTriggerRef, out var respawnTriggerRef) &&
                          respawnTriggerRef == sagaTrigger.RefName &&
                          t.GetCanonicalTimestamp() > defeatTx.GetCanonicalTimestamp());
 
@@ -649,9 +649,9 @@ public class SagaInteractionService
             // Get original spawn position (or use current avatar position if not found)
             var spawnX = avatarX;
             var spawnZ = avatarZ;
-            if (spawnTx.Data.TryGetValue("X", out var origX) && double.TryParse(origX, out var parsedX))
+            if (spawnTx.Data.TryGetValue(TransactionDataKeys.X, out var origX) && double.TryParse(origX, out var parsedX))
                 spawnX = parsedX;
-            if (spawnTx.Data.TryGetValue("Z", out var origZ) && double.TryParse(origZ, out var parsedZ))
+            if (spawnTx.Data.TryGetValue(TransactionDataKeys.Z, out var origZ) && double.TryParse(origZ, out var parsedZ))
                 spawnZ = parsedZ;
 
             System.Diagnostics.Debug.WriteLine($"[RESPAWN] Character '{characterRef}' respawning after {timeSinceDefeat:F0}s (interval: {characterTemplate.RespawnIntervalSeconds}s)");

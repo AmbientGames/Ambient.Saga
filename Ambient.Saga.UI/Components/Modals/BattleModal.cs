@@ -10,6 +10,7 @@ using Ambient.Saga.UI;
 using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.UI.Components.Modals;
 
@@ -923,7 +924,7 @@ public class BattleModal
 
             var result = await viewModel.Mediator.Send(startCommand);
 
-            if (result.Successful && result.Data.TryGetValue("BattleInstanceId", out var battleIdObj))
+            if (result.Successful && result.Data.TryGetValue(TransactionDataKeys.BattleInstanceId, out var battleIdObj))
             {
                 _battleInstanceId = (Guid)battleIdObj;
                 System.Diagnostics.Debug.WriteLine($"[BattleModal] Battle started with ID {_battleInstanceId}");

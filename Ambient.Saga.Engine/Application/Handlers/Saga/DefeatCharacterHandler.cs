@@ -45,7 +45,7 @@ internal sealed class DefeatCharacterHandler : IRequestHandler<DefeatCharacterCo
             // Validate character exists by checking transactions
             var characterExists = instance.GetCommittedTransactions()
                 .Any(t => t.Type == SagaTransactionType.CharacterSpawned &&
-                         t.Data.ContainsKey("CharacterInstanceId") &&
+                         t.Data.ContainsKey(TransactionDataKeys.CharacterInstanceId) &&
                          t.Data[TransactionDataKeys.CharacterInstanceId] == command.CharacterInstanceId.ToString());
 
             if (!characterExists)

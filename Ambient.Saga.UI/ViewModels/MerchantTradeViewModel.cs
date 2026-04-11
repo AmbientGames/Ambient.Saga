@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Domain.Rpg.Trade;
@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MediatR;
 using System.Collections.ObjectModel;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 
@@ -263,8 +264,8 @@ public partial class MerchantTradeViewModel : ObservableObject
             StatusMessageChanged?.Invoke(this, "Trade successful!");
 
             // Signal owner revenue if this was a purchase from an avatar-owned merchant
-            if (result.Data.TryGetValue("OwnerAvatarId", out var ownerIdObj) && ownerIdObj is string ownerId
-                && result.Data.TryGetValue("OwnerRevenue", out var revenueObj) && revenueObj is int revenue)
+            if (result.Data.TryGetValue(TransactionDataKeys.OwnerAvatarId, out var ownerIdObj) && ownerIdObj is string ownerId
+                && result.Data.TryGetValue(TransactionDataKeys.OwnerRevenue, out var revenueObj) && revenueObj is int revenue)
             {
                 OwnerRevenueEarned?.Invoke(ownerId, revenue);
             }

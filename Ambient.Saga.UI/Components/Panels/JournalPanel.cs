@@ -7,6 +7,7 @@ using Ambient.Saga.UI.Components.Utilities;
 using Ambient.Saga.UI.Configuration;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.UI.Components.Panels;
 
@@ -629,13 +630,13 @@ public class JournalPanel
     private static string GetTransactionDisplayText(SagaTransaction transaction)
     {
         // Extract common data fields
-        transaction.Data.TryGetValue("CharacterRef", out var characterRef);
-        transaction.Data.TryGetValue("QuestRef", out var questRef);
-        transaction.Data.TryGetValue("EquipmentRef", out var equipmentRef);
-        transaction.Data.TryGetValue("ConsumableRef", out var consumableRef);
-        transaction.Data.TryGetValue("FeatureRef", out var featureRef);
-        transaction.Data.TryGetValue("TriggerRef", out var triggerRef);
-        transaction.Data.TryGetValue("ItemRef", out var itemRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var characterRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.QuestRef, out var questRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.EquipmentRef, out var equipmentRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.ConsumableRef, out var consumableRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.FeatureRef, out var featureRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.TriggerRef, out var triggerRef);
+        transaction.Data.TryGetValue(TransactionDataKeys.ItemRef, out var itemRef);
 
         return transaction.Type switch
         {

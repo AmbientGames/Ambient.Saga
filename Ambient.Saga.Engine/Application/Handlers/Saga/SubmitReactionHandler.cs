@@ -52,7 +52,7 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
             // Check if battle already ended
             var battleEndedTx = instance.Transactions
                 .FirstOrDefault(t => t.Type == SagaTransactionType.BattleEnded &&
-                                    t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                                    t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                                     battleId == command.BattleInstanceId.ToString());
 
             if (battleEndedTx != null)
@@ -132,7 +132,7 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
     {
         var turnCount = instance.Transactions
             .Count(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                       t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                       t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                        battleId == battleInstanceId.ToString());
         return turnCount + 1;
     }

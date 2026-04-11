@@ -54,7 +54,7 @@ internal sealed class CanActivateTriggerHandler : IRequestHandler<CanActivateTri
             // Check if trigger has already been activated
             var alreadyActivated = instance.GetCommittedTransactions()
                 .Any(t => t.Type == SagaTransactionType.TriggerActivated &&
-                         t.Data.ContainsKey("TriggerRef") &&
+                         t.Data.ContainsKey(TransactionDataKeys.TriggerRef) &&
                          t.Data[TransactionDataKeys.TriggerRef] == query.TriggerRef);
 
             var canActivate = !alreadyActivated;

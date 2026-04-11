@@ -58,7 +58,7 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             var existingBattle = instance.Transactions
                 .Where(t => t.Type == SagaTransactionType.BattleStarted)
                 .FirstOrDefault(t =>
-                    t.Data.TryGetValue("EnemyCombatantId", out var enemyId) &&
+                    t.Data.TryGetValue(TransactionDataKeys.EnemyCombatantId, out var enemyId) &&
                     enemyId == command.EnemyCharacterInstanceId.ToString());
 
             if (existingBattle != null)

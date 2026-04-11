@@ -108,7 +108,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             // Navigate to current node by replaying DialogueNodeVisited transactions
             var visitedNodes = instance.Transactions
                 .Where(t => t.Type == SagaTransactionType.DialogueNodeVisited &&
-                           t.Data.TryGetValue("CharacterRef", out var charRef) &&
+                           t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var charRef) &&
                            charRef == characterState.CharacterRef)
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
@@ -117,7 +117,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             foreach (var visitedTx in visitedNodes)
             {
-                if (!visitedTx.Data.TryGetValue("DialogueNodeId", out var nodeId))
+                if (!visitedTx.Data.TryGetValue(TransactionDataKeys.DialogueNodeId, out var nodeId))
                     continue;
 
                 System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Navigating to previously visited node: {nodeId}");
@@ -195,10 +195,10 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                                 Avatar = avatarEntity,
                                 DialogueDriven = true
                             }, ct);
-                            if (questResult.Data.ContainsKey("GameComplete"))
+                            if (questResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
                             {
                                 gameComplete = true;
-                                completionQuestRef = questResult.Data.TryGetValue("CompletionQuestRef", out var qref) ? qref as string : null;
+                                completionQuestRef = questResult.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string : null;
                             }
                             pendingEvents.RemoveAt(i);
                             break;

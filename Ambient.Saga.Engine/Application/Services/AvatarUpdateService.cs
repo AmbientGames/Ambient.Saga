@@ -41,16 +41,16 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Parse transaction data
-        if (!transaction.Data.TryGetValue("ItemRef", out var itemRef))
+        if (!transaction.Data.TryGetValue(TransactionDataKeys.ItemRef, out var itemRef))
             throw new InvalidOperationException("Trade transaction missing ItemRef");
 
-        if (!transaction.Data.TryGetValue("Quantity", out var quantityStr) || !int.TryParse(quantityStr, out var quantity))
+        if (!transaction.Data.TryGetValue(TransactionDataKeys.Quantity, out var quantityStr) || !int.TryParse(quantityStr, out var quantity))
             throw new InvalidOperationException("Trade transaction missing or invalid Quantity");
 
-        if (!transaction.Data.TryGetValue("IsBuying", out var isBuyingStr) || !bool.TryParse(isBuyingStr, out var isBuying))
+        if (!transaction.Data.TryGetValue(TransactionDataKeys.IsBuying, out var isBuyingStr) || !bool.TryParse(isBuyingStr, out var isBuying))
             throw new InvalidOperationException("Trade transaction missing or invalid IsBuying");
 
-        if (!transaction.Data.TryGetValue("TotalPrice", out var totalPriceStr) || !int.TryParse(totalPriceStr, out var totalPrice))
+        if (!transaction.Data.TryGetValue(TransactionDataKeys.TotalPrice, out var totalPriceStr) || !int.TryParse(totalPriceStr, out var totalPrice))
             throw new InvalidOperationException("Trade transaction missing or invalid TotalPrice");
 
         // Initialize Capabilities if needed
@@ -224,9 +224,9 @@ public class AvatarUpdateService : IAvatarUpdateService
         // Get ALL battle turn transactions (avatar AND enemy turns) for this battle
         var allBattleTurns = sagaInstance.GetCommittedTransactions()
             .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                       t.Data.ContainsKey("BattleTransactionId") &&
+                       t.Data.ContainsKey(TransactionDataKeys.BattleTransactionId) &&
                        t.Data[TransactionDataKeys.BattleTransactionId] == battleStartedTransactionId.ToString())
-            .OrderBy(t => t.Data.TryGetValue("TurnNumber", out var turnStr) && int.TryParse(turnStr, out var turn) ? turn : 0)
+            .OrderBy(t => t.Data.TryGetValue(TransactionDataKeys.TurnNumber, out var turnStr) && int.TryParse(turnStr, out var turn) ? turn : 0)
             .ToList();
 
         if (!allBattleTurns.Any())
@@ -255,31 +255,31 @@ public class AvatarUpdateService : IAvatarUpdateService
 
         foreach (var turn in allBattleTurns)
         {
-            var isPlayerTurn = turn.Data.TryGetValue("IsPlayerTurn", out var isPlayerStr) && isPlayerStr == "True";
+            var isPlayerTurn = turn.Data.TryGetValue(TransactionDataKeys.IsPlayerTurn, out var isPlayerStr) && isPlayerStr == "True";
 
             if (isPlayerTurn)
             {
                 // Avatar's turn: Actor = Avatar, Target = Enemy
                 // Update avatar's stamina (battle transactions call it "Energy")
-                if (turn.Data.TryGetValue("ActorEnergyAfter", out var energyStr) && float.TryParse(energyStr, out var energy))
+                if (turn.Data.TryGetValue(TransactionDataKeys.ActorEnergyAfter, out var energyStr) && float.TryParse(energyStr, out var energy))
                 {
                     finalStamina = energy;  // Map Energy -> Stamina
                 }
 
                 // Update avatar's affinity if changed
-                if (turn.Data.TryGetValue("AffinitySnapshot", out var affinity) && !string.IsNullOrEmpty(affinity))
+                if (turn.Data.TryGetValue(TransactionDataKeys.AffinitySnapshot, out var affinity) && !string.IsNullOrEmpty(affinity))
                 {
                     finalAffinity = affinity;
                 }
 
                 // Update avatar's combat profile (equipped slots) if changed
-                if (turn.Data.TryGetValue("LoadoutSlotSnapshot", out var loadoutSnapshot) && !string.IsNullOrEmpty(loadoutSnapshot))
+                if (turn.Data.TryGetValue(TransactionDataKeys.LoadoutSlotSnapshot, out var loadoutSnapshot) && !string.IsNullOrEmpty(loadoutSnapshot))
                 {
                     finalCombatProfile = ParseLoadoutSnapshot(loadoutSnapshot);
                 }
 
                 // Update equipment condition from LoadoutSlotSnapshot
-                if (turn.Data.TryGetValue("LoadoutSlotSnapshot", out var equipmentSnapshot) && !string.IsNullOrEmpty(equipmentSnapshot))
+                if (turn.Data.TryGetValue(TransactionDataKeys.LoadoutSlotSnapshot, out var equipmentSnapshot) && !string.IsNullOrEmpty(equipmentSnapshot))
                 {
                     UpdateEquipmentConditionsFromSnapshot(avatar, equipmentSnapshot);
                 }
@@ -288,7 +288,7 @@ public class AvatarUpdateService : IAvatarUpdateService
             {
                 // Enemy's turn: Actor = Enemy, Target = Avatar
                 // Avatar's health is recorded as TargetHealthAfter (enemy damaged avatar)
-                if (turn.Data.TryGetValue("TargetHealthAfter", out var healthStr) && float.TryParse(healthStr, out var health))
+                if (turn.Data.TryGetValue(TransactionDataKeys.TargetHealthAfter, out var healthStr) && float.TryParse(healthStr, out var health))
                 {
                     finalHealth = health;
                 }
@@ -347,7 +347,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Parse and transfer equipment
-        if (transaction.Data.TryGetValue("Equipment", out var equipmentData) && !string.IsNullOrEmpty(equipmentData))
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Equipment, out var equipmentData) && !string.IsNullOrEmpty(equipmentData))
         {
             var equipmentEntries = equipmentData.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var entry in equipmentEntries)
@@ -363,7 +363,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Parse and transfer consumables
-        if (transaction.Data.TryGetValue("Consumables", out var consumablesData) && !string.IsNullOrEmpty(consumablesData))
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Consumables, out var consumablesData) && !string.IsNullOrEmpty(consumablesData))
         {
             var consumableEntries = consumablesData.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var entry in consumableEntries)
@@ -379,7 +379,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Parse and transfer spells
-        if (transaction.Data.TryGetValue("Spells", out var spellsData) && !string.IsNullOrEmpty(spellsData))
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Spells, out var spellsData) && !string.IsNullOrEmpty(spellsData))
         {
             var spellEntries = spellsData.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var entry in spellEntries)
@@ -402,7 +402,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Parse and transfer blocks
-        if (transaction.Data.TryGetValue("Blocks", out var blocksData) && !string.IsNullOrEmpty(blocksData))
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Blocks, out var blocksData) && !string.IsNullOrEmpty(blocksData))
         {
             var blockEntries = blocksData.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var entry in blockEntries)
@@ -418,7 +418,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Parse and transfer tools
-        if (transaction.Data.TryGetValue("Tools", out var toolsData) && !string.IsNullOrEmpty(toolsData))
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Tools, out var toolsData) && !string.IsNullOrEmpty(toolsData))
         {
             var toolEntries = toolsData.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var entry in toolEntries)
@@ -434,7 +434,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Parse and transfer building materials
-        if (transaction.Data.TryGetValue("BuildingMaterials", out var materialsData) && !string.IsNullOrEmpty(materialsData))
+        if (transaction.Data.TryGetValue(TransactionDataKeys.BuildingMaterials, out var materialsData) && !string.IsNullOrEmpty(materialsData))
         {
             var materialEntries = materialsData.Split(',', StringSplitOptions.RemoveEmptyEntries);
             foreach (var entry in materialEntries)
@@ -450,7 +450,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Transfer credits
-        if (transaction.Data.TryGetValue("Credits", out var creditsData) && int.TryParse(creditsData, out var credits))
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Credits, out var creditsData) && int.TryParse(creditsData, out var credits))
         {
             avatar.Stats.Credits += credits;
         }
@@ -499,47 +499,47 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Parse and apply stat effects (additive bonuses)
-        if (transaction.Data.TryGetValue("Health", out var healthStr) && float.TryParse(healthStr, out var health) && health != 1.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Health, out var healthStr) && float.TryParse(healthStr, out var health) && health != 1.0f)
         {
             avatar.Stats.Health += health - 1.0f; // Treat as multiplier: 1.0 = no change, 1.5 = +50%
         }
 
-        if (transaction.Data.TryGetValue("Stamina", out var staminaStr) && float.TryParse(staminaStr, out var stamina) && stamina != 1.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Stamina, out var staminaStr) && float.TryParse(staminaStr, out var stamina) && stamina != 1.0f)
         {
             avatar.Stats.Stamina += stamina - 1.0f;
         }
 
-        if (transaction.Data.TryGetValue("Mana", out var manaStr) && float.TryParse(manaStr, out var mana) && mana != 1.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Mana, out var manaStr) && float.TryParse(manaStr, out var mana) && mana != 1.0f)
         {
             avatar.Stats.Mana += mana - 1.0f;
         }
 
-        if (transaction.Data.TryGetValue("Strength", out var strengthStr) && float.TryParse(strengthStr, out var strength) && strength != 0.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Strength, out var strengthStr) && float.TryParse(strengthStr, out var strength) && strength != 0.0f)
         {
             avatar.Stats.Strength += strength; // Additive for non-vital stats
         }
 
-        if (transaction.Data.TryGetValue("Defense", out var defenseStr) && float.TryParse(defenseStr, out var defense) && defense != 0.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Defense, out var defenseStr) && float.TryParse(defenseStr, out var defense) && defense != 0.0f)
         {
             avatar.Stats.Defense += defense;
         }
 
-        if (transaction.Data.TryGetValue("Speed", out var speedStr) && float.TryParse(speedStr, out var speed) && speed != 0.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Speed, out var speedStr) && float.TryParse(speedStr, out var speed) && speed != 0.0f)
         {
             avatar.Stats.Speed += speed;
         }
 
-        if (transaction.Data.TryGetValue("Magic", out var magicStr) && float.TryParse(magicStr, out var magic) && magic != 0.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Magic, out var magicStr) && float.TryParse(magicStr, out var magic) && magic != 0.0f)
         {
             avatar.Stats.Magic += magic;
         }
 
-        if (transaction.Data.TryGetValue("Credits", out var creditsStr) && float.TryParse(creditsStr, out var credits) && credits != 0.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Credits, out var creditsStr) && float.TryParse(creditsStr, out var credits) && credits != 0.0f)
         {
             avatar.Stats.Credits += (int)credits;
         }
 
-        if (transaction.Data.TryGetValue("Experience", out var experienceStr) && float.TryParse(experienceStr, out var experience) && experience != 0.0f)
+        if (transaction.Data.TryGetValue(TransactionDataKeys.Experience, out var experienceStr) && float.TryParse(experienceStr, out var experience) && experience != 0.0f)
         {
             avatar.Stats.Experience += experience;
         }

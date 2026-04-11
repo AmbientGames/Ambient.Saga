@@ -48,12 +48,12 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             // Check if battle ended
             var battleEndedTx = instance.Transactions
                 .FirstOrDefault(t => t.Type == SagaTransactionType.BattleEnded &&
-                                    t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                                    t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                                     battleId == query.BattleInstanceId.ToString());
 
             var battleHasEnded = battleEndedTx != null;
             bool? playerVictory = null;
-            if (battleHasEnded && battleEndedTx.Data.TryGetValue("PlayerVictory", out var victoryStr))
+            if (battleHasEnded && battleEndedTx.Data.TryGetValue(TransactionDataKeys.PlayerVictory, out var victoryStr))
             {
                 playerVictory = bool.Parse(victoryStr);
             }
@@ -72,7 +72,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             // Get all turn transactions
             var turnTransactions = instance.Transactions
                 .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                           t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                           t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                            battleId == query.BattleInstanceId.ToString())
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
@@ -115,18 +115,18 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 var isPlayerTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
 
                 // Check if this is a reaction transaction
-                var isReaction = turnTx.Data.TryGetValue("ActionType", out var actionTypeStr) && actionTypeStr == "Reaction";
+                var isReaction = turnTx.Data.TryGetValue(TransactionDataKeys.ActionType, out var actionTypeStr) && actionTypeStr == "Reaction";
 
                 if (isReaction)
                 {
                     // Reaction log entry
                     var reactionType = turnTx.Data[TransactionDataKeys.ReactionType];
                     var damage = float.Parse(turnTx.Data[TransactionDataKeys.DamageDealt]);
-                    var counterDamage = turnTx.Data.TryGetValue("CounterDamage", out var counterStr)
+                    var counterDamage = turnTx.Data.TryGetValue(TransactionDataKeys.CounterDamage, out var counterStr)
                         ? float.Parse(counterStr)
                         : 0f;
-                    var wasOptimal = turnTx.Data.TryGetValue("WasOptimal", out var optStr) && bool.Parse(optStr);
-                    var timedOut = turnTx.Data.TryGetValue("TimedOut", out var timeStr) && bool.Parse(timeStr);
+                    var wasOptimal = turnTx.Data.TryGetValue(TransactionDataKeys.WasOptimal, out var optStr) && bool.Parse(optStr);
+                    var timedOut = turnTx.Data.TryGetValue(TransactionDataKeys.TimedOut, out var timeStr) && bool.Parse(timeStr);
 
                     if (timedOut)
                     {
@@ -221,7 +221,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerDefense]),
             Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerSpeed]),
             Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerMagic]),
-            AffinityRef = battleStartedTx.Data.TryGetValue("PlayerAffinity", out var pAff) ? pAff : null,
+            AffinityRef = battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerAffinity, out var pAff) ? pAff : null,
             CombatProfile = new Dictionary<string, string>()
         };
 
@@ -237,12 +237,12 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyDefense]),
             Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemySpeed]),
             Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyMagic]),
-            AffinityRef = battleStartedTx.Data.TryGetValue("EnemyAffinity", out var eAff) ? eAff : null,
+            AffinityRef = battleStartedTx.Data.TryGetValue(TransactionDataKeys.EnemyAffinity, out var eAff) ? eAff : null,
             CombatProfile = new Dictionary<string, string>()
         };
 
         // Parse equipment and equipped slots
-        if (battleStartedTx.Data.TryGetValue("PlayerEquippedSlots", out var playerSlots))
+        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerEquippedSlots, out var playerSlots))
         {
             foreach (var slot in playerSlots.Split(',', StringSplitOptions.RemoveEmptyEntries))
             {
@@ -254,7 +254,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             }
         }
 
-        if (battleStartedTx.Data.TryGetValue("EnemyEquippedSlots", out var enemySlots))
+        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.EnemyEquippedSlots, out var enemySlots))
         {
             foreach (var slot in enemySlots.Split(',', StringSplitOptions.RemoveEmptyEntries))
             {
@@ -269,7 +269,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
         // Apply all turn transactions to update combatant states
         var turnTransactions = instance.Transactions
             .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                       t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                       t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                        battleId == battleStartedTx.TransactionId.ToString())
             .OrderBy(t => t.SequenceNumber)
             .ToList();
@@ -279,7 +279,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             var isPlayerTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
 
             // Check if this is a reaction transaction (special handling)
-            var isReaction = turnTx.Data.TryGetValue("ActionType", out var actionType) && actionType == "Reaction";
+            var isReaction = turnTx.Data.TryGetValue(TransactionDataKeys.ActionType, out var actionType) && actionType == "Reaction";
 
             if (isReaction)
             {
@@ -292,7 +292,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 playerCombatant.Stamina = actorEnergyAfter;
 
                 // Apply counter damage to enemy if present
-                if (turnTx.Data.TryGetValue("EnemyHealthAfter", out var enemyHealthStr))
+                if (turnTx.Data.TryGetValue(TransactionDataKeys.EnemyHealthAfter, out var enemyHealthStr))
                 {
                     enemyCombatant.Health = float.Parse(enemyHealthStr);
                 }
@@ -311,7 +311,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 target.Health = targetHealthAfter;
 
                 // Update equipment/affinity from snapshots
-                if (turnTx.Data.TryGetValue("LoadoutSlotSnapshot", out var loadoutSnapshot))
+                if (turnTx.Data.TryGetValue(TransactionDataKeys.LoadoutSlotSnapshot, out var loadoutSnapshot))
                 {
                     combatant.CombatProfile.Clear();
                     foreach (var slot in loadoutSnapshot.Split(',', StringSplitOptions.RemoveEmptyEntries))
@@ -324,7 +324,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                     }
                 }
 
-                if (turnTx.Data.TryGetValue("AffinitySnapshot", out var affinity))
+                if (turnTx.Data.TryGetValue(TransactionDataKeys.AffinitySnapshot, out var affinity))
                 {
                     combatant.AffinityRef = affinity;
                 }
@@ -332,7 +332,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
         }
 
         var randomSeed = int.Parse(battleStartedTx.Data[TransactionDataKeys.RandomSeed]);
-        var playerAffinityRefs = battleStartedTx.Data.TryGetValue("PlayerAffinities", out var affinities)
+        var playerAffinityRefs = battleStartedTx.Data.TryGetValue(TransactionDataKeys.PlayerAffinities, out var affinities)
             ? affinities.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
             : new List<string>();
         var enemyCharacterInstanceId = Guid.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyCombatantId]);

@@ -77,9 +77,9 @@ internal sealed class GetDialogueOptionsHandler : IRequestHandler<GetDialogueOpt
             // Get dialogue history for this character
             var dialogueHistory = instance.GetCommittedTransactions()
                 .Where(t => (t.Type == SagaTransactionType.DialogueStarted || t.Type == SagaTransactionType.DialogueNodeVisited) &&
-                           t.Data.ContainsKey("CharacterRef") &&
+                           t.Data.ContainsKey(TransactionDataKeys.CharacterRef) &&
                            t.Data[TransactionDataKeys.CharacterRef] == query.CharacterRef &&
-                           t.Data.ContainsKey("DialogueTreeRef") &&
+                           t.Data.ContainsKey(TransactionDataKeys.DialogueTreeRef) &&
                            t.Data[TransactionDataKeys.DialogueTreeRef] == query.DialogueTreeRef)
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
@@ -89,7 +89,7 @@ internal sealed class GetDialogueOptionsHandler : IRequestHandler<GetDialogueOpt
             if (dialogueHistory.Any())
             {
                 var lastVisit = dialogueHistory.Last();
-                if (lastVisit.Data.TryGetValue("NodeId", out var nodeId))
+                if (lastVisit.Data.TryGetValue(TransactionDataKeys.NodeId, out var nodeId))
                 {
                     currentNodeId = nodeId;
                 }
@@ -97,7 +97,7 @@ internal sealed class GetDialogueOptionsHandler : IRequestHandler<GetDialogueOpt
 
             // Get visited nodes
             var visitedNodes = dialogueHistory
-                .Where(t => t.Data.ContainsKey("NodeId"))
+                .Where(t => t.Data.ContainsKey(TransactionDataKeys.NodeId))
                 .Select(t => t.Data[TransactionDataKeys.NodeId])
                 .ToHashSet();
 

@@ -6,6 +6,7 @@ using Ambient.Saga.UI;
 using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.UI.Components.Modals;
 
@@ -576,16 +577,16 @@ public class DialogueModal
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Result.Data keys: {string.Join(", ", result.Data.Keys)}");
 
             // Check for game completion
-            if (result.Data.ContainsKey("GameComplete"))
+            if (result.Data.ContainsKey(TransactionDataKeys.GameComplete))
             {
-                var questRef = result.Data.TryGetValue("CompletionQuestRef", out var qref) ? qref as string ?? string.Empty : string.Empty;
+                var questRef = result.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string ?? string.Empty : string.Empty;
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Quest: {questRef}");
                 viewModel.RaiseGameCompleted(questRef);
                 return;
             }
 
             // Check for pending system events (battle, trade transitions)
-            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
+            if (result.Data.TryGetValue(TransactionDataKeys.PendingEvents, out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events");
 
@@ -657,16 +658,16 @@ public class DialogueModal
             }
 
             // Check for game completion
-            if (result.Data.ContainsKey("GameComplete"))
+            if (result.Data.ContainsKey(TransactionDataKeys.GameComplete))
             {
-                var questRef = result.Data.TryGetValue("CompletionQuestRef", out var qref) ? qref as string ?? string.Empty : string.Empty;
+                var questRef = result.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string ?? string.Empty : string.Empty;
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Quest: {questRef}");
                 viewModel.RaiseGameCompleted(questRef);
                 return;
             }
 
             // Check for pending system events (battle, trade transitions)
-            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
+            if (result.Data.TryGetValue(TransactionDataKeys.PendingEvents, out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events from advance");
 
