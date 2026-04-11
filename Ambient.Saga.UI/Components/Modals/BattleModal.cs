@@ -184,7 +184,7 @@ public class BattleModal
         // Three-column layout
         if (ImGui.BeginTable("BattleLayout", 3, ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV))
         {
-            ImGui.TableSetupColumn("Player", ImGuiTableColumnFlags.WidthFixed, 300);
+            ImGui.TableSetupColumn("Avatar", ImGuiTableColumnFlags.WidthFixed, 300);
             ImGui.TableSetupColumn("Battle Log", ImGuiTableColumnFlags.WidthStretch);
             ImGui.TableSetupColumn("Opponent", ImGuiTableColumnFlags.WidthFixed, 300);
 
@@ -192,7 +192,7 @@ public class BattleModal
 
             // Left column: Avatar stats
             ImGui.TableNextColumn();
-            RenderCombatantPanel(player, "Player");
+            RenderCombatantPanel(player, "Avatar");
 
             // Middle column: Battle log
             ImGui.TableNextColumn();
@@ -633,7 +633,7 @@ public class BattleModal
 
     private void RenderCombatantPanel(Combatant combatant, string title)
     {
-        var isPlayer = title == "Player";
+        var isPlayer = title == "Avatar";
         var titleColor = isPlayer ? new Vector4(0.4f, 0.9f, 0.4f, 1.0f) : new Vector4(1.0f, 0.4f, 0.4f, 1.0f);
 
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.08f, 0.08f, 0.1f, 0.9f));
