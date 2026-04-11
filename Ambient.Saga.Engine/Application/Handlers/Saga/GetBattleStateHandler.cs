@@ -59,7 +59,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             }
 
             // Reconstruct combatants from transactions
-            var (avatarCombatant, enemyCombatant, randomSeed, playerAffinityRefs, enemyCharacterInstanceId) =
+            var (avatarCombatant, enemyCombatant, randomSeed, avatarAffinityRefs, enemyCharacterInstanceId) =
                 ReconstructCombatants(battleStartedTx, instance);
 
             // Attach avatar's current capabilities (for equipment change modal)
@@ -191,7 +191,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 BattleLog = battleLog,
                 AvatarVictory = avatarVictory,
                 HasEnded = battleHasEnded,
-                AvatarAffinityRefs = playerAffinityRefs,
+                AvatarAffinityRefs = avatarAffinityRefs,
                 EnemyCharacterInstanceId = enemyCharacterInstanceId
             };
         }
@@ -207,7 +207,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
         }
     }
 
-    private (Combatant player, Combatant enemy, int randomSeed, List<string> playerAffinityRefs, Guid enemyCharacterInstanceId)
+    private (Combatant avatar, Combatant enemy, int randomSeed, List<string> playerAffinityRefs, Guid enemyCharacterInstanceId)
         ReconstructCombatants(SagaTransaction battleStartedTx, SagaInstance instance)
     {
         // Parse initial state from BattleStarted transaction

@@ -17,7 +17,7 @@ public class DialogueConditionEvaluatorTests
     #region Quest Token Conditions
 
     [Fact]
-    public void HasQuestToken_WhenPlayerHasToken_ReturnsTrue()
+    public void HasQuestToken_WhenAvatarHasToken_ReturnsTrue()
     {
         _state.AddQuestToken("dragon_quest");
 
@@ -31,7 +31,7 @@ public class DialogueConditionEvaluatorTests
     }
 
     [Fact]
-    public void LacksQuestToken_WhenPlayerLacksToken_ReturnsTrue()
+    public void LacksQuestToken_WhenAvatarLacksToken_ReturnsTrue()
     {
         var condition = new DialogueCondition
         {
@@ -109,7 +109,7 @@ public class DialogueConditionEvaluatorTests
     #region Degradable Item Conditions
 
     [Fact]
-    public void HasEquipment_WhenPlayerHasItem_ReturnsTrue()
+    public void HasEquipment_WhenAvatarHasItem_ReturnsTrue()
     {
         _state.AddEquipment("iron_sword");
 
@@ -123,7 +123,7 @@ public class DialogueConditionEvaluatorTests
     }
 
     [Fact]
-    public void LacksEquipment_WhenPlayerLacksItem_ReturnsTrue()
+    public void LacksEquipment_WhenAvatarLacksItem_ReturnsTrue()
     {
         var condition = new DialogueCondition
         {
@@ -135,7 +135,7 @@ public class DialogueConditionEvaluatorTests
     }
 
     [Fact]
-    public void HasTool_WhenPlayerHasTool_ReturnsTrue()
+    public void HasTool_WhenAvatarHasTool_ReturnsTrue()
     {
         _state.AddTool("pickaxe");
 
@@ -149,7 +149,7 @@ public class DialogueConditionEvaluatorTests
     }
 
     [Fact]
-    public void HasSpell_WhenPlayerHasSpell_ReturnsTrue()
+    public void HasSpell_WhenAvatarHasSpell_ReturnsTrue()
     {
         _state.AddSpell("fireball");
 
@@ -167,7 +167,7 @@ public class DialogueConditionEvaluatorTests
     #region Avatar State Conditions
 
     [Fact]
-    public void HasAchievement_WhenPlayerHasAchievement_ReturnsTrue()
+    public void HasAchievement_WhenAvatarHasAchievement_ReturnsTrue()
     {
         _state.UnlockAchievement("dragon_slayer");
 

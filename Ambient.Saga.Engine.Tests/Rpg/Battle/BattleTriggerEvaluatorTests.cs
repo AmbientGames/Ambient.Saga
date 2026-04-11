@@ -356,7 +356,7 @@ public class BattleTriggerEvaluatorTests
     #region OnVictory Trigger Tests
 
     [Fact]
-    public void Evaluate_OnVictory_TriggersWhenPlayerWins()
+    public void Evaluate_OnVictory_TriggersWhenAvatarWins()
     {
         // Arrange
         var evaluator = new BattleTriggerEvaluator();
@@ -386,7 +386,7 @@ public class BattleTriggerEvaluatorTests
     }
 
     [Fact]
-    public void Evaluate_OnVictory_DoesNotTriggerWhenPlayerLoses()
+    public void Evaluate_OnVictory_DoesNotTriggerWhenAvatarLoses()
     {
         // Arrange
         var evaluator = new BattleTriggerEvaluator();
@@ -444,7 +444,7 @@ public class BattleTriggerEvaluatorTests
     #region OnDefeat Trigger Tests
 
     [Fact]
-    public void Evaluate_OnDefeat_TriggersWhenPlayerLoses()
+    public void Evaluate_OnDefeat_TriggersWhenAvatarLoses()
     {
         // Arrange
         var evaluator = new BattleTriggerEvaluator();

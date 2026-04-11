@@ -172,7 +172,7 @@ public class SagaStateMachineTests
     }
 
     [Fact]
-    public void ReplayToNow_CharacterDamaged_TracksHealthAndDamageByPlayer()
+    public void ReplayToNow_CharacterDamaged_TracksHealthAndDamageByAvatar()
     {
         // Arrange
         var instance = new SagaInstance { SagaRef = "TestSaga" };
@@ -195,7 +195,7 @@ public class SagaStateMachineTests
             }
         });
 
-        // Player1 damages 30%
+        // Avatar1 damages 30%
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.CharacterDamaged,
@@ -210,7 +210,7 @@ public class SagaStateMachineTests
             }
         });
 
-        // Player2 damages 50%
+        // Avatar2 damages 50%
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.CharacterDamaged,
@@ -566,7 +566,7 @@ public class SagaStateMachineTests
     }
 
     [Fact]
-    public void ReplayToNow_ComplexScenario_BossDefeatWithMultiplePlayers()
+    public void ReplayToNow_ComplexScenario_BossDefeatWithMultipleAvatars()
     {
         // Arrange
         var instance = new SagaInstance { SagaRef = "TestSaga" };
@@ -612,7 +612,7 @@ public class SagaStateMachineTests
             }
         });
 
-        // Player1 damages 40%
+        // Avatar1 damages 40%
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.CharacterDamaged,
@@ -623,7 +623,7 @@ public class SagaStateMachineTests
             Data = new() { ["CharacterInstanceId"] = bossId.ToString(), ["Damage"] = "0.4" }
         });
 
-        // Player2 enters and damages 60%
+        // Avatar2 enters and damages 60%
         instance.AddTransaction(new SagaTransaction
         {
             Type = SagaTransactionType.AvatarEntered,

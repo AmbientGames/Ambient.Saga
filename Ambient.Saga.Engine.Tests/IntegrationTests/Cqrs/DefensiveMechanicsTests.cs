@@ -42,7 +42,7 @@ public class DefensiveMechanicsTests
     public void Defend_ReducesPhysicalDamageBy50Percent()
     {
         // ARRANGE: Two combatants, one defending
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Attacker", strength: 0.20f);
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
@@ -73,7 +73,7 @@ public class DefensiveMechanicsTests
     public void AdjustLoadout_ReducesPhysicalDamageBy15Percent()
     {
         // ARRANGE: Combatant uses AdjustLoadout for defensive positioning
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Attacker", strength: 0.20f);
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
@@ -112,7 +112,7 @@ public class DefensiveMechanicsTests
     public void ChangeLoadout_ReducesPhysicalDamageBy15Percent()
     {
         // ARRANGE: Combatant uses ChangeLoadout for multiple changes
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Attacker", strength: 0.20f);
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
@@ -148,7 +148,7 @@ public class DefensiveMechanicsTests
     public void DefensiveStates_MutuallyExclusive()
     {
         // ARRANGE: Test that Defend and Adjust don't stack
-        // Note: combatant is PLAYER (first arg), dummy is ENEMY (second arg)
+        // Note: combatant is AVATAR (first arg), dummy is ENEMY (second arg)
         var combatant = CreateCombatant("Defender", defense: 0.10f);
         var dummy = CreateCombatant("Dummy", strength: 0.01f);
         var engine = new BattleEngine(combatant, dummy, null, _testWorld);
@@ -313,7 +313,7 @@ public class DefensiveMechanicsTests
     public void SpellAttack_ReducedDefenseEffectiveness()
     {
         // ARRANGE: Spells are less affected by Defend (70% instead of 50%)
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Mage", magic: 0.20f);
         attacker.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
 
@@ -343,7 +343,7 @@ public class DefensiveMechanicsTests
     public void AdjustLoadout_AgainstSpells_ReducedEffectiveness()
     {
         // ARRANGE: IsAdjusting provides 10% reduction against spells (vs 15% against physical)
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Mage", magic: 0.20f);
         attacker.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
 

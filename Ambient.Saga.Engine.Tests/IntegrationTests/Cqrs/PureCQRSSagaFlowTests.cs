@@ -408,7 +408,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         _output.WriteLine("");
         _output.WriteLine("? Commands create transactions (write-only)");
         _output.WriteLine("? Queries read state from transaction log (read-only)");
-        _output.WriteLine("? Client decides WHEN to interact (player agency)");
+        _output.WriteLine("? Client decides WHEN to interact (avatar agency)");
         _output.WriteLine("? Saga decides WHAT is available (server authoritative)");
         _output.WriteLine("");
         _output.WriteLine("This is the stable pattern. Put Sagas away and never think about them again.");

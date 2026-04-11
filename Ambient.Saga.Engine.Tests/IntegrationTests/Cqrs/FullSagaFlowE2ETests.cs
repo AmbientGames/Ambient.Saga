@@ -24,7 +24,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// Comprehensive end-to-end tests for complete Saga flows validating all major fixes:
 ///
 /// FIX VALIDATION:
-/// - Zone exit detection (PlayerExited + CharacterDespawned)
+/// - Zone exit detection (AvatarExited + CharacterDespawned)
 /// - Feature distance calculation (latitude correction)
 /// - Trade validation (credits, inventory, character alive)
 /// - Loot system (inventory transfer)
