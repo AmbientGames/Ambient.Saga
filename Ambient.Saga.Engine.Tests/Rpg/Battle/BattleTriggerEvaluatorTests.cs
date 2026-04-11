@@ -150,7 +150,7 @@ public class BattleTriggerEvaluatorTests
             new CharacterTrigger
             {
                 Condition = BattleTriggerCondition.AvatarHealthBelow,
-                Value = 25f, // Trigger when player health is below 25%
+                Value = 25f, // Trigger when avatar health is below 25%
                 DialogueTreeRef = "BossMocking",
                 StartNodeId = "you_are_weak"
             }
@@ -159,7 +159,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 80f,
-            AvatarHealthPercent = 15f, // Player at 15% health
+            AvatarHealthPercent = 15f, // Avatar at 15% health
             TurnNumber = 8
         };
 
@@ -402,7 +402,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = true,
-            AvatarVictory = false // Player lost
+            AvatarVictory = false // Avatar lost
         };
 
         // Act

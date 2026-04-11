@@ -131,7 +131,7 @@
                     <xs:documentation>Avatar's current health meets the comparison threshold.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="PlayerVisitCount">
+            <xs:enumeration value="AvatarVisitCount">
                 <xs:annotation>
                     <xs:documentation>Number of times the avatar has visited this NPC meets the threshold.</xs:documentation>
                 </xs:annotation>

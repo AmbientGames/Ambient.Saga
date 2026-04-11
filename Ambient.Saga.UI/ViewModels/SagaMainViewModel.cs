@@ -1828,7 +1828,7 @@ public partial class SagaMainViewModel : ObservableObject
 
 
     /// <summary>
-    /// Saves the player avatar to the database.
+    /// Saves the avatar avatar to the database.
     /// </summary>
     public async Task SavePlayerAvatarAsync()
     {

@@ -120,7 +120,7 @@
             </xs:enumeration>
             <xs:enumeration value="ItemTraded">
                 <xs:annotation>
-                    <xs:documentation>The avatar must trade a specific item with a merchant or another player.</xs:documentation>
+                    <xs:documentation>The avatar must trade a specific item with a merchant or another avatar.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="CurrencyCollected">

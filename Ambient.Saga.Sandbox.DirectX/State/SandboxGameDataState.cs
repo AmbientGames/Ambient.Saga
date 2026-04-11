@@ -52,18 +52,18 @@ public class SandboxGameDataState
 }
 
 /// <summary>
-/// Represents another player in multiplayer (not an NPC).
+/// Represents another avatar in multiplayer (not an NPC).
 /// Separate from CharacterInstance since players aren't based on character templates.
 /// </summary>
 public class PlayerInstance
 {
     /// <summary>
-    /// Unique player ID (from multiplayer server).
+    /// Unique avatar ID (from multiplayer server).
     /// </summary>
     public string PlayerId { get; set; } = string.Empty;
 
     /// <summary>
-    /// Player's display name.
+    /// Avatar's display name.
     /// </summary>
     public string PlayerName { get; set; } = string.Empty;
 

@@ -7,7 +7,7 @@ namespace Ambient.Saga.Engine.Application.Commands.Saga;
 /// <summary>
 /// Command to choose a branch in a quest stage with branching paths.
 ///
-/// Branching stages present the player with multiple choices that affect
+/// Branching stages present the avatar with multiple choices that affect
 /// the quest progression. For exclusive branches (default), only one
 /// branch can be chosen.
 ///

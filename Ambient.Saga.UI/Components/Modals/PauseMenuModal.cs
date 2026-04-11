@@ -7,7 +7,7 @@ namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Simple pause menu modal with Resume/Settings/Quit options.
-/// Triggered when player presses ESC with no panels/modals open.
+/// Triggered when avatar presses ESC with no panels/modals open.
 /// </summary>
 public class PauseMenuModal
 {

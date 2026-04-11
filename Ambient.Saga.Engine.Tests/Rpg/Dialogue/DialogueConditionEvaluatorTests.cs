@@ -164,7 +164,7 @@ public class DialogueConditionEvaluatorTests
 
     #endregion
 
-    #region Player State Conditions
+    #region Avatar State Conditions
 
     [Fact]
     public void HasAchievement_WhenPlayerHasAchievement_ReturnsTrue()
@@ -215,7 +215,7 @@ public class DialogueConditionEvaluatorTests
     #region Dialogue History Conditions
 
     [Fact]
-    public void PlayerVisitCount_EvaluatesCorrectly()
+    public void AvatarVisitCount_EvaluatesCorrectly()
     {
         _state.RecordNodeVisit("merchant_dialogue", "greeting");
         _state.RecordNodeVisit("merchant_dialogue", "quest_offer");

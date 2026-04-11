@@ -12,7 +12,7 @@
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="AvatarArchetype">
-        <xs:annotation><xs:documentation>A character class template that defines starting stats, equipment, and respawn configuration for player avatars.</xs:documentation></xs:annotation>
+        <xs:annotation><xs:documentation>A character class template that defines starting stats, equipment, and respawn configuration for avatars.</xs:documentation></xs:annotation>
         <xs:complexContent>
             <xs:extension base="EntityBase">
                 <xs:sequence>

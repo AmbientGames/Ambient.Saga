@@ -284,7 +284,7 @@ public class SagaTransactionLogE2ETests : IDisposable
         // Build transaction sequence
         var transactions = new List<SagaTransaction>
         {
-            // Player enters
+            // Avatar enters
             new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
@@ -333,7 +333,7 @@ public class SagaTransactionLogE2ETests : IDisposable
                     ["CharacterRef"] = "TestGuard"
                 }
             },
-            // Player exits
+            // Avatar exits
             new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),

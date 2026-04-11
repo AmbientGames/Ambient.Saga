@@ -56,7 +56,7 @@ public enum AttackPatternType
 }
 
 /// <summary>
-/// Outcome modifiers based on player's defense choice.
+/// Outcome modifiers based on avatar's defense choice.
 /// </summary>
 public class DefenseOutcome
 {
@@ -83,9 +83,9 @@ public class AttackTell
 {
     public required string RefName { get; init; }
     public required AttackPatternType Pattern { get; init; }
-    /// <summary>Narrative text shown to player (the "tell")</summary>
+    /// <summary>Narrative text shown to avatar (the "tell")</summary>
     public required string TellText { get; init; }
-    /// <summary>Time window in milliseconds for player to react (0 = no time limit)</summary>
+    /// <summary>Time window in milliseconds for avatar to react (0 = no time limit)</summary>
     public int ReactionWindowMs { get; init; } = 3000;
     /// <summary>The optimal defense reaction for this attack</summary>
     public required AvatarDefenseType OptimalDefense { get; init; }
@@ -138,7 +138,7 @@ public class AttackTell
 }
 
 /// <summary>
-/// Represents an incoming attack that the player can react to.
+/// Represents an incoming attack that the avatar can react to.
 /// Used as the "pending attack" state during the reaction phase.
 /// </summary>
 public class PendingAttack

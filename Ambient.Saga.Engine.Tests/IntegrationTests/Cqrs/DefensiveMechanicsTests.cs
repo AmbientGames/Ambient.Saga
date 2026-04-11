@@ -47,9 +47,9 @@ public class DefensiveMechanicsTests
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
         var engine = new BattleEngine(defender, attacker, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) uses Defend action
+        // Avatar (defender) uses Defend action
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
 
         var defenderHealthBeforeAttack = defender.Health;
@@ -78,9 +78,9 @@ public class DefensiveMechanicsTests
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
         var engine = new BattleEngine(defender, attacker, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) uses AdjustLoadout action
+        // Avatar (defender) uses AdjustLoadout action
         var adjustResult = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
@@ -117,9 +117,9 @@ public class DefensiveMechanicsTests
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
         var engine = new BattleEngine(defender, attacker, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) uses ChangeLoadout action (multiple changes)
+        // Avatar (defender) uses ChangeLoadout action (multiple changes)
         var changeResult = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.ChangeLoadout,
@@ -152,7 +152,7 @@ public class DefensiveMechanicsTests
         var combatant = CreateCombatant("Defender", defense: 0.10f);
         var dummy = CreateCombatant("Dummy", strength: 0.01f);
         var engine = new BattleEngine(combatant, dummy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Start with Defend
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
@@ -192,7 +192,7 @@ public class DefensiveMechanicsTests
         var avatar = CreateCombatant("Avatar", strength: 0.15f);
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
         var engine = new BattleEngine(avatar, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Defend first
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
@@ -225,7 +225,7 @@ public class DefensiveMechanicsTests
 
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
         var engine = new BattleEngine(avatar, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Adjust loadout first
         engine.ExecuteAvatarDecision(new CombatAction
@@ -260,7 +260,7 @@ public class DefensiveMechanicsTests
 
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
         var engine = new BattleEngine(avatar, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Defend first
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
@@ -288,7 +288,7 @@ public class DefensiveMechanicsTests
         var avatar = CreateCombatant("Avatar", speed: 0.20f);  // High speed for flee success
         var enemy = CreateCombatant("Enemy", speed: 0.05f);
         var engine = new BattleEngine(avatar, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Adjust loadout first
         engine.ExecuteAvatarDecision(new CombatAction
@@ -320,9 +320,9 @@ public class DefensiveMechanicsTests
         var defender = CreateCombatant("Defender", defense: 0.10f);
         var enemyAI = new CombatAI(_testWorld);  // AI will cast spells when available
         var engine = new BattleEngine(defender, attacker, enemyAI, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) uses Defend
+        // Avatar (defender) uses Defend
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(defender.IsDefending);
 
@@ -350,9 +350,9 @@ public class DefensiveMechanicsTests
         var defender = CreateCombatant("Defender", defense: 0.10f);
         var enemyAI = new CombatAI(_testWorld);  // AI will cast spells when available
         var engine = new BattleEngine(defender, attacker, enemyAI, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) adjusts loadout
+        // Avatar (defender) adjusts loadout
         engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
@@ -380,7 +380,7 @@ public class DefensiveMechanicsTests
         var avatar = CreateCombatant("Defender", defense: 0.15f);
         var enemy = CreateCombatant("Attacker", strength: 0.20f);
         var engine = new BattleEngine(avatar, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Turn 1: Defend
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });

@@ -497,7 +497,7 @@ public class DirectDialogueStateProviderTests
     #region Dialogue History
 
     [Fact]
-    public void GetPlayerVisitCount_NotVisited_ReturnsZero()
+    public void GetAvatarVisitCount_NotVisited_ReturnsZero()
     {
         Assert.Equal(0, _provider.GetAvatarVisitCount("merchant_dialogue"));
     }

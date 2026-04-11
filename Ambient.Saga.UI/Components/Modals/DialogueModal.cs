@@ -12,7 +12,7 @@ namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for character dialogue using CQRS pattern.
-/// Displays NPC dialogue text and player choices in a polished conversation UI.
+/// Displays NPC dialogue text and avatar choices in a polished conversation UI.
 /// </summary>
 public class DialogueModal
 {

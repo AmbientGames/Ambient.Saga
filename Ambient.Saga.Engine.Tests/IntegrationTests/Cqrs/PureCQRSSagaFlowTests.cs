@@ -31,7 +31,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// 2. Saga creates transactions (spawns, triggers, etc.)
 /// 3. Client queries: GetAvailableInteractions - "what can I do?"
 /// 4. UI shows options based on query result
-/// 5. Player acts: StartDialogue, Trade, Attack, etc.
+/// 5. Avatar acts: StartDialogue, Trade, Attack, etc.
 /// 6. Client queries again to update UI
 ///
 /// This is how you "put Sagas away and never think about them again" - the pattern is stable.
@@ -361,7 +361,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         Assert.True(boss.Options.CanAttack);
 
         // ================================================================
-        // STEP 3: COMMAND - Player chooses to talk to merchant
+        // STEP 3: COMMAND - Avatar chooses to talk to merchant
         // ================================================================
         _output.WriteLine("--- STEP 3: COMMAND (Write) ---");
         _output.WriteLine($"Action: StartDialogue with {merchant.DisplayName}");

@@ -645,7 +645,7 @@ public static class WorldValidationService
                     node.NodeId.Equals("end", StringComparison.OrdinalIgnoreCase) ||
                     node.NodeId.EndsWith("_end", StringComparison.OrdinalIgnoreCase) ||
                     // All battle_* dialogue nodes are intentional mid-battle interjections
-                    // They display text/trigger actions and then combat continues (no player choice needed)
+                    // They display text/trigger actions and then combat continues (no avatar choice needed)
                     node.NodeId.StartsWith("battle_", StringComparison.OrdinalIgnoreCase);
 
                 if (!isIntentionalTerminal)
@@ -1712,7 +1712,7 @@ public static class WorldValidationService
             // Regular characters must have dialogue
             if (character.Interactable == null)
             {
-                errors.Add($"{context}: No Interactable section. Add <Interactable><DialogueTreeRef>...</DialogueTreeRef></Interactable> to allow player interaction.");
+                errors.Add($"{context}: No Interactable section. Add <Interactable><DialogueTreeRef>...</DialogueTreeRef></Interactable> to allow avatar interaction.");
             }
             else if (string.IsNullOrEmpty(character.Interactable.DialogueTreeRef))
             {

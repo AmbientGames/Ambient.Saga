@@ -156,7 +156,7 @@ public class BattleCommandTests : IDisposable
 
         _output.WriteLine($"? Battle started with {turnTransactions.Count} turn(s) executed");
         _output.WriteLine($"  Random Seed: {battleStarted.Data["RandomSeed"]}");
-        _output.WriteLine($"  Player HP: {battleStarted.Data["AvatarHealth"]}");
+        _output.WriteLine($"  Avatar HP: {battleStarted.Data["AvatarHealth"]}");
         _output.WriteLine($"  Enemy HP: {battleStarted.Data["EnemyHealth"]}");
     }
 
@@ -404,7 +404,7 @@ public class BattleCommandTests : IDisposable
         Assert.True(battleStarted.Data.ContainsKey("EnemyHealth"));
 
         _output.WriteLine($"Battle Started - Seed: {battleStarted.Data["RandomSeed"]}");
-        _output.WriteLine($"  Player HP: {battleStarted.Data["AvatarHealth"]}");
+        _output.WriteLine($"  Avatar HP: {battleStarted.Data["AvatarHealth"]}");
         _output.WriteLine($"  Enemy HP: {battleStarted.Data["EnemyHealth"]}");
 
         // Verify each turn has required data

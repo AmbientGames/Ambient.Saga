@@ -30,7 +30,7 @@ public enum SagaTransactionType
     CriticalHitDealt,       // Critical hit dealt in combat
     ComboExecuted,          // Combo chain attack executed
 
-    // Player interactions
+    // Avatar interactions
     AvatarEntered,
     AvatarExited,
 

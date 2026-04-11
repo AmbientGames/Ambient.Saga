@@ -12,7 +12,7 @@ namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for quest signpost interactions.
-/// Displays quest details and allows player to accept quests.
+/// Displays quest details and allows avatar to accept quests.
 /// </summary>
 public class QuestModal
 {

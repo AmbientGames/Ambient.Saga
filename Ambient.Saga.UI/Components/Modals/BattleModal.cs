@@ -21,7 +21,7 @@ namespace Ambient.Saga.UI.Components.Modals;
 public class BattleModal
 {
     /// <summary>
-    /// Fired when the player is defeated in battle. Games subscribe to handle defeat
+    /// Fired when the avatar is defeated in battle. Games subscribe to handle defeat
     /// differently from environmental death (e.g. teleport home, keep inventory).
     /// </summary>
     public event Action? PlayerDefeated;
@@ -461,7 +461,7 @@ public class BattleModal
     {
         _selectedReaction = reaction;
         _reactionResolved = true;
-        System.Diagnostics.Debug.WriteLine($"[BattleModal] Player selected reaction: {reaction}");
+        System.Diagnostics.Debug.WriteLine($"[BattleModal] Avatar selected reaction: {reaction}");
     }
 
     /// <summary>
@@ -846,7 +846,7 @@ public class BattleModal
         var totalButtonWidth = _currentState.AvatarVictory == true ? buttonWidth * 2 + 20 : buttonWidth;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalButtonWidth) * 0.5f);
 
-        // Show loot button if player won
+        // Show loot button if avatar won
         if (_currentState.AvatarVictory == true)
         {
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1.0f));

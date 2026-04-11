@@ -144,7 +144,7 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
 
             // Check proximity - calculate distance between avatar and character
             var approachRadius = characterTemplate.Interactable?.ApproachRadius ?? 50.0;
-            if (approachRadius > 0) // -1 means player must initiate, 0 means contact required
+            if (approachRadius > 0) // -1 means avatar must initiate, 0 means contact required
             {
                 var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, characterWorldLat, characterWorldLon, _world);
                 System.Diagnostics.Debug.WriteLine("*** distance: " + distance);
@@ -234,7 +234,7 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         var hasDisengaged = characterState.Traits.ContainsKey("Disengaged");
         var hasSpared = characterState.Traits.ContainsKey("Spared");
 
-        // Disengaged/Spared characters won't fight - player fled or showed mercy
+        // Disengaged/Spared characters won't fight - avatar fled or showed mercy
         // This overrides Hostile trait temporarily
         if (hasDisengaged || hasSpared)
         {

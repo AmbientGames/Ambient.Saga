@@ -37,7 +37,7 @@ public class ModalManager
     public event Action? QuitRequested;
 
     /// <summary>
-    /// Fired when the player is defeated in a saga battle.
+    /// Fired when the avatar is defeated in a saga battle.
     /// Games subscribe to handle defeat differently from environmental death.
     /// </summary>
     public event Action? BattleDefeatRequested;

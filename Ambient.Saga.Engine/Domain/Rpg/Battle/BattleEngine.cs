@@ -14,8 +14,8 @@ public enum BattleState
     CompanionTurn,
     EnemyTurn,
     /// <summary>
-    /// Waiting for player to choose a defensive reaction.
-    /// Enemy has telegraphed their attack; player has a time window to respond.
+    /// Waiting for avatar to choose a defensive reaction.
+    /// Enemy has telegraphed their attack; avatar has a time window to respond.
     /// </summary>
     AwaitingReaction,
     Victory,
@@ -59,7 +59,7 @@ public class BattleEngine
     public IReadOnlyList<CombatEvent> ActionHistory => _actionHistory.AsReadOnly();
 
     /// <summary>
-    /// The pending attack awaiting player reaction (only valid when State == AwaitingReaction).
+    /// The pending attack awaiting avatar reaction (only valid when State == AwaitingReaction).
     /// </summary>
     public PendingAttack? PendingAttack { get; private set; }
 
@@ -178,7 +178,7 @@ public class BattleEngine
         var decision = _enemyMind.DecideTurn(snapshot);
 
         // If the AI chose an attack and tells are available, enter the reaction phase
-        // instead of dealing damage immediately — gives the player a chance to react.
+        // instead of dealing damage immediately — gives the avatar a chance to react.
         if (_attackTells.Count > 0 && IsAttackAction(decision.ActionType))
         {
             var tell = GetRandomTellForEnemy(_enemy);
@@ -372,7 +372,7 @@ public class BattleEngine
 
     /// <summary>
     /// Process avatar status effects at the start of their turn.
-    /// Should be called by the UI/handler before presenting player options.
+    /// Should be called by the UI/handler before presenting avatar options.
     /// </summary>
     public void ProcessAvatarTurnStart()
     {
@@ -397,7 +397,7 @@ public class BattleEngine
             return new CombatEvent
             {
                 Success = false,
-                Message = "Not player's turn"
+                Message = "Not avatar's turn"
             };
         }
 
@@ -2014,7 +2014,7 @@ public class BattleEngine
 
     /// <summary>
     /// Calculate the base damage an enemy attack WOULD deal without any defense modifiers.
-    /// Used by the tell system so the player knows the stakes before choosing a reaction.
+    /// Used by the tell system so the avatar knows the stakes before choosing a reaction.
     /// </summary>
     private float CalculateBaseDamageForTell(Combatant attacker, Combatant target, CombatAction decision)
     {
@@ -2098,7 +2098,7 @@ public class BattleEngine
 
     /// <summary>
     /// Begin an attack with a telegraph, entering the reaction phase.
-    /// Call this instead of directly executing an attack to enable player reactions.
+    /// Call this instead of directly executing an attack to enable avatar reactions.
     /// </summary>
     /// <param name="attacker">The attacking combatant</param>
     /// <param name="target">The target of the attack</param>
@@ -2130,7 +2130,7 @@ public class BattleEngine
     }
 
     /// <summary>
-    /// Resolve the pending attack with the player's chosen defense reaction.
+    /// Resolve the pending attack with the avatar's chosen defense reaction.
     /// </summary>
     /// <param name="reaction">The defense reaction chosen by the player</param>
     /// <returns>The result of the reaction, or null if no pending attack</returns>

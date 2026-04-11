@@ -7,7 +7,7 @@ namespace Ambient.Saga.Presentation.UI.ViewModels;
 
 /// <summary>
 /// ViewModel for character dialogue using CQRS pattern.
-/// Displays current dialogue state and handles player choices.
+/// Displays current dialogue state and handles avatar choices.
 /// </summary>
 public partial class DialogueViewModel : ObservableObject
 {

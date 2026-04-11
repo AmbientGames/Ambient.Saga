@@ -118,7 +118,7 @@ public class BattleTriggerEvaluator
             BattleTriggerCondition.HealthAbove =>
                 context.EnemyHealthPercent > trigger.Value,
 
-            // Player health threshold check
+            // Avatar health threshold check
             BattleTriggerCondition.AvatarHealthBelow =>
                 context.AvatarHealthPercent < trigger.Value,
 
@@ -152,7 +152,7 @@ public class BattleTriggerEvaluator
 public class BattleTriggerContext
 {
     /// <summary>
-    /// Player's current health as a percentage (0-100)
+    /// Avatar's current health as a percentage (0-100)
     /// </summary>
     public float AvatarHealthPercent { get; init; }
 
@@ -167,12 +167,12 @@ public class BattleTriggerContext
     public int TurnNumber { get; init; }
 
     /// <summary>
-    /// Whether the player or enemy just changed stance this turn
+    /// Whether the avatar or enemy just changed stance this turn
     /// </summary>
     public bool StanceJustChanged { get; init; }
 
     /// <summary>
-    /// Whether the player or enemy just changed affinity this turn
+    /// Whether the avatar or enemy just changed affinity this turn
     /// </summary>
     public bool AffinityJustChanged { get; init; }
 
@@ -182,7 +182,7 @@ public class BattleTriggerContext
     public bool BattleEnded { get; init; }
 
     /// <summary>
-    /// Whether the player won (only valid if BattleEnded is true)
+    /// Whether the avatar won (only valid if BattleEnded is true)
     /// </summary>
     public bool AvatarVictory { get; init; }
 

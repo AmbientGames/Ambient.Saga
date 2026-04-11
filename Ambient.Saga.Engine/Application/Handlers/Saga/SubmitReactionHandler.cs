@@ -13,7 +13,7 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
 /// <summary>
 /// Handler for SubmitReactionCommand.
-/// Processes the player's defensive reaction during the reaction phase.
+/// Processes the avatar's defensive reaction during the reaction phase.
 /// </summary>
 internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionCommand, SagaCommandResult>
 {

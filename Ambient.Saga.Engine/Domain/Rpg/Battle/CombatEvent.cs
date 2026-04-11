@@ -43,6 +43,6 @@ public class CombatEvent
     // Trait assignment from combat outcomes (flee, spare, etc.)
     /// <summary>Trait to assign as result of this action (e.g., Disengaged on successful flee)</summary>
     public string? TraitToAssign { get; init; }
-    /// <summary>Character ref that receives the trait (enemy when player flees)</summary>
+    /// <summary>Character ref that receives the trait (enemy when avatar flees)</summary>
     public string? TraitTargetCharacterRef { get; init; }
 }

@@ -79,7 +79,7 @@ public class DialogueEngine
     }
 
     /// <summary>
-    /// Selects a player choice and navigates to the target node.
+    /// Selects a avatar choice and navigates to the target node.
     /// </summary>
     /// <param name="choice">The choice selected by the player</param>
     /// <returns>The next node, or null if dialogue ends</returns>

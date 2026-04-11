@@ -16,7 +16,7 @@ public class BattleModalAdapter : IModal
     }
 
     /// <summary>
-    /// Subscribe to be notified when the player is defeated in battle.
+    /// Subscribe to be notified when the avatar is defeated in battle.
     /// </summary>
     public event Action? PlayerDefeated
     {

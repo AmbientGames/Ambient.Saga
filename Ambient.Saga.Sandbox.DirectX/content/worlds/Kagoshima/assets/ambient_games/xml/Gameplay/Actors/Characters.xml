@@ -376,7 +376,7 @@
     </Traits>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="begin_end" OnceOnly="true" />
-      <Trigger Condition="PlayerHealthBelow" Value="0.3" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="player_low" OnceOnly="true" />
+      <Trigger Condition="AvatarHealthBelow" Value="0.3" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="player_low" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.5" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="impressed_end" OnceOnly="true" />
     </BattleDialogue>
   </Character>

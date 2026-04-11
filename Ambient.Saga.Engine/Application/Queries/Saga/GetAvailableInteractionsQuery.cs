@@ -6,7 +6,7 @@ namespace Ambient.Saga.Engine.Application.Queries.Saga;
 
 /// <summary>
 /// Comprehensive query to get all available interactions at the avatar's current position.
-/// This is the primary query for client UI - returns everything the player can do right now.
+/// This is the primary query for client UI - returns everything the avatar can do right now.
 ///
 /// Design Philosophy:
 /// - Commands are simple (just create transactions)

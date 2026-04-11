@@ -140,7 +140,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
 
             // Now execute the new avatar turn
-            System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Executing player action: {command.AvatarAction.ActionType}");
+            System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Executing avatar action: {command.AvatarAction.ActionType}");
             var avatarEvent = battleEngine.ExecuteAvatarDecision(command.AvatarAction);
 
             var transactionsBefore = instance.Transactions.Count;
@@ -374,7 +374,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         }
     }
 
-    private (Combatant player, Combatant enemy, int randomSeed, List<string> playerAffinityRefs, Guid enemyCharacterInstanceId)
+    private (Combatant avatar, Combatant enemy, int randomSeed, List<string> avatarAffinityRefs, Guid enemyCharacterInstanceId)
         ReconstructBattleState(SagaTransaction battleStartedTx, SagaInstance instance)
     {
         // Parse initial state from BattleStarted transaction
@@ -510,7 +510,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         instance.AddTransaction(battleEndedTx);
         newTransactions.Add(battleEndedTx);
 
-        // If player won, create CharacterDefeated transaction and grant affinity
+        // If avatar won, create CharacterDefeated transaction and grant affinity
         if (avatarVictory)
         {
             var data = new Dictionary<string, string>
