@@ -122,9 +122,9 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             for (var i = 1; i < executedTurns.Count; i++)
             {
                 var turnTx = executedTurns[i];
-                var isPlayerTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
+                var isAvatarTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
 
-                if (isPlayerTurn)
+                if (isAvatarTurn)
                 {
                     // Reconstruct avatar action from transaction
                     var actionType = Enum.Parse<ActionType>(turnTx.Data[TransactionDataKeys.DecisionType]);
@@ -141,7 +141,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
             // Now execute the new avatar turn
             System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Executing player action: {command.PlayerAction.ActionType}");
-            var playerEvent = battleEngine.ExecuteAvatarDecision(command.PlayerAction);
+            var avatarEvent = battleEngine.ExecuteAvatarDecision(command.PlayerAction);
 
             var transactionsBefore = instance.Transactions.Count;
             var newTransactions = new List<SagaTransaction>();
@@ -153,15 +153,15 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 command.AvatarId.ToString(),
                 command.BattleInstanceId,
                 turnNumber,
-                playerEvent.ActorName,
+                avatarEvent.ActorName,
                 true,  // Is player turn
                 command.PlayerAction.ActionType,
                 command.PlayerAction.Parameter,
-                playerEvent.Damage,
-                playerEvent.Healing,
-                playerEvent.TargetName,
-                playerEvent.TargetHealthAfter,
-                playerEvent.ActorEnergyAfter,
+                avatarEvent.Damage,
+                avatarEvent.Healing,
+                avatarEvent.TargetName,
+                avatarEvent.TargetHealthAfter,
+                avatarEvent.ActorEnergyAfter,
                 playerAfterAction,
                 _world,
                 instance.InstanceId);
@@ -169,22 +169,22 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             instance.AddTransaction(playerTurnTx);
             newTransactions.Add(playerTurnTx);
 
-            System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Player turn: {command.PlayerAction.ActionType}, dealt {playerEvent.Damage:F2} damage");
+            System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Player turn: {command.PlayerAction.ActionType}, dealt {avatarEvent.Damage:F2} damage");
 
             // Handle trait assignment from combat event (e.g., Disengaged trait on successful flee)
-            if (!string.IsNullOrEmpty(playerEvent.TraitToAssign) && !string.IsNullOrEmpty(playerEvent.TraitTargetCharacterRef))
+            if (!string.IsNullOrEmpty(avatarEvent.TraitToAssign) && !string.IsNullOrEmpty(avatarEvent.TraitTargetCharacterRef))
             {
                 var traitTx = DialogueTransactionHelper.CreateTraitAssignedTransaction(
                     command.AvatarId.ToString(),
-                    playerEvent.TraitTargetCharacterRef,
-                    playerEvent.TraitToAssign,
+                    avatarEvent.TraitTargetCharacterRef,
+                    avatarEvent.TraitToAssign,
                     null, // No value for Disengaged trait
                     instance.InstanceId);
 
                 instance.AddTransaction(traitTx);
                 newTransactions.Add(traitTx);
 
-                System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Assigned trait '{playerEvent.TraitToAssign}' to '{playerEvent.TraitTargetCharacterRef}'");
+                System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Assigned trait '{avatarEvent.TraitToAssign}' to '{avatarEvent.TraitTargetCharacterRef}'");
             }
 
             // Check if battle ended after avatar's turn

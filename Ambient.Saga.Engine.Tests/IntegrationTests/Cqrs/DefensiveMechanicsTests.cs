@@ -189,7 +189,7 @@ public class DefensiveMechanicsTests
     public void OffensiveAction_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant defends, then attacks
-        var player = CreateCombatant("Player", strength: 0.15f);
+        var player = CreateCombatant("Avatar", strength: 0.15f);
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
         var engine = new BattleEngine(player, enemy, null, _testWorld);
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
@@ -220,7 +220,7 @@ public class DefensiveMechanicsTests
     public void SpellAttack_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant adjusts loadout, then casts spell
-        var player = CreateCombatant("Player", magic: 0.15f);
+        var player = CreateCombatant("Avatar", magic: 0.15f);
         player.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
 
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
@@ -255,7 +255,7 @@ public class DefensiveMechanicsTests
     public void ConsumableUse_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant defends, then uses consumable
-        var player = CreateCombatant("Player", strength: 0.10f);
+        var player = CreateCombatant("Avatar", strength: 0.10f);
         player.Capabilities!.Consumables = new[] { new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 1 } };
 
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
@@ -285,7 +285,7 @@ public class DefensiveMechanicsTests
     public void Flee_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant adjusts, then flees
-        var player = CreateCombatant("Player", speed: 0.20f);  // High speed for flee success
+        var player = CreateCombatant("Avatar", speed: 0.20f);  // High speed for flee success
         var enemy = CreateCombatant("Enemy", speed: 0.05f);
         var engine = new BattleEngine(player, enemy, null, _testWorld);
         engine.StartBattle();  // Enemy attacks first, then it's player's turn

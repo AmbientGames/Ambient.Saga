@@ -151,7 +151,7 @@ public class CombatReactionTests
         // Arrange
         var tell = CreateSlashAttackTell();
         var attacker = CreateMockCombatant("Enemy");
-        var target = CreateMockCombatant("Player");
+        var target = CreateMockCombatant("Avatar");
 
         var pendingAttack = new PendingAttack
         {
@@ -184,7 +184,7 @@ public class CombatReactionTests
             }
         };
         var attacker = CreateMockCombatant("Enemy");
-        var target = CreateMockCombatant("Player");
+        var target = CreateMockCombatant("Avatar");
 
         var pendingAttack = new PendingAttack
         {
@@ -217,7 +217,7 @@ public class CombatReactionTests
             }
         };
         var attacker = CreateMockCombatant("Enemy");
-        var target = CreateMockCombatant("Player");
+        var target = CreateMockCombatant("Avatar");
 
         var pendingAttack = new PendingAttack
         {

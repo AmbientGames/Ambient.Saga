@@ -25,7 +25,7 @@ public class BattleEngineCompanionTests
     public void Constructor_WithCompanions_InitializesParty()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 50);
         var companion1 = CreateCombatant("Companion1", 80);
         var companion2 = CreateCombatant("Companion2", 60);
@@ -39,7 +39,7 @@ public class BattleEngineCompanionTests
 
         // Assert
         Assert.Equal(3, engine.Party.Count);  // Player + 2 companions
-        Assert.Contains(engine.Party, c => c.RefName == "Player");
+        Assert.Contains(engine.Party, c => c.RefName == "Avatar");
         Assert.Contains(engine.Party, c => c.RefName == "Companion1");
         Assert.Contains(engine.Party, c => c.RefName == "Companion2");
     }
@@ -48,7 +48,7 @@ public class BattleEngineCompanionTests
     public void Constructor_WithoutCompanions_PlayerOnlyInParty()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 50);
 
         // Act
@@ -56,7 +56,7 @@ public class BattleEngineCompanionTests
 
         // Assert
         Assert.Single(engine.Party);
-        Assert.Equal("Player", engine.Party[0].RefName);
+        Assert.Equal("Avatar", engine.Party[0].RefName);
     }
 
     #endregion
@@ -67,7 +67,7 @@ public class BattleEngineCompanionTests
     public void StartBattle_EnemyMovesFirst()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 50);
         var companion = CreateCombatant("Companion", 80);
         var enemyAI = new CombatAI(_world);
@@ -90,7 +90,7 @@ public class BattleEngineCompanionTests
     public void AfterPlayerTurn_CompanionTurnsFollow()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 100);
         var companion1 = CreateCombatant("Companion1", 80);
         var companion2 = CreateCombatant("Companion2", 60);
@@ -116,7 +116,7 @@ public class BattleEngineCompanionTests
     public void CompanionTurn_ExecutesAIDecision()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 100);
         var companion = CreateCombatant("Companion", 80);
         var ai = new CombatAI(_world);
@@ -142,7 +142,7 @@ public class BattleEngineCompanionTests
     public void AfterAllCompanionTurns_EnemyTurnFollows()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 200);  // High HP to survive
         var companion = CreateCombatant("Companion", 80);
         var ai = new CombatAI(_world);
@@ -171,7 +171,7 @@ public class BattleEngineCompanionTests
     public void EnemyTargeting_CanTargetPlayer()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 50);
         var companion = CreateCombatant("Companion", 80);
         var ai = new CombatAI(_world);
@@ -188,7 +188,7 @@ public class BattleEngineCompanionTests
         // Assert - Enemy should attack either player or companion
         var enemyAction = engine.ActionHistory.First();
         Assert.True(
-            enemyAction.TargetName == "Player" || enemyAction.TargetName == "Companion",
+            enemyAction.TargetName == "Avatar" || enemyAction.TargetName == "Companion",
             $"Enemy targeted {enemyAction.TargetName}, expected Player or Companion");
     }
 
@@ -204,7 +204,7 @@ public class BattleEngineCompanionTests
         for (int seed = 0; seed < 100; seed++)
         {
             var engine = new BattleEngine(
-                CreateCombatant("Player", 100),
+                CreateCombatant("Avatar", 100),
                 CreateCombatant("Enemy", 50),
                 ai, _world,
                 randomSeed: seed,
@@ -226,7 +226,7 @@ public class BattleEngineCompanionTests
     public void EnemyTargeting_OnlyTargetsAliveCombatants()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 100);
         var deadCompanion = CreateCombatant("DeadCompanion", 0);  // Already dead
         var aliveCompanion = CreateCombatant("AliveCompanion", 80);
@@ -253,7 +253,7 @@ public class BattleEngineCompanionTests
     public void PlayerDefeat_WhenPlayerDies_BattleEnds()
     {
         // Arrange - Player with very low HP
-        var player = CreateCombatant("Player", 1);
+        var player = CreateCombatant("Avatar", 1);
         var enemy = CreateCombatant("Enemy", 100, strength: 50);  // High damage
         var companion = CreateCombatant("Companion", 100);
         var ai = new CombatAI(_world);
@@ -277,7 +277,7 @@ public class BattleEngineCompanionTests
     public void CompanionDeath_BattleContinues()
     {
         // Arrange - Companion with very low HP
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 100);
         var weakCompanion = CreateCombatant("WeakCompanion", 1);
         var ai = new CombatAI(_world);
@@ -305,7 +305,7 @@ public class BattleEngineCompanionTests
     public void Victory_WhenEnemyDefeated_WithCompanions()
     {
         // Arrange - Enemy with very low HP
-        var player = CreateCombatant("Player", 100, strength: 50);  // High damage
+        var player = CreateCombatant("Avatar", 100, strength: 50);  // High damage
         var enemy = CreateCombatant("Enemy", 1);
         var companion = CreateCombatant("Companion", 80);
         var ai = new CombatAI(_world);
@@ -332,7 +332,7 @@ public class BattleEngineCompanionTests
     public void CompanionTurn_SkipsDeadCompanions()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 200);
         var deadCompanion = CreateCombatant("DeadCompanion", 0);  // Dead
         var aliveCompanion = CreateCombatant("AliveCompanion", 80);
@@ -357,7 +357,7 @@ public class BattleEngineCompanionTests
     public void CompanionTurn_AllDeadCompanions_SkipsToEnemyTurn()
     {
         // Arrange
-        var player = CreateCombatant("Player", 100);
+        var player = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 200);
         var deadCompanion1 = CreateCombatant("DeadCompanion1", 0);
         var deadCompanion2 = CreateCombatant("DeadCompanion2", 0);
