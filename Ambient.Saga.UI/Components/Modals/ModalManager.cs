@@ -282,7 +282,7 @@ public class ModalManager
 
     public void OpenQuestDetail(string questRef)
     {
-        if (_questViewModel?.PlayerAvatar == null) return;
+        if (_questViewModel?.Avatar == null) return;
 
         _ = OpenQuestDetailAsync(questRef);
     }
@@ -294,7 +294,7 @@ public class ModalManager
             // Find saga containing this quest using Application layer query
             var sagaRef = await _mediator.Send(new GetSagaForQuestQuery
             {
-                AvatarId = _questViewModel!.PlayerAvatar!.Id,
+                AvatarId = _questViewModel!.Avatar!.Id,
                 QuestRef = questRef
             });
 

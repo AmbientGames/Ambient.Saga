@@ -541,7 +541,7 @@ public class BattleModal
 
     private async Task ResolveReactionAsync(SagaMainViewModel viewModel, CharacterViewModel character, AvatarDefenseType reaction)
     {
-        if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
+        if (viewModel.Avatar == null || _battleInstanceId == Guid.Empty)
             return;
 
         System.Diagnostics.Debug.WriteLine($"[BattleModal] Resolving reaction: {reaction}");
@@ -585,11 +585,11 @@ public class BattleModal
             // Send reaction to backend via command with full combat data
             var command = new SubmitReactionCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 BattleInstanceId = _battleInstanceId,
                 Reaction = reaction,
-                Avatar = viewModel.PlayerAvatar,
+                Avatar = viewModel.Avatar,
 
                 // Populate reaction results
                 TellRefName = _currentTellRefName,
@@ -874,7 +874,7 @@ public class BattleModal
 
     private async Task InitializeBattleAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
@@ -882,7 +882,7 @@ public class BattleModal
             var characterTemplate = viewModel.CurrentWorld.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == character.CharacterRef);
             if (characterTemplate == null) return;
 
-            var archetypeRef = viewModel.PlayerAvatar.ArchetypeRef;
+            var archetypeRef = viewModel.Avatar.ArchetypeRef;
             var archetype = viewModel.CurrentWorld.Gameplay?.AvatarArchetypes?.FirstOrDefault(a => a.RefName == archetypeRef);
             if (archetype == null) return;
 
@@ -890,7 +890,7 @@ public class BattleModal
             var battleSetup = new BattleSetup();
             battleSetup.SetupFromWorld(viewModel.CurrentWorld);
             battleSetup.SelectedAvatarArchetype = archetype;
-            battleSetup.AvatarCapabilities = viewModel.PlayerAvatar.Capabilities ?? new ItemCollection();
+            battleSetup.AvatarCapabilities = viewModel.Avatar.Capabilities ?? new ItemCollection();
             // Get available affinities from world configuration (fallback to archetype affinity if defined)
             var availableAffinities = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
                 .Select(a => a.RefName).ToList() ?? new List<string>();
@@ -911,7 +911,7 @@ public class BattleModal
             // Send StartBattleCommand
             var startCommand = new StartBattleCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 EnemyCharacterInstanceId = character.CharacterInstanceId,
                 AvatarCombatant = avatarCombatant,
@@ -919,7 +919,7 @@ public class BattleModal
                 AvatarAffinityRefs = availableAffinities,
                 EnemyMind = new CombatAI(viewModel.CurrentWorld),
                 RandomSeed = new Random().Next(),
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var result = await viewModel.Mediator.Send(startCommand);
@@ -945,7 +945,7 @@ public class BattleModal
 
     private async Task ExecuteTurnAsync(SagaMainViewModel viewModel, CharacterViewModel character, CombatAction action)
     {
-        if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
+        if (viewModel.Avatar == null || _battleInstanceId == Guid.Empty)
             return;
 
         try
@@ -954,11 +954,11 @@ public class BattleModal
 
             var command = new ExecuteBattleTurnCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 BattleInstanceId = _battleInstanceId,
                 AvatarAction = action,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var result = await viewModel.Mediator.Send(command);
@@ -988,7 +988,7 @@ public class BattleModal
                 }
 
                 // Update avatar from result if battle ended
-                if (result.UpdatedAvatar != null && viewModel.PlayerAvatar is AvatarEntity)
+                if (result.UpdatedAvatar != null && viewModel.Avatar is AvatarEntity)
                 {
                     // Avatar was updated - refresh UI
                     System.Diagnostics.Debug.WriteLine("[BattleModal] Battle ended, avatar updated");
@@ -1007,17 +1007,17 @@ public class BattleModal
 
     private async Task RefreshBattleStateAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
+        if (viewModel.Avatar == null || _battleInstanceId == Guid.Empty)
             return;
 
         try
         {
             var query = new GetBattleStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaRef = character.SagaRef,
                 BattleInstanceId = _battleInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             _currentState = await viewModel.Mediator.Send(query);

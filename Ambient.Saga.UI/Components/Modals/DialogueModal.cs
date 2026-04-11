@@ -510,7 +510,7 @@ public class DialogueModal
             return;
         }
 
-        if (viewModel.PlayerAvatar == null)
+        if (viewModel.Avatar == null)
         {
             _errorMessage = "No avatar selected. Please select an avatar first.";
             return;
@@ -523,10 +523,10 @@ public class DialogueModal
             // Start dialogue
             var startCommand = new StartDialogueCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var startResult = await viewModel.Mediator.Send(startCommand);
@@ -557,18 +557,18 @@ public class DialogueModal
 
     private async Task SelectChoiceAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, string choiceId)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
         {
             var command = new SelectDialogueChoiceCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
                 ChoiceId = choiceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Sending SelectDialogueChoiceCommand...");
@@ -632,17 +632,17 @@ public class DialogueModal
 
     private async Task AdvanceDialogueAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
         {
             var command = new AdvanceDialogueCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Sending AdvanceDialogueCommand...");
@@ -712,7 +712,7 @@ public class DialogueModal
 
     private async Task RefreshDialogueStateAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
         {
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] RefreshDialogueState skipped - World or Avatar is null");
             return;
@@ -724,10 +724,10 @@ public class DialogueModal
 
             var query = new GetDialogueStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             _currentState = await viewModel.Mediator.Send(query);

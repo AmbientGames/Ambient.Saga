@@ -144,7 +144,7 @@ public partial class SagaMainViewModel : ObservableObject
     private double _viewportHeight = 600;
 
     [ObservableProperty]
-    private AvatarEntity? _playerAvatar;
+    private AvatarEntity? _avatar;
 
     [ObservableProperty]
     private ObservableCollection<AvatarArchetype> _availableArchetypes = new();
@@ -183,7 +183,7 @@ public partial class SagaMainViewModel : ObservableObject
 
     /// <summary>
     /// Drain all pending toast messages. Called by GameplayOverlay each frame.
-    /// Also drains messages from PlayerAvatar.PendingMessages if avatar exists.
+    /// Also drains messages from Avatar.PendingMessages if avatar exists.
     /// </summary>
     /// <returns>List of pending messages (empty if none)</returns>
     public IEnumerable<(string Text, MessageType Type, float Duration)> DrainToastMessages()
@@ -195,9 +195,9 @@ public partial class SagaMainViewModel : ObservableObject
         }
 
         // Also drain messages from the avatar's PendingMessages queue
-        if (PlayerAvatar?.PendingMessages != null)
+        if (Avatar?.PendingMessages != null)
         {
-            while (PlayerAvatar.PendingMessages.TryTake(out var notification))
+            while (Avatar.PendingMessages.TryTake(out var notification))
             {
                 var text = !string.IsNullOrEmpty(notification.SourceDisplayName)
                     ? $"{notification.SourceDisplayName}: {notification.Message}"
@@ -495,7 +495,7 @@ public partial class SagaMainViewModel : ObservableObject
     private async Task CheckAvailableInteractionsAsync()
     {
         //return;
-        if (PlayerAvatar == null || CurrentWorld == null || !HasAvatarPosition)
+        if (Avatar == null || CurrentWorld == null || !HasAvatarPosition)
             return;
 
         if (CurrentWorld.HeightMapMetadata == null)
@@ -542,7 +542,7 @@ public partial class SagaMainViewModel : ObservableObject
                 {
                     var query = new GetSpawnedCharactersQuery
                     {
-                        AvatarId = PlayerAvatar.AvatarId,
+                        AvatarId = Avatar.AvatarId,
                         SagaRef = sagaRef,
                         SpawnedOnly = true,
                         AliveOnly = false
@@ -610,7 +610,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     private async Task CheckForInitiatedInteractionsAsync()
     {
-        if (PlayerAvatar == null || CurrentWorld == null || !HasAvatarPosition)
+        if (Avatar == null || CurrentWorld == null || !HasAvatarPosition)
             return;
 
         try
@@ -618,10 +618,10 @@ public partial class SagaMainViewModel : ObservableObject
             // Query the arbiter for the single highest-priority interaction
             var query = new GetInitiatedInteractionQuery
             {
-                AvatarId = PlayerAvatar.AvatarId,
+                AvatarId = Avatar.AvatarId,
                 Latitude = AvatarLatitude,
                 Longitude = AvatarLongitude,
-                Avatar = PlayerAvatar
+                Avatar = Avatar
             };
 
             var result = await _mediator.Send(query);
@@ -653,7 +653,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     private async Task StartDialogueWithCharacterAsync(string sagaRef, Guid characterInstanceId)
     {
-        if (PlayerAvatar == null)
+        if (Avatar == null)
             return;
 
         // Don't re-open dialogue if already in dialogue with this character
@@ -674,10 +674,10 @@ public partial class SagaMainViewModel : ObservableObject
             // Start dialogue command
             var startCommand = new StartDialogueCommand
             {
-                AvatarId = PlayerAvatar.AvatarId,
+                AvatarId = Avatar.AvatarId,
                 SagaArcRef = sagaRef,
                 CharacterInstanceId = characterInstanceId,
-                Avatar = PlayerAvatar
+                Avatar = Avatar
             };
 
             var startResult = await _mediator.Send(startCommand);
@@ -738,15 +738,15 @@ public partial class SagaMainViewModel : ObservableObject
 
     private async Task<DialogueStateResult?> GetDialogueStateAsync(string sagaRef, Guid characterInstanceId)
     {
-        if (PlayerAvatar == null)
+        if (Avatar == null)
             return null;
 
         var stateQuery = new GetDialogueStateQuery
         {
-            AvatarId = PlayerAvatar.AvatarId,
+            AvatarId = Avatar.AvatarId,
             SagaRef = sagaRef,
             CharacterInstanceId = characterInstanceId,
-            Avatar = PlayerAvatar
+            Avatar = Avatar
         };
 
         return await _mediator.Send(stateQuery);
@@ -950,10 +950,10 @@ public partial class SagaMainViewModel : ObservableObject
         // Signal session is ready with avatar and height map (for game initialization)
         // Subscribers must set IsReadyForSagaProcessing = true when ready
         var elevationWaterMap = world.WorldConfiguration?.HeightMapSettings?.ElevationWaterMap;
-        SessionReady?.Invoke(PlayerAvatar, elevationWaterMap);
+        SessionReady?.Invoke(Avatar, elevationWaterMap);
 
         // Load Sagas and triggers from world with feature status
-        var (sagas, triggers) = await SagaArcViewModel.LoadFromWorldAsync(world, PlayerAvatar, _worldRepository);
+        var (sagas, triggers) = await SagaArcViewModel.LoadFromWorldAsync(world, Avatar, _worldRepository);
         Sagas.Clear();
         AllTriggers.Clear();
         foreach (var saga in sagas) Sagas.Add(saga);
@@ -977,7 +977,7 @@ public partial class SagaMainViewModel : ObservableObject
     {
         RecentTransactions.Clear();
 
-        if (PlayerAvatar == null)
+        if (Avatar == null)
             return;
 
         try
@@ -985,7 +985,7 @@ public partial class SagaMainViewModel : ObservableObject
             var repository = _repositoryProvider.Repository;
 
             // Get all saga instances for this avatar
-            var instances = await repository.GetAllInstancesForAvatarAsync(PlayerAvatar.AvatarId);
+            var instances = await repository.GetAllInstancesForAvatarAsync(Avatar.AvatarId);
 
             // Aggregate all transactions from all instances
             var allTransactions = instances
@@ -1303,9 +1303,9 @@ public partial class SagaMainViewModel : ObservableObject
             Achievements?.SetPersistence(_worldRepository, _steamAchievementService);
 
             // Replay pending Steam achievements if avatar exists
-            if (PlayerAvatar != null)
+            if (Avatar != null)
             {
-                var avatarId = PlayerAvatar.AvatarId.ToString();
+                var avatarId = Avatar.AvatarId.ToString();
                 _steamAchievementService.ReplayAchievementsToSteam(avatarId);
             }
 
@@ -1383,7 +1383,7 @@ public partial class SagaMainViewModel : ObservableObject
                 }
 
                 // Enter new SagaTrigger via CQRS
-                if (triggerAtPosition != null && PlayerAvatar != null)
+                if (triggerAtPosition != null && Avatar != null)
                 {
                     System.Diagnostics.Debug.WriteLine($"[MainViewModel] Calling ProcessAvatarMovementAsync for trigger '{triggerAtPosition.RefName}'");
                     // Send UpdateAvatarPositionCommand via CQRS
@@ -1413,7 +1413,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     private async Task ProcessAvatarMovementAsync(ProximityTriggerViewModel trigger)
     {
-        if (CurrentWorld == null || PlayerAvatar == null || !IsReadyForSagaProcessing)
+        if (CurrentWorld == null || Avatar == null || !IsReadyForSagaProcessing)
             return;
 
         try
@@ -1428,7 +1428,7 @@ public partial class SagaMainViewModel : ObservableObject
                 SagaArcRef = trigger.SagaRefName,
                 Latitude = AvatarLatitude,
                 Longitude = AvatarLongitude,
-                Avatar = PlayerAvatar
+                Avatar = Avatar
             };
 
             var result = await _mediator.Send(command);
@@ -1485,7 +1485,7 @@ public partial class SagaMainViewModel : ObservableObject
                 {
                     ModelX = sagaModelX,
                     ModelZ = sagaModelZ,
-                    Avatar = PlayerAvatar
+                    Avatar = Avatar
                 });
 
                 // Update trigger statuses (so completed triggers disappear)
@@ -1565,7 +1565,7 @@ public partial class SagaMainViewModel : ObservableObject
         {
             ModelX = modelX,
             ModelZ = modelZ,
-            Avatar = PlayerAvatar
+            Avatar = Avatar
         });
 
         // Get all trigger interactions at this position
@@ -1734,16 +1734,16 @@ public partial class SagaMainViewModel : ObservableObject
         if (existingAvatar != null)
         {
             // Avatar exists, load it
-            PlayerAvatar = existingAvatar;
+            Avatar = existingAvatar;
 
             // Debug output to verify what was loaded
-            var toolCount = PlayerAvatar.Capabilities?.Tools?.Length ?? 0;
-            var equipmentCount = PlayerAvatar.Capabilities?.Equipment?.Length ?? 0;
-            var consumableCount = PlayerAvatar.Capabilities?.Consumables?.Length ?? 0;
-            var health = PlayerAvatar.Stats?.Health ?? 0;
+            var toolCount = Avatar.Capabilities?.Tools?.Length ?? 0;
+            var equipmentCount = Avatar.Capabilities?.Equipment?.Length ?? 0;
+            var consumableCount = Avatar.Capabilities?.Consumables?.Length ?? 0;
+            var health = Avatar.Stats?.Health ?? 0;
             System.Diagnostics.Debug.WriteLine($"DEBUG LoadAvatar: Loaded avatar with Tools={toolCount}, Equipment={equipmentCount}, Consumables={consumableCount}, Health={health}");
 
-            AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
+            AvatarInfo.UpdateAvatar(Avatar);
 
             // Replay pending Steam achievements for this avatar
             if (_steamAchievementService != null)
@@ -1761,9 +1761,9 @@ public partial class SagaMainViewModel : ObservableObject
         var recoveredAvatar = await _avatarCreationService.FindExistingAvatarAsync(world);
         if (recoveredAvatar != null)
         {
-            PlayerAvatar = recoveredAvatar;
-            AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
-            await SavePlayerAvatarAsync();
+            Avatar = recoveredAvatar;
+            AvatarInfo.UpdateAvatar(Avatar);
+            await SaveAvatarAsync();
             AddToastMessage("Avatar recovered from server.", MessageType.Quest);
             return;
         }
@@ -1790,11 +1790,11 @@ public partial class SagaMainViewModel : ObservableObject
         // Create new avatar from archetype via injected service (offline or online)
         // Generate the avatar GUID here so it's consistent across local DB and any consumer of saga
         var avatarId = Guid.NewGuid();
-        PlayerAvatar = await _avatarCreationService.CreateAvatarAsync(avatarId, selectedArchetype, world);
-        AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
+        Avatar = await _avatarCreationService.CreateAvatarAsync(avatarId, selectedArchetype, world);
+        AvatarInfo.UpdateAvatar(Avatar);
 
         // Save to database
-        await SavePlayerAvatarAsync();
+        await SaveAvatarAsync();
 
         AddToastMessage($"Avatar created: {selectedArchetype.DisplayName}", MessageType.Quest);
         AddToastMessage($"Welcome, {selectedArchetype.DisplayName}!", MessageType.Quest, 5f);
@@ -1815,46 +1815,46 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     private string GetAvatarId()
     {
-        return PlayerAvatar?.AvatarId.ToString() ?? Guid.Empty.ToString();
+        return Avatar?.AvatarId.ToString() ?? Guid.Empty.ToString();
     }
 
 
     /// <summary>
     /// Saves the avatar avatar to the database.
     /// </summary>
-    public async Task SavePlayerAvatarAsync()
+    public async Task SaveAvatarAsync()
     {
-        if (PlayerAvatar == null || _worldRepository == null)
+        if (Avatar == null || _worldRepository == null)
             return;
 
         try
         {
             // Debug output to verify avatar state before saving
-            var toolCount = PlayerAvatar.Capabilities?.Tools?.Length ?? 0;
-            var equipmentCount = PlayerAvatar.Capabilities?.Equipment?.Length ?? 0;
-            var consumableCount = PlayerAvatar.Capabilities?.Consumables?.Length ?? 0;
-            var health = PlayerAvatar.Stats?.Health ?? 0;
+            var toolCount = Avatar.Capabilities?.Tools?.Length ?? 0;
+            var equipmentCount = Avatar.Capabilities?.Equipment?.Length ?? 0;
+            var consumableCount = Avatar.Capabilities?.Consumables?.Length ?? 0;
+            var health = Avatar.Stats?.Health ?? 0;
 
-            System.Diagnostics.Debug.WriteLine($"DEBUG SavePlayerAvatar: Tools={toolCount}, Equipment={equipmentCount}, Consumables={consumableCount}, Health={health}");
+            System.Diagnostics.Debug.WriteLine($"DEBUG SaveAvatar: Tools={toolCount}, Equipment={equipmentCount}, Consumables={consumableCount}, Health={health}");
 
-            await _worldRepository.SaveAvatarAsync(PlayerAvatar);
+            await _worldRepository.SaveAvatarAsync(Avatar);
 
-            System.Diagnostics.Debug.WriteLine($"DEBUG SavePlayerAvatar: Avatar saved successfully");
+            System.Diagnostics.Debug.WriteLine($"DEBUG SaveAvatar: Avatar saved successfully");
         }
         catch (Exception ex)
         {
             AddToastMessage($"Error saving avatar: {ex.Message}", MessageType.Error, 5f);
-            System.Diagnostics.Debug.WriteLine($"DEBUG SavePlayerAvatar ERROR: {ex}");
+            System.Diagnostics.Debug.WriteLine($"DEBUG SaveAvatar ERROR: {ex}");
         }
     }
 
     /// <summary>
-    /// Notify UI that PlayerAvatar has changed (for nested property updates like Stats, Capabilities).
+    /// Notify UI that Avatar has changed (for nested property updates like Stats, Capabilities).
     /// </summary>
-    public void NotifyPlayerAvatarChanged()
+    public void NotifyAvatarChanged()
     {
-        OnPropertyChanged(nameof(PlayerAvatar));
-        AvatarInfo.UpdatePlayerAvatar(PlayerAvatar);
+        OnPropertyChanged(nameof(Avatar));
+        AvatarInfo.UpdateAvatar(Avatar);
         MerchantTrade?.RefreshCategories();
         QuestLog?.RefreshQuests();
         Achievements?.RefreshAchievements();
@@ -1868,7 +1868,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// <returns>True if equip succeeded</returns>
     public async Task<bool> EquipItemAsync(string? equipmentRef, string? slotRef = null)
     {
-        if (PlayerAvatar == null || CurrentWorld == null)
+        if (Avatar == null || CurrentWorld == null)
         {
             AddToastMessage("Cannot equip: No avatar or world loaded", MessageType.Error);
             return false;
@@ -1899,11 +1899,11 @@ public partial class SagaMainViewModel : ObservableObject
 
             var command = new EquipItemOutsideBattleCommand
             {
-                AvatarId = PlayerAvatar.AvatarId,
+                AvatarId = Avatar.AvatarId,
                 SagaArcRef = sagaRef,
                 EquipmentRef = equipmentRef,
                 SlotRef = slotRef,
-                Avatar = PlayerAvatar
+                Avatar = Avatar
             };
 
             var result = await _mediator.Send(command);
@@ -1919,11 +1919,11 @@ public partial class SagaMainViewModel : ObservableObject
                 // Update avatar from result if provided
                 if (result.UpdatedAvatar != null)
                 {
-                    // Copy updated state to PlayerAvatar
-                    PlayerAvatar.CombatProfile = result.UpdatedAvatar.CombatProfile;
+                    // Copy updated state to Avatar
+                    Avatar.CombatProfile = result.UpdatedAvatar.CombatProfile;
                 }
 
-                NotifyPlayerAvatarChanged();
+                NotifyAvatarChanged();
                 return true;
             }
             else
@@ -1945,10 +1945,10 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     public string? GetEquippedItemInSlot(string slotRef)
     {
-        if (PlayerAvatar?.CombatProfile == null)
+        if (Avatar?.CombatProfile == null)
             return null;
 
-        PlayerAvatar.CombatProfile.TryGetValue(slotRef, out var equipmentRef);
+        Avatar.CombatProfile.TryGetValue(slotRef, out var equipmentRef);
         return equipmentRef;
     }
 
@@ -1957,10 +1957,10 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     public bool IsItemEquipped(string equipmentRef)
     {
-        if (PlayerAvatar?.CombatProfile == null)
+        if (Avatar?.CombatProfile == null)
             return false;
 
-        return PlayerAvatar.CombatProfile.ContainsValue(equipmentRef);
+        return Avatar.CombatProfile.ContainsValue(equipmentRef);
     }
 
     /// <summary>
@@ -1971,7 +1971,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// <returns>True if consumable was used successfully</returns>
     public async Task<bool> UseConsumableAsync(string consumableRef)
     {
-        if (PlayerAvatar == null || CurrentWorld == null)
+        if (Avatar == null || CurrentWorld == null)
         {
             AddToastMessage("Cannot use consumable: No avatar or world loaded", MessageType.Error);
             return false;
@@ -1990,10 +1990,10 @@ public partial class SagaMainViewModel : ObservableObject
 
             var command = new UseConsumableCommand
             {
-                AvatarId = PlayerAvatar.AvatarId,
+                AvatarId = Avatar.AvatarId,
                 SagaArcRef = sagaRef,
                 ConsumableRef = consumableRef,
-                Avatar = PlayerAvatar
+                Avatar = Avatar
             };
 
             var result = await _mediator.Send(command);
@@ -2016,12 +2016,12 @@ public partial class SagaMainViewModel : ObservableObject
                 // Update avatar from result if provided
                 if (result.UpdatedAvatar != null)
                 {
-                    // Copy updated state to PlayerAvatar
-                    PlayerAvatar.Stats = result.UpdatedAvatar.Stats;
-                    PlayerAvatar.Capabilities = result.UpdatedAvatar.Capabilities;
+                    // Copy updated state to Avatar
+                    Avatar.Stats = result.UpdatedAvatar.Stats;
+                    Avatar.Capabilities = result.UpdatedAvatar.Capabilities;
                 }
 
-                NotifyPlayerAvatarChanged();
+                NotifyAvatarChanged();
                 return true;
             }
             else
@@ -2047,7 +2047,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// <returns>True if tool was sharpened successfully</returns>
     public async Task<bool> SharpenToolAsync(string toolRef, int cost)
     {
-        if (PlayerAvatar == null || CurrentWorld == null)
+        if (Avatar == null || CurrentWorld == null)
         {
             AddToastMessage("Cannot sharpen tool: No avatar or world loaded", MessageType.Error);
             return false;
@@ -2066,11 +2066,11 @@ public partial class SagaMainViewModel : ObservableObject
 
             var command = new SharpenToolCommand
             {
-                AvatarId = PlayerAvatar.AvatarId,
+                AvatarId = Avatar.AvatarId,
                 SagaArcRef = sagaRef,
                 ToolRef = toolRef,
                 Cost = cost,
-                Avatar = PlayerAvatar
+                Avatar = Avatar
             };
 
             var result = await _mediator.Send(command);
@@ -2086,11 +2086,11 @@ public partial class SagaMainViewModel : ObservableObject
                 // Update avatar from result if provided
                 if (result.UpdatedAvatar != null)
                 {
-                    PlayerAvatar.Stats = result.UpdatedAvatar.Stats;
-                    PlayerAvatar.Capabilities = result.UpdatedAvatar.Capabilities;
+                    Avatar.Stats = result.UpdatedAvatar.Stats;
+                    Avatar.Capabilities = result.UpdatedAvatar.Capabilities;
                 }
 
-                NotifyPlayerAvatarChanged();
+                NotifyAvatarChanged();
                 return true;
             }
             else
@@ -2117,7 +2117,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// <returns>True if teleport was successful</returns>
     public async Task<bool> TeleportAvatarAsync(double destinationLat, double destinationLon, int cost)
     {
-        if (PlayerAvatar == null || CurrentWorld == null)
+        if (Avatar == null || CurrentWorld == null)
         {
             AddToastMessage("Cannot teleport: No avatar or world loaded", MessageType.Error);
             return false;
@@ -2130,12 +2130,12 @@ public partial class SagaMainViewModel : ObservableObject
 
             var command = new TeleportAvatarCommand
             {
-                AvatarId = PlayerAvatar.AvatarId,
+                AvatarId = Avatar.AvatarId,
                 SagaArcRef = sagaRef,
                 DestinationLatitude = destinationLat,
                 DestinationLongitude = destinationLon,
                 Cost = cost,
-                Avatar = PlayerAvatar
+                Avatar = Avatar
             };
 
             var result = await _mediator.Send(command);
@@ -2148,11 +2148,11 @@ public partial class SagaMainViewModel : ObservableObject
                 // Update avatar from result if provided
                 if (result.UpdatedAvatar != null)
                 {
-                    PlayerAvatar.Stats = result.UpdatedAvatar.Stats;
-                    PlayerAvatar.Capabilities = result.UpdatedAvatar.Capabilities;
+                    Avatar.Stats = result.UpdatedAvatar.Stats;
+                    Avatar.Capabilities = result.UpdatedAvatar.Capabilities;
                 }
 
-                NotifyPlayerAvatarChanged();
+                NotifyAvatarChanged();
                 return true;
             }
             else
@@ -2174,7 +2174,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     public int GetConsumableQuantity(string consumableRef)
     {
-        var entry = PlayerAvatar?.Capabilities?.Consumables?
+        var entry = Avatar?.Capabilities?.Consumables?
             .FirstOrDefault(c => c.ConsumableRef == consumableRef);
         return entry?.Quantity ?? 0;
     }
@@ -2386,7 +2386,7 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     public async Task<CharacterViewModel?> SpawnDevCharacterAsync(DevCharacterType characterType)
     {
-        if (CurrentWorld == null || PlayerAvatar == null)
+        if (CurrentWorld == null || Avatar == null)
         {
             System.Diagnostics.Debug.WriteLine("[DevTools] Cannot spawn - no world or avatar loaded");
             AddToastMessage("Load a world first", MessageType.Warning);
@@ -2414,10 +2414,10 @@ public partial class SagaMainViewModel : ObservableObject
             // Use CQRS command to spawn with proper transaction history
             var spawnCommand = new SpawnDevCharacterCommand
             {
-                AvatarId = PlayerAvatar.AvatarId,
+                AvatarId = Avatar.AvatarId,
                 CharacterRef = testCharacter.RefName,
                 SagaArcRef = sagaRef,
-                Avatar = PlayerAvatar
+                Avatar = Avatar
             };
 
             var result = await _mediator.Send(spawnCommand);
@@ -2432,8 +2432,8 @@ public partial class SagaMainViewModel : ObservableObject
             System.Diagnostics.Debug.WriteLine($"[DevTools] Spawn succeeded, InstanceId: {result.CharacterInstanceId}");
 
             // Position near avatar (2m away for immediate interaction)
-            var spawnX = PlayerAvatar.X + 2.0;
-            var spawnZ = PlayerAvatar.Z;
+            var spawnX = Avatar.X + 2.0;
+            var spawnZ = Avatar.Z;
 
             // Create character ViewModel and add to collection
             var canDialogue = testCharacter.Interactable?.DialogueTreeRef != null;

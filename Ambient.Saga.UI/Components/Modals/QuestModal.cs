@@ -262,7 +262,7 @@ public class QuestModal
 
     private void AcceptQuest(SagaMainViewModel viewModel)
     {
-        if (_isAccepting || viewModel.PlayerAvatar == null) return;
+        if (_isAccepting || viewModel.Avatar == null) return;
 
         _isAccepting = true;
         _ = AcceptQuestAsync(viewModel);
@@ -274,11 +274,11 @@ public class QuestModal
         {
             var command = new AcceptQuestCommand
             {
-                AvatarId = viewModel.PlayerAvatar!.Id,
+                AvatarId = viewModel.Avatar!.Id,
                 QuestRef = _currentQuestRef!,
                 SagaArcRef = _currentSagaRef!,
                 QuestGiverRef = _currentQuestGiverRef!,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var result = await _mediator.Send(command);
@@ -316,13 +316,13 @@ public class QuestModal
     /// </summary>
     private async Task<bool> IsQuestActiveAsync(string questRef, string sagaRef, SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar == null) return false;
+        if (viewModel.Avatar == null) return false;
 
         try
         {
             var sagaState = await _mediator.Send(new GetSagaStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar.Id,
+                AvatarId = viewModel.Avatar.Id,
                 SagaRef = sagaRef
             });
 
@@ -339,13 +339,13 @@ public class QuestModal
     /// </summary>
     private async Task<bool> IsQuestCompletedAsync(string questRef, string sagaRef, SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar == null) return false;
+        if (viewModel.Avatar == null) return false;
 
         try
         {
             var sagaState = await _mediator.Send(new GetSagaStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar.Id,
+                AvatarId = viewModel.Avatar.Id,
                 SagaRef = sagaRef
             });
 

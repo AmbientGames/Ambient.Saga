@@ -47,19 +47,19 @@ public class InventoryPanel
 
     public void Render(SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar?.Capabilities == null)
+        if (viewModel.Avatar?.Capabilities == null)
         {
             ImGui.TextColored(new Vector4(1, 0.5f, 0, 1), "No avatar created");
             ImGui.TextWrapped("Enter a world to select archetype");
             return;
         }
 
-        var caps = viewModel.PlayerAvatar.Capabilities;
+        var caps = viewModel.Avatar.Capabilities;
 
         // Carry weight bar
         var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
         var archetype = viewModel.CurrentWorld?.Gameplay?.AvatarArchetypes?
-            .FirstOrDefault(a => a.RefName == viewModel.PlayerAvatar.ArchetypeRef);
+            .FirstOrDefault(a => a.RefName == viewModel.Avatar.ArchetypeRef);
         if (worldConfig != null && archetype != null)
         {
             var weightUnit = worldConfig.WeightUnitName ?? "kg";
@@ -311,7 +311,7 @@ public class InventoryPanel
     private void RenderAffinity(SagaMainViewModel viewModel, ItemCollection caps)
     {
         var world = viewModel.CurrentWorld;
-        var avatar = viewModel.PlayerAvatar;
+        var avatar = viewModel.Avatar;
         var collectedAffinities = avatar?.Affinities ?? Array.Empty<Ambient.Domain.Affinity>();
         var activeAffinityRef = avatar?.ActiveAffinityRef;
 
@@ -552,7 +552,7 @@ public class InventoryPanel
 
                     // Equip button
                     var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
-                    var isEquipped = viewModel.PlayerAvatar?.CurrentToolRef == tool.ToolRef;
+                    var isEquipped = viewModel.Avatar?.CurrentToolRef == tool.ToolRef;
                     if (isEquipped)
                     {
                         ImGui.BeginDisabled();
@@ -563,9 +563,9 @@ public class InventoryPanel
                     {
                         if (ImGui.Button($"Equip##{tool.ToolRef}", buttonSize))
                         {
-                            if (viewModel.PlayerAvatar != null)
+                            if (viewModel.Avatar != null)
                             {
-                                viewModel.PlayerAvatar.CurrentToolRef = tool.ToolRef;
+                                viewModel.Avatar.CurrentToolRef = tool.ToolRef;
                                 viewModel.AddToastMessage($"{toolName} equipped");
                             }
                         }
@@ -614,7 +614,7 @@ public class InventoryPanel
                         if (tool.Condition < 1f)
                         {
                             ImGui.Spacing();
-                            var avatarCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
+                            var avatarCredits = viewModel.Avatar?.Stats?.Credits ?? 0;
                             var canAfford = avatarCredits >= SharpenCost;
                             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits";
                             var isPendingSharpen = _pendingSharpenOperations.Contains(tool.ToolRef);
@@ -644,7 +644,7 @@ public class InventoryPanel
 
                         // Drop button (disabled if currently equipped)
                         ImGui.Spacing();
-                        var isCurrentTool = viewModel.PlayerAvatar?.CurrentToolRef == tool.ToolRef;
+                        var isCurrentTool = viewModel.Avatar?.CurrentToolRef == tool.ToolRef;
                         if (isCurrentTool)
                         {
                             ImGui.BeginDisabled();
@@ -680,7 +680,7 @@ public class InventoryPanel
     private void RenderBlocks(SagaMainViewModel viewModel, ItemCollection caps)
     {
         // Get actual block inventory from BlockOwnership (backed by Capabilities.Blocks)
-        var blockOwnership = viewModel.PlayerAvatar?.BlockOwnership ?? (IDictionary<string, float>)new Dictionary<string, float>();
+        var blockOwnership = viewModel.Avatar?.BlockOwnership ?? (IDictionary<string, float>)new Dictionary<string, float>();
         var blockCount = blockOwnership.Count(kvp => kvp.Value >= 1);
 
         if (ImGui.CollapsingHeader($"Blocks ({blockCount})"))
@@ -720,7 +720,7 @@ public class InventoryPanel
 
                     // Select button
                     var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
-                    var isSelected = viewModel.PlayerAvatar?.CurrentBlockRef == blockRef;
+                    var isSelected = viewModel.Avatar?.CurrentBlockRef == blockRef;
                     if (isSelected)
                     {
                         ImGui.BeginDisabled();
@@ -731,9 +731,9 @@ public class InventoryPanel
                     {
                         if (ImGui.Button($"Select##{blockRef}", buttonSize))
                         {
-                            if (viewModel.PlayerAvatar != null)
+                            if (viewModel.Avatar != null)
                             {
-                                viewModel.PlayerAvatar.CurrentBlockRef = blockRef;
+                                viewModel.Avatar.CurrentBlockRef = blockRef;
                                 viewModel.AddToastMessage($"{blockName} selected");
                             }
                         }
@@ -1141,7 +1141,7 @@ public class InventoryPanel
     {
         if (!_showHotbarAssignPopup) return;
 
-        var avatar = viewModel.PlayerAvatar;
+        var avatar = viewModel.Avatar;
         if (avatar == null) return;
 
         // Open popup if requested (deferred from button click)
@@ -1228,7 +1228,7 @@ public class InventoryPanel
 
     private void DiscardEquipment(SagaMainViewModel viewModel, string equipmentRef, string displayName)
     {
-        var caps = viewModel.PlayerAvatar?.Capabilities;
+        var caps = viewModel.Avatar?.Capabilities;
         if (caps?.Equipment == null) return;
         caps.Equipment = caps.Equipment.Where(e => e.EquipmentRef != equipmentRef).ToArray();
         viewModel.AddToastMessage($"Dropped {displayName}");
@@ -1236,7 +1236,7 @@ public class InventoryPanel
 
     private void DiscardConsumable(SagaMainViewModel viewModel, string consumableRef, string displayName)
     {
-        var caps = viewModel.PlayerAvatar?.Capabilities;
+        var caps = viewModel.Avatar?.Capabilities;
         if (caps?.Consumables == null) return;
         caps.Consumables = caps.Consumables.Where(c => c.ConsumableRef != consumableRef).ToArray();
         viewModel.AddToastMessage($"Dropped {displayName}");
@@ -1244,7 +1244,7 @@ public class InventoryPanel
 
     private void DiscardSpell(SagaMainViewModel viewModel, string spellRef, string displayName)
     {
-        var caps = viewModel.PlayerAvatar?.Capabilities;
+        var caps = viewModel.Avatar?.Capabilities;
         if (caps?.Spells == null) return;
         caps.Spells = caps.Spells.Where(s => s.SpellRef != spellRef).ToArray();
         viewModel.AddToastMessage($"Dropped {displayName}");
@@ -1252,7 +1252,7 @@ public class InventoryPanel
 
     private void DiscardTool(SagaMainViewModel viewModel, string toolRef, string displayName)
     {
-        var caps = viewModel.PlayerAvatar?.Capabilities;
+        var caps = viewModel.Avatar?.Capabilities;
         if (caps?.Tools == null) return;
         caps.Tools = caps.Tools.Where(t => t.ToolRef != toolRef).ToArray();
         viewModel.AddToastMessage($"Dropped {displayName}");
@@ -1261,13 +1261,13 @@ public class InventoryPanel
     private void DiscardBlock(SagaMainViewModel viewModel, string blockRef, string displayName)
     {
         // BlockOwnership is backed by Capabilities.Blocks — single remove handles both
-        viewModel.PlayerAvatar?.BlockOwnership?.Remove(blockRef);
+        viewModel.Avatar?.BlockOwnership?.Remove(blockRef);
         viewModel.AddToastMessage($"Dropped {displayName}");
     }
 
     private void DiscardMaterial(SagaMainViewModel viewModel, string materialRef, string displayName)
     {
-        var caps = viewModel.PlayerAvatar?.Capabilities;
+        var caps = viewModel.Avatar?.Capabilities;
         if (caps?.BuildingMaterials == null) return;
         caps.BuildingMaterials = caps.BuildingMaterials.Where(m => m.BuildingMaterialRef != materialRef).ToArray();
         viewModel.AddToastMessage($"Dropped {displayName}");

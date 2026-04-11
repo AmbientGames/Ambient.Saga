@@ -62,7 +62,7 @@ public class DefaultHudRenderer : IHudRenderer
 
     private void RenderResourceBars(SagaMainViewModel viewModel)
     {
-        var stats = viewModel.PlayerAvatar?.Stats;
+        var stats = viewModel.Avatar?.Stats;
         if (stats == null)
         {
             ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No avatar");

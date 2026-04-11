@@ -65,9 +65,9 @@ public class CharacterPanel
         }
 
         // Home Location (spawn point)
-        if (viewModel.PlayerAvatar != null)
+        if (viewModel.Avatar != null)
         {
-            var home = viewModel.PlayerAvatar.HomeLocation;
+            var home = viewModel.Avatar.HomeLocation;
             if (home.X != 0 || home.Y != 0)
             {
                 ImGui.Spacing();
@@ -80,9 +80,9 @@ public class CharacterPanel
         ImGui.Separator();
 
         // Vitals/Stats
-        if (viewModel.PlayerAvatar != null && viewModel.PlayerAvatar.Stats != null)
+        if (viewModel.Avatar != null && viewModel.Avatar.Stats != null)
         {
-            var vitals = viewModel.PlayerAvatar.Stats;
+            var vitals = viewModel.Avatar.Stats;
             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credit";
             var pluralCurrency = vitals.Credits == 1 ? currencyName : currencyName + "s";
 
@@ -120,17 +120,17 @@ public class CharacterPanel
             RenderStatBar("Endurance", vitals.Endurance / 100.0, new Vector4(0.5f, 0.8f, 0.8f, 1));
 
             // Invulnerability status
-            if (viewModel.PlayerAvatar.IsInvulnerable)
+            if (viewModel.Avatar.IsInvulnerable)
             {
                 ImGui.Spacing();
                 ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "[INVULNERABLE]");
             }
 
             // Archetype info with bias
-            if (!string.IsNullOrEmpty(viewModel.PlayerAvatar.ArchetypeRef))
+            if (!string.IsNullOrEmpty(viewModel.Avatar.ArchetypeRef))
             {
                 var archetype = viewModel.CurrentWorld?.Gameplay?.AvatarArchetypes?
-                    .FirstOrDefault(a => a.RefName == viewModel.PlayerAvatar.ArchetypeRef);
+                    .FirstOrDefault(a => a.RefName == viewModel.Avatar.ArchetypeRef);
 
                 if (archetype != null)
                 {
@@ -160,7 +160,7 @@ public class CharacterPanel
                         var weightUnit = worldConfig.WeightUnitName ?? "kg";
                         var maxCarry = CarryWeightCalculator.GetMaxCarryWeight(archetype);
                         var currentCarry = CarryWeightCalculator.CalculateTotalWeight(
-                            viewModel.PlayerAvatar.Capabilities, worldConfig);
+                            viewModel.Avatar.Capabilities, worldConfig);
                         var fraction = maxCarry > 0 ? currentCarry / maxCarry : 0f;
 
                         ImGui.Spacing();
@@ -226,13 +226,13 @@ public class CharacterPanel
         ImGui.Separator();
 
         // Collected Affinities (captured from characters)
-        if (viewModel.PlayerAvatar?.Affinities != null && viewModel.PlayerAvatar.Affinities.Length > 0)
+        if (viewModel.Avatar?.Affinities != null && viewModel.Avatar.Affinities.Length > 0)
         {
             ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), "Collected Affinities:");
             ImGui.Spacing();
 
             // Active affinity indicator
-            var activeAffinity = viewModel.PlayerAvatar.ActiveAffinityRef;
+            var activeAffinity = viewModel.Avatar.ActiveAffinityRef;
             if (!string.IsNullOrEmpty(activeAffinity))
             {
                 var activeAffinityDef = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == activeAffinity);
@@ -241,7 +241,7 @@ public class CharacterPanel
                 ImGui.Spacing();
             }
 
-            foreach (var affinity in viewModel.PlayerAvatar.Affinities)
+            foreach (var affinity in viewModel.Avatar.Affinities)
             {
                 var affinityDef = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == affinity.AffinityRef);
                 var name = affinityDef?.DisplayName ?? affinity.AffinityRef;
@@ -301,12 +301,12 @@ public class CharacterPanel
         }
 
         // Party/Companions
-        if (viewModel.PlayerAvatar?.Party?.Member != null && viewModel.PlayerAvatar.Party.Member.Length > 0)
+        if (viewModel.Avatar?.Party?.Member != null && viewModel.Avatar.Party.Member.Length > 0)
         {
             ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), "Party Members:");
             ImGui.Spacing();
 
-            foreach (var member in viewModel.PlayerAvatar.Party.Member)
+            foreach (var member in viewModel.Avatar.Party.Member)
             {
                 var memberChar = viewModel.CurrentWorld?.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == member.CharacterRef);
                 var memberName = memberChar?.DisplayName ?? member.CharacterRef;
@@ -342,10 +342,10 @@ public class CharacterPanel
             }
 
             // Party faction info
-            if (!string.IsNullOrEmpty(viewModel.PlayerAvatar.Party.SlotFactionRef))
+            if (!string.IsNullOrEmpty(viewModel.Avatar.Party.SlotFactionRef))
             {
                 ImGui.Spacing();
-                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Party Faction: {viewModel.PlayerAvatar.Party.SlotFactionRef}");
+                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Party Faction: {viewModel.Avatar.Party.SlotFactionRef}");
             }
         }
         else
@@ -363,12 +363,12 @@ public class CharacterPanel
         RenderFactionSection(viewModel);
 
         // Lifetime Statistics
-        if (viewModel.PlayerAvatar != null)
+        if (viewModel.Avatar != null)
         {
             ImGui.TextColored(new Vector4(0.7f, 0.9f, 1, 1), "Lifetime Statistics:");
             ImGui.Spacing();
 
-            var avatar = viewModel.PlayerAvatar;
+            var avatar = viewModel.Avatar;
 
             if (ImGui.BeginTable("LifetimeStatsTable", 2, ImGuiTableFlags.SizingFixedFit))
             {
@@ -526,7 +526,7 @@ public class CharacterPanel
 
     private void RenderEquippedItems(SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar?.CombatProfile == null || viewModel.CurrentWorld == null)
+        if (viewModel.Avatar?.CombatProfile == null || viewModel.CurrentWorld == null)
             return;
 
         // Get loadout slots from world definition
@@ -569,14 +569,14 @@ public class CharacterPanel
 
     private void RenderCurrentSelection(SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar == null || viewModel.CurrentWorld == null)
+        if (viewModel.Avatar == null || viewModel.CurrentWorld == null)
             return;
 
         var hasSelection = false;
         var scale = UIConstants.DpiScale;
 
         // Current Tool (only show if lookup succeeds)
-        var currentToolRef = viewModel.PlayerAvatar.CurrentToolRef;
+        var currentToolRef = viewModel.Avatar.CurrentToolRef;
         if (!string.IsNullOrEmpty(currentToolRef))
         {
             var tool = viewModel.CurrentWorld.TryGetToolByRefName(currentToolRef);

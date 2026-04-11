@@ -33,7 +33,7 @@ public partial class MerchantTradeViewModel : ObservableObject
 
     public string CurrencyName => _context?.CurrencyName ?? "Coin";
     public string PluralCurrencyName => _context?.PluralCurrencyName ?? "Coins";
-    public AvatarBase? PlayerAvatar => _context?.AvatarEntity;  // Implicit upcast to AvatarBase
+    public AvatarBase? Avatar => _context?.AvatarEntity;  // Implicit upcast to AvatarBase
 
     private string _tradeMode = "Buy"; // "Buy" or "Sell"
 
@@ -114,7 +114,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         OnPropertyChanged(nameof(HasSpells));
         OnPropertyChanged(nameof(AvailableCategories));
         OnPropertyChanged(nameof(ShowCategorySelector));
-        OnPropertyChanged(nameof(PlayerAvatar));
+        OnPropertyChanged(nameof(Avatar));
         OnPropertyChanged(nameof(CurrencyName));
         OnPropertyChanged(nameof(PluralCurrencyName));
 
@@ -283,7 +283,7 @@ public partial class MerchantTradeViewModel : ObservableObject
             }
 
             // Refresh UI to reflect updated inventory and credits
-            OnPropertyChanged(nameof(PlayerAvatar));
+            OnPropertyChanged(nameof(Avatar));
             OnPropertyChanged(nameof(TradeInventory));
         }
         catch (Exception ex)
@@ -336,7 +336,7 @@ public partial class MerchantTradeViewModel : ObservableObject
             }
 
             // Refresh UI to reflect updated inventory and credits
-            OnPropertyChanged(nameof(PlayerAvatar));
+            OnPropertyChanged(nameof(Avatar));
             OnPropertyChanged(nameof(TradeInventory));
         }
         catch (Exception ex)

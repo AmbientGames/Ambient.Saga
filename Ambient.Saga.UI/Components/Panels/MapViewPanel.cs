@@ -577,7 +577,7 @@ public class MapViewPanel
                     var distance = MathF.Sqrt(MathF.Pow(mousePos.X - avatarPos.X, 2) + MathF.Pow(mousePos.Y - avatarPos.Y, 2));
                     if (distance <= radius + 3)
                     {
-                        var avatarName = viewModel.PlayerAvatar?.DisplayName ?? "Avatar";
+                        var avatarName = viewModel.Avatar?.DisplayName ?? "Avatar";
                         ImGui.SetTooltip($"{avatarName} (You)");
                     }
                 }
@@ -676,7 +676,7 @@ public class MapViewPanel
             ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize))
         {
             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits";
-            var avatarCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
+            var avatarCredits = viewModel.Avatar?.Stats?.Credits ?? 0;
             var canAfford = avatarCredits >= _pendingTeleportCost;
 
             ImGui.TextWrapped("Teleport to this location?");

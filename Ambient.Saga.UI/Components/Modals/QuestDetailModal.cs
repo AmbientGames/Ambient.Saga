@@ -53,7 +53,7 @@ public class QuestDetailModal
             // Load quest progress from CQRS query
             _questProgress = await _mediator.Send(new GetQuestProgressQuery
             {
-                AvatarId = viewModel.PlayerAvatar!.Id,
+                AvatarId = viewModel.Avatar!.Id,
                 SagaRef = sagaRef,
                 QuestRef = questRef
             });
@@ -61,7 +61,7 @@ public class QuestDetailModal
             // Also load full quest state for more details
             var sagaState = await _mediator.Send(new GetSagaStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar!.Id,
+                AvatarId = viewModel.Avatar!.Id,
                 SagaRef = sagaRef
             });
 
@@ -553,7 +553,7 @@ public class QuestDetailModal
 
     private void AbandonQuest(SagaMainViewModel viewModel)
     {
-        if (_isAbandoning || viewModel.PlayerAvatar == null) return;
+        if (_isAbandoning || viewModel.Avatar == null) return;
 
         _isAbandoning = true;
         _ = AbandonQuestAsync(viewModel);
@@ -565,10 +565,10 @@ public class QuestDetailModal
         {
             var command = new AbandonQuestCommand
             {
-                AvatarId = viewModel.PlayerAvatar!.Id,
+                AvatarId = viewModel.Avatar!.Id,
                 QuestRef = _currentQuestRef!,
                 SagaArcRef = _currentSagaRef!,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var result = await _mediator.Send(command);

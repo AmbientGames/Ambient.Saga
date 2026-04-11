@@ -240,17 +240,17 @@ public class LootModal
 
     private async Task LootCharacterAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
         {
             var command = new LootCharacterCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var result = await viewModel.Mediator.Send(command);
@@ -266,7 +266,7 @@ public class LootModal
                 {
                     throw new NotImplementedException();
                     // todo: this is wrong
-                    viewModel.PlayerAvatar = result.UpdatedAvatar;
+                    viewModel.Avatar = result.UpdatedAvatar;
                 }
             }
             else

@@ -60,7 +60,7 @@ public class MerchantTradeModal
             ImGui.Spacing();
 
             // Avatar money display at top
-            if (_tradeViewModel.IsMerchant && _tradeViewModel.PlayerAvatar?.Stats != null)
+            if (_tradeViewModel.IsMerchant && _tradeViewModel.Avatar?.Stats != null)
             {
                 var moneyBarHeight = ImGui.GetFrameHeightWithSpacing() * 1.5f;
                 ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.12f, 0.08f, 0.9f));
@@ -71,7 +71,7 @@ public class MerchantTradeModal
                 ImGui.SameLine();
                 ImGui.PushFont(UIConstants.FontTitle);
                 ImGui.TextColored(new Vector4(1, 0.85f, 0.2f, 1),
-                    $"{_tradeViewModel.PlayerAvatar.Stats.Credits:N0} {_tradeViewModel.PluralCurrencyName}");
+                    $"{_tradeViewModel.Avatar.Stats.Credits:N0} {_tradeViewModel.PluralCurrencyName}");
                 ImGui.PopFont();
                 ImGui.Unindent(10 * UIConstants.DpiScale);
                 ImGui.EndChild();
@@ -271,7 +271,7 @@ public class MerchantTradeModal
 
     private void InitializeViewModel(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
@@ -311,8 +311,8 @@ public class MerchantTradeModal
             var context = new SagaInteractionContext
             {
                 World = viewModel.CurrentWorld,
-                AvatarEntity = viewModel.PlayerAvatar,
-                AvatarId = viewModel.PlayerAvatar?.AvatarId ?? Guid.Empty,
+                AvatarEntity = viewModel.Avatar,
+                AvatarId = viewModel.Avatar?.AvatarId ?? Guid.Empty,
                 ActiveCharacter = characterTemplate,
                 CurrentSagaRef = character.SagaRef,
                 CurrentCharacterInstanceId = character.CharacterInstanceId

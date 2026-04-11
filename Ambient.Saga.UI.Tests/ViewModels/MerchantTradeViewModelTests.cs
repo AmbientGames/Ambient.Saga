@@ -308,11 +308,11 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
-    public void PlayerAvatar_ReturnsContextAvatar()
+    public void Avatar_ReturnsContextAvatar()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
 
-        Assert.Equal(_avatar, viewModel.PlayerAvatar);
+        Assert.Equal(_avatar, viewModel.Avatar);
     }
 
     #endregion

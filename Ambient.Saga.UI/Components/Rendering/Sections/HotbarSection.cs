@@ -60,7 +60,7 @@ public class HotbarSection : IHudSection
 
     public void Render(HudContext context)
     {
-        var avatar = context.ViewModel.PlayerAvatar;
+        var avatar = context.ViewModel.Avatar;
         if (avatar == null) return;
 
         var hotbar = avatar.Hotbar;

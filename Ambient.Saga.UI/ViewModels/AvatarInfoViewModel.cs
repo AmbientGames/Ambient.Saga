@@ -10,7 +10,7 @@ public partial class AvatarInfoViewModel : ObservableObject
     private IWorld _currentWorld;
 
     [ObservableProperty]
-    private AvatarBase? _playerAvatar;
+    private AvatarBase? _avatar;
 
     [ObservableProperty]
     private double _avatarLatitude;
@@ -35,9 +35,9 @@ public partial class AvatarInfoViewModel : ObservableObject
         OnPropertyChanged(nameof(CurrencyName));
     }
 
-    public void UpdatePlayerAvatar(AvatarBase? avatar)
+    public void UpdateAvatar(AvatarBase? avatar)
     {
-        PlayerAvatar = avatar;
+        Avatar = avatar;
     }
 
     public void UpdateAvatarPosition(double latitude, double longitude, int elevation, bool hasPosition)

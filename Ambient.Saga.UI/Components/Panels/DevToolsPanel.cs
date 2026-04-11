@@ -168,11 +168,11 @@ public class DevToolsPanel
             ImGui.Indent(10 * UIConstants.DpiScale);
 
             // Avatar position
-            if (viewModel.PlayerAvatar != null)
+            if (viewModel.Avatar != null)
             {
                 ImGui.Text($"Avatar Position:");
-                ImGui.Text($"  Lat: {viewModel.PlayerAvatar.Z:F6}");
-                ImGui.Text($"  Lon: {viewModel.PlayerAvatar.X:F6}");
+                ImGui.Text($"  Lat: {viewModel.Avatar.Z:F6}");
+                ImGui.Text($"  Lon: {viewModel.Avatar.X:F6}");
             }
 
             // Current world info

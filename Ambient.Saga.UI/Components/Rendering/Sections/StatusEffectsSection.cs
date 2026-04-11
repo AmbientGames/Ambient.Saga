@@ -39,7 +39,7 @@ public class StatusEffectsSection : IHudSection
 
     public void Render(HudContext context)
     {
-        var stats = context.ViewModel.PlayerAvatar?.Stats;
+        var stats = context.ViewModel.Avatar?.Stats;
         if (stats == null)
             return;
 
