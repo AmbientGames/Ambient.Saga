@@ -214,7 +214,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
         var playerCombatant = new Combatant
         {
             RefName = battleStartedTx.Data[TransactionDataKeys.PlayerCombatantId],
-            DisplayName = "Player",
+            DisplayName = "Avatar",
             Health = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerHealth]),
             Stamina = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerEnergy]),
             Strength = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerStrength]),

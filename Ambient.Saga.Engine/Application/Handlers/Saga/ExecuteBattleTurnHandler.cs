@@ -381,7 +381,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         var playerCombatant = new Combatant
         {
             RefName = battleStartedTx.Data[TransactionDataKeys.PlayerCombatantId],
-            DisplayName = "Player",  // Will be overridden by UI
+            DisplayName = "Avatar",  // Will be overridden by UI
             Health = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerHealth]),
             Stamina = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerEnergy]),
             Strength = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerStrength]),

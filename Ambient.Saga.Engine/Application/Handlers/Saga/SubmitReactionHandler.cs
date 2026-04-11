@@ -91,7 +91,7 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
                     [TransactionDataKeys.TimedOut] = command.TimedOut.ToString(),
 
                     // State after reaction
-                    [TransactionDataKeys.Target] = command.Avatar.ArchetypeRef ?? "Player", // Avatar was target of enemy attack
+                    [TransactionDataKeys.Target] = command.Avatar.ArchetypeRef, // Avatar was target of enemy attack
                     [TransactionDataKeys.TargetHealthAfter] = command.PlayerHealthAfter.ToString("F3"),
                     [TransactionDataKeys.ActorEnergyAfter] = command.PlayerEnergyAfter.ToString("F3"),
                     [TransactionDataKeys.EnemyHealthAfter] = command.EnemyHealthAfter.ToString("F3")
