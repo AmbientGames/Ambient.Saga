@@ -5,6 +5,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -59,11 +60,11 @@ internal sealed class TeleportAvatarHandler : IRequestHandler<TeleportAvatarComm
             // Build transaction data
             var transactionData = new Dictionary<string, string>
             {
-                ["DestinationLatitude"] = command.DestinationLatitude.ToString("F6"),
-                ["DestinationLongitude"] = command.DestinationLongitude.ToString("F6"),
-                ["Cost"] = command.Cost.ToString(),
-                ["CreditsBefore"] = originalCredits.ToString("F0"),
-                ["CreditsAfter"] = command.Avatar.Stats.Credits.ToString("F0")
+                [TransactionDataKeys.DestinationLatitude] = command.DestinationLatitude.ToString("F6"),
+                [TransactionDataKeys.DestinationLongitude] = command.DestinationLongitude.ToString("F6"),
+                [TransactionDataKeys.Cost] = command.Cost.ToString(),
+                [TransactionDataKeys.CreditsBefore] = originalCredits.ToString("F0"),
+                [TransactionDataKeys.CreditsAfter] = command.Avatar.Stats.Credits.ToString("F0")
             };
 
             // Create AvatarTeleported transaction
@@ -117,9 +118,9 @@ internal sealed class TeleportAvatarHandler : IRequestHandler<TeleportAvatarComm
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["ReversedTransactionId"] = transaction.TransactionId.ToString(),
-                        ["Reason"] = $"Avatar persistence failed: {persistEx.Message}",
-                        ["OriginalType"] = transaction.Type.ToString()
+                        [TransactionDataKeys.ReversedTransactionId] = transaction.TransactionId.ToString(),
+                        [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                        [TransactionDataKeys.OriginalType] = transaction.Type.ToString()
                     }
                 };
 
@@ -135,9 +136,9 @@ internal sealed class TeleportAvatarHandler : IRequestHandler<TeleportAvatarComm
 
             var resultData = new Dictionary<string, object>
             {
-                ["DestinationLatitude"] = command.DestinationLatitude,
-                ["DestinationLongitude"] = command.DestinationLongitude,
-                ["Cost"] = command.Cost
+                [TransactionDataKeys.DestinationLatitude] = command.DestinationLatitude,
+                [TransactionDataKeys.DestinationLongitude] = command.DestinationLongitude,
+                [TransactionDataKeys.Cost] = command.Cost
             };
 
             return SagaCommandResult.Success(

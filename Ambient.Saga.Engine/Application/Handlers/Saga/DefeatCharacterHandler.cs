@@ -1,10 +1,11 @@
-﻿using MediatR;
+using MediatR;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -45,7 +46,7 @@ internal sealed class DefeatCharacterHandler : IRequestHandler<DefeatCharacterCo
             var characterExists = instance.GetCommittedTransactions()
                 .Any(t => t.Type == SagaTransactionType.CharacterSpawned &&
                          t.Data.ContainsKey("CharacterInstanceId") &&
-                         t.Data["CharacterInstanceId"] == command.CharacterInstanceId.ToString());
+                         t.Data[TransactionDataKeys.CharacterInstanceId] == command.CharacterInstanceId.ToString());
 
             if (!characterExists)
             {
@@ -62,9 +63,9 @@ internal sealed class DefeatCharacterHandler : IRequestHandler<DefeatCharacterCo
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = command.CharacterInstanceId.ToString(),
-                    ["VictorAvatarId"] = command.AvatarId.ToString(),
-                    ["DefeatMethod"] = command.DefeatMethod ?? "Unknown"
+                    [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
+                    [TransactionDataKeys.VictorAvatarId] = command.AvatarId.ToString(),
+                    [TransactionDataKeys.DefeatMethod] = command.DefeatMethod ?? "Unknown"
                 }
             };
 

@@ -7,6 +7,7 @@ using LiteDB;
 using Microsoft.Extensions.Logging;
 using SharpDX;
 using System.IO;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 
@@ -50,16 +51,16 @@ internal class WorldStateDatabase : IDisposable
         mapper.RegisterType<Vector3>(
             serialize: v => new BsonDocument
             {
-                ["X"] = v.X,
-                ["Y"] = v.Y,
-                ["Z"] = v.Z
+                [TransactionDataKeys.X] = v.X,
+                [TransactionDataKeys.Y] = v.Y,
+                [TransactionDataKeys.Z] = v.Z
             },
             deserialize: bson =>
             {
                 // LiteDB stores numeric values as Double; read as double then cast to float
-                var x = (float)bson["X"].AsDouble;
-                var y = (float)bson["Y"].AsDouble;
-                var z = (float)bson["Z"].AsDouble;
+                var x = (float)bson[TransactionDataKeys.X].AsDouble;
+                var y = (float)bson[TransactionDataKeys.Y].AsDouble;
+                var z = (float)bson[TransactionDataKeys.Z].AsDouble;
                 return new Vector3(x, y, z);
             });
 
@@ -67,11 +68,11 @@ internal class WorldStateDatabase : IDisposable
         mapper.RegisterType<Int3>(
             serialize: v => new BsonDocument
             {
-                ["X"] = v.X,
-                ["Y"] = v.Y,
-                ["Z"] = v.Z
+                [TransactionDataKeys.X] = v.X,
+                [TransactionDataKeys.Y] = v.Y,
+                [TransactionDataKeys.Z] = v.Z
             },
-            deserialize: bson => new Int3(bson["X"].AsInt32, bson["Y"].AsInt32, bson["Z"].AsInt32));
+            deserialize: bson => new Int3(bson[TransactionDataKeys.X].AsInt32, bson[TransactionDataKeys.Y].AsInt32, bson[TransactionDataKeys.Z].AsInt32));
 
         // Ensure nested objects are serialized (LiteDB should handle this by default, but being explicit)
         mapper.IncludeNonPublic = false; // Only serialize public properties

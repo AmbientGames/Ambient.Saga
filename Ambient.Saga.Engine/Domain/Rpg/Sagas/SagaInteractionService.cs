@@ -1,6 +1,7 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
 
@@ -250,9 +251,9 @@ public class SagaInteractionService
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["SagaArcRef"] = _template.RefName,
-                    ["DistanceMeters"] = distanceFromCenter.ToString("F2"),
-                    ["DiscoverRadius"] = _template.DiscoverRadius.ToString("F2")
+                    [TransactionDataKeys.SagaArcRef] = _template.RefName,
+                    [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
+                    [TransactionDataKeys.DiscoverRadius] = _template.DiscoverRadius.ToString("F2")
                 }
             };
             instance.AddTransaction(discoveryTx);
@@ -292,9 +293,9 @@ public class SagaInteractionService
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["TriggerRef"] = sagaTrigger.RefName,
-                        ["DistanceMeters"] = distanceFromCenter.ToString("F2"),
-                        ["ExitRadius"] = exitRadius.ToString("F2")
+                        [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName,
+                        [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
+                        [TransactionDataKeys.ExitRadius] = exitRadius.ToString("F2")
                     }
                 };
                 instance.AddTransaction(exitTx);
@@ -315,10 +316,10 @@ public class SagaInteractionService
                             LocalTimestamp = DateTime.UtcNow,
                             Data = new Dictionary<string, string>
                             {
-                                ["CharacterInstanceId"] = character.CharacterInstanceId.ToString(),
-                                ["CharacterRef"] = character.CharacterRef,
-                                ["Reason"] = "Player exited trigger zone",
-                                ["TriggerRef"] = sagaTrigger.RefName
+                                [TransactionDataKeys.CharacterInstanceId] = character.CharacterInstanceId.ToString(),
+                                [TransactionDataKeys.CharacterRef] = character.CharacterRef,
+                                [TransactionDataKeys.Reason] = "Player exited trigger zone",
+                                [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName
                             }
                         };
                         instance.AddTransaction(despawnTx);
@@ -357,9 +358,9 @@ public class SagaInteractionService
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["TriggerRef"] = sagaTrigger.RefName,
-                    ["DistanceMeters"] = distanceFromCenter.ToString("F2"),
-                    ["EnterRadius"] = sagaTrigger.EnterRadius.ToString("F2")
+                    [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName,
+                    [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
+                    [TransactionDataKeys.EnterRadius] = sagaTrigger.EnterRadius.ToString("F2")
                 }
             };
             instance.AddTransaction(enterTx);
@@ -392,10 +393,10 @@ public class SagaInteractionService
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["SagaTriggerRef"] = sagaTrigger.RefName,
-                ["AvatarX"] = avatarX.ToString("F6"),
-                ["AvatarZ"] = avatarZ.ToString("F6"),
-                ["Seed"] = seed.ToString()
+                [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                [TransactionDataKeys.AvatarX] = avatarX.ToString("F6"),
+                [TransactionDataKeys.AvatarZ] = avatarZ.ToString("F6"),
+                [TransactionDataKeys.Seed] = seed.ToString()
             }
         };
 
@@ -415,9 +416,9 @@ public class SagaInteractionService
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["QuestTokenRef"] = questTokenRef,
-                        ["SagaTriggerRef"] = sagaTrigger.RefName,
-                        ["Reason"] = $"Trigger '{sagaTrigger.RefName}' activated"
+                        [TransactionDataKeys.QuestTokenRef] = questTokenRef,
+                        [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                        [TransactionDataKeys.Reason] = $"Trigger '{sagaTrigger.RefName}' activated"
                     }
                 };
 
@@ -445,8 +446,8 @@ public class SagaInteractionService
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["SagaTriggerRef"] = sagaTrigger.RefName,
-                        ["Reason"] = "Characters spawned"
+                        [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                        [TransactionDataKeys.Reason] = "Characters spawned"
                     }
                 };
                 instance.AddTransaction(completedTx);
@@ -521,12 +522,12 @@ public class SagaInteractionService
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = characterInstanceId.ToString(),
-                    ["CharacterRef"] = characterRef,
-                    ["SagaTriggerRef"] = sagaTrigger.RefName,
-                    ["X"] = spawnX.ToString("F6"),  // Saga-relative
-                    ["Z"] = spawnZ.ToString("F6"),  // Saga-relative
-                    ["SpawnHeight"] = "0"           // Default, game will adjust to terrain
+                    [TransactionDataKeys.CharacterInstanceId] = characterInstanceId.ToString(),
+                    [TransactionDataKeys.CharacterRef] = characterRef,
+                    [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                    [TransactionDataKeys.X] = spawnX.ToString("F6"),  // Saga-relative
+                    [TransactionDataKeys.Z] = spawnZ.ToString("F6"),  // Saga-relative
+                    [TransactionDataKeys.SpawnHeight] = "0"           // Default, game will adjust to terrain
                 }
             };
 
@@ -664,14 +665,14 @@ public class SagaInteractionService
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = newCharacterInstanceId.ToString(),
-                    ["CharacterRef"] = characterRef,
-                    ["SagaTriggerRef"] = sagaTrigger.RefName,
-                    ["X"] = spawnX.ToString("F6"),
-                    ["Z"] = spawnZ.ToString("F6"),
-                    ["SpawnHeight"] = "0",
-                    ["IsRespawn"] = "true", // Mark as respawn for analytics
-                    ["PreviousInstanceId"] = characterInstanceId.ToString() // Link to defeated instance
+                    [TransactionDataKeys.CharacterInstanceId] = newCharacterInstanceId.ToString(),
+                    [TransactionDataKeys.CharacterRef] = characterRef,
+                    [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                    [TransactionDataKeys.X] = spawnX.ToString("F6"),
+                    [TransactionDataKeys.Z] = spawnZ.ToString("F6"),
+                    [TransactionDataKeys.SpawnHeight] = "0",
+                    [TransactionDataKeys.IsRespawn] = "true", // Mark as respawn for analytics
+                    [TransactionDataKeys.PreviousInstanceId] = characterInstanceId.ToString() // Link to defeated instance
                 }
             };
 

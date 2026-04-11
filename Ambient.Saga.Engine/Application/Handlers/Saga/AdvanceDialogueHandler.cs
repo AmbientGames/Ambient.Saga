@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -114,7 +115,7 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
 
             foreach (var visitedTx in visitedNodes)
             {
-                var nodeId = visitedTx.Data["DialogueNodeId"];
+                var nodeId = visitedTx.Data[TransactionDataKeys.DialogueNodeId];
                 if (engine.CurrentNode != null)
                 {
                     var choice = engine.CurrentNode.Choice?.FirstOrDefault(c => c.NextNodeId == nodeId);
@@ -233,13 +234,13 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
             var resultData = new Dictionary<string, object>();
             if (pendingEvents.Count > 0)
             {
-                resultData["PendingEvents"] = pendingEvents;
+                resultData[TransactionDataKeys.PendingEvents] = pendingEvents;
             }
             if (gameComplete)
             {
-                resultData["GameComplete"] = true;
+                resultData[TransactionDataKeys.GameComplete] = true;
                 if (completionQuestRef != null)
-                    resultData["CompletionQuestRef"] = completionQuestRef;
+                    resultData[TransactionDataKeys.CompletionQuestRef] = completionQuestRef;
             }
 
             return SagaCommandResult.Success(

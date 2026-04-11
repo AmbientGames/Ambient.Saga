@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Results.Saga;
@@ -6,6 +6,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -107,19 +108,19 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             var transactions = new List<SagaTransaction> { battleStartedTransaction };
             var resultData = new Dictionary<string, object>
             {
-                ["BattleInstanceId"] = battleStartedTransaction.TransactionId
+                [TransactionDataKeys.BattleInstanceId] = battleStartedTransaction.TransactionId
             };
 
             if (battleEngine.State == BattleState.AwaitingReaction && battleEngine.PendingAttack != null)
             {
                 // Enemy's opening attack produced a tell — reaction phase active
                 var pending = battleEngine.PendingAttack;
-                resultData["AwaitingReaction"] = true;
-                resultData["TellRefName"] = pending.Tell.RefName;
-                resultData["TellText"] = pending.Tell.TellText;
-                resultData["ReactionWindowMs"] = pending.Tell.ReactionWindowMs;
-                resultData["BaseDamage"] = pending.BaseDamage;
-                resultData["OptimalDefense"] = pending.Tell.OptimalDefense.ToString();
+                resultData[TransactionDataKeys.AwaitingReaction] = true;
+                resultData[TransactionDataKeys.TellRefName] = pending.Tell.RefName;
+                resultData[TransactionDataKeys.TellText] = pending.Tell.TellText;
+                resultData[TransactionDataKeys.ReactionWindowMs] = pending.Tell.ReactionWindowMs;
+                resultData[TransactionDataKeys.BaseDamage] = pending.BaseDamage;
+                resultData[TransactionDataKeys.OptimalDefense] = pending.Tell.OptimalDefense.ToString();
 
                 System.Diagnostics.Debug.WriteLine($"[StartBattle] Enemy opened with tell: {pending.Tell.TellText}");
             }

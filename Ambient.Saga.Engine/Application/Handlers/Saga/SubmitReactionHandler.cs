@@ -7,6 +7,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -72,28 +73,28 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["BattleTransactionId"] = command.BattleInstanceId.ToString(),
-                    ["ActionType"] = "Reaction",
-                    ["DecisionType"] = ActionType.Defend.ToString(), // Reactions are defensive actions
-                    ["ReactionType"] = command.Reaction.ToString(),
-                    ["IsPlayerTurn"] = "true",
-                    ["TurnNumber"] = turnNumber.ToString(),
+                    [TransactionDataKeys.BattleTransactionId] = command.BattleInstanceId.ToString(),
+                    [TransactionDataKeys.ActionType] = "Reaction",
+                    [TransactionDataKeys.DecisionType] = ActionType.Defend.ToString(), // Reactions are defensive actions
+                    [TransactionDataKeys.ReactionType] = command.Reaction.ToString(),
+                    [TransactionDataKeys.IsPlayerTurn] = "true",
+                    [TransactionDataKeys.TurnNumber] = turnNumber.ToString(),
 
                     // Reaction-specific data
-                    ["TellRefName"] = command.TellRefName ?? "",
-                    ["BaseDamage"] = command.BaseDamage.ToString(),
-                    ["DamageDealt"] = command.FinalDamage.ToString("F3"), // Damage TO avatar
-                    ["HealingDone"] = "0",
-                    ["CounterDamage"] = (command.CounterDamage ?? 0).ToString("F3"),
-                    ["StaminaGained"] = command.StaminaGained.ToString("F3"),
-                    ["WasOptimal"] = command.WasOptimal.ToString(),
-                    ["TimedOut"] = command.TimedOut.ToString(),
+                    [TransactionDataKeys.TellRefName] = command.TellRefName ?? "",
+                    [TransactionDataKeys.BaseDamage] = command.BaseDamage.ToString(),
+                    [TransactionDataKeys.DamageDealt] = command.FinalDamage.ToString("F3"), // Damage TO avatar
+                    [TransactionDataKeys.HealingDone] = "0",
+                    [TransactionDataKeys.CounterDamage] = (command.CounterDamage ?? 0).ToString("F3"),
+                    [TransactionDataKeys.StaminaGained] = command.StaminaGained.ToString("F3"),
+                    [TransactionDataKeys.WasOptimal] = command.WasOptimal.ToString(),
+                    [TransactionDataKeys.TimedOut] = command.TimedOut.ToString(),
 
                     // State after reaction
-                    ["Target"] = command.Avatar.ArchetypeRef ?? "Player", // Avatar was target of enemy attack
-                    ["TargetHealthAfter"] = command.PlayerHealthAfter.ToString("F3"),
-                    ["ActorEnergyAfter"] = command.PlayerEnergyAfter.ToString("F3"),
-                    ["EnemyHealthAfter"] = command.EnemyHealthAfter.ToString("F3")
+                    [TransactionDataKeys.Target] = command.Avatar.ArchetypeRef ?? "Player", // Avatar was target of enemy attack
+                    [TransactionDataKeys.TargetHealthAfter] = command.PlayerHealthAfter.ToString("F3"),
+                    [TransactionDataKeys.ActorEnergyAfter] = command.PlayerEnergyAfter.ToString("F3"),
+                    [TransactionDataKeys.EnemyHealthAfter] = command.EnemyHealthAfter.ToString("F3")
                 }
             };
 

@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
@@ -9,6 +9,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -196,12 +197,12 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = command.CharacterInstanceId.ToString(),
-                    ["ItemRef"] = command.ItemRef,
-                    ["Quantity"] = command.Quantity.ToString(),
-                    ["IsBuying"] = command.IsBuying.ToString(),
-                    ["PricePerItem"] = command.PricePerItem.ToString(),
-                    ["TotalPrice"] = totalPrice.ToString()
+                    [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
+                    [TransactionDataKeys.ItemRef] = command.ItemRef,
+                    [TransactionDataKeys.Quantity] = command.Quantity.ToString(),
+                    [TransactionDataKeys.IsBuying] = command.IsBuying.ToString(),
+                    [TransactionDataKeys.PricePerItem] = command.PricePerItem.ToString(),
+                    [TransactionDataKeys.TotalPrice] = totalPrice.ToString()
                 }
             };
 
@@ -252,9 +253,9 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                         LocalTimestamp = DateTime.UtcNow,
                         Data = new Dictionary<string, string>
                         {
-                            ["ReversedTransactionId"] = transaction.TransactionId.ToString(),
-                            ["Reason"] = $"Avatar persistence failed: {persistEx.Message}",
-                            ["OriginalType"] = transaction.Type.ToString()
+                            [TransactionDataKeys.ReversedTransactionId] = transaction.TransactionId.ToString(),
+                            [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                            [TransactionDataKeys.OriginalType] = transaction.Type.ToString()
                         }
                     };
 
@@ -272,18 +273,18 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
 
             var resultData = new Dictionary<string, object>
             {
-                ["ItemRef"] = command.ItemRef,
-                ["Quantity"] = command.Quantity,
-                ["PricePerItem"] = command.PricePerItem,
-                ["TotalPrice"] = totalPrice,
-                ["TransactionType"] = command.IsBuying ? "Purchase" : "Sale"
+                [TransactionDataKeys.ItemRef] = command.ItemRef,
+                [TransactionDataKeys.Quantity] = command.Quantity,
+                [TransactionDataKeys.PricePerItem] = command.PricePerItem,
+                [TransactionDataKeys.TotalPrice] = totalPrice,
+                [TransactionDataKeys.TransactionType] = command.IsBuying ? "Purchase" : "Sale"
             };
 
             // If a non-owner bought from an owned arc, signal that the owner should receive revenue
             if (command.IsBuying && !isOwner && !string.IsNullOrEmpty(sagaTemplate.OwnerAvatarId) && totalPrice > 0)
             {
-                resultData["OwnerAvatarId"] = sagaTemplate.OwnerAvatarId;
-                resultData["OwnerRevenue"] = totalPrice;
+                resultData[TransactionDataKeys.OwnerAvatarId] = sagaTemplate.OwnerAvatarId;
+                resultData[TransactionDataKeys.OwnerRevenue] = totalPrice;
             }
 
             return SagaCommandResult.Success(

@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Quests;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -94,17 +95,17 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
             // Create QuestCompleted transaction
             var transactionData = new Dictionary<string, string>
             {
-                ["QuestRef"] = command.QuestRef,
-                ["QuestDisplayName"] = quest.DisplayName,
-                ["QuestReceiverRef"] = command.QuestReceiverRef,
-                ["SagaArcRef"] = command.SagaArcRef,
-                ["CompletedAt"] = DateTime.UtcNow.ToString("O")
+                [TransactionDataKeys.QuestRef] = command.QuestRef,
+                [TransactionDataKeys.QuestDisplayName] = quest.DisplayName,
+                [TransactionDataKeys.QuestReceiverRef] = command.QuestReceiverRef,
+                [TransactionDataKeys.SagaArcRef] = command.SagaArcRef,
+                [TransactionDataKeys.CompletedAt] = DateTime.UtcNow.ToString("O")
             };
 
             // NEW: Include branch choice if quest had branches
             if (!string.IsNullOrEmpty(questState.ChosenBranch))
             {
-                transactionData["ChosenBranch"] = questState.ChosenBranch;
+                transactionData[TransactionDataKeys.ChosenBranch] = questState.ChosenBranch;
             }
 
             var transaction = new SagaTransaction
@@ -163,7 +164,7 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
             Dictionary<string, object>? resultData = null;
             if (!string.IsNullOrEmpty(completionRef) && command.QuestRef == completionRef)
             {
-                resultData = new Dictionary<string, object> { ["GameComplete"] = true, ["CompletionQuestRef"] = completionRef };
+                resultData = new Dictionary<string, object> { [TransactionDataKeys.GameComplete] = true, [TransactionDataKeys.CompletionQuestRef] = completionRef };
             }
 
             return SagaCommandResult.Success(

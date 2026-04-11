@@ -1,4 +1,4 @@
-﻿using Ambient.Application.Contracts;
+using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
@@ -7,6 +7,7 @@ using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Services;
 
@@ -224,7 +225,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         var allBattleTurns = sagaInstance.GetCommittedTransactions()
             .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
                        t.Data.ContainsKey("BattleTransactionId") &&
-                       t.Data["BattleTransactionId"] == battleStartedTransactionId.ToString())
+                       t.Data[TransactionDataKeys.BattleTransactionId] == battleStartedTransactionId.ToString())
             .OrderBy(t => t.Data.TryGetValue("TurnNumber", out var turnStr) && int.TryParse(turnStr, out var turn) ? turn : 0)
             .ToList();
 

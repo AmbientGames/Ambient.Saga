@@ -7,6 +7,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -133,30 +134,30 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
             // Build transaction data
             var transactionData = new Dictionary<string, string>
             {
-                ["ConsumableRef"] = command.ConsumableRef,
-                ["ConsumableDisplayName"] = consumable.DisplayName ?? command.ConsumableRef,
-                ["QuantityBefore"] = consumableEntry.Quantity.ToString(),
-                ["QuantityAfter"] = (consumableEntry.Quantity - 1).ToString(),
-                ["EffectsApplied"] = string.Join(", ", effectsApplied),
-                ["OriginalHealth"] = originalHealth.ToString("F3"),
-                ["OriginalStamina"] = originalStamina.ToString("F3"),
-                ["OriginalMana"] = originalMana.ToString("F3"),
-                ["NewHealth"] = command.Avatar.Stats.Health.ToString("F3"),
-                ["NewStamina"] = command.Avatar.Stats.Stamina.ToString("F3"),
-                ["NewMana"] = command.Avatar.Stats.Mana.ToString("F3")
+                [TransactionDataKeys.ConsumableRef] = command.ConsumableRef,
+                [TransactionDataKeys.ConsumableDisplayName] = consumable.DisplayName ?? command.ConsumableRef,
+                [TransactionDataKeys.QuantityBefore] = consumableEntry.Quantity.ToString(),
+                [TransactionDataKeys.QuantityAfter] = (consumableEntry.Quantity - 1).ToString(),
+                [TransactionDataKeys.EffectsApplied] = string.Join(", ", effectsApplied),
+                [TransactionDataKeys.OriginalHealth] = originalHealth.ToString("F3"),
+                [TransactionDataKeys.OriginalStamina] = originalStamina.ToString("F3"),
+                [TransactionDataKeys.OriginalMana] = originalMana.ToString("F3"),
+                [TransactionDataKeys.NewHealth] = command.Avatar.Stats.Health.ToString("F3"),
+                [TransactionDataKeys.NewStamina] = command.Avatar.Stats.Stamina.ToString("F3"),
+                [TransactionDataKeys.NewMana] = command.Avatar.Stats.Mana.ToString("F3")
             };
 
             // Log status effect info if present (for battle-time processing)
             if (!string.IsNullOrEmpty(consumable.StatusEffectRef))
             {
-                transactionData["StatusEffectRef"] = consumable.StatusEffectRef;
-                transactionData["StatusEffectChance"] = consumable.StatusEffectChance.ToString("F2");
+                transactionData[TransactionDataKeys.StatusEffectRef] = consumable.StatusEffectRef;
+                transactionData[TransactionDataKeys.StatusEffectChance] = consumable.StatusEffectChance.ToString("F2");
             }
 
             if (consumable.CleansesStatusEffects)
             {
-                transactionData["CleansesStatusEffects"] = "true";
-                transactionData["CleanseTargetSelf"] = consumable.CleanseTargetSelf.ToString();
+                transactionData[TransactionDataKeys.CleansesStatusEffects] = "true";
+                transactionData[TransactionDataKeys.CleanseTargetSelf] = consumable.CleanseTargetSelf.ToString();
             }
 
             // Create ConsumableUsed transaction
@@ -218,9 +219,9 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["ReversedTransactionId"] = transaction.TransactionId.ToString(),
-                        ["Reason"] = $"Avatar persistence failed: {persistEx.Message}",
-                        ["OriginalType"] = transaction.Type.ToString()
+                        [TransactionDataKeys.ReversedTransactionId] = transaction.TransactionId.ToString(),
+                        [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                        [TransactionDataKeys.OriginalType] = transaction.Type.ToString()
                     }
                 };
 
@@ -236,10 +237,10 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
 
             var resultData = new Dictionary<string, object>
             {
-                ["ConsumableRef"] = command.ConsumableRef,
-                ["ConsumableDisplayName"] = consumable.DisplayName ?? command.ConsumableRef,
-                ["EffectsApplied"] = effectsApplied,
-                ["RemainingQuantity"] = consumableEntry.Quantity
+                [TransactionDataKeys.ConsumableRef] = command.ConsumableRef,
+                [TransactionDataKeys.ConsumableDisplayName] = consumable.DisplayName ?? command.ConsumableRef,
+                [TransactionDataKeys.EffectsApplied] = effectsApplied,
+                [TransactionDataKeys.RemainingQuantity] = consumableEntry.Quantity
             };
 
             return SagaCommandResult.Success(

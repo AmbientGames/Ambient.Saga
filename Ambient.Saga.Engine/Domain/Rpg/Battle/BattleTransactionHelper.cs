@@ -1,6 +1,7 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 
@@ -34,30 +35,30 @@ public static class BattleTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["SagaArcRef"] = sagaRef,
-                ["PlayerCombatantId"] = playerCombatantId.ToString(),
-                ["EnemyCombatantId"] = enemyCombatantId.ToString(),
-                ["EnemyCharacterRef"] = enemyCharacterRef,
-                ["RandomSeed"] = randomSeed.ToString(),
-                ["SagaInstanceId"] = sagaInstanceId.ToString(),
+                [TransactionDataKeys.SagaArcRef] = sagaRef,
+                [TransactionDataKeys.PlayerCombatantId] = playerCombatantId.ToString(),
+                [TransactionDataKeys.EnemyCombatantId] = enemyCombatantId.ToString(),
+                [TransactionDataKeys.EnemyCharacterRef] = enemyCharacterRef,
+                [TransactionDataKeys.RandomSeed] = randomSeed.ToString(),
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString(),
 
                 // Avatar stats
-                ["PlayerHealth"] = player.Health.ToString("F3"),
-                ["PlayerEnergy"] = player.Stamina.ToString("F3"),
-                ["PlayerStrength"] = player.Strength.ToString("F3"),
-                ["PlayerDefense"] = player.Defense.ToString("F3"),
-                ["PlayerSpeed"] = player.Speed.ToString("F3"),
-                ["PlayerMagic"] = player.Magic.ToString("F3"),
-                ["PlayerAffinity"] = player.AffinityRef ?? "",
+                [TransactionDataKeys.PlayerHealth] = player.Health.ToString("F3"),
+                [TransactionDataKeys.PlayerEnergy] = player.Stamina.ToString("F3"),
+                [TransactionDataKeys.PlayerStrength] = player.Strength.ToString("F3"),
+                [TransactionDataKeys.PlayerDefense] = player.Defense.ToString("F3"),
+                [TransactionDataKeys.PlayerSpeed] = player.Speed.ToString("F3"),
+                [TransactionDataKeys.PlayerMagic] = player.Magic.ToString("F3"),
+                [TransactionDataKeys.PlayerAffinity] = player.AffinityRef ?? "",
 
                 // Enemy stats
-                ["EnemyHealth"] = enemy.Health.ToString("F3"),
-                ["EnemyEnergy"] = enemy.Stamina.ToString("F3"),
-                ["EnemyStrength"] = enemy.Strength.ToString("F3"),
-                ["EnemyDefense"] = enemy.Defense.ToString("F3"),
-                ["EnemySpeed"] = enemy.Speed.ToString("F3"),
-                ["EnemyMagic"] = enemy.Magic.ToString("F3"),
-                ["EnemyAffinity"] = enemy.AffinityRef ?? ""
+                [TransactionDataKeys.EnemyHealth] = enemy.Health.ToString("F3"),
+                [TransactionDataKeys.EnemyEnergy] = enemy.Stamina.ToString("F3"),
+                [TransactionDataKeys.EnemyStrength] = enemy.Strength.ToString("F3"),
+                [TransactionDataKeys.EnemyDefense] = enemy.Defense.ToString("F3"),
+                [TransactionDataKeys.EnemySpeed] = enemy.Speed.ToString("F3"),
+                [TransactionDataKeys.EnemyMagic] = enemy.Magic.ToString("F3"),
+                [TransactionDataKeys.EnemyAffinity] = enemy.AffinityRef ?? ""
             }
         };
 
@@ -68,7 +69,7 @@ public static class BattleTransactionHelper
                 .Select(e => $"{e.EquipmentRef}:{e.Condition:F2}")
                 .ToList();
             if (equipmentRefs.Count > 0)
-                transaction.Data["PlayerEquipment"] = string.Join(",", equipmentRefs);
+                transaction.Data[TransactionDataKeys.PlayerEquipment] = string.Join(",", equipmentRefs);
         }
 
         // Record avatar's initial equipped slots
@@ -77,13 +78,13 @@ public static class BattleTransactionHelper
             var equippedSlots = player.CombatProfile
                 .Select(kvp => $"{kvp.Key}:{kvp.Value}")
                 .ToList();
-            transaction.Data["PlayerEquippedSlots"] = string.Join(",", equippedSlots);
+            transaction.Data[TransactionDataKeys.PlayerEquippedSlots] = string.Join(",", equippedSlots);
         }
 
         // Record avatar's available affinities
         if (playerAffinityRefs != null && playerAffinityRefs.Count > 0)
         {
-            transaction.Data["PlayerAffinities"] = string.Join(",", playerAffinityRefs);
+            transaction.Data[TransactionDataKeys.PlayerAffinities] = string.Join(",", playerAffinityRefs);
         }
 
         // Record enemy's equipment inventory (what they own)
@@ -93,7 +94,7 @@ public static class BattleTransactionHelper
                 .Select(e => $"{e.EquipmentRef}:{e.Condition:F2}")
                 .ToList();
             if (equipmentRefs.Count > 0)
-                transaction.Data["EnemyEquipment"] = string.Join(",", equipmentRefs);
+                transaction.Data[TransactionDataKeys.EnemyEquipment] = string.Join(",", equipmentRefs);
         }
 
         // Record enemy's initial equipped slots
@@ -102,7 +103,7 @@ public static class BattleTransactionHelper
             var equippedSlots = enemy.CombatProfile
                 .Select(kvp => $"{kvp.Key}:{kvp.Value}")
                 .ToList();
-            transaction.Data["EnemyEquippedSlots"] = string.Join(",", equippedSlots);
+            transaction.Data[TransactionDataKeys.EnemyEquippedSlots] = string.Join(",", equippedSlots);
         }
 
         return transaction;
@@ -138,22 +139,22 @@ public static class BattleTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["BattleTransactionId"] = battleTransactionId.ToString(),
-                ["TurnNumber"] = turnNumber.ToString(),
-                ["Actor"] = actorRefName,
-                ["IsPlayerTurn"] = isPlayerTurn.ToString(),
-                ["DecisionType"] = decisionType.ToString(),
-                ["DamageDealt"] = damageDealt.ToString("F3"),
-                ["HealingDone"] = healingDone.ToString("F3"),
-                ["Target"] = targetRefName,
-                ["TargetHealthAfter"] = targetHealthAfter.ToString("F3"),
-                ["ActorEnergyAfter"] = actorEnergyAfter.ToString("F3"),
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.BattleTransactionId] = battleTransactionId.ToString(),
+                [TransactionDataKeys.TurnNumber] = turnNumber.ToString(),
+                [TransactionDataKeys.Actor] = actorRefName,
+                [TransactionDataKeys.IsPlayerTurn] = isPlayerTurn.ToString(),
+                [TransactionDataKeys.DecisionType] = decisionType.ToString(),
+                [TransactionDataKeys.DamageDealt] = damageDealt.ToString("F3"),
+                [TransactionDataKeys.HealingDone] = healingDone.ToString("F3"),
+                [TransactionDataKeys.Target] = targetRefName,
+                [TransactionDataKeys.TargetHealthAfter] = targetHealthAfter.ToString("F3"),
+                [TransactionDataKeys.ActorEnergyAfter] = actorEnergyAfter.ToString("F3"),
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
 
         if (!string.IsNullOrEmpty(itemRefName))
-            transaction.Data["ItemRefName"] = itemRefName;
+            transaction.Data[TransactionDataKeys.ItemRefName] = itemRefName;
 
         // ALWAYS snapshot equipment slots and affinity for every turn (for replay)
         if (world != null)
@@ -186,12 +187,12 @@ public static class BattleTransactionHelper
                 }
 
                 if (LoadoutSlots.Count > 0)
-                    transaction.Data["LoadoutSlotSnapshot"] = string.Join(",", LoadoutSlots);
+                    transaction.Data[TransactionDataKeys.LoadoutSlotSnapshot] = string.Join(",", LoadoutSlots);
             }
 
             // Record current affinity
             if (!string.IsNullOrEmpty(actorAfterAction.AffinityRef))
-                transaction.Data["AffinitySnapshot"] = actorAfterAction.AffinityRef;
+                transaction.Data[TransactionDataKeys.AffinitySnapshot] = actorAfterAction.AffinityRef;
         }
 
         return transaction;
@@ -218,12 +219,12 @@ public static class BattleTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["BattleTransactionId"] = battleTransactionId.ToString(),
-                ["TotalTurns"] = totalTurns.ToString(),
-                ["PlayerVictory"] = playerVictory.ToString(),
-                ["Victor"] = victorRefName,
-                ["Defeated"] = defeatedRefName,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.BattleTransactionId] = battleTransactionId.ToString(),
+                [TransactionDataKeys.TotalTurns] = totalTurns.ToString(),
+                [TransactionDataKeys.PlayerVictory] = playerVictory.ToString(),
+                [TransactionDataKeys.Victor] = victorRefName,
+                [TransactionDataKeys.Defeated] = defeatedRefName,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }

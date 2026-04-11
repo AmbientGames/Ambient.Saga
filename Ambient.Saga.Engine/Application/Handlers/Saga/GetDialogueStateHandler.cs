@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
@@ -6,6 +6,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Evaluation;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -96,7 +97,7 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
             }
 
             // Get dialogue tree from DialogueStarted transaction
-            var dialogueTreeRef = dialogueStarted.Data["DialogueTreeRef"];
+            var dialogueTreeRef = dialogueStarted.Data[TransactionDataKeys.DialogueTreeRef];
             var dialogueTree = _world.Gameplay.DialogueTrees?.FirstOrDefault(dt => dt.RefName == dialogueTreeRef);
             if (dialogueTree == null)
             {
@@ -122,7 +123,7 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
 
             foreach (var visitedTx in visitedNodes)
             {
-                var nodeId = visitedTx.Data["DialogueNodeId"];
+                var nodeId = visitedTx.Data[TransactionDataKeys.DialogueNodeId];
                 System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Navigating to node: {nodeId}");
 
                 // Find the choice that led to this node

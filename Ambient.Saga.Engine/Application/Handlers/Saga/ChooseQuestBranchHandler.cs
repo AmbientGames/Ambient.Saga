@@ -5,6 +5,7 @@ using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -125,11 +126,11 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["QuestRef"] = command.QuestRef,
-                    ["StageRef"] = command.StageRef,
-                    ["BranchRef"] = command.BranchRef,
-                    ["DisplayName"] = chosenBranch.DisplayName ?? chosenBranch.RefName,
-                    ["NextStage"] = chosenBranch.NextStage ?? string.Empty
+                    [TransactionDataKeys.QuestRef] = command.QuestRef,
+                    [TransactionDataKeys.StageRef] = command.StageRef,
+                    [TransactionDataKeys.BranchRef] = command.BranchRef,
+                    [TransactionDataKeys.DisplayName] = chosenBranch.DisplayName ?? chosenBranch.RefName,
+                    [TransactionDataKeys.NextStage] = chosenBranch.NextStage ?? string.Empty
                 }
             };
 

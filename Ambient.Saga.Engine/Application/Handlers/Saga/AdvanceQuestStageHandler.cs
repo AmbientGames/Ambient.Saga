@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Quests;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -100,9 +101,9 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["QuestRef"] = command.QuestRef,
-                    ["FromStage"] = questState.CurrentStage,
-                    ["NextStage"] = nextStageRef ?? string.Empty
+                    [TransactionDataKeys.QuestRef] = command.QuestRef,
+                    [TransactionDataKeys.FromStage] = questState.CurrentStage,
+                    [TransactionDataKeys.NextStage] = nextStageRef ?? string.Empty
                 }
             };
 

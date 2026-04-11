@@ -1,10 +1,11 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -77,9 +78,9 @@ internal sealed class GetDialogueOptionsHandler : IRequestHandler<GetDialogueOpt
             var dialogueHistory = instance.GetCommittedTransactions()
                 .Where(t => (t.Type == SagaTransactionType.DialogueStarted || t.Type == SagaTransactionType.DialogueNodeVisited) &&
                            t.Data.ContainsKey("CharacterRef") &&
-                           t.Data["CharacterRef"] == query.CharacterRef &&
+                           t.Data[TransactionDataKeys.CharacterRef] == query.CharacterRef &&
                            t.Data.ContainsKey("DialogueTreeRef") &&
-                           t.Data["DialogueTreeRef"] == query.DialogueTreeRef)
+                           t.Data[TransactionDataKeys.DialogueTreeRef] == query.DialogueTreeRef)
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
 
@@ -97,7 +98,7 @@ internal sealed class GetDialogueOptionsHandler : IRequestHandler<GetDialogueOpt
             // Get visited nodes
             var visitedNodes = dialogueHistory
                 .Where(t => t.Data.ContainsKey("NodeId"))
-                .Select(t => t.Data["NodeId"])
+                .Select(t => t.Data[TransactionDataKeys.NodeId])
                 .ToHashSet();
 
             // For now, return placeholder options based on node ID

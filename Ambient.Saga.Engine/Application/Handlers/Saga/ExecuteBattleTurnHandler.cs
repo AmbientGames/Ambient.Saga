@@ -1,4 +1,4 @@
-﻿using Ambient.Domain.Entities;
+using Ambient.Domain.Entities;
 using MediatR;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -10,6 +10,7 @@ using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -72,7 +73,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 ReconstructBattleState(battleStartedTx, instance);
 
             // Get enemy AI (need to recreate with same seed for determinism)
-            var enemyCharacterRef = battleStartedTx.Data["EnemyCharacterRef"];
+            var enemyCharacterRef = battleStartedTx.Data[TransactionDataKeys.EnemyCharacterRef];
             var enemyCharacter = _world.GetCharacterByRefName(enemyCharacterRef);
             if (enemyCharacter == null)
             {
@@ -105,7 +106,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 {
                     var turnTx = executedTurns[i];
                     var expectedTurnNumber = i + 1;
-                    var actualTurnNumber = int.Parse(turnTx.Data["TurnNumber"]);
+                    var actualTurnNumber = int.Parse(turnTx.Data[TransactionDataKeys.TurnNumber]);
 
                     if (actualTurnNumber != expectedTurnNumber)
                     {
@@ -121,12 +122,12 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             for (var i = 1; i < executedTurns.Count; i++)
             {
                 var turnTx = executedTurns[i];
-                var isPlayerTurn = bool.Parse(turnTx.Data["IsPlayerTurn"]);
+                var isPlayerTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
 
                 if (isPlayerTurn)
                 {
                     // Reconstruct avatar action from transaction
-                    var actionType = Enum.Parse<ActionType>(turnTx.Data["DecisionType"]);
+                    var actionType = Enum.Parse<ActionType>(turnTx.Data[TransactionDataKeys.DecisionType]);
                     var itemRef = turnTx.Data.TryGetValue("ItemRefName", out var item) ? item : null;
                     var action = new CombatAction { ActionType = actionType, Parameter = itemRef };
 
@@ -282,12 +283,12 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                             tellSeqNumbers.First(),
                             new Dictionary<string, object>
                             {
-                                ["AwaitingReaction"] = true,
-                                ["TellRefName"] = pending.Tell.RefName,
-                                ["TellText"] = pending.Tell.TellText,
-                                ["ReactionWindowMs"] = pending.Tell.ReactionWindowMs,
-                                ["BaseDamage"] = pending.BaseDamage,
-                                ["OptimalDefense"] = pending.Tell.OptimalDefense.ToString()
+                                [TransactionDataKeys.AwaitingReaction] = true,
+                                [TransactionDataKeys.TellRefName] = pending.Tell.RefName,
+                                [TransactionDataKeys.TellText] = pending.Tell.TellText,
+                                [TransactionDataKeys.ReactionWindowMs] = pending.Tell.ReactionWindowMs,
+                                [TransactionDataKeys.BaseDamage] = pending.BaseDamage,
+                                [TransactionDataKeys.OptimalDefense] = pending.Tell.OptimalDefense.ToString()
                             });
                     }
 
@@ -379,28 +380,28 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         // Parse initial state from BattleStarted transaction
         var playerCombatant = new Combatant
         {
-            RefName = battleStartedTx.Data["PlayerCombatantId"],
+            RefName = battleStartedTx.Data[TransactionDataKeys.PlayerCombatantId],
             DisplayName = "Player",  // Will be overridden by UI
-            Health = float.Parse(battleStartedTx.Data["PlayerHealth"]),
-            Stamina = float.Parse(battleStartedTx.Data["PlayerEnergy"]),
-            Strength = float.Parse(battleStartedTx.Data["PlayerStrength"]),
-            Defense = float.Parse(battleStartedTx.Data["PlayerDefense"]),
-            Speed = float.Parse(battleStartedTx.Data["PlayerSpeed"]),
-            Magic = float.Parse(battleStartedTx.Data["PlayerMagic"]),
+            Health = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerHealth]),
+            Stamina = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerEnergy]),
+            Strength = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerStrength]),
+            Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerDefense]),
+            Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerSpeed]),
+            Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.PlayerMagic]),
             AffinityRef = battleStartedTx.Data.TryGetValue("PlayerAffinity", out var pAff) ? pAff : null,
             CombatProfile = new Dictionary<string, string>()
         };
 
         var enemyCombatant = new Combatant
         {
-            RefName = battleStartedTx.Data["EnemyCharacterRef"],
+            RefName = battleStartedTx.Data[TransactionDataKeys.EnemyCharacterRef],
             DisplayName = "Enemy",  // Will be overridden by UI
-            Health = float.Parse(battleStartedTx.Data["EnemyHealth"]),
-            Stamina = float.Parse(battleStartedTx.Data["EnemyEnergy"]),
-            Strength = float.Parse(battleStartedTx.Data["EnemyStrength"]),
-            Defense = float.Parse(battleStartedTx.Data["EnemyDefense"]),
-            Speed = float.Parse(battleStartedTx.Data["EnemySpeed"]),
-            Magic = float.Parse(battleStartedTx.Data["EnemyMagic"]),
+            Health = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyHealth]),
+            Stamina = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyEnergy]),
+            Strength = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyStrength]),
+            Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyDefense]),
+            Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemySpeed]),
+            Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyMagic]),
             AffinityRef = battleStartedTx.Data.TryGetValue("EnemyAffinity", out var eAff) ? eAff : null,
             CombatProfile = new Dictionary<string, string>()
         };
@@ -440,12 +441,12 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
         foreach (var turnTx in turnTransactions)
         {
-            var isPlayerTurn = bool.Parse(turnTx.Data["IsPlayerTurn"]);
+            var isPlayerTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsPlayerTurn]);
             var combatant = isPlayerTurn ? playerCombatant : enemyCombatant;
 
             // Update health/energy from turn results
-            var targetHealthAfter = float.Parse(turnTx.Data["TargetHealthAfter"]);
-            var actorEnergyAfter = float.Parse(turnTx.Data["ActorEnergyAfter"]);
+            var targetHealthAfter = float.Parse(turnTx.Data[TransactionDataKeys.TargetHealthAfter]);
+            var actorEnergyAfter = float.Parse(turnTx.Data[TransactionDataKeys.ActorEnergyAfter]);
 
             // Actor's energy is updated
             combatant.Stamina = actorEnergyAfter;
@@ -474,11 +475,11 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
         }
 
-        var randomSeed = int.Parse(battleStartedTx.Data["RandomSeed"]);
+        var randomSeed = int.Parse(battleStartedTx.Data[TransactionDataKeys.RandomSeed]);
         var playerAffinityRefs = battleStartedTx.Data.TryGetValue("PlayerAffinities", out var affinities)
             ? affinities.Split(',').ToList()
             : new List<string>();
-        var enemyCharacterInstanceId = Guid.Parse(battleStartedTx.Data["EnemyCombatantId"]);
+        var enemyCharacterInstanceId = Guid.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyCombatantId]);
 
         return (playerCombatant, enemyCombatant, randomSeed, playerAffinityRefs, enemyCharacterInstanceId);
     }
@@ -514,17 +515,17 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         {
             var data = new Dictionary<string, string>
             {
-                ["CharacterInstanceId"] = enemyCharacterInstanceId.ToString(),
-                ["CharacterRef"] = enemyCharacter.RefName,
-                ["VictorAvatarId"] = command.AvatarId.ToString(),
-                ["DefeatMethod"] = "Battle",
-                ["BattleTransactionId"] = command.BattleInstanceId.ToString()
+                [TransactionDataKeys.CharacterInstanceId] = enemyCharacterInstanceId.ToString(),
+                [TransactionDataKeys.CharacterRef] = enemyCharacter.RefName,
+                [TransactionDataKeys.VictorAvatarId] = command.AvatarId.ToString(),
+                [TransactionDataKeys.DefeatMethod] = "Battle",
+                [TransactionDataKeys.BattleTransactionId] = command.BattleInstanceId.ToString()
             };
 
             // Add character tags for quest objective tracking
             if (enemyCharacter.Tags != null && enemyCharacter.Tags.Length > 0)
             {
-                data["CharacterTag"] = string.Join(",", enemyCharacter.Tags);
+                data[TransactionDataKeys.CharacterTag] = string.Join(",", enemyCharacter.Tags);
             }
 
             var characterDefeatedTx = new SagaTransaction

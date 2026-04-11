@@ -1,10 +1,11 @@
-﻿using MediatR;
+using MediatR;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -51,8 +52,8 @@ internal sealed class CompleteSagaHandler : IRequestHandler<CompleteSagaCommand,
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["SagaArcRef"] = command.SagaArcRef,
-                    ["CompletionMethod"] = command.CompletionMethod ?? "Manual completion"
+                    [TransactionDataKeys.SagaArcRef] = command.SagaArcRef,
+                    [TransactionDataKeys.CompletionMethod] = command.CompletionMethod ?? "Manual completion"
                 }
             };
 
@@ -74,8 +75,8 @@ internal sealed class CompleteSagaHandler : IRequestHandler<CompleteSagaCommand,
 
             var resultData = new Dictionary<string, object>
             {
-                ["SagaArcRef"] = command.SagaArcRef,
-                ["Completed"] = true
+                [TransactionDataKeys.SagaArcRef] = command.SagaArcRef,
+                [TransactionDataKeys.Completed] = true
             };
 
             return SagaCommandResult.Success(

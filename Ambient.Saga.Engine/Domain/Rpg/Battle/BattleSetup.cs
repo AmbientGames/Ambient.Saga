@@ -1,5 +1,6 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 
@@ -77,7 +78,7 @@ public class BattleSetup
         // Set starting stance
         if (!string.IsNullOrEmpty(AvatarStartingStanceRef))
         {
-            playerCombatant.CombatProfile["Stance"] = AvatarStartingStanceRef;
+            playerCombatant.CombatProfile[TransactionDataKeys.Stance] = AvatarStartingStanceRef;
             System.Diagnostics.Debug.WriteLine($"  Set starting stance: {AvatarStartingStanceRef}");
         }
 
@@ -104,7 +105,7 @@ public class BattleSetup
         InitializeEquippedSlots(enemyCombatant, LoadedWorld);
 
         // Set default stance for opponent
-        enemyCombatant.CombatProfile["Stance"] = "Balanced";
+        enemyCombatant.CombatProfile[TransactionDataKeys.Stance] = "Balanced";
         System.Diagnostics.Debug.WriteLine($"  Set opponent stance: Balanced");
 
         // Create companion combatants
@@ -134,7 +135,7 @@ public class BattleSetup
 
             // Initialize equipped slots
             InitializeEquippedSlots(companionCombatant, LoadedWorld);
-            companionCombatant.CombatProfile["Stance"] = "Balanced";
+            companionCombatant.CombatProfile[TransactionDataKeys.Stance] = "Balanced";
 
             companions.Add(companionCombatant);
             System.Diagnostics.Debug.WriteLine($"  Added companion: {companionCombatant.DisplayName} (HP: {companionCombatant.Health:F2})");

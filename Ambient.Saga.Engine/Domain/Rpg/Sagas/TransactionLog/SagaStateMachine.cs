@@ -1,8 +1,9 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
@@ -832,7 +833,7 @@ public class SagaStateMachine
         // For old simple quests, just update a generic progress counter
         var progressAmount = tx.TryGetData<int>("ProgressAmount", out var amount) ? amount : 1;
         var currentProgress = questState.ObjectiveProgress.GetValueOrDefault("_legacy_", 0);
-        questState.ObjectiveProgress["_legacy_"] = currentProgress + progressAmount;
+        questState.ObjectiveProgress[TransactionDataKeys._legacy_] = currentProgress + progressAmount;
     }
 
     private void ApplyEntityInteracted(SagaState state, SagaTransaction tx)
@@ -919,8 +920,8 @@ public class SagaStateMachine
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["StateJson"] = JsonSerializer.Serialize(state, SnapshotJsonOptions),
-                ["AtSequenceNumber"] = instance.CachedAtSequenceNumber.ToString()
+                [TransactionDataKeys.StateJson] = JsonSerializer.Serialize(state, SnapshotJsonOptions),
+                [TransactionDataKeys.AtSequenceNumber] = instance.CachedAtSequenceNumber.ToString()
             }
         };
     }
