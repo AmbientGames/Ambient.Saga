@@ -50,7 +50,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         }
     }
 
-    public ObservableCollection<TradeItem> TradeInventory => _tradeMode == "Buy" ? GetMerchantInventory() : GetPlayerInventory();
+    public ObservableCollection<TradeItem> TradeInventory => _tradeMode == "Buy" ? GetMerchantInventory() : GetAvatarInventory();
 
     // Category availability properties
     public bool HasEquipment => GetCategoryItemCount("Equipment") > 0;
@@ -200,7 +200,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<TradeItem> GetPlayerInventory()
+    private ObservableCollection<TradeItem> GetAvatarInventory()
     {
         var items = new ObservableCollection<TradeItem>();
 

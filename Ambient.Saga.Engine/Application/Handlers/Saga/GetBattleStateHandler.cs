@@ -207,7 +207,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
         }
     }
 
-    private (Combatant avatar, Combatant enemy, int randomSeed, List<string> playerAffinityRefs, Guid enemyCharacterInstanceId)
+    private (Combatant avatar, Combatant enemy, int randomSeed, List<string> avatarAffinityRefs, Guid enemyCharacterInstanceId)
         ReconstructCombatants(SagaTransaction battleStartedTx, SagaInstance instance)
     {
         // Parse initial state from BattleStarted transaction

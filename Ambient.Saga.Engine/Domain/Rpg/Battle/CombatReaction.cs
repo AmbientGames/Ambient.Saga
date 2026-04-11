@@ -5,7 +5,7 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 /// <summary>
 /// Defense reactions available to players during enemy attack telegraphs.
 /// Inspired by Expedition 33's active defense mechanics adapted for text-based play.
-/// Named PlayerDefenseType to avoid conflict with XSD-generated PlayerDefenseType.
+/// Named AvatarDefenseType to avoid conflict with XSD-generated AvatarDefenseType.
 /// </summary>
 public enum AvatarDefenseType
 {

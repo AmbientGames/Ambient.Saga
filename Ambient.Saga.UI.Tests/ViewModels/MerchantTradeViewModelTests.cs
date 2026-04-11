@@ -446,7 +446,7 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
-    public void TradeInventory_InSellMode_ReturnsPlayerItems()
+    public void TradeInventory_InSellMode_ReturnsAvatarItems()
     {
         // Give avatar an item
         _avatar.Capabilities.Equipment = new[]
@@ -610,7 +610,7 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
-    public void SellItemInventory_WithEmptyPlayerInventory_ReturnsEmpty()
+    public void SellItemInventory_WithEmptyAvatarInventory_ReturnsEmpty()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
         viewModel.TradeMode = "Sell";

@@ -91,7 +91,7 @@ public class ModalManager
         // Complex modals (need ModalManager reference)
         _modalRegistry.Register(new Adapters.DialogueModalAdapter(this));
         var battleAdapter = new Adapters.BattleModalAdapter(this);
-        battleAdapter.PlayerDefeated += () => BattleDefeatRequested?.Invoke();
+        battleAdapter.AvatarDefeated += () => BattleDefeatRequested?.Invoke();
         _modalRegistry.Register(battleAdapter);
 
         // Quest modals (need IMediator)

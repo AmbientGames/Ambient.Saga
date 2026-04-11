@@ -1302,14 +1302,6 @@ public partial class SagaMainViewModel : ObservableObject
             // Inject persistence services into AchievementViewModel
             Achievements?.SetPersistence(_worldRepository, _steamAchievementService);
 
-            // NOTE: Saga instances are created on-demand when first accessed
-            // GetOrCreateSinglePlayerInstance will create them as needed
-
-            // NOTE: Old mutable instance collections removed!
-            // All character/landmark/structure state now comes from SagaState (event-sourced)
-            // State is derived by replaying Saga transactions, not stored separately
-
-
             // Replay pending Steam achievements if avatar exists
             if (PlayerAvatar != null)
             {

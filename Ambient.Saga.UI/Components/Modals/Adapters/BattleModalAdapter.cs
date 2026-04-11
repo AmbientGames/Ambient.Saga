@@ -18,10 +18,10 @@ public class BattleModalAdapter : IModal
     /// <summary>
     /// Subscribe to be notified when the avatar is defeated in battle.
     /// </summary>
-    public event Action? PlayerDefeated
+    public event Action? AvatarDefeated
     {
-        add => _modal.PlayerDefeated += value;
-        remove => _modal.PlayerDefeated -= value;
+        add => _modal.AvatarDefeated += value;
+        remove => _modal.AvatarDefeated -= value;
     }
 
     public string Name => "BossBattle";

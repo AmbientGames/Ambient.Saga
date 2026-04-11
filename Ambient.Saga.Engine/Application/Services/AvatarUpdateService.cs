@@ -255,7 +255,7 @@ public class AvatarUpdateService : IAvatarUpdateService
 
         foreach (var turn in allBattleTurns)
         {
-            var isAvatarTurn = turn.Data.TryGetValue(TransactionDataKeys.IsAvatarTurn, out var isPlayerStr) && isPlayerStr == "True";
+            var isAvatarTurn = turn.Data.TryGetValue(TransactionDataKeys.IsAvatarTurn, out var isAvatarStr) && isAvatarStr == "True";
 
             if (isAvatarTurn)
             {

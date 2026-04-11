@@ -24,7 +24,7 @@ public class BattleModal
     /// Fired when the avatar is defeated in battle. Games subscribe to handle defeat
     /// differently from environmental death (e.g. teleport home, keep inventory).
     /// </summary>
-    public event Action? PlayerDefeated;
+    public event Action? AvatarDefeated;
 
     private BattleStateResult? _currentState;
     private bool _isInitialized = false;
@@ -94,7 +94,7 @@ public class BattleModal
             {
                 _enemyTurnDelay = 0f;
                 _waitingForEnemyTurn = false;
-                // State will automatically refresh and show PlayerTurn
+                // State will automatically refresh and show AvatarTurn
             }
         }
     }
@@ -210,7 +210,7 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        var isPlayerTurn = _currentState.BattleState == BattleState.AvatarTurn && !_waitingForEnemyTurn && !_inReactionPhase;
+        var isAvatarTurn = _currentState.BattleState == BattleState.AvatarTurn && !_waitingForEnemyTurn && !_inReactionPhase;
 
         // Header showing whose turn it is
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.15f, 0.8f));
@@ -229,7 +229,7 @@ public class BattleModal
         {
             RenderReactionPanel(viewModel, character);
         }
-        else if (!isPlayerTurn)
+        else if (!isAvatarTurn)
         {
             ImGui.Spacing();
             var turnText = _waitingForEnemyTurn ? "Enemy is thinking..." : "Enemy's turn...";
@@ -552,8 +552,8 @@ public class BattleModal
         float staminaGained = 0f;
         bool wasOptimal = false;
         bool timedOut = reaction == AvatarDefenseType.None && _reactionTimeRemaining <= 0;
-        float playerHealthAfter = _currentState?.AvatarCombatant?.Health ?? 1.0f;
-        float playerEnergyAfter = _currentState?.AvatarCombatant?.Stamina ?? 1.0f;
+        float avatarHealthAfter = _currentState?.AvatarCombatant?.Health ?? 1.0f;
+        float avatarEnergyAfter = _currentState?.AvatarCombatant?.Stamina ?? 1.0f;
         float enemyHealthAfter = _currentState?.EnemyCombatant?.Health ?? 1.0f;
 
         // If we have a BattleEngine, resolve the reaction properly
@@ -572,8 +572,8 @@ public class BattleModal
                 // Get updated combatant states from engine
                 var avatar = _battleEngine.GetAvatar();
                 var enemy = _battleEngine.GetEnemy();
-                playerHealthAfter = avatar.Health;
-                playerEnergyAfter = avatar.Stamina;
+                avatarHealthAfter = avatar.Health;
+                avatarEnergyAfter = avatar.Stamina;
                 enemyHealthAfter = enemy.Health;
 
                 System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction resolved: damage={finalDamage}, counter={counterDamage}, optimal={wasOptimal}");
@@ -599,8 +599,8 @@ public class BattleModal
                 StaminaGained = staminaGained,
                 WasOptimal = wasOptimal,
                 TimedOut = timedOut,
-                AvatarHealthAfter = playerHealthAfter,
-                AvatarEnergyAfter = playerEnergyAfter,
+                AvatarHealthAfter = avatarHealthAfter,
+                AvatarEnergyAfter = avatarEnergyAfter,
                 EnemyHealthAfter = enemyHealthAfter
             };
 
@@ -633,8 +633,8 @@ public class BattleModal
 
     private void RenderCombatantPanel(Combatant combatant, string title)
     {
-        var isPlayer = title == "Avatar";
-        var titleColor = isPlayer ? new Vector4(0.4f, 0.9f, 0.4f, 1.0f) : new Vector4(1.0f, 0.4f, 0.4f, 1.0f);
+        var isAvatar = title == "Avatar";
+        var titleColor = isAvatar ? new Vector4(0.4f, 0.9f, 0.4f, 1.0f) : new Vector4(1.0f, 0.4f, 0.4f, 1.0f);
 
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.08f, 0.08f, 0.1f, 0.9f));
         ImGui.BeginChild($"{title}Panel", new Vector2(0, 0), ImGuiChildFlags.Borders);
@@ -866,7 +866,7 @@ public class BattleModal
         {
             if (_currentState?.AvatarVictory == false)
             {
-                PlayerDefeated?.Invoke();
+                AvatarDefeated?.Invoke();
             }
             modalManager.CloseModal("BossBattle");
         }

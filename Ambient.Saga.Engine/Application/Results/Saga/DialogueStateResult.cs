@@ -38,7 +38,7 @@ public class DialogueStateResult
 }
 
 /// <summary>
-/// A dialogue choice option available to the player
+/// A dialogue choice option available to the avatar
 /// </summary>
 public class DialogueChoiceOption
 {
