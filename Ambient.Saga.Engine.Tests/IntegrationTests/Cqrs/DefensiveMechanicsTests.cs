@@ -189,14 +189,14 @@ public class DefensiveMechanicsTests
     public void OffensiveAction_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant defends, then attacks
-        var player = CreateCombatant("Avatar", strength: 0.15f);
+        var avatar = CreateCombatant("Avatar", strength: 0.15f);
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Defend first
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        Assert.True(avatar.IsDefending);
         _output.WriteLine("After Defend: IsDefending=true");
 
         // Skip enemy turn
@@ -211,8 +211,8 @@ public class DefensiveMechanicsTests
         });
 
         // ASSERT: Defensive states cleared
-        Assert.False(player.IsDefending);
-        Assert.False(player.IsAdjusting);
+        Assert.False(avatar.IsDefending);
+        Assert.False(avatar.IsAdjusting);
         _output.WriteLine("After Attack: IsDefending=false, IsAdjusting=false");
     }
 
@@ -255,16 +255,16 @@ public class DefensiveMechanicsTests
     public void ConsumableUse_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant defends, then uses consumable
-        var player = CreateCombatant("Avatar", strength: 0.10f);
-        player.Capabilities!.Consumables = new[] { new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 1 } };
+        var avatar = CreateCombatant("Avatar", strength: 0.10f);
+        avatar.Capabilities!.Consumables = new[] { new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 1 } };
 
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Defend first
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        Assert.True(avatar.IsDefending);
 
         // Skip enemy turn
         engine.ExecuteEnemyTurn();
@@ -277,7 +277,7 @@ public class DefensiveMechanicsTests
         });
 
         // ASSERT: Defensive state cleared
-        Assert.False(player.IsDefending);
+        Assert.False(avatar.IsDefending);
         _output.WriteLine("After consumable use: defensive state cleared");
     }
 
@@ -285,9 +285,9 @@ public class DefensiveMechanicsTests
     public void Flee_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant adjusts, then flees
-        var player = CreateCombatant("Avatar", speed: 0.20f);  // High speed for flee success
+        var avatar = CreateCombatant("Avatar", speed: 0.20f);  // High speed for flee success
         var enemy = CreateCombatant("Enemy", speed: 0.05f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
         engine.StartBattle();  // Enemy attacks first, then it's player's turn
 
         // Adjust loadout first
@@ -296,7 +296,7 @@ public class DefensiveMechanicsTests
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:WoodenSword"
         });
-        Assert.True(player.IsAdjusting);
+        Assert.True(avatar.IsAdjusting);
 
         // Skip enemy turn
         engine.ExecuteEnemyTurn();
@@ -305,7 +305,7 @@ public class DefensiveMechanicsTests
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Flee });
 
         // ASSERT: Defensive state cleared (even if flee fails)
-        Assert.False(player.IsAdjusting);
+        Assert.False(avatar.IsAdjusting);
         _output.WriteLine("After flee attempt: defensive state cleared");
     }
 

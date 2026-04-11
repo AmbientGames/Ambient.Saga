@@ -614,8 +614,8 @@ public class InventoryPanel
                         if (tool.Condition < 1f)
                         {
                             ImGui.Spacing();
-                            var playerCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
-                            var canAfford = playerCredits >= SharpenCost;
+                            var avatarCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
+                            var canAfford = avatarCredits >= SharpenCost;
                             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits";
                             var isPendingSharpen = _pendingSharpenOperations.Contains(tool.ToolRef);
 
@@ -637,7 +637,7 @@ public class InventoryPanel
 
                                 if (!canAfford && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
                                 {
-                                    ImGui.SetTooltip($"Not enough {currencyName} (need {SharpenCost}, have {playerCredits:F0})");
+                                    ImGui.SetTooltip($"Not enough {currencyName} (need {SharpenCost}, have {avatarCredits:F0})");
                                 }
                             }
                         }

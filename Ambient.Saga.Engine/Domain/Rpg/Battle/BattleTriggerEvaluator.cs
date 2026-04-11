@@ -119,7 +119,7 @@ public class BattleTriggerEvaluator
                 context.EnemyHealthPercent > trigger.Value,
 
             // Player health threshold check
-            BattleTriggerCondition.PlayerHealthBelow =>
+            BattleTriggerCondition.AvatarHealthBelow =>
                 context.AvatarHealthPercent < trigger.Value,
 
             // Turn-based trigger (fires when turn number is reached)

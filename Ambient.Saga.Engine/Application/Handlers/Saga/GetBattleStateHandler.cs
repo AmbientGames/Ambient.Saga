@@ -242,9 +242,9 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
         };
 
         // Parse equipment and equipped slots
-        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarEquippedSlots, out var playerSlots))
+        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarEquippedSlots, out var avatarSlots))
         {
-            foreach (var slot in playerSlots.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            foreach (var slot in avatarSlots.Split(',', StringSplitOptions.RemoveEmptyEntries))
             {
                 var parts = slot.Split(':');
                 if (parts.Length >= 2)

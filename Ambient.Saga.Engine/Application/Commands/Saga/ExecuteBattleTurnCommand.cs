@@ -10,7 +10,7 @@ namespace Ambient.Saga.Engine.Application.Commands.Saga;
 /// Similar to SelectDialogueChoiceCommand - processes avatar action and creates transaction.
 ///
 /// Side Effects:
-/// - Creates BattleTurnExecuted transaction for player turn
+/// - Creates BattleTurnExecuted transaction for avatar turn
 /// - Creates BattleTurnExecuted transaction for enemy turn (if battle continues)
 /// - Creates BattleEnded transaction if battle finishes
 /// - Creates CharacterDefeated transaction if enemy is defeated

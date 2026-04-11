@@ -148,8 +148,8 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
 
             // Create transaction for avatar's turn
             var turnNumber = executedTurns.Count + 1;
-            var playerAfterAction = battleEngine.GetAvatar();
-            var playerTurnTx = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
+            var avatarAfterAction = battleEngine.GetAvatar();
+            var avatarTurnTx = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
                 command.AvatarId.ToString(),
                 command.BattleInstanceId,
                 turnNumber,
@@ -162,12 +162,12 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                 avatarEvent.TargetName,
                 avatarEvent.TargetHealthAfter,
                 avatarEvent.ActorEnergyAfter,
-                playerAfterAction,
+                avatarAfterAction,
                 _world,
                 instance.InstanceId);
 
-            instance.AddTransaction(playerTurnTx);
-            newTransactions.Add(playerTurnTx);
+            instance.AddTransaction(avatarTurnTx);
+            newTransactions.Add(avatarTurnTx);
 
             System.Diagnostics.Debug.WriteLine($"[ExecuteBattleTurn] Avatar turn: {command.AvatarAction.ActionType}, dealt {avatarEvent.Damage:F2} damage");
 
@@ -220,7 +220,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                         command.BattleInstanceId,
                         turnNumber,
                         companionEvent.ActorName,
-                        false,  // Not player turn (companion is allied but AI-controlled)
+                        false,  // Not avatar turn (companion is allied but AI-controlled)
                         companionEvent.DecisionType,
                         companionEvent.ItemRefName,
                         companionEvent.Damage,
@@ -299,7 +299,7 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
                         command.BattleInstanceId,
                         turnNumber,
                         enemyEvent.ActorName,
-                        false,  // Not player turn
+                        false,  // Not avatar turn
                         enemyEvent.DecisionType,
                         enemyEvent.ItemRefName,
                         enemyEvent.Damage,
@@ -407,9 +407,9 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
         };
 
         // Parse equipment and equipped slots
-        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarEquippedSlots, out var playerSlots))
+        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarEquippedSlots, out var avatarSlots))
         {
-            foreach (var slot in playerSlots.Split(','))
+            foreach (var slot in avatarSlots.Split(','))
             {
                 var parts = slot.Split(':');
                 if (parts.Length >= 2)

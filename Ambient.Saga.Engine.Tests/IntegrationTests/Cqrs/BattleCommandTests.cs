@@ -120,7 +120,7 @@ public class BattleCommandTests : IDisposable
         battleSetup.OpponentCapabilities = weakBoss.Capabilities ?? new ItemCollection();
 
         var battleEngine = battleSetup.CreateBattleEngine();
-        var playerCombatant = battleEngine.GetAvatar();
+        var avatarCombatant = battleEngine.GetAvatar();
         var enemyCombatant = battleEngine.GetEnemy();
 
         var battleResult = await _mediator.Send(new StartBattleCommand
@@ -128,7 +128,7 @@ public class BattleCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             EnemyCharacterInstanceId = bossInstanceId,
-            AvatarCombatant = playerCombatant,
+            AvatarCombatant = avatarCombatant,
             EnemyCombatant = enemyCombatant,
             AvatarAffinityRefs = new List<string> { "Physical" },
             EnemyMind = new CombatAI(_world),

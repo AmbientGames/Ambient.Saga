@@ -138,10 +138,10 @@ public class BattleTriggerEvaluatorTests
 
     #endregion
 
-    #region PlayerHealthBelow Trigger Tests
+    #region AvatarHealthBelow Trigger Tests
 
     [Fact]
-    public void Evaluate_PlayerHealthBelow_TriggersWhenPlayerHealthIsBelow()
+    public void Evaluate_AvatarHealthBelow_TriggersWhenAvatarHealthIsBelow()
     {
         // Arrange
         var evaluator = new BattleTriggerEvaluator();
@@ -149,7 +149,7 @@ public class BattleTriggerEvaluatorTests
         {
             new CharacterTrigger
             {
-                Condition = BattleTriggerCondition.PlayerHealthBelow,
+                Condition = BattleTriggerCondition.AvatarHealthBelow,
                 Value = 25f, // Trigger when player health is below 25%
                 DialogueTreeRef = "BossMocking",
                 StartNodeId = "you_are_weak"

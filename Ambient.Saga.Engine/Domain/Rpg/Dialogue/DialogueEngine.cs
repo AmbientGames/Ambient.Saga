@@ -139,10 +139,10 @@ public class DialogueEngine
         if (_currentNode == null || _currentNode.Choice == null)
             return Array.Empty<DialogueChoice>();
 
-        var playerCredits = _stateProvider.GetCredits();
+        var avatarCredits = _stateProvider.GetCredits();
 
         return _currentNode.Choice
-            .Where(c => c.Cost <= playerCredits)
+            .Where(c => c.Cost <= avatarCredits)
             .ToArray();
     }
 

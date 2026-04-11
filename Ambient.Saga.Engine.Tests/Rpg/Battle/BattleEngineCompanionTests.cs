@@ -25,34 +25,34 @@ public class BattleEngineCompanionTests
     public void Constructor_WithCompanions_InitializesParty()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 50);
         var companion1 = CreateCombatant("Companion1", 80);
         var companion2 = CreateCombatant("Companion2", 60);
 
         // Act
         var engine = new BattleEngine(
-            player, enemy,
+            avatar, enemy,
             enemyMind: null,
             world: _world,
             companions: new List<Combatant> { companion1, companion2 });
 
         // Assert
-        Assert.Equal(3, engine.Party.Count);  // Player + 2 companions
+        Assert.Equal(3, engine.Party.Count);  // Avatar + 2 companions
         Assert.Contains(engine.Party, c => c.RefName == "Avatar");
         Assert.Contains(engine.Party, c => c.RefName == "Companion1");
         Assert.Contains(engine.Party, c => c.RefName == "Companion2");
     }
 
     [Fact]
-    public void Constructor_WithoutCompanions_PlayerOnlyInParty()
+    public void Constructor_WithoutCompanions_AvatarOnlyInParty()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 50);
 
         // Act
-        var engine = new BattleEngine(player, enemy);
+        var engine = new BattleEngine(avatar, enemy);
 
         // Assert
         Assert.Single(engine.Party);
@@ -67,13 +67,13 @@ public class BattleEngineCompanionTests
     public void StartBattle_EnemyMovesFirst()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 50);
         var companion = CreateCombatant("Companion", 80);
         var enemyAI = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, enemyAI, _world,
+            avatar, enemy, enemyAI, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { companion });
 
@@ -87,27 +87,27 @@ public class BattleEngineCompanionTests
     }
 
     [Fact]
-    public void AfterPlayerTurn_CompanionTurnsFollow()
+    public void AfterAvatarTurn_CompanionTurnsFollow()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 100);
         var companion1 = CreateCombatant("Companion1", 80);
         var companion2 = CreateCombatant("Companion2", 60);
         var ai = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { companion1, companion2 });
 
         engine.StartBattle();  // Enemy moves first
 
-        // Act - Player executes their turn
-        var playerResult = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
+        // Act - Avatar executes their turn
+        var avatarResult = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Should now be companion turn
-        Assert.True(playerResult.Success);
+        Assert.True(avatarResult.Success);
         Assert.Equal(BattleState.CompanionTurn, engine.State);
         Assert.NotNull(engine.CurrentCompanion);
     }
@@ -116,13 +116,13 @@ public class BattleEngineCompanionTests
     public void CompanionTurn_ExecutesAIDecision()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 100);
         var companion = CreateCombatant("Companion", 80);
         var ai = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { companion });
 
@@ -142,18 +142,18 @@ public class BattleEngineCompanionTests
     public void AfterAllCompanionTurns_EnemyTurnFollows()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 200);  // High HP to survive
         var companion = CreateCombatant("Companion", 80);
         var ai = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { companion });
 
         engine.StartBattle();  // Enemy turn
-        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });  // Player turn
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });  // Avatar turn
 
         // Act - Execute companion's turn
         var result = engine.ExecuteCompanionTurn();
@@ -168,28 +168,28 @@ public class BattleEngineCompanionTests
     #region Targeting Tests
 
     [Fact]
-    public void EnemyTargeting_CanTargetPlayer()
+    public void EnemyTargeting_CanTargetAvatar()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 50);
         var companion = CreateCombatant("Companion", 80);
         var ai = new CombatAI(_world);
 
-        // Use a seed where enemy targets player
+        // Use a seed where enemy targets avatar
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 42,  // Testing seed
             companions: new List<Combatant> { companion });
 
         // Act
         engine.StartBattle();
 
-        // Assert - Enemy should attack either player or companion
+        // Assert - Enemy should attack either avatar or companion
         var enemyAction = engine.ActionHistory.First();
         Assert.True(
             enemyAction.TargetName == "Avatar" || enemyAction.TargetName == "Companion",
-            $"Enemy targeted {enemyAction.TargetName}, expected Player or Companion");
+            $"Enemy targeted {enemyAction.TargetName}, expected Avatar or Companion");
     }
 
     [Fact]
@@ -226,14 +226,14 @@ public class BattleEngineCompanionTests
     public void EnemyTargeting_OnlyTargetsAliveCombatants()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 100);
         var deadCompanion = CreateCombatant("DeadCompanion", 0);  // Already dead
         var aliveCompanion = CreateCombatant("AliveCompanion", 80);
         var ai = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { deadCompanion, aliveCompanion });
 
@@ -250,24 +250,24 @@ public class BattleEngineCompanionTests
     #region Victory/Defeat Conditions
 
     [Fact]
-    public void PlayerDefeat_WhenPlayerDies_BattleEnds()
+    public void AvatarDefeat_WhenAvatarDies_BattleEnds()
     {
-        // Arrange - Player with very low HP
-        var player = CreateCombatant("Avatar", 1);
+        // Arrange - Avatar with very low HP
+        var avatar = CreateCombatant("Avatar", 1);
         var enemy = CreateCombatant("Enemy", 100, strength: 50);  // High damage
         var companion = CreateCombatant("Companion", 100);
         var ai = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { companion });
 
         // Act
-        engine.StartBattle();  // Enemy attacks, likely kills player
+        engine.StartBattle();  // Enemy attacks, likely kills avatar
 
-        // Assert - Battle should end in defeat if player died
-        if (!player.IsAlive)
+        // Assert - Battle should end in defeat if avatar died
+        if (!avatar.IsAlive)
         {
             Assert.Equal(BattleState.Defeat, engine.State);
         }
@@ -277,14 +277,14 @@ public class BattleEngineCompanionTests
     public void CompanionDeath_BattleContinues()
     {
         // Arrange - Companion with very low HP
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 100);
         var weakCompanion = CreateCombatant("WeakCompanion", 1);
         var ai = new CombatAI(_world);
 
         // Create engine where we manually damage companion
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { weakCompanion });
 
@@ -294,10 +294,10 @@ public class BattleEngineCompanionTests
         weakCompanion.Health = 0;
 
         // Act - Continue battle
-        var playerResult = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
+        var avatarResult = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Battle should continue
-        Assert.True(playerResult.Success);
+        Assert.True(avatarResult.Success);
         Assert.NotEqual(BattleState.Defeat, engine.State);
     }
 
@@ -305,19 +305,19 @@ public class BattleEngineCompanionTests
     public void Victory_WhenEnemyDefeated_WithCompanions()
     {
         // Arrange - Enemy with very low HP
-        var player = CreateCombatant("Avatar", 100, strength: 50);  // High damage
+        var avatar = CreateCombatant("Avatar", 100, strength: 50);  // High damage
         var enemy = CreateCombatant("Enemy", 1);
         var companion = CreateCombatant("Companion", 80);
         var ai = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { companion });
 
         engine.StartBattle();
 
-        // Act - Player attacks weak enemy
+        // Act - Avatar attacks weak enemy
         engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Battle should end in victory
@@ -332,14 +332,14 @@ public class BattleEngineCompanionTests
     public void CompanionTurn_SkipsDeadCompanions()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 200);
         var deadCompanion = CreateCombatant("DeadCompanion", 0);  // Dead
         var aliveCompanion = CreateCombatant("AliveCompanion", 80);
         var ai = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { deadCompanion, aliveCompanion });
 
@@ -357,14 +357,14 @@ public class BattleEngineCompanionTests
     public void CompanionTurn_AllDeadCompanions_SkipsToEnemyTurn()
     {
         // Arrange
-        var player = CreateCombatant("Avatar", 100);
+        var avatar = CreateCombatant("Avatar", 100);
         var enemy = CreateCombatant("Enemy", 200);
         var deadCompanion1 = CreateCombatant("DeadCompanion1", 0);
         var deadCompanion2 = CreateCombatant("DeadCompanion2", 0);
         var ai = new CombatAI(_world);
 
         var engine = new BattleEngine(
-            player, enemy, ai, _world,
+            avatar, enemy, ai, _world,
             randomSeed: 12345,
             companions: new List<Combatant> { deadCompanion1, deadCompanion2 });
 

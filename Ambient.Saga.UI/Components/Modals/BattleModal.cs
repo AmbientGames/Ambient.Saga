@@ -172,10 +172,10 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        var player = _currentState.AvatarCombatant;
+        var avatar = _currentState.AvatarCombatant;
         var enemy = _currentState.EnemyCombatant;
 
-        if (player == null || enemy == null) return;
+        if (avatar == null || enemy == null) return;
 
         // Action buttons at top
         RenderActionButtons(viewModel, character);
@@ -192,7 +192,7 @@ public class BattleModal
 
             // Left column: Avatar stats
             ImGui.TableNextColumn();
-            RenderCombatantPanel(player, "Avatar");
+            RenderCombatantPanel(avatar, "Avatar");
 
             // Middle column: Battle log
             ImGui.TableNextColumn();
@@ -570,10 +570,10 @@ public class BattleModal
                 timedOut = reactionResult.TimedOut;
 
                 // Get updated combatant states from engine
-                var player = _battleEngine.GetAvatar();
+                var avatar = _battleEngine.GetAvatar();
                 var enemy = _battleEngine.GetEnemy();
-                playerHealthAfter = player.Health;
-                playerEnergyAfter = player.Stamina;
+                playerHealthAfter = avatar.Health;
+                playerEnergyAfter = avatar.Stamina;
                 enemyHealthAfter = enemy.Health;
 
                 System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction resolved: damage={finalDamage}, counter={counterDamage}, optimal={wasOptimal}");
@@ -905,7 +905,7 @@ public class BattleModal
             var battleEngine = battleSetup.CreateBattleEngine();
 
             // Get combatants from engine (they're configured by BattleSetup)
-            var playerCombatant = battleEngine.GetAvatar();
+            var avatarCombatant = battleEngine.GetAvatar();
             var enemyCombatant = battleEngine.GetEnemy();
 
             // Send StartBattleCommand
@@ -914,7 +914,7 @@ public class BattleModal
                 AvatarId = viewModel.PlayerAvatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 EnemyCharacterInstanceId = character.CharacterInstanceId,
-                AvatarCombatant = playerCombatant,
+                AvatarCombatant = avatarCombatant,
                 EnemyCombatant = enemyCombatant,
                 AvatarAffinityRefs = availableAffinities,
                 EnemyMind = new CombatAI(viewModel.CurrentWorld),
@@ -1071,9 +1071,9 @@ public class BattleModal
         CleanupEquipmentChangeModal();
 
         // Get available affinities from world configuration
-        var playerAffinityRefs = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
+        var avatarAffinityRefs = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
             .Select(a => a.RefName).ToList() ?? new List<string>();
-        _equipmentChangeModal = new EquipmentChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld, playerAffinityRefs);
+        _equipmentChangeModal = new EquipmentChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld, avatarAffinityRefs);
         _equipmentChangeModal.EquipmentChanged += OnEquipmentChanged;
         _equipmentChangeModal.Cancelled += OnModalCancelled;
         _showEquipmentChange = true;
@@ -1137,11 +1137,11 @@ public class BattleModal
         CleanupAffinityChangeModal();
 
         // Get avatar's available affinities (from avatar capabilities or default world affinities)
-        var playerAffinities = _currentState.AvatarAffinityRefs ??
+        var avatarAffinities = _currentState.AvatarAffinityRefs ??
             viewModel.CurrentWorld.Gameplay?.CharacterAffinities?.Select(a => a.RefName).ToList() ??
             new List<string>();
 
-        _affinityChangeModal = new AffinityChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld, playerAffinities);
+        _affinityChangeModal = new AffinityChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld, avatarAffinities);
         _affinityChangeModal.AffinitySelected += OnAffinitySelected;
         _affinityChangeModal.Cancelled += OnModalCancelled;
         _showAffinityChange = true;

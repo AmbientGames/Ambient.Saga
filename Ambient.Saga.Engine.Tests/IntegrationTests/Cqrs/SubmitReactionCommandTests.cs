@@ -95,7 +95,7 @@ public class SubmitReactionCommandTests : IDisposable
         battleSetup.OpponentCapabilities = new ItemCollection();
 
         var battleEngine = battleSetup.CreateBattleEngine();
-        var playerCombatant = battleEngine.GetAvatar();
+        var avatarCombatant = battleEngine.GetAvatar();
         var enemyCombatant = battleEngine.GetEnemy();
 
         var startResult = await _mediator.Send(new StartBattleCommand
@@ -103,7 +103,7 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             EnemyCharacterInstanceId = enemyInstanceId,
-            AvatarCombatant = playerCombatant,
+            AvatarCombatant = avatarCombatant,
             EnemyCombatant = enemyCombatant,
             AvatarAffinityRefs = new List<string> { "Physical" },
             EnemyMind = new CombatAI(_world),
