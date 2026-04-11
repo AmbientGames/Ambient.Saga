@@ -95,12 +95,12 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
                 var transactions = instance.GetCommittedTransactions();
                 var existingBranchChoice = transactions.FirstOrDefault(t =>
                     t.Type == SagaTransactionType.QuestBranchChosen &&
-                    t.GetData<string>("QuestRef") == command.QuestRef &&
-                    t.GetData<string>("StageRef") == command.StageRef);
+                    t.GetData<string>(TransactionDataKeys.QuestRef) == command.QuestRef &&
+                    t.GetData<string>(TransactionDataKeys.StageRef) == command.StageRef);
 
                 if (existingBranchChoice != null)
                 {
-                    var alreadyChosenBranch = existingBranchChoice.GetData<string>("BranchRef");
+                    var alreadyChosenBranch = existingBranchChoice.GetData<string>(TransactionDataKeys.BranchRef);
                     return SagaCommandResult.Failure(
                         instance.InstanceId,
                         $"A branch has already been chosen for this stage: '{alreadyChosenBranch}'. " +

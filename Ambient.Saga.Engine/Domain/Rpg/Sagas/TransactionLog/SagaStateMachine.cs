@@ -305,7 +305,7 @@ public class SagaStateMachine
 
     private void ApplyTriggerActivated(SagaState state, SagaTransaction tx)
     {
-        var triggerRef = tx.GetData<string>("SagaTriggerRef");
+        var triggerRef = tx.GetData<string>(TransactionDataKeys.SagaTriggerRef);
         if (string.IsNullOrEmpty(triggerRef) || !state.Triggers.TryGetValue(triggerRef, out var trigger))
             return;
 
@@ -326,7 +326,7 @@ public class SagaStateMachine
 
     private void ApplyTriggerCompleted(SagaState state, SagaTransaction tx)
     {
-        var triggerRef = tx.GetData<string>("SagaTriggerRef");
+        var triggerRef = tx.GetData<string>(TransactionDataKeys.SagaTriggerRef);
         if (string.IsNullOrEmpty(triggerRef) || !state.Triggers.TryGetValue(triggerRef, out var trigger))
             return;
 
@@ -336,14 +336,14 @@ public class SagaStateMachine
 
     private void ApplyCharacterSpawned(SagaState state, SagaTransaction tx)
     {
-        var characterInstanceId = tx.GetData<Guid>("CharacterInstanceId");
-        var characterRef = tx.GetData<string>("CharacterRef");
-        var triggerRef = tx.GetData<string>("SagaTriggerRef");
+        var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
+        var characterRef = tx.GetData<string>(TransactionDataKeys.CharacterRef);
+        var triggerRef = tx.GetData<string>(TransactionDataKeys.SagaTriggerRef);
 
         // Try new Saga-relative format first (X, Z), fallback to old GPS format (LongitudeX, LatitudeZ)
-        var x = tx.TryGetData<double>("X", out var xVal) ? xVal : tx.GetData<double>("Longitude");
-        var z = tx.TryGetData<double>("Z", out var zVal) ? zVal : tx.GetData<double>("Latitude");
-        var spawnHeight = tx.TryGetData<double>("SpawnHeight", out var heightVal) ? heightVal : tx.GetData<double>("Y");
+        var x = tx.TryGetData<double>(TransactionDataKeys.X, out var xVal) ? xVal : tx.GetData<double>("Longitude");
+        var z = tx.TryGetData<double>(TransactionDataKeys.Z, out var zVal) ? zVal : tx.GetData<double>("Latitude");
+        var spawnHeight = tx.TryGetData<double>(TransactionDataKeys.SpawnHeight, out var heightVal) ? heightVal : tx.GetData<double>(TransactionDataKeys.Y);
 
         if (characterInstanceId == Guid.Empty || string.IsNullOrEmpty(characterRef))
             return;
@@ -434,8 +434,8 @@ public class SagaStateMachine
 
     private void ApplyCharacterDamaged(SagaState state, SagaTransaction tx)
     {
-        var characterInstanceId = tx.GetData<Guid>("CharacterInstanceId");
-        var damage = tx.GetData<double>("Damage");
+        var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
+        var damage = tx.GetData<double>(TransactionDataKeys.Damage);
 
         if (characterInstanceId == Guid.Empty || !state.Characters.TryGetValue(characterInstanceId.ToString(), out var character))
             return;
@@ -462,7 +462,7 @@ public class SagaStateMachine
 
     private void ApplyCharacterHealed(SagaState state, SagaTransaction tx)
     {
-        var characterInstanceId = tx.GetData<Guid>("CharacterInstanceId");
+        var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
         var healing = tx.GetData<double>("Healing");
 
         if (characterInstanceId == Guid.Empty || !state.Characters.TryGetValue(characterInstanceId.ToString(), out var character))
@@ -473,7 +473,7 @@ public class SagaStateMachine
 
     private void ApplyCharacterDefeated(SagaState state, SagaTransaction tx)
     {
-        var characterInstanceId = tx.GetData<Guid>("CharacterInstanceId");
+        var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
 
         if (characterInstanceId == Guid.Empty || !state.Characters.TryGetValue(characterInstanceId.ToString(), out var character))
             return;
@@ -485,7 +485,7 @@ public class SagaStateMachine
 
     private void ApplyCharacterDespawned(SagaState state, SagaTransaction tx)
     {
-        var characterInstanceId = tx.GetData<Guid>("CharacterInstanceId");
+        var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
 
         if (characterInstanceId == Guid.Empty || !state.Characters.TryGetValue(characterInstanceId.ToString(), out var character))
             return;
@@ -523,9 +523,9 @@ public class SagaStateMachine
         // Dialogue rewards (items, traits, quest tokens) only awarded on FIRST visit
 
         var avatarId = tx.AvatarId ?? string.Empty;
-        var characterRef = tx.GetData<string>("CharacterRef") ?? string.Empty;
-        var dialogueTreeRef = tx.GetData<string>("DialogueTreeRef") ?? string.Empty;
-        var nodeId = tx.GetData<string>("DialogueNodeId") ?? string.Empty;
+        var characterRef = tx.GetData<string>(TransactionDataKeys.CharacterRef) ?? string.Empty;
+        var dialogueTreeRef = tx.GetData<string>(TransactionDataKeys.DialogueTreeRef) ?? string.Empty;
+        var nodeId = tx.GetData<string>(TransactionDataKeys.DialogueNodeId) ?? string.Empty;
 
         if (string.IsNullOrEmpty(avatarId) || string.IsNullOrEmpty(characterRef) || string.IsNullOrEmpty(nodeId))
             return;
@@ -545,10 +545,10 @@ public class SagaStateMachine
                 DialogueNodeId = nodeId,
                 FirstVisitedAt = tx.GetCanonicalTimestamp(),
                 VisitCount = 1,
-                ItemsAwarded = tx.GetData<string>("ItemsAwarded") ?? string.Empty,
-                TraitsAssigned = tx.GetData<string>("TraitsAssigned") ?? string.Empty,
-                QuestTokensAwarded = tx.GetData<string>("QuestTokensAwarded") ?? string.Empty,
-                CurrencyTransferred = tx.GetData<int>("CurrencyTransferred")
+                ItemsAwarded = tx.GetData<string>(TransactionDataKeys.ItemsAwarded) ?? string.Empty,
+                TraitsAssigned = tx.GetData<string>(TransactionDataKeys.TraitsAssigned) ?? string.Empty,
+                QuestTokensAwarded = tx.GetData<string>(TransactionDataKeys.QuestTokensAwarded) ?? string.Empty,
+                CurrencyTransferred = tx.GetData<int>(TransactionDataKeys.CurrencyTransferred)
             };
 
             state.DialogueNodeVisits[visitKey] = visit;
@@ -572,9 +572,9 @@ public class SagaStateMachine
 
     private void ApplyTraitAssigned(SagaState state, SagaTransaction tx)
     {
-        var characterRef = tx.GetData<string>("CharacterRef");
-        var traitType = tx.GetData<string>("TraitType");
-        var traitValue = tx.TryGetData<int?>("TraitValue", out var val) ? val : null;
+        var characterRef = tx.GetData<string>(TransactionDataKeys.CharacterRef);
+        var traitType = tx.GetData<string>(TransactionDataKeys.TraitType);
+        var traitValue = tx.TryGetData<int?>(TransactionDataKeys.TraitValue, out var val) ? val : null;
 
         if (string.IsNullOrEmpty(characterRef) || string.IsNullOrEmpty(traitType))
             return;
@@ -604,8 +604,8 @@ public class SagaStateMachine
 
     private void ApplyTraitRemoved(SagaState state, SagaTransaction tx)
     {
-        var characterRef = tx.GetData<string>("CharacterRef");
-        var traitType = tx.GetData<string>("TraitType");
+        var characterRef = tx.GetData<string>(TransactionDataKeys.CharacterRef);
+        var traitType = tx.GetData<string>(TransactionDataKeys.TraitType);
 
         if (string.IsNullOrEmpty(characterRef) || string.IsNullOrEmpty(traitType))
             return;
@@ -628,8 +628,8 @@ public class SagaStateMachine
 
     private void ApplyReputationChanged(SagaState state, SagaTransaction tx)
     {
-        var factionRef = tx.GetData<string>("FactionRef");
-        var reputationChange = tx.GetData<int>("Amount");
+        var factionRef = tx.GetData<string>(TransactionDataKeys.FactionRef);
+        var reputationChange = tx.GetData<int>(TransactionDataKeys.Amount);
 
         if (string.IsNullOrEmpty(factionRef))
             return;
@@ -659,7 +659,7 @@ public class SagaStateMachine
 
     private void ApplyLootAwarded(SagaState state, SagaTransaction tx)
     {
-        var characterInstanceId = tx.GetData<Guid>("CharacterInstanceId");
+        var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
 
         if (characterInstanceId == Guid.Empty || !state.Characters.TryGetValue(characterInstanceId.ToString(), out var character))
             return;
@@ -680,7 +680,7 @@ public class SagaStateMachine
 
     private void ApplyQuestAccepted(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return;
 
@@ -705,8 +705,8 @@ public class SagaStateMachine
             DisplayName = quest.DisplayName,
             CurrentStage = startStageRef,
             AcceptedAt = tx.GetCanonicalTimestamp(),
-            QuestGiverRef = tx.GetData<string>("QuestGiverRef") ?? string.Empty,
-            SagaRef = tx.GetData<string>("SagaArcRef") ?? state.SagaRef
+            QuestGiverRef = tx.GetData<string>(TransactionDataKeys.QuestGiverRef) ?? string.Empty,
+            SagaRef = tx.GetData<string>(TransactionDataKeys.SagaArcRef) ?? state.SagaRef
         };
 
         state.ActiveQuests[questRef] = questState;
@@ -714,9 +714,9 @@ public class SagaStateMachine
 
     private void ApplyQuestObjectiveCompleted(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
-        var stageRef = tx.GetData<string>("StageRef");
-        var objectiveRef = tx.GetData<string>("ObjectiveRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
+        var stageRef = tx.GetData<string>(TransactionDataKeys.StageRef);
+        var objectiveRef = tx.GetData<string>(TransactionDataKeys.ObjectiveRef);
 
         if (string.IsNullOrEmpty(questRef) || string.IsNullOrEmpty(stageRef) || string.IsNullOrEmpty(objectiveRef))
             return;
@@ -732,7 +732,7 @@ public class SagaStateMachine
         questState.CompletedObjectives[stageRef].Add(objectiveRef);
 
         // Update objective progress value
-        if (tx.TryGetData<int>("CurrentValue", out var currentValue))
+        if (tx.TryGetData<int>(TransactionDataKeys.CurrentValue, out var currentValue))
         {
             questState.ObjectiveProgress[objectiveRef] = currentValue;
         }
@@ -740,8 +740,8 @@ public class SagaStateMachine
 
     private void ApplyQuestStageAdvanced(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
-        var nextStageRef = tx.GetData<string>("NextStage");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
+        var nextStageRef = tx.GetData<string>(TransactionDataKeys.NextStage);
 
         if (string.IsNullOrEmpty(questRef))
             return;
@@ -756,8 +756,8 @@ public class SagaStateMachine
 
     private void ApplyQuestBranchChosen(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
-        var branchRef = tx.GetData<string>("BranchRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
+        var branchRef = tx.GetData<string>(TransactionDataKeys.BranchRef);
 
         if (string.IsNullOrEmpty(questRef) || string.IsNullOrEmpty(branchRef))
             return;
@@ -772,7 +772,7 @@ public class SagaStateMachine
 
     private void ApplyQuestCompleted(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return;
 
@@ -791,7 +791,7 @@ public class SagaStateMachine
 
     private void ApplyQuestFailed(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return;
 
@@ -810,7 +810,7 @@ public class SagaStateMachine
 
     private void ApplyQuestAbandoned(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return;
 
@@ -822,7 +822,7 @@ public class SagaStateMachine
     {
         // DEPRECATED: This is for backward compatibility only
         // New quests should use QuestObjectiveCompleted instead
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return;
 
@@ -838,7 +838,7 @@ public class SagaStateMachine
 
     private void ApplyEntityInteracted(SagaState state, SagaTransaction tx)
     {
-        var featureRef = tx.GetData<string>("FeatureRef");
+        var featureRef = tx.GetData<string>(TransactionDataKeys.FeatureRef);
         if (string.IsNullOrEmpty(featureRef))
             return;
 
@@ -929,7 +929,7 @@ public class SagaStateMachine
     private static bool TryDeserializeSnapshot(SagaTransaction snapshotTx, out SagaState state)
     {
         state = null!;
-        var json = snapshotTx.GetData<string>("StateJson");
+        var json = snapshotTx.GetData<string>(TransactionDataKeys.StateJson);
         if (string.IsNullOrEmpty(json))
             return false;
 

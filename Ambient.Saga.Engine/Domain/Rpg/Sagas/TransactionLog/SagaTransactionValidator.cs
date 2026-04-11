@@ -1,3 +1,4 @@
+using Ambient.Saga.Engine.Domain;
 namespace Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 /// <summary>
@@ -45,7 +46,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateCharacterDamaged(SagaState state, SagaTransaction tx)
     {
-        var id = tx.GetData<string>("CharacterInstanceId");
+        var id = tx.GetData<string>(TransactionDataKeys.CharacterInstanceId);
         if (string.IsNullOrEmpty(id))
             return (false, "Missing CharacterInstanceId");
 
@@ -60,7 +61,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateCharacterDefeated(SagaState state, SagaTransaction tx)
     {
-        var id = tx.GetData<string>("CharacterInstanceId");
+        var id = tx.GetData<string>(TransactionDataKeys.CharacterInstanceId);
         if (string.IsNullOrEmpty(id))
             return (false, "Missing CharacterInstanceId");
 
@@ -75,7 +76,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateCharacterAlive(SagaState state, SagaTransaction tx, string action)
     {
-        var id = tx.GetData<string>("CharacterInstanceId");
+        var id = tx.GetData<string>(TransactionDataKeys.CharacterInstanceId);
         if (string.IsNullOrEmpty(id))
             return (false, "Missing CharacterInstanceId");
 
@@ -90,7 +91,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateCharacterExists(SagaState state, SagaTransaction tx)
     {
-        var id = tx.GetData<string>("CharacterInstanceId");
+        var id = tx.GetData<string>(TransactionDataKeys.CharacterInstanceId);
         if (string.IsNullOrEmpty(id))
             return (false, "Missing CharacterInstanceId");
 
@@ -102,7 +103,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateLootAwarded(SagaState state, SagaTransaction tx)
     {
-        var id = tx.GetData<string>("CharacterInstanceId");
+        var id = tx.GetData<string>(TransactionDataKeys.CharacterInstanceId);
         if (string.IsNullOrEmpty(id))
             return (false, "Missing CharacterInstanceId");
 
@@ -120,7 +121,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateQuestAccepted(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return (false, "Missing QuestRef");
 
@@ -135,7 +136,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateQuestCompleted(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return (false, "Missing QuestRef");
 
@@ -153,7 +154,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateQuestActive(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return (false, "Missing QuestRef");
 
@@ -165,7 +166,7 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateQuestBranchChosen(SagaState state, SagaTransaction tx)
     {
-        var questRef = tx.GetData<string>("QuestRef");
+        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
         if (string.IsNullOrEmpty(questRef))
             return (false, "Missing QuestRef");
 

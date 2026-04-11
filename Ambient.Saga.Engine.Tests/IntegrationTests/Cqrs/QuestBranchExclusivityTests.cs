@@ -16,6 +16,7 @@ using Ambient.Saga.Engine.Tests.Helpers;
 using LiteDB;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
@@ -471,7 +472,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var transactions = instance.GetCommittedTransactions();
         var branchTransaction = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestBranchChosen);
         Assert.NotNull(branchTransaction);
-        Assert.Equal("TASK_A", branchTransaction.GetData<string>("BranchRef"));
+        Assert.Equal("TASK_A", branchTransaction.GetData<string>(TransactionDataKeys.BranchRef));
     }
 
     #endregion
@@ -622,11 +623,11 @@ public class QuestBranchExclusivityTests : IDisposable
         var branchTransaction = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestBranchChosen);
 
         Assert.NotNull(branchTransaction);
-        Assert.Equal("EXCLUSIVE_BRANCH_QUEST", branchTransaction.GetData<string>("QuestRef"));
-        Assert.Equal("CHOICE_STAGE", branchTransaction.GetData<string>("StageRef"));
-        Assert.Equal("PATH_A", branchTransaction.GetData<string>("BranchRef"));
-        Assert.Equal("The Path of Light", branchTransaction.GetData<string>("DisplayName"));
-        Assert.Equal("LIGHT_PATH", branchTransaction.GetData<string>("NextStage"));
+        Assert.Equal("EXCLUSIVE_BRANCH_QUEST", branchTransaction.GetData<string>(TransactionDataKeys.QuestRef));
+        Assert.Equal("CHOICE_STAGE", branchTransaction.GetData<string>(TransactionDataKeys.StageRef));
+        Assert.Equal("PATH_A", branchTransaction.GetData<string>(TransactionDataKeys.BranchRef));
+        Assert.Equal("The Path of Light", branchTransaction.GetData<string>(TransactionDataKeys.DisplayName));
+        Assert.Equal("LIGHT_PATH", branchTransaction.GetData<string>(TransactionDataKeys.NextStage));
     }
 
     #endregion

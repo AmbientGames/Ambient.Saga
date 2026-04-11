@@ -17,6 +17,7 @@ using Ambient.Saga.Engine.Tests.Helpers;
 using LiteDB;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
@@ -257,7 +258,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         var questAccepted = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestAccepted);
 
         Assert.NotNull(questAccepted);
-        Assert.Equal("DEFEAT_BANDITS", questAccepted.GetData<string>("QuestRef"));
+        Assert.Equal("DEFEAT_BANDITS", questAccepted.GetData<string>(TransactionDataKeys.QuestRef));
     }
 
     [Fact]
@@ -359,8 +360,8 @@ public class QuestCommandsIntegrationTests : IDisposable
         var objectiveCompleted = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestObjectiveCompleted);
 
         Assert.NotNull(objectiveCompleted);
-        Assert.Equal("DEFEAT_BANDITS_OBJ", objectiveCompleted.GetData<string>("ObjectiveRef"));
-        Assert.Equal("3", objectiveCompleted.GetData<string>("CurrentValue"));
+        Assert.Equal("DEFEAT_BANDITS_OBJ", objectiveCompleted.GetData<string>(TransactionDataKeys.ObjectiveRef));
+        Assert.Equal("3", objectiveCompleted.GetData<string>(TransactionDataKeys.CurrentValue));
     }
 
     [Fact]
