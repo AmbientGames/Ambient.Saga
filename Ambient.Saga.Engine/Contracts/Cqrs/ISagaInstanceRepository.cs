@@ -65,4 +65,10 @@ public interface ISagaInstanceRepository
     /// Get all Saga instances for an avatar.
     /// </summary>
     Task<List<SagaInstance>> GetAllInstancesForAvatarAsync(Guid avatarId, CancellationToken ct = default);
+
+    /// <summary>
+    /// Persist the sync watermark fields (LastSyncedSequenceNumber, LastSyncedAt, ServerVersion)
+    /// on the stored instance. Called after a successful push to avoid re-sending confirmed transactions.
+    /// </summary>
+    Task UpdateSyncWatermarkAsync(Guid instanceId, long lastSyncedSequenceNumber, DateTime lastSyncedAt, DateTime? serverVersion, CancellationToken ct = default);
 }

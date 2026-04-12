@@ -417,6 +417,35 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         return Task.FromResult(instances);
     }
 
+    public Task UpdateSyncWatermarkAsync(Guid instanceId, long lastSyncedSequenceNumber, DateTime lastSyncedAt, DateTime? serverVersion, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+            if (instance == null)
+                return Task.CompletedTask;
+
+            instance.LastSyncedSequenceNumber = lastSyncedSequenceNumber;
+            instance.LastSyncedAt = lastSyncedAt;
+            instance.ServerVersion = serverVersion;
+
+            _instances.Update(instance);
+
+            // Keep any cached copy in sync so the next GetOrCreate doesn't overwrite with stale values
+            if (_instanceCache.TryGetValue($"{instance.OwnerAvatarId}|{instance.SagaRef}", out var cached))
+            {
+                cached.LastSyncedSequenceNumber = lastSyncedSequenceNumber;
+                cached.LastSyncedAt = lastSyncedAt;
+                cached.ServerVersion = serverVersion;
+            }
+
+            return Task.CompletedTask;
+        }
+    }
+
     /// <summary>
     /// Marks any cached instance with the given ID as dirty so the next
     /// GetOrCreateInstanceAsync call reloads from DB instead of returning stale state.
