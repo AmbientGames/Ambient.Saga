@@ -1,5 +1,6 @@
 using Ambient.Application.Contracts;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 
 namespace Ambient.Infrastructure.GameLogic;
 
@@ -29,8 +30,8 @@ public class ContentPathResolver : IContentPathResolver
 {
     private readonly IGameSettings _gameSettings;
     private readonly ILogger<ContentPathResolver>? _logger;
-    private readonly Dictionary<string, string> _worldPathOverrides = new(StringComparer.OrdinalIgnoreCase);
-    private readonly Dictionary<string, string?> _modelPathCache = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, string> _worldPathOverrides = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, string?> _modelPathCache = new(StringComparer.OrdinalIgnoreCase);
 
     private const string DefaultPack = "default";
     private const string DefaultNamespace = "ambient_games";
