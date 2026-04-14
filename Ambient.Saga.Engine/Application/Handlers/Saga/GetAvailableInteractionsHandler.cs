@@ -143,18 +143,10 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
             //System.Diagnostics.Debug.WriteLine($"[BuildInteractableCharacters] Character '{characterState.CharacterRef}' at world ({characterWorldLat:F6}, {characterWorldLon:F6})");
 
             // Check proximity - calculate distance between avatar and character
-            var approachRadius = characterTemplate.Interactable?.ApproachRadius ?? 50.0;
-            if (approachRadius > 0) // -1 means avatar must initiate, 0 means contact required
-            {
-                var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, characterWorldLat, characterWorldLon, _world);
-                System.Diagnostics.Debug.WriteLine("*** distance: " + distance);
-
-                if (distance > approachRadius)
-                {
-                    continue;
-                }
-                System.Diagnostics.Debug.WriteLine($"[BuildInteractableCharacters] Distance: {distance:F2}m, ApproachRadius: {approachRadius:F2}m");
-            }
+            var approachRadius = characterTemplate.Interactable.ApproachRadius;
+            var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, characterWorldLat, characterWorldLon, _world);
+            if (distance > approachRadius)
+                continue;
 
             var interactable = new InteractableCharacter
             {

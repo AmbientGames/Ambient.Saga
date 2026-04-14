@@ -230,6 +230,22 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
+            // Fan out any QuestTokenAwarded transactions to every other saga instance whose triggers
+            // require the token. Auto-advance dialogue nodes can award tokens just like choice-driven ones.
+            var awardedTokenRefs = newTransactions
+                .Where(t => t.Type == SagaTransactionType.QuestTokenAwarded)
+                .Select(t => t.GetData<string>(TransactionDataKeys.QuestTokenRef))
+                .Where(r => !string.IsNullOrEmpty(r))
+                .Distinct()
+                .ToList();
+
+            if (awardedTokenRefs.Count > 0)
+            {
+                await QuestTokenFanOut.FanOutAsync(
+                    command.AvatarId, command.SagaArcRef, awardedTokenRefs,
+                    _instanceRepository, _readModelRepository, _world, ct);
+            }
+
             // Add pending events to result data
             var resultData = new Dictionary<string, object>();
             if (pendingEvents.Count > 0)

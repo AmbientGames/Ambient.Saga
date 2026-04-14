@@ -29,6 +29,7 @@ using SixLabors.ImageSharp.PixelFormats;
 using System.Collections.ObjectModel;
 using static Ambient.Saga.UI.Services.HeightMapProcessor;
 using SpawnDevCharacterCommand = Ambient.Saga.Engine.Application.Commands.Saga.SpawnDevCharacterCommand;
+using System.Runtime.InteropServices;
 
 namespace Ambient.Saga.Presentation.UI.ViewModels;
 
@@ -309,7 +310,7 @@ public partial class SagaMainViewModel : ObservableObject
             _cachedCharacterStates.Clear();
     }
 
-    private ProximityTriggerViewModel? _previousTrigger;
+    private HashSet<ProximityTriggerViewModel> _previousTriggers = new();
     private IDisposable? _worldDatabase;
     private IWorldStateRepository _worldRepository;
     private ISteamAchievementService? _steamAchievementService;
@@ -534,12 +535,12 @@ public partial class SagaMainViewModel : ObservableObject
                 List<CharacterState> characterStates;
 
                 // Use cached character states if available (skip expensive replay)
-                if (_cachedCharacterStates.TryGetValue(sagaRef, out var cached))
-                {
-                    characterStates = cached;
-                }
-                else
-                {
+                //if (_cachedCharacterStates.TryGetValue(sagaRef, out var cached))
+                //{
+                //    characterStates = cached;
+                //}
+                //else
+                //{
                     var query = new GetSpawnedCharactersQuery
                     {
                         AvatarId = Avatar.AvatarId,
@@ -550,7 +551,7 @@ public partial class SagaMainViewModel : ObservableObject
 
                     characterStates = await _mediator.Send(query);
                     _cachedCharacterStates[sagaRef] = characterStates;
-                }
+                //}
 
                 // Add spawned characters to render collection
                 foreach (var characterState in characterStates)
@@ -1364,41 +1365,55 @@ public partial class SagaMainViewModel : ObservableObject
             var avatarModelX = CoordinateConverter.LongitudeToModelX(AvatarLongitude, CurrentWorld);
             var avatarModelZ = CoordinateConverter.LatitudeToModelZ(AvatarLatitude, CurrentWorld);
 
-            var triggerAtPosition = await FindTriggerAtPoint(avatarModelX, avatarModelZ);
+            var triggersAtPosition = await FindTriggersAtPoint(avatarModelX, avatarModelZ);
+            var currentSet = new HashSet<ProximityTriggerViewModel>(triggersAtPosition);
 
-            // Detect trigger changes and trigger OnExit/OnEnter
-            if (_previousTrigger != triggerAtPosition)
+            // Fast skip: same set of triggers as last check — nothing to do.
+            if (!currentSet.SetEquals(_previousTriggers))
             {
-                System.Diagnostics.Debug.WriteLine($"[MainViewModel] Trigger changed: {_previousTrigger?.RefName ?? "null"} -> {triggerAtPosition?.RefName ?? "null"}");
+                var entered = currentSet.Except(_previousTriggers).ToList();
+                var exited = _previousTriggers.Except(currentSet).ToList();
 
-                // RESET EVERYTHING on trigger change
+                System.Diagnostics.Debug.WriteLine($"[MainViewModel] Triggers changed: +{entered.Count} -{exited.Count}");
+
+                // RESET EVERYTHING on any trigger-set change
                 IsSagaInteractionActive = false;
                 TriggeredCharacter = null;
-                OnCharacterChanged(); // Clear dialogue when character is removed
+                OnCharacterChanged();
 
-                // Exit previous trigger
-                if (_previousTrigger != null)
+                foreach (var trigger in exited)
+                    ActivityLog.Insert(0, $"Exited {trigger.DisplayName} - No exit action");
+
+                var allEntriesSucceeded = true;
+                if (Avatar != null)
                 {
-                    ActivityLog.Insert(0, $"Exited {_previousTrigger.DisplayName} - No exit action");
+                    foreach (var trigger in entered)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"[MainViewModel] Calling TryProcessAvatarMovementAsync for trigger '{trigger.RefName}'");
+                        if (!await TryProcessAvatarMovementAsync(trigger))
+                            allEntriesSucceeded = false;
+                    }
                 }
 
-                // Enter new SagaTrigger via CQRS
-                if (triggerAtPosition != null && Avatar != null)
+                if (allEntriesSucceeded)
                 {
-                    System.Diagnostics.Debug.WriteLine($"[MainViewModel] Calling ProcessAvatarMovementAsync for trigger '{triggerAtPosition.RefName}'");
-                    // Send UpdateAvatarPositionCommand via CQRS
-                    _ = ProcessAvatarMovementAsync(triggerAtPosition);
+                    // Commit — next tick with the same triggers will fast-skip.
+                    _previousTriggers = currentSet;
                 }
-
-                _previousTrigger = triggerAtPosition;
+                else
+                {
+                    // Any failure invalidates the whole transition — leave _previousTriggers unchanged
+                    // so the next position update sees a different set and retries everything.
+                    System.Diagnostics.Debug.WriteLine($"[MainViewModel] Entry failed for one or more triggers — will retry on next position update");
+                }
             }
-            else if (triggerAtPosition != null)
+            else if (currentSet.Count > 0)
             {
-                System.Diagnostics.Debug.WriteLine($"[MainViewModel] Already in trigger '{triggerAtPosition.RefName}' - not calling UpdateAvatarPositionCommand");
+                System.Diagnostics.Debug.WriteLine($"[MainViewModel] Already in {currentSet.Count} trigger(s) - not calling UpdateAvatarPositionCommand");
             }
 
-            // Auto-select the current trigger
-            SelectedTrigger = triggerAtPosition;
+            // Auto-select the outermost undone trigger for UI context
+            SelectedTrigger = triggersAtPosition.OrderByDescending(t => t.EnterRadius).FirstOrDefault();
         }
 
         if (centerOnAvatar)
@@ -1411,10 +1426,10 @@ public partial class SagaMainViewModel : ObservableObject
     /// Processes avatar movement using CQRS UpdateAvatarPositionCommand.
     /// Replaces direct calls to SpawnCharactersFromTrigger.
     /// </summary>
-    private async Task ProcessAvatarMovementAsync(ProximityTriggerViewModel trigger)
+    private async Task<bool> TryProcessAvatarMovementAsync(ProximityTriggerViewModel trigger)
     {
         if (CurrentWorld == null || Avatar == null || !IsReadyForSagaProcessing)
-            return;
+            return false;
 
         try
         {
@@ -1448,10 +1463,13 @@ public partial class SagaMainViewModel : ObservableObject
             {
                 ActivityLog.Insert(0, $"Error processing movement: {result.ErrorMessage}");
             }
+
+            return true;
         }
         catch (Exception ex)
         {
             ActivityLog.Insert(0, $"Error processing movement via CQRS: {ex.Message}");
+            return false;
         }
     }
 
@@ -1555,10 +1573,11 @@ public partial class SagaMainViewModel : ObservableObject
         }
     }
 
-    private async Task<ProximityTriggerViewModel?> FindTriggerAtPoint(double modelX, double modelZ)
+    private async Task<List<ProximityTriggerViewModel>> FindTriggersAtPoint(double modelX, double modelZ)
     {
+        var result = new List<ProximityTriggerViewModel>();
         if (CurrentWorld == null)
-            return null;
+            return result;
 
         // Use CQRS to find all interactions at this position
         var interactions = await _mediator.Send(new QueryInteractionsAtPositionQuery
@@ -1572,35 +1591,6 @@ public partial class SagaMainViewModel : ObservableObject
         var triggerInteractions = interactions
             .Where(i => i.Type == SagaInteractionType.SagaTrigger)
             .ToList();
-
-        ProximityTriggerViewModel? triggeredViewModel = null;
-        string? hoveredSagaRef = null;
-
-        if (triggerInteractions.Any())
-        {
-            // Find the matching ViewModels for all intersected triggers
-            var intersectedTriggers = triggerInteractions
-                .Select(ti => new
-                {
-                    Interaction = ti,
-                    ViewModel = Sagas
-                        .SelectMany(s => s.Triggers)
-                        .FirstOrDefault(t => t.RefName == ti.SagaTriggerRef && t.SagaRefName == ti.SagaRef)
-                })
-                .Where(x => x.ViewModel != null)
-                .ToList();
-
-            // Pick the smallest (innermost) ring - that's the most specific/restrictive trigger
-            var innermost = intersectedTriggers
-                .OrderBy(x => x.ViewModel!.EnterRadius)
-                .FirstOrDefault();
-
-            if (innermost?.ViewModel != null)
-            {
-                triggeredViewModel = innermost.ViewModel;
-                hoveredSagaRef = triggeredViewModel.SagaRefName;
-            }
-        }
 
         // Step 1: Reset ALL triggers on ALL sagas
         foreach (var saga in Sagas)
@@ -1664,6 +1654,10 @@ public partial class SagaMainViewModel : ObservableObject
             trigger.Status = ti.Status;
             trigger.RingColor = TriggerColors.GetColor(ti.Status);
 
+            // Only include in result if not already completed — completed triggers aren't actionable.
+            if (ti.Status != InteractionStatus.Complete)
+                result.Add(trigger);
+
             // Debug info - show expected spawn count from trigger definition
             if (System.Diagnostics.Debugger.IsAttached && CurrentWorld != null)
             {
@@ -1678,7 +1672,7 @@ public partial class SagaMainViewModel : ObservableObject
             }
         }
 
-        return triggeredViewModel;
+        return result;
     }
 
     public async void UpdateMousePosition(double pixelX, double pixelY)
@@ -1703,7 +1697,7 @@ public partial class SagaMainViewModel : ObservableObject
             var mouseModelZ = CoordinateConverter.LatitudeToModelZ(MouseLatitude, CurrentWorld);
 
             // Update trigger hover state based on mouse model position
-            await FindTriggerAtPoint(mouseModelX, mouseModelZ);
+            await FindTriggersAtPoint(mouseModelX, mouseModelZ);
         }
         catch
         {

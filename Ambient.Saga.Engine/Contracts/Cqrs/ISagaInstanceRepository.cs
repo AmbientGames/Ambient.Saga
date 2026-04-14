@@ -14,11 +14,6 @@ public interface ISagaInstanceRepository
     Task<SagaInstance> GetOrCreateInstanceAsync(Guid avatarId, string sagaRef, CancellationToken ct = default);
 
     /// <summary>
-    /// Get Saga instance by ID.
-    /// </summary>
-    Task<SagaInstance?> GetInstanceByIdAsync(Guid instanceId, CancellationToken ct = default);
-
-    /// <summary>
     /// Add transactions to Saga instance.
     /// Returns the new sequence numbers assigned.
     /// </summary>

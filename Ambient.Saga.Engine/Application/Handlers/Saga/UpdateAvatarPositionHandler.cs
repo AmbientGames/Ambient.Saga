@@ -6,6 +6,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
@@ -92,6 +93,22 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
                 return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
             }
 
+            // Fan out any QuestTokenAwarded transactions to every other saga instance whose triggers
+            // require the token. Gates across arcs then unlock naturally from their own transaction logs.
+            var awardedTokenRefs = newTransactions
+                .Where(t => t.Type == SagaTransactionType.QuestTokenAwarded)
+                .Select(t => t.GetData<string>(TransactionDataKeys.QuestTokenRef))
+                .Where(r => !string.IsNullOrEmpty(r))
+                .Distinct()
+                .ToList();
+
+            if (awardedTokenRefs.Count > 0)
+            {
+                await QuestTokenFanOut.FanOutAsync(
+                    command.AvatarId, command.SagaArcRef, awardedTokenRefs,
+                    _instanceRepository, _readModelRepository, _world, ct);
+            }
+
             // Record saga discovery in AvatarDiscovery table for UI visibility
             if (newTransactions.Any(t => t.Type == SagaTransactionType.SagaDiscovered))
             {
@@ -126,4 +143,5 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
 
         return (x, z);
     }
+
 }

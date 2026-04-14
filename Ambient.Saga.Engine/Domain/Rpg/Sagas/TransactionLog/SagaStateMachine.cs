@@ -669,8 +669,11 @@ public class SagaStateMachine
 
     private void ApplyQuestTokenAwarded(SagaState state, SagaTransaction tx)
     {
-        // Quest token awarded - currently just for tracking/achievements
-        // Could track quest token collection if needed
+        var tokenRef = tx.GetData<string>(TransactionDataKeys.QuestTokenRef);
+        if (!string.IsNullOrEmpty(tokenRef))
+        {
+            state.AwardedQuestTokens.Add(tokenRef);
+        }
     }
 
     private void ApplyQuestAccepted(SagaState state, SagaTransaction tx)

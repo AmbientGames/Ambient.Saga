@@ -92,6 +92,13 @@ public class SagaState
     public Dictionary<string, int> FactionReputation { get; set; } = new();
 
     /// <summary>
+    /// Quest tokens that have been awarded to the avatar within the scope of this Saga instance.
+    /// Populated from QuestTokenAwarded transactions during replay.
+    /// Used by trigger availability checks so locked/unlocked state derives from the log, not avatar side-effects.
+    /// </summary>
+    public HashSet<string> AwardedQuestTokens { get; set; } = new();
+
+    /// <summary>
     /// Number of transactions replayed to create this state.
     /// Used for snapshot optimization - if many transactions exist,
     /// create a snapshot to avoid replaying all of them every time.

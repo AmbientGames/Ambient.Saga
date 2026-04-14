@@ -81,6 +81,11 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
                 instance.Transactions = transactionRecords.Select(r => r.ToTransaction()).ToList();
 
+                if (instance.Transactions.Count == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] READ empty instance: SagaRef='{sagaRef}' AvatarId={avatarId} InstanceId={instance.InstanceId}");
+                }
+
                 // Check if our cached replay is still valid by comparing the highest
                 // committed sequence number against what the cache was built from.
                 if (_instanceCache.TryGetValue(lockKey, out var existing)
@@ -147,25 +152,6 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
             return Task.FromResult(instance);
         }
-    }
-
-    public Task<SagaInstance?> GetInstanceByIdAsync(Guid instanceId, CancellationToken ct = default)
-    {
-        var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
-
-        if (instance != null)
-        {
-            // Load transactions
-            var transactionRecords = _transactions
-                .Find(x => x.InstanceId == instanceId)
-                .OrderBy(x => x.SequenceNumber)
-                .ToList();
-
-            // Thread-safe: Replace list instead of Clear+AddRange
-            instance.Transactions = transactionRecords.Select(r => r.ToTransaction()).ToList();
-        }
-
-        return Task.FromResult(instance);
     }
 
     public Task<List<long>> AddTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
@@ -244,16 +230,19 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                     }
 
                     _database.Commit();
+                    System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit OK: InstanceId={instanceId} wrote {transactions.Count} txs");
                     return Task.FromResult((sequenceNumbers, true));
                 }
-                catch
+                catch (Exception innerEx)
                 {
+                    System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit INNER FAIL: InstanceId={instanceId} ex={innerEx.GetType().Name}: {innerEx.Message}");
                     _database.Rollback();
                     throw;
                 }
             }
-            catch
+            catch (Exception outerEx)
             {
+                System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit OUTER FAIL: InstanceId={instanceId} ex={outerEx.GetType().Name}: {outerEx.Message}");
                 return Task.FromResult((new List<long>(), false));
             }
         }

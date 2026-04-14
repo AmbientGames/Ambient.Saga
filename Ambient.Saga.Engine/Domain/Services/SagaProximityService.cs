@@ -141,11 +141,7 @@ public static class SagaProximityService
         if (avatar == null)
             return InteractionStatus.Available;
 
-        // Check quest token requirements first
-        if (!TriggerAvailabilityChecker.CanActivate(sagaTrigger, avatar))
-            return InteractionStatus.Locked;
-
-        // Use replayed state from state machine to check completion
+        // Use replayed state from state machine (single source of truth for locked/unlocked + completion)
         if (worldRepository == null)
         {
             System.Diagnostics.Debug.WriteLine($"[DetermineTriggerStatus] worldRepository is null for trigger '{sagaTrigger.RefName}'");
@@ -167,16 +163,19 @@ public static class SagaProximityService
             return InteractionStatus.Available;
         }
 
-        // Replay state using the state machine (single source of truth)
         var stateMachine = new SagaStateMachine(sagaArc, triggers, world);
         var state = stateMachine.ReplayToNow(sagaInstance);
 
-        // Check trigger status from replayed state
-        if (state.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState))
+        // Completion first — a completed trigger is not "locked" just because tokens are missing
+        if (state.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState)
+            && triggerState.Status == SagaTriggerStatus.Completed)
         {
-            if (triggerState.Status == SagaTriggerStatus.Completed)
-                return InteractionStatus.Complete;
+            return InteractionStatus.Complete;
         }
+
+        // Lock state derives from the replayed token set
+        if (!TriggerAvailabilityChecker.CanActivate(sagaTrigger, state))
+            return InteractionStatus.Locked;
 
         return InteractionStatus.Available;
     }

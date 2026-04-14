@@ -124,35 +124,6 @@ public class SagaInstanceRepositoryTests : IDisposable
 
     #endregion
 
-    #region GetInstanceByIdAsync Tests
-
-    [Fact]
-    public async Task GetInstanceByIdAsync_ExistingInstance_ReturnsInstance()
-    {
-        // Arrange
-        var avatarId = Guid.NewGuid();
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "TestSaga");
-
-        // Act
-        var retrieved = await _repository.GetInstanceByIdAsync(instance.InstanceId);
-
-        // Assert
-        Assert.NotNull(retrieved);
-        Assert.Equal(instance.InstanceId, retrieved.InstanceId);
-    }
-
-    [Fact]
-    public async Task GetInstanceByIdAsync_NonExistentInstance_ReturnsNull()
-    {
-        // Act
-        var result = await _repository.GetInstanceByIdAsync(Guid.NewGuid());
-
-        // Assert
-        Assert.Null(result);
-    }
-
-    #endregion
-
     #region AddTransactionsAsync Tests
 
     [Fact]

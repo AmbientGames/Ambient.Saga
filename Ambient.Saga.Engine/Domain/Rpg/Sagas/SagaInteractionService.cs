@@ -18,6 +18,9 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
 /// </summary>
 public class SagaInteractionService
 {
+    // Sentinel Y — "unknown, resolve against terrain at render time". Matches Archimedea's SpatialConstants.DeepUnderGround.
+    private const string SpawnHeightSentinel = "-1073741824";
+
     private readonly SagaArc _template;
     private readonly List<SagaTrigger> _expandedSagaTriggers;
     private readonly IWorld _world;
@@ -78,8 +81,8 @@ public class SagaInteractionService
             if (!isWithinRadius)
                 continue;
 
-            // Check quest token requirements
-            if (!TriggerAvailabilityChecker.CanActivate(trigger, avatar))
+            // Check quest token requirements (state-based — tokens come from replayed log)
+            if (!TriggerAvailabilityChecker.CanActivate(trigger, currentState))
                 continue;
 
             // Keep track of smallest (innermost) trigger
@@ -136,75 +139,6 @@ public class SagaInteractionService
         return results.OrderByDescending(t => t.SagaTrigger.EnterRadius).ToList();
     }
 
-    /// <summary>
-    /// Checks if a specific trigger can be activated by the avatar at the given position.
-    /// This is a comprehensive check including proximity, quest tokens, and completion status.
-    /// </summary>
-    /// <param name="instance">Saga instance to check state</param>
-    /// <param name="sagaTrigger">The trigger to check</param>
-    /// <param name="avatarX">Avatar X position in Saga-relative coordinates</param>
-    /// <param name="avatarZ">Avatar Z position in Saga-relative coordinates</param>
-    /// <param name="avatar">Avatar with quest tokens and other data</param>
-    /// <returns>Result indicating whether trigger can activate and why/why not</returns>
-    public SagaTriggerActivationCheck CanActivateSagaTrigger(
-        SagaInstance instance,
-        SagaTrigger sagaTrigger,
-        double avatarX,
-        double avatarZ,
-        AvatarBase avatar)
-    {
-        if (instance == null)
-            throw new ArgumentNullException(nameof(instance));
-
-        if (sagaTrigger == null)
-            throw new ArgumentNullException(nameof(sagaTrigger));
-
-        if (avatar == null)
-            throw new ArgumentNullException(nameof(avatar));
-
-        var result = new SagaTriggerActivationCheck
-        {
-            SagaTrigger = sagaTrigger,
-            CanActivate = false
-        };
-
-        // Get current state
-        var currentState = _stateMachine.ReplayToNow(instance);
-
-        // Check if already completed
-        if (currentState.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState)
-            && triggerState.Status == SagaTriggerStatus.Completed)
-        {
-            result.BlockedReason = "Trigger already completed";
-            return result;
-        }
-
-        // Check proximity
-        var distanceFromCenter = Math.Sqrt(avatarX * avatarX + avatarZ * avatarZ);
-        result.DistanceFromCenter = distanceFromCenter;
-        result.IsWithinRadius = distanceFromCenter <= sagaTrigger.EnterRadius;
-
-        if (!result.IsWithinRadius)
-        {
-            result.BlockedReason = $"Avatar outside trigger radius (distance: {distanceFromCenter:F2}m, radius: {sagaTrigger.EnterRadius:F2}m)";
-            return result;
-        }
-
-        // Check quest token requirements
-        result.HasRequiredQuestTokens = TriggerAvailabilityChecker.CanActivate(sagaTrigger, avatar);
-
-        if (!result.HasRequiredQuestTokens)
-        {
-            var missingTokens = TriggerAvailabilityChecker.GetMissingQuestTokens(sagaTrigger, avatar);
-            result.MissingQuestTokens = missingTokens;
-            result.BlockedReason = $"Missing quest tokens: {string.Join(", ", missingTokens)}";
-            return result;
-        }
-
-        // All checks passed
-        result.CanActivate = true;
-        return result;
-    }
 
     #endregion
 
@@ -344,8 +278,8 @@ public class SagaInteractionService
             if (!isWithinEnterRadius)
                 continue;
 
-            // Check quest token requirements
-            if (!TriggerAvailabilityChecker.CanActivate(sagaTrigger, avatar))
+            // Check quest token requirements (state-based — tokens come from replayed log)
+            if (!TriggerAvailabilityChecker.CanActivate(sagaTrigger, currentState))
                 continue;
 
             // Trigger activated! Create entry transaction first
@@ -527,7 +461,7 @@ public class SagaInteractionService
                     [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
                     [TransactionDataKeys.X] = spawnX.ToString("F6"),  // Saga-relative
                     [TransactionDataKeys.Z] = spawnZ.ToString("F6"),  // Saga-relative
-                    [TransactionDataKeys.SpawnHeight] = "0"           // Default, game will adjust to terrain
+                    [TransactionDataKeys.SpawnHeight] = SpawnHeightSentinel // "Y unknown" — game resolves against terrain
                 }
             };
 
@@ -670,7 +604,7 @@ public class SagaInteractionService
                     [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
                     [TransactionDataKeys.X] = spawnX.ToString("F6"),
                     [TransactionDataKeys.Z] = spawnZ.ToString("F6"),
-                    [TransactionDataKeys.SpawnHeight] = "0",
+                    [TransactionDataKeys.SpawnHeight] = SpawnHeightSentinel, // "Y unknown" — game resolves against terrain
                     [TransactionDataKeys.IsRespawn] = "true", // Mark as respawn for analytics
                     [TransactionDataKeys.PreviousInstanceId] = characterInstanceId.ToString() // Link to defeated instance
                 }

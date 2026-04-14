@@ -388,12 +388,15 @@ public class MapViewPanel
                 return (latitude, longitude);
             }
 
-            // Hover state is set by MainViewModel.FindTriggerAtPoint via CQRS query
+            // Hover state is set by MainViewModel.FindTriggersAtPoint via CQRS query
             // (called from UpdateMousePosition - same logic as trigger activation)
 
             // Draw Saga zones (proximity trigger rings)
             foreach (var saga in viewModel.Sagas)
             {
+                if (!saga.IsVisibleOnMap)
+                    continue;
+
                 foreach (var trigger in saga.Triggers)
                 {
                     // Only show triggers when visible (controlled by MainViewModel based on query)
@@ -434,6 +437,9 @@ public class MapViewPanel
             // Draw Saga feature center dots (always visible at Saga centers)
             foreach (var saga in viewModel.Sagas)
             {
+                if (!saga.IsVisibleOnMap)
+                    continue;
+
                 var center = PixelToScreen(saga.PixelX, saga.PixelY);
 
                 // Skip if off-screen

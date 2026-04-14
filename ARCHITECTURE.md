@@ -518,6 +518,29 @@ The `Ambient.Saga` package includes:
 
 ---
 
+## Known Gaps: Rewards That Bypass the Transaction Log
+
+Quest tokens were originally mutated directly on the avatar with no saga transaction driving it (fragile — gate checks drifted from the log). Fixed: `GiveQuestToken` now writes `QuestTokenAwarded`, replay populates `SagaState.AwardedQuestTokens`, `TriggerAvailabilityChecker.CanActivate(trigger, state)` reads from that, and `QuestTokenFanOut.FanOutAsync` propagates the transaction to every saga instance whose triggers reference the token (invoked from `UpdateAvatarPositionHandler`, `SelectDialogueChoiceHandler`, `AdvanceDialogueHandler`).
+
+Other dialogue reward actions still mutate `avatar.Capabilities` directly via `DirectDialogueStateProvider` without writing a transaction. They rely on `shouldAwardRewards` (first-visit idempotence) to avoid double-granting on replay, but the reward itself isn't in the saga log — only the avatar's live state carries it. Some of this is intentional; revisit per-action before generalizing.
+
+Actions that mutate avatar state only (no saga transaction):
+- `TakeQuestToken`
+- `GiveConsumable` / `TakeConsumable`
+- `GiveMaterial` / `TakeMaterial`
+- `GiveBlock` / `TakeBlock`
+- `GiveEquipment` / `TakeEquipment`
+- `GiveTool` / `TakeTool`
+- `GiveSpell` / `TakeSpell`
+- `TransferCurrency`
+- `UnlockAchievement`
+
+Elsewhere, `AvatarUpdateService.UpdateAvatarForLootAsync` / `UpdateAvatarForTradeAsync` / `UpdateAvatarForBattleAsync` / `UpdateAvatarForEffectsAsync` mutate the avatar alongside their own transactions, and `DirectDialogueStateProvider.ChangeReputation` routes reputation changes through a `ReputationChanged` transaction but also writes the live value directly.
+
+None of these are critical right now — note for future cleanup if/when the pattern causes drift.
+
+---
+
 ## License
 
 MIT License - See [LICENSE](LICENSE) for details.
