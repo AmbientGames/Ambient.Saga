@@ -197,9 +197,22 @@ public class DialogueEngine
         // Conditions passed - make this the current node
         _currentNode = targetNode;
 
-        // Create DialogueNodeVisited transaction BEFORE executing actions
-        // This records the INTENT to award items/traits/tokens
-        // The Saga state machine will ensure rewards are only given on first visit
+        // Execute actions FIRST. Reward transactions are staged inside the executor, not
+        // attached to the SagaInstance yet. If any action throws, the executor drops its
+        // staged buffer and the visit transaction below is never recorded — so a retry is
+        // free to re-attempt without hitting the idempotency block.
+        var characterRef = _sagaContext?.CharacterRef ?? string.Empty;
+        _actionExecutor.ExecuteAll(
+            targetNode.Action ?? Array.Empty<DialogueAction>(),
+            _currentTree.RefName,
+            nodeId,
+            characterRef
+        );
+
+        // Actions succeeded — commit the visit record and any staged reward transactions
+        // to the SagaInstance as a single group. The visit is added first so it receives
+        // the lowest sequence number in the group, preserving the historical ordering
+        // (visit precedes its rewards in the log).
         if (_sagaContext != null && _currentTree != null)
         {
             var transaction = DialogueTransactionHelper.CreateDialogueNodeVisitedTransaction(
@@ -212,16 +225,7 @@ public class DialogueEngine
             );
             _sagaContext.SagaInstance.AddTransaction(transaction);
         }
-
-        // Execute actions
-        // Pass character ref for idempotency checking (use empty string if no Saga context)
-        var characterRef = _sagaContext?.CharacterRef ?? string.Empty;
-        _actionExecutor.ExecuteAll(
-            targetNode.Action ?? Array.Empty<DialogueAction>(),
-            _currentTree.RefName,
-            nodeId,
-            characterRef
-        );
+        _actionExecutor.FlushStaged();
 
         return _currentNode;
     }

@@ -13,6 +13,7 @@ public class DialogueActionExecutor
     private readonly IDialogueStateProvider _stateProvider;
     private readonly SagaDialogueContext? _sagaContext;
     private readonly List<DialogueSystemEvent> _raisedEvents = new();
+    private readonly List<SagaTransaction> _staged = new();
 
     public DialogueActionExecutor(IDialogueStateProvider stateProvider, SagaDialogueContext? sagaContext = null)
     {
@@ -26,10 +27,46 @@ public class DialogueActionExecutor
     public IReadOnlyList<DialogueSystemEvent> RaisedEvents => _raisedEvents.AsReadOnly();
 
     /// <summary>
-    /// Clears all raised events.
-    /// Call this after processing events to prepare for next dialogue node.
+    /// Transactions staged during the most recent action execution.
+    /// Not yet attached to the SagaInstance — caller decides whether to flush or discard.
     /// </summary>
-    public void ClearEvents() => _raisedEvents.Clear();
+    public IReadOnlyList<SagaTransaction> StagedTransactions => _staged.AsReadOnly();
+
+    /// <summary>
+    /// Clears all raised events and any staged transactions.
+    /// Call this before processing the next dialogue node so previous staging cannot leak forward.
+    /// </summary>
+    public void ClearEvents()
+    {
+        _raisedEvents.Clear();
+        _staged.Clear();
+    }
+
+    /// <summary>
+    /// Appends any staged transactions to the SagaInstance (if a Saga context is present)
+    /// and clears the staging buffer. Called after ExecuteAll returns successfully.
+    /// </summary>
+    public void FlushStaged()
+    {
+        if (_staged.Count == 0)
+            return;
+
+        if (_sagaContext != null)
+        {
+            foreach (var tx in _staged)
+            {
+                _sagaContext.SagaInstance.AddTransaction(tx);
+            }
+        }
+
+        _staged.Clear();
+    }
+
+    /// <summary>
+    /// Drops any staged transactions without attaching them to the SagaInstance.
+    /// Called when action execution fails so partial rewards are not persisted.
+    /// </summary>
+    public void DiscardStaged() => _staged.Clear();
 
     /// <summary>
     /// Executes a single action.
@@ -58,7 +95,7 @@ public class DialogueActionExecutor
                             characterRef, // Source = character who gave the token
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -192,7 +229,7 @@ public class DialogueActionExecutor
                             traitValue,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -215,7 +252,7 @@ public class DialogueActionExecutor
                             traitName,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -236,7 +273,7 @@ public class DialogueActionExecutor
                             null,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -297,7 +334,7 @@ public class DialogueActionExecutor
                             joinCharacterRef,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -324,7 +361,7 @@ public class DialogueActionExecutor
                             leaveCharacterRef,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -354,7 +391,7 @@ public class DialogueActionExecutor
                             sourceCharacterRef,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -382,7 +419,7 @@ public class DialogueActionExecutor
                             action.Amount,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -478,13 +515,24 @@ public class DialogueActionExecutor
         // The provider only sees COMMITTED state (SagaState is derived from committed transactions),
         // so a re-entry that happens before the first visit is persisted would slip through and
         // double-award. Also scan the instance's pending transactions to close that window.
+        // (Our own in-progress staging lives in _staged, not on the instance, so it is not seen here.)
         var shouldAwardRewards =
             _stateProvider.ShouldAwardNodeRewards(characterRef, nodeId)
             && !HasPendingNodeVisit(characterRef, nodeId);
 
-        foreach (var action in actions)
+        // If any action throws, drop everything staged during this call so the SagaInstance
+        // is not left with a partial reward set paired with a visit record that would block retry.
+        try
         {
-            Execute(action, dialogueTreeRef, nodeId, characterRef, shouldAwardRewards);
+            foreach (var action in actions)
+            {
+                Execute(action, dialogueTreeRef, nodeId, characterRef, shouldAwardRewards);
+            }
+        }
+        catch
+        {
+            _staged.Clear();
+            throw;
         }
     }
 
