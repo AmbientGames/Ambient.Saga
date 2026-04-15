@@ -25,19 +25,25 @@ public class SagaStateMachine
     private readonly IWorld _world;
     private readonly ILogger<SagaStateMachine>? _logger;
     private readonly ISagaMetrics _metrics;
+    private readonly IExtensionTypeRegistry _extensionRegistry;
+    private readonly UnknownTransactionPolicy _unknownPolicy;
 
     public SagaStateMachine(
         SagaArc template,
         List<SagaTrigger> expandedSagaTriggers,
         IWorld world,
         ILogger<SagaStateMachine>? logger = null,
-        ISagaMetrics? metrics = null)
+        ISagaMetrics? metrics = null,
+        IExtensionTypeRegistry? extensionRegistry = null,
+        UnknownTransactionPolicy unknownPolicy = UnknownTransactionPolicy.Quarantine)
     {
         _template = template ?? throw new ArgumentNullException(nameof(template));
         _expandedSagaTriggers = expandedSagaTriggers ?? throw new ArgumentNullException(nameof(expandedSagaTriggers));
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _logger = logger;
         _metrics = metrics ?? NullSagaMetrics.Instance;
+        _extensionRegistry = extensionRegistry ?? EmptyExtensionTypeRegistry.Instance;
+        _unknownPolicy = unknownPolicy;
     }
 
     /// <summary>
@@ -275,10 +281,28 @@ public class SagaStateMachine
 
             // Add more cases as needed
             default:
-                // Unknown transaction type - log but don't fail
-                // This allows forward compatibility with new transaction types
+                HandleUnknownTransactionType(tx);
                 break;
         }
+    }
+
+    private void HandleUnknownTransactionType(SagaTransaction tx)
+    {
+        var typeValue = (int)tx.Type;
+        _metrics.IncrementUnknownTransactionType(typeValue);
+
+        if (_unknownPolicy == UnknownTransactionPolicy.Throw)
+        {
+            throw new InvalidOperationException(
+                $"Unknown SagaTransactionType value {typeValue} encountered during replay " +
+                $"(TransactionId={tx.TransactionId}, SequenceNumber={tx.SequenceNumber}).");
+        }
+
+        _logger?.LogWarning(
+            "Unknown SagaTransactionType value {TypeValue} encountered during replay; quarantined. TransactionId={TransactionId} SequenceNumber={SequenceNumber}",
+            typeValue,
+            tx.TransactionId,
+            tx.SequenceNumber);
     }
 
     // ===== Transaction Application Methods =====
@@ -872,17 +896,37 @@ public class SagaStateMachine
 
     private void ApplyExtension(SagaState state, SagaTransaction tx)
     {
-        // Extension transactions are handled by domain-specific appliers (e.g., Ambient.Core)
-        // The base Saga engine simply records them in the transaction log
-        // Domain packages can query/replay the log to extract extension-specific data
+        // Extension transactions are handled by domain-specific appliers (e.g., Ambient.Core).
+        // The base Saga engine records them and surfaces an observability signal when the
+        // extension name is not registered — so a rename in the extension package fails the
+        // registry check here instead of drifting into a silent replay skip.
         //
         // The ExtensionTypeName property indicates the domain-specific type:
         // - LocationClaimed, ToolWearClaimed, MiningSessionClaimed, etc. (voxel claims)
         // - ProcessingCycleCompleted (crafting/processing)
         // - BlockExtensionCreated/Updated/Destroyed (cache blocks)
-        //
-        // This design keeps Ambient.Saga abstract and allows domain packages
-        // to extend the transaction system without modifying the base enum.
+
+        var name = tx.ExtensionTypeName;
+        if (string.IsNullOrEmpty(name) || _extensionRegistry.IsKnown(name))
+        {
+            return;
+        }
+
+        _metrics.IncrementQuarantinedExtension(name);
+
+        if (_unknownPolicy == UnknownTransactionPolicy.Throw)
+        {
+            throw new InvalidOperationException(
+                $"Unknown extension transaction type '{name}' encountered during replay " +
+                $"(TransactionId={tx.TransactionId}, SequenceNumber={tx.SequenceNumber}). " +
+                $"Register it with IExtensionTypeRegistry or switch policy to Quarantine.");
+        }
+
+        _logger?.LogWarning(
+            "Unknown extension transaction type '{ExtensionTypeName}' encountered during replay; quarantined. TransactionId={TransactionId} SequenceNumber={SequenceNumber}",
+            name,
+            tx.TransactionId,
+            tx.SequenceNumber);
     }
 
     // ===== Snapshot Support =====

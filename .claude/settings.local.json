@@ -9,7 +9,11 @@
       "Bash(grep -v '//')",
       "Bash(C:\\\\Program Files\\\\GRASS GIS 8.4\\\\Python312\\\\python3.exe:*)",
       "Bash(dotnet build:*)",
-      "Bash(\"C:\\\\Program Files\\\\GRASS GIS 8.4\\\\Python312\\\\python3.exe\" extract_dict_keys.py)"
+      "Bash(\"C:\\\\Program Files\\\\GRASS GIS 8.4\\\\Python312\\\\python3.exe\" extract_dict_keys.py)",
+      "Bash(find . -name \"Ambient.Saga.Engine.Core.csproj\" -exec cat {} \\\\;)",
+      "Read(//c/Users/richa/Documents/DevelopmentOpenSource/**)",
+      "Bash(find . -name \"Ambient.Saga.Engine.Core.csproj\")",
+      "Bash(dotnet test *)"
     ]
   }
 }
