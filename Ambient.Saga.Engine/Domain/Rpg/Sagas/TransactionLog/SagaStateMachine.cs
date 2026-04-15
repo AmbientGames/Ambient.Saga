@@ -4,6 +4,7 @@ using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Engine.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
@@ -22,12 +23,21 @@ public class SagaStateMachine
     private readonly SagaArc _template;
     private readonly List<SagaTrigger> _expandedSagaTriggers;
     private readonly IWorld _world;
+    private readonly ILogger<SagaStateMachine>? _logger;
+    private readonly ISagaMetrics _metrics;
 
-    public SagaStateMachine(SagaArc template, List<SagaTrigger> expandedSagaTriggers, IWorld world)
+    public SagaStateMachine(
+        SagaArc template,
+        List<SagaTrigger> expandedSagaTriggers,
+        IWorld world,
+        ILogger<SagaStateMachine>? logger = null,
+        ISagaMetrics? metrics = null)
     {
         _template = template ?? throw new ArgumentNullException(nameof(template));
         _expandedSagaTriggers = expandedSagaTriggers ?? throw new ArgumentNullException(nameof(expandedSagaTriggers));
         _world = world ?? throw new ArgumentNullException(nameof(world));
+        _logger = logger;
+        _metrics = metrics ?? NullSagaMetrics.Instance;
     }
 
     /// <summary>
@@ -905,7 +915,7 @@ public class SagaStateMachine
         };
     }
 
-    private static bool TryDeserializeSnapshot(SagaTransaction snapshotTx, out SagaState state)
+    private bool TryDeserializeSnapshot(SagaTransaction snapshotTx, out SagaState state)
     {
         state = null!;
         var json = snapshotTx.GetData<string>(TransactionDataKeys.StateJson);
@@ -924,10 +934,14 @@ public class SagaStateMachine
         }
         catch (Exception ex)
         {
-            // Snapshot deserialization failed — Replay() will fall back to full replay
-            System.Diagnostics.Debug.WriteLine(
-                $"[SagaStateMachine] Snapshot deserialization failed for transaction {snapshotTx.TransactionId} " +
-                $"(seq {snapshotTx.SequenceNumber}): {ex.Message}");
+            // Snapshot deserialization failed — Replay() will fall back to full replay.
+            // Surface this so corruption or schema drift is visible rather than manifesting as a perf regression.
+            _logger?.LogError(
+                ex,
+                "Saga snapshot deserialization failed; falling back to full replay. TransactionId={TransactionId} SequenceNumber={SequenceNumber}",
+                snapshotTx.TransactionId,
+                snapshotTx.SequenceNumber);
+            _metrics.IncrementSnapshotDeserializationFailure(snapshotTx.TransactionId, snapshotTx.SequenceNumber);
             return false;
         }
     }
