@@ -755,7 +755,51 @@ public partial class SagaMainViewModel : ObservableObject
 
     private DialogueViewModel? _currentDialogueViewModel;
 
-    
+    /// <summary>
+    /// Explicitly closes the current dialogue session. Called by the dialogue modal when the
+    /// player leaves the conversation (close button, ESC, X, walks away). Dispatches
+    /// CloseDialogueCommand so the engine seals the session with a DialogueCompleted
+    /// transaction, then clears in-dialogue state so the player can re-open later.
+    /// </summary>
+    public async Task CloseCurrentDialogueAsync()
+    {
+        if (!_isInDialogue || Avatar == null || _currentDialogueSagaRef == null)
+        {
+            _isInDialogue = false;
+            _currentDialogueSagaRef = null;
+            _currentDialogueCharacterInstanceId = Guid.Empty;
+            return;
+        }
+
+        var sagaRef = _currentDialogueSagaRef;
+        var characterInstanceId = _currentDialogueCharacterInstanceId;
+
+        // Clear state immediately so repeat interactions aren't blocked even if the
+        // network round-trip fails.
+        _isInDialogue = false;
+        _currentDialogueSagaRef = null;
+        _currentDialogueCharacterInstanceId = Guid.Empty;
+
+        try
+        {
+            var closeCommand = new CloseDialogueCommand
+            {
+                AvatarId = Avatar.AvatarId,
+                SagaArcRef = sagaRef,
+                CharacterInstanceId = characterInstanceId,
+                Avatar = Avatar
+            };
+            var result = await _mediator.Send(closeCommand);
+            if (!result.Successful)
+            {
+                System.Diagnostics.Debug.WriteLine($"*** ERROR closing dialogue: {result.ErrorMessage}");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"*** ERROR closing dialogue: {ex.Message}");
+        }
+    }
 
     /// <summary>
     /// Called every frame by the game loop to update visual state.

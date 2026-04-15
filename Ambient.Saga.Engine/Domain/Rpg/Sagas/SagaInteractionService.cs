@@ -217,7 +217,10 @@ public class SagaInteractionService
 
             if (isOutsideExitRadius)
             {
-                // Avatar has exited the trigger zone - create exit transaction
+                // Avatar has exited the trigger zone - record the exit but leave spawned
+                // characters where they are. Encounters persist across visits; defeated
+                // characters with a RespawnIntervalSeconds come back via Phase 3 once the
+                // interval has elapsed and the avatar re-enters the zone.
                 var exitTx = new SagaTransaction
                 {
                     TransactionId = Guid.NewGuid(),
@@ -233,32 +236,6 @@ public class SagaInteractionService
                     }
                 };
                 instance.AddTransaction(exitTx);
-
-                // Despawn any living characters spawned by this trigger
-                foreach (var character in currentState.Characters.Values)
-                {
-                    if (character.SpawnedByTriggerRef == sagaTrigger.RefName &&
-                        character.IsAlive &&
-                        character.IsSpawned)
-                    {
-                        var despawnTx = new SagaTransaction
-                        {
-                            TransactionId = Guid.NewGuid(),
-                            Type = SagaTransactionType.CharacterDespawned,
-                            AvatarId = avatar.AvatarId.ToString(),
-                            Status = TransactionStatus.Pending,
-                            LocalTimestamp = DateTime.UtcNow,
-                            Data = new Dictionary<string, string>
-                            {
-                                [TransactionDataKeys.CharacterInstanceId] = character.CharacterInstanceId.ToString(),
-                                [TransactionDataKeys.CharacterRef] = character.CharacterRef,
-                                [TransactionDataKeys.Reason] = "Avatar exited trigger zone",
-                                [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName
-                            }
-                        };
-                        instance.AddTransaction(despawnTx);
-                    }
-                }
             }
         }
 
@@ -301,6 +278,25 @@ public class SagaInteractionService
 
             // Then activate trigger and spawn characters
             ActivateSagaTrigger(instance, sagaTrigger, avatarX, avatarZ, avatar.AvatarId.ToString());
+        }
+
+        // PHASE 3: Respawn evaluation for completed triggers the avatar is currently inside.
+        // Triggers are one-and-done for activation, but defeated characters from a completed
+        // trigger can come back once their template's RespawnIntervalSeconds has elapsed —
+        // provided the avatar is physically in the zone to witness it.
+        foreach (var sagaTrigger in _expandedSagaTriggers)
+        {
+            if (!currentState.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState)
+                || triggerState.Status != SagaTriggerStatus.Completed)
+            {
+                continue;
+            }
+
+            if (distanceFromCenter > sagaTrigger.EnterRadius)
+                continue;
+
+            var respawnSeed = Random.Shared.Next();
+            CheckAndRespawnDefeatedCharacters(instance, sagaTrigger, avatarX, avatarZ, respawnSeed, avatar.AvatarId.ToString());
         }
     }
 
@@ -393,7 +389,8 @@ public class SagaInteractionService
     /// Spawns characters around the avatar's position using deterministic seed.
     /// - SpawnAndInitiate: 2m from avatar (inside ApproachRadius for immediate engagement)
     /// - SpawnPassive: 10m from avatar at random angles (avatar must approach)
-    /// Respawns defeated characters if RespawnIntervalSeconds has elapsed.
+    /// Called on the initial trigger activation only. Respawn of defeated characters
+    /// is handled separately in Phase 3 of UpdateWithAvatarPosition.
     /// </summary>
     private void SpawnCharacters(
         SagaInstance instance,
@@ -405,9 +402,6 @@ public class SagaInteractionService
     {
         System.Diagnostics.Debug.WriteLine($"[SpawnCharacters] Called for trigger '{sagaTrigger.RefName}' at ({avatarX:F2}, {avatarZ:F2})");
 
-        // Check if characters from this trigger were previously defeated and can respawn
-        CheckAndRespawnDefeatedCharacters(instance, sagaTrigger, avatarX, avatarZ, seed, avatarId);
-
         var spawns = sagaTrigger.Spawn;
         var resolver = new CharacterSpawnResolver(_world, seed);
         var resolvedSpawns = resolver.ResolveSpawns(spawns);
@@ -417,15 +411,18 @@ public class SagaInteractionService
         if (resolvedSpawns.Count == 0)
             return;
 
-        // Spawn characters close to the avatar so they're within ApproachRadius for interaction
-        // Use a small default radius - characters will be spawned around the avatar, not the trigger center
-        var spawnRadius = 10.0; // Default spawn distance from avatar (within typical ApproachRadius)
+        // Place characters ahead of the avatar toward the Saga origin, so the encounter
+        // always materializes between the player and the POI rather than wherever the
+        // player happened to be facing. Depth scales with the trigger's EnterRadius but
+        // is capped so characters are always within a chunk (~15 blocks) of where the
+        // avatar crossed the ring — close enough to notice and be drawn toward.
+        const double maxSpawnDepthMeters = 15.0;
+        var spawnDepth = Math.Min(sagaTrigger.EnterRadius * 0.5, maxSpawnDepthMeters);
 
-        // Calculate spawn positions in circle around avatar (Saga-relative)
-        var spawnPositions = CalculateCircularSpawnPositions(
+        var spawnPositions = CalculateForwardArcSpawnPositions(
             avatarX,
             avatarZ,
-            spawnRadius,
+            spawnDepth,
             resolvedSpawns.Count,
             seed);
 
@@ -445,7 +442,7 @@ public class SagaInteractionService
 
             var characterInstanceId = Guid.NewGuid();
 
-            System.Diagnostics.Debug.WriteLine($"[SpawnCharacters] Creating spawn tx for '{characterRef}' at ({spawnX:F2}, {spawnZ:F2}), radius={spawnRadius}m");
+            System.Diagnostics.Debug.WriteLine($"[SpawnCharacters] Creating spawn tx for '{characterRef}' at ({spawnX:F2}, {spawnZ:F2}), depth={spawnDepth:F2}m");
 
             var spawnTx = new SagaTransaction
             {
@@ -470,14 +467,18 @@ public class SagaInteractionService
     }
 
     /// <summary>
-    /// Calculates spawn positions in a circle around a center point.
-    /// Uses deterministic random seed for consistent placement on replay.
-    /// All coordinates are in Saga-relative space (X/Z plane, Y is height).
+    /// Calculates spawn positions in a small forward arc ahead of the avatar, in the
+    /// direction of the Saga origin (0, 0 in Saga-relative coords). Characters are
+    /// spread across a modest arc centered on that forward direction, with mild
+    /// angular and radial jitter for a natural feel.
+    ///
+    /// If the avatar is at (or essentially at) the origin there is no "forward"
+    /// direction, so we pick an arbitrary one deterministically from the seed.
     /// </summary>
-    private List<(double x, double z)> CalculateCircularSpawnPositions(
-        double centerX,
-        double centerZ,
-        double radius,
+    private List<(double x, double z)> CalculateForwardArcSpawnPositions(
+        double avatarX,
+        double avatarZ,
+        double depth,
         int count,
         int seed)
     {
@@ -488,24 +489,42 @@ public class SagaInteractionService
 
         var rng = new Random(seed);
 
-        // Distribute evenly around circle with slight randomization
-        var baseAngleStep = 2.0 * Math.PI / count;
+        // Unit vector from avatar toward origin, or a random direction if avatar is at origin.
+        const double epsilon = 0.01; // metres
+        var avatarDistanceFromOrigin = Math.Sqrt(avatarX * avatarX + avatarZ * avatarZ);
+        double forwardAngle;
+        if (avatarDistanceFromOrigin < epsilon)
+        {
+            forwardAngle = rng.NextDouble() * 2.0 * Math.PI;
+        }
+        else
+        {
+            // Using the existing sin-for-X, cos-for-Z convention: angle = atan2(x, z).
+            forwardAngle = Math.Atan2(-avatarX, -avatarZ);
+        }
+
+        // Spread the group across a 60° arc centred on the forward direction.
+        // Single-character spawns land straight ahead; groups fan out symmetrically.
+        const double totalArcRadians = Math.PI / 3.0; // 60°
+        var angleStep = count > 1 ? totalArcRadians / (count - 1) : 0.0;
+        var startOffset = -totalArcRadians / 2.0;
+
+        // Keep jitter proportional to the per-character slice, or a small fixed
+        // amount when there is only one character, so it never lands perfectly on
+        // the avatar→origin line.
+        var jitterScale = count > 1 ? angleStep * 0.2 : Math.PI / 36.0; // ~5° fallback
 
         for (var i = 0; i < count; i++)
         {
-            // Base angle with small random offset for natural feel
-            var angle = i * baseAngleStep + (rng.NextDouble() - 0.5) * baseAngleStep * 0.2;
+            var baseOffset = count > 1 ? startOffset + i * angleStep : 0.0;
+            var angle = forwardAngle + baseOffset + (rng.NextDouble() - 0.5) * jitterScale;
 
-            // Slight radius variation (90-100% of specified radius)
-            var radiusVariation = radius * (0.9 + rng.NextDouble() * 0.1);
+            var radiusVariation = depth * (0.9 + rng.NextDouble() * 0.1);
 
             var offsetX = radiusVariation * Math.Sin(angle);
             var offsetZ = radiusVariation * Math.Cos(angle);
 
-            var spawnX = centerX + offsetX;
-            var spawnZ = centerZ + offsetZ;
-
-            positions.Add((spawnX, spawnZ));
+            positions.Add((avatarX + offsetX, avatarZ + offsetZ));
         }
 
         return positions;

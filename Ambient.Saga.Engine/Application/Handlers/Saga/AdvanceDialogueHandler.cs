@@ -102,33 +102,38 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
             var stateProvider = new DirectDialogueStateProvider(_world, command.Avatar);
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
-            // Start dialogue (idempotent)
-            engine.StartDialogue(dialogueTree);
-
-            // Replay to current node by following visited nodes
-            var visitedNodes = instance.Transactions
-                .Where(t => t.Type == SagaTransactionType.DialogueNodeVisited &&
-                           t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var charRef) &&
+            // Scope to the current session: transactions at or after the last DialogueStarted for this character.
+            var characterTransactions = instance.Transactions
+                .Where(t => t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var charRef) &&
                            charRef == characterState.CharacterRef)
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
 
-            foreach (var visitedTx in visitedNodes)
+            var lastStarted = characterTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueStarted);
+            if (lastStarted == null)
             {
-                var nodeId = visitedTx.Data[TransactionDataKeys.DialogueNodeId];
-                if (engine.CurrentNode != null)
-                {
-                    var choice = engine.CurrentNode.Choice?.FirstOrDefault(c => c.NextNodeId == nodeId);
-                    if (choice != null)
-                    {
-                        engine.SelectChoice(choice);
-                    }
-                    else if (engine.CurrentNode.NextNodeId == nodeId)
-                    {
-                        // It was an auto-advance, not a choice
-                        engine.AdvanceDialogue();
-                    }
-                }
+                return SagaCommandResult.Failure(instance.InstanceId, "No active dialogue session");
+            }
+
+            var sessionTransactions = characterTransactions
+                .Where(t => t.SequenceNumber >= lastStarted.SequenceNumber)
+                .ToList();
+
+            if (sessionTransactions.Any(t => t.Type == SagaTransactionType.DialogueCompleted))
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, "Dialogue session has already ended");
+            }
+
+            // Restore state from the transaction log - jump directly to the last visited node.
+            var lastVisit = sessionTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueNodeVisited);
+            if (lastVisit != null)
+            {
+                var lastVisitedNodeId = lastVisit.Data[TransactionDataKeys.DialogueNodeId];
+                engine.RestoreToNode(dialogueTree, lastVisitedNodeId);
+            }
+            else
+            {
+                engine.StartDialogue(dialogueTree);
             }
 
             // Now advance the dialogue
@@ -147,8 +152,15 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
 
             System.Diagnostics.Debug.WriteLine($"[AdvanceDialogue] Advanced to node: {nextNode?.NodeId ?? "END"}");
 
-            // Check for pending system events
+            // Capture pending events BEFORE any EndDialogue call — EndDialogue clears the queue.
             var pendingEvents = engine.PendingEvents.ToList();
+
+            // If the new current node is terminal, end the dialogue session.
+            if (engine.IsCurrentNodeTerminal)
+            {
+                System.Diagnostics.Debug.WriteLine("[AdvanceDialogue] Reached terminal node; ending dialogue session");
+                engine.EndDialogue();
+            }
             if (pendingEvents.Count > 0)
             {
                 System.Diagnostics.Debug.WriteLine($"[AdvanceDialogue] {pendingEvents.Count} pending events");

@@ -147,6 +147,38 @@ public class DialogueEngine
     }
 
     /// <summary>
+    /// Restores engine state to a previously visited node without re-evaluating conditions
+    /// or re-executing actions. Used to rehydrate state from the transaction log.
+    /// </summary>
+    public void RestoreToNode(DialogueTree tree, string nodeId)
+    {
+        if (tree == null)
+            throw new ArgumentNullException(nameof(tree));
+
+        var node = FindNode(tree, nodeId);
+        if (node == null)
+            throw new InvalidOperationException($"Node not found: {nodeId}");
+
+        _currentTree = tree;
+        _currentNode = node;
+        _actionExecutor.ClearEvents();
+    }
+
+    /// <summary>
+    /// True if the current node is terminal (no choices and no NextNodeId).
+    /// </summary>
+    public bool IsCurrentNodeTerminal
+    {
+        get
+        {
+            if (_currentNode == null) return false;
+            var hasChoices = _currentNode.Choice != null && _currentNode.Choice.Length > 0;
+            var hasNextNode = !string.IsNullOrEmpty(_currentNode.NextNodeId);
+            return !hasChoices && !hasNextNode;
+        }
+    }
+
+    /// <summary>
     /// Ends the current dialogue session.
     /// </summary>
     public void EndDialogue()

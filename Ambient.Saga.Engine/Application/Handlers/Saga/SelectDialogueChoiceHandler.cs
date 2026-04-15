@@ -102,35 +102,42 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             var stateProvider = new DirectDialogueStateProvider(_world, command.Avatar);
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
-            // Start dialogue if not already started (idempotent)
-            engine.StartDialogue(dialogueTree);
-
-            // Navigate to current node by replaying DialogueNodeVisited transactions
-            var visitedNodes = instance.Transactions
-                .Where(t => t.Type == SagaTransactionType.DialogueNodeVisited &&
-                           t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var charRef) &&
+            // Scope to the current session: transactions at or after the last DialogueStarted for this character.
+            var characterTransactions = instance.Transactions
+                .Where(t => t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var charRef) &&
                            charRef == characterState.CharacterRef)
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
 
-            System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Replaying {visitedNodes.Count} visited nodes to restore state");
-
-            foreach (var visitedTx in visitedNodes)
+            var lastStarted = characterTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueStarted);
+            if (lastStarted == null)
             {
-                if (!visitedTx.Data.TryGetValue(TransactionDataKeys.DialogueNodeId, out var nodeId))
-                    continue;
+                return SagaCommandResult.Failure(instance.InstanceId, "No active dialogue session");
+            }
 
-                System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Navigating to previously visited node: {nodeId}");
+            var sessionTransactions = characterTransactions
+                .Where(t => t.SequenceNumber >= lastStarted.SequenceNumber)
+                .ToList();
 
-                // Find the choice that led to this node
-                if (engine.CurrentNode != null)
-                {
-                    var navChoice = engine.CurrentNode.Choice?.FirstOrDefault(c => c.NextNodeId == nodeId);
-                    if (navChoice != null)
-                    {
-                        engine.SelectChoice(navChoice);
-                    }
-                }
+            if (sessionTransactions.Any(t => t.Type == SagaTransactionType.DialogueCompleted))
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, "Dialogue session has already ended");
+            }
+
+            // Restore state from the transaction log - jump directly to the last visited node.
+            // This avoids re-running actions and re-evaluating conditions that may have changed.
+            var lastVisit = sessionTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueNodeVisited);
+            if (lastVisit != null)
+            {
+                var lastVisitedNodeId = lastVisit.Data[TransactionDataKeys.DialogueNodeId];
+                engine.RestoreToNode(dialogueTree, lastVisitedNodeId);
+                System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Restored to node: {lastVisitedNodeId}");
+            }
+            else
+            {
+                // No visits yet - navigate from start
+                engine.StartDialogue(dialogueTree);
+                System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] No prior visits; navigated from start to: {engine.CurrentNode?.NodeId ?? "null"}");
             }
 
             // Find the choice in the current node
@@ -152,7 +159,18 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Navigated to node: {nextNode?.NodeId ?? "END"}");
 
             // Check for pending system events (OpenMerchantTrade, StartBossBattle, etc.)
+            // Capture BEFORE any EndDialogue call — EndDialogue clears the event queue.
             var pendingEvents = engine.PendingEvents.ToList();
+
+            // If the new current node is terminal, end the dialogue session.
+            // This creates a DialogueCompleted transaction so the session is sealed and
+            // DialogueCompleted-type quest objectives fire.
+            var isTerminal = engine.IsCurrentNodeTerminal;
+            if (isTerminal)
+            {
+                System.Diagnostics.Debug.WriteLine("[SelectDialogueChoice] Reached terminal node; ending dialogue session");
+                engine.EndDialogue();
+            }
             if (pendingEvents.Count > 0)
             {
                 System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] {pendingEvents.Count} pending events:");

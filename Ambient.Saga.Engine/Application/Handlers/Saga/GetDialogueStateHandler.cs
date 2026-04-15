@@ -80,24 +80,25 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
 
             System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Found {dialogueTransactions.Count} dialogue transactions");
 
-            // Check if dialogue is active
-            var dialogueStarted = dialogueTransactions.FirstOrDefault(t => t.Type == SagaTransactionType.DialogueStarted);
-            var dialogueCompleted = dialogueTransactions.FirstOrDefault(t => t.Type == SagaTransactionType.DialogueCompleted);
-
-            if (dialogueStarted == null)
+            // Scope to the current session: the most recent DialogueStarted is the current session.
+            // A session ends when a DialogueCompleted follows. We want state for the session containing
+            // (or immediately following) the last DialogueStarted.
+            var lastStarted = dialogueTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueStarted);
+            if (lastStarted == null)
             {
-                System.Diagnostics.Debug.WriteLine("[GetDialogueState] No active dialogue");
+                System.Diagnostics.Debug.WriteLine("[GetDialogueState] No dialogue has been started");
                 return new DialogueStateResult { IsActive = false, HasEnded = false };
             }
 
-            if (dialogueCompleted != null)
-            {
-                System.Diagnostics.Debug.WriteLine("[GetDialogueState] Dialogue has ended");
-                return new DialogueStateResult { IsActive = false, HasEnded = true };
-            }
+            var sessionTransactions = dialogueTransactions
+                .Where(t => t.SequenceNumber >= lastStarted.SequenceNumber)
+                .ToList();
+
+            var sessionCompleted = sessionTransactions.FirstOrDefault(t => t.Type == SagaTransactionType.DialogueCompleted);
+            var sessionEnded = sessionCompleted != null;
 
             // Get dialogue tree from DialogueStarted transaction
-            var dialogueTreeRef = dialogueStarted.Data[TransactionDataKeys.DialogueTreeRef];
+            var dialogueTreeRef = lastStarted.Data[TransactionDataKeys.DialogueTreeRef];
             var dialogueTree = _world.Gameplay.DialogueTrees?.FirstOrDefault(dt => dt.RefName == dialogueTreeRef);
             if (dialogueTree == null)
             {
@@ -110,43 +111,29 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
             var stateProvider = new DirectDialogueStateProvider(_world, query.Avatar);
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
-            // Start dialogue (idempotent)
-            engine.StartDialogue(dialogueTree);
+            // Restore state from the transaction log without re-executing actions or re-evaluating conditions.
+            // The last DialogueNodeVisited in the current session tells us exactly where the player is.
+            var lastVisit = sessionTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueNodeVisited);
 
-            // Navigate to current node by replaying DialogueNodeVisited transactions
-            var visitedNodes = dialogueTransactions
-                .Where(t => t.Type == SagaTransactionType.DialogueNodeVisited)
-                .OrderBy(t => t.SequenceNumber)
-                .ToList();
-
-            System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Replaying {visitedNodes.Count} visited nodes");
-
-            foreach (var visitedTx in visitedNodes)
+            if (lastVisit != null)
             {
-                var nodeId = visitedTx.Data[TransactionDataKeys.DialogueNodeId];
-                System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Navigating to node: {nodeId}");
-
-                // Find the choice that led to this node
-                if (engine.CurrentNode != null)
-                {
-                    var choice = engine.CurrentNode.Choice?.FirstOrDefault(c => c.NextNodeId == nodeId);
-                    if (choice != null)
-                    {
-                        engine.SelectChoice(choice);
-                    }
-                }
+                var lastVisitedNodeId = lastVisit.Data[TransactionDataKeys.DialogueNodeId];
+                engine.RestoreToNode(dialogueTree, lastVisitedNodeId);
+                System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Restored to node: {lastVisitedNodeId}");
+            }
+            else
+            {
+                // No visits yet - navigate from start node to resolve initial conditions
+                engine.StartDialogue(dialogueTree);
+                System.Diagnostics.Debug.WriteLine($"[GetDialogueState] No prior visits; navigated from start to: {engine.CurrentNode?.NodeId ?? "null"}");
             }
 
             // Get current node state
             var currentNode = engine.CurrentNode;
             if (currentNode == null)
             {
-                System.Diagnostics.Debug.WriteLine("[GetDialogueState] No current node (dialogue may have ended)");
-                return new DialogueStateResult
-                {
-                    IsActive = false,
-                    HasEnded = true
-                };
+                System.Diagnostics.Debug.WriteLine("[GetDialogueState] No current node");
+                return new DialogueStateResult { IsActive = false, HasEnded = true };
             }
 
             System.Diagnostics.Debug.WriteLine($"[GetDialogueState] Current node: {currentNode.NodeId}");
@@ -206,12 +193,12 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
 
             return new DialogueStateResult
             {
-                IsActive = true,
+                IsActive = !sessionEnded,
                 CurrentNodeId = currentNode.NodeId ?? string.Empty,
                 DialogueText = dialogueText,
                 Choices = choices,
-                CanContinue = !hasChoices && hasNextNode,  // Can only continue if there's somewhere to go
-                HasEnded = isTerminalNode                   // Terminal node = no choices and no next node
+                CanContinue = !sessionEnded && !hasChoices && hasNextNode,
+                HasEnded = sessionEnded || isTerminalNode
             };
         }
         catch (Exception ex)
