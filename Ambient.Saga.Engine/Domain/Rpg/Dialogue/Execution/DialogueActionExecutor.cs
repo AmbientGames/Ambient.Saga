@@ -1,5 +1,6 @@
 ﻿using Ambient.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Dialogue.Execution;
 
@@ -473,12 +474,40 @@ public class DialogueActionExecutor
         if (actions == null || actions.Length == 0)
             return;
 
-        // Check idempotency ONCE for all actions in this node
-        var shouldAwardRewards = _stateProvider.ShouldAwardNodeRewards(characterRef, nodeId);
+        // Check idempotency ONCE for all actions in this node.
+        // The provider only sees COMMITTED state (SagaState is derived from committed transactions),
+        // so a re-entry that happens before the first visit is persisted would slip through and
+        // double-award. Also scan the instance's pending transactions to close that window.
+        var shouldAwardRewards =
+            _stateProvider.ShouldAwardNodeRewards(characterRef, nodeId)
+            && !HasPendingNodeVisit(characterRef, nodeId);
 
         foreach (var action in actions)
         {
             Execute(action, dialogueTreeRef, nodeId, characterRef, shouldAwardRewards);
         }
+    }
+
+    private bool HasPendingNodeVisit(string characterRef, string nodeId)
+    {
+        if (_sagaContext == null)
+            return false;
+
+        var avatarId = _sagaContext.AvatarId;
+        foreach (var tx in _sagaContext.SagaInstance.Transactions)
+        {
+            if (tx.Type != SagaTransactionType.DialogueNodeVisited)
+                continue;
+            if (tx.Status != TransactionStatus.Pending)
+                continue;
+            if (!string.Equals(tx.AvatarId, avatarId, StringComparison.Ordinal))
+                continue;
+            if (!string.Equals(tx.GetData<string>(TransactionDataKeys.CharacterRef), characterRef, StringComparison.Ordinal))
+                continue;
+            if (!string.Equals(tx.GetData<string>(TransactionDataKeys.DialogueNodeId), nodeId, StringComparison.Ordinal))
+                continue;
+            return true;
+        }
+        return false;
     }
 }
