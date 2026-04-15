@@ -231,6 +231,13 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
                     _database.Commit();
                     System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit OK: InstanceId={instanceId} wrote {transactions.Count} txs");
+
+                    // A write straight to LiteDB bypasses any cached SagaInstance held in
+                    // _instanceCache. Mark that cache entry dirty so the next GetOrCreate
+                    // reloads transactions from disk instead of returning the stale copy
+                    // (fan-out from other sagas lands here, and must be visible on next read).
+                    InvalidateInstanceCache(instanceId);
+
                     return Task.FromResult((sequenceNumbers, true));
                 }
                 catch (Exception innerEx)
@@ -338,6 +345,12 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                 }
 
                 _database.Commit();
+
+                // Pending→Committed changes what replay produces. Invalidate any cached
+                // SagaInstance so the next GetOrCreate reloads from disk instead of
+                // returning state derived before these transactions were committed.
+                InvalidateInstanceCache(instanceId);
+
                 return Task.FromResult(true);
             }
             catch
@@ -374,6 +387,11 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                 }
 
                 _database.Commit();
+
+                // Keep the in-memory view aligned with the DB even though replay output
+                // is unchanged — consumers that read instance.Transactions directly would
+                // otherwise see stale Pending entries.
+                InvalidateInstanceCache(instanceId);
             }
             catch
             {

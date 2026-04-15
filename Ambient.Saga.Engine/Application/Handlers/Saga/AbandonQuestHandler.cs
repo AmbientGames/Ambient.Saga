@@ -37,39 +37,28 @@ internal sealed class AbandonQuestHandler : IRequestHandler<AbandonQuestCommand,
     {
         try
         {
-            // Get Saga instance
-            var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
-
-            // Verify Saga exists
-            if (!_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var sagaTemplate))
-            {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{command.SagaArcRef}' not found");
-            }
-
             // Verify quest exists
             var quest = _world.TryGetQuestByRefName(command.QuestRef);
             if (quest == null)
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{command.QuestRef}' not found");
+                return SagaCommandResult.Failure(Guid.Empty, $"Quest '{command.QuestRef}' not found");
             }
 
-            // Get expanded triggers for state machine
-            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var expandedTriggers))
+            // Resolve the Saga instance that actually holds the active quest — the avatar
+            // may be abandoning a quest from an NPC in a different Saga than the one that
+            // issued it.
+            var instance = await QuestInstanceLocator.ResolveActiveQuestInstanceAsync(
+                command.AvatarId, command.QuestRef, command.SagaArcRef, _instanceRepository, _world, ct);
+
+            if (instance == null)
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArcRef}'");
+                var hinted = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
+                return SagaCommandResult.Failure(hinted.InstanceId, $"Quest '{quest.DisplayName}' is not active - cannot abandon");
             }
 
-            // Replay to get current state
-            var stateMachine = new SagaStateMachine(sagaTemplate, expandedTriggers, _world);
-            var currentState = stateMachine.ReplayToNow(instance);
+            var resolvedSagaRef = instance.SagaRef;
 
-            // Check if quest is active
-            if (!currentState.ActiveQuests.ContainsKey(command.QuestRef))
-            {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{quest.DisplayName}' is not active - cannot abandon");
-            }
-
-            // Create QuestAbandoned transaction
+            // Create QuestAbandoned transaction on the owning instance
             var transaction = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
@@ -81,7 +70,7 @@ internal sealed class AbandonQuestHandler : IRequestHandler<AbandonQuestCommand,
                 {
                     [TransactionDataKeys.QuestRef] = command.QuestRef,
                     [TransactionDataKeys.QuestDisplayName] = quest.DisplayName,
-                    [TransactionDataKeys.SagaArcRef] = command.SagaArcRef
+                    [TransactionDataKeys.SagaArcRef] = resolvedSagaRef
                 }
             };
 
@@ -98,8 +87,8 @@ internal sealed class AbandonQuestHandler : IRequestHandler<AbandonQuestCommand,
                 return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transaction rolled back");
             }
 
-            // Invalidate cache
-            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+            // Invalidate cache for the saga that actually owns the quest
+            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, resolvedSagaRef, ct);
 
             // Quest progress is event-sourced from SagaState - no avatar entity update needed
             // Avatar queries active quests via GetActiveQuestsQuery
