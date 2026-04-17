@@ -93,17 +93,6 @@
 					</xs:attribute>
 				</xs:complexType>
 			</xs:element>
-			<xs:element name="QuestToken" minOccurs="0" maxOccurs="unbounded">
-				<xs:annotation><xs:documentation>A quest token granted as a reputation reward, often unlocking faction-specific quests.</xs:documentation></xs:annotation>
-				<xs:complexType>
-					<xs:attribute name="QuestTokenRef" type="QuestTokenRef" use="required">
-						<xs:annotation><xs:documentation>Reference to the quest token definition.</xs:documentation></xs:annotation>
-					</xs:attribute>
-					<xs:attribute name="Quantity" type="xs:int" use="optional" default="1">
-						<xs:annotation><xs:documentation>Number of this quest token granted.</xs:documentation></xs:annotation>
-					</xs:attribute>
-				</xs:complexType>
-			</xs:element>
 		</xs:sequence>
 		<xs:attribute name="RequiredLevel" type="ReputationLevel" use="required">
 			<xs:annotation><xs:documentation>The minimum reputation level the avatar must reach to unlock this reward.</xs:documentation></xs:annotation>

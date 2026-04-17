@@ -2,6 +2,7 @@
 using Ambient.Domain;
 using Ambient.Domain.GameLogic;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Contracts;
@@ -29,6 +30,7 @@ public record WorldRepositories
 {
     public required ISagaInstanceRepository SagaRepository { get; init; }
     public required IGameAvatarRepository AvatarRepository { get; init; }
+    public required IAvatarProgressRepository AvatarProgressRepository { get; init; }
     public required IWorldStateRepository WorldStateRepository { get; init; }
     public required ISteamAchievementService SteamAchievementService { get; init; }
     public required IDisposable Database { get; init; }

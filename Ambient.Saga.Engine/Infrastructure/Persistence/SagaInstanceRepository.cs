@@ -1,4 +1,5 @@
 ﻿using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using LiteDB;
 using System.Collections.Concurrent;
@@ -27,6 +28,11 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     // In-memory instance cache — preserves CachedState/IsDirty across calls
     private readonly ConcurrentDictionary<string, SagaInstance> _instanceCache = new();
+
+    private IAvatarProgressRepository? _avatarProgressRepository;
+
+    public void SetAvatarProgressRepository(IAvatarProgressRepository repository)
+        => _avatarProgressRepository = repository;
 
     public SagaInstanceRepository(ILiteDatabase database)
     {
@@ -229,13 +235,18 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                         sequenceNumbers.Add(transaction.SequenceNumber);
                     }
 
+                    // Project cross-arc state before commit so it's in the same transaction
+                    if (_avatarProgressRepository != null && instance.OwnerAvatarId.HasValue)
+                    {
+                        _avatarProgressRepository.ProjectTransactions(
+                            instance.OwnerAvatarId.Value,
+                            instance.SagaRef,
+                            transactions);
+                    }
+
                     _database.Commit();
                     System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit OK: InstanceId={instanceId} wrote {transactions.Count} txs");
 
-                    // A write straight to LiteDB bypasses any cached SagaInstance held in
-                    // _instanceCache. Mark that cache entry dirty so the next GetOrCreate
-                    // reloads transactions from disk instead of returning the stale copy
-                    // (fan-out from other sagas lands here, and must be visible on next read).
                     InvalidateInstanceCache(instanceId);
 
                     return Task.FromResult((sequenceNumbers, true));

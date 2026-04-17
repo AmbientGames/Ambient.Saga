@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
@@ -72,6 +73,7 @@ public class BattleCommandTests : IDisposable
         // Register dependencies
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
@@ -278,7 +280,6 @@ public class BattleCommandTests : IDisposable
             {
                 Equipment = new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } },
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
 
@@ -354,7 +355,6 @@ public class BattleCommandTests : IDisposable
                     new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
                 },
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             },
             AffinityRef = "Physical"
         };

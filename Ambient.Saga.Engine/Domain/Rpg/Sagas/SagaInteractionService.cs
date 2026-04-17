@@ -1,5 +1,6 @@
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain;
 
@@ -52,7 +53,9 @@ public class SagaInteractionService
         SagaInstance instance,
         double avatarX,
         double avatarZ,
-        AvatarBase avatar)
+        AvatarBase avatar,
+        IAvatarProgressRepository? progressRepo = null,
+        Guid avatarId = default)
     {
         if (instance == null)
             throw new ArgumentNullException(nameof(instance));
@@ -81,8 +84,11 @@ public class SagaInteractionService
             if (!isWithinRadius)
                 continue;
 
-            // Check quest token requirements (state-based — tokens come from replayed log)
-            if (!TriggerAvailabilityChecker.CanActivate(trigger, currentState))
+            // Check quest token requirements from avatar progress table
+            var canActivate = progressRepo != null && avatarId != Guid.Empty
+                ? TriggerAvailabilityChecker.CanActivate(trigger, progressRepo, avatarId)
+                : TriggerAvailabilityChecker.CanActivate(trigger, currentState);
+            if (!canActivate)
                 continue;
 
             // Keep track of smallest (innermost) trigger
@@ -156,7 +162,8 @@ public class SagaInteractionService
         SagaInstance instance,
         double avatarX,
         double avatarZ,
-        AvatarBase avatar)
+        AvatarBase avatar,
+        IAvatarProgressRepository? progressRepo = null)
     {
         if (instance == null)
             throw new ArgumentNullException(nameof(instance));
@@ -255,8 +262,11 @@ public class SagaInteractionService
             if (!isWithinEnterRadius)
                 continue;
 
-            // Check quest token requirements (state-based — tokens come from replayed log)
-            if (!TriggerAvailabilityChecker.CanActivate(sagaTrigger, currentState))
+            // Check quest token requirements from avatar progress table
+            var canActivate = progressRepo != null && avatar.AvatarId != Guid.Empty
+                ? TriggerAvailabilityChecker.CanActivate(sagaTrigger, progressRepo, avatar.AvatarId)
+                : TriggerAvailabilityChecker.CanActivate(sagaTrigger, currentState);
+            if (!canActivate)
                 continue;
 
             // Trigger activated! Create entry transaction first

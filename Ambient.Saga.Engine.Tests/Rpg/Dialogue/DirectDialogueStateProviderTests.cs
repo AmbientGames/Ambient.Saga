@@ -18,7 +18,6 @@ public class DirectDialogueStateProviderTests
         {
             Capabilities = new ItemCollection
             {
-                QuestTokens = Array.Empty<QuestTokenEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
                 BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
                 Equipment = Array.Empty<EquipmentEntry>(),
@@ -45,8 +44,6 @@ public class DirectDialogueStateProviderTests
         _provider.AddQuestToken("quest_001");
 
         Assert.True(_provider.HasQuestToken("quest_001"));
-        Assert.Single(_avatar.Capabilities.QuestTokens);
-        Assert.Equal("quest_001", _avatar.Capabilities.QuestTokens[0].QuestTokenRef);
     }
 
     [Fact]
@@ -55,24 +52,7 @@ public class DirectDialogueStateProviderTests
         _provider.AddQuestToken("quest_001");
         _provider.AddQuestToken("quest_001");
 
-        Assert.Single(_avatar.Capabilities.QuestTokens);
-    }
-
-    [Fact]
-    public void RemoveQuestToken_RemovesExistingToken()
-    {
-        _provider.AddQuestToken("quest_001");
-        _provider.RemoveQuestToken("quest_001");
-
-        Assert.False(_provider.HasQuestToken("quest_001"));
-        Assert.Empty(_avatar.Capabilities.QuestTokens);
-    }
-
-    [Fact]
-    public void RemoveQuestToken_NonExistent_DoesNothing()
-    {
-        _provider.RemoveQuestToken("quest_999");
-        Assert.Empty(_avatar.Capabilities.QuestTokens);
+        Assert.True(_provider.HasQuestToken("quest_001"));
     }
 
     [Fact]
@@ -85,14 +65,6 @@ public class DirectDialogueStateProviderTests
         Assert.True(_provider.HasQuestToken("quest_001"));
         Assert.True(_provider.HasQuestToken("quest_002"));
         Assert.True(_provider.HasQuestToken("quest_003"));
-        Assert.Equal(3, _avatar.Capabilities.QuestTokens.Length);
-
-        _provider.RemoveQuestToken("quest_002");
-
-        Assert.True(_provider.HasQuestToken("quest_001"));
-        Assert.False(_provider.HasQuestToken("quest_002"));
-        Assert.True(_provider.HasQuestToken("quest_003"));
-        Assert.Equal(2, _avatar.Capabilities.QuestTokens.Length);
     }
 
     #endregion
@@ -586,15 +558,14 @@ public class DirectDialogueStateProviderTests
         // Quest completion: Take materials, give rewards
         _provider.RemoveMaterial("iron_ore", 10);
         _provider.RemoveMaterial("gold_ore", 5);
-        _provider.RemoveQuestToken("quest_active");
 
         _provider.TransferCurrency(200);
         _provider.AddConsumable("health_potion", 3);
         _provider.AddEquipment("legendary_sword");
         _provider.UnlockAchievement("quest_master");
 
-        // Verify final state
-        Assert.False(_provider.HasQuestToken("quest_active"));
+        // Verify final state — quest tokens granted in a session persist for the session lifetime
+        Assert.True(_provider.HasQuestToken("quest_active"));
         Assert.Equal(0, _provider.GetMaterialQuantity("iron_ore"));
         Assert.Equal(0, _provider.GetMaterialQuantity("gold_ore"));
         Assert.Equal(250, _provider.GetCredits());

@@ -418,15 +418,6 @@ public class QuestDetailModal
                 }
             }
 
-            if (reward.QuestToken != null && reward.QuestToken.Length > 0)
-            {
-                foreach (var token in reward.QuestToken)
-                {
-                    var tokenDef = viewModel.CurrentWorld?.Gameplay?.QuestTokens?.FirstOrDefault(t => t.RefName == token.QuestTokenRef);
-                    var tokenName = tokenDef?.DisplayName ?? token.QuestTokenRef;
-                    ImGui.BulletText($"Quest Token: {tokenName} x{token.Quantity}");
-                }
-            }
         }
 
         ImGui.Unindent(10 * UIConstants.DpiScale);

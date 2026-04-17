@@ -3,6 +3,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Quests;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -19,17 +20,20 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
+    private readonly IAvatarProgressRepository _avatarProgressRepository;
     private readonly IAvatarUpdateService _avatarUpdateService;
     private readonly IWorld _world;
 
     public AcceptQuestHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
+        IAvatarProgressRepository avatarProgressRepository,
         IAvatarUpdateService avatarUpdateService,
         IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
+        _avatarProgressRepository = avatarProgressRepository;
         _avatarUpdateService = avatarUpdateService;
         _world = world;
     }
@@ -82,7 +86,8 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
                 command.Avatar,
                 _world,
                 currentState.CompletedQuests,
-                currentState.FactionReputation);
+                currentState.FactionReputation,
+                awardedQuestTokens: _avatarProgressRepository.GetAllQuestTokens(command.AvatarId));
 
             if (!canAccept)
             {

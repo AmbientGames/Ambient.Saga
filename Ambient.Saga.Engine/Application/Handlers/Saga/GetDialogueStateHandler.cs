@@ -2,6 +2,7 @@ using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Evaluation;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -17,13 +18,16 @@ namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueStateQuery, DialogueStateResult>
 {
     private readonly ISagaInstanceRepository _instanceRepository;
+    private readonly IAvatarProgressRepository _avatarProgressRepository;
     private readonly IWorld _world;
 
     public GetDialogueStateHandler(
         ISagaInstanceRepository instanceRepository,
+        IAvatarProgressRepository avatarProgressRepository,
         IWorld world)
     {
         _instanceRepository = instanceRepository;
+        _avatarProgressRepository = avatarProgressRepository;
         _world = world;
     }
 
@@ -108,7 +112,7 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
 
             // Create dialogue engine with Saga context (characterRef was already extracted earlier)
             var sagaContext = new SagaDialogueContext(instance, characterRef, query.AvatarId.ToString());
-            var stateProvider = new DirectDialogueStateProvider(_world, query.Avatar);
+            var stateProvider = new DirectDialogueStateProvider(_world, query.Avatar, _avatarProgressRepository, query.AvatarId.ToString());
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
             // Restore state from the transaction log without re-executing actions or re-evaluating conditions.

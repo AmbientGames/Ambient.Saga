@@ -31,22 +31,6 @@ public class DialogueActionExecutorTests
         Assert.True(_state.HasQuestToken("dragon_quest"));
     }
 
-    [Fact]
-    public void TakeQuestToken_RemovesTokenFromAvatar()
-    {
-        _state.AddQuestToken("dragon_quest");
-
-        var action = new DialogueAction
-        {
-            Type = DialogueActionType.TakeQuestToken,
-            RefName = "dragon_quest"
-        };
-
-        _executor.Execute(action, "test_tree", "node1", "test_character", true);
-
-        Assert.False(_state.HasQuestToken("dragon_quest"));
-    }
-
     #endregion
 
     #region Stackable Item Actions

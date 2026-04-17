@@ -26,7 +26,6 @@ public static class AvatarSpawner
         avatar.Capabilities.Consumables = archetype.SpawnCapabilities.Consumables?.ToArray() ?? [];
         avatar.Capabilities.Spells = archetype.SpawnCapabilities.Spells?.ToArray() ?? [];
         avatar.Capabilities.BuildingMaterials = archetype.SpawnCapabilities.BuildingMaterials?.ToArray() ?? [];
-        avatar.Capabilities.QuestTokens = archetype.SpawnCapabilities.QuestTokens?.ToArray() ?? [];
     }
 
     /// <summary>
@@ -42,7 +41,6 @@ public static class AvatarSpawner
         avatar.Capabilities.Consumables = archetype.RespawnCapabilities.Consumables?.ToArray() ?? [];
         avatar.Capabilities.Spells = archetype.RespawnCapabilities.Spells?.ToArray() ?? [];
         avatar.Capabilities.BuildingMaterials = archetype.RespawnCapabilities.BuildingMaterials?.ToArray() ?? [];
-        avatar.Capabilities.QuestTokens = archetype.RespawnCapabilities.QuestTokens?.ToArray() ?? [];
     }
 
 }

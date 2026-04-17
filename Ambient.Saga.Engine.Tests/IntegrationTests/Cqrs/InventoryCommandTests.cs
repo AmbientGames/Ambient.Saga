@@ -7,6 +7,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -46,6 +47,7 @@ public class InventoryCommandTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();

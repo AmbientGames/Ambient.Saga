@@ -4,6 +4,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -20,17 +21,20 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
+    private readonly IAvatarProgressRepository _avatarProgressRepository;
     private readonly IWorld _world;
     private readonly IMediator _mediator;
 
     public SelectDialogueChoiceHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
+        IAvatarProgressRepository avatarProgressRepository,
         IWorld world,
         IMediator mediator)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
+        _avatarProgressRepository = avatarProgressRepository;
         _world = world;
         _mediator = mediator;
     }
@@ -99,7 +103,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             // Create dialogue engine with Saga context (will create transactions)
             var sagaContext = new SagaDialogueContext(instance, characterState.CharacterRef, command.AvatarId.ToString());
-            var stateProvider = new DirectDialogueStateProvider(_world, command.Avatar);
+            var stateProvider = new DirectDialogueStateProvider(_world, command.Avatar, _avatarProgressRepository, command.AvatarId.ToString(), characterState.CharacterRef);
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
             // Scope to the current session: transactions at or after the last DialogueStarted for this character.
@@ -259,22 +263,6 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
-
-            // Fan out any QuestTokenAwarded transactions to every other saga instance whose triggers
-            // require the token. Dialogue-driven awards unlock gates in other arcs the same way trigger-driven ones do.
-            var awardedTokenRefs = newTransactions
-                .Where(t => t.Type == SagaTransactionType.QuestTokenAwarded)
-                .Select(t => t.GetData<string>(TransactionDataKeys.QuestTokenRef))
-                .Where(r => !string.IsNullOrEmpty(r))
-                .Distinct()
-                .ToList();
-
-            if (awardedTokenRefs.Count > 0)
-            {
-                await QuestTokenFanOut.FanOutAsync(
-                    command.AvatarId, command.SagaArcRef, awardedTokenRefs,
-                    _instanceRepository, _readModelRepository, _world, ct);
-            }
 
             // Add pending events to result data so caller can process them
             var resultData = new Dictionary<string, object>();

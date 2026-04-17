@@ -18,6 +18,12 @@ public class StubWorldStateRepository : IWorldStateRepository
     private readonly Dictionary<string, AvatarEntity> _avatars = new();
     private readonly List<AvatarDiscovery> _discoveries = new();
 
+    public void AddSagaInstance(string avatarId, string templateRef, SagaInstance instance)
+    {
+        var key = $"{avatarId}:{templateRef}";
+        _sagaInstances[key] = instance;
+    }
+
     public Task<SagaInstance?> GetSagaInstanceAsync(string avatarId, string templateRef)
     {
         var key = $"{avatarId}:{templateRef}";

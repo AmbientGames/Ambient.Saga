@@ -9,6 +9,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -51,6 +52,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository, FakeAvatarRepository>();
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
@@ -343,11 +345,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
             {
                 new QuestReward
                 {
-                    Condition = QuestRewardCondition.OnSuccess,
-                    QuestToken = new[]
-                    {
-                        new QuestRewardQuestToken { QuestTokenRef = "HERBALIST_BADGE", Quantity = 1 }
-                    }
+                    Condition = QuestRewardCondition.OnSuccess
                 }
             }
         };
@@ -405,7 +403,6 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
             {
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
     }

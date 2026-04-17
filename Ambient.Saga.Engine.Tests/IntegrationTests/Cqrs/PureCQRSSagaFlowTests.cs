@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -64,6 +65,7 @@ public class PureCQRSSagaFlowTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
@@ -234,7 +236,6 @@ public class PureCQRSSagaFlowTests : IDisposable
                 Blocks = Array.Empty<BlockEntry>(),
                 Tools = Array.Empty<ToolEntry>(),
                 BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             },
             RespawnStats = new CharacterStats
             {
@@ -258,7 +259,6 @@ public class PureCQRSSagaFlowTests : IDisposable
                 Blocks = Array.Empty<BlockEntry>(),
                 Tools = Array.Empty<ToolEntry>(),
                 BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
 

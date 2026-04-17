@@ -243,11 +243,6 @@
                     <xs:documentation>Add a quest token to the avatar's inventory.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="TakeQuestToken">
-                <xs:annotation>
-                    <xs:documentation>Remove a quest token from the avatar's inventory.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
             <xs:enumeration value="GiveConsumable">
                 <xs:annotation>
                     <xs:documentation>Add a consumable item to the avatar's inventory.</xs:documentation>

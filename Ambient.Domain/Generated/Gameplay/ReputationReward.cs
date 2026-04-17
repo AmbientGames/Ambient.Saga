@@ -26,8 +26,6 @@ namespace Ambient.Domain {
         
         private ReputationRewardConsumable[] consumableField;
         
-        private ReputationRewardQuestToken[] questTokenField;
-        
         private ReputationLevel requiredLevelField;
         
         /// <remarks/>
@@ -49,17 +47,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.consumableField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("QuestToken")]
-        public ReputationRewardQuestToken[] QuestToken {
-            get {
-                return this.questTokenField;
-            }
-            set {
-                this.questTokenField = value;
             }
         }
         

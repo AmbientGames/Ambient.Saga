@@ -99,11 +99,6 @@ public class DialogueActionExecutor
                     }
                 }
                 break;
-            case DialogueActionType.TakeQuestToken:
-                if (shouldAwardRewards)
-                    _stateProvider.RemoveQuestToken(action.RefName);
-                break;
-
             // Stackable items - IDEMPOTENT (only give on first visit)
             case DialogueActionType.GiveConsumable:
                 if (shouldAwardRewards)

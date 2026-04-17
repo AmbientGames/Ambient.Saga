@@ -1,5 +1,7 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Contracts.Persistence;
+using Ambient.Saga.Engine.Domain.AvatarProgress;
 using Ambient.Saga.Engine.Domain.Rpg.Party;
 using Ambient.Saga.Engine.Domain.Rpg.Reputation;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -16,21 +18,24 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     private readonly AvatarBase _a;
     private readonly Dictionary<string, HashSet<string>> _visited = new();
     private readonly Dictionary<string, int?> _traits = new();
-    private readonly Func<string, SagaState?>? _getSagaStateFunc;
+    private readonly IAvatarProgressRepository? _progressRepo;
+    private readonly Guid _avatarGuid;
     private readonly string? _avatarId;
     private string? _currentCharacterRef;
+    private readonly HashSet<string> _sessionTokens = new();
 
     public DirectDialogueStateProvider(
         IWorld w,
         AvatarBase a,
-        Func<string, SagaState?>? getSagaStateFunc = null,
+        IAvatarProgressRepository? progressRepo = null,
         string? avatarId = null,
         string? characterRef = null)
     {
         _w = w;
         _a = a;
-        _getSagaStateFunc = getSagaStateFunc;
+        _progressRepo = progressRepo;
         _avatarId = avatarId;
+        _avatarGuid = avatarId != null && Guid.TryParse(avatarId, out var g) ? g : Guid.Empty;
         _currentCharacterRef = characterRef;
     }
 
@@ -43,10 +48,14 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
         _currentCharacterRef = characterRef;
     }
 
-    // Quest Tokens
-    public bool HasQuestToken(string r) => _a.Capabilities?.QuestTokens?.Any(e => e.QuestTokenRef == r) ?? false;
-    public void AddQuestToken(string r) { if (_a.Capabilities?.QuestTokens != null && !HasQuestToken(r)) { var list = _a.Capabilities.QuestTokens.ToList(); list.Add(new QuestTokenEntry { QuestTokenRef = r }); _a.Capabilities.QuestTokens = list.ToArray(); } }
-    public void RemoveQuestToken(string r) { if (_a.Capabilities?.QuestTokens != null) _a.Capabilities.QuestTokens = _a.Capabilities.QuestTokens.Where(e => e.QuestTokenRef != r).ToArray(); }
+    // Quest Tokens — read from avatar progress table + session buffer for tokens granted this dialogue
+    public bool HasQuestToken(string r)
+    {
+        if (_sessionTokens.Contains(r)) return true;
+        return _progressRepo?.HasQuestToken(_avatarGuid, r) ?? false;
+    }
+
+    public void AddQuestToken(string r) => _sessionTokens.Add(r);
 
     // Consumables (stackable)
     public int GetConsumableQuantity(string r) => _a.Capabilities?.Consumables?.FirstOrDefault(e => e.ConsumableRef == r)?.Quantity ?? 0;
@@ -93,35 +102,8 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     public void RecordNodeVisit(string t, string n) { if (!_visited.ContainsKey(t)) _visited[t] = new HashSet<string>(); _visited[t].Add(n); }
     public bool WasNodeVisited(string t, string n) => _visited.ContainsKey(t) && _visited[t].Contains(n);
 
-    /// <summary>
-    /// Gets boss defeated count by querying Saga state machine.
-    /// Requires getSagaStateFunc to be injected for this to work.
-    /// </summary>
     public int GetBossDefeatedCount(string bossRef)
-    {
-        if (_getSagaStateFunc == null)
-            return 0; // No Saga state provider - return 0 (not defeated)
-
-        // Find Saga instances that might contain this boss
-        // For now, check all Sagas - in a real implementation, you'd have a mapping
-        foreach (var saga in _w.Gameplay?.SagaArcs ?? Array.Empty<SagaArc>())
-        {
-            var state = _getSagaStateFunc(saga.RefName);
-            if (state != null)
-            {
-                // Check if this character exists in the Saga state and is defeated
-                foreach (var character in state.Characters.Values)
-                {
-                    if (character.CharacterRef == bossRef && !character.IsAlive)
-                    {
-                        return 1; // Boss defeated
-                    }
-                }
-            }
-        }
-
-        return 0; // Boss not found or still alive
-    }
+        => _progressRepo?.GetBossDefeatedCount(_avatarGuid, bossRef) ?? 0;
 
     public void IncrementBossDefeatedCount(string r)
     {
@@ -139,85 +121,25 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
 
     // Quest State
     public bool IsQuestActive(string questRef)
-    {
-        if (_getSagaStateFunc == null)
-            return false; // No Saga state provider
-
-        // Check all Saga instances for active quests
-        foreach (var saga in _w.Gameplay?.SagaArcs ?? Array.Empty<SagaArc>())
-        {
-            var state = _getSagaStateFunc(saga.RefName);
-            if (state != null && state.ActiveQuests.ContainsKey(questRef))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+        => _progressRepo?.GetQuestStatus(_avatarGuid, questRef) == QuestProgressStatus.Active;
 
     public bool IsQuestCompleted(string questRef)
-    {
-        if (_getSagaStateFunc == null)
-            return false; // No Saga state provider
-
-        // Check all Saga instances for completed quests
-        foreach (var saga in _w.Gameplay?.SagaArcs ?? Array.Empty<SagaArc>())
-        {
-            var state = _getSagaStateFunc(saga.RefName);
-            if (state != null && state.CompletedQuests.Contains(questRef))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
+        => _progressRepo?.GetQuestStatus(_avatarGuid, questRef) == QuestProgressStatus.Completed;
 
     public bool IsQuestNotStarted(string questRef)
-    {
-        // Quest not started = neither active nor completed
-        return !IsQuestActive(questRef) && !IsQuestCompleted(questRef);
-    }
+        => _progressRepo?.GetQuestStatus(_avatarGuid, questRef) == null;
 
     // Faction Reputation
     public int GetFactionReputation(string factionRef)
     {
-        if (_getSagaStateFunc == null)
-        {
-            // No Saga state provider - check faction starting reputation
-            if (_w.FactionsLookup.TryGetValue(factionRef, out var factionDef))
-            {
-                return factionDef.StartingReputation;
-            }
-            return 0; // Neutral
-        }
+        var progressValue = _progressRepo?.GetFactionReputation(_avatarGuid, factionRef) ?? 0;
+        if (progressValue != 0) return progressValue;
 
-        // Check all Saga instances for faction reputation
-        foreach (var saga in _w.Gameplay?.SagaArcs ?? Array.Empty<SagaArc>())
-        {
-            var state = _getSagaStateFunc(saga.RefName);
-            if (state != null && state.FactionReputation.TryGetValue(factionRef, out var reputation))
-            {
-                return reputation;
-            }
-        }
-
-        // If no saga arcs in world, try getting state directly (for tests)
-        // This handles the case where tests provide a getSagaStateFunc but minimal world has no SagaArcs
-        var directState = _getSagaStateFunc(string.Empty);
-        if (directState != null && directState.FactionReputation.TryGetValue(factionRef, out var directReputation))
-        {
-            return directReputation;
-        }
-
-        // Not found - check if faction has starting reputation
+        // Fall back to faction starting reputation
         if (_w.FactionsLookup.TryGetValue(factionRef, out var faction))
-        {
             return faction.StartingReputation;
-        }
 
-        return 0; // Default to Neutral
+        return 0;
     }
 
     public string GetFactionReputationLevel(string factionRef)
@@ -237,36 +159,10 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
             "ChangeReputation must be called through DialogueActionExecutor with Saga context");
     }
 
-    /// <summary>
-    /// Checks if rewards should be awarded for this dialogue node.
-    /// If Saga state is available, checks if this is the first visit.
-    /// If Saga state is not available, always returns true (no idempotency).
-    /// </summary>
-    public bool ShouldAwardNodeRewards(string characterRef, string nodeId)
-    {
-        // If no Saga state function provided, always award (backward compatibility)
-        if (_getSagaStateFunc == null || string.IsNullOrEmpty(_avatarId))
-            return true;
-
-        // Check all Saga instances to find one with this dialogue visit
-        foreach (var saga in _w.Gameplay?.SagaArcs ?? Array.Empty<SagaArc>())
-        {
-            var state = _getSagaStateFunc(saga.RefName);
-            if (state != null)
-            {
-                // Check if this node has already been visited
-                var visitKey = $"{_avatarId}_{characterRef}_{nodeId}";
-                if (state.DialogueNodeVisits.ContainsKey(visitKey))
-                {
-                    // Already visited - don't award rewards again
-                    return false;
-                }
-            }
-        }
-
-        // Not found in any Saga state - this is first visit, award rewards
-        return true;
-    }
+    // Idempotency for dialogue node rewards is handled by SagaDialogueContext
+    // and DialogueTransactionHelper.ShouldAwardNodeRewards at the handler level.
+    // This method provides a fallback for test scenarios without saga context.
+    public bool ShouldAwardNodeRewards(string characterRef, string nodeId) => true;
 
     // ===== PARTY MANAGEMENT =====
 

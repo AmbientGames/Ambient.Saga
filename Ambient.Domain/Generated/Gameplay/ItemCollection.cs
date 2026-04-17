@@ -34,8 +34,6 @@ namespace Ambient.Domain {
         
         private BuildingMaterialEntry[] buildingMaterialsField;
         
-        private QuestTokenEntry[] questTokensField;
-        
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Entry", IsNullable=false)]
         public EquipmentEntry[] Equipment {
@@ -99,17 +97,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.buildingMaterialsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Entry", IsNullable=false)]
-        public QuestTokenEntry[] QuestTokens {
-            get {
-                return this.questTokensField;
-            }
-            set {
-                this.questTokensField = value;
             }
         }
     }

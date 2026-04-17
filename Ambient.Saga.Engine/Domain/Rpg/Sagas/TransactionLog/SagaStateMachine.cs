@@ -408,8 +408,6 @@ public class SagaStateMachine
                     { SpellRef = s.SpellRef, Condition = s.Condition }).ToArray(),
                 BuildingMaterials = characterTemplate.Capabilities.BuildingMaterials?.Select(m => new BuildingMaterialEntry
                     { BuildingMaterialRef = m.BuildingMaterialRef, Quantity = m.Quantity }).ToArray(),
-                QuestTokens = characterTemplate.Capabilities.QuestTokens?.Select(q => new QuestTokenEntry
-                    { QuestTokenRef = q.QuestTokenRef }).ToArray()
             };
         }
 

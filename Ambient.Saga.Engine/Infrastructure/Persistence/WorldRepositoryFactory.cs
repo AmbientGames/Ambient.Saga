@@ -62,8 +62,11 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
         // Create repository implementations
         var sagaRepository = new SagaInstanceRepository(database);
         var avatarRepository = new GameAvatarRepository(database);
+        var avatarProgressRepository = new AvatarProgressRepository(database);
         var achievementRepository = new LiteDbRepository<AchievementInstance>(database, "Achievements");
         var discoveryRepository = new AvatarDiscoveryRepository(database);
+
+        sagaRepository.SetAvatarProgressRepository(avatarProgressRepository);
 
         // Create WorldStateRepository with injected dependencies
         var worldStateRepository = new WorldStateRepository(
@@ -80,6 +83,7 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
         {
             SagaRepository = sagaRepository,
             AvatarRepository = avatarRepository,
+            AvatarProgressRepository = avatarProgressRepository,
             WorldStateRepository = worldStateRepository,
             SteamAchievementService = steamAchievementService,
             Database = ownedDatabase // Will be null for Saga (using shared), non-null for Sandbox

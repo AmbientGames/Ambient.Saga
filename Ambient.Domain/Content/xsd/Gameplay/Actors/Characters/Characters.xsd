@@ -73,6 +73,11 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
+                    <xs:element name="GivesQuestTokenOnDefeat" type="QuestTokenRef" minOccurs="0" maxOccurs="unbounded">
+                        <xs:annotation>
+                            <xs:documentation>Quest tokens automatically awarded to the avatar when this character is defeated.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
                     <xs:element name="BattleDialogue" minOccurs="0" maxOccurs="1">
                         <xs:annotation>
                             <xs:documentation>Mid-battle dialogue triggers that activate based on battle conditions</xs:documentation>

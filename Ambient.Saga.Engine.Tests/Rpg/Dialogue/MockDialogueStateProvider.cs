@@ -27,7 +27,6 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     // Quest tokens
     public bool HasQuestToken(string questTokenRef) => _questTokens.Contains(questTokenRef);
     public void AddQuestToken(string questTokenRef) => _questTokens.Add(questTokenRef);
-    public void RemoveQuestToken(string questTokenRef) => _questTokens.Remove(questTokenRef);
 
     // Stackable items
     public int GetConsumableQuantity(string consumableRef) => _consumables.GetValueOrDefault(consumableRef, 0);

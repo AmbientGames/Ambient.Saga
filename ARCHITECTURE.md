@@ -35,21 +35,9 @@ The engine uses **Clean Architecture** with **CQRS** (Command Query Responsibili
 
 ### Event Sourcing & Transaction Log
 
-All game state changes are recorded as immutable transactions, enabling:
+All game state changes are recorded as immutable transactions. Saga arcs are self-contained — each arc's state is derived by replaying its own transaction log. Cross-arc state (quest tokens, quest progress, boss defeats, faction reputation, character traits) is projected to avatar-level progress tables on commit.
 
-```csharp
-// Replay state to any point in time
-var stateMachine = new SagaStateMachine(sagaArc, triggers, world);
-var currentState = stateMachine.ReplayToNow(sagaInstance);
-var pastState = stateMachine.ReplayToTimestamp(sagaInstance, someDateTime);
-var specificState = stateMachine.ReplayToSequence(sagaInstance, sequenceNumber);
-```
-
-**Benefits:**
-- Debug by examining transaction history
-- Implement save/load by persisting transaction log
-- Support multiplayer by synchronizing transactions
-- Detect cheating by validating transaction sequences
+See **[EVENT_SOURCING.md](EVENT_SOURCING.md)** for the full architecture: the self-containment model, avatar progress tables, quest token lifecycle, trigger gating, dialogue conditions, and content authoring rules.
 
 ### Turn-Based Combat System
 
@@ -116,7 +104,7 @@ XML-based dialogue trees with rich condition and action support:
 
 **Dialogue Actions:**
 - `AcceptQuest` / `CompleteQuest` / `AbandonQuest` - Quest management
-- `GiveQuestToken` / `TakeQuestToken` - Token inventory
+- `GiveQuestToken` - Token award (event-sourced via `QuestTokenAwarded` transaction, projected to avatar progress table)
 - `GiveEquipment` / `GiveConsumable` - Item rewards
 - `GiveCredits` / `TakeCredits` - Currency
 - `GiveReputation` - Faction standing changes
@@ -518,26 +506,9 @@ The `Ambient.Saga` package includes:
 
 ---
 
-## Known Gaps: Rewards That Bypass the Transaction Log
+## Known Gaps
 
-Quest tokens were originally mutated directly on the avatar with no saga transaction driving it (fragile — gate checks drifted from the log). Fixed: `GiveQuestToken` now writes `QuestTokenAwarded`, replay populates `SagaState.AwardedQuestTokens`, `TriggerAvailabilityChecker.CanActivate(trigger, state)` reads from that, and `QuestTokenFanOut.FanOutAsync` propagates the transaction to every saga instance whose triggers reference the token (invoked from `UpdateAvatarPositionHandler`, `SelectDialogueChoiceHandler`, `AdvanceDialogueHandler`).
-
-Other dialogue reward actions still mutate `avatar.Capabilities` directly via `DirectDialogueStateProvider` without writing a transaction. They rely on `shouldAwardRewards` (first-visit idempotence) to avoid double-granting on replay, but the reward itself isn't in the saga log — only the avatar's live state carries it. Some of this is intentional; revisit per-action before generalizing.
-
-Actions that mutate avatar state only (no saga transaction):
-- `TakeQuestToken`
-- `GiveConsumable` / `TakeConsumable`
-- `GiveMaterial` / `TakeMaterial`
-- `GiveBlock` / `TakeBlock`
-- `GiveEquipment` / `TakeEquipment`
-- `GiveTool` / `TakeTool`
-- `GiveSpell` / `TakeSpell`
-- `TransferCurrency`
-- `UnlockAchievement`
-
-Elsewhere, `AvatarUpdateService.UpdateAvatarForLootAsync` / `UpdateAvatarForTradeAsync` / `UpdateAvatarForBattleAsync` / `UpdateAvatarForEffectsAsync` mutate the avatar alongside their own transactions, and `DirectDialogueStateProvider.ChangeReputation` routes reputation changes through a `ReputationChanged` transaction but also writes the live value directly.
-
-None of these are critical right now — note for future cleanup if/when the pattern causes drift.
+See **[EVENT_SOURCING.md](EVENT_SOURCING.md)** — the "Known Gaps" section covers avatar-side state mutations, server-side progress tables, UI token display, and faction rewards.
 
 ---
 

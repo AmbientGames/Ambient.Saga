@@ -178,23 +178,6 @@ public class CarryWeightCalculatorTests
     }
 
     [Fact]
-    public void CalculateTotalWeight_QuestTokens_AreWeightless()
-    {
-        var capabilities = new ItemCollection
-        {
-            QuestTokens = new[]
-            {
-                new QuestTokenEntry { QuestTokenRef = "Token1" },
-                new QuestTokenEntry { QuestTokenRef = "Token2" },
-                new QuestTokenEntry { QuestTokenRef = "Token3" }
-            }
-        };
-
-        var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());
-        Assert.Equal(0, result);
-    }
-
-    [Fact]
     public void CalculateTotalWeight_MixedInventory_SumsAllCategories()
     {
         var capabilities = new ItemCollection
@@ -205,7 +188,6 @@ public class CarryWeightCalculatorTests
             Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1f } },
             Consumables = new[] { new ConsumableEntry { ConsumableRef = "Potion", Quantity = 3 } },
             BuildingMaterials = new[] { new BuildingMaterialEntry { BuildingMaterialRef = "Plank", Quantity = 2 } },
-            QuestTokens = new[] { new QuestTokenEntry { QuestTokenRef = "Token" } }
         };
 
         var result = CarryWeightCalculator.CalculateTotalWeight(capabilities, DefaultConfig());

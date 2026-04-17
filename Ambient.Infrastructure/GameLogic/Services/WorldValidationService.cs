@@ -131,18 +131,6 @@ public static class WorldValidationService
                 }
             }
         }
-
-        // Validate QuestToken references
-        if (itemCollection.QuestTokens != null)
-        {
-            foreach (var entry in itemCollection.QuestTokens)
-            {
-                if (!string.IsNullOrEmpty(entry.QuestTokenRef))
-                {
-                    ValidateReference(world.QuestTokensLookup, entry.QuestTokenRef, fullContext, "QuestTokens.QuestTokenRef", "QuestTokens", errors);
-                }
-            }
-        }
     }
 
     private static void ValidateReference<T>(Dictionary<string, T> lookup, string refValue, string context, string propertyName, string lookupName, List<string> errors)
@@ -176,26 +164,6 @@ public static class WorldValidationService
         {
             foreach (var character in world.Gameplay.Characters)
             {
-                // Quest tokens in character inventory
-                if (character.Capabilities?.QuestTokens != null)
-                {
-                    foreach (var QuestTokenStack in character.Capabilities.QuestTokens)
-                    {
-                        if (!string.IsNullOrEmpty(QuestTokenStack.QuestTokenRef))
-                        {
-                            // Check if this is a valid quest key
-                            if (world.QuestTokensLookup.TryGetValue(QuestTokenStack.QuestTokenRef, out var QuestToken))
-                            {
-                                if (!QuestTokenProviders.ContainsKey(QuestTokenStack.QuestTokenRef))
-                                {
-                                    QuestTokenProviders[QuestTokenStack.QuestTokenRef] = new List<string>();
-                                }
-                                QuestTokenProviders[QuestTokenStack.QuestTokenRef].Add($"Character '{character.RefName}'");
-                            }
-                        }
-                    }
-                }
-
                 // Quest tokens given when character defeated/traded (now in Interactable)
                 if (character.Interactable?.GivesQuestTokenRef != null)
                 {
@@ -799,7 +767,6 @@ public static class WorldValidationService
         {
             // Quest tokens
             case DialogueActionType.GiveQuestToken:
-            case DialogueActionType.TakeQuestToken:
                 ValidateActionRefName(world.QuestTokensLookup, action.RefName, actionContext, "QuestTokens", errors, required: true);
                 break;
 
@@ -1526,19 +1493,6 @@ public static class WorldValidationService
         {
             foreach (var character in world.Gameplay.Characters)
             {
-                if (character.Interactable?.Loot?.QuestTokens != null)
-                {
-                    foreach (var tokenEntry in character.Interactable.Loot.QuestTokens)
-                    {
-                        if (!string.IsNullOrEmpty(tokenEntry.QuestTokenRef))
-                        {
-                            if (!tokenGrants.ContainsKey(tokenEntry.QuestTokenRef))
-                                tokenGrants[tokenEntry.QuestTokenRef] = new List<string>();
-                            tokenGrants[tokenEntry.QuestTokenRef].Add($"Character '{character.RefName}' Loot");
-                        }
-                    }
-                }
-
                 if (character.Interactable?.GivesQuestTokenRef != null)
                 {
                     foreach (var tokenRef in character.Interactable.GivesQuestTokenRef)

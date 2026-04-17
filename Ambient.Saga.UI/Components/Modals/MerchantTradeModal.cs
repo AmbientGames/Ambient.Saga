@@ -299,7 +299,6 @@ public class MerchantTradeModal
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Blocks: {loot.Blocks?.Length ?? 0} items");
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Tools: {loot.Tools?.Length ?? 0} items");
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   Spells: {loot.Spells?.Length ?? 0} items");
-                System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal]   QuestTokens: {loot.QuestTokens?.Length ?? 0} items (not tradeable)");
             }
             else
             {

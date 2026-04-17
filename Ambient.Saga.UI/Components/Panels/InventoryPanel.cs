@@ -277,31 +277,10 @@ public class InventoryPanel
         }
     }
 
-    /// <summary>
-    /// Renders the Quest Tokens section.
-    /// </summary>
+    // Quest tokens now live in saga state (AwardedQuestTokens), not avatar inventory.
+    // TODO: Render from saga state read model when UI plumbing is available.
     private void RenderQuestTokens(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        if (caps.QuestTokens != null && caps.QuestTokens.Length > 0)
-        {
-            if (ImGui.CollapsingHeader($"Quest Tokens ({caps.QuestTokens.Length})"))
-            {
-                foreach (var token in caps.QuestTokens)
-                {
-                    var tokenDef = viewModel.CurrentWorld?.Gameplay?.QuestTokens?.FirstOrDefault(t => t.RefName == token.QuestTokenRef);
-                    var name = tokenDef?.DisplayName ?? token.QuestTokenRef;
-
-                    ImGui.Indent();
-                    ImGui.BulletText(name);
-                    if (tokenDef != null && !string.IsNullOrEmpty(tokenDef.Description))
-                    {
-                        ImGui.SameLine();
-                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"- {tokenDef.Description}");
-                    }
-                    ImGui.Unindent();
-                }
-            }
-        }
     }
 
     /// <summary>

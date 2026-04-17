@@ -10,9 +10,6 @@
           <Reward Condition="OnSuccess">
             <Experience Amount="20" />
           </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="BanditChief_HideoutMap" />
-          </Reward>
         </Rewards>
       </Stage>
       <Stage RefName="assault" DisplayName="Assault the Hideout" NextStage="boss">
@@ -129,11 +126,6 @@
           <Objective RefName="defeat_guardian" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the ancient guardian" CharacterRef="HiddenCache_Guardian" />
           <Objective RefName="disarm_traps" Type="QuestTokenCollected" Threshold="1" DisplayName="Navigate the trap room" Optional="true" />
         </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="HiddenCache_AncientKey" />
-          </Reward>
-        </Rewards>
       </Stage>
       <Stage RefName="claim" DisplayName="Claim the Treasure">
         <Objectives>
@@ -530,9 +522,6 @@
           <Reward Condition="OnSuccess">
             <Equipment EquipmentRef="Claymore" Quantity="1" />
           </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_HERO_6" Quantity="1" />
-          </Reward>
         </Rewards>
       </Stage>
     </Stages>
@@ -639,9 +628,6 @@
           <Reward Condition="OnSuccess">
             <Experience Amount="800" />
           </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_ANCIENT_ARTIFACT_KNOWLEDGE" Quantity="1" />
-          </Reward>
         </Rewards>
       </Stage>
     </Stages>
@@ -702,9 +688,6 @@
           </Reward>
           <Reward Condition="OnSuccess">
             <Equipment EquipmentRef="LeatherCap" Quantity="1" />
-          </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="TOKEN_ANCIENT_ARTIFACT_COMPONENTS" Quantity="1" />
           </Reward>
         </Rewards>
       </Stage>

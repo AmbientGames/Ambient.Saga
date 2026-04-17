@@ -57,7 +57,6 @@ public interface IDialogueStateProvider
     void RemoveSpell(string spellRef);
 
     void AddQuestToken(string questTokenRef);
-    void RemoveQuestToken(string questTokenRef);
 
     void TransferCurrency(int amount);
     void UnlockAchievement(string achievementRef);

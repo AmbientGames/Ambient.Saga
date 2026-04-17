@@ -4,6 +4,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Evaluation;
 using Ambient.Saga.Engine.Domain.Rpg.Reputation;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Tests.Mocks;
 
 namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
@@ -178,11 +179,14 @@ public class FactionReputationIntegrationTests : IDisposable
             }
         };
 
+        var mockProgress = new MockAvatarProgressRepository();
+        mockProgress.SetFactionReputation(Guid.Parse("00000000-0000-0000-0000-000000000001"), "KNIGHTS_OF_VALOR", 3000);
+
         var stateProvider = new DirectDialogueStateProvider(
             _world,
             avatarEntity,
-            _ => sagaState,
-            "avatar_1");
+            mockProgress,
+            "00000000-0000-0000-0000-000000000001");
 
         var evaluator = new DialogueConditionEvaluator(stateProvider);
 
@@ -233,11 +237,14 @@ public class FactionReputationIntegrationTests : IDisposable
             }
         };
 
+        var mockProgress = new MockAvatarProgressRepository();
+        mockProgress.SetFactionReputation(Guid.Parse("00000000-0000-0000-0000-000000000001"), "TEST_FACTION", 5000);
+
         var stateProvider = new DirectDialogueStateProvider(
             _world,
             avatarEntity,
-            _ => sagaState,
-            "avatar_1");
+            mockProgress,
+            "00000000-0000-0000-0000-000000000001");
 
         var evaluator = new DialogueConditionEvaluator(stateProvider);
 
@@ -436,12 +443,12 @@ public class FactionReputationIntegrationTests : IDisposable
         };
         _world.FactionsLookup["FRIENDLY_FACTION"] = faction;
 
-        // Create state provider with no Saga state (first interaction)
+        // Create state provider with empty progress (first interaction)
         var stateProvider = new DirectDialogueStateProvider(
             _world,
             avatarEntity,
-            _ => null,  // No Saga state yet
-            "avatar_1");
+            new MockAvatarProgressRepository(),
+            "00000000-0000-0000-0000-000000000001");
 
         // Act
         var reputation = stateProvider.GetFactionReputation("FRIENDLY_FACTION");

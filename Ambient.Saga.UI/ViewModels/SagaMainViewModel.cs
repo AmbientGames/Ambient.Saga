@@ -339,6 +339,7 @@ public partial class SagaMainViewModel : ObservableObject
     // CQRS providers and factory
     private readonly WorldProvider _worldProvider;
     private readonly SagaInstanceRepositoryProvider _repositoryProvider;
+    private readonly AvatarProgressRepositoryProvider _avatarProgressRepositoryProvider;
     private readonly GameAvatarRepositoryProvider _avatarRepositoryProvider;
     private readonly WorldStateRepositoryProvider _worldStateRepositoryProvider;
     private readonly IWorldRepositoryFactory _repositoryFactory;
@@ -356,6 +357,7 @@ public partial class SagaMainViewModel : ObservableObject
     public SagaMainViewModel(
         WorldProvider worldProvider,
         SagaInstanceRepositoryProvider repositoryProvider,
+        AvatarProgressRepositoryProvider avatarProgressRepositoryProvider,
         GameAvatarRepositoryProvider avatarRepositoryProvider,
         WorldStateRepositoryProvider worldStateRepositoryProvider,
         IWorldRepositoryFactory repositoryFactory,
@@ -367,6 +369,7 @@ public partial class SagaMainViewModel : ObservableObject
     {
         _worldProvider = worldProvider ?? throw new ArgumentNullException(nameof(worldProvider));
         _repositoryProvider = repositoryProvider ?? throw new ArgumentNullException(nameof(repositoryProvider));
+        _avatarProgressRepositoryProvider = avatarProgressRepositoryProvider ?? throw new ArgumentNullException(nameof(avatarProgressRepositoryProvider));
         _avatarRepositoryProvider = avatarRepositoryProvider ?? throw new ArgumentNullException(nameof(avatarRepositoryProvider));
         _worldStateRepositoryProvider = worldStateRepositoryProvider ?? throw new ArgumentNullException(nameof(worldStateRepositoryProvider));
         _repositoryFactory = repositoryFactory ?? throw new ArgumentNullException(nameof(repositoryFactory));
@@ -1341,6 +1344,7 @@ public partial class SagaMainViewModel : ObservableObject
             // Initialize CQRS providers
             _worldProvider.SetWorld(world);
             _repositoryProvider.SetRepository(repositories.SagaRepository);
+            _avatarProgressRepositoryProvider.SetRepository(repositories.AvatarProgressRepository);
             _avatarRepositoryProvider.SetRepository(repositories.AvatarRepository);
             _worldStateRepositoryProvider.SetRepository(repositories.WorldStateRepository);
 

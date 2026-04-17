@@ -55,18 +55,6 @@ public interface IAvatarUpdateService
         CancellationToken ct = default);
 
     /// <summary>
-    /// Adds a quest token to avatar's capabilities.
-    /// </summary>
-    /// <param name="avatar">The avatar to update</param>
-    /// <param name="questTokenRef">The quest token reference to add</param>
-    /// <param name="ct">Cancellation token</param>
-    /// <returns>The updated avatar</returns>
-    Task<AvatarEntity> AddQuestTokenAsync(
-        AvatarEntity avatar,
-        string questTokenRef,
-        CancellationToken ct = default);
-
-    /// <summary>
     /// Updates avatar stats based on an EffectApplied transaction.
     /// Applies stat bonuses like health, stamina, strength, defense, etc.
     /// </summary>

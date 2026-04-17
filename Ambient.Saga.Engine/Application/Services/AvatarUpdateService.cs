@@ -459,24 +459,6 @@ public class AvatarUpdateService : IAvatarUpdateService
     }
 
     /// <inheritdoc/>
-    public async Task<AvatarEntity> AddQuestTokenAsync(
-        AvatarEntity avatar,
-        string questTokenRef,
-        CancellationToken ct = default)
-    {
-        // Initialize Capabilities if needed
-        if (avatar.Capabilities == null)
-        {
-            avatar.Capabilities = new ItemCollection();
-        }
-
-        // Add quest token (extension method handles duplicates)
-        avatar.Capabilities.AddQuestToken(questTokenRef);
-
-        return avatar;
-    }
-
-    /// <inheritdoc/>
     public async Task<AvatarEntity> UpdateAvatarForEffectsAsync(
         AvatarEntity avatar,
         SagaInstance sagaInstance,

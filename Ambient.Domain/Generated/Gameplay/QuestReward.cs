@@ -28,8 +28,6 @@ namespace Ambient.Domain {
         
         private QuestRewardConsumable[] consumableField;
         
-        private QuestRewardQuestToken[] questTokenField;
-        
         private QuestRewardAchievement[] achievementField;
         
         private QuestRewardExperience experienceField;
@@ -71,17 +69,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.consumableField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("QuestToken")]
-        public QuestRewardQuestToken[] QuestToken {
-            get {
-                return this.questTokenField;
-            }
-            set {
-                this.questTokenField = value;
             }
         }
         

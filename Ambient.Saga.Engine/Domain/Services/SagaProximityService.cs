@@ -2,6 +2,7 @@
 using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Saga.Engine.Contracts;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
@@ -136,7 +137,8 @@ public static class SagaProximityService
         SagaTrigger sagaTrigger,
         AvatarBase? avatar,
         IWorld world,
-        IWorldStateRepository? worldRepository)
+        IWorldStateRepository? worldRepository,
+        IAvatarProgressRepository? progressRepo = null)
     {
         if (avatar == null)
             return InteractionStatus.Available;
@@ -173,8 +175,11 @@ public static class SagaProximityService
             return InteractionStatus.Complete;
         }
 
-        // Lock state derives from the replayed token set
-        if (!TriggerAvailabilityChecker.CanActivate(sagaTrigger, state))
+        // Lock state derives from avatar progress table (or legacy saga state)
+        var canActivate = progressRepo != null && avatar != null
+            ? TriggerAvailabilityChecker.CanActivate(sagaTrigger, progressRepo, avatar.AvatarId)
+            : TriggerAvailabilityChecker.CanActivate(sagaTrigger, state);
+        if (!canActivate)
             return InteractionStatus.Locked;
 
         return InteractionStatus.Available;

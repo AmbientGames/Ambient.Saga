@@ -13,7 +13,17 @@
       "Bash(find . -name \"Ambient.Saga.Engine.Core.csproj\" -exec cat {} \\\\;)",
       "Read(//c/Users/richa/Documents/DevelopmentOpenSource/**)",
       "Bash(find . -name \"Ambient.Saga.Engine.Core.csproj\")",
-      "Bash(dotnet test *)"
+      "Bash(dotnet test *)",
+      "Bash(grep -E \"\\\\.cs$\")",
+      "Bash(xargs grep *)",
+      "Bash(sed 's/,.*//')",
+      "Bash(grep -A 5 \"<QuestTokens>\" \"C:\\\\Users\\\\richa\\\\Documents\\\\Development\\\\Schema.Codex\\\\Schema.Codex.WorldForge\\\\Content\\\\Generation\\\\Canon\\\\Stories\"/*.xml)",
+      "Bash(find \"/c/Users/richa/Documents/Development/Ambient.Archimedea/Content/worlds/EverestTrail\" -name \"Quests.xml\" -exec grep -l \"QuestToken \" {} \\\\;)",
+      "Bash(find \"/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga/Ambient.Saga.Sandbox.DirectX/content/worlds/Ise\" -name \"Quests.xml\" -exec grep -n \"QuestToken \" {} \\\\;)",
+      "Bash(grep -n \"ProjectTransactions\\\\|AddAndCommitTransactionsAsync\\\\|GetQuestStatus\\\\|GetAllQuestTokens\" \"C:\\\\Users\\\\richa\\\\Documents\\\\DevelopmentOpenSource\\\\Ambient.Saga/Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs\"/*.cs)",
+      "Bash(grep -n \"ProjectTransactions\\\\|HasQuestToken\\\\|GetAllQuestTokens\\\\|GetQuestStatus\" \"C:\\\\Users\\\\richa\\\\Documents\\\\DevelopmentOpenSource\\\\Ambient.Saga/Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs\"/*.cs)",
+      "Bash(find *)",
+      "Bash(grep -B5 -A15 \"ProjectTransactions\" \"C:\\\\Users\\\\richa\\\\Documents\\\\DevelopmentOpenSource\\\\Ambient.Saga/Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs\"/*.cs)"
     ]
   }
 }

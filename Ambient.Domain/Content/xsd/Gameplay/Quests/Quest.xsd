@@ -4,8 +4,8 @@
     <xs:include schemaLocation="../../Refs.xsd" />
     <xs:include schemaLocation="../Acquirables/Equipment.xsd" />
     <xs:include schemaLocation="../Acquirables/Consumable.xsd" />
-    <xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
-    <xs:include schemaLocation="../Achievements/Achievement.xsd" />
+	<xs:include schemaLocation="../Acquirables/QuestToken.xsd" />
+	<xs:include schemaLocation="../Achievements/Achievement.xsd" />
     <xs:include schemaLocation="../Actors/Characters/Dialogue.xsd" />
 
     <!-- Reference Types -->
@@ -428,20 +428,6 @@
                     <xs:attribute name="Quantity" type="xs:int" use="optional" default="1">
                         <xs:annotation>
                             <xs:documentation>Number of this consumable item to award.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="QuestToken" minOccurs="0" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:attribute name="QuestTokenRef" type="QuestTokenRef" use="required">
-                        <xs:annotation>
-                            <xs:documentation>Reference to the quest token to award.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="Quantity" type="xs:int" use="optional" default="1">
-                        <xs:annotation>
-                            <xs:documentation>Number of this quest token to award.</xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
                 </xs:complexType>

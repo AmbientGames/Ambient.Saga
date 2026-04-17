@@ -160,6 +160,11 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             services.AddSingleton(sp =>
                 sp.GetRequiredService<SagaInstanceRepositoryProvider>().Repository);
 
+            // IAvatarProgressRepository factory - will be configured by MainViewModel when world loads
+            services.AddSingleton<AvatarProgressRepositoryProvider>();
+            services.AddSingleton(sp =>
+                sp.GetRequiredService<AvatarProgressRepositoryProvider>().Repository);
+
             // World provider - will be configured by MainViewModel when world loads
             // Returns null until world is loaded - handlers must check for null
             // Inject BlockProvider to enable block trading and catalog features

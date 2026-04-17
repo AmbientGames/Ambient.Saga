@@ -9,6 +9,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -68,6 +69,7 @@ public class FullSagaFlowE2ETests : IDisposable
         // Register dependencies
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository>(new TestAvatarRepository()); // Mock repository for tests
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
@@ -367,7 +369,6 @@ public class FullSagaFlowE2ETests : IDisposable
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
     }
