@@ -46,6 +46,8 @@ Each arc is self-contained for its own local state:
 
 Cross-arc state — things the avatar has achieved across all arcs — lives in **avatar progress tables** (see below). An arc's log only records what happened within that arc.
 
+Note: `SagaState.AwardedQuestTokens` is still populated during replay from the arc's own `QuestTokenAwarded` transactions. This is retained for debugging and audit (which tokens were earned in THIS arc) but is not used for gating decisions — all readers use the avatar progress table instead.
+
 ---
 
 ## Avatar Progress Tables
@@ -104,6 +106,8 @@ Both paths write `QuestTokenAwarded` transactions to the arc's log, which are th
 
 During a dialogue session, tokens are awarded via `GiveQuestToken` but the transaction is not committed until the handler flushes. A session buffer (`_sessionTokens` in `DirectDialogueStateProvider`) makes tokens immediately visible to later nodes in the same dialogue, before commit.
 
+The session buffer currently exists only for quest tokens. The other four cross-arc state types (quest progress, boss defeats, reputation, traits) do not have session buffers — their dialogue actions commit before the next condition check in practice. If same-session visibility becomes an issue for those types, the pattern can be extended.
+
 ### What tokens are NOT
 
 - Not inventory items — they cannot be traded, dropped, or consumed
@@ -127,7 +131,7 @@ Saga triggers define proximity-based encounters. A trigger can gate on quest tok
 </SagaTrigger>
 ```
 
-`TriggerAvailabilityChecker.CanActivate` reads from the avatar progress table. If the avatar has all required tokens, the trigger can activate. When the trigger completes, its `GivesQuestTokenRef` tokens are awarded.
+`TriggerAvailabilityChecker.CanActivate` reads from the avatar progress table. If the avatar has all required tokens, the trigger can activate. When the trigger activates (avatar enters the radius), its `GivesQuestTokenRef` tokens are awarded immediately — the avatar receives proof-of-arrival before combat begins.
 
 ---
 
