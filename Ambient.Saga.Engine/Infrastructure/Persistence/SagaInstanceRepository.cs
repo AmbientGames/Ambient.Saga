@@ -160,6 +160,59 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         }
     }
 
+    public Task<SagaInstance> GetOrRegisterMultiplayerInstanceAsync(string sagaRef, CancellationToken ct = default)
+    {
+        var lockKey = $"NULL|{sagaRef}";
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            if (_instanceCache.TryGetValue(lockKey, out var cached) && !cached.IsDirty)
+                return Task.FromResult(cached);
+
+            var instance = _instances
+                .Find(x => x.CompositeKey == lockKey)
+                .FirstOrDefault();
+
+            if (instance != null)
+            {
+                var records = _transactions
+                    .Find(x => x.InstanceId == instance.InstanceId)
+                    .OrderBy(x => x.SequenceNumber)
+                    .ToList();
+                instance.Transactions = records.Select(r => r.ToTransaction()).ToList();
+
+                _instanceCache[lockKey] = instance;
+                return Task.FromResult(instance);
+            }
+
+            instance = new SagaInstance
+            {
+                InstanceId = Guid.NewGuid(),
+                SagaRef = sagaRef,
+                OwnerAvatarId = null,
+                InstanceType = SagaInstanceType.Multiplayer,
+                CreatedAt = DateTime.UtcNow,
+                CompositeKey = lockKey,
+            };
+
+            try
+            {
+                _instances.Insert(instance);
+            }
+            catch (LiteException ex) when (ex.ErrorCode == LiteException.INDEX_DUPLICATE_KEY)
+            {
+                // Another caller registered it between check and insert — re-query.
+                instance = _instances.Find(x => x.CompositeKey == lockKey).FirstOrDefault();
+                if (instance == null)
+                    throw;
+            }
+
+            _instanceCache[lockKey] = instance;
+            return Task.FromResult(instance);
+        }
+    }
+
     public Task<List<long>> AddTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
     {
         // Use per-instance lock to prevent sequence number collisions without blocking other instances

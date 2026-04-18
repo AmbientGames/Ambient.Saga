@@ -14,6 +14,14 @@ public interface ISagaInstanceRepository
     Task<SagaInstance> GetOrCreateInstanceAsync(Guid avatarId, string sagaRef, CancellationToken ct = default);
 
     /// <summary>
+    /// Get the shared multiplayer Saga instance for a ref (creates if doesn't exist).
+    /// Used for server-sourced arcs (shopkeepers, geocaches, death loot) where the instance is
+    /// not owned by any one avatar and transactions from all players are merged.
+    /// OwnerAvatarId is null; CompositeKey is "NULL|{sagaRef}".
+    /// </summary>
+    Task<SagaInstance> GetOrRegisterMultiplayerInstanceAsync(string sagaRef, CancellationToken ct = default);
+
+    /// <summary>
     /// Add transactions to Saga instance.
     /// Returns the new sequence numbers assigned.
     /// </summary>
