@@ -2,6 +2,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Domain.Extensions;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Engine.Domain;
 using Microsoft.Extensions.Logging;
@@ -675,13 +676,99 @@ public class SagaStateMachine
 
     private void ApplyItemTraded(SagaState state, SagaTransaction tx)
     {
-        // Item trade completed - currently just for tracking/achievements
-        // Could track trade history if needed:
-        // - AvatarId (who traded)
-        // - CharacterRef (who they traded with)
-        // - ItemRef (what was traded)
-        // - Quantity
-        // - Direction (buy/sell)
+        var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
+        var itemRef = tx.GetData<string>(TransactionDataKeys.ItemRef);
+        var quantity = tx.GetData<int>(TransactionDataKeys.Quantity);
+        var isBuying = tx.GetData<bool>(TransactionDataKeys.IsBuying);
+
+        if (characterInstanceId == Guid.Empty || string.IsNullOrEmpty(itemRef) || quantity <= 0)
+            return;
+
+        if (!state.Characters.TryGetValue(characterInstanceId.ToString(), out var character))
+            return;
+
+        character.CurrentInventory ??= new ItemCollection();
+        var inv = character.CurrentInventory;
+
+        // Merchant's delta is opposite the player's direction.
+        //   IsBuying=true  (player buys)  → merchant loses → delta negative
+        //   IsBuying=false (player sells) → merchant gains → delta positive
+        var delta = isBuying ? -quantity : +quantity;
+
+        // Dispatch by world catalog (Saga's IWorld doesn't expose BlocksLookup — Block is the else-fallback).
+        if (_world.ConsumablesLookup.ContainsKey(itemRef))
+        {
+            var c = inv.GetOrAddConsumable(itemRef);
+            c.Quantity += delta;
+            if (c.Quantity <= 0)
+                inv.Consumables = (inv.Consumables ?? Array.Empty<ConsumableEntry>()).Where(x => x.ConsumableRef != itemRef).ToArray();
+        }
+        else if (_world.BuildingMaterialsLookup.ContainsKey(itemRef))
+        {
+            var m = inv.GetOrAddBuildingMaterial(itemRef);
+            m.Quantity += delta;
+            if (m.Quantity <= 0)
+                inv.BuildingMaterials = (inv.BuildingMaterials ?? Array.Empty<BuildingMaterialEntry>()).Where(x => x.BuildingMaterialRef != itemRef).ToArray();
+        }
+        else if (_world.EquipmentLookup.ContainsKey(itemRef))
+        {
+            var list = (inv.Equipment ?? Array.Empty<EquipmentEntry>()).ToList();
+            if (delta > 0)
+            {
+                for (var i = 0; i < delta; i++) list.Add(new EquipmentEntry { EquipmentRef = itemRef, Condition = 1f });
+            }
+            else
+            {
+                for (var i = 0; i < -delta; i++)
+                {
+                    var idx = list.FindIndex(e => e.EquipmentRef == itemRef);
+                    if (idx >= 0) list.RemoveAt(idx);
+                }
+            }
+            inv.Equipment = list.ToArray();
+        }
+        else if (_world.ToolsLookup.ContainsKey(itemRef))
+        {
+            var list = (inv.Tools ?? Array.Empty<ToolEntry>()).ToList();
+            if (delta > 0)
+            {
+                for (var i = 0; i < delta; i++) list.Add(new ToolEntry { ToolRef = itemRef, Condition = 1f });
+            }
+            else
+            {
+                for (var i = 0; i < -delta; i++)
+                {
+                    var idx = list.FindIndex(t => t.ToolRef == itemRef);
+                    if (idx >= 0) list.RemoveAt(idx);
+                }
+            }
+            inv.Tools = list.ToArray();
+        }
+        else if (_world.SpellsLookup.ContainsKey(itemRef))
+        {
+            var list = (inv.Spells ?? Array.Empty<SpellEntry>()).ToList();
+            if (delta > 0)
+            {
+                for (var i = 0; i < delta; i++) list.Add(new SpellEntry { SpellRef = itemRef, Condition = 1f });
+            }
+            else
+            {
+                for (var i = 0; i < -delta; i++)
+                {
+                    var idx = list.FindIndex(s => s.SpellRef == itemRef);
+                    if (idx >= 0) list.RemoveAt(idx);
+                }
+            }
+            inv.Spells = list.ToArray();
+        }
+        else
+        {
+            // Block fallback
+            var b = inv.GetOrAddBlock(itemRef);
+            b.Quantity += delta;
+            if (b.Quantity <= 0)
+                inv.Blocks = (inv.Blocks ?? Array.Empty<BlockEntry>()).Where(x => x.BlockRef != itemRef).ToArray();
+        }
     }
 
     private void ApplyLootAwarded(SagaState state, SagaTransaction tx)
