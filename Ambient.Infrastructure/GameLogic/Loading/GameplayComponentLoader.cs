@@ -114,7 +114,7 @@ public class GameplayComponentLoader : IGameplayComponentLoader
         BuildSagaTriggersLookup(world);
     }
 
-    private static void BuildLookup<T>(IEnumerable<T> items, Dictionary<string, T> lookup) where T : class
+    private static void BuildLookup<T>(IEnumerable<T> items, IDictionary<string, T> lookup) where T : class
     {
         lookup.Clear();
 

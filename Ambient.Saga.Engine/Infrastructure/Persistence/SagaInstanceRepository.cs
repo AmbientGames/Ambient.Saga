@@ -62,6 +62,14 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     public Task<SagaInstance> GetOrCreateInstanceAsync(Guid avatarId, string sagaRef, CancellationToken ct = default)
     {
+        // If a multiplayer instance exists for this sagaRef, every avatar shares it — prefer it
+        // over creating a new single-player instance. This lets commands written for SinglePlayer
+        // sagas transparently target Multiplayer ones (e.g. server-sourced arcs).
+        var multiplayerKey = $"NULL|{sagaRef}";
+        var multiplayer = _instances.Find(x => x.CompositeKey == multiplayerKey).FirstOrDefault();
+        if (multiplayer != null)
+            return GetOrRegisterMultiplayerInstanceAsync(sagaRef, ct);
+
         // Use per-instance lock to prevent race condition without blocking other sagas
         var lockKey = $"{avatarId}|{sagaRef}";
         var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
@@ -469,8 +477,9 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     public Task<List<SagaInstance>> GetAllInstancesForAvatarAsync(Guid avatarId, CancellationToken ct = default)
     {
+        // Include shared multiplayer instances so push ships their transactions too.
         var instances = _instances
-            .Find(x => x.OwnerAvatarId == avatarId)
+            .Find(x => x.OwnerAvatarId == avatarId || x.OwnerAvatarId == null)
             .ToList();
 
         // Load transactions for each instance

@@ -23,7 +23,13 @@
       "Bash(grep -n \"ProjectTransactions\\\\|AddAndCommitTransactionsAsync\\\\|GetQuestStatus\\\\|GetAllQuestTokens\" \"C:\\\\Users\\\\richa\\\\Documents\\\\DevelopmentOpenSource\\\\Ambient.Saga/Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs\"/*.cs)",
       "Bash(grep -n \"ProjectTransactions\\\\|HasQuestToken\\\\|GetAllQuestTokens\\\\|GetQuestStatus\" \"C:\\\\Users\\\\richa\\\\Documents\\\\DevelopmentOpenSource\\\\Ambient.Saga/Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs\"/*.cs)",
       "Bash(find *)",
-      "Bash(grep -B5 -A15 \"ProjectTransactions\" \"C:\\\\Users\\\\richa\\\\Documents\\\\DevelopmentOpenSource\\\\Ambient.Saga/Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs\"/*.cs)"
+      "Bash(grep -B5 -A15 \"ProjectTransactions\" \"C:\\\\Users\\\\richa\\\\Documents\\\\DevelopmentOpenSource\\\\Ambient.Saga/Ambient.Saga.Engine.Tests/IntegrationTests/Cqrs\"/*.cs)",
+      "Bash(sed -i '/GivesQuestTokenRef>TOKEN_Waypoint.*_COMPLETE/d' /c/Users/richa/Documents/Development/Ambient.Archimedea/Content/worlds/90North/90North/assets/ambient_games/xml/Gameplay/Sagas.xml)",
+      "Bash(sed -i '/GivesQuestTokenRef>TOKEN_NorthPoleStation_COMPLETE/d' /c/Users/richa/Documents/Development/Ambient.Archimedea/Content/worlds/90North/90North/assets/ambient_games/xml/Gameplay/Sagas.xml)",
+      "Bash(grep -n \"LoadSagasFromWorldAsync\\\\|LoadServerSagas\\\\|world\\\\\\\\.Gameplay\" \"/c/Users/richa/Documents/Development/Ambient.Archimedea/Ambient.Archimedea.Schema/WinForms/GameForm.cs\")",
+      "Bash(grep -E \"\\\\.\\(cs|xml\\)$\")",
+      "Bash(grep -rln \"Service$\\\\|Factory$\" \"/c/Users/richa/Documents/Development/Ambient.Archimedea/Ambient.Server.Game.Application\" --include=\"*.cs\")",
+      "Bash(grep -v \"//.*ProjectTransactions\")"
     ]
   }
 }

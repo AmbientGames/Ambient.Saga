@@ -44,8 +44,8 @@ public partial class World : IWorld
     [XmlIgnore] public Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; } = new Dictionary<string, CharacterAffinity>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, CombatStance> CombatStancesLookup { get; set; } = new Dictionary<string, CombatStance>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; } = new Dictionary<string, LoadoutSlot>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, SagaArc> SagaArcLookup { get; set; } = new Dictionary<string, SagaArc>(StringComparer.OrdinalIgnoreCase);
-    [XmlIgnore] public Dictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; } = new Dictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public System.Collections.Concurrent.ConcurrentDictionary<string, SagaArc> SagaArcLookup { get; set; } = new System.Collections.Concurrent.ConcurrentDictionary<string, SagaArc>(StringComparer.OrdinalIgnoreCase);
+    [XmlIgnore] public System.Collections.Concurrent.ConcurrentDictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; } = new System.Collections.Concurrent.ConcurrentDictionary<string, List<SagaTrigger>>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, Faction> FactionsLookup { get; set; } = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, StatusEffect> StatusEffectsLookup { get; set; } = new Dictionary<string, StatusEffect>(StringComparer.OrdinalIgnoreCase);
     [XmlIgnore] public Dictionary<string, AttackTell> AttackTellsLookup { get; set; } = new Dictionary<string, AttackTell>(StringComparer.OrdinalIgnoreCase);
@@ -498,27 +498,12 @@ public partial class World : IWorld
     }
 
     /// <inheritdoc />
-    public bool RegisterSagaArc(SagaArc arc)
+    public void RegisterSagaArc(SagaArc arc)
     {
-        if (arc == null || string.IsNullOrEmpty(arc.RefName))
-            return false;
-
-        // Don't overwrite existing arcs
         if (SagaArcLookup.ContainsKey(arc.RefName))
-            return false;
+            return;
 
-        // Validate triggers
-        var triggers = arc.SagaTrigger?.ToList() ?? new List<SagaTrigger>();
-        foreach (var trigger in triggers)
-        {
-            if (trigger.Spawn == null || trigger.Spawn.Length == 0)
-                return false;
-        }
-
-        // Register into runtime dictionaries
         SagaArcLookup[arc.RefName] = arc;
-        SagaTriggersLookup[arc.RefName] = triggers;
-
-        return true;
+        SagaTriggersLookup[arc.RefName] = arc.SagaTrigger.ToList();
     }
 }

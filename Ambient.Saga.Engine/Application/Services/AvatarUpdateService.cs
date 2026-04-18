@@ -18,10 +18,12 @@ namespace Ambient.Saga.Engine.Application.Services;
 public class AvatarUpdateService : IAvatarUpdateService
 {
     private readonly IGameAvatarRepository _avatarRepository;
+    private readonly IWorld _world;
 
-    public AvatarUpdateService(IGameAvatarRepository avatarRepository)
+    public AvatarUpdateService(IGameAvatarRepository avatarRepository, IWorld world)
     {
         _avatarRepository = avatarRepository ?? throw new ArgumentNullException(nameof(avatarRepository));
+        _world = world ?? throw new ArgumentNullException(nameof(world));
     }
 
     /// <inheritdoc/>
@@ -75,19 +77,17 @@ public class AvatarUpdateService : IAvatarUpdateService
             avatar.Stats.Credits += totalPrice;
         }
 
-        // Update inventory - need to determine item type from avatar's current inventory
-        // Try each item type in order
-
-        // Try consumables
-        var existingConsumable = avatar.Capabilities.Consumables?.FirstOrDefault(c => c.ConsumableRef == itemRef);
-        if (existingConsumable != null || isBuying)
+        // Dispatch on the world's catalog to determine the real category of itemRef, not on
+        // the avatar's current inventory. Previously the Consumables check ran first with
+        // `|| isBuying`, so every purchased item became a Consumable regardless of its true type.
+        if (_world.ConsumablesLookup.ContainsKey(itemRef))
         {
             var consumable = avatar.Capabilities.GetOrAddConsumable(itemRef);
             if (isBuying)
             {
                 consumable.Quantity += quantity;
             }
-            else // selling
+            else
             {
                 consumable.Quantity -= quantity;
                 if (consumable.Quantity <= 0)
@@ -97,41 +97,15 @@ public class AvatarUpdateService : IAvatarUpdateService
                     avatar.Capabilities.Consumables = consumables.ToArray();
                 }
             }
-            return avatar;
         }
-
-        // Try blocks
-        var existingBlock = avatar.Capabilities.Blocks?.FirstOrDefault(b => b.BlockRef == itemRef);
-        if (existingBlock != null || isBuying)
-        {
-            var block = avatar.Capabilities.GetOrAddBlock(itemRef);
-            if (isBuying)
-            {
-                block.Quantity += quantity;
-            }
-            else // selling
-            {
-                block.Quantity -= quantity;
-                if (block.Quantity <= 0)
-                {
-                    var blocks = avatar.Capabilities.Blocks?.ToList() ?? new List<BlockEntry>();
-                    blocks.RemoveAll(b => b.BlockRef == itemRef);
-                    avatar.Capabilities.Blocks = blocks.ToArray();
-                }
-            }
-            return avatar;
-        }
-
-        // Try building materials
-        var existingMaterial = avatar.Capabilities.BuildingMaterials?.FirstOrDefault(m => m.BuildingMaterialRef == itemRef);
-        if (existingMaterial != null || isBuying)
+        else if (_world.BuildingMaterialsLookup.ContainsKey(itemRef))
         {
             var material = avatar.Capabilities.GetOrAddBuildingMaterial(itemRef);
             if (isBuying)
             {
                 material.Quantity += quantity;
             }
-            else // selling
+            else
             {
                 material.Quantity -= quantity;
                 if (material.Quantity <= 0)
@@ -141,65 +115,75 @@ public class AvatarUpdateService : IAvatarUpdateService
                     avatar.Capabilities.BuildingMaterials = materials.ToArray();
                 }
             }
-            return avatar;
         }
-
-        // Try equipment (single item trade, quantity should be 1)
-        var existingEquipment = avatar.Capabilities.Equipment?.FirstOrDefault(e => e.EquipmentRef == itemRef);
-        if (existingEquipment != null)
+        else if (_world.EquipmentLookup.ContainsKey(itemRef))
         {
+            var equipment = avatar.Capabilities.Equipment?.ToList() ?? new List<EquipmentEntry>();
             if (isBuying)
             {
-                // Already have it, skip (or could upgrade condition logic here)
+                if (!equipment.Any(e => e.EquipmentRef == itemRef))
+                {
+                    equipment.Add(new EquipmentEntry { EquipmentRef = itemRef, Condition = 1f });
+                    avatar.Capabilities.Equipment = equipment.ToArray();
+                }
             }
-            else // selling
+            else
             {
-                var equipment = avatar.Capabilities.Equipment?.ToList() ?? new List<EquipmentEntry>();
                 equipment.RemoveAll(e => e.EquipmentRef == itemRef);
                 avatar.Capabilities.Equipment = equipment.ToArray();
             }
-            return avatar;
         }
-
-        // Try tools (single item trade, quantity should be 1)
-        var existingTool = avatar.Capabilities.Tools?.FirstOrDefault(t => t.ToolRef == itemRef);
-        if (existingTool != null)
+        else if (_world.ToolsLookup.ContainsKey(itemRef))
         {
+            var tools = avatar.Capabilities.Tools?.ToList() ?? new List<ToolEntry>();
             if (isBuying)
             {
-                // Already have it, skip (or could upgrade condition logic here)
+                if (!tools.Any(t => t.ToolRef == itemRef))
+                {
+                    tools.Add(new ToolEntry { ToolRef = itemRef, Condition = 1f });
+                    avatar.Capabilities.Tools = tools.ToArray();
+                }
             }
-            else // selling
+            else
             {
-                var tools = avatar.Capabilities.Tools?.ToList() ?? new List<ToolEntry>();
                 tools.RemoveAll(t => t.ToolRef == itemRef);
                 avatar.Capabilities.Tools = tools.ToArray();
             }
-            return avatar;
         }
-
-        // Try spells (single item trade, quantity should be 1)
-        var existingSpell = avatar.Capabilities.Spells?.FirstOrDefault(s => s.SpellRef == itemRef);
-        if (existingSpell != null)
+        else if (_world.SpellsLookup.ContainsKey(itemRef))
         {
+            var spells = avatar.Capabilities.Spells?.ToList() ?? new List<SpellEntry>();
             if (isBuying)
             {
-                // Already have it, skip
+                if (!spells.Any(s => s.SpellRef == itemRef))
+                {
+                    spells.Add(new SpellEntry { SpellRef = itemRef, Condition = 1f });
+                    avatar.Capabilities.Spells = spells.ToArray();
+                }
             }
-            else // selling
+            else
             {
-                var spells = avatar.Capabilities.Spells?.ToList() ?? new List<SpellEntry>();
                 spells.RemoveAll(s => s.SpellRef == itemRef);
                 avatar.Capabilities.Spells = spells.ToArray();
             }
-            return avatar;
         }
-
-        // If buying and not found in any category, default to consumable
-        if (isBuying)
+        else
         {
-            var consumable = avatar.Capabilities.GetOrAddConsumable(itemRef);
-            consumable.Quantity += quantity;
+            var block = avatar.Capabilities.GetOrAddBlock(itemRef);
+            if (isBuying)
+            {
+                block.Quantity += quantity;
+            }
+            else
+            {
+                block.Quantity -= quantity;
+                if (block.Quantity <= 0)
+                {
+                    var blocks = avatar.Capabilities.Blocks?.ToList() ?? new List<BlockEntry>();
+                    blocks.RemoveAll(b => b.BlockRef == itemRef);
+                    avatar.Capabilities.Blocks = blocks.ToArray();
+                }
+            }
         }
 
         return avatar;
