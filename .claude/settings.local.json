@@ -29,7 +29,9 @@
       "Bash(grep -n \"LoadSagasFromWorldAsync\\\\|LoadServerSagas\\\\|world\\\\\\\\.Gameplay\" \"/c/Users/richa/Documents/Development/Ambient.Archimedea/Ambient.Archimedea.Schema/WinForms/GameForm.cs\")",
       "Bash(grep -E \"\\\\.\\(cs|xml\\)$\")",
       "Bash(grep -rln \"Service$\\\\|Factory$\" \"/c/Users/richa/Documents/Development/Ambient.Archimedea/Ambient.Server.Game.Application\" --include=\"*.cs\")",
-      "Bash(grep -v \"//.*ProjectTransactions\")"
+      "Bash(grep -v \"//.*ProjectTransactions\")",
+      "Read(//c/Users/richa/Documents/DevelopmentBlockParty/**)",
+      "Read(//c/Users/richa/Documents/DevelopmentBlockParty/Ambient.BlockParty/**)"
     ]
   }
 }

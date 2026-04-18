@@ -56,6 +56,20 @@ public partial class CharacterViewModel : ObservableObject
     [ObservableProperty]
     private bool _canTrade;
 
+    /// <summary>
+    /// True when this character represents a cache (geocache, death loot) rather than a paid merchant.
+    /// Affects the trade modal: hides money/price, relabels Buy→Take and Sell→Deposit.
+    /// </summary>
+    [ObservableProperty]
+    private bool _isCache;
+
+    /// <summary>
+    /// Optional callback that renders extra ImGui content inside the trade modal, after the inventory
+    /// list and before the close button. Used by callers to inject bespoke sections (e.g. a geocache
+    /// logbook) without pushing game-specific concepts into the Saga layer.
+    /// </summary>
+    public Action? ExtraContentRenderer { get; set; }
+
     [ObservableProperty]
     private bool _canAttack;
 
