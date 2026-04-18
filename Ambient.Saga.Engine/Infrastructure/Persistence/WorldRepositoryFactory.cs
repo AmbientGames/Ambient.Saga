@@ -1,5 +1,6 @@
 using Ambient.Application.Contracts;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Domain.Achievements;
 using LiteDB;
@@ -16,25 +17,28 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
     private readonly IGameSettings _gameSettings;
     private readonly ILoggerFactory? _loggerFactory;
     private readonly LiteDatabase? _sharedDatabase;
+    private readonly ISagaReadModelRepository? _readModelRepository;
 
     /// <summary>
     /// Default constructor - creates its own database (for Sandbox/standalone usage).
     /// </summary>
-    public WorldRepositoryFactory(IGameSettings gameSettings, ILoggerFactory? loggerFactory = null)
+    public WorldRepositoryFactory(IGameSettings gameSettings, ILoggerFactory? loggerFactory = null, ISagaReadModelRepository? readModelRepository = null)
     {
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _loggerFactory = loggerFactory;
         _sharedDatabase = null;
+        _readModelRepository = readModelRepository;
     }
 
     /// <summary>
     /// Constructor with shared database injection (for Carbon/integrated usage).
     /// </summary>
-    public WorldRepositoryFactory(IGameSettings gameSettings, LiteDatabase sharedDatabase, ILoggerFactory? loggerFactory = null)
+    public WorldRepositoryFactory(IGameSettings gameSettings, LiteDatabase sharedDatabase, ILoggerFactory? loggerFactory = null, ISagaReadModelRepository? readModelRepository = null)
     {
         _gameSettings = gameSettings ?? throw new ArgumentNullException(nameof(gameSettings));
         _sharedDatabase = sharedDatabase;
         _loggerFactory = loggerFactory;
+        _readModelRepository = readModelRepository;
     }
 
     /// <summary>
@@ -67,6 +71,10 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
         var discoveryRepository = new AvatarDiscoveryRepository(database);
 
         sagaRepository.SetAvatarProgressRepository(avatarProgressRepository);
+        if (_readModelRepository != null)
+        {
+            sagaRepository.SetReadModelRepository(_readModelRepository);
+        }
 
         // Create WorldStateRepository with injected dependencies
         var worldStateRepository = new WorldStateRepository(

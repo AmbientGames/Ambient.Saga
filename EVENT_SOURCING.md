@@ -78,7 +78,9 @@ All readers — trigger availability, dialogue conditions, quest prerequisites, 
 
 ### Server sync
 
-When pulling transactions from the server (`SagaSyncService.PullAsync`), imported transactions are projected to the avatar progress tables after import. This ensures cross-device sync keeps the tables current.
+Cross-device sync is a host responsibility (e.g., Archimedea's `SagaSyncService.PullAsync`) — pulling bytes, decryption, watermarks. The projection invariant stays inside Saga: `SagaInstanceRepository.ImportTransactionsAsync` inserts the newly-arrived transactions and projects them to the avatar progress tables in the **same LiteDB transaction**, so the log and the `Avatar*` tables cannot drift on imports any more than they can on local commits.
+
+Duplicate transactions in a pull batch are skipped by `TransactionId` before projection, which keeps the non-idempotent projections (`AvatarBossDefeats.DefeatedCount`, `AvatarFactionReputation.ReputationValue`) from double-counting when a sync batch overlaps with what the client already has.
 
 ---
 

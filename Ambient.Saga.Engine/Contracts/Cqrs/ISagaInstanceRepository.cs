@@ -61,8 +61,10 @@ public interface ISagaInstanceRepository
     /// Import transactions from the server, preserving their sequence numbers and status.
     /// Used during pull/recovery — does not reassign sequences or override status.
     /// Skips transactions that already exist locally (by TransactionId).
+    /// Newly-inserted transactions are projected to the avatar progress tables in the
+    /// same LiteDB transaction, so the log and projections can't drift.
     /// </summary>
-    Task<int> ImportTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default);
+    Task<int> ImportTransactionsAsync(Guid avatarId, Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default);
 
     /// <summary>
     /// Get all Saga instances for an avatar.

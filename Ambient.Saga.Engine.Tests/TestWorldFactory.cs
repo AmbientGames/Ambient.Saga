@@ -85,7 +85,7 @@ public class TestWorldFactory : IWorldFactory
         world.AchievementsLookup = new Dictionary<string, Achievement>();
         world.QuestsLookup = new Dictionary<string, Quest>();
         world.CharacterAffinitiesLookup = new Dictionary<string, CharacterAffinity>();
-        world.SagaArcLookup = new Dictionary<string, SagaArc>();
+        world.SagaArcLookup = new System.Collections.Concurrent.ConcurrentDictionary<string, SagaArc>();
         world.FactionsLookup = new Dictionary<string, Faction>();
 
         return world;

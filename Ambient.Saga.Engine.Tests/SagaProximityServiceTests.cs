@@ -136,7 +136,7 @@ public class SagaProximityServiceTests
                     SagaArcs = Array.Empty<SagaArc>()
                 }
             },
-            SagaTriggersLookup = new Dictionary<string, List<SagaTrigger>>()
+            SagaTriggersLookup = new System.Collections.Concurrent.ConcurrentDictionary<string, List<SagaTrigger>>()
         };
 
         return world;

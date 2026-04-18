@@ -1,4 +1,5 @@
-﻿using Ambient.Saga.Engine.Contracts.Cqrs;
+﻿using Ambient.Saga.Engine.Application.ReadModels;
+using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using LiteDB;
@@ -30,9 +31,13 @@ public class SagaInstanceRepository : ISagaInstanceRepository
     private readonly ConcurrentDictionary<string, SagaInstance> _instanceCache = new();
 
     private IAvatarProgressRepository? _avatarProgressRepository;
+    private ISagaReadModelRepository? _readModelRepository;
 
     public void SetAvatarProgressRepository(IAvatarProgressRepository repository)
         => _avatarProgressRepository = repository;
+
+    public void SetReadModelRepository(ISagaReadModelRepository repository)
+        => _readModelRepository = repository;
 
     public SagaInstanceRepository(ILiteDatabase database)
     {
@@ -309,6 +314,10 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                     System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit OK: InstanceId={instanceId} wrote {transactions.Count} txs");
 
                     InvalidateInstanceCache(instanceId);
+                    if (instance.OwnerAvatarId.HasValue)
+                    {
+                        InvalidateReadModelCache(instance.OwnerAvatarId.Value, instance.SagaRef);
+                    }
 
                     return Task.FromResult((sequenceNumbers, true));
                 }
@@ -327,35 +336,64 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         }
     }
 
-    public Task<int> ImportTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
+    public Task<int> ImportTransactionsAsync(Guid avatarId, Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
     {
         var lockKey = instanceId.ToString();
         var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
 
         lock (instanceLock)
         {
-            var imported = 0;
+            var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+            if (instance == null)
+                throw new InvalidOperationException($"Saga instance {instanceId} not found");
 
-            foreach (var transaction in transactions)
+            _database.BeginTrans();
+
+            try
             {
-                // Skip if already exists locally (idempotent)
-                var existing = _transactions.FindOne(x => x.TransactionId == transaction.TransactionId);
-                if (existing != null)
-                    continue;
+                var newlyInserted = new List<SagaTransaction>();
 
-                // Preserve sequence number and status from server — do not reassign
-                var record = SagaTransactionRecord.FromTransaction(transaction, instanceId);
-                _transactions.Insert(record);
-                imported++;
+                foreach (var transaction in transactions)
+                {
+                    // Skip if already exists locally (idempotent — keeps non-idempotent
+                    // projections like BossDefeats/FactionReputation from double-counting
+                    // on overlapping pulls)
+                    var existing = _transactions.FindOne(x => x.TransactionId == transaction.TransactionId);
+                    if (existing != null)
+                        continue;
+
+                    // Preserve sequence number and status from server — do not reassign
+                    var record = SagaTransactionRecord.FromTransaction(transaction, instanceId);
+                    _transactions.Insert(record);
+                    newlyInserted.Add(transaction);
+                }
+
+                // Project only the newly-inserted transactions — matches the
+                // AddAndCommitTransactionsAsync invariant so sync clients don't
+                // have to remember to call ProjectTransactions themselves.
+                if (newlyInserted.Count > 0 && _avatarProgressRepository != null && avatarId != Guid.Empty)
+                {
+                    _avatarProgressRepository.ProjectTransactions(avatarId, instance.SagaRef, newlyInserted);
+                }
+
+                _database.Commit();
+
+                if (newlyInserted.Count > 0)
+                {
+                    InvalidateInstanceCache(instanceId);
+                    if (avatarId != Guid.Empty)
+                    {
+                        InvalidateReadModelCache(avatarId, instance.SagaRef);
+                    }
+                }
+
+                return Task.FromResult(newlyInserted.Count);
             }
-
-            // Mark any cached instance as dirty so the next read triggers a reload
-            if (imported > 0)
+            catch
             {
-                InvalidateInstanceCache(instanceId);
+                _database.Rollback();
+                throw;
             }
-
-            return Task.FromResult(imported);
         }
     }
 
@@ -541,6 +579,17 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                 break;
             }
         }
+    }
+
+    /// <summary>
+    /// Drops the cached SagaState projection (if any) for this (avatarId, sagaRef).
+    /// Handlers already invalidate after their own writes, but this covers paths like
+    /// pull-sync imports that otherwise leave the read model serving pre-import state.
+    /// Fire-and-forget — we're inside a sync method and the cache is in-process.
+    /// </summary>
+    private void InvalidateReadModelCache(Guid avatarId, string sagaRef)
+    {
+        _readModelRepository?.InvalidateCacheAsync(avatarId, sagaRef);
     }
 }
 
