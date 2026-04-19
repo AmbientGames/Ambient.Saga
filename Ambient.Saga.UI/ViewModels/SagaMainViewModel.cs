@@ -408,35 +408,6 @@ public partial class SagaMainViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Called every frame by the game loop to update game logic.
-    /// Note: Heavy processing like interaction checks run on background thread.
-    /// </summary>
-    /// <param name="deltaTime">Time elapsed since last frame in seconds.</param>
-    public void Update(double deltaTime)
-    {
-        if (CurrentWorld == null)
-            return;
-
-        // Calculate world time (elapsed ticks since world started)
-        var worldTimeTicks = DateTime.UtcNow.Ticks - CurrentWorld.UtcStartTick;
-
-        // Update MerchantTradeViewModel with delta time and world time
-        //MerchantTrade?.Update(deltaTime, worldTimeTicks);
-
-        // Check for entity respawns (throttle to once per second)
-        _respawnCheckAccumulator += deltaTime;
-        if (_respawnCheckAccumulator >= 1.0)
-        {
-            _respawnCheckAccumulator = 0;
-            CheckEntityRespawns();
-        }
-
-        // Note: Interaction checks moved to background thread - see StartBackgroundProcessing()
-    }
-
-    private double _respawnCheckAccumulator = 0;
-
-    /// <summary>
     /// Starts background processing for interaction checks.
     /// Call this after world is loaded.
     /// </summary>

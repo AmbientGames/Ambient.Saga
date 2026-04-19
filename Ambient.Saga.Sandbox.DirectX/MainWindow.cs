@@ -172,9 +172,6 @@ public partial class MainWindow : Form
                     SteamAPI.RunCallbacks();
                 }
 
-                // Update ViewModel (updates character positions, Sagas, etc.)
-                _viewModel.Update(deltaTime);
-
                 // Update World Map UI (battle logic, modals, etc.)
                 _worldMapUI?.Update(deltaTime);
 
