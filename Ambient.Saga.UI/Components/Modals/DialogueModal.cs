@@ -43,9 +43,10 @@ public class DialogueModal
         // Center the window using helper
         ImGuiHelpers.SetupModalWindow(750, 550);
 
-        // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        // Style the window (DPI-scaled)
+        var scale = UIConstants.DpiScale;
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
@@ -249,7 +250,7 @@ public class DialogueModal
 
         // Dialogue text area with styled background
         // For BeginChild, 0 means "use remaining width", not -1
-        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
         ImGui.BeginChild("DialogueTextArea", new Vector2(0, dialogueHeight), ImGuiChildFlags.Borders);
 
         ImGui.Spacing();
@@ -426,9 +427,9 @@ public class DialogueModal
         var buttonHeight = ImGui.GetFrameHeight();
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + avail.X - buttonWidth);
 
-        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.2f, 0.2f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.25f, 0.25f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.3f, 0.3f, 1));
+        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
 
         if (ImGui.Button("Leave", new Vector2(buttonWidth, buttonHeight)))
         {

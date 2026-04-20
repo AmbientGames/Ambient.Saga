@@ -1197,9 +1197,9 @@ public class InventoryPanel
 
     private bool RenderDropButton(string id)
     {
-        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.55f, 0.2f, 0.2f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.7f, 0.25f, 0.25f, 1));
+        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
         var clicked = ImGui.Button($"Drop##{id}");
         ImGui.PopStyleColor(3);
         return clicked;

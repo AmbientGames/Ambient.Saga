@@ -352,7 +352,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Map [M]", windowFlags))
         {
@@ -388,7 +388,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Character [C]", windowFlags))
         {
@@ -424,7 +424,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Inventory [I]", windowFlags))
         {
@@ -461,7 +461,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("World Info [F1]", windowFlags))
         {
@@ -544,7 +544,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Journal [J]", windowFlags))
         {
@@ -587,7 +587,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         var title = $"{panel.Name} [{panel.KeyLabel}]";
         if (ImGui.Begin(title, windowFlags))

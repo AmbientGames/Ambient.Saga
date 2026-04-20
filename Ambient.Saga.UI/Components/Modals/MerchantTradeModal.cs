@@ -41,9 +41,10 @@ public class MerchantTradeModal
         // Center the window using helper
         ImGuiHelpers.SetupModalWindow(800, 650);
 
-        // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        // Style the window (DPI-scaled)
+        var scale = UIConstants.DpiScale;
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
@@ -157,7 +158,7 @@ public class MerchantTradeModal
 
             // Trade inventory list - reserve space for footer
             var tradeFooterHeight = ImGui.GetFrameHeightWithSpacing() * 2;
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+            ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
             ImGui.BeginChild("TradeInventory", new Vector2(ImGuiSizes.Fill, -tradeFooterHeight), ImGuiChildFlags.Borders);
 
             if (_tradeViewModel.TradeInventory.Count == 0)

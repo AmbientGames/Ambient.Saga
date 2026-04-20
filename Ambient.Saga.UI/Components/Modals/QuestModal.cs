@@ -67,9 +67,10 @@ public class QuestModal
         // Center the window using helper
         ImGuiHelpers.SetupModalWindow(650, 550);
 
-        // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        // Style the window (DPI-scaled)
+        var scale = UIConstants.DpiScale;
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 

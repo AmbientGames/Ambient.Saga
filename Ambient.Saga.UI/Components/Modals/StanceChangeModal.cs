@@ -33,10 +33,11 @@ public class StanceChangeModal
         // Center the modal using helper
         ImGuiHelpers.SetupModalWindow(400, 400);
 
-        // Style with orange border (combat/martial theme)
+        // Style with orange border (combat/martial theme) — DPI-scaled
+        var scale = UIConstants.DpiScale;
         ImGui.PushStyleColor(ImGuiCol.Border, new Vector4(0.8f, 0.5f, 0.2f, 1.0f));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 3f);
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 3f * scale);
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
 
         if (ImGui.Begin("Change Stance###StanceChangeModal", ref isOpen, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
         {

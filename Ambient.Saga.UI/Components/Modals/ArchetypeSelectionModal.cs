@@ -173,9 +173,9 @@ public class ArchetypeSelectionModal
             ImGui.SetCursorPosX(ImGui.GetWindowWidth() - totalWidth - style.WindowPadding.X);
 
             // Quit Game button (red) - this is the only way out if you don't want to play
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
             if (ImGui.Button("Quit Game", new Vector2(quitButtonWidth, buttonHeight)))
             {
                 selector?.CancelSelection();
@@ -192,9 +192,9 @@ public class ArchetypeSelectionModal
             var canEnter = _selectedArchetype != null;
             if (!canEnter) ImGui.BeginDisabled();
 
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
             if (ImGui.Button("Enter World", new Vector2(enterButtonWidth, buttonHeight)))
             {
                 selector?.CompleteSelection(_selectedArchetype);

@@ -692,7 +692,7 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
         ImGui.BeginChild("BattleLogContainer", new Vector2(0, 0), ImGuiChildFlags.Borders);
 
         // Header
@@ -809,7 +809,7 @@ public class BattleModal
         // Show battle log with styled background
         // Reserve space for the bottom buttons (one row of buttons + spacing)
         var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2;
-        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
         ImGui.BeginChild("FinalBattleLog", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
         foreach (var line in _currentState.BattleLog)
@@ -849,9 +849,9 @@ public class BattleModal
         // Show loot button if avatar won
         if (_currentState.AvatarVictory == true)
         {
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
             if (ImGui.Button("Collect Loot", new Vector2(buttonWidth, endButtonHeight)))
             {
                 // Transition to loot modal

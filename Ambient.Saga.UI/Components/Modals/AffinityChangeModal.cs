@@ -34,10 +34,11 @@ public class AffinityChangeModal
         // Center the modal using helper
         ImGuiHelpers.SetupModalWindow(400, 350);
 
-        // Style with cyan/teal border (evasion/elemental theme)
+        // Style with cyan/teal border (evasion/elemental theme) — DPI-scaled
+        var scale = UIConstants.DpiScale;
         ImGui.PushStyleColor(ImGuiCol.Border, new Vector4(0.2f, 0.7f, 0.7f, 1.0f));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 3f);
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 3f * scale);
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
 
         if (ImGui.Begin("Change Affinity###AffinityChangeModal", ref isOpen, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
         {
