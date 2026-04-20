@@ -33,7 +33,7 @@ public class PauseMenuModal
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.AlwaysAutoResize;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("PauseMenu", ref isOpen, windowFlags))
         {
@@ -66,9 +66,9 @@ public class PauseMenuModal
             var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
 
             // Resume button - full width
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
             if (ImGui.Button("Resume Game", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 isOpen = false;
@@ -79,9 +79,9 @@ public class PauseMenuModal
             ImGui.Spacing();
 
             // Settings button - full width
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.3f, 0.35f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.4f, 0.4f, 0.45f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.5f, 0.5f, 0.55f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonNeutral);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonNeutralHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonNeutralActive);
             if (ImGui.Button("Settings", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 SettingsRequested?.Invoke();
@@ -91,9 +91,9 @@ public class PauseMenuModal
             ImGui.Spacing();
 
             // Quit button - full width
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
             if (ImGui.Button("Quit to Desktop", new Vector2(ImGuiSizes.Fill, buttonHeight)))
             {
                 QuitRequested?.Invoke();

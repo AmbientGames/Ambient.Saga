@@ -27,7 +27,7 @@ public class DefaultSettingsPanel : ISettingsPanel
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.AlwaysAutoResize;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Settings", ref isOpen, windowFlags))
         {
@@ -48,9 +48,9 @@ public class DefaultSettingsPanel : ISettingsPanel
             var buttonWidth = 120f * UIConstants.DpiScale;
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
 
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
             if (ImGui.Button("Close", new Vector2(buttonWidth, ImGui.GetFrameHeight() * 1.2f)))
             {
                 isOpen = false;
