@@ -31,7 +31,11 @@
       "Bash(grep -rln \"Service$\\\\|Factory$\" \"/c/Users/richa/Documents/Development/Ambient.Archimedea/Ambient.Server.Game.Application\" --include=\"*.cs\")",
       "Bash(grep -v \"//.*ProjectTransactions\")",
       "Read(//c/Users/richa/Documents/DevelopmentBlockParty/**)",
-      "Read(//c/Users/richa/Documents/DevelopmentBlockParty/Ambient.BlockParty/**)"
+      "Read(//c/Users/richa/Documents/DevelopmentBlockParty/Ambient.BlockParty/**)",
+      "Bash(xargs ls *)",
+      "Bash(git -C \"/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga\" log --all --oneline)",
+      "Bash(git -C \"/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga\" log --all --oneline --grep='shelter\\\\|temperature\\\\|warmth\\\\|climate\\\\|insulat' -i)",
+      "Bash(git *)"
     ]
   }
 }
