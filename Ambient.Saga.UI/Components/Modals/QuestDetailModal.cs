@@ -522,10 +522,14 @@ public class QuestDetailModal
                 ImGui.BeginDisabled();
             }
 
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
             if (ImGui.Button("Abandon Quest", new Vector2(wideButtonWidth, buttonHeight)))
             {
                 AbandonQuest(viewModel);
             }
+            ImGui.PopStyleColor(3);
 
             if (_isAbandoning)
             {

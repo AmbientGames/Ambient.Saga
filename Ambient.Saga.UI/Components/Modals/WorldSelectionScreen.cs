@@ -131,13 +131,23 @@ public class WorldSelectionScreen
                 }
 
                 // Show generating indicator or button
+                ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonInfo);
+                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonInfoHovered);
+                ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonInfoActive);
+                bool generateClicked;
                 if (_isGenerating)
                 {
                     ImGui.BeginDisabled();
                     ImGui.Button("Generating...", new Vector2(ImGuiSizes.Fill, generateButtonHeight));
                     ImGui.EndDisabled();
+                    generateClicked = false;
                 }
-                else if (ImGui.Button("Generate World Content", new Vector2(ImGuiSizes.Fill, generateButtonHeight)))
+                else
+                {
+                    generateClicked = ImGui.Button("Generate World Content", new Vector2(ImGuiSizes.Fill, generateButtonHeight));
+                }
+                ImGui.PopStyleColor(3);
+                if (generateClicked)
                 {
                     _logger?.LogInformation("Generate button clicked for: {ConfigRefName}", viewModel.SelectedConfiguration.RefName);
 
@@ -181,7 +191,11 @@ public class WorldSelectionScreen
             else
             {
                 ImGui.BeginDisabled();
+                ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonInfo);
+                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonInfoHovered);
+                ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonInfoActive);
                 ImGui.Button("Generate World Content", new Vector2(ImGuiSizes.Fill, generateButtonHeight));
+                ImGui.PopStyleColor(3);
                 ImGui.EndDisabled();
 
                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _worldContentGenerator.StatusMessage);

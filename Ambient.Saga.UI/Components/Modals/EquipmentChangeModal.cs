@@ -152,13 +152,25 @@ public class EquipmentChangeModal
 
         ImGui.Spacing();
 
-        // Action buttons - use ButtonRow pattern for evenly spaced buttons
-        var result = ImGuiHelpers.OkCancelButtons("Accept", "Cancel");
-        if (result == 0)
+        // Action buttons - styled Accept + unstyled Cancel (matches Saga modal pattern)
+        var avail = ImGui.GetContentRegionAvail();
+        var style = ImGui.GetStyle();
+        var buttonWidth = (avail.X - style.ItemSpacing.X) / 2;
+
+        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
+        var acceptClicked = ImGui.Button("Accept", new Vector2(buttonWidth, 0));
+        ImGui.PopStyleColor(3);
+
+        ImGui.SameLine();
+        var cancelClicked = ImGui.Button("Cancel", new Vector2(buttonWidth, 0));
+
+        if (acceptClicked)
         {
             OnAcceptPressed();
         }
-        else if (result == 1)
+        else if (cancelClicked)
         {
             Console.WriteLine("Equipment change cancelled");
             Cancelled?.Invoke();

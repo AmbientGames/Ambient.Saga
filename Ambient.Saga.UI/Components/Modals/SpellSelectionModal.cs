@@ -64,7 +64,12 @@ public class SpellSelectionModal
             if (spell == null) continue;
 
             var spellRef = spellEntry.SpellRef; // Capture for lambda
-            if (ImGui.Button($"{spell.DisplayName} ({spellEntry.Condition:P0})", new Vector2(ImGuiSizes.Fill, buttonHeight)))
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonInfo);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonInfoHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonInfoActive);
+            var spellClicked = ImGui.Button($"{spell.DisplayName} ({spellEntry.Condition:P0})", new Vector2(ImGuiSizes.Fill, buttonHeight));
+            ImGui.PopStyleColor(3);
+            if (spellClicked)
             {
                 Console.WriteLine($"Spell selected: {spell.DisplayName} ({spellRef})");
                 SpellSelected?.Invoke(spellRef);

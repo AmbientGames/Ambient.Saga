@@ -64,7 +64,12 @@ public class ItemSelectionModal
             if (consumable == null) continue;
 
             var itemRef = itemEntry.ConsumableRef; // Capture for lambda
-            if (ImGui.Button($"{consumable.DisplayName} x{itemEntry.Quantity}", new Vector2(ImGuiSizes.Fill, buttonHeight)))
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonInfo);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonInfoHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonInfoActive);
+            var itemClicked = ImGui.Button($"{consumable.DisplayName} x{itemEntry.Quantity}", new Vector2(ImGuiSizes.Fill, buttonHeight));
+            ImGui.PopStyleColor(3);
+            if (itemClicked)
             {
                 Console.WriteLine($"Item selected: {consumable.DisplayName} ({itemRef})");
                 ItemSelected?.Invoke(itemRef);
