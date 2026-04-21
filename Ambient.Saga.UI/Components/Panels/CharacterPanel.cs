@@ -1,3 +1,4 @@
+using Ambient.Domain.Enums;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
@@ -454,15 +455,6 @@ public class CharacterPanel
         ImGui.PopStyleColor();
     }
 
-    // Temperature thresholds (body temp in Celsius - 37 is normal).
-    // Kept in sync with Archimedea SurvivalCalculator so the CRITICAL band matches
-    // the temperature where severe hypothermia/hyperthermia damage begins.
-    private const float NormalTemperature = 37f;
-    private const float ColdThreshold = 35f;   // Hypothermia warning
-    private const float HotThreshold = 39f;    // Hyperthermia warning
-    private const float CriticalColdThreshold = 33f;  // Severe hypothermia
-    private const float CriticalHotThreshold = 41f;   // Severe hyperthermia
-
     private void RenderTemperatureStat(float temperature)
     {
         var scale = UIConstants.DpiScale;
@@ -475,25 +467,25 @@ public class CharacterPanel
         Vector4 barColor;
         Vector4 textColor;
 
-        if (temperature < CriticalColdThreshold)
+        if (temperature < ThermalConstants.ColdCritical)
         {
             statusText = "CRITICAL";
             barColor = new Vector4(0.2f, 0.4f, 1f, 1f);      // Deep blue
             textColor = new Vector4(0.4f, 0.6f, 1f, 1f);
         }
-        else if (temperature < ColdThreshold)
+        else if (temperature < ThermalConstants.ColdWarning)
         {
             statusText = "Cold";
             barColor = new Vector4(0.4f, 0.7f, 1f, 1f);      // Light blue
             textColor = new Vector4(0.5f, 0.8f, 1f, 1f);
         }
-        else if (temperature > CriticalHotThreshold)
+        else if (temperature > ThermalConstants.HotCritical)
         {
             statusText = "CRITICAL";
             barColor = new Vector4(1f, 0.2f, 0.2f, 1f);      // Deep red
             textColor = new Vector4(1f, 0.4f, 0.4f, 1f);
         }
-        else if (temperature > HotThreshold)
+        else if (temperature > ThermalConstants.HotWarning)
         {
             statusText = "Hot";
             barColor = new Vector4(1f, 0.5f, 0.2f, 1f);      // Orange
@@ -510,15 +502,15 @@ public class CharacterPanel
         // Bar shows distance from thresholds: 0 = at threshold, 1 = at normal
         // Invert so that normal = full bar, threshold = empty bar
         float progress;
-        if (temperature < NormalTemperature)
+        if (temperature < ThermalConstants.NormalBodyTemp)
         {
-            // Cold side: CriticalCold (0%) -> Normal (100%)
-            progress = Math.Clamp((temperature - CriticalColdThreshold) / (NormalTemperature - CriticalColdThreshold), 0f, 1f);
+            // Cold side: ColdCritical (0%) -> Normal (100%)
+            progress = Math.Clamp((temperature - ThermalConstants.ColdCritical) / (ThermalConstants.NormalBodyTemp - ThermalConstants.ColdCritical), 0f, 1f);
         }
         else
         {
-            // Hot side: Normal (100%) -> CriticalHot (0%)
-            progress = Math.Clamp(1f - (temperature - NormalTemperature) / (CriticalHotThreshold - NormalTemperature), 0f, 1f);
+            // Hot side: Normal (100%) -> HotCritical (0%)
+            progress = Math.Clamp(1f - (temperature - ThermalConstants.NormalBodyTemp) / (ThermalConstants.HotCritical - ThermalConstants.NormalBodyTemp), 0f, 1f);
         }
 
         ImGui.PushStyleColor(ImGuiCol.PlotHistogram, barColor);
