@@ -1054,7 +1054,7 @@ public class InventoryPanel
                 // Effects
                 if (equipItem.Effects != null)
                 {
-                    ImGuiHelpers.RenderAttributes(equipItem.Effects, temperatureLabel: "Insulation:");
+                    ImGuiHelpers.RenderAttributes(equipItem.Effects, warmingLabel: "Insulation:", coolingLabel: "Insulation:");
                 }
             }
 
