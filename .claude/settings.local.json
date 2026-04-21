@@ -35,7 +35,10 @@
       "Bash(xargs ls *)",
       "Bash(git -C \"/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga\" log --all --oneline)",
       "Bash(git -C \"/c/Users/richa/Documents/DevelopmentOpenSource/Ambient.Saga\" log --all --oneline --grep='shelter\\\\|temperature\\\\|warmth\\\\|climate\\\\|insulat' -i)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(py --version)",
+      "Bash(cat)",
+      "Bash(python /tmp/fix_equipment_xml.py)"
     ]
   }
 }

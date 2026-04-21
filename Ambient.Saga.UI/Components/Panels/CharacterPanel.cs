@@ -454,12 +454,14 @@ public class CharacterPanel
         ImGui.PopStyleColor();
     }
 
-    // Temperature thresholds (body temp in Celsius - 37 is normal)
+    // Temperature thresholds (body temp in Celsius - 37 is normal).
+    // Kept in sync with Archimedea SurvivalCalculator so the CRITICAL band matches
+    // the temperature where severe hypothermia/hyperthermia damage begins.
     private const float NormalTemperature = 37f;
     private const float ColdThreshold = 35f;   // Hypothermia warning
     private const float HotThreshold = 39f;    // Hyperthermia warning
-    private const float CriticalColdThreshold = 32f;  // Severe hypothermia
-    private const float CriticalHotThreshold = 42f;   // Severe hyperthermia
+    private const float CriticalColdThreshold = 33f;  // Severe hypothermia
+    private const float CriticalHotThreshold = 41f;   // Severe hyperthermia
 
     private void RenderTemperatureStat(float temperature)
     {

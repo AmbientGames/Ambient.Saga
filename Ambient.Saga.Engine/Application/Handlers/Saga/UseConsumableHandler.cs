@@ -122,10 +122,11 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
                     }
                 }
 
-                // Temperature adjustment (move toward normal body temperature of 37)
-                if (consumable.Effects.Temperature != 37) // Non-default temperature effect
+                // Temperature delta from the consumable. Positive warms the avatar,
+                // negative cools it. 0 = no effect (matches the XSD default).
+                if (consumable.Effects.Temperature != 0)
                 {
-                    var tempChange = consumable.Effects.Temperature - 37; // Relative change
+                    var tempChange = consumable.Effects.Temperature;
                     command.Avatar.Stats.Temperature += tempChange;
                     effectsApplied.Add($"Temperature {(tempChange >= 0 ? "+" : "")}{tempChange:F1}°");
                 }

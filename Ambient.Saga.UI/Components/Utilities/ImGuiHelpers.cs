@@ -87,7 +87,7 @@ public static class ImGuiHelpers
     /// Renders an Attributes display showing stat modifiers with +/- formatting
     /// Matches WPF AttributesDisplay.xaml functionality
     /// </summary>
-    public static void RenderAttributes(Attributes? effects, string title = "Effects:")
+    public static void RenderAttributes(Attributes? effects, string title = "Effects:", string temperatureLabel = "Temperature:")
     {
         if (effects == null) return;
 
@@ -106,7 +106,7 @@ public static class ImGuiHelpers
             RenderEffectLine("Stamina:", effects.Stamina);
             RenderEffectLine("Mana:", effects.Mana);
             // State
-            RenderEffectLine("Temperature:", effects.Temperature);
+            RenderEffectLine(temperatureLabel, effects.Temperature);
             // Attributes
             RenderEffectLine("Strength:", effects.Strength);
             RenderEffectLine("Defense:", effects.Defense);

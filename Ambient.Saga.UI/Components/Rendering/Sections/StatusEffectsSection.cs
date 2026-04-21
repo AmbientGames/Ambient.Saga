@@ -12,11 +12,13 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 public class StatusEffectsSection : IHudSection
 {
     // Temperature thresholds (body temp in Celsius - 37 is normal)
+    // Kept in sync with Archimedea SurvivalCalculator so the HUD flashes CRITICAL at the
+    // same temperature where severe-hypothermia/hyperthermia damage begins.
     private const float NormalTemperature = 37f;
     private const float ColdThreshold = 35f;      // Hypothermia warning
     private const float HotThreshold = 39f;       // Hyperthermia warning
-    private const float CriticalCold = 32f;       // Severe hypothermia
-    private const float CriticalHot = 42f;        // Severe hyperthermia
+    private const float CriticalCold = 33f;       // Severe hypothermia
+    private const float CriticalHot = 41f;        // Severe hyperthermia
 
     // Temperature gauge styling base values at 96 DPI (1.0 scale)
     private const float GaugeWidthBase = 80f;

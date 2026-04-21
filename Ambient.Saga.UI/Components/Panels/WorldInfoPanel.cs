@@ -107,7 +107,7 @@ public class WorldInfoPanel
                         ImGui.Text($"Category: {item.Category} | Rarity: {item.Rarity}");
                         ImGui.Text($"Price: {item.WholesalePrice} (x{item.MerchantMarkupMultiplier} markup)");
                         if (item.Effects != null)
-                            ImGuiHelpers.RenderAttributes(item.Effects);
+                            ImGuiHelpers.RenderAttributes(item.Effects, temperatureLabel: "Insulation:");
                         if (item.StatusEffectRef != null)
                             ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), $"Applies: {item.StatusEffectRef} ({item.StatusEffectChance:P0})");
                         ImGui.TreePop();
