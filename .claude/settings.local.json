@@ -38,7 +38,8 @@
       "Bash(git *)",
       "Bash(py --version)",
       "Bash(cat)",
-      "Bash(python /tmp/fix_equipment_xml.py)"
+      "Bash(python /tmp/fix_equipment_xml.py)",
+      "Bash(python *)"
     ]
   }
 }
