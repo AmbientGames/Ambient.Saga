@@ -25,6 +25,8 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// </summary>
 public class StubAvatarUpdateService : IAvatarUpdateService
 {
+    public event Action<Ambient.Saga.Engine.Contracts.Services.CreditChangeNotification>? CreditsChanged;
+
     public Task<AvatarEntity> UpdateAvatarForTradeAsync(AvatarEntity avatar, SagaInstance sagaInstance, Guid tradeTransactionId, CancellationToken ct = default)
     {
         return Task.FromResult(avatar);

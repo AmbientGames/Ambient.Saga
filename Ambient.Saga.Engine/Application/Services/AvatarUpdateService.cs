@@ -20,10 +20,19 @@ public class AvatarUpdateService : IAvatarUpdateService
     private readonly IGameAvatarRepository _avatarRepository;
     private readonly IWorld _world;
 
+    /// <inheritdoc/>
+    public event Action<CreditChangeNotification>? CreditsChanged;
+
     public AvatarUpdateService(IGameAvatarRepository avatarRepository, IWorld world)
     {
         _avatarRepository = avatarRepository ?? throw new ArgumentNullException(nameof(avatarRepository));
         _world = world ?? throw new ArgumentNullException(nameof(world));
+    }
+
+    private void RaiseCreditsChanged(Guid avatarId, int delta, string reason, Guid transactionId)
+    {
+        if (delta == 0) return;
+        CreditsChanged?.Invoke(new CreditChangeNotification(avatarId, delta, reason, transactionId));
     }
 
     /// <inheritdoc/>
@@ -68,14 +77,9 @@ public class AvatarUpdateService : IAvatarUpdateService
         }
 
         // Update credits
-        if (isBuying)
-        {
-            avatar.Stats.Credits -= totalPrice;
-        }
-        else // selling
-        {
-            avatar.Stats.Credits += totalPrice;
-        }
+        var creditDelta = isBuying ? -totalPrice : totalPrice;
+        avatar.Stats.Credits += creditDelta;
+        RaiseCreditsChanged(avatar.Id, creditDelta, "Trade", tradeTransactionId);
 
         // Dispatch on the world's catalog to determine the real category of itemRef, not on
         // the avatar's current inventory. Previously the Consumables check ran first with
@@ -437,6 +441,7 @@ public class AvatarUpdateService : IAvatarUpdateService
         if (transaction.Data.TryGetValue(TransactionDataKeys.Credits, out var creditsData) && int.TryParse(creditsData, out var credits))
         {
             avatar.Stats.Credits += credits;
+            RaiseCreditsChanged(avatar.Id, credits, "Loot", lootTransactionId);
         }
 
         return avatar;
@@ -502,7 +507,9 @@ public class AvatarUpdateService : IAvatarUpdateService
 
         if (transaction.Data.TryGetValue(TransactionDataKeys.Credits, out var creditsStr) && float.TryParse(creditsStr, out var credits) && credits != 0.0f)
         {
-            avatar.Stats.Credits += (int)credits;
+            var creditDelta = (int)credits;
+            avatar.Stats.Credits += creditDelta;
+            RaiseCreditsChanged(avatar.Id, creditDelta, "Effect", effectTransactionId);
         }
 
         if (transaction.Data.TryGetValue(TransactionDataKeys.Experience, out var experienceStr) && float.TryParse(experienceStr, out var experience) && experience != 0.0f)

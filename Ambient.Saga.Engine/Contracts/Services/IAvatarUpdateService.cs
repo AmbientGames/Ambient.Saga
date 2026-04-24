@@ -13,6 +13,15 @@ namespace Ambient.Saga.Engine.Contracts.Services;
 public interface IAvatarUpdateService
 {
     /// <summary>
+    /// Raised after any transaction that mutates <c>avatar.Stats.Credits</c>
+    /// (Trade, Loot, Effect). Hosts forward these to the authoritative server
+    /// so the server-side balance stays in sync. Fires after the local mutation
+    /// is applied, so <c>avatar.Stats.Credits</c> already reflects the delta
+    /// when subscribers run.
+    /// </summary>
+    event Action<CreditChangeNotification>? CreditsChanged;
+
+    /// <summary>
     /// Updates avatar inventory and credits based on a trade transaction.
     /// </summary>
     /// <param name="avatar">The avatar to update</param>
