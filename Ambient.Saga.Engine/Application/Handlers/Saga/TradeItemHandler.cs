@@ -97,11 +97,10 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
             }
 
             // Owner trades for free (depositing/withdrawing from own shopkeeper).
-            // For non-owners the arc's MarkupMultiplier applies only when *buying* from the
-            // arc — that's what "markup" means semantically (the shop's add-on over catalog
-            // for goods it sells). When a player sells back to the shop they receive catalog
-            // price as-is; the multiplier does not gross up the buy-back, otherwise high-
-            // markup shops would absurdly overpay for sales.
+            // Non-owners pay/receive catalog price scaled by the arc's per-direction
+            // multiplier: MarkupMultiplier when buying from the arc (shop's selling
+            // price), BuybackMultiplier when selling to it (shop's buyback price).
+            // Both default to 1.0 — authored arcs carry no premium unless explicitly set.
             var isOwner = !string.IsNullOrEmpty(sagaTemplate.OwnerAvatarId)
                           && command.AvatarId.ToString() == sagaTemplate.OwnerAvatarId;
             var basePrice = command.PricePerItem * command.Quantity;
@@ -111,7 +110,7 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
             else if (command.IsBuying)
                 totalPrice = (int)Math.Round(basePrice * sagaTemplate.MarkupMultiplier);
             else
-                totalPrice = basePrice;
+                totalPrice = (int)Math.Round(basePrice * sagaTemplate.BuybackMultiplier);
 
             // Validate avatar has sufficient credits for buying (owners trade free)
             if (command.IsBuying && !isOwner)
