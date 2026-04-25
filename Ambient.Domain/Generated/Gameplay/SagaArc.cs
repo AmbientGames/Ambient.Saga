@@ -40,11 +40,14 @@ namespace Ambient.Domain {
         
         private double markupMultiplierField;
         
+        private double buybackMultiplierField;
+        
         public SagaArc() {
             this.kindField = "Default";
             this.discoverRadiusField = 200D;
             this.initialStateField = SagaArcInitialState.Hidden;
             this.markupMultiplierField = 1D;
+            this.buybackMultiplierField = 1D;
         }
         
         /// <remarks/>
@@ -147,6 +150,18 @@ namespace Ambient.Domain {
             }
             set {
                 this.markupMultiplierField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(1D)]
+        public double BuybackMultiplier {
+            get {
+                return this.buybackMultiplierField;
+            }
+            set {
+                this.buybackMultiplierField = value;
             }
         }
     }

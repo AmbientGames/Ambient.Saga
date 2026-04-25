@@ -96,10 +96,22 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 return SagaCommandResult.Failure(instance.InstanceId, "Cannot trade with defeated character");
             }
 
-            // Owner trades for free (depositing/withdrawing from own shopkeeper)
+            // Owner trades for free (depositing/withdrawing from own shopkeeper).
+            // For non-owners the arc's MarkupMultiplier applies only when *buying* from the
+            // arc — that's what "markup" means semantically (the shop's add-on over catalog
+            // for goods it sells). When a player sells back to the shop they receive catalog
+            // price as-is; the multiplier does not gross up the buy-back, otherwise high-
+            // markup shops would absurdly overpay for sales.
             var isOwner = !string.IsNullOrEmpty(sagaTemplate.OwnerAvatarId)
                           && command.AvatarId.ToString() == sagaTemplate.OwnerAvatarId;
-            var totalPrice = isOwner ? 0 : command.PricePerItem * command.Quantity;
+            var basePrice = command.PricePerItem * command.Quantity;
+            int totalPrice;
+            if (isOwner)
+                totalPrice = 0;
+            else if (command.IsBuying)
+                totalPrice = (int)Math.Round(basePrice * sagaTemplate.MarkupMultiplier);
+            else
+                totalPrice = basePrice;
 
             // Validate avatar has sufficient credits for buying (owners trade free)
             if (command.IsBuying && !isOwner)
