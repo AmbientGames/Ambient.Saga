@@ -181,7 +181,14 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             services.AddSingleton(sp =>
                 sp.GetRequiredService<WorldStateRepositoryProvider>().Repository);
 
-            // Avatar update service (depends on IGameAvatarRepository)
+            // Avatar update service (singleton). Repository and world are accessed lazily
+            // via Func<> so the singleton can be constructed before a world is loaded —
+            // GameAvatarRepositoryProvider.Repository throws until SetRepository is called
+            // on world load, so we must defer the access until method-call time.
+            services.AddSingleton<Func<IGameAvatarRepository>>(sp =>
+                () => sp.GetRequiredService<GameAvatarRepositoryProvider>().Repository);
+            services.AddSingleton<Func<IWorld>>(sp =>
+                () => sp.GetRequiredService<WorldProvider>().World);
             services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
         }
 

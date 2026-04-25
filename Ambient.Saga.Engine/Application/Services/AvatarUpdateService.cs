@@ -17,16 +17,21 @@ namespace Ambient.Saga.Engine.Application.Services;
 /// </summary>
 public class AvatarUpdateService : IAvatarUpdateService
 {
-    private readonly IGameAvatarRepository _avatarRepository;
-    private readonly IWorld _world;
+    // Lazily resolved: this service is a singleton but its dependencies are only
+    // populated after a world is loaded. Constructing them eagerly would throw.
+    private readonly Func<IGameAvatarRepository> _avatarRepositoryAccessor;
+    private readonly Func<IWorld> _worldAccessor;
+
+    private IGameAvatarRepository _avatarRepository => _avatarRepositoryAccessor();
+    private IWorld _world => _worldAccessor();
 
     /// <inheritdoc/>
     public event Action<CreditChangeNotification>? CreditsChanged;
 
-    public AvatarUpdateService(IGameAvatarRepository avatarRepository, IWorld world)
+    public AvatarUpdateService(Func<IGameAvatarRepository> avatarRepositoryAccessor, Func<IWorld> worldAccessor)
     {
-        _avatarRepository = avatarRepository ?? throw new ArgumentNullException(nameof(avatarRepository));
-        _world = world ?? throw new ArgumentNullException(nameof(world));
+        _avatarRepositoryAccessor = avatarRepositoryAccessor ?? throw new ArgumentNullException(nameof(avatarRepositoryAccessor));
+        _worldAccessor = worldAccessor ?? throw new ArgumentNullException(nameof(worldAccessor));
     }
 
     private void RaiseCreditsChanged(Guid avatarId, int delta, string reason, Guid transactionId)
