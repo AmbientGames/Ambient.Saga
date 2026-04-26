@@ -57,15 +57,14 @@ public class MerchantTradeModal
         };
         if (ImGui.Begin($"{titleText}###MerchantTradeModal", ref isOpen, windowFlags))
         {
-            // Header (merchant or cache). FontHeading (24pt) instead of FontTitle (30pt) so
-            // the height step over the 20pt body subtitle isn't jarring; the modal's window
-            // titlebar already carries the bigger "Shop"/"Geocache"/"Remnant Loot" label.
+            // Header (merchant or cache). FontHeading for both halves so the subtitle
+            // baselines with the name; the modal's window titlebar already carries the
+            // bigger "Shop"/"Geocache"/"Remnant Loot" label.
             ImGui.PushFont(UIConstants.FontHeading);
             ImGui.TextColored(new Vector4(1, 0.85f, 0.3f, 1), character.DisplayName);
-            ImGui.PopFont();
             ImGui.SameLine();
-            ImGui.AlignTextToFramePadding();
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _tradeViewModel.HeaderSubtitle);
+            ImGui.PopFont();
 
             ImGui.Separator();
             ImGui.Spacing();
