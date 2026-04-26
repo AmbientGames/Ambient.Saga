@@ -170,37 +170,37 @@ public partial class MerchantTradeViewModel : ObservableObject
     }
 
     /// <summary>
-    /// For merchants, the template's Interactable.Loot (treated as the merchant's stock).
-    /// For caches, the character's live CurrentInventory derived from saga replay — this is what
-    /// gets mutated by ItemTraded transactions, so the modal shows what's actually in the cache now.
+    /// Live inventory: replay the SagaInstance's transactions and read the character's
+    /// CurrentInventory. Same source for every arc kind — geocache, player shop, death loot
+    /// — so deposits/withdrawals via ItemTraded mutations are immediately visible.
+    /// Falls back to the character template's Interactable.Loot when no saga instance is
+    /// available (authored arcs that haven't yet had a CharacterSpawned recorded).
     /// </summary>
     private ItemCollection? GetMerchantInventorySource()
     {
-        if (!IsCache)
-            return _context.ActiveCharacter?.Interactable?.Loot;
-
-        if (_context.CurrentSagaRef == null || _context.CurrentCharacterInstanceId == null)
-            return null;
-
-        try
+        if (_context.CurrentSagaRef != null && _context.CurrentCharacterInstanceId != null)
         {
-            var query = new Ambient.Saga.Engine.Application.Queries.Saga.GetSagaStateQuery
+            try
             {
-                AvatarId = _context.AvatarId,
-                SagaRef = _context.CurrentSagaRef,
-            };
-            var sagaState = _mediator.Send(query).Result;
-            if (sagaState != null &&
-                sagaState.Characters.TryGetValue(_context.CurrentCharacterInstanceId.Value.ToString(), out var characterState))
+                var query = new Ambient.Saga.Engine.Application.Queries.Saga.GetSagaStateQuery
+                {
+                    AvatarId = _context.AvatarId,
+                    SagaRef = _context.CurrentSagaRef,
+                };
+                var sagaState = _mediator.Send(query).Result;
+                if (sagaState != null &&
+                    sagaState.Characters.TryGetValue(_context.CurrentCharacterInstanceId.Value.ToString(), out var characterState))
+                {
+                    return characterState.CurrentInventory;
+                }
+            }
+            catch (Exception ex)
             {
-                return characterState.CurrentInventory;
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Failed to read saga inventory: {ex.Message}");
             }
         }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Failed to read cache inventory: {ex.Message}");
-        }
-        return null;
+
+        return _context.ActiveCharacter?.Interactable?.Loot;
     }
 
     private ObservableCollection<TradeItem> GetMerchantInventory()
