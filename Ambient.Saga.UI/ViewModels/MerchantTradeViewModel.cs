@@ -191,8 +191,15 @@ public partial class MerchantTradeViewModel : ObservableObject
                 if (sagaState != null &&
                     sagaState.Characters.TryGetValue(_context.CurrentCharacterInstanceId.Value.ToString(), out var characterState))
                 {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[MerchantTradeVM] Saga inventory hit for '{_context.CurrentSagaRef}' " +
+                        $"(CharacterInstanceId={_context.CurrentCharacterInstanceId.Value})");
                     return characterState.CurrentInventory;
                 }
+                System.Diagnostics.Debug.WriteLine(
+                    $"[MerchantTradeVM] Saga state had no character for CharacterInstanceId={_context.CurrentCharacterInstanceId.Value} " +
+                    $"in '{_context.CurrentSagaRef}'. State chars: [{(sagaState == null ? "null" : string.Join(",", sagaState.Characters.Keys))}]. " +
+                    $"Falling back to template Loot.");
             }
             catch (Exception ex)
             {
