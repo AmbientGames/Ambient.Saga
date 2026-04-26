@@ -108,11 +108,17 @@ public class TradeEngine
                         if (entry == null || string.IsNullOrEmpty(entry.BlockRef))
                             continue;
 
+                        // Block quantities are floats (saturation supports partial blocks),
+                        // but trade is whole-block only — floor and skip anything under 1.
+                        var quantity = (int)entry.Quantity;
+                        if (quantity < 1)
+                            continue;
+
                         var block = _world.BlockProvider.GetBlockByRefName(entry.BlockRef);
                         if (block != null)
                         {
                             var price = isBuying ? CalculateBuyPrice(block, true, characterTraits) : CalculateSellPrice(block);
-                            items.Add(new TradeItemInfo(block, price, quantity: (int)entry.Quantity, condition: null));
+                            items.Add(new TradeItemInfo(block, price, quantity: quantity, condition: null));
                         }
                     }
                 }
@@ -163,7 +169,9 @@ public class TradeEngine
         {
             "Equipment" => inventory.Equipment?.Length ?? 0,
             "Consumables" => inventory.Consumables?.Length ?? 0,
-            "Blocks" => inventory.Blocks?.Length ?? 0,
+            // Match the floor-and-filter rule applied in GetAvailableItems so the category
+            // selector hides Blocks when every entry is a fractional partial block.
+            "Blocks" => inventory.Blocks?.Count(b => b != null && (int)b.Quantity >= 1) ?? 0,
             "Tools" => inventory.Tools?.Length ?? 0,
             "Spells" => inventory.Spells?.Length ?? 0,
             _ => 0
