@@ -57,14 +57,14 @@ public partial class CharacterViewModel : ObservableObject
     private bool _canTrade;
 
     /// <summary>
-    /// True when this character represents a cache (geocache, death loot) rather than a paid merchant.
+    /// True when this character represents a cache (geocache, remnant Loot) rather than a paid merchant.
     /// Affects the trade modal: hides money/price, relabels Buy→Take and Sell→Deposit.
     /// </summary>
     [ObservableProperty]
     private bool _isCache;
 
     /// <summary>
-    /// Source arc kind ("Market", "GeoCache", "DeathLoot") when this character was opened
+    /// Source arc kind ("Market", "GeoCache", "RemnantLoot") when this character was opened
     /// from a saga arc. Empty for plain NPC dialogue. The trade modal uses it to title the
     /// window appropriately so a cache doesn't show up as "Trade".
     /// </summary>

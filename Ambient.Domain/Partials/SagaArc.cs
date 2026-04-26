@@ -19,7 +19,7 @@ public partial class SagaArc
 
     /// <summary>
     /// True for arcs created server-side via <c>ServerSagaArcCreationService</c>
-    /// (Market / GeoCache / DeathLoot — world-shared, transactionally seeded). Set when
+    /// (Market / GeoCache / RemnantLoot — world-shared, transactionally seeded). Set when
     /// the client registers the arc locally from a server DTO. Authored sagas (loaded from
     /// the world XML) leave this false. Lets the client decide multiplayer-vs-single-player
     /// instance routing and server-arc-vs-quest-character visual handling without relying

@@ -15,7 +15,7 @@ public interface ISagaInstanceRepository
 
     /// <summary>
     /// Get the shared multiplayer Saga instance for a ref (creates if doesn't exist).
-    /// Used for server-sourced arcs (shopkeepers, geocaches, death loot) where the instance is
+    /// Used for server-sourced arcs (shopkeepers, geocaches, remnant Loot) where the instance is
     /// not owned by any one avatar and transactions from all players are merged.
     /// OwnerAvatarId is null; CompositeKey is "NULL|{sagaRef}".
     /// </summary>

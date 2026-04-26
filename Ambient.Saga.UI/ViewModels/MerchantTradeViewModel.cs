@@ -27,7 +27,7 @@ public partial class MerchantTradeViewModel : ObservableObject
     private string _selectedTradeCategory = "Equipment";
 
     /// <summary>
-    /// True when this VM is driving a cache interaction (geocache / death loot / etc.) rather than
+    /// True when this VM is driving a cache interaction (geocache / remnant Loot / etc.) rather than
     /// a paid merchant. Hides money/price UI, relabels buttons (Buy→Take, Sell→Deposit), and sends
     /// trade transactions with PricePerItem=0.
     /// </summary>
@@ -171,7 +171,7 @@ public partial class MerchantTradeViewModel : ObservableObject
 
     /// <summary>
     /// Live inventory: replay the SagaInstance's transactions and read the character's
-    /// CurrentInventory. Same source for every arc kind — geocache, player shop, death loot
+    /// CurrentInventory. Same source for every arc kind — geocache, player shop, remnant Loot
     /// — so deposits/withdrawals via ItemTraded mutations are immediately visible.
     /// Falls back to the character template's Interactable.Loot when no saga instance is
     /// available (authored arcs that haven't yet had a CharacterSpawned recorded).

@@ -51,7 +51,7 @@ public class MerchantTradeModal
         var titleText = character.ArcKind switch
         {
             "GeoCache" => "Geocache",
-            "DeathLoot" => "Death Loot",
+            "RemnantLoot" => "Remnant Loot",
             "Market" => "Shop",
             _ => "Trade"
         };
