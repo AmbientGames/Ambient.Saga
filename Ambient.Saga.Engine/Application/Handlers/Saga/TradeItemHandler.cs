@@ -112,7 +112,9 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
             else
                 totalPrice = (int)Math.Round(basePrice * sagaTemplate.BuybackMultiplier);
 
-            // Validate avatar has sufficient credits for buying (owners trade free)
+            // Buy-side validation: only non-owners pay and must have the credits to do so.
+            // Owners take from their own arc for free, no avatar-inventory check needed —
+            // the item lives on the arc's character (saga state), not the avatar.
             if (command.IsBuying && !isOwner)
             {
                 var avatarCredits = command.Avatar.Stats?.Credits ?? 0;
@@ -136,7 +138,7 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                     return SagaCommandResult.Failure(instance.InstanceId, "Too heavy to carry");
                 }
             }
-            else
+            else if (!command.IsBuying)
             {
                 // Validate avatar has the item for selling
                 // Check if it's a consumable, equipment, tool, spell, or block

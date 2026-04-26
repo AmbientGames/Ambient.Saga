@@ -64,6 +64,14 @@ public partial class CharacterViewModel : ObservableObject
     private bool _isCache;
 
     /// <summary>
+    /// Source arc kind ("Market", "GeoCache", "DeathLoot") when this character was opened
+    /// from a saga arc. Empty for plain NPC dialogue. The trade modal uses it to title the
+    /// window appropriately so a cache doesn't show up as "Trade".
+    /// </summary>
+    [ObservableProperty]
+    private string _arcKind = string.Empty;
+
+    /// <summary>
     /// Optional callback that renders extra ImGui content inside the trade modal, after the inventory
     /// list and before the close button. Used by callers to inject bespoke sections (e.g. a geocache
     /// logbook) without pushing game-specific concepts into the Saga layer.

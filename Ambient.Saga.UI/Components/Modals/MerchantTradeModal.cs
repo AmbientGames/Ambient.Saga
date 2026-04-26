@@ -48,7 +48,14 @@ public class MerchantTradeModal
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
-        if (ImGui.Begin($"Trade###MerchantTradeModal", ref isOpen, windowFlags))
+        var titleText = character.ArcKind switch
+        {
+            "GeoCache" => "Geocache",
+            "DeathLoot" => "Death Loot",
+            "Market" => "Shop",
+            _ => "Trade"
+        };
+        if (ImGui.Begin($"{titleText}###MerchantTradeModal", ref isOpen, windowFlags))
         {
             // Header (merchant or cache)
             ImGui.PushFont(UIConstants.FontTitle);
