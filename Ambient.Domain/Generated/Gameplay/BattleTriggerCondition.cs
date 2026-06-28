@@ -27,7 +27,7 @@ namespace Ambient.Domain {
         HealthAbove,
         
         /// <remarks/>
-        PlayerHealthBelow,
+        AvatarHealthBelow,
         
         /// <remarks/>
         TurnNumber,

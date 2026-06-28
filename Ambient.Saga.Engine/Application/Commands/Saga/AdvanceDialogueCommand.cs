@@ -6,7 +6,7 @@ namespace Ambient.Saga.Engine.Application.Commands.Saga;
 
 /// <summary>
 /// Command to advance dialogue to the next node when current node has no choices.
-/// Used when a dialogue node displays text and expects the player to click "Continue".
+/// Used when a dialogue node displays text and expects the avatar to click "Continue".
 ///
 /// Side Effects:
 /// - Creates DialogueNodeVisited transaction for the next node

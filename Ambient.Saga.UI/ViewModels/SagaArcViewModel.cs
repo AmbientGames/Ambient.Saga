@@ -57,6 +57,13 @@ public partial class SagaArcViewModel : ObservableObject
     private InteractionStatus _interactionStatus = InteractionStatus.Available;
 
     /// <summary>
+    /// Whether this Saga's marker/rings should be drawn on the map. Hidden arcs stay off the map
+    /// for clutter reasons until discovered, but still participate in gameplay (proximity, triggers, tokens).
+    /// </summary>
+    [ObservableProperty]
+    private bool _isVisibleOnMap = true;
+
+    /// <summary>
     /// True if any trigger in this Saga is currently hovered (for showing label).
     /// </summary>
     public bool IsAnyTriggerHovered => Triggers.Any(t => t.IsHovered);
@@ -141,21 +148,23 @@ public partial class SagaArcViewModel : ObservableObject
         {
             foreach (var sagaArc in world.Gameplay.SagaArcs)
             {
-                // Check visibility based on InitialState and discovery
-                var isVisible = await IsSagaVisibleAsync(sagaArc, avatar, worldRepository, isDebugMode);
-                if (!isVisible)
-                    continue;
+                // Ensure every arc has a per-avatar instance, regardless of visibility —
+                // gives token fan-out a target and lets Hidden arcs receive their SagaDiscovered transaction later.
+                await worldRepository.GetSagaInstanceAsync(avatar.AvatarId.ToString(), sagaArc.RefName);
 
                 // Get pre-expanded triggers from world lookup
                 if (!world.SagaTriggersLookup.TryGetValue(sagaArc.RefName, out var sagaTriggers))
                     continue;
 
-                // Create ViewModel using FromDomain method
+                // Create ViewModel using FromDomain method (always — hidden only affects map display)
                 var sagaVM = FromDomain(
                     sagaArc,
                     sagaTriggers.OrderByDescending(t => t.EnterRadius).ToList(), // Sorted outer→inner
                     world.HeightMapMetadata,
                     world);
+
+                // Map visibility: Hidden arcs stay off the map until discovered. Gameplay is unaffected.
+                sagaVM.IsVisibleOnMap = await IsSagaVisibleAsync(sagaArc, avatar, worldRepository, isDebugMode);
 
                 // Set feature dot visual properties based on interaction status
                 await SetFeatureStatusAsync(sagaVM, sagaArc, avatar, world, worldRepository);

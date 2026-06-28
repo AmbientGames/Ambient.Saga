@@ -5,13 +5,19 @@ namespace Ambient.Application.Tests
     public class MaterialSuitabilityEncoderTests
     {
         [Theory]
-        [InlineData("Aggregate", 1u)]
-        [InlineData("Carbon", 2u)]
-        [InlineData("Stone", 4u)]
-        [InlineData("Metal", 8u)]
-        [InlineData("Plant", 16u)]
-        [InlineData("Wood", 32u)]
-        [InlineData("Other", 64u)]
+        [InlineData("Stone", 1u)]
+        [InlineData("Concrete", 2u)]
+        [InlineData("Wood", 4u)]
+        [InlineData("Structural", 8u)]
+        [InlineData("Decorative", 16u)]
+        [InlineData("Metal", 32u)]
+        [InlineData("Alloy", 64u)]
+        [InlineData("Aggregate", 128u)]
+        [InlineData("Plant", 256u)]
+        [InlineData("Liquid", 512u)]
+        [InlineData("Ore", 1024u)]
+        [InlineData("Carbon", 2048u)]
+        [InlineData("Miscellaneous", 32768u)]
         public void Encode_KnownMaterial_ReturnsCorrectBitValue(string material, uint expectedBits)
         {
             // Act
@@ -43,7 +49,8 @@ namespace Ambient.Application.Tests
         {
             // Arrange
             string[] allMaterials = {
-                "Aggregate", "Carbon", "Stone", "Metal", "Plant", "Wood", "Other"
+                "Stone", "Concrete", "Wood", "Structural", "Decorative", "Metal", "Alloy",
+                "Aggregate", "Plant", "Liquid", "Ore", "Carbon", "Miscellaneous"
             };
 
             var encodedValues = new HashSet<uint>();

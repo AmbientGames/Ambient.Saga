@@ -9,6 +9,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -54,9 +55,15 @@ public class QuestPrerequisitesTests : IDisposable
         });
 
         services.AddSingleton(_world);
-        services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        var sagaInstanceRepo = new SagaInstanceRepository(_database);
+        var avatarProgressRepo = new AvatarProgressRepository(_database);
+        sagaInstanceRepo.SetAvatarProgressRepository(avatarProgressRepo);
+        services.AddSingleton<ISagaInstanceRepository>(sagaInstanceRepo);
+        services.AddSingleton<IAvatarProgressRepository>(avatarProgressRepo);
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository, FakeAvatarRepository>();
+        services.AddSingleton<Func<IGameAvatarRepository>>(sp => () => sp.GetRequiredService<IGameAvatarRepository>());
+        services.AddSingleton<Func<IWorld>>(sp => () => sp.GetRequiredService<IWorld>());
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
@@ -430,7 +437,6 @@ public class QuestPrerequisitesTests : IDisposable
             {
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
         return avatar;
@@ -642,15 +648,19 @@ public class QuestPrerequisitesTests : IDisposable
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string> { ["QuestRef"] = "QUEST_A" }
         };
-        var questTransactions = new List<SagaTransaction> { completionTx };
-        await _repository.AddTransactionsAsync(instance.InstanceId, questTransactions, CancellationToken.None);
-        await _repository.CommitTransactionsAsync(instance.InstanceId, questTransactions.Select(t => t.TransactionId).ToList(), CancellationToken.None);
+        await _repository.AddAndCommitTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { completionTx }, CancellationToken.None);
 
-        // Add Guild Token to quest tokens
-        avatar.Capabilities.QuestTokens = new[]
+        // Add Guild Token via saga transaction — use AddAndCommitTransactionsAsync so it projects into the progress table
+        var tokenTx = new SagaTransaction
         {
-            new QuestTokenEntry { QuestTokenRef = "GUILD_TOKEN" }
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.QuestTokenAwarded,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string> { ["QuestTokenRef"] = "GUILD_TOKEN", ["Reason"] = "Test setup" }
         };
+        await _repository.AddAndCommitTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { tokenTx }, CancellationToken.None);
 
         // WHEN: Try to accept Epic Quest (now all prerequisites met)
         var result = await _mediator.Send(new AcceptQuestCommand
@@ -744,7 +754,7 @@ public class QuestPrerequisitesTests : IDisposable
             Data = new Dictionary<string, string>
             {
                 ["FactionRef"] = "ADVENTURERS_GUILD",
-                ["ReputationChange"] = "15000" // Well above Honored threshold (9000)
+                ["Amount"] = "15000" // Well above Honored threshold (9000)
             }
         };
         var transactions = new List<SagaTransaction> { reputationTx };
@@ -785,7 +795,7 @@ public class QuestPrerequisitesTests : IDisposable
             Data = new Dictionary<string, string>
             {
                 ["FactionRef"] = "ADVENTURERS_GUILD",
-                ["ReputationChange"] = "5000" // Only Friendly, not Honored
+                ["Amount"] = "5000" // Only Friendly, not Honored
             }
         };
         var transactions = new List<SagaTransaction> { reputationTx };

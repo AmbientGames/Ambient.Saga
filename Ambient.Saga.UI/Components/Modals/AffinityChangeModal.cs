@@ -13,16 +13,16 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class AffinityChangeModal
 {
-    private readonly Combatant _player;
+    private readonly Combatant _avatar;
     private readonly IWorld _world;
     private readonly List<string> _availableAffinities;
 
     public event Action<string>? AffinitySelected;
     public event Action? Cancelled;
 
-    public AffinityChangeModal(Combatant player, IWorld world, List<string> availableAffinities)
+    public AffinityChangeModal(Combatant avatar, IWorld world, List<string> availableAffinities)
     {
-        _player = player;
+        _avatar = avatar;
         _world = world;
         _availableAffinities = availableAffinities ?? new List<string>();
     }
@@ -34,10 +34,11 @@ public class AffinityChangeModal
         // Center the modal using helper
         ImGuiHelpers.SetupModalWindow(400, 350);
 
-        // Style with cyan/teal border (evasion/elemental theme)
+        // Style with cyan/teal border (evasion/elemental theme) — DPI-scaled
+        var scale = UIConstants.DpiScale;
         ImGui.PushStyleColor(ImGuiCol.Border, new Vector4(0.2f, 0.7f, 0.7f, 1.0f));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 3f);
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowBorderSize, 3f * scale);
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
 
         if (ImGui.Begin("Change Affinity###AffinityChangeModal", ref isOpen, ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize))
         {
@@ -55,7 +56,7 @@ public class AffinityChangeModal
             ImGui.Spacing();
 
             // Current affinity
-            var currentAffinityName = GetAffinityDisplayName(_player.AffinityRef);
+            var currentAffinityName = GetAffinityDisplayName(_avatar.AffinityRef);
             ImGui.Text($"Current: ");
             ImGui.SameLine();
             ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.4f, 1.0f), currentAffinityName);
@@ -67,7 +68,7 @@ public class AffinityChangeModal
             {
                 var affinity = _world.TryGetCharacterAffinityByRefName(affinityRef);
                 var displayName = affinity?.DisplayName ?? affinityRef;
-                var isCurrent = affinityRef == _player.AffinityRef;
+                var isCurrent = affinityRef == _avatar.AffinityRef;
 
                 // Disable current affinity
                 if (isCurrent)

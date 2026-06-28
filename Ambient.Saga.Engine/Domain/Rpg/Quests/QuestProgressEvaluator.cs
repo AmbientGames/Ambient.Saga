@@ -1,6 +1,7 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Quests;
 
@@ -83,8 +84,8 @@ public static class QuestProgressEvaluator
         {
             return transactions.Any(t =>
                 t.Type == SagaTransactionType.QuestBranchChosen &&
-                t.GetData<string>("QuestRef") == quest.RefName &&
-                t.GetData<string>("StageRef") == stage.RefName);
+                t.GetData<string>(TransactionDataKeys.QuestRef) == quest.RefName &&
+                t.GetData<string>(TransactionDataKeys.StageRef) == stage.RefName);
         }
 
         // Otherwise check objectives based on logical operator
@@ -125,14 +126,14 @@ public static class QuestProgressEvaluator
         {
             var branchTransaction = transactions
                 .Where(t => t.Type == SagaTransactionType.QuestBranchChosen &&
-                           t.GetData<string>("QuestRef") == quest.RefName &&
-                           t.GetData<string>("StageRef") == currentStage.RefName)
+                           t.GetData<string>(TransactionDataKeys.QuestRef) == quest.RefName &&
+                           t.GetData<string>(TransactionDataKeys.StageRef) == currentStage.RefName)
                 .OrderByDescending(t => t.SequenceNumber)
                 .FirstOrDefault();
 
             if (branchTransaction != null)
             {
-                var chosenBranchRef = branchTransaction.GetData<string>("BranchRef");
+                var chosenBranchRef = branchTransaction.GetData<string>(TransactionDataKeys.BranchRef);
                 var chosenBranch = currentStage.Branches.Branch.FirstOrDefault(b => b.RefName == chosenBranchRef);
                 return chosenBranch?.NextStage;
             }
@@ -148,7 +149,7 @@ public static class QuestProgressEvaluator
     /// <param name="quest">The quest definition to check</param>
     /// <param name="transactions">Committed transactions to evaluate</param>
     /// <param name="currentTime">Current time for time-based fail conditions (optional)</param>
-    /// <param name="currentLocationRef">Player's current location for location-based fail conditions (optional)</param>
+    /// <param name="currentLocationRef">Avatar's current location for location-based fail conditions (optional)</param>
     public static (bool failed, string? reason) CheckFailConditions(
         Quest quest,
         List<SagaTransaction> transactions,
@@ -198,14 +199,14 @@ public static class QuestProgressEvaluator
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.CharacterDefeated &&
-            (string.IsNullOrEmpty(objective.CharacterRef) || t.GetData<string>("CharacterRef") == objective.CharacterRef));
+            (string.IsNullOrEmpty(objective.CharacterRef) || t.GetData<string>(TransactionDataKeys.CharacterRef) == objective.CharacterRef));
     }
 
     private static int CountCharacterDefeatedByTag(QuestObjective objective, List<SagaTransaction> transactions)
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.CharacterDefeated &&
-            t.TryGetData<string>("CharacterTag", out var tags) &&
+            t.TryGetData<string>(TransactionDataKeys.CharacterTag, out var tags) &&
             tags.Split(',').Contains(objective.CharacterTag));
     }
 
@@ -213,7 +214,7 @@ public static class QuestProgressEvaluator
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.CharacterDefeated &&
-            t.TryGetData<string>("CharacterType", out var type) &&
+            t.TryGetData<string>(TransactionDataKeys.CharacterType, out var type) &&
             type == objective.CharacterType);
     }
 
@@ -221,15 +222,15 @@ public static class QuestProgressEvaluator
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.DialogueCompleted &&
-            (string.IsNullOrEmpty(objective.DialogueRef) || t.GetData<string>("DialogueRef") == objective.DialogueRef));
+            (string.IsNullOrEmpty(objective.DialogueRef) || t.GetData<string>(TransactionDataKeys.DialogueRef) == objective.DialogueRef));
     }
 
     private static int CountDialogueChoiceSelected(QuestObjective objective, List<SagaTransaction> transactions)
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.DialogueNodeVisited &&
-            t.GetData<string>("DialogueRef") == objective.DialogueRef &&
-            t.TryGetData<string>("ChoiceRef", out var choice) &&
+            t.GetData<string>(TransactionDataKeys.DialogueRef) == objective.DialogueRef &&
+            t.TryGetData<string>(TransactionDataKeys.ChoiceRef, out var choice) &&
             choice == objective.ChoiceRef);
     }
 
@@ -237,8 +238,8 @@ public static class QuestProgressEvaluator
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.DialogueNodeVisited &&
-            t.GetData<string>("DialogueRef") == objective.DialogueRef &&
-            t.GetData<string>("NodeRef") == objective.NodeRef);
+            t.GetData<string>(TransactionDataKeys.DialogueRef) == objective.DialogueRef &&
+            t.GetData<string>(TransactionDataKeys.NodeRef) == objective.NodeRef);
     }
 
     private static int CountItemCollected(QuestObjective objective, List<SagaTransaction> transactions)
@@ -248,8 +249,8 @@ public static class QuestProgressEvaluator
             .Where(t => t.Type == SagaTransactionType.LootAwarded)
             .Sum(t =>
             {
-                if (t.TryGetData<string>("ItemRef", out var itemRef) && itemRef == objective.ItemRef)
-                    return t.TryGetData<int>("Quantity", out var qty) ? qty : 1;
+                if (t.TryGetData<string>(TransactionDataKeys.ItemRef, out var itemRef) && itemRef == objective.ItemRef)
+                    return t.TryGetData<int>(TransactionDataKeys.Quantity, out var qty) ? qty : 1;
                 return 0;
             });
     }
@@ -259,45 +260,45 @@ public static class QuestProgressEvaluator
         // Count items traded away (sold/given)
         return transactions
             .Where(t => t.Type == SagaTransactionType.ItemTraded &&
-                       t.GetData<string>("ItemRef") == objective.ItemRef &&
-                       t.GetData<string>("Direction") == "Sell")
-            .Sum(t => t.TryGetData<int>("Quantity", out var qty) ? qty : 1);
+                       t.GetData<string>(TransactionDataKeys.ItemRef) == objective.ItemRef &&
+                       t.GetData<string>(TransactionDataKeys.Direction) == "Sell")
+            .Sum(t => t.TryGetData<int>(TransactionDataKeys.Quantity, out var qty) ? qty : 1);
     }
 
     private static int CountItemTraded(QuestObjective objective, List<SagaTransaction> transactions)
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.ItemTraded &&
-            (string.IsNullOrEmpty(objective.ItemRef) || t.GetData<string>("ItemRef") == objective.ItemRef));
+            (string.IsNullOrEmpty(objective.ItemRef) || t.GetData<string>(TransactionDataKeys.ItemRef) == objective.ItemRef));
     }
 
     private static int CountQuestTokenCollected(QuestObjective objective, List<SagaTransaction> transactions)
     {
         return transactions
             .Where(t => t.Type == SagaTransactionType.QuestTokenAwarded &&
-                       t.GetData<string>("QuestTokenRef") == objective.QuestTokenRef)
-            .Sum(t => t.TryGetData<int>("Amount", out var amt) ? amt : 1);
+                       t.GetData<string>(TransactionDataKeys.QuestTokenRef) == objective.QuestTokenRef)
+            .Sum(t => t.TryGetData<int>(TransactionDataKeys.Amount, out var amt) ? amt : 1);
     }
 
     private static int CountSagaDiscovered(QuestObjective objective, List<SagaTransaction> transactions)
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.SagaDiscovered &&
-            (string.IsNullOrEmpty(objective.SagaArcRef) || t.GetData<string>("SagaArcRef") == objective.SagaArcRef));
+            (string.IsNullOrEmpty(objective.SagaArcRef) || t.GetData<string>(TransactionDataKeys.SagaArcRef) == objective.SagaArcRef));
     }
 
     private static int CountLocationReached(QuestObjective objective, List<SagaTransaction> transactions)
     {
         return transactions.Any(t =>
             t.Type == SagaTransactionType.TriggerActivated &&
-            t.GetData<string>("TriggerRef") == objective.LocationRef) ? 1 : 0;
+            t.GetData<string>(TransactionDataKeys.TriggerRef) == objective.LocationRef) ? 1 : 0;
     }
 
     private static int CountTriggerActivated(QuestObjective objective, List<SagaTransaction> transactions)
     {
         return transactions.Count(t =>
             t.Type == SagaTransactionType.TriggerActivated &&
-            t.GetData<string>("TriggerRef") == objective.TriggerRef);
+            t.GetData<string>(TransactionDataKeys.TriggerRef) == objective.TriggerRef);
     }
 
     private static int CountItemCrafted(QuestObjective objective, List<SagaTransaction> transactions)
@@ -305,8 +306,8 @@ public static class QuestProgressEvaluator
         // Count items crafted from ItemCrafted transactions
         return transactions
             .Where(t => t.Type == SagaTransactionType.ItemCrafted &&
-                       (string.IsNullOrEmpty(objective.ItemRef) || t.GetData<string>("ItemRef") == objective.ItemRef))
-            .Sum(t => t.TryGetData<int>("Quantity", out var qty) ? qty : 1);
+                       (string.IsNullOrEmpty(objective.ItemRef) || t.GetData<string>(TransactionDataKeys.ItemRef) == objective.ItemRef))
+            .Sum(t => t.TryGetData<int>(TransactionDataKeys.Quantity, out var qty) ? qty : 1);
     }
 
     private static int CountCurrencyCollected(QuestObjective objective, List<SagaTransaction> transactions)
@@ -315,8 +316,8 @@ public static class QuestProgressEvaluator
         // Only count positive amounts (gains, not losses)
         return transactions
             .Where(t => t.Type == SagaTransactionType.CurrencyChanged &&
-                       t.TryGetData<int>("Amount", out var amt) && amt > 0)
-            .Sum(t => t.TryGetData<int>("Amount", out var amt) ? amt : 0);
+                       t.TryGetData<int>(TransactionDataKeys.Amount, out var amt) && amt > 0)
+            .Sum(t => t.TryGetData<int>(TransactionDataKeys.Amount, out var amt) ? amt : 0);
     }
 
     private static int CountCustomObjective(QuestObjective objective, List<SagaTransaction> transactions)
@@ -325,7 +326,7 @@ public static class QuestProgressEvaluator
         // with matching ObjectiveRef
         return transactions.Any(t =>
             t.Type == SagaTransactionType.CustomObjectiveCompleted &&
-            t.GetData<string>("ObjectiveRef") == objective.RefName) ? objective.Threshold : 0;
+            t.GetData<string>(TransactionDataKeys.ObjectiveRef) == objective.RefName) ? objective.Threshold : 0;
     }
 
     private static bool IsCharacterDead(string? characterRef, List<SagaTransaction> transactions)
@@ -335,7 +336,7 @@ public static class QuestProgressEvaluator
 
         return transactions.Any(t =>
             t.Type == SagaTransactionType.CharacterDefeated &&
-            t.GetData<string>("CharacterRef") == characterRef);
+            t.GetData<string>(TransactionDataKeys.CharacterRef) == characterRef);
     }
 
     private static bool WasWrongChoiceMade(QuestFailCondition failCondition, List<SagaTransaction> transactions)
@@ -345,8 +346,8 @@ public static class QuestProgressEvaluator
 
         return transactions.Any(t =>
             t.Type == SagaTransactionType.DialogueNodeVisited &&
-            t.GetData<string>("DialogueRef") == failCondition.DialogueRef &&
-            t.TryGetData<string>("ChoiceRef", out var choice) &&
+            t.GetData<string>(TransactionDataKeys.DialogueRef) == failCondition.DialogueRef &&
+            t.TryGetData<string>(TransactionDataKeys.ChoiceRef, out var choice) &&
             choice == failCondition.ChoiceRef);
     }
 
@@ -367,7 +368,7 @@ public static class QuestProgressEvaluator
         // Find when the quest was accepted
         var questAcceptedTransaction = transactions
             .Where(t => t.Type == SagaTransactionType.QuestAccepted &&
-                       t.GetData<string>("QuestRef") == questRef)
+                       t.GetData<string>(TransactionDataKeys.QuestRef) == questRef)
             .OrderBy(t => t.LocalTimestamp)
             .FirstOrDefault();
 
@@ -387,11 +388,11 @@ public static class QuestProgressEvaluator
         if (string.IsNullOrEmpty(failCondition.ItemRef))
             return false;
 
-        // Check if player had the item at some point (via LootAwarded or QuestTokenAwarded or ItemTraded Buy)
+        // Check if avatar had the item at some point (via LootAwarded or QuestTokenAwarded or ItemTraded Buy)
         var hadItem = transactions.Any(t =>
-            (t.Type == SagaTransactionType.LootAwarded && t.GetData<string>("ItemRef") == failCondition.ItemRef) ||
-            (t.Type == SagaTransactionType.QuestTokenAwarded && t.GetData<string>("QuestTokenRef") == failCondition.ItemRef) ||
-            (t.Type == SagaTransactionType.ItemTraded && t.GetData<string>("ItemRef") == failCondition.ItemRef && t.GetData<string>("Direction") == "Buy"));
+            (t.Type == SagaTransactionType.LootAwarded && t.GetData<string>(TransactionDataKeys.ItemRef) == failCondition.ItemRef) ||
+            (t.Type == SagaTransactionType.QuestTokenAwarded && t.GetData<string>(TransactionDataKeys.QuestTokenRef) == failCondition.ItemRef) ||
+            (t.Type == SagaTransactionType.ItemTraded && t.GetData<string>(TransactionDataKeys.ItemRef) == failCondition.ItemRef && t.GetData<string>(TransactionDataKeys.Direction) == "Buy"));
 
         if (!hadItem)
             return false;
@@ -399,8 +400,8 @@ public static class QuestProgressEvaluator
         // Check if the item was subsequently lost (sold, traded away, or explicitly removed)
         var lostItem = transactions.Any(t =>
             t.Type == SagaTransactionType.ItemTraded &&
-            t.GetData<string>("ItemRef") == failCondition.ItemRef &&
-            t.GetData<string>("Direction") == "Sell");
+            t.GetData<string>(TransactionDataKeys.ItemRef) == failCondition.ItemRef &&
+            t.GetData<string>(TransactionDataKeys.Direction) == "Sell");
 
         return lostItem;
     }
@@ -413,10 +414,10 @@ public static class QuestProgressEvaluator
         if (string.IsNullOrEmpty(failCondition.LocationRef))
             return false;
 
-        // If we have a current location, directly check if player is no longer at required location
+        // If we have a current location, directly check if avatar is no longer at required location
         if (!string.IsNullOrEmpty(currentLocationRef))
         {
-            // Simple string comparison - player is not at the required location
+            // Simple string comparison - avatar is not at the required location
             return currentLocationRef != failCondition.LocationRef;
         }
 
@@ -431,7 +432,7 @@ public static class QuestProgressEvaluator
             return false; // No location data available
 
         // Check if the location claim indicates leaving the required area
-        var locationRef = lastLocationClaim.GetData<string>("LocationRef");
+        var locationRef = lastLocationClaim.GetData<string>(TransactionDataKeys.LocationRef);
         return !string.IsNullOrEmpty(locationRef) && locationRef != failCondition.LocationRef;
     }
 }

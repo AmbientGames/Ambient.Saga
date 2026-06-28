@@ -1,4 +1,5 @@
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI.Components.Panels;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Rendering;
@@ -64,4 +65,9 @@ public class HudContext
     /// When true, WorldInfoSection should not render (toasts take over top-right).
     /// </summary>
     public bool HasActiveToastMessages { get; init; }
+
+    /// <summary>
+    /// Panel manager for game-registered panels, for rendering key hints.
+    /// </summary>
+    public PanelManager? PanelManager { get; init; }
 }

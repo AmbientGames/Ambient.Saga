@@ -1,5 +1,6 @@
 ﻿using Ambient.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Dialogue.Execution;
 
@@ -12,6 +13,7 @@ public class DialogueActionExecutor
     private readonly IDialogueStateProvider _stateProvider;
     private readonly SagaDialogueContext? _sagaContext;
     private readonly List<DialogueSystemEvent> _raisedEvents = new();
+    private readonly List<SagaTransaction> _staged = new();
 
     public DialogueActionExecutor(IDialogueStateProvider stateProvider, SagaDialogueContext? sagaContext = null)
     {
@@ -25,10 +27,46 @@ public class DialogueActionExecutor
     public IReadOnlyList<DialogueSystemEvent> RaisedEvents => _raisedEvents.AsReadOnly();
 
     /// <summary>
-    /// Clears all raised events.
-    /// Call this after processing events to prepare for next dialogue node.
+    /// Transactions staged during the most recent action execution.
+    /// Not yet attached to the SagaInstance — caller decides whether to flush or discard.
     /// </summary>
-    public void ClearEvents() => _raisedEvents.Clear();
+    public IReadOnlyList<SagaTransaction> StagedTransactions => _staged.AsReadOnly();
+
+    /// <summary>
+    /// Clears all raised events and any staged transactions.
+    /// Call this before processing the next dialogue node so previous staging cannot leak forward.
+    /// </summary>
+    public void ClearEvents()
+    {
+        _raisedEvents.Clear();
+        _staged.Clear();
+    }
+
+    /// <summary>
+    /// Appends any staged transactions to the SagaInstance (if a Saga context is present)
+    /// and clears the staging buffer. Called after ExecuteAll returns successfully.
+    /// </summary>
+    public void FlushStaged()
+    {
+        if (_staged.Count == 0)
+            return;
+
+        if (_sagaContext != null)
+        {
+            foreach (var tx in _staged)
+            {
+                _sagaContext.SagaInstance.AddTransaction(tx);
+            }
+        }
+
+        _staged.Clear();
+    }
+
+    /// <summary>
+    /// Drops any staged transactions without attaching them to the SagaInstance.
+    /// Called when action execution fails so partial rewards are not persisted.
+    /// </summary>
+    public void DiscardStaged() => _staged.Clear();
 
     /// <summary>
     /// Executes a single action.
@@ -57,15 +95,10 @@ public class DialogueActionExecutor
                             characterRef, // Source = character who gave the token
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
-            case DialogueActionType.TakeQuestToken:
-                if (shouldAwardRewards)
-                    _stateProvider.RemoveQuestToken(action.RefName);
-                break;
-
             // Stackable items - IDEMPOTENT (only give on first visit)
             case DialogueActionType.GiveConsumable:
                 if (shouldAwardRewards)
@@ -191,7 +224,7 @@ public class DialogueActionExecutor
                             traitValue,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -214,7 +247,7 @@ public class DialogueActionExecutor
                             traitName,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -235,7 +268,7 @@ public class DialogueActionExecutor
                             null,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -296,7 +329,7 @@ public class DialogueActionExecutor
                             joinCharacterRef,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -323,7 +356,7 @@ public class DialogueActionExecutor
                             leaveCharacterRef,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -353,7 +386,7 @@ public class DialogueActionExecutor
                             sourceCharacterRef,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -381,7 +414,7 @@ public class DialogueActionExecutor
                             action.Amount,
                             _sagaContext.SagaInstance.InstanceId
                         );
-                        _sagaContext.SagaInstance.AddTransaction(transaction);
+                        _staged.Add(transaction);
                     }
                 }
                 break;
@@ -473,12 +506,51 @@ public class DialogueActionExecutor
         if (actions == null || actions.Length == 0)
             return;
 
-        // Check idempotency ONCE for all actions in this node
-        var shouldAwardRewards = _stateProvider.ShouldAwardNodeRewards(characterRef, nodeId);
+        // Check idempotency ONCE for all actions in this node.
+        // The provider only sees COMMITTED state (SagaState is derived from committed transactions),
+        // so a re-entry that happens before the first visit is persisted would slip through and
+        // double-award. Also scan the instance's pending transactions to close that window.
+        // (Our own in-progress staging lives in _staged, not on the instance, so it is not seen here.)
+        var shouldAwardRewards =
+            _stateProvider.ShouldAwardNodeRewards(characterRef, nodeId)
+            && !HasPendingNodeVisit(characterRef, nodeId);
 
-        foreach (var action in actions)
+        // If any action throws, drop everything staged during this call so the SagaInstance
+        // is not left with a partial reward set paired with a visit record that would block retry.
+        try
         {
-            Execute(action, dialogueTreeRef, nodeId, characterRef, shouldAwardRewards);
+            foreach (var action in actions)
+            {
+                Execute(action, dialogueTreeRef, nodeId, characterRef, shouldAwardRewards);
+            }
         }
+        catch
+        {
+            _staged.Clear();
+            throw;
+        }
+    }
+
+    private bool HasPendingNodeVisit(string characterRef, string nodeId)
+    {
+        if (_sagaContext == null)
+            return false;
+
+        var avatarId = _sagaContext.AvatarId;
+        foreach (var tx in _sagaContext.SagaInstance.Transactions)
+        {
+            if (tx.Type != SagaTransactionType.DialogueNodeVisited)
+                continue;
+            if (tx.Status != TransactionStatus.Pending)
+                continue;
+            if (!string.Equals(tx.AvatarId, avatarId, StringComparison.Ordinal))
+                continue;
+            if (!string.Equals(tx.GetData<string>(TransactionDataKeys.CharacterRef), characterRef, StringComparison.Ordinal))
+                continue;
+            if (!string.Equals(tx.GetData<string>(TransactionDataKeys.DialogueNodeId), nodeId, StringComparison.Ordinal))
+                continue;
+            return true;
+        }
+        return false;
     }
 }

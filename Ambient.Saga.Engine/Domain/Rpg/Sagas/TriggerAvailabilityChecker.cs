@@ -1,84 +1,54 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
+using Ambient.Saga.Engine.Contracts.Persistence;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
 
 /// <summary>
-/// Checks if triggers are available to avatars based on quest token requirements.
-/// Server and client use this same logic to determine trigger availability.
-///
-/// Usage:
-/// - Check if trigger meets requirements: TriggerAvailabilityChecker.CanActivate(trigger, avatar)
-/// - Get missing tokens for UI: TriggerAvailabilityChecker.GetMissingQuestTokens(trigger, avatar)
+/// Checks if triggers are available based on the avatar's awarded quest tokens.
 /// </summary>
 public static class TriggerAvailabilityChecker
 {
     /// <summary>
-    /// Checks if a trigger can activate for a given avatar based on quest token requirements.
-    /// Returns true if the avatar has ALL required quest tokens, or if there are no requirements.
+    /// Checks trigger availability against the avatar progress table.
     /// </summary>
-    /// <param name="sagaTrigger">The trigger to check</param>
-    /// <param name="avatar">The avatar attempting to activate the trigger</param>
-    /// <returns>True if the trigger is available, false if locked by missing quest tokens</returns>
-    public static bool CanActivate(SagaTrigger sagaTrigger, AvatarBase avatar)
+    public static bool CanActivate(SagaTrigger sagaTrigger, IAvatarProgressRepository progressRepo, Guid avatarId)
     {
         if (sagaTrigger == null)
             throw new ArgumentNullException(nameof(sagaTrigger));
 
-        if (avatar == null)
-            throw new ArgumentNullException(nameof(avatar));
-
-        // No requirements = always available
         if (sagaTrigger.RequiresQuestTokenRef == null || sagaTrigger.RequiresQuestTokenRef.Length == 0)
             return true;
 
-        // Avatar must have ALL required quest tokens
-        if (avatar.Capabilities?.QuestTokens == null)
-            return false; // No inventory = can't meet requirements
-
-        // Check if avatar has each required token
         foreach (var requiredTokenRef in sagaTrigger.RequiresQuestTokenRef)
         {
-            var hasToken = Array.Exists(avatar.Capabilities.QuestTokens,
-                qt => qt.QuestTokenRef == requiredTokenRef);
-
-            if (!hasToken)
-                return false; // Missing at least one required token
+            if (!progressRepo.HasQuestToken(avatarId, requiredTokenRef))
+                return false;
         }
 
-        return true; // Has all required tokens
+        return true;
     }
 
     /// <summary>
-    /// Gets the list of missing quest tokens required to activate this trigger.
-    /// Useful for UI to display what the player needs.
+    /// Legacy overload that reads from SagaState. Kept for backward compatibility with tests.
     /// </summary>
-    /// <param name="sagaTrigger">The trigger to check</param>
-    /// <param name="avatar">The avatar attempting to activate the trigger</param>
-    /// <returns>Array of missing quest token RefNames, or empty array if none missing</returns>
-    public static string[] GetMissingQuestTokens(SagaTrigger sagaTrigger, AvatarBase avatar)
+    public static bool CanActivate(SagaTrigger sagaTrigger, SagaState state)
     {
         if (sagaTrigger == null)
             throw new ArgumentNullException(nameof(sagaTrigger));
 
-        if (avatar == null)
-            throw new ArgumentNullException(nameof(avatar));
+        if (state == null)
+            throw new ArgumentNullException(nameof(state));
 
-        // No requirements = nothing missing
         if (sagaTrigger.RequiresQuestTokenRef == null || sagaTrigger.RequiresQuestTokenRef.Length == 0)
-            return Array.Empty<string>();
-
-        var missing = new List<string>();
-        var playerTokens = avatar.Capabilities?.QuestTokens;
+            return true;
 
         foreach (var requiredTokenRef in sagaTrigger.RequiresQuestTokenRef)
         {
-            var hasToken = playerTokens != null &&
-                Array.Exists(playerTokens, qt => qt.QuestTokenRef == requiredTokenRef);
-
-            if (!hasToken)
-                missing.Add(requiredTokenRef);
+            if (!state.AwardedQuestTokens.Contains(requiredTokenRef))
+                return false;
         }
 
-        return missing.ToArray();
+        return true;
     }
 }

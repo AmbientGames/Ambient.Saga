@@ -23,16 +23,10 @@ public class SagaTransaction
     // ===== Source =====
 
     /// <summary>
-    /// Avatar ID that caused this transaction (if player-initiated).
+    /// Avatar ID that caused this transaction (if avatar-initiated).
     /// Null for system-initiated transactions (spawns, timeouts).
     /// </summary>
     public string? AvatarId { get; set; }
-
-    /// <summary>
-    /// Client/device ID that created this transaction.
-    /// Used for conflict resolution and debugging.
-    /// </summary>
-    public string ClientId { get; set; } = string.Empty;
 
     // ===== Timing =====
 
@@ -94,12 +88,6 @@ public class SagaTransaction
     /// Example: "Server rejected: boss already dead" or "Conflict with concurrent action"
     /// </summary>
     public string? ReversalReason { get; set; }
-
-    /// <summary>
-    /// How conflicts were resolved during merge.
-    /// Example: "Server wins", "Timestamp ordering", "Replayed after server"
-    /// </summary>
-    public string? MergeStrategy { get; set; }
 
     // ===== Helper Methods =====
 

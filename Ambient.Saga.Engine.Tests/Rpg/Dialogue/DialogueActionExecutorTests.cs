@@ -18,7 +18,7 @@ public class DialogueActionExecutorTests
     #region Quest Token Actions
 
     [Fact]
-    public void GiveQuestToken_AddsTokenToPlayer()
+    public void GiveQuestToken_AddsTokenToAvatar()
     {
         var action = new DialogueAction
         {
@@ -31,28 +31,12 @@ public class DialogueActionExecutorTests
         Assert.True(_state.HasQuestToken("dragon_quest"));
     }
 
-    [Fact]
-    public void TakeQuestToken_RemovesTokenFromPlayer()
-    {
-        _state.AddQuestToken("dragon_quest");
-
-        var action = new DialogueAction
-        {
-            Type = DialogueActionType.TakeQuestToken,
-            RefName = "dragon_quest"
-        };
-
-        _executor.Execute(action, "test_tree", "node1", "test_character", true);
-
-        Assert.False(_state.HasQuestToken("dragon_quest"));
-    }
-
     #endregion
 
     #region Stackable Item Actions
 
     [Fact]
-    public void GiveConsumable_AddsQuantityToPlayer()
+    public void GiveConsumable_AddsQuantityToAvatar()
     {
         var action = new DialogueAction
         {
@@ -67,7 +51,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void TakeConsumable_RemovesQuantityFromPlayer()
+    public void TakeConsumable_RemovesQuantityFromAvatar()
     {
         _state.AddConsumable("health_potion", 10);
 
@@ -84,7 +68,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void GiveMaterial_AddsQuantityToPlayer()
+    public void GiveMaterial_AddsQuantityToAvatar()
     {
         var action = new DialogueAction
         {
@@ -99,7 +83,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void TakeMaterial_RemovesQuantityFromPlayer()
+    public void TakeMaterial_RemovesQuantityFromAvatar()
     {
         _state.AddMaterial("iron_ore", 50);
 
@@ -116,7 +100,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void GiveBlock_AddsBlockToPlayer()
+    public void GiveBlock_AddsBlockToAvatar()
     {
         var action = new DialogueAction
         {
@@ -131,7 +115,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void TakeBlock_RemovesBlockFromPlayer()
+    public void TakeBlock_RemovesBlockFromAvatar()
     {
         _state.AddBlock("stone_block", 100);
 
@@ -152,7 +136,7 @@ public class DialogueActionExecutorTests
     #region Degradable Item Actions
 
     [Fact]
-    public void GiveEquipment_AddsItemToPlayer()
+    public void GiveEquipment_AddsItemToAvatar()
     {
         var action = new DialogueAction
         {
@@ -166,7 +150,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void TakeEquipment_RemovesItemFromPlayer()
+    public void TakeEquipment_RemovesItemFromAvatar()
     {
         _state.AddEquipment("iron_sword");
 
@@ -182,7 +166,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void GiveTool_AddsToolToPlayer()
+    public void GiveTool_AddsToolToAvatar()
     {
         var action = new DialogueAction
         {
@@ -196,7 +180,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void GiveSpell_AddsSpellToPlayer()
+    public void GiveSpell_AddsSpellToAvatar()
     {
         var action = new DialogueAction
         {
@@ -210,7 +194,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void TakeTool_RemovesToolFromPlayer()
+    public void TakeTool_RemovesToolFromAvatar()
     {
         _state.AddTool("pickaxe");
 
@@ -226,7 +210,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void TakeSpell_RemovesSpellFromPlayer()
+    public void TakeSpell_RemovesSpellFromAvatar()
     {
         _state.AddSpell("fireball");
 
@@ -246,7 +230,7 @@ public class DialogueActionExecutorTests
     #region Currency Actions
 
     [Fact]
-    public void TransferCurrency_Positive_AddsCreditsToPlayer()
+    public void TransferCurrency_Positive_AddsCreditsToAvatar()
     {
         _state.Credits = 100;
 
@@ -262,7 +246,7 @@ public class DialogueActionExecutorTests
     }
 
     [Fact]
-    public void TransferCurrency_Negative_RemovesCreditsFromPlayer()
+    public void TransferCurrency_Negative_RemovesCreditsFromAvatar()
     {
         _state.Credits = 100;
 
@@ -282,7 +266,7 @@ public class DialogueActionExecutorTests
     #region Achievement Actions
 
     [Fact]
-    public void UnlockAchievement_UnlocksAchievementForPlayer()
+    public void UnlockAchievement_UnlocksAchievementForAvatar()
     {
         var action = new DialogueAction
         {

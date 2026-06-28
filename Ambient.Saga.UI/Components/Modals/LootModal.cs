@@ -27,9 +27,10 @@ public class LootModal
         // Center the window using helper
         ImGuiHelpers.SetupModalWindow(550, 450);
 
-        // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        // Style the window (DPI-scaled so padding/rounding match the scaled fonts and theme)
+        var scale = UIConstants.DpiScale;
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
@@ -97,7 +98,7 @@ public class LootModal
 
         // Reserve space for bottom buttons
         var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2;
-        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
         ImGui.BeginChild("LootList", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
         if (characterTemplate?.Capabilities != null)
@@ -211,9 +212,9 @@ public class LootModal
             ImGui.BeginDisabled();
         }
 
-        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
+        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
         if (ImGui.Button(_isLooting ? "Looting..." : "Take All", new Vector2(buttonWidth, buttonHeight)) && !_isLooting)
         {
             _isLooting = true;
@@ -228,9 +229,9 @@ public class LootModal
 
         ImGui.SameLine();
 
-        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.25f, 0.25f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.3f, 0.3f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.35f, 0.35f, 1));
+        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
         if (ImGui.Button("Leave", new Vector2(buttonWidth, buttonHeight)))
         {
             isOpen = false;
@@ -240,17 +241,17 @@ public class LootModal
 
     private async Task LootCharacterAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
         {
             var command = new LootCharacterCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var result = await viewModel.Mediator.Send(command);
@@ -266,7 +267,7 @@ public class LootModal
                 {
                     throw new NotImplementedException();
                     // todo: this is wrong
-                    viewModel.PlayerAvatar = result.UpdatedAvatar;
+                    viewModel.Avatar = result.UpdatedAvatar;
                 }
             }
             else

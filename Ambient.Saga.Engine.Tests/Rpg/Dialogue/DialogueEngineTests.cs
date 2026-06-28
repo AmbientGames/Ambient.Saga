@@ -70,7 +70,7 @@ public class DialogueEngineTests
 
         _engine.StartDialogue(tree);
 
-        Assert.Equal(1, _state.GetPlayerVisitCount("simple_dialogue"));
+        Assert.Equal(1, _state.GetAvatarVisitCount("simple_dialogue"));
         Assert.True(_state.WasNodeVisited("simple_dialogue", "start"));
     }
 
@@ -244,7 +244,7 @@ public class DialogueEngineTests
             }
         };
 
-        // Player doesn't have quest token, so start node should fail and skip to fallback
+        // Avatar doesn't have quest token, so start node should fail and skip to fallback
         var node = _engine.StartDialogue(tree);
 
         Assert.NotNull(node);
@@ -270,12 +270,12 @@ public class DialogueEngineTests
                         {
                             Type = DialogueConditionType.Credits,
                             Operator = ComparisonOperator.GreaterThan,
-                            Value = "1000" // Player doesn't have this
+                            Value = "1000" // Avatar doesn't have this
                         },
                         new DialogueCondition
                         {
                             Type = DialogueConditionType.HasQuestToken,
-                            RefName = "quest" // Player has this
+                            RefName = "quest" // Avatar has this
                         }
                     },
                     Text = new[] { "Conditions passed!" }
@@ -486,7 +486,7 @@ public class DialogueEngineTests
             }
         };
 
-        // Setup: Player has materials
+        // Setup: Avatar has materials
         _state.AddMaterial("iron_ore", 15);
         _state.Credits = 100;
 

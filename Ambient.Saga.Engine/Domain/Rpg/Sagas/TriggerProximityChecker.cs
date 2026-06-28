@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Centralizes all trigger proximity/distance checking logic.
-/// Provides clear, testable methods for determining if a player is within trigger range.
+/// Provides clear, testable methods for determining if an avatar is within trigger range.
 ///
 /// Radius Model:
 /// - EnterRadius: Distance at which trigger activates (required)
@@ -12,7 +12,7 @@ public static class TriggerProximityChecker
 {
     /// <summary>
     /// Default hysteresis margin added to EnterRadius when ExitRadius is not specified.
-    /// Prevents flickering when player is near the trigger boundary.
+    /// Prevents flickering when avatar is near the trigger boundary.
     /// </summary>
     public const float DefaultHysteresisMargin = 10.0f;
 

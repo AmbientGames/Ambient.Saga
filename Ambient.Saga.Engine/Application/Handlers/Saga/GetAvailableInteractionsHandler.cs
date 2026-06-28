@@ -1,4 +1,6 @@
 ﻿using Ambient.Domain;
+using Ambient.Domain.Contracts;
+using Ambient.Domain.Entities;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using MediatR;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -6,7 +8,6 @@ using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Application.Queries.Saga;
-using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -142,18 +143,10 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
             //System.Diagnostics.Debug.WriteLine($"[BuildInteractableCharacters] Character '{characterState.CharacterRef}' at world ({characterWorldLat:F6}, {characterWorldLon:F6})");
 
             // Check proximity - calculate distance between avatar and character
-            var approachRadius = characterTemplate.Interactable?.ApproachRadius ?? 50.0;
-            if (approachRadius > 0) // -1 means player must initiate, 0 means contact required
-            {
-                var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, characterWorldLat, characterWorldLon, _world);
-                System.Diagnostics.Debug.WriteLine("*** distance: " + distance);
-
-                if (distance > approachRadius)
-                {
-                    continue;
-                }
-                System.Diagnostics.Debug.WriteLine($"[BuildInteractableCharacters] Distance: {distance:F2}m, ApproachRadius: {approachRadius:F2}m");
-            }
+            var approachRadius = characterTemplate.Interactable.ApproachRadius;
+            var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, characterWorldLat, characterWorldLon, _world);
+            if (distance > approachRadius)
+                continue;
 
             var interactable = new InteractableCharacter
             {
@@ -161,7 +154,7 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
                 CharacterRef = characterState.CharacterRef,
                 DisplayName = characterTemplate.DisplayName,
                 State = characterState,
-                Options = BuildInteractionOptions(characterState, characterTemplate, avatar)
+                Options = BuildInteractionOptions(characterState, characterTemplate, avatar, sagaTemplate)
             };
 
             // Get CharacterType from AffinityRef (if available)
@@ -182,9 +175,16 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
     private CharacterInteractionOptions BuildInteractionOptions(
         CharacterState characterState,
         Character characterTemplate,
-        AvatarBase avatar)
+        AvatarBase avatar,
+        SagaArc sagaTemplate)
     {
         var options = new CharacterInteractionOptions();
+
+        // Check if avatar is the owner of this saga arc
+        var isOwner = !string.IsNullOrEmpty(sagaTemplate.OwnerAvatarId)
+                      && avatar is AvatarEntity avatarEntity
+                      && avatarEntity.AvatarId.ToString() == sagaTemplate.OwnerAvatarId;
+        options.IsOwner = isOwner;
 
         if (characterTemplate.Interactable == null)
         {
@@ -197,9 +197,18 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         // Character must be alive for most interactions
         if (!characterState.IsAlive)
         {
-            // Can only loot dead characters
-            options.CanLoot = !characterState.HasBeenLooted;
+            // Can only loot dead characters (owners don't loot their own characters)
+            options.CanLoot = !isOwner && !characterState.HasBeenLooted;
             options.BlockedReason = "Character is defeated";
+            return options;
+        }
+
+        // Owner gets free trade, no dialogue, no combat
+        if (isOwner)
+        {
+            options.CanTrade = true;
+            options.CanAttack = false;
+            options.CanDialogue = false;
             return options;
         }
 
@@ -217,7 +226,7 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         var hasDisengaged = characterState.Traits.ContainsKey("Disengaged");
         var hasSpared = characterState.Traits.ContainsKey("Spared");
 
-        // Disengaged/Spared characters won't fight - player fled or showed mercy
+        // Disengaged/Spared characters won't fight - avatar fled or showed mercy
         // This overrides Hostile trait temporarily
         if (hasDisengaged || hasSpared)
         {

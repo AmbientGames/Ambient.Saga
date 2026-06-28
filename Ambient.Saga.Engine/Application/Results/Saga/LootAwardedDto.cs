@@ -1,7 +1,7 @@
 ﻿namespace Ambient.Saga.Engine.Application.Results.Saga;
 
 /// <summary>
-/// DTO representing loot awarded to a player.
+/// DTO representing loot awarded to an avatar.
 /// </summary>
 public record LootAwardedDto
 {

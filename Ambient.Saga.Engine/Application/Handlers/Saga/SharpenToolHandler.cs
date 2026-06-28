@@ -5,6 +5,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -77,12 +78,12 @@ internal sealed class SharpenToolHandler : IRequestHandler<SharpenToolCommand, S
             // Build transaction data
             var transactionData = new Dictionary<string, string>
             {
-                ["ToolRef"] = command.ToolRef,
-                ["ConditionBefore"] = originalCondition.ToString("F3"),
-                ["ConditionAfter"] = "1.000",
-                ["Cost"] = command.Cost.ToString(),
-                ["CreditsBefore"] = originalCredits.ToString("F0"),
-                ["CreditsAfter"] = command.Avatar.Stats.Credits.ToString("F0")
+                [TransactionDataKeys.ToolRef] = command.ToolRef,
+                [TransactionDataKeys.ConditionBefore] = originalCondition.ToString("F3"),
+                [TransactionDataKeys.ConditionAfter] = "1.000",
+                [TransactionDataKeys.Cost] = command.Cost.ToString(),
+                [TransactionDataKeys.CreditsBefore] = originalCredits.ToString("F0"),
+                [TransactionDataKeys.CreditsAfter] = command.Avatar.Stats.Credits.ToString("F0")
             };
 
             // Create ToolSharpened transaction
@@ -99,15 +100,9 @@ internal sealed class SharpenToolHandler : IRequestHandler<SharpenToolCommand, S
             instance.AddTransaction(transaction);
 
             // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -143,20 +138,16 @@ internal sealed class SharpenToolHandler : IRequestHandler<SharpenToolCommand, S
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["ReversedTransactionId"] = transaction.TransactionId.ToString(),
-                        ["Reason"] = $"Avatar persistence failed: {persistEx.Message}",
-                        ["OriginalType"] = transaction.Type.ToString()
+                        [TransactionDataKeys.ReversedTransactionId] = transaction.TransactionId.ToString(),
+                        [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                        [TransactionDataKeys.OriginalType] = transaction.Type.ToString()
                     }
                 };
 
                 instance.AddTransaction(reversalTransaction);
-                await _instanceRepository.AddTransactionsAsync(
+                await _instanceRepository.AddAndCommitTransactionsAsync(
                     instance.InstanceId,
                     new List<SagaTransaction> { reversalTransaction },
-                    ct);
-                await _instanceRepository.CommitTransactionsAsync(
-                    instance.InstanceId,
-                    new List<Guid> { reversalTransaction.TransactionId },
                     ct);
 
                 return SagaCommandResult.Failure(instance.InstanceId,
@@ -165,9 +156,9 @@ internal sealed class SharpenToolHandler : IRequestHandler<SharpenToolCommand, S
 
             var resultData = new Dictionary<string, object>
             {
-                ["ToolRef"] = command.ToolRef,
-                ["Cost"] = command.Cost,
-                ["NewCondition"] = 1f
+                [TransactionDataKeys.ToolRef] = command.ToolRef,
+                [TransactionDataKeys.Cost] = command.Cost,
+                [TransactionDataKeys.NewCondition] = 1f
             };
 
             return SagaCommandResult.Success(

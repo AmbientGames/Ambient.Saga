@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AvatarArchetypes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
-  <AvatarArchetype RefName="Warrior" DisplayName="Samurai" Description="A disciplined warrior bound by bushido, the way of the warrior. Masters of the katana and defenders of their lord's honor, samurai are the backbone of any army." AffinityRef="Iron" MaxCarryWeight="45">
+  <AvatarArchetype RefName="Warrior" DisplayName="Samurai" Description="A disciplined warrior bound by bushido, the way of the warrior. Masters of the katana and defenders of their lord's honor, samurai are the backbone of any army." AffinityRef="Iron" Weight="80">
     <SpawnStats Health="1.05" Stamina="0.95" Mana="0.95" Temperature="37" Strength="0.105" Defense="0.105" Magic="0.095" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -212,7 +212,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Barbarian" DisplayName="Sohei" Description="Warrior monks who have forsaken peaceful meditation for righteous fury. Armed with naginata and burning faith, sohei are fearsome berserkers who channel divine wrath." AffinityRef="Fire" MaxCarryWeight="50">
+  <AvatarArchetype RefName="Barbarian" DisplayName="Sohei" Description="Warrior monks who have forsaken peaceful meditation for righteous fury. Armed with naginata and burning faith, sohei are fearsome berserkers who channel divine wrath." AffinityRef="Fire" Weight="95">
     <SpawnStats Health="0.9" Stamina="1" Mana="0.95" Temperature="37" Strength="0.11000001" Defense="0.089999996" Magic="0.095" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -426,7 +426,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Rogue" DisplayName="Shinobi" Description="Shadow operatives trained in the arts of espionage, sabotage, and assassination. Ninja clans sell their services to the highest bidder, striking from darkness." AffinityRef="Umbral" MaxCarryWeight="30">
+  <AvatarArchetype RefName="Rogue" DisplayName="Shinobi" Description="Shadow operatives trained in the arts of espionage, sabotage, and assassination. Ninja clans sell their services to the highest bidder, striking from darkness." AffinityRef="Umbral" Weight="65">
     <SpawnStats Health="0.9" Stamina="1.1" Mana="1" Temperature="37" Strength="0.095" Defense="0.089999996" Magic="0.1" Speed="0.11000001" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -635,7 +635,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Ranger" DisplayName="Matagi" Description="Mountain hunters who live in harmony with nature. Expert trackers and archers, matagi know the secrets of the wilderness and commune with animal spirits." AffinityRef="Wild" MaxCarryWeight="40">
+  <AvatarArchetype RefName="Ranger" DisplayName="Matagi" Description="Mountain hunters who live in harmony with nature. Expert trackers and archers, matagi know the secrets of the wilderness and commune with animal spirits." AffinityRef="Wild" Weight="75">
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1" Temperature="37" Strength="0.1" Defense="0.095" Magic="0.1" Speed="0.105" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -848,7 +848,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Mage" DisplayName="Onmyoji" Description="Practitioners of onmyodo, the way of yin and yang. These court magicians divine the future, ward against evil, and command the five elements through ancient rituals." AffinityRef="Arcane" MaxCarryWeight="25">
+  <AvatarArchetype RefName="Mage" DisplayName="Onmyoji" Description="Practitioners of onmyodo, the way of yin and yang. These court magicians divine the future, ward against evil, and command the five elements through ancient rituals." AffinityRef="Arcane" Weight="60">
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.089999996" Magic="0.11000001" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -1059,7 +1059,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Wizard" DisplayName="Yamabushi" Description="Ascetic mountain hermits who have unlocked forbidden knowledge through extreme training. Their mastery of esoteric Buddhism grants power over reality itself." AffinityRef="Arcane" MaxCarryWeight="20">
+  <AvatarArchetype RefName="Wizard" DisplayName="Yamabushi" Description="Ascetic mountain hermits who have unlocked forbidden knowledge through extreme training. Their mastery of esoteric Buddhism grants power over reality itself." AffinityRef="Arcane" Weight="55">
     <SpawnStats Health="0.95" Stamina="0.95" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.095" Magic="0.11000001" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -1272,7 +1272,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Cleric" DisplayName="Kannushi" Description="Shinto priests who serve the kami and maintain the sacred shrines. Through prayer and purification rituals, they channel divine blessings and banish evil spirits." AffinityRef="Holy" MaxCarryWeight="35">
+  <AvatarArchetype RefName="Cleric" DisplayName="Kannushi" Description="Shinto priests who serve the kami and maintain the sacred shrines. Through prayer and purification rituals, they channel divine blessings and banish evil spirits." AffinityRef="Holy" Weight="70">
     <SpawnStats Health="1.05" Stamina="0.95" Mana="1.05" Temperature="37" Strength="0.095" Defense="0.105" Magic="0.105" Speed="0.095" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -1485,7 +1485,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Bard" DisplayName="Biwa Hoshi" Description="Blind traveling musicians who carry the tales of fallen warriors. Their haunting melodies can inspire allies, curse enemies, and commune with the spirits of the dead." AffinityRef="Spirit" MaxCarryWeight="30">
+  <AvatarArchetype RefName="Bard" DisplayName="Biwa Hoshi" Description="Blind traveling musicians who carry the tales of fallen warriors. Their haunting melodies can inspire allies, curse enemies, and commune with the spirits of the dead." AffinityRef="Spirit" Weight="65">
     <SpawnStats Health="0.95" Stamina="1.05" Mana="1.05" Temperature="37" Strength="0.095" Defense="0.095" Magic="0.105" Speed="0.105" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>
@@ -1696,7 +1696,7 @@
       </BuildingMaterials>
     </RespawnCapabilities>
   </AvatarArchetype>
-  <AvatarArchetype RefName="Summoner" DisplayName="Tsukimono-suji" Description="Those born with the ability to bind and command spirits. Whether fox spirits, oni, or ancestral ghosts, these summoners forge pacts with supernatural entities." AffinityRef="Void" MaxCarryWeight="25">
+  <AvatarArchetype RefName="Summoner" DisplayName="Tsukimono-suji" Description="Those born with the ability to bind and command spirits. Whether fox spirits, oni, or ancestral ghosts, these summoners forge pacts with supernatural entities." AffinityRef="Void" Weight="60">
     <SpawnStats Health="0.9" Stamina="1" Mana="1.1" Temperature="37" Strength="0.089999996" Defense="0.089999996" Magic="0.11000001" Speed="0.1" Endurance="0" Credits="1000" Experience="0" />
     <SpawnCapabilities>
       <Equipment>

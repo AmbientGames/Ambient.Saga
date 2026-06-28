@@ -30,16 +30,16 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_RequiresStaff_FailsWithoutStaff()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f,
             spells: new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } });
-        player.CombatProfile["MainHand"] = "IronSword"; // Not a staff
+        avatar.CombatProfile["MainHand"] = "IronSword"; // Not a staff
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Try to cast spell that requires Staff
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Fireball" // Requires Staff
@@ -54,16 +54,16 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_RequiresStaff_SucceedsWithStaff()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } });
-        player.CombatProfile["MainHand"] = "OakStaff"; // Staff equipped
+        avatar.CombatProfile["MainHand"] = "OakStaff"; // Staff equipped
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Fireball"
@@ -77,16 +77,16 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_RequiresWand_SucceedsWithWandInOffHand()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "LightningBolt", Condition = 1.0f } });
-        player.CombatProfile["OffHand"] = "MagicWand"; // Wand in left hand
+        avatar.CombatProfile["OffHand"] = "MagicWand"; // Wand in left hand
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "LightningBolt" // Requires Wand
@@ -100,15 +100,15 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_NoRequirement_SucceedsWithoutEquipment()
     {
         // Arrange - No equipment in hands
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "Heal", Condition = 1.0f } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Cast spell with no equipment requirement
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Heal"
@@ -126,15 +126,15 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_MinimumMagic_FailsWhenTooLow()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.1f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.1f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "AdvancedFireball", Condition = 1.0f } }); // Low magic
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Try to cast spell requiring high magic
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "AdvancedFireball" // Requires 0.5 Magic
@@ -149,15 +149,15 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_MinimumMagic_SucceedsWhenMet()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.6f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.6f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "AdvancedFireball", Condition = 1.0f } }); // Sufficient magic
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "AdvancedFireball"
@@ -171,15 +171,15 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_MinimumStrength_FailsWhenTooLow()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.1f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.1f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "PowerStrike", Condition = 1.0f } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "PowerStrike" // Requires 0.4 Strength
@@ -205,14 +205,14 @@ public class BattleEnginePhase1Tests
         for (int i = 0; i < iterations; i++)
         {
             // With CriticalHitBonus weapon
-            var playerWithBonus = CreateCombatantWithCapabilities("Player", health: 1.0f, speed: 0.1f,
+            var avatarWithBonus = CreateCombatantWithCapabilities("Avatar", health: 1.0f, speed: 0.1f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "CriticalSword", Condition = 1.0f } }); // Low speed = low base crit
-            playerWithBonus.CombatProfile["MainHand"] = "CriticalSword"; // +30% crit bonus
+            avatarWithBonus.CombatProfile["MainHand"] = "CriticalSword"; // +30% crit bonus
 
             var enemy1 = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
-            var engine1 = new BattleEngine(playerWithBonus, enemy1, world: _world, randomSeed: i);
+            var engine1 = new BattleEngine(avatarWithBonus, enemy1, world: _world, randomSeed: i);
             engine1.StartBattle();
-            var result1 = engine1.ExecutePlayerDecision(new CombatAction
+            var result1 = engine1.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Attack,
                 Parameter = "CriticalSword"
@@ -220,14 +220,14 @@ public class BattleEnginePhase1Tests
             if (result1.IsCritical) critCountWithBonus++;
 
             // Without CriticalHitBonus weapon
-            var playerWithoutBonus = CreateCombatantWithCapabilities("Player", health: 1.0f, speed: 0.1f,
+            var avatarWithoutBonus = CreateCombatantWithCapabilities("Avatar", health: 1.0f, speed: 0.1f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
-            playerWithoutBonus.CombatProfile["MainHand"] = "IronSword"; // No crit bonus
+            avatarWithoutBonus.CombatProfile["MainHand"] = "IronSword"; // No crit bonus
 
             var enemy2 = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
-            var engine2 = new BattleEngine(playerWithoutBonus, enemy2, world: _world, randomSeed: i);
+            var engine2 = new BattleEngine(avatarWithoutBonus, enemy2, world: _world, randomSeed: i);
             engine2.StartBattle();
-            var result2 = engine2.ExecutePlayerDecision(new CombatAction
+            var result2 = engine2.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Attack,
                 Parameter = "IronSword"
@@ -251,14 +251,14 @@ public class BattleEnginePhase1Tests
 
         for (int i = 0; i < iterations; i++)
         {
-            var player = CreateCombatantWithCapabilities("Player", health: 1.0f, speed: 0.3f,
+            var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, speed: 0.3f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "HighCritSword", Condition = 1.0f } });
-            player.CombatProfile["MainHand"] = "HighCritSword"; // +45% crit bonus
+            avatar.CombatProfile["MainHand"] = "HighCritSword"; // +45% crit bonus
 
             var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
-            var engine = new BattleEngine(player, enemy, world: _world, randomSeed: i);
+            var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: i);
             engine.StartBattle();
-            var result = engine.ExecutePlayerDecision(new CombatAction
+            var result = engine.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Attack,
                 Parameter = "HighCritSword"
@@ -280,16 +280,16 @@ public class BattleEnginePhase1Tests
     public void ExecuteWeaponAttack_WithStatusEffect_AppliesEffect()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.5f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "PoisonDagger", Condition = 1.0f } });
-        player.CombatProfile["MainHand"] = "PoisonDagger"; // Has StatusEffectRef = "Poison"
+        avatar.CombatProfile["MainHand"] = "PoisonDagger"; // Has StatusEffectRef = "Poison"
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "PoisonDagger"
@@ -306,15 +306,15 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_WithStatusEffect_AppliesEffectToTarget()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "FrostBolt", Condition = 1.0f } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "FrostBolt" // Has StatusEffectRef = "Frozen"
@@ -330,15 +330,15 @@ public class BattleEnginePhase1Tests
     public void ExecuteSpellAttack_DefensiveSpell_AppliesEffectToSelf()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "DefenseBuff", Condition = 1.0f } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "DefenseBuff" // Defensive spell with status effect
@@ -346,29 +346,29 @@ public class BattleEnginePhase1Tests
 
         // Assert
         Assert.True(result.Success);
-        Assert.Single(player.ActiveStatusEffects);
-        Assert.Equal("DefenseUp", player.ActiveStatusEffects[0].StatusEffectRef);
+        Assert.Single(avatar.ActiveStatusEffects);
+        Assert.Equal("DefenseUp", avatar.ActiveStatusEffects[0].StatusEffectRef);
     }
 
     [Fact]
     public void StatusEffect_Stacking_IncreasesStacks()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.5f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "PoisonDagger", Condition = 1.0f } });
-        player.CombatProfile["MainHand"] = "PoisonDagger";
+        avatar.CombatProfile["MainHand"] = "PoisonDagger";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Apply poison twice
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack, Parameter = "PoisonDagger" });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack, Parameter = "PoisonDagger" });
 
         // Need to go through turn cycle
         engine.ExecuteEnemyTurn();
 
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack, Parameter = "PoisonDagger" });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack, Parameter = "PoisonDagger" });
 
         // Assert - Should have stacked
         Assert.Single(enemy.ActiveStatusEffects);
@@ -384,15 +384,15 @@ public class BattleEnginePhase1Tests
 
         for (int i = 0; i < iterations; i++)
         {
-            var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f,
+            var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.5f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "LowChancePoison", Condition = 1.0f } });
-            player.CombatProfile["MainHand"] = "LowChancePoison"; // 50% chance
+            avatar.CombatProfile["MainHand"] = "LowChancePoison"; // 50% chance
             var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-            var engine = new BattleEngine(player, enemy, world: _world, randomSeed: i);
+            var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: i);
             engine.StartBattle();
 
-            engine.ExecutePlayerDecision(new CombatAction
+            engine.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Attack,
                 Parameter = "LowChancePoison"
@@ -416,7 +416,7 @@ public class BattleEnginePhase1Tests
     public void ProcessStatusEffects_DamageOverTime_DealsDamage()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         // Manually add a DoT effect
@@ -428,7 +428,7 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         var initialHealth = enemy.Health;
 
         // Act - Process status effects
@@ -442,7 +442,7 @@ public class BattleEnginePhase1Tests
     public void ProcessStatusEffects_DamageOverTime_ScalesWithStacks()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy1 = CreateCombatant("Enemy1", health: 1.0f);
         var enemy2 = CreateCombatant("Enemy2", health: 1.0f);
 
@@ -464,7 +464,7 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy1, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy1, world: _world, randomSeed: 42);
 
         // Act
         engine.ProcessStatusEffects(enemy1);
@@ -481,7 +481,7 @@ public class BattleEnginePhase1Tests
     public void ProcessStatusEffects_DecrementsDuration()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
@@ -492,7 +492,7 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
 
         // Act
         engine.ProcessStatusEffects(enemy);
@@ -505,7 +505,7 @@ public class BattleEnginePhase1Tests
     public void ProcessStatusEffects_RemovesExpiredEffects()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         enemy.ActiveStatusEffects.Add(new ActiveStatusEffect
@@ -516,7 +516,7 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
 
         // Act
         engine.ProcessStatusEffects(enemy);
@@ -529,7 +529,7 @@ public class BattleEnginePhase1Tests
     public void ExecuteEnemyTurn_ProcessesStatusEffectsFirst()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 0.1f); // Low health
         var ai = new CombatAI(_world);
 
@@ -542,7 +542,7 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, ai, _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, ai, _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Enemy turn should process status effects first
@@ -557,9 +557,9 @@ public class BattleEnginePhase1Tests
     public void CleanseStatusEffects_RemovesCleansableEffects()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 0.5f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 0.5f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "Cleanse", Condition = 1.0f } });
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Poison",
             RemainingTurns = 3,
@@ -569,18 +569,18 @@ public class BattleEnginePhase1Tests
 
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Cast cleanse spell
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Cleanse"
         });
 
         // Assert - Poison should be cleansed
-        Assert.Empty(player.ActiveStatusEffects);
+        Assert.Empty(avatar.ActiveStatusEffects);
     }
 
     #endregion
@@ -591,11 +591,11 @@ public class BattleEnginePhase1Tests
     public void GetStatusEffectStatModifier_StrengthDebuff_ReducesStrength()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
         var enemy = CreateCombatant("Enemy", health: 1.0f, strength: 0.5f, defense: 0.1f);
 
-        // Add weakness debuff to player
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        // Add weakness debuff to avatar
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Weakness", // -20% Strength
             RemainingTurns = 3,
@@ -603,11 +603,11 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Player attacks
-        var result = engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        // Act - Avatar attacks
+        var result = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
 
         // Assert - Damage should be reduced (can't directly test modifier, but attack damage is affected)
         Assert.True(result.Success);
@@ -619,14 +619,14 @@ public class BattleEnginePhase1Tests
     public void GetStatusEffectStatModifier_DefenseDebuff_IncreasesIncomingDamage()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.3f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.3f);
         var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.5f);
 
         // Record damage without debuff
         var enemyWithoutDebuff = CreateCombatant("Enemy", health: 1.0f, defense: 0.5f);
-        var engine1 = new BattleEngine(player, enemyWithoutDebuff, world: _world, randomSeed: 42);
+        var engine1 = new BattleEngine(avatar, enemyWithoutDebuff, world: _world, randomSeed: 42);
         engine1.StartBattle();
-        engine1.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        engine1.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
         var damageWithoutDebuff = 1.0f - enemyWithoutDebuff.Health;
 
         // Add armor break debuff to enemy
@@ -638,10 +638,10 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var player2 = CreateCombatant("Player", health: 1.0f, strength: 0.3f);
-        var engine2 = new BattleEngine(player2, enemy, world: _world, randomSeed: 42);
+        var avatar2 = CreateCombatant("Avatar", health: 1.0f, strength: 0.3f);
+        var engine2 = new BattleEngine(avatar2, enemy, world: _world, randomSeed: 42);
         engine2.StartBattle();
-        engine2.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+        engine2.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
         var damageWithDebuff = 1.0f - enemy.Health;
 
         // Assert - Damage should be higher with armor break
@@ -665,7 +665,7 @@ public class BattleEnginePhase1Tests
         });
 
         var engine = new BattleEngine(
-            CreateCombatant("Player", health: 1.0f),
+            CreateCombatant("Avatar", health: 1.0f),
             enemy,
             world: _world,
             randomSeed: 42);
@@ -693,7 +693,7 @@ public class BattleEnginePhase1Tests
         });
 
         var engine = new BattleEngine(
-            CreateCombatant("Player", health: 1.0f),
+            CreateCombatant("Avatar", health: 1.0f),
             enemy,
             world: _world,
             randomSeed: 42);
@@ -992,17 +992,17 @@ public class BattleEnginePhase1Tests
     public void ExecuteWeaponAttack_MinimumStrength_FailsWhenTooLow()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.1f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.1f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "HeavySword", Condition = 1.0f } }); // Low strength
-        player.CombatProfile["MainHand"] = "HeavySword";
+        avatar.CombatProfile["MainHand"] = "HeavySword";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithHeavySword = CreateTestWorldWithHeavyWeapon();
-        var engine = new BattleEngine(player, enemy, world: worldWithHeavySword, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithHeavySword, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Try to attack with weapon requiring high strength
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "HeavySword" // Requires 0.5 Strength
@@ -1017,17 +1017,17 @@ public class BattleEnginePhase1Tests
     public void ExecuteWeaponAttack_MinimumStrength_SucceedsWhenMet()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.6f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.6f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "HeavySword", Condition = 1.0f } }); // High strength
-        player.CombatProfile["MainHand"] = "HeavySword";
+        avatar.CombatProfile["MainHand"] = "HeavySword";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithHeavySword = CreateTestWorldWithHeavyWeapon();
-        var engine = new BattleEngine(player, enemy, world: worldWithHeavySword, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithHeavySword, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "HeavySword"
@@ -1041,17 +1041,17 @@ public class BattleEnginePhase1Tests
     public void ExecuteWeaponAttack_MinimumDefense_FailsWhenTooLow()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, defense: 0.1f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, defense: 0.1f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "GuardianBlade", Condition = 1.0f } }); // Low defense
-        player.CombatProfile["MainHand"] = "GuardianBlade";
+        avatar.CombatProfile["MainHand"] = "GuardianBlade";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithGuardianBlade = CreateTestWorldWithHeavyWeapon();
-        var engine = new BattleEngine(player, enemy, world: worldWithGuardianBlade, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithGuardianBlade, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "GuardianBlade" // Requires 0.4 Defense
@@ -1065,17 +1065,17 @@ public class BattleEnginePhase1Tests
     [Fact]
     public void ExecuteWeaponAttack_NoMinimumStats_SucceedsWithLowStats()
     {
-        // Arrange - Player with minimal stats using basic weapon
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.1f, energy: 1.0f,
+        // Arrange - Avatar with minimal stats using basic weapon
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.1f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
-        player.CombatProfile["MainHand"] = "IronSword"; // No MinimumStats requirement
+        avatar.CombatProfile["MainHand"] = "IronSword"; // No MinimumStats requirement
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: _world, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "IronSword"
@@ -1089,17 +1089,17 @@ public class BattleEnginePhase1Tests
     public void ExecuteWeaponAttack_MinimumMagic_FailsForMeleeWithMagicRequirement()
     {
         // Arrange - A magic-infused weapon that requires high magic stat
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.1f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.1f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "EnchantedBlade", Condition = 1.0f } }); // Low magic
-        player.CombatProfile["MainHand"] = "EnchantedBlade";
+        avatar.CombatProfile["MainHand"] = "EnchantedBlade";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithEnchantedBlade = CreateTestWorldWithHeavyWeapon();
-        var engine = new BattleEngine(player, enemy, world: worldWithEnchantedBlade, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithEnchantedBlade, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "EnchantedBlade" // Requires 0.4 Magic
@@ -1163,11 +1163,11 @@ public class BattleEnginePhase1Tests
     public void ExecuteDecision_Stunned_CannotAct()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        // Add Stun effect to player
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        // Add Stun effect to avatar
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Stun",
             RemainingTurns = 2,
@@ -1176,11 +1176,11 @@ public class BattleEnginePhase1Tests
         });
 
         var worldWithStun = CreateTestWorldWithPhase3StatusEffects();
-        var engine = new BattleEngine(player, enemy, world: worldWithStun, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithStun, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Try to attack while stunned
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1194,12 +1194,12 @@ public class BattleEnginePhase1Tests
     public void ExecuteDecision_Silenced_CannotCastSpells()
     {
         // Arrange
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "Heal", Condition = 1.0f } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        // Add Silence effect to player
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        // Add Silence effect to avatar
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Silence",
             RemainingTurns = 2,
@@ -1208,11 +1208,11 @@ public class BattleEnginePhase1Tests
         });
 
         var worldWithSilence = CreateTestWorldWithPhase3StatusEffects();
-        var engine = new BattleEngine(player, enemy, world: worldWithSilence, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithSilence, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Try to cast spell while silenced
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Heal"
@@ -1227,11 +1227,11 @@ public class BattleEnginePhase1Tests
     public void ExecuteDecision_Silenced_CanStillAttack()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        // Add Silence effect to player
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        // Add Silence effect to avatar
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Silence",
             RemainingTurns = 2,
@@ -1240,11 +1240,11 @@ public class BattleEnginePhase1Tests
         });
 
         var worldWithSilence = CreateTestWorldWithPhase3StatusEffects();
-        var engine = new BattleEngine(player, enemy, world: worldWithSilence, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithSilence, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Attack should work while silenced
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1257,11 +1257,11 @@ public class BattleEnginePhase1Tests
     public void ExecuteDecision_Rooted_CannotFlee()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        // Add Root effect to player
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        // Add Root effect to avatar
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Root",
             RemainingTurns = 2,
@@ -1270,11 +1270,11 @@ public class BattleEnginePhase1Tests
         });
 
         var worldWithRoot = CreateTestWorldWithPhase3StatusEffects();
-        var engine = new BattleEngine(player, enemy, world: worldWithRoot, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithRoot, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Try to flee while rooted
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Flee
         });
@@ -1288,11 +1288,11 @@ public class BattleEnginePhase1Tests
     public void ExecuteDecision_Rooted_CanStillAttack()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        // Add Root effect to player
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        // Add Root effect to avatar
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Root",
             RemainingTurns = 2,
@@ -1301,11 +1301,11 @@ public class BattleEnginePhase1Tests
         });
 
         var worldWithRoot = CreateTestWorldWithPhase3StatusEffects();
-        var engine = new BattleEngine(player, enemy, world: worldWithRoot, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithRoot, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Attack should work while rooted
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1318,11 +1318,11 @@ public class BattleEnginePhase1Tests
     public void ExecuteAttack_Blinded_CanMiss()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
         var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
 
         // Add Blind effect with very low accuracy (10%)
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Blind",
             RemainingTurns = 5,
@@ -1336,8 +1336,8 @@ public class BattleEnginePhase1Tests
         var missCount = 0;
         for (int i = 0; i < 20; i++)
         {
-            var testPlayer = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
-            testPlayer.ActiveStatusEffects.Add(new ActiveStatusEffect
+            var testAvatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
+            testAvatar.ActiveStatusEffects.Add(new ActiveStatusEffect
             {
                 StatusEffectRef = "Blind",
                 RemainingTurns = 5,
@@ -1346,10 +1346,10 @@ public class BattleEnginePhase1Tests
             });
             var testEnemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.1f);
 
-            var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithBlind, randomSeed: i);
+            var engine = new BattleEngine(testAvatar, testEnemy, world: worldWithBlind, randomSeed: i);
             engine.StartBattle();
 
-            var result = engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Attack });
+            var result = engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Attack });
             if (result.Damage == 0 && result.Message.Contains("misses"))
             {
                 missCount++;
@@ -1364,11 +1364,11 @@ public class BattleEnginePhase1Tests
     public void GetAccuracyModifier_ReturnsReducedAccuracy()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         // Add Blind effect
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Blind",
             RemainingTurns = 3,
@@ -1377,10 +1377,10 @@ public class BattleEnginePhase1Tests
         });
 
         var worldWithBlind = CreateTestWorldWithPhase3StatusEffects();
-        var engine = new BattleEngine(player, enemy, world: worldWithBlind, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithBlind, randomSeed: 42);
 
         // Act
-        var accuracy = engine.GetAccuracyModifier(player);
+        var accuracy = engine.GetAccuracyModifier(avatar);
 
         // Assert - Blind has -0.5 AccuracyModifier, so accuracy = 1.0 + (-0.5) = 0.5
         Assert.Equal(0.5f, accuracy, 2);
@@ -1390,10 +1390,10 @@ public class BattleEnginePhase1Tests
     public void HasStatusEffectOfType_ReturnsTrue_WhenEffectPresent()
     {
         // Arrange
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Stun",
             RemainingTurns = 2,
@@ -1402,11 +1402,11 @@ public class BattleEnginePhase1Tests
         });
 
         var worldWithStun = CreateTestWorldWithPhase3StatusEffects();
-        var engine = new BattleEngine(player, enemy, world: worldWithStun, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithStun, randomSeed: 42);
 
         // Act
-        var hasStun = engine.HasStatusEffectOfType(player, StatusEffectType.Stun);
-        var hasSilence = engine.HasStatusEffectOfType(player, StatusEffectType.Silence);
+        var hasStun = engine.HasStatusEffectOfType(avatar, StatusEffectType.Stun);
+        var hasSilence = engine.HasStatusEffectOfType(avatar, StatusEffectType.Silence);
 
         // Assert
         Assert.True(hasStun);
@@ -1482,16 +1482,16 @@ public class BattleEnginePhase1Tests
     public void ExecuteUseConsumable_WithStatusEffect_AppliesEffectToTarget()
     {
         // Arrange - Create a consumable that applies poison
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, energy: 1.0f,
             consumables: new[] { new ConsumableEntry { ConsumableRef = "PoisonVial", Quantity = 1 } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
-        var engine = new BattleEngine(player, enemy, world: worldWithConsumable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithConsumable, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Use offensive consumable with status effect
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "PoisonVial"
@@ -1508,16 +1508,16 @@ public class BattleEnginePhase1Tests
     public void ExecuteUseConsumable_DefensiveWithStatusEffect_AppliesEffectToSelf()
     {
         // Arrange - Create a defensive consumable that buffs
-        var player = CreateCombatantWithCapabilities("Player", health: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 0.5f, energy: 1.0f,
             consumables: new[] { new ConsumableEntry { ConsumableRef = "StrengthPotion", Quantity = 1 } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
-        var engine = new BattleEngine(player, enemy, world: worldWithConsumable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithConsumable, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Use defensive consumable with status effect
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "StrengthPotion"
@@ -1526,17 +1526,17 @@ public class BattleEnginePhase1Tests
         // Assert
         Assert.True(result.Success);
         Assert.Equal("StrengthBuff", result.StatusEffectApplied);
-        Assert.Single(player.ActiveStatusEffects);
-        Assert.Equal("StrengthBuff", player.ActiveStatusEffects[0].StatusEffectRef);
+        Assert.Single(avatar.ActiveStatusEffects);
+        Assert.Equal("StrengthBuff", avatar.ActiveStatusEffects[0].StatusEffectRef);
     }
 
     [Fact]
     public void ExecuteUseConsumable_WithCleanse_RemovesStatusEffects()
     {
-        // Arrange - Player has poison, will use antidote
-        var player = CreateCombatantWithCapabilities("Player", health: 0.5f, energy: 1.0f,
+        // Arrange - Avatar has poison, will use antidote
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 0.5f, energy: 1.0f,
             consumables: new[] { new ConsumableEntry { ConsumableRef = "Antidote", Quantity = 1 } });
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "Poison",
             RemainingTurns = 3,
@@ -1546,11 +1546,11 @@ public class BattleEnginePhase1Tests
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
-        var engine = new BattleEngine(player, enemy, world: worldWithConsumable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithConsumable, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Use antidote to cleanse
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "Antidote"
@@ -1558,7 +1558,7 @@ public class BattleEnginePhase1Tests
 
         // Assert
         Assert.True(result.Success);
-        Assert.Empty(player.ActiveStatusEffects);
+        Assert.Empty(avatar.ActiveStatusEffects);
     }
 
     [Fact]
@@ -1571,14 +1571,14 @@ public class BattleEnginePhase1Tests
         var appliedCount = 0;
         for (int i = 0; i < 20; i++)
         {
-            var testPlayer = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 1.0f,
+            var testAvatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, energy: 1.0f,
                 consumables: new[] { new ConsumableEntry { ConsumableRef = "UnreliablePoisonVial", Quantity = 1 } });
             var testEnemy = CreateCombatant("Enemy", health: 1.0f);
 
-            var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithConsumable, randomSeed: i);
+            var engine = new BattleEngine(testAvatar, testEnemy, world: worldWithConsumable, randomSeed: i);
             engine.StartBattle();
 
-            var result = engine.ExecutePlayerDecision(new CombatAction
+            var result = engine.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.UseConsumable,
                 Parameter = "UnreliablePoisonVial"
@@ -1599,16 +1599,16 @@ public class BattleEnginePhase1Tests
     public void ExecuteUseConsumable_NoStatusEffect_NoEffectApplied()
     {
         // Arrange - Basic health potion with no status effect
-        var player = CreateCombatantWithCapabilities("Player", health: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 0.5f, energy: 1.0f,
             consumables: new[] { new ConsumableEntry { ConsumableRef = "BasicHealthPotion", Quantity = 1 } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         var worldWithConsumable = CreateTestWorldWithPhase4Consumables();
-        var engine = new BattleEngine(player, enemy, world: worldWithConsumable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithConsumable, randomSeed: 42);
         engine.StartBattle();
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "BasicHealthPotion"
@@ -1617,7 +1617,7 @@ public class BattleEnginePhase1Tests
         // Assert
         Assert.True(result.Success);
         Assert.Null(result.StatusEffectApplied);
-        Assert.Empty(player.ActiveStatusEffects);
+        Assert.Empty(avatar.ActiveStatusEffects);
         Assert.Empty(enemy.ActiveStatusEffects);
     }
 
@@ -1717,7 +1717,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
 
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
         var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
 
         // Apply Vulnerable status effect to enemy
@@ -1729,14 +1729,14 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithVulnerable, randomSeed: 42);
         engine.StartBattle();
 
         // Store initial health
         var initialHealth = enemy.Health;
 
-        // Act - Player attacks vulnerable enemy
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        // Act - Avatar attacks vulnerable enemy
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1756,9 +1756,9 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
 
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.5f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
-        player.CombatProfile["MainHand"] = "IronSword";
+        avatar.CombatProfile["MainHand"] = "IronSword";
         var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
 
         // Apply Vulnerable status effect to enemy
@@ -1770,14 +1770,14 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithVulnerable, randomSeed: 42);
         engine.StartBattle();
 
         // Store initial health
         var initialHealth = enemy.Health;
 
-        // Act - Player weapon attacks vulnerable enemy
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        // Act - Avatar weapon attacks vulnerable enemy
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = "IronSword"
@@ -1794,7 +1794,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
 
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, magic: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
             spells: new[] { new SpellEntry { SpellRef = "FreeSpell", Condition = 1.0f } });
         var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
 
@@ -1807,11 +1807,11 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithVulnerable, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Player casts spell on vulnerable enemy
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        // Act - Avatar casts spell on vulnerable enemy
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "FreeSpell"
@@ -1828,7 +1828,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
 
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
         var enemy = CreateCombatant("Enemy", health: 1.0f, defense: 0.3f);
 
         // Apply 2 stacks of Vulnerable (stackable up to 3)
@@ -1840,14 +1840,14 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithVulnerable, randomSeed: 42);
         engine.StartBattle();
 
         // Store initial health
         var initialHealth = enemy.Health;
 
         // Act
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack
         });
@@ -1863,16 +1863,16 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithOnDefend = CreateTestWorldWithPhase5OnDefendEquipment();
 
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, energy: 0.5f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "IronShield", Condition = 1.0f } });
-        player.CombatProfile["OffHand"] = "IronShield";
+        avatar.CombatProfile["OffHand"] = "IronShield";
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: worldWithOnDefend, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithOnDefend, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Player defends with shield that has OnDefend effect
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        // Act - Avatar defends with shield that has OnDefend effect
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Defend
         });
@@ -1882,8 +1882,8 @@ public class BattleEnginePhase1Tests
         Assert.Equal(BattleActionType.Defend, result.ActionType);
 
         // Verify the status effect was applied to the defender
-        Assert.Single(player.ActiveStatusEffects);
-        Assert.Equal("IronWill", player.ActiveStatusEffects[0].StatusEffectRef);
+        Assert.Single(avatar.ActiveStatusEffects);
+        Assert.Equal("IronWill", avatar.ActiveStatusEffects[0].StatusEffectRef);
     }
 
     [Fact]
@@ -1892,23 +1892,23 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithOnDefend = CreateTestWorldWithPhase5OnDefendEquipment();
 
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, energy: 0.5f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
-        player.CombatProfile["MainHand"] = "IronSword"; // Sword has no OnDefend effect
+        avatar.CombatProfile["MainHand"] = "IronSword"; // Sword has no OnDefend effect
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: worldWithOnDefend, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithOnDefend, randomSeed: 42);
         engine.StartBattle();
 
-        // Act - Player defends without a shield
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        // Act - Avatar defends without a shield
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Defend
         });
 
         // Assert - No status effect should be applied
         Assert.True(result.Success);
-        Assert.Empty(player.ActiveStatusEffects);
+        Assert.Empty(avatar.ActiveStatusEffects);
     }
 
     [Fact]
@@ -1921,20 +1921,20 @@ public class BattleEnginePhase1Tests
         var appliedCount = 0;
         for (int i = 0; i < 20; i++)
         {
-            var testPlayer = CreateCombatantWithCapabilities("Player", health: 1.0f, energy: 0.5f,
+            var testAvatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, energy: 0.5f,
                 equipment: new[] { new EquipmentEntry { EquipmentRef = "UnreliableShield", Condition = 1.0f } });
-            testPlayer.CombatProfile["OffHand"] = "UnreliableShield";
+            testAvatar.CombatProfile["OffHand"] = "UnreliableShield";
             var testEnemy = CreateCombatant("Enemy", health: 1.0f);
 
-            var engine = new BattleEngine(testPlayer, testEnemy, world: worldWithOnDefend, randomSeed: i);
+            var engine = new BattleEngine(testAvatar, testEnemy, world: worldWithOnDefend, randomSeed: i);
             engine.StartBattle();
 
-            engine.ExecutePlayerDecision(new CombatAction
+            engine.ExecuteAvatarDecision(new CombatAction
             {
                 ActionType = ActionType.Defend
             });
 
-            if (testPlayer.ActiveStatusEffects.Count > 0)
+            if (testAvatar.ActiveStatusEffects.Count > 0)
             {
                 appliedCount++;
             }
@@ -1950,10 +1950,10 @@ public class BattleEnginePhase1Tests
     {
         // Arrange
         var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithVulnerable, randomSeed: 42);
 
         // Act
         var multiplier = engine.GetVulnerabilityMultiplier(enemy);
@@ -1967,7 +1967,7 @@ public class BattleEnginePhase1Tests
     {
         // Arrange
         var worldWithVulnerable = CreateTestWorldWithPhase5StatusEffects();
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         // Apply Vulnerable (25% more damage taken via DefenseModifier = -0.25)
@@ -1979,7 +1979,7 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithVulnerable, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithVulnerable, randomSeed: 42);
 
         // Act
         var multiplier = engine.GetVulnerabilityMultiplier(enemy);
@@ -2089,15 +2089,15 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
 
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.5f, energy: 1.0f,
             equipment: new[] { new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f } });
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Equip two-handed weapon in BothHands slot
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "BothHands:GreatSword"
@@ -2105,7 +2105,7 @@ public class BattleEnginePhase1Tests
 
         // Assert - BothHands slot should have the weapon
         Assert.True(result.Success);
-        Assert.Equal("GreatSword", player.CombatProfile["BothHands"]);
+        Assert.Equal("GreatSword", avatar.CombatProfile["BothHands"]);
     }
 
     [Fact]
@@ -2114,22 +2114,22 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
 
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.5f, energy: 1.0f,
             equipment: new[]
             {
                 new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f },
                 new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
             });
-        player.CombatProfile["MainHand"] = "IronSword"; // One-handed sword in right
-        player.CombatProfile["OffHand"] = "IronShield"; // Shield in left
+        avatar.CombatProfile["MainHand"] = "IronSword"; // One-handed sword in right
+        avatar.CombatProfile["OffHand"] = "IronShield"; // Shield in left
 
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Equip two-handed weapon to BothHands (should clear MainHand and OffHand)
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "BothHands:GreatSword"
@@ -2137,9 +2137,9 @@ public class BattleEnginePhase1Tests
 
         // Assert - MainHand and OffHand should be cleared, BothHands has greatsword
         Assert.True(result.Success);
-        Assert.Equal("GreatSword", player.CombatProfile["BothHands"]);
-        Assert.False(player.CombatProfile.ContainsKey("MainHand"));
-        Assert.False(player.CombatProfile.ContainsKey("OffHand"));
+        Assert.Equal("GreatSword", avatar.CombatProfile["BothHands"]);
+        Assert.False(avatar.CombatProfile.ContainsKey("MainHand"));
+        Assert.False(avatar.CombatProfile.ContainsKey("OffHand"));
     }
 
     [Fact]
@@ -2148,21 +2148,21 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
 
-        var player = CreateCombatantWithCapabilities("Player", health: 1.0f, strength: 0.5f, energy: 1.0f,
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.5f, energy: 1.0f,
             equipment: new[]
             {
                 new EquipmentEntry { EquipmentRef = "GreatSword", Condition = 1.0f },
                 new EquipmentEntry { EquipmentRef = "IronShield", Condition = 1.0f }
             });
-        player.CombatProfile["BothHands"] = "GreatSword"; // Two-handed equipped
+        avatar.CombatProfile["BothHands"] = "GreatSword"; // Two-handed equipped
 
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTwoHanded, randomSeed: 42);
         engine.StartBattle();
 
         // Act - Equip shield in OffHand (should clear BothHands)
-        var result = engine.ExecutePlayerDecision(new CombatAction
+        var result = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "OffHand:IronShield"
@@ -2170,8 +2170,8 @@ public class BattleEnginePhase1Tests
 
         // Assert - Should succeed and clear BothHands
         Assert.True(result.Success);
-        Assert.Equal("IronShield", player.CombatProfile["OffHand"]);
-        Assert.False(player.CombatProfile.ContainsKey("BothHands"));
+        Assert.Equal("IronShield", avatar.CombatProfile["OffHand"]);
+        Assert.False(avatar.CombatProfile.ContainsKey("BothHands"));
     }
 
     [Fact]
@@ -2179,10 +2179,10 @@ public class BattleEnginePhase1Tests
     {
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTwoHanded, randomSeed: 42);
         var greatSword = worldWithTwoHanded.TryGetEquipmentByRefName("GreatSword");
 
         // Act & Assert
@@ -2194,10 +2194,10 @@ public class BattleEnginePhase1Tests
     {
         // Arrange
         var worldWithTwoHanded = CreateTestWorldWithPhase6TwoHandedWeapons();
-        var player = CreateCombatant("Player", health: 1.0f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTwoHanded, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTwoHanded, randomSeed: 42);
         var ironSword = worldWithTwoHanded.TryGetEquipmentByRefName("IronSword");
 
         // Act & Assert
@@ -2210,7 +2210,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithTiming = CreateTestWorldWithPhase6StatusEffectTiming();
 
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         // Apply StartOfTurn poison to enemy
@@ -2222,7 +2222,7 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTiming, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTiming, randomSeed: 42);
         engine.StartBattle();
 
         var healthBeforeProcessing = enemy.Health;
@@ -2241,11 +2241,11 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithTiming = CreateTestWorldWithPhase6StatusEffectTiming();
 
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
-        // Apply EndOfTurn bleed to player
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        // Apply EndOfTurn bleed to avatar
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "EndOfTurnBleed",
             RemainingTurns = 3,
@@ -2253,16 +2253,16 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTiming, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTiming, randomSeed: 42);
         engine.StartBattle();
 
-        var healthBeforeEndOfTurn = player.Health;
+        var healthBeforeEndOfTurn = avatar.Health;
 
         // Act - Process end of turn effects (should apply bleed)
-        engine.ProcessEndOfTurnStatusEffects(player);
+        engine.ProcessEndOfTurnStatusEffects(avatar);
 
         // Assert - Damage should be applied
-        Assert.True(player.Health < healthBeforeEndOfTurn);
+        Assert.True(avatar.Health < healthBeforeEndOfTurn);
         Assert.Contains(engine.CombatLog, log => log.Contains("takes") && log.Contains("damage"));
     }
 
@@ -2272,11 +2272,11 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithTiming = CreateTestWorldWithPhase6StatusEffectTiming();
 
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         // Apply EndOfTurn bleed (should NOT trigger at start of turn)
-        player.ActiveStatusEffects.Add(new ActiveStatusEffect
+        avatar.ActiveStatusEffects.Add(new ActiveStatusEffect
         {
             StatusEffectRef = "EndOfTurnBleed",
             RemainingTurns = 3,
@@ -2284,17 +2284,17 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTiming, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTiming, randomSeed: 42);
         engine.StartBattle();
 
-        var healthBeforeProcessing = player.Health;
+        var healthBeforeProcessing = avatar.Health;
         engine.CombatLog.Clear();
 
         // Act - Process start of turn effects
-        engine.ProcessStatusEffects(player);
+        engine.ProcessStatusEffects(avatar);
 
         // Assert - No damage should be applied (EndOfTurn effect processed at StartOfTurn)
-        Assert.Equal(healthBeforeProcessing, player.Health);
+        Assert.Equal(healthBeforeProcessing, avatar.Health);
         Assert.DoesNotContain(engine.CombatLog, log => log.Contains("takes") && log.Contains("damage"));
     }
 
@@ -2304,7 +2304,7 @@ public class BattleEnginePhase1Tests
         // Arrange
         var worldWithTiming = CreateTestWorldWithPhase6StatusEffectTiming();
 
-        var player = CreateCombatant("Player", health: 1.0f, strength: 0.5f);
+        var avatar = CreateCombatant("Avatar", health: 1.0f, strength: 0.5f);
         var enemy = CreateCombatant("Enemy", health: 1.0f);
 
         // Apply StartOfTurn poison (should NOT trigger at end of turn)
@@ -2316,7 +2316,7 @@ public class BattleEnginePhase1Tests
             AppliedOnTurn = 1
         });
 
-        var engine = new BattleEngine(player, enemy, world: worldWithTiming, randomSeed: 42);
+        var engine = new BattleEngine(avatar, enemy, world: worldWithTiming, randomSeed: 42);
         engine.StartBattle();
 
         var healthBeforeProcessing = enemy.Health;

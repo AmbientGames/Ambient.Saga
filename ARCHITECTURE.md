@@ -35,21 +35,9 @@ The engine uses **Clean Architecture** with **CQRS** (Command Query Responsibili
 
 ### Event Sourcing & Transaction Log
 
-All game state changes are recorded as immutable transactions, enabling:
+All game state changes are recorded as immutable transactions. Saga arcs are self-contained — each arc's state is derived by replaying its own transaction log. Cross-arc state (quest tokens, quest progress, boss defeats, faction reputation, character traits) is projected to avatar-level progress tables on commit.
 
-```csharp
-// Replay state to any point in time
-var stateMachine = new SagaStateMachine(sagaArc, triggers, world);
-var currentState = stateMachine.ReplayToNow(sagaInstance);
-var pastState = stateMachine.ReplayToTimestamp(sagaInstance, someDateTime);
-var specificState = stateMachine.ReplayToSequence(sagaInstance, sequenceNumber);
-```
-
-**Benefits:**
-- Debug by examining transaction history
-- Implement save/load by persisting transaction log
-- Support multiplayer by synchronizing transactions
-- Detect cheating by validating transaction sequences
+See **[EVENT_SOURCING.md](EVENT_SOURCING.md)** for the full architecture: the self-containment model, avatar progress tables, quest token lifecycle, trigger gating, dialogue conditions, and content authoring rules.
 
 ### Turn-Based Combat System
 
@@ -116,7 +104,7 @@ XML-based dialogue trees with rich condition and action support:
 
 **Dialogue Actions:**
 - `AcceptQuest` / `CompleteQuest` / `AbandonQuest` - Quest management
-- `GiveQuestToken` / `TakeQuestToken` - Token inventory
+- `GiveQuestToken` - Token award (event-sourced via `QuestTokenAwarded` transaction, projected to avatar progress table)
 - `GiveEquipment` / `GiveConsumable` - Item rewards
 - `GiveCredits` / `TakeCredits` - Currency
 - `GiveReputation` - Faction standing changes
@@ -515,6 +503,12 @@ The `Ambient.Saga` package includes:
 - `Ambient.Saga.Engine.dll` - Game engine with CQRS handlers
 - `Content/Schemas/` - XML schema files for world definitions
 - `Content/Worlds/` - Sample world definition XML files
+
+---
+
+## Known Gaps
+
+See **[EVENT_SOURCING.md](EVENT_SOURCING.md)** — the "Known Gaps" section covers avatar-side state mutations, server-side progress tables, UI token display, and faction rewards.
 
 ---
 

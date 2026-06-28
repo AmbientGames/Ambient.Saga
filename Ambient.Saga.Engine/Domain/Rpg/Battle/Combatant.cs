@@ -58,8 +58,8 @@ public class Combatant
 
         return new Combatant
         {
-            RefName = avatar.ArchetypeRef ?? "Player",
-            DisplayName = avatar.ArchetypeRef ?? "Player",
+            RefName = avatar.ArchetypeRef,
+            DisplayName = avatar.ArchetypeRef,
             Health = avatar.Stats.Health,
             Stamina = avatar.Stats.Stamina,
             Strength = avatar.Stats.Strength,

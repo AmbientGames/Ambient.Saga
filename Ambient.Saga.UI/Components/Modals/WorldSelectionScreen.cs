@@ -131,13 +131,23 @@ public class WorldSelectionScreen
                 }
 
                 // Show generating indicator or button
+                ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonInfo);
+                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonInfoHovered);
+                ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonInfoActive);
+                bool generateClicked;
                 if (_isGenerating)
                 {
                     ImGui.BeginDisabled();
                     ImGui.Button("Generating...", new Vector2(ImGuiSizes.Fill, generateButtonHeight));
                     ImGui.EndDisabled();
+                    generateClicked = false;
                 }
-                else if (ImGui.Button("Generate World Content", new Vector2(ImGuiSizes.Fill, generateButtonHeight)))
+                else
+                {
+                    generateClicked = ImGui.Button("Generate World Content", new Vector2(ImGuiSizes.Fill, generateButtonHeight));
+                }
+                ImGui.PopStyleColor(3);
+                if (generateClicked)
                 {
                     _logger?.LogInformation("Generate button clicked for: {ConfigRefName}", viewModel.SelectedConfiguration.RefName);
 
@@ -181,7 +191,11 @@ public class WorldSelectionScreen
             else
             {
                 ImGui.BeginDisabled();
+                ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonInfo);
+                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonInfoHovered);
+                ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonInfoActive);
                 ImGui.Button("Generate World Content", new Vector2(ImGuiSizes.Fill, generateButtonHeight));
+                ImGui.PopStyleColor(3);
                 ImGui.EndDisabled();
 
                 ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _worldContentGenerator.StatusMessage);
@@ -209,9 +223,9 @@ public class WorldSelectionScreen
             }
 
             var loadButtonHeight = ImGui.GetFrameHeight() * 1.4f;
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
             if (ImGui.Button("Load Selected World", new Vector2(ImGuiSizes.Fill, loadButtonHeight)))
             {
                 if (viewModel.LoadSelectedConfigurationCommand.CanExecute(null))
@@ -231,9 +245,9 @@ public class WorldSelectionScreen
 
             // Quit button
             var quitButtonHeight = ImGui.GetFrameHeight() * 1.2f;
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
             if (ImGui.Button("Quit Game", new Vector2(ImGuiSizes.Fill, quitButtonHeight)))
             {
                 // Request quit through parent's quit mechanism
@@ -246,9 +260,9 @@ public class WorldSelectionScreen
         {
             // Quit button when no world selected
             var quitButtonHeight = ImGui.GetFrameHeight() * 1.4f;
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
             if (ImGui.Button("Quit Game", new Vector2(ImGuiSizes.Fill, quitButtonHeight)))
             {
                 isOpen = false;

@@ -6,6 +6,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -45,7 +46,11 @@ public class DefeatCharacterCommandTests : IDisposable
         });
 
         services.AddSingleton(_world);
-        services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        var sagaRepo = new SagaInstanceRepository(_database);
+        var progressRepo = new AvatarProgressRepository(_database);
+        sagaRepo.SetAvatarProgressRepository(progressRepo);
+        services.AddSingleton<ISagaInstanceRepository>(sagaRepo);
+        services.AddSingleton<IAvatarProgressRepository>(progressRepo);
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
@@ -63,6 +68,20 @@ public class DefeatCharacterCommandTests : IDisposable
             DisplayName = "Ancient Dragon"
         };
 
+        var guardian = new Character
+        {
+            RefName = "FlameGuardian",
+            DisplayName = "Flame Guardian",
+            GivesQuestTokenOnDefeat = new[] { "GUARDIAN_DEFEATED" }
+        };
+
+        var multiBoss = new Character
+        {
+            RefName = "MultiBoss",
+            DisplayName = "Multi-Token Boss",
+            GivesQuestTokenOnDefeat = new[] { "TOKEN_A", "TOKEN_B" }
+        };
+
         var sagaArc = new SagaArc
         {
             RefName = "DragonLair",
@@ -78,21 +97,25 @@ public class DefeatCharacterCommandTests : IDisposable
                 Gameplay = new GameplayComponents
                 {
                     SagaArcs = new[] { sagaArc },
-                    Characters = new[] { boss }
+                    Characters = new[] { boss, guardian, multiBoss }
                 }
             }
         };
 
         world.SagaArcLookup[sagaArc.RefName] = sagaArc;
         world.CharactersLookup[boss.RefName] = boss;
+        world.CharactersLookup[guardian.RefName] = guardian;
+        world.CharactersLookup[multiBoss.RefName] = multiBoss;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger>();
 
         return world;
     }
 
-    private async Task<Guid> SpawnBossCharacter(Guid avatarId, string sagaRef)
+    private Task<Guid> SpawnBossCharacter(Guid avatarId, string sagaRef)
+        => SpawnCharacter(avatarId, sagaRef, "DragonBoss");
+
+    private async Task<Guid> SpawnCharacter(Guid avatarId, string sagaRef, string characterRef)
     {
-        // Spawn character by creating CharacterSpawned transaction
         var characterInstanceId = Guid.NewGuid();
         var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
 
@@ -104,7 +127,7 @@ public class DefeatCharacterCommandTests : IDisposable
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = "DragonBoss",
+                ["CharacterRef"] = characterRef,
                 ["CharacterInstanceId"] = characterInstanceId.ToString(),
                 ["InitialHealth"] = "1.0"
             }
@@ -255,6 +278,91 @@ public class DefeatCharacterCommandTests : IDisposable
 
         Assert.All(allTransactions, tx =>
             Assert.NotNull(tx.ServerTimestamp));
+    }
+
+    [Fact]
+    public async Task DefeatCharacter_WithGivesQuestTokenOnDefeat_AwardsToken()
+    {
+        var avatarId = Guid.NewGuid();
+        var characterInstanceId = await SpawnCharacter(avatarId, "DragonLair", "FlameGuardian");
+
+        var result = await _mediator.Send(new DefeatCharacterCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "DragonLair",
+            CharacterInstanceId = characterInstanceId
+        });
+
+        Assert.True(result.Successful);
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "DragonLair");
+        var tokenTx = instance.GetCommittedTransactions()
+            .FirstOrDefault(t => t.Type == SagaTransactionType.QuestTokenAwarded);
+
+        Assert.NotNull(tokenTx);
+        Assert.Equal("GUARDIAN_DEFEATED", tokenTx.Data["QuestTokenRef"]);
+    }
+
+    [Fact]
+    public async Task DefeatCharacter_WithGivesQuestTokenOnDefeat_ProjectsToAvatarProgress()
+    {
+        var avatarId = Guid.NewGuid();
+        var characterInstanceId = await SpawnCharacter(avatarId, "DragonLair", "FlameGuardian");
+
+        var result = await _mediator.Send(new DefeatCharacterCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "DragonLair",
+            CharacterInstanceId = characterInstanceId
+        });
+
+        Assert.True(result.Successful);
+
+        var progressRepo = _serviceProvider.GetRequiredService<IAvatarProgressRepository>();
+        Assert.True(progressRepo.HasQuestToken(avatarId, "GUARDIAN_DEFEATED"));
+    }
+
+    [Fact]
+    public async Task DefeatCharacter_WithMultipleTokens_AwardsAll()
+    {
+        var avatarId = Guid.NewGuid();
+        var characterInstanceId = await SpawnCharacter(avatarId, "DragonLair", "MultiBoss");
+
+        var result = await _mediator.Send(new DefeatCharacterCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "DragonLair",
+            CharacterInstanceId = characterInstanceId
+        });
+
+        Assert.True(result.Successful);
+
+        var progressRepo = _serviceProvider.GetRequiredService<IAvatarProgressRepository>();
+        Assert.True(progressRepo.HasQuestToken(avatarId, "TOKEN_A"));
+        Assert.True(progressRepo.HasQuestToken(avatarId, "TOKEN_B"));
+    }
+
+    [Fact]
+    public async Task DefeatCharacter_WithoutGivesQuestTokenOnDefeat_NoTokenAwarded()
+    {
+        var avatarId = Guid.NewGuid();
+        var characterInstanceId = await SpawnBossCharacter(avatarId, "DragonLair");
+
+        var result = await _mediator.Send(new DefeatCharacterCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "DragonLair",
+            CharacterInstanceId = characterInstanceId
+        });
+
+        Assert.True(result.Successful);
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "DragonLair");
+        var tokenTxs = instance.GetCommittedTransactions()
+            .Where(t => t.Type == SagaTransactionType.QuestTokenAwarded)
+            .ToList();
+
+        Assert.Empty(tokenTxs);
     }
 
     public void Dispose()

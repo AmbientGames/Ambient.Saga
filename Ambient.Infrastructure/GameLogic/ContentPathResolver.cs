@@ -1,5 +1,6 @@
 using Ambient.Application.Contracts;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 
 namespace Ambient.Infrastructure.GameLogic;
 
@@ -14,6 +15,12 @@ public interface IContentPathResolver
     string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null);
     string? ResolveModelRefByCategoryKind(string library, string ns, string category, string? kind, Random? random = null);
     string? ResolveXmlPath(string worldRef, string library, string ns, params string[] relativePath);
+
+    /// <summary>
+    /// Registers an override base path for a world (e.g., a temp extraction directory).
+    /// The resolver checks this path first before Documents/Install.
+    /// </summary>
+    void RegisterWorldPath(string worldRef, string basePath) { }
 }
 
 /// <summary>
@@ -23,6 +30,8 @@ public class ContentPathResolver : IContentPathResolver
 {
     private readonly IGameSettings _gameSettings;
     private readonly ILogger<ContentPathResolver>? _logger;
+    private readonly ConcurrentDictionary<string, string> _worldPathOverrides = new(StringComparer.OrdinalIgnoreCase);
+    private readonly ConcurrentDictionary<string, string?> _modelPathCache = new(StringComparer.OrdinalIgnoreCase);
 
     private const string DefaultPack = "default";
     private const string DefaultNamespace = "ambient_games";
@@ -33,6 +42,12 @@ public class ContentPathResolver : IContentPathResolver
         _logger = logger;
         _logger?.LogInformation("ContentPathResolver initialized with PublisherFolder={Publisher}, GameName={Game}",
             gameSettings.PublisherFolder, gameSettings.GameName);
+    }
+
+    public void RegisterWorldPath(string worldRef, string basePath)
+    {
+        _worldPathOverrides[worldRef] = basePath;
+        System.Diagnostics.Debug.WriteLine($"[ContentPathResolver] Registered override for '{worldRef}': {basePath}");
     }
 
     public string? ResolveTexturePath(string library, string ns, string textureName)
@@ -72,31 +87,39 @@ public class ContentPathResolver : IContentPathResolver
     /// </summary>
     public string? ResolveModelPathByCategoryKind(string library, string ns, string category, string? kind, Random? random = null)
     {
-        if (category != "Waypoint" && category != "QuestHub")
-        {
-            System.Diagnostics.Debug.WriteLine($"{category}-{kind}");
-        }
+        // Cache key: resolved model path is deterministic for same category/kind/library/ns
+        var cacheKey = $"{library}|{ns}|{category}|{kind ?? ""}";
+        if (_modelPathCache.TryGetValue(cacheKey, out var cached))
+            return cached;
+
         var rng = random ?? new Random();
         string[] extensions = ["*.litematic", "*.schematic", "*.xml"];
+
+        string? result = null;
 
         // 1. Try models/{Category}/{Kind}/ first
         if (!string.IsNullOrEmpty(kind) && kind != "Default")
         {
             var kindPath = ResolveModelDirectoryPath(library, ns, category, kind);
-            var modelPath = SelectRandomModelFromDirectory(kindPath, extensions, rng);
-            if (modelPath != null)
-                return modelPath;
+            result = SelectRandomModelFromDirectory(kindPath, extensions, rng);
         }
 
         // 2. Try models/{Category}/
-        var categoryPath = ResolveModelDirectoryPath(library, ns, category);
-        var categoryModelPath = SelectRandomModelFromDirectory(categoryPath, extensions, rng);
-        if (categoryModelPath != null)
-            return categoryModelPath;
+        if (result == null)
+        {
+            var categoryPath = ResolveModelDirectoryPath(library, ns, category);
+            result = SelectRandomModelFromDirectory(categoryPath, extensions, rng);
+        }
 
         // 3. Fall back to models/Default/
-        var defaultPath = ResolveModelDirectoryPath(library, ns, "Default");
-        return SelectRandomModelFromDirectory(defaultPath, extensions, rng);
+        if (result == null)
+        {
+            var defaultPath = ResolveModelDirectoryPath(library, ns, "Default");
+            result = SelectRandomModelFromDirectory(defaultPath, extensions, rng);
+        }
+
+        _modelPathCache[cacheKey] = result;
+        return result;
     }
 
     /// <summary>
@@ -191,6 +214,14 @@ public class ContentPathResolver : IContentPathResolver
 
     private string? ResolveWorldPath(string worldRef, string ns, string[] subPath)
     {
+        // Check override path first (e.g., downloaded server world in temp)
+        if (_worldPathOverrides.TryGetValue(worldRef, out var overridePath))
+        {
+            var overrideFilePath = Path.Combine(overridePath, "assets", ns, Path.Combine(subPath));
+            if (File.Exists(overrideFilePath))
+                return overrideFilePath;
+        }
+
         var worldRelativePath = Path.Combine(worldRef, "assets", ns, Path.Combine(subPath));
 
         // Check Documents location first (user-created worlds)

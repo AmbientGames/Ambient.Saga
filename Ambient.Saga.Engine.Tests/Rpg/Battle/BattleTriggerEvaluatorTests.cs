@@ -30,7 +30,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 30f, // Enemy at 30% health
-            PlayerHealthPercent = 80f,
+            AvatarHealthPercent = 80f,
             TurnNumber = 5
         };
 
@@ -61,7 +61,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 75f, // Enemy at 75% health
-            PlayerHealthPercent = 80f,
+            AvatarHealthPercent = 80f,
             TurnNumber = 5
         };
 
@@ -95,7 +95,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 95f, // Enemy at 95% health
-            PlayerHealthPercent = 80f,
+            AvatarHealthPercent = 80f,
             TurnNumber = 1
         };
 
@@ -125,7 +125,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 60f, // Enemy at 60% health
-            PlayerHealthPercent = 80f,
+            AvatarHealthPercent = 80f,
             TurnNumber = 5
         };
 
@@ -138,10 +138,10 @@ public class BattleTriggerEvaluatorTests
 
     #endregion
 
-    #region PlayerHealthBelow Trigger Tests
+    #region AvatarHealthBelow Trigger Tests
 
     [Fact]
-    public void Evaluate_PlayerHealthBelow_TriggersWhenPlayerHealthIsBelow()
+    public void Evaluate_AvatarHealthBelow_TriggersWhenAvatarHealthIsBelow()
     {
         // Arrange
         var evaluator = new BattleTriggerEvaluator();
@@ -149,8 +149,8 @@ public class BattleTriggerEvaluatorTests
         {
             new CharacterTrigger
             {
-                Condition = BattleTriggerCondition.PlayerHealthBelow,
-                Value = 25f, // Trigger when player health is below 25%
+                Condition = BattleTriggerCondition.AvatarHealthBelow,
+                Value = 25f, // Trigger when avatar health is below 25%
                 DialogueTreeRef = "BossMocking",
                 StartNodeId = "you_are_weak"
             }
@@ -159,7 +159,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 80f,
-            PlayerHealthPercent = 15f, // Player at 15% health
+            AvatarHealthPercent = 15f, // Avatar at 15% health
             TurnNumber = 8
         };
 
@@ -195,7 +195,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             EnemyHealthPercent = 50f,
-            PlayerHealthPercent = 50f,
+            AvatarHealthPercent = 50f,
             TurnNumber = 10 // Exactly at turn 10
         };
 
@@ -356,7 +356,7 @@ public class BattleTriggerEvaluatorTests
     #region OnVictory Trigger Tests
 
     [Fact]
-    public void Evaluate_OnVictory_TriggersWhenPlayerWins()
+    public void Evaluate_OnVictory_TriggersWhenAvatarWins()
     {
         // Arrange
         var evaluator = new BattleTriggerEvaluator();
@@ -373,7 +373,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = true,
-            PlayerVictory = true
+            AvatarVictory = true
         };
 
         // Act
@@ -386,7 +386,7 @@ public class BattleTriggerEvaluatorTests
     }
 
     [Fact]
-    public void Evaluate_OnVictory_DoesNotTriggerWhenPlayerLoses()
+    public void Evaluate_OnVictory_DoesNotTriggerWhenAvatarLoses()
     {
         // Arrange
         var evaluator = new BattleTriggerEvaluator();
@@ -402,7 +402,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = true,
-            PlayerVictory = false // Player lost
+            AvatarVictory = false // Avatar lost
         };
 
         // Act
@@ -429,7 +429,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = false, // Battle still ongoing
-            PlayerVictory = true
+            AvatarVictory = true
         };
 
         // Act
@@ -444,7 +444,7 @@ public class BattleTriggerEvaluatorTests
     #region OnDefeat Trigger Tests
 
     [Fact]
-    public void Evaluate_OnDefeat_TriggersWhenPlayerLoses()
+    public void Evaluate_OnDefeat_TriggersWhenAvatarLoses()
     {
         // Arrange
         var evaluator = new BattleTriggerEvaluator();
@@ -461,7 +461,7 @@ public class BattleTriggerEvaluatorTests
         var context = new BattleTriggerContext
         {
             BattleEnded = true,
-            PlayerVictory = false
+            AvatarVictory = false
         };
 
         // Act

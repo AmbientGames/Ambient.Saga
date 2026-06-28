@@ -7,6 +7,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -121,10 +122,11 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
                     }
                 }
 
-                // Temperature adjustment (move toward normal body temperature of 37)
-                if (consumable.Effects.Temperature != 37) // Non-default temperature effect
+                // Temperature delta from the consumable. Positive warms the avatar,
+                // negative cools it. 0 = no effect (matches the XSD default).
+                if (consumable.Effects.Temperature != 0)
                 {
-                    var tempChange = consumable.Effects.Temperature - 37; // Relative change
+                    var tempChange = consumable.Effects.Temperature;
                     command.Avatar.Stats.Temperature += tempChange;
                     effectsApplied.Add($"Temperature {(tempChange >= 0 ? "+" : "")}{tempChange:F1}°");
                 }
@@ -133,30 +135,30 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
             // Build transaction data
             var transactionData = new Dictionary<string, string>
             {
-                ["ConsumableRef"] = command.ConsumableRef,
-                ["ConsumableDisplayName"] = consumable.DisplayName ?? command.ConsumableRef,
-                ["QuantityBefore"] = consumableEntry.Quantity.ToString(),
-                ["QuantityAfter"] = (consumableEntry.Quantity - 1).ToString(),
-                ["EffectsApplied"] = string.Join(", ", effectsApplied),
-                ["OriginalHealth"] = originalHealth.ToString("F3"),
-                ["OriginalStamina"] = originalStamina.ToString("F3"),
-                ["OriginalMana"] = originalMana.ToString("F3"),
-                ["NewHealth"] = command.Avatar.Stats.Health.ToString("F3"),
-                ["NewStamina"] = command.Avatar.Stats.Stamina.ToString("F3"),
-                ["NewMana"] = command.Avatar.Stats.Mana.ToString("F3")
+                [TransactionDataKeys.ConsumableRef] = command.ConsumableRef,
+                [TransactionDataKeys.ConsumableDisplayName] = consumable.DisplayName ?? command.ConsumableRef,
+                [TransactionDataKeys.QuantityBefore] = consumableEntry.Quantity.ToString(),
+                [TransactionDataKeys.QuantityAfter] = (consumableEntry.Quantity - 1).ToString(),
+                [TransactionDataKeys.EffectsApplied] = string.Join(", ", effectsApplied),
+                [TransactionDataKeys.OriginalHealth] = originalHealth.ToString("F3"),
+                [TransactionDataKeys.OriginalStamina] = originalStamina.ToString("F3"),
+                [TransactionDataKeys.OriginalMana] = originalMana.ToString("F3"),
+                [TransactionDataKeys.NewHealth] = command.Avatar.Stats.Health.ToString("F3"),
+                [TransactionDataKeys.NewStamina] = command.Avatar.Stats.Stamina.ToString("F3"),
+                [TransactionDataKeys.NewMana] = command.Avatar.Stats.Mana.ToString("F3")
             };
 
             // Log status effect info if present (for battle-time processing)
             if (!string.IsNullOrEmpty(consumable.StatusEffectRef))
             {
-                transactionData["StatusEffectRef"] = consumable.StatusEffectRef;
-                transactionData["StatusEffectChance"] = consumable.StatusEffectChance.ToString("F2");
+                transactionData[TransactionDataKeys.StatusEffectRef] = consumable.StatusEffectRef;
+                transactionData[TransactionDataKeys.StatusEffectChance] = consumable.StatusEffectChance.ToString("F2");
             }
 
             if (consumable.CleansesStatusEffects)
             {
-                transactionData["CleansesStatusEffects"] = "true";
-                transactionData["CleanseTargetSelf"] = consumable.CleanseTargetSelf.ToString();
+                transactionData[TransactionDataKeys.CleansesStatusEffects] = "true";
+                transactionData[TransactionDataKeys.CleanseTargetSelf] = consumable.CleanseTargetSelf.ToString();
             }
 
             // Create ConsumableUsed transaction
@@ -173,15 +175,9 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
             instance.AddTransaction(transaction);
 
             // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -224,20 +220,16 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["ReversedTransactionId"] = transaction.TransactionId.ToString(),
-                        ["Reason"] = $"Avatar persistence failed: {persistEx.Message}",
-                        ["OriginalType"] = transaction.Type.ToString()
+                        [TransactionDataKeys.ReversedTransactionId] = transaction.TransactionId.ToString(),
+                        [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                        [TransactionDataKeys.OriginalType] = transaction.Type.ToString()
                     }
                 };
 
                 instance.AddTransaction(reversalTransaction);
-                await _instanceRepository.AddTransactionsAsync(
+                await _instanceRepository.AddAndCommitTransactionsAsync(
                     instance.InstanceId,
                     new List<SagaTransaction> { reversalTransaction },
-                    ct);
-                await _instanceRepository.CommitTransactionsAsync(
-                    instance.InstanceId,
-                    new List<Guid> { reversalTransaction.TransactionId },
                     ct);
 
                 return SagaCommandResult.Failure(instance.InstanceId,
@@ -246,10 +238,10 @@ internal sealed class UseConsumableHandler : IRequestHandler<UseConsumableComman
 
             var resultData = new Dictionary<string, object>
             {
-                ["ConsumableRef"] = command.ConsumableRef,
-                ["ConsumableDisplayName"] = consumable.DisplayName ?? command.ConsumableRef,
-                ["EffectsApplied"] = effectsApplied,
-                ["RemainingQuantity"] = consumableEntry.Quantity
+                [TransactionDataKeys.ConsumableRef] = command.ConsumableRef,
+                [TransactionDataKeys.ConsumableDisplayName] = consumable.DisplayName ?? command.ConsumableRef,
+                [TransactionDataKeys.EffectsApplied] = effectsApplied,
+                [TransactionDataKeys.RemainingQuantity] = consumableEntry.Quantity
             };
 
             return SagaCommandResult.Success(

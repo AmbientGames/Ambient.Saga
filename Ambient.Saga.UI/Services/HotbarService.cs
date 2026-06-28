@@ -22,7 +22,7 @@ public class HotbarService
     /// </summary>
     public async Task ActivateSlotAsync(int slotIndex)
     {
-        var avatar = _viewModel.PlayerAvatar;
+        var avatar = _viewModel.Avatar;
         if (avatar == null || slotIndex < 0 || slotIndex >= 9)
             return;
 
@@ -41,7 +41,7 @@ public class HotbarService
     /// </summary>
     public void AssignToSlot(int slotIndex, HotbarItemType itemType, string refName)
     {
-        var avatar = _viewModel.PlayerAvatar;
+        var avatar = _viewModel.Avatar;
         if (avatar == null || slotIndex < 0 || slotIndex >= 9)
             return;
 
@@ -53,7 +53,7 @@ public class HotbarService
     /// </summary>
     public void ClearSlot(int slotIndex)
     {
-        var avatar = _viewModel.PlayerAvatar;
+        var avatar = _viewModel.Avatar;
         if (avatar == null || slotIndex < 0 || slotIndex >= 9)
             return;
 

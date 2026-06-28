@@ -75,6 +75,9 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
                 "imgui",
                 (sp, key) => sp.GetRequiredService<ImGuiArchetypeSelector>());
 
+            // Avatar creation — offline for Saga sandbox
+            services.AddSingleton<Ambient.Domain.Contracts.IAvatarCreationService, Ambient.Infrastructure.GameLogic.Services.AvatarCreationServiceOffline>();
+
             // World content generator (mock implementation)
             services.AddSingleton<IWorldContentGenerator, MockWorldContentGenerator>();
 
@@ -93,6 +96,9 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
                 selector.SetModalManager(modalManager); // Wire up circular reference
                 return modalManager;
             });
+
+            services.AddSingleton<Ambient.Saga.UI.Components.Panels.PanelManager>();
+            services.AddSingleton<Ambient.Saga.UI.Components.GameplayOverlay>();
 
             // World Map UI for Tab 3
             services.AddTransient<WorldMapUI>();
@@ -154,6 +160,11 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             services.AddSingleton(sp =>
                 sp.GetRequiredService<SagaInstanceRepositoryProvider>().Repository);
 
+            // IAvatarProgressRepository factory - will be configured by MainViewModel when world loads
+            services.AddSingleton<AvatarProgressRepositoryProvider>();
+            services.AddSingleton(sp =>
+                sp.GetRequiredService<AvatarProgressRepositoryProvider>().Repository);
+
             // World provider - will be configured by MainViewModel when world loads
             // Returns null until world is loaded - handlers must check for null
             // Inject BlockProvider to enable block trading and catalog features
@@ -170,7 +181,14 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
             services.AddSingleton(sp =>
                 sp.GetRequiredService<WorldStateRepositoryProvider>().Repository);
 
-            // Avatar update service (depends on IGameAvatarRepository)
+            // Avatar update service (singleton). Repository and world are accessed lazily
+            // via Func<> so the singleton can be constructed before a world is loaded —
+            // GameAvatarRepositoryProvider.Repository throws until SetRepository is called
+            // on world load, so we must defer the access until method-call time.
+            services.AddSingleton<Func<IGameAvatarRepository>>(sp =>
+                () => sp.GetRequiredService<GameAvatarRepositoryProvider>().Repository);
+            services.AddSingleton<Func<IWorld>>(sp =>
+                () => sp.GetRequiredService<WorldProvider>().World);
             services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
         }
 

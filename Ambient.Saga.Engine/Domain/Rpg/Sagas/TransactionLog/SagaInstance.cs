@@ -73,6 +73,13 @@ public class SagaInstance
     public DateTime? ServerVersion { get; set; }
 
     /// <summary>
+    /// The highest sequence number confirmed by the server.
+    /// Transactions with SequenceNumber > this value have not been synced yet.
+    /// 0 means nothing has been synced.
+    /// </summary>
+    public long LastSyncedSequenceNumber { get; set; }
+
+    /// <summary>
     /// Whether this instance has pending (uncommitted) transactions.
     /// True if any transactions have Status = Pending.
     /// </summary>
@@ -82,6 +89,26 @@ public class SagaInstance
     /// Gets the next sequence number for a new transaction.
     /// </summary>
     public long GetNextSequenceNumber() => Transactions.Any() ? Transactions.Max(t => t.SequenceNumber) + 1 : 1;
+
+    /// <summary>
+    /// Cached replay state. Invalidated when transactions are added.
+    /// </summary>
+    [LiteDB.BsonIgnore]
+    public SagaState? CachedState { get; set; }
+
+    /// <summary>
+    /// The highest committed sequence number that CachedState was derived from.
+    /// Used to detect staleness when reloading transactions from the database.
+    /// -1 means no replay has been performed yet.
+    /// </summary>
+    [LiteDB.BsonIgnore]
+    public long CachedAtSequenceNumber { get; set; } = -1;
+
+    /// <summary>
+    /// True when the transaction log has changed since the last replay.
+    /// </summary>
+    [LiteDB.BsonIgnore]
+    public bool IsDirty { get; set; } = true;
 
     /// <summary>
     /// Adds a new transaction to the log.
@@ -95,6 +122,7 @@ public class SagaInstance
 
         Transactions.Add(transaction);
         LastModifiedAt = DateTime.UtcNow;
+        IsDirty = true;
     }
 
     /// <summary>

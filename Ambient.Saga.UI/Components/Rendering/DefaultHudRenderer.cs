@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Ambient.Domain.Enums;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -12,11 +13,6 @@ namespace Ambient.Saga.UI.Components.Rendering;
 /// </summary>
 public class DefaultHudRenderer : IHudRenderer
 {
-    // Temperature thresholds (body temp in Celsius - 37 is normal)
-    private const float NormalTemperature = 37f;
-    private const float ColdThreshold = 35f;   // Hypothermia warning
-    private const float HotThreshold = 39f;    // Hyperthermia warning
-
     // Resource bar styling - dynamic sizing
     private const float MinBarWidth = 80f;
     private const float MaxBarWidth = 150f;
@@ -62,7 +58,7 @@ public class DefaultHudRenderer : IHudRenderer
 
     private void RenderResourceBars(SagaMainViewModel viewModel)
     {
-        var stats = viewModel.PlayerAvatar?.Stats;
+        var stats = viewModel.Avatar?.Stats;
         if (stats == null)
         {
             ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), "No avatar");
@@ -145,8 +141,8 @@ public class DefaultHudRenderer : IHudRenderer
 
     private TemperatureStatus GetTemperatureStatus(float temperature)
     {
-        if (temperature < ColdThreshold) return TemperatureStatus.Cold;
-        if (temperature > HotThreshold) return TemperatureStatus.Hot;
+        if (temperature < ThermalConstants.ColdWarning) return TemperatureStatus.Cold;
+        if (temperature > ThermalConstants.HotWarning) return TemperatureStatus.Hot;
         return TemperatureStatus.Normal;
     }
 

@@ -1,7 +1,7 @@
 ﻿namespace Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 /// <summary>
-/// Tracks a player's visit to a specific dialogue node.
+/// Tracks an avatar's visit to a specific dialogue node.
 /// Used to ensure idempotent replay - dialogue actions (give items, assign traits) only execute once per visit.
 /// </summary>
 public class DialogueVisit
@@ -9,7 +9,7 @@ public class DialogueVisit
     /// <summary>
     /// Unique key for this visit.
     /// Format: "{AvatarId}_{CharacterRef}_{NodeId}"
-    /// Example: "player123_MerchantNPC_reward_node"
+    /// Example: "Avatar123_MerchantNPC_reward_node"
     /// </summary>
     public string VisitKey { get; set; } = string.Empty;
 
@@ -71,7 +71,7 @@ public class DialogueVisit
 
     /// <summary>
     /// Currency amount that was transferred on first visit.
-    /// Positive = given to player, Negative = taken from player.
+    /// Positive = given to avatar, Negative = taken from avatar.
     /// </summary>
     public int CurrencyTransferred { get; set; }
 

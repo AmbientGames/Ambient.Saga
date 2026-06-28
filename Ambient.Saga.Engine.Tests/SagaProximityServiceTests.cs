@@ -1,7 +1,9 @@
 ﻿using Ambient.Domain;
 using Ambient.Domain.Partials;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain.Services;
+using Ambient.Saga.Engine.Tests.Helpers;
 
 namespace Ambient.Saga.Engine.Tests;
 
@@ -52,16 +54,26 @@ public class SagaProximityServiceTests
             AvatarId = Guid.NewGuid(),
             Capabilities = new ItemCollection
             {
-                QuestTokens = Array.Empty<QuestTokenEntry>() // No quest tokens
             }
         };
+
+        // Provide a world repository with a saga instance so DetermineTriggerStatusAsync
+        // can replay state and check quest token requirements (no tokens awarded = locked)
+        var worldRepo = new StubWorldStateRepository();
+        worldRepo.AddSagaInstance(avatar.AvatarId.ToString(), saga.RefName, new SagaInstance
+        {
+            InstanceId = Guid.NewGuid(),
+            SagaRef = saga.RefName,
+            OwnerAvatarId = avatar.AvatarId,
+            Transactions = new List<SagaTransaction>()
+        });
 
         var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.Longitude, world);
         var sagaModelZ = CoordinateConverter.LatitudeToModelZ(saga.Latitude, world);
 
         // Act
         var results = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
-            sagaModelX, sagaModelZ, avatar, world);
+            sagaModelX, sagaModelZ, avatar, world, worldRepo);
 
         // Assert
         Assert.NotEmpty(results);
@@ -83,10 +95,7 @@ public class SagaProximityServiceTests
         var avatar = new AvatarBase
         {
             AvatarId = Guid.NewGuid(),
-            Capabilities = new ItemCollection
-            {
-                QuestTokens = new[] { new QuestTokenEntry { QuestTokenRef = "KEY_ITEM" } }
-            }
+            Capabilities = new ItemCollection()
         };
 
         var sagaModelX = CoordinateConverter.LongitudeToModelX(saga.Longitude, world);
@@ -127,7 +136,7 @@ public class SagaProximityServiceTests
                     SagaArcs = Array.Empty<SagaArc>()
                 }
             },
-            SagaTriggersLookup = new Dictionary<string, List<SagaTrigger>>()
+            SagaTriggersLookup = new System.Collections.Concurrent.ConcurrentDictionary<string, List<SagaTrigger>>()
         };
 
         return world;

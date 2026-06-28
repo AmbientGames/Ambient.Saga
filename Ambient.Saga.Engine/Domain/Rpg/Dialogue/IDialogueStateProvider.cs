@@ -1,7 +1,7 @@
 ﻿namespace Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 
 /// <summary>
-/// Abstraction for querying player and world state during dialogue.
+/// Abstraction for querying avatar and world state during dialogue.
 /// Implementations should provide access to inventory, achievements, quest progress, etc.
 /// </summary>
 public interface IDialogueStateProvider
@@ -19,13 +19,13 @@ public interface IDialogueStateProvider
     bool HasTool(string toolRef);
     bool HasSpell(string spellRef);
 
-    // ===== PLAYER STATE =====
+    // ===== AVATAR STATE =====
     bool HasAchievement(string achievementRef);
     float GetCredits();
     float GetHealth();
 
     // ===== DIALOGUE HISTORY =====
-    int GetPlayerVisitCount(string dialogueTreeRef);
+    int GetAvatarVisitCount(string dialogueTreeRef);
     bool WasNodeVisited(string dialogueTreeRef, string nodeId);
 
     // ===== WORLD STATE =====
@@ -57,7 +57,6 @@ public interface IDialogueStateProvider
     void RemoveSpell(string spellRef);
 
     void AddQuestToken(string questTokenRef);
-    void RemoveQuestToken(string questTokenRef);
 
     void TransferCurrency(int amount);
     void UnlockAchievement(string achievementRef);

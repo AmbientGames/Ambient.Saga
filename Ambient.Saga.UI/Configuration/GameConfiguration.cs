@@ -28,7 +28,7 @@ public static class GameConfiguration
 
     /// <summary>
     /// Toggle developer info visibility at runtime.
-    /// Useful for testing player view in debug builds.
+    /// Useful for testing avatar view in debug builds.
     /// </summary>
     public static void ToggleDeveloperInfo() => ShowDeveloperInfo = !ShowDeveloperInfo;
 

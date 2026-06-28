@@ -21,6 +21,19 @@ public interface IAvatarBase
 /// </summary>
 public partial class AvatarBase : IAvatarBase
 {
+    public AvatarBase(string displayName)
+    {
+        DisplayName = displayName;
+        TimeStampUtc = DateTime.UtcNow;
+    }
+
+    public AvatarBase()
+    {
+        TimeStampUtc = DateTime.UtcNow;
+    }
+
+    public DateTime TimeStampUtc { get; set; }
+
     /// <summary>
     /// The standard eye height for avatars in game units.
     /// </summary>
@@ -94,10 +107,19 @@ public partial class AvatarBase : IAvatarBase
     public static float StandardWalkSpeed = 4.3f;
 
     /// <summary>
+    /// Base speed factor from archetype body weight (0–1 range). Set once at avatar creation.
+    /// Lighter archetypes are inherently faster. Multiply by loadout factor at runtime for actual speed.
+    /// </summary>
+    [XmlIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
+    public float BaseSpeedFactor { get; set; } = 1f;
+
+    /// <summary>
     /// Thread-safe collection of pending notification messages for this avatar.
     /// </summary>
     [NonSerialized]
     [XmlIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
     public BlockingCollection<NotificationMessage> PendingMessages = new();
 
     /// <summary>
@@ -105,6 +127,7 @@ public partial class AvatarBase : IAvatarBase
     /// </summary>
     [NonSerialized]
     [XmlIgnore]
+    [System.Text.Json.Serialization.JsonIgnore]
     public int UdpMessageIdProcessed;
 
     /// <summary>
@@ -142,17 +165,21 @@ public partial class AvatarBase : IAvatarBase
     /// </summary>
     public int ChunksOwned { get; set; }
 
-    ///// <summary>
-    ///// Saturation levels for blocks owned by the avatar.
-    ///// </summary>
-    //public int[] BlockOwnershipSaturation { get; set; } = new int[WorldMaximums.MaxBlocks];
+    /// <summary>
+    /// IDictionary wrapper backed by Capabilities.Blocks — all reads/writes go through the BlockEntry[] array.
+    /// </summary>
     [XmlIgnore]
-    public Dictionary<string, float> BlockOwnership { get; set; } = new Dictionary<string, float>();
+    [System.Text.Json.Serialization.JsonIgnore]
+    public BlockInventoryDictionary BlockOwnership => _blockInventory ??= new BlockInventoryDictionary(
+        () => Capabilities?.Blocks,
+        blocks => { if (Capabilities != null) Capabilities.Blocks = blocks; });
+
+    [NonSerialized] private BlockInventoryDictionary? _blockInventory;
 
     /// <summary>
     /// Usage statistics for blocks placed by the avatar (fractional based on saturation).
     /// </summary>
-    public float[] BlockUsage { get; set; } = new float[WorldMaximums.MaxBlocks];
+    public float[] BlockUsageStatistics { get; set; } = new float[WorldMaximums.MaxBlocks];
 
     /// <summary>
     /// The avatar's spawn position.
@@ -183,6 +210,8 @@ public partial class AvatarBase : IAvatarBase
     /// The ID of the world the avatar is in.
     /// </summary>
     public Guid WorldId { get; set; }
+
+    public ulong SteamId { get; set; }
 
     /// <summary>
     /// Decrements the block placement credit for a given block type.

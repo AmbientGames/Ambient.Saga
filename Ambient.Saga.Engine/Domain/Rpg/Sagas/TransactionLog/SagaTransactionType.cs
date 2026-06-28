@@ -30,9 +30,9 @@ public enum SagaTransactionType
     CriticalHitDealt,       // Critical hit dealt in combat
     ComboExecuted,          // Combo chain attack executed
 
-    // Player interactions
-    PlayerEntered,
-    PlayerExited,
+    // Avatar interactions
+    AvatarEntered,
+    AvatarExited,
 
     // Entity interactions
     EntityInteracted,
@@ -45,7 +45,7 @@ public enum SagaTransactionType
 
     // Trading and economy
     ItemTraded,              // Tracks merchant trade transactions
-    ItemCrafted,             // Item crafted by player
+    ItemCrafted,             // Item crafted by avatar
     CurrencyChanged,         // Currency gained or lost
 
     // Party management
@@ -76,11 +76,10 @@ public enum SagaTransactionType
     QuestAccepted,           // Quest accepted from signpost/NPC
     QuestObjectiveCompleted, // Individual objective within a stage completed
     QuestStageAdvanced,      // Advanced to next stage (all objectives complete)
-    QuestBranchChosen,       // Player chose a branch in exclusive choice stage
+    QuestBranchChosen,       // Avatar chose a branch in exclusive choice stage
     QuestCompleted,          // Quest finished successfully (all stages complete)
     QuestFailed,             // Quest failed (fail condition triggered or wrong choice)
-    QuestAbandoned,          // Quest dropped by player
-    QuestProgressed,         // DEPRECATED: Use QuestObjectiveCompleted instead
+    QuestAbandoned,          // Quest dropped by avatar
     CustomObjectiveCompleted, // Custom objective manually marked complete
 
     // Structure interactions

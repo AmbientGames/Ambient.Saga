@@ -13,6 +13,15 @@ namespace Ambient.Saga.Engine.Contracts.Services;
 public interface IAvatarUpdateService
 {
     /// <summary>
+    /// Raised after any transaction that mutates <c>avatar.Stats.Credits</c>
+    /// (Trade, Loot, Effect). Hosts forward these to the authoritative server
+    /// so the server-side balance stays in sync. Fires after the local mutation
+    /// is applied, so <c>avatar.Stats.Credits</c> already reflects the delta
+    /// when subscribers run.
+    /// </summary>
+    event Action<CreditChangeNotification>? CreditsChanged;
+
+    /// <summary>
     /// Updates avatar inventory and credits based on a trade transaction.
     /// </summary>
     /// <param name="avatar">The avatar to update</param>
@@ -52,18 +61,6 @@ public interface IAvatarUpdateService
         AvatarEntity avatar,
         SagaInstance sagaInstance,
         Guid lootTransactionId,
-        CancellationToken ct = default);
-
-    /// <summary>
-    /// Adds a quest token to avatar's capabilities.
-    /// </summary>
-    /// <param name="avatar">The avatar to update</param>
-    /// <param name="questTokenRef">The quest token reference to add</param>
-    /// <param name="ct">Cancellation token</param>
-    /// <returns>The updated avatar</returns>
-    Task<AvatarEntity> AddQuestTokenAsync(
-        AvatarEntity avatar,
-        string questTokenRef,
         CancellationToken ct = default);
 
     /// <summary>

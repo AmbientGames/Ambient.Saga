@@ -9,6 +9,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -24,7 +25,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// Comprehensive end-to-end tests for complete Saga flows validating all major fixes:
 ///
 /// FIX VALIDATION:
-/// - Zone exit detection (PlayerExited + CharacterDespawned)
+/// - Zone exit detection (AvatarExited + CharacterDespawned)
 /// - Feature distance calculation (latitude correction)
 /// - Trade validation (credits, inventory, character alive)
 /// - Loot system (inventory transfer)
@@ -68,8 +69,11 @@ public class FullSagaFlowE2ETests : IDisposable
         // Register dependencies
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository>(new TestAvatarRepository()); // Mock repository for tests
+        services.AddSingleton<Func<IGameAvatarRepository>>(sp => () => sp.GetRequiredService<IGameAvatarRepository>());
+        services.AddSingleton<Func<IWorld>>(sp => () => sp.GetRequiredService<IWorld>());
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
@@ -367,7 +371,6 @@ public class FullSagaFlowE2ETests : IDisposable
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
     }

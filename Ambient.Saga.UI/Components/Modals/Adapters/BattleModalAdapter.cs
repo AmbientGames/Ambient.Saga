@@ -15,6 +15,15 @@ public class BattleModalAdapter : IModal
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
     }
 
+    /// <summary>
+    /// Subscribe to be notified when the avatar is defeated in battle.
+    /// </summary>
+    public event Action? AvatarDefeated
+    {
+        add => _modal.AvatarDefeated += value;
+        remove => _modal.AvatarDefeated -= value;
+    }
+
     public string Name => "BossBattle";
 
     public bool CanOpen(object? context)

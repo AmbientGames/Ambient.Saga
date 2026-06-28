@@ -1,3 +1,5 @@
+using Ambient.Domain.Enums;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
 using System.Numerics;
@@ -64,9 +66,9 @@ public class CharacterPanel
         }
 
         // Home Location (spawn point)
-        if (viewModel.PlayerAvatar != null)
+        if (viewModel.Avatar != null)
         {
-            var home = viewModel.PlayerAvatar.HomeLocation;
+            var home = viewModel.Avatar.HomeLocation;
             if (home.X != 0 || home.Y != 0)
             {
                 ImGui.Spacing();
@@ -79,9 +81,9 @@ public class CharacterPanel
         ImGui.Separator();
 
         // Vitals/Stats
-        if (viewModel.PlayerAvatar != null && viewModel.PlayerAvatar.Stats != null)
+        if (viewModel.Avatar != null && viewModel.Avatar.Stats != null)
         {
-            var vitals = viewModel.PlayerAvatar.Stats;
+            var vitals = viewModel.Avatar.Stats;
             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credit";
             var pluralCurrency = vitals.Credits == 1 ? currencyName : currencyName + "s";
 
@@ -119,17 +121,17 @@ public class CharacterPanel
             RenderStatBar("Endurance", vitals.Endurance / 100.0, new Vector4(0.5f, 0.8f, 0.8f, 1));
 
             // Invulnerability status
-            if (viewModel.PlayerAvatar.IsInvulnerable)
+            if (viewModel.Avatar.IsInvulnerable)
             {
                 ImGui.Spacing();
                 ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), "[INVULNERABLE]");
             }
 
             // Archetype info with bias
-            if (!string.IsNullOrEmpty(viewModel.PlayerAvatar.ArchetypeRef))
+            if (!string.IsNullOrEmpty(viewModel.Avatar.ArchetypeRef))
             {
                 var archetype = viewModel.CurrentWorld?.Gameplay?.AvatarArchetypes?
-                    .FirstOrDefault(a => a.RefName == viewModel.PlayerAvatar.ArchetypeRef);
+                    .FirstOrDefault(a => a.RefName == viewModel.Avatar.ArchetypeRef);
 
                 if (archetype != null)
                 {
@@ -150,6 +152,32 @@ public class CharacterPanel
                         ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), "Affinity:");
                         ImGui.SameLine();
                         ImGui.Text(affinityName);
+                    }
+
+                    // Weight & Carry Capacity
+                    var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
+                    if (worldConfig != null)
+                    {
+                        var weightUnit = worldConfig.WeightUnitName ?? "kg";
+                        var maxCarry = CarryWeightCalculator.GetMaxCarryWeight(archetype);
+                        var currentCarry = CarryWeightCalculator.CalculateTotalWeight(
+                            viewModel.Avatar.Capabilities, worldConfig);
+                        var fraction = maxCarry > 0 ? currentCarry / maxCarry : 0f;
+
+                        ImGui.Spacing();
+                        RenderStatLine("Weight:", $"{archetype.Weight:N0} {weightUnit}");
+
+                        var carryColor = fraction > 0.9f
+                            ? new Vector4(1, 0.3f, 0.3f, 1)
+                            : fraction > 0.7f
+                                ? new Vector4(1, 0.8f, 0.3f, 1)
+                                : new Vector4(0.5f, 0.8f, 1, 1);
+                        ImGui.PushStyleColor(ImGuiCol.PlotHistogram, carryColor);
+                        ImGui.Text("Carry:");
+                        ImGui.SameLine(100 * UIConstants.DpiScale);
+                        ImGui.ProgressBar(fraction, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()),
+                            $"{currentCarry:N1} / {maxCarry:N1} {weightUnit}");
+                        ImGui.PopStyleColor();
                     }
 
                     // Archetype bias (permanent stat modifiers)
@@ -199,13 +227,13 @@ public class CharacterPanel
         ImGui.Separator();
 
         // Collected Affinities (captured from characters)
-        if (viewModel.PlayerAvatar?.Affinities != null && viewModel.PlayerAvatar.Affinities.Length > 0)
+        if (viewModel.Avatar?.Affinities != null && viewModel.Avatar.Affinities.Length > 0)
         {
             ImGui.TextColored(new Vector4(0.8f, 0.5f, 1, 1), "Collected Affinities:");
             ImGui.Spacing();
 
             // Active affinity indicator
-            var activeAffinity = viewModel.PlayerAvatar.ActiveAffinityRef;
+            var activeAffinity = viewModel.Avatar.ActiveAffinityRef;
             if (!string.IsNullOrEmpty(activeAffinity))
             {
                 var activeAffinityDef = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == activeAffinity);
@@ -214,7 +242,7 @@ public class CharacterPanel
                 ImGui.Spacing();
             }
 
-            foreach (var affinity in viewModel.PlayerAvatar.Affinities)
+            foreach (var affinity in viewModel.Avatar.Affinities)
             {
                 var affinityDef = viewModel.CurrentWorld?.Gameplay?.CharacterAffinities?.FirstOrDefault(a => a.RefName == affinity.AffinityRef);
                 var name = affinityDef?.DisplayName ?? affinity.AffinityRef;
@@ -274,12 +302,12 @@ public class CharacterPanel
         }
 
         // Party/Companions
-        if (viewModel.PlayerAvatar?.Party?.Member != null && viewModel.PlayerAvatar.Party.Member.Length > 0)
+        if (viewModel.Avatar?.Party?.Member != null && viewModel.Avatar.Party.Member.Length > 0)
         {
             ImGui.TextColored(new Vector4(1, 0.8f, 0.5f, 1), "Party Members:");
             ImGui.Spacing();
 
-            foreach (var member in viewModel.PlayerAvatar.Party.Member)
+            foreach (var member in viewModel.Avatar.Party.Member)
             {
                 var memberChar = viewModel.CurrentWorld?.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == member.CharacterRef);
                 var memberName = memberChar?.DisplayName ?? member.CharacterRef;
@@ -315,10 +343,10 @@ public class CharacterPanel
             }
 
             // Party faction info
-            if (!string.IsNullOrEmpty(viewModel.PlayerAvatar.Party.SlotFactionRef))
+            if (!string.IsNullOrEmpty(viewModel.Avatar.Party.SlotFactionRef))
             {
                 ImGui.Spacing();
-                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Party Faction: {viewModel.PlayerAvatar.Party.SlotFactionRef}");
+                ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), $"Party Faction: {viewModel.Avatar.Party.SlotFactionRef}");
             }
         }
         else
@@ -336,12 +364,12 @@ public class CharacterPanel
         RenderFactionSection(viewModel);
 
         // Lifetime Statistics
-        if (viewModel.PlayerAvatar != null)
+        if (viewModel.Avatar != null)
         {
             ImGui.TextColored(new Vector4(0.7f, 0.9f, 1, 1), "Lifetime Statistics:");
             ImGui.Spacing();
 
-            var avatar = viewModel.PlayerAvatar;
+            var avatar = viewModel.Avatar;
 
             if (ImGui.BeginTable("LifetimeStatsTable", 2, ImGuiTableFlags.SizingFixedFit))
             {
@@ -427,13 +455,6 @@ public class CharacterPanel
         ImGui.PopStyleColor();
     }
 
-    // Temperature thresholds (body temp in Celsius - 37 is normal)
-    private const float NormalTemperature = 37f;
-    private const float ColdThreshold = 35f;   // Hypothermia warning
-    private const float HotThreshold = 39f;    // Hyperthermia warning
-    private const float CriticalColdThreshold = 32f;  // Severe hypothermia
-    private const float CriticalHotThreshold = 42f;   // Severe hyperthermia
-
     private void RenderTemperatureStat(float temperature)
     {
         var scale = UIConstants.DpiScale;
@@ -446,25 +467,25 @@ public class CharacterPanel
         Vector4 barColor;
         Vector4 textColor;
 
-        if (temperature < CriticalColdThreshold)
+        if (temperature < ThermalConstants.ColdCritical)
         {
             statusText = "CRITICAL";
             barColor = new Vector4(0.2f, 0.4f, 1f, 1f);      // Deep blue
             textColor = new Vector4(0.4f, 0.6f, 1f, 1f);
         }
-        else if (temperature < ColdThreshold)
+        else if (temperature < ThermalConstants.ColdWarning)
         {
             statusText = "Cold";
             barColor = new Vector4(0.4f, 0.7f, 1f, 1f);      // Light blue
             textColor = new Vector4(0.5f, 0.8f, 1f, 1f);
         }
-        else if (temperature > CriticalHotThreshold)
+        else if (temperature > ThermalConstants.HotCritical)
         {
             statusText = "CRITICAL";
             barColor = new Vector4(1f, 0.2f, 0.2f, 1f);      // Deep red
             textColor = new Vector4(1f, 0.4f, 0.4f, 1f);
         }
-        else if (temperature > HotThreshold)
+        else if (temperature > ThermalConstants.HotWarning)
         {
             statusText = "Hot";
             barColor = new Vector4(1f, 0.5f, 0.2f, 1f);      // Orange
@@ -481,15 +502,15 @@ public class CharacterPanel
         // Bar shows distance from thresholds: 0 = at threshold, 1 = at normal
         // Invert so that normal = full bar, threshold = empty bar
         float progress;
-        if (temperature < NormalTemperature)
+        if (temperature < ThermalConstants.NormalBodyTemp)
         {
-            // Cold side: CriticalCold (0%) -> Normal (100%)
-            progress = Math.Clamp((temperature - CriticalColdThreshold) / (NormalTemperature - CriticalColdThreshold), 0f, 1f);
+            // Cold side: ColdCritical (0%) -> Normal (100%)
+            progress = Math.Clamp((temperature - ThermalConstants.ColdCritical) / (ThermalConstants.NormalBodyTemp - ThermalConstants.ColdCritical), 0f, 1f);
         }
         else
         {
-            // Hot side: Normal (100%) -> CriticalHot (0%)
-            progress = Math.Clamp(1f - (temperature - NormalTemperature) / (CriticalHotThreshold - NormalTemperature), 0f, 1f);
+            // Hot side: Normal (100%) -> HotCritical (0%)
+            progress = Math.Clamp(1f - (temperature - ThermalConstants.NormalBodyTemp) / (ThermalConstants.HotCritical - ThermalConstants.NormalBodyTemp), 0f, 1f);
         }
 
         ImGui.PushStyleColor(ImGuiCol.PlotHistogram, barColor);
@@ -499,7 +520,7 @@ public class CharacterPanel
 
     private void RenderEquippedItems(SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar?.CombatProfile == null || viewModel.CurrentWorld == null)
+        if (viewModel.Avatar?.CombatProfile == null || viewModel.CurrentWorld == null)
             return;
 
         // Get loadout slots from world definition
@@ -542,14 +563,14 @@ public class CharacterPanel
 
     private void RenderCurrentSelection(SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar == null || viewModel.CurrentWorld == null)
+        if (viewModel.Avatar == null || viewModel.CurrentWorld == null)
             return;
 
         var hasSelection = false;
         var scale = UIConstants.DpiScale;
 
         // Current Tool (only show if lookup succeeds)
-        var currentToolRef = viewModel.PlayerAvatar.CurrentToolRef;
+        var currentToolRef = viewModel.Avatar.CurrentToolRef;
         if (!string.IsNullOrEmpty(currentToolRef))
         {
             var tool = viewModel.CurrentWorld.TryGetToolByRefName(currentToolRef);
@@ -598,8 +619,8 @@ public class CharacterPanel
 
     private void RenderFactionEntry(Ambient.Domain.Faction faction, SagaMainViewModel viewModel)
     {
-        // Get player's reputation with this faction
-        var currentRep = faction.StartingReputation; // TODO: Get actual player reputation from avatar
+        // Get avatar's reputation with this faction
+        var currentRep = faction.StartingReputation; // TODO: Get actual avatar reputation
         var repLevel = GetReputationLevel(currentRep);
         var (levelColor, levelName) = GetReputationDisplay(repLevel);
 

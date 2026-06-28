@@ -3,6 +3,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -65,28 +66,22 @@ internal sealed class SpawnDevCharacterHandler : IRequestHandler<SpawnDevCharact
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = characterInstanceId.ToString(),
-                    ["CharacterRef"] = command.CharacterRef,
-                    ["SagaTriggerRef"] = "DEV_TRIGGER",
-                    ["X"] = "0",
-                    ["Z"] = "0",
-                    ["SpawnHeight"] = "0",
-                    ["IsDevSpawn"] = "true"
+                    [TransactionDataKeys.CharacterInstanceId] = characterInstanceId.ToString(),
+                    [TransactionDataKeys.CharacterRef] = command.CharacterRef,
+                    [TransactionDataKeys.SagaTriggerRef] = "DEV_TRIGGER",
+                    [TransactionDataKeys.X] = "0",
+                    [TransactionDataKeys.Z] = "0",
+                    [TransactionDataKeys.SpawnHeight] = "0",
+                    [TransactionDataKeys.IsDevSpawn] = "true"
                 }
             };
 
             instance.AddTransaction(spawnTransaction);
 
-            // Persist transaction
-            await _instanceRepository.AddTransactionsAsync(
+            // Persist and commit transaction
+            var (_, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { spawnTransaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { spawnTransaction.TransactionId },
                 ct);
 
             if (!committed)

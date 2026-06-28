@@ -65,6 +65,14 @@ public class InteractionHintsSection : IHudSection
 
         currentX = RenderCompactKey(drawList, currentX, centerY, "J", context.ActivePanel == ActivePanel.Journal);
 
+        // Extended panel (game-registered via PanelManager)
+        var extPanel = context.PanelManager?.Panel;
+        if (extPanel != null && extPanel.IsAvailable)
+        {
+            currentX += KeySpacing;
+            currentX = RenderCompactKey(drawList, currentX, centerY, extPanel.KeyLabel, context.ActivePanel == ActivePanel.Extended);
+        }
+
         // Developer keys (only when debugger attached)
         if (isDebug)
         {
@@ -105,6 +113,13 @@ public class InteractionHintsSection : IHudSection
         width += ImGui.CalcTextSize("C").X + keyHorizontalPadding + KeySpacing;
         width += ImGui.CalcTextSize("I").X + keyHorizontalPadding + KeySpacing;
         width += ImGui.CalcTextSize("J").X + keyHorizontalPadding;
+
+        // Extended panel
+        var extPanel = context.PanelManager?.Panel;
+        if (extPanel != null && extPanel.IsAvailable)
+        {
+            width += ImGui.CalcTextSize(extPanel.KeyLabel).X + keyHorizontalPadding + KeySpacing;
+        }
 
         // Dev keys
         if (isDebug)

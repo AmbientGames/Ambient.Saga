@@ -25,9 +25,6 @@
     </Capabilities>
     <Interactable>
       <Loot>
-        <QuestTokens>
-          <Entry QuestTokenRef="BanditChief_HideoutMap" />
-        </QuestTokens>
       </Loot>
     </Interactable>
     <Traits>
@@ -77,9 +74,6 @@
     </Capabilities>
     <Interactable>
       <Loot>
-        <QuestTokens>
-          <Entry QuestTokenRef="BanditChief_ChiefsBadge" />
-        </QuestTokens>
       </Loot>
     </Interactable>
     <Traits>
@@ -148,9 +142,6 @@
     </Capabilities>
     <Interactable>
       <Loot>
-        <QuestTokens>
-          <Entry QuestTokenRef="ElementalSage_TrialComplete" />
-        </QuestTokens>
       </Loot>
     </Interactable>
     <Traits>
@@ -160,6 +151,7 @@
     <Tags>
       <Tag>FlameGuardian</Tag>
     </Tags>
+    <GivesQuestTokenOnDefeat>ElementalSage_TrialComplete</GivesQuestTokenOnDefeat>
   </Character>
   <Character RefName="FalseProphet_Concerned" DisplayName="Worried Chaperone" Description="A teacher concerned about the scary stories spreading">
     <Stats Health="0.50" Stamina="0.4" Mana="0.3" Strength="0.04" Defense="0.05" Speed="0.06" Magic="0.08" Credits="40" />
@@ -337,6 +329,7 @@
       <Trait Name="Hostile" Value="1" />
       <Trait Name="FleeThreshold" Value="0" />
     </Traits>
+    <GivesQuestTokenOnDefeat>HiddenCache_AncientKey</GivesQuestTokenOnDefeat>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="HiddenCache_GuardianBattle" StartNodeId="battle_activation" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.5" DialogueTreeRef="HiddenCache_GuardianBattle" StartNodeId="battle_damage_warning" OnceOnly="true" />
@@ -376,7 +369,7 @@
     </Traits>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="begin_end" OnceOnly="true" />
-      <Trigger Condition="PlayerHealthBelow" Value="0.3" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="player_low" OnceOnly="true" />
+      <Trigger Condition="AvatarHealthBelow" Value="0.3" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="player_low" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.5" DialogueTreeRef="LostTechnique_SparBattle" StartNodeId="impressed_end" OnceOnly="true" />
     </BattleDialogue>
   </Character>
@@ -470,10 +463,6 @@
     </Capabilities>
     <Interactable>
       <Loot>
-        <QuestTokens>
-          <Entry QuestTokenRef="MissingHeirloom_Heirloom" />
-          <Entry QuestTokenRef="MissingHeirloom_ThiefConfession" />
-        </QuestTokens>
       </Loot>
       <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
     </Interactable>
@@ -497,9 +486,6 @@
     </Capabilities>
     <Interactable>
       <Loot>
-        <QuestTokens>
-          <Entry QuestTokenRef="MissingHeirloom_Heirloom" />
-        </QuestTokens>
       </Loot>
       <DialogueTreeRef>MissingHeirloom_Victim_Start</DialogueTreeRef>
     </Interactable>
@@ -696,9 +682,6 @@
     </Capabilities>
     <Interactable>
       <Loot>
-        <QuestTokens>
-          <Entry QuestTokenRef="RivalGuild_LeaderDefeated" />
-        </QuestTokens>
       </Loot>
       <DialogueTreeRef>RivalGuild_Recruitment</DialogueTreeRef>
     </Interactable>
@@ -707,6 +690,7 @@
       <Trait Name="BossFight" Value="1" />
       <Trait Name="TacticalRetreat" Value="25" />
     </Traits>
+    <GivesQuestTokenOnDefeat>RivalGuild_LeaderDefeated</GivesQuestTokenOnDefeat>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="RivalGuild_RivalBattle" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.5" DialogueTreeRef="RivalGuild_RivalBattle" StartNodeId="battle_midpoint" OnceOnly="true" />

@@ -130,7 +130,7 @@ public class StubMediator : IMediator
 public class MerchantTradeViewModelTests
 {
     private readonly IWorld _world;
-    private readonly AvatarEntity _player;
+    private readonly AvatarEntity _avatar;
     private readonly Character _merchant;
     private readonly SagaInteractionContext _context;
     private readonly IMediator _mediator;
@@ -138,7 +138,7 @@ public class MerchantTradeViewModelTests
     public MerchantTradeViewModelTests()
     {
         _world = CreateTestWorld();
-        _player = CreateTestPlayer();
+        _avatar = CreateTestAvatar();
         _merchant = CreateTestMerchant();
         _mediator = new StubMediator();
         _context = CreateTestContext();
@@ -149,7 +149,7 @@ public class MerchantTradeViewModelTests
         return new SagaInteractionContext
         {
             World = _world,
-            AvatarEntity = _player,
+            AvatarEntity = _avatar,
             ActiveCharacter = _merchant,
             CurrentSagaRef = "TestSaga",
             CurrentCharacterInstanceId = Guid.NewGuid()
@@ -224,7 +224,7 @@ public class MerchantTradeViewModelTests
         return world;
     }
 
-    private AvatarEntity CreateTestPlayer(float credits = 1000f)
+    private AvatarEntity CreateTestAvatar(float credits = 1000f)
     {
         return new AvatarEntity
         {
@@ -308,11 +308,11 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
-    public void PlayerAvatar_ReturnsContextAvatar()
+    public void Avatar_ReturnsContextAvatar()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
 
-        Assert.Equal(_player, viewModel.PlayerAvatar);
+        Assert.Equal(_avatar, viewModel.Avatar);
     }
 
     #endregion
@@ -429,7 +429,7 @@ public class MerchantTradeViewModelTests
 
         viewModel.TradeMode = "Sell";
 
-        // In sell mode with empty player inventory, should return empty
+        // In sell mode with empty avatar inventory, should return empty
         Assert.Empty(viewModel.TradeInventory);
     }
 
@@ -446,10 +446,10 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
-    public void TradeInventory_InSellMode_ReturnsPlayerItems()
+    public void TradeInventory_InSellMode_ReturnsAvatarItems()
     {
-        // Give player an item
-        _player.Capabilities.Equipment = new[]
+        // Give avatar an item
+        _avatar.Capabilities.Equipment = new[]
         {
             new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }
         };
@@ -498,12 +498,12 @@ public class MerchantTradeViewModelTests
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
         var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
-        var initialCredits = _player.Stats.Credits;
+        var initialCredits = _avatar.Stats.Credits;
 
         await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
 
-        Assert.True(_player.Stats.Credits < initialCredits);
-        Assert.Contains(_player.Capabilities.Equipment!, e => e.EquipmentRef == "iron_sword");
+        Assert.True(_avatar.Stats.Credits < initialCredits);
+        Assert.Contains(_avatar.Capabilities.Equipment!, e => e.EquipmentRef == "iron_sword");
     }
 
     [Fact]
@@ -539,7 +539,7 @@ public class MerchantTradeViewModelTests
     [Fact]
     public async Task BuyItemCommand_WithInsufficientCredits_FiresErrorStatus()
     {
-        _player.Stats.Credits = 10; // Not enough for any item
+        _avatar.Stats.Credits = 10; // Not enough for any item
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
         var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
 
@@ -555,13 +555,13 @@ public class MerchantTradeViewModelTests
     [Fact]
     public async Task BuyItemCommand_WithInsufficientCredits_DoesNotAddItem()
     {
-        _player.Stats.Credits = 10;
+        _avatar.Stats.Credits = 10;
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
         var itemToBuy = viewModel.TradeInventory.First(i => i.Item.RefName == "iron_sword");
 
         await viewModel.BuyItemCommand.ExecuteAsync(itemToBuy);
 
-        Assert.Empty(_player.Capabilities.Equipment!);
+        Assert.Empty(_avatar.Capabilities.Equipment!);
     }
 
     #endregion
@@ -571,11 +571,11 @@ public class MerchantTradeViewModelTests
     [Fact]
     public async Task SellItemCommand_WithItemInInventory_AddsCreditsAndRemovesItem()
     {
-        _player.Capabilities.Equipment = new[]
+        _avatar.Capabilities.Equipment = new[]
         {
             new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }
         };
-        var initialCredits = _player.Stats.Credits;
+        var initialCredits = _avatar.Stats.Credits;
 
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
         viewModel.TradeMode = "Sell";
@@ -583,14 +583,14 @@ public class MerchantTradeViewModelTests
 
         await viewModel.SellItemCommand.ExecuteAsync(itemToSell);
 
-        Assert.True(_player.Stats.Credits > initialCredits);
-        Assert.Empty(_player.Capabilities.Equipment!);
+        Assert.True(_avatar.Stats.Credits > initialCredits);
+        Assert.Empty(_avatar.Capabilities.Equipment!);
     }
 
     [Fact]
     public async Task SellItemCommand_WithItemInInventory_FiresActivityMessage()
     {
-        _player.Capabilities.Equipment = new[]
+        _avatar.Capabilities.Equipment = new[]
         {
             new EquipmentEntry { EquipmentRef = "iron_sword", Condition = 1.0f }
         };
@@ -610,7 +610,7 @@ public class MerchantTradeViewModelTests
     }
 
     [Fact]
-    public void SellItemInventory_WithEmptyPlayerInventory_ReturnsEmpty()
+    public void SellItemInventory_WithEmptyAvatarInventory_ReturnsEmpty()
     {
         var viewModel = new MerchantTradeViewModel(_context, _mediator);
         viewModel.TradeMode = "Sell";
@@ -628,7 +628,7 @@ public class MerchantTradeViewModelTests
         var contextWithNullWorld = new SagaInteractionContext
         {
             World = null,
-            AvatarEntity = _player,
+            AvatarEntity = _avatar,
             ActiveCharacter = _merchant
         };
 
@@ -666,7 +666,7 @@ public class MerchantTradeViewModelTests
         var contextWithNullSaga = new SagaInteractionContext
         {
             World = _world,
-            AvatarEntity = _player,
+            AvatarEntity = _avatar,
             ActiveCharacter = _merchant,
             CurrentSagaRef = null,
             CurrentCharacterInstanceId = Guid.NewGuid()

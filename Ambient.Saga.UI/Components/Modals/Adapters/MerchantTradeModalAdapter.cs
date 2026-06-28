@@ -13,8 +13,9 @@ public class MerchantTradeModalAdapter : IModal
 
     public bool CanOpen(object? context)
     {
-        // Validate that we have the required character context with a merchant
-        return context is CharacterContext { Character.CanTrade: true };
+        // Merchants (CanTrade) and caches (IsCache) both use this modal.
+        return context is CharacterContext { Character.CanTrade: true }
+            || context is CharacterContext { Character.IsCache: true };
     }
 
     public void OnOpening(object? context)

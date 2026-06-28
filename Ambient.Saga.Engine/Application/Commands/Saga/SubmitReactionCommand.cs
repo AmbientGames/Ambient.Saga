@@ -6,7 +6,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Battle;
 namespace Ambient.Saga.Engine.Application.Commands.Saga;
 
 /// <summary>
-/// Command to submit a player's defensive reaction during the reaction phase.
+/// Command to submit a avatar's defensive reaction during the reaction phase.
 /// Part of the Expedition 33-inspired active defense system.
 /// </summary>
 public class SubmitReactionCommand : IRequest<SagaCommandResult>
@@ -27,9 +27,9 @@ public class SubmitReactionCommand : IRequest<SagaCommandResult>
     public required Guid BattleInstanceId { get; init; }
 
     /// <summary>
-    /// The player's chosen defensive reaction
+    /// The avatar's chosen defensive reaction
     /// </summary>
-    public required PlayerDefenseType Reaction { get; init; }
+    public required AvatarDefenseType Reaction { get; init; }
 
     /// <summary>
     /// Avatar entity for updates
@@ -46,17 +46,17 @@ public class SubmitReactionCommand : IRequest<SagaCommandResult>
     /// <summary>
     /// Base damage from the attack before reaction modifiers
     /// </summary>
-    public int BaseDamage { get; init; }
+    public float BaseDamage { get; init; }
 
     /// <summary>
     /// Final damage taken after reaction modifier applied
     /// </summary>
-    public int FinalDamage { get; init; }
+    public float FinalDamage { get; init; }
 
     /// <summary>
     /// Counter damage dealt to attacker (if reaction enabled counter)
     /// </summary>
-    public int? CounterDamage { get; init; }
+    public float? CounterDamage { get; init; }
 
     /// <summary>
     /// Stamina gained from skilled defense (0-1 normalized)
@@ -74,14 +74,14 @@ public class SubmitReactionCommand : IRequest<SagaCommandResult>
     public bool TimedOut { get; init; }
 
     /// <summary>
-    /// Player health after damage applied
+    /// Avatar health after damage applied
     /// </summary>
-    public float PlayerHealthAfter { get; init; }
+    public float AvatarHealthAfter { get; init; }
 
     /// <summary>
-    /// Player energy after stamina effects applied
+    /// Avatar energy after stamina effects applied
     /// </summary>
-    public float PlayerEnergyAfter { get; init; }
+    public float AvatarEnergyAfter { get; init; }
 
     /// <summary>
     /// Enemy health after counter damage (if any)

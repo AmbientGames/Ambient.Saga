@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Quests;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -38,41 +39,56 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
     {
         try
         {
-            // Get Saga instance
-            var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
-
-            // Verify Saga exists
-            if (!_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var sagaTemplate))
-            {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{command.SagaArcRef}' not found");
-            }
-
             // Verify quest exists
             var quest = _world.TryGetQuestByRefName(command.QuestRef);
             if (quest == null)
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{command.QuestRef}' not found");
+                return SagaCommandResult.Failure(Guid.Empty, $"Quest '{command.QuestRef}' not found");
+            }
+
+            // A CompleteQuest dialogue action can fire from an NPC whose Saga did not issue
+            // the quest. Resolve the Saga instance that actually holds the active quest so
+            // the QuestCompleted transaction lands on the log that records its lifecycle.
+            var instance = await QuestInstanceLocator.ResolveActiveQuestInstanceAsync(
+                command.AvatarId, command.QuestRef, command.SagaArcRef, _instanceRepository, _world, ct);
+
+            if (instance == null)
+            {
+                // Not active anywhere — disambiguate "already done" vs. "never accepted" using
+                // the caller-specified saga, since that's the best contextual guess available.
+                var hinted = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
+                if (_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var hintedTemplate)
+                    && _world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var hintedTriggers))
+                {
+                    var hintedState = new SagaStateMachine(hintedTemplate, hintedTriggers, _world).ReplayToNow(hinted);
+                    if (hintedState.CompletedQuests.Contains(command.QuestRef))
+                    {
+                        return SagaCommandResult.Failure(hinted.InstanceId, $"Quest '{quest.DisplayName}' already completed");
+                    }
+                }
+                return SagaCommandResult.Failure(hinted.InstanceId, $"Quest '{quest.DisplayName}' not accepted");
+            }
+
+            var resolvedSagaRef = instance.SagaRef;
+
+            // Verify Saga exists (for the resolved instance)
+            if (!_world.SagaArcLookup.TryGetValue(resolvedSagaRef, out var sagaTemplate))
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{resolvedSagaRef}' not found");
             }
 
             // Get expanded triggers for state machine
-            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var expandedTriggers))
+            if (!_world.SagaTriggersLookup.TryGetValue(resolvedSagaRef, out var expandedTriggers))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArcRef}'");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{resolvedSagaRef}'");
             }
 
             // Replay to get current state
             var stateMachine = new SagaStateMachine(sagaTemplate, expandedTriggers, _world);
             var currentState = stateMachine.ReplayToNow(instance);
 
-            // Check if quest is accepted and not already completed
-            if (!currentState.ActiveQuests.TryGetValue(command.QuestRef, out var questState))
-            {
-                if (currentState.CompletedQuests.Contains(command.QuestRef))
-                {
-                    return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{quest.DisplayName}' already completed");
-                }
-                return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{quest.DisplayName}' not accepted");
-            }
+            // Resolver guaranteed ActiveQuests contains the quest — safe lookup.
+            var questState = currentState.ActiveQuests[command.QuestRef];
 
             // NEW: Check if quest is ready for completion (all stages done)
             // In the new multi-stage system, CurrentStage will be empty when all stages are complete
@@ -94,17 +110,17 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
             // Create QuestCompleted transaction
             var transactionData = new Dictionary<string, string>
             {
-                ["QuestRef"] = command.QuestRef,
-                ["QuestDisplayName"] = quest.DisplayName,
-                ["QuestReceiverRef"] = command.QuestReceiverRef,
-                ["SagaArcRef"] = command.SagaArcRef,
-                ["CompletedAt"] = DateTime.UtcNow.ToString("O")
+                [TransactionDataKeys.QuestRef] = command.QuestRef,
+                [TransactionDataKeys.QuestDisplayName] = quest.DisplayName,
+                [TransactionDataKeys.QuestReceiverRef] = command.QuestReceiverRef,
+                [TransactionDataKeys.SagaArcRef] = resolvedSagaRef,
+                [TransactionDataKeys.CompletedAt] = DateTime.UtcNow.ToString("O")
             };
 
             // NEW: Include branch choice if quest had branches
             if (!string.IsNullOrEmpty(questState.ChosenBranch))
             {
-                transactionData["ChosenBranch"] = questState.ChosenBranch;
+                transactionData[TransactionDataKeys.ChosenBranch] = questState.ChosenBranch;
             }
 
             var transaction = new SagaTransaction
@@ -119,16 +135,10 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
 
             instance.AddTransaction(transaction);
 
-            // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            // Persist and commit transaction atomically
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -136,8 +146,8 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
                 return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transaction rolled back");
             }
 
-            // Invalidate cache
-            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+            // Invalidate cache for the saga that actually owns the quest
+            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, resolvedSagaRef, ct);
 
             // Distribute quest completion rewards
             if (quest.Rewards != null && quest.Rewards.Length > 0)
@@ -169,7 +179,7 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
             Dictionary<string, object>? resultData = null;
             if (!string.IsNullOrEmpty(completionRef) && command.QuestRef == completionRef)
             {
-                resultData = new Dictionary<string, object> { ["GameComplete"] = true };
+                resultData = new Dictionary<string, object> { [TransactionDataKeys.GameComplete] = true, [TransactionDataKeys.CompletionQuestRef] = completionRef };
             }
 
             return SagaCommandResult.Success(

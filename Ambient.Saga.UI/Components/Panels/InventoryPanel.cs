@@ -1,4 +1,5 @@
 using Ambient.Domain;
+using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Domain.Hotbar;
 using Ambient.Saga.Presentation.UI.ViewModels;
 using ImGuiNET;
@@ -46,14 +47,38 @@ public class InventoryPanel
 
     public void Render(SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar?.Capabilities == null)
+        if (viewModel.Avatar?.Capabilities == null)
         {
             ImGui.TextColored(new Vector4(1, 0.5f, 0, 1), "No avatar created");
             ImGui.TextWrapped("Enter a world to select archetype");
             return;
         }
 
-        var caps = viewModel.PlayerAvatar.Capabilities;
+        var caps = viewModel.Avatar.Capabilities;
+
+        // Carry weight bar
+        var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
+        var archetype = viewModel.CurrentWorld?.Gameplay?.AvatarArchetypes?
+            .FirstOrDefault(a => a.RefName == viewModel.Avatar.ArchetypeRef);
+        if (worldConfig != null && archetype != null)
+        {
+            var weightUnit = worldConfig.WeightUnitName ?? "kg";
+            var maxCarry = CarryWeightCalculator.GetMaxCarryWeight(archetype);
+            var currentCarry = CarryWeightCalculator.CalculateTotalWeight(caps, worldConfig);
+            var fraction = maxCarry > 0 ? currentCarry / maxCarry : 0f;
+
+            var carryColor = fraction > 0.9f
+                ? new Vector4(1, 0.3f, 0.3f, 1)
+                : fraction > 0.7f
+                    ? new Vector4(1, 0.8f, 0.3f, 1)
+                    : new Vector4(0.5f, 0.8f, 1, 1);
+            ImGui.PushStyleColor(ImGuiCol.PlotHistogram, carryColor);
+            ImGui.ProgressBar(fraction, new Vector2(ImGuiSizes.Fill, ImGui.GetFrameHeight()),
+                $"Carrying: {currentCarry:N1} / {maxCarry:N1} {weightUnit}");
+            ImGui.PopStyleColor();
+            ImGui.Spacing();
+        }
+
         var hasBlockProvider = viewModel.CurrentWorld?.BlockProvider != null;
         var columnCount = hasBlockProvider ? 3 : 2;
 
@@ -166,6 +191,14 @@ public class InventoryPanel
                                 ImGuiHelpers.RenderAttributes(consumableItem.Effects);
                             }
                         }
+
+                        // Drop button
+                        ImGui.Spacing();
+                        if (RenderDropButton($"drop_con_{consumable.ConsumableRef}"))
+                        {
+                            DiscardConsumable(viewModel, consumable.ConsumableRef, name);
+                        }
+
                         ImGui.TreePop();
                     }
 
@@ -221,6 +254,14 @@ public class InventoryPanel
                                 ImGuiHelpers.RenderAttributes(spellItem.Effects);
                             }
                         }
+
+                        // Drop button
+                        ImGui.Spacing();
+                        if (RenderDropButton($"drop_sp_{spell.SpellRef}"))
+                        {
+                            DiscardSpell(viewModel, spell.SpellRef, spellItem?.DisplayName ?? spell.SpellRef);
+                        }
+
                         ImGui.TreePop();
                     }
 
@@ -236,31 +277,10 @@ public class InventoryPanel
         }
     }
 
-    /// <summary>
-    /// Renders the Quest Tokens section.
-    /// </summary>
+    // Quest tokens now live in saga state (AwardedQuestTokens), not avatar inventory.
+    // TODO: Render from saga state read model when UI plumbing is available.
     private void RenderQuestTokens(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        if (caps.QuestTokens != null && caps.QuestTokens.Length > 0)
-        {
-            if (ImGui.CollapsingHeader($"Quest Tokens ({caps.QuestTokens.Length})"))
-            {
-                foreach (var token in caps.QuestTokens)
-                {
-                    var tokenDef = viewModel.CurrentWorld?.Gameplay?.QuestTokens?.FirstOrDefault(t => t.RefName == token.QuestTokenRef);
-                    var name = tokenDef?.DisplayName ?? token.QuestTokenRef;
-
-                    ImGui.Indent();
-                    ImGui.BulletText(name);
-                    if (tokenDef != null && !string.IsNullOrEmpty(tokenDef.Description))
-                    {
-                        ImGui.SameLine();
-                        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), $"- {tokenDef.Description}");
-                    }
-                    ImGui.Unindent();
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -270,7 +290,7 @@ public class InventoryPanel
     private void RenderAffinity(SagaMainViewModel viewModel, ItemCollection caps)
     {
         var world = viewModel.CurrentWorld;
-        var avatar = viewModel.PlayerAvatar;
+        var avatar = viewModel.Avatar;
         var collectedAffinities = avatar?.Affinities ?? Array.Empty<Ambient.Domain.Affinity>();
         var activeAffinityRef = avatar?.ActiveAffinityRef;
 
@@ -511,7 +531,7 @@ public class InventoryPanel
 
                     // Equip button
                     var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
-                    var isEquipped = viewModel.PlayerAvatar?.CurrentToolRef == tool.ToolRef;
+                    var isEquipped = viewModel.Avatar?.CurrentToolRef == tool.ToolRef;
                     if (isEquipped)
                     {
                         ImGui.BeginDisabled();
@@ -522,9 +542,9 @@ public class InventoryPanel
                     {
                         if (ImGui.Button($"Equip##{tool.ToolRef}", buttonSize))
                         {
-                            if (viewModel.PlayerAvatar != null)
+                            if (viewModel.Avatar != null)
                             {
-                                viewModel.PlayerAvatar.CurrentToolRef = tool.ToolRef;
+                                viewModel.Avatar.CurrentToolRef = tool.ToolRef;
                                 viewModel.AddToastMessage($"{toolName} equipped");
                             }
                         }
@@ -573,8 +593,8 @@ public class InventoryPanel
                         if (tool.Condition < 1f)
                         {
                             ImGui.Spacing();
-                            var playerCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
-                            var canAfford = playerCredits >= SharpenCost;
+                            var avatarCredits = viewModel.Avatar?.Stats?.Credits ?? 0;
+                            var canAfford = avatarCredits >= SharpenCost;
                             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits";
                             var isPendingSharpen = _pendingSharpenOperations.Contains(tool.ToolRef);
 
@@ -596,9 +616,25 @@ public class InventoryPanel
 
                                 if (!canAfford && ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
                                 {
-                                    ImGui.SetTooltip($"Not enough {currencyName} (need {SharpenCost}, have {playerCredits:F0})");
+                                    ImGui.SetTooltip($"Not enough {currencyName} (need {SharpenCost}, have {avatarCredits:F0})");
                                 }
                             }
+                        }
+
+                        // Drop button (disabled if currently equipped)
+                        ImGui.Spacing();
+                        var isCurrentTool = viewModel.Avatar?.CurrentToolRef == tool.ToolRef;
+                        if (isCurrentTool)
+                        {
+                            ImGui.BeginDisabled();
+                            RenderDropButton($"drop_tl_{tool.ToolRef}");
+                            ImGui.EndDisabled();
+                            if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+                                ImGui.SetTooltip("Unequip before dropping");
+                        }
+                        else if (RenderDropButton($"drop_tl_{tool.ToolRef}"))
+                        {
+                            DiscardTool(viewModel, tool.ToolRef, toolName);
                         }
 
                         ImGui.TreePop();
@@ -622,8 +658,8 @@ public class InventoryPanel
     /// </summary>
     private void RenderBlocks(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        // Get actual block inventory from runtime BlockOwnership dictionary
-        var blockOwnership = viewModel.PlayerAvatar?.BlockOwnership ?? new Dictionary<string, float>();
+        // Get actual block inventory from BlockOwnership (backed by Capabilities.Blocks)
+        var blockOwnership = viewModel.Avatar?.BlockOwnership ?? (IDictionary<string, float>)new Dictionary<string, float>();
         var blockCount = blockOwnership.Count(kvp => kvp.Value >= 1);
 
         if (ImGui.CollapsingHeader($"Blocks ({blockCount})"))
@@ -663,7 +699,7 @@ public class InventoryPanel
 
                     // Select button
                     var buttonSize = new Vector2(ActionButtonWidth, ImGui.GetFrameHeight());
-                    var isSelected = viewModel.PlayerAvatar?.CurrentBlockRef == blockRef;
+                    var isSelected = viewModel.Avatar?.CurrentBlockRef == blockRef;
                     if (isSelected)
                     {
                         ImGui.BeginDisabled();
@@ -674,9 +710,9 @@ public class InventoryPanel
                     {
                         if (ImGui.Button($"Select##{blockRef}", buttonSize))
                         {
-                            if (viewModel.PlayerAvatar != null)
+                            if (viewModel.Avatar != null)
                             {
-                                viewModel.PlayerAvatar.CurrentBlockRef = blockRef;
+                                viewModel.Avatar.CurrentBlockRef = blockRef;
                                 viewModel.AddToastMessage($"{blockName} selected");
                             }
                         }
@@ -705,6 +741,13 @@ public class InventoryPanel
                             {
                                 ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {blockDef.MerchantMarkupMultiplier:F1}x");
                             }
+                        }
+
+                        // Drop button
+                        ImGui.Spacing();
+                        if (RenderDropButton($"drop_blk_{blockRef}"))
+                        {
+                            DiscardBlock(viewModel, blockRef, blockName);
                         }
 
                         ImGui.TreePop();
@@ -775,6 +818,15 @@ public class InventoryPanel
                                 ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Markup: {materialItem.MerchantMarkupMultiplier:F1}x");
                             }
                         }
+
+                        // Drop button
+                        ImGui.Spacing();
+                        if (RenderDropButton($"drop_mat_{material.BuildingMaterialRef}"))
+                        {
+                            DiscardMaterial(viewModel, material.BuildingMaterialRef,
+                                materialItem?.DisplayName ?? material.BuildingMaterialRef);
+                        }
+
                         ImGui.TreePop();
                     }
 
@@ -862,7 +914,7 @@ public class InventoryPanel
             equipmentBySlot[slot.RefName] = new List<(EquipmentEntry entry, Equipment? def)>();
         }
 
-        // Group player's equipment by slot
+        // Group avatar's equipment by slot
         if (caps.Equipment != null)
         {
             foreach (var equip in caps.Equipment)
@@ -1002,7 +1054,7 @@ public class InventoryPanel
                 // Effects
                 if (equipItem.Effects != null)
                 {
-                    ImGuiHelpers.RenderAttributes(equipItem.Effects);
+                    ImGuiHelpers.RenderAttributes(equipItem.Effects, warmingLabel: "Insulation:", coolingLabel: "Insulation:");
                 }
             }
 
@@ -1014,6 +1066,21 @@ public class InventoryPanel
                     ? new Vector4(0.9f, 0.7f, 0.2f, 1)
                     : new Vector4(0.9f, 0.3f, 0.2f, 1);
             ImGui.TextColored(conditionColor, $"Condition: {equip.Condition:P0}");
+
+            // Drop button (disabled if equipped)
+            ImGui.Spacing();
+            if (isEquipped)
+            {
+                ImGui.BeginDisabled();
+                RenderDropButton($"drop_eq_{equip.EquipmentRef}");
+                ImGui.EndDisabled();
+                if (ImGui.IsItemHovered(ImGuiHoveredFlags.AllowWhenDisabled))
+                    ImGui.SetTooltip("Unequip before dropping");
+            }
+            else if (RenderDropButton($"drop_eq_{equip.EquipmentRef}"))
+            {
+                DiscardEquipment(viewModel, equip.EquipmentRef, name);
+            }
 
             ImGui.TreePop();
         }
@@ -1053,7 +1120,7 @@ public class InventoryPanel
     {
         if (!_showHotbarAssignPopup) return;
 
-        var avatar = viewModel.PlayerAvatar;
+        var avatar = viewModel.Avatar;
         if (avatar == null) return;
 
         // Open popup if requested (deferred from button click)
@@ -1126,6 +1193,63 @@ public class InventoryPanel
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName
         };
+    }
+
+    private bool RenderDropButton(string id)
+    {
+        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
+        var clicked = ImGui.Button($"Drop##{id}");
+        ImGui.PopStyleColor(3);
+        return clicked;
+    }
+
+    private void DiscardEquipment(SagaMainViewModel viewModel, string equipmentRef, string displayName)
+    {
+        var caps = viewModel.Avatar?.Capabilities;
+        if (caps?.Equipment == null) return;
+        caps.Equipment = caps.Equipment.Where(e => e.EquipmentRef != equipmentRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardConsumable(SagaMainViewModel viewModel, string consumableRef, string displayName)
+    {
+        var caps = viewModel.Avatar?.Capabilities;
+        if (caps?.Consumables == null) return;
+        caps.Consumables = caps.Consumables.Where(c => c.ConsumableRef != consumableRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardSpell(SagaMainViewModel viewModel, string spellRef, string displayName)
+    {
+        var caps = viewModel.Avatar?.Capabilities;
+        if (caps?.Spells == null) return;
+        caps.Spells = caps.Spells.Where(s => s.SpellRef != spellRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardTool(SagaMainViewModel viewModel, string toolRef, string displayName)
+    {
+        var caps = viewModel.Avatar?.Capabilities;
+        if (caps?.Tools == null) return;
+        caps.Tools = caps.Tools.Where(t => t.ToolRef != toolRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardBlock(SagaMainViewModel viewModel, string blockRef, string displayName)
+    {
+        // BlockOwnership is backed by Capabilities.Blocks — single remove handles both
+        viewModel.Avatar?.BlockOwnership?.Remove(blockRef);
+        viewModel.AddToastMessage($"Dropped {displayName}");
+    }
+
+    private void DiscardMaterial(SagaMainViewModel viewModel, string materialRef, string displayName)
+    {
+        var caps = viewModel.Avatar?.Capabilities;
+        if (caps?.BuildingMaterials == null) return;
+        caps.BuildingMaterials = caps.BuildingMaterials.Where(m => m.BuildingMaterialRef != materialRef).ToArray();
+        viewModel.AddToastMessage($"Dropped {displayName}");
     }
 
     /// <summary>

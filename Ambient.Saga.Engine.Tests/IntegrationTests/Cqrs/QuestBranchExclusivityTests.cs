@@ -9,6 +9,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -16,6 +17,7 @@ using Ambient.Saga.Engine.Tests.Helpers;
 using LiteDB;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
@@ -51,8 +53,11 @@ public class QuestBranchExclusivityTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository, FakeAvatarRepository>();
+        services.AddSingleton<Func<IGameAvatarRepository>>(sp => () => sp.GetRequiredService<IGameAvatarRepository>());
+        services.AddSingleton<Func<IWorld>>(sp => () => sp.GetRequiredService<IWorld>());
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
@@ -255,7 +260,6 @@ public class QuestBranchExclusivityTests : IDisposable
             {
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Consumables = Array.Empty<ConsumableEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
     }
@@ -471,7 +475,7 @@ public class QuestBranchExclusivityTests : IDisposable
         var transactions = instance.GetCommittedTransactions();
         var branchTransaction = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestBranchChosen);
         Assert.NotNull(branchTransaction);
-        Assert.Equal("TASK_A", branchTransaction.GetData<string>("BranchRef"));
+        Assert.Equal("TASK_A", branchTransaction.GetData<string>(TransactionDataKeys.BranchRef));
     }
 
     #endregion
@@ -622,11 +626,11 @@ public class QuestBranchExclusivityTests : IDisposable
         var branchTransaction = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestBranchChosen);
 
         Assert.NotNull(branchTransaction);
-        Assert.Equal("EXCLUSIVE_BRANCH_QUEST", branchTransaction.GetData<string>("QuestRef"));
-        Assert.Equal("CHOICE_STAGE", branchTransaction.GetData<string>("StageRef"));
-        Assert.Equal("PATH_A", branchTransaction.GetData<string>("BranchRef"));
-        Assert.Equal("The Path of Light", branchTransaction.GetData<string>("DisplayName"));
-        Assert.Equal("LIGHT_PATH", branchTransaction.GetData<string>("NextStage"));
+        Assert.Equal("EXCLUSIVE_BRANCH_QUEST", branchTransaction.GetData<string>(TransactionDataKeys.QuestRef));
+        Assert.Equal("CHOICE_STAGE", branchTransaction.GetData<string>(TransactionDataKeys.StageRef));
+        Assert.Equal("PATH_A", branchTransaction.GetData<string>(TransactionDataKeys.BranchRef));
+        Assert.Equal("The Path of Light", branchTransaction.GetData<string>(TransactionDataKeys.DisplayName));
+        Assert.Equal("LIGHT_PATH", branchTransaction.GetData<string>(TransactionDataKeys.NextStage));
     }
 
     #endregion

@@ -24,9 +24,6 @@ namespace Ambient.Domain {
         GiveQuestToken,
         
         /// <remarks/>
-        TakeQuestToken,
-        
-        /// <remarks/>
         GiveConsumable,
         
         /// <remarks/>

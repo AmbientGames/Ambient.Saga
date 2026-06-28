@@ -20,14 +20,14 @@ internal class WorldStateRepository : IWorldStateRepository
     private readonly ISagaInstanceRepository _sagaRepository;
     private readonly IGameAvatarRepository _avatarRepository;
     private readonly IRepository<AchievementInstance> _achievementRepository;
-    private readonly IPlayerDiscoveryRepository _discoveryRepository;
+    private readonly IAvatarDiscoveryRepository _discoveryRepository;
     private readonly IWorld _world;
 
     public WorldStateRepository(
         ISagaInstanceRepository sagaRepository,
         IGameAvatarRepository avatarRepository,
         IRepository<AchievementInstance> achievementRepository,
-        IPlayerDiscoveryRepository discoveryRepository,
+        IAvatarDiscoveryRepository discoveryRepository,
         IWorld world)
     {
         _sagaRepository = sagaRepository ?? throw new ArgumentNullException(nameof(sagaRepository));
@@ -40,23 +40,6 @@ internal class WorldStateRepository : IWorldStateRepository
     #region Saga Operations (Delegated to CQRS Repository)
 
     /// <summary>
-    /// Gets or creates Saga instances for single-player.
-    /// Each avatar gets their own instance of each Saga.
-    /// </summary>
-    public async Task<List<SagaInstance>> GetOrCreateSagaInstancesAsync(string avatarId)
-    {
-        var instances = new List<SagaInstance>();
-        var avatarGuid = Guid.Parse(avatarId);
-
-        foreach (var sagaTemplate in _world.Gameplay.SagaArcs ?? [])
-        {
-            var instance = await _sagaRepository.GetOrCreateInstanceAsync(avatarGuid, sagaTemplate.RefName);
-            instances.Add(instance);
-        }
-        return instances;
-    }
-
-    /// <summary>
     /// Gets a Saga instance by template RefName for a specific avatar.
     /// </summary>
     public async Task<SagaInstance?> GetSagaInstanceAsync(string avatarId, string templateRef)
@@ -64,42 +47,6 @@ internal class WorldStateRepository : IWorldStateRepository
         var avatarGuid = Guid.Parse(avatarId);
         return await _sagaRepository.GetOrCreateInstanceAsync(avatarGuid, templateRef);
     }
-
-    /// <summary>
-    /// Adds a transaction to a Saga instance and saves it.
-    /// </summary>
-    public async Task AddSagaTransactionAsync(Guid instanceId, SagaTransaction transaction)
-    {
-        await _sagaRepository.AddTransactionsAsync(instanceId, new List<SagaTransaction> { transaction });
-    }
-
-    /// <summary>
-    /// Gets the current derived state of a Saga by replaying its transactions.
-    /// </summary>
-    public async Task<SagaState> GetSagaStateAsync(Guid instanceId)
-    {
-        var instance = await _sagaRepository.GetInstanceByIdAsync(instanceId);
-        if (instance == null)
-            throw new InvalidOperationException($"Saga instance {instanceId} not found");
-
-        var template = _world.Gameplay.SagaArcs?.FirstOrDefault(p => p.RefName == instance.SagaRef);
-        if (template == null)
-            throw new InvalidOperationException($"Saga template '{instance.SagaRef}' not found");
-
-        // Replay transactions to derive current state
-        var stateMachine = new SagaStateMachine(template, new List<SagaTrigger>(), _world);
-        return stateMachine.Replay(instance.Transactions);
-    }
-
-    #endregion
-
-    #region Character Queries (REMOVED - Use CQRS Queries Instead)
-
-    // NOTE: Character query methods removed from WorldStateRepository
-    // Use official CQRS queries instead:
-    //   - GetAvailableInteractionsQuery for nearby characters
-    //   - GetCharacterByIdQuery for specific character
-    //   - GetSpawnedCharactersQuery for all spawned characters
 
     #endregion
 
@@ -172,19 +119,19 @@ internal class WorldStateRepository : IWorldStateRepository
 
     #endregion
 
-    #region Player Discovery Tracking
+    #region Avatar Discovery Tracking
 
     /// <summary>
-    /// Records a player discovery (lore, achievement, Saga, etc.).
+    /// Records an avatar discovery (lore, achievement, Saga, etc.).
     /// </summary>
-    public async Task<PlayerDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null)
+    public async Task<AvatarDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null)
     {
-        var existing = await _discoveryRepository.FindOneAsync<PlayerDiscovery>(avatarId, entityType, entityRef);
+        var existing = await _discoveryRepository.FindOneAsync<AvatarDiscovery>(avatarId, entityType, entityRef);
 
         if (existing != null)
             return existing;
 
-        var discovery = new PlayerDiscovery
+        var discovery = new AvatarDiscovery
         {
             AvatarId = avatarId,
             EntityType = entityType,
@@ -200,11 +147,11 @@ internal class WorldStateRepository : IWorldStateRepository
     }
 
     /// <summary>
-    /// Records a trigger event for a player discovery.
+    /// Records a trigger event for an avatar discovery.
     /// </summary>
     public async Task RecordTriggerAsync(string avatarId, string entityType, string entityRef)
     {
-        var discovery = await _discoveryRepository.FindOneAsync<PlayerDiscovery>(avatarId, entityType, entityRef);
+        var discovery = await _discoveryRepository.FindOneAsync<AvatarDiscovery>(avatarId, entityType, entityRef);
 
         if (discovery == null)
         {
@@ -216,16 +163,16 @@ internal class WorldStateRepository : IWorldStateRepository
     }
 
     /// <summary>
-    /// Gets the last trigger time for a specific player/entity combination.
+    /// Gets the last trigger time for a specific avatar/entity combination.
     /// </summary>
     public async Task<DateTime?> GetLastTriggerTimeAsync(string avatarId, string entityType, string entityRef)
     {
-        var discovery = await _discoveryRepository.FindOneAsync<PlayerDiscovery>(avatarId, entityType, entityRef);
+        var discovery = await _discoveryRepository.FindOneAsync<AvatarDiscovery>(avatarId, entityType, entityRef);
         return discovery?.LastTriggeredAt;
     }
 
     /// <summary>
-    /// Checks if a player has discovered a specific entity.
+    /// Checks if an avatar has discovered a specific entity.
     /// </summary>
     public async Task<bool> HasDiscoveredAsync(string avatarId, string entityType, string entityRef)
     {
@@ -233,11 +180,11 @@ internal class WorldStateRepository : IWorldStateRepository
     }
 
     /// <summary>
-    /// Gets all discoveries for a specific player.
+    /// Gets all discoveries for a specific avatar.
     /// </summary>
-    public async Task<List<PlayerDiscovery>> GetPlayerDiscoveriesAsync(string avatarId)
+    public async Task<List<AvatarDiscovery>> GetAvatarDiscoveriesAsync(string avatarId)
     {
-        return await _discoveryRepository.GetByAvatarIdAsync<PlayerDiscovery>(avatarId);
+        return await _discoveryRepository.GetByAvatarIdAsync<AvatarDiscovery>(avatarId);
     }
 
     #endregion

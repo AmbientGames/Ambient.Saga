@@ -107,7 +107,7 @@ public class WorldInfoPanel
                         ImGui.Text($"Category: {item.Category} | Rarity: {item.Rarity}");
                         ImGui.Text($"Price: {item.WholesalePrice} (x{item.MerchantMarkupMultiplier} markup)");
                         if (item.Effects != null)
-                            ImGuiHelpers.RenderAttributes(item.Effects);
+                            ImGuiHelpers.RenderAttributes(item.Effects, warmingLabel: "Insulation:", coolingLabel: "Insulation:");
                         if (item.StatusEffectRef != null)
                             ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), $"Applies: {item.StatusEffectRef} ({item.StatusEffectChance:P0})");
                         ImGui.TreePop();
@@ -218,7 +218,7 @@ public class WorldInfoPanel
             var filtered = blocks.Where(b => MatchesFilter(b.DisplayName) || MatchesFilter(b.RefName)).ToList();
             if (filtered.Count > 0 && ImGui.CollapsingHeader($"Blocks ({filtered.Count})"))
             {
-                var grouped = filtered.GroupBy(b => b.SubstanceRef ?? "Other").OrderBy(g => g.Key);
+                var grouped = filtered.GroupBy(b => b.SubstanceRef ?? "Miscellaneous").OrderBy(g => g.Key);
                 foreach (var group in grouped)
                 {
                     if (ImGui.TreeNode($"{group.Key} ({group.Count()})"))

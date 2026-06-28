@@ -6,7 +6,7 @@ namespace Ambient.Saga.Engine.Application.Queries.Saga;
 
 /// <summary>
 /// Comprehensive query to get all available interactions at the avatar's current position.
-/// This is the primary query for client UI - returns everything the player can do right now.
+/// This is the primary query for client UI - returns everything the avatar can do right now.
 ///
 /// Design Philosophy:
 /// - Commands are simple (just create transactions)
@@ -14,10 +14,10 @@ namespace Ambient.Saga.Engine.Application.Queries.Saga;
 /// - This query is the "what can I do?" entry point
 ///
 /// Usage:
-/// 1. Player moves → UpdateAvatarPositionCommand (creates transactions)
+/// 1. Avatar moves → UpdateAvatarPositionCommand (creates transactions)
 /// 2. Client queries → GetAvailableInteractionsQuery (reads state)
 /// 3. UI shows options → "Press E to talk to Merchant", "Click to loot chest"
-/// 4. Player acts → StartDialogueCommand, TradeItemCommand, etc.
+/// 4. Avatar acts → StartDialogueCommand, TradeItemCommand, etc.
 /// </summary>
 public record GetAvailableInteractionsQuery : IRequest<AvailableInteractionsResult>
 {

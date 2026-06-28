@@ -3,6 +3,7 @@ using ImGuiNET;
 using System.Numerics;
 using Ambient.Saga.UI.Components;
 using Ambient.Saga.UI.Components.Modals;
+using Ambient.Saga.UI.Components.Panels;
 
 namespace Ambient.Saga.UI.Services;
 
@@ -25,7 +26,6 @@ public class WorldMapUI
     // UI Components
     private GameplayOverlay _gameplayOverlay;
 
-    // Modal system (injected via DI for ImGuiArchetypeSelector)
     private readonly ModalManager _modalManager;
 
     // Platform-agnostic texture provider (DirectX11, OpenGL, etc.)
@@ -40,9 +40,10 @@ public class WorldMapUI
     // Pending texture update (deferred to avoid disposing texture during render)
     private bool _pendingTextureUpdate;
 
-    public WorldMapUI(ModalManager modalManager)
+    public WorldMapUI(ModalManager modalManager, GameplayOverlay gameplayOverlay)
     {
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
+        _gameplayOverlay = gameplayOverlay ?? throw new ArgumentNullException(nameof(gameplayOverlay));
     }
 
     public void Initialize(SagaMainViewModel viewModel, ITextureProvider textureProvider)
@@ -50,9 +51,6 @@ public class WorldMapUI
         _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         _textureProvider = textureProvider ?? throw new ArgumentNullException(nameof(textureProvider));
 
-        // Initialize components
-        _gameplayOverlay = new GameplayOverlay(_modalManager);
-        
         // Subscribe to pause menu request from input handler
         _gameplayOverlay.InputHandler.PauseMenuRequested += OnPauseMenuRequested;
 
@@ -155,6 +153,12 @@ public class WorldMapUI
     /// Used by host applications to detect when UI is active and adjust game state accordingly.
     /// </summary>
     public bool IsAnyPanelOpen => _gameplayOverlay?.ActivePanel != ActivePanel.None;
+
+    /// <summary>
+    /// Gets the gameplay overlay for registering custom panels, input handlers, etc.
+    /// Available after Initialize() is called.
+    /// </summary>
+    public GameplayOverlay? GameplayOverlay => _gameplayOverlay;
 
     /// <summary>
     /// Fired each frame when the map panel is being rendered.

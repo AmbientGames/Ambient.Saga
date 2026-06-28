@@ -9,6 +9,7 @@ public class DialogueModalAdapter : IModal
 {
     private readonly DialogueModal _modal = new();
     private readonly ModalManager _modalManager;
+    private SagaMainViewModel? _lastViewModel;
 
     public DialogueModalAdapter(ModalManager modalManager)
     {
@@ -52,6 +53,7 @@ public class DialogueModalAdapter : IModal
 
         if (viewModel != null && character != null)
         {
+            _lastViewModel = viewModel;
             _modal.Render(viewModel, character, _modalManager, ref isOpen);
         }
         else
@@ -64,5 +66,14 @@ public class DialogueModalAdapter : IModal
     public void OnClosed()
     {
         System.Diagnostics.Debug.WriteLine("[DialogueModal] Closed");
+
+        // Seal the dialogue session so the player can re-open it later. Fire-and-forget:
+        // clearing client state happens synchronously inside CloseCurrentDialogueAsync so
+        // repeat interactions aren't blocked even if the server round-trip is in flight.
+        if (_lastViewModel != null)
+        {
+            _ = _lastViewModel.CloseCurrentDialogueAsync();
+            _lastViewModel = null;
+        }
     }
 }

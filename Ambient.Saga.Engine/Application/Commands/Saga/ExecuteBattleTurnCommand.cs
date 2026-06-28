@@ -7,10 +7,10 @@ namespace Ambient.Saga.Engine.Application.Commands.Saga;
 
 /// <summary>
 /// Command to execute ONE turn in an interactive battle.
-/// Similar to SelectDialogueChoiceCommand - processes player action and creates transaction.
+/// Similar to SelectDialogueChoiceCommand - processes avatar action and creates transaction.
 ///
 /// Side Effects:
-/// - Creates BattleTurnExecuted transaction for player turn
+/// - Creates BattleTurnExecuted transaction for avatar turn
 /// - Creates BattleTurnExecuted transaction for enemy turn (if battle continues)
 /// - Creates BattleEnded transaction if battle finishes
 /// - Creates CharacterDefeated transaction if enemy is defeated
@@ -34,9 +34,9 @@ public record ExecuteBattleTurnCommand : IRequest<SagaCommandResult>
     public required Guid BattleInstanceId { get; init; }
 
     /// <summary>
-    /// Player's combat action for this turn
+    /// Avatar's combat action for this turn
     /// </summary>
-    public required CombatAction PlayerAction { get; init; }
+    public required CombatAction AvatarAction { get; init; }
 
     /// <summary>
     /// Avatar entity participating in battle (for state updates if battle ends)

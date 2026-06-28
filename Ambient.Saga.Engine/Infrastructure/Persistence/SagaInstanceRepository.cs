@@ -1,4 +1,6 @@
-﻿using Ambient.Saga.Engine.Contracts.Cqrs;
+﻿using Ambient.Saga.Engine.Application.ReadModels;
+using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using LiteDB;
 using System.Collections.Concurrent;
@@ -24,6 +26,18 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     // Per-instance locks to avoid global blocking - different sagas don't block each other
     private readonly ConcurrentDictionary<string, object> _instanceLocks = new();
+
+    // In-memory instance cache — preserves CachedState/IsDirty across calls
+    private readonly ConcurrentDictionary<string, SagaInstance> _instanceCache = new();
+
+    private IAvatarProgressRepository? _avatarProgressRepository;
+    private ISagaReadModelRepository? _readModelRepository;
+
+    public void SetAvatarProgressRepository(IAvatarProgressRepository repository)
+        => _avatarProgressRepository = repository;
+
+    public void SetReadModelRepository(ISagaReadModelRepository repository)
+        => _readModelRepository = repository;
 
     public SagaInstanceRepository(ILiteDatabase database)
     {
@@ -53,13 +67,25 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     public Task<SagaInstance> GetOrCreateInstanceAsync(Guid avatarId, string sagaRef, CancellationToken ct = default)
     {
+        // If a multiplayer instance exists for this sagaRef, every avatar shares it — prefer it
+        // over creating a new single-player instance. This lets commands written for SinglePlayer
+        // sagas transparently target Multiplayer ones (e.g. server-sourced arcs).
+        var multiplayerKey = $"NULL|{sagaRef}";
+        var multiplayer = _instances.Find(x => x.CompositeKey == multiplayerKey).FirstOrDefault();
+        if (multiplayer != null)
+            return GetOrRegisterMultiplayerInstanceAsync(sagaRef, ct);
+
         // Use per-instance lock to prevent race condition without blocking other sagas
         var lockKey = $"{avatarId}|{sagaRef}";
         var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
 
         lock (instanceLock)
         {
-            // Try to find existing instance
+            // Return cached instance if available and clean (no new transactions to load)
+            if (_instanceCache.TryGetValue(lockKey, out var cachedInstance) && !cachedInstance.IsDirty)
+                return Task.FromResult(cachedInstance);
+
+            // Try to find existing instance in DB
             var instance = _instances
                 .Find(x => x.OwnerAvatarId == avatarId && x.SagaRef == sagaRef)
                 .FirstOrDefault();
@@ -72,9 +98,36 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                     .OrderBy(x => x.SequenceNumber)
                     .ToList();
 
-                // CRITICAL FIX: Thread-safe transaction loading - replace list instead of Clear+AddRange
-                // This prevents concurrent modification exceptions if another thread is reading transactions
                 instance.Transactions = transactionRecords.Select(r => r.ToTransaction()).ToList();
+
+                if (instance.Transactions.Count == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] READ empty instance: SagaRef='{sagaRef}' AvatarId={avatarId} InstanceId={instance.InstanceId}");
+                }
+
+                // Check if our cached replay is still valid by comparing the highest
+                // committed sequence number against what the cache was built from.
+                if (_instanceCache.TryGetValue(lockKey, out var existing)
+                    && existing.InstanceId == instance.InstanceId
+                    && existing.CachedState != null)
+                {
+                    var maxCommittedSeq = instance.GetCommittedTransactions()
+                        .Select(t => t.SequenceNumber)
+                        .DefaultIfEmpty(0)
+                        .Max();
+
+                    if (existing.CachedAtSequenceNumber == maxCommittedSeq)
+                    {
+                        // No new committed transactions since last replay — cache still valid
+                        instance.CachedState = existing.CachedState;
+                        instance.CachedAtSequenceNumber = existing.CachedAtSequenceNumber;
+                        instance.IsDirty = false;
+                    }
+                    // else: new committed transactions exist — IsDirty defaults to true
+                }
+                // else: no cached version — IsDirty defaults to true
+
+                _instanceCache[lockKey] = instance;
 
                 return Task.FromResult(instance);
             }
@@ -120,23 +173,57 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         }
     }
 
-    public Task<SagaInstance?> GetInstanceByIdAsync(Guid instanceId, CancellationToken ct = default)
+    public Task<SagaInstance> GetOrRegisterMultiplayerInstanceAsync(string sagaRef, CancellationToken ct = default)
     {
-        var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+        var lockKey = $"NULL|{sagaRef}";
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
 
-        if (instance != null)
+        lock (instanceLock)
         {
-            // Load transactions
-            var transactionRecords = _transactions
-                .Find(x => x.InstanceId == instanceId)
-                .OrderBy(x => x.SequenceNumber)
-                .ToList();
+            if (_instanceCache.TryGetValue(lockKey, out var cached) && !cached.IsDirty)
+                return Task.FromResult(cached);
 
-            // Thread-safe: Replace list instead of Clear+AddRange
-            instance.Transactions = transactionRecords.Select(r => r.ToTransaction()).ToList();
+            var instance = _instances
+                .Find(x => x.CompositeKey == lockKey)
+                .FirstOrDefault();
+
+            if (instance != null)
+            {
+                var records = _transactions
+                    .Find(x => x.InstanceId == instance.InstanceId)
+                    .OrderBy(x => x.SequenceNumber)
+                    .ToList();
+                instance.Transactions = records.Select(r => r.ToTransaction()).ToList();
+
+                _instanceCache[lockKey] = instance;
+                return Task.FromResult(instance);
+            }
+
+            instance = new SagaInstance
+            {
+                InstanceId = Guid.NewGuid(),
+                SagaRef = sagaRef,
+                OwnerAvatarId = null,
+                InstanceType = SagaInstanceType.Multiplayer,
+                CreatedAt = DateTime.UtcNow,
+                CompositeKey = lockKey,
+            };
+
+            try
+            {
+                _instances.Insert(instance);
+            }
+            catch (LiteException ex) when (ex.ErrorCode == LiteException.INDEX_DUPLICATE_KEY)
+            {
+                // Another caller registered it between check and insert — re-query.
+                instance = _instances.Find(x => x.CompositeKey == lockKey).FirstOrDefault();
+                if (instance == null)
+                    throw;
+            }
+
+            _instanceCache[lockKey] = instance;
+            return Task.FromResult(instance);
         }
-
-        return Task.FromResult(instance);
     }
 
     public Task<List<long>> AddTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
@@ -175,6 +262,138 @@ public class SagaInstanceRepository : ISagaInstanceRepository
             }
 
             return Task.FromResult(sequenceNumbers);
+        }
+    }
+
+    public Task<(List<long> SequenceNumbers, bool Committed)> AddAndCommitTransactionsAsync(Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+            if (instance == null)
+                throw new InvalidOperationException($"Saga instance {instanceId} not found");
+
+            try
+            {
+                _database.BeginTrans();
+
+                try
+                {
+                    var maxSequence = _transactions
+                        .Find(x => x.InstanceId == instanceId)
+                        .Select(x => x.SequenceNumber)
+                        .DefaultIfEmpty(0)
+                        .Max();
+
+                    var sequenceNumbers = new List<long>();
+
+                    foreach (var transaction in transactions)
+                    {
+                        transaction.SequenceNumber = ++maxSequence;
+                        transaction.Status = TransactionStatus.Committed;
+                        transaction.ServerTimestamp = DateTime.UtcNow;
+
+                        var record = SagaTransactionRecord.FromTransaction(transaction, instanceId);
+                        _transactions.Insert(record);
+                        sequenceNumbers.Add(transaction.SequenceNumber);
+                    }
+
+                    // Project cross-arc state before commit so it's in the same transaction
+                    if (_avatarProgressRepository != null && instance.OwnerAvatarId.HasValue)
+                    {
+                        _avatarProgressRepository.ProjectTransactions(
+                            instance.OwnerAvatarId.Value,
+                            instance.SagaRef,
+                            transactions);
+                    }
+
+                    _database.Commit();
+                    System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit OK: InstanceId={instanceId} wrote {transactions.Count} txs");
+
+                    InvalidateInstanceCache(instanceId);
+                    if (instance.OwnerAvatarId.HasValue)
+                    {
+                        InvalidateReadModelCache(instance.OwnerAvatarId.Value, instance.SagaRef);
+                    }
+
+                    return Task.FromResult((sequenceNumbers, true));
+                }
+                catch (Exception innerEx)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit INNER FAIL: InstanceId={instanceId} ex={innerEx.GetType().Name}: {innerEx.Message}");
+                    _database.Rollback();
+                    throw;
+                }
+            }
+            catch (Exception outerEx)
+            {
+                System.Diagnostics.Debug.WriteLine($"[SagaInstanceRepository] AddAndCommit OUTER FAIL: InstanceId={instanceId} ex={outerEx.GetType().Name}: {outerEx.Message}");
+                return Task.FromResult((new List<long>(), false));
+            }
+        }
+    }
+
+    public Task<int> ImportTransactionsAsync(Guid avatarId, Guid instanceId, List<SagaTransaction> transactions, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+            if (instance == null)
+                throw new InvalidOperationException($"Saga instance {instanceId} not found");
+
+            _database.BeginTrans();
+
+            try
+            {
+                var newlyInserted = new List<SagaTransaction>();
+
+                foreach (var transaction in transactions)
+                {
+                    // Skip if already exists locally (idempotent — keeps non-idempotent
+                    // projections like BossDefeats/FactionReputation from double-counting
+                    // on overlapping pulls)
+                    var existing = _transactions.FindOne(x => x.TransactionId == transaction.TransactionId);
+                    if (existing != null)
+                        continue;
+
+                    // Preserve sequence number and status from server — do not reassign
+                    var record = SagaTransactionRecord.FromTransaction(transaction, instanceId);
+                    _transactions.Insert(record);
+                    newlyInserted.Add(transaction);
+                }
+
+                // Project only the newly-inserted transactions — matches the
+                // AddAndCommitTransactionsAsync invariant so sync clients don't
+                // have to remember to call ProjectTransactions themselves.
+                if (newlyInserted.Count > 0 && _avatarProgressRepository != null && avatarId != Guid.Empty)
+                {
+                    _avatarProgressRepository.ProjectTransactions(avatarId, instance.SagaRef, newlyInserted);
+                }
+
+                _database.Commit();
+
+                if (newlyInserted.Count > 0)
+                {
+                    InvalidateInstanceCache(instanceId);
+                    if (avatarId != Guid.Empty)
+                    {
+                        InvalidateReadModelCache(avatarId, instance.SagaRef);
+                    }
+                }
+
+                return Task.FromResult(newlyInserted.Count);
+            }
+            catch
+            {
+                _database.Rollback();
+                throw;
+            }
         }
     }
 
@@ -236,6 +455,12 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                 }
 
                 _database.Commit();
+
+                // Pending→Committed changes what replay produces. Invalidate any cached
+                // SagaInstance so the next GetOrCreate reloads from disk instead of
+                // returning state derived before these transactions were committed.
+                InvalidateInstanceCache(instanceId);
+
                 return Task.FromResult(true);
             }
             catch
@@ -252,13 +477,36 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     public Task RollbackTransactionsAsync(Guid instanceId, List<Guid> transactionIds, CancellationToken ct = default)
     {
-        foreach (var transactionId in transactionIds)
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
         {
-            var record = _transactions.FindOne(x => x.TransactionId == transactionId);
-            if (record != null && record.InstanceId == instanceId)
+            _database.BeginTrans();
+
+            try
             {
-                record.Status = TransactionStatus.Rejected;
-                _transactions.Update(record);
+                foreach (var transactionId in transactionIds)
+                {
+                    var record = _transactions.FindOne(x => x.TransactionId == transactionId);
+                    if (record != null && record.InstanceId == instanceId)
+                    {
+                        record.Status = TransactionStatus.Rejected;
+                        _transactions.Update(record);
+                    }
+                }
+
+                _database.Commit();
+
+                // Keep the in-memory view aligned with the DB even though replay output
+                // is unchanged — consumers that read instance.Transactions directly would
+                // otherwise see stale Pending entries.
+                InvalidateInstanceCache(instanceId);
+            }
+            catch
+            {
+                _database.Rollback();
+                throw;
             }
         }
 
@@ -267,8 +515,9 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
     public Task<List<SagaInstance>> GetAllInstancesForAvatarAsync(Guid avatarId, CancellationToken ct = default)
     {
+        // Include shared multiplayer instances so push ships their transactions too.
         var instances = _instances
-            .Find(x => x.OwnerAvatarId == avatarId)
+            .Find(x => x.OwnerAvatarId == avatarId || x.OwnerAvatarId == null)
             .ToList();
 
         // Load transactions for each instance
@@ -285,6 +534,63 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
         return Task.FromResult(instances);
     }
+
+    public Task UpdateSyncWatermarkAsync(Guid instanceId, long lastSyncedSequenceNumber, DateTime lastSyncedAt, DateTime? serverVersion, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+            if (instance == null)
+                return Task.CompletedTask;
+
+            instance.LastSyncedSequenceNumber = lastSyncedSequenceNumber;
+            instance.LastSyncedAt = lastSyncedAt;
+            instance.ServerVersion = serverVersion;
+
+            _instances.Update(instance);
+
+            // Keep any cached copy in sync so the next GetOrCreate doesn't overwrite with stale values
+            if (_instanceCache.TryGetValue($"{instance.OwnerAvatarId}|{instance.SagaRef}", out var cached))
+            {
+                cached.LastSyncedSequenceNumber = lastSyncedSequenceNumber;
+                cached.LastSyncedAt = lastSyncedAt;
+                cached.ServerVersion = serverVersion;
+            }
+
+            return Task.CompletedTask;
+        }
+    }
+
+    /// <summary>
+    /// Marks any cached instance with the given ID as dirty so the next
+    /// GetOrCreateInstanceAsync call reloads from DB instead of returning stale state.
+    /// Used after external writes (sync import) that bypass AddTransaction.
+    /// </summary>
+    private void InvalidateInstanceCache(Guid instanceId)
+    {
+        foreach (var kvp in _instanceCache)
+        {
+            if (kvp.Value.InstanceId == instanceId)
+            {
+                kvp.Value.IsDirty = true;
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Drops the cached SagaState projection (if any) for this (avatarId, sagaRef).
+    /// Handlers already invalidate after their own writes, but this covers paths like
+    /// pull-sync imports that otherwise leave the read model serving pre-import state.
+    /// Fire-and-forget — we're inside a sync method and the cache is in-process.
+    /// </summary>
+    private void InvalidateReadModelCache(Guid avatarId, string sagaRef)
+    {
+        _readModelRepository?.InvalidateCacheAsync(avatarId, sagaRef);
+    }
 }
 
 /// <summary>
@@ -298,15 +604,14 @@ internal class SagaTransactionRecord
     public Guid TransactionId { get; set; }
     public long SequenceNumber { get; set; }
     public string? AvatarId { get; set; }
-    public string ClientId { get; set; } = string.Empty;
     public DateTime LocalTimestamp { get; set; }
     public DateTime? ServerTimestamp { get; set; }
     public TransactionStatus Status { get; set; }
     public SagaTransactionType Type { get; set; }
+    public string? ExtensionTypeName { get; set; }
     public Dictionary<string, string> Data { get; set; } = new();
     public Guid? ReversesTransactionId { get; set; }
     public string? ReversalReason { get; set; }
-    public string? MergeStrategy { get; set; }
 
     public static SagaTransactionRecord FromTransaction(SagaTransaction transaction, Guid instanceId)
     {
@@ -316,15 +621,14 @@ internal class SagaTransactionRecord
             TransactionId = transaction.TransactionId,
             SequenceNumber = transaction.SequenceNumber,
             AvatarId = transaction.AvatarId,
-            ClientId = transaction.ClientId,
             LocalTimestamp = transaction.LocalTimestamp,
             ServerTimestamp = transaction.ServerTimestamp,
             Status = transaction.Status,
             Type = transaction.Type,
+            ExtensionTypeName = transaction.ExtensionTypeName,
             Data = new Dictionary<string, string>(transaction.Data),
             ReversesTransactionId = transaction.ReversesTransactionId,
-            ReversalReason = transaction.ReversalReason,
-            MergeStrategy = transaction.MergeStrategy
+            ReversalReason = transaction.ReversalReason
         };
     }
 
@@ -335,15 +639,14 @@ internal class SagaTransactionRecord
             TransactionId = TransactionId,
             SequenceNumber = SequenceNumber,
             AvatarId = AvatarId,
-            ClientId = ClientId,
             LocalTimestamp = LocalTimestamp,
             ServerTimestamp = ServerTimestamp,
             Status = Status,
             Type = Type,
+            ExtensionTypeName = ExtensionTypeName,
             Data = new Dictionary<string, string>(Data),
             ReversesTransactionId = ReversesTransactionId,
-            ReversalReason = ReversalReason,
-            MergeStrategy = MergeStrategy
+            ReversalReason = ReversalReason
         };
     }
 }

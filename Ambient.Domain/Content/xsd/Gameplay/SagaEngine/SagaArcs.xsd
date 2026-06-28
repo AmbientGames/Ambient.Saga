@@ -60,7 +60,7 @@
 			</xs:enumeration>
 			<xs:enumeration value="Service">
 				<xs:annotation>
-					<xs:documentation>A location offering player services such as healing, repair, or fast travel.</xs:documentation>
+					<xs:documentation>A location offering avatar services such as healing, repair, or fast travel.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Default">
@@ -84,12 +84,12 @@
 
 	<xs:simpleType name="SagaArcInitialState">
 		<xs:annotation>
-			<xs:documentation>Controls whether a SagaArc is revealed on the map before the player discovers it.</xs:documentation>
+			<xs:documentation>Controls whether a SagaArc is revealed on the map before the avatar discovers it.</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="Hidden">
 				<xs:annotation>
-					<xs:documentation>The point of interest is invisible on the map until the player enters its DiscoverRadius.</xs:documentation>
+					<xs:documentation>The point of interest is invisible on the map until the avatar enters its DiscoverRadius.</xs:documentation>
 				</xs:annotation>
 			</xs:enumeration>
 			<xs:enumeration value="Visible">
@@ -134,12 +134,27 @@
 				<!-- Deterministic POI interaction envelope -->
 				<xs:attribute name="DiscoverRadius" type="xs:double" use="optional" default="200">
 					<xs:annotation>
-						<xs:documentation>Distance in meters at which the player discovers this point of interest and it becomes visible on the map.</xs:documentation>
+						<xs:documentation>Distance in meters at which the avatar discovers this point of interest and it becomes visible on the map.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
 				<xs:attribute name="InitialState" type="SagaArcInitialState" use="optional" default="Hidden">
 					<xs:annotation>
 						<xs:documentation>Whether this point of interest is visible or hidden on the map before discovery.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="OwnerAvatarId" type="xs:string" use="optional">
+					<xs:annotation>
+						<xs:documentation>Avatar ID of the player who owns this saga arc. Owner can trade freely with characters (no cost), characters will not be hostile to owner. Used for player-created arcs such as shopkeepers.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="MarkupMultiplier" type="xs:double" use="optional" default="1">
+					<xs:annotation>
+						<xs:documentation>Multiplier applied to the catalog price of items SOLD BY characters in this arc to a non-owner (the shop's selling price). 1.0 means catalog price (no markup), 1.25 means a 25% markup, 0.5 means a 50% discount. Authored arcs typically leave this at the default; player-owned shops raise it to express their resale margin. Owner always pays zero regardless.</xs:documentation>
+					</xs:annotation>
+				</xs:attribute>
+				<xs:attribute name="BuybackMultiplier" type="xs:double" use="optional" default="1">
+					<xs:annotation>
+						<xs:documentation>Multiplier applied to the catalog price of items BOUGHT BY characters in this arc from a non-owner (the shop's buy-back price when a player sells to it). 1.0 means catalog price, 0.5 means the shop pays half (typical RPG buyback). Owner-side trades always go at zero regardless.</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
 			</xs:extension>

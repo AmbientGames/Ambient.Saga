@@ -124,35 +124,6 @@ public class SagaInstanceRepositoryTests : IDisposable
 
     #endregion
 
-    #region GetInstanceByIdAsync Tests
-
-    [Fact]
-    public async Task GetInstanceByIdAsync_ExistingInstance_ReturnsInstance()
-    {
-        // Arrange
-        var avatarId = Guid.NewGuid();
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "TestSaga");
-
-        // Act
-        var retrieved = await _repository.GetInstanceByIdAsync(instance.InstanceId);
-
-        // Assert
-        Assert.NotNull(retrieved);
-        Assert.Equal(instance.InstanceId, retrieved.InstanceId);
-    }
-
-    [Fact]
-    public async Task GetInstanceByIdAsync_NonExistentInstance_ReturnsNull()
-    {
-        // Act
-        var result = await _repository.GetInstanceByIdAsync(Guid.NewGuid());
-
-        // Assert
-        Assert.Null(result);
-    }
-
-    #endregion
-
     #region AddTransactionsAsync Tests
 
     [Fact]
@@ -308,7 +279,6 @@ public class SagaInstanceRepositoryTests : IDisposable
             TransactionId = Guid.NewGuid(),
             Type = SagaTransactionType.CharacterSpawned,
             AvatarId = avatarId.ToString(),
-            ClientId = "TestClient",
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
@@ -327,7 +297,6 @@ public class SagaInstanceRepositoryTests : IDisposable
         Assert.Equal(transaction.TransactionId, tx.TransactionId);
         Assert.Equal(transaction.Type, tx.Type);
         Assert.Equal(transaction.AvatarId, tx.AvatarId);
-        Assert.Equal(transaction.ClientId, tx.ClientId);
         Assert.Equal("Merchant", tx.Data["CharacterRef"]);
     }
 
@@ -624,7 +593,6 @@ public class SagaInstanceRepositoryTests : IDisposable
             TransactionId = Guid.NewGuid(),
             Type = SagaTransactionType.ItemTraded,
             AvatarId = avatarId.ToString(),
-            ClientId = "TestClient-123",
             LocalTimestamp = new DateTime(2024, 1, 15, 10, 30, 0, DateTimeKind.Utc),
             Data = new Dictionary<string, string>
             {

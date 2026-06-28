@@ -1,10 +1,11 @@
-﻿using MediatR;
+using MediatR;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -45,24 +46,18 @@ internal sealed class AssignTraitHandler : IRequestHandler<AssignTraitCommand, S
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterRef"] = command.CharacterRef,
-                    ["TraitType"] = command.TraitType,
-                    ["Reason"] = command.Reason ?? "Manual assignment"
+                    [TransactionDataKeys.CharacterRef] = command.CharacterRef,
+                    [TransactionDataKeys.TraitType] = command.TraitType,
+                    [TransactionDataKeys.Reason] = command.Reason ?? "Manual assignment"
                 }
             };
 
             instance.AddTransaction(transaction);
 
-            // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            // Persist and commit transaction atomically
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -75,8 +70,8 @@ internal sealed class AssignTraitHandler : IRequestHandler<AssignTraitCommand, S
 
             var resultData = new Dictionary<string, object>
             {
-                ["TraitType"] = command.TraitType,
-                ["CharacterRef"] = command.CharacterRef
+                [TransactionDataKeys.TraitType] = command.TraitType,
+                [TransactionDataKeys.CharacterRef] = command.CharacterRef
             };
 
             return SagaCommandResult.Success(

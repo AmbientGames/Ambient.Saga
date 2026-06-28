@@ -27,7 +27,6 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     // Quest tokens
     public bool HasQuestToken(string questTokenRef) => _questTokens.Contains(questTokenRef);
     public void AddQuestToken(string questTokenRef) => _questTokens.Add(questTokenRef);
-    public void RemoveQuestToken(string questTokenRef) => _questTokens.Remove(questTokenRef);
 
     // Stackable items
     public int GetConsumableQuantity(string consumableRef) => _consumables.GetValueOrDefault(consumableRef, 0);
@@ -56,7 +55,7 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public void AddSpell(string spellRef) => _spells.Add(spellRef);
     public void RemoveSpell(string spellRef) => _spells.Remove(spellRef);
 
-    // Player state
+    // Avatar state
     public bool HasAchievement(string achievementRef) => _achievements.Contains(achievementRef);
     public void UnlockAchievement(string achievementRef) => _achievements.Add(achievementRef);
     public float GetCredits() => Credits;
@@ -64,7 +63,7 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public void TransferCurrency(int amount) => Credits += amount;
 
     // Dialogue history
-    public int GetPlayerVisitCount(string dialogueTreeRef) => _visitCounts.GetValueOrDefault(dialogueTreeRef, 0);
+    public int GetAvatarVisitCount(string dialogueTreeRef) => _visitCounts.GetValueOrDefault(dialogueTreeRef, 0);
 
     public bool WasNodeVisited(string dialogueTreeRef, string nodeId)
     {
@@ -74,7 +73,7 @@ public class MockDialogueStateProvider : IDialogueStateProvider
     public void RecordNodeVisit(string dialogueTreeRef, string nodeId)
     {
         // Increment visit count for tree
-        _visitCounts[dialogueTreeRef] = GetPlayerVisitCount(dialogueTreeRef) + 1;
+        _visitCounts[dialogueTreeRef] = GetAvatarVisitCount(dialogueTreeRef) + 1;
 
         // Track specific node visit
         if (!_visitedNodes.ContainsKey(dialogueTreeRef))

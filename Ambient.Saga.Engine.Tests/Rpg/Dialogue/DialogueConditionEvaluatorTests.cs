@@ -17,7 +17,7 @@ public class DialogueConditionEvaluatorTests
     #region Quest Token Conditions
 
     [Fact]
-    public void HasQuestToken_WhenPlayerHasToken_ReturnsTrue()
+    public void HasQuestToken_WhenAvatarHasToken_ReturnsTrue()
     {
         _state.AddQuestToken("dragon_quest");
 
@@ -31,7 +31,7 @@ public class DialogueConditionEvaluatorTests
     }
 
     [Fact]
-    public void LacksQuestToken_WhenPlayerLacksToken_ReturnsTrue()
+    public void LacksQuestToken_WhenAvatarLacksToken_ReturnsTrue()
     {
         var condition = new DialogueCondition
         {
@@ -109,7 +109,7 @@ public class DialogueConditionEvaluatorTests
     #region Degradable Item Conditions
 
     [Fact]
-    public void HasEquipment_WhenPlayerHasItem_ReturnsTrue()
+    public void HasEquipment_WhenAvatarHasItem_ReturnsTrue()
     {
         _state.AddEquipment("iron_sword");
 
@@ -123,7 +123,7 @@ public class DialogueConditionEvaluatorTests
     }
 
     [Fact]
-    public void LacksEquipment_WhenPlayerLacksItem_ReturnsTrue()
+    public void LacksEquipment_WhenAvatarLacksItem_ReturnsTrue()
     {
         var condition = new DialogueCondition
         {
@@ -135,7 +135,7 @@ public class DialogueConditionEvaluatorTests
     }
 
     [Fact]
-    public void HasTool_WhenPlayerHasTool_ReturnsTrue()
+    public void HasTool_WhenAvatarHasTool_ReturnsTrue()
     {
         _state.AddTool("pickaxe");
 
@@ -149,7 +149,7 @@ public class DialogueConditionEvaluatorTests
     }
 
     [Fact]
-    public void HasSpell_WhenPlayerHasSpell_ReturnsTrue()
+    public void HasSpell_WhenAvatarHasSpell_ReturnsTrue()
     {
         _state.AddSpell("fireball");
 
@@ -164,10 +164,10 @@ public class DialogueConditionEvaluatorTests
 
     #endregion
 
-    #region Player State Conditions
+    #region Avatar State Conditions
 
     [Fact]
-    public void HasAchievement_WhenPlayerHasAchievement_ReturnsTrue()
+    public void HasAchievement_WhenAvatarHasAchievement_ReturnsTrue()
     {
         _state.UnlockAchievement("dragon_slayer");
 
@@ -215,14 +215,14 @@ public class DialogueConditionEvaluatorTests
     #region Dialogue History Conditions
 
     [Fact]
-    public void PlayerVisitCount_EvaluatesCorrectly()
+    public void AvatarVisitCount_EvaluatesCorrectly()
     {
         _state.RecordNodeVisit("merchant_dialogue", "greeting");
         _state.RecordNodeVisit("merchant_dialogue", "quest_offer");
 
         var condition = new DialogueCondition
         {
-            Type = DialogueConditionType.PlayerVisitCount,
+            Type = DialogueConditionType.AvatarVisitCount,
             RefName = "merchant_dialogue",
             Operator = ComparisonOperator.Equals,
             Value = "2"
@@ -498,7 +498,7 @@ public class DialogueConditionEvaluatorTests
         // Scenario: Character offers to join if:
         // 1. Party slot is available
         // 2. They're not already in the party
-        // 3. Player has completed a quest (has token)
+        // 3. Avatar has completed a quest (has token)
         _state.MaxPartySlots = 2;
         _state.AddQuestToken("saved_the_village");
 

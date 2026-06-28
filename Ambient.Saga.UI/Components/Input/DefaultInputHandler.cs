@@ -43,6 +43,9 @@ public class DefaultInputHandler : IInputHandler
     // Hotbar key states (1-9)
     private readonly bool[] _hotbarKeysWerePressed = new bool[9];
 
+    // Extended panel key state
+    private bool _extendedPanelKeyWasPressed = false;
+
     /// <summary>
     /// Event raised when ESC is pressed with no panels open.
     /// Subscribe to this to show your game's pause menu.
@@ -135,20 +138,30 @@ public class DefaultInputHandler : IInputHandler
         }
         _f12KeyWasPressed = f12KeyDown;
 
+        // Extended panel key (game-registered via PanelManager)
+        var extPanel = context.PanelManager?.Panel;
+        if (extPanel != null && extPanel.IsAvailable)
+        {
+            bool extKeyDown = ImGui.IsKeyDown(extPanel.Key);
+            if (extKeyDown && !_extendedPanelKeyWasPressed)
+            {
+                context.TogglePanelAction(ActivePanel.Extended);
+            }
+            _extendedPanelKeyWasPressed = extKeyDown;
+        }
+
         // ESC key - Hierarchical behavior
-        // 1. If panel open ? Close panel
-        // 2. If no panels open ? Request pause menu
+        // 1. If panel open → close it
+        // 2. If nothing open → request pause menu
         bool escKeyDown = ImGui.IsKeyDown(ImGuiKey.Escape);
         if (escKeyDown && !_escKeyWasPressed)
         {
             if (context.ActivePanel != ActivePanel.None)
             {
-                // Close the currently open panel
                 context.CloseAllPanelsAction();
             }
             else
             {
-                // No panels open - request pause menu
                 _pauseMenuRequestedThisFrame = true;
                 PauseMenuRequested?.Invoke();
             }

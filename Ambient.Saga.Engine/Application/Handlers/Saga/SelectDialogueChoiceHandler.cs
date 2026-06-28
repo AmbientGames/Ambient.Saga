@@ -1,13 +1,15 @@
-﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -19,17 +21,20 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
+    private readonly IAvatarProgressRepository _avatarProgressRepository;
     private readonly IWorld _world;
     private readonly IMediator _mediator;
 
     public SelectDialogueChoiceHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
+        IAvatarProgressRepository avatarProgressRepository,
         IWorld world,
         IMediator mediator)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
+        _avatarProgressRepository = avatarProgressRepository;
         _world = world;
         _mediator = mediator;
     }
@@ -98,38 +103,45 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             // Create dialogue engine with Saga context (will create transactions)
             var sagaContext = new SagaDialogueContext(instance, characterState.CharacterRef, command.AvatarId.ToString());
-            var stateProvider = new DirectDialogueStateProvider(_world, command.Avatar);
+            var stateProvider = new DirectDialogueStateProvider(_world, command.Avatar, _avatarProgressRepository, command.AvatarId.ToString(), characterState.CharacterRef);
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
-            // Start dialogue if not already started (idempotent)
-            engine.StartDialogue(dialogueTree);
-
-            // Navigate to current node by replaying DialogueNodeVisited transactions
-            var visitedNodes = instance.Transactions
-                .Where(t => t.Type == SagaTransactionType.DialogueNodeVisited &&
-                           t.Data.TryGetValue("CharacterRef", out var charRef) &&
+            // Scope to the current session: transactions at or after the last DialogueStarted for this character.
+            var characterTransactions = instance.Transactions
+                .Where(t => t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var charRef) &&
                            charRef == characterState.CharacterRef)
                 .OrderBy(t => t.SequenceNumber)
                 .ToList();
 
-            System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Replaying {visitedNodes.Count} visited nodes to restore state");
-
-            foreach (var visitedTx in visitedNodes)
+            var lastStarted = characterTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueStarted);
+            if (lastStarted == null)
             {
-                if (!visitedTx.Data.TryGetValue("DialogueNodeId", out var nodeId))
-                    continue;
+                return SagaCommandResult.Failure(instance.InstanceId, "No active dialogue session");
+            }
 
-                System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Navigating to previously visited node: {nodeId}");
+            var sessionTransactions = characterTransactions
+                .Where(t => t.SequenceNumber >= lastStarted.SequenceNumber)
+                .ToList();
 
-                // Find the choice that led to this node
-                if (engine.CurrentNode != null)
-                {
-                    var navChoice = engine.CurrentNode.Choice?.FirstOrDefault(c => c.NextNodeId == nodeId);
-                    if (navChoice != null)
-                    {
-                        engine.SelectChoice(navChoice);
-                    }
-                }
+            if (sessionTransactions.Any(t => t.Type == SagaTransactionType.DialogueCompleted))
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, "Dialogue session has already ended");
+            }
+
+            // Restore state from the transaction log - jump directly to the last visited node.
+            // This avoids re-running actions and re-evaluating conditions that may have changed.
+            var lastVisit = sessionTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueNodeVisited);
+            if (lastVisit != null)
+            {
+                var lastVisitedNodeId = lastVisit.Data[TransactionDataKeys.DialogueNodeId];
+                engine.RestoreToNode(dialogueTree, lastVisitedNodeId);
+                System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Restored to node: {lastVisitedNodeId}");
+            }
+            else
+            {
+                // No visits yet - navigate from start
+                engine.StartDialogue(dialogueTree);
+                System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] No prior visits; navigated from start to: {engine.CurrentNode?.NodeId ?? "null"}");
             }
 
             // Find the choice in the current node
@@ -151,7 +163,18 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] Navigated to node: {nextNode?.NodeId ?? "END"}");
 
             // Check for pending system events (OpenMerchantTrade, StartBossBattle, etc.)
+            // Capture BEFORE any EndDialogue call — EndDialogue clears the event queue.
             var pendingEvents = engine.PendingEvents.ToList();
+
+            // If the new current node is terminal, end the dialogue session.
+            // This creates a DialogueCompleted transaction so the session is sealed and
+            // DialogueCompleted-type quest objectives fire.
+            var isTerminal = engine.IsCurrentNodeTerminal;
+            if (isTerminal)
+            {
+                System.Diagnostics.Debug.WriteLine("[SelectDialogueChoice] Reached terminal node; ending dialogue session");
+                engine.EndDialogue();
+            }
             if (pendingEvents.Count > 0)
             {
                 System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] {pendingEvents.Count} pending events:");
@@ -163,6 +186,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             // Dispatch quest events directly (business logic, not UI transitions)
             bool gameComplete = false;
+            string? completionQuestRef = null;
             if (pendingEvents.Exists(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent)
                 && command.Avatar is AvatarEntity avatarEntity)
             {
@@ -193,8 +217,11 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                                 Avatar = avatarEntity,
                                 DialogueDriven = true
                             }, ct);
-                            if (questResult.Data.ContainsKey("GameComplete"))
+                            if (questResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
+                            {
                                 gameComplete = true;
+                                completionQuestRef = questResult.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string : null;
+                            }
                             pendingEvents.RemoveAt(i);
                             break;
 
@@ -227,11 +254,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             }
 
             // Persist and commit
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(instance.InstanceId, newTransactions, ct);
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                newTransactions.Select(t => t.TransactionId).ToList(),
-                ct);
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
 
             if (!committed)
             {
@@ -245,11 +268,13 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             var resultData = new Dictionary<string, object>();
             if (pendingEvents.Count > 0)
             {
-                resultData["PendingEvents"] = pendingEvents;
+                resultData[TransactionDataKeys.PendingEvents] = pendingEvents;
             }
             if (gameComplete)
             {
-                resultData["GameComplete"] = true;
+                resultData[TransactionDataKeys.GameComplete] = true;
+                if (completionQuestRef != null)
+                    resultData[TransactionDataKeys.CompletionQuestRef] = completionQuestRef;
             }
 
             return SagaCommandResult.Success(

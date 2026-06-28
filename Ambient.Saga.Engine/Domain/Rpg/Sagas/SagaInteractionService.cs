@@ -1,6 +1,8 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
 
@@ -17,6 +19,9 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Sagas;
 /// </summary>
 public class SagaInteractionService
 {
+    // Sentinel Y — "unknown, resolve against terrain at render time". Matches Archimedea's SpatialConstants.DeepUnderGround.
+    private const string SpawnHeightSentinel = "-1073741824";
+
     private readonly SagaArc _template;
     private readonly List<SagaTrigger> _expandedSagaTriggers;
     private readonly IWorld _world;
@@ -48,7 +53,9 @@ public class SagaInteractionService
         SagaInstance instance,
         double avatarX,
         double avatarZ,
-        AvatarBase avatar)
+        AvatarBase avatar,
+        IAvatarProgressRepository? progressRepo = null,
+        Guid avatarId = default)
     {
         if (instance == null)
             throw new ArgumentNullException(nameof(instance));
@@ -77,8 +84,11 @@ public class SagaInteractionService
             if (!isWithinRadius)
                 continue;
 
-            // Check quest token requirements
-            if (!TriggerAvailabilityChecker.CanActivate(trigger, avatar))
+            // Check quest token requirements from avatar progress table
+            var canActivate = progressRepo != null && avatarId != Guid.Empty
+                ? TriggerAvailabilityChecker.CanActivate(trigger, progressRepo, avatarId)
+                : TriggerAvailabilityChecker.CanActivate(trigger, currentState);
+            if (!canActivate)
                 continue;
 
             // Keep track of smallest (innermost) trigger
@@ -135,75 +145,6 @@ public class SagaInteractionService
         return results.OrderByDescending(t => t.SagaTrigger.EnterRadius).ToList();
     }
 
-    /// <summary>
-    /// Checks if a specific trigger can be activated by the avatar at the given position.
-    /// This is a comprehensive check including proximity, quest tokens, and completion status.
-    /// </summary>
-    /// <param name="instance">Saga instance to check state</param>
-    /// <param name="sagaTrigger">The trigger to check</param>
-    /// <param name="avatarX">Avatar X position in Saga-relative coordinates</param>
-    /// <param name="avatarZ">Avatar Z position in Saga-relative coordinates</param>
-    /// <param name="avatar">Avatar with quest tokens and other data</param>
-    /// <returns>Result indicating whether trigger can activate and why/why not</returns>
-    public SagaTriggerActivationCheck CanActivateSagaTrigger(
-        SagaInstance instance,
-        SagaTrigger sagaTrigger,
-        double avatarX,
-        double avatarZ,
-        AvatarBase avatar)
-    {
-        if (instance == null)
-            throw new ArgumentNullException(nameof(instance));
-
-        if (sagaTrigger == null)
-            throw new ArgumentNullException(nameof(sagaTrigger));
-
-        if (avatar == null)
-            throw new ArgumentNullException(nameof(avatar));
-
-        var result = new SagaTriggerActivationCheck
-        {
-            SagaTrigger = sagaTrigger,
-            CanActivate = false
-        };
-
-        // Get current state
-        var currentState = _stateMachine.ReplayToNow(instance);
-
-        // Check if already completed
-        if (currentState.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState)
-            && triggerState.Status == SagaTriggerStatus.Completed)
-        {
-            result.BlockedReason = "Trigger already completed";
-            return result;
-        }
-
-        // Check proximity
-        var distanceFromCenter = Math.Sqrt(avatarX * avatarX + avatarZ * avatarZ);
-        result.DistanceFromCenter = distanceFromCenter;
-        result.IsWithinRadius = distanceFromCenter <= sagaTrigger.EnterRadius;
-
-        if (!result.IsWithinRadius)
-        {
-            result.BlockedReason = $"Avatar outside trigger radius (distance: {distanceFromCenter:F2}m, radius: {sagaTrigger.EnterRadius:F2}m)";
-            return result;
-        }
-
-        // Check quest token requirements
-        result.HasRequiredQuestTokens = TriggerAvailabilityChecker.CanActivate(sagaTrigger, avatar);
-
-        if (!result.HasRequiredQuestTokens)
-        {
-            var missingTokens = TriggerAvailabilityChecker.GetMissingQuestTokens(sagaTrigger, avatar);
-            result.MissingQuestTokens = missingTokens;
-            result.BlockedReason = $"Missing quest tokens: {string.Join(", ", missingTokens)}";
-            return result;
-        }
-
-        // All checks passed
-        result.CanActivate = true;
-        return result;
-    }
 
     #endregion
 
@@ -221,7 +162,8 @@ public class SagaInteractionService
         SagaInstance instance,
         double avatarX,
         double avatarZ,
-        AvatarBase avatar)
+        AvatarBase avatar,
+        IAvatarProgressRepository? progressRepo = null)
     {
         if (instance == null)
             throw new ArgumentNullException(nameof(instance));
@@ -250,9 +192,9 @@ public class SagaInteractionService
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["SagaArcRef"] = _template.RefName,
-                    ["DistanceMeters"] = distanceFromCenter.ToString("F2"),
-                    ["DiscoverRadius"] = _template.DiscoverRadius.ToString("F2")
+                    [TransactionDataKeys.SagaArcRef] = _template.RefName,
+                    [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
+                    [TransactionDataKeys.DiscoverRadius] = _template.DiscoverRadius.ToString("F2")
                 }
             };
             instance.AddTransaction(discoveryTx);
@@ -282,48 +224,25 @@ public class SagaInteractionService
 
             if (isOutsideExitRadius)
             {
-                // Player has exited the trigger zone - create exit transaction
+                // Avatar has exited the trigger zone - record the exit but leave spawned
+                // characters where they are. Encounters persist across visits; defeated
+                // characters with a RespawnIntervalSeconds come back via Phase 3 once the
+                // interval has elapsed and the avatar re-enters the zone.
                 var exitTx = new SagaTransaction
                 {
                     TransactionId = Guid.NewGuid(),
-                    Type = SagaTransactionType.PlayerExited,
+                    Type = SagaTransactionType.AvatarExited,
                     AvatarId = avatar.AvatarId.ToString(),
                     Status = TransactionStatus.Pending,
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["TriggerRef"] = sagaTrigger.RefName,
-                        ["DistanceMeters"] = distanceFromCenter.ToString("F2"),
-                        ["ExitRadius"] = exitRadius.ToString("F2")
+                        [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName,
+                        [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
+                        [TransactionDataKeys.ExitRadius] = exitRadius.ToString("F2")
                     }
                 };
                 instance.AddTransaction(exitTx);
-
-                // Despawn any living characters spawned by this trigger
-                foreach (var character in currentState.Characters.Values)
-                {
-                    if (character.SpawnedByTriggerRef == sagaTrigger.RefName &&
-                        character.IsAlive &&
-                        character.IsSpawned)
-                    {
-                        var despawnTx = new SagaTransaction
-                        {
-                            TransactionId = Guid.NewGuid(),
-                            Type = SagaTransactionType.CharacterDespawned,
-                            AvatarId = avatar.AvatarId.ToString(),
-                            Status = TransactionStatus.Pending,
-                            LocalTimestamp = DateTime.UtcNow,
-                            Data = new Dictionary<string, string>
-                            {
-                                ["CharacterInstanceId"] = character.CharacterInstanceId.ToString(),
-                                ["CharacterRef"] = character.CharacterRef,
-                                ["Reason"] = "Player exited trigger zone",
-                                ["TriggerRef"] = sagaTrigger.RefName
-                            }
-                        };
-                        instance.AddTransaction(despawnTx);
-                    }
-                }
             }
         }
 
@@ -343,29 +262,51 @@ public class SagaInteractionService
             if (!isWithinEnterRadius)
                 continue;
 
-            // Check quest token requirements
-            if (!TriggerAvailabilityChecker.CanActivate(sagaTrigger, avatar))
+            // Check quest token requirements from avatar progress table
+            var canActivate = progressRepo != null && avatar.AvatarId != Guid.Empty
+                ? TriggerAvailabilityChecker.CanActivate(sagaTrigger, progressRepo, avatar.AvatarId)
+                : TriggerAvailabilityChecker.CanActivate(sagaTrigger, currentState);
+            if (!canActivate)
                 continue;
 
             // Trigger activated! Create entry transaction first
             var enterTx = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerEntered,
+                Type = SagaTransactionType.AvatarEntered,
                 AvatarId = avatar.AvatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["TriggerRef"] = sagaTrigger.RefName,
-                    ["DistanceMeters"] = distanceFromCenter.ToString("F2"),
-                    ["EnterRadius"] = sagaTrigger.EnterRadius.ToString("F2")
+                    [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName,
+                    [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
+                    [TransactionDataKeys.EnterRadius] = sagaTrigger.EnterRadius.ToString("F2")
                 }
             };
             instance.AddTransaction(enterTx);
 
             // Then activate trigger and spawn characters
             ActivateSagaTrigger(instance, sagaTrigger, avatarX, avatarZ, avatar.AvatarId.ToString());
+        }
+
+        // PHASE 3: Respawn evaluation for completed triggers the avatar is currently inside.
+        // Triggers are one-and-done for activation, but defeated characters from a completed
+        // trigger can come back once their template's RespawnIntervalSeconds has elapsed —
+        // provided the avatar is physically in the zone to witness it.
+        foreach (var sagaTrigger in _expandedSagaTriggers)
+        {
+            if (!currentState.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState)
+                || triggerState.Status != SagaTriggerStatus.Completed)
+            {
+                continue;
+            }
+
+            if (distanceFromCenter > sagaTrigger.EnterRadius)
+                continue;
+
+            var respawnSeed = Random.Shared.Next();
+            CheckAndRespawnDefeatedCharacters(instance, sagaTrigger, avatarX, avatarZ, respawnSeed, avatar.AvatarId.ToString());
         }
     }
 
@@ -392,10 +333,10 @@ public class SagaInteractionService
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["SagaTriggerRef"] = sagaTrigger.RefName,
-                ["AvatarX"] = avatarX.ToString("F6"),
-                ["AvatarZ"] = avatarZ.ToString("F6"),
-                ["Seed"] = seed.ToString()
+                [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                [TransactionDataKeys.AvatarX] = avatarX.ToString("F6"),
+                [TransactionDataKeys.AvatarZ] = avatarZ.ToString("F6"),
+                [TransactionDataKeys.Seed] = seed.ToString()
             }
         };
 
@@ -415,9 +356,9 @@ public class SagaInteractionService
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["QuestTokenRef"] = questTokenRef,
-                        ["SagaTriggerRef"] = sagaTrigger.RefName,
-                        ["Reason"] = $"Trigger '{sagaTrigger.RefName}' activated"
+                        [TransactionDataKeys.QuestTokenRef] = questTokenRef,
+                        [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                        [TransactionDataKeys.Reason] = $"Trigger '{sagaTrigger.RefName}' activated"
                     }
                 };
 
@@ -445,8 +386,8 @@ public class SagaInteractionService
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["SagaTriggerRef"] = sagaTrigger.RefName,
-                        ["Reason"] = "Characters spawned"
+                        [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                        [TransactionDataKeys.Reason] = "Characters spawned"
                     }
                 };
                 instance.AddTransaction(completedTx);
@@ -456,9 +397,10 @@ public class SagaInteractionService
 
     /// <summary>
     /// Spawns characters around the avatar's position using deterministic seed.
-    /// - SpawnAndInitiate: 2m from player (inside ApproachRadius for immediate engagement)
-    /// - SpawnPassive: 10m from player at random angles (player must approach)
-    /// Respawns defeated characters if RespawnIntervalSeconds has elapsed.
+    /// - SpawnAndInitiate: 2m from avatar (inside ApproachRadius for immediate engagement)
+    /// - SpawnPassive: 10m from avatar at random angles (avatar must approach)
+    /// Called on the initial trigger activation only. Respawn of defeated characters
+    /// is handled separately in Phase 3 of UpdateWithAvatarPosition.
     /// </summary>
     private void SpawnCharacters(
         SagaInstance instance,
@@ -470,9 +412,6 @@ public class SagaInteractionService
     {
         System.Diagnostics.Debug.WriteLine($"[SpawnCharacters] Called for trigger '{sagaTrigger.RefName}' at ({avatarX:F2}, {avatarZ:F2})");
 
-        // Check if characters from this trigger were previously defeated and can respawn
-        CheckAndRespawnDefeatedCharacters(instance, sagaTrigger, avatarX, avatarZ, seed, avatarId);
-
         var spawns = sagaTrigger.Spawn;
         var resolver = new CharacterSpawnResolver(_world, seed);
         var resolvedSpawns = resolver.ResolveSpawns(spawns);
@@ -482,15 +421,18 @@ public class SagaInteractionService
         if (resolvedSpawns.Count == 0)
             return;
 
-        // Spawn characters close to the avatar so they're within ApproachRadius for interaction
-        // Use a small default radius - characters will be spawned around the avatar, not the trigger center
-        var spawnRadius = 10.0; // Default spawn distance from avatar (within typical ApproachRadius)
+        // Place characters ahead of the avatar toward the Saga origin, so the encounter
+        // always materializes between the player and the POI rather than wherever the
+        // player happened to be facing. Depth scales with the trigger's EnterRadius but
+        // is capped so characters are always within a chunk (~15 blocks) of where the
+        // avatar crossed the ring — close enough to notice and be drawn toward.
+        const double maxSpawnDepthMeters = 15.0;
+        var spawnDepth = Math.Min(sagaTrigger.EnterRadius * 0.5, maxSpawnDepthMeters);
 
-        // Calculate spawn positions in circle around avatar (Saga-relative)
-        var spawnPositions = CalculateCircularSpawnPositions(
+        var spawnPositions = CalculateForwardArcSpawnPositions(
             avatarX,
             avatarZ,
-            spawnRadius,
+            spawnDepth,
             resolvedSpawns.Count,
             seed);
 
@@ -510,7 +452,7 @@ public class SagaInteractionService
 
             var characterInstanceId = Guid.NewGuid();
 
-            System.Diagnostics.Debug.WriteLine($"[SpawnCharacters] Creating spawn tx for '{characterRef}' at ({spawnX:F2}, {spawnZ:F2}), radius={spawnRadius}m");
+            System.Diagnostics.Debug.WriteLine($"[SpawnCharacters] Creating spawn tx for '{characterRef}' at ({spawnX:F2}, {spawnZ:F2}), depth={spawnDepth:F2}m");
 
             var spawnTx = new SagaTransaction
             {
@@ -521,12 +463,12 @@ public class SagaInteractionService
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = characterInstanceId.ToString(),
-                    ["CharacterRef"] = characterRef,
-                    ["SagaTriggerRef"] = sagaTrigger.RefName,
-                    ["X"] = spawnX.ToString("F6"),  // Saga-relative
-                    ["Z"] = spawnZ.ToString("F6"),  // Saga-relative
-                    ["SpawnHeight"] = "0"           // Default, game will adjust to terrain
+                    [TransactionDataKeys.CharacterInstanceId] = characterInstanceId.ToString(),
+                    [TransactionDataKeys.CharacterRef] = characterRef,
+                    [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                    [TransactionDataKeys.X] = spawnX.ToString("F6"),  // Saga-relative
+                    [TransactionDataKeys.Z] = spawnZ.ToString("F6"),  // Saga-relative
+                    [TransactionDataKeys.SpawnHeight] = SpawnHeightSentinel // "Y unknown" — game resolves against terrain
                 }
             };
 
@@ -535,14 +477,18 @@ public class SagaInteractionService
     }
 
     /// <summary>
-    /// Calculates spawn positions in a circle around a center point.
-    /// Uses deterministic random seed for consistent placement on replay.
-    /// All coordinates are in Saga-relative space (X/Z plane, Y is height).
+    /// Calculates spawn positions in a small forward arc ahead of the avatar, in the
+    /// direction of the Saga origin (0, 0 in Saga-relative coords). Characters are
+    /// spread across a modest arc centered on that forward direction, with mild
+    /// angular and radial jitter for a natural feel.
+    ///
+    /// If the avatar is at (or essentially at) the origin there is no "forward"
+    /// direction, so we pick an arbitrary one deterministically from the seed.
     /// </summary>
-    private List<(double x, double z)> CalculateCircularSpawnPositions(
-        double centerX,
-        double centerZ,
-        double radius,
+    private List<(double x, double z)> CalculateForwardArcSpawnPositions(
+        double avatarX,
+        double avatarZ,
+        double depth,
         int count,
         int seed)
     {
@@ -553,24 +499,42 @@ public class SagaInteractionService
 
         var rng = new Random(seed);
 
-        // Distribute evenly around circle with slight randomization
-        var baseAngleStep = 2.0 * Math.PI / count;
+        // Unit vector from avatar toward origin, or a random direction if avatar is at origin.
+        const double epsilon = 0.01; // metres
+        var avatarDistanceFromOrigin = Math.Sqrt(avatarX * avatarX + avatarZ * avatarZ);
+        double forwardAngle;
+        if (avatarDistanceFromOrigin < epsilon)
+        {
+            forwardAngle = rng.NextDouble() * 2.0 * Math.PI;
+        }
+        else
+        {
+            // Using the existing sin-for-X, cos-for-Z convention: angle = atan2(x, z).
+            forwardAngle = Math.Atan2(-avatarX, -avatarZ);
+        }
+
+        // Spread the group across a 60° arc centred on the forward direction.
+        // Single-character spawns land straight ahead; groups fan out symmetrically.
+        const double totalArcRadians = Math.PI / 3.0; // 60°
+        var angleStep = count > 1 ? totalArcRadians / (count - 1) : 0.0;
+        var startOffset = -totalArcRadians / 2.0;
+
+        // Keep jitter proportional to the per-character slice, or a small fixed
+        // amount when there is only one character, so it never lands perfectly on
+        // the avatar→origin line.
+        var jitterScale = count > 1 ? angleStep * 0.2 : Math.PI / 36.0; // ~5° fallback
 
         for (var i = 0; i < count; i++)
         {
-            // Base angle with small random offset for natural feel
-            var angle = i * baseAngleStep + (rng.NextDouble() - 0.5) * baseAngleStep * 0.2;
+            var baseOffset = count > 1 ? startOffset + i * angleStep : 0.0;
+            var angle = forwardAngle + baseOffset + (rng.NextDouble() - 0.5) * jitterScale;
 
-            // Slight radius variation (90-100% of specified radius)
-            var radiusVariation = radius * (0.9 + rng.NextDouble() * 0.1);
+            var radiusVariation = depth * (0.9 + rng.NextDouble() * 0.1);
 
             var offsetX = radiusVariation * Math.Sin(angle);
             var offsetZ = radiusVariation * Math.Cos(angle);
 
-            var spawnX = centerX + offsetX;
-            var spawnZ = centerZ + offsetZ;
-
-            positions.Add((spawnX, spawnZ));
+            positions.Add((avatarX + offsetX, avatarZ + offsetZ));
         }
 
         return positions;
@@ -591,7 +555,7 @@ public class SagaInteractionService
         // Get all CharacterSpawned transactions for this trigger
         var spawnedByTrigger = instance.GetCommittedTransactions()
             .Where(t => t.Type == SagaTransactionType.CharacterSpawned &&
-                       t.Data.TryGetValue("SagaTriggerRef", out var triggerRef) &&
+                       t.Data.TryGetValue(TransactionDataKeys.SagaTriggerRef, out var triggerRef) &&
                        triggerRef == sagaTrigger.RefName)
             .ToList();
 
@@ -601,10 +565,10 @@ public class SagaInteractionService
         // Check each spawned character to see if it was defeated and can respawn
         foreach (var spawnTx in spawnedByTrigger)
         {
-            if (!spawnTx.Data.TryGetValue("CharacterRef", out var characterRef))
+            if (!spawnTx.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var characterRef))
                 continue;
 
-            if (!spawnTx.Data.TryGetValue("CharacterInstanceId", out var instanceIdStr) ||
+            if (!spawnTx.Data.TryGetValue(TransactionDataKeys.CharacterInstanceId, out var instanceIdStr) ||
                 !Guid.TryParse(instanceIdStr, out var characterInstanceId))
                 continue;
 
@@ -619,7 +583,7 @@ public class SagaInteractionService
             // Check if this character was defeated
             var defeatTx = instance.GetCommittedTransactions()
                 .FirstOrDefault(t => t.Type == SagaTransactionType.CharacterDefeated &&
-                                   t.Data.TryGetValue("CharacterInstanceId", out var defId) &&
+                                   t.Data.TryGetValue(TransactionDataKeys.CharacterInstanceId, out var defId) &&
                                    defId == characterInstanceId.ToString());
 
             if (defeatTx == null)
@@ -633,9 +597,9 @@ public class SagaInteractionService
             // Check if character was already respawned after this defeat
             var respawnedAfterDefeat = instance.GetCommittedTransactions()
                 .Any(t => t.Type == SagaTransactionType.CharacterSpawned &&
-                         t.Data.TryGetValue("CharacterRef", out var respawnRef) &&
+                         t.Data.TryGetValue(TransactionDataKeys.CharacterRef, out var respawnRef) &&
                          respawnRef == characterRef &&
-                         t.Data.TryGetValue("SagaTriggerRef", out var respawnTriggerRef) &&
+                         t.Data.TryGetValue(TransactionDataKeys.SagaTriggerRef, out var respawnTriggerRef) &&
                          respawnTriggerRef == sagaTrigger.RefName &&
                          t.GetCanonicalTimestamp() > defeatTx.GetCanonicalTimestamp());
 
@@ -648,9 +612,9 @@ public class SagaInteractionService
             // Get original spawn position (or use current avatar position if not found)
             var spawnX = avatarX;
             var spawnZ = avatarZ;
-            if (spawnTx.Data.TryGetValue("X", out var origX) && double.TryParse(origX, out var parsedX))
+            if (spawnTx.Data.TryGetValue(TransactionDataKeys.X, out var origX) && double.TryParse(origX, out var parsedX))
                 spawnX = parsedX;
-            if (spawnTx.Data.TryGetValue("Z", out var origZ) && double.TryParse(origZ, out var parsedZ))
+            if (spawnTx.Data.TryGetValue(TransactionDataKeys.Z, out var origZ) && double.TryParse(origZ, out var parsedZ))
                 spawnZ = parsedZ;
 
             System.Diagnostics.Debug.WriteLine($"[RESPAWN] Character '{characterRef}' respawning after {timeSinceDefeat:F0}s (interval: {characterTemplate.RespawnIntervalSeconds}s)");
@@ -664,14 +628,14 @@ public class SagaInteractionService
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = newCharacterInstanceId.ToString(),
-                    ["CharacterRef"] = characterRef,
-                    ["SagaTriggerRef"] = sagaTrigger.RefName,
-                    ["X"] = spawnX.ToString("F6"),
-                    ["Z"] = spawnZ.ToString("F6"),
-                    ["SpawnHeight"] = "0",
-                    ["IsRespawn"] = "true", // Mark as respawn for analytics
-                    ["PreviousInstanceId"] = characterInstanceId.ToString() // Link to defeated instance
+                    [TransactionDataKeys.CharacterInstanceId] = newCharacterInstanceId.ToString(),
+                    [TransactionDataKeys.CharacterRef] = characterRef,
+                    [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                    [TransactionDataKeys.X] = spawnX.ToString("F6"),
+                    [TransactionDataKeys.Z] = spawnZ.ToString("F6"),
+                    [TransactionDataKeys.SpawnHeight] = SpawnHeightSentinel, // "Y unknown" — game resolves against terrain
+                    [TransactionDataKeys.IsRespawn] = "true", // Mark as respawn for analytics
+                    [TransactionDataKeys.PreviousInstanceId] = characterInstanceId.ToString() // Link to defeated instance
                 }
             };
 

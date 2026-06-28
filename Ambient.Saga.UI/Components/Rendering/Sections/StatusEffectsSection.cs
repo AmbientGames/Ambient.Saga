@@ -1,3 +1,4 @@
+using Ambient.Domain.Enums;
 using Ambient.Saga.UI;
 using ImGuiNET;
 using System.Numerics;
@@ -11,13 +12,6 @@ namespace Ambient.Saga.UI.Components.Rendering.Sections;
 /// </summary>
 public class StatusEffectsSection : IHudSection
 {
-    // Temperature thresholds (body temp in Celsius - 37 is normal)
-    private const float NormalTemperature = 37f;
-    private const float ColdThreshold = 35f;      // Hypothermia warning
-    private const float HotThreshold = 39f;       // Hyperthermia warning
-    private const float CriticalCold = 32f;       // Severe hypothermia
-    private const float CriticalHot = 42f;        // Severe hyperthermia
-
     // Temperature gauge styling base values at 96 DPI (1.0 scale)
     private const float GaugeWidthBase = 80f;
     private const float GaugeHeightBase = 8f;
@@ -39,7 +33,7 @@ public class StatusEffectsSection : IHudSection
 
     public void Render(HudContext context)
     {
-        var stats = context.ViewModel.PlayerAvatar?.Stats;
+        var stats = context.ViewModel.Avatar?.Stats;
         if (stats == null)
             return;
 
@@ -63,25 +57,25 @@ public class StatusEffectsSection : IHudSection
         Vector4 bgColor;
         string statusLabel;
 
-        if (bodyTemp < CriticalCold)
+        if (bodyTemp < ThermalConstants.ColdCritical)
         {
             statusColor = new Vector4(0.2f, 0.4f, 1f, 1f);      // Deep blue
             bgColor = new Vector4(0.1f, 0.15f, 0.3f, 0.8f);
             statusLabel = "CRITICAL";
         }
-        else if (bodyTemp < ColdThreshold)
+        else if (bodyTemp < ThermalConstants.ColdWarning)
         {
             statusColor = new Vector4(0.4f, 0.7f, 1f, 1f);      // Light blue
             bgColor = new Vector4(0.15f, 0.2f, 0.3f, 0.8f);
             statusLabel = "Cold";
         }
-        else if (bodyTemp > CriticalHot)
+        else if (bodyTemp > ThermalConstants.HotCritical)
         {
             statusColor = new Vector4(1f, 0.2f, 0.2f, 1f);      // Deep red
             bgColor = new Vector4(0.3f, 0.1f, 0.1f, 0.8f);
             statusLabel = "CRITICAL";
         }
-        else if (bodyTemp > HotThreshold)
+        else if (bodyTemp > ThermalConstants.HotWarning)
         {
             statusColor = new Vector4(1f, 0.5f, 0.2f, 1f);      // Orange
             bgColor = new Vector4(0.3f, 0.2f, 0.1f, 0.8f);
@@ -94,7 +88,7 @@ public class StatusEffectsSection : IHudSection
         }
 
         // Flash effect for warnings
-        var isWarning = bodyTemp < ColdThreshold || bodyTemp > HotThreshold;
+        var isWarning = bodyTemp < ThermalConstants.ColdWarning || bodyTemp > ThermalConstants.HotWarning;
         if (isWarning)
         {
             var flash = (float)Math.Sin(ImGui.GetTime() * 4) * 0.3f + 0.7f;
@@ -104,15 +98,15 @@ public class StatusEffectsSection : IHudSection
         // Calculate gauge fill based on deviation from normal
         // Gauge shows how far from critical you are (full = near normal, empty = at critical)
         float fillFraction;
-        if (bodyTemp < NormalTemperature)
+        if (bodyTemp < ThermalConstants.NormalBodyTemp)
         {
-            // Cold side: CriticalCold (0%) -> Normal (100%)
-            fillFraction = Math.Clamp((bodyTemp - CriticalCold) / (NormalTemperature - CriticalCold), 0f, 1f);
+            // Cold side: ThermalConstants.ColdCritical (0%) -> Normal (100%)
+            fillFraction = Math.Clamp((bodyTemp - ThermalConstants.ColdCritical) / (ThermalConstants.NormalBodyTemp - ThermalConstants.ColdCritical), 0f, 1f);
         }
         else
         {
-            // Hot side: Normal (100%) -> CriticalHot (0%)
-            fillFraction = Math.Clamp(1f - (bodyTemp - NormalTemperature) / (CriticalHot - NormalTemperature), 0f, 1f);
+            // Hot side: Normal (100%) -> ThermalConstants.HotCritical (0%)
+            fillFraction = Math.Clamp(1f - (bodyTemp - ThermalConstants.NormalBodyTemp) / (ThermalConstants.HotCritical - ThermalConstants.NormalBodyTemp), 0f, 1f);
         }
 
         // Draw label

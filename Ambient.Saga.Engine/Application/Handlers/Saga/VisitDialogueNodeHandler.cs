@@ -1,10 +1,11 @@
-﻿using MediatR;
+using MediatR;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -45,24 +46,18 @@ internal sealed class VisitDialogueNodeHandler : IRequestHandler<VisitDialogueNo
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterRef"] = command.CharacterRef,
-                    ["DialogueTreeRef"] = command.DialogueTreeRef,
-                    ["DialogueNodeId"] = command.DialogueNodeId
+                    [TransactionDataKeys.CharacterRef] = command.CharacterRef,
+                    [TransactionDataKeys.DialogueTreeRef] = command.DialogueTreeRef,
+                    [TransactionDataKeys.DialogueNodeId] = command.DialogueNodeId
                 }
             };
 
             instance.AddTransaction(transaction);
 
-            // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            // Persist and commit transaction
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)

@@ -22,12 +22,12 @@ public class DialogueStateResult
     public List<string> DialogueText { get; set; } = new();
 
     /// <summary>
-    /// Available player choices
+    /// Available avatar choices
     /// </summary>
     public List<DialogueChoiceOption> Choices { get; set; } = new();
 
     /// <summary>
-    /// Whether player can continue (no choices, just advance)
+    /// Whether avatar can continue (no choices, just advance)
     /// </summary>
     public bool CanContinue { get; set; }
 
@@ -38,7 +38,7 @@ public class DialogueStateResult
 }
 
 /// <summary>
-/// A dialogue choice option available to the player
+/// A dialogue choice option available to the avatar
 /// </summary>
 public class DialogueChoiceOption
 {

@@ -1,5 +1,6 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 
@@ -24,7 +25,7 @@ public class BattleSetup
     public ItemCollection OpponentCapabilities { get; set; } = new ItemCollection();
     public CharacterStats? OpponentStatsOverride { get; set; } = null;
 
-    // Party companions (characters who fight alongside player)
+    // Party companions (characters who fight alongside avatar)
     public List<Character> CompanionCharacters { get; set; } = new List<Character>();
 
     public void SetupFromWorld(IWorld world)
@@ -52,12 +53,12 @@ public class BattleSetup
         if (SelectedOpponentCharacter == null)
             throw new InvalidOperationException("Opponent character not selected");
 
-        // Create player combatant from archetype
+        // Create avatar combatant from archetype
         var avatarStats = AvatarStatsOverride ?? SelectedAvatarArchetype.SpawnStats;
         if (avatarStats == null)
             throw new InvalidOperationException("Avatar archetype must have SpawnStats defined");
 
-        var playerCombatant = new Combatant
+        var avatarCombatant = new Combatant
         {
             RefName = SelectedAvatarArchetype.RefName,
             DisplayName = SelectedAvatarArchetype.DisplayName,
@@ -72,12 +73,12 @@ public class BattleSetup
         };
 
         // Initialize EquippedItems by assigning equipment to slots
-        InitializeEquippedSlots(playerCombatant, LoadedWorld);
+        InitializeEquippedSlots(avatarCombatant, LoadedWorld);
 
         // Set starting stance
         if (!string.IsNullOrEmpty(AvatarStartingStanceRef))
         {
-            playerCombatant.CombatProfile["Stance"] = AvatarStartingStanceRef;
+            avatarCombatant.CombatProfile[TransactionDataKeys.Stance] = AvatarStartingStanceRef;
             System.Diagnostics.Debug.WriteLine($"  Set starting stance: {AvatarStartingStanceRef}");
         }
 
@@ -104,7 +105,7 @@ public class BattleSetup
         InitializeEquippedSlots(enemyCombatant, LoadedWorld);
 
         // Set default stance for opponent
-        enemyCombatant.CombatProfile["Stance"] = "Balanced";
+        enemyCombatant.CombatProfile[TransactionDataKeys.Stance] = "Balanced";
         System.Diagnostics.Debug.WriteLine($"  Set opponent stance: Balanced");
 
         // Create companion combatants
@@ -134,7 +135,7 @@ public class BattleSetup
 
             // Initialize equipped slots
             InitializeEquippedSlots(companionCombatant, LoadedWorld);
-            companionCombatant.CombatProfile["Stance"] = "Balanced";
+            companionCombatant.CombatProfile[TransactionDataKeys.Stance] = "Balanced";
 
             companions.Add(companionCombatant);
             System.Diagnostics.Debug.WriteLine($"  Added companion: {companionCombatant.DisplayName} (HP: {companionCombatant.Health:F2})");
@@ -142,14 +143,14 @@ public class BattleSetup
 
         // Create BattleEngine with CombatAI for opponent and companions
         var enemyMind = new CombatAI(LoadedWorld);
-        var battleEngine = new BattleEngine(playerCombatant, enemyCombatant, enemyMind, LoadedWorld,
+        var battleEngine = new BattleEngine(avatarCombatant, enemyCombatant, enemyMind, LoadedWorld,
             companions: companions.Count > 0 ? companions : null);
 
-        // Set player's available affinities
-        battleEngine.SetPlayerAffinities(AvatarAffinityRefs);
+        // Set avatar's available affinities
+        battleEngine.SetAvatarAffinities(AvatarAffinityRefs);
 
         System.Diagnostics.Debug.WriteLine($"\n=== BATTLE ENGINE CREATED ===");
-        System.Diagnostics.Debug.WriteLine($"Player: {playerCombatant.DisplayName} (HP: {playerCombatant.Health:F2})");
+        System.Diagnostics.Debug.WriteLine($"Avatar: {avatarCombatant.DisplayName} (HP: {avatarCombatant.Health:F2})");
         if (companions.Count > 0)
         {
             System.Diagnostics.Debug.WriteLine($"Companions: {string.Join(", ", companions.Select(c => c.DisplayName))}");

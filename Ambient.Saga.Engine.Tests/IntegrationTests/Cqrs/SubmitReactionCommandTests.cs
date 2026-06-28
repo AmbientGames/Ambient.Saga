@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
@@ -22,7 +23,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
 /// <summary>
 /// Integration tests for SubmitReactionCommand - the active defense system.
-/// Tests that player defensive reactions are properly recorded as transactions.
+/// Tests that avatar defensive reactions are properly recorded as transactions.
 /// </summary>
 [Collection("Sequential CQRS Tests")]
 public class SubmitReactionCommandTests : IDisposable
@@ -52,6 +53,7 @@ public class SubmitReactionCommandTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
@@ -95,7 +97,7 @@ public class SubmitReactionCommandTests : IDisposable
         battleSetup.OpponentCapabilities = new ItemCollection();
 
         var battleEngine = battleSetup.CreateBattleEngine();
-        var playerCombatant = battleEngine.GetPlayer();
+        var avatarCombatant = battleEngine.GetAvatar();
         var enemyCombatant = battleEngine.GetEnemy();
 
         var startResult = await _mediator.Send(new StartBattleCommand
@@ -103,9 +105,9 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             EnemyCharacterInstanceId = enemyInstanceId,
-            PlayerCombatant = playerCombatant,
+            AvatarCombatant = avatarCombatant,
             EnemyCombatant = enemyCombatant,
-            PlayerAffinityRefs = new List<string> { "Physical" },
+            AvatarAffinityRefs = new List<string> { "Physical" },
             EnemyMind = new CombatAI(_world),
             RandomSeed = 12345,
             Avatar = avatar
@@ -121,7 +123,7 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             BattleInstanceId = battleInstanceId,
-            Reaction = PlayerDefenseType.Parry,
+            Reaction = AvatarDefenseType.Parry,
             Avatar = avatar
         });
 
@@ -141,12 +143,12 @@ public class SubmitReactionCommandTests : IDisposable
     }
 
     [Theory]
-    [InlineData(PlayerDefenseType.Dodge)]
-    [InlineData(PlayerDefenseType.Block)]
-    [InlineData(PlayerDefenseType.Parry)]
-    [InlineData(PlayerDefenseType.Brace)]
-    [InlineData(PlayerDefenseType.None)]
-    public async Task SubmitReaction_AllDefenseTypes_RecordedCorrectly(PlayerDefenseType defenseType)
+    [InlineData(AvatarDefenseType.Dodge)]
+    [InlineData(AvatarDefenseType.Block)]
+    [InlineData(AvatarDefenseType.Parry)]
+    [InlineData(AvatarDefenseType.Brace)]
+    [InlineData(AvatarDefenseType.None)]
+    public async Task SubmitReaction_AllDefenseTypes_RecordedCorrectly(AvatarDefenseType defenseType)
     {
         // ARRANGE
         var avatarId = Guid.NewGuid();
@@ -183,9 +185,9 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             EnemyCharacterInstanceId = enemyInstanceId,
-            PlayerCombatant = battleEngine.GetPlayer(),
+            AvatarCombatant = battleEngine.GetAvatar(),
             EnemyCombatant = battleEngine.GetEnemy(),
-            PlayerAffinityRefs = new List<string> { "Physical" },
+            AvatarAffinityRefs = new List<string> { "Physical" },
             EnemyMind = new CombatAI(_world),
             RandomSeed = 12345,
             Avatar = avatar
@@ -234,7 +236,7 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             BattleInstanceId = fakeBattleId,
-            Reaction = PlayerDefenseType.Dodge,
+            Reaction = AvatarDefenseType.Dodge,
             Avatar = avatar
         });
 
@@ -282,9 +284,9 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             EnemyCharacterInstanceId = enemyInstanceId,
-            PlayerCombatant = battleEngine.GetPlayer(),
+            AvatarCombatant = battleEngine.GetAvatar(),
             EnemyCombatant = battleEngine.GetEnemy(),
-            PlayerAffinityRefs = new List<string> { "Physical" },
+            AvatarAffinityRefs = new List<string> { "Physical" },
             EnemyMind = new CombatAI(_world),
             RandomSeed = 12345,
             Avatar = avatar
@@ -298,7 +300,7 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             BattleInstanceId = battleInstanceId,
-            Reaction = PlayerDefenseType.Dodge,
+            Reaction = AvatarDefenseType.Dodge,
             Avatar = avatar
         });
 
@@ -307,7 +309,7 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             BattleInstanceId = battleInstanceId,
-            Reaction = PlayerDefenseType.Block,
+            Reaction = AvatarDefenseType.Block,
             Avatar = avatar
         });
 
@@ -316,7 +318,7 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             BattleInstanceId = battleInstanceId,
-            Reaction = PlayerDefenseType.Parry,
+            Reaction = AvatarDefenseType.Parry,
             Avatar = avatar
         });
 
@@ -404,7 +406,6 @@ public class SubmitReactionCommandTests : IDisposable
             {
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
 
@@ -475,7 +476,6 @@ public class SubmitReactionCommandTests : IDisposable
             {
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             },
             AffinityRef = "Physical"
         };

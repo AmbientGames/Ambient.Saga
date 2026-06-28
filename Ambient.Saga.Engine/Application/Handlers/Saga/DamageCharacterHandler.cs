@@ -1,10 +1,11 @@
-﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -72,24 +73,18 @@ internal sealed class DamageCharacterHandler : IRequestHandler<DamageCharacterCo
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = command.CharacterInstanceId.ToString(),
-                    ["Damage"] = command.Damage.ToString(),
-                    ["DamageSource"] = command.DamageSource ?? "Unknown"
+                    [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
+                    [TransactionDataKeys.Damage] = command.Damage.ToString(),
+                    [TransactionDataKeys.DamageSource] = command.DamageSource ?? "Unknown"
                 }
             };
 
             instance.AddTransaction(transaction);
 
-            // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            // Persist and commit transaction atomically
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -104,8 +99,8 @@ internal sealed class DamageCharacterHandler : IRequestHandler<DamageCharacterCo
             var newHealth = character.CurrentHealth - command.Damage;
             var resultData = new Dictionary<string, object>
             {
-                ["NewHealth"] = newHealth,
-                ["CharacterDied"] = newHealth <= 0
+                [TransactionDataKeys.NewHealth] = newHealth,
+                [TransactionDataKeys.CharacterDied] = newHealth <= 0
             };
 
             return SagaCommandResult.Success(

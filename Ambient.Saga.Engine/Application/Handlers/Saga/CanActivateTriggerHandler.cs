@@ -1,9 +1,10 @@
-﻿using MediatR;
+using MediatR;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -53,8 +54,8 @@ internal sealed class CanActivateTriggerHandler : IRequestHandler<CanActivateTri
             // Check if trigger has already been activated
             var alreadyActivated = instance.GetCommittedTransactions()
                 .Any(t => t.Type == SagaTransactionType.TriggerActivated &&
-                         t.Data.ContainsKey("TriggerRef") &&
-                         t.Data["TriggerRef"] == query.TriggerRef);
+                         t.Data.ContainsKey(TransactionDataKeys.TriggerRef) &&
+                         t.Data[TransactionDataKeys.TriggerRef] == query.TriggerRef);
 
             var canActivate = !alreadyActivated;
 

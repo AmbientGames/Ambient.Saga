@@ -7,6 +7,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -129,25 +130,19 @@ internal sealed class EquipItemOutsideBattleHandler : IRequestHandler<EquipItemO
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["SlotRef"] = command.SlotRef,
-                    ["PreviousEquipmentRef"] = previousEquipmentRef ?? "",
-                    ["NewEquipmentRef"] = command.EquipmentRef ?? "",
-                    ["IsUnequipping"] = isUnequipping.ToString()
+                    [TransactionDataKeys.SlotRef] = command.SlotRef,
+                    [TransactionDataKeys.PreviousEquipmentRef] = previousEquipmentRef ?? "",
+                    [TransactionDataKeys.NewEquipmentRef] = command.EquipmentRef ?? "",
+                    [TransactionDataKeys.IsUnequipping] = isUnequipping.ToString()
                 }
             };
 
             instance.AddTransaction(transaction);
 
             // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -209,20 +204,16 @@ internal sealed class EquipItemOutsideBattleHandler : IRequestHandler<EquipItemO
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
                     {
-                        ["ReversedTransactionId"] = transaction.TransactionId.ToString(),
-                        ["Reason"] = $"Avatar persistence failed: {persistEx.Message}",
-                        ["OriginalType"] = transaction.Type.ToString()
+                        [TransactionDataKeys.ReversedTransactionId] = transaction.TransactionId.ToString(),
+                        [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                        [TransactionDataKeys.OriginalType] = transaction.Type.ToString()
                     }
                 };
 
                 instance.AddTransaction(reversalTransaction);
-                await _instanceRepository.AddTransactionsAsync(
+                await _instanceRepository.AddAndCommitTransactionsAsync(
                     instance.InstanceId,
                     new List<SagaTransaction> { reversalTransaction },
-                    ct);
-                await _instanceRepository.CommitTransactionsAsync(
-                    instance.InstanceId,
-                    new List<Guid> { reversalTransaction.TransactionId },
                     ct);
 
                 return SagaCommandResult.Failure(instance.InstanceId,
@@ -231,11 +222,11 @@ internal sealed class EquipItemOutsideBattleHandler : IRequestHandler<EquipItemO
 
             var resultData = new Dictionary<string, object>
             {
-                ["SlotRef"] = command.SlotRef,
-                ["PreviousEquipmentRef"] = previousEquipmentRef ?? "(none)",
-                ["NewEquipmentRef"] = command.EquipmentRef ?? "(none)",
-                ["Action"] = isUnequipping ? "Unequipped" : "Equipped",
-                ["ClearedSlots"] = clearedSlots
+                [TransactionDataKeys.SlotRef] = command.SlotRef,
+                [TransactionDataKeys.PreviousEquipmentRef] = previousEquipmentRef ?? "(none)",
+                [TransactionDataKeys.NewEquipmentRef] = command.EquipmentRef ?? "(none)",
+                [TransactionDataKeys.Action] = isUnequipping ? "Unequipped" : "Equipped",
+                [TransactionDataKeys.ClearedSlots] = clearedSlots
             };
 
             return SagaCommandResult.Success(

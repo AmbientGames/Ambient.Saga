@@ -76,7 +76,7 @@ public class AbandonQuestEvent : DialogueSystemEvent
 }
 
 /// <summary>
-/// Raised when a character joins the player's party via dialogue.
+/// Raised when a character joins the avatar's party via dialogue.
 /// </summary>
 public class PartyMemberJoinedEvent : DialogueSystemEvent
 {
@@ -84,7 +84,7 @@ public class PartyMemberJoinedEvent : DialogueSystemEvent
 }
 
 /// <summary>
-/// Raised when a character leaves the player's party via dialogue.
+/// Raised when a character leaves the avatar's party via dialogue.
 /// </summary>
 public class PartyMemberLeftEvent : DialogueSystemEvent
 {

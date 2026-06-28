@@ -79,7 +79,7 @@ public class DialogueEngine
     }
 
     /// <summary>
-    /// Selects a player choice and navigates to the target node.
+    /// Selects a avatar choice and navigates to the target node.
     /// </summary>
     /// <param name="choice">The choice selected by the player</param>
     /// <returns>The next node, or null if dialogue ends</returns>
@@ -139,11 +139,43 @@ public class DialogueEngine
         if (_currentNode == null || _currentNode.Choice == null)
             return Array.Empty<DialogueChoice>();
 
-        var playerCredits = _stateProvider.GetCredits();
+        var avatarCredits = _stateProvider.GetCredits();
 
         return _currentNode.Choice
-            .Where(c => c.Cost <= playerCredits)
+            .Where(c => c.Cost <= avatarCredits)
             .ToArray();
+    }
+
+    /// <summary>
+    /// Restores engine state to a previously visited node without re-evaluating conditions
+    /// or re-executing actions. Used to rehydrate state from the transaction log.
+    /// </summary>
+    public void RestoreToNode(DialogueTree tree, string nodeId)
+    {
+        if (tree == null)
+            throw new ArgumentNullException(nameof(tree));
+
+        var node = FindNode(tree, nodeId);
+        if (node == null)
+            throw new InvalidOperationException($"Node not found: {nodeId}");
+
+        _currentTree = tree;
+        _currentNode = node;
+        _actionExecutor.ClearEvents();
+    }
+
+    /// <summary>
+    /// True if the current node is terminal (no choices and no NextNodeId).
+    /// </summary>
+    public bool IsCurrentNodeTerminal
+    {
+        get
+        {
+            if (_currentNode == null) return false;
+            var hasChoices = _currentNode.Choice != null && _currentNode.Choice.Length > 0;
+            var hasNextNode = !string.IsNullOrEmpty(_currentNode.NextNodeId);
+            return !hasChoices && !hasNextNode;
+        }
     }
 
     /// <summary>
@@ -197,9 +229,22 @@ public class DialogueEngine
         // Conditions passed - make this the current node
         _currentNode = targetNode;
 
-        // Create DialogueNodeVisited transaction BEFORE executing actions
-        // This records the INTENT to award items/traits/tokens
-        // The Saga state machine will ensure rewards are only given on first visit
+        // Execute actions FIRST. Reward transactions are staged inside the executor, not
+        // attached to the SagaInstance yet. If any action throws, the executor drops its
+        // staged buffer and the visit transaction below is never recorded — so a retry is
+        // free to re-attempt without hitting the idempotency block.
+        var characterRef = _sagaContext?.CharacterRef ?? string.Empty;
+        _actionExecutor.ExecuteAll(
+            targetNode.Action ?? Array.Empty<DialogueAction>(),
+            _currentTree.RefName,
+            nodeId,
+            characterRef
+        );
+
+        // Actions succeeded — commit the visit record and any staged reward transactions
+        // to the SagaInstance as a single group. The visit is added first so it receives
+        // the lowest sequence number in the group, preserving the historical ordering
+        // (visit precedes its rewards in the log).
         if (_sagaContext != null && _currentTree != null)
         {
             var transaction = DialogueTransactionHelper.CreateDialogueNodeVisitedTransaction(
@@ -212,16 +257,7 @@ public class DialogueEngine
             );
             _sagaContext.SagaInstance.AddTransaction(transaction);
         }
-
-        // Execute actions
-        // Pass character ref for idempotency checking (use empty string if no Saga context)
-        var characterRef = _sagaContext?.CharacterRef ?? string.Empty;
-        _actionExecutor.ExecuteAll(
-            targetNode.Action ?? Array.Empty<DialogueAction>(),
-            _currentTree.RefName,
-            nodeId,
-            characterRef
-        );
+        _actionExecutor.FlushStaged();
 
         return _currentNode;
     }

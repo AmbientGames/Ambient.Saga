@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Results.Saga;
@@ -6,6 +6,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -57,7 +58,7 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             var existingBattle = instance.Transactions
                 .Where(t => t.Type == SagaTransactionType.BattleStarted)
                 .FirstOrDefault(t =>
-                    t.Data.TryGetValue("EnemyCombatantId", out var enemyId) &&
+                    t.Data.TryGetValue(TransactionDataKeys.EnemyCombatantId, out var enemyId) &&
                     enemyId == command.EnemyCharacterInstanceId.ToString());
 
             if (existingBattle != null)
@@ -71,14 +72,15 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
 
             // Create battle engine with deterministic seed and companions
             var battleEngine = new BattleEngine(
-                command.PlayerCombatant,
+                command.AvatarCombatant,
                 command.EnemyCombatant,
                 command.EnemyMind,
                 _world,
                 command.RandomSeed,
                 companions: command.CompanionCombatants);
 
-            battleEngine.SetPlayerAffinities(command.PlayerAffinityRefs);
+            battleEngine.SetAvatarAffinities(command.AvatarAffinityRefs);
+            battleEngine.RegisterTellsFromWorld(_world);
 
             if (command.CompanionCombatants?.Count > 0)
             {
@@ -89,13 +91,13 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             var battleStartedTransaction = BattleTransactionHelper.CreateBattleStartedTransaction(
                 command.AvatarId.ToString(),
                 command.SagaArcRef,
-                Guid.NewGuid(),  // Player combatant ID
+                Guid.NewGuid(),  // Avatar combatant ID
                 command.EnemyCharacterInstanceId,
                 command.EnemyCombatant.RefName,
                 command.RandomSeed,
-                command.PlayerCombatant,
+                command.AvatarCombatant,
                 command.EnemyCombatant,
-                command.PlayerAffinityRefs,
+                command.AvatarAffinityRefs,
                 instance.InstanceId);
 
             instance.AddTransaction(battleStartedTransaction);
@@ -103,50 +105,60 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             // Start battle (enemy moves first)
             battleEngine.StartBattle();
 
-            // Create transaction for enemy's opening turn
-            var enemyAction = battleEngine.ActionHistory.FirstOrDefault();
-            if (enemyAction != null)
-            {
-                var enemyAfterAction = battleEngine.GetEnemy();
-                var enemyTurnTransaction = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
-                    command.AvatarId.ToString(),
-                    battleStartedTransaction.TransactionId,
-                    1,  // Turn 1
-                    enemyAction.ActorName,
-                    false,  // Not player turn
-                    enemyAction.DecisionType,
-                    enemyAction.ItemRefName,
-                    enemyAction.Damage,
-                    enemyAction.Healing,
-                    enemyAction.TargetName,
-                    enemyAction.TargetHealthAfter,
-                    enemyAction.ActorEnergyAfter,
-                    enemyAfterAction,
-                    _world,
-                    instance.InstanceId);
-
-                instance.AddTransaction(enemyTurnTransaction);
-
-                System.Diagnostics.Debug.WriteLine($"[StartBattle] Enemy opened with {enemyAction.DecisionType}, dealt {enemyAction.Damage:F2} damage");
-            }
-
-            // Persist transactions
             var transactions = new List<SagaTransaction> { battleStartedTransaction };
-            if (enemyAction != null)
+            var resultData = new Dictionary<string, object>
             {
-                transactions.Add(instance.Transactions.Last());
-            }
+                [TransactionDataKeys.BattleInstanceId] = battleStartedTransaction.TransactionId
+            };
 
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
-                instance.InstanceId,
-                transactions,
-                ct);
+            if (battleEngine.State == BattleState.AwaitingReaction && battleEngine.PendingAttack != null)
+            {
+                // Enemy's opening attack produced a tell — reaction phase active
+                var pending = battleEngine.PendingAttack;
+                resultData[TransactionDataKeys.AwaitingReaction] = true;
+                resultData[TransactionDataKeys.TellRefName] = pending.Tell.RefName;
+                resultData[TransactionDataKeys.TellText] = pending.Tell.TellText;
+                resultData[TransactionDataKeys.ReactionWindowMs] = pending.Tell.ReactionWindowMs;
+                resultData[TransactionDataKeys.BaseDamage] = pending.BaseDamage;
+                resultData[TransactionDataKeys.OptimalDefense] = pending.Tell.OptimalDefense.ToString();
+
+                System.Diagnostics.Debug.WriteLine($"[StartBattle] Enemy opened with tell: {pending.Tell.TellText}");
+            }
+            else
+            {
+                // Enemy attacked directly (no tells available) — record the turn
+                var enemyAction = battleEngine.ActionHistory.FirstOrDefault();
+                if (enemyAction != null)
+                {
+                    var enemyAfterAction = battleEngine.GetEnemy();
+                    var enemyTurnTransaction = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
+                        command.AvatarId.ToString(),
+                        battleStartedTransaction.TransactionId,
+                        1,  // Turn 1
+                        enemyAction.ActorName,
+                        false,  // Not avatar turn
+                        enemyAction.DecisionType,
+                        enemyAction.ItemRefName,
+                        enemyAction.Damage,
+                        enemyAction.Healing,
+                        enemyAction.TargetName,
+                        enemyAction.TargetHealthAfter,
+                        enemyAction.ActorEnergyAfter,
+                        enemyAfterAction,
+                        _world,
+                        instance.InstanceId);
+
+                    instance.AddTransaction(enemyTurnTransaction);
+                    transactions.Add(enemyTurnTransaction);
+
+                    System.Diagnostics.Debug.WriteLine($"[StartBattle] Enemy opened with {enemyAction.DecisionType}, dealt {enemyAction.Damage:F2} damage");
+                }
+            }
 
             // Commit all transactions
-            var transactionIds = transactions.Select(t => t.TransactionId).ToList();
-            var committed = await _instanceRepository.CommitTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
-                transactionIds,
+                transactions,
                 ct);
 
             if (!committed)
@@ -161,12 +173,9 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
 
             return SagaCommandResult.Success(
                 instance.InstanceId,
-                transactionIds,
+                transactions.Select(t => t.TransactionId).ToList(),
                 sequenceNumbers.First(),
-                new Dictionary<string, object>
-                {
-                    ["BattleInstanceId"] = battleStartedTransaction.TransactionId
-                });
+                resultData);
         }
         catch (Exception ex)
         {

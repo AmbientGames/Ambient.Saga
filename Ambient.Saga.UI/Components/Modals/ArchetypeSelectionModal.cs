@@ -173,9 +173,9 @@ public class ArchetypeSelectionModal
             ImGui.SetCursorPosX(ImGui.GetWindowWidth() - totalWidth - style.WindowPadding.X);
 
             // Quit Game button (red) - this is the only way out if you don't want to play
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.15f, 0.15f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.25f, 0.25f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
             if (ImGui.Button("Quit Game", new Vector2(quitButtonWidth, buttonHeight)))
             {
                 selector?.CancelSelection();
@@ -192,9 +192,9 @@ public class ArchetypeSelectionModal
             var canEnter = _selectedArchetype != null;
             if (!canEnter) ImGui.BeginDisabled();
 
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
             if (ImGui.Button("Enter World", new Vector2(enterButtonWidth, buttonHeight)))
             {
                 selector?.CompleteSelection(_selectedArchetype);
@@ -428,7 +428,7 @@ public class ArchetypeSelectionModal
                 {
                     var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(item.BlockRef);
                     var blockName = blockDef?.DisplayName ?? item.BlockRef;
-                    ImGui.BulletText($"{blockName} x{item.Quantity}");
+                    ImGui.BulletText($"{blockName} x{(int)item.Quantity}");
                 }
                 ImGui.Spacing();
                 hasAnyItems = true;
@@ -456,7 +456,7 @@ public class ArchetypeSelectionModal
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No starting items");
         }
 
-        // Carry Weight
+        // Weight & Carry Capacity
         var worldConfig = viewModel.CurrentWorld?.WorldConfiguration;
         if (worldConfig != null)
         {
@@ -464,18 +464,41 @@ public class ArchetypeSelectionModal
             ImGui.Separator();
             ImGui.Spacing();
 
+            var weightUnit = worldConfig.WeightUnitName ?? "kg";
             var maxWeight = CarryWeightCalculator.GetMaxCarryWeight(archetype);
             var currentWeight = CarryWeightCalculator.CalculateTotalWeight(archetype.SpawnCapabilities, worldConfig);
-            var weightUnit = worldConfig.WeightUnitName ?? "kg";
 
-            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Carry Weight");
+            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Physical");
             ImGui.Separator();
             ImGui.Spacing();
 
+            ImGui.Text($"Weight: {archetype.Weight:N0} {weightUnit}");
+            ImGui.Text($"Max Carry: {maxWeight:N1} {weightUnit}");
+            ImGui.Spacing();
+
             var fraction = maxWeight > 0 ? (float)currentWeight / maxWeight : 0f;
-            ImGui.ProgressBar(fraction, new Vector2(-1, 0), $"{currentWeight:N0} / {maxWeight:N0} {weightUnit}");
+            ImGui.ProgressBar(fraction, new Vector2(-1, 0), $"{currentWeight:N1} / {maxWeight:N1} {weightUnit}");
+
+            ImGui.Spacing();
+
+            var baseSpeed = CarryWeightCalculator.GetBaseSpeedFactor(archetype);
+            var spawnSpeed = CarryWeightCalculator.GetSpawnSpeedMultiplier(archetype, worldConfig);
+
+            ImGui.Text("Base Speed:");
+            ImGui.SameLine();
+            ImGui.TextColored(SpeedColor(baseSpeed), $"{baseSpeed:P0}");
+
+            ImGui.Text("With Loadout:");
+            ImGui.SameLine();
+            ImGui.TextColored(SpeedColor(spawnSpeed), $"{spawnSpeed:P0}");
         }
     }
+
+    private static Vector4 SpeedColor(float speed) => speed >= 0.8f
+        ? new Vector4(0.2f, 1f, 0.2f, 1f)
+        : speed >= 0.5f
+            ? new Vector4(1f, 0.8f, 0.3f, 1f)
+            : new Vector4(1f, 0.4f, 0.4f, 1f);
 
     private void RenderModifierLine(string statName, float modifier)
     {

@@ -6,14 +6,14 @@
 public enum SagaInstanceType
 {
     /// <summary>
-    /// Player's private instance, never syncs to server.
+    /// Avatar's private instance, never syncs to server.
     /// Pure offline mode - state lives only on this device.
     /// Example: Solo exploration in offline mode
     /// </summary>
     LocalOnly,
 
     /// <summary>
-    /// Player's instance that syncs progress to server but is not shared.
+    /// Avatar's instance that syncs progress to server but is not shared.
     /// Other players see their own separate instances of the same Saga.
     /// Example: Personal quest progression, solo dungeon runs
     /// </summary>

@@ -1,12 +1,13 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Achievements;
 
 /// <summary>
 /// Service for evaluating achievement progress from event-sourced Saga transaction logs.
-/// Achievements track player milestones by querying immutable transaction history.
+/// Achievements track avatar milestones by querying immutable transaction history.
 /// Progress is computed on-demand, not stored incrementally.
 /// Server and client use this same logic to compute achievement progress.
 /// </summary>
@@ -123,7 +124,7 @@ public static class AchievementProgressEvaluator
             .Where(t => t.Type == SagaTransactionType.CharacterDefeated)
             .Count(t =>
             {
-                var characterRef = t.GetData<string>("CharacterRef");
+                var characterRef = t.GetData<string>(TransactionDataKeys.CharacterRef);
                 if (string.IsNullOrEmpty(characterRef))
                     return false;
 
@@ -146,7 +147,7 @@ public static class AchievementProgressEvaluator
             .Where(t => t.Type == SagaTransactionType.CharacterDefeated)
             .Count(t =>
             {
-                var characterRef = t.GetData<string>("CharacterRef");
+                var characterRef = t.GetData<string>(TransactionDataKeys.CharacterRef);
                 if (string.IsNullOrEmpty(characterRef))
                     return false;
 
@@ -167,7 +168,7 @@ public static class AchievementProgressEvaluator
 
         return transactions
             .Where(t => t.Type == SagaTransactionType.CharacterDefeated)
-            .Count(t => t.GetData<string>("CharacterRef") == characterRef);
+            .Count(t => t.GetData<string>(TransactionDataKeys.CharacterRef) == characterRef);
     }
 
     #endregion
@@ -178,7 +179,7 @@ public static class AchievementProgressEvaluator
     {
         return transactions
             .Where(t => t.Type == SagaTransactionType.SagaDiscovered)
-            .Select(t => t.GetData<string>("SagaArcRef"))
+            .Select(t => t.GetData<string>(TransactionDataKeys.SagaArcRef))
             .Distinct()
             .Count();
     }
@@ -187,7 +188,7 @@ public static class AchievementProgressEvaluator
     {
         return transactions
             .Where(t => t.Type == SagaTransactionType.SagaCompleted)
-            .Select(t => t.GetData<string>("SagaArcRef"))
+            .Select(t => t.GetData<string>(TransactionDataKeys.SagaArcRef))
             .Distinct()
             .Count();
     }
@@ -196,7 +197,7 @@ public static class AchievementProgressEvaluator
     {
         return transactions
             .Where(t => t.Type == SagaTransactionType.LandmarkDiscovered)
-            .Select(t => t.GetData<string>("LandmarkRef"))
+            .Select(t => t.GetData<string>(TransactionDataKeys.LandmarkRef))
             .Distinct()
             .Count();
     }
@@ -216,7 +217,7 @@ public static class AchievementProgressEvaluator
     {
         return transactions
             .Where(t => t.Type == SagaTransactionType.DialogueCompleted)
-            .Select(t => t.GetData<string>("DialogueTreeRef"))
+            .Select(t => t.GetData<string>(TransactionDataKeys.DialogueTreeRef))
             .Distinct()
             .Count();
     }
@@ -233,7 +234,7 @@ public static class AchievementProgressEvaluator
         // Characters met = either dialogue started or dialogue completed
         var dialogueChars = transactions
             .Where(t => t.Type == SagaTransactionType.DialogueStarted || t.Type == SagaTransactionType.DialogueCompleted)
-            .Select(t => t.GetData<string>("CharacterRef"))
+            .Select(t => t.GetData<string>(TransactionDataKeys.CharacterRef))
             .Where(r => !string.IsNullOrEmpty(r))
             .Distinct();
 
@@ -258,7 +259,7 @@ public static class AchievementProgressEvaluator
 
         return transactions
             .Where(t => t.Type == SagaTransactionType.TraitAssigned)
-            .Count(t => t.GetData<string>("TraitType") == traitType);
+            .Count(t => t.GetData<string>(TransactionDataKeys.TraitType) == traitType);
     }
 
     private static float CountTraitsAssignedToCharacterType(List<SagaTransaction> transactions, string? characterType, IWorld world)
@@ -271,7 +272,7 @@ public static class AchievementProgressEvaluator
             .Where(t => t.Type == SagaTransactionType.TraitAssigned)
             .Count(t =>
             {
-                var characterRef = t.GetData<string>("CharacterRef");
+                var characterRef = t.GetData<string>(TransactionDataKeys.CharacterRef);
                 if (string.IsNullOrEmpty(characterRef))
                     return false;
 
@@ -308,7 +309,7 @@ public static class AchievementProgressEvaluator
 
         if (!string.IsNullOrEmpty(questTokenRef))
         {
-            query = query.Where(t => t.GetData<string>("QuestTokenRef") == questTokenRef);
+            query = query.Where(t => t.GetData<string>(TransactionDataKeys.QuestTokenRef) == questTokenRef);
         }
 
         return query.Count();
@@ -322,7 +323,7 @@ public static class AchievementProgressEvaluator
     {
         return transactions
             .Where(t => t.Type == SagaTransactionType.QuestCompleted)
-            .Select(t => t.GetData<string>("QuestRef"))
+            .Select(t => t.GetData<string>(TransactionDataKeys.QuestRef))
             .Distinct()
             .Count();
     }
@@ -334,7 +335,7 @@ public static class AchievementProgressEvaluator
 
         return transactions
             .Where(t => t.Type == SagaTransactionType.QuestCompleted)
-            .Any(t => t.GetData<string>("QuestRef") == questRef) ? 1 : 0;
+            .Any(t => t.GetData<string>(TransactionDataKeys.QuestRef) == questRef) ? 1 : 0;
     }
 
     #endregion
@@ -349,8 +350,8 @@ public static class AchievementProgressEvaluator
         // Calculate total reputation changes for the faction
         var totalReputation = transactions
             .Where(t => t.Type == SagaTransactionType.ReputationChanged &&
-                       t.GetData<string>("FactionRef") == factionRef)
-            .Sum(t => t.TryGetData<int>("Amount", out var amount) ? amount : 0);
+                       t.GetData<string>(TransactionDataKeys.FactionRef) == factionRef)
+            .Sum(t => t.TryGetData<int>(TransactionDataKeys.Amount, out var amount) ? amount : 0);
 
         // Check if the reputation level is reached
         // Reputation levels: Hated < -6000, Hostile < -3000, Unfriendly < 0, Neutral < 3000,
@@ -368,11 +369,11 @@ public static class AchievementProgressEvaluator
         // Group reputation changes by faction and sum them
         var factionReputations = transactions
             .Where(t => t.Type == SagaTransactionType.ReputationChanged)
-            .GroupBy(t => t.GetData<string>("FactionRef"))
+            .GroupBy(t => t.GetData<string>(TransactionDataKeys.FactionRef))
             .Where(g => !string.IsNullOrEmpty(g.Key))
             .ToDictionary(
                 g => g.Key!,
-                g => g.Sum(t => t.TryGetData<int>("Amount", out var amount) ? amount : 0)
+                g => g.Sum(t => t.TryGetData<int>(TransactionDataKeys.Amount, out var amount) ? amount : 0)
             );
 
         var targetThreshold = GetReputationThreshold(reputationLevel);
@@ -407,8 +408,8 @@ public static class AchievementProgressEvaluator
         if (!string.IsNullOrEmpty(statusEffectType))
         {
             query = query.Where(t =>
-                t.GetData<string>("StatusEffectRef")?.Contains(statusEffectType, StringComparison.OrdinalIgnoreCase) == true ||
-                t.GetData<string>("StatusEffectType") == statusEffectType);
+                t.GetData<string>(TransactionDataKeys.StatusEffectRef)?.Contains(statusEffectType, StringComparison.OrdinalIgnoreCase) == true ||
+                t.GetData<string>(TransactionDataKeys.StatusEffectType) == statusEffectType);
         }
 
         return query.Count();

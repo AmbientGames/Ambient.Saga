@@ -5,6 +5,7 @@ using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -94,12 +95,12 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
                 var transactions = instance.GetCommittedTransactions();
                 var existingBranchChoice = transactions.FirstOrDefault(t =>
                     t.Type == SagaTransactionType.QuestBranchChosen &&
-                    t.GetData<string>("QuestRef") == command.QuestRef &&
-                    t.GetData<string>("StageRef") == command.StageRef);
+                    t.GetData<string>(TransactionDataKeys.QuestRef) == command.QuestRef &&
+                    t.GetData<string>(TransactionDataKeys.StageRef) == command.StageRef);
 
                 if (existingBranchChoice != null)
                 {
-                    var alreadyChosenBranch = existingBranchChoice.GetData<string>("BranchRef");
+                    var alreadyChosenBranch = existingBranchChoice.GetData<string>(TransactionDataKeys.BranchRef);
                     return SagaCommandResult.Failure(
                         instance.InstanceId,
                         $"A branch has already been chosen for this stage: '{alreadyChosenBranch}'. " +
@@ -125,26 +126,20 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["QuestRef"] = command.QuestRef,
-                    ["StageRef"] = command.StageRef,
-                    ["BranchRef"] = command.BranchRef,
-                    ["DisplayName"] = chosenBranch.DisplayName ?? chosenBranch.RefName,
-                    ["NextStage"] = chosenBranch.NextStage ?? string.Empty
+                    [TransactionDataKeys.QuestRef] = command.QuestRef,
+                    [TransactionDataKeys.StageRef] = command.StageRef,
+                    [TransactionDataKeys.BranchRef] = command.BranchRef,
+                    [TransactionDataKeys.DisplayName] = chosenBranch.DisplayName ?? chosenBranch.RefName,
+                    [TransactionDataKeys.NextStage] = chosenBranch.NextStage ?? string.Empty
                 }
             };
 
             instance.AddTransaction(transaction);
 
-            // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            // Persist and commit transaction atomically
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)

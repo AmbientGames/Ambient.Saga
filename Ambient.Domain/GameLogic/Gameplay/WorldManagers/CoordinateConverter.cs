@@ -229,6 +229,8 @@ public static class CoordinateConverter
     // World Bounds
     // ============================================================================
 
+    private const int Buffer = 6;
+
     /// <summary>
     /// Returns the world's playable boundaries in model coordinates.
     /// For height map worlds: image extent converted to model space.
@@ -236,10 +238,10 @@ public static class CoordinateConverter
     /// </summary>
     public static (double XMin, double XMax, double ZMin, double ZMax) GetWorldBounds(IWorld world)
     {
-        var xMin = LongitudeToModelX(-180, world);
-        var xMax = LongitudeToModelX(180, world);
-        var zMin = LatitudeToModelZ(-90, world);
-        var zMax = LatitudeToModelZ(90, world);
+        var xMin = LongitudeToModelX(-180, world) - Buffer;
+        var xMax = LongitudeToModelX(180, world) + Buffer;
+        var zMin = LatitudeToModelZ(-90, world) - Buffer;
+        var zMax = LatitudeToModelZ(90, world) + Buffer;
         return (xMin, xMax, zMin, zMax);
     }
 
@@ -250,6 +252,15 @@ public static class CoordinateConverter
     {
         var (xMin, xMax, zMin, zMax) = GetWorldBounds(world);
         return modelX < xMin || modelX > xMax || modelZ < zMin || modelZ > zMax;
+    }
+
+    /// <summary>
+    /// Clamps model coordinates to stay within the world's playable boundaries.
+    /// </summary>
+    public static (double X, double Z) ClampToBounds(double modelX, double modelZ, IWorld world)
+    {
+        var (xMin, xMax, zMin, zMax) = GetWorldBounds(world);
+        return (Math.Clamp(modelX, xMin, xMax), Math.Clamp(modelZ, zMin, zMax));
     }
 
     // ============================================================================

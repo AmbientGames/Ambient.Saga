@@ -43,27 +43,27 @@ public interface IWorldStateRepository
     Task DeleteAvatarsAsync();
 
     /// <summary>
-    /// Records a player discovery (lore, achievement, Saga, etc.).
+    /// Records an avatar discovery (lore, achievement, Saga, etc.).
     /// </summary>
-    Task<PlayerDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null);
+    Task<AvatarDiscovery> RecordDiscoveryAsync(string avatarId, string entityType, string entityRef, Dictionary<string, string>? metadata = null);
 
     /// <summary>
-    /// Records a trigger event for a player discovery.
+    /// Records a trigger event for an avatar discovery.
     /// </summary>
     Task RecordTriggerAsync(string avatarId, string entityType, string entityRef);
 
     /// <summary>
-    /// Gets the last trigger time for a specific player/entity combination.
+    /// Gets the last trigger time for a specific avatar/entity combination.
     /// </summary>
     Task<DateTime?> GetLastTriggerTimeAsync(string avatarId, string entityType, string entityRef);
 
     /// <summary>
-    /// Checks if a player has discovered a specific entity.
+    /// Checks if an avatar has discovered a specific entity.
     /// </summary>
     Task<bool> HasDiscoveredAsync(string avatarId, string entityType, string entityRef);
 
     /// <summary>
-    /// Gets all discoveries for a specific player.
+    /// Gets all discoveries for a specific avatar.
     /// </summary>
-    Task<List<PlayerDiscovery>> GetPlayerDiscoveriesAsync(string avatarId);
+    Task<List<AvatarDiscovery>> GetAvatarDiscoveriesAsync(string avatarId);
 }

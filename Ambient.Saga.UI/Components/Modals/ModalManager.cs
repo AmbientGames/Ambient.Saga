@@ -37,6 +37,12 @@ public class ModalManager
     public event Action? QuitRequested;
 
     /// <summary>
+    /// Fired when the avatar is defeated in a saga battle.
+    /// Games subscribe to handle defeat differently from environmental death.
+    /// </summary>
+    public event Action? BattleDefeatRequested;
+
+    /// <summary>
     /// Requests the application to quit.
     /// Called when the user needs to exit (e.g., cancels mandatory archetype selection).
     /// </summary>
@@ -84,7 +90,9 @@ public class ModalManager
 
         // Complex modals (need ModalManager reference)
         _modalRegistry.Register(new Adapters.DialogueModalAdapter(this));
-        _modalRegistry.Register(new Adapters.BattleModalAdapter(this));
+        var battleAdapter = new Adapters.BattleModalAdapter(this);
+        battleAdapter.AvatarDefeated += () => BattleDefeatRequested?.Invoke();
+        _modalRegistry.Register(battleAdapter);
 
         // Quest modals (need IMediator)
         _modalRegistry.Register(new Adapters.QuestModalAdapter(_mediator));
@@ -274,7 +282,7 @@ public class ModalManager
 
     public void OpenQuestDetail(string questRef)
     {
-        if (_questViewModel?.PlayerAvatar == null) return;
+        if (_questViewModel?.Avatar == null) return;
 
         _ = OpenQuestDetailAsync(questRef);
     }
@@ -286,7 +294,7 @@ public class ModalManager
             // Find saga containing this quest using Application layer query
             var sagaRef = await _mediator.Send(new GetSagaForQuestQuery
             {
-                AvatarId = _questViewModel!.PlayerAvatar!.Id,
+                AvatarId = _questViewModel!.Avatar!.Id,
                 QuestRef = questRef
             });
 

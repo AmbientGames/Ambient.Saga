@@ -81,7 +81,7 @@ namespace Ambient.Domain {
         Health,
         
         /// <remarks/>
-        PlayerVisitCount,
+        AvatarVisitCount,
         
         /// <remarks/>
         NodeVisited,

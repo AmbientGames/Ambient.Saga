@@ -118,9 +118,9 @@ public class BattleTriggerEvaluator
             BattleTriggerCondition.HealthAbove =>
                 context.EnemyHealthPercent > trigger.Value,
 
-            // Player health threshold check
-            BattleTriggerCondition.PlayerHealthBelow =>
-                context.PlayerHealthPercent < trigger.Value,
+            // Avatar health threshold check
+            BattleTriggerCondition.AvatarHealthBelow =>
+                context.AvatarHealthPercent < trigger.Value,
 
             // Turn-based trigger (fires when turn number is reached)
             BattleTriggerCondition.TurnNumber =>
@@ -135,10 +135,10 @@ public class BattleTriggerEvaluator
 
             // Battle outcome triggers - only fire at end of battle
             BattleTriggerCondition.OnVictory =>
-                context.BattleEnded && context.PlayerVictory,
+                context.BattleEnded && context.AvatarVictory,
 
             BattleTriggerCondition.OnDefeat =>
-                context.BattleEnded && !context.PlayerVictory,
+                context.BattleEnded && !context.AvatarVictory,
 
             _ => false
         };
@@ -152,9 +152,9 @@ public class BattleTriggerEvaluator
 public class BattleTriggerContext
 {
     /// <summary>
-    /// Player's current health as a percentage (0-100)
+    /// Avatar's current health as a percentage (0-100)
     /// </summary>
-    public float PlayerHealthPercent { get; init; }
+    public float AvatarHealthPercent { get; init; }
 
     /// <summary>
     /// Enemy's current health as a percentage (0-100)
@@ -167,12 +167,12 @@ public class BattleTriggerContext
     public int TurnNumber { get; init; }
 
     /// <summary>
-    /// Whether the player or enemy just changed stance this turn
+    /// Whether the avatar or enemy just changed stance this turn
     /// </summary>
     public bool StanceJustChanged { get; init; }
 
     /// <summary>
-    /// Whether the player or enemy just changed affinity this turn
+    /// Whether the avatar or enemy just changed affinity this turn
     /// </summary>
     public bool AffinityJustChanged { get; init; }
 
@@ -182,9 +182,9 @@ public class BattleTriggerContext
     public bool BattleEnded { get; init; }
 
     /// <summary>
-    /// Whether the player won (only valid if BattleEnded is true)
+    /// Whether the avatar won (only valid if BattleEnded is true)
     /// </summary>
-    public bool PlayerVictory { get; init; }
+    public bool AvatarVictory { get; init; }
 
     /// <summary>
     /// Create context from current battle engine state.
@@ -194,12 +194,12 @@ public class BattleTriggerContext
         bool stanceJustChanged = false,
         bool affinityJustChanged = false)
     {
-        var player = engine.GetPlayer();
+        var avatar = engine.GetAvatar();
         var enemy = engine.GetEnemy();
 
         return new BattleTriggerContext
         {
-            PlayerHealthPercent = player.HealthPercent,
+            AvatarHealthPercent = avatar.HealthPercent,
             EnemyHealthPercent = enemy.HealthPercent,
             TurnNumber = engine.GetTurnNumber(),
             StanceJustChanged = stanceJustChanged,
@@ -207,7 +207,7 @@ public class BattleTriggerContext
             BattleEnded = engine.State == BattleState.Victory ||
                          engine.State == BattleState.Defeat ||
                          engine.State == BattleState.Fled,
-            PlayerVictory = engine.State == BattleState.Victory
+            AvatarVictory = engine.State == BattleState.Victory
         };
     }
 }

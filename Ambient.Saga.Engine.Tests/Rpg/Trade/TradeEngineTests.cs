@@ -475,46 +475,46 @@ public class TradeEngineTests
     [Fact]
     public void CompleteTradeScenario_BuyAndSell()
     {
-        // Player starts with 1000 credits
-        var player = CreateTestAvatar(credits: 1000);
+        // Avatar starts with 1000 credits
+        var avatar = CreateTestAvatar(credits: 1000);
         var merchant = CreateMerchantInventory();
 
-        // Player buys an iron sword for 150
+        // Avatar buys an iron sword for 150
         var equipment = _world.Gameplay.Equipment[0];
         var buyItemInfo = new TradeItemInfo(equipment, 150);
-        var buyResult = _engine.BuyItem(player, merchant, buyItemInfo);
+        var buyResult = _engine.BuyItem(avatar, merchant, buyItemInfo);
 
         Assert.True(buyResult.Success);
-        Assert.Equal(850, player.Stats.Credits);
-        Assert.Single(player.Capabilities.Equipment);
+        Assert.Equal(850, avatar.Stats.Credits);
+        Assert.Single(avatar.Capabilities.Equipment);
 
-        // Player sells the sword back for 100 (wholesale price)
+        // Avatar sells the sword back for 100 (wholesale price)
         var sellItemInfo = new TradeItemInfo(equipment, 100, condition: 1.0f);
-        var sellResult = _engine.SellItem(player, merchant, sellItemInfo);
+        var sellResult = _engine.SellItem(avatar, merchant, sellItemInfo);
 
         Assert.True(sellResult.Success);
-        Assert.Equal(950, player.Stats.Credits); // 850 + 100
-        Assert.Empty(player.Capabilities.Equipment);
+        Assert.Equal(950, avatar.Stats.Credits); // 850 + 100
+        Assert.Empty(avatar.Capabilities.Equipment);
         Assert.Equal(2, merchant.Equipment.Length); // Back to 2 items
     }
 
     [Fact]
     public void MultipleConsumablePurchases_StacksCorrectly()
     {
-        var player = CreateTestAvatar();
+        var avatar = CreateTestAvatar();
         var merchant = CreateMerchantInventory();
 
         var consumable = _world.Gameplay.Consumables[0];
 
         // Buy 3 potions
-        var buyResult1 = _engine.BuyItem(player, merchant, new TradeItemInfo(consumable, 60, quantity: 3));
+        var buyResult1 = _engine.BuyItem(avatar, merchant, new TradeItemInfo(consumable, 60, quantity: 3));
         Assert.True(buyResult1.Success);
-        Assert.Equal(3, player.Capabilities.Consumables[0].Quantity);
+        Assert.Equal(3, avatar.Capabilities.Consumables[0].Quantity);
 
         // Buy 2 more potions
-        var buyResult2 = _engine.BuyItem(player, merchant, new TradeItemInfo(consumable, 60, quantity: 2));
+        var buyResult2 = _engine.BuyItem(avatar, merchant, new TradeItemInfo(consumable, 60, quantity: 2));
         Assert.True(buyResult2.Success);
-        Assert.Equal(5, player.Capabilities.Consumables[0].Quantity);
+        Assert.Equal(5, avatar.Capabilities.Consumables[0].Quantity);
         Assert.Equal(5, merchant.Consumables[0].Quantity); // 10 - 3 - 2
     }
 

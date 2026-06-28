@@ -131,18 +131,6 @@ public static class WorldValidationService
                 }
             }
         }
-
-        // Validate QuestToken references
-        if (itemCollection.QuestTokens != null)
-        {
-            foreach (var entry in itemCollection.QuestTokens)
-            {
-                if (!string.IsNullOrEmpty(entry.QuestTokenRef))
-                {
-                    ValidateReference(world.QuestTokensLookup, entry.QuestTokenRef, fullContext, "QuestTokens.QuestTokenRef", "QuestTokens", errors);
-                }
-            }
-        }
     }
 
     private static void ValidateReference<T>(Dictionary<string, T> lookup, string refValue, string context, string propertyName, string lookupName, List<string> errors)
@@ -176,26 +164,6 @@ public static class WorldValidationService
         {
             foreach (var character in world.Gameplay.Characters)
             {
-                // Quest tokens in character inventory
-                if (character.Capabilities?.QuestTokens != null)
-                {
-                    foreach (var QuestTokenStack in character.Capabilities.QuestTokens)
-                    {
-                        if (!string.IsNullOrEmpty(QuestTokenStack.QuestTokenRef))
-                        {
-                            // Check if this is a valid quest key
-                            if (world.QuestTokensLookup.TryGetValue(QuestTokenStack.QuestTokenRef, out var QuestToken))
-                            {
-                                if (!QuestTokenProviders.ContainsKey(QuestTokenStack.QuestTokenRef))
-                                {
-                                    QuestTokenProviders[QuestTokenStack.QuestTokenRef] = new List<string>();
-                                }
-                                QuestTokenProviders[QuestTokenStack.QuestTokenRef].Add($"Character '{character.RefName}'");
-                            }
-                        }
-                    }
-                }
-
                 // Quest tokens given when character defeated/traded (now in Interactable)
                 if (character.Interactable?.GivesQuestTokenRef != null)
                 {
@@ -340,7 +308,7 @@ public static class WorldValidationService
             // Validate all inventory items in Capabilities (what character owns/uses)
             ValidateItemCollection(world, errors, characterContext, character.Capabilities, "Capabilities");
 
-            // Validate all inventory items in Loot (what character gives/drops to players)
+            // Validate all inventory items in Loot (what character gives/drops to avatars)
             ValidateItemCollection(world, errors, characterContext, character.Interactable?.Loot, "Interactable.Loot");
         }
     }
@@ -645,7 +613,7 @@ public static class WorldValidationService
                     node.NodeId.Equals("end", StringComparison.OrdinalIgnoreCase) ||
                     node.NodeId.EndsWith("_end", StringComparison.OrdinalIgnoreCase) ||
                     // All battle_* dialogue nodes are intentional mid-battle interjections
-                    // They display text/trigger actions and then combat continues (no player choice needed)
+                    // They display text/trigger actions and then combat continues (no avatar choice needed)
                     node.NodeId.StartsWith("battle_", StringComparison.OrdinalIgnoreCase);
 
                 if (!isIntentionalTerminal)
@@ -704,7 +672,7 @@ public static class WorldValidationService
                 ValidateConditionRefName(world.SpellsLookup, condition.RefName, conditionContext, "Spells", errors, required: true);
                 break;
 
-            // Player state
+            // Avatar state
             case DialogueConditionType.HasAchievement:
                 ValidateConditionRefName(world.AchievementsLookup, condition.RefName, conditionContext, "Achievements", errors, required: true);
                 break;
@@ -715,7 +683,7 @@ public static class WorldValidationService
                 break;
 
             // Dialogue history
-            case DialogueConditionType.PlayerVisitCount:
+            case DialogueConditionType.AvatarVisitCount:
                 ValidateConditionRefName(world.DialogueTreesLookup, condition.RefName, conditionContext, "DialogueTrees", errors, required: true);
                 ValidateNumericConditionValue(condition, conditionContext, errors);
                 break;
@@ -799,7 +767,6 @@ public static class WorldValidationService
         {
             // Quest tokens
             case DialogueActionType.GiveQuestToken:
-            case DialogueActionType.TakeQuestToken:
                 ValidateActionRefName(world.QuestTokensLookup, action.RefName, actionContext, "QuestTokens", errors, required: true);
                 break;
 
@@ -1016,10 +983,10 @@ public static class WorldValidationService
     ///
     /// ARCHITECTURE NOTE:
     /// - Character.Capabilities = Items the character OWNS and USES (personal gear, not dropped)
-    /// - Character.Interactable.Loot = Items the character GIVES/DROPS to players (rewards, shop inventory)
+    /// - Character.Interactable.Loot = Items the character GIVES/DROPS to avatars (rewards, shop inventory)
     /// - Dialogue rewards come from Loot, not Capabilities (game balance: boss can use powerful gear without dropping it)
     ///
-    /// Validates "Give" actions only - "Take" actions are validated at runtime against player inventory.
+    /// Validates "Give" actions only - "Take" actions are validated at runtime against avatar inventory.
     ///
     /// Checks:
     /// - GiveEquipment: Character.Interactable.Loot.Equipment contains EquipmentRef
@@ -1048,7 +1015,7 @@ public static class WorldValidationService
 
             var characterContext = $"Character '{character.RefName}'";
 
-            // Check all dialogue nodes for "Give" actions (not "Take" - those validate player inventory at runtime)
+            // Check all dialogue nodes for "Give" actions (not "Take" - those validate avatar inventory at runtime)
             if (dialogueTree.Node != null)
             {
                 foreach (var node in dialogueTree.Node)
@@ -1096,7 +1063,7 @@ public static class WorldValidationService
                                 break;
 
                             case DialogueActionType.TransferCurrency:
-                                // Only validate positive transfers (giving to player)
+                                // Only validate positive transfers (giving to avatar)
                                 if (action.Amount > 0)
                                 {
                                     ValidateCharacterHasCurrency(character, action.Amount, nodeContext, errors);
@@ -1526,19 +1493,6 @@ public static class WorldValidationService
         {
             foreach (var character in world.Gameplay.Characters)
             {
-                if (character.Interactable?.Loot?.QuestTokens != null)
-                {
-                    foreach (var tokenEntry in character.Interactable.Loot.QuestTokens)
-                    {
-                        if (!string.IsNullOrEmpty(tokenEntry.QuestTokenRef))
-                        {
-                            if (!tokenGrants.ContainsKey(tokenEntry.QuestTokenRef))
-                                tokenGrants[tokenEntry.QuestTokenRef] = new List<string>();
-                            tokenGrants[tokenEntry.QuestTokenRef].Add($"Character '{character.RefName}' Loot");
-                        }
-                    }
-                }
-
                 if (character.Interactable?.GivesQuestTokenRef != null)
                 {
                     foreach (var tokenRef in character.Interactable.GivesQuestTokenRef)
@@ -1712,7 +1666,7 @@ public static class WorldValidationService
             // Regular characters must have dialogue
             if (character.Interactable == null)
             {
-                errors.Add($"{context}: No Interactable section. Add <Interactable><DialogueTreeRef>...</DialogueTreeRef></Interactable> to allow player interaction.");
+                errors.Add($"{context}: No Interactable section. Add <Interactable><DialogueTreeRef>...</DialogueTreeRef></Interactable> to allow avatar interaction.");
             }
             else if (string.IsNullOrEmpty(character.Interactable.DialogueTreeRef))
             {

@@ -4,7 +4,7 @@ using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 namespace Ambient.Saga.Engine.Domain.Rpg.Dialogue.Evaluation;
 
 /// <summary>
-/// Evaluates dialogue conditions against player/world state.
+/// Evaluates dialogue conditions against avatar/world state.
 /// Fully data-driven - no special cases needed for new condition types.
 /// </summary>
 public class DialogueConditionEvaluator
@@ -43,13 +43,13 @@ public class DialogueConditionEvaluator
             DialogueConditionType.HasSpell => _stateProvider.HasSpell(condition.RefName),
             DialogueConditionType.LacksSpell => !_stateProvider.HasSpell(condition.RefName),
 
-            // Player state
+            // Avatar state
             DialogueConditionType.HasAchievement => _stateProvider.HasAchievement(condition.RefName),
             DialogueConditionType.Credits => EvaluateNumeric(_stateProvider.GetCredits(), condition),
             DialogueConditionType.Health => EvaluateNumeric(_stateProvider.GetHealth(), condition),
 
             // Dialogue history
-            DialogueConditionType.PlayerVisitCount => EvaluateNumeric(_stateProvider.GetPlayerVisitCount(condition.RefName), condition),
+            DialogueConditionType.AvatarVisitCount => EvaluateNumeric(_stateProvider.GetAvatarVisitCount(condition.RefName), condition),
             DialogueConditionType.NodeVisited => _stateProvider.WasNodeVisited(condition.RefName, condition.Value),
 
             // World state

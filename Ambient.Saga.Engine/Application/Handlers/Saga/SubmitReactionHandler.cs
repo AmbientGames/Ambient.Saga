@@ -7,12 +7,13 @@ using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
 /// <summary>
 /// Handler for SubmitReactionCommand.
-/// Processes the player's defensive reaction during the reaction phase.
+/// Processes the avatar's defensive reaction during the reaction phase.
 /// </summary>
 internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionCommand, SagaCommandResult>
 {
@@ -51,7 +52,7 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
             // Check if battle already ended
             var battleEndedTx = instance.Transactions
                 .FirstOrDefault(t => t.Type == SagaTransactionType.BattleEnded &&
-                                    t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                                    t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                                     battleId == command.BattleInstanceId.ToString());
 
             if (battleEndedTx != null)
@@ -72,42 +73,37 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["BattleTransactionId"] = command.BattleInstanceId.ToString(),
-                    ["ActionType"] = "Reaction",
-                    ["DecisionType"] = ActionType.Defend.ToString(), // Reactions are defensive actions
-                    ["ReactionType"] = command.Reaction.ToString(),
-                    ["IsPlayerTurn"] = "true",
-                    ["TurnNumber"] = turnNumber.ToString(),
+                    [TransactionDataKeys.BattleTransactionId] = command.BattleInstanceId.ToString(),
+                    [TransactionDataKeys.ActionType] = "Reaction",
+                    [TransactionDataKeys.DecisionType] = ActionType.Defend.ToString(), // Reactions are defensive actions
+                    [TransactionDataKeys.ReactionType] = command.Reaction.ToString(),
+                    [TransactionDataKeys.IsAvatarTurn] = "true",
+                    [TransactionDataKeys.TurnNumber] = turnNumber.ToString(),
 
                     // Reaction-specific data
-                    ["TellRefName"] = command.TellRefName ?? "",
-                    ["BaseDamage"] = command.BaseDamage.ToString(),
-                    ["DamageDealt"] = command.FinalDamage.ToString("F3"), // Damage TO player
-                    ["HealingDone"] = "0",
-                    ["CounterDamage"] = (command.CounterDamage ?? 0).ToString("F3"),
-                    ["StaminaGained"] = command.StaminaGained.ToString("F3"),
-                    ["WasOptimal"] = command.WasOptimal.ToString(),
-                    ["TimedOut"] = command.TimedOut.ToString(),
+                    [TransactionDataKeys.TellRefName] = command.TellRefName ?? "",
+                    [TransactionDataKeys.BaseDamage] = command.BaseDamage.ToString(),
+                    [TransactionDataKeys.DamageDealt] = command.FinalDamage.ToString("F3"), // Damage TO avatar
+                    [TransactionDataKeys.HealingDone] = "0",
+                    [TransactionDataKeys.CounterDamage] = (command.CounterDamage ?? 0).ToString("F3"),
+                    [TransactionDataKeys.StaminaGained] = command.StaminaGained.ToString("F3"),
+                    [TransactionDataKeys.WasOptimal] = command.WasOptimal.ToString(),
+                    [TransactionDataKeys.TimedOut] = command.TimedOut.ToString(),
 
                     // State after reaction
-                    ["Target"] = command.Avatar.ArchetypeRef ?? "Player", // Player was target of enemy attack
-                    ["TargetHealthAfter"] = command.PlayerHealthAfter.ToString("F3"),
-                    ["ActorEnergyAfter"] = command.PlayerEnergyAfter.ToString("F3"),
-                    ["EnemyHealthAfter"] = command.EnemyHealthAfter.ToString("F3")
+                    [TransactionDataKeys.Target] = command.Avatar.ArchetypeRef, // Avatar was target of enemy attack
+                    [TransactionDataKeys.TargetHealthAfter] = command.AvatarHealthAfter.ToString("F3"),
+                    [TransactionDataKeys.ActorEnergyAfter] = command.AvatarEnergyAfter.ToString("F3"),
+                    [TransactionDataKeys.EnemyHealthAfter] = command.EnemyHealthAfter.ToString("F3")
                 }
             };
 
             instance.AddTransaction(reactionTx);
 
             // Persist and commit
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { reactionTx },
-                ct);
-
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { reactionTx.TransactionId },
                 ct);
 
             if (!committed)
@@ -136,7 +132,7 @@ internal sealed class SubmitReactionHandler : IRequestHandler<SubmitReactionComm
     {
         var turnCount = instance.Transactions
             .Count(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                       t.Data.TryGetValue("BattleTransactionId", out var battleId) &&
+                       t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
                        battleId == battleInstanceId.ToString());
         return turnCount + 1;
     }

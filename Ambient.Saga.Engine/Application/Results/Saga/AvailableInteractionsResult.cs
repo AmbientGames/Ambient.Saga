@@ -101,6 +101,12 @@ public class CharacterInteractionOptions
     public bool CanLoot { get; set; }
 
     /// <summary>
+    /// Whether the interacting avatar is the owner of this saga arc.
+    /// Owners trade for free and characters will not be hostile.
+    /// </summary>
+    public bool IsOwner { get; set; }
+
+    /// <summary>
     /// Why interactions are blocked (if any are false)
     /// </summary>
     public string? BlockedReason { get; set; }

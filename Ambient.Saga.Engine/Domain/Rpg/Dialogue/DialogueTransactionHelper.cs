@@ -1,5 +1,6 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 
@@ -26,9 +27,9 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = characterRef,
-                ["DialogueTreeRef"] = dialogueTreeRef,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.CharacterRef] = characterRef,
+                [TransactionDataKeys.DialogueTreeRef] = dialogueTreeRef,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -60,10 +61,10 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = characterRef,
-                ["DialogueTreeRef"] = dialogueTreeRef,
-                ["DialogueNodeId"] = nodeId,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.CharacterRef] = characterRef,
+                [TransactionDataKeys.DialogueTreeRef] = dialogueTreeRef,
+                [TransactionDataKeys.DialogueNodeId] = nodeId,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
 
@@ -107,16 +108,16 @@ public static class DialogueTransactionHelper
 
             // Store as comma-separated lists for easy parsing
             if (itemsAwarded.Count > 0)
-                transaction.Data["ItemsAwarded"] = string.Join(",", itemsAwarded);
+                transaction.Data[TransactionDataKeys.ItemsAwarded] = string.Join(",", itemsAwarded);
 
             if (traitsAssigned.Count > 0)
-                transaction.Data["TraitsAssigned"] = string.Join(",", traitsAssigned);
+                transaction.Data[TransactionDataKeys.TraitsAssigned] = string.Join(",", traitsAssigned);
 
             if (questTokens.Count > 0)
-                transaction.Data["QuestTokensAwarded"] = string.Join(",", questTokens);
+                transaction.Data[TransactionDataKeys.QuestTokensAwarded] = string.Join(",", questTokens);
 
             if (currencyTransferred != 0)
-                transaction.Data["CurrencyTransferred"] = currencyTransferred.ToString();
+                transaction.Data[TransactionDataKeys.CurrencyTransferred] = currencyTransferred.ToString();
         }
 
         return transaction;
@@ -139,9 +140,9 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = characterRef,
-                ["DialogueTreeRef"] = dialogueTreeRef,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.CharacterRef] = characterRef,
+                [TransactionDataKeys.DialogueTreeRef] = dialogueTreeRef,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -164,15 +165,15 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = characterRef,
-                ["TraitType"] = traitType,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.CharacterRef] = characterRef,
+                [TransactionDataKeys.TraitType] = traitType,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
 
         if (traitValue.HasValue)
         {
-            transaction.Data["TraitValue"] = traitValue.Value.ToString();
+            transaction.Data[TransactionDataKeys.TraitValue] = traitValue.Value.ToString();
         }
 
         return transaction;
@@ -195,9 +196,9 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = characterRef,
-                ["TraitType"] = traitType,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.CharacterRef] = characterRef,
+                [TransactionDataKeys.TraitType] = traitType,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -211,7 +212,7 @@ public static class DialogueTransactionHelper
         string itemRef,
         int quantity,
         int price,
-        bool isBuy, // true = player buying, false = player selling
+        bool isBuy, // true = avatar buying, false = avatar selling
         Guid sagaInstanceId)
     {
         return new SagaTransaction
@@ -222,12 +223,12 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = merchantCharacterRef,
-                ["ItemRef"] = itemRef,
-                ["Quantity"] = quantity.ToString(),
-                ["Price"] = price.ToString(),
-                ["Direction"] = isBuy ? "Buy" : "Sell",
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.CharacterRef] = merchantCharacterRef,
+                [TransactionDataKeys.ItemRef] = itemRef,
+                [TransactionDataKeys.Quantity] = quantity.ToString(),
+                [TransactionDataKeys.Price] = price.ToString(),
+                [TransactionDataKeys.Direction] = isBuy ? "Buy" : "Sell",
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -250,10 +251,10 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["SourceRef"] = sourceRef,
-                ["ItemRef"] = itemRef,
-                ["Quantity"] = quantity.ToString(),
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.SourceRef] = sourceRef,
+                [TransactionDataKeys.ItemRef] = itemRef,
+                [TransactionDataKeys.Quantity] = quantity.ToString(),
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -275,9 +276,9 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["QuestTokenRef"] = questTokenRef,
-                ["SourceRef"] = sourceRef,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.QuestTokenRef] = questTokenRef,
+                [TransactionDataKeys.SourceRef] = sourceRef,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -329,8 +330,8 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = characterRef,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.CharacterRef] = characterRef,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -351,8 +352,8 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = characterRef,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.CharacterRef] = characterRef,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -374,9 +375,9 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["FactionRef"] = factionRef,
-                ["Amount"] = amount.ToString(),
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.FactionRef] = factionRef,
+                [TransactionDataKeys.Amount] = amount.ToString(),
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }
@@ -398,9 +399,9 @@ public static class DialogueTransactionHelper
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["AffinityRef"] = affinityRef,
-                ["CapturedFromCharacterRef"] = capturedFromCharacterRef,
-                ["SagaInstanceId"] = sagaInstanceId.ToString()
+                [TransactionDataKeys.AffinityRef] = affinityRef,
+                [TransactionDataKeys.CapturedFromCharacterRef] = capturedFromCharacterRef,
+                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
             }
         };
     }

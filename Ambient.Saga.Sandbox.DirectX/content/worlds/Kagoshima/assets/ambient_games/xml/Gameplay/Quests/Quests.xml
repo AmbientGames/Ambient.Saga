@@ -10,9 +10,6 @@
           <Reward Condition="OnSuccess">
             <Experience Amount="20" />
           </Reward>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="BanditChief_HideoutMap" />
-          </Reward>
         </Rewards>
       </Stage>
       <Stage RefName="assault" DisplayName="Assault the Hideout" NextStage="boss">
@@ -129,11 +126,6 @@
           <Objective RefName="defeat_guardian" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the ancient guardian" CharacterRef="HiddenCache_Guardian" />
           <Objective RefName="disarm_traps" Type="QuestTokenCollected" Threshold="1" DisplayName="Navigate the trap room" Optional="true" />
         </Objectives>
-        <Rewards>
-          <Reward Condition="OnSuccess">
-            <QuestToken QuestTokenRef="HiddenCache_AncientKey" />
-          </Reward>
-        </Rewards>
       </Stage>
       <Stage RefName="claim" DisplayName="Claim the Treasure">
         <Objectives>

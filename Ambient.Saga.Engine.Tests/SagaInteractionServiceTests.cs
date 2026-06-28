@@ -76,7 +76,6 @@ public class SagaInteractionServiceTests
 
     private AvatarBase CreateAvatar(string archetypeRef = "Warrior", params string[] questTokens)
     {
-        // Generate deterministic Guid from archetype ref for testing
         using var md5 = System.Security.Cryptography.MD5.Create();
         var hash = md5.ComputeHash(System.Text.Encoding.UTF8.GetBytes(archetypeRef));
         var avatarId = new Guid(hash);
@@ -85,10 +84,7 @@ public class SagaInteractionServiceTests
         {
             AvatarId = avatarId,
             ArchetypeRef = archetypeRef,
-            Capabilities = new ItemCollection
-            {
-                QuestTokens = questTokens.Select(t => new QuestTokenEntry { QuestTokenRef = t }).ToArray()
-            }
+            Capabilities = new ItemCollection()
         };
     }
 
@@ -229,9 +225,9 @@ public class SagaInteractionServiceTests
         var dz = z - 6.0;
         var distanceFromAvatar = Math.Sqrt(dx * dx + dz * dz);
 
-        // Spawn radius is fixed at 10.0 meters (default trigger type)
-        var expectedRadius = 10.0;
-        Assert.InRange(distanceFromAvatar, expectedRadius * 0.9, expectedRadius * 1.0);
+        // Spawn depth is Min(EnterRadius * 0.5, 15.0) = 5.0 meters
+        var expectedDepth = Math.Min(10.0 * 0.5, 15.0);
+        Assert.InRange(distanceFromAvatar, expectedDepth * 0.9, expectedDepth * 1.0);
     }
 
     [Fact]
@@ -367,9 +363,10 @@ public class SagaInteractionServiceTests
 
         // === STEP 1: Avatar with no keys tries all triggers ===
         var avatarNoKeys = CreateAvatar("Warrior");
+        var progress = new Mocks.MockAvatarProgressRepository();
 
         // At outer position (25m from center) - only outer should activate
-        service.UpdateWithAvatarPosition(instance, 25.0, 0.0, avatarNoKeys);
+        service.UpdateWithAvatarPosition(instance, 25.0, 0.0, avatarNoKeys, progress);
 
         var outerActivations = instance.Transactions.Count(tx =>
             tx.Type == SagaTransactionType.TriggerActivated &&
@@ -388,13 +385,14 @@ public class SagaInteractionServiceTests
         Assert.Equal("Outer_Complete", questTokens[0].Data["QuestTokenRef"]);
 
         // === STEP 2: Avatar with "Outer_Complete" tries middle trigger ===
-        var avatarWithOuterKey = CreateAvatar("Warrior", "Outer_Complete");
+        var avatarWithOuterKey = CreateAvatar("Warrior");
+        progress.SetQuestToken(avatarWithOuterKey.AvatarId, "Outer_Complete");
 
         // Reset to simulate new session (in real game, avatar inventory would be updated)
         instance.Transactions.Clear();
 
         // At middle position (15m from center) - middle should now activate
-        service.UpdateWithAvatarPosition(instance, 15.0, 0.0, avatarWithOuterKey);
+        service.UpdateWithAvatarPosition(instance, 15.0, 0.0, avatarWithOuterKey, progress);
 
         var middleActivationCount = instance.Transactions.Count(tx =>
             tx.Type == SagaTransactionType.TriggerActivated &&
@@ -408,12 +406,13 @@ public class SagaInteractionServiceTests
         Assert.Single(middleTokens);
 
         // === STEP 3: Avatar with "Middle_Complete" activates inner ===
-        var avatarWithMiddleKey = CreateAvatar("Warrior", "Middle_Complete");
+        var avatarWithMiddleKey = CreateAvatar("Warrior");
+        progress.SetQuestToken(avatarWithMiddleKey.AvatarId, "Middle_Complete");
 
         instance.Transactions.Clear();
 
         // At inner position (5m from center) - inner should activate
-        service.UpdateWithAvatarPosition(instance, 5.0, 0.0, avatarWithMiddleKey);
+        service.UpdateWithAvatarPosition(instance, 5.0, 0.0, avatarWithMiddleKey, progress);
 
         var innerActivationCount = instance.Transactions.Count(tx =>
             tx.Type == SagaTransactionType.TriggerActivated &&
@@ -587,129 +586,6 @@ public class SagaInteractionServiceTests
         Assert.False(results[2].IsWithinRadius); // Inner: 10m (position is 15m away)
     }
 
-    [Fact]
-    public void CanActivateTrigger_AllConditionsMet_ReturnsTrue()
-    {
-        // Arrange
-        var world = CreateWorldWithCharacters();
-        var template = CreateSagaTemplate();
-        var trigger = CreateSagaTrigger(refName: "TestTrigger", enterRadius: 15.0f);
-        var triggers = new List<SagaTrigger> { trigger };
-        var service = new SagaInteractionService(template, triggers, world);
-        var instance = CreateSagaInstance();
-        var avatar = CreateAvatar();
-
-        // Act
-        var result = service.CanActivateSagaTrigger(instance, trigger, 10.0, 5.0, avatar);
-
-        // Assert
-        Assert.True(result.CanActivate);
-        Assert.True(result.IsWithinRadius);
-        Assert.True(result.HasRequiredQuestTokens);
-        Assert.Null(result.BlockedReason);
-        Assert.Empty(result.MissingQuestTokens);
-    }
-
-    [Fact]
-    public void CanActivateTrigger_OutsideRadius_ReturnsFalseWithReason()
-    {
-        // Arrange
-        var world = CreateWorldWithCharacters();
-        var template = CreateSagaTemplate();
-        var trigger = CreateSagaTrigger(refName: "TestTrigger", enterRadius: 10.0f);
-        var triggers = new List<SagaTrigger> { trigger };
-        var service = new SagaInteractionService(template, triggers, world);
-        var instance = CreateSagaInstance();
-        var avatar = CreateAvatar();
-
-        // Act - Position outside radius
-        var result = service.CanActivateSagaTrigger(instance, trigger, 20.0, 20.0, avatar);
-
-        // Assert
-        Assert.False(result.CanActivate);
-        Assert.False(result.IsWithinRadius);
-        Assert.NotNull(result.BlockedReason);
-        Assert.Contains("outside trigger radius", result.BlockedReason);
-    }
-
-    [Fact]
-    public void CanActivateTrigger_MissingQuestTokens_ReturnsFalseWithMissingTokens()
-    {
-        // Arrange
-        var world = CreateWorldWithCharacters();
-        var template = CreateSagaTemplate();
-        var trigger = CreateSagaTrigger(
-            refName: "LockedTrigger",
-            enterRadius: 15.0f,
-            requiredTokens: new[] { "RedKey", "BlueKey" });
-        var triggers = new List<SagaTrigger> { trigger };
-        var service = new SagaInteractionService(template, triggers, world);
-        var instance = CreateSagaInstance();
-        var avatar = CreateAvatar(); // No quest tokens
-
-        // Act
-        var result = service.CanActivateSagaTrigger(instance, trigger, 10.0, 5.0, avatar);
-
-        // Assert
-        Assert.False(result.CanActivate);
-        Assert.True(result.IsWithinRadius); // Within radius but blocked by tokens
-        Assert.False(result.HasRequiredQuestTokens);
-        Assert.NotNull(result.BlockedReason);
-        Assert.Contains("Missing quest tokens", result.BlockedReason);
-        Assert.Equal(2, result.MissingQuestTokens.Length);
-        Assert.Contains("RedKey", result.MissingQuestTokens);
-        Assert.Contains("BlueKey", result.MissingQuestTokens);
-    }
-
-    [Fact]
-    public void CanActivateTrigger_AlreadyCompleted_ReturnsFalseWithReason()
-    {
-        // Arrange - Use trigger WITH spawns so TriggerCompleted is created by production code
-        var world = CreateWorldWithCharacters();
-        var template = CreateSagaTemplate();
-        var spawn = CreateCharacterSpawn("Guard", count: 1);
-        var trigger = CreateSagaTrigger(refName: "TestTrigger", enterRadius: 15.0f, spawns: new[] { spawn });
-        var triggers = new List<SagaTrigger> { trigger };
-        var service = new SagaInteractionService(template, triggers, world);
-        var instance = CreateSagaInstance();
-        var avatar = CreateAvatar();
-
-        // Activate the trigger (production code creates TriggerCompleted)
-        service.UpdateWithAvatarPosition(instance, 10.0, 5.0, avatar);
-
-        // Commit transactions so they're visible to replay
-        foreach (var tx in instance.Transactions)
-            tx.Status = TransactionStatus.Committed;
-
-        // Act - Try to check if it can activate again
-        var result = service.CanActivateSagaTrigger(instance, trigger, 10.0, 5.0, avatar);
-
-        // Assert
-        Assert.False(result.CanActivate);
-        Assert.Equal("Trigger already completed", result.BlockedReason);
-    }
-
-    [Fact]
-    public void QueryMethods_DoNotCreateTransactions()
-    {
-        // This test verifies that query methods are truly non-mutating
-        var world = CreateWorldWithCharacters();
-        var template = CreateSagaTemplate();
-        var trigger = CreateSagaTrigger(refName: "TestTrigger", enterRadius: 15.0f);
-        var triggers = new List<SagaTrigger> { trigger };
-        var service = new SagaInteractionService(template, triggers, world);
-        var instance = CreateSagaInstance();
-        var avatar = CreateAvatar();
-
-        // Act - Call all query methods
-        service.GetSagaTriggerAtPosition(instance, 10.0, 5.0, avatar);
-        service.GetTriggersAtPosition(instance, 10.0, 5.0);
-        service.CanActivateSagaTrigger(instance, trigger, 10.0, 5.0, avatar);
-
-        // Assert - No transactions created
-        Assert.Empty(instance.Transactions);
-    }
-
     #endregion
 
     #region End-to-End Integration Tests
@@ -749,9 +625,11 @@ public class SagaInteractionServiceTests
         Assert.Equal(3, spawnTransactions.Count);
 
         // Manually calculate what the positions SHOULD be using the same seed
+        // Spawn depth = Min(EnterRadius * 0.5, 15.0) = Min(15 * 0.5, 15) = 7.5
+        var spawnDepth = Math.Min(15.0 * 0.5, 15.0);
         var expectedPositions = CalculateExpectedSpawnPositions(
             10.0, 5.0, // Avatar position
-            10.0, // Default spawn radius (keeps characters within typical ApproachRadius)
+            spawnDepth, // Forward-arc spawn depth
             3, // Count
             seed);
 
@@ -766,21 +644,39 @@ public class SagaInteractionServiceTests
         }
     }
 
-    // Helper to calculate expected spawn positions (mirrors SagaInteractionService logic)
+    // Helper to calculate expected spawn positions (mirrors SagaInteractionService.CalculateForwardArcSpawnPositions)
     private List<(double x, double z)> CalculateExpectedSpawnPositions(
-        double centerX, double centerZ, double radius, int count, int seed)
+        double avatarX, double avatarZ, double depth, int count, int seed)
     {
         var positions = new List<(double, double)>();
         var rng = new Random(seed);
-        var baseAngleStep = 2.0 * Math.PI / count;
+
+        // Unit vector from avatar toward origin, or a random direction if avatar is at origin.
+        const double epsilon = 0.01;
+        var avatarDistanceFromOrigin = Math.Sqrt(avatarX * avatarX + avatarZ * avatarZ);
+        double forwardAngle;
+        if (avatarDistanceFromOrigin < epsilon)
+        {
+            forwardAngle = rng.NextDouble() * 2.0 * Math.PI;
+        }
+        else
+        {
+            forwardAngle = Math.Atan2(-avatarX, -avatarZ);
+        }
+
+        const double totalArcRadians = Math.PI / 3.0; // 60 degrees
+        var angleStep = count > 1 ? totalArcRadians / (count - 1) : 0.0;
+        var startOffset = -totalArcRadians / 2.0;
+        var jitterScale = count > 1 ? angleStep * 0.2 : Math.PI / 36.0;
 
         for (var i = 0; i < count; i++)
         {
-            var angle = i * baseAngleStep + (rng.NextDouble() - 0.5) * baseAngleStep * 0.2;
-            var radiusVariation = radius * (0.9 + rng.NextDouble() * 0.1);
+            var baseOffset = count > 1 ? startOffset + i * angleStep : 0.0;
+            var angle = forwardAngle + baseOffset + (rng.NextDouble() - 0.5) * jitterScale;
+            var radiusVariation = depth * (0.9 + rng.NextDouble() * 0.1);
             var offsetX = radiusVariation * Math.Sin(angle);
             var offsetZ = radiusVariation * Math.Cos(angle);
-            positions.Add((centerX + offsetX, centerZ + offsetZ));
+            positions.Add((avatarX + offsetX, avatarZ + offsetZ));
         }
 
         return positions;

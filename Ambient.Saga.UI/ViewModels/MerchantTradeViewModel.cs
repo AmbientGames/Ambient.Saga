@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Domain.Rpg.Trade;
@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MediatR;
 using System.Collections.ObjectModel;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 
@@ -15,6 +16,7 @@ public partial class MerchantTradeViewModel : ObservableObject
     // Events for notifying the host about state changes
     public event EventHandler<string>? StatusMessageChanged;
     public event EventHandler<string>? ActivityMessageGenerated;
+    public event Action<string, int>? OwnerRevenueEarned;
 
     private readonly SagaInteractionContext _context;
     private readonly IMediator _mediator;
@@ -24,14 +26,31 @@ public partial class MerchantTradeViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(TradeInventory))]
     private string _selectedTradeCategory = "Equipment";
 
-    // MerchantTradeViewModel is only instantiated when OpenMerchantTrade dialogue action fires,
-    // so we can assume it's always a merchant interaction
+    /// <summary>
+    /// True when this VM is driving a cache interaction (geocache / remnant Loot / etc.) rather than
+    /// a paid merchant. Hides money/price UI, relabels buttons (Buy→Take, Sell→Deposit), and sends
+    /// trade transactions with PricePerItem=0.
+    /// </summary>
+    public bool IsCache { get; }
+
     public bool ShowBuySellToggle => true;
-    public bool IsMerchant => true;
+    public bool IsMerchant => !IsCache;
 
     public string CurrencyName => _context?.CurrencyName ?? "Coin";
     public string PluralCurrencyName => _context?.PluralCurrencyName ?? "Coins";
-    public AvatarBase? PlayerAvatar => _context?.AvatarEntity;  // Implicit upcast to AvatarBase
+    public AvatarBase? Avatar => _context?.AvatarEntity;  // Implicit upcast to AvatarBase
+
+    // UI text + visibility that varies by mode
+    public bool ShowMoneyBar => !IsCache;
+    public bool ShowPrices => !IsCache;
+    public string HeaderSubtitle => IsCache ? "- Cache" : "- Merchant";
+    public string BuyModeLabel => IsCache ? "Take from Cache" : "Buy from Merchant";
+    public string SellModeLabel => IsCache ? "Deposit Items" : "Sell your Items";
+    public string ItemBuyLabel => IsCache ? "Take" : "Buy";
+    public string ItemSellLabel => IsCache ? "Deposit" : "Sell";
+    public string CloseLabel => IsCache ? "Close" : "Leave Shop";
+    public string EmptyBuyText => IsCache ? "Cache is empty" : "Merchant has no items in this category";
+    public string EmptySellText => IsCache ? "You have nothing to deposit in this category" : "You have no items to sell in this category";
 
     private string _tradeMode = "Buy"; // "Buy" or "Sell"
 
@@ -48,7 +67,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         }
     }
 
-    public ObservableCollection<TradeItem> TradeInventory => _tradeMode == "Buy" ? GetMerchantInventory() : GetPlayerInventory();
+    public ObservableCollection<TradeItem> TradeInventory => _tradeMode == "Buy" ? GetMerchantInventory() : GetAvatarInventory();
 
     // Category availability properties
     public bool HasEquipment => GetCategoryItemCount("Equipment") > 0;
@@ -76,10 +95,11 @@ public partial class MerchantTradeViewModel : ObservableObject
     // Should we show the category selector? (only if more than one category has items)
     public bool ShowCategorySelector => AvailableCategories.Count > 1;
 
-    public MerchantTradeViewModel(SagaInteractionContext context, IMediator mediator)
+    public MerchantTradeViewModel(SagaInteractionContext context, IMediator mediator, bool isCache = false)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        IsCache = isCache;
 
         if (_context.World != null)
         {
@@ -112,7 +132,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         OnPropertyChanged(nameof(HasSpells));
         OnPropertyChanged(nameof(AvailableCategories));
         OnPropertyChanged(nameof(ShowCategorySelector));
-        OnPropertyChanged(nameof(PlayerAvatar));
+        OnPropertyChanged(nameof(Avatar));
         OnPropertyChanged(nameof(CurrencyName));
         OnPropertyChanged(nameof(PluralCurrencyName));
 
@@ -143,26 +163,69 @@ public partial class MerchantTradeViewModel : ObservableObject
         if (_tradeEngine == null) return 0;
 
         var inventory = _tradeMode == "Buy"
-            ? _context.ActiveCharacter?.Interactable?.Loot  // Merchant inventory for buying
-            : _context.AvatarEntity?.Capabilities;  // Player inventory for selling
+            ? GetMerchantInventorySource()      // Merchant loot or cache's live stock
+            : _context.AvatarEntity?.Capabilities;
 
         return _tradeEngine.GetCategoryItemCount(inventory, category);
+    }
+
+    /// <summary>
+    /// Live inventory: replay the SagaInstance's transactions and read the character's
+    /// CurrentInventory. Same source for every arc kind — geocache, player shop, remnant Loot
+    /// — so deposits/withdrawals via ItemTraded mutations are immediately visible.
+    /// Falls back to the character template's Interactable.Loot when no saga instance is
+    /// available (authored arcs that haven't yet had a CharacterSpawned recorded).
+    /// </summary>
+    private ItemCollection? GetMerchantInventorySource()
+    {
+        if (_context.CurrentSagaRef != null && _context.CurrentCharacterInstanceId != null)
+        {
+            try
+            {
+                var query = new Ambient.Saga.Engine.Application.Queries.Saga.GetSagaStateQuery
+                {
+                    AvatarId = _context.AvatarId,
+                    SagaRef = _context.CurrentSagaRef,
+                };
+                var sagaState = _mediator.Send(query).Result;
+                if (sagaState != null &&
+                    sagaState.Characters.TryGetValue(_context.CurrentCharacterInstanceId.Value.ToString(), out var characterState))
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[MerchantTradeVM] Saga inventory hit for '{_context.CurrentSagaRef}' " +
+                        $"(CharacterInstanceId={_context.CurrentCharacterInstanceId.Value})");
+                    return characterState.CurrentInventory;
+                }
+                System.Diagnostics.Debug.WriteLine(
+                    $"[MerchantTradeVM] Saga state had no character for CharacterInstanceId={_context.CurrentCharacterInstanceId.Value} " +
+                    $"in '{_context.CurrentSagaRef}'. State chars: [{(sagaState == null ? "null" : string.Join(",", sagaState.Characters.Keys))}]. " +
+                    $"Falling back to template Loot.");
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Failed to read saga inventory: {ex.Message}");
+            }
+        }
+
+        return _context.ActiveCharacter?.Interactable?.Loot;
     }
 
     private ObservableCollection<TradeItem> GetMerchantInventory()
     {
         var items = new ObservableCollection<TradeItem>();
+        if (_tradeEngine == null) return items;
 
-        if (_tradeEngine == null || _context.ActiveCharacter?.Interactable?.Loot == null)
-            return items;
+        var source = GetMerchantInventorySource();
+        if (source == null) return items;
 
-        // Get character traits for pricing (asynchronously, but we'll use cached value if available)
-        var characterTraits = GetCharacterTraitsAsync().Result;  // Sync over async for UI binding
+        // Traits drive merchant pricing; caches don't care.
+        var characterTraits = IsCache ? null : GetCharacterTraitsAsync().Result;  // Sync over async for UI binding
 
-        var tradeItems = _tradeEngine.GetAvailableItems(_context.ActiveCharacter.Interactable.Loot, SelectedTradeCategory, isBuying: true, characterTraits);
+        var tradeItems = _tradeEngine.GetAvailableItems(source, SelectedTradeCategory, isBuying: true, characterTraits);
         foreach (var item in tradeItems)
         {
-            items.Add(new TradeItem(item.Item, item.Price, item.Quantity, item.Condition));
+            var price = IsCache ? 0 : item.Price;
+            items.Add(new TradeItem(item.Item, price, item.Quantity, item.Condition));
         }
 
         return items;
@@ -198,7 +261,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<TradeItem> GetPlayerInventory()
+    private ObservableCollection<TradeItem> GetAvatarInventory()
     {
         var items = new ObservableCollection<TradeItem>();
 
@@ -243,7 +306,7 @@ public partial class MerchantTradeViewModel : ObservableObject
                 ItemRef = tradeItem.Item.RefName,
                 Quantity = 1,  // Buy one at a time
                 IsBuying = true,
-                PricePerItem = tradeItem.Price,
+                PricePerItem = IsCache ? 0 : tradeItem.Price,
                 Avatar = _context.AvatarEntity
             };
 
@@ -257,9 +320,18 @@ public partial class MerchantTradeViewModel : ObservableObject
                 return;
             }
 
-            var message = $"Bought {tradeItem.Item.DisplayName} for {tradeItem.Price} {PluralCurrencyName}";
+            var message = IsCache
+                ? $"Took {tradeItem.Item.DisplayName} from cache"
+                : $"Bought {tradeItem.Item.DisplayName} for {tradeItem.Price} {PluralCurrencyName}";
             ActivityMessageGenerated?.Invoke(this, message);
-            StatusMessageChanged?.Invoke(this, "Trade successful!");
+            StatusMessageChanged?.Invoke(this, IsCache ? "Taken." : "Trade successful!");
+
+            // Signal owner revenue if this was a purchase from an avatar-owned merchant
+            if (result.Data.TryGetValue(TransactionDataKeys.OwnerAvatarId, out var ownerIdObj) && ownerIdObj is string ownerId
+                && result.Data.TryGetValue(TransactionDataKeys.OwnerRevenue, out var revenueObj) && revenueObj is int revenue)
+            {
+                OwnerRevenueEarned?.Invoke(ownerId, revenue);
+            }
 
             // Use the updated avatar returned by Saga Engine (self-contained)
             System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] UpdatedAvatar: {(result.UpdatedAvatar != null ? "present" : "NULL")}");
@@ -274,7 +346,7 @@ public partial class MerchantTradeViewModel : ObservableObject
             }
 
             // Refresh UI to reflect updated inventory and credits
-            OnPropertyChanged(nameof(PlayerAvatar));
+            OnPropertyChanged(nameof(Avatar));
             OnPropertyChanged(nameof(TradeInventory));
         }
         catch (Exception ex)
@@ -304,7 +376,7 @@ public partial class MerchantTradeViewModel : ObservableObject
                 ItemRef = tradeItem.Item.RefName,
                 Quantity = 1,  // Sell one at a time
                 IsBuying = false,
-                PricePerItem = tradeItem.Price,
+                PricePerItem = IsCache ? 0 : tradeItem.Price,
                 Avatar = _context.AvatarEntity
             };
 
@@ -316,9 +388,11 @@ public partial class MerchantTradeViewModel : ObservableObject
                 return;
             }
 
-            var message = $"Sold {tradeItem.Item.DisplayName} for {tradeItem.Price} {PluralCurrencyName}";
+            var message = IsCache
+                ? $"Deposited {tradeItem.Item.DisplayName} in cache"
+                : $"Sold {tradeItem.Item.DisplayName} for {tradeItem.Price} {PluralCurrencyName}";
             ActivityMessageGenerated?.Invoke(this, message);
-            StatusMessageChanged?.Invoke(this, "Trade successful!");
+            StatusMessageChanged?.Invoke(this, IsCache ? "Deposited." : "Trade successful!");
 
             // Use the updated avatar returned by Saga Engine (self-contained)
             if (result.UpdatedAvatar != null)
@@ -327,7 +401,7 @@ public partial class MerchantTradeViewModel : ObservableObject
             }
 
             // Refresh UI to reflect updated inventory and credits
-            OnPropertyChanged(nameof(PlayerAvatar));
+            OnPropertyChanged(nameof(Avatar));
             OnPropertyChanged(nameof(TradeInventory));
         }
         catch (Exception ex)

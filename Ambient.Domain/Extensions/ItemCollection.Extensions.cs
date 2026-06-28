@@ -211,7 +211,7 @@ public static class ItemCollectionExtensions
     }
 
     /// <summary>
-    /// Finds the first building material in the player's inventory that is compatible with the given substance
+    /// Finds the first building material in the avatar's inventory that is compatible with the given substance
     /// and has quantity remaining.
     /// </summary>
     public static bool TryGetCompatibleBuildingMaterial(
@@ -270,47 +270,6 @@ public static class ItemCollectionExtensions
 
     #region QuestTokens (Presence-based)
 
-    public static bool HasQuestToken(this ItemCollection collection, string questTokenRef)
-    {
-        if (collection?.QuestTokens == null) return false;
-        return Array.Exists(collection.QuestTokens, q => q.QuestTokenRef == questTokenRef);
-    }
-
-    public static QuestTokenEntry? GetQuestToken(this ItemCollection collection, string questTokenRef)
-    {
-        return collection?.QuestTokens?.FirstOrDefault(q => q.QuestTokenRef == questTokenRef);
-    }
-
-    public static QuestTokenEntry AddQuestToken(this ItemCollection collection, string questTokenRef)
-    {
-        if (collection.QuestTokens == null)
-        {
-            collection.QuestTokens = Array.Empty<QuestTokenEntry>();
-        }
-
-        var existing = Array.Find(collection.QuestTokens, q => q.QuestTokenRef == questTokenRef);
-        if (existing != null) return existing;
-
-        var newToken = new QuestTokenEntry { QuestTokenRef = questTokenRef };
-        var tokens = collection.QuestTokens;
-        Array.Resize(ref tokens, tokens.Length + 1);
-        tokens[tokens.Length - 1] = newToken;
-        collection.QuestTokens = tokens;
-        return newToken;
-    }
-
-    public static bool RemoveQuestToken(this ItemCollection collection, string questTokenRef)
-    {
-        if (collection?.QuestTokens == null) return false;
-
-        var index = Array.FindIndex(collection.QuestTokens, q => q.QuestTokenRef == questTokenRef);
-        if (index == -1) return false;
-
-        var tokens = collection.QuestTokens.ToList();
-        tokens.RemoveAt(index);
-        collection.QuestTokens = tokens.ToArray();
-        return true;
-    }
 
     #endregion
 }

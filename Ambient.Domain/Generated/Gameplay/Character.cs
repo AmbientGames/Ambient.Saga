@@ -28,6 +28,8 @@ namespace Ambient.Domain {
         
         private string[] tagsField;
         
+        private string[] givesQuestTokenOnDefeatField;
+        
         private CharacterTrigger[] battleDialogueField;
         
         private int respawnIntervalSecondsField;
@@ -65,6 +67,17 @@ namespace Ambient.Domain {
             }
             set {
                 this.tagsField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("GivesQuestTokenOnDefeat")]
+        public string[] GivesQuestTokenOnDefeat {
+            get {
+                return this.givesQuestTokenOnDefeatField;
+            }
+            set {
+                this.givesQuestTokenOnDefeatField = value;
             }
         }
         

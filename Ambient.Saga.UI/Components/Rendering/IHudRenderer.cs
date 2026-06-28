@@ -1,4 +1,5 @@
 using Ambient.Saga.Presentation.UI.ViewModels;
+using Ambient.Saga.UI.Components.Panels;
 using System.Numerics;
 
 namespace Ambient.Saga.UI.Components.Rendering;
@@ -12,9 +13,10 @@ public interface IHudRenderer
     /// <summary>
     /// Render the HUD.
     /// </summary>
-    /// <param name="viewModel">Main view model with world/avatar state</param>
-    /// <param name="activePanel">Currently active panel</param>
-    /// <param name="displaySize">Display size in pixels</param>
-    /// <param name="hasActiveToastMessages">Whether toast messages are currently being displayed (hides world info)</param>
     void Render(SagaMainViewModel viewModel, ActivePanel activePanel, Vector2 displaySize, bool hasActiveToastMessages = false);
+
+    /// <summary>
+    /// Sets the panel manager for rendering key hints.
+    /// </summary>
+    void SetPanelManager(PanelManager panelManager) { }
 }

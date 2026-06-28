@@ -1,12 +1,14 @@
-﻿using Ambient.Domain.Contracts;
+using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Quests;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -18,17 +20,20 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
+    private readonly IAvatarProgressRepository _avatarProgressRepository;
     private readonly IAvatarUpdateService _avatarUpdateService;
     private readonly IWorld _world;
 
     public AcceptQuestHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
+        IAvatarProgressRepository avatarProgressRepository,
         IAvatarUpdateService avatarUpdateService,
         IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
+        _avatarProgressRepository = avatarProgressRepository;
         _avatarUpdateService = avatarUpdateService;
         _world = world;
     }
@@ -81,7 +86,8 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
                 command.Avatar,
                 _world,
                 currentState.CompletedQuests,
-                currentState.FactionReputation);
+                currentState.FactionReputation,
+                awardedQuestTokens: _avatarProgressRepository.GetAllQuestTokens(command.AvatarId));
 
             if (!canAccept)
             {
@@ -98,25 +104,19 @@ internal sealed class AcceptQuestHandler : IRequestHandler<AcceptQuestCommand, S
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["QuestRef"] = command.QuestRef,
-                    ["QuestDisplayName"] = quest.DisplayName,
-                    ["QuestGiverRef"] = command.QuestGiverRef,
-                    ["SagaArcRef"] = command.SagaArcRef
+                    [TransactionDataKeys.QuestRef] = command.QuestRef,
+                    [TransactionDataKeys.QuestDisplayName] = quest.DisplayName,
+                    [TransactionDataKeys.QuestGiverRef] = command.QuestGiverRef,
+                    [TransactionDataKeys.SagaArcRef] = command.SagaArcRef
                 }
             };
 
             instance.AddTransaction(transaction);
 
-            // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            // Persist and commit transaction atomically
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)

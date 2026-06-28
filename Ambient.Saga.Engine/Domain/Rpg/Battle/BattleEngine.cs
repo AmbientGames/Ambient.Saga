@@ -10,12 +10,12 @@ namespace Ambient.Saga.Engine.Domain.Rpg.Battle;
 public enum BattleState
 {
     NotStarted,
-    PlayerTurn,
+    AvatarTurn,
     CompanionTurn,
     EnemyTurn,
     /// <summary>
-    /// Waiting for player to choose a defensive reaction.
-    /// Enemy has telegraphed their attack; player has a time window to respond.
+    /// Waiting for avatar to choose a defensive reaction.
+    /// Enemy has telegraphed their attack; avatar has a time window to respond.
     /// </summary>
     AwaitingReaction,
     Victory,
@@ -41,8 +41,8 @@ public class BattleEngine
     private const string OffHandSlot = "OffHand";
     private const string BothHandsSlot = "BothHands";
 
-    private readonly Combatant _player;
-    private readonly List<Combatant> _companions;  // Party members (excluding player)
+    private readonly Combatant _avatar;
+    private readonly List<Combatant> _companions;  // Party members (excluding avatar)
     private readonly Combatant _enemy;
     private readonly ICombatAI? _enemyMind;  // Tactical AI for enemy
     private readonly ICombatAI? _companionMind;  // AI for companion turns
@@ -55,11 +55,11 @@ public class BattleEngine
 
     public BattleState State { get; private set; }
     public List<string> CombatLog { get; } = new();
-    public List<string> PlayerAffinityRefs { get; private set; } = new();
+    public List<string> AvatarAffinityRefs { get; private set; } = new();
     public IReadOnlyList<CombatEvent> ActionHistory => _actionHistory.AsReadOnly();
 
     /// <summary>
-    /// The pending attack awaiting player reaction (only valid when State == AwaitingReaction).
+    /// The pending attack awaiting avatar reaction (only valid when State == AwaitingReaction).
     /// </summary>
     public PendingAttack? PendingAttack { get; private set; }
 
@@ -69,9 +69,9 @@ public class BattleEngine
     private readonly Dictionary<string, AttackTell> _attackTells = new();
 
     /// <summary>
-    /// All party members (player + companions) for UI display.
+    /// All party members (avatar + companions) for UI display.
     /// </summary>
-    public IReadOnlyList<Combatant> Party => new[] { _player }.Concat(_companions).ToList().AsReadOnly();
+    public IReadOnlyList<Combatant> Party => new[] { _avatar }.Concat(_companions).ToList().AsReadOnly();
 
     /// <summary>
     /// Current companion taking their turn (null if not companion turn).
@@ -83,17 +83,17 @@ public class BattleEngine
     /// <summary>
     /// Create a new battle engine.
     /// </summary>
-    /// <param name="player">The player combatant</param>
+    /// <param name="avatar">The avatar combatant</param>
     /// <param name="enemy">The enemy combatant</param>
     /// <param name="enemyMind">AI brain for enemy tactical decisions (optional for player-vs-player)</param>
     /// <param name="world">World data for affinity matchups and item lookups (required for advanced combat)</param>
     /// <param name="randomSeed">Optional seed for deterministic behavior in tests</param>
-    /// <param name="companions">Optional party companions who fight alongside the player</param>
+    /// <param name="companions">Optional party companions who fight alongside the avatar</param>
     /// <param name="companionMind">AI brain for companion tactical decisions (uses enemyMind if not provided)</param>
-    public BattleEngine(Combatant player, Combatant enemy, ICombatAI? enemyMind = null, IWorld world = null, int? randomSeed = null,
+    public BattleEngine(Combatant avatar, Combatant enemy, ICombatAI? enemyMind = null, IWorld world = null, int? randomSeed = null,
         List<Combatant>? companions = null, ICombatAI? companionMind = null)
     {
-        _player = player ?? throw new ArgumentNullException(nameof(player));
+        _avatar = avatar ?? throw new ArgumentNullException(nameof(avatar));
         _enemy = enemy ?? throw new ArgumentNullException(nameof(enemy));
         _companions = companions ?? new List<Combatant>();
         _enemyMind = enemyMind;
@@ -118,11 +118,11 @@ public class BattleEngine
         if (_companions.Count > 0)
         {
             var partyNames = string.Join(", ", _companions.Select(c => c.DisplayName));
-            CombatLog.Add($"{_player.DisplayName} (with {partyNames}) vs {_enemy.DisplayName}!");
+            CombatLog.Add($"{_avatar.DisplayName} (with {partyNames}) vs {_enemy.DisplayName}!");
         }
         else
         {
-            CombatLog.Add($"{_player.DisplayName} vs {_enemy.DisplayName}!");
+            CombatLog.Add($"{_avatar.DisplayName} vs {_enemy.DisplayName}!");
         }
 
         // Opponent always initiates the interaction
@@ -161,7 +161,7 @@ public class BattleEngine
             };
         }
 
-        // Select target from party (player + alive companions)
+        // Select target from party (avatar + alive companions)
         var target = SelectEnemyTarget();
 
         if (_enemyMind == null)
@@ -177,7 +177,36 @@ public class BattleEngine
         var snapshot = CreateBattleSnapshot(forEnemy: true);
         var decision = _enemyMind.DecideTurn(snapshot);
 
-        // Execute the AI's decision against selected target
+        // If the AI chose an attack and tells are available, enter the reaction phase
+        // instead of dealing damage immediately — gives the avatar a chance to react.
+        if (_attackTells.Count > 0 && IsAttackAction(decision.ActionType))
+        {
+            var tell = GetRandomTellForEnemy(_enemy);
+            if (tell != null)
+            {
+                // Calculate what the damage WOULD be without defense
+                var baseDamage = CalculateBaseDamageForTell(_enemy, target, decision);
+
+                if (BeginAttackWithTell(_enemy, target, tell.RefName, baseDamage))
+                {
+                    // Battle is now in AwaitingReaction state — return the tell event
+                    return new CombatEvent
+                    {
+                        ActionType = BattleActionType.Attack,
+                        ActorName = _enemy.DisplayName,
+                        TargetName = target.DisplayName,
+                        Damage = baseDamage,
+                        Success = true,
+                        IsDefending = true, // Signals awaiting reaction
+                        Message = tell.TellText,
+                        TurnNumber = _turnNumber,
+                        IsAvatarTurn = false
+                    };
+                }
+            }
+        }
+
+        // No tells available or tell failed — execute directly as before
         var action = ExecuteDecision(_enemy, target, decision);
         RecordAction(action);
 
@@ -191,25 +220,25 @@ public class BattleEngine
 
     /// <summary>
     /// Select which party member the enemy will target.
-    /// Currently uses simple logic: random alive party member, weighted toward player.
+    /// Currently uses simple logic: random alive party member, weighted toward avatar.
     /// </summary>
     private Combatant SelectEnemyTarget()
     {
         // Build list of alive targets
         var aliveTargets = new List<Combatant>();
-        if (_player.IsAlive)
-            aliveTargets.Add(_player);
+        if (_avatar.IsAlive)
+            aliveTargets.Add(_avatar);
         aliveTargets.AddRange(_companions.Where(c => c.IsAlive));
 
         if (aliveTargets.Count == 0)
-            return _player;  // Shouldn't happen, but fallback
+            return _avatar;  // Shouldn't happen, but fallback
 
         if (aliveTargets.Count == 1)
             return aliveTargets[0];
 
-        // Weight toward player (50% chance to target player, 50% split among companions)
-        if (_player.IsAlive && _random.NextDouble() < 0.5)
-            return _player;
+        // Weight toward avatar (50% chance to target avatar, 50% split among companions)
+        if (_avatar.IsAlive && _random.NextDouble() < 0.5)
+            return _avatar;
 
         // Random from all alive targets
         return aliveTargets[_random.Next(aliveTargets.Count)];
@@ -342,51 +371,51 @@ public class BattleEngine
     }
 
     /// <summary>
-    /// Process player status effects at the start of their turn.
-    /// Should be called by the UI/handler before presenting player options.
+    /// Process avatar status effects at the start of their turn.
+    /// Should be called by the UI/handler before presenting avatar options.
     /// </summary>
-    public void ProcessPlayerTurnStart()
+    public void ProcessAvatarTurnStart()
     {
-        if (State != BattleState.PlayerTurn) return;
+        if (State != BattleState.AvatarTurn) return;
 
-        ProcessStatusEffects(_player);
+        ProcessStatusEffects(_avatar);
 
-        // Check if player died from DoT
-        if (!_player.IsAlive)
+        // Check if avatar died from DoT
+        if (!_avatar.IsAlive)
         {
             CheckBattleEnd();
         }
     }
 
     /// <summary>
-    /// Execute a player decision (for AI-controlled players or UI-driven choices).
+    /// Execute an avatar decision (for AI-controlled avatars or UI-driven choices).
     /// </summary>
-    public CombatEvent ExecutePlayerDecision(CombatAction decision)
+    public CombatEvent ExecuteAvatarDecision(CombatAction decision)
     {
-        if (State != BattleState.PlayerTurn)
+        if (State != BattleState.AvatarTurn)
         {
             return new CombatEvent
             {
                 Success = false,
-                Message = "Not player's turn"
+                Message = "Not avatar's turn"
             };
         }
 
-        // Check if player died from status effects before their action
-        if (!_player.IsAlive)
+        // Check if avatar died from status effects before their action
+        if (!_avatar.IsAlive)
         {
             CheckBattleEnd();
             return new CombatEvent
             {
                 Success = false,
-                Message = $"{_player.DisplayName} succumbed to status effects!"
+                Message = $"{_avatar.DisplayName} succumbed to status effects!"
             };
         }
 
-        var action = ExecuteDecision(_player, _enemy, decision);
+        var action = ExecuteDecision(_avatar, _enemy, decision);
         RecordAction(action);
 
-        if (action.Success && State == BattleState.PlayerTurn)
+        if (action.Success && State == BattleState.AvatarTurn)
         {
             CheckBattleEnd();
         }
@@ -398,7 +427,7 @@ public class BattleEngine
     /// Get current battle snapshot for AI decision-making.
     /// Opponent's capabilities are hidden (set to null).
     /// </summary>
-    public BattleView GetPlayerSnapshot()
+    public BattleView GetAvatarSnapshot()
     {
         return CreateBattleSnapshot(forEnemy: false);
     }
@@ -408,8 +437,8 @@ public class BattleEngine
     /// </summary>
     private BattleView CreateBattleSnapshot(bool forEnemy)
     {
-        var self = forEnemy ? _enemy : _player;
-        var opponent = forEnemy ? _player : _enemy;
+        var self = forEnemy ? _enemy : _avatar;
+        var opponent = forEnemy ? _avatar : _enemy;
 
         // Create observable opponent (hide their capabilities/inventory)
         // Stats shown are effective stats (base * stance multipliers)
@@ -786,6 +815,24 @@ public class BattleEngine
         var effectiveStrength = GetEffectiveStrength(attacker);
         var baseDamage = effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
 
+        // Apply affinity multiplier to base damage only
+        // (effect damage already includes affinity from EffectApplier)
+        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
+            weapon.AffinityRef ?? attacker.AffinityRef,
+            defender.AffinityRef,
+            _world);
+
+        baseDamage *= affinityMultiplier;
+
+        if (affinityMultiplier > 1.0f)
+        {
+            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
+        }
+        else if (affinityMultiplier < 1.0f)
+        {
+            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
+        }
+
         // Critical hit calculation - base chance from speed + weapon CriticalHitBonus
         var effectiveSpeed = GetEffectiveSpeed(attacker);
         var baseCritChance = Math.Min(0.3f, effectiveSpeed / 100f);
@@ -845,21 +892,6 @@ public class BattleEngine
 
         // Apply damage
         defender.Health = Math.Max(0, defender.Health - totalDamage);
-
-        // Log affinity bonus if applicable
-        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
-            weapon.AffinityRef ?? attacker.AffinityRef,
-            defender.AffinityRef,
-            _world);
-
-        if (affinityMultiplier > 1.0f)
-        {
-            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
-        }
-        else if (affinityMultiplier < 1.0f)
-        {
-            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
-        }
 
         CombatLog.Add($"{attacker.DisplayName} attacks with {weapon.DisplayName} for {totalDamage * 100:F1}% damage!");
         CombatLog.Add($"{defender.DisplayName} HP: {defender.HealthPercent:F1}%");
@@ -974,6 +1006,24 @@ public class BattleEngine
         var effectiveMagic = GetEffectiveMagic(attacker);
         var baseDamage = effectiveMagic * SPELL_DAMAGE_MULTIPLIER;
 
+        // Apply affinity multiplier to base damage only
+        // (effect damage already includes affinity from EffectApplier)
+        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
+            spell.AffinityRef ?? attacker.AffinityRef,
+            defender.AffinityRef,
+            _world);
+
+        baseDamage *= affinityMultiplier;
+
+        if (affinityMultiplier > 1.0f)
+        {
+            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
+        }
+        else if (affinityMultiplier < 1.0f)
+        {
+            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
+        }
+
         // Apply spell effects using EffectApplier
         // Use spell's UseType to determine if offensive (damage) or defensive (healing/buff)
         var effects = EffectApplier.ApplyEffects(
@@ -1048,21 +1098,6 @@ public class BattleEngine
 
         // Apply damage
         defender.Health = Math.Max(0, defender.Health - totalDamage);
-
-        // Log affinity bonus if applicable
-        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
-            spell.AffinityRef ?? attacker.AffinityRef,
-            defender.AffinityRef,
-            _world);
-
-        if (affinityMultiplier > 1.0f)
-        {
-            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
-        }
-        else if (affinityMultiplier < 1.0f)
-        {
-            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
-        }
 
         CombatLog.Add($"{attacker.DisplayName} casts {spell.DisplayName} for {totalDamage * 100:F1}% damage!");
         if (totalCost > 0)
@@ -1516,12 +1551,12 @@ public class BattleEngine
             return;
         }
 
-        // Player down = defeat (companions flee without leader)
-        if (_player.Health <= 0)
+        // Avatar down = defeat (companions flee without leader)
+        if (_avatar.Health <= 0)
         {
             State = BattleState.Defeat;
             CombatLog.Add("=== DEFEAT ===");
-            CombatLog.Add($"{_player.DisplayName} has been defeated...");
+            CombatLog.Add($"{_avatar.DisplayName} has been defeated...");
             if (_companions.Count > 0)
             {
                 CombatLog.Add("Your companions flee without their leader!");
@@ -1529,13 +1564,13 @@ public class BattleEngine
             return;
         }
 
-        // Switch turns: Player -> Companions -> Enemy -> Player
-        if (State == BattleState.PlayerTurn)
+        // Switch turns: Avatar -> Companions -> Enemy -> Avatar
+        if (State == BattleState.AvatarTurn)
         {
-            // PHASE 6: Process EndOfTurn status effects for player before switching
-            ProcessEndOfTurnStatusEffects(_player);
+            // PHASE 6: Process EndOfTurn status effects for avatar before switching
+            ProcessEndOfTurnStatusEffects(_avatar);
 
-            // After player, companions go (if any alive)
+            // After avatar, companions go (if any alive)
             var aliveCompanions = _companions.Where(c => c.IsAlive).ToList();
             if (aliveCompanions.Count > 0)
             {
@@ -1559,17 +1594,17 @@ public class BattleEngine
             // PHASE 6: Process EndOfTurn status effects for enemy before switching
             ProcessEndOfTurnStatusEffects(_enemy);
 
-            State = BattleState.PlayerTurn;
-            CombatLog.Add($"--- {_player.DisplayName}'s turn ---");
+            State = BattleState.AvatarTurn;
+            CombatLog.Add($"--- {_avatar.DisplayName}'s turn ---");
             _turnNumber++;
         }
         // CompanionTurn advancement is handled in AdvanceCompanionTurn()
     }
 
     /// <summary>
-    /// Get the current player combatant (for UI binding).
+    /// Get the current avatar combatant (for UI binding).
     /// </summary>
-    public Combatant GetPlayer() => _player;
+    public Combatant GetAvatar() => _avatar;
 
     /// <summary>
     /// Get companion combatants (for UI binding).
@@ -1592,11 +1627,11 @@ public class BattleEngine
     public int GetTurnNumber() => _turnNumber;
 
     /// <summary>
-    /// Set the player's available affinities for battle.
+    /// Set the avatar's available affinities for battle.
     /// </summary>
-    public void SetPlayerAffinities(List<string> affinityRefs)
+    public void SetAvatarAffinities(List<string> affinityRefs)
     {
-        PlayerAffinityRefs = affinityRefs ?? new List<string>();
+        AvatarAffinityRefs = affinityRefs ?? new List<string>();
     }
 
     // ============================================================================
@@ -1971,6 +2006,67 @@ public class BattleEngine
         return true;
     }
 
+    /// <summary>
+    /// Whether the action type is an attack that should trigger tells.
+    /// </summary>
+    private static bool IsAttackAction(ActionType actionType) =>
+        actionType is ActionType.Attack or ActionType.CastSpell;
+
+    /// <summary>
+    /// Calculate the base damage an enemy attack WOULD deal without any defense modifiers.
+    /// Used by the tell system so the avatar knows the stakes before choosing a reaction.
+    /// </summary>
+    private float CalculateBaseDamageForTell(Combatant attacker, Combatant target, CombatAction decision)
+    {
+        float baseDamage;
+        string? affinityRef = attacker.AffinityRef;
+
+        if (!string.IsNullOrEmpty(decision.Parameter) && _world != null)
+        {
+            // Use spell formula if the AI chose a spell
+            if (decision.ActionType == ActionType.CastSpell)
+            {
+                var effectiveMagic = GetEffectiveMagic(attacker);
+                baseDamage = effectiveMagic * SPELL_DAMAGE_MULTIPLIER;
+                var spell = _world.GetSpellByRefName(decision.Parameter);
+                affinityRef = spell?.AffinityRef ?? attacker.AffinityRef;
+            }
+            else
+            {
+                // Use weapon attack formula if the AI chose a weapon
+                var weapon = _world.TryGetEquipmentByRefName(decision.Parameter);
+                if (weapon != null)
+                {
+                    var effectiveStrength = GetEffectiveStrength(attacker);
+                    baseDamage = effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
+                    affinityRef = weapon.AffinityRef ?? attacker.AffinityRef;
+                }
+                else
+                {
+                    // Fallback: basic attack formula
+                    var strength = GetEffectiveStrength(attacker);
+                    var defense = GetEffectiveDefense(target);
+                    baseDamage = Math.Max(0.01f, strength - defense / 2f);
+                }
+            }
+        }
+        else
+        {
+            // Fallback: basic attack formula
+            var strength = GetEffectiveStrength(attacker);
+            var defense = GetEffectiveDefense(target);
+            baseDamage = Math.Max(0.01f, strength - defense / 2f);
+        }
+
+        // Apply affinity so the preview matches actual damage
+        if (_world != null)
+        {
+            baseDamage *= EffectApplier.CalculateAffinityMultiplier(
+                affinityRef, target.AffinityRef, _world);
+        }
+        return baseDamage;
+    }
+
     #region Combat Reaction System (Expedition 33-inspired)
 
     /// <summary>
@@ -1983,15 +2079,33 @@ public class BattleEngine
     }
 
     /// <summary>
+    /// Register all attack tells from world data.
+    /// Call after construction but before StartBattle to enable the reaction system.
+    /// </summary>
+    public void RegisterTellsFromWorld(IWorld world)
+    {
+        if (world?.Gameplay?.AttackTells == null)
+            return;
+
+        foreach (var tell in world.Gameplay.AttackTells)
+        {
+            if (!string.IsNullOrEmpty(tell.RefName))
+            {
+                RegisterAttackTell(CombatReactionMapper.FromDomain(tell));
+            }
+        }
+    }
+
+    /// <summary>
     /// Begin an attack with a telegraph, entering the reaction phase.
-    /// Call this instead of directly executing an attack to enable player reactions.
+    /// Call this instead of directly executing an attack to enable avatar reactions.
     /// </summary>
     /// <param name="attacker">The attacking combatant</param>
     /// <param name="target">The target of the attack</param>
     /// <param name="tellRefName">Reference name of the attack tell to use</param>
     /// <param name="baseDamage">The base damage before reaction modifiers</param>
     /// <returns>True if reaction phase started, false if tell not found or invalid state</returns>
-    public bool BeginAttackWithTell(Combatant attacker, Combatant target, string tellRefName, int baseDamage)
+    public bool BeginAttackWithTell(Combatant attacker, Combatant target, string tellRefName, float baseDamage)
     {
         if (!_attackTells.TryGetValue(tellRefName, out var tell))
         {
@@ -2016,11 +2130,11 @@ public class BattleEngine
     }
 
     /// <summary>
-    /// Resolve the pending attack with the player's chosen defense reaction.
+    /// Resolve the pending attack with the avatar's chosen defense reaction.
     /// </summary>
     /// <param name="reaction">The defense reaction chosen by the player</param>
     /// <returns>The result of the reaction, or null if no pending attack</returns>
-    public ReactionResult? ResolveReaction(PlayerDefenseType reaction)
+    public ReactionResult? ResolveReaction(AvatarDefenseType reaction)
     {
         if (State != BattleState.AwaitingReaction || PendingAttack == null)
         {
@@ -2033,15 +2147,15 @@ public class BattleEngine
         // If timed out, force None reaction
         if (timedOut)
         {
-            reaction = PlayerDefenseType.None;
+            reaction = AvatarDefenseType.None;
             CombatLog.Add("Time's up!");
         }
 
         var outcome = pending.Tell.GetOutcome(reaction);
-        var finalDamage = (int)Math.Round(pending.BaseDamage * outcome.DamageMultiplier);
+        var finalDamage = pending.BaseDamage * outcome.DamageMultiplier;
 
         // Apply damage
-        pending.Target.Health -= finalDamage;
+        pending.Target.Health = Math.Max(0, pending.Target.Health - finalDamage);
 
         // Build narrative
         var narrativeText = outcome.ResponseText;
@@ -2049,23 +2163,23 @@ public class BattleEngine
         {
             narrativeText = reaction switch
             {
-                PlayerDefenseType.Dodge => finalDamage == 0 ? "You evade the attack!" : $"You dodge but take {finalDamage} damage.",
-                PlayerDefenseType.Block => $"You block, taking {finalDamage} damage.",
-                PlayerDefenseType.Parry => outcome.EnablesCounter ? "You parry and prepare to counter!" : $"You deflect, taking {finalDamage} damage.",
-                PlayerDefenseType.Brace => $"You brace for impact, taking {finalDamage} damage.",
-                _ => $"You take {finalDamage} damage!"
+                AvatarDefenseType.Dodge => finalDamage == 0 ? "You evade the attack!" : $"You dodge but take {finalDamage * 100:F1}% damage.",
+                AvatarDefenseType.Block => $"You block, taking {finalDamage * 100:F1}% damage.",
+                AvatarDefenseType.Parry => outcome.EnablesCounter ? "You parry and prepare to counter!" : $"You deflect, taking {finalDamage * 100:F1}% damage.",
+                AvatarDefenseType.Brace => $"You brace for impact, taking {finalDamage * 100:F1}% damage.",
+                _ => $"You take {finalDamage * 100:F1}% damage!"
             };
         }
 
         CombatLog.Add($"{narrativeText}");
 
         // Handle counter-attack
-        int? counterDamage = null;
+        float? counterDamage = null;
         if (outcome.EnablesCounter && pending.Target.IsAlive)
         {
-            counterDamage = (int)Math.Round(pending.BaseDamage * outcome.CounterMultiplier);
-            pending.Attacker.Health -= counterDamage.Value;
-            CombatLog.Add($"Counter-attack hits {pending.Attacker.DisplayName} for {counterDamage} damage!");
+            counterDamage = pending.BaseDamage * outcome.CounterMultiplier;
+            pending.Attacker.Health = Math.Max(0, pending.Attacker.Health - counterDamage.Value);
+            CombatLog.Add($"Counter-attack hits {pending.Attacker.DisplayName} for {counterDamage.Value * 100:F1}% damage!");
         }
 
         // Apply defense effects (e.g., stamina recovery from skilled defense)
@@ -2119,8 +2233,8 @@ public class BattleEngine
         // If battle didn't end, move to appropriate next state
         if (State == BattleState.AwaitingReaction)
         {
-            // Move to player turn after enemy attack resolves
-            State = BattleState.PlayerTurn;
+            // Move to avatar turn after enemy attack resolves
+            State = BattleState.AvatarTurn;
             _turnNumber++;
         }
 
@@ -2139,7 +2253,7 @@ public class BattleEngine
 
         if (PendingAttack.IsExpired)
         {
-            return ResolveReaction(PlayerDefenseType.None);
+            return ResolveReaction(AvatarDefenseType.None);
         }
 
         return null;

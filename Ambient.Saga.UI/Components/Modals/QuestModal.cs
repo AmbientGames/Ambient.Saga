@@ -12,7 +12,7 @@ namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for quest signpost interactions.
-/// Displays quest details and allows player to accept quests.
+/// Displays quest details and allows avatar to accept quests.
 /// </summary>
 public class QuestModal
 {
@@ -67,9 +67,10 @@ public class QuestModal
         // Center the window using helper
         ImGuiHelpers.SetupModalWindow(650, 550);
 
-        // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        // Style the window (DPI-scaled)
+        var scale = UIConstants.DpiScale;
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
@@ -89,7 +90,7 @@ public class QuestModal
                 ImGui.Spacing();
 
                 var descriptionHeight = ImGui.GetFrameHeightWithSpacing() * 4;
-                ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+                ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
                 ImGui.BeginChild("QuestDescription", new Vector2(ImGuiSizes.Fill, descriptionHeight), ImGuiChildFlags.Borders);
                 ImGui.Indent(10 * UIConstants.DpiScale);
                 ImGui.Spacing();
@@ -207,9 +208,9 @@ public class QuestModal
             var totalWidth = buttonWidth * 2 + 20;
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalWidth) * 0.5f);
 
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.35f, 0.4f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.25f, 0.45f, 0.55f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.3f, 0.55f, 0.7f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonInfo);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonInfoHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonInfoActive);
             if (ImGui.Button("View Quest Log", new Vector2(buttonWidth, buttonHeight)))
             {
                 isOpen = false;
@@ -233,9 +234,9 @@ public class QuestModal
                 ImGui.BeginDisabled();
             }
 
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
             if (ImGui.Button(_isAccepting ? "Accepting..." : "Accept Quest", new Vector2(buttonWidth, buttonHeight)))
             {
                 AcceptQuest(viewModel);
@@ -249,9 +250,9 @@ public class QuestModal
 
             ImGui.SameLine();
 
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.25f, 0.25f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.3f, 0.3f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.35f, 0.35f, 1));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
             if (ImGui.Button("Decline", new Vector2(buttonWidth, buttonHeight)))
             {
                 isOpen = false;
@@ -262,7 +263,7 @@ public class QuestModal
 
     private void AcceptQuest(SagaMainViewModel viewModel)
     {
-        if (_isAccepting || viewModel.PlayerAvatar == null) return;
+        if (_isAccepting || viewModel.Avatar == null) return;
 
         _isAccepting = true;
         _ = AcceptQuestAsync(viewModel);
@@ -274,11 +275,11 @@ public class QuestModal
         {
             var command = new AcceptQuestCommand
             {
-                AvatarId = viewModel.PlayerAvatar!.Id,
+                AvatarId = viewModel.Avatar!.Id,
                 QuestRef = _currentQuestRef!,
                 SagaArcRef = _currentSagaRef!,
                 QuestGiverRef = _currentQuestGiverRef!,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var result = await _mediator.Send(command);
@@ -316,13 +317,13 @@ public class QuestModal
     /// </summary>
     private async Task<bool> IsQuestActiveAsync(string questRef, string sagaRef, SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar == null) return false;
+        if (viewModel.Avatar == null) return false;
 
         try
         {
             var sagaState = await _mediator.Send(new GetSagaStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar.Id,
+                AvatarId = viewModel.Avatar.Id,
                 SagaRef = sagaRef
             });
 
@@ -339,13 +340,13 @@ public class QuestModal
     /// </summary>
     private async Task<bool> IsQuestCompletedAsync(string questRef, string sagaRef, SagaMainViewModel viewModel)
     {
-        if (viewModel.PlayerAvatar == null) return false;
+        if (viewModel.Avatar == null) return false;
 
         try
         {
             var sagaState = await _mediator.Send(new GetSagaStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar.Id,
+                AvatarId = viewModel.Avatar.Id,
                 SagaRef = sagaRef
             });
 

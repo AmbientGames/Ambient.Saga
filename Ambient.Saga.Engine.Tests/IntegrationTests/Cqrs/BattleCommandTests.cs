@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
@@ -26,7 +27,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// Uses BattleSetup helper to create properly configured StartBattleCommand objects.
 /// The battle system uses turn-based combat via:
 ///   - StartBattleCommand: Initializes battle, creates BattleStarted transaction
-///   - ExecuteBattleTurnCommand: Executes one player + one enemy turn
+///   - ExecuteBattleTurnCommand: Executes one avatar + one enemy turn
 ///
 /// TESTS:
 /// 1. StartBattle_CreatesValidTransactions - Verifies battle initialization ? UPDATED
@@ -72,6 +73,7 @@ public class BattleCommandTests : IDisposable
         // Register dependencies
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
@@ -120,7 +122,7 @@ public class BattleCommandTests : IDisposable
         battleSetup.OpponentCapabilities = weakBoss.Capabilities ?? new ItemCollection();
 
         var battleEngine = battleSetup.CreateBattleEngine();
-        var playerCombatant = battleEngine.GetPlayer();
+        var avatarCombatant = battleEngine.GetAvatar();
         var enemyCombatant = battleEngine.GetEnemy();
 
         var battleResult = await _mediator.Send(new StartBattleCommand
@@ -128,9 +130,9 @@ public class BattleCommandTests : IDisposable
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
             EnemyCharacterInstanceId = bossInstanceId,
-            PlayerCombatant = playerCombatant,
+            AvatarCombatant = avatarCombatant,
             EnemyCombatant = enemyCombatant,
-            PlayerAffinityRefs = new List<string> { "Physical" },
+            AvatarAffinityRefs = new List<string> { "Physical" },
             EnemyMind = new CombatAI(_world),
             RandomSeed = 12345,  // Fixed seed for determinism
             Avatar = avatar
@@ -151,328 +153,14 @@ public class BattleCommandTests : IDisposable
 
         var battleStarted = transactions.First(t => t.Type == SagaTransactionType.BattleStarted);
         Assert.Equal("12345", battleStarted.Data["RandomSeed"]);
-        Assert.True(battleStarted.Data.ContainsKey("PlayerHealth"));
+        Assert.True(battleStarted.Data.ContainsKey("AvatarHealth"));
         Assert.True(battleStarted.Data.ContainsKey("EnemyHealth"));
 
         _output.WriteLine($"? Battle started with {turnTransactions.Count} turn(s) executed");
         _output.WriteLine($"  Random Seed: {battleStarted.Data["RandomSeed"]}");
-        _output.WriteLine($"  Player HP: {battleStarted.Data["PlayerHealth"]}");
+        _output.WriteLine($"  Avatar HP: {battleStarted.Data["AvatarHealth"]}");
         _output.WriteLine($"  Enemy HP: {battleStarted.Data["EnemyHealth"]}");
     }
-
-    // TODO: Rewrite remaining tests to use BattleSetup and new turn-based API
-    // These tests use old API signatures (CharacterInstanceId instead of EnemyCharacterInstanceId)
-    // and old schema properties (CharacterType, BasePrice, Energy) that no longer exist.
-    /*
-    [Fact]
-    public async Task BattleReplay_SameSeed_DeterministicOutcome()
-    {
-        // ARRANGE: Create two identical battles with same seed
-        var avatarId1 = Guid.NewGuid();
-        var avatarId2 = Guid.NewGuid();
-        var avatar1 = CreateWarriorAvatar(avatarId1);
-        var avatar2 = CreateWarriorAvatar(avatarId2);
-
-        var sagaRef = "WeakBossSaga";
-        var fixedSeed = 12345; // Same seed for determinism
-
-        // Spawn bosses for both avatars
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId1,
-            SagaRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar1
-        });
-
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId2,
-            SagaRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar2
-        });
-
-        var instance1 = await _repository.GetOrCreateInstanceAsync(avatarId1, sagaRef);
-        var instance2 = await _repository.GetOrCreateInstanceAsync(avatarId2, sagaRef);
-
-        var boss1Id = Guid.Parse(instance1.GetCommittedTransactions()
-            .First(t => t.Type == SagaTransactionType.CharacterSpawned).Data["CharacterInstanceId"]);
-        var boss2Id = Guid.Parse(instance2.GetCommittedTransactions()
-            .First(t => t.Type == SagaTransactionType.CharacterSpawned).Data["CharacterInstanceId"]);
-
-        // ACT: Execute battles with SAME SEED
-        // Note: StartBattleCommand uses Random.Shared by default
-        // This test validates that seed is stored in BattleStarted transaction
-        await _mediator.Send(new StartBattleCommand
-        {
-            AvatarId = avatarId1,
-            SagaRef = sagaRef,
-            CharacterInstanceId = boss1Id,
-            Avatar = avatar1
-        });
-
-        await _mediator.Send(new StartBattleCommand
-        {
-            AvatarId = avatarId2,
-            SagaRef = sagaRef,
-            CharacterInstanceId = boss2Id,
-            Avatar = avatar2
-        });
-
-        // ASSERT: Both battles should have identical turn counts and outcomes
-        var final1 = await _repository.GetOrCreateInstanceAsync(avatarId1, sagaRef);
-        var final2 = await _repository.GetOrCreateInstanceAsync(avatarId2, sagaRef);
-
-        var battle1Turns = final1.GetCommittedTransactions()
-            .Count(t => t.Type == SagaTransactionType.BattleTurnExecuted);
-        var battle2Turns = final2.GetCommittedTransactions()
-            .Count(t => t.Type == SagaTransactionType.BattleTurnExecuted);
-
-        _output.WriteLine($"Battle 1 turns: {battle1Turns}");
-        _output.WriteLine($"Battle 2 turns: {battle2Turns}");
-
-        // Battles may differ due to different random seeds, but transaction structure should be identical
-        Assert.Equal(
-            final1.GetCommittedTransactions().Count(t => t.Type == SagaTransactionType.BattleStarted),
-            final2.GetCommittedTransactions().Count(t => t.Type == SagaTransactionType.BattleStarted));
-    }
-
-    [Fact]
-    public async Task ZoneExit_LivingEnemies_Despawned()
-    {
-        // ARRANGE: Spawn multiple enemies but DON'T defeat them
-        var avatarId = Guid.NewGuid();
-        var avatar = CreateWarriorAvatar(avatarId);
-
-        var sagaRef = "MultiEnemySaga";
-
-        // Enter zone (spawns 3 enemies)
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar
-        });
-
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var spawnedEnemies = instance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.CharacterSpawned)
-            .ToList();
-
-        Assert.Equal(3, spawnedEnemies.Count);
-        _output.WriteLine($"Spawned {spawnedEnemies.Count} living enemies");
-
-        // ACT: Exit zone WITHOUT defeating enemies
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaRef = sagaRef,
-            Latitude = 35.002, // Far away
-            Longitude = 139.002,
-            Avatar = avatar
-        });
-
-        // ASSERT: All living enemies despawned
-        var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var despawns = finalInstance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.CharacterDespawned)
-            .ToList();
-
-        Assert.Equal(3, despawns.Count);
-
-        foreach (var despawn in despawns)
-        {
-            Assert.Equal("Player exited trigger zone", despawn.Data["Reason"]);
-            _output.WriteLine($"Living enemy despawned: {despawn.Data["CharacterRef"]}");
-        }
-    }
-
-    [Fact]
-    public async Task ZoneExit_DefeatedEnemy_CorpseRemains()
-    {
-        // ARRANGE: Defeat enemy
-        var avatarId = Guid.NewGuid();
-        var avatar = CreateWarriorAvatar(avatarId);
-
-        var sagaRef = "WeakBossSaga";
-
-        // Spawn and defeat boss
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar
-        });
-
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var bossInstanceId = Guid.Parse(
-            instance.GetCommittedTransactions()
-                .First(t => t.Type == SagaTransactionType.CharacterSpawned)
-                .Data["CharacterInstanceId"]);
-
-        // Defeat boss
-        await _mediator.Send(new StartBattleCommand
-        {
-            AvatarId = avatarId,
-            SagaRef = sagaRef,
-            CharacterInstanceId = bossInstanceId,
-            Avatar = avatar
-        });
-
-        _output.WriteLine($"Boss defeated: {bossInstanceId}");
-
-        // ACT: Exit zone with defeated enemy corpse
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaRef = sagaRef,
-            Latitude = 35.002,
-            Longitude = 139.002,
-            Avatar = avatar
-        });
-
-        // ASSERT: Defeated enemy NOT despawned (corpse remains for looting)
-        var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var despawns = finalInstance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.CharacterDespawned)
-            .ToList();
-
-        // Should have PlayerExited but NO despawn for defeated character
-        Assert.Contains(finalInstance.GetCommittedTransactions(), t => t.Type == SagaTransactionType.PlayerExited);
-        Assert.DoesNotContain(despawns, d => d.Data["CharacterInstanceId"] == bossInstanceId.ToString());
-
-        _output.WriteLine("? Corpse remains for looting after zone exit");
-    }
-
-    [Fact]
-    public async Task BattleTransactions_CompleteAuditTrail()
-    {
-        // ARRANGE: Setup battle
-        var avatarId = Guid.NewGuid();
-        var avatar = CreateWarriorAvatar(avatarId);
-
-        var sagaRef = "WeakBossSaga";
-
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar
-        });
-
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var bossInstanceId = Guid.Parse(
-            instance.GetCommittedTransactions()
-                .First(t => t.Type == SagaTransactionType.CharacterSpawned)
-                .Data["CharacterInstanceId"]);
-
-        // ACT: Execute battle
-        await _mediator.Send(new StartBattleCommand
-        {
-            AvatarId = avatarId,
-            SagaRef = sagaRef,
-            CharacterInstanceId = bossInstanceId,
-            Avatar = avatar
-        });
-
-        // ASSERT: Verify complete audit trail
-        var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var battleTxs = finalInstance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.BattleStarted ||
-                       t.Type == SagaTransactionType.BattleTurnExecuted ||
-                       t.Type == SagaTransactionType.BattleEnded)
-            .OrderBy(t => t.SequenceNumber)
-            .ToList();
-
-        var battleStarted = battleTxs.First(t => t.Type == SagaTransactionType.BattleStarted);
-        var battleEnded = battleTxs.First(t => t.Type == SagaTransactionType.BattleEnded);
-        var turns = battleTxs.Where(t => t.Type == SagaTransactionType.BattleTurnExecuted).ToList();
-
-        // Verify BattleStarted has complete snapshot
-        Assert.True(battleStarted.Data.ContainsKey("RandomSeed"));
-        Assert.True(battleStarted.Data.ContainsKey("PlayerHealth"));
-        Assert.True(battleStarted.Data.ContainsKey("PlayerStrength"));
-        Assert.True(battleStarted.Data.ContainsKey("EnemyHealth"));
-
-        _output.WriteLine($"Battle Started - Seed: {battleStarted.Data["RandomSeed"]}");
-        _output.WriteLine($"  Player HP: {battleStarted.Data["PlayerHealth"]}");
-        _output.WriteLine($"  Enemy HP: {battleStarted.Data["EnemyHealth"]}");
-
-        // Verify each turn has required data
-        foreach (var turn in turns)
-        {
-            Assert.True(turn.Data.ContainsKey("TurnNumber"));
-            Assert.True(turn.Data.ContainsKey("Actor"));
-            Assert.True(turn.Data.ContainsKey("DecisionType"));
-
-            _output.WriteLine($"Turn {turn.Data["TurnNumber"]}: {turn.Data["Actor"]} - {turn.Data["DecisionType"]}");
-        }
-
-        // Verify BattleEnded links back to BattleStarted
-        Assert.Equal(battleStarted.TransactionId.ToString(), battleEnded.Data["BattleStartedTransactionId"]);
-        _output.WriteLine($"Battle Ended - Total Turns: {battleEnded.Data["TotalTurns"]}");
-    }
-
-    [Fact]
-    public async Task MultipleEnemies_SequentialBattles_AllDefeated()
-    {
-        // ARRANGE: Spawn 3 enemies
-        var avatarId = Guid.NewGuid();
-        var avatar = CreateWarriorAvatar(avatarId);
-
-        var sagaRef = "MultiEnemySaga";
-
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar
-        });
-
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var enemyIds = instance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.CharacterSpawned)
-            .Select(t => Guid.Parse(t.Data["CharacterInstanceId"]))
-            .ToList();
-
-        Assert.Equal(3, enemyIds.Count);
-
-        // ACT: Defeat each enemy sequentially
-        foreach (var enemyId in enemyIds)
-        {
-            var battleResult = await _mediator.Send(new StartBattleCommand
-            {
-                AvatarId = avatarId,
-                SagaRef = sagaRef,
-                CharacterInstanceId = enemyId,
-                Avatar = avatar
-            });
-
-            Assert.True(battleResult.Success);
-            _output.WriteLine($"Defeated enemy: {enemyId}");
-        }
-
-        // ASSERT: All 3 enemies defeated
-        var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var defeats = finalInstance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.CharacterDefeated)
-            .ToList();
-
-        Assert.Equal(3, defeats.Count);
-        _output.WriteLine($"Total enemies defeated: {defeats.Count}");
-    }
-    */
 
     public void Dispose()
     {
@@ -592,7 +280,6 @@ public class BattleCommandTests : IDisposable
             {
                 Equipment = new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } },
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
 
@@ -668,7 +355,6 @@ public class BattleCommandTests : IDisposable
                     new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
                 },
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             },
             AffinityRef = "Physical"
         };

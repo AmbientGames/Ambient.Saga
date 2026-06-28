@@ -10,6 +10,7 @@ using Ambient.Saga.UI;
 using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.UI.Components.Modals;
 
@@ -19,6 +20,12 @@ namespace Ambient.Saga.UI.Components.Modals;
 /// </summary>
 public class BattleModal
 {
+    /// <summary>
+    /// Fired when the avatar is defeated in battle. Games subscribe to handle defeat
+    /// differently from environmental death (e.g. teleport home, keep inventory).
+    /// </summary>
+    public event Action? AvatarDefeated;
+
     private BattleStateResult? _currentState;
     private bool _isInitialized = false;
     private Guid _lastCharacterInstanceId;
@@ -31,11 +38,11 @@ public class BattleModal
     private bool _inReactionPhase = false;
     private string? _currentTellText = null;
     private string? _currentTellRefName = null;  // Reference name of the attack tell
-    private int _currentBaseDamage = 0;  // Base damage from the pending attack
+    private float _currentBaseDamage = 0;  // Base damage from the pending attack
     private float _reactionTimeRemaining = 0f;
     private float _reactionTimeTotal = 0f;  // Total window time (from tell or default)
     private const float DEFAULT_REACTION_WINDOW_SECONDS = 5.0f;  // Fallback if tell doesn't specify
-    private PlayerDefenseType? _selectedReaction = null;
+    private AvatarDefenseType? _selectedReaction = null;
     private bool _reactionResolved = false;
 
     // Last reaction result for command population
@@ -73,7 +80,7 @@ public class BattleModal
             {
                 // Time expired - auto-select None (no reaction)
                 _reactionTimeRemaining = 0f;
-                _selectedReaction = PlayerDefenseType.None;
+                _selectedReaction = AvatarDefenseType.None;
                 _reactionResolved = true;
                 System.Diagnostics.Debug.WriteLine("[BattleModal] Reaction window expired - no defense");
             }
@@ -87,7 +94,7 @@ public class BattleModal
             {
                 _enemyTurnDelay = 0f;
                 _waitingForEnemyTurn = false;
-                // State will automatically refresh and show PlayerTurn
+                // State will automatically refresh and show AvatarTurn
             }
         }
     }
@@ -165,10 +172,10 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        var player = _currentState.PlayerCombatant;
+        var avatar = _currentState.AvatarCombatant;
         var enemy = _currentState.EnemyCombatant;
 
-        if (player == null || enemy == null) return;
+        if (avatar == null || enemy == null) return;
 
         // Action buttons at top
         RenderActionButtons(viewModel, character);
@@ -177,15 +184,15 @@ public class BattleModal
         // Three-column layout
         if (ImGui.BeginTable("BattleLayout", 3, ImGuiTableFlags.Resizable | ImGuiTableFlags.BordersInnerV))
         {
-            ImGui.TableSetupColumn("Player", ImGuiTableColumnFlags.WidthFixed, 300);
+            ImGui.TableSetupColumn("Avatar", ImGuiTableColumnFlags.WidthFixed, 300);
             ImGui.TableSetupColumn("Battle Log", ImGuiTableColumnFlags.WidthStretch);
             ImGui.TableSetupColumn("Opponent", ImGuiTableColumnFlags.WidthFixed, 300);
 
             ImGui.TableNextRow();
 
-            // Left column: Player stats
+            // Left column: Avatar stats
             ImGui.TableNextColumn();
-            RenderCombatantPanel(player, "Player");
+            RenderCombatantPanel(avatar, "Avatar");
 
             // Middle column: Battle log
             ImGui.TableNextColumn();
@@ -203,7 +210,7 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        var isPlayerTurn = _currentState.BattleState == BattleState.PlayerTurn && !_waitingForEnemyTurn && !_inReactionPhase;
+        var isAvatarTurn = _currentState.BattleState == BattleState.AvatarTurn && !_waitingForEnemyTurn && !_inReactionPhase;
 
         // Header showing whose turn it is
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.1f, 0.1f, 0.15f, 0.8f));
@@ -222,7 +229,7 @@ public class BattleModal
         {
             RenderReactionPanel(viewModel, character);
         }
-        else if (!isPlayerTurn)
+        else if (!isAvatarTurn)
         {
             ImGui.Spacing();
             var turnText = _waitingForEnemyTurn ? "Enemy is thinking..." : "Enemy's turn...";
@@ -402,7 +409,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.2f, 0.7f, 0.7f, 1.0f));
         if (ImGui.Button("Dodge", new Vector2(buttonWidth, reactionButtonHeight)))
         {
-            SelectReaction(PlayerDefenseType.Dodge, viewModel, character);
+            SelectReaction(AvatarDefenseType.Dodge, viewModel, character);
         }
         ImGui.PopStyleColor(3);
 
@@ -414,7 +421,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.45f, 0.75f, 1.0f));
         if (ImGui.Button("Block", new Vector2(buttonWidth, reactionButtonHeight)))
         {
-            SelectReaction(PlayerDefenseType.Block, viewModel, character);
+            SelectReaction(AvatarDefenseType.Block, viewModel, character);
         }
         ImGui.PopStyleColor(3);
 
@@ -426,7 +433,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.75f, 0.65f, 0.2f, 1.0f));
         if (ImGui.Button("Parry", new Vector2(buttonWidth, reactionButtonHeight)))
         {
-            SelectReaction(PlayerDefenseType.Parry, viewModel, character);
+            SelectReaction(AvatarDefenseType.Parry, viewModel, character);
         }
         ImGui.PopStyleColor(3);
 
@@ -438,7 +445,7 @@ public class BattleModal
         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.4f, 0.75f, 1.0f));
         if (ImGui.Button("Brace", new Vector2(buttonWidth, reactionButtonHeight)))
         {
-            SelectReaction(PlayerDefenseType.Brace, viewModel, character);
+            SelectReaction(AvatarDefenseType.Brace, viewModel, character);
         }
         ImGui.PopStyleColor(3);
 
@@ -450,11 +457,11 @@ public class BattleModal
         }
     }
 
-    private void SelectReaction(PlayerDefenseType reaction, SagaMainViewModel viewModel, CharacterViewModel character)
+    private void SelectReaction(AvatarDefenseType reaction, SagaMainViewModel viewModel, CharacterViewModel character)
     {
         _selectedReaction = reaction;
         _reactionResolved = true;
-        System.Diagnostics.Debug.WriteLine($"[BattleModal] Player selected reaction: {reaction}");
+        System.Diagnostics.Debug.WriteLine($"[BattleModal] Avatar selected reaction: {reaction}");
     }
 
     /// <summary>
@@ -532,21 +539,21 @@ public class BattleModal
         return string.Format(template, enemyName);
     }
 
-    private async Task ResolveReactionAsync(SagaMainViewModel viewModel, CharacterViewModel character, PlayerDefenseType reaction)
+    private async Task ResolveReactionAsync(SagaMainViewModel viewModel, CharacterViewModel character, AvatarDefenseType reaction)
     {
-        if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
+        if (viewModel.Avatar == null || _battleInstanceId == Guid.Empty)
             return;
 
         System.Diagnostics.Debug.WriteLine($"[BattleModal] Resolving reaction: {reaction}");
 
         // Default values if BattleEngine not available
-        int finalDamage = _currentBaseDamage;
-        int? counterDamage = null;
+        float finalDamage = _currentBaseDamage;
+        float? counterDamage = null;
         float staminaGained = 0f;
         bool wasOptimal = false;
-        bool timedOut = reaction == PlayerDefenseType.None && _reactionTimeRemaining <= 0;
-        float playerHealthAfter = _currentState?.PlayerCombatant?.Health ?? 1.0f;
-        float playerEnergyAfter = _currentState?.PlayerCombatant?.Stamina ?? 1.0f;
+        bool timedOut = reaction == AvatarDefenseType.None && _reactionTimeRemaining <= 0;
+        float avatarHealthAfter = _currentState?.AvatarCombatant?.Health ?? 1.0f;
+        float avatarEnergyAfter = _currentState?.AvatarCombatant?.Stamina ?? 1.0f;
         float enemyHealthAfter = _currentState?.EnemyCombatant?.Health ?? 1.0f;
 
         // If we have a BattleEngine, resolve the reaction properly
@@ -563,10 +570,10 @@ public class BattleModal
                 timedOut = reactionResult.TimedOut;
 
                 // Get updated combatant states from engine
-                var player = _battleEngine.GetPlayer();
+                var avatar = _battleEngine.GetAvatar();
                 var enemy = _battleEngine.GetEnemy();
-                playerHealthAfter = player.Health;
-                playerEnergyAfter = player.Stamina;
+                avatarHealthAfter = avatar.Health;
+                avatarEnergyAfter = avatar.Stamina;
                 enemyHealthAfter = enemy.Health;
 
                 System.Diagnostics.Debug.WriteLine($"[BattleModal] Reaction resolved: damage={finalDamage}, counter={counterDamage}, optimal={wasOptimal}");
@@ -578,11 +585,11 @@ public class BattleModal
             // Send reaction to backend via command with full combat data
             var command = new SubmitReactionCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 BattleInstanceId = _battleInstanceId,
                 Reaction = reaction,
-                Avatar = viewModel.PlayerAvatar,
+                Avatar = viewModel.Avatar,
 
                 // Populate reaction results
                 TellRefName = _currentTellRefName,
@@ -592,8 +599,8 @@ public class BattleModal
                 StaminaGained = staminaGained,
                 WasOptimal = wasOptimal,
                 TimedOut = timedOut,
-                PlayerHealthAfter = playerHealthAfter,
-                PlayerEnergyAfter = playerEnergyAfter,
+                AvatarHealthAfter = avatarHealthAfter,
+                AvatarEnergyAfter = avatarEnergyAfter,
                 EnemyHealthAfter = enemyHealthAfter
             };
 
@@ -626,8 +633,8 @@ public class BattleModal
 
     private void RenderCombatantPanel(Combatant combatant, string title)
     {
-        var isPlayer = title == "Player";
-        var titleColor = isPlayer ? new Vector4(0.4f, 0.9f, 0.4f, 1.0f) : new Vector4(1.0f, 0.4f, 0.4f, 1.0f);
+        var isAvatar = title == "Avatar";
+        var titleColor = isAvatar ? new Vector4(0.4f, 0.9f, 0.4f, 1.0f) : new Vector4(1.0f, 0.4f, 0.4f, 1.0f);
 
         ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.08f, 0.08f, 0.1f, 0.9f));
         ImGui.BeginChild($"{title}Panel", new Vector2(0, 0), ImGuiChildFlags.Borders);
@@ -685,7 +692,7 @@ public class BattleModal
     {
         if (_currentState == null) return;
 
-        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
         ImGui.BeginChild("BattleLogContainer", new Vector2(0, 0), ImGuiChildFlags.Borders);
 
         // Header
@@ -756,7 +763,7 @@ public class BattleModal
         ImGui.Spacing();
         ImGui.Spacing();
 
-        if (_currentState.PlayerVictory == true)
+        if (_currentState.AvatarVictory == true)
         {
             ImGui.PushFont(UIConstants.FontTitle);
             var text = "VICTORY!";
@@ -771,7 +778,7 @@ public class BattleModal
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - subSize.X) * 0.5f);
             ImGui.TextColored(new Vector4(0.7f, 0.9f, 0.7f, 1.0f), subText);
         }
-        else if (_currentState.PlayerVictory == false)
+        else if (_currentState.AvatarVictory == false)
         {
             ImGui.PushFont(UIConstants.FontTitle);
             var text = "DEFEAT";
@@ -802,7 +809,7 @@ public class BattleModal
         // Show battle log with styled background
         // Reserve space for the bottom buttons (one row of buttons + spacing)
         var footerHeight = ImGui.GetFrameHeightWithSpacing() * 2;
-        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
         ImGui.BeginChild("FinalBattleLog", new Vector2(ImGuiSizes.Fill, -footerHeight), ImGuiChildFlags.Borders);
 
         foreach (var line in _currentState.BattleLog)
@@ -836,15 +843,15 @@ public class BattleModal
         // Center the action buttons
         var buttonWidth = 150f;
         var endButtonHeight = ImGui.GetFrameHeight() * 1.4f;
-        var totalButtonWidth = _currentState.PlayerVictory == true ? buttonWidth * 2 + 20 : buttonWidth;
+        var totalButtonWidth = _currentState.AvatarVictory == true ? buttonWidth * 2 + 20 : buttonWidth;
         ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalButtonWidth) * 0.5f);
 
-        // Show loot button if player won
-        if (_currentState.PlayerVictory == true)
+        // Show loot button if avatar won
+        if (_currentState.AvatarVictory == true)
         {
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.55f, 0.3f, 1.0f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.7f, 0.4f, 1.0f));
+            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
             if (ImGui.Button("Collect Loot", new Vector2(buttonWidth, endButtonHeight)))
             {
                 // Transition to loot modal
@@ -857,13 +864,17 @@ public class BattleModal
 
         if (ImGui.Button("Close", new Vector2(buttonWidth, endButtonHeight)))
         {
+            if (_currentState?.AvatarVictory == false)
+            {
+                AvatarDefeated?.Invoke();
+            }
             modalManager.CloseModal("BossBattle");
         }
     }
 
     private async Task InitializeBattleAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
@@ -871,7 +882,7 @@ public class BattleModal
             var characterTemplate = viewModel.CurrentWorld.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == character.CharacterRef);
             if (characterTemplate == null) return;
 
-            var archetypeRef = viewModel.PlayerAvatar.ArchetypeRef;
+            var archetypeRef = viewModel.Avatar.ArchetypeRef;
             var archetype = viewModel.CurrentWorld.Gameplay?.AvatarArchetypes?.FirstOrDefault(a => a.RefName == archetypeRef);
             if (archetype == null) return;
 
@@ -879,7 +890,7 @@ public class BattleModal
             var battleSetup = new BattleSetup();
             battleSetup.SetupFromWorld(viewModel.CurrentWorld);
             battleSetup.SelectedAvatarArchetype = archetype;
-            battleSetup.AvatarCapabilities = viewModel.PlayerAvatar.Capabilities ?? new ItemCollection();
+            battleSetup.AvatarCapabilities = viewModel.Avatar.Capabilities ?? new ItemCollection();
             // Get available affinities from world configuration (fallback to archetype affinity if defined)
             var availableAffinities = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
                 .Select(a => a.RefName).ToList() ?? new List<string>();
@@ -894,26 +905,26 @@ public class BattleModal
             var battleEngine = battleSetup.CreateBattleEngine();
 
             // Get combatants from engine (they're configured by BattleSetup)
-            var playerCombatant = battleEngine.GetPlayer();
+            var avatarCombatant = battleEngine.GetAvatar();
             var enemyCombatant = battleEngine.GetEnemy();
 
             // Send StartBattleCommand
             var startCommand = new StartBattleCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 EnemyCharacterInstanceId = character.CharacterInstanceId,
-                PlayerCombatant = playerCombatant,
+                AvatarCombatant = avatarCombatant,
                 EnemyCombatant = enemyCombatant,
-                PlayerAffinityRefs = availableAffinities,
+                AvatarAffinityRefs = availableAffinities,
                 EnemyMind = new CombatAI(viewModel.CurrentWorld),
                 RandomSeed = new Random().Next(),
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var result = await viewModel.Mediator.Send(startCommand);
 
-            if (result.Successful && result.Data.TryGetValue("BattleInstanceId", out var battleIdObj))
+            if (result.Successful && result.Data.TryGetValue(TransactionDataKeys.BattleInstanceId, out var battleIdObj))
             {
                 _battleInstanceId = (Guid)battleIdObj;
                 System.Diagnostics.Debug.WriteLine($"[BattleModal] Battle started with ID {_battleInstanceId}");
@@ -934,7 +945,7 @@ public class BattleModal
 
     private async Task ExecuteTurnAsync(SagaMainViewModel viewModel, CharacterViewModel character, CombatAction action)
     {
-        if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
+        if (viewModel.Avatar == null || _battleInstanceId == Guid.Empty)
             return;
 
         try
@@ -943,11 +954,11 @@ public class BattleModal
 
             var command = new ExecuteBattleTurnCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 BattleInstanceId = _battleInstanceId,
-                PlayerAction = action,
-                Avatar = viewModel.PlayerAvatar
+                AvatarAction = action,
+                Avatar = viewModel.Avatar
             };
 
             var result = await viewModel.Mediator.Send(command);
@@ -977,7 +988,7 @@ public class BattleModal
                 }
 
                 // Update avatar from result if battle ended
-                if (result.UpdatedAvatar != null && viewModel.PlayerAvatar is AvatarEntity)
+                if (result.UpdatedAvatar != null && viewModel.Avatar is AvatarEntity)
                 {
                     // Avatar was updated - refresh UI
                     System.Diagnostics.Debug.WriteLine("[BattleModal] Battle ended, avatar updated");
@@ -996,17 +1007,17 @@ public class BattleModal
 
     private async Task RefreshBattleStateAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.PlayerAvatar == null || _battleInstanceId == Guid.Empty)
+        if (viewModel.Avatar == null || _battleInstanceId == Guid.Empty)
             return;
 
         try
         {
             var query = new GetBattleStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaRef = character.SagaRef,
                 BattleInstanceId = _battleInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             _currentState = await viewModel.Mediator.Send(query);
@@ -1028,12 +1039,12 @@ public class BattleModal
     // Modal opening methods
     private void OpenSpellSelectionModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         // Clean up previous instance to avoid memory leaks
         CleanupSpellSelectionModal();
 
-        _spellSelectionModal = new SpellSelectionModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
+        _spellSelectionModal = new SpellSelectionModal(_currentState.AvatarCombatant, viewModel.CurrentWorld);
         _spellSelectionModal.SpellSelected += OnSpellSelected;
         _spellSelectionModal.Cancelled += OnModalCancelled;
         _showSpellSelection = true;
@@ -1041,12 +1052,12 @@ public class BattleModal
 
     private void OpenItemSelectionModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         // Clean up previous instance to avoid memory leaks
         CleanupItemSelectionModal();
 
-        _itemSelectionModal = new ItemSelectionModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
+        _itemSelectionModal = new ItemSelectionModal(_currentState.AvatarCombatant, viewModel.CurrentWorld);
         _itemSelectionModal.ItemSelected += OnItemSelected;
         _itemSelectionModal.Cancelled += OnModalCancelled;
         _showItemSelection = true;
@@ -1054,15 +1065,15 @@ public class BattleModal
 
     private void OpenEquipmentChangeModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         // Clean up previous instance to avoid memory leaks
         CleanupEquipmentChangeModal();
 
         // Get available affinities from world configuration
-        var playerAffinityRefs = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
+        var avatarAffinityRefs = viewModel.CurrentWorld.Gameplay?.CharacterAffinities?
             .Select(a => a.RefName).ToList() ?? new List<string>();
-        _equipmentChangeModal = new EquipmentChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld, playerAffinityRefs);
+        _equipmentChangeModal = new EquipmentChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld, avatarAffinityRefs);
         _equipmentChangeModal.EquipmentChanged += OnEquipmentChanged;
         _equipmentChangeModal.Cancelled += OnModalCancelled;
         _showEquipmentChange = true;
@@ -1121,16 +1132,16 @@ public class BattleModal
 
     private void OpenAffinityChangeModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         CleanupAffinityChangeModal();
 
-        // Get player's available affinities (from avatar capabilities or default world affinities)
-        var playerAffinities = _currentState.PlayerAffinityRefs ??
+        // Get avatar's available affinities (from avatar capabilities or default world affinities)
+        var avatarAffinities = _currentState.AvatarAffinityRefs ??
             viewModel.CurrentWorld.Gameplay?.CharacterAffinities?.Select(a => a.RefName).ToList() ??
             new List<string>();
 
-        _affinityChangeModal = new AffinityChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld, playerAffinities);
+        _affinityChangeModal = new AffinityChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld, avatarAffinities);
         _affinityChangeModal.AffinitySelected += OnAffinitySelected;
         _affinityChangeModal.Cancelled += OnModalCancelled;
         _showAffinityChange = true;
@@ -1138,11 +1149,11 @@ public class BattleModal
 
     private void OpenStanceChangeModal(SagaMainViewModel viewModel)
     {
-        if (_currentState?.PlayerCombatant == null || viewModel.CurrentWorld == null) return;
+        if (_currentState?.AvatarCombatant == null || viewModel.CurrentWorld == null) return;
 
         CleanupStanceChangeModal();
 
-        _stanceChangeModal = new StanceChangeModal(_currentState.PlayerCombatant, viewModel.CurrentWorld);
+        _stanceChangeModal = new StanceChangeModal(_currentState.AvatarCombatant, viewModel.CurrentWorld);
         _stanceChangeModal.StanceSelected += OnStanceSelected;
         _stanceChangeModal.Cancelled += OnModalCancelled;
         _showStanceChange = true;

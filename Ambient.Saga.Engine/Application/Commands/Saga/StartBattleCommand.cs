@@ -31,9 +31,9 @@ public record StartBattleCommand : IRequest<SagaCommandResult>
     public required Guid EnemyCharacterInstanceId { get; init; }
 
     /// <summary>
-    /// Player's combatant configuration
+    /// Avatar's combatant configuration
     /// </summary>
-    public required Combatant PlayerCombatant { get; init; }
+    public required Combatant AvatarCombatant { get; init; }
 
     /// <summary>
     /// Enemy's combatant configuration
@@ -41,9 +41,9 @@ public record StartBattleCommand : IRequest<SagaCommandResult>
     public required Combatant EnemyCombatant { get; init; }
 
     /// <summary>
-    /// Player's selected affinities (for switching during battle)
+    /// Avatar's selected affinities (for switching during battle)
     /// </summary>
-    public required List<string> PlayerAffinityRefs { get; init; }
+    public required List<string> AvatarAffinityRefs { get; init; }
 
     /// <summary>
     /// Enemy AI (must be created with same random seed for determinism)

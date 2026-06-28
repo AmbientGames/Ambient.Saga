@@ -48,27 +48,27 @@ public class MockBlockProvider : IBlockProvider
         yield return new MockBlock("GoldBlock", "Gold Block", "Pure gold. Valuable but soft.", "Metal", 500, 2.0f);
         yield return new MockBlock("CopperBlock", "Copper Block", "Copper block. Develops patina over time.", "Metal", 75, 1.5f);
 
-        // Earth blocks
-        yield return new MockBlock("Dirt", "Dirt", "Common soil. Easy to dig.", "Earth", 1, 1.0f);
-        yield return new MockBlock("Grass", "Grass Block", "Dirt with grass on top.", "Earth", 2, 1.0f);
-        yield return new MockBlock("Sand", "Sand", "Fine sand. Falls when unsupported.", "Earth", 2, 1.0f);
-        yield return new MockBlock("Gravel", "Gravel", "Loose stones. Falls when unsupported.", "Earth", 3, 1.1f);
-        yield return new MockBlock("Clay", "Clay", "Moldable clay. Can be fired into bricks.", "Earth", 10, 1.2f);
+        // Aggregate blocks
+        yield return new MockBlock("Dirt", "Dirt", "Common soil. Easy to dig.", "Aggregate", 1, 1.0f);
+        yield return new MockBlock("Grass", "Grass Block", "Dirt with grass on top.", "Aggregate", 2, 1.0f);
+        yield return new MockBlock("Sand", "Sand", "Fine sand. Falls when unsupported.", "Aggregate", 2, 1.0f);
+        yield return new MockBlock("Gravel", "Gravel", "Loose stones. Falls when unsupported.", "Aggregate", 3, 1.1f);
+        yield return new MockBlock("Clay", "Clay", "Moldable clay. Can be fired into bricks.", "Aggregate", 10, 1.2f);
 
-        // Special blocks
-        yield return new MockBlock("Glass", "Glass", "Transparent glass block.", "Glass", 20, 1.5f);
+        // Decorative blocks
+        yield return new MockBlock("Glass", "Glass", "Transparent glass block.", "Decorative", 20, 1.5f);
         yield return new MockBlock("Obsidian", "Obsidian", "Volcanic glass. Extremely hard.", "Stone", 200, 2.5f);
-        yield return new MockBlock("Glowstone", "Glowstone", "Luminescent block. Provides light.", "Crystal", 150, 2.0f);
+        yield return new MockBlock("Glowstone", "Glowstone", "Luminescent block. Provides light.", "Decorative", 150, 2.0f);
 
-        // Functional blocks (machines, storage, lighting)
-        yield return new MockBlock("Cache", "Storage Cache", "Secure storage container for items.", "Functional", 50, 1.5f);
-        yield return new MockBlock("Lamp", "Lamp", "Portable light source.", "Functional", 15, 1.3f);
-        yield return new MockBlock("WoodStove", "Wood Stove", "Basic heating and cooking appliance.", "Functional", 75, 1.4f);
-        yield return new MockBlock("BlastFurnace", "Blast Furnace", "Industrial furnace for smelting ores.", "Functional", 200, 1.6f);
-        yield return new MockBlock("BlastFurnaceMK2", "Blast Furnace MK2", "Improved blast furnace with higher efficiency.", "Functional", 400, 1.8f);
-        yield return new MockBlock("BlastFurnaceMK3", "Blast Furnace MK3", "Advanced blast furnace for rapid smelting.", "Functional", 800, 2.0f);
-        yield return new MockBlock("CharcoalKiln", "Charcoal Kiln", "Converts wood into charcoal fuel.", "Functional", 100, 1.5f);
-        yield return new MockBlock("SawMill", "Sawmill", "Processes logs into lumber efficiently.", "Functional", 150, 1.5f);
+        // Miscellaneous blocks (machines, storage, lighting)
+        yield return new MockBlock("Cache", "Storage Cache", "Secure storage container for items.", "Miscellaneous", 50, 1.5f);
+        yield return new MockBlock("Lamp", "Lamp", "Portable light source.", "Miscellaneous", 15, 1.3f);
+        yield return new MockBlock("WoodStove", "Wood Stove", "Basic heating and cooking appliance.", "Alloy", 75, 1.4f);
+        yield return new MockBlock("BlastFurnace", "Blast Furnace", "Industrial furnace for smelting ores.", "Alloy", 200, 1.6f);
+        yield return new MockBlock("BlastFurnaceMK2", "Blast Furnace MK2", "Improved blast furnace with higher efficiency.", "Alloy", 400, 1.8f);
+        yield return new MockBlock("BlastFurnaceMK3", "Blast Furnace MK3", "Advanced blast furnace for rapid smelting.", "Alloy", 800, 2.0f);
+        yield return new MockBlock("CharcoalKiln", "Charcoal Kiln", "Converts wood into charcoal fuel.", "Miscellaneous", 100, 1.5f);
+        yield return new MockBlock("SawMill", "Sawmill", "Processes logs into lumber efficiently.", "Miscellaneous", 150, 1.5f);
 
         // Natural resources
         yield return new MockBlock("Oak", "Oak Wood", "Raw oak timber for construction and fuel.", "Wood", 5, 1.2f);

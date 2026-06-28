@@ -1,10 +1,10 @@
 ﻿namespace Ambient.Domain.Partials;
 
 /// <summary>
-/// Tracks player discovery/interaction relationships with world entities.
+/// Tracks avatar discovery/interaction relationships with world entities.
 /// Used for multiplayer state management - prevents entity bloat while supporting queries.
 /// </summary>
-public class PlayerDiscovery
+public class AvatarDiscovery
 {
     /// <summary>
     /// Unique identifier for this discovery record.
@@ -27,18 +27,18 @@ public class PlayerDiscovery
     public string EntityRef { get; set; } = string.Empty;
 
     /// <summary>
-    /// When this entity was first discovered by this player.
+    /// When this entity was first discovered by this avatar.
     /// </summary>
     public DateTime DiscoveredAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
-    /// When this entity was last triggered by this player (for cooldown tracking).
+    /// When this entity was last triggered by this avatar (for cooldown tracking).
     /// Null if never triggered, or same as DiscoveredAt on first trigger.
     /// </summary>
     public DateTime? LastTriggeredAt { get; set; }
 
     /// <summary>
-    /// Number of times this player has triggered this entity.
+    /// Number of times this avatar has triggered this entity.
     /// </summary>
     public int TriggerCount { get; set; } = 0;
 

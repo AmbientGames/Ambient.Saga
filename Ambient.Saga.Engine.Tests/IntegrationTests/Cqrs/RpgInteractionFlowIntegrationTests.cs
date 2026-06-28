@@ -10,6 +10,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain.Rpg.Trade;
@@ -57,8 +58,11 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository, FakeAvatarRepository>();
+        services.AddSingleton<Func<IGameAvatarRepository>>(sp => () => sp.GetRequiredService<IGameAvatarRepository>());
+        services.AddSingleton<Func<IWorld>>(sp => () => sp.GetRequiredService<IWorld>());
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
@@ -507,7 +511,6 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             {
                 Equipment = Array.Empty<EquipmentEntry>(),
                 Spells = Array.Empty<SpellEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
     }

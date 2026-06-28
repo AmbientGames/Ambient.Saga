@@ -3,232 +3,148 @@
 ## Component Diagram
 
 ```
-???????????????????????????????????????????????????????????????????
-?                         GameplayOverlay                          ?
-?                                                                  ?
-?  Constructor: (ModalManager, IInputHandler?, IHudRenderer?)     ?
-?                                                                  ?
-?  ???????????????????  ????????????????????  ?????????????????? ?
-?  ?  IInputHandler  ?  ?   IHudRenderer   ?  ?  ModalManager  ? ?
-?  ?   (injected)    ?  ?   (injected)     ?  ?   (injected)   ? ?
-?  ???????????????????  ????????????????????  ?????????????????? ?
-?           ?                    ?                     ?          ?
-?           ? ProcessInput()     ? Render()            ? Render() ?
-?           ?                    ?                     ?          ?
-?  ?????????????????????????????????????????????????????????????? ?
-?  ?                      Render() Method                        ? ?
-?  ?  1. Process input via handler                               ? ?
-?  ?  2. Render HUD via renderer                                 ? ?
-?  ?  3. Render active panel (Map/Character/WorldInfo)           ? ?
-?  ?  4. Render modals via modal manager                         ? ?
-?  ??????????????????????????????????????????????????????????????? ?
-???????????????????????????????????????????????????????????????????
+GameplayOverlay
+  Constructor: (ModalManager, PanelManager?, IInputHandler?, IHudRenderer?)
+
+  +------------------+  +------------------+  +------------------+  +------------------+
+  |  IInputHandler   |  |   IHudRenderer   |  |  ModalManager    |  |  PanelManager    |
+  |   (injected)     |  |   (injected)     |  |   (injected)     |  |   (injected)     |
+  +------------------+  +------------------+  +------------------+  +------------------+
+          |                      |                     |                     |
+          | ProcessInput()       | Render()            | Render()           | Panel
+          |                      |                     |                     |
+  +----------------------------------------------------------------------+
+  |                        Render() Method                                |
+  |  1. Process input via handler                                        |
+  |  2. Render HUD via renderer                                          |
+  |  3. Render active panel (Map/Character/Inventory/Journal/Extended)   |
+  |  4. Render modals via modal manager                                  |
+  +----------------------------------------------------------------------+
 ```
 
-## Class Hierarchy
+## ActivePanel Enum
 
 ```
-IInputHandler (interface)
-??? DefaultInputHandler (M/C/I/ESC keys)
-??? ArrowKeyInputHandler (Arrow keys)
-??? CompositeInputHandler (Combines multiple handlers)
-??? [Your custom implementations]
-    ??? GamepadInputHandler
-    ??? FunctionKeyInputHandler
-    ??? ImmersiveInputHandler
-
-IHudRenderer (interface)
-??? DefaultHudRenderer (Bottom bar with hotkeys)
-??? [Your custom implementations]
-    ??? CompactHudRenderer (Minimal corner HUD)
-    ??? TopBarHudRenderer (Top of screen)
-    ??? NoHudRenderer (Immersive mode)
+ActivePanel
+  None        - No panel open (3D world view)
+  Map         - Press M (requires height map)
+  Character   - Press C
+  Inventory   - Press I
+  Journal     - Press J
+  WorldInfo   - Press F1 (debugger only)
+  DevTools    - Press F12 (debugger only)
+  Extended    - Game-registered panel via PanelManager (e.g. F for Social)
 ```
+
+All panels are mutually exclusive. Opening one closes the current. ESC closes any.
 
 ## Data Flow
 
 ```
 User Input (Keyboard/Mouse/Gamepad)
-    ?
-    ?
+    |
 IInputHandler.ProcessInput(InputContext)
-    ?
-    ??? Checks context.IsModalActive
-    ??? Checks context.IsTextInputActive
-    ?
-    ??? Calls action methods:
-        ??? context.TogglePanelAction(panel)
-        ??? context.CloseAllPanelsAction()
-            ?
-            ?
-        GameplayOverlay
-            ??? Updates _activePanel state
-            ?
-            ?
+    |-- Checks context.IsModalActive (suppress when modals open)
+    |-- Checks context.IsTextInputActive (suppress when typing)
+    |
+    |-- Built-in keys: M/C/I/J/F1/F12
+    |-- Extended panel key: from context.PanelManager.Panel.Key
+    |-- ESC: close panel or request pause menu
+    |
+    +-- context.TogglePanelAction(panel) --> GameplayOverlay._activePanel
+            |
         Render Loop
-            ??? IHudRenderer.Render()
-            ??? Panel rendering (switch on _activePanel)
-            ??? ModalManager.Render()
-                ?
-                ?
-            ImGui Output
+            |-- IHudRenderer.Render() (key hints, status)
+            |-- Panel rendering (switch on _activePanel)
+            |   |-- Built-in panels: MapViewPanel, CharacterPanel, etc.
+            |   +-- Extended: PanelManager.Panel.Render()
+            +-- ModalManager.Render() (always on top)
 ```
 
-## InputContext Structure
+## InputContext
 
 ```
 InputContext
-??? IsModalActive: bool          (from ModalManager)
-??? IsTextInputActive: bool      (from ImGui.IO)
-??? ActivePanel: ActivePanel     (current panel state)
-??? TogglePanelAction: Action    (toggle panel on/off)
-??? CloseAllPanelsAction: Action (close all panels)
+  IsModalActive: bool             (from ModalManager.HasActiveModal)
+  IsTextInputActive: bool         (from ImGui.IO.WantTextInput)
+  ActivePanel: ActivePanel        (current panel state)
+  HasMap: bool                    (whether height map exists)
+  TogglePanelAction: Action       (toggle panel on/off)
+  CloseAllPanelsAction: Action    (close all panels)
+  PanelManager: PanelManager?     (extended panel for key handling)
 ```
 
-## Extension Points
+## Extended Panel (IPanel)
 
-### 1. Custom Input Handler
+Game-specific panels implement `IPanel` and register via `PanelManager`:
 
 ```csharp
-public class MyInputHandler : IInputHandler
+public interface IPanel
 {
-    public void ProcessInput(InputContext context)
-    {
-        // Your custom input logic
-        if (MyCondition())
-        {
-            context.TogglePanelAction(ActivePanel.Map);
-        }
-    }
+    string Name { get; }
+    ImGuiKey Key { get; }
+    string KeyLabel { get; }
+    bool IsAvailable => true;
+    void OnOpening() { }
+    void Render(object? context, ref bool isOpen);
+    void OnClosed() { }
 }
 ```
 
-### 2. Custom HUD Renderer
-
-```csharp
-public class MyHudRenderer : IHudRenderer
-{
-    public void Render(MainViewModel viewModel, 
-                       ActivePanel activePanel, 
-                       Vector2 displaySize)
-    {
-        // Your custom HUD rendering
-        ImGui.Begin("MyHUD");
-        ImGui.Text($"Active: {activePanel}");
-        ImGui.End();
-    }
-}
-```
-
-### 3. Composite Input (Multiple Handlers)
-
-```csharp
-var composite = new CompositeInputHandler();
-composite.AddHandler(new DefaultInputHandler());
-composite.AddHandler(new GamepadInputHandler());
-composite.AddHandler(new MyCustomHandler());
-
-// All handlers process input in sequence
-```
-
-## Usage Patterns
-
-### Pattern 1: Default (No Customization)
-```
-new GameplayOverlay(modalManager)
-    ??? Uses DefaultInputHandler + DefaultHudRenderer
-```
-
-### Pattern 2: Custom Input Only
-```
-new GameplayOverlay(modalManager, myInputHandler)
-    ??? Uses myInputHandler + DefaultHudRenderer
-```
-
-### Pattern 3: Custom HUD Only
-```
-new GameplayOverlay(modalManager, null, myHudRenderer)
-    ??? Uses DefaultInputHandler + myHudRenderer
-```
-
-### Pattern 4: Full Customization
-```
-new GameplayOverlay(modalManager, myInputHandler, myHudRenderer)
-    ??? Uses myInputHandler + myHudRenderer
-```
+GameplayOverlay renders the extended panel in the same full-screen frame as built-in panels (consistent margins, background color, window flags). The panel's `Render` method only provides content — the window frame is handled by GameplayOverlay.
 
 ## Dependency Graph
 
 ```
 GameplayOverlay
-    ?
-    ??? requires: ModalManager (mandatory)
-    ??? optional: IInputHandler (defaults to DefaultInputHandler)
-    ??? optional: IHudRenderer (defaults to DefaultHudRenderer)
+    +-- requires: ModalManager (mandatory)
+    +-- optional: PanelManager (holds game-specific extended panel)
+    +-- optional: IInputHandler (defaults to DefaultInputHandler)
+    +-- optional: IHudRenderer (defaults to SectionedHudRenderer)
+
+PanelManager
+    +-- holds: IPanel? (one extended panel, or null)
 
 ModalManager
-    ??? manages: All modal dialogs
-    ??? provides: HasActiveModal() for input suppression
-
-IInputHandler
-    ??? receives: InputContext
-    ??? invokes: TogglePanelAction, CloseAllPanelsAction
-
-IHudRenderer
-    ??? receives: MainViewModel, ActivePanel, DisplaySize
-    ??? renders: Always-visible UI elements
+    +-- manages: all modal dialogs
+    +-- provides: HasActiveModal() for input suppression
 ```
 
 ## Lifecycle
 
 ```
-Application Startup
-    ?
-    ??? Create ModalManager
-    ??? Create IInputHandler (optional)
-    ??? Create IHudRenderer (optional)
-    ?
-    ??? Create GameplayOverlay(modalManager, inputHandler, hudRenderer)
-        ?
-        ??? Overlay ready for use
+DI Registration
+    +-- Register ModalManager (singleton)
+    +-- Register PanelManager (singleton)
+    +-- Register GameplayOverlay (singleton)
+
+Game Startup
+    +-- Register extended panel on PanelManager (optional)
+    +-- Register modals on ModalManager
 
 Game Loop (Each Frame)
-    ?
-    ??? Call overlay.Render(viewModel, heightMap, width, height)
-        ?
-        ??? 1. Input Processing Phase
-        ?   ??? inputHandler.ProcessInput(context)
-        ?
-        ??? 2. HUD Rendering Phase
-        ?   ??? hudRenderer.Render(viewModel, activePanel, displaySize)
-        ?
-        ??? 3. Panel Rendering Phase
-        ?   ??? switch(activePanel) { ... }
-        ?
-        ??? 4. Modal Rendering Phase
-            ??? modalManager.Render(viewModel)
+    +-- overlay.Render(viewModel, heightMap, width, height)
+        +-- 1. Input: inputHandler.ProcessInput(context)
+        +-- 2. HUD: hudRenderer.Render(...)
+        +-- 3. Panels: switch(_activePanel) with lifecycle hooks
+        +-- 4. Modals: modalManager.Render(viewModel)
 ```
 
-## Key Principles
+## Usage Patterns
 
-1. **Single Responsibility**
-   - `GameplayOverlay` orchestrates the UI flow
-   - `IInputHandler` handles input logic
-   - `IHudRenderer` handles HUD presentation
-   - `ModalManager` handles modal dialogs
+```csharp
+// Default (no customization)
+new GameplayOverlay(modalManager)
 
-2. **Open/Closed Principle**
-   - Open for extension (new handlers/renderers)
-   - Closed for modification (core overlay unchanged)
+// With extended panel
+new GameplayOverlay(modalManager, panelManager: panelManager)
 
-3. **Dependency Inversion**
-   - Depends on abstractions (IInputHandler, IHudRenderer)
-   - Not on concrete implementations
+// With custom input
+new GameplayOverlay(modalManager, inputHandler: myInputHandler)
 
-4. **Interface Segregation**
-   - Small, focused interfaces
-   - Easy to implement
+// With custom HUD
+new GameplayOverlay(modalManager, hudRenderer: myHudRenderer)
 
-5. **Liskov Substitution**
-   - Any IInputHandler implementation works
-   - Any IHudRenderer implementation works
+// Full customization
+new GameplayOverlay(modalManager, panelManager, myInputHandler, myHudRenderer)
+```

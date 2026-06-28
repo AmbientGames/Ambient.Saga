@@ -20,7 +20,7 @@ public class SagaDialogueContext
     public string CharacterRef { get; }
 
     /// <summary>
-    /// Avatar ID of the player having the conversation.
+    /// Avatar ID of the avatar having the conversation.
     /// </summary>
     public string AvatarId { get; }
 

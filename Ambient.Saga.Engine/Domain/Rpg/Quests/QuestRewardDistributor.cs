@@ -66,19 +66,6 @@ public static class QuestRewardDistributor
             }
         }
 
-        // Award Quest Tokens
-        if (reward.QuestToken != null && reward.QuestToken.Length > 0)
-        {
-            foreach (var questTokenReward in reward.QuestToken)
-            {
-                // Add quest token multiple times if quantity > 1
-                for (var i = 0; i < questTokenReward.Quantity; i++)
-                {
-                    avatar.Capabilities.AddQuestToken(questTokenReward.QuestTokenRef);
-                }
-            }
-        }
-
         // Reputation rewards - TODO: Implement faction system
         // For now, log that reputation rewards are not yet supported
         if (reward.Reputation != null && reward.Reputation.Length > 0)
@@ -157,7 +144,8 @@ public static class QuestRewardDistributor
         IWorld world,
         HashSet<string> completedQuests,
         Dictionary<string, int>? factionReputation = null,
-        HashSet<string>? unlockedAchievements = null)
+        HashSet<string>? unlockedAchievements = null,
+        HashSet<string>? awardedQuestTokens = null)
     {
         if (quest.Prerequisites == null || quest.Prerequisites.Length == 0)
             return (true, null);
@@ -202,10 +190,10 @@ public static class QuestRewardDistributor
                     hasItem = avatar.Capabilities.Consumables.Any(c => c.ConsumableRef == prereq.RequiredItemRef && c.Quantity > 0);
                 }
 
-                // Check in quest tokens
-                if (!hasItem && avatar.Capabilities?.QuestTokens != null)
+                // Check in quest tokens (from saga state, not avatar)
+                if (!hasItem && awardedQuestTokens != null)
                 {
-                    hasItem = avatar.Capabilities.QuestTokens.Any(q => q.QuestTokenRef == prereq.RequiredItemRef);
+                    hasItem = awardedQuestTokens.Contains(prereq.RequiredItemRef);
                 }
 
                 if (!hasItem)

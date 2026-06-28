@@ -10,6 +10,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -17,6 +18,7 @@ using Ambient.Saga.Engine.Tests.Helpers;
 using LiteDB;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
@@ -51,8 +53,11 @@ public class QuestCommandsIntegrationTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository, FakeAvatarRepository>();
+        services.AddSingleton<Func<IGameAvatarRepository>>(sp => () => sp.GetRequiredService<IGameAvatarRepository>());
+        services.AddSingleton<Func<IWorld>>(sp => () => sp.GetRequiredService<IWorld>());
         services.AddSingleton<IAvatarUpdateService, AvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
 
@@ -257,7 +262,7 @@ public class QuestCommandsIntegrationTests : IDisposable
         var questAccepted = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestAccepted);
 
         Assert.NotNull(questAccepted);
-        Assert.Equal("DEFEAT_BANDITS", questAccepted.GetData<string>("QuestRef"));
+        Assert.Equal("DEFEAT_BANDITS", questAccepted.GetData<string>(TransactionDataKeys.QuestRef));
     }
 
     [Fact]
@@ -359,8 +364,8 @@ public class QuestCommandsIntegrationTests : IDisposable
         var objectiveCompleted = transactions.FirstOrDefault(t => t.Type == SagaTransactionType.QuestObjectiveCompleted);
 
         Assert.NotNull(objectiveCompleted);
-        Assert.Equal("DEFEAT_BANDITS_OBJ", objectiveCompleted.GetData<string>("ObjectiveRef"));
-        Assert.Equal("3", objectiveCompleted.GetData<string>("CurrentValue"));
+        Assert.Equal("DEFEAT_BANDITS_OBJ", objectiveCompleted.GetData<string>(TransactionDataKeys.ObjectiveRef));
+        Assert.Equal("3", objectiveCompleted.GetData<string>(TransactionDataKeys.CurrentValue));
     }
 
     [Fact]

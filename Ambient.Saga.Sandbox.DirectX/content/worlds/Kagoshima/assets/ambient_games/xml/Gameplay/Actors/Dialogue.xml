@@ -162,8 +162,6 @@
     <Node NodeId="reward_complete">
       <Text>Of course, of course! You've more than earned it.</Text>
       <Text>The bounty is paid. You have the gratitude of our entire community.</Text>
-      <Action Type="TakeQuestToken" RefName="BanditChief_ChiefsBadge" Amount="1" />
-      <Action Type="TakeQuestToken" RefName="BanditChief_Bounty" Amount="1" />
       <Action Type="CompleteQuest" RefName="BanditChief_Quest" Amount="1" />
     </Node>
   </DialogueTree>
@@ -221,8 +219,6 @@
       <Text>Go forth, flame-bearer. May your passion light the way.</Text>
       <Action Type="GrantAffinity" RefName="Fire" CharacterRef="ElementalSage_Sage" Amount="1" />
       <Action Type="GiveQuestToken" RefName="ElementalSage_AffinityGranted" Amount="1" />
-      <Action Type="TakeQuestToken" RefName="ElementalSage_TrialComplete" Amount="1" />
-      <Action Type="TakeQuestToken" RefName="ElementalSage_TrialToken" Amount="1" />
       <Action Type="CompleteQuest" RefName="ElementalSage_Quest" Amount="1" />
     </Node>
     <Node NodeId="already_granted_end">
@@ -1453,14 +1449,12 @@
       <Text>Words cannot express my gratitude. You've restored our family's honor.</Text>
       <Text>And you showed mercy to the thief? You are truly noble.</Text>
       <Text>Please accept this additional reward for your compassion.</Text>
-      <Action Type="TakeQuestToken" RefName="MissingHeirloom_Heirloom" Amount="1" />
       <Action Type="TransferCurrency" Amount="50" />
       <Action Type="CompleteQuest" RefName="MissingHeirloom_Quest" Amount="1" />
     </Node>
     <Node NodeId="receive_standard">
       <Text>Thank you! Thank you! Our family is whole again.</Text>
       <Text>Please, accept this reward for your service.</Text>
-      <Action Type="TakeQuestToken" RefName="MissingHeirloom_Heirloom" Amount="1" />
       <Action Type="CompleteQuest" RefName="MissingHeirloom_Quest" Amount="1" />
     </Node>
   </DialogueTree>

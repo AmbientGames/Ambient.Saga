@@ -1,10 +1,11 @@
-﻿using MediatR;
+using MediatR;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Domain.Contracts;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -44,8 +45,8 @@ internal sealed class DefeatCharacterHandler : IRequestHandler<DefeatCharacterCo
             // Validate character exists by checking transactions
             var characterExists = instance.GetCommittedTransactions()
                 .Any(t => t.Type == SagaTransactionType.CharacterSpawned &&
-                         t.Data.ContainsKey("CharacterInstanceId") &&
-                         t.Data["CharacterInstanceId"] == command.CharacterInstanceId.ToString());
+                         t.Data.ContainsKey(TransactionDataKeys.CharacterInstanceId) &&
+                         t.Data[TransactionDataKeys.CharacterInstanceId] == command.CharacterInstanceId.ToString());
 
             if (!characterExists)
             {
@@ -62,24 +63,52 @@ internal sealed class DefeatCharacterHandler : IRequestHandler<DefeatCharacterCo
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = command.CharacterInstanceId.ToString(),
-                    ["VictorAvatarId"] = command.AvatarId.ToString(),
-                    ["DefeatMethod"] = command.DefeatMethod ?? "Unknown"
+                    [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
+                    [TransactionDataKeys.VictorAvatarId] = command.AvatarId.ToString(),
+                    [TransactionDataKeys.DefeatMethod] = command.DefeatMethod ?? "Unknown"
                 }
             };
 
             instance.AddTransaction(transaction);
 
-            // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
-                instance.InstanceId,
-                new List<SagaTransaction> { transaction },
-                ct);
+            var transactions = new List<SagaTransaction> { transaction };
 
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
+            // Award quest tokens declared on the character template (GivesQuestTokenOnDefeat)
+            var characterRef = instance.GetCommittedTransactions()
+                .Where(t => t.Type == SagaTransactionType.CharacterSpawned &&
+                           t.Data.TryGetValue(TransactionDataKeys.CharacterInstanceId, out var id) &&
+                           id == command.CharacterInstanceId.ToString())
+                .Select(t => t.Data.GetValueOrDefault(TransactionDataKeys.CharacterRef))
+                .FirstOrDefault();
+
+            if (characterRef != null && _world.CharactersLookup.TryGetValue(characterRef, out var characterTemplate)
+                && characterTemplate.GivesQuestTokenOnDefeat != null)
+            {
+                foreach (var tokenRef in characterTemplate.GivesQuestTokenOnDefeat)
+                {
+                    if (string.IsNullOrEmpty(tokenRef)) continue;
+                    var tokenTx = new SagaTransaction
+                    {
+                        TransactionId = Guid.NewGuid(),
+                        Type = SagaTransactionType.QuestTokenAwarded,
+                        AvatarId = command.AvatarId.ToString(),
+                        Status = TransactionStatus.Pending,
+                        LocalTimestamp = DateTime.UtcNow,
+                        Data = new Dictionary<string, string>
+                        {
+                            [TransactionDataKeys.QuestTokenRef] = tokenRef,
+                            [TransactionDataKeys.Reason] = $"Defeated {characterRef}"
+                        }
+                    };
+                    instance.AddTransaction(tokenTx);
+                    transactions.Add(tokenTx);
+                }
+            }
+
+            // Persist and commit transaction atomically
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
+                transactions,
                 ct);
 
             if (!committed)

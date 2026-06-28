@@ -7,6 +7,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Domain.Achievements;
@@ -24,6 +25,8 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// </summary>
 public class StubAvatarUpdateService : IAvatarUpdateService
 {
+    public event Action<Ambient.Saga.Engine.Contracts.Services.CreditChangeNotification>? CreditsChanged;
+
     public Task<AvatarEntity> UpdateAvatarForTradeAsync(AvatarEntity avatar, SagaInstance sagaInstance, Guid tradeTransactionId, CancellationToken ct = default)
     {
         return Task.FromResult(avatar);
@@ -110,6 +113,7 @@ public class TradeItemCommandTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
@@ -165,7 +169,6 @@ public class TradeItemCommandTests : IDisposable
                 Blocks = Array.Empty<BlockEntry>(),
                 Tools = Array.Empty<ToolEntry>(),
                 BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
         world.AvatarArchetypesLookup[warriorArchetype.RefName] = warriorArchetype;

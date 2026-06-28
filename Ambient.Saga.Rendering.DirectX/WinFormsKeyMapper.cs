@@ -40,7 +40,8 @@ public static class WinFormsKeyMapper
         Keys.Y => ImGuiKey.Y,
         Keys.Z => ImGuiKey.Z,
 
-        // Panel hotkeys (M=Map, C=Character, I=Inventory, J=Journal)
+        // Panel hotkeys (M=Map, C=Character, I=Inventory, J=Journal, F=Social)
+        Keys.F => ImGuiKey.F,
         Keys.M => ImGuiKey.M,
         Keys.I => ImGuiKey.I,
         Keys.J => ImGuiKey.J,

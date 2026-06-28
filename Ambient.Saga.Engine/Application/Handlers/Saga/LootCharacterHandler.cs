@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
@@ -9,6 +9,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -133,31 +134,25 @@ internal sealed class LootCharacterHandler : IRequestHandler<LootCharacterComman
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = command.CharacterInstanceId.ToString(),
-                    ["CharacterRef"] = character.CharacterRef,
-                    ["LootSource"] = $"Character '{character.CharacterRef}' defeated",
-                    ["Equipment"] = string.Join(",", lootedEquipment),
-                    ["Consumables"] = string.Join(",", lootedConsumables),
-                    ["Spells"] = string.Join(",", lootedSpells),
-                    ["Blocks"] = string.Join(",", lootedBlocks),
-                    ["Tools"] = string.Join(",", lootedTools),
-                    ["BuildingMaterials"] = string.Join(",", lootedMaterials),
-                    ["Credits"] = lootedCredits.ToString()
+                    [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
+                    [TransactionDataKeys.CharacterRef] = character.CharacterRef,
+                    [TransactionDataKeys.LootSource] = $"Character '{character.CharacterRef}' defeated",
+                    [TransactionDataKeys.Equipment] = string.Join(",", lootedEquipment),
+                    [TransactionDataKeys.Consumables] = string.Join(",", lootedConsumables),
+                    [TransactionDataKeys.Spells] = string.Join(",", lootedSpells),
+                    [TransactionDataKeys.Blocks] = string.Join(",", lootedBlocks),
+                    [TransactionDataKeys.Tools] = string.Join(",", lootedTools),
+                    [TransactionDataKeys.BuildingMaterials] = string.Join(",", lootedMaterials),
+                    [TransactionDataKeys.Credits] = lootedCredits.ToString()
                 }
             };
 
             instance.AddTransaction(transaction);
 
             // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -195,20 +190,16 @@ internal sealed class LootCharacterHandler : IRequestHandler<LootCharacterComman
                         LocalTimestamp = DateTime.UtcNow,
                         Data = new Dictionary<string, string>
                         {
-                            ["ReversedTransactionId"] = transaction.TransactionId.ToString(),
-                            ["Reason"] = $"Avatar persistence failed: {persistEx.Message}",
-                            ["OriginalType"] = transaction.Type.ToString()
+                            [TransactionDataKeys.ReversedTransactionId] = transaction.TransactionId.ToString(),
+                            [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                            [TransactionDataKeys.OriginalType] = transaction.Type.ToString()
                         }
                     };
 
                     instance.AddTransaction(reversalTransaction);
-                    await _instanceRepository.AddTransactionsAsync(
+                    await _instanceRepository.AddAndCommitTransactionsAsync(
                         instance.InstanceId,
                         new List<SagaTransaction> { reversalTransaction },
-                        ct);
-                    await _instanceRepository.CommitTransactionsAsync(
-                        instance.InstanceId,
-                        new List<Guid> { reversalTransaction.TransactionId },
                         ct);
 
                     return SagaCommandResult.Failure(

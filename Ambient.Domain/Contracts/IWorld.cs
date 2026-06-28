@@ -45,8 +45,8 @@ public interface IWorld
     Dictionary<string, CharacterAffinity> CharacterAffinitiesLookup { get; set; }
     Dictionary<string, CombatStance> CombatStancesLookup { get; set; }
     Dictionary<string, LoadoutSlot> LoadoutSlotsLookup { get; set; }
-    Dictionary<string, SagaArc> SagaArcLookup { get; set; }
-    Dictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; }
+    System.Collections.Concurrent.ConcurrentDictionary<string, SagaArc> SagaArcLookup { get; set; }
+    System.Collections.Concurrent.ConcurrentDictionary<string, List<SagaTrigger>> SagaTriggersLookup { get; set; }
     Dictionary<string, Faction> FactionsLookup { get; set; }
     Dictionary<string, StatusEffect> StatusEffectsLookup { get; set; }
     Dictionary<string, AttackTell> AttackTellsLookup { get; set; }
@@ -102,4 +102,13 @@ public interface IWorld
 
     public AttackTell GetAttackTellByRefName(string attackTellRefName);
     public AttackTell? TryGetAttackTellByRefName(string attackTellRefName);
+
+    /// <summary>
+    /// Registers a saga arc into the runtime dictionaries so it is processed
+    /// identically to XML-defined arcs. Used by consumers to inject server-sourced
+    /// arcs (e.g. avatar shopkeepers) at runtime.
+    /// Idempotent: no-op if the arc's RefName already exists. Throws on invalid input
+    /// (null arc, empty RefName, or triggers missing spawns).
+    /// </summary>
+    void RegisterSagaArc(SagaArc arc);
 }

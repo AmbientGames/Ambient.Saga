@@ -42,15 +42,15 @@ public class DefensiveMechanicsTests
     public void Defend_ReducesPhysicalDamageBy50Percent()
     {
         // ARRANGE: Two combatants, one defending
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Attacker", strength: 0.20f);
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
         var engine = new BattleEngine(defender, attacker, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) uses Defend action
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        // Avatar (defender) uses Defend action
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
 
         var defenderHealthBeforeAttack = defender.Health;
         _output.WriteLine($"Defender health before attack: {defenderHealthBeforeAttack * 100:F1}%");
@@ -73,15 +73,15 @@ public class DefensiveMechanicsTests
     public void AdjustLoadout_ReducesPhysicalDamageBy15Percent()
     {
         // ARRANGE: Combatant uses AdjustLoadout for defensive positioning
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Attacker", strength: 0.20f);
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
         var engine = new BattleEngine(defender, attacker, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) uses AdjustLoadout action
-        var adjustResult = engine.ExecutePlayerDecision(new CombatAction
+        // Avatar (defender) uses AdjustLoadout action
+        var adjustResult = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:WoodenSword"
@@ -112,15 +112,15 @@ public class DefensiveMechanicsTests
     public void ChangeLoadout_ReducesPhysicalDamageBy15Percent()
     {
         // ARRANGE: Combatant uses ChangeLoadout for multiple changes
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Attacker", strength: 0.20f);
         var defender = CreateCombatant("Defender", defense: 0.10f);
 
         var engine = new BattleEngine(defender, attacker, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) uses ChangeLoadout action (multiple changes)
-        var changeResult = engine.ExecutePlayerDecision(new CombatAction
+        // Avatar (defender) uses ChangeLoadout action (multiple changes)
+        var changeResult = engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.ChangeLoadout,
             Parameter = "MainHand:IronSword,OffHand:WoodenShield"
@@ -148,14 +148,14 @@ public class DefensiveMechanicsTests
     public void DefensiveStates_MutuallyExclusive()
     {
         // ARRANGE: Test that Defend and Adjust don't stack
-        // Note: combatant is PLAYER (first arg), dummy is ENEMY (second arg)
+        // Note: combatant is AVATAR (first arg), dummy is ENEMY (second arg)
         var combatant = CreateCombatant("Defender", defense: 0.10f);
         var dummy = CreateCombatant("Dummy", strength: 0.01f);
         var engine = new BattleEngine(combatant, dummy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Start with Defend
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(combatant.IsDefending);
         Assert.False(combatant.IsAdjusting);
         _output.WriteLine("After Defend: IsDefending=true, IsAdjusting=false");
@@ -164,7 +164,7 @@ public class DefensiveMechanicsTests
         engine.ExecuteEnemyTurn();
 
         // ACT: Switch to AdjustLoadout
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:IronSword"
@@ -179,7 +179,7 @@ public class DefensiveMechanicsTests
         engine.ExecuteEnemyTurn();
 
         // Switch back to Defend
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(combatant.IsDefending);
         Assert.False(combatant.IsAdjusting);
         _output.WriteLine("After Defend again: IsDefending=true, IsAdjusting=false");
@@ -189,14 +189,14 @@ public class DefensiveMechanicsTests
     public void OffensiveAction_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant defends, then attacks
-        var player = CreateCombatant("Player", strength: 0.15f);
+        var avatar = CreateCombatant("Avatar", strength: 0.15f);
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Defend first
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
+        Assert.True(avatar.IsDefending);
         _output.WriteLine("After Defend: IsDefending=true");
 
         // Skip enemy turn
@@ -204,15 +204,15 @@ public class DefensiveMechanicsTests
 
         // ACT: Attack (offensive action)
         var weapon = _testWorld.GetEquipmentByRefName("IronSword")!;
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.Attack,
             Parameter = weapon.RefName
         });
 
         // ASSERT: Defensive states cleared
-        Assert.False(player.IsDefending);
-        Assert.False(player.IsAdjusting);
+        Assert.False(avatar.IsDefending);
+        Assert.False(avatar.IsAdjusting);
         _output.WriteLine("After Attack: IsDefending=false, IsAdjusting=false");
     }
 
@@ -220,34 +220,34 @@ public class DefensiveMechanicsTests
     public void SpellAttack_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant adjusts loadout, then casts spell
-        var player = CreateCombatant("Player", magic: 0.15f);
-        player.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
+        var avatar = CreateCombatant("Avatar", magic: 0.15f);
+        avatar.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
 
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Adjust loadout first
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "Affinity:Fire"
         });
-        Assert.True(player.IsAdjusting);
+        Assert.True(avatar.IsAdjusting);
 
         // Skip enemy turn
         engine.ExecuteEnemyTurn();
 
         // ACT: Cast spell (offensive action)
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.CastSpell,
             Parameter = "Fireball"
         });
 
         // ASSERT: Defensive state cleared
-        Assert.False(player.IsAdjusting);
-        Assert.False(player.IsDefending);
+        Assert.False(avatar.IsAdjusting);
+        Assert.False(avatar.IsDefending);
         _output.WriteLine("After spell cast: defensive states cleared");
     }
 
@@ -255,29 +255,29 @@ public class DefensiveMechanicsTests
     public void ConsumableUse_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant defends, then uses consumable
-        var player = CreateCombatant("Player", strength: 0.10f);
-        player.Capabilities!.Consumables = new[] { new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 1 } };
+        var avatar = CreateCombatant("Avatar", strength: 0.10f);
+        avatar.Capabilities!.Consumables = new[] { new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 1 } };
 
         var enemy = CreateCombatant("Enemy", strength: 0.10f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Defend first
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
+        Assert.True(avatar.IsDefending);
 
         // Skip enemy turn
         engine.ExecuteEnemyTurn();
 
         // ACT: Use consumable
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.UseConsumable,
             Parameter = "HealthPotion"
         });
 
         // ASSERT: Defensive state cleared
-        Assert.False(player.IsDefending);
+        Assert.False(avatar.IsDefending);
         _output.WriteLine("After consumable use: defensive state cleared");
     }
 
@@ -285,27 +285,27 @@ public class DefensiveMechanicsTests
     public void Flee_ClearsDefensiveStates()
     {
         // ARRANGE: Combatant adjusts, then flees
-        var player = CreateCombatant("Player", speed: 0.20f);  // High speed for flee success
+        var avatar = CreateCombatant("Avatar", speed: 0.20f);  // High speed for flee success
         var enemy = CreateCombatant("Enemy", speed: 0.05f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Adjust loadout first
-        engine.ExecutePlayerDecision(new CombatAction
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:WoodenSword"
         });
-        Assert.True(player.IsAdjusting);
+        Assert.True(avatar.IsAdjusting);
 
         // Skip enemy turn
         engine.ExecuteEnemyTurn();
 
         // ACT: Flee
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Flee });
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Flee });
 
         // ASSERT: Defensive state cleared (even if flee fails)
-        Assert.False(player.IsAdjusting);
+        Assert.False(avatar.IsAdjusting);
         _output.WriteLine("After flee attempt: defensive state cleared");
     }
 
@@ -313,17 +313,17 @@ public class DefensiveMechanicsTests
     public void SpellAttack_ReducedDefenseEffectiveness()
     {
         // ARRANGE: Spells are less affected by Defend (70% instead of 50%)
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Mage", magic: 0.20f);
         attacker.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
 
         var defender = CreateCombatant("Defender", defense: 0.10f);
         var enemyAI = new CombatAI(_testWorld);  // AI will cast spells when available
         var engine = new BattleEngine(defender, attacker, enemyAI, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) uses Defend
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
+        // Avatar (defender) uses Defend
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
         Assert.True(defender.IsDefending);
 
         var defenderHealthBeforeSpell = defender.Health;
@@ -343,17 +343,17 @@ public class DefensiveMechanicsTests
     public void AdjustLoadout_AgainstSpells_ReducedEffectiveness()
     {
         // ARRANGE: IsAdjusting provides 10% reduction against spells (vs 15% against physical)
-        // Note: defender is PLAYER (first arg), attacker is ENEMY (second arg)
+        // Note: defender is AVATAR (first arg), attacker is ENEMY (second arg)
         var attacker = CreateCombatant("Mage", magic: 0.20f);
         attacker.Capabilities!.Spells = new[] { new SpellEntry { SpellRef = "Fireball", Condition = 1.0f } };
 
         var defender = CreateCombatant("Defender", defense: 0.10f);
         var enemyAI = new CombatAI(_testWorld);  // AI will cast spells when available
         var engine = new BattleEngine(defender, attacker, enemyAI, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
-        // Player (defender) adjusts loadout
-        engine.ExecutePlayerDecision(new CombatAction
+        // Avatar (defender) adjusts loadout
+        engine.ExecuteAvatarDecision(new CombatAction
         {
             ActionType = ActionType.AdjustLoadout,
             Parameter = "MainHand:IronSword"
@@ -377,33 +377,33 @@ public class DefensiveMechanicsTests
     public void MultipleDefensiveTurns_Persist()
     {
         // ARRANGE: Combatant defends multiple turns in a row
-        var player = CreateCombatant("Defender", defense: 0.15f);
+        var avatar = CreateCombatant("Defender", defense: 0.15f);
         var enemy = CreateCombatant("Attacker", strength: 0.20f);
-        var engine = new BattleEngine(player, enemy, null, _testWorld);
-        engine.StartBattle();  // Enemy attacks first, then it's player's turn
+        var engine = new BattleEngine(avatar, enemy, null, _testWorld);
+        engine.StartBattle();  // Enemy attacks first, then it's avatar's turn
 
         // Turn 1: Defend
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
+        Assert.True(avatar.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks, reduced damage
-        var healthAfterTurn1 = player.Health;
+        var healthAfterTurn1 = avatar.Health;
         _output.WriteLine($"Health after turn 1: {healthAfterTurn1 * 100:F1}%");
 
         // Turn 2: Defend again
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
+        Assert.True(avatar.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks again, reduced damage
-        var healthAfterTurn2 = player.Health;
+        var healthAfterTurn2 = avatar.Health;
         _output.WriteLine($"Health after turn 2: {healthAfterTurn2 * 100:F1}%");
 
         // Turn 3: Defend AGAIN
-        engine.ExecutePlayerDecision(new CombatAction { ActionType = ActionType.Defend });
-        Assert.True(player.IsDefending);
+        engine.ExecuteAvatarDecision(new CombatAction { ActionType = ActionType.Defend });
+        Assert.True(avatar.IsDefending);
 
         engine.ExecuteEnemyTurn();  // Enemy attacks again, reduced damage
-        var healthAfterTurn3 = player.Health;
+        var healthAfterTurn3 = avatar.Health;
         _output.WriteLine($"Health after turn 3: {healthAfterTurn3 * 100:F1}%");
 
         // ASSERT: All three turns had damage reduction

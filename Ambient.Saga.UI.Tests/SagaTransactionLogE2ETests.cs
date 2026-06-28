@@ -113,7 +113,7 @@ public class SagaTransactionLogE2ETests : IDisposable
                 var tx = new SagaTransaction
                 {
                     TransactionId = Guid.NewGuid(),
-                    Type = SagaTransactionType.PlayerEntered,
+                    Type = SagaTransactionType.AvatarEntered,
                     AvatarId = avatarId.ToString(),
                     Status = TransactionStatus.Pending,
                     LocalTimestamp = DateTime.UtcNow,
@@ -162,7 +162,7 @@ public class SagaTransactionLogE2ETests : IDisposable
             .Select(i => new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerEntered,
+                Type = SagaTransactionType.AvatarEntered,
                 AvatarId = avatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,
@@ -207,7 +207,7 @@ public class SagaTransactionLogE2ETests : IDisposable
             .Select(i => new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerEntered,
+                Type = SagaTransactionType.AvatarEntered,
                 AvatarId = avatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,
@@ -252,7 +252,7 @@ public class SagaTransactionLogE2ETests : IDisposable
         var tx = new SagaTransaction
         {
             TransactionId = Guid.NewGuid(),
-            Type = SagaTransactionType.PlayerEntered,
+            Type = SagaTransactionType.AvatarEntered,
             AvatarId = avatarId.ToString(),
             Status = TransactionStatus.Pending,
             LocalTimestamp = DateTime.UtcNow
@@ -284,11 +284,11 @@ public class SagaTransactionLogE2ETests : IDisposable
         // Build transaction sequence
         var transactions = new List<SagaTransaction>
         {
-            // Player enters
+            // Avatar enters
             new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerEntered,
+                Type = SagaTransactionType.AvatarEntered,
                 AvatarId = avatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,
@@ -333,11 +333,11 @@ public class SagaTransactionLogE2ETests : IDisposable
                     ["CharacterRef"] = "TestGuard"
                 }
             },
-            // Player exits
+            // Avatar exits
             new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerExited,
+                Type = SagaTransactionType.AvatarExited,
                 AvatarId = avatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,
@@ -458,7 +458,7 @@ public class SagaTransactionLogE2ETests : IDisposable
             var tx = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerEntered,
+                Type = SagaTransactionType.AvatarEntered,
                 AvatarId = avatarId.ToString(),
                 Status = TransactionStatus.Pending,
                 LocalTimestamp = DateTime.UtcNow,
@@ -532,7 +532,7 @@ public class SagaTransactionLogE2ETests : IDisposable
         var transactions = Enumerable.Range(1, 5).Select(i => new SagaTransaction
         {
             TransactionId = Guid.NewGuid(),
-            Type = SagaTransactionType.PlayerEntered,
+            Type = SagaTransactionType.AvatarEntered,
             AvatarId = avatarId.ToString(),
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string> { ["Index"] = i.ToString() }
@@ -562,7 +562,7 @@ public class SagaTransactionLogE2ETests : IDisposable
             new()
             {
                 TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.PlayerEntered,
+                Type = SagaTransactionType.AvatarEntered,
                 AvatarId = avatarId.ToString(),
                 LocalTimestamp = DateTime.UtcNow
             },

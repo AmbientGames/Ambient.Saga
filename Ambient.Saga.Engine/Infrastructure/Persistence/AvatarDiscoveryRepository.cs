@@ -4,14 +4,14 @@ using LiteDB;
 namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 
 /// <summary>
-/// LiteDB implementation of IPlayerDiscoveryRepository.
+/// LiteDB implementation of IAvatarDiscoveryRepository.
 /// </summary>
-internal class PlayerDiscoveryRepository : IPlayerDiscoveryRepository
+internal class AvatarDiscoveryRepository : IAvatarDiscoveryRepository
 {
     private readonly ILiteDatabase _database;
-    private const string CollectionName = "PlayerDiscoveries";
+    private const string CollectionName = "AvatarDiscoveries";
 
-    public PlayerDiscoveryRepository(ILiteDatabase database)
+    public AvatarDiscoveryRepository(ILiteDatabase database)
     {
         _database = database ?? throw new ArgumentNullException(nameof(database));
     }

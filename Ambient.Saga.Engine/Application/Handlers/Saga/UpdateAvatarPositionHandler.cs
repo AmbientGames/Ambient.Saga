@@ -6,6 +6,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
@@ -84,21 +85,15 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
                 return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), instance.Transactions.Count);
             }
 
-            // Persist transactions
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(instance.InstanceId, newTransactions, ct);
-
-            // Mark as committed (optimistic concurrency)
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                newTransactions.Select(t => t.TransactionId).ToList(),
-                ct);
+            // Persist and commit transactions
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
 
             if (!committed)
             {
                 return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
             }
 
-            // Record saga discovery in PlayerDiscovery table for UI visibility
+            // Record saga discovery in AvatarDiscovery table for UI visibility
             if (newTransactions.Any(t => t.Type == SagaTransactionType.SagaDiscovered))
             {
                 await _worldStateRepository.RecordDiscoveryAsync(
@@ -132,4 +127,5 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
 
         return (x, z);
     }
+
 }

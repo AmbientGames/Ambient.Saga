@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -31,7 +32,7 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 /// 2. Saga creates transactions (spawns, triggers, etc.)
 /// 3. Client queries: GetAvailableInteractions - "what can I do?"
 /// 4. UI shows options based on query result
-/// 5. Player acts: StartDialogue, Trade, Attack, etc.
+/// 5. Avatar acts: StartDialogue, Trade, Attack, etc.
 /// 6. Client queries again to update UI
 ///
 /// This is how you "put Sagas away and never think about them again" - the pattern is stable.
@@ -64,6 +65,7 @@ public class PureCQRSSagaFlowTests : IDisposable
 
         services.AddSingleton(_world);
         services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
+        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IAvatarUpdateService, StubAvatarUpdateService>();
         services.AddSingleton<IWorldStateRepository, StubWorldStateRepository>();
@@ -234,7 +236,6 @@ public class PureCQRSSagaFlowTests : IDisposable
                 Blocks = Array.Empty<BlockEntry>(),
                 Tools = Array.Empty<ToolEntry>(),
                 BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             },
             RespawnStats = new CharacterStats
             {
@@ -258,15 +259,13 @@ public class PureCQRSSagaFlowTests : IDisposable
                 Blocks = Array.Empty<BlockEntry>(),
                 Tools = Array.Empty<ToolEntry>(),
                 BuildingMaterials = Array.Empty<BuildingMaterialEntry>(),
-                QuestTokens = Array.Empty<QuestTokenEntry>()
             }
         };
 
         var avatar = new AvatarBase
         {
             ArchetypeRef = "Samurai",
-            DisplayName = name,
-            BlockOwnership = new Dictionary<string, float>()
+            DisplayName = name
         };
 
         AvatarSpawner.SpawnFromModelAvatar(
@@ -362,7 +361,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         Assert.True(boss.Options.CanAttack);
 
         // ================================================================
-        // STEP 3: COMMAND - Player chooses to talk to merchant
+        // STEP 3: COMMAND - Avatar chooses to talk to merchant
         // ================================================================
         _output.WriteLine("--- STEP 3: COMMAND (Write) ---");
         _output.WriteLine($"Action: StartDialogue with {merchant.DisplayName}");
@@ -409,7 +408,7 @@ public class PureCQRSSagaFlowTests : IDisposable
         _output.WriteLine("");
         _output.WriteLine("? Commands create transactions (write-only)");
         _output.WriteLine("? Queries read state from transaction log (read-only)");
-        _output.WriteLine("? Client decides WHEN to interact (player agency)");
+        _output.WriteLine("? Client decides WHEN to interact (avatar agency)");
         _output.WriteLine("? Saga decides WHAT is available (server authoritative)");
         _output.WriteLine("");
         _output.WriteLine("This is the stable pattern. Put Sagas away and never think about them again.");

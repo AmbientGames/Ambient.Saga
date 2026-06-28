@@ -29,6 +29,11 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
         // Query ALL Sagas for nearby interactions
         foreach (var sagaKvp in _world.SagaArcLookup)
         {
+            // Server-sourced arcs (player-created shopkeepers, geocaches, remnant Loot) are discovered
+            // via traces, not proximity. Skip them so their synthetic characters don't auto-initiate.
+            if (!string.IsNullOrEmpty(sagaKvp.Value.OwnerAvatarId))
+                continue;
+
             var query = new GetAvailableInteractionsQuery
             {
                 AvatarId = request.AvatarId,

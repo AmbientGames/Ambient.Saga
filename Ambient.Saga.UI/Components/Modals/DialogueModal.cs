@@ -6,12 +6,13 @@ using Ambient.Saga.UI;
 using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
 using System.Numerics;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.UI.Components.Modals;
 
 /// <summary>
 /// Modal for character dialogue using CQRS pattern.
-/// Displays NPC dialogue text and player choices in a polished conversation UI.
+/// Displays NPC dialogue text and avatar choices in a polished conversation UI.
 /// </summary>
 public class DialogueModal
 {
@@ -42,9 +43,10 @@ public class DialogueModal
         // Center the window using helper
         ImGuiHelpers.SetupModalWindow(750, 550);
 
-        // Style the window
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20, 20));
-        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f);
+        // Style the window (DPI-scaled)
+        var scale = UIConstants.DpiScale;
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(20 * scale, 20 * scale));
+        ImGui.PushStyleVar(ImGuiStyleVar.WindowRounding, 10f * scale);
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
@@ -248,7 +250,7 @@ public class DialogueModal
 
         // Dialogue text area with styled background
         // For BeginChild, 0 means "use remaining width", not -1
-        ImGui.PushStyleColor(ImGuiCol.ChildBg, new Vector4(0.05f, 0.05f, 0.08f, 0.9f));
+        ImGui.PushStyleColor(ImGuiCol.ChildBg, UIColors.PanelBgDark);
         ImGui.BeginChild("DialogueTextArea", new Vector2(0, dialogueHeight), ImGuiChildFlags.Borders);
 
         ImGui.Spacing();
@@ -425,9 +427,9 @@ public class DialogueModal
         var buttonHeight = ImGui.GetFrameHeight();
         ImGui.SetCursorPosX(ImGui.GetCursorPosX() + avail.X - buttonWidth);
 
-        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.2f, 0.2f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.25f, 0.25f, 1));
-        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.3f, 0.3f, 1));
+        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonDanger);
+        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonDangerHovered);
+        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonDangerActive);
 
         if (ImGui.Button("Leave", new Vector2(buttonWidth, buttonHeight)))
         {
@@ -509,7 +511,7 @@ public class DialogueModal
             return;
         }
 
-        if (viewModel.PlayerAvatar == null)
+        if (viewModel.Avatar == null)
         {
             _errorMessage = "No avatar selected. Please select an avatar first.";
             return;
@@ -522,10 +524,10 @@ public class DialogueModal
             // Start dialogue
             var startCommand = new StartDialogueCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             var startResult = await viewModel.Mediator.Send(startCommand);
@@ -556,18 +558,18 @@ public class DialogueModal
 
     private async Task SelectChoiceAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, string choiceId)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
         {
             var command = new SelectDialogueChoiceCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
                 ChoiceId = choiceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Sending SelectDialogueChoiceCommand...");
@@ -576,15 +578,16 @@ public class DialogueModal
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Result.Data keys: {string.Join(", ", result.Data.Keys)}");
 
             // Check for game completion
-            if (result.Data.ContainsKey("GameComplete"))
+            if (result.Data.ContainsKey(TransactionDataKeys.GameComplete))
             {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Exiting application.");
-                Environment.Exit(0);
+                var questRef = result.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string ?? string.Empty : string.Empty;
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Quest: {questRef}");
+                viewModel.RaiseGameCompleted(questRef);
                 return;
             }
 
             // Check for pending system events (battle, trade transitions)
-            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
+            if (result.Data.TryGetValue(TransactionDataKeys.PendingEvents, out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events");
 
@@ -630,17 +633,17 @@ public class DialogueModal
 
     private async Task AdvanceDialogueAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
             return;
 
         try
         {
             var command = new AdvanceDialogueCommand
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Sending AdvanceDialogueCommand...");
@@ -656,15 +659,16 @@ public class DialogueModal
             }
 
             // Check for game completion
-            if (result.Data.ContainsKey("GameComplete"))
+            if (result.Data.ContainsKey(TransactionDataKeys.GameComplete))
             {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Exiting application.");
-                Environment.Exit(0);
+                var questRef = result.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string ?? string.Empty : string.Empty;
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Game complete! Quest: {questRef}");
+                viewModel.RaiseGameCompleted(questRef);
                 return;
             }
 
             // Check for pending system events (battle, trade transitions)
-            if (result.Data.TryGetValue("PendingEvents", out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
+            if (result.Data.TryGetValue(TransactionDataKeys.PendingEvents, out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
                 System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events from advance");
 
@@ -709,7 +713,7 @@ public class DialogueModal
 
     private async Task RefreshDialogueStateAsync(SagaMainViewModel viewModel, CharacterViewModel character)
     {
-        if (viewModel.CurrentWorld == null || viewModel.PlayerAvatar == null)
+        if (viewModel.CurrentWorld == null || viewModel.Avatar == null)
         {
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] RefreshDialogueState skipped - World or Avatar is null");
             return;
@@ -721,10 +725,10 @@ public class DialogueModal
 
             var query = new GetDialogueStateQuery
             {
-                AvatarId = viewModel.PlayerAvatar.AvatarId,
+                AvatarId = viewModel.Avatar.AvatarId,
                 SagaRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.PlayerAvatar
+                Avatar = viewModel.Avatar
             };
 
             _currentState = await viewModel.Mediator.Send(query);

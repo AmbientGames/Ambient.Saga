@@ -36,10 +36,18 @@ namespace Ambient.Domain {
         
         private SagaArcInitialState initialStateField;
         
+        private string ownerAvatarIdField;
+        
+        private double markupMultiplierField;
+        
+        private double buybackMultiplierField;
+        
         public SagaArc() {
             this.kindField = "Default";
             this.discoverRadiusField = 200D;
             this.initialStateField = SagaArcInitialState.Hidden;
+            this.markupMultiplierField = 1D;
+            this.buybackMultiplierField = 1D;
         }
         
         /// <remarks/>
@@ -119,6 +127,41 @@ namespace Ambient.Domain {
             }
             set {
                 this.initialStateField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string OwnerAvatarId {
+            get {
+                return this.ownerAvatarIdField;
+            }
+            set {
+                this.ownerAvatarIdField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(1D)]
+        public double MarkupMultiplier {
+            get {
+                return this.markupMultiplierField;
+            }
+            set {
+                this.markupMultiplierField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(1D)]
+        public double BuybackMultiplier {
+            get {
+                return this.buybackMultiplierField;
+            }
+            set {
+                this.buybackMultiplierField = value;
             }
         }
     }

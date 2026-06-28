@@ -1,3 +1,4 @@
+using Ambient.Saga.UI.Components.Panels;
 using ImGuiNET;
 
 namespace Ambient.Saga.UI.Components.Input;
@@ -76,4 +77,9 @@ public class InputContext
     /// Gets the ImGui IO for checking key states.
     /// </summary>
     public ImGuiIOPtr IO => ImGui.GetIO();
+
+    /// <summary>
+    /// Panel manager for game-registered panels. The input handler processes these alongside built-in keys.
+    /// </summary>
+    public PanelManager? PanelManager { get; init; }
 }

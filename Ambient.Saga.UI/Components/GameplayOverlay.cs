@@ -5,6 +5,7 @@ using System.Numerics;
 using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Components.Modals;
 using Ambient.Saga.UI.Components.Input;
+using Ambient.Saga.UI.Components.Panels;
 using Ambient.Saga.UI.Components.Rendering;
 using Ambient.Saga.UI.Components.Rendering.Sections;
 using Ambient.Saga.UI.Components.Overlay;
@@ -33,7 +34,9 @@ public enum ActivePanel
     /// <summary>World Info panel (press F1) - shows world catalog (debugger only)</summary>
     WorldInfo,
     /// <summary>Dev Tools panel (press F12) - only available when debugger attached</summary>
-    DevTools
+    DevTools,
+    /// <summary>Extended panel - game-specific panel registered via PanelManager</summary>
+    Extended
 }
 
 /// <summary>
@@ -94,6 +97,9 @@ public class GameplayOverlay
     // Modal system
     private readonly ModalManager _modalManager;
 
+    // Panel system (registered panels with hotkeys, like ModalManager for modals)
+    private readonly PanelManager _panelManager;
+
     // Extensibility components
     private readonly IInputHandler _inputHandler;
     private readonly IHudRenderer _hudRenderer;
@@ -136,30 +142,22 @@ public class GameplayOverlay
     public MessageOverlay MessageOverlay => _messageOverlay;
 
     /// <summary>
-    /// Create a GameplayOverlay with default input and HUD rendering.
-    /// Uses SectionedHudRenderer for modular, extensible HUD.
+    /// Create a GameplayOverlay with custom input, HUD rendering, and panel management.
     /// </summary>
-    public GameplayOverlay(ModalManager modalManager)
-        : this(modalManager, new DefaultInputHandler(), new SectionedHudRenderer())
-    {
-    }
-
-    /// <summary>
-    /// Create a GameplayOverlay with custom input and HUD rendering.
-    /// This constructor enables full extensibility of the overlay's behavior.
-    /// </summary>
-    /// <param name="modalManager">Modal manager for handling dialogs</param>
-    /// <param name="inputHandler">Custom input handler (null = use default)</param>
-    /// <param name="hudRenderer">Custom HUD renderer (null = use default)</param>
     public GameplayOverlay(
         ModalManager modalManager,
+        PanelManager? panelManager = null,
         IInputHandler? inputHandler = null,
         IHudRenderer? hudRenderer = null)
     {
         _modalManager = modalManager ?? throw new ArgumentNullException(nameof(modalManager));
+        _panelManager = panelManager ?? new PanelManager();
         _inputHandler = inputHandler ?? new DefaultInputHandler();
-        _hudRenderer = hudRenderer ?? new DefaultHudRenderer();
+        _hudRenderer = hudRenderer ?? new SectionedHudRenderer();
         _messageOverlay = new MessageOverlay();
+
+        // Wire panel manager to HUD renderer for key hints
+        _hudRenderer.SetPanelManager(_panelManager);
 
         // Initialize panels
         _worldInfoPanel = new WorldInfoPanel();
@@ -196,10 +194,22 @@ public class GameplayOverlay
     /// </summary>
     public void TogglePanel(ActivePanel panel)
     {
+        // Close the current extended panel if switching away
+        if (_activePanel == ActivePanel.Extended && panel != ActivePanel.Extended)
+            _panelManager.Panel?.OnClosed();
+
         if (_activePanel == panel)
+        {
+            if (panel == ActivePanel.Extended)
+                _panelManager.Panel?.OnClosed();
             _activePanel = ActivePanel.None;
+        }
         else
+        {
+            if (panel == ActivePanel.Extended)
+                _panelManager.Panel?.OnOpening();
             _activePanel = panel;
+        }
     }
 
     /// <summary>
@@ -207,8 +217,15 @@ public class GameplayOverlay
     /// </summary>
     public void CloseAllPanels()
     {
+        if (_activePanel == ActivePanel.Extended)
+            _panelManager.Panel?.OnClosed();
         _activePanel = ActivePanel.None;
     }
+
+    /// <summary>
+    /// Gets the panel manager for registering game-specific panels.
+    /// </summary>
+    public PanelManager PanelManager => _panelManager;
 
     /// <summary>
     /// Render the gameplay overlay.
@@ -234,7 +251,8 @@ public class GameplayOverlay
             ActivePanel = _activePanel,
             HasMap = viewModel.HeightMapImage != null,
             TogglePanelAction = TogglePanel,
-            CloseAllPanelsAction = CloseAllPanels
+            CloseAllPanelsAction = CloseAllPanels,
+            PanelManager = _panelManager
         };
         _inputHandler.ProcessInput(inputContext);
 
@@ -292,6 +310,9 @@ public class GameplayOverlay
             case ActivePanel.DevTools:
                 RenderDevToolsPanel(viewModel);
                 break;
+            case ActivePanel.Extended:
+                RenderExtendedPanel(viewModel);
+                break;
             case ActivePanel.None:
             default:
                 // No panel open - just the 3D world
@@ -331,7 +352,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Map [M]", windowFlags))
         {
@@ -367,7 +388,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Character [C]", windowFlags))
         {
@@ -403,7 +424,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Inventory [I]", windowFlags))
         {
@@ -440,7 +461,7 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("World Info [F1]", windowFlags))
         {
@@ -523,11 +544,56 @@ public class GameplayOverlay
 
         var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
 
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, new Vector4(0.08f, 0.08f, 0.12f, 0.95f));
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
 
         if (ImGui.Begin("Journal [J]", windowFlags))
         {
             _journalPanel.Render(viewModel, _modalManager);
+        }
+        ImGui.End();
+
+        ImGui.PopStyleColor();
+    }
+
+    /// <summary>
+    /// Render the extended panel (game-registered via PanelManager).
+    /// Uses the same full-screen style as all built-in panels.
+    /// </summary>
+    private void RenderExtendedPanel(SagaMainViewModel viewModel)
+    {
+        var panel = _panelManager.Panel;
+        if (panel == null || !panel.IsAvailable)
+        {
+            _activePanel = ActivePanel.None;
+            return;
+        }
+
+        var io = ImGui.GetIO();
+        var displaySize = io.DisplaySize;
+        var scale = UIConstants.DpiScale;
+
+        var margin = 10f * scale;
+        var textHeight = ImGui.CalcTextSize("M").Y;
+        var style = ImGui.GetStyle();
+        var buttonHeight = textHeight + style.FramePadding.Y * 2;
+        var hudHeight = buttonHeight + style.WindowPadding.Y * 2;
+        var panelX = margin;
+        var panelY = margin;
+        var panelWidth = displaySize.X - (margin * 2);
+        var panelHeight = displaySize.Y - hudHeight - (margin * 3);
+
+        ImGui.SetNextWindowPos(new Vector2(panelX, panelY), ImGuiCond.Always);
+        ImGui.SetNextWindowSize(new Vector2(panelWidth, panelHeight), ImGuiCond.Always);
+
+        var windowFlags = ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove;
+
+        ImGui.PushStyleColor(ImGuiCol.WindowBg, UIColors.WindowBg);
+
+        var title = $"{panel.Name} [{panel.KeyLabel}]";
+        if (ImGui.Begin(title, windowFlags))
+        {
+            bool isOpen = true;
+            panel.Render(viewModel, ref isOpen);
         }
         ImGui.End();
 

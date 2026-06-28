@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
@@ -9,6 +9,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
+using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
 
@@ -95,10 +96,26 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 return SagaCommandResult.Failure(instance.InstanceId, "Cannot trade with defeated character");
             }
 
-            var totalPrice = command.PricePerItem * command.Quantity;
+            // Owner trades for free (depositing/withdrawing from own shopkeeper).
+            // Non-owners pay/receive catalog price scaled by the arc's per-direction
+            // multiplier: MarkupMultiplier when buying from the arc (shop's selling
+            // price), BuybackMultiplier when selling to it (shop's buyback price).
+            // Both default to 1.0 — authored arcs carry no premium unless explicitly set.
+            var isOwner = !string.IsNullOrEmpty(sagaTemplate.OwnerAvatarId)
+                          && command.AvatarId.ToString() == sagaTemplate.OwnerAvatarId;
+            var basePrice = command.PricePerItem * command.Quantity;
+            int totalPrice;
+            if (isOwner)
+                totalPrice = 0;
+            else if (command.IsBuying)
+                totalPrice = (int)Math.Round(basePrice * sagaTemplate.MarkupMultiplier);
+            else
+                totalPrice = (int)Math.Round(basePrice * sagaTemplate.BuybackMultiplier);
 
-            // Validate avatar has sufficient credits for buying
-            if (command.IsBuying)
+            // Buy-side validation: only non-owners pay and must have the credits to do so.
+            // Owners take from their own arc for free, no avatar-inventory check needed —
+            // the item lives on the arc's character (saga state), not the avatar.
+            if (command.IsBuying && !isOwner)
             {
                 var avatarCredits = command.Avatar.Stats?.Credits ?? 0;
                 if (avatarCredits < totalPrice)
@@ -121,7 +138,7 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                     return SagaCommandResult.Failure(instance.InstanceId, "Too heavy to carry");
                 }
             }
-            else
+            else if (!command.IsBuying)
             {
                 // Validate avatar has the item for selling
                 // Check if it's a consumable, equipment, tool, spell, or block
@@ -193,27 +210,21 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterInstanceId"] = command.CharacterInstanceId.ToString(),
-                    ["ItemRef"] = command.ItemRef,
-                    ["Quantity"] = command.Quantity.ToString(),
-                    ["IsBuying"] = command.IsBuying.ToString(),
-                    ["PricePerItem"] = command.PricePerItem.ToString(),
-                    ["TotalPrice"] = totalPrice.ToString()
+                    [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
+                    [TransactionDataKeys.ItemRef] = command.ItemRef,
+                    [TransactionDataKeys.Quantity] = command.Quantity.ToString(),
+                    [TransactionDataKeys.IsBuying] = command.IsBuying.ToString(),
+                    [TransactionDataKeys.PricePerItem] = command.PricePerItem.ToString(),
+                    [TransactionDataKeys.TotalPrice] = totalPrice.ToString()
                 }
             };
 
             instance.AddTransaction(transaction);
 
             // Persist transaction
-            var sequenceNumbers = await _instanceRepository.AddTransactionsAsync(
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
                 new List<SagaTransaction> { transaction },
-                ct);
-
-            // Commit transaction
-            var committed = await _instanceRepository.CommitTransactionsAsync(
-                instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
                 ct);
 
             if (!committed)
@@ -255,20 +266,16 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                         LocalTimestamp = DateTime.UtcNow,
                         Data = new Dictionary<string, string>
                         {
-                            ["ReversedTransactionId"] = transaction.TransactionId.ToString(),
-                            ["Reason"] = $"Avatar persistence failed: {persistEx.Message}",
-                            ["OriginalType"] = transaction.Type.ToString()
+                            [TransactionDataKeys.ReversedTransactionId] = transaction.TransactionId.ToString(),
+                            [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                            [TransactionDataKeys.OriginalType] = transaction.Type.ToString()
                         }
                     };
 
                     instance.AddTransaction(reversalTransaction);
-                    await _instanceRepository.AddTransactionsAsync(
+                    await _instanceRepository.AddAndCommitTransactionsAsync(
                         instance.InstanceId,
                         new List<SagaTransaction> { reversalTransaction },
-                        ct);
-                    await _instanceRepository.CommitTransactionsAsync(
-                        instance.InstanceId,
-                        new List<Guid> { reversalTransaction.TransactionId },
                         ct);
 
                     return SagaCommandResult.Failure(
@@ -279,12 +286,19 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
 
             var resultData = new Dictionary<string, object>
             {
-                ["ItemRef"] = command.ItemRef,
-                ["Quantity"] = command.Quantity,
-                ["PricePerItem"] = command.PricePerItem,
-                ["TotalPrice"] = totalPrice,
-                ["TransactionType"] = command.IsBuying ? "Purchase" : "Sale"
+                [TransactionDataKeys.ItemRef] = command.ItemRef,
+                [TransactionDataKeys.Quantity] = command.Quantity,
+                [TransactionDataKeys.PricePerItem] = command.PricePerItem,
+                [TransactionDataKeys.TotalPrice] = totalPrice,
+                [TransactionDataKeys.TransactionType] = command.IsBuying ? "Purchase" : "Sale"
             };
+
+            // If a non-owner bought from an owned arc, signal that the owner should receive revenue
+            if (command.IsBuying && !isOwner && !string.IsNullOrEmpty(sagaTemplate.OwnerAvatarId) && totalPrice > 0)
+            {
+                resultData[TransactionDataKeys.OwnerAvatarId] = sagaTemplate.OwnerAvatarId;
+                resultData[TransactionDataKeys.OwnerRevenue] = totalPrice;
+            }
 
             return SagaCommandResult.Success(
                 instance.InstanceId,

@@ -388,12 +388,15 @@ public class MapViewPanel
                 return (latitude, longitude);
             }
 
-            // Hover state is set by MainViewModel.FindTriggerAtPoint via CQRS query
+            // Hover state is set by MainViewModel.FindTriggersAtPoint via CQRS query
             // (called from UpdateMousePosition - same logic as trigger activation)
 
             // Draw Saga zones (proximity trigger rings)
             foreach (var saga in viewModel.Sagas)
             {
+                if (!saga.IsVisibleOnMap)
+                    continue;
+
                 foreach (var trigger in saga.Triggers)
                 {
                     // Only show triggers when visible (controlled by MainViewModel based on query)
@@ -434,6 +437,9 @@ public class MapViewPanel
             // Draw Saga feature center dots (always visible at Saga centers)
             foreach (var saga in viewModel.Sagas)
             {
+                if (!saga.IsVisibleOnMap)
+                    continue;
+
                 var center = PixelToScreen(saga.PixelX, saga.PixelY);
 
                 // Skip if off-screen
@@ -577,7 +583,7 @@ public class MapViewPanel
                     var distance = MathF.Sqrt(MathF.Pow(mousePos.X - avatarPos.X, 2) + MathF.Pow(mousePos.Y - avatarPos.Y, 2));
                     if (distance <= radius + 3)
                     {
-                        var avatarName = viewModel.PlayerAvatar?.DisplayName ?? "Avatar";
+                        var avatarName = viewModel.Avatar?.DisplayName ?? "Avatar";
                         ImGui.SetTooltip($"{avatarName} (You)");
                     }
                 }
@@ -676,8 +682,8 @@ public class MapViewPanel
             ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.AlwaysAutoResize))
         {
             var currencyName = viewModel.CurrentWorld?.WorldConfiguration?.CurrencyName ?? "Credits";
-            var playerCredits = viewModel.PlayerAvatar?.Stats?.Credits ?? 0;
-            var canAfford = playerCredits >= _pendingTeleportCost;
+            var avatarCredits = viewModel.Avatar?.Stats?.Credits ?? 0;
+            var canAfford = avatarCredits >= _pendingTeleportCost;
 
             ImGui.TextWrapped("Teleport to this location?");
             ImGui.Spacing();
@@ -687,7 +693,7 @@ public class MapViewPanel
 
             ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"Cost: {_pendingTeleportCost} {currencyName}");
             ImGui.TextColored(canAfford ? new Vector4(0.5f, 1, 0.5f, 1) : new Vector4(1, 0.4f, 0.4f, 1),
-                $"Your balance: {playerCredits:F0} {currencyName}");
+                $"Your balance: {avatarCredits:F0} {currencyName}");
 
             ImGui.Spacing();
             ImGui.Separator();
