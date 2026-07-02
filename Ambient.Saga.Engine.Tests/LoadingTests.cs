@@ -18,24 +18,23 @@ public class LoadingTests : IAsyncLifetime
         _definitionDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Content", "xsd");
 
         // Content/Worlds is at solution root (shared by all Sandboxes)
-        var solutionRoot = FindSolutionRoot();
-        _dataDirectory = Path.Combine(solutionRoot, "Content", "Worlds");
+        _dataDirectory = FindWorldsDirectory();
 
         _worldLoader = TestWorldFactory.CreateTestWorldAssetLoader();
     }
 
-    private static string FindSolutionRoot()
+    private static string FindWorldsDirectory()
     {
         var directory = AppDomain.CurrentDomain.BaseDirectory;
-        while (directory != null && !File.Exists(Path.Combine(directory, "Ambient.Saga.sln")))
+        while (directory != null)
         {
+            var worldDefPath = Path.Combine(directory, "Content", "Worlds");
+            if (Directory.Exists(worldDefPath))
+                return worldDefPath;
             directory = Directory.GetParent(directory)?.FullName;
         }
 
-        if (directory == null)
-            throw new InvalidOperationException("Could not find solution root (Ambient.Saga.sln)");
-
-        return directory;
+        throw new InvalidOperationException("Could not find Content/Worlds directory");
     }
 
     public async Task InitializeAsync()
