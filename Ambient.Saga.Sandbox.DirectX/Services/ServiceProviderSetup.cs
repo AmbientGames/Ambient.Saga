@@ -147,6 +147,7 @@ namespace Ambient.Saga.Sandbox.DirectX.Services
                 cfg.AddOpenBehavior(typeof(SagaLoggingBehavior<,>));
                 cfg.AddOpenBehavior(typeof(SagaValidationBehavior<,>));
                 cfg.AddOpenBehavior(typeof(AchievementEvaluationBehavior<,>));
+                cfg.AddOpenBehavior(typeof(QuestStageProgressionBehavior<,>));
             });
 
             // Repository factory (creates repositories when world loads)
