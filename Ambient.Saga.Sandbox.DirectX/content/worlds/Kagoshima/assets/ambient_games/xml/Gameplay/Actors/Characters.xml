@@ -84,6 +84,9 @@
       <Trait Name="TacticalRetreat" Value="25" />
       <Trait Name="LastStand" Value="10" />
     </Traits>
+    <Tags>
+      <Tag>boss</Tag>
+    </Tags>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="BanditChief_BossBattle" StartNodeId="battle_impressed" OnceOnly="true" />
@@ -235,6 +238,9 @@
     <Traits>
       <Trait Name="Hostile" Value="0" />
     </Traits>
+    <Tags>
+      <Tag>guard</Tag>
+    </Tags>
   </Character>
   <Character RefName="FalseProphet_Investigator" DisplayName="Suspicious Kannushi" Description="A Shinto priest investigating rumors of false miracles and stolen offerings">
     <Stats Health="0.60" Stamina="0.5" Mana="0.6" Strength="0.05" Defense="0.06" Speed="0.08" Magic="0.14" Credits="60" />
@@ -631,6 +637,9 @@
     <Traits>
       <Trait Name="Friendly" Value="0" />
     </Traits>
+    <Tags>
+      <Tag>guard</Tag>
+    </Tags>
   </Character>
   <Character RefName="RivalGuild_GuildMaster" DisplayName="Trade Master" Description="The calculating leader of your merchant association">
     <Stats Health="0.80" Stamina="0.6" Mana="0.5" Strength="0.10" Defense="0.12" Speed="0.10" Magic="0.15" Credits="300" />
@@ -690,6 +699,9 @@
       <Trait Name="BossFight" Value="1" />
       <Trait Name="TacticalRetreat" Value="25" />
     </Traits>
+    <Tags>
+      <Tag>boss</Tag>
+    </Tags>
     <GivesQuestTokenOnDefeat>RivalGuild_LeaderDefeated</GivesQuestTokenOnDefeat>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="RivalGuild_RivalBattle" StartNodeId="battle_opening" OnceOnly="true" />
@@ -786,6 +798,9 @@
     <Traits>
       <Trait Name="WillingToBargain" Value="30" />
     </Traits>
+    <Tags>
+      <Tag>guard</Tag>
+    </Tags>
   </Character>
   <Character RefName="WanderingMerchant_Bandit" DisplayName="Roadside Nusubito" Description="A desperate thief who ambushes travelers on the mountain paths">
     <Stats Health="0.70" Stamina="0.8" Mana="0.1" Strength="0.10" Defense="0.08" Speed="0.14" Magic="0.02" Credits="30" />
@@ -893,6 +908,9 @@
       <Trait Name="TacticalRetreat" Value="30" />
       <Trait Name="LastStand" Value="15" />
     </Traits>
+    <Tags>
+      <Tag>boss</Tag>
+    </Tags>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_Tsurumarujo" StartNodeId="battle_first_blood" OnceOnly="true" />
@@ -2296,6 +2314,9 @@
       <Trait Name="TacticalRetreat" Value="30" />
       <Trait Name="LastStand" Value="15" />
     </Traits>
+    <Tags>
+      <Tag>boss</Tag>
+    </Tags>
     <BattleDialogue>
       <Trigger Condition="TurnNumber" Value="1" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_opening" OnceOnly="true" />
       <Trigger Condition="HealthBelow" Value="0.75" DialogueTreeRef="DIALOGUE_BOSS_TerukuniDaimyojinsha" StartNodeId="battle_first_blood" OnceOnly="true" />
