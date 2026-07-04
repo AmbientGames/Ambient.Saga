@@ -14,7 +14,7 @@ public interface IAvatarUpdateService
 {
     /// <summary>
     /// Raised after any transaction that mutates <c>avatar.Stats.Credits</c>
-    /// (Trade, Loot, Effect). Hosts forward these to the authoritative server
+    /// (Trade, Effect). Hosts forward these to the authoritative server
     /// so the server-side balance stays in sync. Fires after the local mutation
     /// is applied, so <c>avatar.Stats.Credits</c> already reflects the delta
     /// when subscribers run.
@@ -47,20 +47,6 @@ public interface IAvatarUpdateService
         AvatarEntity avatar,
         SagaInstance sagaInstance,
         Guid battleStartedTransactionId,
-        CancellationToken ct = default);
-
-    /// <summary>
-    /// Updates avatar inventory based on loot transaction.
-    /// </summary>
-    /// <param name="avatar">The avatar to update</param>
-    /// <param name="sagaInstance">The Saga instance containing loot transactions</param>
-    /// <param name="lootTransactionId">The ID of the LootAwarded transaction</param>
-    /// <param name="ct">Cancellation token</param>
-    /// <returns>The updated avatar</returns>
-    Task<AvatarEntity> UpdateAvatarForLootAsync(
-        AvatarEntity avatar,
-        SagaInstance sagaInstance,
-        Guid lootTransactionId,
         CancellationToken ct = default);
 
     /// <summary>

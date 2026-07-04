@@ -53,16 +53,16 @@ public static class ModalAdapterExample
     /// <summary>
     /// Example: Adapter for a modal that needs CharacterViewModel context
     /// </summary>
-    public class LootModalAdapter : IModal
+    public class MerchantTradeModalAdapterExample : IModal
     {
-        private readonly LootModal _modal = new();
+        private readonly MerchantTradeModal _modal = new();
 
-        public string Name => "Loot";
+        public string Name => "MerchantTradeExample";
 
         public bool CanOpen(object? context)
         {
             // Validate that we have the required character context
-            return context is CharacterContext { Character: { CanLoot: true } };
+            return context is CharacterContext { Character.CanTrade: true };
         }
 
         public void Render(object? context, ref bool isOpen)

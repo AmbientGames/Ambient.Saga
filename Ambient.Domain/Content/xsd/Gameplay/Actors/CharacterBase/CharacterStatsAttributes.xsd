@@ -40,6 +40,50 @@
             <xs:annotation><xs:documentation>Stamina efficiency and temperature tolerance.</xs:documentation></xs:annotation>
         </xs:attribute>
     </xs:attributeGroup>
+    <xs:attributeGroup name="EffectBlock">
+        <xs:annotation>
+            <xs:documentation>
+                Stat deltas for effects (spell/consumable/equipment payloads) and
+                requirement thresholds. Unlike StatBlock, every attribute defaults
+                to 0 — an omitted attribute means "no effect / no requirement",
+                never a phantom full heal or 100% damage.
+                Sign convention: on OFFENSIVE items negative values harm the target
+                (damage, debuffs) and positive values benefit the caster (self-buffs,
+                restores); on DEFENSIVE items positive values benefit the target
+                (healing, buffs) and negative values are costs to the caster.
+            </xs:documentation>
+        </xs:annotation>
+        <!-- Resources -->
+        <xs:attribute name="Health" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Health change. Offensive: negative damages the target, positive heals the caster. Defensive: positive heals, negative is a caster cost.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Stamina" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Stamina change or requirement.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Mana" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Mana change or requirement.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <!-- State -->
+        <xs:attribute name="Temperature" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Warming/cooling buff modifier.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <!-- Attributes -->
+        <xs:attribute name="Strength" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Strength buff/debuff or requirement.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Defense" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Defense buff/debuff or requirement.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Magic" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Magic buff/debuff or requirement.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Speed" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Speed buff/debuff or requirement.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Endurance" type="xs:float" use="optional" default="0.0">
+            <xs:annotation><xs:documentation>Endurance buff/debuff or requirement.</xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
     <xs:attributeGroup name="ProgressBlock">
         <xs:annotation>
             <xs:documentation>

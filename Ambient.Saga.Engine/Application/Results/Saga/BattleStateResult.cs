@@ -39,6 +39,26 @@ public class BattleStateResult
     public Combatant? EnemyCombatant { get; set; }
 
     /// <summary>
+    /// Companion combatants' current state (empty when the party has none)
+    /// </summary>
+    public List<Combatant> Companions { get; set; } = new();
+
+    /// <summary>
+    /// When <see cref="BattleState"/> is AwaitingReaction: the telegraphed attack's
+    /// tell ref, so a resuming UI can re-show the telegraph.
+    /// </summary>
+    public string? PendingTellRefName { get; set; }
+
+    /// <summary>Base damage of the pending telegraphed attack (AwaitingReaction only).</summary>
+    public float PendingTellBaseDamage { get; set; }
+
+    /// <summary>Authored reaction window in milliseconds (AwaitingReaction only).</summary>
+    public int PendingTellReactionWindowMs { get; set; }
+
+    /// <summary>UTC timestamp the tell was issued (AwaitingReaction only).</summary>
+    public DateTime? PendingTellIssuedAtUtc { get; set; }
+
+    /// <summary>
     /// Battle log messages (reconstructed from transactions)
     /// </summary>
     public List<string> BattleLog { get; set; } = new();

@@ -24,7 +24,7 @@ public class QuestProgressEvaluatorTests
         };
     }
 
-    private SagaTransaction CreateTransaction(SagaTransactionType type, Dictionary<string, string>? data = null)
+    private SagaTransaction CreateTransaction(SagaTransactionType type, Dictionary<string, string>? data = null, long sequenceNumber = 0)
     {
         var transaction = new SagaTransaction
         {
@@ -32,11 +32,49 @@ public class QuestProgressEvaluatorTests
             Type = type,
             AvatarId = TestAvatarId,
             Status = TransactionStatus.Committed,
+            SequenceNumber = sequenceNumber,
             LocalTimestamp = DateTime.UtcNow,
             Data = data ?? new Dictionary<string, string>()
         };
 
         return transaction;
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_AfterAbandonAndReAccept_DoesNotInheritPriorProgress()
+    {
+        // Defeat 3 bandits, abandon, re-accept: the old transactions must not
+        // pre-complete the objective of the NEW acceptance
+        var quest = new Quest { RefName = "BANDIT_QUEST", DisplayName = "Bandit Quest" };
+        var stage = new QuestStage { RefName = "HUNT" };
+        var objective = new QuestObjective
+        {
+            RefName = "DEFEAT_BANDITS",
+            Type = QuestObjectiveType.CharacterDefeated,
+            CharacterRef = "Bandit",
+            Threshold = 3
+        };
+
+        var questData = new Dictionary<string, string> { ["QuestRef"] = "BANDIT_QUEST" };
+        var defeatData = new Dictionary<string, string> { ["CharacterRef"] = "Bandit" };
+
+        var transactions = new List<SagaTransaction>
+        {
+            CreateTransaction(SagaTransactionType.QuestAccepted, new(questData), sequenceNumber: 1),
+            CreateTransaction(SagaTransactionType.CharacterDefeated, new(defeatData), sequenceNumber: 2),
+            CreateTransaction(SagaTransactionType.CharacterDefeated, new(defeatData), sequenceNumber: 3),
+            CreateTransaction(SagaTransactionType.CharacterDefeated, new(defeatData), sequenceNumber: 4),
+            CreateTransaction(SagaTransactionType.QuestAbandoned, new(questData), sequenceNumber: 5),
+            CreateTransaction(SagaTransactionType.QuestAccepted, new(questData), sequenceNumber: 6)
+        };
+
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, new World());
+
+        Assert.Equal(0, progress);
+
+        // ...and a defeat after the re-accept counts normally
+        transactions.Add(CreateTransaction(SagaTransactionType.CharacterDefeated, new(defeatData), sequenceNumber: 7));
+        Assert.Equal(1, QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, new World()));
     }
 
     private Quest CreateTestQuest()
@@ -246,15 +284,14 @@ public class QuestProgressEvaluatorTests
 
         var transactions = new List<SagaTransaction>
         {
+            // Production LootAwarded shape: packed per-family lists ("Ref:Quantity")
             CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
             {
-                ["ItemRef"] = "MOONFLOWER",
-                ["Quantity"] = "3"
+                ["Consumables"] = "MOONFLOWER:3"
             }),
             CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
             {
-                ["ItemRef"] = "MOONFLOWER",
-                ["Quantity"] = "2"
+                ["Consumables"] = "MOONFLOWER:2"
             })
         };
 
@@ -318,8 +355,7 @@ public class QuestProgressEvaluatorTests
             }),
             CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
             {
-                ["ItemRef"] = "BLOODY_KNIFE",
-                ["Quantity"] = "1"
+                ["Consumables"] = "BLOODY_KNIFE:1"
             })
         };
 
@@ -369,7 +405,7 @@ public class QuestProgressEvaluatorTests
         {
             CreateTransaction(SagaTransactionType.TriggerActivated, new Dictionary<string, string>
             {
-                ["TriggerRef"] = "TOWN"
+                ["SagaTriggerRef"] = "TOWN"
             })
             // Bandits not defeated - but it's optional
         };
@@ -618,10 +654,11 @@ public class QuestProgressEvaluatorTests
 
         var transactions = new List<SagaTransaction>
         {
+            // A selected choice is recorded as a visit to its target node
             CreateTransaction(SagaTransactionType.DialogueNodeVisited, new Dictionary<string, string>
             {
-                ["DialogueRef"] = "FINAL_ACCUSATION",
-                ["ChoiceRef"] = "GARDENER"
+                ["DialogueTreeRef"] = "FINAL_ACCUSATION",
+                ["DialogueNodeId"] = "GARDENER"
             })
         };
 
@@ -748,15 +785,14 @@ public class QuestProgressEvaluatorTests
             // Avatar obtained the item
             CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
             {
-                ["ItemRef"] = "SACRED_ARTIFACT",
-                ["Quantity"] = "1"
+                ["Consumables"] = "SACRED_ARTIFACT:1"
             }),
-            // Avatar then sold it
+            // Avatar then sold it (IsBuying=False is how TradeItemHandler records a sale)
             CreateTransaction(SagaTransactionType.ItemTraded, new Dictionary<string, string>
             {
                 ["ItemRef"] = "SACRED_ARTIFACT",
                 ["Quantity"] = "1",
-                ["Direction"] = "Sell"
+                ["IsBuying"] = "False"
             })
         };
 
@@ -792,8 +828,7 @@ public class QuestProgressEvaluatorTests
             // Avatar obtained the item and kept it
             CreateTransaction(SagaTransactionType.LootAwarded, new Dictionary<string, string>
             {
-                ["ItemRef"] = "SACRED_ARTIFACT",
-                ["Quantity"] = "1"
+                ["Consumables"] = "SACRED_ARTIFACT:1"
             })
         };
 

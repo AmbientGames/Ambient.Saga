@@ -128,7 +128,17 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
                 return SagaCommandResult.Failure(instance.InstanceId, "Dialogue session has already ended");
             }
 
+            // The session's tree can differ from the character's default (battle
+            // dialogue triggers open their own battle trees)
+            var sessionTreeRef = lastStarted.Data.GetValueOrDefault(TransactionDataKeys.DialogueTreeRef);
+            if (!string.IsNullOrEmpty(sessionTreeRef) && sessionTreeRef != dialogueTree.RefName &&
+                _world.DialogueTreesLookup.TryGetValue(sessionTreeRef, out var sessionTree))
+            {
+                dialogueTree = sessionTree;
+            }
+
             // Restore state from the transaction log - jump directly to the last visited node.
+            var entryNodeEvents = new List<DialogueSystemEvent>();
             var lastVisit = sessionTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueNodeVisited);
             if (lastVisit != null)
             {
@@ -137,7 +147,16 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
             }
             else
             {
-                engine.StartDialogue(dialogueTree);
+                // First command of the session: the entry node's actions execute and
+                // commit here (the state query is read-only and never runs them)
+                var startNodeOverride = lastStarted.Data.GetValueOrDefault(TransactionDataKeys.NodeId);
+                if (!string.IsNullOrEmpty(startNodeOverride))
+                    engine.StartDialogueAt(dialogueTree, startNodeOverride);
+                else
+                    engine.StartDialogue(dialogueTree);
+
+                // Preserve entry-node events — AdvanceDialogue clears the event queue
+                entryNodeEvents = engine.PendingEvents.ToList();
             }
 
             // Now advance the dialogue
@@ -157,7 +176,8 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
             System.Diagnostics.Debug.WriteLine($"[AdvanceDialogue] Advanced to node: {nextNode?.NodeId ?? "END"}");
 
             // Capture pending events BEFORE any EndDialogue call — EndDialogue clears the queue.
-            var pendingEvents = engine.PendingEvents.ToList();
+            // Entry-node events (captured before AdvanceDialogue cleared them) come first.
+            var pendingEvents = entryNodeEvents.Concat(engine.PendingEvents).ToList();
 
             // If the new current node is terminal, end the dialogue session.
             if (engine.IsCurrentNodeTerminal)
@@ -170,19 +190,27 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
                 System.Diagnostics.Debug.WriteLine($"[AdvanceDialogue] {pendingEvents.Count} pending events");
             }
 
-            // Dispatch quest events directly (business logic, not UI transitions)
+            // Dispatch quest events directly (business logic, not UI transitions).
+            // Authored order matters: a node's [CompleteQuest A, AcceptQuest B] must
+            // complete A before B's prerequisite check runs, and a failed nested
+            // command must be surfaced, not swallowed.
             bool gameComplete = false;
             string? completionQuestRef = null;
+            var questEventErrors = new List<string>();
             if (pendingEvents.Exists(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent)
                 && command.Avatar is AvatarEntity avatarEntity)
             {
-                for (int i = pendingEvents.Count - 1; i >= 0; i--)
+                var questEvents = pendingEvents
+                    .Where(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent)
+                    .ToList();
+                pendingEvents.RemoveAll(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent);
+
+                foreach (var evt in questEvents)
                 {
-                    var evt = pendingEvents[i];
                     switch (evt)
                     {
                         case AcceptQuestEvent acceptEvt:
-                            await _mediator.Send(new AcceptQuestCommand
+                            var acceptResult = await _mediator.Send(new AcceptQuestCommand
                             {
                                 AvatarId = command.AvatarId,
                                 SagaArcRef = acceptEvt.SagaRef,
@@ -190,7 +218,8 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
                                 QuestGiverRef = acceptEvt.QuestGiverRef,
                                 Avatar = avatarEntity
                             }, ct);
-                            pendingEvents.RemoveAt(i);
+                            if (!acceptResult.Successful)
+                                questEventErrors.Add($"AcceptQuest '{acceptEvt.QuestRef}' failed: {acceptResult.ErrorMessage}");
                             break;
 
                         case CompleteQuestEvent completeEvt:
@@ -203,25 +232,34 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
                                 Avatar = avatarEntity,
                                 DialogueDriven = true
                             }, ct);
-                            if (questResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
+                            if (!questResult.Successful)
+                            {
+                                questEventErrors.Add($"CompleteQuest '{completeEvt.QuestRef}' failed: {questResult.ErrorMessage}");
+                            }
+                            else if (questResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
                             {
                                 gameComplete = true;
                                 completionQuestRef = questResult.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string : null;
                             }
-                            pendingEvents.RemoveAt(i);
                             break;
 
                         case AbandonQuestEvent abandonEvt:
-                            await _mediator.Send(new AbandonQuestCommand
+                            var abandonResult = await _mediator.Send(new AbandonQuestCommand
                             {
                                 AvatarId = command.AvatarId,
                                 SagaArcRef = abandonEvt.SagaRef,
                                 QuestRef = abandonEvt.QuestRef,
                                 Avatar = avatarEntity
                             }, ct);
-                            pendingEvents.RemoveAt(i);
+                            if (!abandonResult.Successful)
+                                questEventErrors.Add($"AbandonQuest '{abandonEvt.QuestRef}' failed: {abandonResult.ErrorMessage}");
                             break;
                     }
+                }
+
+                foreach (var error in questEventErrors)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[AdvanceDialogue] {error}");
                 }
             }
 
@@ -229,22 +267,6 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
             var newTransactions = instance.Transactions.Skip(transactionsBefore).ToList();
 
             System.Diagnostics.Debug.WriteLine($"[AdvanceDialogue] Created {newTransactions.Count} transactions");
-
-            if (newTransactions.Count == 0)
-            {
-                return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), instance.Transactions.Count);
-            }
-
-            // Persist and commit
-            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
-
-            if (!committed)
-            {
-                return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
-            }
-
-            // Invalidate cache
-            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
             // Add pending events to result data
             var resultData = new Dictionary<string, object>();
@@ -258,6 +280,28 @@ internal sealed class AdvanceDialogueHandler : IRequestHandler<AdvanceDialogueCo
                 if (completionQuestRef != null)
                     resultData[TransactionDataKeys.CompletionQuestRef] = completionQuestRef;
             }
+            // Nested quest command failures don't fail the dialogue advance (the
+            // navigation itself succeeded) but must be visible to the caller
+            if (questEventErrors.Count > 0)
+            {
+                resultData[TransactionDataKeys.QuestEventErrors] = questEventErrors;
+            }
+
+            if (newTransactions.Count == 0)
+            {
+                return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), instance.Transactions.Count, resultData);
+            }
+
+            // Persist and commit
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
+
+            if (!committed)
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
+            }
+
+            // Invalidate cache
+            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
             return SagaCommandResult.Success(
                 instance.InstanceId,

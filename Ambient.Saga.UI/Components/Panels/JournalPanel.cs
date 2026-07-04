@@ -150,7 +150,7 @@ public class JournalPanel
         {
             foreach (var quest in viewModel.QuestLog.ActiveQuests!)
             {
-                RenderQuestEntry(quest, isCompleted: false, modalManager);
+                RenderQuestEntry(quest, isCompleted: false, modalManager, viewModel);
             }
         }
         else
@@ -174,7 +174,7 @@ public class JournalPanel
             {
                 foreach (var quest in viewModel.QuestLog.CompletedQuests!)
                 {
-                    RenderQuestEntry(quest, isCompleted: true, modalManager);
+                    RenderQuestEntry(quest, isCompleted: true, modalManager, viewModel);
                 }
             }
             else
@@ -184,7 +184,7 @@ public class JournalPanel
         }
     }
 
-    private void RenderQuestEntry(QuestDisplayItem quest, bool isCompleted, ModalManager modalManager)
+    private void RenderQuestEntry(QuestDisplayItem quest, bool isCompleted, ModalManager modalManager, SagaMainViewModel viewModel)
     {
         var bgColor = isCompleted
             ? new Vector4(0.0f, 0.15f, 0.0f, 0.3f)
@@ -241,7 +241,7 @@ public class JournalPanel
         ImGui.SetCursorPos(new Vector2(0, 0));
         if (ImGui.InvisibleButton($"quest_click_{quest.RefName}", new Vector2(ImGui.GetContentRegionAvail().X, cardHeight - ImGui.GetStyle().WindowPadding.Y * 2)))
         {
-            modalManager.OpenQuestDetail(quest.RefName);
+            modalManager.OpenQuestDetail(quest.RefName, viewModel);
         }
 
         if (ImGui.IsItemHovered())
@@ -360,7 +360,6 @@ public class JournalPanel
         if (character.CanDialogue) interactions.Add("Talk");
         if (character.CanTrade) interactions.Add("Trade");
         if (character.CanAttack) interactions.Add("Combat");
-        if (character.CanLoot) interactions.Add("Loot");
 
         if (interactions.Count > 0)
         {

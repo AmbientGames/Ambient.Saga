@@ -11,4 +11,11 @@ public class InitiatedInteractionResult
     public InteractableCharacter? Character { get; set; }
     public double Distance { get; set; }
     public int Priority { get; set; }
+
+    /// <summary>
+    /// The winning character initiates battle (proximity assault): effective traits
+    /// include Hostile with no truce trait (Disengaged/Spared). Mirrors
+    /// Character.Options.IsAssault so view models don't reach into trait logic.
+    /// </summary>
+    public bool IsAssault { get; set; }
 }

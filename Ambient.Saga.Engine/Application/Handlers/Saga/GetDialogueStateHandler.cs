@@ -110,9 +110,13 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
                 return new DialogueStateResult { IsActive = false, HasEnded = false };
             }
 
-            // Create dialogue engine with Saga context (characterRef was already extracted earlier)
+            // Create dialogue engine with Saga context (characterRef was already extracted
+            // earlier). The provider needs the SAME characterRef the command path passes:
+            // without it, conditions like IsInParty with an empty RefName ("the NPC I'm
+            // talking to") evaluate false here but true when the choice executes — hiding
+            // valid choices (e.g. "Leave my party") from the UI.
             var sagaContext = new SagaDialogueContext(instance, characterRef, query.AvatarId.ToString());
-            var stateProvider = new DirectDialogueStateProvider(_world, query.Avatar, _avatarProgressRepository, query.AvatarId.ToString());
+            var stateProvider = new DirectDialogueStateProvider(_world, query.Avatar, _avatarProgressRepository, query.AvatarId.ToString(), characterRef);
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
             // Restore state from the transaction log without re-executing actions or re-evaluating conditions.
@@ -127,9 +131,36 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
             }
             else
             {
-                // No visits yet - navigate from start node to resolve initial conditions
-                engine.StartDialogue(dialogueTree);
-                System.Diagnostics.Debug.WriteLine($"[GetDialogueState] No prior visits; navigated from start to: {engine.CurrentNode?.NodeId ?? "null"}");
+                // No visits yet - show the session's start node (battle dialogue
+                // triggers author per-moment entry points) or the tree default.
+                // RestoreToNode, NOT StartDialogue: this is a read-only query, and
+                // StartDialogue executes the first node's actions against the live
+                // avatar and stages transactions that are then thrown away — the
+                // first command (Select/Advance) is where the entry node actually
+                // executes and commits. Failed-condition auto-advance is replicated
+                // here read-only, matching NavigateToNode.
+                var startNodeOverride = lastStarted.Data.GetValueOrDefault(TransactionDataKeys.NodeId);
+                var startNodeId = !string.IsNullOrEmpty(startNodeOverride) ? startNodeOverride : dialogueTree.StartNodeId;
+
+                var startConditionEvaluator = new DialogueConditionEvaluator(stateProvider);
+                var displayNode = dialogueTree.Node?.FirstOrDefault(n => n.NodeId == startNodeId);
+                while (displayNode != null &&
+                       displayNode.Condition is { Length: > 0 } &&
+                       !startConditionEvaluator.EvaluateAll(displayNode.Condition, displayNode.ConditionLogic))
+                {
+                    displayNode = !string.IsNullOrEmpty(displayNode.NextNodeId)
+                        ? dialogueTree.Node?.FirstOrDefault(n => n.NodeId == displayNode.NextNodeId)
+                        : null;
+                }
+
+                if (displayNode == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("[GetDialogueState] No prior visits and no displayable start node");
+                    return new DialogueStateResult { IsActive = false, HasEnded = true };
+                }
+
+                engine.RestoreToNode(dialogueTree, displayNode.NodeId);
+                System.Diagnostics.Debug.WriteLine($"[GetDialogueState] No prior visits; showing start node: {displayNode.NodeId}");
             }
 
             // Get current node state
@@ -207,7 +238,9 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[GetDialogueState] ERROR: {ex.Message}");
+            // Degrading to an inactive conversation masks content bugs (a malformed condition
+            // once killed a shipped dialogue tree here) — keep the full exception in the log.
+            System.Diagnostics.Debug.WriteLine($"[GetDialogueState] ERROR: {ex}");
             return new DialogueStateResult { IsActive = false, HasEnded = false };
         }
     }

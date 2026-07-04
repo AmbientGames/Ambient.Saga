@@ -365,6 +365,40 @@ public class DefeatCharacterCommandTests : IDisposable
         Assert.Empty(tokenTxs);
     }
 
+    [Fact]
+    public async Task DefeatCharacter_SecondDefeat_NoDuplicateKillCreditOrTokens()
+    {
+        // Arrange: a token-granting character, defeated once already
+        var avatarId = Guid.NewGuid();
+        var characterInstanceId = await SpawnCharacter(avatarId, "DragonLair", "FlameGuardian");
+
+        var firstResult = await _mediator.Send(new DefeatCharacterCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "DragonLair",
+            CharacterInstanceId = characterInstanceId
+        });
+        Assert.True(firstResult.Successful);
+
+        // Act: report the same defeat again (double-dispatched battle end, replayed client, ...)
+        var secondResult = await _mediator.Send(new DefeatCharacterCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = "DragonLair",
+            CharacterInstanceId = characterInstanceId
+        });
+
+        // Assert: no-op success — no new transactions written
+        Assert.True(secondResult.Successful, secondResult.ErrorMessage);
+        Assert.Empty(secondResult.TransactionIds);
+
+        // Exactly one kill credit and one token award in the log
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "DragonLair");
+        var committed = instance.GetCommittedTransactions();
+        Assert.Single(committed.Where(t => t.Type == SagaTransactionType.CharacterDefeated));
+        Assert.Single(committed.Where(t => t.Type == SagaTransactionType.QuestTokenAwarded));
+    }
+
     public void Dispose()
     {
         _database?.Dispose();

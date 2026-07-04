@@ -16,9 +16,13 @@ namespace Ambient.Saga.UI.Components.Modals;
 public class ModalManager
 {
     // Modal instances
-    private BattleModal _battleModal = new();
     private PauseMenuModal _pauseMenuModal = new();
     private ISettingsPanel _settingsPanel;
+
+    // The registered battle adapter — kept so Update() ticks the SAME BattleModal
+    // instance the registry renders (reaction countdown, enemy-turn delay clearing,
+    // and pending battle dialogue effects all live on that instance).
+    private Adapters.BattleModalAdapter _battleModalAdapter = null!;
 
     // Modal stack for proper hierarchical handling
     private readonly ModalStack _modalStack = new();
@@ -85,17 +89,19 @@ public class ModalManager
     private void RegisterModalAdapters()
     {
         // Character context modals
-        _modalRegistry.Register(new Adapters.LootModalAdapter());
+        // Note: the legacy Loot modal was removed — looting flows through the
+        // MerchantTrade family (GeoCache, RemnantLoot, Market, Trade).
         _modalRegistry.Register(new Adapters.MerchantTradeModalAdapter());
 
         // Complex modals (need ModalManager reference)
         _modalRegistry.Register(new Adapters.DialogueModalAdapter(this));
-        var battleAdapter = new Adapters.BattleModalAdapter(this);
-        battleAdapter.AvatarDefeated += () => BattleDefeatRequested?.Invoke();
-        _modalRegistry.Register(battleAdapter);
+        _battleModalAdapter = new Adapters.BattleModalAdapter(this);
+        _battleModalAdapter.AvatarDefeated += () => BattleDefeatRequested?.Invoke();
+        _modalRegistry.Register(_battleModalAdapter);
 
-        // Quest modals (need IMediator)
-        _modalRegistry.Register(new Adapters.QuestModalAdapter(_mediator));
+        // Quest-log detail modal (needs IMediator). The signpost offer modal
+        // ("Quest"/QuestModalAdapter) was removed 2026-07-04 — quests are
+        // offered via dialogue.
         _modalRegistry.Register(new Adapters.QuestDetailModalAdapter(_mediator));
 
         // Note: Journal is now a panel (not a modal), accessed via J key
@@ -127,10 +133,8 @@ public class ModalManager
     public bool ShowArchetypeSelection => _modalStack.Contains("ArchetypeSelection");
     public bool ShowMerchantTrade => _modalStack.Contains("MerchantTrade");
     public bool ShowBossBattle => _modalStack.Contains("BossBattle");
-    public bool ShowQuest => _modalStack.Contains("Quest");
     public bool ShowQuestDetail => _modalStack.Contains("QuestDetail");
     public bool ShowDialogue => _modalStack.Contains("Dialogue");
-    public bool ShowLoot => _modalStack.Contains("Loot");
     public bool ShowPauseMenu => _modalStack.Contains("PauseMenu");
     public bool ShowSettings => _modalStack.Contains("Settings");
     public bool ShowJournal => _modalStack.Contains("Journal");
@@ -138,8 +142,20 @@ public class ModalManager
     // Selected character for interactions
     public CharacterViewModel? SelectedCharacter { get; set; }
 
-    // Quest context (for quest signpost interactions)
-    private SagaMainViewModel? _questViewModel;
+    /// <summary>
+    /// Battle-affecting dialogue events (HealSelf, ChangeStance, ChangeAffinity,
+    /// EndBattle) deposited by the DialogueModal during mid-battle conversations.
+    /// The BattleModal drains this each frame and applies them to the running battle.
+    /// </summary>
+    public List<Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events.DialogueSystemEvent>? PendingBattleDialogueEffects { get; set; }
+
+    /// <summary>
+    /// One-shot dialogue start override set by battle dialogue triggers: the boss's
+    /// battle tree and the authored entry node (battle_enraged, ...). Consumed by
+    /// the DialogueModal on its next initialization.
+    /// </summary>
+    public (string TreeRef, string? NodeId)? DialogueStartOverride { get; set; }
+
     // Check if any modal is currently open
     public bool IsAnyModalOpen => _modalStack.HasModals;
 
@@ -195,7 +211,7 @@ public class ModalManager
     {
         if (ShowBossBattle)
         {
-            _battleModal.Update(deltaTime);
+            _battleModalAdapter.Update(deltaTime);
         }
     }
 
@@ -207,7 +223,7 @@ public class ModalManager
         // The following modals have been migrated to the registry pattern:
         // - WorldSelection, ArchetypeSelection, Characters
         // - Achievements, WorldCatalog, MerchantTrade, BossBattle
-        // - Quest, QuestLog, QuestDetail, Dialogue, Loot
+        // - QuestDetail, Dialogue
         //
         // Only PauseMenu and Settings remain with manual rendering due to
         // special requirements (PauseMenu uses ModalStack directly, Settings
@@ -243,14 +259,11 @@ public class ModalManager
         var context = new CharacterContext(viewModel, character);
 
         // Open appropriate modal based on available interactions (determined by character traits and state)
-        if (character.CanLoot)
+        // Dead characters route through dialogue too — that is where the
+        // RemnantLoot/trade flow attaches.
+        if (character.CanDialogue)
         {
-            // Defeated character - show loot
-            OpenRegisteredModal("Loot", context);
-        }
-        else if (character.CanDialogue)
-        {
-            // Living character with dialogue - start conversation
+            // Character with dialogue - start conversation
             OpenRegisteredModal("Dialogue", context);
         }
         else if (character.CanAttack && character.IsAlive)
@@ -271,37 +284,48 @@ public class ModalManager
     }
 
 
-    public void OpenQuestSignpost(string questRef, string sagaRef, string signpostRef, SagaMainViewModel viewModel)
+    /// <summary>
+    /// Proximity assault: a hostile character initiated battle
+    /// (SagaMainViewModel.AssaultRequested). Opens the battle modal exactly like
+    /// clicking Attack on the character (OpenCharacterInteraction's battle branch) —
+    /// straight into battle, no pre-fight conversation; menace speech is the
+    /// character's battle_opening dialogue trigger. Returns false without opening
+    /// when any modal is already active (dialogue, trade, pause, a running battle):
+    /// the assault is deferred, not dropped — the view model re-raises on its next
+    /// ~1 s interaction check while the avatar remains in range.
+    /// </summary>
+    public bool TryOpenAssault(CharacterViewModel character, SagaMainViewModel viewModel)
     {
-        _questViewModel = viewModel;
+        if (HasActiveModal())
+            return false;
 
-        // Create quest context and open via registry
-        var context = new QuestContext(questRef, sagaRef, signpostRef, viewModel);
-        OpenRegisteredModal("Quest", context);
+        SelectedCharacter = character;
+        OpenRegisteredModal("BossBattle", new CharacterContext(viewModel, character));
+        return true;
     }
 
-    public void OpenQuestDetail(string questRef)
+    public void OpenQuestDetail(string questRef, SagaMainViewModel viewModel)
     {
-        if (_questViewModel?.Avatar == null) return;
+        if (viewModel.Avatar == null) return;
 
-        _ = OpenQuestDetailAsync(questRef);
+        _ = OpenQuestDetailAsync(questRef, viewModel);
     }
 
-    private async Task OpenQuestDetailAsync(string questRef)
+    private async Task OpenQuestDetailAsync(string questRef, SagaMainViewModel viewModel)
     {
         try
         {
             // Find saga containing this quest using Application layer query
             var sagaRef = await _mediator.Send(new GetSagaForQuestQuery
             {
-                AvatarId = _questViewModel!.Avatar!.Id,
+                AvatarId = viewModel.Avatar!.Id,
                 QuestRef = questRef
             });
 
             if (sagaRef == null) return;
 
             // Create quest detail context and open via registry
-            var context = new QuestDetailContext(questRef, sagaRef, _questViewModel);
+            var context = new QuestDetailContext(questRef, sagaRef, viewModel);
             OpenRegisteredModal("QuestDetail", context);
         }
         catch (Exception ex)
@@ -313,7 +337,6 @@ public class ModalManager
     public void CloseAll()
     {
         SelectedCharacter = null;
-        _questViewModel = null;
 
         // Clear the modal stack - this is the single source of truth
         _modalStack.Clear();

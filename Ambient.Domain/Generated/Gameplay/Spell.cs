@@ -22,9 +22,9 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class Spell : DegradableAcquirable {
         
-        private Attributes effectsField;
+        private EffectAttributes effectsField;
         
-        private Attributes minimumStatsField;
+        private EffectAttributes minimumStatsField;
         
         private float durabilityLossField;
         
@@ -53,7 +53,7 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        public Attributes Effects {
+        public EffectAttributes Effects {
             get {
                 return this.effectsField;
             }
@@ -63,7 +63,7 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        public Attributes MinimumStats {
+        public EffectAttributes MinimumStats {
             get {
                 return this.minimumStatsField;
             }

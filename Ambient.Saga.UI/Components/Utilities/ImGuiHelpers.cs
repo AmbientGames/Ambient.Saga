@@ -15,7 +15,7 @@ public static class ImGuiSizes
 
 /// <summary>
 /// Helper methods for rendering common UI components in ImGui.
-/// See IMGUI-GUIDELINES.md for comprehensive layout documentation.
+/// See docs/UI-IMGUI-GUIDELINES.md (repo root) for comprehensive layout documentation.
 /// </summary>
 public static class ImGuiHelpers
 {
@@ -87,7 +87,7 @@ public static class ImGuiHelpers
     /// Renders an Attributes display showing stat modifiers with +/- formatting
     /// Matches WPF AttributesDisplay.xaml functionality
     /// </summary>
-    public static void RenderAttributes(Attributes? effects, string title = "Effects:", string warmingLabel = "Warming:", string coolingLabel = "Cooling:")
+    public static void RenderAttributes(IStatAttributes? effects, string title = "Effects:", string warmingLabel = "Warming:", string coolingLabel = "Cooling:")
     {
         if (effects == null) return;
 

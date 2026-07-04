@@ -72,6 +72,50 @@ public class BattleTriggerEvaluatorTests
         Assert.Empty(results);
     }
 
+    [Fact]
+    public void Evaluate_HealthBelow_FractionValue_ReadAsPercent()
+    {
+        // Shipped content authors health thresholds as normalized fractions
+        // (Value="0.5" = 50%) — the evaluator must scale them to the percent context
+        var evaluator = new BattleTriggerEvaluator();
+        var triggers = new[]
+        {
+            new CharacterTrigger
+            {
+                Condition = BattleTriggerCondition.HealthBelow,
+                Value = 0.5f, // 50%
+                DialogueTreeRef = "BossPhase2"
+            }
+        };
+
+        var below = new BattleTriggerContext { EnemyHealthPercent = 30f };
+        var above = new BattleTriggerContext { EnemyHealthPercent = 75f };
+
+        Assert.Single(evaluator.Evaluate(triggers, below));
+        Assert.Empty(evaluator.Evaluate(triggers, above));
+    }
+
+    [Fact]
+    public void Evaluate_AvatarHealthBelow_FractionValue_ReadAsPercent()
+    {
+        var evaluator = new BattleTriggerEvaluator();
+        var triggers = new[]
+        {
+            new CharacterTrigger
+            {
+                Condition = BattleTriggerCondition.AvatarHealthBelow,
+                Value = 0.25f, // 25%
+                DialogueTreeRef = "BossMocking"
+            }
+        };
+
+        var below = new BattleTriggerContext { AvatarHealthPercent = 15f };
+        var above = new BattleTriggerContext { AvatarHealthPercent = 40f };
+
+        Assert.Single(evaluator.Evaluate(triggers, below));
+        Assert.Empty(evaluator.Evaluate(triggers, above));
+    }
+
     #endregion
 
     #region HealthAbove Trigger Tests

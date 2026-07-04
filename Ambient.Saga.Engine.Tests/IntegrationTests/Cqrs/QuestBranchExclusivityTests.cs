@@ -210,6 +210,41 @@ public class QuestBranchExclusivityTests : IDisposable
             }
         };
 
+        // Quest whose single branch ends the quest (Branch.NextStage = null) —
+        // choosing it cascades ChooseBranch → AdvanceStage → CompleteQuest, and
+        // it is the world's completion quest, so GameComplete must surface
+        // through the whole chain (B11)
+        var finaleQuest = new Quest
+        {
+            RefName = "FINALE_QUEST",
+            DisplayName = "The Finale",
+            Description = "Ends the game",
+            Stages = new QuestStages
+            {
+                StartStage = "FINAL_CHOICE",
+                Stage = new[]
+                {
+                    new QuestStage
+                    {
+                        RefName = "FINAL_CHOICE",
+                        DisplayName = "The Final Choice",
+                        Branches = new QuestStageBranches
+                        {
+                            Branch = new[]
+                            {
+                                new QuestBranch
+                                {
+                                    RefName = "END_IT",
+                                    DisplayName = "End it all",
+                                    NextStage = null // no next stage: quest completes
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
         var sagaArc = new SagaArc
         {
             RefName = "TEST_SAGA",
@@ -225,7 +260,7 @@ public class QuestBranchExclusivityTests : IDisposable
                 Gameplay = new GameplayComponents
                 {
                     SagaArcs = new[] { sagaArc },
-                    Quests = new[] { exclusiveBranchQuest, nonExclusiveBranchQuest }
+                    Quests = new[] { exclusiveBranchQuest, nonExclusiveBranchQuest, finaleQuest }
                 }
             }
         };
@@ -233,7 +268,9 @@ public class QuestBranchExclusivityTests : IDisposable
         world.SagaArcLookup[sagaArc.RefName] = sagaArc;
         world.QuestsLookup[exclusiveBranchQuest.RefName] = exclusiveBranchQuest;
         world.QuestsLookup[nonExclusiveBranchQuest.RefName] = nonExclusiveBranchQuest;
+        world.QuestsLookup[finaleQuest.RefName] = finaleQuest;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger>();
+        world.WorldConfiguration.CompletionQuestRef = "FINALE_QUEST";
 
         return world;
     }
@@ -631,6 +668,129 @@ public class QuestBranchExclusivityTests : IDisposable
         Assert.Equal("PATH_A", branchTransaction.GetData<string>(TransactionDataKeys.BranchRef));
         Assert.Equal("The Path of Light", branchTransaction.GetData<string>(TransactionDataKeys.DisplayName));
         Assert.Equal("LIGHT_PATH", branchTransaction.GetData<string>(TransactionDataKeys.NextStage));
+    }
+
+    #endregion
+
+    #region Re-Acceptance Tests (B7)
+
+    [Fact]
+    public async Task ChooseQuestBranch_AfterAbandonAndReaccept_DifferentBranchSucceeds()
+    {
+        // Arrange: accept, choose PATH_A, abandon
+        var avatar = CreateTestAvatar();
+
+        await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "EXCLUSIVE_BRANCH_QUEST",
+            QuestGiverRef = "NPC",
+            Avatar = avatar
+        });
+
+        var firstChoice = await _mediator.Send(new ChooseQuestBranchCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "EXCLUSIVE_BRANCH_QUEST",
+            StageRef = "CHOICE_STAGE",
+            BranchRef = "PATH_A",
+            Avatar = avatar
+        });
+        Assert.True(firstChoice.Successful, firstChoice.ErrorMessage);
+
+        var abandonResult = await _mediator.Send(new AbandonQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "EXCLUSIVE_BRANCH_QUEST",
+            Avatar = avatar
+        });
+        Assert.True(abandonResult.Successful, abandonResult.ErrorMessage);
+
+        // Re-accept: a fresh run of the quest
+        var reacceptResult = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "EXCLUSIVE_BRANCH_QUEST",
+            QuestGiverRef = "NPC",
+            Avatar = avatar
+        });
+        Assert.True(reacceptResult.Successful, reacceptResult.ErrorMessage);
+
+        // Act: choose the OTHER branch — the previous run's PATH_A choice must
+        // not trip the exclusivity check or route the stage advance
+        var secondChoice = await _mediator.Send(new ChooseQuestBranchCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "EXCLUSIVE_BRANCH_QUEST",
+            StageRef = "CHOICE_STAGE",
+            BranchRef = "PATH_B",
+            Avatar = avatar
+        });
+
+        // Assert
+        Assert.True(secondChoice.Successful, secondChoice.ErrorMessage);
+
+        // The new run advanced along PATH_B, not the stale PATH_A route
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+        var saga = _world.SagaArcLookup["TEST_SAGA"];
+        var triggers = _world.SagaTriggersLookup["TEST_SAGA"];
+        var state = new SagaStateMachine(saga, triggers, _world).ReplayToNow(instance);
+
+        Assert.True(state.ActiveQuests.TryGetValue("EXCLUSIVE_BRANCH_QUEST", out var questState));
+        Assert.Equal("SHADOW_PATH", questState.CurrentStage);
+        Assert.Equal("PATH_B", questState.ChosenBranch);
+    }
+
+    #endregion
+
+    #region GameComplete Propagation Tests (B11)
+
+    [Fact]
+    public async Task ChooseQuestBranch_CompletionQuestFinalBranch_PropagatesGameComplete()
+    {
+        // Arrange: FINALE_QUEST is the world's CompletionQuestRef and its only
+        // branch has no next stage, so choosing it cascades
+        // ChooseBranch → AdvanceStage → CompleteQuest
+        var avatar = CreateTestAvatar();
+
+        await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "FINALE_QUEST",
+            QuestGiverRef = "NPC",
+            Avatar = avatar
+        });
+
+        // Act
+        var result = await _mediator.Send(new ChooseQuestBranchCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "FINALE_QUEST",
+            StageRef = "FINAL_CHOICE",
+            BranchRef = "END_IT",
+            Avatar = avatar
+        });
+
+        // Assert: the GameComplete signal produced by the nested CompleteQuest
+        // must surface on the outermost result (it used to be discarded)
+        Assert.True(result.Successful, result.ErrorMessage);
+        Assert.True(result.Data.ContainsKey(TransactionDataKeys.GameComplete));
+        Assert.Equal(true, result.Data[TransactionDataKeys.GameComplete]);
+        Assert.Equal("FINALE_QUEST", result.Data[TransactionDataKeys.CompletionQuestRef]);
+
+        // And the quest actually completed
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+        var saga = _world.SagaArcLookup["TEST_SAGA"];
+        var triggers = _world.SagaTriggersLookup["TEST_SAGA"];
+        var state = new SagaStateMachine(saga, triggers, _world).ReplayToNow(instance);
+        Assert.Contains("FINALE_QUEST", state.CompletedQuests);
     }
 
     #endregion

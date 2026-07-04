@@ -633,14 +633,19 @@ public class SagaInteractionServiceTests
             3, // Count
             seed);
 
-        // Verify transactions match expected positions
+        // Verify transactions match expected positions. Positions round-trip through
+        // "F6"-formatted strings, so compare with an explicit tolerance — rounding both
+        // sides to N digits (Assert.Equal precision) flakes when a coordinate lands on
+        // a rounding boundary for an unlucky seed.
         for (var i = 0; i < 3; i++)
         {
             var actualX = double.Parse(spawnTransactions[i].Data["X"]);
             var actualZ = double.Parse(spawnTransactions[i].Data["Z"]);
 
-            Assert.Equal(expectedPositions[i].x, actualX, precision: 4);
-            Assert.Equal(expectedPositions[i].z, actualZ, precision: 4);
+            Assert.True(Math.Abs(expectedPositions[i].x - actualX) < 1e-4,
+                $"X[{i}]: expected {expectedPositions[i].x}, got {actualX} (seed {seed})");
+            Assert.True(Math.Abs(expectedPositions[i].z - actualZ) < 1e-4,
+                $"Z[{i}]: expected {expectedPositions[i].z}, got {actualZ} (seed {seed})");
         }
     }
 

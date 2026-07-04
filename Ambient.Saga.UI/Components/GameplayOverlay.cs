@@ -113,6 +113,10 @@ public class GameplayOverlay
     // Panel state - which panel is currently shown (game mode: one at a time)
     private ActivePanel _activePanel = ActivePanel.None;
 
+    // Panel rendered last frame — used to detect the Journal opening so its History
+    // tab can be refreshed (RecentTransactions otherwise only loads at world load).
+    private ActivePanel _lastRenderedPanel = ActivePanel.None;
+
     /// <summary>
     /// Gets or sets which panel is currently active.
     /// Setting to the same value toggles it off.
@@ -288,6 +292,14 @@ public class GameplayOverlay
             toastTopOffset = (hudText1Lines * lineHeight) + (backgroundPadding * 2) + sectionGap;
         }
         _messageOverlay.Render(io.DisplaySize, hudHeight, toastTopOffset);
+
+        // Refresh Journal history when the Journal opens (fire-and-forget; the
+        // ViewModel publishes the refreshed list atomically when it completes)
+        if (_activePanel == ActivePanel.Journal && _lastRenderedPanel != ActivePanel.Journal)
+        {
+            _ = viewModel.RefreshRecentTransactionsAsync();
+        }
+        _lastRenderedPanel = _activePanel;
 
         // Render the active panel (if any)
         switch (_activePanel)

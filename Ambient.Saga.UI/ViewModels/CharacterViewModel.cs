@@ -82,11 +82,5 @@ public partial class CharacterViewModel : ObservableObject
     private bool _canAttack;
 
     [ObservableProperty]
-    private bool _canLoot;
-
-    [ObservableProperty]
-    private bool _hasBeenLooted;
-
-    [ObservableProperty]
     private Vector4 _markerColor = new Vector4(1f, 0.65f, 0f, 1f); // Orange
 }

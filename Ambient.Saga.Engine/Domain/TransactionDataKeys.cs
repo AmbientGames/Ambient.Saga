@@ -28,7 +28,10 @@ public static class TransactionDataKeys
     public const string CharacterType = "CharacterType";
     public const string ChoiceRef = "ChoiceRef";
     public const string ChosenBranch = "ChosenBranch";
+    public const string BattleOutcome = "BattleOutcome";
     public const string CleanseTargetSelf = "CleanseTargetSelf";
+    public const string Companions = "Companions";
+    public const string CompanionStatesAfterTurn = "CompanionStatesAfterTurn";
     public const string CleansesStatusEffects = "CleansesStatusEffects";
     public const string ClearedSlots = "ClearedSlots";
     public const string Completed = "Completed";
@@ -71,10 +74,14 @@ public static class TransactionDataKeys
     public const string EnemyEnergy = "EnemyEnergy";
     public const string EnemyEquipment = "EnemyEquipment";
     public const string EnemyEquippedSlots = "EnemyEquippedSlots";
+    public const string EnemyEnergyAfterTurn = "EnemyEnergyAfterTurn";
     public const string EnemyHealth = "EnemyHealth";
     public const string EnemyHealthAfter = "EnemyHealthAfter";
+    public const string EnemyHealthAfterTurn = "EnemyHealthAfterTurn";
     public const string EnemyMagic = "EnemyMagic";
     public const string EnemySpeed = "EnemySpeed";
+    public const string EnemyStatModifiers = "EnemyStatModifiers";
+    public const string EnemyStatusEffects = "EnemyStatusEffects";
     public const string EnemyStrength = "EnemyStrength";
     public const string EnterRadius = "EnterRadius";
     public const string Equipment = "Equipment";
@@ -102,7 +109,6 @@ public static class TransactionDataKeys
     public const string LoadoutSlotSnapshot = "LoadoutSlotSnapshot";
     public const string LocationRef = "LocationRef";
     public const string Longitude = "Longitude";
-    public const string LootSource = "LootSource";
     public const string Magic = "Magic";
     public const string Mana = "Mana";
     public const string NewCondition = "NewCondition";
@@ -132,6 +138,10 @@ public static class TransactionDataKeys
     public const string AvatarHealth = "AvatarHealth";
     public const string AvatarMagic = "AvatarMagic";
     public const string AvatarSpeed = "AvatarSpeed";
+    public const string AvatarEnergyAfterTurn = "AvatarEnergyAfterTurn";
+    public const string AvatarHealthAfterTurn = "AvatarHealthAfterTurn";
+    public const string AvatarStatModifiers = "AvatarStatModifiers";
+    public const string AvatarStatusEffects = "AvatarStatusEffects";
     public const string AvatarStrength = "AvatarStrength";
     public const string AvatarVictory = "AvatarVictory";
     public const string PreviousEquipmentRef = "PreviousEquipmentRef";
@@ -143,6 +153,7 @@ public static class TransactionDataKeys
     public const string QuantityAfter = "QuantityAfter";
     public const string QuantityBefore = "QuantityBefore";
     public const string QuestDisplayName = "QuestDisplayName";
+    public const string QuestEventErrors = "QuestEventErrors";
     public const string QuestGiverRef = "QuestGiverRef";
     public const string QuestReceiverRef = "QuestReceiverRef";
     public const string QuestRef = "QuestRef";

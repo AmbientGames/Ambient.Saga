@@ -72,13 +72,15 @@ public static class SagaProximityService
     /// <param name="avatar">Avatar for availability checking</param>
     /// <param name="world">World data</param>
     /// <param name="worldRepository">Repository for checking character/feature state (optional)</param>
+    /// <param name="progressRepo">Avatar progress table for cross-arc quest-token gating (optional; without it token gates fall back to per-instance state)</param>
     /// <returns>All interactions at this position, sorted by priority and distance</returns>
     public static async Task<List<SagaInteraction>> QueryAllInteractionsAtPositionAsync(
         double modelX,
         double modelZ,
         AvatarBase? avatar,
         IWorld world,
-        IWorldStateRepository worldRepository = null)
+        IWorldStateRepository worldRepository = null,
+        IAvatarProgressRepository? progressRepo = null)
     {
         var interactions = new List<SagaInteraction>();
 
@@ -105,7 +107,7 @@ public static class SagaProximityService
 
                 if (isWithin)
                 {
-                    var triggerStatus = await DetermineTriggerStatusAsync(saga, trigger, avatar, world, worldRepository);
+                    var triggerStatus = await DetermineTriggerStatusAsync(saga, trigger, avatar, world, worldRepository, progressRepo);
                     interactions.Add(new SagaInteraction
                     {
                         Type = SagaInteractionType.SagaTrigger,

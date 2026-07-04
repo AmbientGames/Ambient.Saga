@@ -301,13 +301,31 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                         sequenceNumbers.Add(transaction.SequenceNumber);
                     }
 
-                    // Project cross-arc state before commit so it's in the same transaction
-                    if (_avatarProgressRepository != null && instance.OwnerAvatarId.HasValue)
+                    // Project cross-arc state before commit so it's in the same transaction.
+                    // Shared multiplayer instances have no owner — project per transaction
+                    // author instead (tokens/reputation earned on shared arcs used to never
+                    // reach AvatarQuestTokens, soft-locking cross-arc gating).
+                    if (_avatarProgressRepository != null)
                     {
-                        _avatarProgressRepository.ProjectTransactions(
-                            instance.OwnerAvatarId.Value,
-                            instance.SagaRef,
-                            transactions);
+                        if (instance.OwnerAvatarId.HasValue)
+                        {
+                            _avatarProgressRepository.ProjectTransactions(
+                                instance.OwnerAvatarId.Value,
+                                instance.SagaRef,
+                                transactions);
+                        }
+                        else
+                        {
+                            foreach (var authorGroup in transactions
+                                         .Where(t => Guid.TryParse(t.AvatarId, out var authorId) && authorId != Guid.Empty)
+                                         .GroupBy(t => Guid.Parse(t.AvatarId)))
+                            {
+                                _avatarProgressRepository.ProjectTransactions(
+                                    authorGroup.Key,
+                                    instance.SagaRef,
+                                    authorGroup.ToList());
+                            }
+                        }
                     }
 
                     _database.Commit();
@@ -552,12 +570,42 @@ public class SagaInstanceRepository : ISagaInstanceRepository
 
             _instances.Update(instance);
 
-            // Keep any cached copy in sync so the next GetOrCreate doesn't overwrite with stale values
-            if (_instanceCache.TryGetValue($"{instance.OwnerAvatarId}|{instance.SagaRef}", out var cached))
+            // Keep any cached copy in sync so the next GetOrCreate doesn't overwrite with
+            // stale values. Use CompositeKey — hand-building "{OwnerAvatarId}|{SagaRef}"
+            // rendered "|ref" for multiplayer (null owner) instead of the cached "NULL|ref",
+            // so shared instances never received watermark updates and re-synced endlessly.
+            if (_instanceCache.TryGetValue(instance.CompositeKey, out var cached))
             {
                 cached.LastSyncedSequenceNumber = lastSyncedSequenceNumber;
                 cached.LastSyncedAt = lastSyncedAt;
                 cached.ServerVersion = serverVersion;
+            }
+
+            return Task.CompletedTask;
+        }
+    }
+
+    public Task UpdatePullWatermarkAsync(Guid instanceId, DateTime lastPulledServerTimestamp, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+            if (instance == null)
+                return Task.CompletedTask;
+
+            // Never move the watermark backwards
+            if (instance.LastPulledServerTimestamp == null || lastPulledServerTimestamp > instance.LastPulledServerTimestamp)
+            {
+                instance.LastPulledServerTimestamp = lastPulledServerTimestamp;
+                _instances.Update(instance);
+
+                if (_instanceCache.TryGetValue(instance.CompositeKey, out var cached))
+                {
+                    cached.LastPulledServerTimestamp = lastPulledServerTimestamp;
+                }
             }
 
             return Task.CompletedTask;

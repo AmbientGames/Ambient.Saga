@@ -67,6 +67,11 @@ public class DialogueModalAdapter : IModal
     {
         System.Diagnostics.Debug.WriteLine("[DialogueModal] Closed");
 
+        // Reset modal state so reopening doesn't show the previous conversation's
+        // stale tree (ModalRegistry never renders with isOpen=false, so the modal's
+        // own reset-on-close path never ran).
+        _modal.Reset();
+
         // Seal the dialogue session so the player can re-open it later. Fire-and-forget:
         // clearing client state happens synchronously inside CloseCurrentDialogueAsync so
         // repeat interactions aren't blocked even if the server round-trip is in flight.

@@ -134,6 +134,23 @@ public class BattleEngine
     }
 
     /// <summary>
+    /// Resume a battle mid-fight from externally reconstructed combatant state.
+    /// Persisted turn results are folded into the combatants by the caller
+    /// (see ExecuteBattleTurnHandler.ReconstructBattleState); no turns are
+    /// re-simulated, so replay cannot double-apply damage or diverge from the
+    /// recorded history. Command boundaries always sit at the avatar's turn.
+    /// </summary>
+    public void ResumeBattle(int turnNumber)
+    {
+        if (State != BattleState.NotStarted)
+            return;
+
+        State = BattleState.AvatarTurn;
+        _turnNumber = Math.Max(1, turnNumber);
+        CombatLog.Add($"=== BATTLE RESUMED (turn {_turnNumber}) ===");
+    }
+
+    /// <summary>
     /// Execute the enemy's turn using their IBattleMind tactical AI.
     /// </summary>
     public CombatEvent ExecuteEnemyTurn()
@@ -154,10 +171,19 @@ public class BattleEngine
         if (!_enemy.IsAlive)
         {
             CheckBattleEnd();
+            // Fully stamped: this event is persisted as a turn transaction, and the
+            // reconstruction/persistence fold reads the health/energy fields back
             return new CombatEvent
             {
+                ActionType = BattleActionType.Attack, // Placeholder — no action taken
+                ActorName = _enemy.DisplayName,
+                TargetName = _enemy.DisplayName,
                 Success = true,
-                Message = $"{_enemy.DisplayName} succumbed to status effects!"
+                Message = $"{_enemy.DisplayName} succumbed to status effects!",
+                TurnNumber = _turnNumber,
+                IsAvatarTurn = false,
+                TargetHealthAfter = _enemy.Health,
+                ActorEnergyAfter = _enemy.Stamina
             };
         }
 
@@ -214,6 +240,14 @@ public class BattleEngine
         {
             CheckBattleEnd();
         }
+        else if (State == BattleState.EnemyTurn)
+        {
+            // A failed enemy action still yields the turn — the state machine used
+            // to stay wedged in EnemyTurn forever when the AI's decision failed
+            CombatLog.Add($"{_enemy.DisplayName} fumbles and loses the turn!");
+            State = BattleState.AvatarTurn;
+            _turnNumber++;
+        }
 
         return action;
     }
@@ -266,8 +300,15 @@ public class BattleEngine
             AdvanceCompanionTurn();
             return new CombatEvent
             {
+                ActionType = BattleActionType.Attack, // Placeholder — no action taken
+                ActorName = companion.DisplayName,
+                TargetName = companion.DisplayName,
                 Success = true,
-                Message = $"{companion.DisplayName} is defeated and cannot act"
+                Message = $"{companion.DisplayName} is defeated and cannot act",
+                TurnNumber = _turnNumber,
+                IsAvatarTurn = false,
+                TargetHealthAfter = companion.Health,
+                ActorEnergyAfter = companion.Stamina
             };
         }
 
@@ -282,8 +323,15 @@ public class BattleEngine
             AdvanceCompanionTurn();
             return new CombatEvent
             {
+                ActionType = BattleActionType.Attack, // Placeholder — no action taken
+                ActorName = companion.DisplayName,
+                TargetName = companion.DisplayName,
                 Success = true,
-                Message = $"{companion.DisplayName} succumbed to status effects!"
+                Message = $"{companion.DisplayName} succumbed to status effects!",
+                TurnNumber = _turnNumber,
+                IsAvatarTurn = false,
+                TargetHealthAfter = companion.Health,
+                ActorEnergyAfter = companion.Stamina
             };
         }
 
@@ -407,8 +455,15 @@ public class BattleEngine
             CheckBattleEnd();
             return new CombatEvent
             {
+                ActionType = BattleActionType.Attack, // Placeholder — no action taken
+                ActorName = _avatar.DisplayName,
+                TargetName = _avatar.DisplayName,
                 Success = false,
-                Message = $"{_avatar.DisplayName} succumbed to status effects!"
+                Message = $"{_avatar.DisplayName} succumbed to status effects!",
+                TurnNumber = _turnNumber,
+                IsAvatarTurn = true,
+                TargetHealthAfter = _avatar.Health,
+                ActorEnergyAfter = _avatar.Stamina
             };
         }
 
@@ -468,92 +523,111 @@ public class BattleEngine
 
     private CombatEvent ExecuteDecision(Combatant actor, Combatant target, CombatAction decision)
     {
+        CombatEvent result;
+
         // PHASE 3: Check for Stun - prevents ALL actions
         if (HasStatusEffectOfType(actor, StatusEffectType.Stun))
         {
             CombatLog.Add($"💫 {actor.DisplayName} is stunned and cannot act!");
-            return new CombatEvent
+            result = new CombatEvent
             {
                 ActionType = BattleActionType.Attack, // Placeholder
                 ActorName = actor.DisplayName,
+                TargetName = target.DisplayName,
                 Success = false,
                 Message = $"{actor.DisplayName} is stunned and cannot act!"
             };
         }
-
         // PHASE 3: Check for Silence - prevents spell casting
-        if (decision.ActionType == ActionType.CastSpell && HasStatusEffectOfType(actor, StatusEffectType.Silence))
+        else if (decision.ActionType == ActionType.CastSpell && HasStatusEffectOfType(actor, StatusEffectType.Silence))
         {
             CombatLog.Add($"🔇 {actor.DisplayName} is silenced and cannot cast spells!");
-            return new CombatEvent
+            result = new CombatEvent
             {
                 ActionType = BattleActionType.SpecialAttack,
                 ActorName = actor.DisplayName,
+                TargetName = target.DisplayName,
                 Success = false,
                 Message = $"{actor.DisplayName} is silenced and cannot cast spells!"
             };
         }
-
         // PHASE 3: Check for Root - prevents fleeing
-        if (decision.ActionType == ActionType.Flee && HasStatusEffectOfType(actor, StatusEffectType.Root))
+        else if (decision.ActionType == ActionType.Flee && HasStatusEffectOfType(actor, StatusEffectType.Root))
         {
             CombatLog.Add($"🌿 {actor.DisplayName} is rooted and cannot flee!");
-            return new CombatEvent
+            result = new CombatEvent
             {
                 ActionType = BattleActionType.Flee,
                 ActorName = actor.DisplayName,
+                TargetName = target.DisplayName,
                 Success = false,
                 Message = $"{actor.DisplayName} is rooted and cannot flee!"
             };
         }
-
-        Equipment? weapon = null;
-        Spell? spell = null;
-        Consumable? consumable = null;
-
-        if (decision.Parameter != null && _world != null)
+        else
         {
-            switch (decision.ActionType)
+            Equipment? weapon = null;
+            Spell? spell = null;
+            Consumable? consumable = null;
+
+            if (decision.Parameter != null && _world != null)
             {
-                case ActionType.Attack:
-                    weapon = _world.GetEquipmentByRefName(decision.Parameter);
-                    break;
+                switch (decision.ActionType)
+                {
+                    case ActionType.Attack:
+                        weapon = _world.GetEquipmentByRefName(decision.Parameter);
+                        break;
 
-                case ActionType.CastSpell:
-                    spell = _world.GetSpellByRefName(decision.Parameter);
-                    break;
+                    case ActionType.CastSpell:
+                        spell = _world.GetSpellByRefName(decision.Parameter);
+                        break;
 
-                case ActionType.UseConsumable:
-                    consumable = _world.GetConsumableByRefName(decision.Parameter);
-                    break;
-                case ActionType.AdjustLoadout:
-                case ActionType.ChangeLoadout:
-                    break;
+                    case ActionType.UseConsumable:
+                        consumable = _world.GetConsumableByRefName(decision.Parameter);
+                        break;
+                    case ActionType.AdjustLoadout:
+                    case ActionType.ChangeLoadout:
+                        break;
+                }
             }
+
+            // Clear defensive states when taking offensive actions (attack, spell, consumable, flee)
+            // Defensive actions (Defend, AdjustLoadout, ChangeLoadout) set their own states
+            if (decision.ActionType == ActionType.Attack ||
+                decision.ActionType == ActionType.CastSpell ||
+                decision.ActionType == ActionType.UseConsumable ||
+                decision.ActionType == ActionType.Flee)
+            {
+                actor.IsDefending = false;
+                actor.IsAdjusting = false;
+            }
+
+            result = decision.ActionType switch
+            {
+                ActionType.Attack => weapon == null ? ExecuteAttack(actor, target) : ExecuteWeaponAttack(actor, target, weapon),
+                ActionType.CastSpell => ExecuteSpellAttack(actor, target, spell!),
+                ActionType.UseConsumable => ExecuteUseConsumable(actor, target, consumable!),
+                ActionType.Defend => ExecuteDefend(actor),
+                ActionType.Flee => ExecuteFlee(actor),
+                ActionType.AdjustLoadout => ExecuteAdjustLoadout(actor, decision.Parameter),
+                ActionType.ChangeLoadout => ExecuteChangeLoadout(actor, decision.Parameter),
+                _ => throw new NotImplementedException("Unknown Action")
+            };
         }
 
-        // Clear defensive states when taking offensive actions (attack, spell, consumable, flee)
-        // Defensive actions (Defend, AdjustLoadout, ChangeLoadout) set their own states
-        if (decision.ActionType == ActionType.Attack ||
-            decision.ActionType == ActionType.CastSpell ||
-            decision.ActionType == ActionType.UseConsumable ||
-            decision.ActionType == ActionType.Flee)
-        {
-            actor.IsDefending = false;
-            actor.IsAdjusting = false;
-        }
+        // Stamp the transaction-logging fields — persisted turn transactions carry these,
+        // and replay/state reconstruction read them back. Failure events (stun/silence/
+        // root above, "not enough energy" from the executors) MUST be stamped too: they
+        // are persisted like any other turn, and an un-stamped event (empty Target,
+        // TargetHealthAfter=0) used to zero a living combatant during reconstruction.
+        result.TurnNumber = _turnNumber;
+        result.DecisionType = decision.ActionType;
+        result.ItemRefName ??= decision.Parameter;
+        result.IsAvatarTurn = ReferenceEquals(actor, _avatar);
+        result.TargetHealthAfter = target.Health;
+        result.ActorEnergyAfter = actor.Stamina;
 
-        return decision.ActionType switch
-        {
-            ActionType.Attack => weapon == null ? ExecuteAttack(actor, target) : ExecuteWeaponAttack(actor, target, weapon),
-            ActionType.CastSpell => ExecuteSpellAttack(actor, target, spell!),
-            ActionType.UseConsumable => ExecuteUseConsumable(actor, target, consumable!),
-            ActionType.Defend => ExecuteDefend(actor),
-            ActionType.Flee => ExecuteFlee(actor),
-            ActionType.AdjustLoadout => ExecuteAdjustLoadout(actor, decision.Parameter),
-            ActionType.ChangeLoadout => ExecuteChangeLoadout(actor, decision.Parameter),
-            _ => throw new NotImplementedException("Unknown Action")
-        };
+        return result;
     }
 
     private void RecordAction(CombatEvent action)
@@ -590,7 +664,66 @@ public class BattleEngine
         // Apply status effect modifiers
         effectiveStrength *= GetStatusEffectStatModifier(combatant, "Strength");
 
-        return effectiveStrength;
+        effectiveStrength += GetEquipmentPassiveModifier(combatant, "Strength");
+
+        return ApplyCombatStatModifier(combatant, "Strength", effectiveStrength);
+    }
+
+    /// <summary>
+    /// Applies the additive buff/debuff delta from spells and consumables on top of
+    /// the multiplier pipeline, floored at 10% of the multiplied value so debuffs
+    /// weaken but never zero out a stat (mirrors the status-effect floor).
+    /// </summary>
+    private static float ApplyCombatStatModifier(Combatant combatant, string statName, float value)
+    {
+        if (!combatant.CombatStatModifiers.TryGetValue(statName, out var delta) || delta == 0f)
+            return value;
+
+        return Math.Max(value * 0.1f, value + delta);
+    }
+
+    /// <summary>
+    /// Sum of the passive stat modifiers from currently equipped items, scaled by
+    /// condition ("stat modifiers applied while equipped" per Equipment.xsd — worn
+    /// armor's Defense finally does something). Computed live from CombatProfile so
+    /// mid-battle loadout changes take effect immediately and nothing goes stale.
+    /// </summary>
+    private float GetEquipmentPassiveModifier(Combatant combatant, string statName)
+    {
+        if (_world == null || combatant.CombatProfile == null)
+            return 0f;
+
+        var total = 0f;
+        foreach (var equipmentRef in combatant.CombatProfile.Values)
+        {
+            if (string.IsNullOrEmpty(equipmentRef))
+                continue;
+
+            // Non-equipment CombatProfile entries (e.g. the Stance slot) resolve to null
+            var equipment = _world.TryGetEquipmentByRefName(equipmentRef);
+            if (equipment?.Effects == null)
+                continue;
+
+            var value = statName switch
+            {
+                "Strength" => equipment.Effects.Strength,
+                "Defense" => equipment.Effects.Defense,
+                "Speed" => equipment.Effects.Speed,
+                "Magic" => equipment.Effects.Magic,
+                _ => 0f
+            };
+            if (value == 0f)
+                continue;
+
+            var condition = 1f;
+            var entry = combatant.Capabilities?.Equipment?.FirstOrDefault(e => e.EquipmentRef == equipmentRef);
+            if (entry != null)
+                condition = entry.Condition;
+
+            total += value * condition;
+        }
+
+        return total;
     }
 
     /// <summary>
@@ -615,7 +748,9 @@ public class BattleEngine
         // Apply status effect modifiers
         effectiveDefense *= GetStatusEffectStatModifier(combatant, "Defense");
 
-        return effectiveDefense;
+        effectiveDefense += GetEquipmentPassiveModifier(combatant, "Defense");
+
+        return ApplyCombatStatModifier(combatant, "Defense", effectiveDefense);
     }
 
     /// <summary>
@@ -640,7 +775,9 @@ public class BattleEngine
         // Apply status effect modifiers
         effectiveSpeed *= GetStatusEffectStatModifier(combatant, "Speed");
 
-        return effectiveSpeed;
+        effectiveSpeed += GetEquipmentPassiveModifier(combatant, "Speed");
+
+        return ApplyCombatStatModifier(combatant, "Speed", effectiveSpeed);
     }
 
     /// <summary>
@@ -665,7 +802,9 @@ public class BattleEngine
         // Apply status effect modifiers
         effectiveMagic *= GetStatusEffectStatModifier(combatant, "Magic");
 
-        return effectiveMagic;
+        effectiveMagic += GetEquipmentPassiveModifier(combatant, "Magic");
+
+        return ApplyCombatStatModifier(combatant, "Magic", effectiveMagic);
     }
 
     // ============================================================================
@@ -698,9 +837,11 @@ public class BattleEngine
         var variance = _random.Next(80, 121) / 100f; // 80% to 120%
         var damage = Math.Max(0.01f, baseDamage * variance); // Minimum 1% damage, not 100%
 
-        // Critical hit chance based on Speed (with stance multiplier)
+        // Critical hit chance based on Speed (with stance multiplier).
+        // Stats are normalized 0-1: full Speed = the 30% cap (the old /100 was
+        // leftover 0-100-scale arithmetic that capped real crit chance at ~1%)
         var effectiveSpeed = GetEffectiveSpeed(attacker);
-        var critChance = Math.Min(0.3f, effectiveSpeed / 100f);
+        var critChance = Math.Min(0.3f, effectiveSpeed * 0.3f);
         var isCritical = _random.NextDouble() < critChance;
 
         if (isCritical)
@@ -811,9 +952,12 @@ public class BattleEngine
                 weaponCondition = equipped.Condition;
         }
 
-        // Calculate base damage: Strength (with stance multiplier) scaled by weapon multiplier
+        // Calculate base damage: Strength (with stance multiplier) scaled by weapon
+        // multiplier, reduced by the defender's Defense (armor finally matters —
+        // weapon attacks used to bypass Defense entirely)
         var effectiveStrength = GetEffectiveStrength(attacker);
-        var baseDamage = effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
+        var weaponDefense = GetEffectiveDefense(defender);
+        var baseDamage = Math.Max(0f, effectiveStrength * WEAPON_DAMAGE_MULTIPLIER - weaponDefense / 2f);
 
         // Apply affinity multiplier to base damage only
         // (effect damage already includes affinity from EffectApplier)
@@ -834,14 +978,15 @@ public class BattleEngine
         }
 
         // Critical hit calculation - base chance from speed + weapon CriticalHitBonus
+        // (normalized 0-1 stats: full Speed = the 30% base cap)
         var effectiveSpeed = GetEffectiveSpeed(attacker);
-        var baseCritChance = Math.Min(0.3f, effectiveSpeed / 100f);
+        var baseCritChance = Math.Min(0.3f, effectiveSpeed * 0.3f);
         var critChance = Math.Min(0.5f, baseCritChance + weapon.CriticalHitBonus); // Cap at 50%
         var isCritical = _random.NextDouble() < critChance;
 
         // Apply weapon effects using EffectApplier
         var effects = EffectApplier.ApplyEffects(
-            weapon.Effects ?? new Attributes(),
+            weapon.Effects ?? new EffectAttributes(),
             weapon.AffinityRef,
             weaponCondition,
             attacker.AffinityRef,
@@ -1002,59 +1147,105 @@ public class BattleEngine
                 spellCondition = known.Condition;
         }
 
-        // Calculate base damage: Magic (with stance multiplier) scaled by spell multiplier
-        var effectiveMagic = GetEffectiveMagic(attacker);
-        var baseDamage = effectiveMagic * SPELL_DAMAGE_MULTIPLIER;
+        // Defensive spells (the XSD default UseType) heal/restore the caster instead of
+        // attacking, so base damage and affinity matchups only apply to offensive spells.
+        var isOffensive = spell.UseType == ItemUseType.Offensive;
 
-        // Apply affinity multiplier to base damage only
-        // (effect damage already includes affinity from EffectApplier)
-        var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
-            spell.AffinityRef ?? attacker.AffinityRef,
-            defender.AffinityRef,
-            _world);
-
-        baseDamage *= affinityMultiplier;
-
-        if (affinityMultiplier > 1.0f)
+        var baseDamage = 0.0f;
+        if (isOffensive)
         {
-            CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
-        }
-        else if (affinityMultiplier < 1.0f)
-        {
-            CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
+            // Calculate base damage: Magic (with stance multiplier) scaled by spell
+            // multiplier, reduced by a quarter of the defender's Defense (magic
+            // partially bypasses armor, consistent with Defend being less effective
+            // against spells than physical attacks)
+            var effectiveMagic = GetEffectiveMagic(attacker);
+            var spellDefense = GetEffectiveDefense(defender);
+            baseDamage = Math.Max(0f, effectiveMagic * SPELL_DAMAGE_MULTIPLIER - spellDefense / 4f);
+
+            // Apply affinity multiplier to base damage only
+            // (effect damage already includes affinity from EffectApplier)
+            var affinityMultiplier = EffectApplier.CalculateAffinityMultiplier(
+                spell.AffinityRef ?? attacker.AffinityRef,
+                defender.AffinityRef,
+                _world);
+
+            baseDamage *= affinityMultiplier;
+
+            if (affinityMultiplier > 1.0f)
+            {
+                CombatLog.Add($"Affinity advantage! ({affinityMultiplier:F1}x damage)");
+            }
+            else if (affinityMultiplier < 1.0f)
+            {
+                CombatLog.Add($"Affinity resistance! ({affinityMultiplier:F1}x damage)");
+            }
         }
 
         // Apply spell effects using EffectApplier
         // Use spell's UseType to determine if offensive (damage) or defensive (healing/buff)
         var effects = EffectApplier.ApplyEffects(
-            spell.Effects ?? new Attributes(),
+            spell.Effects ?? new EffectAttributes(),
             spell.AffinityRef,
             spellCondition,
             attacker.AffinityRef,
             defender.AffinityRef,
-            isOffensive: spell.UseType == ItemUseType.Offensive,
+            isOffensive: isOffensive,
             _world,
             spell.DisplayName);
 
-        // Sum up Health damage from effects (should be negative)
-        // Also apply caster costs (negative Mana/Stamina)
-        var effectDamage = 0.0;
+        // Route resource effects (Stamina and Mana share one energy pool). Stat
+        // buff/debuff modifiers are applied AFTER the energy check below — applying
+        // them here let a failed cast ("Not enough energy!") stack battle-long stat
+        // modifiers for free, infinitely.
+        var effectDamage = 0.0;      // negative Health on the defender (extra damage)
+        var healing = 0.0;           // positive Health to the caster via defensive use
+        var selfHealthDelta = 0.0;   // caster Health riding on the cast (self-heal or cost)
+        var energyRestore = 0.0;     // positive Stamina/Mana back to the caster
+        var enemyEnergyDrain = 0.0;  // negative Stamina/Mana on the defender
         var manaCost = 0.0;
         var staminaCost = 0.0;
 
         foreach (var effect in effects)
         {
-            if (effect.StatName == "Health" && !effect.AppliedToAttacker)
+            if (effect.StatName == "Health")
             {
-                effectDamage += effect.Change;  // Already negative for offensive
+                if (!effect.AppliedToAttacker)
+                {
+                    if (isOffensive)
+                        effectDamage += effect.Change;  // negative: damage on the defender
+                    else
+                        healing += effect.Change;       // positive: healing (target = caster)
+                }
+                else
+                {
+                    selfHealthDelta += effect.Change;
+                }
             }
-            else if (effect.StatName == "Mana" && effect.AppliedToAttacker)
+            else if (effect.StatName == "Stamina" || effect.StatName == "Mana")
             {
-                manaCost += Math.Abs(effect.Change);
-            }
-            else if (effect.StatName == "Stamina" && effect.AppliedToAttacker)
-            {
-                staminaCost += Math.Abs(effect.Change);
+                if (effect.AppliedToAttacker)
+                {
+                    if (effect.Change < 0)
+                    {
+                        if (effect.StatName == "Mana")
+                            manaCost += Math.Abs(effect.Change);
+                        else
+                            staminaCost += Math.Abs(effect.Change);
+                    }
+                    else
+                    {
+                        energyRestore += effect.Change;
+                    }
+                }
+                else if (effect.Change < 0)
+                {
+                    enemyEnergyDrain += effect.Change;
+                }
+                else
+                {
+                    // Defensive restores refill the caster's shared energy pool
+                    energyRestore += effect.Change;
+                }
             }
         }
 
@@ -1073,38 +1264,88 @@ public class BattleEngine
         // Apply energy cost
         attacker.Stamina = Math.Max(0, attacker.Stamina - (float)totalCost);
 
-        // Total damage = base + effect damage
-        var totalDamage = Math.Max(BASE_DAMAGE_MINIMUM, (float)(baseDamage + Math.Abs(effectDamage)));
+        // Buff/debuff payloads: Strength/Defense/Speed/Magic effects become additive
+        // combat modifiers. EffectApplier routes by side: on offensive items negative
+        // values debuff the defender and positive values buff the caster; on
+        // defensive items positive values buff the caster and negatives are costs.
+        ApplyCombatStatEffects(effects, attacker, isOffensive ? defender : attacker, spell.DisplayName);
 
-        // Apply defending bonus (less effective against spells)
-        if (defender.IsDefending)
+        var totalDamage = 0.0f;
+        var totalHealing = 0.0f;
+        if (isOffensive)
         {
-            totalDamage *= 0.7f;  // Spells only reduced to 70% instead of 50%
-            CombatLog.Add($"{defender.DisplayName}'s defense partially reduces spell damage!");
-        }
-        else if (defender.IsAdjusting)
-        {
-            totalDamage *= 0.90f;  // 10% reduction against spells (less effective than physical defense)
-            CombatLog.Add($"{defender.DisplayName}'s defensive positioning slightly reduces spell damage!");
-        }
+            // Total damage = base + effect damage
+            totalDamage = Math.Max(BASE_DAMAGE_MINIMUM, (float)(baseDamage + Math.Abs(effectDamage)));
 
-        // PHASE 5: Apply Vulnerable status effect (increases damage taken)
-        var spellVulnerabilityMultiplier = GetVulnerabilityMultiplier(defender);
-        if (spellVulnerabilityMultiplier > 1.0f)
-        {
-            totalDamage *= spellVulnerabilityMultiplier;
-            CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({spellVulnerabilityMultiplier:F1}x damage taken)");
-        }
+            // Apply defending bonus (less effective against spells)
+            if (defender.IsDefending)
+            {
+                totalDamage *= 0.7f;  // Spells only reduced to 70% instead of 50%
+                CombatLog.Add($"{defender.DisplayName}'s defense partially reduces spell damage!");
+            }
+            else if (defender.IsAdjusting)
+            {
+                totalDamage *= 0.90f;  // 10% reduction against spells (less effective than physical defense)
+                CombatLog.Add($"{defender.DisplayName}'s defensive positioning slightly reduces spell damage!");
+            }
 
-        // Apply damage
-        defender.Health = Math.Max(0, defender.Health - totalDamage);
+            // PHASE 5: Apply Vulnerable status effect (increases damage taken)
+            var spellVulnerabilityMultiplier = GetVulnerabilityMultiplier(defender);
+            if (spellVulnerabilityMultiplier > 1.0f)
+            {
+                totalDamage *= spellVulnerabilityMultiplier;
+                CombatLog.Add($"💔 {defender.DisplayName} is vulnerable! ({spellVulnerabilityMultiplier:F1}x damage taken)");
+            }
 
-        CombatLog.Add($"{attacker.DisplayName} casts {spell.DisplayName} for {totalDamage * 100:F1}% damage!");
-        if (totalCost > 0)
-        {
-            CombatLog.Add($"({totalCost * 100:F1}% energy used)");
+            // Apply damage
+            defender.Health = Math.Max(0, defender.Health - totalDamage);
+
+            // Self effects riding on the attack (e.g. Bloodlust heals/energizes the caster)
+            if (selfHealthDelta != 0)
+            {
+                attacker.Health = Math.Clamp(attacker.Health + (float)selfHealthDelta, 0, Combatant.MAX_STAT);
+            }
+            if (energyRestore > 0)
+            {
+                attacker.Stamina = Math.Min(Combatant.MAX_STAT, attacker.Stamina + (float)energyRestore);
+            }
+            if (enemyEnergyDrain < 0)
+            {
+                defender.Stamina = Math.Max(0, defender.Stamina + (float)enemyEnergyDrain);
+                CombatLog.Add($"{defender.DisplayName} loses {Math.Abs(enemyEnergyDrain) * 100:F0}% energy!");
+            }
+
+            CombatLog.Add($"{attacker.DisplayName} casts {spell.DisplayName} for {totalDamage * 100:F1}% damage!");
+            if (totalCost > 0)
+            {
+                CombatLog.Add($"({totalCost * 100:F1}% energy used)");
+            }
+            CombatLog.Add($"{defender.DisplayName} HP: {defender.HealthPercent:F1}%");
         }
-        CombatLog.Add($"{defender.DisplayName} HP: {defender.HealthPercent:F1}%");
+        else
+        {
+            // Defensive: heal/restore the caster (selfHealthDelta carries any
+            // authored self-cost, e.g. blood-magic style trade-offs)
+            totalHealing = (float)healing;
+            var netHealthChange = totalHealing + (float)selfHealthDelta;
+            if (netHealthChange != 0)
+            {
+                attacker.Health = Math.Clamp(attacker.Health + netHealthChange, 0, Combatant.MAX_STAT);
+            }
+            if (energyRestore > 0)
+            {
+                attacker.Stamina = Math.Min(Combatant.MAX_STAT, attacker.Stamina + (float)energyRestore);
+            }
+
+            CombatLog.Add(totalHealing > 0
+                ? $"{attacker.DisplayName} casts {spell.DisplayName}, restoring {totalHealing * 100:F1}% health!"
+                : $"{attacker.DisplayName} casts {spell.DisplayName}!");
+            if (totalCost > 0)
+            {
+                CombatLog.Add($"({totalCost * 100:F1}% energy used)");
+            }
+            CombatLog.Add($"{attacker.DisplayName} HP: {attacker.HealthPercent:F1}%");
+        }
 
         // Degrade spell condition slightly
         if (attacker.Capabilities?.Spells != null && spell.DurabilityLoss > 0)
@@ -1124,7 +1365,7 @@ public class BattleEngine
         string? appliedStatusEffect = null;
         if (!string.IsNullOrEmpty(spell.StatusEffectRef))
         {
-            var effectTarget = spell.UseType == ItemUseType.Offensive ? defender : attacker;
+            var effectTarget = isOffensive ? defender : attacker;
             appliedStatusEffect = TryApplyStatusEffect(
                 spell.StatusEffectRef,
                 spell.StatusEffectChance,
@@ -1144,13 +1385,37 @@ public class BattleEngine
         {
             ActionType = BattleActionType.SpecialAttack,  // Using SpecialAttack type for spells
             ActorName = attacker.DisplayName,
-            TargetName = defender.DisplayName,
+            TargetName = isOffensive ? defender.DisplayName : attacker.DisplayName,
             Damage = totalDamage,
+            Healing = totalHealing,
             IsCritical = false,
             Success = true,
             Message = $"{attacker.DisplayName} casts {spell.DisplayName}!",
             StatusEffectApplied = appliedStatusEffect
         };
+    }
+
+    /// <summary>
+    /// Applies Strength/Defense/Speed/Magic effect results as additive combat
+    /// modifiers (battle-scoped buffs/debuffs). Caster-side effects (negative,
+    /// AppliedToAttacker) land on the actor; target-side effects land on the
+    /// given effect target — the caster for defensive use, the defender for
+    /// offensive (where EffectApplier already inverted the sign into a debuff).
+    /// </summary>
+    private void ApplyCombatStatEffects(EffectApplier.EffectResult[] effects, Combatant actor, Combatant effectTarget, string sourceName)
+    {
+        foreach (var effect in effects)
+        {
+            if (effect.StatName is not ("Strength" or "Defense" or "Speed" or "Magic"))
+                continue;
+
+            var recipient = effect.AppliedToAttacker ? actor : effectTarget;
+            recipient.CombatStatModifiers.TryGetValue(effect.StatName, out var current);
+            recipient.CombatStatModifiers[effect.StatName] = current + (float)effect.Change;
+
+            var sign = effect.Change >= 0 ? "+" : "";
+            CombatLog.Add($"{recipient.DisplayName}: {sign}{effect.Change * 100:F0}% {effect.StatName} ({sourceName})");
+        }
     }
 
     private CombatEvent ExecuteUseConsumable(Combatant user, Combatant target, Consumable consumable)
@@ -1193,7 +1458,7 @@ public class BattleEngine
 
         // Apply consumable effects using consumable's UseType
         var effects = EffectApplier.ApplyEffects(
-            consumable.Effects ?? new Attributes(),
+            consumable.Effects ?? new EffectAttributes(),
             consumable.AffinityRef,
             1.0f,  // Consumables don't degrade
             user.AffinityRef,
@@ -1202,29 +1467,40 @@ public class BattleEngine
             _world,
             consumable.DisplayName);
 
-        // Apply effects to appropriate target
+        // Buff/debuff payloads become additive combat modifiers on the effect target
+        ApplyCombatStatEffects(effects, user, effectTarget, consumable.DisplayName);
+
+        // Apply resource effects. EffectApplier routes by side: on offensive items
+        // negative values harm the target (thrown weapons, poisons) and positive
+        // values benefit the user; on defensive items positives benefit the target
+        // (the user in self-use flows) and negatives are costs to the user.
         var totalHealthChange = 0.0f;
         foreach (var effect in effects)
         {
-            if (effect.StatName == "Health" && !effect.AppliedToAttacker)
+            if (effect.StatName == "Health")
             {
                 var change = (float)effect.Change;
-                effectTarget.Health = Math.Clamp(effectTarget.Health + change, 0, Combatant.MAX_STAT);
-                totalHealthChange += change;
-            }
-            else if (effect.StatName == "Stamina" || effect.StatName == "Mana")
-            {
-                // Energy costs/restores
                 if (effect.AppliedToAttacker)
                 {
-                    // Cost to user
-                    user.Stamina = Math.Max(0, user.Stamina + (float)effect.Change);
+                    user.Health = Math.Clamp(user.Health + change, 0, Combatant.MAX_STAT);
                 }
                 else
                 {
-                    // Restore to target
-                    var energyRestore = (float)effect.Change;
-                    effectTarget.Stamina = Math.Min(Combatant.MAX_STAT, effectTarget.Stamina + energyRestore);
+                    effectTarget.Health = Math.Clamp(effectTarget.Health + change, 0, Combatant.MAX_STAT);
+                    totalHealthChange += change;
+                }
+            }
+            else if (effect.StatName == "Stamina" || effect.StatName == "Mana")
+            {
+                if (effect.AppliedToAttacker)
+                {
+                    // Cost (negative) or self-restore (positive) to the user
+                    user.Stamina = Math.Clamp(user.Stamina + (float)effect.Change, 0, Combatant.MAX_STAT);
+                }
+                else
+                {
+                    // Restore (positive) or drain (negative) on the effect target
+                    effectTarget.Stamina = Math.Clamp(effectTarget.Stamina + (float)effect.Change, 0, Combatant.MAX_STAT);
                 }
             }
         }
@@ -1507,7 +1783,9 @@ public class BattleEngine
 
     private CombatEvent ExecuteFlee(Combatant fleer)
     {
-        var fleeChance = 0.5 + fleer.Speed / 200f; // Base 50% + speed bonus
+        // Base 50% + up to +45% from Speed (normalized 0-1; the old /200 was
+        // leftover 0-100-scale arithmetic that gave at most +0.5%)
+        var fleeChance = Math.Min(0.95, 0.5 + GetEffectiveSpeed(fleer) * 0.45f);
 
         if (_random.NextDouble() < fleeChance)
         {
@@ -1642,7 +1920,7 @@ public class BattleEngine
     /// Check if combatant meets minimum stat requirements for an item.
     /// Returns a failed CombatEvent if requirements not met, null if OK.
     /// </summary>
-    private CombatEvent? CheckMinimumStats(Combatant combatant, Attributes minimumStats, string itemName)
+    private CombatEvent? CheckMinimumStats(Combatant combatant, EffectAttributes minimumStats, string itemName)
     {
         // Check each stat that has a minimum requirement (values > 0 are requirements)
         if (minimumStats.Strength > 0 && combatant.Strength < minimumStats.Strength)
@@ -1840,8 +2118,10 @@ public class BattleEngine
                 }
             }
 
-            // Duration decrement only happens at StartOfTurn (to avoid double-counting)
-            if (timing == ApplicationMethod.StartOfTurn)
+            // Duration decrement only happens at StartOfTurn (to avoid double-counting).
+            // DurationTurns=0 is authored as "permanent until cleansed" (StatusEffects.xsd)
+            // — those effects never tick down or expire here.
+            if (timing == ApplicationMethod.StartOfTurn && statusEffect.DurationTurns > 0)
             {
                 active.RemainingTurns--;
                 if (active.RemainingTurns <= 0)
@@ -2023,22 +2303,24 @@ public class BattleEngine
 
         if (!string.IsNullOrEmpty(decision.Parameter) && _world != null)
         {
-            // Use spell formula if the AI chose a spell
+            // Use spell formula if the AI chose a spell (mirrors ExecuteSpellAttack
+            // including the Defense term, so the telegraphed stakes match reality)
             if (decision.ActionType == ActionType.CastSpell)
             {
                 var effectiveMagic = GetEffectiveMagic(attacker);
-                baseDamage = effectiveMagic * SPELL_DAMAGE_MULTIPLIER;
+                baseDamage = Math.Max(0f, effectiveMagic * SPELL_DAMAGE_MULTIPLIER - GetEffectiveDefense(target) / 4f);
                 var spell = _world.GetSpellByRefName(decision.Parameter);
                 affinityRef = spell?.AffinityRef ?? attacker.AffinityRef;
             }
             else
             {
-                // Use weapon attack formula if the AI chose a weapon
+                // Use weapon attack formula if the AI chose a weapon (mirrors
+                // ExecuteWeaponAttack including the Defense term)
                 var weapon = _world.TryGetEquipmentByRefName(decision.Parameter);
                 if (weapon != null)
                 {
                     var effectiveStrength = GetEffectiveStrength(attacker);
-                    baseDamage = effectiveStrength * WEAPON_DAMAGE_MULTIPLIER;
+                    baseDamage = Math.Max(0f, effectiveStrength * WEAPON_DAMAGE_MULTIPLIER - GetEffectiveDefense(target) / 2f);
                     affinityRef = weapon.AffinityRef ?? attacker.AffinityRef;
                 }
                 else

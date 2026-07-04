@@ -96,9 +96,13 @@ public class CharacterInteractionOptions
     public bool CanAttack { get; set; }
 
     /// <summary>
-    /// Can loot this character (usually only if defeated and not yet looted)
+    /// This character initiates battle on proximity (proximity assault): its
+    /// EFFECTIVE traits (template traits merged with runtime TraitAssigned/
+    /// TraitRemoved transactions during replay) include Hostile and no truce
+    /// trait (Disengaged from a successful flee, or Spared) suppresses it.
+    /// Computed engine-side so hosts never re-derive trait logic.
     /// </summary>
-    public bool CanLoot { get; set; }
+    public bool IsAssault { get; set; }
 
     /// <summary>
     /// Whether the interacting avatar is the owner of this saga arc.

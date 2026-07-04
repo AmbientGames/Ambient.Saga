@@ -72,24 +72,36 @@ internal sealed class StartDialogueHandler : IRequestHandler<StartDialogueComman
                 return SagaCommandResult.Failure(instance.InstanceId, $"Character template '{characterState.CharacterRef}' not found");
             }
 
-            // Check if character has dialogue
-            if (characterTemplate.Interactable == null)
+            // Resolve the tree: an explicit override (battle dialogue triggers open
+            // their own battle trees) or the character's Interactable default
+            string dialogueTreeRef;
+            if (!string.IsNullOrEmpty(command.DialogueTreeRefOverride))
             {
-                return SagaCommandResult.Failure(instance.InstanceId,
-                    $"Character '{characterTemplate.RefName}' has no Interactable section defined. Add <Interactable><DialogueTreeRef>...</DialogueTreeRef></Interactable> to the character definition.");
+                dialogueTreeRef = command.DialogueTreeRefOverride;
             }
-
-            if (string.IsNullOrEmpty(characterTemplate.Interactable.DialogueTreeRef))
+            else
             {
-                return SagaCommandResult.Failure(instance.InstanceId,
-                    $"Character '{characterTemplate.RefName}' has no DialogueTreeRef. Add <DialogueTreeRef>your_dialogue_tree</DialogueTreeRef> to the character's Interactable section.");
+                // Check if character has dialogue
+                if (characterTemplate.Interactable == null)
+                {
+                    return SagaCommandResult.Failure(instance.InstanceId,
+                        $"Character '{characterTemplate.RefName}' has no Interactable section defined. Add <Interactable><DialogueTreeRef>...</DialogueTreeRef></Interactable> to the character definition.");
+                }
+
+                if (string.IsNullOrEmpty(characterTemplate.Interactable.DialogueTreeRef))
+                {
+                    return SagaCommandResult.Failure(instance.InstanceId,
+                        $"Character '{characterTemplate.RefName}' has no DialogueTreeRef. Add <DialogueTreeRef>your_dialogue_tree</DialogueTreeRef> to the character's Interactable section.");
+                }
+
+                dialogueTreeRef = characterTemplate.Interactable.DialogueTreeRef;
             }
 
             // Validate the dialogue tree exists
-            if (!_world.DialogueTreesLookup.ContainsKey(characterTemplate.Interactable.DialogueTreeRef))
+            if (!_world.DialogueTreesLookup.ContainsKey(dialogueTreeRef))
             {
                 return SagaCommandResult.Failure(instance.InstanceId,
-                    $"Character '{characterTemplate.RefName}' references DialogueTree '{characterTemplate.Interactable.DialogueTreeRef}' which does not exist.");
+                    $"Character '{characterTemplate.RefName}' references DialogueTree '{dialogueTreeRef}' which does not exist.");
             }
 
             // Safety net: if a prior dialogue session for this character was left dangling (no
@@ -120,7 +132,8 @@ internal sealed class StartDialogueHandler : IRequestHandler<StartDialogueComman
                 transactionsToCommit.Add(sealTx);
             }
 
-            // Create DialogueStarted transaction
+            // Create DialogueStarted transaction (the session's tree — and start node,
+            // when overridden — ride on it; the session handlers read them back)
             var transaction = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),
@@ -132,9 +145,14 @@ internal sealed class StartDialogueHandler : IRequestHandler<StartDialogueComman
                 {
                     [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
                     [TransactionDataKeys.CharacterRef] = characterState.CharacterRef,
-                    [TransactionDataKeys.DialogueTreeRef] = characterTemplate.Interactable.DialogueTreeRef
+                    [TransactionDataKeys.DialogueTreeRef] = dialogueTreeRef
                 }
             };
+
+            if (!string.IsNullOrEmpty(command.StartNodeIdOverride))
+            {
+                transaction.Data[TransactionDataKeys.NodeId] = command.StartNodeIdOverride;
+            }
 
             instance.AddTransaction(transaction);
             transactionsToCommit.Add(transaction);

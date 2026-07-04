@@ -142,6 +142,12 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
 
             //System.Diagnostics.Debug.WriteLine($"[BuildInteractableCharacters] Character '{characterState.CharacterRef}' at world ({characterWorldLat:F6}, {characterWorldLon:F6})");
 
+            // Characters without an Interactable section are valid content (scenery/
+            // battle-only NPCs) — skip them instead of throwing. The NRE here was
+            // swallowed by the catch-all, which blanked EVERY interaction in the arc.
+            if (characterTemplate.Interactable == null)
+                continue;
+
             // Check proximity - calculate distance between avatar and character
             var approachRadius = characterTemplate.Interactable.ApproachRadius;
             var distance = CoordinateConverter.CalculateDistance(avatarLat, avatarLon, characterWorldLat, characterWorldLon, _world);
@@ -197,8 +203,6 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
         // Character must be alive for most interactions
         if (!characterState.IsAlive)
         {
-            // Can only loot dead characters (owners don't loot their own characters)
-            options.CanLoot = !isOwner && !characterState.HasBeenLooted;
             options.BlockedReason = "Character is defeated";
             return options;
         }
@@ -252,6 +256,13 @@ internal sealed class GetAvailableInteractionsHandler : IRequestHandler<GetAvail
             options.CanAttack = true;
             options.CanTrade = true;
         }
+
+        // Proximity assault: an effectively-Hostile character initiates battle when
+        // the avatar is inside its ApproachRadius, unless a truce trait suppresses
+        // it (Disengaged after a successful flee, Spared after mercy). The player
+        // can still attack by clicking; this flag only drives CHARACTER-initiated
+        // battle. Owner/dead cases returned early above and stay false.
+        options.IsAssault = hasHostile && !hasDisengaged && !hasSpared;
 
         return options;
     }

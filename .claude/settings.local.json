@@ -39,7 +39,8 @@
       "Bash(py --version)",
       "Bash(cat)",
       "Bash(python /tmp/fix_equipment_xml.py)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(grep -nB6 \"ProcessAvatarTurnStart\" Ambient.Saga.Engine/Domain/Rpg/Battle/BattleEngine.cs)"
     ]
   }
 }

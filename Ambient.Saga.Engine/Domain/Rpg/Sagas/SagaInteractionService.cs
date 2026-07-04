@@ -1,4 +1,4 @@
-using Ambient.Domain;
+﻿﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -193,8 +193,8 @@ public class SagaInteractionService
                 Data = new Dictionary<string, string>
                 {
                     [TransactionDataKeys.SagaArcRef] = _template.RefName,
-                    [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
-                    [TransactionDataKeys.DiscoverRadius] = _template.DiscoverRadius.ToString("F2")
+                    [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2", System.Globalization.CultureInfo.InvariantCulture),
+                    [TransactionDataKeys.DiscoverRadius] = _template.DiscoverRadius.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)
                 }
             };
             instance.AddTransaction(discoveryTx);
@@ -238,8 +238,8 @@ public class SagaInteractionService
                     Data = new Dictionary<string, string>
                     {
                         [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName,
-                        [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
-                        [TransactionDataKeys.ExitRadius] = exitRadius.ToString("F2")
+                        [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2", System.Globalization.CultureInfo.InvariantCulture),
+                        [TransactionDataKeys.ExitRadius] = exitRadius.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)
                     }
                 };
                 instance.AddTransaction(exitTx);
@@ -280,8 +280,8 @@ public class SagaInteractionService
                 Data = new Dictionary<string, string>
                 {
                     [TransactionDataKeys.TriggerRef] = sagaTrigger.RefName,
-                    [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2"),
-                    [TransactionDataKeys.EnterRadius] = sagaTrigger.EnterRadius.ToString("F2")
+                    [TransactionDataKeys.DistanceMeters] = distanceFromCenter.ToString("F2", System.Globalization.CultureInfo.InvariantCulture),
+                    [TransactionDataKeys.EnterRadius] = sagaTrigger.EnterRadius.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)
                 }
             };
             instance.AddTransaction(enterTx);
@@ -334,8 +334,8 @@ public class SagaInteractionService
             Data = new Dictionary<string, string>
             {
                 [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
-                [TransactionDataKeys.AvatarX] = avatarX.ToString("F6"),
-                [TransactionDataKeys.AvatarZ] = avatarZ.ToString("F6"),
+                [TransactionDataKeys.AvatarX] = avatarX.ToString("F6", System.Globalization.CultureInfo.InvariantCulture),
+                [TransactionDataKeys.AvatarZ] = avatarZ.ToString("F6", System.Globalization.CultureInfo.InvariantCulture),
                 [TransactionDataKeys.Seed] = seed.ToString()
             }
         };
@@ -466,8 +466,8 @@ public class SagaInteractionService
                     [TransactionDataKeys.CharacterInstanceId] = characterInstanceId.ToString(),
                     [TransactionDataKeys.CharacterRef] = characterRef,
                     [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
-                    [TransactionDataKeys.X] = spawnX.ToString("F6"),  // Saga-relative
-                    [TransactionDataKeys.Z] = spawnZ.ToString("F6"),  // Saga-relative
+                    [TransactionDataKeys.X] = spawnX.ToString("F6", System.Globalization.CultureInfo.InvariantCulture),  // Saga-relative
+                    [TransactionDataKeys.Z] = spawnZ.ToString("F6", System.Globalization.CultureInfo.InvariantCulture),  // Saga-relative
                     [TransactionDataKeys.SpawnHeight] = SpawnHeightSentinel // "Y unknown" — game resolves against terrain
                 }
             };
@@ -513,16 +513,16 @@ public class SagaInteractionService
             forwardAngle = Math.Atan2(-avatarX, -avatarZ);
         }
 
-        // Spread the group across a 60° arc centred on the forward direction.
+        // Spread the group across a 60Â° arc centred on the forward direction.
         // Single-character spawns land straight ahead; groups fan out symmetrically.
-        const double totalArcRadians = Math.PI / 3.0; // 60°
+        const double totalArcRadians = Math.PI / 3.0; // 60Â°
         var angleStep = count > 1 ? totalArcRadians / (count - 1) : 0.0;
         var startOffset = -totalArcRadians / 2.0;
 
         // Keep jitter proportional to the per-character slice, or a small fixed
         // amount when there is only one character, so it never lands perfectly on
-        // the avatar→origin line.
-        var jitterScale = count > 1 ? angleStep * 0.2 : Math.PI / 36.0; // ~5° fallback
+        // the avatarâ†’origin line.
+        var jitterScale = count > 1 ? angleStep * 0.2 : Math.PI / 36.0; // ~5Â° fallback
 
         for (var i = 0; i < count; i++)
         {
@@ -631,8 +631,8 @@ public class SagaInteractionService
                     [TransactionDataKeys.CharacterInstanceId] = newCharacterInstanceId.ToString(),
                     [TransactionDataKeys.CharacterRef] = characterRef,
                     [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
-                    [TransactionDataKeys.X] = spawnX.ToString("F6"),
-                    [TransactionDataKeys.Z] = spawnZ.ToString("F6"),
+                    [TransactionDataKeys.X] = spawnX.ToString("F6", System.Globalization.CultureInfo.InvariantCulture),
+                    [TransactionDataKeys.Z] = spawnZ.ToString("F6", System.Globalization.CultureInfo.InvariantCulture),
                     [TransactionDataKeys.SpawnHeight] = SpawnHeightSentinel, // "Y unknown" — game resolves against terrain
                     [TransactionDataKeys.IsRespawn] = "true", // Mark as respawn for analytics
                     [TransactionDataKeys.PreviousInstanceId] = characterInstanceId.ToString() // Link to defeated instance

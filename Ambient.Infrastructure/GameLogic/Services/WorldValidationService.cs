@@ -715,6 +715,16 @@ public static class WorldValidationService
 
             // Reputation
             case DialogueConditionType.ReputationLevel:
+                // The evaluator parses the Value as a ReputationLevel enum name
+                // ("Honored"); requiring an integer here rejected exactly the content
+                // that would work and passed fragile numeric strings
+                ValidateConditionRefName(world.FactionsLookup, condition.FactionRef, conditionContext, "Factions", errors, required: true);
+                if (string.IsNullOrEmpty(condition.Value) || !Enum.TryParse<ReputationLevel>(condition.Value, ignoreCase: true, out _))
+                {
+                    errors.Add($"{conditionContext}: ReputationLevel Value '{condition.Value}' must be a reputation level name (e.g. Neutral, Friendly, Honored)");
+                }
+                break;
+
             case DialogueConditionType.ReputationValue:
                 ValidateConditionRefName(world.FactionsLookup, condition.FactionRef, conditionContext, "Factions", errors, required: true);
                 ValidateNumericConditionValue(condition, conditionContext, errors);
@@ -722,9 +732,13 @@ public static class WorldValidationService
 
             // Trait comparison
             case DialogueConditionType.TraitComparison:
-                // Trait attribute is validated by the schema (CharacterTraitType enum)
-                // Value is optional - used for comparing trait values
-                // No additional validation needed here
+                // The schema marks Trait optional, but the evaluator throws without it,
+                // which kills the entire conversation at runtime — require it here.
+                if (!condition.TraitSpecified)
+                {
+                    errors.Add($"{conditionContext}: TraitComparison requires the Trait attribute");
+                }
+                ValidateNumericConditionValue(condition, conditionContext, errors);
                 break;
 
             default:

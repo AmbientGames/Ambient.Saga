@@ -351,6 +351,152 @@ public class BattleEnginePhase1Tests
     }
 
     [Fact]
+    public void ExecuteSpellAttack_BuffSpell_RaisesCasterStatModifier()
+    {
+        // Arrange
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
+            spells: new[] { new SpellEntry { SpellRef = "BattleCry", Condition = 1.0f } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - BattleCry is Defensive with Strength +0.2
+        var result = engine.ExecuteAvatarDecision(new CombatAction
+        {
+            ActionType = ActionType.CastSpell,
+            Parameter = "BattleCry"
+        });
+
+        // Assert - the buff lands on the caster as an additive combat modifier
+        Assert.True(result.Success);
+        Assert.Equal(0.2f, avatar.CombatStatModifiers["Strength"], 3);
+        Assert.Empty(enemy.CombatStatModifiers);
+        Assert.Contains(engine.CombatLog, l => l.Contains("+20% Strength"));
+    }
+
+    [Fact]
+    public void ExecuteSpellAttack_DebuffSpell_LowersEnemyEffectiveStat()
+    {
+        // Arrange
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, magic: 0.5f, energy: 1.0f,
+            spells: new[] { new SpellEntry { SpellRef = "WeakeningCurse", Condition = 1.0f } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f, strength: 0.5f);
+
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
+        engine.StartBattle();
+
+        // Act - offensive spell with a positive Strength effect = -0.2 debuff on the target
+        var result = engine.ExecuteAvatarDecision(new CombatAction
+        {
+            ActionType = ActionType.CastSpell,
+            Parameter = "WeakeningCurse"
+        });
+
+        // Assert - the enemy's effective Strength (visible in the avatar's snapshot) dropped
+        Assert.True(result.Success);
+        Assert.Equal(-0.2f, enemy.CombatStatModifiers["Strength"], 3);
+        var observedEnemy = engine.GetAvatarSnapshot().Opponent;
+        Assert.Equal(0.3f, observedEnemy.Strength, 3);
+    }
+
+    [Fact]
+    public void ExecuteWeaponAttack_DefenderDefense_ReducesDamage()
+    {
+        // Two identical battles with the same seed — only the defender's Defense differs,
+        // so the RNG draws (variance, crit) are identical and the comparison is exact
+        float DamageWith(float defense)
+        {
+            var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.4f,
+                equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
+            avatar.CombatProfile["MainHand"] = "IronSword";
+            var enemy = CreateCombatant("Enemy", health: 1.0f, defense: defense);
+
+            var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 7);
+            engine.StartBattle();
+
+            var result = engine.ExecuteAvatarDecision(new CombatAction
+            {
+                ActionType = ActionType.Attack,
+                Parameter = "IronSword"
+            });
+            Assert.True(result.Success);
+            return result.Damage;
+        }
+
+        var unarmored = DamageWith(0f);
+        var armored = DamageWith(0.4f);
+
+        Assert.True(armored < unarmored,
+            $"Armored defender ({armored}) should take less weapon damage than unarmored ({unarmored})");
+    }
+
+    [Fact]
+    public void EquipmentPassives_WornArmor_ReducesIncomingDamage()
+    {
+        // Same battle twice with the same seed — the only difference is whether the
+        // defender actually WEARS the armor it owns (passive Defense +0.2)
+        float DamageTaken(bool wearArmor)
+        {
+            var avatar = CreateCombatantWithCapabilities("Avatar", health: 1.0f, strength: 0.4f,
+                equipment: new[] { new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f } });
+            avatar.CombatProfile["MainHand"] = "IronSword";
+            var enemy = CreateCombatantWithCapabilities("Enemy", health: 1.0f,
+                equipment: new[] { new EquipmentEntry { EquipmentRef = "SteelArmor", Condition = 1.0f } });
+            if (wearArmor)
+            {
+                enemy.CombatProfile["Chest"] = "SteelArmor";
+            }
+
+            var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 7);
+            engine.StartBattle();
+
+            var result = engine.ExecuteAvatarDecision(new CombatAction
+            {
+                ActionType = ActionType.Attack,
+                Parameter = "IronSword"
+            });
+            Assert.True(result.Success);
+            return result.Damage;
+        }
+
+        var bare = DamageTaken(wearArmor: false);
+        var wearing = DamageTaken(wearArmor: true);
+
+        Assert.True(wearing < bare,
+            $"Wearing armor ({wearing}) should reduce damage vs not wearing it ({bare})");
+    }
+
+    [Fact]
+    public void ExecuteSpellAttack_HealingSpell_HealsCasterAndLeavesDefenderUnharmed()
+    {
+        // Arrange
+        var avatar = CreateCombatantWithCapabilities("Avatar", health: 0.5f, magic: 0.5f, energy: 1.0f,
+            spells: new[] { new SpellEntry { SpellRef = "Heal", Condition = 1.0f } });
+        var enemy = CreateCombatant("Enemy", health: 1.0f);
+
+        var engine = new BattleEngine(avatar, enemy, world: _world, randomSeed: 42);
+        engine.StartBattle();
+
+        var avatarHealthBeforeCast = avatar.Health;
+        var enemyHealthBeforeCast = enemy.Health;
+
+        // Act - Heal is Defensive with Health = +0.2
+        var result = engine.ExecuteAvatarDecision(new CombatAction
+        {
+            ActionType = ActionType.CastSpell,
+            Parameter = "Heal"
+        });
+
+        // Assert - the caster is healed; the defender takes no damage
+        Assert.True(result.Success);
+        Assert.Equal(avatarHealthBeforeCast + 0.2f, avatar.Health, 3);
+        Assert.Equal(enemyHealthBeforeCast, enemy.Health, 3);
+        Assert.Equal(0.2f, result.Healing, 3);
+        Assert.Equal(0f, result.Damage, 3);
+    }
+
+    [Fact]
     public void StatusEffect_Stacking_IncreasesStacks()
     {
         // Arrange
@@ -764,7 +910,16 @@ public class BattleEnginePhase1Tests
             DisplayName = "Iron Sword",
             Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0f,
-            Effects = new Attributes { Health = -0.1f }
+            Effects = new EffectAttributes { Health = -0.1f }
+        };
+
+        var steelArmor = new Equipment
+        {
+            RefName = "SteelArmor",
+            DisplayName = "Steel Armor",
+            Category = EquipmentCategoryType.ArmorHeavy,
+            // Passive worn modifier ("applied while equipped" per Equipment.xsd)
+            Effects = new EffectAttributes { Defense = 0.2f }
         };
 
         var criticalSword = new Equipment
@@ -773,7 +928,7 @@ public class BattleEnginePhase1Tests
             DisplayName = "Critical Sword",
             Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0.3f, // +30% crit chance
-            Effects = new Attributes { Health = -0.1f }
+            Effects = new EffectAttributes { Health = -0.1f }
         };
 
         var oakStaff = new Equipment
@@ -781,7 +936,7 @@ public class BattleEnginePhase1Tests
             RefName = "OakStaff",
             DisplayName = "Oak Staff",
             Category = EquipmentCategoryType.Staff,
-            Effects = new Attributes { Health = -0.05f }
+            Effects = new EffectAttributes { Health = -0.05f }
         };
 
         var magicWand = new Equipment
@@ -789,7 +944,7 @@ public class BattleEnginePhase1Tests
             RefName = "MagicWand",
             DisplayName = "Magic Wand",
             Category = EquipmentCategoryType.Wand,
-            Effects = new Attributes { Health = -0.05f }
+            Effects = new EffectAttributes { Health = -0.05f }
         };
 
         var poisonDagger = new Equipment
@@ -799,7 +954,7 @@ public class BattleEnginePhase1Tests
             Category = EquipmentCategoryType.OneHanded,
             StatusEffectRef = "Poison",
             StatusEffectChance = 1.0f, // 100% chance for testing
-            Effects = new Attributes { Health = -0.1f }
+            Effects = new EffectAttributes { Health = -0.1f }
         };
 
         var lowChancePoison = new Equipment
@@ -809,7 +964,7 @@ public class BattleEnginePhase1Tests
             Category = EquipmentCategoryType.OneHanded,
             StatusEffectRef = "Poison",
             StatusEffectChance = 0.5f, // 50% chance
-            Effects = new Attributes { Health = -0.1f }
+            Effects = new EffectAttributes { Health = -0.1f }
         };
 
         var highCritSword = new Equipment
@@ -818,7 +973,7 @@ public class BattleEnginePhase1Tests
             DisplayName = "High Crit Sword",
             Category = EquipmentCategoryType.OneHanded,
             CriticalHitBonus = 0.55f, // 55% crit bonus - should cap at 50% total
-            Effects = new Attributes { Health = -0.1f }
+            Effects = new EffectAttributes { Health = -0.1f }
         };
 
         // Create spells
@@ -829,7 +984,7 @@ public class BattleEnginePhase1Tests
             RequiresEquipped = EquipmentCategoryType.Staff,
             RequiresEquippedSpecified = true,
             UseType = ItemUseType.Offensive,
-            Effects = new Attributes { Health = -0.2f }
+            Effects = new EffectAttributes { Health = -0.2f }
         };
 
         var lightningBolt = new Spell
@@ -839,7 +994,7 @@ public class BattleEnginePhase1Tests
             RequiresEquipped = EquipmentCategoryType.Wand,
             RequiresEquippedSpecified = true,
             UseType = ItemUseType.Offensive,
-            Effects = new Attributes { Health = -0.15f }
+            Effects = new EffectAttributes { Health = -0.15f }
         };
 
         var heal = new Spell
@@ -847,7 +1002,25 @@ public class BattleEnginePhase1Tests
             RefName = "Heal",
             DisplayName = "Heal",
             UseType = ItemUseType.Defensive,
-            Effects = new Attributes { Health = 0.2f }
+            Effects = new EffectAttributes { Health = 0.2f }
+        };
+
+        // Buff/debuff spells (Attributes defaults Health/Stamina/Mana to 1.0 — zero explicitly)
+        var battleCry = new Spell
+        {
+            RefName = "BattleCry",
+            DisplayName = "Battle Cry",
+            UseType = ItemUseType.Defensive,
+            Effects = new EffectAttributes { Health = 0f, Stamina = 0f, Mana = 0f, Strength = 0.2f }
+        };
+
+        var weakeningCurse = new Spell
+        {
+            RefName = "WeakeningCurse",
+            DisplayName = "Weakening Curse",
+            UseType = ItemUseType.Offensive,
+            // Offensive convention: negative values harm the target (debuff)
+            Effects = new EffectAttributes { Strength = -0.2f }
         };
 
         var advancedFireball = new Spell
@@ -855,8 +1028,8 @@ public class BattleEnginePhase1Tests
             RefName = "AdvancedFireball",
             DisplayName = "Advanced Fireball",
             UseType = ItemUseType.Offensive,
-            MinimumStats = new Attributes { Magic = 0.5f },
-            Effects = new Attributes { Health = -0.3f }
+            MinimumStats = new EffectAttributes { Magic = 0.5f },
+            Effects = new EffectAttributes { Health = -0.3f }
         };
 
         var powerStrike = new Spell
@@ -864,8 +1037,8 @@ public class BattleEnginePhase1Tests
             RefName = "PowerStrike",
             DisplayName = "Power Strike",
             UseType = ItemUseType.Offensive,
-            MinimumStats = new Attributes { Strength = 0.4f },
-            Effects = new Attributes { Health = -0.25f }
+            MinimumStats = new EffectAttributes { Strength = 0.4f },
+            Effects = new EffectAttributes { Health = -0.25f }
         };
 
         var frostBolt = new Spell
@@ -875,7 +1048,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Offensive,
             StatusEffectRef = "Frozen",
             StatusEffectChance = 1.0f,
-            Effects = new Attributes { Health = -0.1f }
+            Effects = new EffectAttributes { Health = -0.1f }
         };
 
         var defenseBuff = new Spell
@@ -885,7 +1058,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Defensive,
             StatusEffectRef = "DefenseUp",
             StatusEffectChance = 1.0f,
-            Effects = new Attributes()
+            Effects = new EffectAttributes()
         };
 
         var cleanse = new Spell
@@ -895,7 +1068,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Defensive,
             CleansesStatusEffects = true,
             CleanseTargetSelf = true,
-            Effects = new Attributes()
+            Effects = new EffectAttributes()
         };
 
         // Create status effects
@@ -959,8 +1132,8 @@ public class BattleEnginePhase1Tests
         {
             Gameplay = new GameplayComponents
             {
-                Equipment = new[] { ironSword, criticalSword, oakStaff, magicWand, poisonDagger, lowChancePoison, highCritSword },
-                Spells = new[] { fireball, lightningBolt, heal, advancedFireball, powerStrike, frostBolt, defenseBuff, cleanse },
+                Equipment = new[] { ironSword, steelArmor, criticalSword, oakStaff, magicWand, poisonDagger, lowChancePoison, highCritSword },
+                Spells = new[] { fireball, lightningBolt, heal, advancedFireball, powerStrike, frostBolt, defenseBuff, cleanse, battleCry, weakeningCurse },
                 StatusEffects = new[] { poison, frozen, defenseUp, weakness, armorBreak },
                 Consumables = Array.Empty<Consumable>(),
                 Characters = Array.Empty<Character>(),
@@ -1123,8 +1296,8 @@ public class BattleEnginePhase1Tests
             RefName = "HeavySword",
             DisplayName = "Heavy Sword",
             Category = EquipmentCategoryType.TwoHanded,
-            MinimumStats = new Attributes { Strength = 0.5f },
-            Effects = new Attributes { Health = -0.2f }
+            MinimumStats = new EffectAttributes { Strength = 0.5f },
+            Effects = new EffectAttributes { Health = -0.2f }
         };
 
         // Add guardian blade with Defense requirement
@@ -1133,8 +1306,8 @@ public class BattleEnginePhase1Tests
             RefName = "GuardianBlade",
             DisplayName = "Guardian Blade",
             Category = EquipmentCategoryType.OneHanded,
-            MinimumStats = new Attributes { Defense = 0.4f },
-            Effects = new Attributes { Health = -0.15f }
+            MinimumStats = new EffectAttributes { Defense = 0.4f },
+            Effects = new EffectAttributes { Health = -0.15f }
         };
 
         // Add enchanted blade with Magic requirement
@@ -1143,8 +1316,8 @@ public class BattleEnginePhase1Tests
             RefName = "EnchantedBlade",
             DisplayName = "Enchanted Blade",
             Category = EquipmentCategoryType.OneHanded,
-            MinimumStats = new Attributes { Magic = 0.4f },
-            Effects = new Attributes { Health = -0.18f }
+            MinimumStats = new EffectAttributes { Magic = 0.4f },
+            Effects = new EffectAttributes { Health = -0.18f }
         };
 
         baseWorld.Gameplay.Equipment = baseWorld.Gameplay.Equipment.Concat(new[] { heavySword, guardianBlade, enchantedBlade }).ToArray();
@@ -1636,7 +1809,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Offensive,
             StatusEffectRef = "Poison",
             StatusEffectChance = 1.0f,
-            Effects = new Attributes { Health = -0.05f }
+            Effects = new EffectAttributes { Health = -0.05f }
         };
 
         // Add defensive consumable with status effect (buff)
@@ -1647,7 +1820,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Defensive,
             StatusEffectRef = "StrengthBuff",
             StatusEffectChance = 1.0f,
-            Effects = new Attributes { Health = 0.1f }
+            Effects = new EffectAttributes { Health = 0.1f }
         };
 
         // Add cleansing consumable
@@ -1658,7 +1831,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Defensive,
             CleansesStatusEffects = true,
             CleanseTargetSelf = true,
-            Effects = new Attributes { Health = 0.05f }
+            Effects = new EffectAttributes { Health = 0.05f }
         };
 
         // Add unreliable poison vial with 50% chance
@@ -1669,7 +1842,7 @@ public class BattleEnginePhase1Tests
             UseType = ItemUseType.Offensive,
             StatusEffectRef = "Poison",
             StatusEffectChance = 0.5f, // 50% chance
-            Effects = new Attributes { Health = -0.03f }
+            Effects = new EffectAttributes { Health = -0.03f }
         };
 
         // Add basic health potion with no status effect
@@ -1678,7 +1851,7 @@ public class BattleEnginePhase1Tests
             RefName = "BasicHealthPotion",
             DisplayName = "Basic Health Potion",
             UseType = ItemUseType.Defensive,
-            Effects = new Attributes { Health = 0.2f }
+            Effects = new EffectAttributes { Health = 0.2f }
         };
 
         // Add strength buff status effect
@@ -2014,7 +2187,8 @@ public class BattleEnginePhase1Tests
             RefName = "FreeSpell",
             DisplayName = "Free Spell",
             RequiresEquippedSpecified = false,
-            Effects = new Attributes { Health = -0.1f }
+            UseType = ItemUseType.Offensive,
+            Effects = new EffectAttributes { Health = -0.1f }
         };
 
         baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects.Concat(new[] { vulnerable }).ToArray();
@@ -2054,7 +2228,7 @@ public class BattleEnginePhase1Tests
             Category = EquipmentCategoryType.Shield,
             OnDefendStatusEffectRef = "IronWill",
             OnDefendStatusEffectChance = 1.0f,
-            Effects = new Attributes { Defense = 0.15f }
+            Effects = new EffectAttributes { Defense = 0.15f }
         };
 
         // Add Unreliable Shield with 50% OnDefend chance
@@ -2066,7 +2240,7 @@ public class BattleEnginePhase1Tests
             Category = EquipmentCategoryType.Shield,
             OnDefendStatusEffectRef = "IronWill",
             OnDefendStatusEffectChance = 0.5f, // 50% chance
-            Effects = new Attributes { Defense = 0.1f }
+            Effects = new EffectAttributes { Defense = 0.1f }
         };
 
         baseWorld.Gameplay.StatusEffects = baseWorld.Gameplay.StatusEffects.Concat(new[] { ironWill }).ToArray();
@@ -2344,7 +2518,7 @@ public class BattleEnginePhase1Tests
             DisplayName = "Great Sword",
             SlotRef = "BothHands",  // Two-handed weapons use BothHands slot
             Category = EquipmentCategoryType.TwoHanded,
-            Effects = new Attributes { Strength = 0.3f }
+            Effects = new EffectAttributes { Strength = 0.3f }
         };
 
         baseWorld.Gameplay.Equipment = baseWorld.Gameplay.Equipment.Concat(new[] { greatSword }).ToArray();

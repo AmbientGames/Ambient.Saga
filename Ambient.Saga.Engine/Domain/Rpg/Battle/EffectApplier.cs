@@ -37,7 +37,7 @@ public static class EffectApplier
     /// <param name="itemTypeName">Name of item type (for result source tracking)</param>
     /// <returns>List of stat changes to apply</returns>
     public static EffectResult[] ApplyEffects(
-        Attributes effects,
+        EffectAttributes effects,
         string? itemAffinity,
         float condition,
         string? attackerAffinity,
@@ -81,7 +81,13 @@ public static class EffectApplier
 
     /// <summary>
     /// Calculate effect for a single stat.
-    /// EXACT COPY of BattleUI.cs ApplySingleEffect method (lines 809-849).
+    ///
+    /// Sign conventions (matched to how the content is actually authored):
+    /// OFFENSIVE items — negative values harm the TARGET (damage, debuffs),
+    /// positive values benefit the CASTER (self-buffs, restores). This lets one
+    /// spell express "Charge: Health=-0.15 (enemy damage), Speed=+0.2 (self buff)".
+    /// DEFENSIVE items — positive values benefit the TARGET (the caster in
+    /// self-cast flows), negative values are costs/penalties to the CASTER.
     /// </summary>
     private static void AddEffectResult(
         List<EffectResult> results,
@@ -99,47 +105,61 @@ public static class EffectApplier
         // Apply condition degradation to all effects
         effectValue *= condition;
 
-        // Per XSD Specification (Spell.xsd lines 21-26):
-        // - NEGATIVE values = costs/penalties to CASTER
-        // - POSITIVE values = effects on TARGET (inverted if Offensive)
-
-        if (effectValue < 0)
+        if (isOffensive)
         {
-            // NEGATIVE = Cost to CASTER (e.g., Mana="-0.08" costs caster 0.08 mana)
-            // Apply to attacker/caster, not target
-            results.Add(new EffectResult
+            if (effectValue < 0)
             {
-                StatName = statName,
-                Change = effectValue,
-                AppliedToAttacker = true,
-                Source = itemTypeName
-            });
-        }
-        else
-        {
-            // POSITIVE = Effect on TARGET
-            if (isOffensive)
-            {
-                // OFFENSIVE: Invert positive to negative (damage)
-                // e.g., Health="0.25" becomes -0.25 damage to target
-                effectValue = -effectValue;
-
-                // Apply affinity multiplier for offensive damage
+                // Harm to the TARGET (damage/debuff)
+                // Apply affinity multiplier to damage-type harms
                 if (statName == "Health" || statName == "Temperature")
                 {
                     effectValue *= affinityMultiplier;
                 }
-            }
-            // else: DEFENSIVE - apply positive value as-is (healing/buffs)
 
-            // Apply to target
-            results.Add(new EffectResult
+                results.Add(new EffectResult
+                {
+                    StatName = statName,
+                    Change = effectValue,
+                    AppliedToAttacker = false,
+                    Source = itemTypeName
+                });
+            }
+            else
             {
-                StatName = statName,
-                Change = effectValue,
-                AppliedToAttacker = false,
-                Source = itemTypeName
-            });
+                // Benefit to the CASTER (self-buff/restore riding on an attack)
+                results.Add(new EffectResult
+                {
+                    StatName = statName,
+                    Change = effectValue,
+                    AppliedToAttacker = true,
+                    Source = itemTypeName
+                });
+            }
+        }
+        else
+        {
+            if (effectValue < 0)
+            {
+                // Cost/penalty to the CASTER (e.g., Mana="-0.08", IgnorePain Magic="-0.1")
+                results.Add(new EffectResult
+                {
+                    StatName = statName,
+                    Change = effectValue,
+                    AppliedToAttacker = true,
+                    Source = itemTypeName
+                });
+            }
+            else
+            {
+                // Benefit to the TARGET (healing/buffs — the caster in self-cast flows)
+                results.Add(new EffectResult
+                {
+                    StatName = statName,
+                    Change = effectValue,
+                    AppliedToAttacker = false,
+                    Source = itemTypeName
+                });
+            }
         }
     }
 

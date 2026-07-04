@@ -19,11 +19,6 @@ public record CharacterContext(SagaMainViewModel ViewModel, CharacterViewModel C
 public record CharacterModalContext(SagaMainViewModel ViewModel, CharacterViewModel Character, ModalManager ModalManager);
 
 /// <summary>
-/// Context for quest-related modals.
-/// </summary>
-public record QuestContext(string QuestRef, string SagaRef, string SignpostRef, SagaMainViewModel ViewModel);
-
-/// <summary>
 /// Context for quest detail modal.
 /// </summary>
 public record QuestDetailContext(string QuestRef, string SagaRef, SagaMainViewModel ViewModel);

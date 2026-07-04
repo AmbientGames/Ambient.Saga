@@ -29,13 +29,14 @@ public class CombatEvent
     public bool Success { get; init; }
     public string Message { get; init; } = string.Empty;
 
-    // Additional data for transaction logging
-    public int TurnNumber { get; init; }
-    public ActionType DecisionType { get; init; }
-    public string? ItemRefName { get; init; }  // Weapon/spell/consumable used
-    public bool IsAvatarTurn { get; init; }
-    public float TargetHealthAfter { get; init; }
-    public float ActorEnergyAfter { get; init; }
+    // Additional data for transaction logging — stamped by BattleEngine.ExecuteDecision
+    // at the end of each action so persisted turn transactions carry real values
+    public int TurnNumber { get; set; }
+    public ActionType DecisionType { get; set; }
+    public string? ItemRefName { get; set; }  // Weapon/spell/consumable used
+    public bool IsAvatarTurn { get; set; }
+    public float TargetHealthAfter { get; set; }
+    public float ActorEnergyAfter { get; set; }
     public string? EquipmentChanged { get; init; }  // For ChangeLoadout actions
     public string? AffinityChanged { get; init; }    // For affinity switches
     public string? StatusEffectApplied { get; init; }  // Status effect applied during this action

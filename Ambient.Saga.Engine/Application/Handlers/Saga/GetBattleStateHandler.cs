@@ -53,20 +53,40 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
 
             var battleHasEnded = battleEndedTx != null;
             bool? avatarVictory = null;
-            if (battleHasEnded && battleEndedTx.Data.TryGetValue(TransactionDataKeys.AvatarVictory, out var victoryStr))
+            BattleState? endedOutcome = null;
+            if (battleHasEnded)
             {
-                avatarVictory = bool.Parse(victoryStr);
+                if (battleEndedTx!.Data.TryGetValue(TransactionDataKeys.AvatarVictory, out var victoryStr))
+                {
+                    avatarVictory = bool.Parse(victoryStr);
+                }
+
+                // Distinct outcome (Victory/Defeat/Fled) written since the round-3 fix;
+                // legacy transactions only carry AvatarVictory (fled looked like defeat)
+                if (battleEndedTx.Data.TryGetValue(TransactionDataKeys.BattleOutcome, out var outcomeStr) &&
+                    Enum.TryParse<BattleState>(outcomeStr, out var parsedOutcome))
+                {
+                    endedOutcome = parsedOutcome;
+                    if (parsedOutcome == BattleState.Fled)
+                    {
+                        avatarVictory = null; // fled is neither victory nor defeat
+                    }
+                }
             }
 
             // Reconstruct combatants from transactions
-            var (avatarCombatant, enemyCombatant, randomSeed, avatarAffinityRefs, enemyCharacterInstanceId) =
-                ReconstructCombatants(battleStartedTx, instance);
+            var (avatarCombatant, enemyCombatant, randomSeed, avatarAffinityRefs, enemyCharacterInstanceId, companions) =
+                BattleStateReconstructor.Reconstruct(battleStartedTx, instance, _world);
 
             // Attach avatar's current capabilities (for equipment change modal)
             // This comes from the live avatar, not the transaction log
             if (query.Avatar?.Capabilities != null)
             {
                 avatarCombatant.Capabilities = query.Avatar.Capabilities;
+            }
+            if (query.Avatar != null)
+            {
+                avatarCombatant.ArchetypeBias = query.Avatar.ArchetypeBias;
             }
 
             // Get all turn transactions
@@ -81,11 +101,13 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
 
             // Determine current battle state
             BattleState battleState;
+            SagaTransaction? pendingTellTx = null;
             if (battleHasEnded)
             {
-                battleState = avatarVictory == true ? BattleState.Victory :
-                             avatarVictory == false ? BattleState.Defeat :
-                             BattleState.Fled;
+                battleState = endedOutcome ??
+                             (avatarVictory == true ? BattleState.Victory :
+                              avatarVictory == false ? BattleState.Defeat :
+                              BattleState.Fled);
             }
             else
             {
@@ -98,8 +120,26 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 else
                 {
                     var lastTurn = turnTransactions.Last();
-                    var wasAvatarTurn = bool.Parse(lastTurn.Data[TransactionDataKeys.IsAvatarTurn]);
-                    battleState = wasAvatarTurn ? BattleState.EnemyTurn : BattleState.AvatarTurn;
+                    var lastActionType = lastTurn.Data.TryGetValue(TransactionDataKeys.ActionType, out var at) ? at : null;
+
+                    if (lastActionType == "Tell")
+                    {
+                        // A telegraphed enemy attack is pending — the player must react
+                        battleState = BattleState.AwaitingReaction;
+                        pendingTellTx = lastTurn;
+                    }
+                    else if (lastActionType == "Reaction")
+                    {
+                        // The reaction RESOLVED the enemy's turn — the avatar acts next.
+                        // (Reactions are recorded IsAvatarTurn=true; naive parity said
+                        // EnemyTurn, wedging UIs that drive from this query.)
+                        battleState = BattleState.AvatarTurn;
+                    }
+                    else
+                    {
+                        var wasAvatarTurn = bool.Parse(lastTurn.Data[TransactionDataKeys.IsAvatarTurn]);
+                        battleState = wasAvatarTurn ? BattleState.EnemyTurn : BattleState.AvatarTurn;
+                    }
                 }
             }
 
@@ -114,16 +154,24 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
             {
                 var isAvatarTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsAvatarTurn]);
 
-                // Check if this is a reaction transaction
+                // Check if this is a reaction or tell transaction
                 var isReaction = turnTx.Data.TryGetValue(TransactionDataKeys.ActionType, out var actionTypeStr) && actionTypeStr == "Reaction";
+                var isTell = actionTypeStr == "Tell";
+
+                if (isTell)
+                {
+                    battleLog.Add($"{enemyCombatant.DisplayName} telegraphs an attack!");
+                    continue;
+                }
 
                 if (isReaction)
                 {
                     // Reaction log entry
                     var reactionType = turnTx.Data[TransactionDataKeys.ReactionType];
-                    var damage = float.Parse(turnTx.Data[TransactionDataKeys.DamageDealt]);
-                    var counterDamage = turnTx.Data.TryGetValue(TransactionDataKeys.CounterDamage, out var counterStr)
-                        ? float.Parse(counterStr)
+                    BattleTransactionHelper.TryParseFloat(turnTx.Data[TransactionDataKeys.DamageDealt], out var damage);
+                    var counterDamage = turnTx.Data.TryGetValue(TransactionDataKeys.CounterDamage, out var counterStr) &&
+                                        BattleTransactionHelper.TryParseFloat(counterStr, out var parsedCounter)
+                        ? parsedCounter
                         : 0f;
                     var wasOptimal = turnTx.Data.TryGetValue(TransactionDataKeys.WasOptimal, out var optStr) && bool.Parse(optStr);
                     var timedOut = turnTx.Data.TryGetValue(TransactionDataKeys.TimedOut, out var timeStr) && bool.Parse(timeStr);
@@ -153,8 +201,8 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                     var actor = isAvatarTurn ? avatarCombatant.DisplayName : enemyCombatant.DisplayName;
                     var target = isAvatarTurn ? enemyCombatant.DisplayName : avatarCombatant.DisplayName;
                     var actionType = Enum.Parse<ActionType>(turnTx.Data[TransactionDataKeys.DecisionType]);
-                    var damage = float.Parse(turnTx.Data[TransactionDataKeys.DamageDealt]);
-                    var healing = float.Parse(turnTx.Data[TransactionDataKeys.HealingDone]);
+                    BattleTransactionHelper.TryParseFloat(turnTx.Data[TransactionDataKeys.DamageDealt], out var damage);
+                    BattleTransactionHelper.TryParseFloat(turnTx.Data[TransactionDataKeys.HealingDone], out var healing);
 
                     if (damage > 0)
                     {
@@ -180,7 +228,7 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
 
             System.Diagnostics.Debug.WriteLine($"[GetBattleState] Battle state: {battleState}, Turn: {turnNumber}, Ended: {battleHasEnded}");
 
-            return new BattleStateResult
+            var result = new BattleStateResult
             {
                 IsActive = !battleHasEnded,
                 BattleState = battleState,
@@ -188,12 +236,33 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                 TurnNumber = turnNumber,
                 AvatarCombatant = avatarCombatant,
                 EnemyCombatant = enemyCombatant,
+                Companions = companions,
                 BattleLog = battleLog,
                 AvatarVictory = avatarVictory,
                 HasEnded = battleHasEnded,
                 AvatarAffinityRefs = avatarAffinityRefs,
                 EnemyCharacterInstanceId = enemyCharacterInstanceId
             };
+
+            // Surface the pending tell so a UI resuming mid-reaction (reload, reconnect)
+            // can re-show the telegraph instead of wedging
+            if (pendingTellTx != null)
+            {
+                result.PendingTellRefName = pendingTellTx.Data.TryGetValue(TransactionDataKeys.TellRefName, out var tellRef) ? tellRef : null;
+                if (pendingTellTx.Data.TryGetValue(TransactionDataKeys.BaseDamage, out var tellDamageStr) &&
+                    BattleTransactionHelper.TryParseFloat(tellDamageStr, out var tellDamage))
+                {
+                    result.PendingTellBaseDamage = tellDamage;
+                }
+                if (pendingTellTx.Data.TryGetValue(TransactionDataKeys.ReactionWindowMs, out var windowStr) &&
+                    int.TryParse(windowStr, out var windowMs))
+                {
+                    result.PendingTellReactionWindowMs = windowMs;
+                }
+                result.PendingTellIssuedAtUtc = pendingTellTx.LocalTimestamp;
+            }
+
+            return result;
         }
         catch (Exception ex)
         {
@@ -207,136 +276,4 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
         }
     }
 
-    private (Combatant avatar, Combatant enemy, int randomSeed, List<string> avatarAffinityRefs, Guid enemyCharacterInstanceId)
-        ReconstructCombatants(SagaTransaction battleStartedTx, SagaInstance instance)
-    {
-        // Parse initial state from BattleStarted transaction
-        var avatarCombatant = new Combatant
-        {
-            RefName = battleStartedTx.Data[TransactionDataKeys.AvatarCombatantId],
-            DisplayName = "Avatar",
-            Health = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarHealth]),
-            Stamina = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarEnergy]),
-            Strength = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarStrength]),
-            Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarDefense]),
-            Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarSpeed]),
-            Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.AvatarMagic]),
-            AffinityRef = battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarAffinity, out var pAff) ? pAff : null,
-            CombatProfile = new Dictionary<string, string>()
-        };
-
-        var enemyCharacterRef = battleStartedTx.Data[TransactionDataKeys.EnemyCharacterRef];
-        var enemyCharacter = _world.GetCharacterByRefName(enemyCharacterRef);
-        var enemyCombatant = new Combatant
-        {
-            RefName = enemyCharacterRef,
-            DisplayName = enemyCharacter?.DisplayName ?? "Enemy",
-            Health = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyHealth]),
-            Stamina = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyEnergy]),
-            Strength = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyStrength]),
-            Defense = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyDefense]),
-            Speed = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemySpeed]),
-            Magic = float.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyMagic]),
-            AffinityRef = battleStartedTx.Data.TryGetValue(TransactionDataKeys.EnemyAffinity, out var eAff) ? eAff : null,
-            CombatProfile = new Dictionary<string, string>()
-        };
-
-        // Parse equipment and equipped slots
-        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarEquippedSlots, out var avatarSlots))
-        {
-            foreach (var slot in avatarSlots.Split(',', StringSplitOptions.RemoveEmptyEntries))
-            {
-                var parts = slot.Split(':');
-                if (parts.Length >= 2)
-                {
-                    avatarCombatant.CombatProfile[parts[0]] = parts[1];
-                }
-            }
-        }
-
-        if (battleStartedTx.Data.TryGetValue(TransactionDataKeys.EnemyEquippedSlots, out var enemySlots))
-        {
-            foreach (var slot in enemySlots.Split(',', StringSplitOptions.RemoveEmptyEntries))
-            {
-                var parts = slot.Split(':');
-                if (parts.Length >= 2)
-                {
-                    enemyCombatant.CombatProfile[parts[0]] = parts[1];
-                }
-            }
-        }
-
-        // Apply all turn transactions to update combatant states
-        var turnTransactions = instance.Transactions
-            .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                       t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
-                       battleId == battleStartedTx.TransactionId.ToString())
-            .OrderBy(t => t.SequenceNumber)
-            .ToList();
-
-        foreach (var turnTx in turnTransactions)
-        {
-            var isAvatarTurn = bool.Parse(turnTx.Data[TransactionDataKeys.IsAvatarTurn]);
-
-            // Check if this is a reaction transaction (special handling)
-            var isReaction = turnTx.Data.TryGetValue(TransactionDataKeys.ActionType, out var actionType) && actionType == "Reaction";
-
-            if (isReaction)
-            {
-                // Reaction: avatar defends against enemy attack
-                // DamageDealt is damage TO avatar, CounterDamage is damage TO enemy
-                var targetHealthAfter = float.Parse(turnTx.Data[TransactionDataKeys.TargetHealthAfter]);
-                var actorEnergyAfter = float.Parse(turnTx.Data[TransactionDataKeys.ActorEnergyAfter]);
-
-                avatarCombatant.Health = targetHealthAfter;
-                avatarCombatant.Stamina = actorEnergyAfter;
-
-                // Apply counter damage to enemy if present
-                if (turnTx.Data.TryGetValue(TransactionDataKeys.EnemyHealthAfter, out var enemyHealthStr))
-                {
-                    enemyCombatant.Health = float.Parse(enemyHealthStr);
-                }
-            }
-            else
-            {
-                // Normal turn: actor attacks target
-                var combatant = isAvatarTurn ? avatarCombatant : enemyCombatant;
-                var target = isAvatarTurn ? enemyCombatant : avatarCombatant;
-
-                // Update health/energy from turn results
-                var targetHealthAfter = float.Parse(turnTx.Data[TransactionDataKeys.TargetHealthAfter]);
-                var actorEnergyAfter = float.Parse(turnTx.Data[TransactionDataKeys.ActorEnergyAfter]);
-
-                combatant.Stamina = actorEnergyAfter;
-                target.Health = targetHealthAfter;
-
-                // Update equipment/affinity from snapshots
-                if (turnTx.Data.TryGetValue(TransactionDataKeys.LoadoutSlotSnapshot, out var loadoutSnapshot))
-                {
-                    combatant.CombatProfile.Clear();
-                    foreach (var slot in loadoutSnapshot.Split(',', StringSplitOptions.RemoveEmptyEntries))
-                    {
-                        var parts = slot.Split(':');
-                        if (parts.Length >= 2)
-                        {
-                            combatant.CombatProfile[parts[0]] = parts[1];
-                        }
-                    }
-                }
-
-                if (turnTx.Data.TryGetValue(TransactionDataKeys.AffinitySnapshot, out var affinity))
-                {
-                    combatant.AffinityRef = affinity;
-                }
-            }
-        }
-
-        var randomSeed = int.Parse(battleStartedTx.Data[TransactionDataKeys.RandomSeed]);
-        var avatarAffinityRefs = battleStartedTx.Data.TryGetValue(TransactionDataKeys.AvatarAffinities, out var affinities)
-            ? affinities.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()
-            : new List<string>();
-        var enemyCharacterInstanceId = Guid.Parse(battleStartedTx.Data[TransactionDataKeys.EnemyCombatantId]);
-
-        return (avatarCombatant, enemyCombatant, randomSeed, avatarAffinityRefs, enemyCharacterInstanceId);
-    }
 }

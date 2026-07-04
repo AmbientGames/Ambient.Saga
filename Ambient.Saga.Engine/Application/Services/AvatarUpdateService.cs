@@ -6,6 +6,7 @@ using Ambient.Domain.Extensions;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Achievements;
+using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Domain;
 
@@ -248,42 +249,79 @@ public class AvatarUpdateService : IAvatarUpdateService
 
         foreach (var turn in allBattleTurns)
         {
-            var isAvatarTurn = turn.Data.TryGetValue(TransactionDataKeys.IsAvatarTurn, out var isAvatarStr) && isAvatarStr == "True";
+            var isAvatarTurn = turn.Data.TryGetValue(TransactionDataKeys.IsAvatarTurn, out var isAvatarStr) &&
+                               bool.TryParse(isAvatarStr, out var parsedAvatarTurn) && parsedAvatarTurn;
+            var isReaction = turn.Data.TryGetValue(TransactionDataKeys.ActionType, out var actionType) && actionType == "Reaction";
 
-            if (isAvatarTurn)
+            // Preferred path: absolute post-turn avatar snapshots, written on every turn
+            // since the round-3 fix. No turn-parity inference — companion turns, enemy
+            // self-heals, avatar self-heals and reactions all read back correctly.
+            if (turn.Data.TryGetValue(TransactionDataKeys.AvatarHealthAfterTurn, out var absHealthStr) &&
+                BattleTransactionHelper.TryParseFloat(absHealthStr, out var absHealth))
             {
-                // Avatar's turn: Actor = Avatar, Target = Enemy
+                finalHealth = absHealth;
+
+                if (turn.Data.TryGetValue(TransactionDataKeys.AvatarEnergyAfterTurn, out var absEnergyStr) &&
+                    BattleTransactionHelper.TryParseFloat(absEnergyStr, out var absEnergy))
+                {
+                    finalStamina = absEnergy;
+                }
+            }
+            else if (isReaction)
+            {
+                // Legacy reaction tx: TargetHealthAfter/ActorEnergyAfter are the AVATAR's
+                // (the avatar reacted to a telegraphed enemy attack)
+                if (turn.Data.TryGetValue(TransactionDataKeys.TargetHealthAfter, out var reactionHealthStr) &&
+                    BattleTransactionHelper.TryParseFloat(reactionHealthStr, out var reactionHealth))
+                {
+                    finalHealth = reactionHealth;
+                }
+                if (turn.Data.TryGetValue(TransactionDataKeys.ActorEnergyAfter, out var reactionEnergyStr) &&
+                    BattleTransactionHelper.TryParseFloat(reactionEnergyStr, out var reactionEnergy))
+                {
+                    finalStamina = reactionEnergy;
+                }
+            }
+            else if (isAvatarTurn)
+            {
+                // Legacy avatar turn: Actor = Avatar, Target = Enemy
                 // Update avatar's stamina (battle transactions call it "Energy")
-                if (turn.Data.TryGetValue(TransactionDataKeys.ActorEnergyAfter, out var energyStr) && float.TryParse(energyStr, out var energy))
+                if (turn.Data.TryGetValue(TransactionDataKeys.ActorEnergyAfter, out var energyStr) &&
+                    BattleTransactionHelper.TryParseFloat(energyStr, out var energy))
                 {
                     finalStamina = energy;  // Map Energy -> Stamina
                 }
+            }
+            else
+            {
+                // Legacy non-avatar turn. Only treat TargetHealthAfter as the avatar's
+                // health when the avatar actually was the target — companion turns and
+                // enemy self-heals record the ENEMY's health there.
+                var targetsAvatar = !turn.Data.TryGetValue(TransactionDataKeys.Target, out var targetName) ||
+                                    string.IsNullOrEmpty(targetName) ||
+                                    targetName == "Avatar" ||
+                                    targetName == avatar.DisplayName;
+                if (targetsAvatar &&
+                    turn.Data.TryGetValue(TransactionDataKeys.TargetHealthAfter, out var healthStr) &&
+                    BattleTransactionHelper.TryParseFloat(healthStr, out var health))
+                {
+                    finalHealth = health;
+                }
+            }
 
-                // Update avatar's affinity if changed
+            // Affinity/loadout/equipment-condition ride on the avatar's own turns
+            // (including reactions) regardless of which health path applied above
+            if (isAvatarTurn || isReaction)
+            {
                 if (turn.Data.TryGetValue(TransactionDataKeys.AffinitySnapshot, out var affinity) && !string.IsNullOrEmpty(affinity))
                 {
                     finalAffinity = affinity;
                 }
 
-                // Update avatar's combat profile (equipped slots) if changed
                 if (turn.Data.TryGetValue(TransactionDataKeys.LoadoutSlotSnapshot, out var loadoutSnapshot) && !string.IsNullOrEmpty(loadoutSnapshot))
                 {
                     finalCombatProfile = ParseLoadoutSnapshot(loadoutSnapshot);
-                }
-
-                // Update equipment condition from LoadoutSlotSnapshot
-                if (turn.Data.TryGetValue(TransactionDataKeys.LoadoutSlotSnapshot, out var equipmentSnapshot) && !string.IsNullOrEmpty(equipmentSnapshot))
-                {
-                    UpdateEquipmentConditionsFromSnapshot(avatar, equipmentSnapshot);
-                }
-            }
-            else
-            {
-                // Enemy's turn: Actor = Enemy, Target = Avatar
-                // Avatar's health is recorded as TargetHealthAfter (enemy damaged avatar)
-                if (turn.Data.TryGetValue(TransactionDataKeys.TargetHealthAfter, out var healthStr) && float.TryParse(healthStr, out var health))
-                {
-                    finalHealth = health;
+                    UpdateEquipmentConditionsFromSnapshot(avatar, loadoutSnapshot);
                 }
             }
         }
@@ -307,146 +345,6 @@ public class AvatarUpdateService : IAvatarUpdateService
         if (finalCombatProfile != null)
         {
             avatar.CombatProfile = finalCombatProfile;
-        }
-
-        return avatar;
-    }
-
-    /// <inheritdoc/>
-    public async Task<AvatarEntity> UpdateAvatarForLootAsync(
-        AvatarEntity avatar,
-        SagaInstance sagaInstance,
-        Guid lootTransactionId,
-        CancellationToken ct = default)
-    {
-        // Find the LootAwarded transaction
-        var transaction = sagaInstance.GetCommittedTransactions()
-            .FirstOrDefault(t => t.TransactionId == lootTransactionId && t.Type == SagaTransactionType.LootAwarded);
-
-        if (transaction == null)
-        {
-            throw new InvalidOperationException($"LootAwarded transaction '{lootTransactionId}' not found or not committed");
-        }
-
-        // Initialize Capabilities and Stats if needed
-        if (avatar.Capabilities == null)
-        {
-            avatar.Capabilities = new ItemCollection();
-        }
-
-        if (avatar.Stats == null)
-        {
-            avatar.Stats = new CharacterStats();
-        }
-
-        // Parse and transfer equipment
-        if (transaction.Data.TryGetValue(TransactionDataKeys.Equipment, out var equipmentData) && !string.IsNullOrEmpty(equipmentData))
-        {
-            var equipmentEntries = equipmentData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in equipmentEntries)
-            {
-                var parts = entry.Split(':');
-                if (parts.Length >= 2 && float.TryParse(parts[1], out var condition))
-                {
-                    var equipmentRef = parts[0];
-                    var equipment = avatar.Capabilities.GetOrAddEquipment(equipmentRef);
-                    equipment.Condition = Math.Max(equipment.Condition, condition); // Keep best condition if duplicate
-                }
-            }
-        }
-
-        // Parse and transfer consumables
-        if (transaction.Data.TryGetValue(TransactionDataKeys.Consumables, out var consumablesData) && !string.IsNullOrEmpty(consumablesData))
-        {
-            var consumableEntries = consumablesData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in consumableEntries)
-            {
-                var parts = entry.Split(':');
-                if (parts.Length >= 2 && int.TryParse(parts[1], out var quantity))
-                {
-                    var consumableRef = parts[0];
-                    var consumable = avatar.Capabilities.GetOrAddConsumable(consumableRef);
-                    consumable.Quantity += quantity;
-                }
-            }
-        }
-
-        // Parse and transfer spells
-        if (transaction.Data.TryGetValue(TransactionDataKeys.Spells, out var spellsData) && !string.IsNullOrEmpty(spellsData))
-        {
-            var spellEntries = spellsData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in spellEntries)
-            {
-                var parts = entry.Split(':');
-                var spellRef = parts[0];
-
-                // Add spell if not already known
-                var spell = avatar.Capabilities.GetSpell(spellRef);
-                if (spell == null)
-                {
-                    var newSpell = avatar.Capabilities.GetOrAddSpell(spellRef);
-                    // If condition was provided, use it
-                    if (parts.Length >= 2 && float.TryParse(parts[1], out var condition))
-                    {
-                        newSpell.Condition = condition;
-                    }
-                }
-            }
-        }
-
-        // Parse and transfer blocks
-        if (transaction.Data.TryGetValue(TransactionDataKeys.Blocks, out var blocksData) && !string.IsNullOrEmpty(blocksData))
-        {
-            var blockEntries = blocksData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in blockEntries)
-            {
-                var parts = entry.Split(':');
-                if (parts.Length >= 2 && int.TryParse(parts[1], out var quantity))
-                {
-                    var blockRef = parts[0];
-                    var block = avatar.Capabilities.GetOrAddBlock(blockRef);
-                    block.Quantity += quantity;
-                }
-            }
-        }
-
-        // Parse and transfer tools
-        if (transaction.Data.TryGetValue(TransactionDataKeys.Tools, out var toolsData) && !string.IsNullOrEmpty(toolsData))
-        {
-            var toolEntries = toolsData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in toolEntries)
-            {
-                var parts = entry.Split(':');
-                if (parts.Length >= 2 && float.TryParse(parts[1], out var condition))
-                {
-                    var toolRef = parts[0];
-                    var tool = avatar.Capabilities.GetOrAddTool(toolRef);
-                    tool.Condition = Math.Max(tool.Condition, condition); // Keep best condition if duplicate
-                }
-            }
-        }
-
-        // Parse and transfer building materials
-        if (transaction.Data.TryGetValue(TransactionDataKeys.BuildingMaterials, out var materialsData) && !string.IsNullOrEmpty(materialsData))
-        {
-            var materialEntries = materialsData.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var entry in materialEntries)
-            {
-                var parts = entry.Split(':');
-                if (parts.Length >= 2 && int.TryParse(parts[1], out var quantity))
-                {
-                    var materialRef = parts[0];
-                    var material = avatar.Capabilities.GetOrAddBuildingMaterial(materialRef);
-                    material.Quantity += quantity;
-                }
-            }
-        }
-
-        // Transfer credits
-        if (transaction.Data.TryGetValue(TransactionDataKeys.Credits, out var creditsData) && int.TryParse(creditsData, out var credits))
-        {
-            avatar.Stats.Credits += credits;
-            RaiseCreditsChanged(avatar.Id, credits, "Loot", lootTransactionId);
         }
 
         return avatar;
@@ -520,6 +418,9 @@ public class AvatarUpdateService : IAvatarUpdateService
         if (transaction.Data.TryGetValue(TransactionDataKeys.Experience, out var experienceStr) && float.TryParse(experienceStr, out var experience) && experience != 0.0f)
         {
             avatar.Stats.Experience += experience;
+            // Levels derive from accumulated XP; never demote
+            avatar.Stats.Level = Math.Max(avatar.Stats.Level,
+                Domain.Rpg.Progression.LevelCurve.GetLevelForExperience(avatar.Stats.Experience));
         }
 
         return avatar;
@@ -681,12 +582,6 @@ public class AvatarUpdateService : IAvatarUpdateService
     {
         if (string.IsNullOrWhiteSpace(loadoutSnapshot)) return;
 
-        // Initialize Capabilities if needed
-        if (avatar.Capabilities == null)
-        {
-            avatar.Capabilities = new ItemCollection();
-        }
-
         var slots = loadoutSnapshot.Split(',', StringSplitOptions.RemoveEmptyEntries);
         foreach (var slot in slots)
         {
@@ -694,36 +589,71 @@ public class AvatarUpdateService : IAvatarUpdateService
             if (parts.Length != 3) continue;  // Need SlotName:EquipmentRef:Condition
 
             var equipmentRef = parts[1];
-            if (!float.TryParse(parts[2], out var condition)) continue;
+            if (!BattleTransactionHelper.TryParseFloat(parts[2], out var condition)) continue;
 
-            // Update the equipment condition in avatar's inventory
-            var equipment = avatar.Capabilities.GetOrAddEquipment(equipmentRef);
-            equipment.Condition = condition;
+            // Update condition only for items the avatar still owns — the battle
+            // snapshot must never re-create equipment sold/removed mid-battle
+            var equipment = avatar.Capabilities?.GetEquipment(equipmentRef);
+            if (equipment != null)
+            {
+                equipment.Condition = condition;
+            }
         }
     }
 
-    // In-memory cache for achievement instances (simplified for now - real impl would use LiteDB)
-    private static readonly Dictionary<Guid, List<AchievementInstance>> _achievementCache = new();
-    private static readonly object _cacheLock = new();
+    // Achievement unlock state is backed by the avatar's persisted Achievements list —
+    // the previous static in-memory cache was empty on every app start, so every
+    // already-unlocked achievement re-fired as "newly unlocked" each session. This
+    // also makes the avatar's list the single unlock ledger instead of one of three
+    // divergent stores.
 
     /// <inheritdoc/>
-    public Task<List<AchievementInstance>> GetAchievementInstancesAsync(Guid avatarId, CancellationToken ct = default)
+    public async Task<List<AchievementInstance>> GetAchievementInstancesAsync(Guid avatarId, CancellationToken ct = default)
     {
-        lock (_cacheLock)
-        {
-            if (_achievementCache.TryGetValue(avatarId, out var instances))
-                return Task.FromResult(instances);
-            return Task.FromResult(new List<AchievementInstance>());
-        }
+        var avatar = await _avatarRepository.LoadAvatarAsync<AvatarEntity>();
+        if (avatar?.Achievements == null)
+            return new List<AchievementInstance>();
+
+        return avatar.Achievements
+            .Where(a => !string.IsNullOrEmpty(a.AchievementRef))
+            .Select(a => new AchievementInstance
+            {
+                InstanceId = a.AchievementRef,
+                TemplateRef = a.AchievementRef,
+                IsUnlocked = true,
+                UnlockedAt = DateTime.TryParse(a.UnlockedDate, out var unlockedAt) ? unlockedAt : null
+            })
+            .ToList();
     }
 
     /// <inheritdoc/>
-    public Task UpdateAchievementInstancesAsync(Guid avatarId, List<AchievementInstance> instances, CancellationToken ct = default)
+    public async Task UpdateAchievementInstancesAsync(Guid avatarId, List<AchievementInstance> instances, CancellationToken ct = default)
     {
-        lock (_cacheLock)
+        var avatar = await _avatarRepository.LoadAvatarAsync<AvatarEntity>();
+        if (avatar == null)
+            return;
+
+        var achievements = avatar.Achievements?.ToList() ?? new List<AchievementEntry>();
+        var changed = false;
+
+        foreach (var instance in instances.Where(i => i.IsUnlocked && !string.IsNullOrEmpty(i.TemplateRef)))
         {
-            _achievementCache[avatarId] = instances;
+            if (achievements.Any(a => a.AchievementRef == instance.TemplateRef))
+                continue;
+
+            achievements.Add(new AchievementEntry
+            {
+                AchievementRef = instance.TemplateRef,
+                UnlockedDate = (instance.UnlockedAt ?? DateTime.UtcNow).ToString("O"),
+                ProgressPercentage = 1.0f
+            });
+            changed = true;
         }
-        return Task.CompletedTask;
+
+        if (changed)
+        {
+            avatar.Achievements = achievements.ToArray();
+            await PersistAvatarAsync(avatar, ct);
+        }
     }
 }

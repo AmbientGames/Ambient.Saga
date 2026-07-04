@@ -1,4 +1,4 @@
-﻿using Ambient.Domain;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Trade;
@@ -76,7 +76,7 @@ public class TradeEngine
                     foreach (var entry in inventory.Equipment)
                     {
                         var equipItem = _world.Gameplay.Equipment?.FirstOrDefault(e => e.RefName == entry.EquipmentRef);
-                        if (equipItem != null)
+                        if (equipItem != null && equipItem.WholesalePrice != int.MaxValue) // int.MaxValue = untradeable sentinel
                         {
                             var price = isBuying ? CalculateBuyPrice(equipItem, true, characterTraits) : CalculateSellPrice(equipItem);
                             items.Add(new TradeItemInfo(equipItem, price, quantity: null, condition: entry.Condition));
@@ -91,7 +91,7 @@ public class TradeEngine
                     foreach (var entry in inventory.Consumables)
                     {
                         var consumable = _world.Gameplay.Consumables?.FirstOrDefault(c => c.RefName == entry.ConsumableRef);
-                        if (consumable != null)
+                        if (consumable != null && consumable.WholesalePrice != int.MaxValue) // int.MaxValue = untradeable sentinel
                         {
                             var price = isBuying ? CalculateBuyPrice(consumable, true, characterTraits) : CalculateSellPrice(consumable);
                             items.Add(new TradeItemInfo(consumable, price, quantity: entry.Quantity, condition: null));
@@ -115,7 +115,7 @@ public class TradeEngine
                             continue;
 
                         var block = _world.BlockProvider.GetBlockByRefName(entry.BlockRef);
-                        if (block != null)
+                        if (block != null && block.WholesalePrice != int.MaxValue) // int.MaxValue = untradeable sentinel
                         {
                             var price = isBuying ? CalculateBuyPrice(block, true, characterTraits) : CalculateSellPrice(block);
                             items.Add(new TradeItemInfo(block, price, quantity: quantity, condition: null));
@@ -130,7 +130,7 @@ public class TradeEngine
                     foreach (var entry in inventory.Tools)
                     {
                         var tool = _world.Gameplay.Tools?.FirstOrDefault(t => t.RefName == entry.ToolRef);
-                        if (tool != null)
+                        if (tool != null && tool.WholesalePrice != int.MaxValue) // int.MaxValue = untradeable sentinel
                         {
                             var price = isBuying ? CalculateBuyPrice(tool, true, characterTraits) : CalculateSellPrice(tool);
                             items.Add(new TradeItemInfo(tool, price, quantity: null, condition: entry.Condition));
@@ -145,7 +145,7 @@ public class TradeEngine
                     foreach (var entry in inventory.Spells)
                     {
                         var spell = _world.Gameplay.Spells?.FirstOrDefault(s => s.RefName == entry.SpellRef);
-                        if (spell != null)
+                        if (spell != null && spell.WholesalePrice != int.MaxValue) // int.MaxValue = untradeable sentinel
                         {
                             var price = isBuying ? CalculateBuyPrice(spell, true, characterTraits) : CalculateSellPrice(spell);
                             items.Add(new TradeItemInfo(spell, price, quantity: null, condition: (float)entry.Condition));

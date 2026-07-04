@@ -85,17 +85,12 @@ public class QuestDetailModal
 
         ImGuiHelpers.SetupModalWindow(900, 700);
 
+        // Stable title with ### id — status ([ACTIVE]/[COMPLETED]/[FAILED]) is rendered
+        // as text inside the window (RenderHeader) so the ImGui window identity doesn't
+        // change mid-life.
         var title = _questTemplate.DisplayName ?? _questTemplate.RefName;
-        if (_questProgress?.IsComplete == true)
-        {
-            title += _questProgress.IsSuccess ? " [COMPLETED]" : " [FAILED]";
-        }
-        else if (_questState != null)
-        {
-            title += " [ACTIVE]";
-        }
 
-        if (ImGui.Begin($"Quest: {title}", ref isOpen, ImGuiWindowFlags.None))
+        if (ImGui.Begin($"Quest: {title}###QuestDetailModal", ref isOpen, ImGuiWindowFlags.None))
         {
             if (_isLoading)
             {
@@ -114,9 +109,10 @@ public class QuestDetailModal
             {
                 RenderQuestContent(viewModel, ref isOpen);
             }
-
-            ImGui.End();
         }
+        // End() must be called unconditionally (outside the Begin() if) — a collapsed
+        // window returns false from Begin() and skipping End() imbalances ImGui.
+        ImGui.End();
     }
 
     private void RenderQuestContent(SagaMainViewModel viewModel, ref bool isOpen)

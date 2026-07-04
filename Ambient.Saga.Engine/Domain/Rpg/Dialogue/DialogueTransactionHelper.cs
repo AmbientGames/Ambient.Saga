@@ -203,61 +203,10 @@ public static class DialogueTransactionHelper
         };
     }
 
-    /// <summary>
-    /// Creates a transaction for a completed trade.
-    /// </summary>
-    public static SagaTransaction CreateItemTradedTransaction(
-        string avatarId,
-        string merchantCharacterRef,
-        string itemRef,
-        int quantity,
-        int price,
-        bool isBuy, // true = avatar buying, false = avatar selling
-        Guid sagaInstanceId)
-    {
-        return new SagaTransaction
-        {
-            TransactionId = Guid.NewGuid(),
-            Type = SagaTransactionType.ItemTraded,
-            AvatarId = avatarId,
-            LocalTimestamp = DateTime.UtcNow,
-            Data = new Dictionary<string, string>
-            {
-                [TransactionDataKeys.CharacterRef] = merchantCharacterRef,
-                [TransactionDataKeys.ItemRef] = itemRef,
-                [TransactionDataKeys.Quantity] = quantity.ToString(),
-                [TransactionDataKeys.Price] = price.ToString(),
-                [TransactionDataKeys.Direction] = isBuy ? "Buy" : "Sell",
-                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
-            }
-        };
-    }
-
-    /// <summary>
-    /// Creates a transaction for awarding loot.
-    /// </summary>
-    public static SagaTransaction CreateLootAwardedTransaction(
-        string avatarId,
-        string sourceRef, // Boss/chest/etc that dropped loot
-        string itemRef,
-        int quantity,
-        Guid sagaInstanceId)
-    {
-        return new SagaTransaction
-        {
-            TransactionId = Guid.NewGuid(),
-            Type = SagaTransactionType.LootAwarded,
-            AvatarId = avatarId,
-            LocalTimestamp = DateTime.UtcNow,
-            Data = new Dictionary<string, string>
-            {
-                [TransactionDataKeys.SourceRef] = sourceRef,
-                [TransactionDataKeys.ItemRef] = itemRef,
-                [TransactionDataKeys.Quantity] = quantity.ToString(),
-                [TransactionDataKeys.SagaInstanceId] = sagaInstanceId.ToString()
-            }
-        };
-    }
+    // CreateItemTradedTransaction was deleted: it had zero callers and wrote drifted
+    // keys (CharacterRef/Price/Direction) that no consumer reads — TradeItemHandler
+    // owns ItemTraded transactions. (CreateLootAwardedTransaction went with the
+    // corpse-looting feature, removed 2026-07-04.)
 
     /// <summary>
     /// Creates a transaction for awarding a quest token.

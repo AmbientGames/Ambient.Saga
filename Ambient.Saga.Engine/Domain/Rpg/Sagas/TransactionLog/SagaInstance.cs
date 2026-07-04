@@ -80,6 +80,14 @@ public class SagaInstance
     public long LastSyncedSequenceNumber { get; set; }
 
     /// <summary>
+    /// Max server-clock timestamp of transactions imported via pull.
+    /// Sent back as the pull watermark — server timestamps are globally ordered,
+    /// unlike client-local sequence numbers which collide across avatars on
+    /// shared arcs. Null if nothing has been pulled yet.
+    /// </summary>
+    public DateTime? LastPulledServerTimestamp { get; set; }
+
+    /// <summary>
     /// Whether this instance has pending (uncommitted) transactions.
     /// True if any transactions have Status = Pending.
     /// </summary>

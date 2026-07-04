@@ -26,11 +26,12 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+	<!-- Saga-flavor (xmlns="Ambient.Domain") sample worlds; world discovery looks in <output>\content\worlds -->
 	<ItemGroup>
-		<SandboxContent Include="..\Ambient.Saga.Sandbox.DirectX\content\**\*" />
+		<TestContent Include="TestContent\**\*" />
 	</ItemGroup>
 
-	<Target Name="CopySandboxContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">
-		<Copy SourceFiles="@(SandboxContent)" DestinationFiles="@(SandboxContent->'$(TargetDir)content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
+	<Target Name="CopyTestContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">
+		<Copy SourceFiles="@(TestContent)" DestinationFiles="@(TestContent->'$(TargetDir)content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
 	</Target>
 </Project>

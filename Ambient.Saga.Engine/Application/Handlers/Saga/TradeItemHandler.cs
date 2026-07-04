@@ -8,6 +8,7 @@ using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
+using Ambient.Saga.Engine.Domain.Rpg.Trade;
 using MediatR;
 using Ambient.Saga.Engine.Domain;
 
@@ -112,6 +113,49 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
             else
                 totalPrice = (int)Math.Round(basePrice * sagaTemplate.BuybackMultiplier);
 
+            // WholesalePrice=int.MaxValue is the "cannot be traded" sentinel
+            // (Economy.xsd). Selling one used to pay ~2.1 BILLION credits.
+            var catalogItem = ResolveTradeable(command.ItemRef);
+            if (catalogItem != null && catalogItem.WholesalePrice == int.MaxValue)
+            {
+                return SagaCommandResult.Failure(instance.InstanceId,
+                    $"'{command.ItemRef}' cannot be traded");
+            }
+
+            if (command.IsBuying)
+            {
+                // Merchants only sell what they actually stock — check the replayed
+                // inventory (degradables replay as one entry per unit, so count entries)
+                var stock = character.CurrentInventory;
+                var inStock =
+                    (stock?.Consumables?.FirstOrDefault(c => c.ConsumableRef == command.ItemRef)?.Quantity ?? 0) >= command.Quantity ||
+                    (stock?.BuildingMaterials?.FirstOrDefault(m => m.BuildingMaterialRef == command.ItemRef)?.Quantity ?? 0) >= command.Quantity ||
+                    (stock?.Blocks?.FirstOrDefault(b => b.BlockRef == command.ItemRef)?.Quantity ?? 0) >= command.Quantity ||
+                    (stock?.Equipment?.Count(e => e.EquipmentRef == command.ItemRef) ?? 0) >= command.Quantity ||
+                    (stock?.Tools?.Count(t => t.ToolRef == command.ItemRef) ?? 0) >= command.Quantity ||
+                    (stock?.Spells?.Count(s => s.SpellRef == command.ItemRef) ?? 0) >= command.Quantity;
+                if (!inStock)
+                {
+                    return SagaCommandResult.Failure(instance.InstanceId,
+                        $"'{command.ItemRef}' is not in stock (quantity: {command.Quantity})");
+                }
+
+                // Degradables are one-per-avatar (GetOrAdd convention); buying a second
+                // copy used to charge full price and grant nothing — reject instead
+                var alreadyOwned =
+                    (_world.EquipmentLookup.ContainsKey(command.ItemRef) &&
+                        (command.Avatar.Capabilities?.Equipment?.Any(e => e.EquipmentRef == command.ItemRef) ?? false)) ||
+                    (_world.ToolsLookup.ContainsKey(command.ItemRef) &&
+                        (command.Avatar.Capabilities?.Tools?.Any(t => t.ToolRef == command.ItemRef) ?? false)) ||
+                    (_world.SpellsLookup.ContainsKey(command.ItemRef) &&
+                        (command.Avatar.Capabilities?.Spells?.Any(s => s.SpellRef == command.ItemRef) ?? false));
+                if (alreadyOwned)
+                {
+                    return SagaCommandResult.Failure(instance.InstanceId,
+                        $"Already own '{command.ItemRef}'");
+                }
+            }
+
             // Buy-side validation: only non-owners pay and must have the credits to do so.
             // Owners take from their own arc for free, no avatar-inventory check needed —
             // the item lives on the arc's character (saga state), not the avatar.
@@ -157,24 +201,25 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                     }
                 }
 
-                // Check equipment
-                if (!hasItem && command.Avatar.Capabilities?.Equipment != null)
+                // Check equipment/tools/spells — degradables are unique per ref (one
+                // inventory entry each, removed wholesale on sale), so the sale
+                // quantity must be exactly 1: a crafted Quantity=1000 command was
+                // paid 1000× wholesale for a single owned item
+                if (!hasItem && command.Quantity == 1 && command.Avatar.Capabilities?.Equipment != null)
                 {
                     hasItem = command.Avatar.Capabilities.Equipment
                         .Any(e => e.EquipmentRef == command.ItemRef);
                     if (hasItem) itemType = "equipment";
                 }
 
-                // Check tools
-                if (!hasItem && command.Avatar.Capabilities?.Tools != null)
+                if (!hasItem && command.Quantity == 1 && command.Avatar.Capabilities?.Tools != null)
                 {
                     hasItem = command.Avatar.Capabilities.Tools
                         .Any(t => t.ToolRef == command.ItemRef);
                     if (hasItem) itemType = "tool";
                 }
 
-                // Check spells
-                if (!hasItem && command.Avatar.Capabilities?.Spells != null)
+                if (!hasItem && command.Quantity == 1 && command.Avatar.Capabilities?.Spells != null)
                 {
                     hasItem = command.Avatar.Capabilities.Spells
                         .Any(s => s.SpellRef == command.ItemRef);
@@ -200,6 +245,28 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 }
             }
 
+            // Server-side price check: PricePerItem is client-supplied, so recompute
+            // the canonical catalog price with the same formula the trade UI uses
+            // (TradeEngine + the merchant's replayed traits) and reject mismatches —
+            // otherwise a tampered client buys at 0 or sells at any price it likes.
+            // Owner trades are free (totalPrice forced to 0 above) and items without
+            // a catalog entry have no server price to compare against.
+            if (!isOwner && catalogItem != null)
+            {
+                var tradeEngine = new TradeEngine(_world);
+                currentState.CharacterTraits.TryGetValue(character.CharacterRef, out var merchantTraits);
+                var expectedPrice = command.IsBuying
+                    ? tradeEngine.CalculateBuyPrice(catalogItem, isMerchant: true, merchantTraits)
+                    : tradeEngine.CalculateSellPrice(catalogItem);
+
+                // ±1 credit tolerance absorbs client/server integer-rounding differences
+                if (Math.Abs(command.PricePerItem - expectedPrice) > 1)
+                {
+                    return SagaCommandResult.Failure(instance.InstanceId,
+                        $"Price mismatch for '{command.ItemRef}': client offered {command.PricePerItem}, server price is {expectedPrice}");
+                }
+            }
+
             // Create ItemTraded transaction
             var transaction = new SagaTransaction
             {
@@ -221,10 +288,34 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
 
             instance.AddTransaction(transaction);
 
+            var tradeTransactions = new List<SagaTransaction> { transaction };
+
+            // Record the credit movement — CurrencyCollected quest objectives read
+            // CurrencyChanged transactions (selling = positive gain, buying = cost)
+            if (totalPrice != 0)
+            {
+                var currencyTx = new SagaTransaction
+                {
+                    TransactionId = Guid.NewGuid(),
+                    Type = SagaTransactionType.CurrencyChanged,
+                    AvatarId = command.AvatarId.ToString(),
+                    Status = TransactionStatus.Pending,
+                    LocalTimestamp = DateTime.UtcNow,
+                    Data = new Dictionary<string, string>
+                    {
+                        [TransactionDataKeys.Amount] = (command.IsBuying ? -totalPrice : totalPrice).ToString(),
+                        [TransactionDataKeys.Reason] = "Trade",
+                        [TransactionDataKeys.ItemRef] = command.ItemRef
+                    }
+                };
+                instance.AddTransaction(currencyTx);
+                tradeTransactions.Add(currencyTx);
+            }
+
             // Persist transaction
             var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
-                new List<SagaTransaction> { transaction },
+                tradeTransactions,
                 ct);
 
             if (!committed)
@@ -311,6 +402,20 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
         {
             return SagaCommandResult.Failure(Guid.Empty, $"Error trading item: {ex.Message}");
         }
+    }
+
+    /// <summary>Resolves an item ref to its catalog entry across the tradeable families.</summary>
+    private ITradeable? ResolveTradeable(string itemRef)
+    {
+        if (string.IsNullOrEmpty(itemRef))
+            return null;
+
+        if (_world.EquipmentLookup.TryGetValue(itemRef, out var equipment)) return equipment;
+        if (_world.ConsumablesLookup.TryGetValue(itemRef, out var consumable)) return consumable;
+        if (_world.ToolsLookup.TryGetValue(itemRef, out var tool)) return tool;
+        if (_world.SpellsLookup.TryGetValue(itemRef, out var spell)) return spell;
+        if (_world.BuildingMaterialsLookup.TryGetValue(itemRef, out var material)) return material;
+        return _world.BlockProvider?.GetBlockByRefName(itemRef);
     }
 
     private float DetermineItemCategoryWeight(string itemRef, ItemCollection? capabilities)

@@ -159,6 +159,12 @@ public class MockDialogueStateProvider : IDialogueStateProvider
         _factionReputation[factionRef] = GetFactionReputation(factionRef) + amount;
     }
 
+    /// <summary>Spillover entries the mock should report; empty by default.</summary>
+    public List<(string FactionRef, int Amount)> ReputationSpillover { get; } = new();
+
+    public IReadOnlyList<(string FactionRef, int Amount)> GetReputationSpillover(string factionRef, int amount)
+        => ReputationSpillover;
+
     // Party management
     private readonly List<string> _partyMembers = new();
     public int MaxPartySlots { get; set; } = 1;

@@ -88,7 +88,7 @@
     <xs:complexType name="DefenseOutcome">
         <xs:annotation><xs:documentation>Defines the consequences of choosing a specific defensive reaction against an attack tell.</xs:documentation></xs:annotation>
         <xs:sequence>
-            <xs:element name="Effects" type="Attributes" minOccurs="0" maxOccurs="1">
+            <xs:element name="Effects" type="EffectAttributes" minOccurs="0" maxOccurs="1">
                 <xs:annotation><xs:documentation>Stat modifiers applied when this defense is chosen (e.g. Stamina="0.1" grants 10% stamina for a skilled defense).</xs:documentation></xs:annotation>
             </xs:element>
         </xs:sequence>

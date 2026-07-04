@@ -1,4 +1,4 @@
-using Ambient.Domain;
+﻿﻿using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
@@ -56,9 +56,11 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
             {
                 // Not active anywhere — disambiguate "already done" vs. "never accepted" using
                 // the caller-specified saga, since that's the best contextual guess available.
+                // Template lookups use the stripped ref (dev instances are "Real__DEV__id").
+                var hintedLookupRef = QuestInstanceLocator.StripDevSuffix(command.SagaArcRef);
                 var hinted = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
-                if (_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var hintedTemplate)
-                    && _world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var hintedTriggers))
+                if (_world.SagaArcLookup.TryGetValue(hintedLookupRef, out var hintedTemplate)
+                    && _world.SagaTriggersLookup.TryGetValue(hintedLookupRef, out var hintedTriggers))
                 {
                     var hintedState = new SagaStateMachine(hintedTemplate, hintedTriggers, _world).ReplayToNow(hinted);
                     if (hintedState.CompletedQuests.Contains(command.QuestRef))
@@ -70,17 +72,18 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
             }
 
             var resolvedSagaRef = instance.SagaRef;
+            var resolvedLookupRef = QuestInstanceLocator.StripDevSuffix(resolvedSagaRef);
 
-            // Verify Saga exists (for the resolved instance)
-            if (!_world.SagaArcLookup.TryGetValue(resolvedSagaRef, out var sagaTemplate))
+            // Verify Saga exists (for the resolved instance; stripped ref for template lookup)
+            if (!_world.SagaArcLookup.TryGetValue(resolvedLookupRef, out var sagaTemplate))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{resolvedSagaRef}' not found");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{resolvedLookupRef}' not found");
             }
 
             // Get expanded triggers for state machine
-            if (!_world.SagaTriggersLookup.TryGetValue(resolvedSagaRef, out var expandedTriggers))
+            if (!_world.SagaTriggersLookup.TryGetValue(resolvedLookupRef, out var expandedTriggers))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{resolvedSagaRef}'");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{resolvedLookupRef}'");
             }
 
             // Replay to get current state
@@ -133,12 +136,36 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
                 Data = transactionData
             };
 
-            instance.AddTransaction(transaction);
+            // Reputation rewards are transaction-driven (replayed saga state +
+            // cross-arc projection, like the dialogue ChangeReputation action) —
+            // stage them so they commit atomically with QuestCompleted
+            var transactionsToCommit = new List<SagaTransaction> { transaction };
+            transactionsToCommit.AddRange(QuestRewardDistributor.CollectRewardTransactions(
+                quest.Rewards,
+                QuestRewardCondition.OnSuccess,
+                command.AvatarId.ToString(),
+                instance.InstanceId,
+                _world));
+            if (!string.IsNullOrEmpty(questState.ChosenBranch))
+            {
+                transactionsToCommit.AddRange(QuestRewardDistributor.CollectRewardTransactions(
+                    quest.Rewards,
+                    QuestRewardCondition.OnBranch,
+                    command.AvatarId.ToString(),
+                    instance.InstanceId,
+                    _world,
+                    branchRef: questState.ChosenBranch));
+            }
 
-            // Persist and commit transaction atomically
+            foreach (var tx in transactionsToCommit)
+            {
+                instance.AddTransaction(tx);
+            }
+
+            // Persist and commit transactions atomically
             var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
-                new List<SagaTransaction> { transaction },
+                transactionsToCommit,
                 ct);
 
             if (!committed)
@@ -184,7 +211,7 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
 
             return SagaCommandResult.Success(
                 instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
+                transactionsToCommit.Select(t => t.TransactionId).ToList(),
                 sequenceNumbers.First(),
                 resultData);
         }

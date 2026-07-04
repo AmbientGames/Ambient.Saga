@@ -52,10 +52,11 @@ internal sealed class CanActivateTriggerHandler : IRequestHandler<CanActivateTri
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(query.AvatarId, query.SagaRef, ct);
 
             // Check if trigger has already been activated
+            // (emitted under SagaTriggerRef — see SagaInteractionService)
             var alreadyActivated = instance.GetCommittedTransactions()
                 .Any(t => t.Type == SagaTransactionType.TriggerActivated &&
-                         t.Data.ContainsKey(TransactionDataKeys.TriggerRef) &&
-                         t.Data[TransactionDataKeys.TriggerRef] == query.TriggerRef);
+                         t.Data.ContainsKey(TransactionDataKeys.SagaTriggerRef) &&
+                         t.Data[TransactionDataKeys.SagaTriggerRef] == query.TriggerRef);
 
             var canActivate = !alreadyActivated;
 

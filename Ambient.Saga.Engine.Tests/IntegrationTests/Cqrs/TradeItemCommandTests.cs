@@ -37,11 +37,6 @@ public class StubAvatarUpdateService : IAvatarUpdateService
         return Task.FromResult(avatar);
     }
 
-    public Task<AvatarEntity> UpdateAvatarForLootAsync(AvatarEntity avatar, SagaInstance sagaInstance, Guid lootTransactionId, CancellationToken ct = default)
-    {
-        return Task.FromResult(avatar);
-    }
-
     public Task<AvatarEntity> AddQuestTokenAsync(AvatarEntity avatar, string questTokenRef, CancellationToken ct = default)
     {
         return Task.FromResult(avatar);
@@ -128,7 +123,19 @@ public class TradeItemCommandTests : IDisposable
         var merchant = new Character
         {
             RefName = "Merchant",
-            DisplayName = "Village Merchant"
+            DisplayName = "Village Merchant",
+            // Merchants only sell what they stock (see TradeItemHandler)
+            Capabilities = new ItemCollection
+            {
+                Consumables = new[]
+                {
+                    new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 100 }
+                },
+                Equipment = new[]
+                {
+                    new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
+                }
+            }
         };
 
         var sagaarc = new SagaArc
@@ -154,6 +161,8 @@ public class TradeItemCommandTests : IDisposable
         world.SagaArcLookup[sagaarc.RefName] = sagaarc;
         world.CharactersLookup[merchant.RefName] = merchant;
         world.SagaTriggersLookup[sagaarc.RefName] = new List<SagaTrigger>();
+        // WholesalePrice must be set: the schema default is int.MaxValue = untradeable
+        world.EquipmentLookup["IronSword"] = new Equipment { RefName = "IronSword", DisplayName = "Iron Sword", WholesalePrice = 100 };
 
         // Register archetype so carry weight checks can find it
         var warriorArchetype = new AvatarArchetype
@@ -254,6 +263,67 @@ public class TradeItemCommandTests : IDisposable
         Assert.Equal("3", tradeTx.Data["Quantity"]);
         Assert.Equal("True", tradeTx.Data["IsBuying"]);
         Assert.Equal("150", tradeTx.Data["TotalPrice"]); // 3 * 50
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyMoreThanMerchantStocks_Rejected()
+    {
+        // Arrange — fixture merchant stocks 100 HealthPotions
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Stats.Credits = 1_000_000;
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            SagaArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 200,
+            IsBuying = true,
+            PricePerItem = 1
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert — merchants are not infinite stock
+        Assert.False(result.Successful);
+        Assert.Contains("not in stock", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyDuplicateEquipment_Rejected()
+    {
+        // Arrange — avatar already owns the sword the merchant stocks
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Equipment = new[]
+        {
+            new EquipmentEntry { EquipmentRef = "IronSword", Condition = 0.5f }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            SagaArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 50
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert — buying a duplicate degradable used to charge and grant nothing
+        Assert.False(result.Successful);
+        Assert.Contains("Already own", result.ErrorMessage);
     }
 
     [Fact]
@@ -460,6 +530,94 @@ public class TradeItemCommandTests : IDisposable
 
         Assert.All(instance.Transactions, tx =>
             Assert.NotNull(tx.ServerTimestamp));
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyBelowCatalogPrice_Rejected()
+    {
+        // Arrange — IronSword: WholesalePrice 100 × default markup 1.5 = 150 buy price.
+        // The client-supplied price is server-validated against the catalog now.
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            SagaArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 50 // tampered: far below the server-computed 150
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("Price mismatch", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_BuyAtCatalogPrice_Succeeds()
+    {
+        // Arrange — the honest price: 100 × 1.5 markup = 150
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            SagaArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 150
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.True(result.Successful, $"Command failed: {result.ErrorMessage}");
+    }
+
+    [Fact]
+    public async Task TradeItem_SellAboveCatalogPrice_Rejected()
+    {
+        // Arrange — avatar owns an IronSword; sell price is the wholesale 100
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Equipment = new[]
+        {
+            new EquipmentEntry { EquipmentRef = "IronSword", Condition = 0.8f }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            SagaArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "IronSword",
+            Quantity = 1,
+            IsBuying = false,
+            PricePerItem = 9999 // tampered: sell far above the catalog's 100
+        };
+
+        // Act
+        var result = await _mediator.Send(command);
+
+        // Assert
+        Assert.False(result.Successful);
+        Assert.Contains("Price mismatch", result.ErrorMessage);
     }
 
     public void Dispose()

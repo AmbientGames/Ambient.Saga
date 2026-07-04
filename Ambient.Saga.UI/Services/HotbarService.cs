@@ -11,6 +11,10 @@ public class HotbarService
 {
     private readonly SagaMainViewModel _viewModel;
 
+    // Per-slot in-flight guard: rapid taps on the same slot must not dispatch the
+    // action twice (double-tap eating two potions before the first lands).
+    private readonly bool[] _slotBusy = new bool[9];
+
     public HotbarService(SagaMainViewModel viewModel)
     {
         _viewModel = viewModel;
@@ -32,8 +36,20 @@ public class HotbarService
         if (slot.IsEmpty)
             return;
 
-        // Perform action based on item type
-        await PerformSlotActionAsync(avatar, slot);
+        // Ignore re-activation while this slot's action is still in flight
+        if (_slotBusy[slotIndex])
+            return;
+        _slotBusy[slotIndex] = true;
+
+        try
+        {
+            // Perform action based on item type
+            await PerformSlotActionAsync(avatar, slot);
+        }
+        finally
+        {
+            _slotBusy[slotIndex] = false;
+        }
     }
 
     /// <summary>

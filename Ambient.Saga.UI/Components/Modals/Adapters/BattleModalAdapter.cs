@@ -26,6 +26,16 @@ public class BattleModalAdapter : IModal
 
     public string Name => "BossBattle";
 
+    /// <summary>
+    /// Per-frame tick for the rendered BattleModal instance (reaction countdown,
+    /// enemy-turn delay clearing, pending battle dialogue effects).
+    /// Called by ModalManager.Update while the battle modal is open.
+    /// </summary>
+    public void Update(float deltaTime)
+    {
+        _modal.Update(deltaTime);
+    }
+
     public bool CanOpen(object? context)
     {
         return context is CharacterModalContext or CharacterContext;
@@ -73,5 +83,9 @@ public class BattleModalAdapter : IModal
     public void OnClosed()
     {
         System.Diagnostics.Debug.WriteLine("[BattleModal] Closed");
+
+        // Reset battle state so re-engaging the same enemy starts a fresh battle
+        // instead of showing the previous battle's end screen.
+        _modal.Reset();
     }
 }

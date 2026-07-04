@@ -4,6 +4,7 @@ using Ambient.Domain.Partials;
 using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
+using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
@@ -160,6 +161,108 @@ public class BattleCommandTests : IDisposable
         _output.WriteLine($"  Random Seed: {battleStarted.Data["RandomSeed"]}");
         _output.WriteLine($"  Avatar HP: {battleStarted.Data["AvatarHealth"]}");
         _output.WriteLine($"  Enemy HP: {battleStarted.Data["EnemyHealth"]}");
+    }
+
+    [Fact]
+    public async Task ExecuteBattleTurn_StateMatchesRecordedTurnResults_NoDoubleApplication()
+    {
+        // ARRANGE: spawn boss and start a battle (same flow as StartBattle test)
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateWarriorAvatar(avatarId);
+        var sagaRef = "WeakBossSaga";
+
+        await _mediator.Send(new UpdateAvatarPositionCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            Latitude = 35.0,
+            Longitude = 139.0,
+            Avatar = avatar
+        });
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        var bossInstanceId = Guid.Parse(
+            instance.GetCommittedTransactions()
+                .First(t => t.Type == SagaTransactionType.CharacterSpawned)
+                .Data["CharacterInstanceId"]);
+
+        var weakBoss = _world.CharactersLookup["WeakBoss"];
+        var warriorArchetype = _world.AvatarArchetypesLookup["Warrior"];
+
+        var battleSetup = new BattleSetup();
+        battleSetup.SetupFromWorld(_world);
+        battleSetup.SelectedAvatarArchetype = warriorArchetype;
+        battleSetup.AvatarCapabilities = avatar.Capabilities ?? new ItemCollection();
+        battleSetup.AvatarAffinityRefs = new List<string> { "Physical" };
+        battleSetup.SelectedOpponentCharacter = weakBoss;
+        battleSetup.OpponentCapabilities = weakBoss.Capabilities ?? new ItemCollection();
+
+        var battleEngine = battleSetup.CreateBattleEngine();
+
+        var battleResult = await _mediator.Send(new StartBattleCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            EnemyCharacterInstanceId = bossInstanceId,
+            AvatarCombatant = battleEngine.GetAvatar(),
+            EnemyCombatant = battleEngine.GetEnemy(),
+            AvatarAffinityRefs = new List<string> { "Physical" },
+            EnemyMind = new CombatAI(_world, 12345),
+            RandomSeed = 12345,
+            Avatar = avatar
+        });
+        Assert.True(battleResult.Successful, $"Battle start failed: {battleResult.ErrorMessage}");
+
+        var battleId = (await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef))
+            .GetCommittedTransactions()
+            .First(t => t.Type == SagaTransactionType.BattleStarted)
+            .TransactionId;
+
+        // ACT: one avatar attack (+ enemy response) through the CQRS layer
+        var turnResult = await _mediator.Send(new ExecuteBattleTurnCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            BattleInstanceId = battleId,
+            AvatarAction = new CombatAction { ActionType = ActionType.Attack },
+            Avatar = avatar
+        });
+        Assert.True(turnResult.Successful, $"Turn failed: {turnResult.ErrorMessage}");
+
+        // ASSERT: reconstructed state equals the recorded per-turn results exactly
+        var state = await _mediator.Send(new GetBattleStateQuery
+        {
+            AvatarId = avatarId,
+            SagaRef = sagaRef,
+            BattleInstanceId = battleId,
+            Avatar = avatar
+        });
+        Assert.True(state.IsActive || state.HasEnded);
+
+        var turnTxs = (await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef))
+            .GetCommittedTransactions()
+            .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
+                        t.Data["BattleTransactionId"] == battleId.ToString())
+            .OrderBy(t => t.SequenceNumber)
+            .ToList();
+
+        // The avatar's recorded hit must carry a real (non-garbage) enemy health,
+        // and the reconstructed enemy health must equal it — applied exactly once
+        var avatarHit = turnTxs.Last(t => bool.Parse(t.Data["IsAvatarTurn"]));
+        var recordedEnemyHealth = float.Parse(avatarHit.Data["TargetHealthAfter"]);
+        var initialEnemyHealth = weakBoss.Stats.Health;
+
+        Assert.True(recordedEnemyHealth > 0f, "Recorded enemy health should not be zero after one weak hit");
+        Assert.True(recordedEnemyHealth < initialEnemyHealth, "Avatar's hit should have reduced enemy health");
+        Assert.Equal(recordedEnemyHealth, state.EnemyCombatant!.Health, 3);
+
+        // Enemy's response (no tells in this world) must land real damage on the avatar
+        var enemyHit = turnTxs.LastOrDefault(t => !bool.Parse(t.Data["IsAvatarTurn"]));
+        if (enemyHit != null)
+        {
+            var recordedAvatarHealth = float.Parse(enemyHit.Data["TargetHealthAfter"]);
+            Assert.Equal(recordedAvatarHealth, state.AvatarCombatant!.Health, 3);
+        }
     }
 
     public void Dispose()

@@ -132,8 +132,14 @@ public static class AchievementProgressEvaluator
                 if (!world.CharactersLookup.TryGetValue(characterRef, out var character))
                     return false;
 
-                // Match against RefName (case-insensitive) - e.g., "GenericBoss" contains "Boss"
-                return character.RefName?.Contains(characterType, StringComparison.OrdinalIgnoreCase) == true;
+                // Match against RefName (e.g. "BOSS_School" contains "Boss") or trait
+                // names (e.g. trait "BossFight" contains "Boss") — RefName alone
+                // misses trait-flagged bosses like RivalGuild_Enforcer
+                if (character.RefName?.Contains(characterType, StringComparison.OrdinalIgnoreCase) == true)
+                    return true;
+
+                return character.Traits?.Any(tr =>
+                    tr.Name.ToString().Contains(characterType, StringComparison.OrdinalIgnoreCase)) == true;
             });
     }
 
@@ -383,18 +389,15 @@ public static class AchievementProgressEvaluator
 
     private static int GetReputationThreshold(string? reputationLevel)
     {
-        return reputationLevel?.ToLowerInvariant() switch
+        // Delegate to the reputation system's own thresholds — this table used to
+        // disagree (Honored 6000 vs 9000, Exalted 21000 vs 42000), so "Reach Exalted"
+        // achievements unlocked at what the faction system considers Revered
+        if (Enum.TryParse<ReputationLevel>(reputationLevel, ignoreCase: true, out var level))
         {
-            "hated" => -6000,
-            "hostile" => -3000,
-            "unfriendly" => 0,
-            "neutral" => 0,
-            "friendly" => 3000,
-            "honored" => 6000,
-            "revered" => 12000,
-            "exalted" => 21000,
-            _ => 0
-        };
+            return Rpg.Reputation.ReputationManager.GetReputationRange(level).Min;
+        }
+
+        return 0;
     }
 
     #endregion

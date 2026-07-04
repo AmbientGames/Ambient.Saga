@@ -2,6 +2,7 @@ using Ambient.Saga.Presentation.UI.ViewModels;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
+using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
 using Ambient.Saga.UI;
 using Ambient.Saga.UI.Components.Utilities;
 using ImGuiNET;
@@ -19,24 +20,49 @@ public class DialogueModal
     private DialogueStateResult? _currentState;
     private bool _isInitialized = false;
     private Guid _lastCharacterInstanceId;
+
+    // Tree/node requested by a battle dialogue trigger (one-shot, from ModalManager)
+    private (string TreeRef, string? NodeId)? _startOverride;
     private bool _isLoading = false;
     private string? _errorMessage = null;
+
+    /// <summary>
+    /// Resets all dialogue state. Called by DialogueModalAdapter.OnClosed so reopening
+    /// a conversation doesn't render the previous session's stale tree (the registry
+    /// never renders with isOpen=false, so the old reset-on-close path never ran).
+    /// </summary>
+    public void Reset()
+    {
+        _isInitialized = false;
+        _lastCharacterInstanceId = Guid.Empty;
+        _currentState = null;
+        _errorMessage = null;
+        _isLoading = false;
+        _startOverride = null;
+    }
 
     public void Render(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         if (!isOpen)
         {
-            _isInitialized = false;
+            Reset();
             return;
         }
 
-        // Initialize dialogue on first render for this character
-        if (!_isInitialized || _lastCharacterInstanceId != character.CharacterInstanceId)
+        // Initialize dialogue on first render for this character. A pending battle
+        // trigger override always forces a fresh session at the requested node.
+        if (!_isInitialized || _lastCharacterInstanceId != character.CharacterInstanceId ||
+            modalManager.DialogueStartOverride != null)
         {
             _isInitialized = true;
             _lastCharacterInstanceId = character.CharacterInstanceId;
             _errorMessage = null;
             _isLoading = true;
+
+            // Battle dialogue triggers request a specific tree/node (one-shot hand-off)
+            _startOverride = modalManager.DialogueStartOverride;
+            modalManager.DialogueStartOverride = null;
+
             _ = InitializeDialogueAndSetLoadingAsync(viewModel, character);
         }
 
@@ -91,7 +117,7 @@ public class DialogueModal
         // Dialogue ended
         if (_currentState.HasEnded)
         {
-            RenderDialogueEnded(character, modalManager, ref isOpen);
+            RenderDialogueEnded(ref isOpen);
             return;
         }
 
@@ -185,7 +211,7 @@ public class DialogueModal
         }
     }
 
-    private void RenderDialogueEnded(CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
+    private void RenderDialogueEnded(ref bool isOpen)
     {
         ImGui.Spacing();
         ImGui.Spacing();
@@ -202,30 +228,6 @@ public class DialogueModal
         ImGui.Spacing();
 
         var buttonHeight = ImGui.GetFrameHeight();
-
-        // Check if character is lootable (defeated and has loot)
-        if (character.CanLoot && !character.IsAlive)
-        {
-            // Show loot option for defeated characters - full width
-            ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.6f, 0.5f, 0.2f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.7f, 0.6f, 0.25f, 1));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.8f, 0.7f, 0.3f, 1));
-
-            if (ImGui.Button("Collect Loot", new Vector2(ImGuiSizes.Fill, buttonHeight)))
-            {
-                // Close dialogue and open loot modal
-                modalManager.CloseModal("Dialogue");
-                modalManager.SelectedCharacter = character;
-                modalManager.OpenModal("Loot");
-                CloseAndReset(ref isOpen);
-                return;
-            }
-
-            ImGui.PopStyleColor(3);
-
-            ImGui.Spacing();
-            ImGui.Spacing();
-        }
 
         // Full-width close button
         if (ImGui.Button("End Conversation", new Vector2(ImGuiSizes.Fill, buttonHeight)))
@@ -442,10 +444,7 @@ public class DialogueModal
     private void CloseAndReset(ref bool isOpen)
     {
         isOpen = false;
-        _isInitialized = false;
-        _currentState = null;
-        _errorMessage = null;
-        _isLoading = false;
+        Reset();
     }
 
     #region Async Operations
@@ -521,14 +520,17 @@ public class DialogueModal
         {
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Starting dialogue with character {character.CharacterRef}, SagaRef: {character.SagaRef}");
 
-            // Start dialogue
+            // Start dialogue (battle triggers may target a specific tree/node)
             var startCommand = new StartDialogueCommand
             {
                 AvatarId = viewModel.Avatar.AvatarId,
                 SagaArcRef = character.SagaRef,
                 CharacterInstanceId = character.CharacterInstanceId,
-                Avatar = viewModel.Avatar
+                Avatar = viewModel.Avatar,
+                DialogueTreeRefOverride = _startOverride?.TreeRef,
+                StartNodeIdOverride = _startOverride?.NodeId
             };
+            _startOverride = null;
 
             var startResult = await viewModel.Mediator.Send(startCommand);
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] StartDialogue result: Successful={startResult.Successful}, Error={startResult.ErrorMessage}");
@@ -586,39 +588,13 @@ public class DialogueModal
                 return;
             }
 
-            // Check for pending system events (battle, trade transitions)
+            // Route pending system events (battle effects, trade/combat transitions)
             if (result.Data.TryGetValue(TransactionDataKeys.PendingEvents, out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events");
-
-                // Process the first event (dialogue choices should only have one transition event)
-                var firstEvent = eventsList[0]!;
-                var eventType = firstEvent.GetType().Name;
-
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Event type: {eventType}");
-
-                // Close dialogue and open appropriate modal
-                modalManager.CloseModal("Dialogue");
-
-                // Create context for modal transition
-                var context = new CharacterContext(viewModel, character);
-
-                if (eventType.Contains("OpenMerchantTrade"))
+                if (ProcessPendingEvents(eventsList, viewModel, character, modalManager))
                 {
-                    System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening MerchantTrade modal for {character.DisplayName} ({character.CharacterRef})");
-                    modalManager.OpenRegisteredModal("MerchantTrade", context);
+                    return; // Don't refresh dialogue state - we've transitioned to a different modal
                 }
-                else if (eventType.Contains("StartBossBattle") || eventType.Contains("StartCombat"))
-                {
-                    System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening BossBattle modal for {character.DisplayName} ({character.CharacterRef})");
-                    modalManager.OpenRegisteredModal("BossBattle", context);
-                }
-
-                return; // Don't refresh dialogue state - we've transitioned to a different modal
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] No pending events from choice, refreshing dialogue state");
             }
 
             // No transition events - refresh dialogue state normally
@@ -629,6 +605,58 @@ public class DialogueModal
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Error selecting choice: {ex.Message}");
             _errorMessage = ex.Message;
         }
+    }
+
+    /// <summary>
+    /// Routes pending dialogue system events. Battle-affecting events (HealSelf,
+    /// ChangeStance, ChangeAffinity, EndBattle — boss taunts and parley outcomes)
+    /// are deposited for the BattleModal to apply to the running battle; trade and
+    /// combat transition events switch modals as before.
+    /// Returns true if the dialogue transitioned to a different modal.
+    /// </summary>
+    private bool ProcessPendingEvents(System.Collections.IList eventsList, SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
+    {
+        System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events");
+
+        // Battle-affecting events only matter while a battle is running underneath
+        if (modalManager.ShowBossBattle)
+        {
+            var battleEffects = eventsList.OfType<DialogueSystemEvent>()
+                .Where(e => e is HealSelfEvent or ChangeStanceEvent or ChangeAffinityEvent or EndBattleEvent)
+                .ToList();
+
+            if (battleEffects.Count > 0)
+            {
+                modalManager.PendingBattleDialogueEffects ??= new List<DialogueSystemEvent>();
+                modalManager.PendingBattleDialogueEffects.AddRange(battleEffects);
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Deposited {battleEffects.Count} battle dialogue effects");
+            }
+        }
+
+        // Transition events: the first match switches modals (dialogue choices
+        // should only carry one transition)
+        foreach (var evt in eventsList)
+        {
+            var eventType = evt!.GetType().Name;
+
+            if (eventType.Contains("OpenMerchantTrade"))
+            {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening MerchantTrade modal for {character.DisplayName} ({character.CharacterRef})");
+                modalManager.CloseModal("Dialogue");
+                modalManager.OpenRegisteredModal("MerchantTrade", new CharacterContext(viewModel, character));
+                return true;
+            }
+
+            if (eventType.Contains("StartBossBattle") || eventType.Contains("StartCombat"))
+            {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening BossBattle modal for {character.DisplayName} ({character.CharacterRef})");
+                modalManager.CloseModal("Dialogue");
+                modalManager.OpenRegisteredModal("BossBattle", new CharacterContext(viewModel, character));
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private async Task AdvanceDialogueAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
@@ -667,38 +695,13 @@ public class DialogueModal
                 return;
             }
 
-            // Check for pending system events (battle, trade transitions)
+            // Route pending system events (battle effects, trade/combat transitions)
             if (result.Data.TryGetValue(TransactionDataKeys.PendingEvents, out var eventsObj) && eventsObj is System.Collections.IList eventsList && eventsList.Count > 0)
             {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Processing {eventsList.Count} pending events from advance");
-
-                var firstEvent = eventsList[0]!;
-                var eventType = firstEvent.GetType().Name;
-
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Event type: {eventType}");
-
-                // Close dialogue and open appropriate modal
-                modalManager.CloseModal("Dialogue");
-
-                // Create context for modal transition
-                var context = new CharacterContext(viewModel, character);
-
-                if (eventType.Contains("OpenMerchantTrade"))
+                if (ProcessPendingEvents(eventsList, viewModel, character, modalManager))
                 {
-                    System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening MerchantTrade modal for {character.DisplayName} ({character.CharacterRef})");
-                    modalManager.OpenRegisteredModal("MerchantTrade", context);
+                    return;
                 }
-                else if (eventType.Contains("StartBossBattle") || eventType.Contains("StartCombat"))
-                {
-                    System.Diagnostics.Debug.WriteLine($"[DialogueModal] Opening BossBattle modal for {character.DisplayName} ({character.CharacterRef})");
-                    modalManager.OpenRegisteredModal("BossBattle", context);
-                }
-
-                return;
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine($"[DialogueModal] No pending events from advance, refreshing dialogue state");
             }
 
             // Refresh dialogue state to show next node

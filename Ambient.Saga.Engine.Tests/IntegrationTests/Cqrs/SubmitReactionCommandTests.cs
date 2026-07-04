@@ -4,13 +4,14 @@ using Ambient.Domain.Partials;
 using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Application.Behaviors;
 using Ambient.Saga.Engine.Application.Commands.Saga;
+using Ambient.Saga.Engine.Application.Handlers.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
-using Ambient.Saga.Engine.Application.Services;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
+using Ambient.Saga.Engine.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -23,7 +24,10 @@ namespace Ambient.Saga.Engine.Tests.IntegrationTests.Cqrs;
 
 /// <summary>
 /// Integration tests for SubmitReactionCommand - the active defense system.
-/// Tests that avatar defensive reactions are properly recorded as transactions.
+///
+/// Round-3 contract: the telegraphed enemy attack (tell) is PERSISTED as a turn
+/// transaction, and SubmitReaction resolves it SERVER-side — the client-computed
+/// damage numbers on the command are ignored. Reacting with no pending tell fails.
 /// </summary>
 [Collection("Sequential CQRS Tests")]
 public class SubmitReactionCommandTests : IDisposable
@@ -64,82 +68,88 @@ public class SubmitReactionCommandTests : IDisposable
     }
 
     [Fact]
-    public async Task SubmitReaction_RecordsTransaction_ForActiveBattle()
+    public async Task StartBattle_WithTells_PersistsTellTransaction_AndReactionResolvesIt()
     {
-        // ARRANGE: Start a battle first
-        var avatarId = Guid.NewGuid();
-        var avatar = CreateTestAvatar(avatarId);
-        var sagaRef = "TestSaga";
+        var (avatarId, sagaRef, battleId, avatar) = await StartBattleAgainst("TestEnemy");
 
-        // Spawn character
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar
-        });
-
+        // The enemy's opening telegraph must be persisted (it used to live only in the
+        // discarded engine instance — quitting mid-tell made the attack evaporate)
         var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var enemyInstanceId = Guid.Parse(
-            instance.GetCommittedTransactions()
-                .First(t => t.Type == SagaTransactionType.CharacterSpawned)
-                .Data["CharacterInstanceId"]);
+        var tellTx = ReactionTransactionFactory.FindUnresolvedTell(instance, battleId);
+        Assert.NotNull(tellTx);
+        Assert.True(BattleTransactionHelper.TryParseFloat(
+            tellTx!.Data[TransactionDataKeys.BaseDamage], out var baseDamage));
+        Assert.True(baseDamage > 0f, "Telegraphed attack must carry its base damage");
 
-        // Start battle using BattleSetup
-        var battleSetup = new BattleSetup();
-        battleSetup.SetupFromWorld(_world);
-        battleSetup.SelectedAvatarArchetype = _world.AvatarArchetypesLookup["TestArchetype"];
-        battleSetup.AvatarCapabilities = avatar.Capabilities ?? new ItemCollection();
-        battleSetup.AvatarAffinityRefs = new List<string> { "Physical" };
-        battleSetup.SelectedOpponentCharacter = _world.CharactersLookup["TestEnemy"];
-        battleSetup.OpponentCapabilities = new ItemCollection();
-
-        var battleEngine = battleSetup.CreateBattleEngine();
-        var avatarCombatant = battleEngine.GetAvatar();
-        var enemyCombatant = battleEngine.GetEnemy();
-
-        var startResult = await _mediator.Send(new StartBattleCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            EnemyCharacterInstanceId = enemyInstanceId,
-            AvatarCombatant = avatarCombatant,
-            EnemyCombatant = enemyCombatant,
-            AvatarAffinityRefs = new List<string> { "Physical" },
-            EnemyMind = new CombatAI(_world),
-            RandomSeed = 12345,
-            Avatar = avatar
-        });
-
-        Assert.True(startResult.Successful, $"Battle start failed: {startResult.ErrorMessage}");
-        var battleInstanceId = startResult.TransactionIds.First();
-        _output.WriteLine($"Battle started: {battleInstanceId}");
-
-        // ACT: Submit a reaction
+        // React — the server resolves the outcome
         var reactionResult = await _mediator.Send(new SubmitReactionCommand
         {
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
-            BattleInstanceId = battleInstanceId,
+            BattleInstanceId = battleId,
             Reaction = AvatarDefenseType.Parry,
             Avatar = avatar
         });
-
-        // ASSERT
         Assert.True(reactionResult.Successful, $"Reaction failed: {reactionResult.ErrorMessage}");
 
         var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
         var reactionTx = finalInstance.GetCommittedTransactions()
-            .FirstOrDefault(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                                 t.Data.TryGetValue("ActionType", out var action) &&
-                                 action == "Reaction");
+            .Single(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
+                         t.Data.TryGetValue(TransactionDataKeys.ActionType, out var action) &&
+                         action == "Reaction");
 
-        Assert.NotNull(reactionTx);
-        Assert.Equal("Parry", reactionTx.Data["ReactionType"]);
-        Assert.Equal(battleInstanceId.ToString(), reactionTx.Data["BattleTransactionId"]);
-        _output.WriteLine($"Reaction recorded: {reactionTx.Data["ReactionType"]}");
+        Assert.Equal("Parry", reactionTx.Data[TransactionDataKeys.ReactionType]);
+        Assert.Equal(battleId.ToString(), reactionTx.Data[TransactionDataKeys.BattleTransactionId]);
+
+        // Server-computed damage: parry outcome is authored with DamageMultiplier 0.3
+        Assert.True(BattleTransactionHelper.TryParseFloat(
+            reactionTx.Data[TransactionDataKeys.DamageDealt], out var finalDamage));
+        Assert.Equal(baseDamage * 0.3f, finalDamage, 3);
+
+        // The tell is resolved — no pending tell remains
+        Assert.Null(ReactionTransactionFactory.FindUnresolvedTell(finalInstance, battleId));
+    }
+
+    [Fact]
+    public async Task SubmitReaction_IgnoresClientSuppliedNumbers()
+    {
+        var (avatarId, sagaRef, battleId, avatar) = await StartBattleAgainst("TestEnemy");
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        var tellTx = ReactionTransactionFactory.FindUnresolvedTell(instance, battleId);
+        Assert.NotNull(tellTx);
+        BattleTransactionHelper.TryParseFloat(tellTx!.Data[TransactionDataKeys.BaseDamage], out var baseDamage);
+
+        // A cheating client claims the attack dealt nothing and the enemy is nearly dead
+        var reactionResult = await _mediator.Send(new SubmitReactionCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            BattleInstanceId = battleId,
+            Reaction = AvatarDefenseType.Brace,
+            Avatar = avatar,
+            FinalDamage = 0f,          // lie
+            EnemyHealthAfter = 0.001f, // lie
+            CounterDamage = 0.9f,      // lie — brace has no counter
+            StaminaGained = 1f         // lie
+        });
+        Assert.True(reactionResult.Successful, $"Reaction failed: {reactionResult.ErrorMessage}");
+
+        var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        var reactionTx = finalInstance.GetCommittedTransactions()
+            .Single(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
+                         t.Data.TryGetValue(TransactionDataKeys.ActionType, out var action) &&
+                         action == "Reaction");
+
+        // Brace is authored with DamageMultiplier 0.6 and no counter — server values win
+        BattleTransactionHelper.TryParseFloat(reactionTx.Data[TransactionDataKeys.DamageDealt], out var damage);
+        Assert.Equal(baseDamage * 0.6f, damage, 3);
+        BattleTransactionHelper.TryParseFloat(reactionTx.Data[TransactionDataKeys.CounterDamage], out var counter);
+        Assert.Equal(0f, counter, 3);
+
+        // Enemy health snapshot must be untouched by the client's lie (no counter happened)
+        BattleTransactionHelper.TryParseFloat(reactionTx.Data[TransactionDataKeys.EnemyHealthAfterTurn], out var enemyHealth);
+        Assert.True(enemyHealth > 0.4f, $"Enemy health should be near its starting 0.5, was {enemyHealth}");
     }
 
     [Theory]
@@ -148,89 +158,40 @@ public class SubmitReactionCommandTests : IDisposable
     [InlineData(AvatarDefenseType.Parry)]
     [InlineData(AvatarDefenseType.Brace)]
     [InlineData(AvatarDefenseType.None)]
-    public async Task SubmitReaction_AllDefenseTypes_RecordedCorrectly(AvatarDefenseType defenseType)
+    public async Task SubmitReaction_AllDefenseTypes_ResolvedAndRecorded(AvatarDefenseType defenseType)
     {
-        // ARRANGE
-        var avatarId = Guid.NewGuid();
-        var avatar = CreateTestAvatar(avatarId);
-        var sagaRef = "TestSaga";
+        var (avatarId, sagaRef, battleId, avatar) = await StartBattleAgainst("TestEnemy");
 
-        await _mediator.Send(new UpdateAvatarPositionCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            Latitude = 35.0,
-            Longitude = 139.0,
-            Avatar = avatar
-        });
-
-        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var enemyInstanceId = Guid.Parse(
-            instance.GetCommittedTransactions()
-                .First(t => t.Type == SagaTransactionType.CharacterSpawned)
-                .Data["CharacterInstanceId"]);
-
-        var battleSetup = new BattleSetup();
-        battleSetup.SetupFromWorld(_world);
-        battleSetup.SelectedAvatarArchetype = _world.AvatarArchetypesLookup["TestArchetype"];
-        battleSetup.AvatarCapabilities = avatar.Capabilities ?? new ItemCollection();
-        battleSetup.AvatarAffinityRefs = new List<string> { "Physical" };
-        battleSetup.SelectedOpponentCharacter = _world.CharactersLookup["TestEnemy"];
-        battleSetup.OpponentCapabilities = new ItemCollection();
-
-        var battleEngine = battleSetup.CreateBattleEngine();
-
-        var startResult = await _mediator.Send(new StartBattleCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            EnemyCharacterInstanceId = enemyInstanceId,
-            AvatarCombatant = battleEngine.GetAvatar(),
-            EnemyCombatant = battleEngine.GetEnemy(),
-            AvatarAffinityRefs = new List<string> { "Physical" },
-            EnemyMind = new CombatAI(_world),
-            RandomSeed = 12345,
-            Avatar = avatar
-        });
-
-        var battleInstanceId = startResult.TransactionIds.First();
-
-        // ACT
         var reactionResult = await _mediator.Send(new SubmitReactionCommand
         {
             AvatarId = avatarId,
             SagaArcRef = sagaRef,
-            BattleInstanceId = battleInstanceId,
+            BattleInstanceId = battleId,
             Reaction = defenseType,
             Avatar = avatar
         });
-
-        // ASSERT
-        Assert.True(reactionResult.Successful);
+        Assert.True(reactionResult.Successful, $"Reaction failed: {reactionResult.ErrorMessage}");
 
         var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
         var reactionTx = finalInstance.GetCommittedTransactions()
-            .First(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                       t.Data.TryGetValue("ActionType", out var action) &&
-                       action == "Reaction");
+            .Single(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
+                        t.Data.TryGetValue(TransactionDataKeys.ActionType, out var action) &&
+                        action == "Reaction");
 
-        Assert.Equal(defenseType.ToString(), reactionTx.Data["ReactionType"]);
-        _output.WriteLine($"Defense type {defenseType} recorded successfully");
+        Assert.Equal(defenseType.ToString(), reactionTx.Data[TransactionDataKeys.ReactionType]);
+        _output.WriteLine($"Defense type {defenseType} resolved server-side");
     }
 
     [Fact]
     public async Task SubmitReaction_FailsForNonexistentBattle()
     {
-        // ARRANGE
         var avatarId = Guid.NewGuid();
         var avatar = CreateTestAvatar(avatarId);
         var sagaRef = "TestSaga";
         var fakeBattleId = Guid.NewGuid();
 
-        // Create saga instance without starting a battle
         await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
 
-        // ACT
         var result = await _mediator.Send(new SubmitReactionCommand
         {
             AvatarId = avatarId,
@@ -240,16 +201,101 @@ public class SubmitReactionCommandTests : IDisposable
             Avatar = avatar
         });
 
-        // ASSERT
         Assert.False(result.Successful);
         Assert.Contains("not found", result.ErrorMessage);
-        _output.WriteLine($"Correctly failed: {result.ErrorMessage}");
     }
 
     [Fact]
-    public async Task SubmitReaction_MultipleReactions_IncrementsTurnNumber()
+    public async Task SubmitReaction_FailsWhenNoPendingTell()
     {
-        // ARRANGE
+        var (avatarId, sagaRef, battleId, avatar) = await StartBattleAgainst("TestEnemy");
+
+        // Resolve the opening tell legitimately
+        var first = await _mediator.Send(new SubmitReactionCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            BattleInstanceId = battleId,
+            Reaction = AvatarDefenseType.Dodge,
+            Avatar = avatar
+        });
+        Assert.True(first.Successful);
+
+        // A second reaction with nothing pending must be rejected — replaying reactions
+        // used to inject arbitrary client-authored turns into the log
+        var second = await _mediator.Send(new SubmitReactionCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            BattleInstanceId = battleId,
+            Reaction = AvatarDefenseType.Block,
+            Avatar = avatar
+        });
+
+        Assert.False(second.Successful);
+        Assert.Contains("No pending enemy attack", second.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task ReactionCounterKill_EndsBattle_WithVictoryAndDefeatedCharacter()
+    {
+        // The parry counter (multiplier 50 on base damage) is guaranteed lethal
+        var (avatarId, sagaRef, battleId, avatar) = await StartBattleAgainst("FragileEnemy");
+
+        var reactionResult = await _mediator.Send(new SubmitReactionCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            BattleInstanceId = battleId,
+            Reaction = AvatarDefenseType.Parry,
+            Avatar = avatar
+        });
+        Assert.True(reactionResult.Successful, $"Reaction failed: {reactionResult.ErrorMessage}");
+
+        var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        var committed = finalInstance.GetCommittedTransactions();
+
+        // The counter-kill must END the battle — it used to leave the battle "active"
+        // against a 0-HP enemy with victory processing skipped
+        var battleEnded = committed.FirstOrDefault(t =>
+            t.Type == SagaTransactionType.BattleEnded &&
+            t.Data[TransactionDataKeys.BattleTransactionId] == battleId.ToString());
+        Assert.NotNull(battleEnded);
+        Assert.Equal(bool.TrueString, battleEnded!.Data[TransactionDataKeys.AvatarVictory]);
+
+        Assert.Contains(committed, t => t.Type == SagaTransactionType.CharacterDefeated);
+    }
+
+    [Fact]
+    public async Task ExecuteBattleTurn_WhileTellPending_IsRejected()
+    {
+        var (avatarId, sagaRef, battleId, avatar) = await StartBattleAgainst("TestEnemy");
+
+        // Skipping the reaction and attacking used to make the telegraphed attack
+        // silently evaporate (a repeatable free dodge)
+        var turnResult = await _mediator.Send(new ExecuteBattleTurnCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            BattleInstanceId = battleId,
+            AvatarAction = new CombatAction { ActionType = ActionType.Attack },
+            Avatar = avatar
+        });
+
+        Assert.False(turnResult.Successful);
+        Assert.Contains("awaiting your reaction", turnResult.ErrorMessage);
+    }
+
+    public void Dispose()
+    {
+        _database?.Dispose();
+        _serviceProvider?.Dispose();
+    }
+
+    #region Setup helpers
+
+    private async Task<(Guid avatarId, string sagaRef, Guid battleId, AvatarEntity avatar)> StartBattleAgainst(string enemyRef)
+    {
         var avatarId = Guid.NewGuid();
         var avatar = CreateTestAvatar(avatarId);
         var sagaRef = "TestSaga";
@@ -266,15 +312,16 @@ public class SubmitReactionCommandTests : IDisposable
         var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
         var enemyInstanceId = Guid.Parse(
             instance.GetCommittedTransactions()
-                .First(t => t.Type == SagaTransactionType.CharacterSpawned)
-                .Data["CharacterInstanceId"]);
+                .First(t => t.Type == SagaTransactionType.CharacterSpawned &&
+                            t.Data[TransactionDataKeys.CharacterRef] == enemyRef)
+                .Data[TransactionDataKeys.CharacterInstanceId]);
 
         var battleSetup = new BattleSetup();
         battleSetup.SetupFromWorld(_world);
         battleSetup.SelectedAvatarArchetype = _world.AvatarArchetypesLookup["TestArchetype"];
         battleSetup.AvatarCapabilities = avatar.Capabilities ?? new ItemCollection();
         battleSetup.AvatarAffinityRefs = new List<string> { "Physical" };
-        battleSetup.SelectedOpponentCharacter = _world.CharactersLookup["TestEnemy"];
+        battleSetup.SelectedOpponentCharacter = _world.CharactersLookup[enemyRef];
         battleSetup.OpponentCapabilities = new ItemCollection();
 
         var battleEngine = battleSetup.CreateBattleEngine();
@@ -287,70 +334,15 @@ public class SubmitReactionCommandTests : IDisposable
             AvatarCombatant = battleEngine.GetAvatar(),
             EnemyCombatant = battleEngine.GetEnemy(),
             AvatarAffinityRefs = new List<string> { "Physical" },
-            EnemyMind = new CombatAI(_world),
+            EnemyMind = new CombatAI(_world, 12345),
             RandomSeed = 12345,
             Avatar = avatar
         });
+        Assert.True(startResult.Successful, $"Battle start failed: {startResult.ErrorMessage}");
 
-        var battleInstanceId = startResult.TransactionIds.First();
-
-        // ACT: Submit multiple reactions
-        await _mediator.Send(new SubmitReactionCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            BattleInstanceId = battleInstanceId,
-            Reaction = AvatarDefenseType.Dodge,
-            Avatar = avatar
-        });
-
-        await _mediator.Send(new SubmitReactionCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            BattleInstanceId = battleInstanceId,
-            Reaction = AvatarDefenseType.Block,
-            Avatar = avatar
-        });
-
-        await _mediator.Send(new SubmitReactionCommand
-        {
-            AvatarId = avatarId,
-            SagaArcRef = sagaRef,
-            BattleInstanceId = battleInstanceId,
-            Reaction = AvatarDefenseType.Parry,
-            Avatar = avatar
-        });
-
-        // ASSERT
-        var finalInstance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
-        var reactionTxs = finalInstance.GetCommittedTransactions()
-            .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
-                       t.Data.TryGetValue("ActionType", out var action) &&
-                       action == "Reaction")
-            .OrderBy(t => int.Parse(t.Data["TurnNumber"]))
-            .ToList();
-
-        Assert.Equal(3, reactionTxs.Count);
-
-        // Verify turn numbers are sequential (accounting for enemy turns too)
-        var turnNumbers = reactionTxs.Select(t => int.Parse(t.Data["TurnNumber"])).ToList();
-        for (int i = 1; i < turnNumbers.Count; i++)
-        {
-            Assert.True(turnNumbers[i] > turnNumbers[i - 1],
-                $"Turn numbers should increase: {turnNumbers[i - 1]} vs {turnNumbers[i]}");
-        }
-
-        _output.WriteLine($"Recorded {reactionTxs.Count} reactions with turn numbers: {string.Join(", ", turnNumbers)}");
+        var battleId = startResult.TransactionIds.First();
+        return (avatarId, sagaRef, battleId, avatar);
     }
-
-    public void Dispose()
-    {
-        _database?.Dispose();
-        _serviceProvider?.Dispose();
-    }
-
-    #region Test World Setup
 
     private World CreateTestWorld()
     {
@@ -368,10 +360,8 @@ public class SubmitReactionCommandTests : IDisposable
             EnterRadius = 100.0f,
             Spawn = new[]
             {
-                new CharacterSpawn
-                {
-                    CharacterRef = "TestEnemy"
-                }
+                new CharacterSpawn { CharacterRef = "TestEnemy" },
+                new CharacterSpawn { CharacterRef = "FragileEnemy" }
             }
         };
 
@@ -384,6 +374,38 @@ public class SubmitReactionCommandTests : IDisposable
                 Health = 0.5f,
                 Strength = 0.1f,
                 Defense = 0.1f
+            }
+        };
+
+        var fragileEnemy = new Character
+        {
+            RefName = "FragileEnemy",
+            DisplayName = "Fragile Enemy",
+            Stats = new CharacterStats
+            {
+                // Healthy enough that its AI opens with an attack (and telegraphs),
+                // but the parry counter (50x base damage) is still guaranteed lethal
+                Health = 0.5f,
+                Strength = 0.1f,
+                Defense = 0.0f
+            }
+        };
+
+        // Universal tell (no weapon restriction) — the enemy's opening attack telegraphs
+        var testTell = new Ambient.Domain.AttackTell
+        {
+            RefName = "TestTell",
+            TellText = "The enemy winds up a heavy swing!",
+            ReactionWindowMs = 60000, // generous: tests must never hit the server timeout
+            OptimalDefense = DefenseReactionType.Dodge,
+            Pattern = Ambient.Domain.AttackPatternType.Slash,
+            Outcome = new[]
+            {
+                new Ambient.Domain.DefenseOutcome { Reaction = DefenseReactionType.Dodge, DamageMultiplier = 0.0f },
+                new Ambient.Domain.DefenseOutcome { Reaction = DefenseReactionType.Block, DamageMultiplier = 0.4f },
+                new Ambient.Domain.DefenseOutcome { Reaction = DefenseReactionType.Parry, DamageMultiplier = 0.3f, EnablesCounter = true, CounterMultiplier = 50f },
+                new Ambient.Domain.DefenseOutcome { Reaction = DefenseReactionType.Brace, DamageMultiplier = 0.6f },
+                new Ambient.Domain.DefenseOutcome { Reaction = DefenseReactionType.None, DamageMultiplier = 1.0f }
             }
         };
 
@@ -434,13 +456,14 @@ public class SubmitReactionCommandTests : IDisposable
                 Gameplay = new GameplayComponents
                 {
                     SagaArcs = new[] { saga },
-                    Characters = new[] { enemy },
+                    Characters = new[] { enemy, fragileEnemy },
                     Equipment = Array.Empty<Equipment>(),
                     AvatarArchetypes = new[] { archetype },
                     Achievements = Array.Empty<Achievement>(),
                     CharacterAffinities = new[] { affinity },
                     DialogueTrees = Array.Empty<DialogueTree>(),
-                    Consumables = Array.Empty<Consumable>()
+                    Consumables = Array.Empty<Consumable>(),
+                    AttackTells = new[] { testTell }
                 }
             }
         };
@@ -448,6 +471,7 @@ public class SubmitReactionCommandTests : IDisposable
         world.SagaArcLookup[saga.RefName] = saga;
         world.SagaTriggersLookup[saga.RefName] = new List<SagaTrigger> { trigger };
         world.CharactersLookup[enemy.RefName] = enemy;
+        world.CharactersLookup[fragileEnemy.RefName] = fragileEnemy;
         world.AvatarArchetypesLookup[archetype.RefName] = archetype;
         world.CharacterAffinitiesLookup[affinity.RefName] = affinity;
 

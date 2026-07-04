@@ -110,15 +110,32 @@ public class SagaTransaction
             return default;
         }
 
-        // Try to convert
+        // Try to convert (invariant culture: transaction data is written invariant by
+        // SetData — current-culture parsing corrupted floats when a save crossed locales)
         try
         {
-            return (T)Convert.ChangeType(value, typeof(T));
+            return (T)Convert.ChangeType(NormalizeNumeric<T>(value), typeof(T), System.Globalization.CultureInfo.InvariantCulture);
         }
         catch
         {
             return default;
         }
+    }
+
+    /// <summary>
+    /// Normalizes legacy culture-formatted numerics before invariant parsing. Values
+    /// written before the invariant-culture fix used the machine culture ("35,5" on
+    /// comma-decimal locales); SetData never writes group separators, so a lone comma
+    /// is always a decimal separator.
+    /// </summary>
+    private static string NormalizeNumeric<T>(string value)
+    {
+        if ((typeof(T) == typeof(float) || typeof(T) == typeof(double) || typeof(T) == typeof(decimal)) &&
+            value.Contains(',') && !value.Contains('.'))
+        {
+            return value.Replace(',', '.');
+        }
+        return value;
     }
 
     /// <summary>
@@ -149,10 +166,10 @@ public class SagaTransaction
             return false;
         }
 
-        // Try to convert
+        // Try to convert (invariant culture, legacy comma-decimals normalized — see GetData)
         try
         {
-            value = (T)Convert.ChangeType(stringValue, typeof(T));
+            value = (T)Convert.ChangeType(NormalizeNumeric<T>(stringValue), typeof(T), System.Globalization.CultureInfo.InvariantCulture);
             return true;
         }
         catch
@@ -162,13 +179,16 @@ public class SagaTransaction
     }
 
     /// <summary>
-    /// Sets a value in the Data dictionary.
+    /// Sets a value in the Data dictionary (invariant culture — the value must
+    /// round-trip through GetData regardless of the machine's locale).
     /// </summary>
     public void SetData<T>(string key, T value)
     {
         if (value != null)
         {
-            Data[key] = value.ToString() ?? string.Empty;
+            Data[key] = value is IFormattable formattable
+                ? formattable.ToString(null, System.Globalization.CultureInfo.InvariantCulture)
+                : value.ToString() ?? string.Empty;
         }
     }
 
