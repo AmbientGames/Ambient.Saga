@@ -1445,7 +1445,7 @@
       <Choice Text="[Standard]" NextNodeId="receive_standard" />
     </Node>
     <Node NodeId="receive_merciful">
-      <Condition Type="TraitComparison" />
+      <Condition Type="TraitComparison" Trait="Merciful" Operator="GreaterThanOrEqual" Value="1" />
       <Text>Words cannot express my gratitude. You've restored our family's honor.</Text>
       <Text>And you showed mercy to the thief? You are truly noble.</Text>
       <Text>Please accept this additional reward for your compassion.</Text>
@@ -2045,7 +2045,7 @@
       <Choice Text="[Standard offer]" NextNodeId="negotiate_unskilled" />
     </Node>
     <Node NodeId="negotiate_skilled">
-      <Condition Type="TraitComparison" />
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="15" />
       <Text>Ha! You drive a hard bargain. Very well - 35%. You've earned my respect already.</Text>
       <Action Type="AssignTrait" Trait="NegotiatedDiscount" TraitValue="35" Amount="1" />
       <Action Type="AssignTrait" Trait="BargainSkill" TraitValue="25" Amount="1" />
@@ -2143,7 +2143,7 @@
       <Choice Text="[Bluff without skill]" NextNodeId="bluff_fail" />
     </Node>
     <Node NodeId="bluff_success_end">
-      <Condition Type="TraitComparison" />
+      <Condition Type="TraitComparison" Trait="BargainSkill" Operator="GreaterThanOrEqual" Value="30" />
       <Text>Hmm... you don't look like you're worth the trouble. Move along.</Text>
     </Node>
     <Node NodeId="bluff_fail">

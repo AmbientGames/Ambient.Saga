@@ -126,6 +126,10 @@ public partial class MainWindow : Form
         // Subscribe to dialogue requests from MainViewModel
         _viewModel.DialogueRequested += OnDialogueRequested;
 
+        // Subscribe to proximity assaults: a hostile (not Disengaged) character
+        // initiates battle when the avatar lands inside its ApproachRadius
+        _viewModel.AssaultRequested += OnAssaultRequested;
+
         // Offline sandbox — no server pull needed, enable saga processing immediately on session ready
         _viewModel.SessionReady += (_, _) => _viewModel.IsReadyForSagaProcessing = true;
 
@@ -150,6 +154,14 @@ public partial class MainWindow : Form
     {
         // Open the dialogue modal for this character
         _modalManager.OpenCharacterInteraction(character, _viewModel);
+    }
+
+    private void OnAssaultRequested(CharacterViewModel character)
+    {
+        // Straight into battle, same as clicking Attack on the character (menace
+        // speech is the battle_opening dialogue trigger). Declined while another
+        // modal is open — the view model re-raises on its next 1 s check.
+        _modalManager.TryOpenAssault(character, _viewModel);
     }
 
     private void OnApplicationIdle(object? sender, EventArgs e)
