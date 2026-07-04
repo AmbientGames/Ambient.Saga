@@ -3,6 +3,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Domain.Rpg.Quests;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
 using Ambient.Saga.Engine.Domain;
@@ -36,13 +37,21 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
     {
         try
         {
-            // Get Saga instance
+            // Handle dev saga refs (format: "RealSagaRef__DEV__uniqueid")
+            var sagaRefForLookup = command.SagaArcRef;
+            var devSuffix = "__DEV__";
+            if (command.SagaArcRef.Contains(devSuffix))
+            {
+                sagaRefForLookup = command.SagaArcRef.Substring(0, command.SagaArcRef.IndexOf(devSuffix));
+            }
+
+            // Get Saga instance (use full ref with DEV suffix for unique instance)
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
 
-            // Verify Saga exists
-            if (!_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var sagaTemplate))
+            // Verify Saga exists (use stripped ref for template lookup)
+            if (!_world.SagaArcLookup.TryGetValue(sagaRefForLookup, out var sagaTemplate))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{command.SagaArcRef}' not found");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{sagaRefForLookup}' not found");
             }
 
             // Verify quest exists
@@ -52,10 +61,10 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
                 return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{command.QuestRef}' not found");
             }
 
-            // Get expanded triggers for state machine
-            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var expandedTriggers))
+            // Get expanded triggers for state machine (use stripped ref for lookup)
+            if (!_world.SagaTriggersLookup.TryGetValue(sagaRefForLookup, out var expandedTriggers))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArcRef}'");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{sagaRefForLookup}'");
             }
 
             // Replay to get current state
@@ -91,8 +100,12 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
             // Check exclusivity - if Exclusive is true (default), only one branch can be chosen
             if (stage.Branches.Exclusive)
             {
-                // Check if a branch has already been chosen for this stage
-                var transactions = instance.GetCommittedTransactions();
+                // Check if a branch has already been chosen for this stage.
+                // Scoped to the current acceptance: a branch chosen before an
+                // abandon + re-accept belongs to the previous run and must not
+                // lock this one out.
+                var transactions = QuestProgressEvaluator.ScopeToCurrentAcceptance(
+                    quest, instance.GetCommittedTransactions());
                 var existingBranchChoice = transactions.FirstOrDefault(t =>
                     t.Type == SagaTransactionType.QuestBranchChosen &&
                     t.GetData<string>(TransactionDataKeys.QuestRef) == command.QuestRef &&
@@ -151,7 +164,7 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
             // Automatically advance the stage now that a branch has been chosen
-            await _mediator.Send(new AdvanceQuestStageCommand
+            var advanceResult = await _mediator.Send(new AdvanceQuestStageCommand
             {
                 AvatarId = command.AvatarId,
                 SagaArcRef = command.SagaArcRef,
@@ -159,11 +172,32 @@ internal sealed class ChooseQuestBranchHandler : IRequestHandler<ChooseQuestBran
                 Avatar = command.Avatar
             }, ct);
 
+            Dictionary<string, object>? resultData = null;
+            if (!advanceResult.Successful)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[ChooseQuestBranch] AdvanceQuestStage '{command.QuestRef}' failed: {advanceResult.ErrorMessage}");
+            }
+            // Propagate the game-complete signal from the nested advance (which itself
+            // propagates it from CompleteQuest) — the caller only sees this result
+            else if (advanceResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
+            {
+                resultData = new Dictionary<string, object>
+                {
+                    [TransactionDataKeys.GameComplete] = advanceResult.Data[TransactionDataKeys.GameComplete]
+                };
+                if (advanceResult.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var completionQuestRef))
+                {
+                    resultData[TransactionDataKeys.CompletionQuestRef] = completionQuestRef;
+                }
+            }
+
             // Return success
             return SagaCommandResult.Success(
                 instance.InstanceId,
                 new List<Guid> { transaction.TransactionId },
-                sequenceNumbers.First());
+                sequenceNumbers.First(),
+                resultData);
         }
         catch (Exception ex)
         {

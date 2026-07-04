@@ -105,12 +105,13 @@ public class CharacterPanel
             ImGui.Spacing();
             ImGui.Separator();
 
-            // Combat Stats
+            // Combat Stats (0-1 normalized like the vitals — dividing by 100
+            // rendered every bar effectively empty)
             ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Combat:");
-            RenderStatBar("Strength", vitals.Strength / 100.0, new Vector4(1, 0.5f, 0.2f, 1));
-            RenderStatBar("Defense", vitals.Defense / 100.0, new Vector4(0.6f, 0.6f, 0.6f, 1));
-            RenderStatBar("Speed", vitals.Speed / 100.0, new Vector4(1, 1, 0.3f, 1));
-            RenderStatBar("Magic", vitals.Magic / 100.0, new Vector4(0.7f, 0.3f, 1, 1));
+            RenderStatBar("Strength", vitals.Strength, new Vector4(1, 0.5f, 0.2f, 1));
+            RenderStatBar("Defense", vitals.Defense, new Vector4(0.6f, 0.6f, 0.6f, 1));
+            RenderStatBar("Speed", vitals.Speed, new Vector4(1, 1, 0.3f, 1));
+            RenderStatBar("Magic", vitals.Magic, new Vector4(0.7f, 0.3f, 1, 1));
 
             ImGui.Spacing();
             ImGui.Separator();
@@ -118,7 +119,7 @@ public class CharacterPanel
             // State
             ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "State:");
             RenderTemperatureStat(vitals.Temperature);
-            RenderStatBar("Endurance", vitals.Endurance / 100.0, new Vector4(0.5f, 0.8f, 0.8f, 1));
+            RenderStatBar("Endurance", vitals.Endurance, new Vector4(0.5f, 0.8f, 0.8f, 1));
 
             // Invulnerability status
             if (viewModel.Avatar.IsInvulnerable)
@@ -405,14 +406,9 @@ public class CharacterPanel
                 ImGui.TableNextColumn();
                 ImGui.Text($"{avatar.BlocksDestroyed:N0}");
 
-                // Quest stats
-                var completedQuests = avatar.Quests?.Count(q => q.IsCompleted) ?? 0;
-                var totalQuests = avatar.Quests?.Length ?? 0;
-                ImGui.TableNextRow();
-                ImGui.TableNextColumn();
-                ImGui.Text("Quests:");
-                ImGui.TableNextColumn();
-                ImGui.Text($"{completedQuests} / {totalQuests} completed");
+                // NOTE: no quest stats row — avatar.Quests (the QuestInventory avatar XML)
+                // has no writer anywhere, so it always displayed "0 / 0 completed".
+                // Quest state lives in the saga transaction log; the Journal shows it.
 
                 // Achievement stats
                 var unlockedAchievements = avatar.Achievements?.Length ?? 0;
@@ -619,8 +615,8 @@ public class CharacterPanel
 
     private void RenderFactionEntry(Ambient.Domain.Faction faction, SagaMainViewModel viewModel)
     {
-        // Get avatar's reputation with this faction
-        var currentRep = faction.StartingReputation; // TODO: Get actual avatar reputation
+        // Get avatar's reputation with this faction (baseline + earned)
+        var currentRep = viewModel.GetFactionReputation(faction);
         var repLevel = GetReputationLevel(currentRep);
         var (levelColor, levelName) = GetReputationDisplay(repLevel);
 

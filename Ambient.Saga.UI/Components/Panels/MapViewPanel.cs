@@ -539,12 +539,8 @@ public class MapViewPanel
                         if (character.CanDialogue) capabilities.Add("Dialogue");
                         if (character.CanTrade) capabilities.Add("Trade");
                         if (character.CanAttack) capabilities.Add("Attack");
-                        if (character.CanLoot) capabilities.Add("Loot");
                         if (capabilities.Count > 0)
                             tooltip += $"\nCan: {string.Join(", ", capabilities)}";
-
-                        if (character.HasBeenLooted)
-                            tooltip += "\n(Looted)";
 
                         ImGui.SetTooltip(tooltip);
                     }
@@ -557,8 +553,11 @@ public class MapViewPanel
                     if (ImGui.IsMouseClicked(ImGuiMouseButton.Left))
                     {
                         // Always start with dialogue - dialogue determines next steps (battle, trade, etc.)
+                        // Must open with a CharacterContext — the legacy OpenModal() path
+                        // pushes no context, which the DialogueModalAdapter rejects
+                        // (the modal closed the same frame it opened).
                         modalManager.SelectedCharacter = character;
-                        modalManager.OpenModal("Dialogue");
+                        modalManager.OpenRegisteredModal("Dialogue", new CharacterContext(viewModel, character));
                     }
                 }
             }

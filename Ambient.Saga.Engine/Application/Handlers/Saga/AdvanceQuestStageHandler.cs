@@ -42,13 +42,21 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
     {
         try
         {
-            // Get Saga instance
+            // Handle dev saga refs (format: "RealSagaRef__DEV__uniqueid")
+            var sagaRefForLookup = command.SagaArcRef;
+            var devSuffix = "__DEV__";
+            if (command.SagaArcRef.Contains(devSuffix))
+            {
+                sagaRefForLookup = command.SagaArcRef.Substring(0, command.SagaArcRef.IndexOf(devSuffix));
+            }
+
+            // Get Saga instance (use full ref with DEV suffix for unique instance)
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
 
-            // Verify Saga exists
-            if (!_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var sagaTemplate))
+            // Verify Saga exists (use stripped ref for template lookup)
+            if (!_world.SagaArcLookup.TryGetValue(sagaRefForLookup, out var sagaTemplate))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{command.SagaArcRef}' not found");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{sagaRefForLookup}' not found");
             }
 
             // Verify quest exists
@@ -58,10 +66,10 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
                 return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{command.QuestRef}' not found");
             }
 
-            // Get expanded triggers for state machine
-            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var expandedTriggers))
+            // Get expanded triggers for state machine (use stripped ref for lookup)
+            if (!_world.SagaTriggersLookup.TryGetValue(sagaRefForLookup, out var expandedTriggers))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArcRef}'");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{sagaRefForLookup}'");
             }
 
             // Replay to get current state
@@ -107,12 +115,26 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
                 }
             };
 
-            instance.AddTransaction(transaction);
+            // Reputation stage rewards are transaction-driven (replayed saga state +
+            // cross-arc projection, like the dialogue ChangeReputation action) —
+            // stage them so they commit atomically with QuestStageAdvanced
+            var transactionsToCommit = new List<SagaTransaction> { transaction };
+            transactionsToCommit.AddRange(QuestRewardDistributor.CollectRewardTransactions(
+                currentStage.Rewards,
+                QuestRewardCondition.OnSuccess,
+                command.AvatarId.ToString(),
+                instance.InstanceId,
+                _world));
 
-            // Persist and commit transaction atomically
+            foreach (var tx in transactionsToCommit)
+            {
+                instance.AddTransaction(tx);
+            }
+
+            // Persist and commit transactions atomically
             var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
-                new List<SagaTransaction> { transaction },
+                transactionsToCommit,
                 ct);
 
             if (!committed)
@@ -138,9 +160,10 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
             // If nextStage is null, quest is complete - trigger completion
+            Dictionary<string, object>? resultData = null;
             if (string.IsNullOrEmpty(nextStageRef))
             {
-                await _mediator.Send(new CompleteQuestCommand
+                var completionResult = await _mediator.Send(new CompleteQuestCommand
                 {
                     AvatarId = command.AvatarId,
                     SagaArcRef = command.SagaArcRef,
@@ -148,13 +171,33 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
                     QuestReceiverRef = questState.QuestGiverRef, // Turn in to original giver
                     Avatar = command.Avatar
                 }, ct);
+
+                if (!completionResult.Successful)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"[AdvanceQuestStage] CompleteQuest '{command.QuestRef}' failed: {completionResult.ErrorMessage}");
+                }
+                // Propagate the game-complete signal — the stage advance is the only
+                // result the caller sees, so the nested completion must not swallow it
+                else if (completionResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
+                {
+                    resultData = new Dictionary<string, object>
+                    {
+                        [TransactionDataKeys.GameComplete] = completionResult.Data[TransactionDataKeys.GameComplete]
+                    };
+                    if (completionResult.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var completionQuestRef))
+                    {
+                        resultData[TransactionDataKeys.CompletionQuestRef] = completionQuestRef;
+                    }
+                }
             }
 
             // Return success
             return SagaCommandResult.Success(
                 instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
-                sequenceNumbers.First());
+                transactionsToCommit.Select(t => t.TransactionId).ToList(),
+                sequenceNumbers.First(),
+                resultData);
         }
         catch (Exception ex)
         {

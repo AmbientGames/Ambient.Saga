@@ -15,7 +15,7 @@
         <xs:complexContent>
             <xs:extension base="StackableAcquirable">
                 <xs:sequence>
-                    <xs:element name="Effects" type="Attributes">
+                    <xs:element name="Effects" type="EffectAttributes">
                         <xs:annotation><xs:documentation>Stat modifiers applied when this item is consumed.</xs:documentation></xs:annotation>
                     </xs:element>
                 </xs:sequence>

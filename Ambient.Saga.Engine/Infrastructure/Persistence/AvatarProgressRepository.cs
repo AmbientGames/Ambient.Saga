@@ -100,6 +100,11 @@ public class AvatarProgressRepository : IAvatarProgressRepository
     public int? GetCharacterTraitValue(Guid avatarId, string characterRef, string traitType)
         => _characterTraits.FindOne(x => x.AvatarId == avatarId && x.CharacterRef == characterRef && x.TraitType == traitType)?.TraitValue;
 
+    public int? GetMaxTraitValue(Guid avatarId, string traitType)
+        => _characterTraits.Find(x => x.AvatarId == avatarId && x.TraitType == traitType)
+            .Where(x => x.TraitValue != null)
+            .Max(x => x.TraitValue);
+
     // ===== PROJECTION METHODS =====
 
     private void ProjectQuestToken(Guid avatarId, string sagaRef, SagaTransaction tx)

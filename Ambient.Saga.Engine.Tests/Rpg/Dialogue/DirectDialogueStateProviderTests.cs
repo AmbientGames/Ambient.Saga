@@ -601,4 +601,59 @@ public class DirectDialogueStateProviderTests
     }
 
     #endregion
+
+    #region Character Traits
+
+    [Fact]
+    public void GetTraitValue_AssignedThisSession_ReturnsSessionValue()
+    {
+        _provider.AssignTrait("BargainSkill", 25);
+
+        Assert.Equal(25, _provider.GetTraitValue("BargainSkill"));
+    }
+
+    [Fact]
+    public void GetTraitValue_EarnedInPreviousRequest_ReadsPersistedProjection()
+    {
+        // Trait was earned at one NPC in an earlier request (already projected);
+        // a fresh provider talking to a DIFFERENT NPC must still see it.
+        var avatarId = Guid.NewGuid();
+        var repo = new Mocks.MockAvatarProgressRepository();
+        repo.SetCharacterTrait(avatarId, "TollGuard", "BargainSkill", 35);
+
+        var provider = new DirectDialogueStateProvider(
+            _world, _avatar, repo, avatarId.ToString(), characterRef: "WanderingMerchant");
+
+        Assert.Equal(35, provider.GetTraitValue("BargainSkill"));
+    }
+
+    [Fact]
+    public void GetTraitValue_LowerValueAtCurrentCharacter_DoesNotMaskBestEarned()
+    {
+        var avatarId = Guid.NewGuid();
+        var repo = new Mocks.MockAvatarProgressRepository();
+        repo.SetCharacterTrait(avatarId, "TollGuard", "BargainSkill", 35);
+        repo.SetCharacterTrait(avatarId, "WanderingMerchant", "BargainSkill", 25);
+
+        var provider = new DirectDialogueStateProvider(
+            _world, _avatar, repo, avatarId.ToString(), characterRef: "WanderingMerchant");
+
+        Assert.Equal(35, provider.GetTraitValue("BargainSkill"));
+    }
+
+    [Fact]
+    public void RemoveTrait_RemovedThisSession_DoesNotResurrectFromProjection()
+    {
+        var avatarId = Guid.NewGuid();
+        var repo = new Mocks.MockAvatarProgressRepository();
+        repo.SetCharacterTrait(avatarId, "TollGuard", "BargainSkill", 35);
+
+        var provider = new DirectDialogueStateProvider(
+            _world, _avatar, repo, avatarId.ToString(), characterRef: "TollGuard");
+        provider.RemoveTrait("BargainSkill");
+
+        Assert.Null(provider.GetTraitValue("BargainSkill"));
+    }
+
+    #endregion
 }

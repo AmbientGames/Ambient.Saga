@@ -23,3 +23,18 @@ public sealed class EmptyExtensionTypeRegistry : IExtensionTypeRegistry
     public static readonly EmptyExtensionTypeRegistry Instance = new();
     public bool IsKnown(string extensionTypeName) => false;
 }
+
+/// <summary>
+/// Default registry: accepts any self-identifying extension (non-empty name).
+/// Extension transactions are host-layer data the RPG engine deliberately does not
+/// fold into SagaState — with nothing registering names, the strict Empty registry
+/// quarantine-logged EVERY claim on EVERY replay, permanently saturating the
+/// anti-drift signal with false positives. The sync validator already rejects
+/// extension transactions without a name; hosts that want strict name checking
+/// pass an explicit registry.
+/// </summary>
+public sealed class PermissiveExtensionTypeRegistry : IExtensionTypeRegistry
+{
+    public static readonly PermissiveExtensionTypeRegistry Instance = new();
+    public bool IsKnown(string extensionTypeName) => !string.IsNullOrEmpty(extensionTypeName);
+}

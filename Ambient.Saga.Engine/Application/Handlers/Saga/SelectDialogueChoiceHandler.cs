@@ -128,8 +128,19 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                 return SagaCommandResult.Failure(instance.InstanceId, "Dialogue session has already ended");
             }
 
+            // The session's tree can differ from the character's default (battle
+            // dialogue triggers open their own battle trees) — trust the session's
+            // DialogueStarted transaction over the Interactable default
+            var sessionTreeRef = lastStarted.Data.GetValueOrDefault(TransactionDataKeys.DialogueTreeRef);
+            if (!string.IsNullOrEmpty(sessionTreeRef) && sessionTreeRef != dialogueTree.RefName &&
+                _world.DialogueTreesLookup.TryGetValue(sessionTreeRef, out var sessionTree))
+            {
+                dialogueTree = sessionTree;
+            }
+
             // Restore state from the transaction log - jump directly to the last visited node.
             // This avoids re-running actions and re-evaluating conditions that may have changed.
+            var entryNodeEvents = new List<DialogueSystemEvent>();
             var lastVisit = sessionTransactions.LastOrDefault(t => t.Type == SagaTransactionType.DialogueNodeVisited);
             if (lastVisit != null)
             {
@@ -139,9 +150,20 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             }
             else
             {
-                // No visits yet - navigate from start
-                engine.StartDialogue(dialogueTree);
+                // No visits yet - navigate from the session's start node (battle
+                // triggers author per-moment entry points) or the tree default.
+                // This is where the entry node's actions execute and commit — the
+                // state query is read-only and never runs them.
+                var startNodeOverride = lastStarted.Data.GetValueOrDefault(TransactionDataKeys.NodeId);
+                if (!string.IsNullOrEmpty(startNodeOverride))
+                    engine.StartDialogueAt(dialogueTree, startNodeOverride);
+                else
+                    engine.StartDialogue(dialogueTree);
                 System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] No prior visits; navigated from start to: {engine.CurrentNode?.NodeId ?? "null"}");
+
+                // Preserve entry-node events (ChangeStance, StartCombat, ...) —
+                // SelectChoice clears the event queue before navigating
+                entryNodeEvents = engine.PendingEvents.ToList();
             }
 
             // Find the choice in the current node
@@ -164,7 +186,8 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             // Check for pending system events (OpenMerchantTrade, StartBossBattle, etc.)
             // Capture BEFORE any EndDialogue call — EndDialogue clears the event queue.
-            var pendingEvents = engine.PendingEvents.ToList();
+            // Entry-node events (captured before SelectChoice cleared them) come first.
+            var pendingEvents = entryNodeEvents.Concat(engine.PendingEvents).ToList();
 
             // If the new current node is terminal, end the dialogue session.
             // This creates a DialogueCompleted transaction so the session is sealed and
@@ -184,19 +207,27 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                 }
             }
 
-            // Dispatch quest events directly (business logic, not UI transitions)
+            // Dispatch quest events directly (business logic, not UI transitions).
+            // Authored order matters: a node's [CompleteQuest A, AcceptQuest B] must
+            // complete A before B's prerequisite check runs, and a failed nested
+            // command must be surfaced, not swallowed.
             bool gameComplete = false;
             string? completionQuestRef = null;
+            var questEventErrors = new List<string>();
             if (pendingEvents.Exists(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent)
                 && command.Avatar is AvatarEntity avatarEntity)
             {
-                for (int i = pendingEvents.Count - 1; i >= 0; i--)
+                var questEvents = pendingEvents
+                    .Where(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent)
+                    .ToList();
+                pendingEvents.RemoveAll(e => e is AcceptQuestEvent or CompleteQuestEvent or AbandonQuestEvent);
+
+                foreach (var evt in questEvents)
                 {
-                    var evt = pendingEvents[i];
                     switch (evt)
                     {
                         case AcceptQuestEvent acceptEvt:
-                            await _mediator.Send(new AcceptQuestCommand
+                            var acceptResult = await _mediator.Send(new AcceptQuestCommand
                             {
                                 AvatarId = command.AvatarId,
                                 SagaArcRef = acceptEvt.SagaRef,
@@ -204,7 +235,8 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                                 QuestGiverRef = acceptEvt.QuestGiverRef,
                                 Avatar = avatarEntity
                             }, ct);
-                            pendingEvents.RemoveAt(i);
+                            if (!acceptResult.Successful)
+                                questEventErrors.Add($"AcceptQuest '{acceptEvt.QuestRef}' failed: {acceptResult.ErrorMessage}");
                             break;
 
                         case CompleteQuestEvent completeEvt:
@@ -217,25 +249,34 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                                 Avatar = avatarEntity,
                                 DialogueDriven = true
                             }, ct);
-                            if (questResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
+                            if (!questResult.Successful)
+                            {
+                                questEventErrors.Add($"CompleteQuest '{completeEvt.QuestRef}' failed: {questResult.ErrorMessage}");
+                            }
+                            else if (questResult.Data.ContainsKey(TransactionDataKeys.GameComplete))
                             {
                                 gameComplete = true;
                                 completionQuestRef = questResult.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var qref) ? qref as string : null;
                             }
-                            pendingEvents.RemoveAt(i);
                             break;
 
                         case AbandonQuestEvent abandonEvt:
-                            await _mediator.Send(new AbandonQuestCommand
+                            var abandonResult = await _mediator.Send(new AbandonQuestCommand
                             {
                                 AvatarId = command.AvatarId,
                                 SagaArcRef = abandonEvt.SagaRef,
                                 QuestRef = abandonEvt.QuestRef,
                                 Avatar = avatarEntity
                             }, ct);
-                            pendingEvents.RemoveAt(i);
+                            if (!abandonResult.Successful)
+                                questEventErrors.Add($"AbandonQuest '{abandonEvt.QuestRef}' failed: {abandonResult.ErrorMessage}");
                             break;
                     }
+                }
+
+                foreach (var error in questEventErrors)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[SelectDialogueChoice] {error}");
                 }
             }
 
@@ -247,22 +288,6 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             {
                 System.Diagnostics.Debug.WriteLine($"  - {tx.Type}: {string.Join(", ", tx.Data.Select(kvp => $"{kvp.Key}={kvp.Value}"))}");
             }
-
-            if (newTransactions.Count == 0)
-            {
-                return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), instance.Transactions.Count);
-            }
-
-            // Persist and commit
-            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
-
-            if (!committed)
-            {
-                return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
-            }
-
-            // Invalidate cache
-            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
             // Add pending events to result data so caller can process them
             var resultData = new Dictionary<string, object>();
@@ -276,6 +301,28 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                 if (completionQuestRef != null)
                     resultData[TransactionDataKeys.CompletionQuestRef] = completionQuestRef;
             }
+            // Nested quest command failures don't fail the dialogue advance (the
+            // navigation itself succeeded) but must be visible to the caller
+            if (questEventErrors.Count > 0)
+            {
+                resultData[TransactionDataKeys.QuestEventErrors] = questEventErrors;
+            }
+
+            if (newTransactions.Count == 0)
+            {
+                return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), instance.Transactions.Count, resultData);
+            }
+
+            // Persist and commit
+            var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, newTransactions, ct);
+
+            if (!committed)
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, "Concurrency conflict - transactions rolled back");
+            }
+
+            // Invalidate cache
+            await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
             return SagaCommandResult.Success(
                 instance.InstanceId,

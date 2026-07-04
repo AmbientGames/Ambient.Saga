@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QuestTokens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Ambient.Domain ..\..\..\..\..\Content\xsd\Gameplay\Gameplay.xsd" xmlns="Ambient.Domain">
+  <QuestToken RefName="BanditChief_HideoutMap" DisplayName="Meetup Location" Description="Information about where the rival students hang out" />
+  <QuestToken RefName="BanditChief_ChiefsBadge" DisplayName="Rival's Apology" Description="The rival leader's written apology for causing trouble" />
+  <QuestToken RefName="BanditChief_StolenGoods" DisplayName="Returned Items" Description="Belongings taken from other students during the harassment" />
+  <QuestToken RefName="BanditChief_Bounty" DisplayName="Teacher's Request" Description="The teacher's official request to handle the situation" />
+  <QuestToken RefName="BanditChief_RescueStarted" DisplayName="Helping in Progress" Description="You've begun helping the bullied student" />
+  <QuestToken RefName="ElementalSage_TrialToken" DisplayName="Shrine Visitor Pass" Description="A special talisman allowing entry to the sacred inner grounds" />
+  <QuestToken RefName="ElementalSage_TrialComplete" DisplayName="Trial Completion Seal" Description="A stamp proving you passed the shrine's spiritual test" />
+  <QuestToken RefName="ElementalSage_AffinityGranted" DisplayName="Sacred Fire Blessing" Description="A spiritual connection to the shrine's eternal flame" />
+  <QuestToken RefName="FalseProphet_Rumor" DisplayName="Ghost Rumors" Description="Stories about a spirit haunting the inn" />
+  <QuestToken RefName="FalseProphet_FollowerAccount" DisplayName="Skeptic's Notes" Description="Notes from someone who stopped believing the stories" />
+  <QuestToken RefName="FalseProphet_FakeRelic" DisplayName="Prank Props" Description="Items used to fake supernatural occurrences" />
+  <QuestToken RefName="FalseProphet_FinancialRecords" DisplayName="Attention Evidence" Description="Proof the storyteller just wants attention" />
+  <QuestToken RefName="FalseProphet_DarkSecret" DisplayName="The Real Reason" Description="Why the student started telling ghost stories" />
+  <QuestToken RefName="FalseProphet_Exposed" DisplayName="Truth Revealed" Description="Everyone now knows the stories were made up" />
+  <QuestToken RefName="FalseProphet_Redeemed" DisplayName="Storyteller Reformed" Description="The student apologized and stopped the rumors" />
+  <QuestToken RefName="HiddenCache_OldMap" DisplayName="Antique Map" Description="An old map showing paths to hidden shrines" />
+  <QuestToken RefName="HiddenCache_FirstClue" DisplayName="First Torii Gate" Description="Found the first marker on the hidden path" />
+  <QuestToken RefName="HiddenCache_SecondClue" DisplayName="Stone Lantern" Description="The second landmark on the secret trail" />
+  <QuestToken RefName="HiddenCache_ThirdClue" DisplayName="Sacred Tree" Description="The final marker before the hidden shrine" />
+  <QuestToken RefName="HiddenCache_AncientKey" DisplayName="Shrine Key" Description="An ornate key that opens the inner sanctuary" />
+  <QuestToken RefName="HiddenCache_TreasureFound" DisplayName="Shrine Discovered" Description="You found the hidden sacred site" />
+  <QuestToken RefName="HiddenCache_TrapDisarmed" DisplayName="Puzzle Solved" Description="You figured out the shrine's ancient mechanism" />
+  <QuestToken RefName="HiddenCache_SecretRevealed" DisplayName="Ancient Wisdom" Description="Old scrolls reveal the shrine's history" />
+  <QuestToken RefName="LostTechnique_Rumor" DisplayName="Artisan Legend" Description="Stories about a master craftsman who still practices the old ways" />
+  <QuestToken RefName="LostTechnique_MasterLocation" DisplayName="Workshop Location" Description="Directions to the master artisan's home" />
+  <QuestToken RefName="LostTechnique_Accepted" DisplayName="Apprentice Status" Description="The master agreed to teach you" />
+  <QuestToken RefName="LostTechnique_TrialOne" DisplayName="Dexterity Proven" Description="You demonstrated steady hands" />
+  <QuestToken RefName="LostTechnique_TrialTwo" DisplayName="Knowledge Shown" Description="You understand the craft's history" />
+  <QuestToken RefName="LostTechnique_TrialThree" DisplayName="Passion Demonstrated" Description="You showed true respect for tradition" />
+  <QuestToken RefName="LostTechnique_Mastery" DisplayName="Technique Learned" Description="You can now practice the traditional craft" />
+  <QuestToken RefName="LostTechnique_LineageToken" DisplayName="Master's Certificate" Description="Official recognition of your training" />
+  <QuestToken RefName="MissingHeirloom_Evidence_Footprints" DisplayName="Sneaker Prints" Description="Distinctive shoe prints leading away from the bus" />
+  <QuestToken RefName="MissingHeirloom_Evidence_TornCloth" DisplayName="School Uniform Thread" Description="A thread from a school uniform caught on a branch" />
+  <QuestToken RefName="MissingHeirloom_Evidence_WitnessAccount" DisplayName="Witness Report" Description="A classmate saw something suspicious at the rest stop" />
+  <QuestToken RefName="MissingHeirloom_ThiefIdentified" DisplayName="Prankster Identified" Description="You know who took the charm" />
+  <QuestToken RefName="MissingHeirloom_ThiefLocation" DisplayName="Prankster's Location" Description="You know where to find them" />
+  <QuestToken RefName="MissingHeirloom_Heirloom" DisplayName="Family Omamori" Description="A handmade protective charm blessed at the family's local shrine" />
+  <QuestToken RefName="MissingHeirloom_ThiefConfession" DisplayName="Confession Received" Description="The prankster admitted it was just a joke" />
+  <QuestToken RefName="RefugeeEscort_GroupAssembled" DisplayName="Search Party Ready" Description="Everyone who's helping is gathered" />
+  <QuestToken RefName="RefugeeEscort_SuppliesGathered" DisplayName="First Aid Kit" Description="Medical supplies from the nurse" />
+  <QuestToken RefName="RefugeeEscort_SafePassage" DisplayName="Safe Route Found" Description="A path back to the meeting point" />
+  <QuestToken RefName="RefugeeEscort_FirstWaypoint" DisplayName="First Checkpoint" Description="Reached a familiar landmark" />
+  <QuestToken RefName="RefugeeEscort_ChildRescued" DisplayName="First-Year Found" Description="The lost underclassman is safe" />
+  <QuestToken RefName="RefugeeEscort_BetrayerExposed" DisplayName="Misunderstanding Cleared" Description="Someone's intentions were misunderstood" />
+  <QuestToken RefName="RefugeeEscort_JourneyComplete" DisplayName="Back at the Bus" Description="Everyone reached the meeting point" />
+  <QuestToken RefName="RefugeeEscort_AllSurvived" DisplayName="All Accounted For" Description="No one was left behind" />
+  <QuestToken RefName="RivalGuild_GuildCharter" DisplayName="Club Membership" Description="Your photography club member card" />
+  <QuestToken RefName="RivalGuild_IntelGathered" DisplayName="Rival's Strategy" Description="Information about the other club's photo spots" />
+  <QuestToken RefName="RivalGuild_SabotageComplete" DisplayName="Perfect Shot Taken" Description="You got an amazing photo they missed" />
+  <QuestToken RefName="RivalGuild_RivalCharter" DisplayName="Rival Club Info" Description="Details about the opposing photography club" />
+  <QuestToken RefName="RivalGuild_LeaderDefeated" DisplayName="Contest Won" Description="Your club outscored the rivals" />
+  <QuestToken RefName="RivalGuild_PeaceTreaty" DisplayName="Friendly Rivalry" Description="Both clubs agreed to share photo locations" />
+  <QuestToken RefName="RivalGuild_Dominance" DisplayName="Grand Prize" Description="Your club won the photography contest" />
+  <QuestToken RefName="RivalGuild_DoubleAgent" DisplayName="Friends on Both Sides" Description="You're friendly with photographers from both schools" />
+  <QuestToken RefName="WanderingMerchant_TradeGoods" DisplayName="Guide's Supplies" Description="Items the tour guide needs to return" />
+  <QuestToken RefName="WanderingMerchant_FirstDelivery" DisplayName="First Tourist Helped" Description="Successfully assisted a lost visitor" />
+  <QuestToken RefName="WanderingMerchant_SecondDelivery" DisplayName="Group Located" Description="Found the guide's tour group" />
+  <QuestToken RefName="WanderingMerchant_JourneyComplete" DisplayName="Guide Reunited" Description="The tour guide is back with their group" />
+  <QuestToken RefName="WanderingMerchant_TradeSecret" DisplayName="Local Knowledge" Description="Tips about hidden spots in Ise-Shima" />
+  <QuestToken RefName="WanderingMerchant_MerchantBond" DisplayName="Tour Guide's Thanks" Description="A small gift from the grateful guide" />
+  <QuestToken RefName="WanderingMerchant_RoadToll" DisplayName="Admission Paid" Description="Valid ticket to enter the shrine grounds" />
+  <QuestToken RefName="TOKEN_Kazahinominomiya_COMPLETE" DisplayName="Kazahinomi-no-Miya Emblem" Description="Proof that you have overcome the trials of Kazahinomi-no-Miya." />
+  <QuestToken RefName="TOKEN_KotaiJinguInnerShrine_COMPLETE" DisplayName="Kotai Jingu (Inner Shrine) Crest" Description="This seal bears the marks of Kotai Jingu (Inner Shrine), evidence of your triumph." />
+  <QuestToken RefName="TOKEN_Aramatsurinomiya_COMPLETE" DisplayName="Mark of Aramatsuri-no-Miya" Description="Proof that you have overcome the trials of Aramatsuri-no-Miya." />
+  <QuestToken RefName="TOKEN_ToyokeDaijinguOuterShrine_COMPLETE" DisplayName="Toyoke Daijingu (Outer Shrine) Seal" Description="This crest signifies your victory within Toyoke Daijingu (Outer Shrine)." />
+  <QuestToken RefName="TOKEN_KazamiyaGeku_COMPLETE" DisplayName="Emblem of Kazamiya (Geku)" Description="A symbol of honor earned through perseverance at Kazamiya (Geku)." />
+  <QuestToken RefName="TOKEN_Tsuchinomiya_COMPLETE" DisplayName="Tsuchi-no-Miya Seal" Description="This seal bears the marks of Tsuchi-no-Miya, evidence of your triumph." />
+  <QuestToken RefName="TOKEN_Takanomiya_COMPLETE" DisplayName="Emblem of Taka-no-Miya" Description="This badge commemorates your accomplishments at Taka-no-Miya." />
+</QuestTokens>

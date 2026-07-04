@@ -421,7 +421,7 @@ public class DefensiveMechanicsTests
             RefName = "IronSword",
             DisplayName = "Iron Sword",
             WholesalePrice = 50,
-            Effects = new Attributes { Health = -0.10f },  // 10% damage
+            Effects = new EffectAttributes { Health = -0.10f },  // 10% damage
             AffinityRef = "Physical"
         };
 
@@ -430,7 +430,7 @@ public class DefensiveMechanicsTests
             RefName = "WoodenSword",
             DisplayName = "Wooden Sword",
             WholesalePrice = 10,
-            Effects = new Attributes { Health = -0.05f },  // 5% damage
+            Effects = new EffectAttributes { Health = -0.05f },  // 5% damage
             AffinityRef = "Physical"
         };
 
@@ -439,7 +439,7 @@ public class DefensiveMechanicsTests
             RefName = "WoodenShield",
             DisplayName = "Wooden Shield",
             WholesalePrice = 20,
-            Effects = new Attributes { Defense = 0.05f }
+            Effects = new EffectAttributes { Defense = 0.05f }
         };
 
         var fireball = new Spell
@@ -447,7 +447,7 @@ public class DefensiveMechanicsTests
             RefName = "Fireball",
             DisplayName = "Fireball",
             UseType = ItemUseType.Offensive,
-            Effects = new Attributes { Health = -0.15f },  // 15% damage
+            Effects = new EffectAttributes { Health = -0.15f },  // 15% damage
             AffinityRef = "Fire"
         };
 
@@ -455,7 +455,7 @@ public class DefensiveMechanicsTests
         {
             RefName = "HealthPotion",
             DisplayName = "Health Potion",
-            Effects = new Attributes { Health = 0.25f }  // 25% heal
+            Effects = new EffectAttributes { Health = 0.25f }  // 25% heal
         };
 
         var physicalAffinity = new CharacterAffinity

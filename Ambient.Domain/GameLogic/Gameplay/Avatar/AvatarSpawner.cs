@@ -33,7 +33,19 @@ public static class AvatarSpawner
     /// </summary>
     public static void ReSpawnFromModelAvatar(AvatarBase avatar, AvatarArchetype archetype)
     {
+        // Respawn resets vitals to archetype values but must not wipe earned
+        // progression — credits, experience and level persist through death.
+        // (A deliberate death penalty, if ever wanted, belongs here as an
+        // explicit rule, not as a side effect of the blanket stat copy.)
+        var credits = avatar.Stats.Credits;
+        var experience = avatar.Stats.Experience;
+        var level = avatar.Stats.Level;
+
         CharacterStatsCopier.CopyCharacterStats(archetype.RespawnStats, avatar.Stats);
+
+        avatar.Stats.Credits = credits;
+        avatar.Stats.Experience = experience;
+        avatar.Stats.Level = level;
 
         avatar.Capabilities.Blocks = archetype.RespawnCapabilities.Blocks?.ToArray() ?? [];
         avatar.Capabilities.Tools = archetype.RespawnCapabilities.Tools?.ToArray() ?? [];

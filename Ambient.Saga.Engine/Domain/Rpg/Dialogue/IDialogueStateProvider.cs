@@ -41,6 +41,13 @@ public interface IDialogueStateProvider
     string GetFactionReputationLevel(string factionRef);  // Returns ReputationLevel as string
     void ChangeReputation(string factionRef, int amount);
 
+    /// <summary>
+    /// Spillover changes to related factions when the given faction's reputation
+    /// changes (allies gain, enemies lose, per the faction's relationship data).
+    /// The caller stages a ReputationChanged transaction per entry.
+    /// </summary>
+    IReadOnlyList<(string FactionRef, int Amount)> GetReputationSpillover(string factionRef, int amount);
+
     // ===== INVENTORY MODIFICATION =====
     void AddConsumable(string consumableRef, int amount);
     void RemoveConsumable(string consumableRef, int amount);

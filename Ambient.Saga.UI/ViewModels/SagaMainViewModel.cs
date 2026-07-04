@@ -228,13 +228,27 @@ public partial class SagaMainViewModel : ObservableObject
     public QuestLogViewModel? QuestLog { get; private set; }
     public AchievementViewModel? Achievements { get; private set; }
 
-    // Context that SagaInteractionViewModel references
+    // Context that SagaInteractionViewModel references.
+    // World/Avatar are populated by OnCurrentWorldChanged/OnAvatarChanged as soon as
+    // they become available (world load, avatar create/load, world switch) so the
+    // child ViewModels (QuestLog, Achievements, MerchantTrade) see live data.
     private SagaInteractionContext _sagaInteractionContext = new()
     {
         World = null!,
         AvatarEntity = null!,
         ActiveCharacter = null
     };
+
+    partial void OnCurrentWorldChanged(IWorld value)
+    {
+        _sagaInteractionContext.World = value;
+    }
+
+    partial void OnAvatarChanged(AvatarEntity? value)
+    {
+        _sagaInteractionContext.AvatarEntity = value;
+        _sagaInteractionContext.AvatarId = value?.AvatarId ?? Guid.Empty;
+    }
 
     // Event for when character changes so dialogue can be loaded
     public event EventHandler? CharacterChanged;
@@ -244,6 +258,17 @@ public partial class SagaMainViewModel : ObservableObject
 
     // Event for when dialogue should be displayed (for character interactions)
     public event Action<CharacterViewModel>? DialogueRequested;
+
+    // Event for a proximity assault: the arbiter's winning character is effectively
+    // Hostile (and not Disengaged/Spared) with the avatar inside its ApproachRadius,
+    // so the CHARACTER initiates battle. Hosts open the battle modal exactly like
+    // clicking Attack on the character (ModalManager.TryOpenAssault); menace speech
+    // is the character's battle_opening dialogue trigger. Fires in ALL hosts — the
+    // one proximity-INITIATED interaction in the 3D games, where dialogue stays
+    // click-only. Re-raised on each ~1 s interaction check while the conditions
+    // persist, so a busy host (modal already open) ignores a raise and picks up the
+    // next one — suppression defers, never drops.
+    public event Action<CharacterViewModel>? AssaultRequested;
 
     // Event for when session is ready (avatar loaded and height map available)
     public event Action<AvatarEntity, ElevationWaterMap?>? SessionReady;
@@ -296,6 +321,29 @@ public partial class SagaMainViewModel : ObservableObject
     public void RaiseOwnerRevenueEarned(string ownerAvatarId, int revenue)
     {
         OwnerRevenueEarned?.Invoke(ownerAvatarId, revenue);
+    }
+
+    /// <summary>
+    /// Avatar's current standing with a faction: authored baseline plus earned
+    /// reputation from the progress projection — the same math dialogue gates use
+    /// (DirectDialogueStateProvider.GetFactionReputation).
+    /// </summary>
+    public int GetFactionReputation(Ambient.Domain.Faction faction)
+    {
+        var earned = 0;
+        if (Avatar != null)
+        {
+            try
+            {
+                earned = _avatarProgressRepositoryProvider.Repository
+                    .GetFactionReputation(Avatar.AvatarId, faction.RefName);
+            }
+            catch (InvalidOperationException)
+            {
+                // No world/repository loaded yet — fall back to the authored baseline
+            }
+        }
+        return faction.StartingReputation + earned;
     }
 
     /// <summary>
@@ -478,8 +526,11 @@ public partial class SagaMainViewModel : ObservableObject
 
         try
         {
-            // Clear previous character list
-            Characters.Clear();
+            // Build the full character list off-thread, then publish it atomically at the
+            // end. The render thread (JournalPanel, MapViewPanel), mouse handlers and the
+            // actor-sim worker enumerate Characters concurrently — mutating the published
+            // collection here (Clear/Add) caused "Collection was modified" crashes.
+            var updatedCharacters = new List<CharacterViewModel>();
 
             // Get avatar model coordinates for proximity filtering
             var avatarModelX = CoordinateConverter.LongitudeToModelX(AvatarLongitude, CurrentWorld);
@@ -563,9 +614,14 @@ public partial class SagaMainViewModel : ObservableObject
                         ? new System.Numerics.Vector4(1f, 0.65f, 0f, 1f)
                         : new System.Numerics.Vector4(0.5f, 0.5f, 0.5f, 1f);
 
-                    Characters.Add(characterVm);
+                    updatedCharacters.Add(characterVm);
                 }
             }
+
+            // Atomic publish: swap the collection reference in one assignment. Readers
+            // keep enumerating the old (immutable-from-now-on) collection; the property
+            // setter raises PropertyChanged for anyone bound to Characters.
+            Characters = new ObservableCollection<CharacterViewModel>(updatedCharacters);
 
             System.Diagnostics.Debug.WriteLine($"[CheckInteractions] Finished - Total characters in collection: {Characters.Count}");
 
@@ -582,9 +638,23 @@ public partial class SagaMainViewModel : ObservableObject
     /// <summary>
     /// Checks for the highest-priority interaction that wants to engage with the avatar.
     /// Uses the arbiter query to select ONE interaction across all Sagas.
+    /// Internal for tests (see SagaMainViewModelInitiatedInteractionTests).
     /// </summary>
-    private async Task CheckForInitiatedInteractionsAsync()
+    internal async Task CheckForInitiatedInteractionsAsync()
     {
+        // The arbiter only runs when a host can act on its verdict:
+        // - DialogueRequested: proximity-initiated dialogue, the SANDBOX's interaction
+        //   mechanism (no 3D models to click — arriving inside a character's
+        //   ApproachRadius IS the interaction). The Schema 3D games do NOT subscribe:
+        //   dialogue is click-only there, and the engine must not open dialogue
+        //   sessions nobody will ever see (StartDialogueCommand would fire with no
+        //   UI, leaving the session dangling and _isInDialogue wedged).
+        // - AssaultRequested: proximity assault (hostile character initiates battle).
+        //   Subscribed by ALL hosts.
+        // No subscriber for either → arbiter idle.
+        if (DialogueRequested == null && AssaultRequested == null)
+            return;
+
         if (Avatar == null || CurrentWorld == null || !HasAvatarPosition)
             return;
 
@@ -601,15 +671,25 @@ public partial class SagaMainViewModel : ObservableObject
 
             var result = await _mediator.Send(query);
 
-            if (result.HasInteraction)
+            if (result.HasInteraction && result.Character != null)
             {
-                if (result.Character != null)
+                // Proximity assault wins over walk-up dialogue: the hostile character
+                // initiates battle directly (no pre-fight conversation — menace speech
+                // is the battle_opening dialogue trigger). Skip while a walk-up
+                // dialogue is in progress; the next 1 s tick re-raises once it closes.
+                // The host additionally suppresses raises while any modal is open.
+                if (result.IsAssault && AssaultRequested != null)
                 {
-                    // Start dialogue if character wants to talk
-                    if (result.Character.Options.CanDialogue)
+                    if (!_isInDialogue)
                     {
-                        await StartDialogueWithCharacterAsync(result.SagaRef, result.Character.CharacterInstanceId);
+                        RaiseAssaultRequested(result.SagaRef, result.Character.CharacterInstanceId);
                     }
+                }
+                // Otherwise start dialogue if the character wants to talk — only in
+                // hosts that show walk-up dialogue (DialogueRequested subscribed).
+                else if (result.Character.Options.CanDialogue && DialogueRequested != null)
+                {
+                    await StartDialogueWithCharacterAsync(result.SagaRef, result.Character.CharacterInstanceId);
                 }
             }
         }
@@ -617,6 +697,27 @@ public partial class SagaMainViewModel : ObservableObject
         {
             System.Diagnostics.Debug.WriteLine($"*** ERROR checking initiated interactions: {ex.Message}");
         }
+    }
+
+    /// <summary>
+    /// Raises AssaultRequested with the CharacterViewModel hosts need to open the
+    /// battle modal. If the character isn't in the published Characters collection
+    /// yet (it refreshes on the same 1 s cadence), the raise is skipped — the next
+    /// interaction check retries while the avatar stays in range.
+    /// </summary>
+    private void RaiseAssaultRequested(string sagaRef, Guid characterInstanceId)
+    {
+        var characterVM = Characters.FirstOrDefault(c =>
+            c.CharacterInstanceId == characterInstanceId && c.SagaRef == sagaRef);
+
+        if (characterVM == null)
+        {
+            System.Diagnostics.Debug.WriteLine($"*** Assault deferred: CharacterViewModel not published yet for {characterInstanceId} in Saga {sagaRef}");
+            return;
+        }
+
+        System.Diagnostics.Debug.WriteLine($"*** Proximity assault: {characterVM.DisplayName} ({characterVM.CharacterRef}) initiates battle");
+        AssaultRequested?.Invoke(characterVM);
     }
 
     private string? _currentDialogueSagaRef;
@@ -971,8 +1072,9 @@ public partial class SagaMainViewModel : ObservableObject
         var elevationWaterMap = world.WorldConfiguration?.HeightMapSettings?.ElevationWaterMap;
         SessionReady?.Invoke(Avatar, elevationWaterMap);
 
-        // Load Sagas and triggers from world with feature status
-        var (sagas, triggers) = await SagaArcViewModel.LoadFromWorldAsync(world, Avatar, _worldRepository);
+        // Load Sagas and triggers from world with feature status (progress repo
+        // set by InitializeWorldDatabase above; needed for cross-arc token gates)
+        var (sagas, triggers) = await SagaArcViewModel.LoadFromWorldAsync(world, Avatar, _worldRepository, _avatarProgressRepositoryProvider.Repository);
         Sagas.Clear();
         AllTriggers.Clear();
         foreach (var saga in sagas) Sagas.Add(saga);
@@ -980,6 +1082,12 @@ public partial class SagaMainViewModel : ObservableObject
 
         // Load recent transactions for History tab
         await LoadRecentTransactionsAsync();
+
+        // Refresh quest log and achievements now that the shared interaction context
+        // has both world and avatar (see OnCurrentWorldChanged/OnAvatarChanged)
+        if (QuestLog != null)
+            await QuestLog.RefreshQuestsAsync();
+        Achievements?.RefreshAchievements();
 
         // Initialize avatar position at spawn if available
         InitializeAvatarPosition(world);
@@ -994,10 +1102,11 @@ public partial class SagaMainViewModel : ObservableObject
     /// </summary>
     private async Task LoadRecentTransactionsAsync()
     {
-        RecentTransactions.Clear();
-
         if (Avatar == null)
+        {
+            RecentTransactions = new ObservableCollection<Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog.SagaTransaction>();
             return;
+        }
 
         try
         {
@@ -1013,10 +1122,9 @@ public partial class SagaMainViewModel : ObservableObject
                 .Take(100) // Limit to most recent 100 transactions
                 .ToList();
 
-            foreach (var transaction in allTransactions)
-            {
-                RecentTransactions.Add(transaction);
-            }
+            // Atomic publish: swap the collection reference so the render thread
+            // (JournalPanel History) never sees a half-built list.
+            RecentTransactions = new ObservableCollection<Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog.SagaTransaction>(allTransactions);
         }
         catch (InvalidOperationException)
         {
@@ -1372,6 +1480,7 @@ public partial class SagaMainViewModel : ObservableObject
     {
         AvatarLatitude = latitude;
         AvatarLongitude = longitude;
+        AvatarElevation = (int)elevation;
 
         HasAvatarPosition = true;
 
@@ -1574,8 +1683,8 @@ public partial class SagaMainViewModel : ObservableObject
             var clickLatitude = CoordinateConverter.HeightMapPixelYToLatitude(pixelY, CurrentWorld.HeightMapMetadata);
             var clickLongitude = CoordinateConverter.HeightMapPixelXToLongitude(pixelX, CurrentWorld.HeightMapMetadata);
 
-            AvatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(clickLatitude, CurrentWorld.HeightMapMetadata);
-            AvatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(clickLongitude, CurrentWorld.HeightMapMetadata);
+            AvatarPixelX = CoordinateConverter.HeightMapLongitudeToPixelX(clickLongitude, CurrentWorld.HeightMapMetadata);
+            AvatarPixelY = CoordinateConverter.HeightMapLatitudeToPixelY(clickLatitude, CurrentWorld.HeightMapMetadata);
             var avatarElevation = SampleElevation((int)AvatarPixelX, (int)AvatarPixelY);
 
             // Move avatar to clicked position
@@ -2472,7 +2581,9 @@ public partial class SagaMainViewModel : ObservableObject
                 MarkerColor = GetDevCharacterColor(characterType)
             };
 
-            Characters.Add(characterVm);
+            // Atomic publish (see CheckAvailableInteractionsAsync): render/sim threads
+            // enumerate Characters concurrently, so never mutate the live collection.
+            Characters = new ObservableCollection<CharacterViewModel>(Characters) { characterVm };
             System.Diagnostics.Debug.WriteLine($"[DevTools] Spawned {testCharacter.DisplayName} at ({spawnX:F2}, {spawnZ:F2})");
             AddToastMessage($"Spawned {testCharacter.DisplayName}", MessageType.Combat);
             AddToastMessage($"{testCharacter.DisplayName} appeared!", MessageType.Combat, 3f);

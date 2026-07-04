@@ -3,6 +3,7 @@ using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.WorldManagers;
 using Ambient.Presentation.WindowsUI.RpgControls.ViewModels;
 using Ambient.Saga.Engine.Contracts;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
@@ -138,7 +139,8 @@ public partial class SagaArcViewModel : ObservableObject
     public static async Task<(List<SagaArcViewModel> Sagas, List<ProximityTriggerViewModel> AllSagaTriggers)> LoadFromWorldAsync(
         IWorld world,
         AvatarBase? avatar = null,
-        IWorldStateRepository? worldRepository = null)
+        IWorldStateRepository? worldRepository = null,
+        IAvatarProgressRepository? progressRepo = null)
     {
         var sagas = new List<SagaArcViewModel>();
         var allSagaTriggers = new List<ProximityTriggerViewModel>();
@@ -179,7 +181,7 @@ public partial class SagaArcViewModel : ObservableObject
                     triggerVM.IsHovered = false;
 
                     // Query trigger status and set color
-                    await SetTriggerStatusAsync(triggerVM, sagaArc, avatar, world, worldRepository);
+                    await SetTriggerStatusAsync(triggerVM, sagaArc, avatar, world, worldRepository, progressRepo);
 
                     allSagaTriggers.Add(triggerVM);
                 }
@@ -260,15 +262,17 @@ public partial class SagaArcViewModel : ObservableObject
         SagaArc sagaArc,
         AvatarBase? avatar,
         IWorld world,
-        IWorldStateRepository worldRepository)
+        IWorldStateRepository worldRepository,
+        IAvatarProgressRepository? progressRepo = null)
     {
         // Convert Saga GPS to model coordinates for query
         var sagaModelX = CoordinateConverter.LongitudeToModelX(sagaArc.Longitude, world);
         var sagaModelZ = CoordinateConverter.LatitudeToModelZ(sagaArc.Latitude, world);
 
-        // Query application service for trigger status at Saga center
+        // Query application service for trigger status at Saga center; the progress
+        // repo lets lock status honor quest tokens awarded by other arcs
         var interactions = await SagaProximityService.QueryAllInteractionsAtPositionAsync(
-            sagaModelX, sagaModelZ, avatar, world, worldRepository);
+            sagaModelX, sagaModelZ, avatar, world, worldRepository, progressRepo);
 
         var triggerInteraction = interactions.FirstOrDefault(i =>
             i.Type == SagaInteractionType.SagaTrigger &&

@@ -27,8 +27,10 @@ public class Combatant
     // Affinity for elemental bonuses (settable for testing/runtime changes)
     public string? AffinityRef { get; set; }
 
-    // Archetype bias - small stat multipliers (±10%) from base archetype
-    public Attributes? ArchetypeBias { get; init; }
+    // Archetype bias - small stat multipliers (±10%) from base archetype.
+    // Settable: reconstruction rebuilds combatants from the transaction log and
+    // re-attaches the bias from the avatar entity / character template afterwards.
+    public Attributes? ArchetypeBias { get; set; }
 
     // Reference to capabilities for spell/equipment access
     public ItemCollection? Capabilities { get; set; }
@@ -42,6 +44,11 @@ public class Combatant
 
     // Active status effects (tracked during battle)
     public List<ActiveStatusEffect> ActiveStatusEffects { get; set; } = new();
+
+    // Additive stat deltas from buff/debuff spells and consumables, keyed by stat
+    // name ("Strength", "Defense", "Speed", "Magic"). Applied on top of the
+    // multiplier pipeline in BattleEngine.GetEffective* and last for the battle.
+    public Dictionary<string, float> CombatStatModifiers { get; } = new();
 
     // Helper properties
     public bool IsAlive => Health > 0;

@@ -162,6 +162,9 @@ public class BattleSetup
 
     /// <summary>
     /// Initialize EquippedItems dictionary from Capabilities.Equipment.
+    /// Hand slots are exclusive: a BothHands weapon occupies MainHand and OffHand,
+    /// so equipping everything owned by SlotRef used to stack a two-hander's
+    /// passives on top of a one-hander's from turn 0.
     /// </summary>
     private void InitializeEquippedSlots(Combatant combatant, IWorld world)
     {
@@ -171,12 +174,27 @@ public class BattleSetup
         foreach (var entry in combatant.Capabilities.Equipment)
         {
             var equipment = world.GetEquipmentByRefName(entry.EquipmentRef);
-            if (equipment != null && !string.IsNullOrEmpty(equipment.SlotRef))
+            if (equipment == null || string.IsNullOrEmpty(equipment.SlotRef))
+                continue;
+
+            var slotName = equipment.SlotRef.ToString();
+
+            // Enforce hand exclusivity (first equipped wins, matching slot overwrite
+            // semantics elsewhere: later same-slot items replace, but a occupied
+            // conflicting hand blocks)
+            if (slotName == "BothHands" &&
+                (combatant.CombatProfile.ContainsKey("MainHand") || combatant.CombatProfile.ContainsKey("OffHand")))
             {
-                var slotName = equipment.SlotRef.ToString();
-                combatant.CombatProfile[slotName] = entry.EquipmentRef;
-                System.Diagnostics.Debug.WriteLine($"  Equipped {equipment.DisplayName} in {slotName} slot");
+                continue;
             }
+            if ((slotName == "MainHand" || slotName == "OffHand") &&
+                combatant.CombatProfile.ContainsKey("BothHands"))
+            {
+                continue;
+            }
+
+            combatant.CombatProfile[slotName] = entry.EquipmentRef;
+            System.Diagnostics.Debug.WriteLine($"  Equipped {equipment.DisplayName} in {slotName} slot");
         }
     }
 }

@@ -61,16 +61,6 @@ public class CharacterState
     public Dictionary<string, double> DamageByAvatar { get; set; } = new();
 
     /// <summary>
-    /// Whether this character has been looted.
-    /// </summary>
-    public bool HasBeenLooted { get; set; }
-
-    /// <summary>
-    /// When this character was looted (null if not yet looted).
-    /// </summary>
-    public DateTime? LootedAt { get; set; }
-
-    /// <summary>
     /// Current stats for this character instance (copied from template on spawn).
     /// </summary>
     public CharacterStats? CurrentStats { get; set; }

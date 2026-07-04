@@ -51,6 +51,10 @@ public class BattleModal
     // BattleEngine instance for reaction resolution
     private BattleEngine? _battleEngine = null;
 
+    // Battle dialogue triggers (boss taunts) authored on the enemy character
+    private readonly BattleTriggerEvaluator _battleTriggers = new();
+    private CharacterTrigger[]? _battleDialogueTriggers;
+
     // Selection modal instances
     private SpellSelectionModal? _spellSelectionModal;
     private ItemSelectionModal? _itemSelectionModal;
@@ -69,6 +73,43 @@ public class BattleModal
     private SagaMainViewModel? _cachedViewModel;
     private CharacterViewModel? _cachedCharacter;
     private ModalManager? _cachedModalManager;
+
+    // In-flight guard: true while a turn command is pending, so double-clicking an
+    // action button can't dispatch two turns for the same battle turn.
+    private bool _isProcessingTurn = false;
+
+    /// <summary>
+    /// Resets all battle state. Called by BattleModalAdapter.OnClosed so re-engaging
+    /// the same enemy starts a fresh battle instead of showing the previous battle's
+    /// end screen (the registry never renders with isOpen=false, so the old
+    /// reset-on-close render path never ran).
+    /// </summary>
+    public void Reset()
+    {
+        _currentState = null;
+        _isInitialized = false;
+        _lastCharacterInstanceId = Guid.Empty;
+        _battleInstanceId = Guid.Empty;
+        _enemyTurnDelay = 0f;
+        _waitingForEnemyTurn = false;
+        _isProcessingTurn = false;
+        _lastReactionResult = null;
+        _battleDialogueTriggers = null;
+        _battleTriggers.Reset();
+        EndReactionPhase();
+
+        // Tear down any open selection modals (and their event handlers)
+        _showSpellSelection = false;
+        _showItemSelection = false;
+        _showEquipmentChange = false;
+        _showAffinityChange = false;
+        _showStanceChange = false;
+        CleanupSpellSelectionModal();
+        CleanupItemSelectionModal();
+        CleanupEquipmentChangeModal();
+        CleanupAffinityChangeModal();
+        CleanupStanceChangeModal();
+    }
 
     public void Update(float deltaTime)
     {
@@ -97,18 +138,22 @@ public class BattleModal
                 // State will automatically refresh and show AvatarTurn
             }
         }
+
+        // Apply battle-affecting dialogue events deposited by the mid-battle
+        // DialogueModal (boss taunts: HealSelf/ChangeStance/ChangeAffinity/EndBattle)
+        if (_cachedModalManager?.PendingBattleDialogueEffects is { Count: > 0 } effects &&
+            _cachedViewModel != null && _cachedCharacter != null)
+        {
+            _cachedModalManager.PendingBattleDialogueEffects = null;
+            _ = ApplyDialogueEffectsAsync(_cachedViewModel, _cachedCharacter, effects);
+        }
     }
 
     public void Render(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager, ref bool isOpen)
     {
         if (!isOpen)
         {
-            _isInitialized = false;
-            _battleInstanceId = Guid.Empty;
-            _showSpellSelection = false;
-            _showItemSelection = false;
-            _showEquipmentChange = false;
-            EndReactionPhase();  // Reset reaction state
+            Reset();
             return;
         }
 
@@ -259,6 +304,11 @@ public class BattleModal
             // Button height based on frame height for DPI scaling
             var actionButtonHeight = ImGui.GetFrameHeight() * 1.2f;
 
+            // Disable all action buttons while a turn command is in flight so a
+            // double-click can't dispatch two turn commands (same pattern as
+            // DialogueModal's _isLoading guard)
+            ImGui.BeginDisabled(_isProcessingTurn);
+
             // Core combat actions with styled buttons
             ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.3f, 0.15f, 0.15f, 1.0f));
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.2f, 0.2f, 1.0f));
@@ -355,6 +405,8 @@ public class BattleModal
                 OpenStanceChangeModal(viewModel);
             }
             ImGui.PopStyleColor(3);
+
+            ImGui.EndDisabled();
         }
 
         ImGui.EndChild();
@@ -473,7 +525,7 @@ public class BattleModal
     /// <param name="baseDamage">Base damage of the attack (before defense modifiers)</param>
     /// <param name="reactionWindowMs">Time window in milliseconds (0 = use default)</param>
     /// <param name="battleEngine">BattleEngine instance for resolving the reaction</param>
-    public void StartReactionPhase(string tellText, string? tellRefName, int baseDamage, int reactionWindowMs = 0, BattleEngine? battleEngine = null)
+    public void StartReactionPhase(string tellText, string? tellRefName, float baseDamage, int reactionWindowMs = 0, BattleEngine? battleEngine = null)
     {
         _inReactionPhase = true;
         _currentTellText = tellText;
@@ -512,31 +564,57 @@ public class BattleModal
         _battleEngine = null;
     }
 
-    // Default tells for when enemy doesn't have specific tells defined
-    private static readonly string[] DefaultTellTemplates = new[]
-    {
-        "{0} lunges forward with weapon raised!",
-        "{0} draws back for a powerful strike!",
-        "{0} crouches low, preparing to spring!",
-        "{0} snarls and raises a claw!",
-        "{0} takes a deep breath, energy gathering!",
-        "{0} shifts stance and locks eyes with you!",
-        "{0} winds up for a sweeping attack!",
-        "{0} feints left, then commits to an attack!",
-        "{0} lets out a battle cry and charges!",
-        "{0} coils back, muscles tensing!"
-    };
-
-    private static readonly Random _tellRandom = new();
-
     /// <summary>
-    /// Generates a random default tell narrative for an enemy.
-    /// Used when character doesn't have specific AttackTells defined.
+    /// Starts the reaction phase from the tell metadata a battle command returned
+    /// (StartBattle/ExecuteBattleTurn return AwaitingReaction + tell data when the
+    /// enemy's attack is telegraphed). Builds a local BattleEngine over the current
+    /// combatant state so the reaction resolves with the real outcome matrix —
+    /// damage multipliers, counters, stamina rewards — instead of cosmetic zeros.
     /// </summary>
-    private static string GetRandomDefaultTell(string enemyName)
+    private bool TryStartReactionFromResult(SagaMainViewModel viewModel, SagaCommandResult result)
     {
-        var template = DefaultTellTemplates[_tellRandom.Next(DefaultTellTemplates.Length)];
-        return string.Format(template, enemyName);
+        if (result.Data == null ||
+            !result.Data.TryGetValue(TransactionDataKeys.AwaitingReaction, out var awaitingObj) ||
+            awaitingObj is not bool awaiting || !awaiting)
+        {
+            return false;
+        }
+
+        var tellRefName = result.Data.TryGetValue(TransactionDataKeys.TellRefName, out var refObj) ? refObj as string : null;
+        var tellText = result.Data.TryGetValue(TransactionDataKeys.TellText, out var textObj) ? textObj as string : null;
+        var windowMs = result.Data.TryGetValue(TransactionDataKeys.ReactionWindowMs, out var windowObj) ? Convert.ToInt32(windowObj) : 0;
+        var baseDamage = result.Data.TryGetValue(TransactionDataKeys.BaseDamage, out var damageObj) ? Convert.ToSingle(damageObj) : 0f;
+
+        if (string.IsNullOrEmpty(tellRefName) || string.IsNullOrEmpty(tellText))
+        {
+            return false;
+        }
+
+        var reactionEngine = CreateReactionEngine(viewModel, tellRefName, baseDamage);
+        StartReactionPhase(tellText, tellRefName, baseDamage, windowMs, reactionEngine);
+        return true;
+    }
+
+    private BattleEngine? CreateReactionEngine(SagaMainViewModel viewModel, string tellRefName, float baseDamage)
+    {
+        if (viewModel.CurrentWorld == null ||
+            _currentState?.AvatarCombatant == null ||
+            _currentState.EnemyCombatant == null)
+        {
+            return null;
+        }
+
+        var engine = new BattleEngine(
+            _currentState.AvatarCombatant,
+            _currentState.EnemyCombatant,
+            world: viewModel.CurrentWorld);
+        engine.RegisterTellsFromWorld(viewModel.CurrentWorld);
+
+        return engine.BeginAttackWithTell(
+            _currentState.EnemyCombatant,
+            _currentState.AvatarCombatant,
+            tellRefName,
+            baseDamage) ? engine : null;
     }
 
     private async Task ResolveReactionAsync(SagaMainViewModel viewModel, CharacterViewModel character, AvatarDefenseType reaction)
@@ -793,6 +871,23 @@ public class BattleModal
             ImGui.SetCursorPosX((ImGui.GetWindowWidth() - subSize.X) * 0.5f);
             ImGui.TextColored(new Vector4(0.9f, 0.7f, 0.7f, 1.0f), subText);
         }
+        else
+        {
+            // Fled battle: AvatarVictory is null — without this branch the end
+            // screen rendered no headline at all
+            ImGui.PushFont(UIConstants.FontTitle);
+            var text = "ESCAPED";
+            var textSize = ImGui.CalcTextSize(text);
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
+            ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.4f, 1.0f), text);
+            ImGui.PopFont();
+
+            ImGui.Spacing();
+            var subText = "You fled from the battle.";
+            var subSize = ImGui.CalcTextSize(subText);
+            ImGui.SetCursorPosX((ImGui.GetWindowWidth() - subSize.X) * 0.5f);
+            ImGui.TextColored(new Vector4(0.9f, 0.85f, 0.6f, 1.0f), subText);
+        }
 
         ImGui.Spacing();
         ImGui.Spacing();
@@ -840,27 +935,12 @@ public class BattleModal
 
         ImGui.Spacing();
 
-        // Center the action buttons
+        // Center the close button
+        // (The legacy "Collect Loot" button is gone — defeated characters are looted
+        // through the character interaction flow / MerchantTrade family instead.)
         var buttonWidth = 150f;
         var endButtonHeight = ImGui.GetFrameHeight() * 1.4f;
-        var totalButtonWidth = _currentState.AvatarVictory == true ? buttonWidth * 2 + 20 : buttonWidth;
-        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - totalButtonWidth) * 0.5f);
-
-        // Show loot button if avatar won
-        if (_currentState.AvatarVictory == true)
-        {
-            ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
-            if (ImGui.Button("Collect Loot", new Vector2(buttonWidth, endButtonHeight)))
-            {
-                // Transition to loot modal
-                modalManager.CloseModal("BossBattle");
-                modalManager.OpenModal("Loot");
-            }
-            ImGui.PopStyleColor(3);
-            ImGui.SameLine();
-        }
+        ImGui.SetCursorPosX((ImGui.GetWindowWidth() - buttonWidth) * 0.5f);
 
         if (ImGui.Button("Close", new Vector2(buttonWidth, endButtonHeight)))
         {
@@ -881,6 +961,9 @@ public class BattleModal
         {
             var characterTemplate = viewModel.CurrentWorld.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == character.CharacterRef);
             if (characterTemplate == null) return;
+
+            _battleTriggers.Reset();
+            _battleDialogueTriggers = characterTemplate.BattleDialogue;
 
             var archetypeRef = viewModel.Avatar.ArchetypeRef;
             var archetype = viewModel.CurrentWorld.Gameplay?.AvatarArchetypes?.FirstOrDefault(a => a.RefName == archetypeRef);
@@ -931,6 +1014,9 @@ public class BattleModal
 
                 // Get initial battle state
                 await RefreshBattleStateAsync(viewModel, character);
+
+                // The opening enemy attack may be telegraphed — react with real tell data
+                TryStartReactionFromResult(viewModel, result);
             }
             else
             {
@@ -947,6 +1033,12 @@ public class BattleModal
     {
         if (viewModel.Avatar == null || _battleInstanceId == Guid.Empty)
             return;
+
+        // In-flight guard: ignore a second dispatch (double-click, selection modal
+        // callback racing a button press) until the pending turn completes.
+        if (_isProcessingTurn)
+            return;
+        _isProcessingTurn = true;
 
         try
         {
@@ -968,23 +1060,12 @@ public class BattleModal
                 // Refresh battle state
                 await RefreshBattleStateAsync(viewModel, character);
 
-                // If battle is still ongoing and it's now enemy turn, trigger reaction phase
-                // NOTE: Currently the backend executes enemy turn immediately, so this is UI-only simulation
-                // For full integration, the backend would need to pause before enemy turn
-                if (_currentState != null && !_currentState.HasEnded && _currentState.BattleState == BattleState.EnemyTurn)
+                // The handler either recorded the enemy's response directly, or paused
+                // with a telegraphed attack — in which case the result carries the real
+                // tell (text, window, base damage) for the reaction phase
+                if (_currentState != null && !_currentState.HasEnded)
                 {
-                    // Check if backend provided a tell (from IsAwaitingReaction state)
-                    if (_currentState.IsAwaitingReaction && !string.IsNullOrEmpty(_currentState.PendingTellText))
-                    {
-                        StartReactionPhase(_currentState.PendingTellText, _currentState.PendingReactionWindowMs);
-                    }
-                    else
-                    {
-                        // Generate a default tell for the enemy based on their character
-                        var enemyName = _currentState.EnemyCombatant?.DisplayName ?? "The enemy";
-                        var defaultTell = GetRandomDefaultTell(enemyName);
-                        StartReactionPhase(defaultTell, 5000);  // 5 second default
-                    }
+                    TryStartReactionFromResult(viewModel, result);
                 }
 
                 // Update avatar from result if battle ended
@@ -1002,6 +1083,10 @@ public class BattleModal
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[BattleModal] Error executing turn: {ex.Message}");
+        }
+        finally
+        {
+            _isProcessingTurn = false;
         }
     }
 
@@ -1029,10 +1114,68 @@ public class BattleModal
             {
                 StartReactionPhase(_currentState.PendingTellText, _currentState.PendingReactionWindowMs);
             }
+
+            // Fire any authored battle dialogue triggers against the fresh state
+            CheckBattleDialogueTriggers(viewModel, character);
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"[BattleModal] Error refreshing battle state: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Evaluate the enemy's authored battle dialogue triggers (boss taunts) against
+    /// the current battle state and, if one fires, open the mid-battle dialogue at
+    /// the trigger's tree/node. Runs after every battle-state refresh: battle start
+    /// (TurnNumber triggers), each turn (health thresholds), and battle end
+    /// (OnVictory/OnDefeat).
+    /// </summary>
+    private void CheckBattleDialogueTriggers(SagaMainViewModel viewModel, CharacterViewModel character)
+    {
+        if (_battleDialogueTriggers is not { Length: > 0 }) return;
+        if (_currentState?.AvatarCombatant == null || _currentState.EnemyCombatant == null) return;
+        if (_cachedModalManager == null || _cachedModalManager.ShowDialogue) return;
+
+        // Mid-telegraph is not a talking moment; the post-reaction refresh re-checks
+        if (!_currentState.HasEnded && (_currentState.IsAwaitingReaction || _inReactionPhase)) return;
+
+        var context = new BattleTriggerContext
+        {
+            AvatarHealthPercent = _currentState.AvatarCombatant.HealthPercent,
+            EnemyHealthPercent = _currentState.EnemyCombatant.HealthPercent,
+            TurnNumber = _currentState.TurnNumber,
+            BattleEnded = _currentState.HasEnded,
+            AvatarVictory = _currentState.AvatarVictory == true
+        };
+
+        var fired = _battleTriggers.Evaluate(_battleDialogueTriggers, context);
+        if (fired.Count == 0) return;
+
+        // One dialogue at a time; once-only triggers are auto-consumed by the
+        // evaluator, so a simultaneous second trigger simply waits for a later check.
+        // Skip triggers whose authored tree/node doesn't exist — much generated
+        // content points battle triggers at nodes its trees never define, and
+        // opening those produced an empty dead dialogue modal in every fight.
+        foreach (var trigger in fired)
+        {
+            var tree = viewModel.CurrentWorld != null &&
+                       viewModel.CurrentWorld.DialogueTreesLookup.TryGetValue(trigger.DialogueTreeRef, out var t)
+                ? t
+                : null;
+            var nodeExists = tree != null &&
+                             (string.IsNullOrEmpty(trigger.StartNodeId) ||
+                              (tree.Node?.Any(n => n.NodeId == trigger.StartNodeId) ?? false));
+            if (!nodeExists)
+            {
+                System.Diagnostics.Debug.WriteLine($"[BattleModal] Skipping battle dialogue trigger with missing tree/node: {trigger.DialogueTreeRef} @ {trigger.StartNodeId ?? "start"}");
+                continue;
+            }
+
+            System.Diagnostics.Debug.WriteLine($"[BattleModal] Battle dialogue trigger fired: {trigger.DialogueTreeRef} @ {trigger.StartNodeId ?? "start"}");
+            _cachedModalManager.DialogueStartOverride = (trigger.DialogueTreeRef, trigger.StartNodeId);
+            OpenMidBattleDialogue(viewModel, character);
+            return;
         }
     }
 
@@ -1159,14 +1302,77 @@ public class BattleModal
         _showStanceChange = true;
     }
 
+    /// <summary>
+    /// Applies dialogue-driven battle effects to the running battle: the enemy's
+    /// self-heal, stance/affinity change, or a scripted battle conclusion. Recorded
+    /// server-side as a battle turn so replay and state reconstruction honor them.
+    /// </summary>
+    private async Task ApplyDialogueEffectsAsync(SagaMainViewModel viewModel, CharacterViewModel character,
+        List<Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events.DialogueSystemEvent> effects)
+    {
+        if (viewModel.Avatar == null || _battleInstanceId == Guid.Empty)
+            return;
+
+        var healAmount = 0f;
+        string? stanceRef = null;
+        string? affinityRef = null;
+        string? endResult = null;
+
+        foreach (var effect in effects)
+        {
+            switch (effect)
+            {
+                case Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events.HealSelfEvent heal:
+                    // Content authors percent (e.g. Amount="50"); battle stats are 0-1
+                    healAmount += heal.Amount / 100f;
+                    break;
+                case Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events.ChangeStanceEvent stance:
+                    stanceRef = stance.StanceRef;
+                    break;
+                case Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events.ChangeAffinityEvent affinity:
+                    affinityRef = affinity.AffinityRef;
+                    break;
+                case Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events.EndBattleEvent end:
+                    endResult = end.Result;
+                    break;
+            }
+        }
+
+        try
+        {
+            var command = new ApplyBattleDialogueEffectsCommand
+            {
+                AvatarId = viewModel.Avatar.AvatarId,
+                SagaArcRef = character.SagaRef,
+                BattleInstanceId = _battleInstanceId,
+                Avatar = viewModel.Avatar,
+                EnemyHealAmount = healAmount,
+                EnemyStanceRef = stanceRef,
+                EnemyAffinityRef = affinityRef,
+                EndBattleResult = endResult
+            };
+
+            var result = await viewModel.Mediator.Send(command);
+            System.Diagnostics.Debug.WriteLine($"[BattleModal] Dialogue effects applied: heal={healAmount}, stance={stanceRef}, affinity={affinityRef}, end={endResult} (success={result.Successful})");
+
+            await RefreshBattleStateAsync(viewModel, character);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[BattleModal] Error applying dialogue effects: {ex.Message}");
+        }
+    }
+
     private void OpenMidBattleDialogue(SagaMainViewModel viewModel, CharacterViewModel character)
     {
         if (_cachedModalManager == null) return;
 
         // Open dialogue modal while keeping battle active
-        // Battle stays in background, dialogue appears on top
-        _cachedModalManager.OpenModal("Dialogue");
+        // Battle stays in background, dialogue appears on top.
+        // Must open with a CharacterContext — the legacy OpenModal() path pushes no
+        // context, which the DialogueModalAdapter rejects (closes same-frame).
         _cachedModalManager.SelectedCharacter = character;
+        _cachedModalManager.OpenRegisteredModal("Dialogue", new CharacterContext(viewModel, character));
 
         System.Diagnostics.Debug.WriteLine($"[BattleModal] Opening mid-battle dialogue with {character.DisplayName}");
     }

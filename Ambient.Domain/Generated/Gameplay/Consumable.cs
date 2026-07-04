@@ -22,7 +22,7 @@ namespace Ambient.Domain {
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class Consumable : StackableAcquirable {
         
-        private Attributes effectsField;
+        private EffectAttributes effectsField;
         
         private float durabilityLossField;
         
@@ -45,7 +45,7 @@ namespace Ambient.Domain {
         }
         
         /// <remarks/>
-        public Attributes Effects {
+        public EffectAttributes Effects {
             get {
                 return this.effectsField;
             }

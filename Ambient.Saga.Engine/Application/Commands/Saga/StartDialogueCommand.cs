@@ -17,4 +17,17 @@ public record StartDialogueCommand : IRequest<SagaCommandResult>
     public required string SagaArcRef { get; init; }
     public required Guid CharacterInstanceId { get; init; }
     public required AvatarBase Avatar { get; init; }
+
+    /// <summary>
+    /// Optional: open a specific tree instead of the character's Interactable
+    /// default — used by battle dialogue triggers (boss taunts reference their
+    /// own battle trees).
+    /// </summary>
+    public string? DialogueTreeRefOverride { get; init; }
+
+    /// <summary>
+    /// Optional: start the conversation at a specific node of that tree —
+    /// battle triggers author per-moment entry points (battle_enraged, ...).
+    /// </summary>
+    public string? StartNodeIdOverride { get; init; }
 }

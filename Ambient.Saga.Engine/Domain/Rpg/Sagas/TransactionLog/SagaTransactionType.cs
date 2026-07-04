@@ -68,7 +68,10 @@ public enum SagaTransactionType
     AvatarTeleported,        // Avatar teleported to new location (costs currency)
 
     // Loot and rewards
-    LootAwarded,
+    LootAwarded,             // RETIRED: corpse looting removed 2026-07-04 (superseded by the
+                             // MerchantTrade family). No producer remains; the member stays so
+                             // enum value numbering is preserved and historical transactions
+                             // still parse (stateless in the replay fold).
     EffectApplied,
     QuestTokenAwarded,
 

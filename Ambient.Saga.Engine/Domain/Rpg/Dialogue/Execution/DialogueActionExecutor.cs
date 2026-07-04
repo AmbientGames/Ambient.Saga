@@ -154,7 +154,29 @@ public class DialogueActionExecutor
             // Currency - IDEMPOTENT (only transfer on first visit)
             case DialogueActionType.TransferCurrency:
                 if (shouldAwardRewards)
+                {
                     _stateProvider.TransferCurrency(action.Amount);
+
+                    // Record the credit movement — CurrencyCollected quest objectives
+                    // read CurrencyChanged transactions
+                    if (_sagaContext != null && action.Amount != 0)
+                    {
+                        _staged.Add(new SagaTransaction
+                        {
+                            TransactionId = Guid.NewGuid(),
+                            Type = SagaTransactionType.CurrencyChanged,
+                            AvatarId = _sagaContext.AvatarId,
+                            Status = TransactionStatus.Pending,
+                            LocalTimestamp = DateTime.UtcNow,
+                            Data = new Dictionary<string, string>
+                            {
+                                [TransactionDataKeys.Amount] = action.Amount.ToString(),
+                                [TransactionDataKeys.Reason] = "Dialogue",
+                                [TransactionDataKeys.CharacterRef] = characterRef
+                            }
+                        });
+                    }
+                }
                 break;
 
             // Achievements - IDEMPOTENT (only unlock on first visit)
@@ -416,6 +438,23 @@ public class DialogueActionExecutor
                         );
                         _staged.Add(transaction);
                     }
+
+                    // Spillover to related factions (allies gain, enemies lose) —
+                    // each gets its own ReputationChanged transaction so replay
+                    // and the progress projection see the full picture
+                    foreach (var (spillFactionRef, spillAmount) in _stateProvider.GetReputationSpillover(action.FactionRef, action.Amount))
+                    {
+                        _stateProvider.ChangeReputation(spillFactionRef, spillAmount);
+
+                        if (_sagaContext != null)
+                        {
+                            _staged.Add(DialogueTransactionHelper.CreateReputationChangedTransaction(
+                                _sagaContext.AvatarId,
+                                spillFactionRef,
+                                spillAmount,
+                                _sagaContext.SagaInstance.InstanceId));
+                        }
+                    }
                 }
                 break;
 
@@ -507,13 +546,15 @@ public class DialogueActionExecutor
             return;
 
         // Check idempotency ONCE for all actions in this node.
-        // The provider only sees COMMITTED state (SagaState is derived from committed transactions),
-        // so a re-entry that happens before the first visit is persisted would slip through and
-        // double-award. Also scan the instance's pending transactions to close that window.
+        // Node rewards are first-visit-only: the committed DialogueNodeVisited history
+        // is the ledger (closing the farming loop where closing and re-opening a
+        // conversation re-paid currency/consumables on every visit), and the pending
+        // scan closes the window before the first visit is committed.
         // (Our own in-progress staging lives in _staged, not on the instance, so it is not seen here.)
         var shouldAwardRewards =
             _stateProvider.ShouldAwardNodeRewards(characterRef, nodeId)
-            && !HasPendingNodeVisit(characterRef, nodeId);
+            && !HasPendingNodeVisit(characterRef, nodeId)
+            && !HasCommittedNodeVisit(dialogueTreeRef, nodeId, characterRef);
 
         // If any action throws, drop everything staged during this call so the SagaInstance
         // is not left with a partial reward set paired with a visit record that would block retry.
@@ -529,6 +570,26 @@ public class DialogueActionExecutor
             _staged.Clear();
             throw;
         }
+    }
+
+    /// <summary>
+    /// True if this node's rewards were already granted in a previous conversation:
+    /// a committed DialogueNodeVisited transaction for the same character/tree/node
+    /// exists in the instance log. This is the first-visit-only reward ledger.
+    /// </summary>
+    private bool HasCommittedNodeVisit(string dialogueTreeRef, string nodeId, string characterRef)
+    {
+        if (_sagaContext == null)
+            return false;
+
+        var avatarId = _sagaContext.AvatarId;
+        return _sagaContext.SagaInstance.Transactions.Any(tx =>
+            tx.Type == SagaTransactionType.DialogueNodeVisited &&
+            tx.Status == TransactionStatus.Committed &&
+            string.Equals(tx.AvatarId, avatarId, StringComparison.Ordinal) &&
+            string.Equals(tx.GetData<string>(TransactionDataKeys.CharacterRef), characterRef, StringComparison.Ordinal) &&
+            string.Equals(tx.GetData<string>(TransactionDataKeys.DialogueTreeRef), dialogueTreeRef, StringComparison.Ordinal) &&
+            string.Equals(tx.GetData<string>(TransactionDataKeys.DialogueNodeId), nodeId, StringComparison.Ordinal));
     }
 
     private bool HasPendingNodeVisit(string characterRef, string nodeId)

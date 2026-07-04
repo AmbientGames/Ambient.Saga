@@ -109,18 +109,25 @@ public class BattleTriggerEvaluator
     /// </summary>
     private bool EvaluateTrigger(CharacterTrigger trigger, BattleTriggerContext context)
     {
+        // Shipped content authors health thresholds as normalized fractions
+        // (Value="0.75" = 75%) while the context carries percentages — values in
+        // (0,1] are read as fractions, larger values as percents
+        var healthThreshold = trigger.Value > 0 && trigger.Value <= 1.0f
+            ? trigger.Value * 100f
+            : trigger.Value;
+
         return trigger.Condition switch
         {
             // Enemy (character) health threshold checks
             BattleTriggerCondition.HealthBelow =>
-                context.EnemyHealthPercent < trigger.Value,
+                context.EnemyHealthPercent < healthThreshold,
 
             BattleTriggerCondition.HealthAbove =>
-                context.EnemyHealthPercent > trigger.Value,
+                context.EnemyHealthPercent > healthThreshold,
 
             // Avatar health threshold check
             BattleTriggerCondition.AvatarHealthBelow =>
-                context.AvatarHealthPercent < trigger.Value,
+                context.AvatarHealthPercent < healthThreshold,
 
             // Turn-based trigger (fires when turn number is reached)
             BattleTriggerCondition.TurnNumber =>
@@ -133,12 +140,13 @@ public class BattleTriggerEvaluator
             BattleTriggerCondition.AffinityChanged =>
                 context.AffinityJustChanged,
 
-            // Battle outcome triggers - only fire at end of battle
+            // Battle outcome triggers - only fire at end of battle.
+            // Fleeing is neither: a fled battle fires no outcome dialogue.
             BattleTriggerCondition.OnVictory =>
                 context.BattleEnded && context.AvatarVictory,
 
             BattleTriggerCondition.OnDefeat =>
-                context.BattleEnded && !context.AvatarVictory,
+                context.BattleEnded && !context.AvatarVictory && !context.AvatarFled,
 
             _ => false
         };
@@ -187,6 +195,12 @@ public class BattleTriggerContext
     public bool AvatarVictory { get; init; }
 
     /// <summary>
+    /// Whether the avatar fled (only valid if BattleEnded is true).
+    /// A fled battle is neither a victory nor a defeat.
+    /// </summary>
+    public bool AvatarFled { get; init; }
+
+    /// <summary>
     /// Create context from current battle engine state.
     /// </summary>
     public static BattleTriggerContext FromBattleEngine(
@@ -207,7 +221,8 @@ public class BattleTriggerContext
             BattleEnded = engine.State == BattleState.Victory ||
                          engine.State == BattleState.Defeat ||
                          engine.State == BattleState.Fled,
-            AvatarVictory = engine.State == BattleState.Victory
+            AvatarVictory = engine.State == BattleState.Victory,
+            AvatarFled = engine.State == BattleState.Fled
         };
     }
 }

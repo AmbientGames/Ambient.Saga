@@ -64,11 +64,26 @@ internal static class QuestInstanceLocator
         return state != null && state.ActiveQuests.ContainsKey(questRef) ? instance : null;
     }
 
+    /// <summary>
+    /// Strips the dev-spawn suffix ("RealSagaRef__DEV__uniqueid" → "RealSagaRef") for
+    /// template lookups. Instance operations keep the full ref.
+    /// </summary>
+    internal static string StripDevSuffix(string sagaRef)
+    {
+        const string devSuffix = "__DEV__";
+        return sagaRef.Contains(devSuffix)
+            ? sagaRef.Substring(0, sagaRef.IndexOf(devSuffix, StringComparison.Ordinal))
+            : sagaRef;
+    }
+
     private static SagaState? TryReplayState(SagaInstance instance, string sagaRef, IWorld world)
     {
-        if (!world.SagaArcLookup.TryGetValue(sagaRef, out var template))
+        // Dev saga instances ("RealSagaRef__DEV__uniqueid") replay against the real template
+        var sagaRefForLookup = StripDevSuffix(sagaRef);
+
+        if (!world.SagaArcLookup.TryGetValue(sagaRefForLookup, out var template))
             return null;
-        if (!world.SagaTriggersLookup.TryGetValue(sagaRef, out var triggers))
+        if (!world.SagaTriggersLookup.TryGetValue(sagaRefForLookup, out var triggers))
             return null;
 
         var stateMachine = new SagaStateMachine(template, triggers, world);

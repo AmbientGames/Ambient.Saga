@@ -73,7 +73,7 @@ public class InventoryCommandTests : IDisposable
             RefName = "IronSword",
             DisplayName = "Iron Sword",
             SlotRef = "MainHand",
-            Effects = new Attributes { Strength = 0.1f }
+            Effects = new EffectAttributes { Strength = 0.1f }
         };
 
         var steelShield = new Equipment
@@ -81,7 +81,7 @@ public class InventoryCommandTests : IDisposable
             RefName = "SteelShield",
             DisplayName = "Steel Shield",
             SlotRef = "OffHand",
-            Effects = new Attributes { Defense = 0.15f }
+            Effects = new EffectAttributes { Defense = 0.15f }
         };
 
         var greatAxe = new Equipment
@@ -89,7 +89,7 @@ public class InventoryCommandTests : IDisposable
             RefName = "GreatAxe",
             DisplayName = "Great Axe",
             SlotRef = "BothHands",
-            Effects = new Attributes { Strength = 0.25f }
+            Effects = new EffectAttributes { Strength = 0.25f }
         };
 
         var ironHelmet = new Equipment
@@ -97,7 +97,7 @@ public class InventoryCommandTests : IDisposable
             RefName = "IronHelmet",
             DisplayName = "Iron Helmet",
             SlotRef = "Head",
-            Effects = new Attributes { Defense = 0.05f }
+            Effects = new EffectAttributes { Defense = 0.05f }
         };
 
         // Consumables
@@ -105,28 +105,28 @@ public class InventoryCommandTests : IDisposable
         {
             RefName = "HealthPotion",
             DisplayName = "Health Potion",
-            Effects = new Attributes { Health = 0.3f }
+            Effects = new EffectAttributes { Health = 0.3f }
         };
 
         var staminaPotion = new Consumable
         {
             RefName = "StaminaPotion",
             DisplayName = "Stamina Potion",
-            Effects = new Attributes { Stamina = 0.25f }
+            Effects = new EffectAttributes { Stamina = 0.25f }
         };
 
         var manaPotion = new Consumable
         {
             RefName = "ManaPotion",
             DisplayName = "Mana Potion",
-            Effects = new Attributes { Mana = 0.4f }
+            Effects = new EffectAttributes { Mana = 0.4f }
         };
 
         var fullRestorePotion = new Consumable
         {
             RefName = "FullRestorePotion",
             DisplayName = "Full Restore Potion",
-            Effects = new Attributes { Health = 1.0f, Stamina = 1.0f, Mana = 1.0f }
+            Effects = new EffectAttributes { Health = 1.0f, Stamina = 1.0f, Mana = 1.0f }
         };
 
         // Loadout slots

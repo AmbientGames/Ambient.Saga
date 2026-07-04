@@ -5,6 +5,7 @@ using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
+using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Domain;
 
@@ -54,9 +55,19 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             // Get Saga instance
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
 
-            // Check if battle already started for this character
+            // Check if an ACTIVE battle already exists for this character. Battles that
+            // already have a BattleEnded (victory, defeat, or fled) must not be returned:
+            // re-engaging after fleeing used to hand back the ended battle id, making the
+            // enemy permanently unfightable ("Battle has already ended" on every turn).
+            var endedBattleIds = instance.Transactions
+                .Where(t => t.Type == SagaTransactionType.BattleEnded &&
+                            t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out _))
+                .Select(t => t.Data[TransactionDataKeys.BattleTransactionId])
+                .ToHashSet();
+
             var existingBattle = instance.Transactions
-                .Where(t => t.Type == SagaTransactionType.BattleStarted)
+                .Where(t => t.Type == SagaTransactionType.BattleStarted &&
+                            !endedBattleIds.Contains(t.TransactionId.ToString()))
                 .FirstOrDefault(t =>
                     t.Data.TryGetValue(TransactionDataKeys.EnemyCombatantId, out var enemyId) &&
                     enemyId == command.EnemyCharacterInstanceId.ToString());
@@ -68,6 +79,18 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                     instance.InstanceId,
                     new List<Guid> { existingBattle.TransactionId },
                     existingBattle.SequenceNumber);
+            }
+
+            // The enemy keeps damage taken in previous battles (e.g. the player fled and
+            // came back): fold in its health at the end of its most recent ended battle,
+            // read from the absolute per-turn snapshots. The client-supplied combatant
+            // is typically built fresh from the template at full health.
+            var previousHealth = GetEnemyHealthFromLastEndedBattle(instance, command.EnemyCharacterInstanceId);
+            if (previousHealth.HasValue && previousHealth.Value < command.EnemyCombatant.Health)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[StartBattle] Carrying enemy damage from previous battle: health {command.EnemyCombatant.Health:F3} -> {previousHealth.Value:F3}");
+                command.EnemyCombatant.Health = previousHealth.Value;
             }
 
             // Create battle engine with deterministic seed and companions
@@ -98,7 +121,8 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                 command.AvatarCombatant,
                 command.EnemyCombatant,
                 command.AvatarAffinityRefs,
-                instance.InstanceId);
+                instance.InstanceId,
+                companions: command.CompanionCombatants);
 
             instance.AddTransaction(battleStartedTransaction);
 
@@ -113,7 +137,9 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
 
             if (battleEngine.State == BattleState.AwaitingReaction && battleEngine.PendingAttack != null)
             {
-                // Enemy's opening attack produced a tell — reaction phase active
+                // Enemy's opening attack produced a tell — reaction phase active.
+                // Persist the tell as a turn transaction so the pending attack survives
+                // command boundaries and save/reload (see ExecuteBattleTurnHandler).
                 var pending = battleEngine.PendingAttack;
                 resultData[TransactionDataKeys.AwaitingReaction] = true;
                 resultData[TransactionDataKeys.TellRefName] = pending.Tell.RefName;
@@ -121,6 +147,32 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                 resultData[TransactionDataKeys.ReactionWindowMs] = pending.Tell.ReactionWindowMs;
                 resultData[TransactionDataKeys.BaseDamage] = pending.BaseDamage;
                 resultData[TransactionDataKeys.OptimalDefense] = pending.Tell.OptimalDefense.ToString();
+
+                var tellTx = BattleTransactionHelper.CreateBattleTurnExecutedTransaction(
+                    command.AvatarId.ToString(),
+                    battleStartedTransaction.TransactionId,
+                    1,  // Turn 1
+                    battleEngine.GetEnemy().DisplayName,
+                    false,  // Enemy's turn
+                    ActionType.Attack,
+                    null,
+                    0f,     // No damage yet — resolves via SubmitReaction
+                    0f,
+                    battleEngine.GetAvatar().DisplayName,
+                    battleEngine.GetAvatar().Health,
+                    battleEngine.GetEnemy().Stamina,
+                    battleEngine.GetEnemy(),
+                    _world,
+                    instance.InstanceId,
+                    avatarState: battleEngine.GetAvatar(),
+                    enemyState: battleEngine.GetEnemy(),
+                    companionStates: battleEngine.GetCompanions());
+                tellTx.Data[TransactionDataKeys.ActionType] = "Tell";
+                tellTx.Data[TransactionDataKeys.TellRefName] = pending.Tell.RefName;
+                tellTx.Data[TransactionDataKeys.BaseDamage] = BattleTransactionHelper.FormatFloat(pending.BaseDamage);
+                tellTx.Data[TransactionDataKeys.ReactionWindowMs] = pending.Tell.ReactionWindowMs.ToString();
+                instance.AddTransaction(tellTx);
+                transactions.Add(tellTx);
 
                 System.Diagnostics.Debug.WriteLine($"[StartBattle] Enemy opened with tell: {pending.Tell.TellText}");
             }
@@ -146,7 +198,10 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
                         enemyAction.ActorEnergyAfter,
                         enemyAfterAction,
                         _world,
-                        instance.InstanceId);
+                        instance.InstanceId,
+                        avatarState: battleEngine.GetAvatar(),
+                        enemyState: battleEngine.GetEnemy(),
+                        companionStates: battleEngine.GetCompanions());
 
                     instance.AddTransaction(enemyTurnTransaction);
                     transactions.Add(enemyTurnTransaction);
@@ -182,5 +237,43 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             System.Diagnostics.Debug.WriteLine($"[StartBattle] ERROR: {ex.Message}");
             return SagaCommandResult.Failure(Guid.Empty, $"Error starting battle: {ex.Message}");
         }
+    }
+
+    /// <summary>
+    /// The enemy's health at the end of its most recent ended battle against this avatar,
+    /// or null when it has never been fought (or the battle predates the absolute
+    /// per-turn health snapshots).
+    /// </summary>
+    private static float? GetEnemyHealthFromLastEndedBattle(SagaInstance instance, Guid enemyCharacterInstanceId)
+    {
+        var lastEndedBattleId = instance.Transactions
+            .Where(t => t.Type == SagaTransactionType.BattleStarted &&
+                        t.Data.TryGetValue(TransactionDataKeys.EnemyCombatantId, out var enemyId) &&
+                        enemyId == enemyCharacterInstanceId.ToString())
+            .Where(started => instance.Transactions.Any(ended =>
+                        ended.Type == SagaTransactionType.BattleEnded &&
+                        ended.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var endedBattleId) &&
+                        endedBattleId == started.TransactionId.ToString()))
+            .OrderBy(t => t.SequenceNumber)
+            .LastOrDefault()?.TransactionId;
+
+        if (lastEndedBattleId == null)
+            return null;
+
+        var lastTurnWithSnapshot = instance.Transactions
+            .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
+                        t.Data.TryGetValue(TransactionDataKeys.BattleTransactionId, out var battleId) &&
+                        battleId == lastEndedBattleId.ToString() &&
+                        t.Data.ContainsKey(TransactionDataKeys.EnemyHealthAfterTurn))
+            .OrderBy(t => t.SequenceNumber)
+            .LastOrDefault();
+
+        if (lastTurnWithSnapshot == null)
+            return null;
+
+        return BattleTransactionHelper.TryParseFloat(
+            lastTurnWithSnapshot.Data[TransactionDataKeys.EnemyHealthAfterTurn], out var health)
+            ? health
+            : null;
     }
 }

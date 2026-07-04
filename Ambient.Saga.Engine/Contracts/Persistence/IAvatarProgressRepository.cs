@@ -34,4 +34,11 @@ public interface IAvatarProgressRepository
     // ===== CHARACTER TRAITS =====
 
     int? GetCharacterTraitValue(Guid avatarId, string characterRef, string traitType);
+
+    /// <summary>
+    /// Highest value of a trait across all characters for this avatar, or null if never assigned.
+    /// Skill-style traits (e.g. BargainSkill) are earned at one NPC and gated at another, so
+    /// dialogue conditions read the avatar's best earned value regardless of source character.
+    /// </summary>
+    int? GetMaxTraitValue(Guid avatarId, string traitType);
 }

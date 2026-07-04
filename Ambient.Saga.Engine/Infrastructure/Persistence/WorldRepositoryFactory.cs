@@ -84,8 +84,10 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
             discoveryRepository,
             world);
 
-        // Create Steam achievement service (use owned database if we created one, otherwise null)
-        var steamAchievementService = new SteamAchievementService(ownedDatabase, isSteamAvailable);
+        // Create Steam achievement service against the database actually in use
+        // (shared or owned) — passing only the owned one left it with a null
+        // database on the shared path, NRE'ing on the first unlock.
+        var steamAchievementService = new SteamAchievementService(database, isSteamAvailable);
 
         return new WorldRepositories
         {

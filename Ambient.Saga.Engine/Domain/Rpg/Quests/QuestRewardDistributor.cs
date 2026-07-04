@@ -2,13 +2,21 @@
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Domain.Extensions;
+using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Reputation;
+using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Domain.Rpg.Quests;
 
 /// <summary>
-/// Handles distribution of quest rewards to avatar inventory and stats.
-/// Supports all reward types: Currency, Equipment, Consumable, QuestToken, Experience, Reputation.
+/// Handles distribution of quest rewards.
+/// Avatar-state rewards (Currency, Experience, Equipment, Consumable, Achievement) are
+/// applied directly to the avatar via <see cref="DistributeRewards"/>. Reputation rewards
+/// are transaction-driven (replayed saga state + cross-arc projection, exactly like the
+/// dialogue ChangeReputation action): callers collect them via
+/// <see cref="CollectRewardTransactions"/> and commit them atomically with the
+/// transaction that caused the reward (QuestCompleted / QuestStageAdvanced /
+/// QuestObjectiveCompleted).
 /// </summary>
 public static class QuestRewardDistributor
 {
@@ -36,10 +44,12 @@ public static class QuestRewardDistributor
             avatar.Stats.Credits += reward.Currency.Amount;
         }
 
-        // Award Experience
+        // Award Experience (levels derive from accumulated XP; never demote)
         if (reward.Experience != null)
         {
             avatar.Stats.Experience += reward.Experience.Amount;
+            avatar.Stats.Level = Math.Max(avatar.Stats.Level,
+                Progression.LevelCurve.GetLevelForExperience(avatar.Stats.Experience));
         }
 
         // Award Equipment
@@ -66,20 +76,28 @@ public static class QuestRewardDistributor
             }
         }
 
-        // Reputation rewards - TODO: Implement faction system
-        // For now, log that reputation rewards are not yet supported
-        if (reward.Reputation != null && reward.Reputation.Length > 0)
-        {
-            // NOTE: Reputation system not yet implemented
-            // Will need FactionReputation tracking in avatar capabilities
-        }
+        // Reputation rewards carry no avatar state — reputation only exists as
+        // ReputationChanged transactions (replayed saga state + cross-arc projection).
+        // They are handled by CollectRewardTransactions; the quest command handlers
+        // commit those transactions together with the reward's cause.
 
-        // Achievement rewards - TODO: Achievement unlocking
-        // Achievements are auto-unlocked via transaction log, no manual award needed
+        // Award Achievements — the avatar's Achievements list is the single unlock
+        // ledger; mirrors the dialogue UnlockAchievement action path exactly
         if (reward.Achievement != null && reward.Achievement.Length > 0)
         {
-            // NOTE: Achievements are event-sourced from transaction log
-            // No direct avatar state change needed here
+            foreach (var achievementReward in reward.Achievement)
+            {
+                if (string.IsNullOrEmpty(achievementReward.AchievementRef))
+                    continue;
+
+                avatar.Achievements ??= Array.Empty<AchievementEntry>();
+                if (avatar.Achievements.Any(a => a.AchievementRef == achievementReward.AchievementRef))
+                    continue; // already unlocked — idempotent
+
+                var list = avatar.Achievements.ToList();
+                list.Add(new AchievementEntry { AchievementRef = achievementReward.AchievementRef });
+                avatar.Achievements = list.ToArray();
+            }
         }
     }
 
@@ -105,27 +123,105 @@ public static class QuestRewardDistributor
 
         foreach (var reward in rewards)
         {
-            // Check if reward matches condition
-            if (reward.Condition != condition)
+            if (!MatchesCondition(reward, condition, branchRef, objectiveRef))
                 continue;
-
-            // For OnBranch rewards, check BranchRef matches
-            if (condition == QuestRewardCondition.OnBranch)
-            {
-                if (string.IsNullOrEmpty(branchRef) || reward.BranchRef != branchRef)
-                    continue;
-            }
-
-            // For OnObjective rewards, check ObjectiveRef matches
-            if (condition == QuestRewardCondition.OnObjective)
-            {
-                if (string.IsNullOrEmpty(objectiveRef) || reward.ObjectiveRef != objectiveRef)
-                    continue;
-            }
 
             // Distribute the reward
             DistributeReward(reward, avatar, world);
         }
+    }
+
+    /// <summary>
+    /// Collects the saga transactions produced by rewards matching the given condition.
+    /// Currently this is Reputation rewards: each yields a ReputationChanged transaction
+    /// (plus one per spillover-affected faction), the same shape the dialogue
+    /// ChangeReputation action writes. Callers commit these atomically with the
+    /// transaction that caused the reward, so replay and the cross-arc progress
+    /// projection both see them.
+    /// </summary>
+    /// <param name="rewards">Array of quest rewards to filter</param>
+    /// <param name="condition">The condition to match (OnSuccess, OnFailure, OnBranch, OnObjective)</param>
+    /// <param name="avatarId">Avatar receiving the rewards</param>
+    /// <param name="sagaInstanceId">Saga instance whose log records the reward</param>
+    /// <param name="world">World containing faction definitions (for spillover)</param>
+    /// <param name="branchRef">Optional branch reference for OnBranch rewards</param>
+    /// <param name="objectiveRef">Optional objective reference for OnObjective rewards</param>
+    public static List<SagaTransaction> CollectRewardTransactions(
+        QuestReward[]? rewards,
+        QuestRewardCondition condition,
+        string avatarId,
+        Guid sagaInstanceId,
+        IWorld world,
+        string? branchRef = null,
+        string? objectiveRef = null)
+    {
+        var transactions = new List<SagaTransaction>();
+        if (rewards == null || rewards.Length == 0)
+            return transactions;
+
+        foreach (var reward in rewards)
+        {
+            if (!MatchesCondition(reward, condition, branchRef, objectiveRef))
+                continue;
+
+            if (reward.Reputation == null || reward.Reputation.Length == 0)
+                continue;
+
+            foreach (var reputationReward in reward.Reputation)
+            {
+                if (string.IsNullOrEmpty(reputationReward.FactionRef) || reputationReward.Amount == 0)
+                    continue;
+
+                transactions.Add(DialogueTransactionHelper.CreateReputationChangedTransaction(
+                    avatarId,
+                    reputationReward.FactionRef,
+                    reputationReward.Amount,
+                    sagaInstanceId));
+
+                // Spillover to related factions (allies gain, enemies lose) — each gets
+                // its own ReputationChanged transaction, mirroring the dialogue path
+                foreach (var (spillFactionRef, spillAmount) in ReputationManager.CalculateSpilloverForAll(
+                    world.FactionsLookup, reputationReward.FactionRef, reputationReward.Amount))
+                {
+                    transactions.Add(DialogueTransactionHelper.CreateReputationChangedTransaction(
+                        avatarId,
+                        spillFactionRef,
+                        spillAmount,
+                        sagaInstanceId));
+                }
+            }
+        }
+
+        return transactions;
+    }
+
+    /// <summary>
+    /// Checks whether a reward applies for the given condition (and branch/objective scope).
+    /// </summary>
+    private static bool MatchesCondition(
+        QuestReward reward,
+        QuestRewardCondition condition,
+        string? branchRef,
+        string? objectiveRef)
+    {
+        if (reward.Condition != condition)
+            return false;
+
+        // For OnBranch rewards, check BranchRef matches
+        if (condition == QuestRewardCondition.OnBranch)
+        {
+            if (string.IsNullOrEmpty(branchRef) || reward.BranchRef != branchRef)
+                return false;
+        }
+
+        // For OnObjective rewards, check ObjectiveRef matches
+        if (condition == QuestRewardCondition.OnObjective)
+        {
+            if (string.IsNullOrEmpty(objectiveRef) || reward.ObjectiveRef != objectiveRef)
+                return false;
+        }
+
+        return true;
     }
 
     /// <summary>

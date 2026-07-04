@@ -36,8 +36,11 @@ public static class ReputationManager
                 return level;
         }
 
-        // If value is above all thresholds, return Exalted
-        return ReputationLevel.Exalted;
+        // Outside every range: below the Hated floor is still Hated
+        // (values under -42000 used to fall through to Exalted), above is Exalted
+        return reputationValue < ReputationThresholds[ReputationLevel.Hated].Min
+            ? ReputationLevel.Hated
+            : ReputationLevel.Exalted;
     }
 
     /// <summary>
@@ -78,6 +81,37 @@ public static class ReputationManager
             FactionRelationshipRelationshipType.Rival => 0,  // Rivals don't affect each other
             _ => 0
         };
+    }
+
+    /// <summary>
+    /// Calculates spillover amounts for every related faction (allies gain, enemies lose).
+    /// Returns one entry per affected faction; the source faction itself is excluded.
+    /// Shared by the dialogue ChangeReputation path and quest Reputation rewards so
+    /// both emit identical spillover transactions.
+    /// </summary>
+    /// <param name="allFactions">All factions in the world, keyed by RefName</param>
+    /// <param name="factionRef">Faction gaining reputation</param>
+    /// <param name="amount">Amount of reputation gained with the source faction</param>
+    public static IReadOnlyList<(string FactionRef, int Amount)> CalculateSpilloverForAll(
+        Dictionary<string, Faction> allFactions,
+        string factionRef,
+        int amount)
+    {
+        if (!allFactions.TryGetValue(factionRef, out var sourceFaction))
+            return Array.Empty<(string, int)>();
+
+        var spillover = new List<(string, int)>();
+        foreach (var (otherRef, _) in allFactions)
+        {
+            if (otherRef == factionRef)
+                continue;
+
+            var spillAmount = CalculateSpillover(sourceFaction, otherRef, amount);
+            if (spillAmount != 0)
+                spillover.Add((otherRef, spillAmount));
+        }
+
+        return spillover;
     }
 
     /// <summary>

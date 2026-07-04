@@ -51,8 +51,11 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         });
 
         services.AddSingleton(_world);
-        services.AddSingleton<ISagaInstanceRepository>(new SagaInstanceRepository(_database));
-        services.AddSingleton<IAvatarProgressRepository>(new AvatarProgressRepository(_database));
+        var sagaInstanceRepo = new SagaInstanceRepository(_database);
+        var avatarProgressRepo = new AvatarProgressRepository(_database);
+        sagaInstanceRepo.SetAvatarProgressRepository(avatarProgressRepo);
+        services.AddSingleton<ISagaInstanceRepository>(sagaInstanceRepo);
+        services.AddSingleton<IAvatarProgressRepository>(avatarProgressRepo);
         services.AddSingleton<ISagaReadModelRepository, InMemorySagaReadModelRepository>();
         services.AddSingleton<IGameAvatarRepository, FakeAvatarRepository>();
         services.AddSingleton<Func<IGameAvatarRepository>>(sp => () => sp.GetRequiredService<IGameAvatarRepository>());
@@ -352,6 +355,104 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
             }
         };
 
+        // Quest 6: Quest with a Reputation reward (recorded as a ReputationChanged
+        // transaction on the saga instance, like the dialogue ChangeReputation action)
+        var guildErrand = new Quest
+        {
+            RefName = "GUILD_ERRAND",
+            DisplayName = "An Errand for the Guild",
+            Description = "Deliver supplies for the merchant guild",
+            Stages = new QuestStages
+            {
+                StartStage = "DELIVER",
+                Stage = new[]
+                {
+                    new QuestStage
+                    {
+                        RefName = "DELIVER",
+                        DisplayName = "Deliver the Supplies",
+                        Objectives = new QuestStageObjectives
+                        {
+                            Objective = new[]
+                            {
+                                new QuestObjective
+                                {
+                                    RefName = "COLLECT_CRATE",
+                                    Type = QuestObjectiveType.ItemCollected,
+                                    ItemRef = "SUPPLY_CRATE",
+                                    Threshold = 1,
+                                    DisplayName = "Collect the supply crate"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            Rewards = new[]
+            {
+                new QuestReward
+                {
+                    Condition = QuestRewardCondition.OnSuccess,
+                    Reputation = new[]
+                    {
+                        new QuestRewardReputation { FactionRef = "MERCHANT_GUILD", Amount = 250 }
+                    }
+                }
+            }
+        };
+
+        // Quest 7: Quest with an Achievement reward (unlocked on the avatar's
+        // Achievements ledger, like the dialogue UnlockAchievement action)
+        var proveWorth = new Quest
+        {
+            RefName = "PROVE_WORTH",
+            DisplayName = "Prove Your Worth",
+            Description = "Earn the guild's trust",
+            Stages = new QuestStages
+            {
+                StartStage = "TRIAL",
+                Stage = new[]
+                {
+                    new QuestStage
+                    {
+                        RefName = "TRIAL",
+                        DisplayName = "Complete the Trial",
+                        Objectives = new QuestStageObjectives
+                        {
+                            Objective = new[]
+                            {
+                                new QuestObjective
+                                {
+                                    RefName = "COLLECT_SEAL",
+                                    Type = QuestObjectiveType.ItemCollected,
+                                    ItemRef = "GUILD_SEAL",
+                                    Threshold = 1,
+                                    DisplayName = "Collect the guild seal"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            Rewards = new[]
+            {
+                new QuestReward
+                {
+                    Condition = QuestRewardCondition.OnSuccess,
+                    Achievement = new[]
+                    {
+                        new QuestRewardAchievement { AchievementRef = "ACH_GUILD_FRIEND" }
+                    }
+                }
+            }
+        };
+
+        var merchantGuild = new Faction
+        {
+            RefName = "MERCHANT_GUILD",
+            DisplayName = "Merchant Guild"
+        };
+
         var sagaArc = new SagaArc
         {
             RefName = "TEST_SAGA",
@@ -367,7 +468,7 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
                 Gameplay = new GameplayComponents
                 {
                     SagaArcs = new[] { sagaArc },
-                    Quests = new[] { collectHerbs, dragonHunt, secretVault, multiObjectiveQuest, herbMaster }
+                    Quests = new[] { collectHerbs, dragonHunt, secretVault, multiObjectiveQuest, herbMaster, guildErrand, proveWorth }
                 }
             }
         };
@@ -378,6 +479,9 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         world.QuestsLookup[secretVault.RefName] = secretVault;
         world.QuestsLookup[multiObjectiveQuest.RefName] = multiObjectiveQuest;
         world.QuestsLookup[herbMaster.RefName] = herbMaster;
+        world.QuestsLookup[guildErrand.RefName] = guildErrand;
+        world.QuestsLookup[proveWorth.RefName] = proveWorth;
+        world.FactionsLookup[merchantGuild.RefName] = merchantGuild;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger>();
 
         return world;
@@ -447,8 +551,8 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["ItemRef"] = "HEALING_HERB",
-                    ["Quantity"] = "1"
+                    // Production LootAwarded shape: packed per-family lists ("Ref:Quantity")
+                    ["Consumables"] = "HEALING_HERB:1"
                 }
             };
             lootTransactions.Add(lootTx);
@@ -512,8 +616,8 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["ItemRef"] = "HEALING_HERB",
-                    ["Quantity"] = "1"
+                    // Production LootAwarded shape: packed per-family lists ("Ref:Quantity")
+                    ["Consumables"] = "HEALING_HERB:1"
                 }
             };
             lootTransactions.Add(lootTx);
@@ -748,8 +852,8 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["ItemRef"] = "ITEM_A",
-                ["Quantity"] = "1"
+                // Production LootAwarded shape: packed per-family lists ("Ref:Quantity")
+                ["Consumables"] = "ITEM_A:1"
             }
         };
         await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { lootTx }, CancellationToken.None);
@@ -810,8 +914,8 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["ItemRef"] = "ITEM_A",
-                ["Quantity"] = "1"
+                // Production LootAwarded shape: packed per-family lists ("Ref:Quantity")
+                ["Consumables"] = "ITEM_A:1"
             }
         };
         await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { lootTxA }, CancellationToken.None);
@@ -839,8 +943,8 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["ItemRef"] = "ITEM_B",
-                ["Quantity"] = "1"
+                // Production LootAwarded shape: packed per-family lists ("Ref:Quantity")
+                ["Consumables"] = "ITEM_B:1"
             }
         };
         await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { lootTxB }, CancellationToken.None);
@@ -875,6 +979,128 @@ public class QuestRewardsAndPrerequisitesTests : IDisposable
         var rewardItemB = avatar.Capabilities.Consumables.FirstOrDefault(c => c.ConsumableRef == "REWARD_ITEM_B");
         Assert.NotNull(rewardItemB);
         Assert.Equal(2, rewardItemB.Quantity);
+    }
+
+    #endregion
+
+    #region Reputation & Achievement Reward Tests
+
+    [Fact]
+    public async Task CompleteQuest_WithReputationReward_CommitsReputationChangedTransaction()
+    {
+        // Arrange
+        var avatar = CreateTestAvatar();
+        var acceptCommand = new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "GUILD_ERRAND",
+            QuestGiverRef = "GUILD_CLERK",
+            Avatar = avatar
+        };
+        await _mediator.Send(acceptCommand);
+
+        // Simulate collecting the supply crate
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+        var lootTx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.LootAwarded,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                // Production LootAwarded shape: packed per-family lists ("Ref:Quantity")
+                ["Consumables"] = "SUPPLY_CRATE:1"
+            }
+        };
+        await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { lootTx }, CancellationToken.None);
+        await _repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { lootTx.TransactionId }, CancellationToken.None);
+
+        // Act: Advance the final stage (auto-completes the quest, distributing rewards)
+        var advanceCommand = new AdvanceQuestStageCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "GUILD_ERRAND",
+            Avatar = avatar
+        };
+        var result = await _mediator.Send(advanceCommand);
+
+        // Assert
+        Assert.True(result.Successful, result.ErrorMessage);
+
+        // The reward must exist as a committed ReputationChanged transaction on the instance
+        instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+        var reputationTx = instance.GetCommittedTransactions()
+            .SingleOrDefault(t => t.Type == SagaTransactionType.ReputationChanged);
+        Assert.NotNull(reputationTx);
+        Assert.Equal("MERCHANT_GUILD", reputationTx.Data["FactionRef"]);
+        Assert.Equal("250", reputationTx.Data["Amount"]);
+
+        // Replayed saga state sees the reputation
+        var stateMachine = new SagaStateMachine(
+            _world.SagaArcLookup["TEST_SAGA"],
+            _world.SagaTriggersLookup["TEST_SAGA"],
+            _world);
+        var state = stateMachine.ReplayToNow(instance);
+        Assert.Equal(250, state.FactionReputation["MERCHANT_GUILD"]);
+
+        // Cross-arc progress projection sees the reputation
+        var progressRepository = _serviceProvider.GetRequiredService<IAvatarProgressRepository>();
+        Assert.Equal(250, progressRepository.GetFactionReputation(avatar.Id, "MERCHANT_GUILD"));
+    }
+
+    [Fact]
+    public async Task CompleteQuest_WithAchievementReward_UnlocksOnAvatarLedger()
+    {
+        // Arrange
+        var avatar = CreateTestAvatar();
+        var acceptCommand = new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "PROVE_WORTH",
+            QuestGiverRef = "GUILD_MASTER",
+            Avatar = avatar
+        };
+        await _mediator.Send(acceptCommand);
+
+        // Simulate collecting the guild seal
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "TEST_SAGA", CancellationToken.None);
+        var lootTx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.LootAwarded,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                // Production LootAwarded shape: packed per-family lists ("Ref:Quantity")
+                ["Consumables"] = "GUILD_SEAL:1"
+            }
+        };
+        await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { lootTx }, CancellationToken.None);
+        await _repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { lootTx.TransactionId }, CancellationToken.None);
+
+        // Act: Advance the final stage (auto-completes the quest, distributing rewards)
+        var advanceCommand = new AdvanceQuestStageCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "PROVE_WORTH",
+            Avatar = avatar
+        };
+        var result = await _mediator.Send(advanceCommand);
+
+        // Assert: the achievement is unlocked on the avatar's ledger (single unlock store,
+        // same path as the dialogue UnlockAchievement action), exactly once
+        Assert.True(result.Successful, result.ErrorMessage);
+        Assert.NotNull(avatar.Achievements);
+        var unlocked = Assert.Single(avatar.Achievements);
+        Assert.Equal("ACH_GUILD_FRIEND", unlocked.AchievementRef);
     }
 
     #endregion

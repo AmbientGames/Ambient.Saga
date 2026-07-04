@@ -43,7 +43,9 @@ public class SagaStateMachine
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _logger = logger;
         _metrics = metrics ?? NullSagaMetrics.Instance;
-        _extensionRegistry = extensionRegistry ?? EmptyExtensionTypeRegistry.Instance;
+        // Permissive default: any self-identifying extension replays as host-layer
+        // data without quarantine noise; pass an explicit registry for strict checking
+        _extensionRegistry = extensionRegistry ?? PermissiveExtensionTypeRegistry.Instance;
         _unknownPolicy = unknownPolicy;
     }
 
@@ -100,6 +102,14 @@ public class SagaStateMachine
     {
         var ordered = transactions.OrderBy(t => t.SequenceNumber).ToList();
 
+        // TransactionReversed compensations need the referenced transaction's data
+        // to compute the inverse fold
+        var transactionsById = new Dictionary<Guid, SagaTransaction>(ordered.Count);
+        foreach (var tx in ordered)
+        {
+            transactionsById[tx.TransactionId] = tx;
+        }
+
         // Find the latest snapshot to avoid replaying the entire log
         SagaState? state = null;
         var replayFrom = 0;
@@ -119,7 +129,7 @@ public class SagaStateMachine
 
         for (var i = replayFrom; i < ordered.Count; i++)
         {
-            ApplyTransaction(state, ordered[i]);
+            ApplyTransaction(state, ordered[i], transactionsById);
         }
 
         state.TransactionCount = transactions.Count;
@@ -155,6 +165,15 @@ public class SagaStateMachine
     /// This method must be deterministic and idempotent.
     /// </summary>
     public void ApplyTransaction(SagaState state, SagaTransaction tx)
+    {
+        ApplyTransaction(state, tx, transactionsById: null);
+    }
+
+    /// <summary>
+    /// Applies a single transaction, with the full log available by id so
+    /// TransactionReversed compensations can look up the transaction they undo.
+    /// </summary>
+    private void ApplyTransaction(SagaState state, SagaTransaction tx, IReadOnlyDictionary<Guid, SagaTransaction>? transactionsById)
     {
         switch (tx.Type)
         {
@@ -230,10 +249,6 @@ public class SagaStateMachine
                 ApplyItemTraded(state, tx);
                 break;
 
-            case SagaTransactionType.LootAwarded:
-                ApplyLootAwarded(state, tx);
-                break;
-
             case SagaTransactionType.QuestTokenAwarded:
                 ApplyQuestTokenAwarded(state, tx);
                 break;
@@ -270,6 +285,10 @@ public class SagaStateMachine
                 ApplyEntityInteracted(state, tx);
                 break;
 
+            case SagaTransactionType.TransactionReversed:
+                ApplyTransactionReversed(state, tx, transactionsById);
+                break;
+
             // Snapshots are consumed by Replay(), not applied individually
             case SagaTransactionType.StateSnapshot:
                 break;
@@ -282,10 +301,41 @@ public class SagaStateMachine
 
             // Add more cases as needed
             default:
+                if (StatelessTransactionTypes.Contains(tx.Type))
+                {
+                    // Legitimately emitted but carries no SagaState fold: battle turns are
+                    // read directly from the log by the battle handlers, equipment/
+                    // consumable/teleport events update the avatar entity, etc.
+                    // Routing these through the unknown handler saturated the anti-drift
+                    // signal with false positives — and would crash every replay if the
+                    // policy were ever flipped to Throw.
+                    break;
+                }
                 HandleUnknownTransactionType(tx);
                 break;
         }
     }
+
+    /// <summary>
+    /// Types the engine emits that intentionally have no SagaState application —
+    /// their consumers read the log directly or mutate the avatar entity.
+    /// </summary>
+    private static readonly HashSet<SagaTransactionType> StatelessTransactionTypes = new()
+    {
+        SagaTransactionType.BattleStarted,
+        SagaTransactionType.BattleTurnExecuted,
+        SagaTransactionType.BattleEnded,
+        SagaTransactionType.EquipmentChanged,
+        SagaTransactionType.ConsumableUsed,
+        SagaTransactionType.ToolSharpened,
+        SagaTransactionType.AvatarTeleported,
+        SagaTransactionType.PartyMemberJoined,
+        SagaTransactionType.PartyMemberLeft,
+        SagaTransactionType.AffinityGranted,
+        SagaTransactionType.EffectApplied,
+        SagaTransactionType.CurrencyChanged, // read by QuestProgressEvaluator (CurrencyCollected objectives)
+        SagaTransactionType.LootAwarded, // retired feature (corpse looting removed 2026-07-04); value reserved so stray historical transactions don't trip the unknown-type quarantine
+    };
 
     private void HandleUnknownTransactionType(SagaTransaction tx)
     {
@@ -442,11 +492,17 @@ public class SagaStateMachine
         }
 
         // Copy any existing traits from the global trait list for this character template
-        // (traits assigned through dialogue or game events override template traits)
+        // (traits assigned through dialogue or game events override template traits).
+        // Disengaged is deliberately NOT inherited: it is per-encounter combat state
+        // (assigned when the avatar successfully flees) and a fresh spawn is a fresh
+        // encounter — respawned instances of a fled-from enemy assault again.
         if (state.CharacterTraits.TryGetValue(characterRef!, out var existingTraits))
         {
             foreach (var traitName in existingTraits)
             {
+                if (traitName == "Disengaged")
+                    continue;
+
                 characterState.Traits[traitName] = null; // Boolean flag trait
             }
         }
@@ -674,7 +730,7 @@ public class SagaStateMachine
         // need to recalculate spillover here during replay.
     }
 
-    private void ApplyItemTraded(SagaState state, SagaTransaction tx)
+    private void ApplyItemTraded(SagaState state, SagaTransaction tx, bool invert = false)
     {
         var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
         var itemRef = tx.GetData<string>(TransactionDataKeys.ItemRef);
@@ -694,6 +750,11 @@ public class SagaStateMachine
         //   IsBuying=true  (player buys)  → merchant loses → delta negative
         //   IsBuying=false (player sells) → merchant gains → delta positive
         var delta = isBuying ? -quantity : +quantity;
+
+        // A TransactionReversed compensation re-applies the trade with the
+        // opposite delta, restoring the merchant's pre-trade stock
+        if (invert)
+            delta = -delta;
 
         // Dispatch by world catalog (Saga's IWorld doesn't expose BlocksLookup — Block is the else-fallback).
         if (_world.ConsumablesLookup.ContainsKey(itemRef))
@@ -769,21 +830,6 @@ public class SagaStateMachine
             if (b.Quantity <= 0)
                 inv.Blocks = (inv.Blocks ?? Array.Empty<BlockEntry>()).Where(x => x.BlockRef != itemRef).ToArray();
         }
-    }
-
-    private void ApplyLootAwarded(SagaState state, SagaTransaction tx)
-    {
-        var characterInstanceId = tx.GetData<Guid>(TransactionDataKeys.CharacterInstanceId);
-
-        if (characterInstanceId == Guid.Empty || !state.Characters.TryGetValue(characterInstanceId.ToString(), out var character))
-            return;
-
-        // Clear inventory and mark as looted
-        character.CurrentInventory = null;
-        character.HasBeenLooted = true;
-        character.LootedAt = tx.GetCanonicalTimestamp();
-
-        System.Diagnostics.Debug.WriteLine($"[Replay] Character {characterInstanceId} looted at {tx.GetCanonicalTimestamp()}");
     }
 
     private void ApplyQuestTokenAwarded(SagaState state, SagaTransaction tx)
@@ -974,6 +1020,48 @@ public class SagaStateMachine
 
             avatarInteraction.InteractionCount++;
             avatarInteraction.LastInteractedAt = tx.GetCanonicalTimestamp();
+        }
+    }
+
+    // ===== Compensating Transaction Application =====
+
+    /// <summary>
+    /// Applies a TransactionReversed compensation: the referenced transaction
+    /// committed to the log but its avatar-side persistence failed (see
+    /// TradeItemHandler), so its saga-side fold must be undone. Reverses the
+    /// types with a state fold (ItemTraded); anything else is logged and
+    /// skipped — never quarantined as unknown.
+    /// </summary>
+    private void ApplyTransactionReversed(SagaState state, SagaTransaction tx, IReadOnlyDictionary<Guid, SagaTransaction>? transactionsById)
+    {
+        var reversedIdRaw = tx.GetData<string>(TransactionDataKeys.ReversedTransactionId);
+        if (!Guid.TryParse(reversedIdRaw, out var reversedId) ||
+            transactionsById == null ||
+            !transactionsById.TryGetValue(reversedId, out var original))
+        {
+            // Without the original transaction there is nothing to undo (e.g. a
+            // single-transaction ApplyTransaction call outside Replay) — skip
+            _logger?.LogWarning(
+                "TransactionReversed {TransactionId} references transaction '{ReversedId}' which is not available; skipping reversal",
+                tx.TransactionId,
+                reversedIdRaw);
+            return;
+        }
+
+        switch (original.Type)
+        {
+            case SagaTransactionType.ItemTraded:
+                ApplyItemTraded(state, original, invert: true);
+                break;
+
+            default:
+                // No reversible saga-side fold for this type; the reversal remains
+                // in the log as an audit record
+                _logger?.LogInformation(
+                    "TransactionReversed {TransactionId} for {OriginalType} has no state fold to reverse; skipping",
+                    tx.TransactionId,
+                    original.Type);
+                break;
         }
     }
 

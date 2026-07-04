@@ -59,12 +59,12 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
 
     // Consumables (stackable)
     public int GetConsumableQuantity(string r) => _a.Capabilities?.Consumables?.FirstOrDefault(e => e.ConsumableRef == r)?.Quantity ?? 0;
-    public void AddConsumable(string r, int amt) { if (_a.Capabilities?.Consumables != null && amt > 0) { var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Consumables.ToList(); list.Add(new ConsumableEntry { ConsumableRef = r, Quantity = amt }); _a.Capabilities.Consumables = list.ToArray(); } } }
+    public void AddConsumable(string r, int amt) { if (_a.Capabilities != null && amt > 0) { _a.Capabilities.Consumables ??= Array.Empty<ConsumableEntry>(); var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Consumables.ToList(); list.Add(new ConsumableEntry { ConsumableRef = r, Quantity = amt }); _a.Capabilities.Consumables = list.ToArray(); } } }
     public void RemoveConsumable(string r, int amt) { if (_a.Capabilities?.Consumables != null && amt > 0) { var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Consumables = _a.Capabilities.Consumables.Where(x => x.ConsumableRef != r).ToArray(); } } }
 
     // Materials (stackable)
     public int GetMaterialQuantity(string r) => _a.Capabilities?.BuildingMaterials?.FirstOrDefault(e => e.BuildingMaterialRef == r)?.Quantity ?? 0;
-    public void AddMaterial(string r, int amt) { if (_a.Capabilities?.BuildingMaterials != null && amt > 0) { var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.BuildingMaterials.ToList(); list.Add(new BuildingMaterialEntry { BuildingMaterialRef = r, Quantity = amt }); _a.Capabilities.BuildingMaterials = list.ToArray(); } } }
+    public void AddMaterial(string r, int amt) { if (_a.Capabilities != null && amt > 0) { _a.Capabilities.BuildingMaterials ??= Array.Empty<BuildingMaterialEntry>(); var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.BuildingMaterials.ToList(); list.Add(new BuildingMaterialEntry { BuildingMaterialRef = r, Quantity = amt }); _a.Capabilities.BuildingMaterials = list.ToArray(); } } }
     public void RemoveMaterial(string r, int amt) { if (_a.Capabilities?.BuildingMaterials != null && amt > 0) { var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.BuildingMaterials = _a.Capabilities.BuildingMaterials.Where(x => x.BuildingMaterialRef != r).ToArray(); } } }
 
     // Blocks (stackable voxel blocks)
@@ -74,22 +74,22 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
 
     // Equipment (degradable)
     public bool HasEquipment(string r) => _a.Capabilities?.Equipment?.Any(e => e.EquipmentRef == r) ?? false;
-    public void AddEquipment(string r) { if (_a.Capabilities?.Equipment != null && !HasEquipment(r)) { var list = _a.Capabilities.Equipment.ToList(); list.Add(new EquipmentEntry { EquipmentRef = r, Condition = 1.0f }); _a.Capabilities.Equipment = list.ToArray(); } }
+    public void AddEquipment(string r) { if (_a.Capabilities != null && !HasEquipment(r)) { _a.Capabilities.Equipment ??= Array.Empty<EquipmentEntry>(); var list = _a.Capabilities.Equipment.ToList(); list.Add(new EquipmentEntry { EquipmentRef = r, Condition = 1.0f }); _a.Capabilities.Equipment = list.ToArray(); } }
     public void RemoveEquipment(string r) { if (_a.Capabilities?.Equipment != null) { var e = _a.Capabilities.Equipment.FirstOrDefault(x => x.EquipmentRef == r); if (e != null) { var list = _a.Capabilities.Equipment.ToList(); list.Remove(e); _a.Capabilities.Equipment = list.ToArray(); } } }
 
     // Tools (degradable)
     public bool HasTool(string r) => _a.Capabilities?.Tools?.Any(e => e.ToolRef == r) ?? false;
-    public void AddTool(string r) { if (_a.Capabilities?.Tools != null && !HasTool(r)) { var list = _a.Capabilities.Tools.ToList(); list.Add(new ToolEntry { ToolRef = r, Condition = 1.0f }); _a.Capabilities.Tools = list.ToArray(); } }
+    public void AddTool(string r) { if (_a.Capabilities != null && !HasTool(r)) { _a.Capabilities.Tools ??= Array.Empty<ToolEntry>(); var list = _a.Capabilities.Tools.ToList(); list.Add(new ToolEntry { ToolRef = r, Condition = 1.0f }); _a.Capabilities.Tools = list.ToArray(); } }
     public void RemoveTool(string r) { if (_a.Capabilities?.Tools != null) { var e = _a.Capabilities.Tools.FirstOrDefault(x => x.ToolRef == r); if (e != null) { var list = _a.Capabilities.Tools.ToList(); list.Remove(e); _a.Capabilities.Tools = list.ToArray(); } } }
 
     // Spells (degradable)
     public bool HasSpell(string r) => _a.Capabilities?.Spells?.Any(e => e.SpellRef == r) ?? false;
-    public void AddSpell(string r) { if (_a.Capabilities?.Spells != null && !HasSpell(r)) { var list = _a.Capabilities.Spells.ToList(); list.Add(new SpellEntry { SpellRef = r, Condition = 1.0f }); _a.Capabilities.Spells = list.ToArray(); } }
+    public void AddSpell(string r) { if (_a.Capabilities != null && !HasSpell(r)) { _a.Capabilities.Spells ??= Array.Empty<SpellEntry>(); var list = _a.Capabilities.Spells.ToList(); list.Add(new SpellEntry { SpellRef = r, Condition = 1.0f }); _a.Capabilities.Spells = list.ToArray(); } }
     public void RemoveSpell(string r) { if (_a.Capabilities?.Spells != null) { var e = _a.Capabilities.Spells.FirstOrDefault(x => x.SpellRef == r); if (e != null) { var list = _a.Capabilities.Spells.ToList(); list.Remove(e); _a.Capabilities.Spells = list.ToArray(); } } }
 
     // Achievements
     public bool HasAchievement(string r) => _a.Achievements?.Any(e => e.AchievementRef == r) ?? false;
-    public void UnlockAchievement(string r) { if (_a.Achievements != null && !HasAchievement(r)) { var list = _a.Achievements.ToList(); list.Add(new AchievementEntry { AchievementRef = r }); _a.Achievements = list.ToArray(); } }
+    public void UnlockAchievement(string r) { if (!HasAchievement(r)) { _a.Achievements ??= Array.Empty<AchievementEntry>(); var list = _a.Achievements.ToList(); list.Add(new AchievementEntry { AchievementRef = r }); _a.Achievements = list.ToArray(); } }
 
     // Currency & Health
     public float GetCredits() => _a.Stats.Credits;
@@ -114,10 +114,23 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     // Character State (stored as a special trait)
     public void SetCharacterState(string characterState) => AssignTrait(characterState, null);
 
-    // Character Traits
-    public int? GetTraitValue(string trait) => _traits.TryGetValue(trait, out var value) ? value : null;
+    // Character Traits — session buffer for traits assigned this request, backed by the
+    // persisted AvatarCharacterTraits projection so trait gates survive across requests.
+    public int? GetTraitValue(string trait)
+    {
+        if (_traits.TryGetValue(trait, out var value)) return value;
+
+        // Skill traits (BargainSkill, Merciful, ...) are earned at one NPC and gated at
+        // another, so read the avatar's best earned value regardless of source character.
+        // A lower assignment at the current NPC must not mask a higher skill earned elsewhere.
+        return _progressRepo?.GetMaxTraitValue(_avatarGuid, trait);
+    }
+
     public void AssignTrait(string trait, int? traitValue) => _traits[trait] = traitValue;
-    public void RemoveTrait(string trait) => _traits.Remove(trait);
+
+    // Null tombstone: a trait removed this request must not resurrect from the projection
+    // (the TraitRemoved transaction only projects after commit).
+    public void RemoveTrait(string trait) => _traits[trait] = null;
 
     // Quest State
     public bool IsQuestActive(string questRef)
@@ -129,17 +142,24 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     public bool IsQuestNotStarted(string questRef)
         => _progressRepo?.GetQuestStatus(_avatarGuid, questRef) == null;
 
-    // Faction Reputation
+    // Faction Reputation — persisted projection + faction starting value +
+    // session-local deltas for changes made during this request (the durable
+    // record is the ReputationChanged transactions the executor stages)
+    private readonly Dictionary<string, int> _sessionReputationDeltas = new();
+
     public int GetFactionReputation(string factionRef)
     {
-        var progressValue = _progressRepo?.GetFactionReputation(_avatarGuid, factionRef) ?? 0;
-        if (progressValue != 0) return progressValue;
+        // Starting reputation is the baseline; earned changes are deltas on top.
+        // (The old code returned StartingReputation whenever the stored value was
+        // exactly 0, so earning +500 then -500 snapped back to the faction default.)
+        var baseline = _w.FactionsLookup.TryGetValue(factionRef, out var faction)
+            ? faction.StartingReputation
+            : 0;
 
-        // Fall back to faction starting reputation
-        if (_w.FactionsLookup.TryGetValue(factionRef, out var faction))
-            return faction.StartingReputation;
+        var earned = _progressRepo?.GetFactionReputation(_avatarGuid, factionRef) ?? 0;
+        _sessionReputationDeltas.TryGetValue(factionRef, out var sessionDelta);
 
-        return 0;
+        return baseline + earned + sessionDelta;
     }
 
     public string GetFactionReputationLevel(string factionRef)
@@ -151,13 +171,12 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
 
     public void ChangeReputation(string factionRef, int amount)
     {
-        // Reputation changes are handled via ChangeReputation dialogue action
-        // which creates ReputationChanged transactions.
-        // This method is a placeholder for the interface - actual implementation
-        // is in DialogueActionExecutor which has access to Saga context.
-        throw new InvalidOperationException(
-            "ChangeReputation must be called through DialogueActionExecutor with Saga context");
+        _sessionReputationDeltas.TryGetValue(factionRef, out var current);
+        _sessionReputationDeltas[factionRef] = current + amount;
     }
+
+    public IReadOnlyList<(string FactionRef, int Amount)> GetReputationSpillover(string factionRef, int amount)
+        => ReputationManager.CalculateSpilloverForAll(_w.FactionsLookup, factionRef, amount);
 
     // Idempotency for dialogue node rewards is handled by SagaDialogueContext
     // and DialogueTransactionHelper.ShouldAwardNodeRewards at the handler level.

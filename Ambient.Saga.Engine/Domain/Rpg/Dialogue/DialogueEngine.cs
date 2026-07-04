@@ -79,6 +79,41 @@ public class DialogueEngine
     }
 
     /// <summary>
+    /// Starts a dialogue at a specific node instead of the tree's StartNodeId.
+    /// Battle dialogue triggers author per-moment entry points (battle_enraged,
+    /// battle_desperate, ...) into their battle trees.
+    /// </summary>
+    public DialogueNode? StartDialogueAt(DialogueTree tree, string startNodeId)
+    {
+        if (tree == null)
+            throw new ArgumentNullException(nameof(tree));
+        if (string.IsNullOrEmpty(startNodeId))
+            return StartDialogue(tree);
+
+        _currentTree = tree;
+        _actionExecutor.ClearEvents();
+
+        // Create DialogueStarted transaction if Saga context provided — the start
+        // node rides on it so a resumed session re-enters at the same place
+        if (_sagaContext != null)
+        {
+            var transaction = DialogueTransactionHelper.CreateDialogueStartedTransaction(
+                _sagaContext.AvatarId,
+                _sagaContext.CharacterRef,
+                tree.RefName,
+                _sagaContext.SagaInstance.InstanceId
+            );
+            transaction.Data[TransactionDataKeys.NodeId] = startNodeId;
+            _sagaContext.SagaInstance.AddTransaction(transaction);
+        }
+
+        // Record visit
+        _stateProvider.RecordNodeVisit(tree.RefName, startNodeId);
+
+        return NavigateToNode(startNodeId);
+    }
+
+    /// <summary>
     /// Selects a avatar choice and navigates to the target node.
     /// </summary>
     /// <param name="choice">The choice selected by the player</param>

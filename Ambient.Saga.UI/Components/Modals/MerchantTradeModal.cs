@@ -354,6 +354,14 @@ public class MerchantTradeModal
                 viewModel.ActivityLog.Insert(0, msg);
             };
 
+            // Status messages carry the trade failure text ("Not enough money", ...);
+            // without this subscription failures were completely silent.
+            _tradeViewModel.StatusMessageChanged += (s, msg) =>
+            {
+                viewModel.ActivityLog.Insert(0, msg);
+                viewModel.AddToastMessage(msg);
+            };
+
             _tradeViewModel.OwnerRevenueEarned += (ownerAvatarId, revenue) =>
             {
                 viewModel.RaiseOwnerRevenueEarned(ownerAvatarId, revenue);

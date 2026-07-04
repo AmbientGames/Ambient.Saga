@@ -76,4 +76,12 @@ public interface ISagaInstanceRepository
     /// on the stored instance. Called after a successful push to avoid re-sending confirmed transactions.
     /// </summary>
     Task UpdateSyncWatermarkAsync(Guid instanceId, long lastSyncedSequenceNumber, DateTime lastSyncedAt, DateTime? serverVersion, CancellationToken ct = default);
+
+    /// <summary>
+    /// Persists the max server-clock timestamp of transactions imported via pull.
+    /// Sent back as the pull watermark on subsequent pulls (server timestamps are
+    /// globally ordered, unlike client-local sequence numbers, which collide
+    /// across avatars on shared arcs).
+    /// </summary>
+    Task UpdatePullWatermarkAsync(Guid instanceId, DateTime lastPulledServerTimestamp, CancellationToken ct = default);
 }

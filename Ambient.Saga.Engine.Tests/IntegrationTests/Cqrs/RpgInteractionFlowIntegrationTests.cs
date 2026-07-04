@@ -54,6 +54,9 @@ public class RpgInteractionFlowIntegrationTests : IDisposable
             cfg.AddOpenBehavior(typeof(SagaLoggingBehavior<,>));
             cfg.AddOpenBehavior(typeof(SagaValidationBehavior<,>));
             cfg.AddOpenBehavior(typeof(AchievementEvaluationBehavior<,>));
+            // Full production pipeline: the dialogue-driven interaction flow must
+            // behave identically with stage auto-advancement active
+            cfg.AddOpenBehavior(typeof(QuestStageProgressionBehavior<,>));
         });
 
         services.AddSingleton(_world);

@@ -1,5 +1,6 @@
 ﻿using Ambient.Application.Contracts;
 using Ambient.Domain.GameLogic;
+using LiteDB;
 using Steamworks;
 
 namespace Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -7,15 +8,17 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 /// <summary>
 /// Wraps Steam achievement calls with local persistence.
 /// Logs all achievements sent to Steam and replays them on world load.
+/// Takes the raw LiteDatabase so it works with both an owned WorldStateDatabase
+/// (Sandbox path) and a shared/injected database (game host path).
 /// </summary>
 internal class SteamAchievementService : ISteamAchievementService
 {
-    private readonly WorldStateDatabase _database;
+    private readonly LiteDatabase _database;
     private readonly bool _isSteamAvailable;
 
-    public SteamAchievementService(WorldStateDatabase database, bool isSteamAvailable)
+    public SteamAchievementService(LiteDatabase database, bool isSteamAvailable)
     {
-        _database = database;
+        _database = database ?? throw new ArgumentNullException(nameof(database));
         _isSteamAvailable = isSteamAvailable;
     }
 

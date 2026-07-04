@@ -6,6 +6,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -22,17 +23,20 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IWorldStateRepository _worldStateRepository;
+    private readonly IAvatarProgressRepository _avatarProgressRepository;
     private readonly IWorld _world;
 
     public UpdateAvatarPositionHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
         IWorldStateRepository worldStateRepository,
+        IAvatarProgressRepository avatarProgressRepository,
         IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
         _worldStateRepository = worldStateRepository;
+        _avatarProgressRepository = avatarProgressRepository;
         _world = world;
     }
 
@@ -67,8 +71,11 @@ internal sealed class UpdateAvatarPositionHandler : IRequestHandler<UpdateAvatar
             // Create transactions list to track what gets created
             var transactionsBefore = instance.Transactions.Count;
 
-            // Update position (creates transactions internally)
-            service.UpdateWithAvatarPosition(instance, avatarX, avatarZ, command.Avatar);
+            // Update position (creates transactions internally). The progress repository
+            // gives trigger gating the cross-arc quest-token table — tokens are awarded
+            // by other arcs, so per-instance AwardedQuestTokens alone can never satisfy
+            // a RequiresQuestTokenRef authored against a different arc's token.
+            service.UpdateWithAvatarPosition(instance, avatarX, avatarZ, command.Avatar, _avatarProgressRepository);
 
             // Get newly created transactions
             var newTransactions = instance.Transactions.Skip(transactionsBefore).ToList();

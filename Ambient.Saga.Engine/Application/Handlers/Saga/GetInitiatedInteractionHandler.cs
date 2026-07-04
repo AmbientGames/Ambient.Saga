@@ -91,7 +91,10 @@ internal sealed class GetInitiatedInteractionHandler : IRequestHandler<GetInitia
             SagaRef = winner.SagaRef,
             Character = winner.Character,
             Distance = winner.Distance,
-            Priority = winner.Priority
+            Priority = winner.Priority,
+            // Computed by GetAvailableInteractionsHandler from the character's
+            // EFFECTIVE traits (template + replayed TraitAssigned/TraitRemoved).
+            IsAssault = winner.Character?.Options.IsAssault == true
         };
     }
 

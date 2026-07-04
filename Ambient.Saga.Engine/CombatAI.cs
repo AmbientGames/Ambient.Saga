@@ -51,10 +51,12 @@ public class CombatAI : ICombatAI
                 var currentIndex = _turnCount / 2 - 1; // Turn 2 -> index 0, turn 4 -> index 1, etc.
                 var weaponRef = mainHandWeapons[currentIndex % mainHandWeapons.Count];
 
+                // ExecuteChangeLoadout expects "Slot:Value" pairs — a bare weapon ref
+                // used to fail every swap and wedge the enemy's turn
                 return new CombatAction
                 {
                     ActionType = ActionType.ChangeLoadout,
-                    Parameter = weaponRef
+                    Parameter = $"MainHand:{weaponRef}"
                 };
             }
         }

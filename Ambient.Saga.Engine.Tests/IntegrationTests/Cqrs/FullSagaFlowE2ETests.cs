@@ -262,7 +262,8 @@ public class FullSagaFlowE2ETests : IDisposable
             {
                 Equipment = new[]
                 {
-                    new EquipmentEntry { EquipmentRef = "GoldPouch", Condition = 1.0f }
+                    new EquipmentEntry { EquipmentRef = "GoldPouch", Condition = 1.0f },
+                    new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
                 }
             },
             Stats = new CharacterStats

@@ -23,6 +23,7 @@ public class MockAvatarProgressRepository : IAvatarProgressRepository
     public int GetBossDefeatedCount(Guid avatarId, string characterRef) => _bossDefeats.GetValueOrDefault((avatarId, characterRef));
     public int GetFactionReputation(Guid avatarId, string factionRef) => _factionReputation.GetValueOrDefault((avatarId, factionRef));
     public int? GetCharacterTraitValue(Guid avatarId, string characterRef, string traitType) => _characterTraits.GetValueOrDefault((avatarId, characterRef, traitType));
+    public int? GetMaxTraitValue(Guid avatarId, string traitType) => _characterTraits.Where(kv => kv.Key.Item1 == avatarId && kv.Key.Item3 == traitType && kv.Value != null).Select(kv => kv.Value).DefaultIfEmpty(null).Max();
 
     public void SetQuestToken(Guid avatarId, string tokenRef) => _questTokens.Add((avatarId, tokenRef));
     public void SetFactionReputation(Guid avatarId, string factionRef, int value) => _factionReputation[(avatarId, factionRef)] = value;

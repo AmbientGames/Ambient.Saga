@@ -10,4 +10,15 @@
         </xs:annotation>
         <xs:attributeGroup ref="StatBlock" />
     </xs:complexType>
+    <xs:complexType name="EffectAttributes">
+        <xs:annotation>
+            <xs:documentation>
+                Effect payload / requirement threshold block for equipment, spells and
+                consumables. All attributes default to 0 (no effect / no requirement) —
+                use Attributes for multiplier blocks (stances, archetype bias) where
+                1.0 is the identity.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attributeGroup ref="EffectBlock" />
+    </xs:complexType>
 </xs:schema>

@@ -1,6 +1,7 @@
 ﻿using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.Queries.Saga;
 using Ambient.Saga.Engine.Contracts;
+using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Services;
 using MediatR;
 
@@ -17,13 +18,16 @@ internal sealed class QueryInteractionsAtPositionHandler : IRequestHandler<Query
 {
     private readonly IWorld _world;
     private readonly IWorldStateRepository _worldRepository;
+    private readonly IAvatarProgressRepository _avatarProgressRepository;
 
     public QueryInteractionsAtPositionHandler(
         IWorld world,
-        IWorldStateRepository worldRepository)
+        IWorldStateRepository worldRepository,
+        IAvatarProgressRepository avatarProgressRepository)
     {
         _world = world;
         _worldRepository = worldRepository;
+        _avatarProgressRepository = avatarProgressRepository;
     }
 
     public async Task<List<SagaInteraction>> Handle(QueryInteractionsAtPositionQuery query, CancellationToken ct)
@@ -39,7 +43,8 @@ internal sealed class QueryInteractionsAtPositionHandler : IRequestHandler<Query
             query.ModelZ,
             query.Avatar,
             _world,
-            _worldRepository);
+            _worldRepository,
+            _avatarProgressRepository);
 
         return interactions;
     }

@@ -3,6 +3,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Quests;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using MediatR;
@@ -18,15 +19,18 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
+    private readonly IAvatarUpdateService _avatarUpdateService;
     private readonly IWorld _world;
 
     public ProgressQuestObjectiveHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
+        IAvatarUpdateService avatarUpdateService,
         IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
+        _avatarUpdateService = avatarUpdateService;
         _world = world;
     }
 
@@ -34,13 +38,21 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
     {
         try
         {
-            // Get Saga instance
+            // Handle dev saga refs (format: "RealSagaRef__DEV__uniqueid")
+            var sagaRefForLookup = command.SagaArcRef;
+            var devSuffix = "__DEV__";
+            if (command.SagaArcRef.Contains(devSuffix))
+            {
+                sagaRefForLookup = command.SagaArcRef.Substring(0, command.SagaArcRef.IndexOf(devSuffix));
+            }
+
+            // Get Saga instance (use full ref with DEV suffix for unique instance)
             var instance = await _instanceRepository.GetOrCreateInstanceAsync(command.AvatarId, command.SagaArcRef, ct);
 
-            // Verify Saga exists
-            if (!_world.SagaArcLookup.TryGetValue(command.SagaArcRef, out var sagaTemplate))
+            // Verify Saga exists (use stripped ref for template lookup)
+            if (!_world.SagaArcLookup.TryGetValue(sagaRefForLookup, out var sagaTemplate))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{command.SagaArcRef}' not found");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Saga '{sagaRefForLookup}' not found");
             }
 
             // Verify quest exists
@@ -50,10 +62,10 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
                 return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{command.QuestRef}' not found");
             }
 
-            // Get expanded triggers for state machine
-            if (!_world.SagaTriggersLookup.TryGetValue(command.SagaArcRef, out var expandedTriggers))
+            // Get expanded triggers for state machine (use stripped ref for lookup)
+            if (!_world.SagaTriggersLookup.TryGetValue(sagaRefForLookup, out var expandedTriggers))
             {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{command.SagaArcRef}'");
+                return SagaCommandResult.Failure(instance.InstanceId, $"Triggers not found for Saga '{sagaRefForLookup}'");
             }
 
             // Replay to get current state
@@ -117,23 +129,27 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
                 }
             };
 
-            instance.AddTransaction(transaction);
+            // Reputation OnObjective rewards are transaction-driven (replayed saga
+            // state + cross-arc projection, like the dialogue ChangeReputation action)
+            // — stage them so they commit atomically with QuestObjectiveCompleted
+            var transactionsToCommit = new List<SagaTransaction> { transaction };
+            transactionsToCommit.AddRange(QuestRewardDistributor.CollectRewardTransactions(
+                quest.Rewards,
+                Ambient.Domain.QuestRewardCondition.OnObjective,
+                command.AvatarId.ToString(),
+                instance.InstanceId,
+                _world,
+                objectiveRef: command.ObjectiveRef));
 
-            // Distribute OnObjective rewards for this specific objective
-            if (quest.Rewards != null && quest.Rewards.Length > 0)
+            foreach (var tx in transactionsToCommit)
             {
-                QuestRewardDistributor.DistributeRewards(
-                    quest.Rewards,
-                    Ambient.Domain.QuestRewardCondition.OnObjective,
-                    command.Avatar,
-                    _world,
-                    objectiveRef: command.ObjectiveRef);
+                instance.AddTransaction(tx);
             }
 
-            // Persist and commit transaction
+            // Persist and commit transactions
             var (sequenceNumbers, committed) = await _instanceRepository.AddAndCommitTransactionsAsync(
                 instance.InstanceId,
-                new List<SagaTransaction> { transaction },
+                transactionsToCommit,
                 ct);
 
             if (!committed)
@@ -144,10 +160,25 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
 
+            // Distribute OnObjective rewards after commit and persist the avatar,
+            // matching CompleteQuestHandler/AdvanceQuestStageHandler — without the
+            // persist, the reward mutation is discarded on the next avatar reload
+            if (quest.Rewards != null && quest.Rewards.Length > 0)
+            {
+                QuestRewardDistributor.DistributeRewards(
+                    quest.Rewards,
+                    Ambient.Domain.QuestRewardCondition.OnObjective,
+                    command.Avatar,
+                    _world,
+                    objectiveRef: command.ObjectiveRef);
+
+                await _avatarUpdateService.PersistAvatarAsync(command.Avatar, ct);
+            }
+
             // Return success
             return SagaCommandResult.Success(
                 instance.InstanceId,
-                new List<Guid> { transaction.TransactionId },
+                transactionsToCommit.Select(t => t.TransactionId).ToList(),
                 sequenceNumbers.First());
         }
         catch (Exception ex)

@@ -366,6 +366,49 @@ public class QuestPrerequisitesTests : IDisposable
             }
         };
 
+        // Quest H: Requires reputation with a faction whose StartingReputation
+        // already meets the bar (tests the baseline is included in the check)
+        var questH = new Quest
+        {
+            RefName = "MINERS_QUEST",
+            DisplayName = "Miners' Errand",
+            Description = "Requires Honored reputation with the Miners' Guild",
+            Prerequisites = new[]
+            {
+                new QuestPrerequisite
+                {
+                    FactionRef = "MINERS_GUILD",
+                    RequiredReputationLevel = "Honored"
+                }
+            },
+            Stages = new QuestStages
+            {
+                StartStage = "DIG",
+                Stage = new[]
+                {
+                    new QuestStage
+                    {
+                        RefName = "DIG",
+                        DisplayName = "Dig",
+                        Objectives = new QuestStageObjectives
+                        {
+                            Objective = new[]
+                            {
+                                new QuestObjective
+                                {
+                                    RefName = "DIG_OBJ",
+                                    Type = QuestObjectiveType.ItemCollected,
+                                    ItemRef = "ORE",
+                                    Threshold = 1,
+                                    DisplayName = "Collect ore"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
         // Achievement for testing
         var dragonSlayerAchievement = new Achievement
         {
@@ -380,6 +423,14 @@ public class QuestPrerequisitesTests : IDisposable
             DisplayName = "Adventurer's Guild"
         };
 
+        // Faction that starts out Honored (9000+) without any earned reputation
+        var minersGuild = new Faction
+        {
+            RefName = "MINERS_GUILD",
+            DisplayName = "Miners' Guild",
+            StartingReputation = 10000
+        };
+
         var sagaArc = new SagaArc
         {
             RefName = "TEST_SAGA",
@@ -388,29 +439,42 @@ public class QuestPrerequisitesTests : IDisposable
             Longitude = 135.0
         };
 
+        // Second arc for cross-arc prerequisite tests (a quest completed in
+        // OTHER_SAGA must satisfy a prerequisite when accepting in TEST_SAGA)
+        var otherArc = new SagaArc
+        {
+            RefName = "OTHER_SAGA",
+            DisplayName = "Other Saga",
+            Latitude = 36.0,
+            Longitude = 136.0
+        };
+
         var world = new World
         {
             WorldTemplate = new WorldTemplate
             {
                 Gameplay = new GameplayComponents
                 {
-                    SagaArcs = new[] { sagaArc },
-                    Quests = new[] { questA, questB, questC, questD, questE, questF, questG },
+                    SagaArcs = new[] { sagaArc, otherArc },
+                    Quests = new[] { questA, questB, questC, questD, questE, questF, questG, questH },
                     Achievements = new[] { dragonSlayerAchievement },
-                    Factions = new[] { adventurersGuild }
+                    Factions = new[] { adventurersGuild, minersGuild }
                 }
             }
         };
 
         // Populate lookup dictionaries
         world.SagaArcLookup[sagaArc.RefName] = sagaArc;
+        world.SagaArcLookup[otherArc.RefName] = otherArc;
         foreach (var quest in world.WorldTemplate.Gameplay.Quests)
         {
             world.QuestsLookup[quest.RefName] = quest;
         }
         world.AchievementsLookup[dragonSlayerAchievement.RefName] = dragonSlayerAchievement;
         world.FactionsLookup[adventurersGuild.RefName] = adventurersGuild;
+        world.FactionsLookup[minersGuild.RefName] = minersGuild;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger>();
+        world.SagaTriggersLookup[otherArc.RefName] = new List<SagaTrigger>();
 
         return world;
     }
@@ -815,6 +879,137 @@ public class QuestPrerequisitesTests : IDisposable
         // THEN: Should fail with reputation requirement error
         Assert.False(result.Successful);
         Assert.Contains("Honored", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task AcceptQuest_WithReputationPrerequisite_StartingReputationBaselineCounts()
+    {
+        // GIVEN: MINERS_QUEST requires Honored with MINERS_GUILD, whose
+        // StartingReputation (10000) already clears the Honored threshold —
+        // no earned reputation transactions exist anywhere
+        var avatar = CreateTestAvatar();
+
+        // WHEN: Try to accept the quest
+        var result = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "MINERS_QUEST",
+            QuestGiverRef = "FOREMAN",
+            Avatar = avatar
+        });
+
+        // THEN: Should succeed off the faction baseline alone
+        Assert.True(result.Successful, result.ErrorMessage);
+    }
+
+    #endregion
+
+    #region Cross-Arc Prerequisite Tests (B1)
+
+    [Fact]
+    public async Task AcceptQuest_QuestPrerequisiteCompletedInOtherArc_Succeeds()
+    {
+        // GIVEN: Quest A accepted AND completed in OTHER_SAGA (a different arc
+        // than the one offering Quest B)
+        var avatar = CreateTestAvatar();
+
+        await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "OTHER_SAGA",
+            QuestRef = "QUEST_A",
+            QuestGiverRef = "NPC",
+            Avatar = avatar
+        });
+
+        var otherInstance = await _repository.GetOrCreateInstanceAsync(avatar.Id, "OTHER_SAGA", CancellationToken.None);
+        var completionTx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.QuestCompleted,
+            AvatarId = avatar.Id.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string> { ["QuestRef"] = "QUEST_A" }
+        };
+        // AddAndCommit so the completion projects into the cross-arc progress table
+        await _repository.AddAndCommitTransactionsAsync(otherInstance.InstanceId, new List<SagaTransaction> { completionTx }, CancellationToken.None);
+
+        // WHEN: Try to accept Quest B in TEST_SAGA, whose arc-local log never saw Quest A
+        var result = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "QUEST_B",
+            QuestGiverRef = "NPC",
+            Avatar = avatar
+        });
+
+        // THEN: The cross-arc completion satisfies the prerequisite
+        Assert.True(result.Successful, result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task AcceptQuest_WithAchievementPrerequisite_SucceedsWhenOnAvatarLedger()
+    {
+        // GIVEN: The avatar's persisted Achievements list (the unlock ledger)
+        // contains the required achievement
+        var avatar = CreateTestAvatar();
+        avatar.Achievements = new[]
+        {
+            new AchievementEntry
+            {
+                AchievementRef = "DRAGON_SLAYER",
+                UnlockedDate = DateTime.UtcNow.ToString("O"),
+                ProgressPercentage = 1.0f
+            }
+        };
+
+        // WHEN: Try to accept the Master Quest
+        var result = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = "TEST_SAGA",
+            QuestRef = "MASTER_QUEST",
+            QuestGiverRef = "MASTER",
+            Avatar = avatar
+        });
+
+        // THEN: Should succeed (achievements used to be passed as null, always failing)
+        Assert.True(result.Successful, result.ErrorMessage);
+    }
+
+    #endregion
+
+    #region Dev Saga Ref Tests (B10)
+
+    [Fact]
+    public async Task AcceptQuest_WithDevSagaRef_Succeeds()
+    {
+        // GIVEN: A dev-spawned saga instance ref ("RealSagaRef__DEV__uniqueid");
+        // template/trigger lookups must use the stripped ref, instance ops the full ref
+        var avatar = CreateTestAvatar();
+        var devSagaRef = "TEST_SAGA__DEV__abc123";
+
+        // WHEN: Accept a quest offered by the dev-spawned NPC's saga
+        var result = await _mediator.Send(new AcceptQuestCommand
+        {
+            AvatarId = avatar.Id,
+            SagaArcRef = devSagaRef,
+            QuestRef = "QUEST_A",
+            QuestGiverRef = "NPC",
+            Avatar = avatar
+        });
+
+        // THEN: Should succeed, with the QuestAccepted on the dev instance
+        Assert.True(result.Successful, result.ErrorMessage);
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatar.Id, devSagaRef, CancellationToken.None);
+        var acceptTx = instance.GetCommittedTransactions()
+            .FirstOrDefault(t => t.Type == SagaTransactionType.QuestAccepted);
+        Assert.NotNull(acceptTx);
+        Assert.Equal("QUEST_A", acceptTx.Data["QuestRef"]);
     }
 
     #endregion

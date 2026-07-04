@@ -1,4 +1,5 @@
 using MediatR;
+using Ambient.Domain;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Application.Commands.Saga;
@@ -53,27 +54,22 @@ internal sealed class DefeatCharacterHandler : IRequestHandler<DefeatCharacterCo
                 return SagaCommandResult.Failure(instance.InstanceId, $"Character with instance ID '{command.CharacterInstanceId}' not found");
             }
 
-            // Create CharacterDefeated transaction
-            var transaction = new SagaTransaction
+            // Already-defeated guard: battle end and quest hooks can both report the
+            // same kill — a duplicate CharacterDefeated would double kill credit and
+            // re-award defeat tokens. No-op succeed without writing new transactions.
+            var alreadyDefeated = instance.GetCommittedTransactions()
+                .Any(t => t.Type == SagaTransactionType.CharacterDefeated &&
+                          t.Data.TryGetValue(TransactionDataKeys.CharacterInstanceId, out var defeatedId) &&
+                          defeatedId == command.CharacterInstanceId.ToString());
+
+            if (alreadyDefeated)
             {
-                TransactionId = Guid.NewGuid(),
-                Type = SagaTransactionType.CharacterDefeated,
-                AvatarId = command.AvatarId.ToString(),
-                Status = TransactionStatus.Pending,
-                LocalTimestamp = DateTime.UtcNow,
-                Data = new Dictionary<string, string>
-                {
-                    [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
-                    [TransactionDataKeys.VictorAvatarId] = command.AvatarId.ToString(),
-                    [TransactionDataKeys.DefeatMethod] = command.DefeatMethod ?? "Unknown"
-                }
-            };
+                System.Diagnostics.Debug.WriteLine($"[DefeatCharacter] Character {command.CharacterInstanceId} already defeated - skipping duplicate");
+                return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), 0);
+            }
 
-            instance.AddTransaction(transaction);
-
-            var transactions = new List<SagaTransaction> { transaction };
-
-            // Award quest tokens declared on the character template (GivesQuestTokenOnDefeat)
+            // Resolve the character template — its ref/tags/traits enrich the transaction
+            // for quest objective evaluation, and GivesQuestTokenOnDefeat is read below
             var characterRef = instance.GetCommittedTransactions()
                 .Where(t => t.Type == SagaTransactionType.CharacterSpawned &&
                            t.Data.TryGetValue(TransactionDataKeys.CharacterInstanceId, out var id) &&
@@ -81,8 +77,47 @@ internal sealed class DefeatCharacterHandler : IRequestHandler<DefeatCharacterCo
                 .Select(t => t.Data.GetValueOrDefault(TransactionDataKeys.CharacterRef))
                 .FirstOrDefault();
 
-            if (characterRef != null && _world.CharactersLookup.TryGetValue(characterRef, out var characterTemplate)
-                && characterTemplate.GivesQuestTokenOnDefeat != null)
+            Character? characterTemplate = null;
+            if (characterRef != null)
+                _world.CharactersLookup.TryGetValue(characterRef, out characterTemplate);
+
+            // Create CharacterDefeated transaction
+            var transactionData = new Dictionary<string, string>
+            {
+                [TransactionDataKeys.CharacterInstanceId] = command.CharacterInstanceId.ToString(),
+                [TransactionDataKeys.VictorAvatarId] = command.AvatarId.ToString(),
+                [TransactionDataKeys.DefeatMethod] = command.DefeatMethod ?? "Unknown"
+            };
+
+            if (!string.IsNullOrEmpty(characterRef))
+                transactionData[TransactionDataKeys.CharacterRef] = characterRef;
+
+            // Tags plus boolean trait names — both vocabularies are used by
+            // CharactersDefeatedByTag quest objectives (e.g. "BanditScout", "hostile")
+            var tagVocabulary = (characterTemplate?.Tags ?? Array.Empty<string>())
+                .Concat((characterTemplate?.Traits ?? Array.Empty<CharacterTrait>()).Select(tr => tr.Name.ToString()))
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Distinct()
+                .ToList();
+            if (tagVocabulary.Count > 0)
+                transactionData[TransactionDataKeys.CharacterTag] = string.Join(",", tagVocabulary);
+
+            var transaction = new SagaTransaction
+            {
+                TransactionId = Guid.NewGuid(),
+                Type = SagaTransactionType.CharacterDefeated,
+                AvatarId = command.AvatarId.ToString(),
+                Status = TransactionStatus.Pending,
+                LocalTimestamp = DateTime.UtcNow,
+                Data = transactionData
+            };
+
+            instance.AddTransaction(transaction);
+
+            var transactions = new List<SagaTransaction> { transaction };
+
+            // Award quest tokens declared on the character template (GivesQuestTokenOnDefeat)
+            if (characterRef != null && characterTemplate?.GivesQuestTokenOnDefeat != null)
             {
                 foreach (var tokenRef in characterTemplate.GivesQuestTokenOnDefeat)
                 {
