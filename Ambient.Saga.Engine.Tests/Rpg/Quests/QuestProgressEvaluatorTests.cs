@@ -933,6 +933,258 @@ public class QuestProgressEvaluatorTests
 
     #endregion
 
+    #region Acceptance Scope / Accepting Dialogue Session Tests
+
+    // The dialogue handlers flush node-action transactions (QuestTokenAwarded, ...)
+    // around the nested AcceptQuestCommand dispatch such that the QuestAccepted
+    // transaction ends up with a HIGHER sequence number than a token granted by the
+    // very node that accepted the quest. GiveQuestToken is first-visit-only, so if
+    // the acceptance scope started strictly at QuestAccepted, that token could never
+    // count toward a QuestTokenCollected objective (stage-1 soft-lock). The scope
+    // must therefore widen to the start of the dialogue session the acceptance came
+    // from — and ONLY that session.
+
+    private const string GiverRef = "QUEST_GIVER";
+    private const string TokenRef = "RUMOR_TOKEN";
+    private const string TokenQuestRef = "TOKEN_QUEST";
+
+    private static Quest CreateTokenQuest() => new()
+    {
+        RefName = TokenQuestRef,
+        DisplayName = "Token Quest"
+    };
+
+    private static QuestObjective CreateTokenObjective() => new()
+    {
+        RefName = "COLLECT_RUMOR",
+        Type = QuestObjectiveType.QuestTokenCollected,
+        QuestTokenRef = TokenRef,
+        Threshold = 1
+    };
+
+    private SagaTransaction DialogueStartedTx(long seq, string characterRef = GiverRef) =>
+        CreateTransaction(SagaTransactionType.DialogueStarted, new Dictionary<string, string>
+        {
+            ["CharacterRef"] = characterRef,
+            ["DialogueTreeRef"] = "GIVER_TREE"
+        }, seq);
+
+    private SagaTransaction DialogueCompletedTx(long seq, string characterRef = GiverRef) =>
+        CreateTransaction(SagaTransactionType.DialogueCompleted, new Dictionary<string, string>
+        {
+            ["CharacterRef"] = characterRef,
+            ["DialogueTreeRef"] = "GIVER_TREE"
+        }, seq);
+
+    private SagaTransaction NodeVisitedTx(long seq, string nodeId) =>
+        CreateTransaction(SagaTransactionType.DialogueNodeVisited, new Dictionary<string, string>
+        {
+            ["CharacterRef"] = GiverRef,
+            ["DialogueTreeRef"] = "GIVER_TREE",
+            ["DialogueNodeId"] = nodeId
+        }, seq);
+
+    private SagaTransaction TokenAwardedTx(long seq) =>
+        CreateTransaction(SagaTransactionType.QuestTokenAwarded, new Dictionary<string, string>
+        {
+            ["QuestTokenRef"] = TokenRef,
+            ["SourceRef"] = GiverRef
+        }, seq);
+
+    private SagaTransaction QuestAcceptedTx(long seq, string giverRef = GiverRef) =>
+        CreateTransaction(SagaTransactionType.QuestAccepted, new Dictionary<string, string>
+        {
+            ["QuestRef"] = TokenQuestRef,
+            ["QuestGiverRef"] = giverRef
+        }, seq);
+
+    private SagaTransaction QuestAbandonedTx(long seq) =>
+        CreateTransaction(SagaTransactionType.QuestAbandoned, new Dictionary<string, string>
+        {
+            ["QuestRef"] = TokenQuestRef
+        }, seq);
+
+    [Fact]
+    public void EvaluateObjectiveProgress_TokenGrantedBySameSessionBeforeAccept_CountsTowardObjective()
+    {
+        // Node grants the token, a later node in the SAME session accepts the quest
+        // (session still open when the acceptance is recorded)
+        var transactions = new List<SagaTransaction>
+        {
+            DialogueStartedTx(10),
+            NodeVisitedTx(11, "RUMOR_NODE"),
+            TokenAwardedTx(12),
+            NodeVisitedTx(13, "ACCEPT_NODE"),
+            QuestAcceptedTx(14)
+        };
+
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(
+            CreateTokenQuest(), new QuestStage { RefName = "STAGE_1" }, CreateTokenObjective(), transactions, CreateTestWorld());
+
+        Assert.Equal(1, progress);
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_TokenGrantedByTerminalAcceptNode_CountsTowardObjective()
+    {
+        // Terminal accept node: EndDialogue writes DialogueCompleted BEFORE the
+        // handler dispatches AcceptQuestCommand, so the completion precedes the
+        // acceptance in the log even though the acceptance came from this session
+        var transactions = new List<SagaTransaction>
+        {
+            DialogueStartedTx(10),
+            NodeVisitedTx(11, "ACCEPT_NODE"),
+            TokenAwardedTx(12),
+            DialogueCompletedTx(13),
+            QuestAcceptedTx(14)
+        };
+
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(
+            CreateTokenQuest(), new QuestStage { RefName = "STAGE_1" }, CreateTokenObjective(), transactions, CreateTestWorld());
+
+        Assert.Equal(1, progress);
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_TokenFromPriorCompletedSession_DoesNotCount()
+    {
+        // Token earned in a fully completed earlier conversation; the quest is
+        // accepted in a NEW session — the old session's token must not leak in
+        var transactions = new List<SagaTransaction>
+        {
+            DialogueStartedTx(1),
+            NodeVisitedTx(2, "RUMOR_NODE"),
+            TokenAwardedTx(3),
+            DialogueCompletedTx(4),
+            DialogueStartedTx(5),
+            NodeVisitedTx(6, "ACCEPT_NODE"),
+            QuestAcceptedTx(7)
+        };
+
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(
+            CreateTokenQuest(), new QuestStage { RefName = "STAGE_1" }, CreateTokenObjective(), transactions, CreateTestWorld());
+
+        Assert.Equal(0, progress);
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_TokenFromPriorCompletedSession_NonDialogueAcceptance_DoesNotCount()
+    {
+        // Session with the giver ends, unrelated gameplay happens, then the quest is
+        // accepted outside dialogue — the sealed session must not be treated as the
+        // accepting session just because it is the nearest one
+        var transactions = new List<SagaTransaction>
+        {
+            DialogueStartedTx(1),
+            TokenAwardedTx(2),
+            DialogueCompletedTx(3),
+            CreateTransaction(SagaTransactionType.TriggerActivated, new Dictionary<string, string>
+            {
+                ["SagaTriggerRef"] = "QUEST_BOARD"
+            }, 4),
+            QuestAcceptedTx(5)
+        };
+
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(
+            CreateTokenQuest(), new QuestStage { RefName = "STAGE_1" }, CreateTokenObjective(), transactions, CreateTestWorld());
+
+        Assert.Equal(0, progress);
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_AbandonAndReAccept_TokenFromFirstAcceptancesSessionDoesNotCount()
+    {
+        // Abandon + re-accept starts a fresh scope: the widened scope must never
+        // reach back before the LATEST acceptance's session
+        var transactions = new List<SagaTransaction>
+        {
+            DialogueStartedTx(1),
+            NodeVisitedTx(2, "ACCEPT_NODE"),
+            TokenAwardedTx(3),
+            QuestAcceptedTx(4),
+            DialogueCompletedTx(5),
+            QuestAbandonedTx(6),
+            DialogueStartedTx(7),
+            NodeVisitedTx(8, "ACCEPT_NODE"),
+            QuestAcceptedTx(9)
+        };
+
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(
+            CreateTokenQuest(), new QuestStage { RefName = "STAGE_1" }, CreateTokenObjective(), transactions, CreateTestWorld());
+
+        Assert.Equal(0, progress);
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_DirectReAcceptAfterAbandon_DoesNotReachBackIntoOldSession()
+    {
+        // Abandon and re-accept happen OUTSIDE dialogue right after the session
+        // ended: even though only quest-lifecycle transactions sit between the
+        // completion and the new acceptance, the abandon of this quest proves the
+        // acceptance is a fresh run, not the terminal-node dispatch of that session
+        var transactions = new List<SagaTransaction>
+        {
+            DialogueStartedTx(1),
+            TokenAwardedTx(2),
+            QuestAcceptedTx(3),
+            DialogueCompletedTx(4),
+            QuestAbandonedTx(5),
+            QuestAcceptedTx(6)
+        };
+
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(
+            CreateTokenQuest(), new QuestStage { RefName = "STAGE_1" }, CreateTokenObjective(), transactions, CreateTestWorld());
+
+        Assert.Equal(0, progress);
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_AcceptanceWithNoDialogueSession_ScopesFromAcceptanceExactlyAsBefore()
+    {
+        // No DialogueStarted anywhere: pre-acceptance token stays out of scope,
+        // post-acceptance token counts (unchanged legacy behavior)
+        var transactions = new List<SagaTransaction>
+        {
+            TokenAwardedTx(1),
+            QuestAcceptedTx(2)
+        };
+
+        var quest = CreateTokenQuest();
+        var stage = new QuestStage { RefName = "STAGE_1" };
+
+        Assert.Equal(0, QuestProgressEvaluator.EvaluateObjectiveProgress(
+            quest, stage, CreateTokenObjective(), transactions, CreateTestWorld()));
+
+        transactions.Add(TokenAwardedTx(3));
+
+        Assert.Equal(1, QuestProgressEvaluator.EvaluateObjectiveProgress(
+            quest, stage, CreateTokenObjective(), transactions, CreateTestWorld()));
+    }
+
+    [Fact]
+    public void EvaluateObjectiveProgress_OtherCharactersSessionBetweenGiverSessionAndAccept_UsesGiverSession()
+    {
+        // The giver's session is still open while a nested conversation with another
+        // character starts and completes (e.g. proximity NPC chatter) — the OTHER
+        // character's completion must not disqualify the giver's open session
+        var transactions = new List<SagaTransaction>
+        {
+            DialogueStartedTx(1),
+            TokenAwardedTx(2),
+            DialogueStartedTx(3, "BYSTANDER"),
+            DialogueCompletedTx(4, "BYSTANDER"),
+            NodeVisitedTx(5, "ACCEPT_NODE"),
+            QuestAcceptedTx(6)
+        };
+
+        var progress = QuestProgressEvaluator.EvaluateObjectiveProgress(
+            CreateTokenQuest(), new QuestStage { RefName = "STAGE_1" }, CreateTokenObjective(), transactions, CreateTestWorld());
+
+        Assert.Equal(1, progress);
+    }
+
+    #endregion
+
     #region CurrencyCollected Objective Tests
 
     [Fact]

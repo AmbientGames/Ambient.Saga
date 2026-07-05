@@ -204,6 +204,16 @@ public static class QuestProgressEvaluator
     /// (objectives instantly complete, stage rewards granted again, old branch
     /// choices auto-"chosen"). Public so command handlers can scope their own
     /// log queries (e.g. branch exclusivity) with the same rule.
+    ///
+    /// The scope starts at the beginning of the dialogue session the acceptance
+    /// came from, not at the QuestAccepted transaction itself: the dialogue
+    /// handlers stage node-action transactions (QuestTokenAwarded, ...) before
+    /// they dispatch the nested AcceptQuestCommand, so a token granted by the
+    /// very node that accepts the quest ends up with a LOWER sequence number
+    /// than QuestAccepted. GiveQuestToken is first-visit-only, so scoping
+    /// strictly from the acceptance excluded that token forever and soft-locked
+    /// stage-1 QuestTokenCollected objectives. Acceptances that did not come
+    /// from a dialogue session keep the strict from-QuestAccepted scope.
     /// </summary>
     public static List<SagaTransaction> ScopeToCurrentAcceptance(Quest quest, List<SagaTransaction> transactions)
     {
@@ -216,8 +226,88 @@ public static class QuestProgressEvaluator
         if (latestAccept == null)
             return transactions;
 
-        return transactions.Where(t => t.SequenceNumber >= latestAccept.SequenceNumber).ToList();
+        var scopeStart = FindAcceptingDialogueSessionStart(quest.RefName, latestAccept, transactions)
+                         ?? latestAccept.SequenceNumber;
+
+        return transactions.Where(t => t.SequenceNumber >= scopeStart).ToList();
     }
+
+    /// <summary>
+    /// Finds the sequence number of the DialogueStarted transaction that begins
+    /// the dialogue session the given acceptance was made in, or null when the
+    /// acceptance did not come from a (still attributable) dialogue session.
+    ///
+    /// Rule: take the nearest preceding DialogueStarted for the quest giver
+    /// (QuestAccepted always records QuestGiverRef; for dialogue-driven
+    /// acceptances it is the conversation partner — see DialogueActionExecutor).
+    /// That session contains the acceptance when it is still open at the
+    /// acceptance, or when it was sealed by the very command that dispatched the
+    /// acceptance: on a terminal accept node EndDialogue writes DialogueCompleted
+    /// just before the quest events run, so only quest-lifecycle transactions
+    /// from that same dispatch can sit between the completion and the
+    /// acceptance. Anything else in that gap — or an abandon of this very quest,
+    /// which proves the acceptance is a fresh run — means the session already
+    /// ended for good, and its transactions must not leak into the new scope
+    /// (tokens from a previous conversation, or from before an abandon +
+    /// re-accept, never count).
+    /// </summary>
+    private static long? FindAcceptingDialogueSessionStart(
+        string questRef,
+        SagaTransaction latestAccept,
+        List<SagaTransaction> transactions)
+    {
+        var giverRef = latestAccept.GetData<string>(TransactionDataKeys.QuestGiverRef);
+
+        var prior = transactions
+            .Where(t => t.SequenceNumber < latestAccept.SequenceNumber)
+            .OrderBy(t => t.SequenceNumber)
+            .ToList();
+
+        var sessionStart = prior.LastOrDefault(t =>
+            t.Type == SagaTransactionType.DialogueStarted &&
+            (string.IsNullOrEmpty(giverRef) ||
+             t.GetData<string>(TransactionDataKeys.CharacterRef) == giverRef));
+
+        if (sessionStart == null)
+            return null;
+
+        var sessionCharacterRef = sessionStart.GetData<string>(TransactionDataKeys.CharacterRef);
+
+        var sessionCompletion = prior.LastOrDefault(t =>
+            t.Type == SagaTransactionType.DialogueCompleted &&
+            t.SequenceNumber > sessionStart.SequenceNumber &&
+            t.GetData<string>(TransactionDataKeys.CharacterRef) == sessionCharacterRef);
+
+        // Session still open at the acceptance — the acceptance came from it
+        if (sessionCompletion == null)
+            return sessionStart.SequenceNumber;
+
+        // Session sealed first: only the terminal-accept-node dispatch order may
+        // bridge the gap (see summary above)
+        var acceptanceBelongsToSealedSession = prior
+            .Where(t => t.SequenceNumber > sessionCompletion.SequenceNumber)
+            .All(t => QuestLifecycleTransactionTypes.Contains(t.Type) &&
+                      !(t.Type == SagaTransactionType.QuestAbandoned &&
+                        t.GetData<string>(TransactionDataKeys.QuestRef) == questRef));
+
+        return acceptanceBelongsToSealedSession ? sessionStart.SequenceNumber : null;
+    }
+
+    /// <summary>
+    /// Transaction types the dialogue handlers' quest-event dispatch (and the
+    /// quest pipeline behaviors it triggers) can emit between a terminal node's
+    /// DialogueCompleted and a QuestAccepted from that same node.
+    /// </summary>
+    private static readonly HashSet<SagaTransactionType> QuestLifecycleTransactionTypes = new()
+    {
+        SagaTransactionType.QuestAccepted,
+        SagaTransactionType.QuestCompleted,
+        SagaTransactionType.QuestAbandoned,
+        SagaTransactionType.QuestStageAdvanced,
+        SagaTransactionType.QuestObjectiveCompleted,
+        SagaTransactionType.QuestBranchChosen,
+        SagaTransactionType.ReputationChanged
+    };
 
     // ===== Private Helper Methods =====
 

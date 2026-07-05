@@ -65,7 +65,7 @@ public class QuestState
     public DateTime? CompletedAt { get; set; }
 
     /// <summary>
-    /// Reference to the quest giver (signpost or character)
+    /// Reference to the quest giver character
     /// </summary>
     public string QuestGiverRef { get; set; } = string.Empty;
 
