@@ -50,9 +50,6 @@
         <Achievement AchievementRef="BANDIT_SLAYER" />
       </Reward>
     </Rewards>
-    <FailConditions>
-      <FailCondition Type="CharacterDied" CharacterRef="BanditChief_Prisoner" />
-    </FailConditions>
   </Quest>
   <Quest RefName="ElementalSage_Quest" DisplayName="The Shrine's Secret" Description="Discover a hidden shrine guardian who teaches ancient spiritual traditions.">
     <Stages StartStage="defeat_guardian">
@@ -273,9 +270,6 @@
         <Experience Amount="100" />
       </Reward>
     </Rewards>
-    <FailConditions>
-      <FailCondition Type="CharacterDied" CharacterRef="RefugeeEscort_Leader" />
-    </FailConditions>
   </Quest>
   <Quest RefName="RivalGuild_Quest" DisplayName="The Photo Contest" Description="Compete against another school in a photography scavenger hunt.">
     <Stages StartStage="recruit">
@@ -357,9 +351,6 @@
         <Experience Amount="75" />
       </Reward>
     </Rewards>
-    <FailConditions>
-      <FailCondition Type="CharacterDied" CharacterRef="WanderingMerchant_Merchant" />
-    </FailConditions>
   </Quest>
   <Quest RefName="OFFICIAL_MAIN_CHAIN" DisplayName="The Grand Journey" Description="An epic quest connecting 7 legendary locations across the realm.">
     <Stages StartStage="OFFICIAL_MAIN_CHAIN_STAGE_01">
@@ -506,7 +497,7 @@
   </Quest>
   <Quest RefName="MAIN_QUEST_02" DisplayName="Epic Quest: Journey 2" Description="An epic challenging adventure through Kazamiya (Geku), Tsuchi-no-Miya, Taka-no-Miya, testing all your skills.">
     <Prerequisites>
-      <Prerequisite QuestRef="MAIN_QUEST_01" MinimumLevel="33" />
+      <Prerequisite MinimumLevel="33" />
     </Prerequisites>
     <Stages StartStage="CLEAR_PATH">
       <Stage RefName="CLEAR_PATH" DisplayName="Clear the Path" NextStage="COMPLETE">
@@ -806,8 +797,5 @@
         </Rewards>
       </Stage>
     </Stages>
-    <FailConditions>
-      <FailCondition Type="TimeExpired" TimeLimit="600" />
-    </FailConditions>
   </Quest>
 </Quests>

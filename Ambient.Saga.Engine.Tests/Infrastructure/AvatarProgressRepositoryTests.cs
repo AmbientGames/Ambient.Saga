@@ -159,23 +159,6 @@ public class AvatarProgressRepositoryTests : IDisposable
     }
 
     [Fact]
-    public void QuestFailed_StatusIsFailed()
-    {
-        var accept = CreateTransaction(SagaTransactionType.QuestAccepted, new Dictionary<string, string>
-        {
-            [TransactionDataKeys.QuestRef] = "quest-04"
-        });
-        var fail = CreateTransaction(SagaTransactionType.QuestFailed, new Dictionary<string, string>
-        {
-            [TransactionDataKeys.QuestRef] = "quest-04"
-        });
-
-        _repo.ProjectTransactions(_avatarId, SagaRef, [accept, fail]);
-
-        Assert.Equal(QuestProgressStatus.Failed, _repo.GetQuestStatus(_avatarId, "quest-04"));
-    }
-
-    [Fact]
     public void QuestStageAdvanced_CurrentStageUpdated()
     {
         var accept = CreateTransaction(SagaTransactionType.QuestAccepted, new Dictionary<string, string>

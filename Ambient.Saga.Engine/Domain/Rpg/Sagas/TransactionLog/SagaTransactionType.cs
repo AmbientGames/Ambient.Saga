@@ -80,8 +80,11 @@ public enum SagaTransactionType
     QuestStageAdvanced,      // Advanced to next stage (all objectives complete)
     QuestBranchChosen,       // Avatar chose a branch in exclusive choice stage
     QuestCompleted,          // Quest finished successfully (all stages complete)
-    QuestFailed,             // Quest failed (fail condition triggered or wrong choice)
     QuestAbandoned,          // Quest dropped by avatar
+    // (QuestFailed removed 2026-07-05 — quest failure was removed from the engine
+    // entirely; nothing can produce it. Wire formats carry enum NAMES, so removing
+    // the member is safe: a historical "QuestFailed" string no longer parses and
+    // falls back to Extension, which the validator rejects and replay skips.)
 
     // Structure interactions
     StructureDamaged,

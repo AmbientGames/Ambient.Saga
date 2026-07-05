@@ -92,9 +92,22 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                 return SagaCommandResult.Failure(instance.InstanceId, $"Character '{command.CharacterInstanceId}' not found");
             }
 
+            // VICTORY LOOT exception: the victor of THIS spawn instance may free-take
+            // (zero-price buy) the defeated character's remaining Loot. Anything else
+            // against a dead character — priced trades, or zero-price sells INTO the
+            // corpse — is rejected. Mirrors SagaTransactionValidator.ValidateItemTraded.
+            var isVictoryLootTake = false;
             if (!character.IsAlive)
             {
-                return SagaCommandResult.Failure(instance.InstanceId, "Cannot trade with defeated character");
+                var isVictor = !string.IsNullOrEmpty(character.DefeatedByAvatarId)
+                               && string.Equals(character.DefeatedByAvatarId, command.AvatarId.ToString(), StringComparison.OrdinalIgnoreCase);
+
+                if (!(command.IsBuying && command.PricePerItem == 0 && isVictor))
+                {
+                    return SagaCommandResult.Failure(instance.InstanceId, "Cannot trade with defeated character");
+                }
+
+                isVictoryLootTake = true;
             }
 
             // Owner trades for free (depositing/withdrawing from own shopkeeper).
@@ -115,8 +128,10 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
 
             // WholesalePrice=int.MaxValue is the "cannot be traded" sentinel
             // (Economy.xsd). Selling one used to pay ~2.1 BILLION credits.
+            // Victory-loot takes are exempt: a defeat drop is a gift, not commerce —
+            // untradeable Loot entries are still collectable by the victor.
             var catalogItem = ResolveTradeable(command.ItemRef);
-            if (catalogItem != null && catalogItem.WholesalePrice == int.MaxValue)
+            if (catalogItem != null && catalogItem.WholesalePrice == int.MaxValue && !isVictoryLootTake)
             {
                 return SagaCommandResult.Failure(instance.InstanceId,
                     $"'{command.ItemRef}' cannot be traded");
@@ -249,9 +264,10 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
             // the canonical catalog price with the same formula the trade UI uses
             // (TradeEngine + the merchant's replayed traits) and reject mismatches —
             // otherwise a tampered client buys at 0 or sells at any price it likes.
-            // Owner trades are free (totalPrice forced to 0 above) and items without
-            // a catalog entry have no server price to compare against.
-            if (!isOwner && catalogItem != null)
+            // Owner trades are free (totalPrice forced to 0 above), items without
+            // a catalog entry have no server price to compare against, and victory-loot
+            // takes are zero-price BY RULE (enforced above).
+            if (!isOwner && catalogItem != null && !isVictoryLootTake)
             {
                 var tradeEngine = new TradeEngine(_world);
                 currentState.CharacterTraits.TryGetValue(character.CharacterRef, out var merchantTraits);

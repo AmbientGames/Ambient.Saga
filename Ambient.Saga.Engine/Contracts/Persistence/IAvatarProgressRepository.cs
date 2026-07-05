@@ -13,6 +13,15 @@ public interface IAvatarProgressRepository
 
     void ProjectTransactions(Guid avatarId, string sagaRef, IReadOnlyList<SagaTransaction> transactions);
 
+    /// <summary>
+    /// Best-effort inverse of <see cref="ProjectTransactions"/> for transactions
+    /// that were projected and later reversed (server rejection compensation).
+    /// Pass the ORIGINAL transactions being reversed, not the TransactionReversed
+    /// compensations. Non-invertible projections (QuestStageAdvanced's previous
+    /// stage, TraitRemoved's previous value) are skipped.
+    /// </summary>
+    void ReverseTransactions(Guid avatarId, string sagaRef, IReadOnlyList<SagaTransaction> reversedOriginals);
+
     // ===== QUEST TOKENS =====
 
     bool HasQuestToken(Guid avatarId, string questTokenRef);

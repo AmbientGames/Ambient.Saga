@@ -133,40 +133,6 @@
         </xs:restriction>
     </xs:simpleType>
 
-    <!-- Fail Condition Types -->
-    <xs:simpleType name="QuestFailConditionType">
-        <xs:annotation>
-            <xs:documentation>Defines conditions that cause a quest to fail automatically.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="CharacterDied">
-                <xs:annotation>
-                    <xs:documentation>Quest fails if a specific protected character is killed.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="TimeExpired">
-                <xs:annotation>
-                    <xs:documentation>Quest fails if the time limit (in seconds) elapses.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="ItemLost">
-                <xs:annotation>
-                    <xs:documentation>Quest fails if a required item is lost, consumed, or traded away.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="LocationLeft">
-                <xs:annotation>
-                    <xs:documentation>Quest fails if the avatar leaves a required area.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="WrongChoiceMade">
-                <xs:annotation>
-                    <xs:documentation>Quest fails if the avatar selects a specific disqualifying dialogue choice.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-        </xs:restriction>
-    </xs:simpleType>
-
     <!-- Reward Types -->
     <xs:simpleType name="QuestRewardCondition">
         <xs:annotation>
@@ -176,11 +142,6 @@
             <xs:enumeration value="OnSuccess">
                 <xs:annotation>
                     <xs:documentation>Reward is granted when the quest or stage completes successfully.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="OnFailure">
-                <xs:annotation>
-                    <xs:documentation>Reward is granted when the quest fails (e.g., consolation prize).</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
             <xs:enumeration value="OnBranch">
@@ -455,7 +416,7 @@
         </xs:sequence>
         <xs:attribute name="Condition" type="QuestRewardCondition" use="required">
             <xs:annotation>
-                <xs:documentation>Determines when this reward is granted (on success, failure, branch, or objective).</xs:documentation>
+                <xs:documentation>Determines when this reward is granted (on success, branch, or objective).</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="BranchRef" type="QuestBranchRef" use="optional">
@@ -466,48 +427,6 @@
         <xs:attribute name="ObjectiveRef" type="QuestObjectiveRef" use="optional">
             <xs:annotation>
                 <xs:documentation>Required when Condition is OnObjective; specifies which objective triggers this reward.</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-    </xs:complexType>
-
-    <!-- Quest Fail Condition -->
-    <xs:complexType name="QuestFailCondition">
-        <xs:annotation>
-            <xs:documentation>A condition that, when triggered, causes the quest to fail immediately.</xs:documentation>
-        </xs:annotation>
-        <xs:attribute name="Type" type="QuestFailConditionType" use="required">
-            <xs:annotation>
-                <xs:documentation>The type of event that triggers quest failure.</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="CharacterRef" type="xs:string" use="optional">
-            <xs:annotation>
-                <xs:documentation>Character whose death triggers failure (used with CharacterDied).</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="ItemRef" type="xs:string" use="optional">
-            <xs:annotation>
-                <xs:documentation>Item whose loss triggers failure (used with ItemLost).</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="LocationRef" type="xs:string" use="optional">
-            <xs:annotation>
-                <xs:documentation>Location the avatar must stay within (used with LocationLeft).</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="DialogueRef" type="xs:string" use="optional">
-            <xs:annotation>
-                <xs:documentation>Dialogue tree containing the disqualifying choice (used with WrongChoiceMade).</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="ChoiceRef" type="xs:string" use="optional">
-            <xs:annotation>
-                <xs:documentation>Specific dialogue choice that triggers failure (used with WrongChoiceMade).</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
-        <xs:attribute name="TimeLimit" type="xs:int" use="optional">
-            <xs:annotation>
-                <xs:documentation>Time limit in seconds before the quest fails (used with TimeExpired).</xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -552,7 +471,7 @@
     <!-- Quest (Main Definition) -->
     <xs:complexType name="Quest">
         <xs:annotation>
-            <xs:documentation>A multi-stage quest definition with prerequisites, branching objectives, rewards, and fail conditions.</xs:documentation>
+            <xs:documentation>A multi-stage quest definition with prerequisites, branching objectives, and rewards.</xs:documentation>
         </xs:annotation>
         <xs:complexContent>
             <xs:extension base="EntityBase">
@@ -585,15 +504,6 @@
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element name="Reward" type="QuestReward" minOccurs="1" maxOccurs="unbounded" />
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-
-                    <!-- Global fail conditions (CheckFailConditions is implemented but not called at runtime — fail conditions are not enforced) -->
-                    <xs:element name="FailConditions" minOccurs="0" maxOccurs="1">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element name="FailCondition" type="QuestFailCondition" minOccurs="1" maxOccurs="unbounded" />
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>

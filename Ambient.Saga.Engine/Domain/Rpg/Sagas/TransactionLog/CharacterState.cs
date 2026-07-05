@@ -55,6 +55,15 @@ public class CharacterState
     public DateTime? DespawnedAt { get; set; }
 
     /// <summary>
+    /// AvatarId of the avatar that defeated this character instance (null while alive).
+    /// Folded from the CharacterDefeated transaction's VictorAvatarId (falling back to
+    /// the transaction author). Scoped to THIS spawn instance — a respawned instance
+    /// starts fresh. Gates the victory-loot free-take: only the victor may take the
+    /// defeated character's remaining Loot (zero-price ItemTraded buys).
+    /// </summary>
+    public string? DefeatedByAvatarId { get; set; }
+
+    /// <summary>
     /// Total damage dealt to this character by each avatar.
     /// Key: AvatarId, Value: Total damage
     /// </summary>

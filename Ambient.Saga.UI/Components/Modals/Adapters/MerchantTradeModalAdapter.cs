@@ -13,9 +13,11 @@ public class MerchantTradeModalAdapter : IModal
 
     public bool CanOpen(object? context)
     {
-        // Merchants (CanTrade) and caches (IsCache) both use this modal.
+        // Merchants (CanTrade), caches (IsCache) and victory loot (IsVictoryLoot —
+        // a character defeated by this avatar with remaining Loot) all use this modal.
         return context is CharacterContext { Character.CanTrade: true }
-            || context is CharacterContext { Character.IsCache: true };
+            || context is CharacterContext { Character.IsCache: true }
+            || context is CharacterContext { Character.IsVictoryLoot: true };
     }
 
     public void OnOpening(object? context)

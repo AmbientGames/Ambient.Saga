@@ -30,11 +30,16 @@ public class TransactionReversalTests
         {
             RefName = "Merchant",
             DisplayName = "Village Merchant",
-            Capabilities = new ItemCollection
+            // Trade stock lives in Interactable.Loot — ApplyCharacterSpawned clones it
+            // into the live CurrentInventory per spawn instance
+            Interactable = new Interactable
             {
-                Consumables = new[]
+                Loot = new ItemCollection
                 {
-                    new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 10 }
+                    Consumables = new[]
+                    {
+                        new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 10 }
+                    }
                 }
             }
         };
@@ -122,6 +127,49 @@ public class TransactionReversalTests
         });
         Assert.Equal(10, state.Characters[MerchantInstanceId.ToString()]
             .CurrentInventory!.Consumables!.Single(c => c.ConsumableRef == "HealthPotion").Quantity);
+    }
+
+    [Fact]
+    public void Replay_ReversedReputationChanged_RestoresReputation()
+    {
+        var world = CreateWorldWithMerchant();
+        var stateMachine = CreateStateMachine(world);
+
+        var repChange = CreateTransaction(SagaTransactionType.ReputationChanged, 1, new Dictionary<string, string>
+        {
+            [TransactionDataKeys.FactionRef] = "VillageFaction",
+            [TransactionDataKeys.Amount] = "10"
+        });
+
+        var state = stateMachine.Replay(new List<SagaTransaction>
+        {
+            repChange, CreateReversalTransaction(2, repChange)
+        });
+
+        Assert.Equal(0, state.FactionReputation["VillageFaction"]);
+    }
+
+    [Fact]
+    public void Replay_ReversedQuestTokenAwarded_RemovesToken()
+    {
+        var world = CreateWorldWithMerchant();
+        var stateMachine = CreateStateMachine(world);
+
+        var award = CreateTransaction(SagaTransactionType.QuestTokenAwarded, 1, new Dictionary<string, string>
+        {
+            [TransactionDataKeys.QuestTokenRef] = "token-reversal-test"
+        });
+
+        // Sanity: without the reversal the token is present
+        var stateWithoutReversal = stateMachine.Replay(new List<SagaTransaction> { award });
+        Assert.Contains("token-reversal-test", stateWithoutReversal.AwardedQuestTokens);
+
+        var state = stateMachine.Replay(new List<SagaTransaction>
+        {
+            award, CreateReversalTransaction(2, award)
+        });
+
+        Assert.DoesNotContain("token-reversal-test", state.AwardedQuestTokens);
     }
 
     [Fact]

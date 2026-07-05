@@ -646,7 +646,6 @@ public class JournalPanel
             SagaTransactionType.CharacterSpawned => $"Encountered {characterRef ?? "character"}",
             SagaTransactionType.QuestAccepted => $"Accepted quest: {questRef ?? "unknown"}",
             SagaTransactionType.QuestCompleted => $"Completed quest: {questRef ?? "unknown"}",
-            SagaTransactionType.QuestFailed => $"Failed quest: {questRef ?? "unknown"}",
             SagaTransactionType.QuestAbandoned => $"Abandoned quest: {questRef ?? "unknown"}",
             SagaTransactionType.QuestObjectiveCompleted => $"Objective completed: {questRef ?? "unknown"}",
             SagaTransactionType.QuestStageAdvanced => $"Quest advanced: {questRef ?? "unknown"}",
@@ -707,7 +706,6 @@ public class JournalPanel
             // Quests - blue tones
             SagaTransactionType.QuestAccepted => new Vector4(0.4f, 0.6f, 1f, 1f),
             SagaTransactionType.QuestCompleted => new Vector4(0.4f, 0.9f, 0.4f, 1f),
-            SagaTransactionType.QuestFailed => new Vector4(0.8f, 0.3f, 0.3f, 1f),
             SagaTransactionType.QuestObjectiveCompleted => new Vector4(0.5f, 0.7f, 1f, 1f),
             SagaTransactionType.QuestStageAdvanced => new Vector4(0.5f, 0.8f, 1f, 1f),
 
@@ -920,17 +918,15 @@ public class JournalPanel
     }
 
     /// <summary>
-    /// Gets human-readable criteria text for all 28 achievement criteria types
+    /// Gets human-readable criteria text for every achievement criteria type
     /// </summary>
     private static string GetAchievementCriteriaText(AchievementCriteriaType criteriaType, float threshold)
     {
         return criteriaType switch
         {
             // Progression
-            AchievementCriteriaType.PlayTimeHours => $"Play for {threshold:F0} hours",
             AchievementCriteriaType.BlocksPlaced => $"Place {threshold:F0} blocks",
             AchievementCriteriaType.BlocksDestroyed => $"Destroy {threshold:F0} blocks",
-            AchievementCriteriaType.DistanceTraveled => $"Travel {threshold:F0} meters",
 
             // Combat
             AchievementCriteriaType.CharactersDefeated => $"Defeat {threshold:F0} characters",

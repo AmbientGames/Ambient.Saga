@@ -45,22 +45,12 @@ public class QuestState
     public bool IsSuccess { get; set; }
 
     /// <summary>
-    /// Whether the quest failed (fail condition triggered or wrong choice made)
-    /// </summary>
-    public bool IsFailed { get; set; }
-
-    /// <summary>
-    /// Failure reason (if failed)
-    /// </summary>
-    public string? FailureReason { get; set; }
-
-    /// <summary>
     /// When the quest was accepted
     /// </summary>
     public DateTime AcceptedAt { get; set; }
 
     /// <summary>
-    /// When the quest was completed or failed
+    /// When the quest was completed
     /// </summary>
     public DateTime? CompletedAt { get; set; }
 
@@ -75,9 +65,9 @@ public class QuestState
     public string SagaRef { get; set; } = string.Empty;
 
     /// <summary>
-    /// Whether the quest is complete (success or failure)
+    /// Whether the quest is complete
     /// </summary>
-    public bool IsComplete => IsSuccess || IsFailed;
+    public bool IsComplete => IsSuccess;
 }
 
 /// <summary>
@@ -107,7 +97,5 @@ public class QuestProgressSnapshot
     public List<ObjectiveProgress> Objectives { get; set; } = new();
     public bool IsComplete { get; set; }
     public bool IsSuccess { get; set; }
-    public bool IsFailed { get; set; }
-    public string? FailureReason { get; set; }
     public float OverallProgress { get; set; } // 0.0 - 1.0 across all stages
 }

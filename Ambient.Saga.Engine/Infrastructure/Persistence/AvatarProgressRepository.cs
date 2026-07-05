@@ -49,9 +49,6 @@ public class AvatarProgressRepository : IAvatarProgressRepository
                 case SagaTransactionType.QuestCompleted:
                     ProjectQuestCompleted(avatarId, tx);
                     break;
-                case SagaTransactionType.QuestFailed:
-                    ProjectQuestFailed(avatarId, tx);
-                    break;
                 case SagaTransactionType.QuestAbandoned:
                     ProjectQuestAbandoned(avatarId, tx);
                     break;
@@ -73,6 +70,48 @@ public class AvatarProgressRepository : IAvatarProgressRepository
                 case SagaTransactionType.TraitRemoved:
                     ProjectTraitRemoved(avatarId, tx);
                     break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Best-effort inverse projection for server-rejected (reversed) transactions.
+    /// Mirrors the ProjectTransactions switch; types whose prior projection value is
+    /// unrecoverable from the transaction alone (QuestStageAdvanced, TraitRemoved)
+    /// are skipped — the log keeps the TransactionReversed audit record either way.
+    /// </summary>
+    public void ReverseTransactions(Guid avatarId, string sagaRef, IReadOnlyList<SagaTransaction> reversedOriginals)
+    {
+        foreach (var tx in reversedOriginals)
+        {
+            switch (tx.Type)
+            {
+                case SagaTransactionType.QuestTokenAwarded:
+                    ReverseQuestToken(avatarId, tx);
+                    break;
+
+                case SagaTransactionType.QuestAccepted:
+                    ReverseQuestAccepted(avatarId, tx);
+                    break;
+                case SagaTransactionType.QuestCompleted:
+                case SagaTransactionType.QuestAbandoned:
+                    // Inverse of a terminal quest status: the quest was Active before
+                    ReverseQuestTerminalStatus(avatarId, tx);
+                    break;
+
+                case SagaTransactionType.CharacterDefeated:
+                    ReverseCharacterDefeated(avatarId, tx);
+                    break;
+
+                case SagaTransactionType.ReputationChanged:
+                    ReverseReputationChanged(avatarId, tx);
+                    break;
+
+                case SagaTransactionType.TraitAssigned:
+                    ReverseTraitAssigned(avatarId, tx);
+                    break;
+
+                    // QuestStageAdvanced / TraitRemoved: previous value unknown — skip
             }
         }
     }
@@ -159,20 +198,6 @@ public class AvatarProgressRepository : IAvatarProgressRepository
         if (existing != null)
         {
             existing.Status = QuestProgressStatus.Completed;
-            existing.CompletedAt = tx.LocalTimestamp;
-            _questProgress.Update(existing);
-        }
-    }
-
-    private void ProjectQuestFailed(Guid avatarId, SagaTransaction tx)
-    {
-        var questRef = tx.Data.GetValueOrDefault(TransactionDataKeys.QuestRef);
-        if (string.IsNullOrEmpty(questRef)) return;
-
-        var existing = _questProgress.FindOne(x => x.AvatarId == avatarId && x.QuestRef == questRef);
-        if (existing != null)
-        {
-            existing.Status = QuestProgressStatus.Failed;
             existing.CompletedAt = tx.LocalTimestamp;
             _questProgress.Update(existing);
         }
@@ -280,6 +305,96 @@ public class AvatarProgressRepository : IAvatarProgressRepository
                 TraitValue = traitValue,
                 AssignedAt = tx.LocalTimestamp
             });
+        }
+    }
+
+    // ===== REVERSAL METHODS (inverse projections, best-effort) =====
+
+    private void ReverseQuestToken(Guid avatarId, SagaTransaction tx)
+    {
+        var tokenRef = tx.Data.GetValueOrDefault(TransactionDataKeys.QuestTokenRef);
+        if (string.IsNullOrEmpty(tokenRef)) return;
+
+        var existing = _questTokens.FindOne(x => x.AvatarId == avatarId && x.QuestTokenRef == tokenRef);
+        if (existing != null)
+        {
+            _questTokens.Delete(existing.Id);
+        }
+    }
+
+    private void ReverseQuestAccepted(Guid avatarId, SagaTransaction tx)
+    {
+        var questRef = tx.Data.GetValueOrDefault(TransactionDataKeys.QuestRef);
+        if (string.IsNullOrEmpty(questRef)) return;
+
+        // Only delete if the row still reflects the accept being reversed —
+        // a later completion means a different (unreversed) history took over
+        var existing = _questProgress.FindOne(x => x.AvatarId == avatarId && x.QuestRef == questRef);
+        if (existing != null && existing.Status == QuestProgressStatus.Active)
+        {
+            _questProgress.Delete(existing.Id);
+        }
+    }
+
+    private void ReverseQuestTerminalStatus(Guid avatarId, SagaTransaction tx)
+    {
+        var questRef = tx.Data.GetValueOrDefault(TransactionDataKeys.QuestRef);
+        if (string.IsNullOrEmpty(questRef)) return;
+
+        var existing = _questProgress.FindOne(x => x.AvatarId == avatarId && x.QuestRef == questRef);
+        if (existing != null && existing.Status != QuestProgressStatus.Active)
+        {
+            existing.Status = QuestProgressStatus.Active;
+            existing.CompletedAt = null;
+            _questProgress.Update(existing);
+        }
+    }
+
+    private void ReverseCharacterDefeated(Guid avatarId, SagaTransaction tx)
+    {
+        var characterRef = tx.Data.GetValueOrDefault(TransactionDataKeys.CharacterRef);
+        if (string.IsNullOrEmpty(characterRef)) return;
+
+        var existing = _bossDefeats.FindOne(x => x.AvatarId == avatarId && x.CharacterRef == characterRef);
+        if (existing == null) return;
+
+        existing.DefeatedCount--;
+        if (existing.DefeatedCount <= 0)
+        {
+            _bossDefeats.Delete(existing.Id);
+        }
+        else
+        {
+            _bossDefeats.Update(existing);
+        }
+    }
+
+    private void ReverseReputationChanged(Guid avatarId, SagaTransaction tx)
+    {
+        var factionRef = tx.Data.GetValueOrDefault(TransactionDataKeys.FactionRef);
+        if (string.IsNullOrEmpty(factionRef)) return;
+        if (!int.TryParse(tx.Data.GetValueOrDefault(TransactionDataKeys.Amount), out var amount)) return;
+
+        var existing = _factionReputation.FindOne(x => x.AvatarId == avatarId && x.FactionRef == factionRef);
+        if (existing == null) return;
+
+        existing.ReputationValue -= amount;
+        existing.LastChangedAt = tx.LocalTimestamp;
+        _factionReputation.Update(existing);
+    }
+
+    private void ReverseTraitAssigned(Guid avatarId, SagaTransaction tx)
+    {
+        // Prior trait value is unknowable from the transaction, so removal is the
+        // closest inverse (mirrors ProjectTraitRemoved)
+        var characterRef = tx.Data.GetValueOrDefault(TransactionDataKeys.CharacterRef);
+        var traitType = tx.Data.GetValueOrDefault(TransactionDataKeys.TraitType);
+        if (string.IsNullOrEmpty(characterRef) || string.IsNullOrEmpty(traitType)) return;
+
+        var existing = _characterTraits.FindOne(x => x.AvatarId == avatarId && x.CharacterRef == characterRef && x.TraitType == traitType);
+        if (existing != null)
+        {
+            _characterTraits.Delete(existing.Id);
         }
     }
 

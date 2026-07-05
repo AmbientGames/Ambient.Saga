@@ -4,7 +4,6 @@ public enum QuestProgressStatus
 {
     Active,
     Completed,
-    Failed,
     Abandoned
 }
 

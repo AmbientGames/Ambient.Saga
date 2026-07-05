@@ -74,7 +74,6 @@ internal sealed class GetQuestProgressHandler : IRequestHandler<GetQuestProgress
                     Objectives = new List<ObjectiveProgress>(),
                     IsComplete = true,
                     IsSuccess = true,
-                    IsFailed = false,
                     OverallProgress = 1.0f
                 };
             }
@@ -105,9 +104,7 @@ internal sealed class GetQuestProgressHandler : IRequestHandler<GetQuestProgress
             QuestRef = questState.QuestRef,
             DisplayName = questState.DisplayName,
             IsComplete = questState.IsComplete,
-            IsSuccess = questState.IsSuccess,
-            IsFailed = questState.IsFailed,
-            FailureReason = questState.FailureReason
+            IsSuccess = questState.IsSuccess
         };
 
         // Find current stage

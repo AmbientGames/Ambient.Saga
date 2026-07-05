@@ -10,6 +10,7 @@ using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Tests.Helpers;
+using Ambient.Saga.Engine.Domain;
 using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -124,16 +125,21 @@ public class TradeItemCommandTests : IDisposable
         {
             RefName = "Merchant",
             DisplayName = "Village Merchant",
-            // Merchants only sell what they stock (see TradeItemHandler)
-            Capabilities = new ItemCollection
+            // Merchants only sell what they stock (see TradeItemHandler). Stock is the
+            // template's Interactable.Loot — "the stuff they give you" — which
+            // ApplyCharacterSpawned clones into the live CurrentInventory per spawn.
+            Interactable = new Interactable
             {
-                Consumables = new[]
+                Loot = new ItemCollection
                 {
-                    new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 100 }
-                },
-                Equipment = new[]
-                {
-                    new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
+                    Consumables = new[]
+                    {
+                        new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 100 }
+                    },
+                    Equipment = new[]
+                    {
+                        new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
+                    }
                 }
             }
         };
@@ -324,6 +330,120 @@ public class TradeItemCommandTests : IDisposable
         // Assert — buying a duplicate degradable used to charge and grant nothing
         Assert.False(result.Successful);
         Assert.Contains("Already own", result.ErrorMessage);
+    }
+
+    /// <summary>Appends a committed CharacterDefeated transaction carrying the victor.</summary>
+    private async Task DefeatCharacter(Guid avatarId, string sagaRef, Guid characterInstanceId, Guid victorAvatarId)
+    {
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        var defeatTx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.CharacterDefeated,
+            AvatarId = victorAvatarId.ToString(),
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                [TransactionDataKeys.CharacterInstanceId] = characterInstanceId.ToString(),
+                [TransactionDataKeys.CharacterRef] = "Merchant",
+                [TransactionDataKeys.VictorAvatarId] = victorAvatarId.ToString()
+            }
+        };
+        await _repository.AddTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { defeatTx });
+        await _repository.CommitTransactionsAsync(instance.InstanceId, new List<Guid> { defeatTx.TransactionId });
+    }
+
+    [Fact]
+    public async Task TradeItem_VictorFreeTakeFromDefeatedCharacter_Succeeds()
+    {
+        // Victory loot: the avatar that defeated the character may take its remaining
+        // Loot as zero-price buys — replay/sync/stock tracking ride the normal
+        // ItemTraded path.
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+        await DefeatCharacter(avatarId, "VillageMerchant", characterInstanceId, victorAvatarId: avatarId);
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            SagaArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 0
+        };
+
+        var result = await _mediator.Send(command);
+
+        Assert.True(result.Successful, $"Victor free-take failed: {result.ErrorMessage}");
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, "VillageMerchant");
+        var tradeTx = instance.GetCommittedTransactions()
+            .FirstOrDefault(t => t.Type == SagaTransactionType.ItemTraded);
+        Assert.NotNull(tradeTx);
+        Assert.Equal("0", tradeTx!.Data["TotalPrice"]);
+    }
+
+    [Fact]
+    public async Task TradeItem_NonVictorTakeFromDefeatedCharacter_Rejected()
+    {
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+        // Someone ELSE defeated the character
+        await DefeatCharacter(avatarId, "VillageMerchant", characterInstanceId, victorAvatarId: Guid.NewGuid());
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            SagaArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = true,
+            PricePerItem = 0
+        };
+
+        var result = await _mediator.Send(command);
+
+        Assert.False(result.Successful);
+        Assert.Contains("defeated", result.ErrorMessage);
+    }
+
+    [Fact]
+    public async Task TradeItem_ZeroPriceSellToDefeatedCharacter_Rejected()
+    {
+        // Even the victor cannot deposit INTO the corpse — free-take is buy-only
+        var avatarId = Guid.NewGuid();
+        var avatar = CreateTestAvatar(avatarId);
+        avatar.Capabilities.Consumables = new[]
+        {
+            new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 5 }
+        };
+        var characterInstanceId = await SpawnMerchant(avatarId, "VillageMerchant");
+        await DefeatCharacter(avatarId, "VillageMerchant", characterInstanceId, victorAvatarId: avatarId);
+
+        var command = new TradeItemCommand
+        {
+            AvatarId = avatarId,
+            Avatar = avatar,
+            SagaArcRef = "VillageMerchant",
+            CharacterInstanceId = characterInstanceId,
+            ItemRef = "HealthPotion",
+            Quantity = 1,
+            IsBuying = false,
+            PricePerItem = 0
+        };
+
+        var result = await _mediator.Send(command);
+
+        Assert.False(result.Successful);
+        Assert.Contains("defeated", result.ErrorMessage);
     }
 
     [Fact]

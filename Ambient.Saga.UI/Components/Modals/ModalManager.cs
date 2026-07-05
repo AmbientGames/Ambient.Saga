@@ -97,6 +97,11 @@ public class ModalManager
         _modalRegistry.Register(new Adapters.DialogueModalAdapter(this));
         _battleModalAdapter = new Adapters.BattleModalAdapter(this);
         _battleModalAdapter.AvatarDefeated += () => BattleDefeatRequested?.Invoke();
+        // Victory loot: when a battle ends in victory and its modal closes, offer the
+        // defeated character's remaining Loot as a free-take (works in EVERY host that
+        // renders through this ModalManager — Schema 3D games and the sandbox alike).
+        _battleModalAdapter.VictoryLootAvailable += (viewModel, character) =>
+            _ = QueueVictoryLootAsync(viewModel, character);
         _modalRegistry.Register(_battleModalAdapter);
 
         // Quest-log detail modal (needs IMediator). The signpost offer modal
@@ -213,6 +218,67 @@ public class ModalManager
         {
             _battleModalAdapter.Update(deltaTime);
         }
+
+        // Open a queued victory-loot modal once no other modal is in the way —
+        // same deferred-never-dropped contract as TryOpenAssault (the request stays
+        // queued while dialogue/trade/pause modals are open, then fires).
+        if (_pendingVictoryLoot is { } pending && !HasActiveModal())
+        {
+            _pendingVictoryLoot = null;
+            SelectedCharacter = pending.Character;
+            OpenRegisteredModal("MerchantTrade", new CharacterContext(pending.ViewModel, pending.Character));
+        }
+    }
+
+    /// <summary>
+    /// Pending victory-loot request: set after a victorious battle's modal closes,
+    /// consumed by Update() as soon as the modal stack is free.
+    /// </summary>
+    private (SagaMainViewModel ViewModel, CharacterViewModel Character)? _pendingVictoryLoot;
+
+    /// <summary>
+    /// Validates a victory-loot offer against the replayed saga state (server-of-record
+    /// for the drop): the character must be dead, THIS avatar must be its victor, and
+    /// its remaining Loot must be non-empty — an empty drop opens no modal. On success
+    /// the request is queued; Update() opens the trade modal in victory-loot mode when
+    /// no other modal is active (deferred, never dropped).
+    /// </summary>
+    private async Task QueueVictoryLootAsync(SagaMainViewModel viewModel, CharacterViewModel character)
+    {
+        try
+        {
+            if (viewModel.Avatar == null)
+                return;
+
+            var sagaState = await _mediator.Send(new GetSagaStateQuery
+            {
+                AvatarId = viewModel.Avatar.AvatarId,
+                SagaRef = character.SagaRef,
+            });
+
+            if (sagaState == null ||
+                !sagaState.Characters.TryGetValue(character.CharacterInstanceId.ToString(), out var characterState))
+                return;
+
+            if (characterState.IsAlive)
+                return;
+
+            var avatarId = viewModel.Avatar.AvatarId.ToString();
+            if (string.IsNullOrEmpty(characterState.DefeatedByAvatarId) ||
+                !string.Equals(characterState.DefeatedByAvatarId, avatarId, StringComparison.OrdinalIgnoreCase))
+                return;
+
+            // Empty Loot → no modal
+            if (!(characterState.CurrentInventory?.HasAnyItems() ?? false))
+                return;
+
+            character.IsVictoryLoot = true;
+            _pendingVictoryLoot = (viewModel, character);
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[ModalManager] Victory loot check failed: {ex.Message}");
+        }
     }
 
     public void Render(SagaMainViewModel viewModel)
@@ -261,7 +327,13 @@ public class ModalManager
         // Open appropriate modal based on available interactions (determined by character traits and state)
         // Dead characters route through dialogue too — that is where the
         // RemnantLoot/trade flow attaches.
-        if (character.CanDialogue)
+        if (character.IsVictoryLoot && !character.IsAlive)
+        {
+            // Defeated-by-this-avatar character with remaining Loot: clicking the corpse
+            // re-opens the victory-loot free-take (same modal the battle-close flow opens).
+            OpenRegisteredModal("MerchantTrade", context);
+        }
+        else if (character.CanDialogue)
         {
             // Character with dialogue - start conversation
             OpenRegisteredModal("Dialogue", context);

@@ -125,7 +125,7 @@ avatar-level LiteDB collections, projected from the transaction log on commit.
 | Table | Transaction Source | Used By |
 |---|---|---|
 | `AvatarQuestTokens` | `QuestTokenAwarded` | `HasQuestToken` / `LacksQuestToken` dialogue conditions, `TriggerAvailabilityChecker`, quest prerequisites |
-| `AvatarQuestProgress` | `QuestAccepted`, `QuestCompleted`, `QuestAbandoned`, `QuestFailed`, `QuestStageAdvanced` | `QuestActive` / `QuestCompleted` / `QuestNotStarted` dialogue conditions |
+| `AvatarQuestProgress` | `QuestAccepted`, `QuestCompleted`, `QuestAbandoned`, `QuestStageAdvanced` | `QuestActive` / `QuestCompleted` / `QuestNotStarted` dialogue conditions |
 | `AvatarBossDefeats` | `CharacterDefeated` | `BossDefeatedCount` dialogue condition |
 | `AvatarFactionReputation` | `ReputationChanged` | `ReputationLevel` / `ReputationValue` dialogue conditions |
 | `AvatarCharacterTraits` | `TraitAssigned`, `TraitRemoved` | `TraitComparison` dialogue condition |

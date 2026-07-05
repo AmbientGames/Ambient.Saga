@@ -99,8 +99,6 @@ public static class AchievementProgressEvaluator
             // Traditional voxel metrics (not event-sourced yet)
             AchievementCriteriaType.BlocksPlaced => 0, // TODO: Implement if needed
             AchievementCriteriaType.BlocksDestroyed => 0, // TODO: Implement if needed
-            AchievementCriteriaType.DistanceTraveled => 0, // TODO: Implement if needed
-            AchievementCriteriaType.PlayTimeHours => 0, // TODO: Implement if needed
 
             _ => 0
         };

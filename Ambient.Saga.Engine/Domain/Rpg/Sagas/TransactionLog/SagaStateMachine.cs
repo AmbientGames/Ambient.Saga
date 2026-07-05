@@ -289,10 +289,6 @@ public class SagaStateMachine
                 ApplyQuestCompleted(state, tx);
                 break;
 
-            case SagaTransactionType.QuestFailed:
-                ApplyQuestFailed(state, tx);
-                break;
-
             case SagaTransactionType.QuestAbandoned:
                 ApplyQuestAbandoned(state, tx);
                 break;
@@ -457,23 +453,31 @@ public class SagaStateMachine
             CharacterStatsCopier.CopyCharacterStats(characterTemplate.Stats, copiedStats);
         }
 
-        // Deep clone inventory from template - each item is cloned to avoid shared state
+        // Deep clone the GIVEABLE stock from the template - each item is cloned to avoid
+        // shared state. The source is Interactable.Loot ("the stuff they give you"):
+        // merchant trade stock for traders, victory drops for defeated hostiles/bosses.
+        // Capabilities is deliberately NOT the source — that is the gear the character
+        // USES in battle (re-attached from the template by the battle handlers), never
+        // the player-acquirable inventory. Because the clone happens per CharacterSpawned
+        // (per spawn instance), a RESPAWNED character comes back with fresh template Loot
+        // while the previous life's ItemTraded takes stay folded on the old instance.
+        var lootTemplate = characterTemplate.Interactable?.Loot;
         ItemCollection? copiedInventory = null;
-        if (characterTemplate.Capabilities != null)
+        if (lootTemplate != null)
         {
             copiedInventory = new ItemCollection
             {
-                Blocks = characterTemplate.Capabilities.Blocks?.Select(b => new BlockEntry
+                Blocks = lootTemplate.Blocks?.Select(b => new BlockEntry
                     { BlockRef = b.BlockRef, Quantity = b.Quantity }).ToArray(),
-                Tools = characterTemplate.Capabilities.Tools?.Select(t => new ToolEntry
+                Tools = lootTemplate.Tools?.Select(t => new ToolEntry
                     { ToolRef = t.ToolRef, Condition = t.Condition }).ToArray(),
-                Equipment = characterTemplate.Capabilities.Equipment?.Select(e => new EquipmentEntry
+                Equipment = lootTemplate.Equipment?.Select(e => new EquipmentEntry
                     { EquipmentRef = e.EquipmentRef, Condition = e.Condition }).ToArray(),
-                Consumables = characterTemplate.Capabilities.Consumables?.Select(c => new ConsumableEntry
+                Consumables = lootTemplate.Consumables?.Select(c => new ConsumableEntry
                     { ConsumableRef = c.ConsumableRef, Quantity = c.Quantity }).ToArray(),
-                Spells = characterTemplate.Capabilities.Spells?.Select(s => new SpellEntry
+                Spells = lootTemplate.Spells?.Select(s => new SpellEntry
                     { SpellRef = s.SpellRef, Condition = s.Condition }).ToArray(),
-                BuildingMaterials = characterTemplate.Capabilities.BuildingMaterials?.Select(m => new BuildingMaterialEntry
+                BuildingMaterials = lootTemplate.BuildingMaterials?.Select(m => new BuildingMaterialEntry
                     { BuildingMaterialRef = m.BuildingMaterialRef, Quantity = m.Quantity }).ToArray(),
             };
         }
@@ -557,6 +561,11 @@ public class SagaStateMachine
         {
             character.IsAlive = false;
             character.DefeatedAt = tx.GetCanonicalTimestamp();
+            // The avatar whose damage dropped the character to zero is the victor
+            if (!string.IsNullOrEmpty(tx.AvatarId))
+            {
+                character.DefeatedByAvatarId = tx.AvatarId;
+            }
         }
     }
 
@@ -581,6 +590,12 @@ public class SagaStateMachine
         character.IsAlive = false;
         character.CurrentHealth = 0;
         character.DefeatedAt = tx.GetCanonicalTimestamp();
+
+        // Record the victor for this spawn instance — gates the victory-loot free-take
+        // (BattleEndTransactionFactory / DefeatCharacterHandler stamp VictorAvatarId;
+        // fall back to the transaction author for older logs).
+        var victor = tx.GetData<string>(TransactionDataKeys.VictorAvatarId);
+        character.DefeatedByAvatarId = !string.IsNullOrEmpty(victor) ? victor : tx.AvatarId;
     }
 
     private void ApplyCharacterDespawned(SagaState state, SagaTransaction tx)
@@ -983,25 +998,6 @@ public class SagaStateMachine
         state.CompletedQuests.Add(questRef);
     }
 
-    private void ApplyQuestFailed(SagaState state, SagaTransaction tx)
-    {
-        var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
-        if (string.IsNullOrEmpty(questRef))
-            return;
-
-        // Only apply if quest is active
-        if (!state.ActiveQuests.TryGetValue(questRef, out var questState))
-            return;
-
-        // Mark as failed
-        questState.IsFailed = true;
-        questState.FailureReason = tx.GetData<string>(TransactionDataKeys.FailureReason);
-        questState.CompletedAt = tx.GetCanonicalTimestamp();
-
-        // Remove from active quests (not added to completed)
-        state.ActiveQuests.Remove(questRef);
-    }
-
     private void ApplyQuestAbandoned(SagaState state, SagaTransaction tx)
     {
         var questRef = tx.GetData<string>(TransactionDataKeys.QuestRef);
@@ -1057,11 +1053,19 @@ public class SagaStateMachine
     // ===== Compensating Transaction Application =====
 
     /// <summary>
-    /// Applies a TransactionReversed compensation: the referenced transaction
-    /// committed to the log but its avatar-side persistence failed (see
-    /// TradeItemHandler), so its saga-side fold must be undone. Reverses the
-    /// types with a state fold (ItemTraded); anything else is logged and
-    /// skipped — never quarantined as unknown.
+    /// Applies a TransactionReversed compensation against a still-Committed
+    /// original: the referenced transaction committed to the log but a later
+    /// step failed (avatar persistence — see TradeItemHandler and the dialogue
+    /// reward handlers), so its saga-side fold must be undone. Reverses the
+    /// avatar-affecting types with an invertible fold (ItemTraded,
+    /// ReputationChanged, QuestTokenAwarded, QuestAccepted, QuestCompleted,
+    /// TraitAssigned); anything else is logged and skipped — never quarantined
+    /// as unknown.
+    ///
+    /// Note: server-REJECTED transactions take a different path — they are
+    /// marked Rejected (excluded from replay entirely), so their compensation
+    /// deliberately dangles here and skips (the original isn't in
+    /// transactionsById). See SagaInstanceRepository.RejectAndCompensateTransactionsAsync.
     /// </summary>
     private void ApplyTransactionReversed(SagaState state, SagaTransaction tx, IReadOnlyDictionary<Guid, SagaTransaction>? transactionsById)
     {
@@ -1084,6 +1088,74 @@ public class SagaStateMachine
             case SagaTransactionType.ItemTraded:
                 ApplyItemTraded(state, original, invert: true);
                 break;
+
+            case SagaTransactionType.ReputationChanged:
+            {
+                var factionRef = original.GetData<string>(TransactionDataKeys.FactionRef);
+                var amount = original.GetData<int>(TransactionDataKeys.Amount);
+                if (!string.IsNullOrEmpty(factionRef) && state.FactionReputation.ContainsKey(factionRef))
+                {
+                    state.FactionReputation[factionRef] -= amount;
+                }
+                break;
+            }
+
+            case SagaTransactionType.QuestTokenAwarded:
+            {
+                var tokenRef = original.GetData<string>(TransactionDataKeys.QuestTokenRef);
+                if (!string.IsNullOrEmpty(tokenRef))
+                {
+                    state.AwardedQuestTokens.Remove(tokenRef);
+                }
+                break;
+            }
+
+            case SagaTransactionType.QuestAccepted:
+            {
+                var questRef = original.GetData<string>(TransactionDataKeys.QuestRef);
+                if (!string.IsNullOrEmpty(questRef))
+                {
+                    state.ActiveQuests.Remove(questRef);
+                }
+                break;
+            }
+
+            case SagaTransactionType.QuestCompleted:
+            {
+                // Inverse is "not completed": cross-arc gates stop counting it.
+                // Stage progress at completion time is unrecoverable from the
+                // single transaction, so the quest does NOT return to ActiveQuests —
+                // the avatar can re-accept it.
+                var questRef = original.GetData<string>(TransactionDataKeys.QuestRef);
+                if (!string.IsNullOrEmpty(questRef))
+                {
+                    state.CompletedQuests.Remove(questRef);
+                }
+                break;
+            }
+
+            case SagaTransactionType.TraitAssigned:
+            {
+                // Prior value is unknowable — removal is the closest inverse
+                // (mirrors ApplyTraitRemoved)
+                var characterRef = original.GetData<string>(TransactionDataKeys.CharacterRef);
+                var traitType = original.GetData<string>(TransactionDataKeys.TraitType);
+                if (!string.IsNullOrEmpty(characterRef) && !string.IsNullOrEmpty(traitType))
+                {
+                    if (state.CharacterTraits.TryGetValue(characterRef, out var traits))
+                    {
+                        traits.Remove(traitType);
+                    }
+                    foreach (var characterState in state.Characters.Values)
+                    {
+                        if (characterState.CharacterRef == characterRef)
+                        {
+                            characterState.Traits.Remove(traitType);
+                        }
+                    }
+                }
+                break;
+            }
 
             default:
                 // No reversible saga-side fold for this type; the reversal remains

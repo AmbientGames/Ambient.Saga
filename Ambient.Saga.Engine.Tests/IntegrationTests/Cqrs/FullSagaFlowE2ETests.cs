@@ -258,12 +258,16 @@ public class FullSagaFlowE2ETests : IDisposable
         {
             RefName = "Merchant",
             DisplayName = "Wandering Merchant",
-            Capabilities = new ItemCollection
+            // Trade stock lives in Interactable.Loot (cloned into CurrentInventory per spawn)
+            Interactable = new Interactable
             {
-                Equipment = new[]
+                Loot = new ItemCollection
                 {
-                    new EquipmentEntry { EquipmentRef = "GoldPouch", Condition = 1.0f },
-                    new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
+                    Equipment = new[]
+                    {
+                        new EquipmentEntry { EquipmentRef = "GoldPouch", Condition = 1.0f },
+                        new EquipmentEntry { EquipmentRef = "IronSword", Condition = 1.0f }
+                    }
                 }
             },
             Stats = new CharacterStats
