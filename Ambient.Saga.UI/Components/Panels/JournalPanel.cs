@@ -332,7 +332,9 @@ public class JournalPanel
             ? ImGui.GetFrameHeightWithSpacing() * 3f
             : ImGui.GetFrameHeightWithSpacing() * 2.5f;
 
-        ImGui.BeginChild($"bestiary_{character.DisplayName}_{character.PixelX}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
+        // Keyed on CharacterInstanceId, not position: a moving character keyed on PixelX
+        // gets a new widget identity every frame (audit D9).
+        ImGui.BeginChild($"bestiary_{character.CharacterInstanceId}", new Vector2(ImGuiSizes.Fill, cardHeight), ImGuiChildFlags.Borders);
 
         // Character name and status
         var typeColor = GetCharacterTypeColor(character.CharacterType);
@@ -374,7 +376,7 @@ public class JournalPanel
 
         // Make clickable to interact
         ImGui.SetCursorPos(new Vector2(0, 0));
-        if (ImGui.InvisibleButton($"bestiary_click_{character.DisplayName}_{character.PixelX}", new Vector2(ImGui.GetContentRegionAvail().X, cardHeight - ImGui.GetStyle().WindowPadding.Y * 2)))
+        if (ImGui.InvisibleButton($"bestiary_click_{character.CharacterInstanceId}", new Vector2(ImGui.GetContentRegionAvail().X, cardHeight - ImGui.GetStyle().WindowPadding.Y * 2)))
         {
             modalManager.OpenCharacterInteraction(character, viewModel);
         }

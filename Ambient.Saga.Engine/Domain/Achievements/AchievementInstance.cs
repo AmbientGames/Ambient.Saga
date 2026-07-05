@@ -1,9 +1,11 @@
 ﻿namespace Ambient.Saga.Engine.Domain.Achievements;
 
 /// <summary>
-/// Per-avatar achievement state stored in LiteDB.
-/// Progress is computed from Saga transaction logs, then cached here for performance.
-/// This is NOT event-sourced - it's a computed cache of achievement state.
+/// Per-avatar achievement state, computed on demand.
+/// Progress is evaluated from Saga transaction logs; unlock state is projected
+/// from (and persisted to) the avatar's Achievements list — the single unlock
+/// ledger (audit C2). This type is a transient evaluation/projection DTO; the
+/// former dedicated LiteDB collection for it was removed.
 /// </summary>
 public class AchievementInstance
 {

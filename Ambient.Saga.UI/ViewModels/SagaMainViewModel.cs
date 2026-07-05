@@ -604,8 +604,14 @@ public partial class SagaMainViewModel : ObservableObject
                         ModelY = characterState.CurrentY,
                         ModelZ = CoordinateConverter.LatitudeToModelZ(worldLat, CurrentWorld),
                         IsAlive = characterState.IsAlive,
-                        CanDialogue = true,
-                        CanTrade = true,
+                        // Derive from the template instead of hardcoding true: corpses and
+                        // mute NPCs must not advertise Talk/Trade (audit D9). Same signals
+                        // the dev-spawn path uses: DialogueTreeRef presence for dialogue,
+                        // the WillTrade trait for trade.
+                        CanDialogue = characterState.IsAlive &&
+                            !string.IsNullOrEmpty(characterTemplate.Interactable?.DialogueTreeRef),
+                        CanTrade = characterState.IsAlive &&
+                            (characterTemplate.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false),
                         CanAttack = characterState.IsAlive,
                         SagaRef = sagaRef
                     };
@@ -827,8 +833,6 @@ public partial class SagaMainViewModel : ObservableObject
 
         return await _mediator.Send(stateQuery);
     }
-
-    private DialogueViewModel? _currentDialogueViewModel;
 
     /// <summary>
     /// Explicitly closes the current dialogue session. Called by the dialogue modal when the
@@ -1476,6 +1480,16 @@ public partial class SagaMainViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// True while a SetAvatarPosition invocation is still awaiting trigger processing.
+    /// SetAvatarPosition is async void (fired from position ticks); without this guard an
+    /// overlapping invocation could evaluate the same trigger transition before the first
+    /// one commits _previousTriggers, double-firing trigger entry (duplicate spawn
+    /// transactions — audit D9). Overlapping invocations still update the coordinates but
+    /// skip trigger processing; the next tick retries with the committed set.
+    /// </summary>
+    private bool _triggerProcessingInFlight;
+
     public async void SetAvatarPosition(double latitude, double longitude, double elevation, bool centerOnAvatar = false)
     {
         AvatarLatitude = latitude;
@@ -1488,60 +1502,68 @@ public partial class SagaMainViewModel : ObservableObject
         AvatarInfo.UpdateAvatarPosition(AvatarLatitude, AvatarLongitude, AvatarElevation, HasAvatarPosition);
 
         // Handle trigger enter/exit logic based on new avatar position
-        if (CurrentWorld != null)
+        if (CurrentWorld != null && !_triggerProcessingInFlight)
         {
-            var avatarModelX = CoordinateConverter.LongitudeToModelX(AvatarLongitude, CurrentWorld);
-            var avatarModelZ = CoordinateConverter.LatitudeToModelZ(AvatarLatitude, CurrentWorld);
-
-            var triggersAtPosition = await FindTriggersAtPoint(avatarModelX, avatarModelZ);
-            var currentSet = new HashSet<ProximityTriggerViewModel>(triggersAtPosition);
-
-            // Fast skip: same set of triggers as last check — nothing to do.
-            if (!currentSet.SetEquals(_previousTriggers))
+            _triggerProcessingInFlight = true;
+            try
             {
-                var entered = currentSet.Except(_previousTriggers).ToList();
-                var exited = _previousTriggers.Except(currentSet).ToList();
+                var avatarModelX = CoordinateConverter.LongitudeToModelX(AvatarLongitude, CurrentWorld);
+                var avatarModelZ = CoordinateConverter.LatitudeToModelZ(AvatarLatitude, CurrentWorld);
 
-                System.Diagnostics.Debug.WriteLine($"[MainViewModel] Triggers changed: +{entered.Count} -{exited.Count}");
+                var triggersAtPosition = await FindTriggersAtPoint(avatarModelX, avatarModelZ);
+                var currentSet = new HashSet<ProximityTriggerViewModel>(triggersAtPosition);
 
-                // RESET EVERYTHING on any trigger-set change
-                IsSagaInteractionActive = false;
-                TriggeredCharacter = null;
-                OnCharacterChanged();
-
-                foreach (var trigger in exited)
-                    ActivityLog.Insert(0, $"Exited {trigger.DisplayName} - No exit action");
-
-                var allEntriesSucceeded = true;
-                if (Avatar != null)
+                // Fast skip: same set of triggers as last check — nothing to do.
+                if (!currentSet.SetEquals(_previousTriggers))
                 {
-                    foreach (var trigger in entered)
+                    var entered = currentSet.Except(_previousTriggers).ToList();
+                    var exited = _previousTriggers.Except(currentSet).ToList();
+
+                    System.Diagnostics.Debug.WriteLine($"[MainViewModel] Triggers changed: +{entered.Count} -{exited.Count}");
+
+                    // RESET EVERYTHING on any trigger-set change
+                    IsSagaInteractionActive = false;
+                    TriggeredCharacter = null;
+                    OnCharacterChanged();
+
+                    foreach (var trigger in exited)
+                        ActivityLog.Insert(0, $"Exited {trigger.DisplayName} - No exit action");
+
+                    var allEntriesSucceeded = true;
+                    if (Avatar != null)
                     {
-                        System.Diagnostics.Debug.WriteLine($"[MainViewModel] Calling TryProcessAvatarMovementAsync for trigger '{trigger.RefName}'");
-                        if (!await TryProcessAvatarMovementAsync(trigger))
-                            allEntriesSucceeded = false;
+                        foreach (var trigger in entered)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"[MainViewModel] Calling TryProcessAvatarMovementAsync for trigger '{trigger.RefName}'");
+                            if (!await TryProcessAvatarMovementAsync(trigger))
+                                allEntriesSucceeded = false;
+                        }
+                    }
+
+                    if (allEntriesSucceeded)
+                    {
+                        // Commit — next tick with the same triggers will fast-skip.
+                        _previousTriggers = currentSet;
+                    }
+                    else
+                    {
+                        // Any failure invalidates the whole transition — leave _previousTriggers unchanged
+                        // so the next position update sees a different set and retries everything.
+                        System.Diagnostics.Debug.WriteLine($"[MainViewModel] Entry failed for one or more triggers — will retry on next position update");
                     }
                 }
+                else if (currentSet.Count > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine($"[MainViewModel] Already in {currentSet.Count} trigger(s) - not calling UpdateAvatarPositionCommand");
+                }
 
-                if (allEntriesSucceeded)
-                {
-                    // Commit — next tick with the same triggers will fast-skip.
-                    _previousTriggers = currentSet;
-                }
-                else
-                {
-                    // Any failure invalidates the whole transition — leave _previousTriggers unchanged
-                    // so the next position update sees a different set and retries everything.
-                    System.Diagnostics.Debug.WriteLine($"[MainViewModel] Entry failed for one or more triggers — will retry on next position update");
-                }
+                // Auto-select the outermost undone trigger for UI context
+                SelectedTrigger = triggersAtPosition.OrderByDescending(t => t.EnterRadius).FirstOrDefault();
             }
-            else if (currentSet.Count > 0)
+            finally
             {
-                System.Diagnostics.Debug.WriteLine($"[MainViewModel] Already in {currentSet.Count} trigger(s) - not calling UpdateAvatarPositionCommand");
+                _triggerProcessingInFlight = false;
             }
-
-            // Auto-select the outermost undone trigger for UI context
-            SelectedTrigger = triggersAtPosition.OrderByDescending(t => t.EnterRadius).FirstOrDefault();
         }
 
         if (centerOnAvatar)

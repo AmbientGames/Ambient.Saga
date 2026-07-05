@@ -38,6 +38,15 @@ public class SagaTriggerState
     public HashSet<string> TriggeredByAvatars { get; set; } = new();
 
     /// <summary>
+    /// Avatars currently inside this trigger's ring: added by AvatarEntered,
+    /// removed by AvatarExited. This is what makes exit emission transition-based —
+    /// SagaInteractionService only records an AvatarExited when the avatar is in
+    /// this set, so leaving the ring produces exactly one exit transaction instead
+    /// of one per position tick (audit B9).
+    /// </summary>
+    public HashSet<string> OccupyingAvatars { get; set; } = new();
+
+    /// <summary>
     /// When this trigger was completed (null if not completed).
     /// </summary>
     public DateTime? CompletedAt { get; set; }

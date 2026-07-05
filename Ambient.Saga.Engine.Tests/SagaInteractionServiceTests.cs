@@ -588,6 +588,109 @@ public class SagaInteractionServiceTests
 
     #endregion
 
+    #region Trigger Exit & Completion Tests (audit B9)
+
+    /// <summary>
+    /// Marks all pending transactions committed, mirroring what
+    /// UpdateAvatarPositionHandler does after each position update. Replay only
+    /// folds committed transactions, so the transition tracking under test needs
+    /// the same commit cadence as production.
+    /// </summary>
+    private static void CommitPendingTransactions(SagaInstance instance)
+    {
+        foreach (var tx in instance.Transactions)
+        {
+            tx.Status = TransactionStatus.Committed;
+        }
+        instance.IsDirty = true;
+    }
+
+    [Fact]
+    public void UpdateWithAvatarPosition_RepeatedTicksOutsideEnteredTrigger_EmitsExactlyOneAvatarExited()
+    {
+        // Audit B9: an AvatarExited used to be committed on EVERY position tick
+        // outside the radius of a still-Active trigger — unbounded log growth.
+        // A trigger with no spawns is the exact trigger kind that reproduced it.
+        var world = CreateWorldWithCharacters();
+        var template = CreateSagaTemplate();
+        var trigger = CreateSagaTrigger(refName: "TokenRing", enterRadius: 10.0f, spawns: null);
+        var service = new SagaInteractionService(template, new List<SagaTrigger> { trigger }, world);
+        var instance = CreateSagaInstance();
+        var avatar = CreateAvatar();
+
+        // Enter the ring (activation + AvatarEntered), commit like the handler does
+        service.UpdateWithAvatarPosition(instance, 5.0, 0.0, avatar);
+        CommitPendingTransactions(instance);
+        Assert.Equal(1, instance.Transactions.Count(tx => tx.Type == SagaTransactionType.AvatarEntered));
+
+        // Keep ticking far outside the exit radius (10 + 10 hysteresis = 20)
+        for (var tick = 0; tick < 5; tick++)
+        {
+            service.UpdateWithAvatarPosition(instance, 50.0, 0.0, avatar);
+            CommitPendingTransactions(instance);
+        }
+
+        // Exactly ONE exit for the transition; nothing for the ticks after it
+        Assert.Equal(1, instance.Transactions.Count(tx => tx.Type == SagaTransactionType.AvatarExited));
+    }
+
+    [Fact]
+    public void UpdateWithAvatarPosition_SpawningTrigger_AlsoEmitsSingleAvatarExited()
+    {
+        // Completed (spawning) triggers get the same transition-based exit record
+        var world = CreateWorldWithCharacters();
+        var template = CreateSagaTemplate();
+        var trigger = CreateSagaTrigger(
+            refName: "Camp",
+            enterRadius: 10.0f,
+            spawns: new[] { CreateCharacterSpawn("Guard") });
+        var service = new SagaInteractionService(template, new List<SagaTrigger> { trigger }, world);
+        var instance = CreateSagaInstance();
+        var avatar = CreateAvatar();
+
+        service.UpdateWithAvatarPosition(instance, 5.0, 0.0, avatar);
+        CommitPendingTransactions(instance);
+
+        for (var tick = 0; tick < 3; tick++)
+        {
+            service.UpdateWithAvatarPosition(instance, 60.0, 0.0, avatar);
+            CommitPendingTransactions(instance);
+        }
+
+        Assert.Equal(1, instance.Transactions.Count(tx => tx.Type == SagaTransactionType.AvatarExited));
+    }
+
+    [Fact]
+    public void UpdateWithAvatarPosition_TriggerWithNoSpawns_CompletesAtActivation()
+    {
+        // Audit B9: triggers that spawned nothing used to stay Active forever.
+        // Activation IS the trigger's work — tokens awarded, spawns attempted —
+        // so it completes immediately regardless of spawn outcome.
+        var world = CreateWorldWithCharacters();
+        var template = CreateSagaTemplate();
+        var trigger = new SagaTrigger
+        {
+            RefName = "TokenRing",
+            EnterRadius = 10.0f,
+            GivesQuestTokenRef = new[] { "RingToken" }
+        };
+        var service = new SagaInteractionService(template, new List<SagaTrigger> { trigger }, world);
+        var instance = CreateSagaInstance();
+        var avatar = CreateAvatar();
+
+        service.UpdateWithAvatarPosition(instance, 5.0, 0.0, avatar);
+        CommitPendingTransactions(instance);
+
+        // Token still awarded, and the trigger is done — not stuck Active
+        Assert.Equal(1, instance.Transactions.Count(tx => tx.Type == SagaTransactionType.QuestTokenAwarded));
+        Assert.Equal(1, instance.Transactions.Count(tx => tx.Type == SagaTransactionType.TriggerCompleted));
+
+        var info = service.GetTriggersAtPosition(instance, 5.0, 0.0).Single();
+        Assert.True(info.IsCompleted);
+    }
+
+    #endregion
+
     #region End-to-End Integration Tests
 
 

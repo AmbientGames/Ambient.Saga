@@ -116,7 +116,10 @@ internal sealed class GetDialogueStateHandler : IRequestHandler<GetDialogueState
             // talking to") evaluate false here but true when the choice executes — hiding
             // valid choices (e.g. "Leave my party") from the UI.
             var sagaContext = new SagaDialogueContext(instance, characterRef, query.AvatarId.ToString());
-            var stateProvider = new DirectDialogueStateProvider(_world, query.Avatar, _avatarProgressRepository, query.AvatarId.ToString(), characterRef);
+            // Pass the instance so NodeVisited / AvatarVisitCount conditions read the
+            // committed dialogue history — the query must filter choices exactly the
+            // way the command path will evaluate them.
+            var stateProvider = new DirectDialogueStateProvider(_world, query.Avatar, _avatarProgressRepository, query.AvatarId.ToString(), characterRef, instance);
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
             // Restore state from the transaction log without re-executing actions or re-evaluating conditions.

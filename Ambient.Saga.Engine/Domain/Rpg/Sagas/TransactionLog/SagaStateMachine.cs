@@ -127,6 +127,22 @@ public class SagaStateMachine
 
         state ??= CreateInitialState();
 
+        // A snapshot freezes the trigger set as of its creation. Merge in template
+        // triggers added since (fresh initial state), otherwise their
+        // TriggerActivated transactions are silently discarded on resume and
+        // content updates stay invisible to migrated saves (audit C4).
+        foreach (var trigger in _expandedSagaTriggers)
+        {
+            if (!state.Triggers.ContainsKey(trigger.RefName))
+            {
+                state.Triggers[trigger.RefName] = new SagaTriggerState
+                {
+                    SagaTriggerRef = trigger.RefName,
+                    Status = SagaTriggerStatus.Inactive
+                };
+            }
+        }
+
         for (var i = replayFrom; i < ordered.Count; i++)
         {
             ApplyTransaction(state, ordered[i], transactionsById);
@@ -587,12 +603,27 @@ public class SagaStateMachine
             state.FirstDiscoveredAt = tx.GetCanonicalTimestamp();
             state.DiscoveredByAvatars.Add(tx.AvatarId);
         }
+
+        // Mark the trigger's ring as occupied by this avatar. Occupancy is what
+        // gates AvatarExited emission (transition-based, audit B9).
+        var triggerRef = tx.GetData<string>(TransactionDataKeys.TriggerRef);
+        if (!string.IsNullOrEmpty(triggerRef) && !string.IsNullOrEmpty(tx.AvatarId)
+            && state.Triggers.TryGetValue(triggerRef, out var trigger))
+        {
+            trigger.OccupyingAvatars.Add(tx.AvatarId);
+        }
     }
 
     private void ApplyAvatarExited(SagaState state, SagaTransaction tx)
     {
-        // Avatar exited Saga - could trigger cleanup, despawns, etc.
-        // Implementation depends on game design
+        // The trigger's ring is no longer occupied by this avatar. Spawned
+        // characters stay where they are — encounters persist across visits.
+        var triggerRef = tx.GetData<string>(TransactionDataKeys.TriggerRef);
+        if (!string.IsNullOrEmpty(triggerRef) && !string.IsNullOrEmpty(tx.AvatarId)
+            && state.Triggers.TryGetValue(triggerRef, out var trigger))
+        {
+            trigger.OccupyingAvatars.Remove(tx.AvatarId);
+        }
     }
 
     private void ApplyDialogueStarted(SagaState state, SagaTransaction tx)

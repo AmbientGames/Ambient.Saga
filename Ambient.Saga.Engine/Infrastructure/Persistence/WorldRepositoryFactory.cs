@@ -2,7 +2,6 @@ using Ambient.Application.Contracts;
 using Ambient.Domain.Contracts;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts;
-using Ambient.Saga.Engine.Domain.Achievements;
 using LiteDB;
 using Microsoft.Extensions.Logging;
 
@@ -67,7 +66,6 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
         var sagaRepository = new SagaInstanceRepository(database);
         var avatarRepository = new GameAvatarRepository(database);
         var avatarProgressRepository = new AvatarProgressRepository(database);
-        var achievementRepository = new LiteDbRepository<AchievementInstance>(database, "Achievements");
         var discoveryRepository = new AvatarDiscoveryRepository(database);
 
         sagaRepository.SetAvatarProgressRepository(avatarProgressRepository);
@@ -76,13 +74,13 @@ public class WorldRepositoryFactory : IWorldRepositoryFactory
             sagaRepository.SetReadModelRepository(_readModelRepository);
         }
 
-        // Create WorldStateRepository with injected dependencies
+        // Create WorldStateRepository with injected dependencies.
+        // No AchievementInstance collection: the avatar's persisted Achievements
+        // list is the single unlock ledger (audit C2).
         var worldStateRepository = new WorldStateRepository(
             sagaRepository,
             avatarRepository,
-            achievementRepository,
-            discoveryRepository,
-            world);
+            discoveryRepository);
 
         // Create Steam achievement service against the database actually in use
         // (shared or owned) — passing only the owned one left it with a null

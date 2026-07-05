@@ -1,7 +1,6 @@
 ﻿using Ambient.Application.Contracts;
 using Ambient.Domain.Partials;
 using Ambient.Domain.Entities;
-using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Contracts;
@@ -9,6 +8,10 @@ namespace Ambient.Saga.Engine.Contracts;
 /// <summary>
 /// Interface for world state repository operations.
 /// This interface belongs in the Application layer as part of the repository pattern.
+/// NOTE: achievement unlock state deliberately has NO members here — the avatar's
+/// persisted Achievements list is the single unlock ledger (audit C2). The former
+/// AchievementInstance LiteDB collection was a divergent parallel store whose
+/// instance set froze at first creation.
 /// </summary>
 public interface IWorldStateRepository
 {
@@ -16,16 +19,6 @@ public interface IWorldStateRepository
     /// Gets a Saga instance by template RefName for a specific avatar.
     /// </summary>
     Task<SagaInstance?> GetSagaInstanceAsync(string avatarId, string templateRef);
-
-    /// <summary>
-    /// Gets or creates AchievementInstance objects for a specific avatar.
-    /// </summary>
-    Task<List<AchievementInstance>> GetOrCreateAchievementInstancesAsync(string avatarId);
-
-    /// <summary>
-    /// Saves AchievementInstance state.
-    /// </summary>
-    Task SaveAchievementAsync(AchievementInstance instance);
 
     /// <summary>
     /// Loads avatar from database, or returns null if not found.

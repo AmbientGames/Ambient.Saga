@@ -990,4 +990,88 @@ public class SagaStateMachineTests
     }
 
     #endregion
+
+    #region Trigger Occupancy Folds (audit B9)
+
+    [Fact]
+    public void ReplayToNow_AvatarEnteredThenExited_TogglesTriggerOccupancy()
+    {
+        // Arrange
+        var instance = new SagaInstance { SagaRef = "TestSaga" };
+
+        instance.AddTransaction(new SagaTransaction
+        {
+            Type = SagaTransactionType.AvatarEntered,
+            AvatarId = "Avatar1",
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 1,
+            Data = new() { ["TriggerRef"] = "approach" }
+        });
+
+        // Act / Assert - entered: the trigger's ring is occupied
+        var entered = _stateMachine.ReplayToNow(instance);
+        Assert.Contains("Avatar1", entered.Triggers["approach"].OccupyingAvatars);
+
+        instance.AddTransaction(new SagaTransaction
+        {
+            Type = SagaTransactionType.AvatarExited,
+            AvatarId = "Avatar1",
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 2,
+            Data = new() { ["TriggerRef"] = "approach" }
+        });
+
+        // Act / Assert - exited: occupancy cleared (this is what gates exit
+        // emission in SagaInteractionService, so exits are once-per-transition)
+        var exited = _stateMachine.ReplayToNow(instance);
+        Assert.DoesNotContain("Avatar1", exited.Triggers["approach"].OccupyingAvatars);
+    }
+
+    #endregion
+
+    #region Snapshot Resume Template Merge (audit C4)
+
+    [Fact]
+    public void Replay_SnapshotPredatesTemplateTrigger_MergesAndActivatesNewTrigger()
+    {
+        // Arrange - snapshot was taken when the arc template only had "approach";
+        // the current template also has "inner" (added by a content update)
+        var oldMachine = new SagaStateMachine(
+            _testSagaArc,
+            new List<SagaTrigger> { _testSagaTriggers[0] }, // "approach" only
+            _testWorld);
+
+        var snapshotTx = oldMachine.CreateSnapshotTransaction(new SagaInstance { SagaRef = "TestSaga" });
+        snapshotTx.Status = TransactionStatus.Committed;
+        snapshotTx.SequenceNumber = 1;
+
+        var instance = new SagaInstance { SagaRef = "TestSaga" };
+        instance.AddTransaction(snapshotTx);
+
+        // A trigger unknown to the snapshot activates after the snapshot
+        instance.AddTransaction(new SagaTransaction
+        {
+            Type = SagaTransactionType.TriggerActivated,
+            AvatarId = "Avatar1",
+            Status = TransactionStatus.Committed,
+            SequenceNumber = 2,
+            Data = new() { ["SagaTriggerRef"] = "inner" }
+        });
+
+        // Act - replay with the CURRENT template (approach + inner)
+        var state = _stateMachine.ReplayToNow(instance);
+
+        // Assert - "inner" was merged into the restored snapshot state and its
+        // activation applied instead of being silently discarded
+        Assert.True(state.Triggers.ContainsKey("inner"));
+        Assert.Equal(SagaTriggerStatus.Active, state.Triggers["inner"].Status);
+        Assert.Equal(1, state.Triggers["inner"].ActivationCount);
+        Assert.Contains("Avatar1", state.Triggers["inner"].TriggeredByAvatars);
+
+        // The snapshot's own trigger is untouched
+        Assert.True(state.Triggers.ContainsKey("approach"));
+        Assert.Equal(SagaTriggerStatus.Inactive, state.Triggers["approach"].Status);
+    }
+
+    #endregion
 }

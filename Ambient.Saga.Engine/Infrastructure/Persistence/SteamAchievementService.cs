@@ -1,4 +1,6 @@
-﻿using Ambient.Application.Contracts;
+﻿using System.Globalization;
+using Ambient.Application.Contracts;
+using Ambient.Domain.Entities;
 using Ambient.Domain.GameLogic;
 using LiteDB;
 using Steamworks;
@@ -8,6 +10,11 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 /// <summary>
 /// Wraps Steam achievement calls with local persistence.
 /// Logs all achievements sent to Steam and replays them on world load.
+/// Replay is driven by the avatar's persisted Achievements list — the single
+/// unlock ledger (audit C2): ledger unlocks missing from the local sync journal
+/// are seeded as pending records first, so achievements earned through dialogue,
+/// quest rewards, or the evaluation pipeline reach Steam even though those paths
+/// never call UnlockAchievement directly.
 /// Takes the raw LiteDatabase so it works with both an owned WorldStateDatabase
 /// (Sandbox path) and a shared/injected database (game host path).
 /// </summary>
@@ -71,14 +78,21 @@ internal class SteamAchievementService : ISteamAchievementService
     /// <summary>
     /// Replays all pending/failed achievements to Steam.
     /// Call this when a world/save is loaded.
+    /// Reads the avatar's Achievements ledger first and seeds sync records for any
+    /// unlock the journal doesn't know about (see class remarks), then pushes all
+    /// non-synced records to Steam.
     /// </summary>
     /// <param name="avatarId">Optional: only replay for specific avatar</param>
     public void ReplayAchievementsToSteam(string? avatarId = null)
     {
+        var collection = _database.GetCollection<SteamAchievementSync>("SteamAchievements");
+
+        // Seed even when Steam is down — the records stay Pending and sync on a
+        // later replay once Steam is available.
+        SeedJournalFromAvatarLedger(collection, avatarId);
+
         if (!_isSteamAvailable)
             return;
-
-        var collection = _database.GetCollection<SteamAchievementSync>("SteamAchievements");
 
         // Get all non-synced achievements
         var query = collection.Query();
@@ -101,6 +115,52 @@ internal class SteamAchievementService : ISteamAchievementService
         if (pendingAchievements.Any())
         {
             SteamUserStats.StoreStats();
+        }
+    }
+
+    /// <summary>
+    /// Seeds sync records for ledger unlocks missing from the journal.
+    /// The avatar's persisted Achievements list is the single unlock ledger; the
+    /// journal only tracks what has been handed to Steam. An achievement RefName
+    /// IS the Steam API achievement id (by definition, see AchievementViewModel).
+    /// </summary>
+    private void SeedJournalFromAvatarLedger(ILiteCollection<SteamAchievementSync> collection, string? avatarId)
+    {
+        var avatar = new GameAvatarRepository(_database)
+            .LoadAvatarAsync<AvatarEntity>()
+            .GetAwaiter().GetResult();
+
+        if (avatar?.Achievements == null)
+            return;
+
+        var ledgerAvatarId = avatar.AvatarId.ToString();
+        if (!string.IsNullOrEmpty(avatarId) && !string.Equals(avatarId, ledgerAvatarId, StringComparison.OrdinalIgnoreCase))
+            return; // Ledger belongs to a different avatar than the one being replayed
+
+        foreach (var entry in avatar.Achievements)
+        {
+            var achievementRef = entry.AchievementRef;
+            if (string.IsNullOrEmpty(achievementRef))
+                continue;
+
+            var existing = collection.FindOne(s =>
+                s.SteamAchievementId == achievementRef &&
+                s.AvatarId == ledgerAvatarId);
+
+            if (existing != null)
+                continue;
+
+            collection.Insert(new SteamAchievementSync
+            {
+                SteamAchievementId = achievementRef,
+                AvatarId = ledgerAvatarId,
+                AchievementTemplateRef = achievementRef,
+                EarnedAt = DateTime.TryParse(entry.UnlockedDate, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var earnedAt)
+                    ? earnedAt
+                    : DateTime.UtcNow,
+                Status = SteamSyncStatus.Pending,
+                RetryCount = 0
+            });
         }
     }
 

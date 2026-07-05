@@ -208,12 +208,16 @@ public class SagaInteractionService
             }
         }
 
-        // PHASE 1: Check for trigger exits (process before enters to avoid state conflicts)
+        // PHASE 1: Check for trigger exits (process before enters to avoid state conflicts).
+        // Exit emission is transition-based: an AvatarExited is recorded only for a
+        // trigger this avatar currently OCCUPIES (its AvatarEntered has been folded
+        // into state and no AvatarExited has followed it). Without the occupancy
+        // gate a new exit transaction was committed on EVERY position tick outside
+        // the radius — unbounded log growth (audit B9).
         foreach (var sagaTrigger in _expandedSagaTriggers)
         {
-            // Only check triggers that are currently Active (not Inactive or Completed)
             if (!currentState.Triggers.TryGetValue(sagaTrigger.RefName, out var triggerState)
-                || triggerState.Status != SagaTriggerStatus.Active)
+                || !triggerState.OccupyingAvatars.Contains(avatarId))
             {
                 continue;
             }
@@ -232,7 +236,7 @@ public class SagaInteractionService
                 {
                     TransactionId = Guid.NewGuid(),
                     Type = SagaTransactionType.AvatarExited,
-                    AvatarId = avatar.AvatarId.ToString(),
+                    AvatarId = avatarId,
                     Status = TransactionStatus.Pending,
                     LocalTimestamp = DateTime.UtcNow,
                     Data = new Dictionary<string, string>
@@ -243,6 +247,10 @@ public class SagaInteractionService
                     }
                 };
                 instance.AddTransaction(exitTx);
+
+                // Keep the in-call view consistent (the transaction is pending until
+                // the handler commits, so the replayed state doesn't see it yet)
+                triggerState.OccupyingAvatars.Remove(avatarId);
             }
         }
 
@@ -367,32 +375,36 @@ public class SagaInteractionService
         }
 
         // Spawn characters if trigger has spawns
+        var spawnedCharacters = false;
         if (sagaTrigger.Spawn != null && sagaTrigger.Spawn.Length > 0)
         {
             var spawnCountBefore = instance.Transactions.Count(tx => tx.Type == SagaTransactionType.CharacterSpawned);
             SpawnCharacters(instance, sagaTrigger, avatarX, avatarZ, seed, avatarId);
             var spawnCountAfter = instance.Transactions.Count(tx => tx.Type == SagaTransactionType.CharacterSpawned);
-
-            // Only mark trigger as completed if characters were actually spawned
-            // Per design: "The instant the characters are triggered and instantiated that trigger is 'done'"
-            if (spawnCountAfter > spawnCountBefore)
-            {
-                var completedTx = new SagaTransaction
-                {
-                    TransactionId = Guid.NewGuid(),
-                    Type = SagaTransactionType.TriggerCompleted,
-                    AvatarId = avatarId,
-                    Status = TransactionStatus.Pending,
-                    LocalTimestamp = DateTime.UtcNow,
-                    Data = new Dictionary<string, string>
-                    {
-                        [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
-                        [TransactionDataKeys.Reason] = "Characters spawned"
-                    }
-                };
-                instance.AddTransaction(completedTx);
-            }
+            spawnedCharacters = spawnCountAfter > spawnCountBefore;
         }
+
+        // Triggers are one-and-done: activation IS the trigger's work — characters
+        // instantiated (if any resolved), tokens awarded. Per design: "The instant
+        // the characters are triggered and instantiated that trigger is 'done'".
+        // This must ALSO apply to triggers that spawn nothing (token-only rings,
+        // or spawn lists that resolve to no characters): Phase 2 never re-activates
+        // an Active trigger, so leaving them Active bought no retry — it just left
+        // them stuck Active forever (audit B9).
+        var completedTx = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.TriggerCompleted,
+            AvatarId = avatarId,
+            Status = TransactionStatus.Pending,
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>
+            {
+                [TransactionDataKeys.SagaTriggerRef] = sagaTrigger.RefName,
+                [TransactionDataKeys.Reason] = spawnedCharacters ? "Characters spawned" : "No characters to spawn"
+            }
+        };
+        instance.AddTransaction(completedTx);
     }
 
     /// <summary>

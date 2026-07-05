@@ -240,7 +240,8 @@ public partial class AchievementViewModel : ObservableObject
 
     /// <summary>
     /// Manually unlocks an achievement (for testing or admin purposes).
-    /// Persists to LiteDB and syncs to Steam if available.
+    /// Persists to the avatar's Achievements ledger (the single unlock store,
+    /// audit C2) and syncs to Steam if available.
     /// </summary>
     public async Task<bool> UnlockAchievementAsync(string achievementRef)
     {
@@ -268,26 +269,15 @@ public partial class AchievementViewModel : ObservableObject
         });
         _context.AvatarEntity.Achievements = achievementList.ToArray();
 
-        // Persist to LiteDB if repository is available
+        // Persist the avatar so the ledger entry survives a crash before the
+        // host's next save. The avatar's Achievements list is the single unlock
+        // store — the former parallel AchievementInstance collection was removed
+        // (audit C2: divergent state, instance set frozen at first creation).
         if (_worldRepository != null)
         {
             try
             {
-                var avatarId = _context.AvatarEntity.AvatarId.ToString();
-                var instances = await _worldRepository.GetOrCreateAchievementInstancesAsync(avatarId);
-
-                // Find or create instance for this achievement
-                var instance = instances.FirstOrDefault(i => i.TemplateRef == achievementRef);
-
-                if (instance != null)
-                {
-                    // Update instance
-                    instance.IsUnlocked = true;
-                    instance.UnlockedAt = DateTime.UtcNow;
-                    instance.CurrentProgress = (int)(achievement.Criteria?.Threshold ?? 1f);
-
-                    await _worldRepository.SaveAchievementAsync(instance);
-                }
+                await _worldRepository.SaveAvatarAsync(_context.AvatarEntity);
             }
             catch
             {
