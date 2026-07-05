@@ -26,6 +26,25 @@ public class BattleModal
     /// </summary>
     public event Action? AvatarDefeated;
 
+    /// <summary>
+    /// Set while the end screen shows a VICTORY: the defeated character whose remaining
+    /// Loot the victor may now free-take. Drained by BattleModalAdapter.OnClosed (before
+    /// Reset) so the host can open the victory-loot trade modal after the battle modal
+    /// closes — whether via the Close button or the window's X.
+    /// </summary>
+    private (SagaMainViewModel ViewModel, CharacterViewModel Character)? _victoryLootCandidate;
+
+    /// <summary>
+    /// Returns and clears the pending victory-loot candidate (null when the battle
+    /// did not end in victory).
+    /// </summary>
+    public (SagaMainViewModel ViewModel, CharacterViewModel Character)? TakeVictoryLootCandidate()
+    {
+        var candidate = _victoryLootCandidate;
+        _victoryLootCandidate = null;
+        return candidate;
+    }
+
     private BattleStateResult? _currentState;
     private bool _isInitialized = false;
     private Guid _lastCharacterInstanceId;
@@ -95,6 +114,7 @@ public class BattleModal
         _isProcessingTurn = false;
         _lastReactionResult = null;
         _battleDialogueTriggers = null;
+        _victoryLootCandidate = null;
         _battleTriggers.Reset();
         EndReactionPhase();
 
@@ -843,6 +863,10 @@ public class BattleModal
 
         if (_currentState.AvatarVictory == true)
         {
+            // Remember the beaten enemy so the host can offer its victory loot once
+            // this modal closes (Close button or window X — both end at OnClosed).
+            _victoryLootCandidate = (viewModel, character);
+
             ImGui.PushFont(UIConstants.FontTitle);
             var text = "VICTORY!";
             var textSize = ImGui.CalcTextSize(text);

@@ -36,8 +36,6 @@ public class AchievementDisplayItem
         {
             AchievementCriteriaType.BlocksPlaced => $"Place {Threshold:F0} blocks",
             AchievementCriteriaType.BlocksDestroyed => $"Destroy {Threshold:F0} blocks",
-            AchievementCriteriaType.DistanceTraveled => $"Travel {Threshold:F0} meters",
-            AchievementCriteriaType.PlayTimeHours => $"Play for {Threshold:F0} hours",
             _ => $"Reach {Threshold:F0}"
         };
     }
@@ -169,8 +167,6 @@ public partial class AchievementViewModel : ObservableObject
         {
             AchievementCriteriaType.BlocksPlaced => _context.AvatarEntity.BlocksPlaced,
             AchievementCriteriaType.BlocksDestroyed => _context.AvatarEntity.BlocksDestroyed,
-            AchievementCriteriaType.DistanceTraveled => _context.AvatarEntity.DistanceTraveled,
-            AchievementCriteriaType.PlayTimeHours => _context.AvatarEntity.PlayTimeHours,
             _ => 0f
         };
     }

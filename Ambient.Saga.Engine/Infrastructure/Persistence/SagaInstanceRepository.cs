@@ -1,5 +1,6 @@
 ﻿using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Domain;
 using Ambient.Saga.Engine.Contracts.Persistence;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using LiteDB;
@@ -380,7 +381,11 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                     if (existing != null)
                         continue;
 
-                    // Preserve sequence number and status from server — do not reassign
+                    // Preserve sequence number and status from server — do not reassign.
+                    // Imported transactions are already server-side (often authored by
+                    // OTHER avatars on shared arcs): they must never be pushed back, and
+                    // push-rejection handling must never mark them Rejected.
+                    transaction.SyncState = TransactionSyncState.Imported;
                     var record = SagaTransactionRecord.FromTransaction(transaction, instanceId);
                     _transactions.Insert(record);
                     newlyInserted.Add(transaction);
@@ -507,8 +512,11 @@ public class SagaInstanceRepository : ISagaInstanceRepository
                 foreach (var transactionId in transactionIds)
                 {
                     var record = _transactions.FindOne(x => x.TransactionId == transactionId);
-                    if (record != null && record.InstanceId == instanceId)
+                    if (record != null && record.InstanceId == instanceId
+                        && record.SyncState != TransactionSyncState.Imported)
                     {
+                        // Imported transactions are server-confirmed peer history — a
+                        // rejection can only ever apply to our own local optimism
                         record.Status = TransactionStatus.Rejected;
                         _transactions.Update(record);
                     }
@@ -529,6 +537,184 @@ public class SagaInstanceRepository : ISagaInstanceRepository
         }
 
         return Task.CompletedTask;
+    }
+
+    public Task MarkTransactionsSyncedAsync(Guid instanceId, IReadOnlyCollection<Guid> transactionIds, DateTime? serverTimestamp = null, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            _database.BeginTrans();
+
+            try
+            {
+                foreach (var transactionId in transactionIds)
+                {
+                    var record = _transactions.FindOne(x => x.TransactionId == transactionId);
+                    if (record == null || record.InstanceId != instanceId)
+                        continue;
+
+                    // Only local unsynced records move to Synced — Imported/LocalOnly
+                    // records were never pushed and must stay as they are
+                    if (record.SyncState != TransactionSyncState.LocalUnsynced)
+                        continue;
+
+                    record.SyncState = TransactionSyncState.Synced;
+                    if (serverTimestamp.HasValue && record.ServerTimestamp == null)
+                    {
+                        // The sync endpoint stamps one serverNow per batch, so the batch
+                        // timestamp IS the stored server timestamp for these records
+                        record.ServerTimestamp = serverTimestamp.Value;
+                    }
+                    _transactions.Update(record);
+                }
+
+                _database.Commit();
+
+                // SyncState doesn't change replay output, but cached instance.Transactions
+                // must not keep serving stale LocalUnsynced entries to the next push
+                InvalidateInstanceCache(instanceId);
+            }
+            catch
+            {
+                _database.Rollback();
+                throw;
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task<List<SagaTransaction>> RejectAndCompensateTransactionsAsync(Guid instanceId, IReadOnlyList<TransactionRejection> rejections, CancellationToken ct = default)
+    {
+        var lockKey = instanceId.ToString();
+        var instanceLock = _instanceLocks.GetOrAdd(lockKey, _ => new object());
+
+        lock (instanceLock)
+        {
+            var instance = _instances.Find(x => x.InstanceId == instanceId).FirstOrDefault();
+            if (instance == null)
+                throw new InvalidOperationException($"Saga instance {instanceId} not found");
+
+            var reversals = new List<SagaTransaction>();
+            var reversedOriginals = new List<SagaTransaction>();
+
+            _database.BeginTrans();
+
+            try
+            {
+                var maxSequence = _transactions
+                    .Find(x => x.InstanceId == instanceId)
+                    .Select(x => x.SequenceNumber)
+                    .DefaultIfEmpty(0)
+                    .Max();
+
+                foreach (var rejection in rejections)
+                {
+                    var record = _transactions.FindOne(x => x.TransactionId == rejection.TransactionId);
+                    if (record == null || record.InstanceId != instanceId)
+                        continue;
+
+                    // Rejection handling applies ONLY to local optimism. Imported
+                    // records are server-confirmed peer history (the inverse
+                    // watermark race used to erase them from replay this way);
+                    // already-rejected records make this call idempotent.
+                    if (record.SyncState == TransactionSyncState.Imported ||
+                        record.Status == TransactionStatus.Rejected)
+                        continue;
+
+                    record.Status = TransactionStatus.Rejected;
+                    record.ReversalReason = rejection.Reason;
+                    _transactions.Update(record);
+
+                    var original = record.ToTransaction();
+                    reversedOriginals.Add(original);
+
+                    // Committed client-only compensation. In replay the Rejected original
+                    // is already excluded (GetCommittedTransactions), so the reversal's
+                    // fold finds no referenced transaction and skips quietly — it exists
+                    // as the audit record and for reward-ledger consumers that count
+                    // reversals directly (see DialogueActionExecutor).
+                    var reversal = new SagaTransaction
+                    {
+                        TransactionId = Guid.NewGuid(),
+                        Type = SagaTransactionType.TransactionReversed,
+                        AvatarId = original.AvatarId,
+                        Status = TransactionStatus.Committed,
+                        SyncState = TransactionSyncState.LocalOnly,
+                        LocalTimestamp = DateTime.UtcNow,
+                        SequenceNumber = ++maxSequence,
+                        ReversesTransactionId = original.TransactionId,
+                        ReversalReason = rejection.Reason,
+                        Data = new Dictionary<string, string>
+                        {
+                            [TransactionDataKeys.ReversedTransactionId] = original.TransactionId.ToString(),
+                            [TransactionDataKeys.Reason] = rejection.Reason ?? "Server rejected",
+                            [TransactionDataKeys.OriginalType] = original.Type.ToString()
+                        }
+                    };
+
+                    _transactions.Insert(SagaTransactionRecord.FromTransaction(reversal, instanceId));
+                    reversals.Add(reversal);
+                }
+
+                // Undo cross-arc projections inside the same LiteDB transaction —
+                // mirrors the per-author grouping AddAndCommitTransactionsAsync uses
+                // for shared multiplayer instances
+                if (reversedOriginals.Count > 0 && _avatarProgressRepository != null)
+                {
+                    if (instance.OwnerAvatarId.HasValue)
+                    {
+                        _avatarProgressRepository.ReverseTransactions(
+                            instance.OwnerAvatarId.Value,
+                            instance.SagaRef,
+                            reversedOriginals);
+                    }
+                    else
+                    {
+                        foreach (var authorGroup in reversedOriginals
+                                     .Where(t => Guid.TryParse(t.AvatarId, out var authorId) && authorId != Guid.Empty)
+                                     .GroupBy(t => Guid.Parse(t.AvatarId!)))
+                        {
+                            _avatarProgressRepository.ReverseTransactions(
+                                authorGroup.Key,
+                                instance.SagaRef,
+                                authorGroup.ToList());
+                        }
+                    }
+                }
+
+                _database.Commit();
+
+                if (reversedOriginals.Count > 0)
+                {
+                    InvalidateInstanceCache(instanceId);
+                    if (instance.OwnerAvatarId.HasValue)
+                    {
+                        InvalidateReadModelCache(instance.OwnerAvatarId.Value, instance.SagaRef);
+                    }
+                    else
+                    {
+                        foreach (var authorId in reversedOriginals
+                                     .Select(t => Guid.TryParse(t.AvatarId, out var id) ? id : Guid.Empty)
+                                     .Where(id => id != Guid.Empty)
+                                     .Distinct())
+                        {
+                            InvalidateReadModelCache(authorId, instance.SagaRef);
+                        }
+                    }
+                }
+
+                return Task.FromResult(reversals);
+            }
+            catch
+            {
+                _database.Rollback();
+                throw;
+            }
+        }
     }
 
     public Task<List<SagaInstance>> GetAllInstancesForAvatarAsync(Guid avatarId, CancellationToken ct = default)
@@ -655,6 +841,7 @@ internal class SagaTransactionRecord
     public DateTime LocalTimestamp { get; set; }
     public DateTime? ServerTimestamp { get; set; }
     public TransactionStatus Status { get; set; }
+    public TransactionSyncState SyncState { get; set; } = TransactionSyncState.LocalUnsynced;
     public SagaTransactionType Type { get; set; }
     public string? ExtensionTypeName { get; set; }
     public Dictionary<string, string> Data { get; set; } = new();
@@ -672,6 +859,7 @@ internal class SagaTransactionRecord
             LocalTimestamp = transaction.LocalTimestamp,
             ServerTimestamp = transaction.ServerTimestamp,
             Status = transaction.Status,
+            SyncState = transaction.SyncState,
             Type = transaction.Type,
             ExtensionTypeName = transaction.ExtensionTypeName,
             Data = new Dictionary<string, string>(transaction.Data),
@@ -690,6 +878,7 @@ internal class SagaTransactionRecord
             LocalTimestamp = LocalTimestamp,
             ServerTimestamp = ServerTimestamp,
             Status = Status,
+            SyncState = SyncState,
             Type = Type,
             ExtensionTypeName = ExtensionTypeName,
             Data = new Dictionary<string, string>(Data),

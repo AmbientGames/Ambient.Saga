@@ -66,7 +66,7 @@ public class AchievementTests
         var achievement = new Achievement();
         var criteria = new AchievementCriteria
         {
-            Type = AchievementCriteriaType.PlayTimeHours,
+            Type = AchievementCriteriaType.CharactersDefeated,
             Threshold = 1
         };
 
@@ -75,7 +75,7 @@ public class AchievementTests
 
         // Assert
         Assert.NotNull(achievement.Criteria);
-        Assert.Equal(AchievementCriteriaType.PlayTimeHours, achievement.Criteria.Type);
+        Assert.Equal(AchievementCriteriaType.CharactersDefeated, achievement.Criteria.Type);
         Assert.Equal(1, achievement.Criteria.Threshold);
     }
 
@@ -140,8 +140,8 @@ public class AchievementTests
     [Theory]
     [InlineData(AchievementCriteriaType.BlocksDestroyed, 10)]
     [InlineData(AchievementCriteriaType.BlocksPlaced, 5)]
-    [InlineData(AchievementCriteriaType.PlayTimeHours, 1)]
-    [InlineData(AchievementCriteriaType.DistanceTraveled, 100)]
+    [InlineData(AchievementCriteriaType.CharactersDefeated, 1)]
+    [InlineData(AchievementCriteriaType.QuestsCompleted, 100)]
     public void Criteria_SetToVariousTypes_AcceptsAllValues(AchievementCriteriaType type, float threshold)
     {
         // Arrange

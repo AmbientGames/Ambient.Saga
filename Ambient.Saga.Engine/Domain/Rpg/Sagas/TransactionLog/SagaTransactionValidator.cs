@@ -65,7 +65,6 @@ public static class SagaTransactionValidator
             // Quest lifecycle
             SagaTransactionType.QuestAccepted => ValidateQuestAccepted(state, transaction),
             SagaTransactionType.QuestCompleted => ValidateQuestCompleted(state, transaction),
-            SagaTransactionType.QuestFailed => ValidateQuestActive(state, transaction),
             SagaTransactionType.QuestAbandoned => ValidateQuestActive(state, transaction),
             SagaTransactionType.QuestStageAdvanced => ValidateQuestStageAdvanced(state, transaction, world),
             SagaTransactionType.QuestBranchChosen => ValidateQuestBranchChosen(state, transaction),
@@ -108,9 +107,30 @@ public static class SagaTransactionValidator
 
     private static (bool, string?) ValidateItemTraded(SagaState state, SagaTransaction tx, IWorld? world)
     {
-        var aliveCheck = ValidateCharacterAlive(state, tx, "trade with");
-        if (!aliveCheck.Item1)
-            return aliveCheck;
+        var characterId = tx.GetData<string>(TransactionDataKeys.CharacterInstanceId);
+        if (string.IsNullOrEmpty(characterId))
+            return (false, "Missing CharacterInstanceId");
+
+        if (!state.Characters.TryGetValue(characterId, out var tradeCharacter))
+            return (false, $"Character '{characterId}' not found");
+
+        // VICTORY LOOT exception: the victor of THIS spawn instance may free-take
+        // (zero-price buy) the defeated character's remaining Loot. Everything else
+        // against a dead character stays invalid — including zero-price SELLS to a
+        // corpse (there is no honest producer for depositing into a defeat drop).
+        var isVictoryLootTake = false;
+        if (!tradeCharacter.IsAlive)
+        {
+            var buyingFromCorpse = tx.TryGetData<bool>(TransactionDataKeys.IsBuying, out var b) && b;
+            var freeOfCharge = tx.TryGetData<int>(TransactionDataKeys.PricePerItem, out var p) && p == 0;
+            var isVictor = !string.IsNullOrEmpty(tradeCharacter.DefeatedByAvatarId)
+                           && string.Equals(tradeCharacter.DefeatedByAvatarId, tx.AvatarId, StringComparison.OrdinalIgnoreCase);
+
+            if (!(buyingFromCorpse && freeOfCharge && isVictor))
+                return (false, $"Cannot trade with dead character '{characterId}' (victory loot is a zero-price take by the victor only)");
+
+            isVictoryLootTake = true;
+        }
 
         if (tx.TryGetData<int>(TransactionDataKeys.Quantity, out var quantity) && quantity <= 0)
             return (false, "Trade quantity must be greater than zero");
@@ -135,7 +155,9 @@ public static class SagaTransactionValidator
         // maximum-discount buy price, the ceiling for sales is full wholesale.
         // Uses TradeEngine so pricing lives in exactly one place. The key is
         // required — omitting it was an opt-out from the bound.
-        if (world != null)
+        // Victory-loot takes are exempt: they are zero-price BY RULE (enforced above),
+        // so the merchant buy floor does not apply.
+        if (world != null && !isVictoryLootTake)
         {
             if (!tx.TryGetData<int>(TransactionDataKeys.PricePerItem, out var pricePerItem))
                 return (false, "ItemTraded requires PricePerItem");
@@ -329,11 +351,8 @@ public static class SagaTransactionValidator
         if (state.CompletedQuests.Contains(questRef))
             return (false, $"Quest '{questRef}' already completed");
 
-        if (!state.ActiveQuests.TryGetValue(questRef, out var questState))
+        if (!state.ActiveQuests.ContainsKey(questRef))
             return (false, $"Quest '{questRef}' not active");
-
-        if (questState.IsFailed)
-            return (false, $"Quest '{questRef}' has failed — cannot complete");
 
         return (true, null);
     }

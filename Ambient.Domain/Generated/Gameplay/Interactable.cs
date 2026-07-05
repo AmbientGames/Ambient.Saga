@@ -25,9 +25,7 @@ namespace Ambient.Domain {
         private string contentField;
         
         private ItemCollection lootField;
-        
-        private RewardEffects effectsField;
-        
+
         private string[] requiresQuestTokenRefField;
         
         private string[] givesQuestTokenRefField;
@@ -63,16 +61,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.lootField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public RewardEffects Effects {
-            get {
-                return this.effectsField;
-            }
-            set {
-                this.effectsField = value;
             }
         }
         

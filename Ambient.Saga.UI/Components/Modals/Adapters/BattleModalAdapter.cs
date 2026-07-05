@@ -24,6 +24,13 @@ public class BattleModalAdapter : IModal
         remove => _modal.AvatarDefeated -= value;
     }
 
+    /// <summary>
+    /// Fired after the battle modal closes on a VICTORY, carrying the defeated
+    /// character. ModalManager subscribes and opens the victory-loot trade modal
+    /// (free-take mode) if the character has any remaining Loot.
+    /// </summary>
+    public event Action<SagaMainViewModel, CharacterViewModel>? VictoryLootAvailable;
+
     public string Name => "BossBattle";
 
     /// <summary>
@@ -84,8 +91,17 @@ public class BattleModalAdapter : IModal
     {
         System.Diagnostics.Debug.WriteLine("[BattleModal] Closed");
 
+        // Drain the victory-loot candidate BEFORE Reset clears it: a battle that
+        // ended in victory offers the defeated character's remaining Loot.
+        var victoryLoot = _modal.TakeVictoryLootCandidate();
+
         // Reset battle state so re-engaging the same enemy starts a fresh battle
         // instead of showing the previous battle's end screen.
         _modal.Reset();
+
+        if (victoryLoot != null)
+        {
+            VictoryLootAvailable?.Invoke(victoryLoot.Value.ViewModel, victoryLoot.Value.Character);
+        }
     }
 }

@@ -25,13 +25,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         BlocksDestroyed,
-        
-        /// <remarks/>
-        DistanceTraveled,
-        
-        /// <remarks/>
-        PlayTimeHours,
-        
+
         /// <remarks/>
         CharactersDefeated,
         

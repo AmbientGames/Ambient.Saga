@@ -21,16 +21,6 @@
                     <xs:documentation>Not yet tracked — no transaction emitter exists for block destruction counts.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="DistanceTraveled">
-                <xs:annotation>
-                    <xs:documentation>Not yet tracked — no transaction emitter exists for distance traveled.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-            <xs:enumeration value="PlayTimeHours">
-                <xs:annotation>
-                    <xs:documentation>Not yet tracked — no transaction emitter exists for play time accumulation.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
             <xs:enumeration value="CharactersDefeated" />
             <xs:enumeration value="CharactersDefeatedByType" />
             <xs:enumeration value="CharactersDefeatedByTag" />

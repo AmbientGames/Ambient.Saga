@@ -105,7 +105,7 @@ public static class QuestRewardDistributor
     /// Distribute all rewards that match the given condition.
     /// </summary>
     /// <param name="rewards">Array of quest rewards to filter and distribute</param>
-    /// <param name="condition">The condition to match (OnSuccess, OnFailure, OnBranch, OnObjective)</param>
+    /// <param name="condition">The condition to match (OnSuccess, OnBranch, OnObjective)</param>
     /// <param name="avatar">The avatar to receive rewards</param>
     /// <param name="world">World containing catalog definitions</param>
     /// <param name="branchRef">Optional branch reference for OnBranch rewards</param>
@@ -140,7 +140,7 @@ public static class QuestRewardDistributor
     /// projection both see them.
     /// </summary>
     /// <param name="rewards">Array of quest rewards to filter</param>
-    /// <param name="condition">The condition to match (OnSuccess, OnFailure, OnBranch, OnObjective)</param>
+    /// <param name="condition">The condition to match (OnSuccess, OnBranch, OnObjective)</param>
     /// <param name="avatarId">Avatar receiving the rewards</param>
     /// <param name="sagaInstanceId">Saga instance whose log records the reward</param>
     /// <param name="world">World containing faction definitions (for spillover)</param>

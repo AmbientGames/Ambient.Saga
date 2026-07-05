@@ -27,9 +27,7 @@ namespace Ambient.Domain {
         private QuestStages stagesField;
         
         private QuestReward[] rewardsField;
-        
-        private QuestFailCondition[] failConditionsField;
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Prerequisite", IsNullable=false)]
         public QuestPrerequisite[] Prerequisites {
@@ -59,17 +57,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.rewardsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("FailCondition", IsNullable=false)]
-        public QuestFailCondition[] FailConditions {
-            get {
-                return this.failConditionsField;
-            }
-            set {
-                this.failConditionsField = value;
             }
         }
     }

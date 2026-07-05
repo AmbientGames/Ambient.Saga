@@ -613,6 +613,14 @@ public partial class SagaMainViewModel : ObservableObject
                         CanTrade = characterState.IsAlive &&
                             (characterTemplate.Traits?.Any(t => t.Name == CharacterTraitType.WillTrade) ?? false),
                         CanAttack = characterState.IsAlive,
+                        // Victory loot: a defeated character whose victor is THIS avatar
+                        // keeps its remaining Loot takeable (free-take trade mode) until
+                        // the drop is exhausted or the character respawns fresh.
+                        IsVictoryLoot = !characterState.IsAlive &&
+                            !string.IsNullOrEmpty(characterState.DefeatedByAvatarId) &&
+                            string.Equals(characterState.DefeatedByAvatarId, Avatar.AvatarId.ToString(),
+                                StringComparison.OrdinalIgnoreCase) &&
+                            (characterState.CurrentInventory?.HasAnyItems() ?? false),
                         SagaRef = sagaRef
                     };
 

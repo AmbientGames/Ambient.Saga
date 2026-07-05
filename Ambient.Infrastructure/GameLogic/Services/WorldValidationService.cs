@@ -672,6 +672,15 @@ public static class WorldValidationService
                 ValidateConditionRefName(world.SpellsLookup, condition.RefName, conditionContext, "Spells", errors, required: true);
                 break;
 
+            case DialogueConditionType.HasBlock:
+            case DialogueConditionType.LacksBlock:
+                // note, not possible to validate the block is valid (Blocks are not exposed on IWorld)
+                if (string.IsNullOrEmpty(condition.RefName))
+                {
+                    errors.Add($"{conditionContext}: RefName is required but not specified");
+                }
+                break;
+
             // Avatar state
             case DialogueConditionType.HasAchievement:
                 ValidateConditionRefName(world.AchievementsLookup, condition.RefName, conditionContext, "Achievements", errors, required: true);
@@ -738,6 +747,20 @@ public static class WorldValidationService
                 {
                     errors.Add($"{conditionContext}: TraitComparison requires the Trait attribute");
                 }
+                ValidateNumericConditionValue(condition, conditionContext, errors);
+                break;
+
+            // Party state
+            case DialogueConditionType.PartySlotAvailable:
+                // No attributes to validate
+                break;
+
+            case DialogueConditionType.IsInParty:
+                // RefName is optional - empty means the current dialogue character
+                ValidateConditionRefName(world.CharactersLookup, condition.RefName, conditionContext, "Characters", errors, required: false);
+                break;
+
+            case DialogueConditionType.PartySize:
                 ValidateNumericConditionValue(condition, conditionContext, errors);
                 break;
 
@@ -878,7 +901,11 @@ public static class WorldValidationService
             // Reputation management
             case DialogueActionType.ChangeReputation:
                 ValidateActionRefName(world.FactionsLookup, action.FactionRef, actionContext, "Factions", errors, required: true);
-                ValidateActionAmount(action.Amount, actionContext, errors, allowZero: true); // Can be negative
+                // Negative amounts are legitimate (reputation loss); only zero is meaningless
+                if (action.Amount == 0)
+                {
+                    errors.Add($"{actionContext}: Amount should not be zero (no effect)");
+                }
                 break;
 
             // Quest actions
@@ -1239,11 +1266,21 @@ public static class WorldValidationService
         {
             var questContext = $"Quest '{quest.RefName}'";
 
-            // Validate Prerequisites FactionRef
+            // Validate Prerequisites references
             if (quest.Prerequisites != null)
             {
                 foreach (var prereq in quest.Prerequisites)
                 {
+                    if (!string.IsNullOrEmpty(prereq.QuestRef))
+                    {
+                        ValidateReference(world.QuestsLookup, prereq.QuestRef, $"{questContext} Prerequisite", "QuestRef", "Quests", errors);
+                    }
+
+                    if (!string.IsNullOrEmpty(prereq.RequiredAchievementRef))
+                    {
+                        ValidateReference(world.AchievementsLookup, prereq.RequiredAchievementRef, $"{questContext} Prerequisite", "RequiredAchievementRef", "Achievements", errors);
+                    }
+
                     if (!string.IsNullOrEmpty(prereq.FactionRef))
                     {
                         ValidateReference(world.FactionsLookup, prereq.FactionRef, $"{questContext} Prerequisite", "FactionRef", "Factions", errors);

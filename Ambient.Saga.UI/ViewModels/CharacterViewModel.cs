@@ -72,6 +72,16 @@ public partial class CharacterViewModel : ObservableObject
     private string _arcKind = string.Empty;
 
     /// <summary>
+    /// True when this character is a DEFEATED enemy whose remaining Interactable.Loot the
+    /// current avatar (its victor) may free-take. Distinct from IsCache (geocache /
+    /// RemnantLoot player-death drops): victory loot is a defeat drop, and the trade modal
+    /// titles and labels it as such. Computed from the replayed saga state
+    /// (dead + DefeatedByAvatarId == this avatar + remaining CurrentInventory non-empty).
+    /// </summary>
+    [ObservableProperty]
+    private bool _isVictoryLoot;
+
+    /// <summary>
     /// Optional callback that renders extra ImGui content inside the trade modal, after the inventory
     /// list and before the close button. Used by callers to inject bespoke sections (e.g. a geocache
     /// logbook) without pushing game-specific concepts into the Saga layer.

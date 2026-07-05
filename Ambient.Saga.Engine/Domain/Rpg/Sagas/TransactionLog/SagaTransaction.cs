@@ -50,6 +50,14 @@ public class SagaTransaction
     /// </summary>
     public TransactionStatus Status { get; set; } = TransactionStatus.Pending;
 
+    /// <summary>
+    /// Where this transaction stands relative to the server (see
+    /// <see cref="TransactionSyncState"/>). Push selection is driven by this
+    /// per-transaction state, never by per-instance sequence watermarks —
+    /// sequence numbers collide across avatars on shared arcs.
+    /// </summary>
+    public TransactionSyncState SyncState { get; set; } = TransactionSyncState.LocalUnsynced;
+
     // ===== Content =====
 
     /// <summary>

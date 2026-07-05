@@ -85,7 +85,7 @@ public class QuestDetailModal
 
         ImGuiHelpers.SetupModalWindow(900, 700);
 
-        // Stable title with ### id — status ([ACTIVE]/[COMPLETED]/[FAILED]) is rendered
+        // Stable title with ### id — status ([ACTIVE]/[COMPLETED]) is rendered
         // as text inside the window (RenderHeader) so the ImGui window identity doesn't
         // change mid-life.
         var title = _questTemplate.DisplayName ?? _questTemplate.RefName;
@@ -149,15 +149,6 @@ public class QuestDetailModal
             RenderRewards(viewModel);
         }
 
-        // Fail conditions
-        if (_questTemplate.FailConditions != null && _questTemplate.FailConditions.Length > 0)
-        {
-            ImGui.Spacing();
-            ImGui.Separator();
-            ImGui.Spacing();
-            RenderFailConditions(viewModel);
-        }
-
         // Prerequisites (if not met, would be grayed out)
         if (_questTemplate.Prerequisites != null && _questTemplate.Prerequisites.Length > 0)
         {
@@ -184,18 +175,7 @@ public class QuestDetailModal
             ImGui.SameLine();
             if (_questProgress.IsComplete)
             {
-                if (_questProgress.IsSuccess)
-                {
-                    ImGui.TextColored(new Vector4(0, 1, 0, 1), "[COMPLETED]");
-                }
-                else if (_questProgress.IsFailed)
-                {
-                    ImGui.TextColored(new Vector4(1, 0, 0, 1), "[FAILED]");
-                    if (!string.IsNullOrEmpty(_questProgress.FailureReason))
-                    {
-                        ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), $"Reason: {_questProgress.FailureReason}");
-                    }
-                }
+                ImGui.TextColored(new Vector4(0, 1, 0, 1), "[COMPLETED]");
             }
             else
             {
@@ -384,8 +364,7 @@ public class QuestDetailModal
 
         foreach (var reward in _questTemplate!.Rewards!)
         {
-            var condition = reward.Condition == QuestRewardCondition.OnSuccess ? "On Success" :
-                           reward.Condition == QuestRewardCondition.OnFailure ? "On Failure" : "Always";
+            var condition = reward.Condition == QuestRewardCondition.OnSuccess ? "On Success" : "Always";
 
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"[{condition}]");
 
@@ -417,38 +396,6 @@ public class QuestDetailModal
         }
 
         ImGui.Unindent(10 * UIConstants.DpiScale);
-    }
-
-    private void RenderFailConditions(SagaMainViewModel viewModel)
-    {
-        ImGui.TextColored(new Vector4(1, 0.5f, 0.5f, 1), "Failure Conditions:");
-        ImGui.Spacing();
-
-        ImGui.Indent(10 * UIConstants.DpiScale);
-
-        foreach (var failCondition in _questTemplate!.FailConditions!)
-        {
-            var conditionText = failCondition.Type switch
-            {
-                QuestFailConditionType.CharacterDied => GetCharacterDiedText(failCondition.CharacterRef, viewModel),
-                QuestFailConditionType.TimeExpired => $"If time expires ({failCondition.TimeLimit} minutes)",
-                QuestFailConditionType.WrongChoiceMade => $"If wrong choice made in dialogue",
-                QuestFailConditionType.ItemLost => $"If {failCondition.ItemRef} is lost",
-                _ => "Unknown condition"
-            };
-
-            ImGui.BulletText(conditionText);
-        }
-
-        ImGui.Unindent(10 * UIConstants.DpiScale);
-    }
-
-    private string GetCharacterDiedText(string? characterRef, SagaMainViewModel viewModel)
-    {
-        if (string.IsNullOrEmpty(characterRef)) return "If character dies";
-        var charDef = viewModel.CurrentWorld?.Gameplay?.Characters?.FirstOrDefault(c => c.RefName == characterRef);
-        var charName = charDef?.DisplayName ?? characterRef;
-        return $"If {charName} dies";
     }
 
     private void RenderPrerequisites(SagaMainViewModel viewModel)

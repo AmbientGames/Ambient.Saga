@@ -48,13 +48,17 @@ public class MerchantTradeModal
 
         var windowFlags = ImGuiWindowFlags.NoCollapse;
 
-        var titleText = character.ArcKind switch
-        {
-            "GeoCache" => "Geocache",
-            "RemnantLoot" => "Remnant Loot",
-            "Market" => "Shop",
-            _ => "Trade"
-        };
+        // Victory loot (defeat drop) is visually distinct from the cache kinds:
+        // "Remnant Loot" = a player's death drop, "Victory Loot" = an enemy you beat.
+        var titleText = character.IsVictoryLoot
+            ? "Victory Loot"
+            : character.ArcKind switch
+            {
+                "GeoCache" => "Geocache",
+                "RemnantLoot" => "Remnant Loot",
+                "Market" => "Shop",
+                _ => "Trade"
+            };
         if (ImGui.Begin($"{titleText}###MerchantTradeModal", ref isOpen, windowFlags))
         {
             // Header (merchant or cache). FontHeading for both halves so the subtitle
@@ -344,8 +348,10 @@ public class MerchantTradeModal
             };
 
             // Create ViewModel — character.IsCache flips the VM into cache mode (hides money/prices,
-            // relabels Buy→Take / Sell→Deposit, zero-price trades).
-            _tradeViewModel = new MerchantTradeViewModel(context, viewModel.Mediator, isCache: character.IsCache);
+            // relabels Buy→Take / Sell→Deposit, zero-price trades); character.IsVictoryLoot flips it
+            // into victory-loot mode (free TAKE ONLY — no deposits into a defeat drop).
+            _tradeViewModel = new MerchantTradeViewModel(context, viewModel.Mediator,
+                isCache: character.IsCache, isVictoryLoot: character.IsVictoryLoot);
             _tradeViewModel.RefreshCategories();
 
             // Load the saga-replayed live inventory asynchronously (audit D9: the replay

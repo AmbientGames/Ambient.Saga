@@ -102,14 +102,6 @@ internal sealed class CompleteQuestHandler : IRequestHandler<CompleteQuestComman
                     $"Quest '{quest.DisplayName}' not complete - still on stage '{questState.CurrentStage}'");
             }
 
-            // NEW: Check if quest failed (shouldn't complete a failed quest)
-            if (questState.IsFailed)
-            {
-                return SagaCommandResult.Failure(
-                    instance.InstanceId,
-                    $"Quest '{quest.DisplayName}' failed - cannot complete");
-            }
-
             // Create QuestCompleted transaction
             var transactionData = new Dictionary<string, string>
             {

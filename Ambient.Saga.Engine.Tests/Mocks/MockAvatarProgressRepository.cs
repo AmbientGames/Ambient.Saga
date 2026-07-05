@@ -13,6 +13,7 @@ public class MockAvatarProgressRepository : IAvatarProgressRepository
     private readonly Dictionary<(Guid, string, string), int?> _characterTraits = new();
 
     public void ProjectTransactions(Guid avatarId, string sagaRef, IReadOnlyList<SagaTransaction> transactions) { }
+    public void ReverseTransactions(Guid avatarId, string sagaRef, IReadOnlyList<SagaTransaction> reversedOriginals) { }
 
     public bool HasQuestToken(Guid avatarId, string questTokenRef) => _questTokens.Contains((avatarId, questTokenRef));
     public HashSet<string> GetAllQuestTokens(Guid avatarId) => _questTokens.Where(t => t.Item1 == avatarId).Select(t => t.Item2).ToHashSet();

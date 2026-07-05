@@ -28,6 +28,21 @@ public class SagaTransactionValidatorTests
         return state;
     }
 
+    /// <summary>Dead character whose victor is recorded — the victory-loot scenario.</summary>
+    private static SagaState CreateStateWithDefeatedCharacter(string victorAvatarId)
+    {
+        var state = new SagaState();
+        state.Characters[MerchantInstanceId.ToString()] = new CharacterState
+        {
+            CharacterInstanceId = MerchantInstanceId,
+            CharacterRef = "Bandit",
+            IsSpawned = true,
+            IsAlive = false,
+            DefeatedByAvatarId = victorAvatarId
+        };
+        return state;
+    }
+
     private static World CreateWorldWithPricedSword(int wholesalePrice = 100)
     {
         var world = new World();
@@ -227,6 +242,82 @@ public class SagaTransactionValidatorTests
             CreateTransaction(SagaTransactionType.ItemTraded, TradeData(pricePerItem: 150, isBuying: true)));
 
         Assert.False(deadValid); // merchant not in state
+    }
+
+    // ===== Victory loot: the victor free-take exception =====
+
+    private static SagaTransaction CreateVictoryTakeTransaction(string avatarId, int pricePerItem = 0, bool isBuying = true)
+    {
+        var tx = CreateTransaction(SagaTransactionType.ItemTraded, TradeData(pricePerItem, isBuying));
+        tx.AvatarId = avatarId;
+        return tx;
+    }
+
+    [Fact]
+    public void Validate_VictorFreeTakeFromDefeatedCharacter_Allowed()
+    {
+        var victor = Guid.NewGuid().ToString();
+
+        var (isValid, reason) = SagaTransactionValidator.Validate(
+            CreateStateWithDefeatedCharacter(victor),
+            CreateVictoryTakeTransaction(victor),
+            CreateWorldWithPricedSword()); // world present: floor bound must NOT apply to the free take
+
+        Assert.True(isValid, reason);
+    }
+
+    [Fact]
+    public void Validate_NonVictorFreeTakeFromDefeatedCharacter_Rejected()
+    {
+        var (isValid, reason) = SagaTransactionValidator.Validate(
+            CreateStateWithDefeatedCharacter(victorAvatarId: Guid.NewGuid().ToString()),
+            CreateVictoryTakeTransaction(avatarId: Guid.NewGuid().ToString()),
+            CreateWorldWithPricedSword());
+
+        Assert.False(isValid);
+        Assert.Contains("dead character", reason);
+    }
+
+    [Fact]
+    public void Validate_ZeroPriceSellToDefeatedCharacter_Rejected()
+    {
+        // Even the victor cannot deposit INTO a corpse — free-take is buy-only
+        var victor = Guid.NewGuid().ToString();
+
+        var (isValid, _) = SagaTransactionValidator.Validate(
+            CreateStateWithDefeatedCharacter(victor),
+            CreateVictoryTakeTransaction(victor, pricePerItem: 0, isBuying: false),
+            CreateWorldWithPricedSword());
+
+        Assert.False(isValid);
+    }
+
+    [Fact]
+    public void Validate_PricedBuyFromDefeatedCharacter_Rejected()
+    {
+        // Victory loot is zero-price BY RULE — a priced trade with a corpse stays invalid
+        var victor = Guid.NewGuid().ToString();
+
+        var (isValid, _) = SagaTransactionValidator.Validate(
+            CreateStateWithDefeatedCharacter(victor),
+            CreateVictoryTakeTransaction(victor, pricePerItem: 150),
+            CreateWorldWithPricedSword());
+
+        Assert.False(isValid);
+    }
+
+    [Fact]
+    public void Validate_FreeTakeFromAliveCharacter_StillRejectedByPriceFloor()
+    {
+        // The victor exception applies to DEFEATED characters only: a zero-price buy
+        // from a living merchant keeps hitting the catalog floor bound
+        var (isValid, reason) = SagaTransactionValidator.Validate(
+            CreateStateWithLivingMerchant(),
+            CreateTransaction(SagaTransactionType.ItemTraded, TradeData(pricePerItem: 0, isBuying: true)),
+            CreateWorldWithPricedSword());
+
+        Assert.False(isValid);
+        Assert.Contains("below the catalog minimum", reason);
     }
 
     [Fact]

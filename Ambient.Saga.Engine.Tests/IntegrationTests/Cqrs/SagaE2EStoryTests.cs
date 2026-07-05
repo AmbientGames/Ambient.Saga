@@ -78,17 +78,18 @@ public class SagaE2EStoryTests : IDisposable
         {
             RefName = "VillageMerchant",
             DisplayName = "Takeshi the Merchant",
+            // Merchants only sell what they stock (see TradeItemHandler); stock is the
+            // template's Interactable.Loot, cloned into CurrentInventory per spawn
             Interactable = new Interactable
             {
-                DialogueTreeRef = "MerchantGreeting"
-            },
-            // Merchants only sell what they stock (see TradeItemHandler)
-            Capabilities = new ItemCollection
-            {
-                Consumables = new[]
+                Loot = new ItemCollection
                 {
-                    new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 50 }
-                }
+                    Consumables = new[]
+                    {
+                        new ConsumableEntry { ConsumableRef = "HealthPotion", Quantity = 50 }
+                    }
+                },
+                DialogueTreeRef = "MerchantGreeting"
             }
         };
 

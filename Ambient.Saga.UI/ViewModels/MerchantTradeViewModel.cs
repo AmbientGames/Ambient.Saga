@@ -57,23 +57,36 @@ public partial class MerchantTradeViewModel : ObservableObject
     /// </summary>
     public bool IsCache { get; }
 
-    public bool ShowBuySellToggle => true;
-    public bool IsMerchant => !IsCache;
+    /// <summary>
+    /// True when this VM is driving a VICTORY-LOOT collect: the defeated character's remaining
+    /// Loot, free-takeable by its victor. Free like a cache, but TAKE ONLY — the engine rejects
+    /// zero-price sells to a corpse, so the Sell/Deposit side is hidden entirely. Labeled
+    /// distinctly from caches so a defeat drop never reads as "Geocache"/"Remnant Loot".
+    /// </summary>
+    public bool IsVictoryLoot { get; }
+
+    /// <summary>Free-take modes: zero-price trades, no money UI.</summary>
+    public bool IsFreeTake => IsCache || IsVictoryLoot;
+
+    public bool ShowBuySellToggle => !IsVictoryLoot;
+    public bool IsMerchant => !IsFreeTake;
 
     public string CurrencyName => _context?.CurrencyName ?? "Coin";
     public string PluralCurrencyName => _context?.PluralCurrencyName ?? "Coins";
     public AvatarBase? Avatar => _context?.AvatarEntity;  // Implicit upcast to AvatarBase
 
     // UI text + visibility that varies by mode
-    public bool ShowMoneyBar => !IsCache;
-    public bool ShowPrices => !IsCache;
-    public string HeaderSubtitle => IsCache ? "- Cache" : "- Merchant";
-    public string BuyModeLabel => IsCache ? "Take from Cache" : "Buy from Merchant";
+    public bool ShowMoneyBar => !IsFreeTake;
+    public bool ShowPrices => !IsFreeTake;
+    public string HeaderSubtitle => IsVictoryLoot ? "- Defeated" : IsCache ? "- Cache" : "- Merchant";
+    public string BuyModeLabel => IsVictoryLoot ? "Spoils of Victory" : IsCache ? "Take from Cache" : "Buy from Merchant";
     public string SellModeLabel => IsCache ? "Deposit Items" : "Sell your Items";
-    public string ItemBuyLabel => IsCache ? "Take" : "Buy";
+    public string ItemBuyLabel => IsFreeTake ? "Take" : "Buy";
     public string ItemSellLabel => IsCache ? "Deposit" : "Sell";
-    public string CloseLabel => IsCache ? "Close" : "Leave Shop";
-    public string EmptyBuyText => IsCache ? "Cache is empty" : "Merchant has no items in this category";
+    public string CloseLabel => IsFreeTake ? "Close" : "Leave Shop";
+    public string EmptyBuyText => IsVictoryLoot
+        ? "Nothing left to take"
+        : IsCache ? "Cache is empty" : "Merchant has no items in this category";
     public string EmptySellText => IsCache ? "You have nothing to deposit in this category" : "You have no items to sell in this category";
 
     private string _tradeMode = "Buy"; // "Buy" or "Sell"
@@ -120,11 +133,12 @@ public partial class MerchantTradeViewModel : ObservableObject
     // Should we show the category selector? (only if more than one category has items)
     public bool ShowCategorySelector => AvailableCategories.Count > 1;
 
-    public MerchantTradeViewModel(SagaInteractionContext context, IMediator mediator, bool isCache = false)
+    public MerchantTradeViewModel(SagaInteractionContext context, IMediator mediator, bool isCache = false, bool isVictoryLoot = false)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         IsCache = isCache;
+        IsVictoryLoot = isVictoryLoot;
 
         if (_context.World != null)
         {
@@ -265,14 +279,14 @@ public partial class MerchantTradeViewModel : ObservableObject
         var source = GetMerchantInventorySource();
         if (source == null) return items;
 
-        // Traits drive merchant pricing; caches don't care. Cached by RefreshSagaStateAsync
-        // — no sync-over-async on the render path.
-        var characterTraits = IsCache ? null : _characterTraits;
+        // Traits drive merchant pricing; free-take modes (caches, victory loot) don't care.
+        // Cached by RefreshSagaStateAsync — no sync-over-async on the render path.
+        var characterTraits = IsFreeTake ? null : _characterTraits;
 
         var tradeItems = _tradeEngine.GetAvailableItems(source, SelectedTradeCategory, isBuying: true, characterTraits);
         foreach (var item in tradeItems)
         {
-            var price = IsCache ? 0 : item.Price;
+            var price = IsFreeTake ? 0 : item.Price;
             items.Add(new TradeItem(item.Item, price, item.Quantity, item.Condition));
         }
 
@@ -324,7 +338,7 @@ public partial class MerchantTradeViewModel : ObservableObject
                 ItemRef = tradeItem.Item.RefName,
                 Quantity = 1,  // Buy one at a time
                 IsBuying = true,
-                PricePerItem = IsCache ? 0 : tradeItem.Price,
+                PricePerItem = IsFreeTake ? 0 : tradeItem.Price,
                 Avatar = _context.AvatarEntity
             };
 
@@ -338,11 +352,13 @@ public partial class MerchantTradeViewModel : ObservableObject
                 return;
             }
 
-            var message = IsCache
-                ? $"Took {tradeItem.Item.DisplayName} from cache"
-                : $"Bought {tradeItem.Item.DisplayName} for {tradeItem.Price} {PluralCurrencyName}";
+            var message = IsVictoryLoot
+                ? $"Claimed {tradeItem.Item.DisplayName} as victory loot"
+                : IsCache
+                    ? $"Took {tradeItem.Item.DisplayName} from cache"
+                    : $"Bought {tradeItem.Item.DisplayName} for {tradeItem.Price} {PluralCurrencyName}";
             ActivityMessageGenerated?.Invoke(this, message);
-            StatusMessageChanged?.Invoke(this, IsCache ? "Taken." : "Trade successful!");
+            StatusMessageChanged?.Invoke(this, IsFreeTake ? "Taken." : "Trade successful!");
 
             // Signal owner revenue if this was a purchase from an avatar-owned merchant
             if (result.Data.TryGetValue(TransactionDataKeys.OwnerAvatarId, out var ownerIdObj) && ownerIdObj is string ownerId
@@ -379,6 +395,14 @@ public partial class MerchantTradeViewModel : ObservableObject
     [RelayCommand]
     private async Task SellItemAsync(TradeItem tradeItem)
     {
+        // Victory loot is take-only (the toggle is hidden; this is a belt-and-braces
+        // guard — the engine rejects zero-price sells to a dead character anyway).
+        if (IsVictoryLoot)
+        {
+            StatusMessageChanged?.Invoke(this, "You cannot leave items on a defeated enemy");
+            return;
+        }
+
         if (_context.AvatarEntity == null || _context.CurrentSagaRef == null || _context.CurrentCharacterInstanceId == null)
         {
             StatusMessageChanged?.Invoke(this, "Cannot complete trade - missing avatar or character data");

@@ -3,6 +3,11 @@
 namespace Ambient.Saga.Engine.Contracts.Cqrs;
 
 /// <summary>
+/// A server rejection of a locally-pushed transaction.
+/// </summary>
+public record TransactionRejection(Guid TransactionId, string? Reason);
+
+/// <summary>
 /// Repository for Saga instances (write-side event sourcing).
 /// Handles transaction log persistence and retrieval.
 /// </summary>
@@ -54,8 +59,31 @@ public interface ISagaInstanceRepository
 
     /// <summary>
     /// Mark transactions as rolled back (conflict resolution).
+    /// Imported transactions (SyncState = Imported) are never touched — they are
+    /// server-confirmed peer history, not local optimism.
     /// </summary>
     Task RollbackTransactionsAsync(Guid instanceId, List<Guid> transactionIds, CancellationToken ct = default);
+
+    /// <summary>
+    /// Mark locally-created transactions as acknowledged by the server
+    /// (SyncState = Synced) so they are never pushed again. Stamps the
+    /// server timestamp when the record doesn't have one yet.
+    /// Only LocalUnsynced records are affected.
+    /// </summary>
+    Task MarkTransactionsSyncedAsync(Guid instanceId, IReadOnlyCollection<Guid> transactionIds, DateTime? serverTimestamp = null, CancellationToken ct = default);
+
+    /// <summary>
+    /// Full server-rejection handling for locally-created transactions, atomically:
+    /// marks each Rejected (excluding it from replay), writes a committed
+    /// client-only TransactionReversed compensation referencing it (audit trail +
+    /// reward-ledger consumers), and reverses its cross-arc projections
+    /// (IAvatarProgressRepository). Imported and already-rejected transactions are
+    /// skipped — rejection handling applies only to LocalUnsynced pushes.
+    /// Avatar-entity side effects (items/credits already applied by handlers) are
+    /// NOT reversed here — see FEATURE-STATUS "online path".
+    /// Returns the compensating transactions written.
+    /// </summary>
+    Task<List<SagaTransaction>> RejectAndCompensateTransactionsAsync(Guid instanceId, IReadOnlyList<TransactionRejection> rejections, CancellationToken ct = default);
 
     /// <summary>
     /// Import transactions from the server, preserving their sequence numbers and status.

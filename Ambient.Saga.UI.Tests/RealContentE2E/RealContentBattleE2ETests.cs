@@ -221,6 +221,22 @@ public class RealContentBattleE2ETests : IAsyncLifetime, IDisposable
         var corpse = Assert.Single(afterBattle, c => c.CharacterInstanceId == enemyState.CharacterInstanceId);
         Assert.False(corpse.IsAlive);
 
+        // Victory-loot seam: the replayed state records THIS avatar as the victor of
+        // the defeated spawn instance — the gate for the free-take trade path (the
+        // host offers the corpse's remaining Interactable.Loot via MerchantTradeModal).
+        // The vendored Ise hostile authors no Loot, so the drop itself is empty here;
+        // loot collection over seeded content is covered by
+        // VictoryLootTradeViewModelTests and the engine's victory-loot tests.
+        var sagaState = await vm.Mediator.Send(new GetSagaStateQuery
+        {
+            AvatarId = avatar.AvatarId,
+            SagaRef = SagaRef
+        });
+        Assert.NotNull(sagaState);
+        var victorRecorded = sagaState!.Characters[enemyState.CharacterInstanceId.ToString()];
+        Assert.False(victorRecorded.IsAlive);
+        Assert.Equal(avatar.AvatarId.ToString(), victorRecorded.DefeatedByAvatarId);
+
         // ================= RELOAD: reconstruction from the log =================
         // Discard EVERYTHING in memory (service provider, mediator, repositories,
         // read-model cache, view model) and rebuild over the same LiteDB file — the
