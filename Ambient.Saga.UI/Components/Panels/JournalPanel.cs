@@ -656,7 +656,6 @@ public class JournalPanel
             SagaTransactionType.LootAwarded => "Collected loot",
             SagaTransactionType.EquipmentChanged => $"Equipped {equipmentRef ?? "item"}",
             SagaTransactionType.ConsumableUsed => $"Used {consumableRef ?? "item"}",
-            SagaTransactionType.LandmarkDiscovered => $"Discovered {featureRef ?? triggerRef ?? "location"}",
             SagaTransactionType.SagaDiscovered => $"Found new area: {triggerRef ?? "unknown"}",
             SagaTransactionType.SagaCompleted => $"Area completed: {triggerRef ?? "unknown"}",
             SagaTransactionType.BattleStarted => $"Battle started with {characterRef ?? "enemy"}",
@@ -668,7 +667,6 @@ public class JournalPanel
             SagaTransactionType.AvatarExited => "Departed location",
             SagaTransactionType.AffinityGranted => $"Learned about {characterRef ?? "character"}",
             SagaTransactionType.CurrencyChanged => "Currency changed",
-            SagaTransactionType.ItemCrafted => $"Crafted {itemRef ?? "item"}",
             SagaTransactionType.PartyMemberJoined => $"{characterRef ?? "Companion"} joined party",
             SagaTransactionType.PartyMemberLeft => $"{characterRef ?? "Companion"} left party",
             SagaTransactionType.StatusEffectApplied => "Status effect applied",
@@ -719,7 +717,6 @@ public class JournalPanel
             SagaTransactionType.ItemTraded => new Vector4(1f, 0.84f, 0f, 1f),
 
             // Discovery - green tones
-            SagaTransactionType.LandmarkDiscovered => new Vector4(0.4f, 0.9f, 0.5f, 1f),
             SagaTransactionType.SagaDiscovered => new Vector4(0.5f, 0.9f, 0.6f, 1f),
 
             // Loot/Items - gold/orange
@@ -748,7 +745,6 @@ public class JournalPanel
             SagaTransactionType.QuestObjectiveCompleted => new Vector4(0.05f, 0.05f, 0.15f, 0.3f),
 
             // Discovery events - slight green tint
-            SagaTransactionType.LandmarkDiscovered or
             SagaTransactionType.SagaDiscovered => new Vector4(0.05f, 0.15f, 0.05f, 0.3f),
 
             // Default - neutral
@@ -947,7 +943,6 @@ public class JournalPanel
             // Exploration
             AchievementCriteriaType.SagaArcsDiscovered => $"Discover {threshold:F0} saga arcs",
             AchievementCriteriaType.SagaArcsCompleted => $"Complete {threshold:F0} saga arcs",
-            AchievementCriteriaType.LandmarksDiscovered => $"Discover {threshold:F0} landmarks",
             AchievementCriteriaType.SagaTriggersActivated => $"Activate {threshold:F0} triggers",
 
             // Social

@@ -46,11 +46,7 @@ public static class QuestProgressEvaluator
             QuestObjectiveType.LocationReached => CountLocationReached(objective, relevantTransactions),
             QuestObjectiveType.TriggerActivated => CountTriggerActivated(objective, relevantTransactions),
 
-            QuestObjectiveType.ItemCrafted => CountItemCrafted(objective, relevantTransactions),
             QuestObjectiveType.CurrencyCollected => CountCurrencyCollected(objective, relevantTransactions),
-
-            // Custom objectives are evaluated externally - return threshold if a CustomObjectiveCompleted transaction exists
-            QuestObjectiveType.Custom => CountCustomObjective(objective, relevantTransactions),
 
             _ => 0
         };
@@ -402,15 +398,6 @@ public static class QuestProgressEvaluator
             (string.IsNullOrEmpty(objective.TriggerRef) || t.GetData<string>(TransactionDataKeys.SagaTriggerRef) == objective.TriggerRef));
     }
 
-    private static int CountItemCrafted(QuestObjective objective, List<SagaTransaction> transactions)
-    {
-        // Count items crafted from ItemCrafted transactions
-        return transactions
-            .Where(t => t.Type == SagaTransactionType.ItemCrafted &&
-                       (string.IsNullOrEmpty(objective.ItemRef) || t.GetData<string>(TransactionDataKeys.ItemRef) == objective.ItemRef))
-            .Sum(t => t.TryGetData<int>(TransactionDataKeys.Quantity, out var qty) ? qty : 1);
-    }
-
     private static int CountCurrencyCollected(QuestObjective objective, List<SagaTransaction> transactions)
     {
         // Sum all currency gained (from trades, loot, dialogue rewards)
@@ -419,15 +406,6 @@ public static class QuestProgressEvaluator
             .Where(t => t.Type == SagaTransactionType.CurrencyChanged &&
                        t.TryGetData<int>(TransactionDataKeys.Amount, out var amt) && amt > 0)
             .Sum(t => t.TryGetData<int>(TransactionDataKeys.Amount, out var amt) ? amt : 0);
-    }
-
-    private static int CountCustomObjective(QuestObjective objective, List<SagaTransaction> transactions)
-    {
-        // Custom objectives are marked complete via CustomObjectiveCompleted transaction
-        // with matching ObjectiveRef
-        return transactions.Any(t =>
-            t.Type == SagaTransactionType.CustomObjectiveCompleted &&
-            t.GetData<string>(TransactionDataKeys.ObjectiveRef) == objective.RefName) ? objective.Threshold : 0;
     }
 
     private static bool IsCharacterDead(string? characterRef, List<SagaTransaction> transactions)

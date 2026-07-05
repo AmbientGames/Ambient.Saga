@@ -113,11 +113,6 @@
                     <xs:documentation>The avatar must deliver a specific item to a target NPC or location.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="ItemCrafted">
-                <xs:annotation>
-                    <xs:documentation>The avatar must craft a specific item.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
             <xs:enumeration value="ItemTraded">
                 <xs:annotation>
                     <xs:documentation>The avatar must trade a specific item with a merchant or another avatar.</xs:documentation>
@@ -133,13 +128,6 @@
             <xs:enumeration value="QuestTokenCollected">
                 <xs:annotation>
                     <xs:documentation>The avatar must collect a specific quest token item.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-
-            <!-- Custom objectives -->
-            <xs:enumeration value="Custom">
-                <xs:annotation>
-                    <xs:documentation>A custom objective evaluated by game-specific logic outside the standard transaction types.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
         </xs:restriction>

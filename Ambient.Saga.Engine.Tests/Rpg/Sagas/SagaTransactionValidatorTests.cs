@@ -74,9 +74,6 @@ public class SagaTransactionValidatorTests
 
     [Theory]
     [InlineData(SagaTransactionType.CurrencyChanged)]
-    [InlineData(SagaTransactionType.ItemCrafted)]
-    [InlineData(SagaTransactionType.CustomObjectiveCompleted)]
-    [InlineData(SagaTransactionType.LandmarkDiscovered)]
     public void Validate_TypesWithoutClientProducer_Rejected(SagaTransactionType type)
     {
         var (isValid, _) = SagaTransactionValidator.Validate(

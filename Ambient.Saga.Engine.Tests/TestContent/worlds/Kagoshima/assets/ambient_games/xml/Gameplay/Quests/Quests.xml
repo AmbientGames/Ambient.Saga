@@ -516,7 +516,6 @@
       <Stage RefName="UNLOCK_SHRINE" DisplayName="Unlock the Shrine's Secrets">
         <Objectives>
           <Objective RefName="COLLECT_KEYS" Type="QuestTokenCollected" Threshold="3" DisplayName="Collect 3 shrine keys" ItemRef="TOKEN_SHRINE_KEY" />
-          <Objective RefName="SOLVE_SHRINE_PUZZLE" Type="Custom" Threshold="1" DisplayName="Solve the shrine's ancient puzzle" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -545,8 +544,6 @@
       <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Craft the Ultimate Masterpiece">
         <Objectives>
           <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="ChainBoots" />
-          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="LightCrossbow" />
-          <Objective RefName="BONUS_FLAWLESS_CRAFT" Type="Custom" Threshold="1" DisplayName="Achieve 100% quality on first try" Optional="true" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -570,13 +567,11 @@
       <Stage RefName="UNLOCK_VAULT" DisplayName="Unlock the Collector's Vault" NextStage="CLAIM_TREASURES">
         <Objectives>
           <Objective RefName="REACH_VAULT" Type="LocationReached" Threshold="1" DisplayName="Reach the vault at Iso-teien" SagaArcRef="Isoteien1" Hidden="true" />
-          <Objective RefName="PLACE_SEALS" Type="Custom" Threshold="5" DisplayName="Place all 5 ancient seals" />
         </Objectives>
       </Stage>
       <Stage RefName="CLAIM_TREASURES" DisplayName="Claim the Legendary Treasures">
         <Objectives>
           <Objective RefName="DEFEAT_VAULT_GUARDIAN" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the vault guardian" CharacterTag="boss" />
-          <Objective RefName="LOOT_VAULT" Type="Custom" Threshold="1" DisplayName="Claim the vault's treasures" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -607,7 +602,6 @@
           <Objective RefName="DEFEAT_WAVE_1" Type="CharactersDefeatedByTag" Threshold="10" DisplayName="Defeat 10 enemies (Wave 1)" CharacterTag="hostile" />
           <Objective RefName="COLLECT_SPEED_TOKENS" Type="QuestTokenCollected" Threshold="5" DisplayName="Collect 5 speed tokens" ItemRef="TOKEN_SPEED_CHALLENGE" />
           <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the time keeper" CharacterTag="boss" />
-          <Objective RefName="BONUS_UNDER_5_MIN" Type="Custom" Threshold="1" DisplayName="Complete in under 5 minutes" Optional="true" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">

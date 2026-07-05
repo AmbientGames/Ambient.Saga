@@ -22,14 +22,6 @@ All game entities (blocks, tools, climate zones, etc.) follow this naming conven
           ├── Tool
           └── Spell
 
-  SagaFocus
-  ├── Quest token requirements/rewards
-  ├── EnterRadius
-  └── Effects (optional Attributes or RewardEffects)
-      ├── Landmark: discovery buffs (inspiration, knowledge) - uses RewardEffects (can grant Credits/XP)
-      ├── Structure: shelter effects (warmth, healing, loot) - uses Attributes
-      └── QuestSignpost: quest acceptance buffs (courage, determination) - uses Attributes
-
 ## References
 
 When referencing entities from other entities, use string-based reference attributes:

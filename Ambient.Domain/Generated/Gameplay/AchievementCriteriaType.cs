@@ -49,10 +49,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         SagaArcsCompleted,
-        
-        /// <remarks/>
-        LandmarksDiscovered,
-        
+
         /// <remarks/>
         SagaTriggersActivated,
         
