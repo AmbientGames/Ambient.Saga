@@ -348,6 +348,12 @@ public class MerchantTradeModal
             _tradeViewModel = new MerchantTradeViewModel(context, viewModel.Mediator, isCache: character.IsCache);
             _tradeViewModel.RefreshCategories();
 
+            // Load the saga-replayed live inventory asynchronously (audit D9: the replay
+            // used to run sync-over-async inside the TradeInventory getter, several times
+            // per rendered frame). Until it lands the modal shows the template Loot
+            // fallback; the cache invalidation makes the next frame pick up the result.
+            _ = _tradeViewModel.RefreshSagaStateAsync();
+
             // Subscribe to events
             _tradeViewModel.ActivityMessageGenerated += (s, msg) =>
             {

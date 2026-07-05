@@ -83,6 +83,61 @@ public class AchievementProgressEvaluatorTests
         };
     }
 
+    #region Content-Update Template Tests (audit C2)
+
+    [Fact]
+    public void GetNewlyUnlockedAchievements_TemplateAddedAfterFirstPlay_IsEvaluableAndUnlocks()
+    {
+        // Audit C2: the retired AchievementInstance store froze the instance set at
+        // first creation, so templates added by content updates were invisible to
+        // existing avatars. The avatar-ledger pipeline evaluates every template in
+        // the world catalog each pass — a new template must unlock for a veteran
+        // avatar whose ledger predates it.
+        var world = CreateTestWorld();
+
+        var originalTemplate = new Achievement
+        {
+            RefName = "ACH_FIRST_BLOOD",
+            DisplayName = "First Blood",
+            Criteria = new AchievementCriteria { Type = AchievementCriteriaType.CharactersDefeated, Threshold = 1 }
+        };
+        var addedByUpdate = new Achievement
+        {
+            RefName = "ACH_ADDED_IN_UPDATE",
+            DisplayName = "Added In Update",
+            Criteria = new AchievementCriteria { Type = AchievementCriteriaType.CharactersDefeated, Threshold = 1 }
+        };
+
+        // Ledger from first play only knows the original template (already unlocked)
+        var previousInstances = new List<AchievementInstance>
+        {
+            new()
+            {
+                InstanceId = "ACH_FIRST_BLOOD",
+                TemplateRef = "ACH_FIRST_BLOOD",
+                AvatarId = TestAvatarId,
+                IsUnlocked = true
+            }
+        };
+
+        var saga = CreateSagaWithTransactions(
+            CreateTransaction(SagaTransactionType.CharacterDefeated, TestAvatarId));
+
+        // Act
+        var newlyUnlocked = AchievementProgressEvaluator.GetNewlyUnlockedAchievements(
+            new[] { originalTemplate, addedByUpdate },
+            previousInstances,
+            new[] { saga },
+            world,
+            TestAvatarId);
+
+        // Assert - the update-added template unlocks; the already-unlocked one is not re-raised
+        var unlocked = Assert.Single(newlyUnlocked);
+        Assert.Equal("ACH_ADDED_IN_UPDATE", unlocked.RefName);
+    }
+
+    #endregion
+
     #region EvaluateProgress Tests
 
     [Fact]

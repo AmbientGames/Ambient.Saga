@@ -576,16 +576,31 @@ public class DialogueActionExecutor
     /// True if this node's rewards were already granted in a previous conversation:
     /// a committed DialogueNodeVisited transaction for the same character/tree/node
     /// exists in the instance log. This is the first-visit-only reward ledger.
+    /// Visits undone by a committed TransactionReversed compensation don't count —
+    /// the avatar-side persistence failed, so the reward was never made durable
+    /// and must be re-awardable (audit B6).
     /// </summary>
     private bool HasCommittedNodeVisit(string dialogueTreeRef, string nodeId, string characterRef)
     {
         if (_sagaContext == null)
             return false;
 
+        var reversedIds = new HashSet<Guid>();
+        foreach (var tx in _sagaContext.SagaInstance.Transactions)
+        {
+            if (tx.Type == SagaTransactionType.TransactionReversed &&
+                tx.Status == TransactionStatus.Committed &&
+                Guid.TryParse(tx.GetData<string>(TransactionDataKeys.ReversedTransactionId), out var reversedId))
+            {
+                reversedIds.Add(reversedId);
+            }
+        }
+
         var avatarId = _sagaContext.AvatarId;
         return _sagaContext.SagaInstance.Transactions.Any(tx =>
             tx.Type == SagaTransactionType.DialogueNodeVisited &&
             tx.Status == TransactionStatus.Committed &&
+            !reversedIds.Contains(tx.TransactionId) &&
             string.Equals(tx.AvatarId, avatarId, StringComparison.Ordinal) &&
             string.Equals(tx.GetData<string>(TransactionDataKeys.CharacterRef), characterRef, StringComparison.Ordinal) &&
             string.Equals(tx.GetData<string>(TransactionDataKeys.DialogueTreeRef), dialogueTreeRef, StringComparison.Ordinal) &&

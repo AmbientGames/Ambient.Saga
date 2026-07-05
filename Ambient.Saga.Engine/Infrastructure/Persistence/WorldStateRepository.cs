@@ -5,7 +5,6 @@ using Ambient.Domain.Partials;
 using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Contracts;
 using Ambient.Saga.Engine.Contracts.Cqrs;
-using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Infrastructure.Persistence;
@@ -14,27 +13,23 @@ namespace Ambient.Saga.Engine.Infrastructure.Persistence;
 /// Repository for managing persisted world state.
 /// Uses the CQRS SagaInstanceRepository for all Saga operations.
 /// Provides simple CRUD for avatar state.
+/// Achievement unlocks are NOT stored here: the avatar's persisted Achievements
+/// list (saved via SaveAvatarAsync) is the single unlock ledger (audit C2).
 /// </summary>
 internal class WorldStateRepository : IWorldStateRepository
 {
     private readonly ISagaInstanceRepository _sagaRepository;
     private readonly IGameAvatarRepository _avatarRepository;
-    private readonly IRepository<AchievementInstance> _achievementRepository;
     private readonly IAvatarDiscoveryRepository _discoveryRepository;
-    private readonly IWorld _world;
 
     public WorldStateRepository(
         ISagaInstanceRepository sagaRepository,
         IGameAvatarRepository avatarRepository,
-        IRepository<AchievementInstance> achievementRepository,
-        IAvatarDiscoveryRepository discoveryRepository,
-        IWorld world)
+        IAvatarDiscoveryRepository discoveryRepository)
     {
         _sagaRepository = sagaRepository ?? throw new ArgumentNullException(nameof(sagaRepository));
         _avatarRepository = avatarRepository ?? throw new ArgumentNullException(nameof(avatarRepository));
-        _achievementRepository = achievementRepository ?? throw new ArgumentNullException(nameof(achievementRepository));
         _discoveryRepository = discoveryRepository ?? throw new ArgumentNullException(nameof(discoveryRepository));
-        _world = world ?? throw new ArgumentNullException(nameof(world));
     }
 
     #region Saga Operations (Delegated to CQRS Repository)
@@ -74,47 +69,6 @@ internal class WorldStateRepository : IWorldStateRepository
     public async Task DeleteAvatarsAsync()
     {
         await _avatarRepository.DeleteAvatarsAsync();
-    }
-
-    #endregion
-
-    #region Achievement Instances (Per Avatar)
-
-    /// <summary>
-    /// Gets or creates AchievementInstance objects for a specific avatar.
-    /// </summary>
-    public async Task<List<AchievementInstance>> GetOrCreateAchievementInstancesAsync(string avatarId)
-    {
-        var existingInstances = (await _achievementRepository.FindAsync(a => a.AvatarId == avatarId)).ToList();
-        if (existingInstances.Any())
-            return existingInstances;
-
-        // First time: create instances from templates
-        var instances = new List<AchievementInstance>();
-        foreach (var template in _world.Gameplay.Achievements ?? [])
-        {
-            var instance = new AchievementInstance
-            {
-                TemplateRef = template.RefName,
-                InstanceId = Guid.NewGuid().ToString(),
-                AvatarId = avatarId,
-                CurrentProgress = 0,
-                IsUnlocked = false
-            };
-            instances.Add(instance);
-        }
-
-        if (instances.Any())
-            await _achievementRepository.InsertManyAsync(instances);
-        return instances;
-    }
-
-    /// <summary>
-    /// Saves AchievementInstance state.
-    /// </summary>
-    public async Task SaveAchievementAsync(AchievementInstance instance)
-    {
-        await _achievementRepository.UpsertAsync(instance);
     }
 
     #endregion

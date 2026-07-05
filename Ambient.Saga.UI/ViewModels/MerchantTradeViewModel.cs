@@ -26,6 +26,30 @@ public partial class MerchantTradeViewModel : ObservableObject
     [NotifyPropertyChangedFor(nameof(TradeInventory))]
     private string _selectedTradeCategory = "Equipment";
 
+    // ---- Render-path caches (audit D9) -------------------------------------------------
+    // TradeInventory and the category counts are evaluated several times per frame by
+    // MerchantTradeModal. They must never hit the mediator (saga replay) on the render
+    // path, so the saga-derived state is loaded asynchronously into these fields
+    // (RefreshSagaStateAsync) and the computed inventory list is cached until something
+    // relevant changes (mode/category switch, completed trade, saga refresh).
+
+    /// <summary>Saga-replayed live merchant/cache inventory; null → fall back to the character template's Loot.</summary>
+    private ItemCollection? _sagaMerchantInventory;
+
+    /// <summary>Saga-replayed character traits (drive merchant pricing); null when unavailable.</summary>
+    private List<string>? _characterTraits;
+
+    /// <summary>Cached TradeInventory result; null means "rebuild on next read".</summary>
+    private ObservableCollection<TradeItem>? _tradeInventoryCache;
+
+    partial void OnSelectedTradeCategoryChanged(string value) => _tradeInventoryCache = null;
+
+    private void InvalidateTradeInventory()
+    {
+        _tradeInventoryCache = null;
+        OnPropertyChanged(nameof(TradeInventory));
+    }
+
     /// <summary>
     /// True when this VM is driving a cache interaction (geocache / remnant Loot / etc.) rather than
     /// a paid merchant. Hides money/price UI, relabels buttons (Buy→Take, Sell→Deposit), and sends
@@ -61,13 +85,14 @@ public partial class MerchantTradeViewModel : ObservableObject
         {
             if (SetProperty(ref _tradeMode, value))
             {
-                OnPropertyChanged(nameof(TradeInventory));
+                InvalidateTradeInventory();
                 RefreshCategories();
             }
         }
     }
 
-    public ObservableCollection<TradeItem> TradeInventory => _tradeMode == "Buy" ? GetMerchantInventory() : GetAvatarInventory();
+    public ObservableCollection<TradeItem> TradeInventory =>
+        _tradeInventoryCache ??= _tradeMode == "Buy" ? GetMerchantInventory() : GetAvatarInventory();
 
     // Category availability properties
     public bool HasEquipment => GetCategoryItemCount("Equipment") > 0;
@@ -149,7 +174,7 @@ public partial class MerchantTradeViewModel : ObservableObject
             else
             {
                 // Force refresh of inventory even if category didn't change
-                OnPropertyChanged(nameof(TradeInventory));
+                InvalidateTradeInventory();
             }
         }
         else
@@ -170,44 +195,66 @@ public partial class MerchantTradeViewModel : ObservableObject
     }
 
     /// <summary>
-    /// Live inventory: replay the SagaInstance's transactions and read the character's
-    /// CurrentInventory. Same source for every arc kind — geocache, player shop, remnant Loot
-    /// — so deposits/withdrawals via ItemTraded mutations are immediately visible.
-    /// Falls back to the character template's Interactable.Loot when no saga instance is
-    /// available (authored arcs that haven't yet had a CharacterSpawned recorded).
+    /// Live inventory source. The saga-replayed CurrentInventory (same source for every arc
+    /// kind — geocache, player shop, remnant Loot — so deposits/withdrawals via ItemTraded
+    /// mutations become visible) is loaded asynchronously by <see cref="RefreshSagaStateAsync"/>;
+    /// until it lands (or when no saga instance exists — authored arcs without a recorded
+    /// CharacterSpawned) this falls back to the character template's Interactable.Loot.
+    /// Never queries the mediator: this sits on the render path.
     /// </summary>
     private ItemCollection? GetMerchantInventorySource()
     {
-        if (_context.CurrentSagaRef != null && _context.CurrentCharacterInstanceId != null)
-        {
-            try
-            {
-                var query = new Ambient.Saga.Engine.Application.Queries.Saga.GetSagaStateQuery
-                {
-                    AvatarId = _context.AvatarId,
-                    SagaRef = _context.CurrentSagaRef,
-                };
-                var sagaState = _mediator.Send(query).Result;
-                if (sagaState != null &&
-                    sagaState.Characters.TryGetValue(_context.CurrentCharacterInstanceId.Value.ToString(), out var characterState))
-                {
-                    System.Diagnostics.Debug.WriteLine(
-                        $"[MerchantTradeVM] Saga inventory hit for '{_context.CurrentSagaRef}' " +
-                        $"(CharacterInstanceId={_context.CurrentCharacterInstanceId.Value})");
-                    return characterState.CurrentInventory;
-                }
-                System.Diagnostics.Debug.WriteLine(
-                    $"[MerchantTradeVM] Saga state had no character for CharacterInstanceId={_context.CurrentCharacterInstanceId.Value} " +
-                    $"in '{_context.CurrentSagaRef}'. State chars: [{(sagaState == null ? "null" : string.Join(",", sagaState.Characters.Keys))}]. " +
-                    $"Falling back to template Loot.");
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Failed to read saga inventory: {ex.Message}");
-            }
-        }
+        return _sagaMerchantInventory ?? _context.ActiveCharacter?.Interactable?.Loot;
+    }
 
-        return _context.ActiveCharacter?.Interactable?.Loot;
+    /// <summary>
+    /// Replays the saga instance ONCE (off the render path) and caches the character's live
+    /// inventory and traits. Call when the trade UI opens and after each completed trade —
+    /// never per frame. Raises property changes so the next rendered frame picks it up.
+    /// </summary>
+    public async Task RefreshSagaStateAsync()
+    {
+        if (_context.CurrentSagaRef == null)
+            return;
+
+        try
+        {
+            var query = new Ambient.Saga.Engine.Application.Queries.Saga.GetSagaStateQuery
+            {
+                AvatarId = _context.AvatarId,
+                SagaRef = _context.CurrentSagaRef,
+            };
+            var sagaState = await _mediator.Send(query);
+
+            if (sagaState != null && _context.CurrentCharacterInstanceId != null &&
+                sagaState.Characters.TryGetValue(_context.CurrentCharacterInstanceId.Value.ToString(), out var characterState))
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[MerchantTradeVM] Saga inventory hit for '{_context.CurrentSagaRef}' " +
+                    $"(CharacterInstanceId={_context.CurrentCharacterInstanceId.Value})");
+                _sagaMerchantInventory = characterState.CurrentInventory;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"[MerchantTradeVM] Saga state had no character for CharacterInstanceId={_context.CurrentCharacterInstanceId?.ToString() ?? "null"} " +
+                    $"in '{_context.CurrentSagaRef}'. Falling back to template Loot.");
+                _sagaMerchantInventory = null;
+            }
+
+            _characterTraits = sagaState != null && _context.ActiveCharacter != null &&
+                sagaState.CharacterTraits.TryGetValue(_context.ActiveCharacter.RefName, out var traits)
+                    ? traits
+                    : null;
+
+            // Categories may have appeared/disappeared with the live inventory.
+            RefreshCategories();
+            InvalidateTradeInventory();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] Failed to refresh saga state: {ex.Message}");
+        }
     }
 
     private ObservableCollection<TradeItem> GetMerchantInventory()
@@ -218,8 +265,9 @@ public partial class MerchantTradeViewModel : ObservableObject
         var source = GetMerchantInventorySource();
         if (source == null) return items;
 
-        // Traits drive merchant pricing; caches don't care.
-        var characterTraits = IsCache ? null : GetCharacterTraitsAsync().Result;  // Sync over async for UI binding
+        // Traits drive merchant pricing; caches don't care. Cached by RefreshSagaStateAsync
+        // — no sync-over-async on the render path.
+        var characterTraits = IsCache ? null : _characterTraits;
 
         var tradeItems = _tradeEngine.GetAvailableItems(source, SelectedTradeCategory, isBuying: true, characterTraits);
         foreach (var item in tradeItems)
@@ -229,36 +277,6 @@ public partial class MerchantTradeViewModel : ObservableObject
         }
 
         return items;
-    }
-
-    private async Task<List<string>?> GetCharacterTraitsAsync()
-    {
-        try
-        {
-            if (_context.CurrentSagaRef == null || _context.ActiveCharacter == null)
-                return null;
-
-            // Query SagaState for character traits
-            var query = new Ambient.Saga.Engine.Application.Queries.Saga.GetSagaStateQuery
-            {
-                AvatarId = _context.AvatarId,
-                SagaRef = _context.CurrentSagaRef
-            };
-
-            var sagaState = await _mediator.Send(query);
-
-            if (sagaState != null && sagaState.CharacterTraits.TryGetValue(_context.ActiveCharacter.RefName, out var traits))
-            {
-                return traits;
-            }
-
-            return null;
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[MerchantTrade] Error fetching character traits: {ex.Message}");
-            return null;
-        }
     }
 
     private ObservableCollection<TradeItem> GetAvatarInventory()
@@ -345,9 +363,11 @@ public partial class MerchantTradeViewModel : ObservableObject
                 System.Diagnostics.Debug.WriteLine($"[MerchantTradeVM] WARNING: No updated avatar returned!");
             }
 
-            // Refresh UI to reflect updated inventory and credits
+            // Refresh UI to reflect updated inventory and credits (re-replays the saga
+            // state once, off the render path).
             OnPropertyChanged(nameof(Avatar));
-            OnPropertyChanged(nameof(TradeInventory));
+            InvalidateTradeInventory();
+            await RefreshSagaStateAsync();
         }
         catch (Exception ex)
         {
@@ -400,9 +420,11 @@ public partial class MerchantTradeViewModel : ObservableObject
                 _context.AvatarEntity = result.UpdatedAvatar;
             }
 
-            // Refresh UI to reflect updated inventory and credits
+            // Refresh UI to reflect updated inventory and credits (re-replays the saga
+            // state once, off the render path).
             OnPropertyChanged(nameof(Avatar));
-            OnPropertyChanged(nameof(TradeInventory));
+            InvalidateTradeInventory();
+            await RefreshSagaStateAsync();
         }
         catch (Exception ex)
         {

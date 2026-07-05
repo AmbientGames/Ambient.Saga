@@ -1,7 +1,6 @@
 using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Entities;
-using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 using LiteDB;
 using Microsoft.Extensions.Logging;
@@ -39,7 +38,6 @@ internal class WorldStateDatabase : IDisposable
 
         // Configure EntityInstance-derived types to use InstanceId as the document ID
         mapper.Entity<SagaInstance>().Id(x => x.InstanceId);
-        mapper.Entity<AchievementInstance>().Id(x => x.InstanceId);
 
         // BlockOwnership is a computed wrapper over Capabilities.Blocks — don't persist separately
         mapper.Entity<AvatarBase>().Ignore(x => x.BlockOwnership);

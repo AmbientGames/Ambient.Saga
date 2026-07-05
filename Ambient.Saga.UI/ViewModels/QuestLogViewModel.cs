@@ -80,7 +80,7 @@ public partial class QuestLogViewModel : ObservableObject
                 // Get Saga state from transaction log
                 var sagaState = await _mediator.Send(new GetSagaStateQuery
                 {
-                    AvatarId = _context.AvatarEntity.Id,
+                    AvatarId = _context.AvatarEntity.AvatarId,
                     SagaRef = saga.RefName
                 });
 

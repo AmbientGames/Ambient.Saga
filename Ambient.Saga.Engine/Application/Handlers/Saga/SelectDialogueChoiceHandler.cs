@@ -5,6 +5,7 @@ using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Contracts.Persistence;
+using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue;
 using Ambient.Saga.Engine.Domain.Rpg.Dialogue.Events;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -22,6 +23,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
     private readonly IAvatarProgressRepository _avatarProgressRepository;
+    private readonly IAvatarUpdateService _avatarUpdateService;
     private readonly IWorld _world;
     private readonly IMediator _mediator;
 
@@ -29,12 +31,14 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
         IAvatarProgressRepository avatarProgressRepository,
+        IAvatarUpdateService avatarUpdateService,
         IWorld world,
         IMediator mediator)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
         _avatarProgressRepository = avatarProgressRepository;
+        _avatarUpdateService = avatarUpdateService;
         _world = world;
         _mediator = mediator;
     }
@@ -103,7 +107,7 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             // Create dialogue engine with Saga context (will create transactions)
             var sagaContext = new SagaDialogueContext(instance, characterState.CharacterRef, command.AvatarId.ToString());
-            var stateProvider = new DirectDialogueStateProvider(_world, command.Avatar, _avatarProgressRepository, command.AvatarId.ToString(), characterState.CharacterRef);
+            var stateProvider = new DirectDialogueStateProvider(_world, command.Avatar, _avatarProgressRepository, command.AvatarId.ToString(), characterState.CharacterRef, instance);
             var engine = new DialogueEngine(stateProvider, sagaContext);
 
             // Scope to the current session: transactions at or after the last DialogueStarted for this character.
@@ -323,6 +327,57 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
 
             // Invalidate cache
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+
+            // The committed DialogueNodeVisited ledger above blocks any re-grant, so a
+            // reward living only on the in-memory avatar would be lost forever on a crash
+            // before the host's periodic save (audit B6). Persist now, like TradeItemHandler.
+            // AvatarMutated is only set when a node actually changed the avatar (first
+            // visit with give/take/currency actions), so condition-only navigation and
+            // repeat visits cost no write.
+            if (stateProvider.AvatarMutated && command.Avatar is AvatarEntity rewardedAvatar)
+            {
+                try
+                {
+                    await _avatarUpdateService.PersistAvatarAsync(rewardedAvatar, ct);
+                }
+                catch (Exception persistEx)
+                {
+                    // Ledger committed but the avatar save failed: reverse the visit
+                    // records so the first-visit reward block does not orphan the reward
+                    // (TransactionReversed is skipped by the reward ledger checks).
+                    var reversals = newTransactions
+                        .Where(t => t.Type == SagaTransactionType.DialogueNodeVisited)
+                        .Select(visitTx => new SagaTransaction
+                        {
+                            TransactionId = Guid.NewGuid(),
+                            Type = SagaTransactionType.TransactionReversed,
+                            AvatarId = command.AvatarId.ToString(),
+                            Status = TransactionStatus.Pending,
+                            LocalTimestamp = DateTime.UtcNow,
+                            Data = new Dictionary<string, string>
+                            {
+                                [TransactionDataKeys.ReversedTransactionId] = visitTx.TransactionId.ToString(),
+                                [TransactionDataKeys.Reason] = $"Avatar persistence failed: {persistEx.Message}",
+                                [TransactionDataKeys.OriginalType] = visitTx.Type.ToString()
+                            }
+                        })
+                        .ToList();
+
+                    if (reversals.Count > 0)
+                    {
+                        foreach (var reversal in reversals)
+                        {
+                            instance.AddTransaction(reversal);
+                        }
+                        await _instanceRepository.AddAndCommitTransactionsAsync(instance.InstanceId, reversals, ct);
+                        await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+                    }
+
+                    return SagaCommandResult.Failure(
+                        instance.InstanceId,
+                        $"Dialogue committed but avatar update failed: {persistEx.Message}");
+                }
+            }
 
             return SagaCommandResult.Success(
                 instance.InstanceId,

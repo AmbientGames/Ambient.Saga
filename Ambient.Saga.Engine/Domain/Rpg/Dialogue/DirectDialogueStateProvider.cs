@@ -23,13 +23,17 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     private readonly string? _avatarId;
     private string? _currentCharacterRef;
     private readonly HashSet<string> _sessionTokens = new();
+    private readonly SagaInstance? _sagaInstance;
+    private HashSet<(string Tree, string Node)>? _committedNodeVisits;
+    private Dictionary<string, int>? _committedTreeVisits;
 
     public DirectDialogueStateProvider(
         IWorld w,
         AvatarBase a,
         IAvatarProgressRepository? progressRepo = null,
         string? avatarId = null,
-        string? characterRef = null)
+        string? characterRef = null,
+        SagaInstance? sagaInstance = null)
     {
         _w = w;
         _a = a;
@@ -37,7 +41,17 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
         _avatarId = avatarId;
         _avatarGuid = avatarId != null && Guid.TryParse(avatarId, out var g) ? g : Guid.Empty;
         _currentCharacterRef = characterRef;
+        _sagaInstance = sagaInstance;
     }
+
+    /// <summary>
+    /// True once any call in this request actually changed the avatar object
+    /// (inventory, currency, health, achievements, party, affinities).
+    /// The dialogue command handlers use this to decide whether the avatar
+    /// must be persisted after the transaction commit (audit B6) — condition-only
+    /// navigation stays write-free.
+    /// </summary>
+    public bool AvatarMutated { get; private set; }
 
     /// <summary>
     /// Sets the character reference for the current dialogue.
@@ -59,48 +73,137 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
 
     // Consumables (stackable)
     public int GetConsumableQuantity(string r) => _a.Capabilities?.Consumables?.FirstOrDefault(e => e.ConsumableRef == r)?.Quantity ?? 0;
-    public void AddConsumable(string r, int amt) { if (_a.Capabilities != null && amt > 0) { _a.Capabilities.Consumables ??= Array.Empty<ConsumableEntry>(); var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Consumables.ToList(); list.Add(new ConsumableEntry { ConsumableRef = r, Quantity = amt }); _a.Capabilities.Consumables = list.ToArray(); } } }
-    public void RemoveConsumable(string r, int amt) { if (_a.Capabilities?.Consumables != null && amt > 0) { var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Consumables = _a.Capabilities.Consumables.Where(x => x.ConsumableRef != r).ToArray(); } } }
+    public void AddConsumable(string r, int amt) { if (_a.Capabilities != null && amt > 0) { AvatarMutated = true; _a.Capabilities.Consumables ??= Array.Empty<ConsumableEntry>(); var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Consumables.ToList(); list.Add(new ConsumableEntry { ConsumableRef = r, Quantity = amt }); _a.Capabilities.Consumables = list.ToArray(); } } }
+    public void RemoveConsumable(string r, int amt) { if (_a.Capabilities?.Consumables != null && amt > 0) { var e = _a.Capabilities.Consumables.FirstOrDefault(x => x.ConsumableRef == r); if (e != null) { AvatarMutated = true; e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Consumables = _a.Capabilities.Consumables.Where(x => x.ConsumableRef != r).ToArray(); } } }
 
     // Materials (stackable)
     public int GetMaterialQuantity(string r) => _a.Capabilities?.BuildingMaterials?.FirstOrDefault(e => e.BuildingMaterialRef == r)?.Quantity ?? 0;
-    public void AddMaterial(string r, int amt) { if (_a.Capabilities != null && amt > 0) { _a.Capabilities.BuildingMaterials ??= Array.Empty<BuildingMaterialEntry>(); var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.BuildingMaterials.ToList(); list.Add(new BuildingMaterialEntry { BuildingMaterialRef = r, Quantity = amt }); _a.Capabilities.BuildingMaterials = list.ToArray(); } } }
-    public void RemoveMaterial(string r, int amt) { if (_a.Capabilities?.BuildingMaterials != null && amt > 0) { var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.BuildingMaterials = _a.Capabilities.BuildingMaterials.Where(x => x.BuildingMaterialRef != r).ToArray(); } } }
+    public void AddMaterial(string r, int amt) { if (_a.Capabilities != null && amt > 0) { AvatarMutated = true; _a.Capabilities.BuildingMaterials ??= Array.Empty<BuildingMaterialEntry>(); var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.BuildingMaterials.ToList(); list.Add(new BuildingMaterialEntry { BuildingMaterialRef = r, Quantity = amt }); _a.Capabilities.BuildingMaterials = list.ToArray(); } } }
+    public void RemoveMaterial(string r, int amt) { if (_a.Capabilities?.BuildingMaterials != null && amt > 0) { var e = _a.Capabilities.BuildingMaterials.FirstOrDefault(x => x.BuildingMaterialRef == r); if (e != null) { AvatarMutated = true; e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.BuildingMaterials = _a.Capabilities.BuildingMaterials.Where(x => x.BuildingMaterialRef != r).ToArray(); } } }
 
     // Blocks (stackable voxel blocks)
     public float GetBlockQuantity(string r) => _a.Capabilities?.Blocks?.FirstOrDefault(e => e.BlockRef == r)?.Quantity ?? 0;
-    public void AddBlock(string r, int amt) { if (_a.Capabilities != null && amt > 0) { _a.Capabilities.Blocks ??= Array.Empty<BlockEntry>(); var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Blocks.ToList(); list.Add(new BlockEntry { BlockRef = r, Quantity = amt }); _a.Capabilities.Blocks = list.ToArray(); } } }
-    public void RemoveBlock(string r, int amt) { if (_a.Capabilities?.Blocks != null && amt > 0) { var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) { e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Blocks = _a.Capabilities.Blocks.Where(x => x.BlockRef != r).ToArray(); } } }
+    public void AddBlock(string r, int amt) { if (_a.Capabilities != null && amt > 0) { AvatarMutated = true; _a.Capabilities.Blocks ??= Array.Empty<BlockEntry>(); var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Blocks.ToList(); list.Add(new BlockEntry { BlockRef = r, Quantity = amt }); _a.Capabilities.Blocks = list.ToArray(); } } }
+    public void RemoveBlock(string r, int amt) { if (_a.Capabilities?.Blocks != null && amt > 0) { var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) { AvatarMutated = true; e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Blocks = _a.Capabilities.Blocks.Where(x => x.BlockRef != r).ToArray(); } } }
 
     // Equipment (degradable)
     public bool HasEquipment(string r) => _a.Capabilities?.Equipment?.Any(e => e.EquipmentRef == r) ?? false;
-    public void AddEquipment(string r) { if (_a.Capabilities != null && !HasEquipment(r)) { _a.Capabilities.Equipment ??= Array.Empty<EquipmentEntry>(); var list = _a.Capabilities.Equipment.ToList(); list.Add(new EquipmentEntry { EquipmentRef = r, Condition = 1.0f }); _a.Capabilities.Equipment = list.ToArray(); } }
-    public void RemoveEquipment(string r) { if (_a.Capabilities?.Equipment != null) { var e = _a.Capabilities.Equipment.FirstOrDefault(x => x.EquipmentRef == r); if (e != null) { var list = _a.Capabilities.Equipment.ToList(); list.Remove(e); _a.Capabilities.Equipment = list.ToArray(); } } }
+    public void AddEquipment(string r) { if (_a.Capabilities != null && !HasEquipment(r)) { AvatarMutated = true; _a.Capabilities.Equipment ??= Array.Empty<EquipmentEntry>(); var list = _a.Capabilities.Equipment.ToList(); list.Add(new EquipmentEntry { EquipmentRef = r, Condition = 1.0f }); _a.Capabilities.Equipment = list.ToArray(); } }
+    public void RemoveEquipment(string r) { if (_a.Capabilities?.Equipment != null) { var e = _a.Capabilities.Equipment.FirstOrDefault(x => x.EquipmentRef == r); if (e != null) { AvatarMutated = true; var list = _a.Capabilities.Equipment.ToList(); list.Remove(e); _a.Capabilities.Equipment = list.ToArray(); } } }
 
     // Tools (degradable)
     public bool HasTool(string r) => _a.Capabilities?.Tools?.Any(e => e.ToolRef == r) ?? false;
-    public void AddTool(string r) { if (_a.Capabilities != null && !HasTool(r)) { _a.Capabilities.Tools ??= Array.Empty<ToolEntry>(); var list = _a.Capabilities.Tools.ToList(); list.Add(new ToolEntry { ToolRef = r, Condition = 1.0f }); _a.Capabilities.Tools = list.ToArray(); } }
-    public void RemoveTool(string r) { if (_a.Capabilities?.Tools != null) { var e = _a.Capabilities.Tools.FirstOrDefault(x => x.ToolRef == r); if (e != null) { var list = _a.Capabilities.Tools.ToList(); list.Remove(e); _a.Capabilities.Tools = list.ToArray(); } } }
+    public void AddTool(string r) { if (_a.Capabilities != null && !HasTool(r)) { AvatarMutated = true; _a.Capabilities.Tools ??= Array.Empty<ToolEntry>(); var list = _a.Capabilities.Tools.ToList(); list.Add(new ToolEntry { ToolRef = r, Condition = 1.0f }); _a.Capabilities.Tools = list.ToArray(); } }
+    public void RemoveTool(string r) { if (_a.Capabilities?.Tools != null) { var e = _a.Capabilities.Tools.FirstOrDefault(x => x.ToolRef == r); if (e != null) { AvatarMutated = true; var list = _a.Capabilities.Tools.ToList(); list.Remove(e); _a.Capabilities.Tools = list.ToArray(); } } }
 
     // Spells (degradable)
     public bool HasSpell(string r) => _a.Capabilities?.Spells?.Any(e => e.SpellRef == r) ?? false;
-    public void AddSpell(string r) { if (_a.Capabilities != null && !HasSpell(r)) { _a.Capabilities.Spells ??= Array.Empty<SpellEntry>(); var list = _a.Capabilities.Spells.ToList(); list.Add(new SpellEntry { SpellRef = r, Condition = 1.0f }); _a.Capabilities.Spells = list.ToArray(); } }
-    public void RemoveSpell(string r) { if (_a.Capabilities?.Spells != null) { var e = _a.Capabilities.Spells.FirstOrDefault(x => x.SpellRef == r); if (e != null) { var list = _a.Capabilities.Spells.ToList(); list.Remove(e); _a.Capabilities.Spells = list.ToArray(); } } }
+    public void AddSpell(string r) { if (_a.Capabilities != null && !HasSpell(r)) { AvatarMutated = true; _a.Capabilities.Spells ??= Array.Empty<SpellEntry>(); var list = _a.Capabilities.Spells.ToList(); list.Add(new SpellEntry { SpellRef = r, Condition = 1.0f }); _a.Capabilities.Spells = list.ToArray(); } }
+    public void RemoveSpell(string r) { if (_a.Capabilities?.Spells != null) { var e = _a.Capabilities.Spells.FirstOrDefault(x => x.SpellRef == r); if (e != null) { AvatarMutated = true; var list = _a.Capabilities.Spells.ToList(); list.Remove(e); _a.Capabilities.Spells = list.ToArray(); } } }
 
     // Achievements
     public bool HasAchievement(string r) => _a.Achievements?.Any(e => e.AchievementRef == r) ?? false;
-    public void UnlockAchievement(string r) { if (!HasAchievement(r)) { _a.Achievements ??= Array.Empty<AchievementEntry>(); var list = _a.Achievements.ToList(); list.Add(new AchievementEntry { AchievementRef = r }); _a.Achievements = list.ToArray(); } }
+    public void UnlockAchievement(string r) { if (!HasAchievement(r)) { AvatarMutated = true; _a.Achievements ??= Array.Empty<AchievementEntry>(); var list = _a.Achievements.ToList(); list.Add(new AchievementEntry { AchievementRef = r }); _a.Achievements = list.ToArray(); } }
 
     // Currency & Health
     public float GetCredits() => _a.Stats.Credits;
-    public void TransferCurrency(int amt) { if (_a.Stats != null) _a.Stats.Credits += amt; }
+    public void TransferCurrency(int amt) { if (_a.Stats != null && amt != 0) { AvatarMutated = true; _a.Stats.Credits += amt; } }
     public float GetHealth() => _a.Stats.Health;
-    public void ModifyHealth(int amt) { if (_a.Stats != null) _a.Stats.Health = Math.Max(0, _a.Stats.Health + amt); }
+    public void ModifyHealth(int amt) { if (_a.Stats != null && amt != 0) { AvatarMutated = true; _a.Stats.Health = Math.Max(0, _a.Stats.Health + amt); } }
 
-    // Dialogue History
-    public int GetAvatarVisitCount(string t) => _visited.ContainsKey(t) ? 1 : 0;
+    // Dialogue History — session-local visits (this request) backed by the instance's
+    // committed transaction log, so NodeVisited / AvatarVisitCount conditions see
+    // previous conversations and survive reloads (the log IS the durable record).
+    public int GetAvatarVisitCount(string t)
+    {
+        EnsureCommittedDialogueHistory();
+        var committed = _committedTreeVisits!.GetValueOrDefault(t);
+        if (committed > 0) return committed;
+        // No committed history (no saga instance wired, e.g. plain engine/test use):
+        // the current session is the one and only visit
+        return _visited.ContainsKey(t) ? 1 : 0;
+    }
+
     public void RecordNodeVisit(string t, string n) { if (!_visited.ContainsKey(t)) _visited[t] = new HashSet<string>(); _visited[t].Add(n); }
-    public bool WasNodeVisited(string t, string n) => _visited.ContainsKey(t) && _visited[t].Contains(n);
+
+    public bool WasNodeVisited(string t, string n)
+    {
+        if (_visited.TryGetValue(t, out var nodes) && nodes.Contains(n)) return true;
+        EnsureCommittedDialogueHistory();
+        return _committedNodeVisits!.Contains((t, n));
+    }
+
+    /// <summary>
+    /// Lazily projects the instance's committed transaction log into dialogue history:
+    /// per-tree node visits (NodeVisited) and per-tree conversation counts
+    /// (AvatarVisitCount = completed sessions + the in-progress one, per the XSD's
+    /// "number of times the avatar has visited this NPC"). Scoped to this avatar,
+    /// skipping transactions undone by a committed TransactionReversed compensation
+    /// (avatar persistence failed, so the visit must not count against re-award).
+    /// </summary>
+    private void EnsureCommittedDialogueHistory()
+    {
+        if (_committedNodeVisits != null) return;
+        _committedNodeVisits = new HashSet<(string, string)>();
+        _committedTreeVisits = new Dictionary<string, int>();
+        if (_sagaInstance == null) return;
+
+        var reversedIds = new HashSet<Guid>();
+        foreach (var tx in _sagaInstance.Transactions)
+        {
+            if (tx.Type == SagaTransactionType.TransactionReversed &&
+                tx.Status == TransactionStatus.Committed &&
+                Guid.TryParse(tx.GetData<string>(TransactionDataKeys.ReversedTransactionId), out var reversedId))
+            {
+                reversedIds.Add(reversedId);
+            }
+        }
+
+        // One conversation = one DialogueStarted..DialogueCompleted span (dangling
+        // sessions are sealed by StartDialogueHandler, so Completed count is exact);
+        // a Started after the tree's last Completed is the in-progress conversation.
+        var completedByTree = new Dictionary<string, int>();
+        var lastStartedSeq = new Dictionary<string, long>();
+        var lastCompletedSeq = new Dictionary<string, long>();
+
+        foreach (var tx in _sagaInstance.Transactions.OrderBy(t => t.SequenceNumber))
+        {
+            if (tx.Status != TransactionStatus.Committed) continue;
+            if (reversedIds.Contains(tx.TransactionId)) continue;
+            if (_avatarId != null && !string.Equals(tx.AvatarId, _avatarId, StringComparison.Ordinal)) continue;
+
+            var tree = tx.GetData<string>(TransactionDataKeys.DialogueTreeRef);
+            if (string.IsNullOrEmpty(tree)) continue;
+
+            switch (tx.Type)
+            {
+                case SagaTransactionType.DialogueNodeVisited:
+                    var node = tx.GetData<string>(TransactionDataKeys.DialogueNodeId);
+                    if (!string.IsNullOrEmpty(node)) _committedNodeVisits.Add((tree, node));
+                    break;
+
+                case SagaTransactionType.DialogueStarted:
+                    lastStartedSeq[tree] = tx.SequenceNumber;
+                    break;
+
+                case SagaTransactionType.DialogueCompleted:
+                    completedByTree[tree] = completedByTree.GetValueOrDefault(tree) + 1;
+                    lastCompletedSeq[tree] = tx.SequenceNumber;
+                    break;
+            }
+        }
+
+        foreach (var (tree, startedSeq) in lastStartedSeq)
+        {
+            var inProgress = !lastCompletedSeq.TryGetValue(tree, out var completedSeq) || startedSeq > completedSeq ? 1 : 0;
+            _committedTreeVisits[tree] = completedByTree.GetValueOrDefault(tree) + inProgress;
+        }
+
+        foreach (var (tree, count) in completedByTree)
+        {
+            if (!_committedTreeVisits.ContainsKey(tree)) _committedTreeVisits[tree] = count;
+        }
+    }
 
     public int GetBossDefeatedCount(string bossRef)
         => _progressRepo?.GetBossDefeatedCount(_avatarGuid, bossRef) ?? 0;
@@ -232,6 +335,7 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
             return false; // No slot available
 
         _a.Party = updatedParty;
+        AvatarMutated = true;
         return true;
     }
 
@@ -244,6 +348,7 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
             return;
 
         _a.Party = PartyManager.RemovePartyMember(_a.Party, characterRef);
+        AvatarMutated = true;
     }
 
     // ===== AFFINITY MANAGEMENT =====
@@ -276,5 +381,6 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
             AcquiredDate = DateTime.UtcNow.ToString("O")
         });
         _a.Affinities = affinities.ToArray();
+        AvatarMutated = true;
     }
 }

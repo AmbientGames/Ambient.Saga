@@ -318,7 +318,7 @@ public class ModalManager
             // Find saga containing this quest using Application layer query
             var sagaRef = await _mediator.Send(new GetSagaForQuestQuery
             {
-                AvatarId = viewModel.Avatar!.Id,
+                AvatarId = viewModel.Avatar!.AvatarId,
                 QuestRef = questRef
             });
 

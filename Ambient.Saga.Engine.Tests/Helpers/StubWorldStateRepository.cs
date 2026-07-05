@@ -1,7 +1,6 @@
 using Ambient.Domain.Partials;
 using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Contracts;
-using Ambient.Saga.Engine.Domain.Achievements;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
 
 namespace Ambient.Saga.Engine.Tests.Helpers;
@@ -14,7 +13,6 @@ namespace Ambient.Saga.Engine.Tests.Helpers;
 public class StubWorldStateRepository : IWorldStateRepository
 {
     private readonly Dictionary<string, SagaInstance> _sagaInstances = new();
-    private readonly Dictionary<string, List<AchievementInstance>> _achievements = new();
     private readonly Dictionary<string, AvatarEntity> _avatars = new();
     private readonly List<AvatarDiscovery> _discoveries = new();
 
@@ -29,21 +27,6 @@ public class StubWorldStateRepository : IWorldStateRepository
         var key = $"{avatarId}:{templateRef}";
         _sagaInstances.TryGetValue(key, out var instance);
         return Task.FromResult(instance);
-    }
-
-    public Task<List<AchievementInstance>> GetOrCreateAchievementInstancesAsync(string avatarId)
-    {
-        if (!_achievements.TryGetValue(avatarId, out var instances))
-        {
-            instances = new List<AchievementInstance>();
-            _achievements[avatarId] = instances;
-        }
-        return Task.FromResult(instances);
-    }
-
-    public Task SaveAchievementAsync(AchievementInstance instance)
-    {
-        return Task.CompletedTask;
     }
 
     public Task<AvatarEntity?> LoadAvatarAsync()
