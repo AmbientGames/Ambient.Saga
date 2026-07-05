@@ -269,33 +269,6 @@ public class GameplayTests : IAsyncLifetime
     }
 
     //[Fact]
-    //public void Sagas_AllContentReferences_ShouldExist()
-    //{
-    //    Assert.NotNull(_world?.Gameplay.SagaArcs);
-    //    foreach (var saga in _world.Gameplay.SagaArcs!)
-    //    {
-    //        // Saga content is stored in Item property with ItemElementName indicating the type
-    //        if (!string.IsNullOrEmpty(saga.Item))
-    //        {
-    //            switch (saga.ItemElementName)
-    //            {
-    //                case ItemChoiceType2.StructureRef:
-    //                    var structureExists = _world.StructuresLookup.TryGetValue(saga.Item, out var structure);
-    //                    Assert.True(structureExists, $"Structure '{saga.Item}' not found for Saga '{saga.RefName}'");
-    //                    Assert.NotNull(structure);
-    //                    break;
-                        
-    //               case ItemChoiceType2.LandmarkRef:
-    //                    var landmarkExists = _world.LandmarksLookup.TryGetValue(saga.Item, out var landmark);
-    //                    Assert.True(landmarkExists, $"Landmark '{saga.Item}' not found for Saga '{saga.RefName}'");
-    //                    Assert.NotNull(landmark);
-    //                    break;
-    //            }
-    //        }
-    //    }
-    //}
-
-    //[Fact]
     //public void Tools_AllSubstanceReferences_ShouldExist()
     //{
     //    Assert.NotNull(_world?.Gameplay.Tools);

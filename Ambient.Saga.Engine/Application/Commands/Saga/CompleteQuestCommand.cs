@@ -31,7 +31,7 @@ public record CompleteQuestCommand : IRequest<SagaCommandResult>
     public required string QuestRef { get; init; }
 
     /// <summary>
-    /// Quest signpost or NPC accepting the completion (for tracking)
+    /// NPC accepting the completion (for tracking)
     /// </summary>
     public required string QuestReceiverRef { get; init; }
 

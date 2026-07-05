@@ -104,7 +104,6 @@ public static class TransactionDataKeys
     public const string ItemRef = "ItemRef";
     public const string ItemRefName = "ItemRefName";
     public const string ItemsAwarded = "ItemsAwarded";
-    public const string LandmarkRef = "LandmarkRef";
     public const string Latitude = "Latitude";
     public const string LoadoutSlotSnapshot = "LoadoutSlotSnapshot";
     public const string LocationRef = "LocationRef";

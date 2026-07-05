@@ -66,7 +66,6 @@ public static class AchievementProgressEvaluator
             // Discovery achievements
             AchievementCriteriaType.SagaArcsDiscovered => CountUniqueSagasDiscovered(allTransactions),
             AchievementCriteriaType.SagaArcsCompleted => CountSagasCompleted(allTransactions),
-            AchievementCriteriaType.LandmarksDiscovered => CountLandmarksDiscovered(allTransactions),
             AchievementCriteriaType.SagaTriggersActivated => CountSagaTriggersActivated(allTransactions),
 
             // Social achievements
@@ -195,15 +194,6 @@ public static class AchievementProgressEvaluator
         return transactions
             .Where(t => t.Type == SagaTransactionType.SagaCompleted)
             .Select(t => t.GetData<string>(TransactionDataKeys.SagaArcRef))
-            .Distinct()
-            .Count();
-    }
-
-    private static float CountLandmarksDiscovered(List<SagaTransaction> transactions)
-    {
-        return transactions
-            .Where(t => t.Type == SagaTransactionType.LandmarkDiscovered)
-            .Select(t => t.GetData<string>(TransactionDataKeys.LandmarkRef))
             .Distinct()
             .Count();
     }

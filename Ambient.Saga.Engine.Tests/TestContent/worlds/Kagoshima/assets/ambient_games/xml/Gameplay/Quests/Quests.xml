@@ -82,16 +82,16 @@
     <Stages StartStage="investigate">
       <Stage RefName="investigate" DisplayName="Gather Information" NextStage="evidence">
         <Objectives>
-          <Objective RefName="hear_rumors" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn about the prophet" />
+          <Objective RefName="hear_rumors" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn about the prophet" QuestTokenRef="FalseProphet_Rumor" />
           <Objective RefName="meet_scholar" Type="DialogueCompleted" Threshold="1" DisplayName="Consult the skeptical scholar" DialogueRef="FalseProphet_ScholarMeet" />
         </Objectives>
       </Stage>
       <Stage RefName="evidence" DisplayName="Find Evidence" NextStage="confront">
         <Objectives>
-          <Objective RefName="follower_testimony" Type="QuestTokenCollected" Threshold="1" DisplayName="Speak to the former follower" />
-          <Objective RefName="fake_relic" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain proof of fake miracles" />
-          <Objective RefName="find_records" Type="QuestTokenCollected" Threshold="1" DisplayName="Find financial evidence" Optional="true" />
-          <Objective RefName="find_dark_secret" Type="QuestTokenCollected" Threshold="1" DisplayName="Uncover the dark secret" Optional="true" Hidden="true" />
+          <Objective RefName="follower_testimony" Type="QuestTokenCollected" Threshold="1" DisplayName="Speak to the former follower" QuestTokenRef="FalseProphet_FollowerAccount" />
+          <Objective RefName="fake_relic" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain proof of fake miracles" QuestTokenRef="FalseProphet_FakeRelic" />
+          <Objective RefName="find_records" Type="QuestTokenCollected" Threshold="1" DisplayName="Find financial evidence" QuestTokenRef="FalseProphet_FinancialRecords" Optional="true" />
+          <Objective RefName="find_dark_secret" Type="QuestTokenCollected" Threshold="1" DisplayName="Uncover the dark secret" QuestTokenRef="FalseProphet_DarkSecret" Optional="true" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="confront" DisplayName="Reveal the Truth" />
@@ -110,26 +110,26 @@
     <Stages StartStage="acquire_map">
       <Stage RefName="acquire_map" DisplayName="Acquire the Map" NextStage="decipher">
         <Objectives>
-          <Objective RefName="get_map" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain the ancient map" />
+          <Objective RefName="get_map" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain the ancient map" QuestTokenRef="HiddenCache_OldMap" />
         </Objectives>
       </Stage>
       <Stage RefName="decipher" DisplayName="Follow the Trail" NextStage="navigate">
         <Objectives>
-          <Objective RefName="first_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Decipher the first location" />
-          <Objective RefName="second_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Find the second clue" />
-          <Objective RefName="third_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Discover the final marker" />
+          <Objective RefName="first_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Decipher the first location" QuestTokenRef="HiddenCache_FirstClue" />
+          <Objective RefName="second_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Find the second clue" QuestTokenRef="HiddenCache_SecondClue" />
+          <Objective RefName="third_clue" Type="QuestTokenCollected" Threshold="1" DisplayName="Discover the final marker" QuestTokenRef="HiddenCache_ThirdClue" />
         </Objectives>
       </Stage>
       <Stage RefName="navigate" DisplayName="Reach the Cache" NextStage="overcome" />
       <Stage RefName="overcome" DisplayName="Breach the Defenses" NextStage="claim">
         <Objectives>
           <Objective RefName="defeat_guardian" Type="CharacterDefeated" Threshold="1" DisplayName="Defeat the ancient guardian" CharacterRef="HiddenCache_Guardian" />
-          <Objective RefName="disarm_traps" Type="QuestTokenCollected" Threshold="1" DisplayName="Navigate the trap room" Optional="true" />
+          <Objective RefName="disarm_traps" Type="QuestTokenCollected" Threshold="1" DisplayName="Navigate the trap room" QuestTokenRef="HiddenCache_TrapDisarmed" Optional="true" />
         </Objectives>
       </Stage>
       <Stage RefName="claim" DisplayName="Claim the Treasure">
         <Objectives>
-          <Objective RefName="find_cache" Type="QuestTokenCollected" Threshold="1" DisplayName="Discover the hidden cache" />
+          <Objective RefName="find_cache" Type="QuestTokenCollected" Threshold="1" DisplayName="Discover the hidden cache" QuestTokenRef="HiddenCache_TreasureFound" />
         </Objectives>
       </Stage>
     </Stages>
@@ -149,18 +149,18 @@
     <Stages StartStage="hear_legend">
       <Stage RefName="hear_legend" DisplayName="Learn the Legend" NextStage="find_path">
         <Objectives>
-          <Objective RefName="hear_story" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn about the lost technique" />
+          <Objective RefName="hear_story" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn about the lost technique" QuestTokenRef="LostTechnique_Rumor" />
         </Objectives>
       </Stage>
       <Stage RefName="find_path" DisplayName="Find the Master" NextStage="trial_body">
         <Objectives>
-          <Objective RefName="get_directions" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn the path to the master" />
-          <Objective RefName="be_accepted" Type="QuestTokenCollected" Threshold="1" DisplayName="Be accepted as a student" />
+          <Objective RefName="get_directions" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn the path to the master" QuestTokenRef="LostTechnique_MasterLocation" />
+          <Objective RefName="be_accepted" Type="QuestTokenCollected" Threshold="1" DisplayName="Be accepted as a student" QuestTokenRef="LostTechnique_Accepted" />
         </Objectives>
       </Stage>
       <Stage RefName="trial_body" DisplayName="Trial of the Body" NextStage="trial_mind">
         <Objectives>
-          <Objective RefName="pass_body" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the first trial" />
+          <Objective RefName="pass_body" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the first trial" QuestTokenRef="LostTechnique_TrialOne" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -170,7 +170,7 @@
       </Stage>
       <Stage RefName="trial_mind" DisplayName="Trial of the Mind" NextStage="trial_spirit">
         <Objectives>
-          <Objective RefName="pass_mind" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the second trial" />
+          <Objective RefName="pass_mind" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the second trial" QuestTokenRef="LostTechnique_TrialTwo" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -180,7 +180,7 @@
       </Stage>
       <Stage RefName="trial_spirit" DisplayName="Trial of the Spirit" NextStage="learn">
         <Objectives>
-          <Objective RefName="pass_spirit" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the third trial" />
+          <Objective RefName="pass_spirit" Type="QuestTokenCollected" Threshold="1" DisplayName="Pass the third trial" QuestTokenRef="LostTechnique_TrialThree" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -190,7 +190,7 @@
       </Stage>
       <Stage RefName="learn" DisplayName="Master the Technique">
         <Objectives>
-          <Objective RefName="achieve_mastery" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn the lost technique" />
+          <Objective RefName="achieve_mastery" Type="QuestTokenCollected" Threshold="1" DisplayName="Learn the lost technique" QuestTokenRef="LostTechnique_Mastery" />
         </Objectives>
       </Stage>
     </Stages>
@@ -207,15 +207,15 @@
     <Stages StartStage="investigate">
       <Stage RefName="investigate" DisplayName="Investigate the Theft" NextStage="find_thief">
         <Objectives>
-          <Objective RefName="gather_witness" Type="QuestTokenCollected" Threshold="1" DisplayName="Get a witness statement" />
-          <Objective RefName="gather_footprints" Type="QuestTokenCollected" Threshold="1" DisplayName="Find physical evidence" />
-          <Objective RefName="gather_cloth" Type="QuestTokenCollected" Threshold="1" DisplayName="Find physical evidence" />
+          <Objective RefName="gather_witness" Type="QuestTokenCollected" Threshold="1" DisplayName="Get a witness statement" QuestTokenRef="MissingHeirloom_Evidence_WitnessAccount" />
+          <Objective RefName="gather_footprints" Type="QuestTokenCollected" Threshold="1" DisplayName="Find physical evidence" QuestTokenRef="MissingHeirloom_Evidence_Footprints" />
+          <Objective RefName="gather_cloth" Type="QuestTokenCollected" Threshold="1" DisplayName="Find physical evidence" QuestTokenRef="MissingHeirloom_Evidence_TornCloth" />
         </Objectives>
       </Stage>
       <Stage RefName="find_thief" DisplayName="Track Down the Thief" NextStage="resolve">
         <Objectives>
-          <Objective RefName="identify_thief" Type="QuestTokenCollected" Threshold="1" DisplayName="Identify the thief" />
-          <Objective RefName="locate_thief" Type="QuestTokenCollected" Threshold="1" DisplayName="Locate the thief's hideout" />
+          <Objective RefName="identify_thief" Type="QuestTokenCollected" Threshold="1" DisplayName="Identify the thief" QuestTokenRef="MissingHeirloom_ThiefIdentified" />
+          <Objective RefName="locate_thief" Type="QuestTokenCollected" Threshold="1" DisplayName="Locate the thief's hideout" QuestTokenRef="MissingHeirloom_ThiefLocation" />
         </Objectives>
       </Stage>
       <Stage RefName="resolve" DisplayName="Recover the Heirloom" NextStage="return" />
@@ -239,13 +239,13 @@
     <Stages StartStage="gather">
       <Stage RefName="gather" DisplayName="Prepare for Departure" NextStage="first_leg">
         <Objectives>
-          <Objective RefName="assemble_group" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather the refugees" />
-          <Objective RefName="gather_supplies" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather travel supplies" Optional="true" />
+          <Objective RefName="assemble_group" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather the refugees" QuestTokenRef="RefugeeEscort_GroupAssembled" />
+          <Objective RefName="gather_supplies" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather travel supplies" QuestTokenRef="RefugeeEscort_SuppliesGathered" Optional="true" />
         </Objectives>
       </Stage>
       <Stage RefName="first_leg" DisplayName="Begin the Journey" NextStage="crisis">
         <Objectives>
-          <Objective RefName="reach_waypoint" Type="QuestTokenCollected" Threshold="1" DisplayName="Reach the first waypoint" />
+          <Objective RefName="reach_waypoint" Type="QuestTokenCollected" Threshold="1" DisplayName="Reach the first waypoint" QuestTokenRef="RefugeeEscort_FirstWaypoint" />
         </Objectives>
       </Stage>
       <Stage RefName="crisis" DisplayName="Handle the Crisis" NextStage="pursue" />
@@ -263,7 +263,7 @@
       </Stage>
       <Stage RefName="border" DisplayName="Cross to Safety">
         <Objectives>
-          <Objective RefName="complete_journey" Type="QuestTokenCollected" Threshold="1" DisplayName="Reach safe territory" />
+          <Objective RefName="complete_journey" Type="QuestTokenCollected" Threshold="1" DisplayName="Reach safe territory" QuestTokenRef="RefugeeEscort_JourneyComplete" />
         </Objectives>
       </Stage>
     </Stages>
@@ -281,17 +281,17 @@
     <Stages StartStage="recruit">
       <Stage RefName="recruit" DisplayName="Join the Guild" NextStage="intel">
         <Objectives>
-          <Objective RefName="get_charter" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain guild membership" />
+          <Objective RefName="get_charter" Type="QuestTokenCollected" Threshold="1" DisplayName="Obtain guild membership" QuestTokenRef="RivalGuild_GuildCharter" />
         </Objectives>
       </Stage>
       <Stage RefName="intel" DisplayName="Gather Intelligence" NextStage="sabotage">
         <Objectives>
-          <Objective RefName="buy_info" Type="QuestTokenCollected" Threshold="1" DisplayName="Acquire intelligence on the rivals" />
+          <Objective RefName="buy_info" Type="QuestTokenCollected" Threshold="1" DisplayName="Acquire intelligence on the rivals" QuestTokenRef="RivalGuild_IntelGathered" />
         </Objectives>
       </Stage>
       <Stage RefName="sabotage" DisplayName="Sabotage Operations" NextStage="confront">
         <Objectives>
-          <Objective RefName="complete_sabotage" Type="QuestTokenCollected" Threshold="1" DisplayName="Sabotage rival operations" />
+          <Objective RefName="complete_sabotage" Type="QuestTokenCollected" Threshold="1" DisplayName="Sabotage rival operations" QuestTokenRef="RivalGuild_SabotageComplete" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -322,17 +322,17 @@
     <Stages StartStage="departure">
       <Stage RefName="departure" DisplayName="Begin the Journey" NextStage="first_leg">
         <Objectives>
-          <Objective RefName="receive_goods" Type="QuestTokenCollected" Threshold="1" DisplayName="Receive the trade goods from the merchant" />
+          <Objective RefName="receive_goods" Type="QuestTokenCollected" Threshold="1" DisplayName="Receive the trade goods from the merchant" QuestTokenRef="WanderingMerchant_TradeGoods" />
         </Objectives>
       </Stage>
       <Stage RefName="first_leg" DisplayName="Travel to First Destination" NextStage="first_delivery">
         <Objectives>
-          <Objective RefName="pass_toll" Type="QuestTokenCollected" Threshold="1" DisplayName="Get past the toll checkpoint" />
+          <Objective RefName="pass_toll" Type="QuestTokenCollected" Threshold="1" DisplayName="Get past the toll checkpoint" QuestTokenRef="WanderingMerchant_RoadToll" />
         </Objectives>
       </Stage>
       <Stage RefName="first_delivery" DisplayName="Complete First Delivery" NextStage="second_leg">
         <Objectives>
-          <Objective RefName="deliver_first" Type="QuestTokenCollected" Threshold="1" DisplayName="Deliver goods to the first buyer" />
+          <Objective RefName="deliver_first" Type="QuestTokenCollected" Threshold="1" DisplayName="Deliver goods to the first buyer" QuestTokenRef="WanderingMerchant_FirstDelivery" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -342,12 +342,12 @@
       </Stage>
       <Stage RefName="second_leg" DisplayName="Continue to Final Destination" NextStage="final_delivery">
         <Objectives>
-          <Objective RefName="gather_intel" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather road intelligence" Optional="true" Hidden="true" />
+          <Objective RefName="gather_intel" Type="QuestTokenCollected" Threshold="1" DisplayName="Gather road intelligence" QuestTokenRef="WanderingMerchant_TradeSecret" Optional="true" Hidden="true" />
         </Objectives>
       </Stage>
       <Stage RefName="final_delivery" DisplayName="Complete the Journey">
         <Objectives>
-          <Objective RefName="finish_journey" Type="QuestTokenCollected" Threshold="1" DisplayName="Complete the trading journey" />
+          <Objective RefName="finish_journey" Type="QuestTokenCollected" Threshold="1" DisplayName="Complete the trading journey" QuestTokenRef="WanderingMerchant_JourneyComplete" />
         </Objectives>
       </Stage>
     </Stages>
@@ -516,7 +516,6 @@
       <Stage RefName="UNLOCK_SHRINE" DisplayName="Unlock the Shrine's Secrets">
         <Objectives>
           <Objective RefName="COLLECT_KEYS" Type="QuestTokenCollected" Threshold="3" DisplayName="Collect 3 shrine keys" ItemRef="TOKEN_SHRINE_KEY" />
-          <Objective RefName="SOLVE_SHRINE_PUZZLE" Type="Custom" Threshold="1" DisplayName="Solve the shrine's ancient puzzle" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -545,8 +544,6 @@
       <Stage RefName="CRAFT_MASTERPIECE" DisplayName="Craft the Ultimate Masterpiece">
         <Objectives>
           <Objective RefName="GATHER_RARE_MATERIALS" Type="ItemCollected" Threshold="5" DisplayName="Gather 5 legendary materials" ItemRef="ChainBoots" />
-          <Objective RefName="CRAFT_LEGENDARY_ITEM" Type="ItemCrafted" Threshold="1" DisplayName="Craft the legendary masterpiece" ItemRef="LightCrossbow" />
-          <Objective RefName="BONUS_FLAWLESS_CRAFT" Type="Custom" Threshold="1" DisplayName="Achieve 100% quality on first try" Optional="true" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -570,13 +567,11 @@
       <Stage RefName="UNLOCK_VAULT" DisplayName="Unlock the Collector's Vault" NextStage="CLAIM_TREASURES">
         <Objectives>
           <Objective RefName="REACH_VAULT" Type="LocationReached" Threshold="1" DisplayName="Reach the vault at Iso-teien" SagaArcRef="Isoteien1" Hidden="true" />
-          <Objective RefName="PLACE_SEALS" Type="Custom" Threshold="5" DisplayName="Place all 5 ancient seals" />
         </Objectives>
       </Stage>
       <Stage RefName="CLAIM_TREASURES" DisplayName="Claim the Legendary Treasures">
         <Objectives>
           <Objective RefName="DEFEAT_VAULT_GUARDIAN" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the vault guardian" CharacterTag="boss" />
-          <Objective RefName="LOOT_VAULT" Type="Custom" Threshold="1" DisplayName="Claim the vault's treasures" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">
@@ -607,7 +602,6 @@
           <Objective RefName="DEFEAT_WAVE_1" Type="CharactersDefeatedByTag" Threshold="10" DisplayName="Defeat 10 enemies (Wave 1)" CharacterTag="hostile" />
           <Objective RefName="COLLECT_SPEED_TOKENS" Type="QuestTokenCollected" Threshold="5" DisplayName="Collect 5 speed tokens" ItemRef="TOKEN_SPEED_CHALLENGE" />
           <Objective RefName="DEFEAT_FINAL_BOSS" Type="CharactersDefeatedByTag" Threshold="1" DisplayName="Defeat the time keeper" CharacterTag="boss" />
-          <Objective RefName="BONUS_UNDER_5_MIN" Type="Custom" Threshold="1" DisplayName="Complete in under 5 minutes" Optional="true" />
         </Objectives>
         <Rewards>
           <Reward Condition="OnSuccess">

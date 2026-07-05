@@ -52,10 +52,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         ItemDelivered,
-        
-        /// <remarks/>
-        ItemCrafted,
-        
+
         /// <remarks/>
         ItemTraded,
         
@@ -64,8 +61,5 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         QuestTokenCollected,
-        
-        /// <remarks/>
-        Custom,
     }
 }

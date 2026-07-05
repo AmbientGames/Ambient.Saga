@@ -113,11 +113,6 @@
                     <xs:documentation>The avatar must deliver a specific item to a target NPC or location.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
-            <xs:enumeration value="ItemCrafted">
-                <xs:annotation>
-                    <xs:documentation>The avatar must craft a specific item.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
             <xs:enumeration value="ItemTraded">
                 <xs:annotation>
                     <xs:documentation>The avatar must trade a specific item with a merchant or another avatar.</xs:documentation>
@@ -133,13 +128,6 @@
             <xs:enumeration value="QuestTokenCollected">
                 <xs:annotation>
                     <xs:documentation>The avatar must collect a specific quest token item.</xs:documentation>
-                </xs:annotation>
-            </xs:enumeration>
-
-            <!-- Custom objectives -->
-            <xs:enumeration value="Custom">
-                <xs:annotation>
-                    <xs:documentation>A custom objective evaluated by game-specific logic outside the standard transaction types.</xs:documentation>
                 </xs:annotation>
             </xs:enumeration>
         </xs:restriction>
@@ -211,7 +199,7 @@
     <!-- Quest Objective -->
     <xs:complexType name="QuestObjective">
         <xs:annotation>
-            <xs:documentation>A single trackable goal within a quest stage. Evaluated by QuestProgressEvaluator against the transaction log, but automatic objective progression is not yet wired — ProgressQuestObjectiveCommand has no callers. Objectives currently serve as metadata describing what the player should do. Actual quest advancement is driven by dialogue actions (AcceptQuest, CompleteQuest).</xs:documentation>
+            <xs:documentation>A single trackable goal within a quest stage. Evaluated by QuestProgressEvaluator against the transaction log, and automatic objective progression IS wired: QuestStageProgressionBehavior watches committed transactions and advances stages (and completes quests) when their objectives are met. Dialogue actions (AcceptQuest, CompleteQuest) remain available for explicitly authored transitions.</xs:documentation>
         </xs:annotation>
         <xs:attribute name="RefName" type="QuestObjectiveRef" use="required">
             <xs:annotation>
@@ -349,7 +337,7 @@
                         </xs:attribute>
                     </xs:complexType>
                 </xs:element>
-                <!-- ChooseQuestBranchHandler exists but the UI branch selection buttons are not yet connected -->
+                <!-- Branch selection is handled by ChooseQuestBranchHandler and connected to the quest UI -->
                 <xs:element name="Branches">
                     <xs:complexType>
                         <xs:sequence>
@@ -357,7 +345,7 @@
                         </xs:sequence>
                         <xs:attribute name="Exclusive" type="xs:boolean" use="optional" default="true">
                             <xs:annotation>
-                                <xs:documentation>If true, only one branch can be chosen and the others become unavailable. Note: ChooseQuestBranchHandler exists but the UI branch selection is not yet connected.</xs:documentation>
+                                <xs:documentation>If true, only one branch can be chosen and the others become unavailable. Branch selection is handled by ChooseQuestBranchHandler and connected to the quest UI.</xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
                     </xs:complexType>

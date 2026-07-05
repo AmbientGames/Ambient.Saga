@@ -5,7 +5,7 @@ using MediatR;
 namespace Ambient.Saga.Engine.Application.Commands.Saga;
 
 /// <summary>
-/// Command to accept a quest from a quest signpost or NPC.
+/// Command to accept a quest offered by an NPC quest giver.
 ///
 /// Side Effects:
 /// - Creates QuestAccepted transaction
@@ -20,7 +20,7 @@ public record AcceptQuestCommand : IRequest<SagaCommandResult>
     public required Guid AvatarId { get; init; }
 
     /// <summary>
-    /// Saga containing the quest signpost/NPC
+    /// Saga containing the quest giver NPC
     /// </summary>
     public required string SagaArcRef { get; init; }
 
@@ -30,7 +30,7 @@ public record AcceptQuestCommand : IRequest<SagaCommandResult>
     public required string QuestRef { get; init; }
 
     /// <summary>
-    /// Quest signpost or NPC offering the quest (for tracking)
+    /// NPC offering the quest (for tracking)
     /// </summary>
     public required string QuestGiverRef { get; init; }
 

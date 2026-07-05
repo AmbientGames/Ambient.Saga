@@ -45,7 +45,6 @@ public enum SagaTransactionType
 
     // Trading and economy
     ItemTraded,              // Tracks merchant trade transactions
-    ItemCrafted,             // Item crafted by avatar
     CurrencyChanged,         // Currency gained or lost
 
     // Party management
@@ -76,21 +75,17 @@ public enum SagaTransactionType
     QuestTokenAwarded,
 
     // Quest system (multi-stage, multi-objective)
-    QuestAccepted,           // Quest accepted from signpost/NPC
+    QuestAccepted,           // Quest accepted from an NPC dialogue offer
     QuestObjectiveCompleted, // Individual objective within a stage completed
     QuestStageAdvanced,      // Advanced to next stage (all objectives complete)
     QuestBranchChosen,       // Avatar chose a branch in exclusive choice stage
     QuestCompleted,          // Quest finished successfully (all stages complete)
     QuestFailed,             // Quest failed (fail condition triggered or wrong choice)
     QuestAbandoned,          // Quest dropped by avatar
-    CustomObjectiveCompleted, // Custom objective manually marked complete
 
     // Structure interactions
     StructureDamaged,
     StructureRepaired,
-
-    // Landmark interactions
-    LandmarkDiscovered,
 
     // Extension point for domain-specific transaction types (e.g., Ambient.Core voxel claims)
     // When Type = Extension, check ExtensionTypeName for the actual type identifier
