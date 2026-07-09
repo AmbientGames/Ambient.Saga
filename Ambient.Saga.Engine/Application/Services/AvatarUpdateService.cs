@@ -190,7 +190,7 @@ public class AvatarUpdateService : IAvatarUpdateService
                 if (block.Quantity <= 0)
                 {
                     var blocks = avatar.Capabilities.Blocks?.ToList() ?? new List<BlockEntry>();
-                    blocks.RemoveAll(b => b.BlockRef == itemRef);
+                    blocks.Remove(block);
                     avatar.Capabilities.Blocks = blocks.ToArray();
                 }
             }
@@ -486,7 +486,7 @@ public class AvatarUpdateService : IAvatarUpdateService
                 if (existingBlock.Quantity <= 0)
                 {
                     var blocks = avatar.Capabilities.Blocks?.ToList() ?? new List<BlockEntry>();
-                    blocks.RemoveAll(b => b.BlockRef == materialRef);
+                    blocks.Remove(existingBlock);
                     avatar.Capabilities.Blocks = blocks.ToArray();
                 }
                 continue;

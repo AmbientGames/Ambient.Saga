@@ -1170,7 +1170,11 @@ public class BattleModal
             EnemyHealthPercent = _currentState.EnemyCombatant.HealthPercent,
             TurnNumber = _currentState.TurnNumber,
             BattleEnded = _currentState.HasEnded,
-            AvatarVictory = _currentState.AvatarVictory == true
+            AvatarVictory = _currentState.AvatarVictory == true,
+            // Fled = battle ended with neither victory nor defeat (AvatarVictory null).
+            // Without this the OnDefeat condition (!Victory && !Fled) evaluated true after a
+            // successful flee, firing the enemy's defeat taunt on escape.
+            AvatarFled = _currentState.HasEnded && _currentState.AvatarVictory == null
         };
 
         var fired = _battleTriggers.Evaluate(_battleDialogueTriggers, context);

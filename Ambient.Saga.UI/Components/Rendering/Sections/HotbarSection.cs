@@ -1,3 +1,4 @@
+using Ambient.Domain;
 using Ambient.Domain.Hotbar;
 using Ambient.Saga.UI;
 using ImGuiNET;
@@ -175,7 +176,9 @@ public class HotbarSection : IHudSection
         return slot.ItemType switch
         {
             HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(BlockRefVariation.BaseRef(slot.RefName)) is { } blockDef
+                ? blockDef.GetVariationDisplayName(BlockRefVariation.VariationOf(slot.RefName)) ?? blockDef.DisplayName ?? slot.RefName
+                : slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName

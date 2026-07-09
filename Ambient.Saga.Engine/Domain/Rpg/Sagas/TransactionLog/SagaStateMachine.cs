@@ -462,25 +462,7 @@ public class SagaStateMachine
         // (per spawn instance), a RESPAWNED character comes back with fresh template Loot
         // while the previous life's ItemTraded takes stay folded on the old instance.
         var lootTemplate = characterTemplate.Interactable?.Loot;
-        ItemCollection? copiedInventory = null;
-        if (lootTemplate != null)
-        {
-            copiedInventory = new ItemCollection
-            {
-                Blocks = lootTemplate.Blocks?.Select(b => new BlockEntry
-                    { BlockRef = b.BlockRef, Quantity = b.Quantity }).ToArray(),
-                Tools = lootTemplate.Tools?.Select(t => new ToolEntry
-                    { ToolRef = t.ToolRef, Condition = t.Condition }).ToArray(),
-                Equipment = lootTemplate.Equipment?.Select(e => new EquipmentEntry
-                    { EquipmentRef = e.EquipmentRef, Condition = e.Condition }).ToArray(),
-                Consumables = lootTemplate.Consumables?.Select(c => new ConsumableEntry
-                    { ConsumableRef = c.ConsumableRef, Quantity = c.Quantity }).ToArray(),
-                Spells = lootTemplate.Spells?.Select(s => new SpellEntry
-                    { SpellRef = s.SpellRef, Condition = s.Condition }).ToArray(),
-                BuildingMaterials = lootTemplate.BuildingMaterials?.Select(m => new BuildingMaterialEntry
-                    { BuildingMaterialRef = m.BuildingMaterialRef, Quantity = m.Quantity }).ToArray(),
-            };
-        }
+        ItemCollection? copiedInventory = lootTemplate?.DeepClone();
 
         var characterState = new CharacterState
         {
@@ -874,7 +856,7 @@ public class SagaStateMachine
             var b = inv.GetOrAddBlock(itemRef);
             b.Quantity += delta;
             if (b.Quantity <= 0)
-                inv.Blocks = (inv.Blocks ?? Array.Empty<BlockEntry>()).Where(x => x.BlockRef != itemRef).ToArray();
+                inv.Blocks = (inv.Blocks ?? Array.Empty<BlockEntry>()).Where(x => !ReferenceEquals(x, b)).ToArray();
         }
     }
 

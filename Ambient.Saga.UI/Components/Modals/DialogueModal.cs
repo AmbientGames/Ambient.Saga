@@ -63,7 +63,7 @@ public class DialogueModal
             _startOverride = modalManager.DialogueStartOverride;
             modalManager.DialogueStartOverride = null;
 
-            _ = InitializeDialogueAndSetLoadingAsync(viewModel, character);
+            _ = InitializeDialogueAndSetLoadingAsync(viewModel, character, modalManager);
         }
 
         // Center the window using helper
@@ -216,12 +216,33 @@ public class DialogueModal
         ImGui.Spacing();
         ImGui.Spacing();
 
-        // Center text using available width
-        var endText = "The conversation has ended.";
-        var textSize = ImGui.CalcTextSize(endText);
-        var avail = ImGui.GetContentRegionAvail();
-        ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (avail.X - textSize.X) * 0.5f);
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1), endText);
+        // Render the ending node's authored text when it has any — quest-accept
+        // confirmations, turn-in reward lines, farewells. The handler returns DialogueText
+        // for a terminal node with HasEnded=true; without this the player only ever saw
+        // "The conversation has ended." and never the closing content.
+        var finalText = _currentState?.DialogueText;
+        if (finalText is { Count: > 0 })
+        {
+            foreach (var line in finalText)
+            {
+                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.95f, 0.95f, 0.9f, 1.0f));
+                ImGui.PushTextWrapPos(ImGui.GetCursorPosX() + ImGui.GetContentRegionAvail().X);
+                ImGui.TextWrapped(line);
+                ImGui.PopTextWrapPos();
+                ImGui.PopStyleColor();
+                ImGui.Spacing();
+            }
+            ImGui.Spacing();
+        }
+        else
+        {
+            // Center text using available width
+            var endText = "The conversation has ended.";
+            var textSize = ImGui.CalcTextSize(endText);
+            var avail = ImGui.GetContentRegionAvail();
+            ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (avail.X - textSize.X) * 0.5f);
+            ImGui.TextColored(new Vector4(0.8f, 0.8f, 0.8f, 1), endText);
+        }
 
         ImGui.Spacing();
         ImGui.Spacing();
@@ -449,11 +470,11 @@ public class DialogueModal
 
     #region Async Operations
 
-    private async Task InitializeDialogueAndSetLoadingAsync(SagaMainViewModel viewModel, CharacterViewModel character)
+    private async Task InitializeDialogueAndSetLoadingAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
         try
         {
-            await InitializeDialogueAsync(viewModel, character);
+            await InitializeDialogueAsync(viewModel, character, modalManager);
         }
         finally
         {
@@ -502,7 +523,7 @@ public class DialogueModal
         }
     }
 
-    private async Task InitializeDialogueAsync(SagaMainViewModel viewModel, CharacterViewModel character)
+    private async Task InitializeDialogueAsync(SagaMainViewModel viewModel, CharacterViewModel character, ModalManager modalManager)
     {
         if (viewModel.CurrentWorld == null)
         {
@@ -544,6 +565,18 @@ public class DialogueModal
             // Get initial state
             await RefreshDialogueStateAsync(viewModel, character);
 
+            // A dialogue can open directly into a *terminal* entry node — text plus actions
+            // (a boss taunt's ChangeStance/HealSelf/EndBattle, a one-line NPC's GiveConsumable),
+            // no choices and no next. StartDialogue only records the session and the read-only
+            // state query never runs actions, so the terminal UI would offer "End Conversation"
+            // and the node's actions would never fire. One AdvanceDialogue executes and commits
+            // them here (harvesting any battle effects); the committed-visit guard makes it a
+            // safe no-op if they somehow already ran.
+            if (_currentState is { HasEnded: true })
+            {
+                await AdvanceDialogueAsync(viewModel, character, modalManager);
+            }
+
             // If state is still null after refresh, show error
             if (_currentState == null)
             {
@@ -578,6 +611,16 @@ public class DialogueModal
             var result = await viewModel.Mediator.Send(command);
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Command result: Successful={result.Successful}, Error={result.ErrorMessage}");
             System.Diagnostics.Debug.WriteLine($"[DialogueModal] Result.Data keys: {string.Join(", ", result.Data.Keys)}");
+
+            // A failed choice command (e.g. "Character has no dialogue tree", stale state,
+            // insufficient credits) was silently swallowed here — the click appeared to do
+            // nothing. Surface it like AdvanceDialogueAsync does.
+            if (!result.Successful)
+            {
+                System.Diagnostics.Debug.WriteLine($"[DialogueModal] Select FAILED: {result.ErrorMessage}");
+                _errorMessage = result.ErrorMessage;
+                return;
+            }
 
             // Check for game completion
             if (result.Data.ContainsKey(TransactionDataKeys.GameComplete))

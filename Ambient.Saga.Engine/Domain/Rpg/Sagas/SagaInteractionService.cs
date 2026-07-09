@@ -624,9 +624,12 @@ public class SagaInteractionService
             // Get original spawn position (or use current avatar position if not found)
             var spawnX = avatarX;
             var spawnZ = avatarZ;
-            if (spawnTx.Data.TryGetValue(TransactionDataKeys.X, out var origX) && double.TryParse(origX, out var parsedX))
+            // Writer formats X/Z with InvariantCulture ("F6" below); read them back the same
+            // way. A bare double.TryParse uses the current culture, so on comma-decimal locales
+            // the parse fails and the character silently respawns at the avatar's position.
+            if (spawnTx.Data.TryGetValue(TransactionDataKeys.X, out var origX) && double.TryParse(origX, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var parsedX))
                 spawnX = parsedX;
-            if (spawnTx.Data.TryGetValue(TransactionDataKeys.Z, out var origZ) && double.TryParse(origZ, out var parsedZ))
+            if (spawnTx.Data.TryGetValue(TransactionDataKeys.Z, out var origZ) && double.TryParse(origZ, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var parsedZ))
                 spawnZ = parsedZ;
 
             System.Diagnostics.Debug.WriteLine($"[RESPAWN] Character '{characterRef}' respawning after {timeSinceDefeat:F0}s (interval: {characterTemplate.RespawnIntervalSeconds}s)");

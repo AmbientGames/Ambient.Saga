@@ -137,8 +137,15 @@ internal sealed class GetBattleStateHandler : IRequestHandler<GetBattleStateQuer
                     }
                     else
                     {
-                        var wasAvatarTurn = bool.Parse(lastTurn.Data[TransactionDataKeys.IsAvatarTurn]);
-                        battleState = wasAvatarTurn ? BattleState.EnemyTurn : BattleState.AvatarTurn;
+                        // Battle is ongoing and the last turn is neither a tell nor a reaction.
+                        // Enemy/companion turns are executed and committed in the SAME command as
+                        // the avatar's action, so a successful avatar turn is always followed by an
+                        // enemy turn — the last committed turn is the enemy's. The last turn is only
+                        // the avatar's when the action DIDN'T hand off (failed: no energy, stun,
+                        // rooted flee, unequipped weapon), leaving the engine in AvatarTurn. Either
+                        // way the avatar is up next. The old parity ("last was avatar => EnemyTurn")
+                        // reported EnemyTurn after a failed action and wedged the UI forever.
+                        battleState = BattleState.AvatarTurn;
                     }
                 }
             }

@@ -84,7 +84,7 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
     // Blocks (stackable voxel blocks)
     public float GetBlockQuantity(string r) => _a.Capabilities?.Blocks?.FirstOrDefault(e => e.BlockRef == r)?.Quantity ?? 0;
     public void AddBlock(string r, int amt) { if (_a.Capabilities != null && amt > 0) { AvatarMutated = true; _a.Capabilities.Blocks ??= Array.Empty<BlockEntry>(); var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) e.Quantity += amt; else { var list = _a.Capabilities.Blocks.ToList(); list.Add(new BlockEntry { BlockRef = r, Quantity = amt }); _a.Capabilities.Blocks = list.ToArray(); } } }
-    public void RemoveBlock(string r, int amt) { if (_a.Capabilities?.Blocks != null && amt > 0) { var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) { AvatarMutated = true; e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Blocks = _a.Capabilities.Blocks.Where(x => x.BlockRef != r).ToArray(); } } }
+    public void RemoveBlock(string r, int amt) { if (_a.Capabilities?.Blocks != null && amt > 0) { var e = _a.Capabilities.Blocks.FirstOrDefault(x => x.BlockRef == r); if (e != null) { AvatarMutated = true; e.Quantity = Math.Max(0, e.Quantity - amt); if (e.Quantity == 0) _a.Capabilities.Blocks = _a.Capabilities.Blocks.Where(x => !ReferenceEquals(x, e)).ToArray(); } } }
 
     // Equipment (degradable)
     public bool HasEquipment(string r) => _a.Capabilities?.Equipment?.Any(e => e.EquipmentRef == r) ?? false;
@@ -243,7 +243,14 @@ public class DirectDialogueStateProvider : IDialogueStateProvider
         => _progressRepo?.GetQuestStatus(_avatarGuid, questRef) == QuestProgressStatus.Completed;
 
     public bool IsQuestNotStarted(string questRef)
-        => _progressRepo?.GetQuestStatus(_avatarGuid, questRef) == null;
+    {
+        // Abandoned quests are re-offerable. Offer nodes gate on QuestNotStarted and docs
+        // promise "re-accepting starts a fresh scope", but AbandonQuest projects a durable
+        // Abandoned row (not null), so treating only null as not-started hid the offer forever —
+        // one Abandon tap bricked the quest, and the world if it was the completion quest.
+        var status = _progressRepo?.GetQuestStatus(_avatarGuid, questRef);
+        return status == null || status == QuestProgressStatus.Abandoned;
+    }
 
     // Faction Reputation — persisted projection + faction starting value +
     // session-local deltas for changes made during this request (the durable

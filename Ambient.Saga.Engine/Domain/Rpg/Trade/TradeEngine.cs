@@ -103,22 +103,24 @@ public class TradeEngine
             case "Blocks":
                 if (inventory.Blocks != null && _world.BlockProvider != null)
                 {
-                    foreach (var entry in inventory.Blocks)
+                    // One row per stack identity (variation folded into the ref) so colours of a
+                    // block trade as distinct items. Price and label come from the base block
+                    // definition — variations share a price and gain only a variation-specific name.
+                    foreach (var group in inventory.Blocks.Where(e => e != null && !string.IsNullOrEmpty(e.BlockRef)).GroupBy(e => e.BlockRef))
                     {
-                        if (entry == null || string.IsNullOrEmpty(entry.BlockRef))
-                            continue;
-
                         // Block quantities are floats (saturation supports partial blocks),
                         // but trade is whole-block only — floor and skip anything under 1.
-                        var quantity = (int)entry.Quantity;
+                        var quantity = (int)group.Sum(e => e.Quantity);
                         if (quantity < 1)
                             continue;
 
-                        var block = _world.BlockProvider.GetBlockByRefName(entry.BlockRef);
+                        var block = _world.BlockProvider.GetBlockByRefName(BlockRefVariation.BaseRef(group.Key));
                         if (block != null && block.WholesalePrice != int.MaxValue) // int.MaxValue = untradeable sentinel
                         {
                             var price = isBuying ? CalculateBuyPrice(block, true, characterTraits) : CalculateSellPrice(block);
-                            items.Add(new TradeItemInfo(block, price, quantity: quantity, condition: null));
+                            var displayName = block.GetVariationDisplayName(BlockRefVariation.VariationOf(group.Key)) ?? block.DisplayName;
+                            items.Add(new TradeItemInfo(block, price, quantity: quantity, condition: null,
+                                itemRef: group.Key, displayName: displayName));
                         }
                     }
                 }
@@ -226,7 +228,7 @@ public class TradeEngine
         {
             Equipment equipment => TransferEquipment(source, dest, equipment.RefName, item.Condition),
             Consumable consumable => TransferConsumable(source, dest, consumable.RefName, item.Quantity ?? 1),
-            IBlock block => TransferBlock(source, dest, block.RefName, item.Quantity ?? 1),
+            IBlock => TransferBlock(source, dest, item.ItemRef, item.Quantity ?? 1),
             Tool tool => TransferTool(source, dest, tool.RefName, item.Condition),
             Spell spell => TransferSpell(source, dest, spell.RefName, item.Condition),
             _ => TradeResult.Failed("Unknown item type")
@@ -276,26 +278,36 @@ public class TradeEngine
         return TradeResult.Succeeded("Transfer complete");
     }
 
-    private TradeResult TransferBlock(ItemCollection source, ItemCollection dest, string refName, int quantity)
+    private TradeResult TransferBlock(ItemCollection source, ItemCollection dest, string blockRef, int quantity)
     {
-        // Find and reduce/remove from source
+        // A block ref is the whole stack identity (variation folded in), so a transfer moves
+        // exactly that stack — the colour you sell is the colour that leaves your inventory.
         var sourceList = source.Blocks?.ToList() ?? new List<BlockEntry>();
-        var sourceStack = sourceList.FirstOrDefault(s => s.BlockRef == refName);
-        if (sourceStack == null || sourceStack.Quantity < quantity)
+        var available = sourceList.Where(s => s.BlockRef == blockRef).Sum(s => s.Quantity);
+        if (available < quantity)
             return TradeResult.Failed("Insufficient quantity in source inventory");
 
-        sourceStack.Quantity -= quantity;
-        if (sourceStack.Quantity <= 0)
-            sourceList.Remove(sourceStack);
-        source.Blocks = sourceList.ToArray();
-
-        // Add to destination
         var destList = dest.Blocks?.ToList() ?? new List<BlockEntry>();
-        var destStack = destList.FirstOrDefault(s => s.BlockRef == refName);
-        if (destStack != null)
-            destStack.Quantity += quantity;
-        else
-            destList.Add(new BlockEntry { BlockRef = refName, Quantity = quantity });
+        float remaining = quantity;
+        foreach (var sourceStack in sourceList.Where(s => s.BlockRef == blockRef).ToList())
+        {
+            if (remaining <= 0)
+                break;
+
+            var take = Math.Min(sourceStack.Quantity, remaining);
+            sourceStack.Quantity -= take;
+            remaining -= take;
+            if (sourceStack.Quantity <= 0)
+                sourceList.Remove(sourceStack);
+
+            var destStack = destList.FirstOrDefault(s => s.BlockRef == blockRef);
+            if (destStack != null)
+                destStack.Quantity += take;
+            else
+                destList.Add(new BlockEntry { BlockRef = blockRef, Quantity = take });
+        }
+
+        source.Blocks = sourceList.ToArray();
         dest.Blocks = destList.ToArray();
 
         return TradeResult.Succeeded("Transfer complete");

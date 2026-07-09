@@ -99,8 +99,11 @@ internal sealed class ProgressQuestObjectiveHandler : IRequestHandler<ProgressQu
                 return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), 0);
             }
 
-            // Evaluate current progress from transaction log
-            var transactions = instance.GetCommittedTransactions();
+            // Evaluate current progress from the transaction log. Objectives can be
+            // satisfied cross-arc (the satisfying transaction may live in a different
+            // arc's instance than the one that owns the quest), so evaluate against
+            // the avatar's whole cross-arc committed log (see CrossArcQuestTransactionLog).
+            var transactions = await CrossArcQuestTransactionLog.BuildAsync(command.AvatarId, _instanceRepository, ct);
             var currentValue = QuestProgressEvaluator.EvaluateObjectiveProgress(quest, stage, objective, transactions, _world);
 
             // Check if threshold met

@@ -89,18 +89,13 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
                 return SagaCommandResult.Failure(instance.InstanceId, $"Character template '{characterState.CharacterRef}' not found");
             }
 
+            // The character's default DialogueTreeRef may be empty (battle-only bosses have no
+            // interactable tree). Don't fail here — the session's DialogueStarted override
+            // (resolved below) can supply the tree. Fail only if NEITHER resolves.
             var dialogueTreeRef = characterTemplate.Interactable?.DialogueTreeRef;
-            if (string.IsNullOrEmpty(dialogueTreeRef))
-            {
-                return SagaCommandResult.Failure(instance.InstanceId, "Character has no dialogue tree");
-            }
-
-            // Get dialogue tree
-            var dialogueTree = _world.Gameplay.DialogueTrees?.FirstOrDefault(dt => dt.RefName == dialogueTreeRef);
-            if (dialogueTree == null)
-            {
-                return SagaCommandResult.Failure(instance.InstanceId, $"Dialogue tree '{dialogueTreeRef}' not found");
-            }
+            var dialogueTree = string.IsNullOrEmpty(dialogueTreeRef)
+                ? null
+                : _world.Gameplay.DialogueTrees?.FirstOrDefault(dt => dt.RefName == dialogueTreeRef);
 
             // Track transactions before processing choice
             var transactionsBefore = instance.Transactions.Count;
@@ -136,10 +131,19 @@ internal sealed class SelectDialogueChoiceHandler : IRequestHandler<SelectDialog
             // dialogue triggers open their own battle trees) — trust the session's
             // DialogueStarted transaction over the Interactable default
             var sessionTreeRef = lastStarted.Data.GetValueOrDefault(TransactionDataKeys.DialogueTreeRef);
-            if (!string.IsNullOrEmpty(sessionTreeRef) && sessionTreeRef != dialogueTree.RefName &&
+            if (!string.IsNullOrEmpty(sessionTreeRef) && sessionTreeRef != dialogueTree?.RefName &&
                 _world.DialogueTreesLookup.TryGetValue(sessionTreeRef, out var sessionTree))
             {
                 dialogueTree = sessionTree;
+            }
+
+            // Both the default and the session override have now had a chance to supply a tree;
+            // fail only if neither did. (The old empty-default check hard-failed battle-only
+            // characters before the session override could provide their battle tree, soft-locking
+            // e.g. EverestTrail's BanditChief_Boss on every choice.)
+            if (dialogueTree == null)
+            {
+                return SagaCommandResult.Failure(instance.InstanceId, "Character has no dialogue tree");
             }
 
             // Restore state from the transaction log - jump directly to the last visited node.

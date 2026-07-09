@@ -287,7 +287,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         foreach (var item in tradeItems)
         {
             var price = IsFreeTake ? 0 : item.Price;
-            items.Add(new TradeItem(item.Item, price, item.Quantity, item.Condition));
+            items.Add(new TradeItem(item.Item, price, item.Quantity, item.Condition, item.ItemRef, item.DisplayName));
         }
 
         return items;
@@ -303,7 +303,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         var tradeItems = _tradeEngine.GetAvailableItems(_context.AvatarEntity.Capabilities, SelectedTradeCategory, isBuying: false);
         foreach (var item in tradeItems)
         {
-            items.Add(new TradeItem(item.Item, item.Price, item.Quantity, item.Condition));
+            items.Add(new TradeItem(item.Item, item.Price, item.Quantity, item.Condition, item.ItemRef, item.DisplayName));
         }
 
         return items;
@@ -335,7 +335,7 @@ public partial class MerchantTradeViewModel : ObservableObject
                 AvatarId = _context.AvatarId,
                 SagaArcRef = _context.CurrentSagaRef,
                 CharacterInstanceId = _context.CurrentCharacterInstanceId.Value,
-                ItemRef = tradeItem.Item.RefName,
+                ItemRef = tradeItem.ItemRef,
                 Quantity = 1,  // Buy one at a time
                 IsBuying = true,
                 PricePerItem = IsFreeTake ? 0 : tradeItem.Price,
@@ -417,7 +417,7 @@ public partial class MerchantTradeViewModel : ObservableObject
                 AvatarId = _context.AvatarId,
                 SagaArcRef = _context.CurrentSagaRef,
                 CharacterInstanceId = _context.CurrentCharacterInstanceId.Value,
-                ItemRef = tradeItem.Item.RefName,
+                ItemRef = tradeItem.ItemRef,
                 Quantity = 1,  // Sell one at a time
                 IsBuying = false,
                 PricePerItem = IsCache ? 0 : tradeItem.Price,

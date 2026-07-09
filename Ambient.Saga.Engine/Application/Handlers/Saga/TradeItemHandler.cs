@@ -241,7 +241,7 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                     if (hasItem) itemType = "spell";
                 }
 
-                // Check blocks
+                // Check blocks — the ref is the exact stack identity (variation folded in)
                 if (!hasItem && command.Avatar.Capabilities?.Blocks != null)
                 {
                     var block = command.Avatar.Capabilities.Blocks
@@ -431,7 +431,9 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
         if (_world.ToolsLookup.TryGetValue(itemRef, out var tool)) return tool;
         if (_world.SpellsLookup.TryGetValue(itemRef, out var spell)) return spell;
         if (_world.BuildingMaterialsLookup.TryGetValue(itemRef, out var material)) return material;
-        return _world.BlockProvider?.GetBlockByRefName(itemRef);
+        // Blocks trade by combined ref (variation folded in); the definition, price, and
+        // tradeable status all live on the base block, so resolve with the base ref.
+        return _world.BlockProvider?.GetBlockByRefName(BlockRefVariation.BaseRef(itemRef));
     }
 
     private float DetermineItemCategoryWeight(string itemRef, ItemCollection? capabilities)

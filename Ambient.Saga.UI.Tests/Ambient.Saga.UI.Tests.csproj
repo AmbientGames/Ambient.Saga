@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\Ambient.Domain\Ambient.Domain.csproj" />
-	  <ProjectReference Include="..\Ambient.Saga.UI\Ambient.Saga.UI.csproj" />
-	  <ProjectReference Include="..\Ambient.Saga.Engine\Ambient.Saga.Engine.csproj" />
+    <ProjectReference Include="..\..\Engine\Ambient.Domain\Ambient.Domain.csproj" />
+    <ProjectReference Include="..\Ambient.Saga.UI\Ambient.Saga.UI.csproj" />
+    <ProjectReference Include="..\..\Engine\Ambient.Saga.Engine\Ambient.Saga.Engine.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +35,18 @@
 
   <Target Name="CopySandboxContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">
     <Copy SourceFiles="@(SandboxContent)" DestinationFiles="@(SandboxContent->'$(TargetDir)content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
+  </Target>
+
+  <!-- Saga-flavor (xmlns="Ambient.Domain") sample worlds for the real-content E2E tests.
+       In the upstream repo the SandboxContent copy above already provides Ise/Kagoshima in
+       <output>\content\worlds; in Foundry the sandbox lives elsewhere, so vendor the same
+       worlds from the engine test project. World discovery looks in <output>\content\worlds. -->
+  <ItemGroup>
+    <SagaTestContent Include="..\..\Engine\Ambient.Saga.Engine.Tests\TestContent\**\*" />
+  </ItemGroup>
+
+  <Target Name="CopySagaTestContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">
+    <Copy SourceFiles="@(SagaTestContent)" DestinationFiles="@(SagaTestContent->'$(TargetDir)content\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>

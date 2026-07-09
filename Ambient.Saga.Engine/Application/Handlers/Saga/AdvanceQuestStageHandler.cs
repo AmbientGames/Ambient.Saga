@@ -82,6 +82,37 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
                 return SagaCommandResult.Failure(instance.InstanceId, $"Quest '{quest.DisplayName}' is not active");
             }
 
+            // Recovery path (R4-30): the final stage-advance sets CurrentStage to "" and then hands
+            // off to CompleteQuest. If that nested completion failed, the quest is stranded active
+            // with no stage — the stage lookup below would dead-end it forever. Re-attempt the
+            // completion so re-invoking this command recovers it instead of failing.
+            if (string.IsNullOrEmpty(questState.CurrentStage))
+            {
+                var retry = await _mediator.Send(new CompleteQuestCommand
+                {
+                    AvatarId = command.AvatarId,
+                    SagaArcRef = command.SagaArcRef,
+                    QuestRef = command.QuestRef,
+                    QuestReceiverRef = questState.QuestGiverRef,
+                    Avatar = command.Avatar
+                }, ct);
+
+                if (!retry.Successful)
+                {
+                    return SagaCommandResult.Failure(instance.InstanceId,
+                        $"Quest '{quest.DisplayName}' is awaiting completion; retry failed: {retry.ErrorMessage}");
+                }
+
+                var recoveredData = new Dictionary<string, object>();
+                if (retry.Data.ContainsKey(TransactionDataKeys.GameComplete))
+                {
+                    recoveredData[TransactionDataKeys.GameComplete] = retry.Data[TransactionDataKeys.GameComplete];
+                    if (retry.Data.TryGetValue(TransactionDataKeys.CompletionQuestRef, out var recoveredQuestRef))
+                        recoveredData[TransactionDataKeys.CompletionQuestRef] = recoveredQuestRef;
+                }
+                return SagaCommandResult.Success(instance.InstanceId, new List<Guid>(), instance.Transactions.Count, recoveredData);
+            }
+
             // Find current stage
             var currentStage = quest.Stages?.Stage?.FirstOrDefault(s => s.RefName == questState.CurrentStage);
             if (currentStage == null)
@@ -89,8 +120,12 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
                 return SagaCommandResult.Failure(instance.InstanceId, $"Current stage '{questState.CurrentStage}' not found");
             }
 
-            // Validate stage is complete
-            var transactions = instance.GetCommittedTransactions();
+            // Validate stage is complete. Objectives can be satisfied cross-arc
+            // (a Trail quest's triggers/tokens/dialogue/defeats land in another arc's
+            // instance), so re-validate against the avatar's whole cross-arc committed
+            // log — otherwise this handler would reject an advance the progression
+            // behavior already approved on the same cross-arc evidence.
+            var transactions = await CrossArcQuestTransactionLog.BuildAsync(command.AvatarId, _instanceRepository, ct);
             if (!QuestProgressEvaluator.IsStageComplete(quest, currentStage, transactions, _world))
             {
                 return SagaCommandResult.Failure(instance.InstanceId, $"Stage '{currentStage.DisplayName}' is not yet complete");
@@ -174,8 +209,18 @@ internal sealed class AdvanceQuestStageHandler : IRequestHandler<AdvanceQuestSta
 
                 if (!completionResult.Successful)
                 {
+                    // The final stage advanced and committed, but completion failed — the quest is
+                    // now active with an empty stage. Surface it so the caller doesn't read a clean
+                    // success; re-invoking this command recovers it via the path above (R4-30).
                     System.Diagnostics.Debug.WriteLine(
                         $"[AdvanceQuestStage] CompleteQuest '{command.QuestRef}' failed: {completionResult.ErrorMessage}");
+                    resultData = new Dictionary<string, object>
+                    {
+                        [TransactionDataKeys.QuestEventErrors] = new List<string>
+                        {
+                            $"CompleteQuest '{command.QuestRef}' failed: {completionResult.ErrorMessage}"
+                        }
+                    };
                 }
                 // Propagate the game-complete signal — the stage advance is the only
                 // result the caller sees, so the nested completion must not swallow it

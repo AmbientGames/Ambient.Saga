@@ -28,11 +28,26 @@ public class TradeItemInfo
     /// </summary>
     public float? Condition { get; }
 
-    public TradeItemInfo(ITradeable item, int price, int? quantity = null, float? condition = null)
+    /// <summary>
+    /// The trade identity. For blocks this is the combined ref (variation folded in), so each
+    /// variation trades as a distinct item; equals <see cref="Item"/>.RefName for everything else.
+    /// </summary>
+    public string ItemRef { get; }
+
+    /// <summary>
+    /// The label to show. Variation-specific for blocks (e.g. the colour name); equals
+    /// <see cref="Item"/>.DisplayName otherwise.
+    /// </summary>
+    public string DisplayName { get; }
+
+    public TradeItemInfo(ITradeable item, int price, int? quantity = null, float? condition = null,
+        string? itemRef = null, string? displayName = null)
     {
         Item = item;
         Price = price;
         Quantity = quantity;
         Condition = condition;
+        ItemRef = itemRef ?? item.RefName;
+        DisplayName = displayName ?? item.DisplayName;
     }
 }
