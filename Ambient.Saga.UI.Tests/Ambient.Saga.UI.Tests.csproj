@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Engine\Ambient.Domain\Ambient.Domain.csproj" />
+    <ProjectReference Include="..\Ambient.Domain\Ambient.Domain.csproj" />
     <ProjectReference Include="..\Ambient.Saga.UI\Ambient.Saga.UI.csproj" />
-    <ProjectReference Include="..\..\Engine\Ambient.Saga.Engine\Ambient.Saga.Engine.csproj" />
+    <ProjectReference Include="..\Ambient.Saga.Engine\Ambient.Saga.Engine.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,7 +42,7 @@
        <output>\content\worlds; in Foundry the sandbox lives elsewhere, so vendor the same
        worlds from the engine test project. World discovery looks in <output>\content\worlds. -->
   <ItemGroup>
-    <SagaTestContent Include="..\..\Engine\Ambient.Saga.Engine.Tests\TestContent\**\*" />
+    <SagaTestContent Include="..\Ambient.Saga.Engine.Tests\TestContent\**\*" />
   </ItemGroup>
 
   <Target Name="CopySagaTestContent" AfterTargets="Build" Condition="'$(DesignTimeBuild)'!='true' and '$(TargetDir)'!=''">
