@@ -223,17 +223,7 @@ public static class SagaTransactionValidator
     }
 
     private static ITradeable? ResolveTradeable(IWorld world, string? itemRef)
-    {
-        if (string.IsNullOrEmpty(itemRef))
-            return null;
-
-        if (world.EquipmentLookup.TryGetValue(itemRef, out var equipment)) return equipment;
-        if (world.ConsumablesLookup.TryGetValue(itemRef, out var consumable)) return consumable;
-        if (world.ToolsLookup.TryGetValue(itemRef, out var tool)) return tool;
-        if (world.SpellsLookup.TryGetValue(itemRef, out var spell)) return spell;
-        if (world.BuildingMaterialsLookup.TryGetValue(itemRef, out var material)) return material;
-        return world.BlockProvider?.GetBlockByRefName(itemRef);
-    }
+        => string.IsNullOrEmpty(itemRef) ? null : world.TryGetTradeableByRefName(itemRef);
 
     // Shops may charge up to this multiple of the standard merchant price. Deliberately high
     // (10x): cross-map arbitrage is a legitimate playstyle — buying in one town and selling in

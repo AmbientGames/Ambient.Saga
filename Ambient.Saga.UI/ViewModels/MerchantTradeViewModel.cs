@@ -314,7 +314,7 @@ public partial class MerchantTradeViewModel : ObservableObject
     /// their ref (so the provider decides the label); everything else uses the item's own name.
     /// </summary>
     public string GetDisplayName(TradeItem item)
-        => _context.World?.BlockProvider?.GetDisplayName(item.ItemRef) ?? item.Item.DisplayName;
+        => _context.World?.GetItemDisplayName(item.ItemRef) ?? item.Item.DisplayName;
 
     [RelayCommand]
     private async Task BuyItemAsync(TradeItem tradeItem)

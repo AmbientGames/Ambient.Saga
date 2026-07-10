@@ -669,7 +669,7 @@ public class InventoryPanel
             {
                 // Sort by display name (then by ref) for consistent ordering
                 var sortedBlocks = stacks
-                    .OrderBy(e => viewModel.CurrentWorld?.BlockProvider?.GetDisplayName(e.BlockRef) ?? e.BlockRef)
+                    .OrderBy(e => viewModel.CurrentWorld?.GetItemDisplayName(e.BlockRef) ?? e.BlockRef)
                     .ThenBy(e => e.BlockRef)
                     .ToList();
 
@@ -679,7 +679,7 @@ public class InventoryPanel
                     var quantity = (int)stack.Quantity;  // Truncate to whole blocks for display
 
                     var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(blockRef);
-                    var blockName = viewModel.CurrentWorld?.BlockProvider?.GetDisplayName(blockRef) ?? blockRef;
+                    var blockName = viewModel.CurrentWorld?.GetItemDisplayName(blockRef) ?? blockRef;
                     ImGui.Indent();
 
                     var maxTextWidth = GetAvailableTextWidth();
@@ -1186,14 +1186,8 @@ public class InventoryPanel
         if (world == null)
             return slot.RefName;
 
-        return slot.ItemType switch
-        {
-            HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Block => world.BlockProvider?.GetDisplayName(slot.RefName) ?? slot.RefName,
-            HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
-            _ => slot.RefName
-        };
+        // Every item type resolves the same way — no per-type branch, no block special case.
+        return world.GetItemDisplayName(slot.RefName) ?? slot.RefName;
     }
 
     private bool RenderDropButton(string id)

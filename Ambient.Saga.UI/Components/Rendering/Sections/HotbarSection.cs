@@ -172,14 +172,8 @@ public class HotbarSection : IHudSection
         if (world == null)
             return slot.RefName;
 
-        return slot.ItemType switch
-        {
-            HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Block => world.BlockProvider?.GetDisplayName(slot.RefName) ?? slot.RefName,
-            HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
-            _ => slot.RefName
-        };
+        // Every item type resolves the same way — no per-type branch, no block special case.
+        return world.GetItemDisplayName(slot.RefName) ?? slot.RefName;
     }
 
     private static string TruncateText(string text, float maxWidth)

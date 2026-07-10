@@ -97,6 +97,40 @@ public interface IWorld
     public Faction GetFactionByRefName(string factionRefName);
     public Faction? TryGetFactionByRefName(string factionRefName);
 
+    /// <summary>
+    /// Resolves an item ref to its catalog entry across every tradeable family (equipment,
+    /// consumables, tools, spells, building materials, blocks). The single place a ref becomes an
+    /// item, so every caller resolves the same way regardless of type.
+    /// </summary>
+    ITradeable? TryGetTradeableByRefName(string refName)
+    {
+        if (EquipmentLookup.TryGetValue(refName, out var equipment)) return equipment;
+        if (ConsumablesLookup.TryGetValue(refName, out var consumable)) return consumable;
+        if (ToolsLookup.TryGetValue(refName, out var tool)) return tool;
+        if (SpellsLookup.TryGetValue(refName, out var spell)) return spell;
+        if (BuildingMaterialsLookup.TryGetValue(refName, out var material)) return material;
+        return BlockProvider?.GetBlockByRefName(refName);
+    }
+
+    /// <summary>
+    /// The display name for any inventory ref, uniformly: unfolds a variant (if any), resolves the
+    /// item, and asks it for that variant's name. Blocks, weapons, potions all go through here —
+    /// there is no per-type name lookup and no special case for blocks.
+    /// </summary>
+    string? GetItemDisplayName(string itemRef)
+    {
+        var (baseRef, variant) = ItemRefManager.Split(itemRef);
+        var item = TryGetTradeableByRefName(baseRef);
+        if (item == null) return null;
+
+        // Compose the variant label with the base name in the one place that decodes the ref
+        // (e.g. "Blue" + "Wool"). Items with no variant labels fall straight through to DisplayName.
+        var labels = item.VariantNames;
+        if (variant > 0 && labels != null && variant < labels.Count && !string.IsNullOrEmpty(labels[variant]))
+            return $"{labels[variant]} {item.DisplayName}";
+        return item.DisplayName;
+    }
+
     public StatusEffect GetStatusEffectByRefName(string statusEffectRefName);
     public StatusEffect? TryGetStatusEffectByRefName(string statusEffectRefName);
 
