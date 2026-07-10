@@ -287,7 +287,7 @@ public partial class MerchantTradeViewModel : ObservableObject
         foreach (var item in tradeItems)
         {
             var price = IsFreeTake ? 0 : item.Price;
-            items.Add(new TradeItem(item.Item, price, item.Quantity, item.Condition, item.ItemRef, item.DisplayName));
+            items.Add(new TradeItem(item.Item, price, item.Quantity, item.Condition, item.ItemRef));
         }
 
         return items;
@@ -303,11 +303,18 @@ public partial class MerchantTradeViewModel : ObservableObject
         var tradeItems = _tradeEngine.GetAvailableItems(_context.AvatarEntity.Capabilities, SelectedTradeCategory, isBuying: false);
         foreach (var item in tradeItems)
         {
-            items.Add(new TradeItem(item.Item, item.Price, item.Quantity, item.Condition, item.ItemRef, item.DisplayName));
+            items.Add(new TradeItem(item.Item, item.Price, item.Quantity, item.Condition, item.ItemRef));
         }
 
         return items;
     }
+
+    /// <summary>
+    /// The display name to show for a trade row. Blocks resolve through the block provider by
+    /// their ref (so the provider decides the label); everything else uses the item's own name.
+    /// </summary>
+    public string GetDisplayName(TradeItem item)
+        => _context.World?.BlockProvider?.GetDisplayName(item.ItemRef) ?? item.Item.DisplayName;
 
     [RelayCommand]
     private async Task BuyItemAsync(TradeItem tradeItem)

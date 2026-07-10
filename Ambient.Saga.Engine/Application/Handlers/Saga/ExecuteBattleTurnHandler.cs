@@ -10,7 +10,6 @@ using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
-using Ambient.Domain.Extensions;
 using Ambient.Saga.Engine.Domain;
 
 namespace Ambient.Saga.Engine.Application.Handlers.Saga;
@@ -103,11 +102,13 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
             if (enemyCharacter.Capabilities != null)
             {
-                // Deep-clone: enemyCharacter is the SHARED world template. Battle drains its
-                // consumables and wears its equipment/weapon durability; without a copy those
-                // losses persist on the template across every battle and respawn of this
-                // character until the world reloads (R4-18).
-                enemyCombatant.Capabilities = enemyCharacter.Capabilities.DeepClone();
+                // NOTE: this aliases the SHARED world template. Within-battle consumable/durability
+                // consumption relies on mutating it (the log records no enemy consumption to replay),
+                // so it persists across turns — but it also leaks across battles/respawns until the
+                // world reloads (R4-18). Cloning here breaks within-battle persistence (the enemy
+                // re-heals every turn); the real fix is to record enemy consumption and replay it,
+                // like ApplyRecordedEquipmentConditions does for the avatar.
+                enemyCombatant.Capabilities = enemyCharacter.Capabilities;
             }
 
             // Deterministic per-turn RNG: derive this command's seed from the battle seed

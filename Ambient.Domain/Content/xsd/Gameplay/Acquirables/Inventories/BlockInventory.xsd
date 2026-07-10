@@ -5,11 +5,7 @@
         <xs:annotation>
             <xs:documentation>A single block type in inventory, tracked by quantity (float for partial blocks from mining).</xs:documentation>
         </xs:annotation>
-        <xs:attribute name="BlockRef" type="BlockRef" use="required">
-            <xs:annotation>
-                <xs:documentation>The stack's full identity. Variation is folded into this ref (base ref for variation 0, "baseRef#n" for variations 1-7), mirroring how the voxel layer packs variation into the block word. Refs differing only in variation are distinct stacks; nothing above the voxel seam parses the format.</xs:documentation>
-            </xs:annotation>
-        </xs:attribute>
+        <xs:attribute name="BlockRef" type="BlockRef" use="required" />
         <xs:attribute name="Quantity" type="xs:float" use="required" />
     </xs:complexType>
     <xs:complexType name="BlockInventory">

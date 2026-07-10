@@ -659,7 +659,7 @@ public class InventoryPanel
     private void RenderBlocks(SagaMainViewModel viewModel, ItemCollection caps)
     {
         // Get actual block inventory from BlockOwnership (backed by Capabilities.Blocks).
-        // One row per stack — a stack's identity is (BlockRef, Variation).
+        // One row per stack — a stack's identity is its opaque ref.
         var stacks = viewModel.Avatar?.BlockOwnership?.Entries.Where(e => e.Quantity >= 1).ToList() ?? new List<BlockEntry>();
         var blockCount = stacks.Count;
 
@@ -667,20 +667,19 @@ public class InventoryPanel
         {
             if (stacks.Count > 0)
             {
-                // Sort by display name (then by ref, which orders variations) for consistent ordering
+                // Sort by display name (then by ref) for consistent ordering
                 var sortedBlocks = stacks
-                    .OrderBy(e => viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(BlockRefVariation.BaseRef(e.BlockRef))?.DisplayName ?? e.BlockRef)
+                    .OrderBy(e => viewModel.CurrentWorld?.BlockProvider?.GetDisplayName(e.BlockRef) ?? e.BlockRef)
                     .ThenBy(e => e.BlockRef)
                     .ToList();
 
                 foreach (var stack in sortedBlocks)
                 {
-                    var blockRef = stack.BlockRef;                              // combined stack identity
-                    var variation = BlockRefVariation.VariationOf(blockRef);    // unfolded only for display
+                    var blockRef = stack.BlockRef;       // opaque stack identity
                     var quantity = (int)stack.Quantity;  // Truncate to whole blocks for display
 
-                    var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(BlockRefVariation.BaseRef(blockRef));
-                    var blockName = blockDef?.GetVariationDisplayName(variation) ?? blockDef?.DisplayName ?? blockRef;
+                    var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(blockRef);
+                    var blockName = viewModel.CurrentWorld?.BlockProvider?.GetDisplayName(blockRef) ?? blockRef;
                     ImGui.Indent();
 
                     var maxTextWidth = GetAvailableTextWidth();
@@ -747,7 +746,7 @@ public class InventoryPanel
 
                         // Drop button
                         ImGui.Spacing();
-                        if (RenderDropButton($"drop_blk_{blockRef}_{variation}"))
+                        if (RenderDropButton($"drop_blk_{blockRef}"))
                         {
                             DiscardBlock(viewModel, blockRef, blockName);
                         }
@@ -1190,9 +1189,7 @@ public class InventoryPanel
         return slot.ItemType switch
         {
             HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(BlockRefVariation.BaseRef(slot.RefName)) is { } blockDef
-                ? blockDef.GetVariationDisplayName(BlockRefVariation.VariationOf(slot.RefName)) ?? blockDef.DisplayName ?? slot.RefName
-                : slot.RefName,
+            HotbarItemType.Block => world.BlockProvider?.GetDisplayName(slot.RefName) ?? slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName

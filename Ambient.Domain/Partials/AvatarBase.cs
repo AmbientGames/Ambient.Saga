@@ -52,9 +52,7 @@ public partial class AvatarBase : IAvatarBase
     public string? CurrentToolRef { get; set; }
 
     /// <summary>
-    /// The currently selected block reference (session state). This is the full stack
-    /// identity — any variation is folded into the ref (see <see cref="BlockRefVariation"/>) —
-    /// so it is split only at the voxel seam when a block is placed.
+    /// The currently selected block reference (session state).
     /// </summary>
     public string? CurrentBlockRef { get; set; }
 

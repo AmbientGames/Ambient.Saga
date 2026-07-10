@@ -193,15 +193,15 @@ public class MerchantTradeModal
 
                 foreach (var tradeItem in _tradeViewModel.TradeInventory)
                 {
-                    // Use stable ID based on the trade identity (variation-distinct for blocks),
-                    // not object hash (which changes each frame)
+                    // Use stable ID based on the trade identity (the exact ref), not object hash
+                    // (which changes each frame)
                     ImGui.PushID(tradeItem.ItemRef);
 
                     // Item row with styled background
                     ImGui.BeginGroup();
 
-                    // Item name (variation-specific for blocks)
-                    ImGui.TextColored(new Vector4(0.95f, 0.95f, 0.9f, 1), tradeItem.DisplayName);
+                    // Item name (the provider resolves block refs to their label)
+                    ImGui.TextColored(new Vector4(0.95f, 0.95f, 0.9f, 1), _tradeViewModel.GetDisplayName(tradeItem));
 
                     // Quantity if > 1
                     if (tradeItem.Quantity > 1)

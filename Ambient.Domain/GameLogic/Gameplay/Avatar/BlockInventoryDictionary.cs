@@ -5,10 +5,8 @@ namespace Ambient.Domain.GameLogic.Gameplay.Avatar;
 /// <summary>
 /// IDictionary&lt;string, float&gt; wrapper backed by Capabilities.Blocks (BlockEntry[]).
 /// All reads/writes go through the array — no separate copy.
-/// A stack's identity is its <see cref="BlockEntry.BlockRef"/>, with any variation already
-/// folded in (see <see cref="BlockRefVariation"/>). Two refs that differ only in variation are
-/// distinct keys — the dictionary neither parses nor aggregates variations; that split lives
-/// only at the voxel seam.
+/// A stack's identity is its <see cref="BlockEntry.BlockRef"/>, treated as an opaque string:
+/// the dictionary never parses a ref, so distinct refs are simply distinct keys.
 /// </summary>
 public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDictionary<string, float>
 {
@@ -59,16 +57,6 @@ public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDic
             entry.Quantity += delta;
         else
             Append(new BlockEntry { BlockRef = blockRef, Quantity = delta });
-    }
-
-    /// <summary>
-    /// Every stack whose ref shares the given base (i.e. all variations of one block type).
-    /// The only place a caller reaches "underneath" the opaque ref, used to enumerate the
-    /// variations of a block for the placement selector.
-    /// </summary>
-    public IEnumerable<BlockEntry> GetEntries(string baseRef)
-    {
-        return Blocks.Where(b => BlockRefVariation.BaseRef(b.BlockRef) == baseRef);
     }
 
     /// <summary>

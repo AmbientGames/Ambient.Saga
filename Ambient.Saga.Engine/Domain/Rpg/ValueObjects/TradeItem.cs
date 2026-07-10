@@ -28,24 +28,18 @@ public class TradeItem
     public float? Condition { get; set; }
 
     /// <summary>
-    /// The trade identity. For blocks this is the combined ref (variation folded in), so each
-    /// variation trades as a distinct item; equals <see cref="Item"/>.RefName otherwise.
+    /// The exact inventory ref this row trades. Usually equals <see cref="Item"/>.RefName, but
+    /// the provider may resolve several refs to one definition, so the transfer uses this ref.
     /// </summary>
     public string ItemRef { get; set; }
 
-    /// <summary>
-    /// The label to show. Variation-specific for blocks; equals <see cref="Item"/>.DisplayName otherwise.
-    /// </summary>
-    public string DisplayName { get; set; }
-
     public TradeItem(ITradeable item, int price, int? quantity = null, float? condition = null,
-        string? itemRef = null, string? displayName = null)
+        string? itemRef = null)
     {
         Item = item;
         Price = price;
         Quantity = quantity;
         Condition = condition;
         ItemRef = itemRef ?? item.RefName;
-        DisplayName = displayName ?? item.DisplayName;
     }
 }

@@ -11,8 +11,7 @@ public class HotbarSlot
     public HotbarItemType ItemType { get; set; } = HotbarItemType.Empty;
 
     /// <summary>
-    /// The RefName of the item in this slot (null if empty). For block slots this is the
-    /// full stack identity, with any variation folded into the ref.
+    /// The RefName of the item in this slot (null if empty).
     /// </summary>
     public string? RefName { get; set; }
 

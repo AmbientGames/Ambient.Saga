@@ -21,11 +21,4 @@ public interface IBlock : ITradeable
     /// Optional substance type (e.g., "Stone", "Wood", "Metal") for categorization.
     /// </summary>
     string? SubstanceRef { get; }
-
-    /// <summary>
-    /// Display name for a specific variation of this block (0-7), e.g. "Oak Stairs".
-    /// Games without block variations use the default, which falls back to null so
-    /// callers show the plain DisplayName.
-    /// </summary>
-    string? GetVariationDisplayName(byte variation) => null;
 }

@@ -103,9 +103,9 @@ public class TradeEngine
             case "Blocks":
                 if (inventory.Blocks != null && _world.BlockProvider != null)
                 {
-                    // One row per stack identity (variation folded into the ref) so colours of a
-                    // block trade as distinct items. Price and label come from the base block
-                    // definition — variations share a price and gain only a variation-specific name.
+                    // One row per distinct block ref — a ref is opaque here, so two refs are just
+                    // two tradeable items. The provider resolves the ref to a block definition for
+                    // its price and name.
                     foreach (var group in inventory.Blocks.Where(e => e != null && !string.IsNullOrEmpty(e.BlockRef)).GroupBy(e => e.BlockRef))
                     {
                         // Block quantities are floats (saturation supports partial blocks),
@@ -114,13 +114,12 @@ public class TradeEngine
                         if (quantity < 1)
                             continue;
 
-                        var block = _world.BlockProvider.GetBlockByRefName(BlockRefVariation.BaseRef(group.Key));
+                        var block = _world.BlockProvider.GetBlockByRefName(group.Key);
                         if (block != null && block.WholesalePrice != int.MaxValue) // int.MaxValue = untradeable sentinel
                         {
                             var price = isBuying ? CalculateBuyPrice(block, true, characterTraits) : CalculateSellPrice(block);
-                            var displayName = block.GetVariationDisplayName(BlockRefVariation.VariationOf(group.Key)) ?? block.DisplayName;
                             items.Add(new TradeItemInfo(block, price, quantity: quantity, condition: null,
-                                itemRef: group.Key, displayName: displayName));
+                                itemRef: group.Key));
                         }
                     }
                 }
@@ -280,8 +279,7 @@ public class TradeEngine
 
     private TradeResult TransferBlock(ItemCollection source, ItemCollection dest, string blockRef, int quantity)
     {
-        // A block ref is the whole stack identity (variation folded in), so a transfer moves
-        // exactly that stack — the colour you sell is the colour that leaves your inventory.
+        // A block ref is the whole stack identity, so a transfer moves exactly that stack.
         var sourceList = source.Blocks?.ToList() ?? new List<BlockEntry>();
         var available = sourceList.Where(s => s.BlockRef == blockRef).Sum(s => s.Quantity);
         if (available < quantity)
