@@ -241,7 +241,7 @@ internal sealed class TradeItemHandler : IRequestHandler<TradeItemCommand, SagaC
                     if (hasItem) itemType = "spell";
                 }
 
-                // Check blocks
+                // Check blocks — the ref is the exact stack identity
                 if (!hasItem && command.Avatar.Capabilities?.Blocks != null)
                 {
                     var block = command.Avatar.Capabilities.Blocks

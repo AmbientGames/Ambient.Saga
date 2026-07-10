@@ -5,6 +5,7 @@ using Ambient.Saga.Engine.Application.Commands.Saga;
 using Ambient.Saga.Engine.Application.ReadModels;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
+using Ambient.Saga.Engine.Contracts.Services;
 using Ambient.Saga.Engine.Domain;
 using Ambient.Saga.Engine.Domain.Rpg.Battle;
 using Ambient.Saga.Engine.Domain.Rpg.Sagas.TransactionLog;
@@ -21,15 +22,18 @@ internal sealed class ApplyBattleDialogueEffectsHandler : IRequestHandler<ApplyB
 {
     private readonly ISagaInstanceRepository _instanceRepository;
     private readonly ISagaReadModelRepository _readModelRepository;
+    private readonly IAvatarUpdateService _avatarUpdateService;
     private readonly IWorld _world;
 
     public ApplyBattleDialogueEffectsHandler(
         ISagaInstanceRepository instanceRepository,
         ISagaReadModelRepository readModelRepository,
+        IAvatarUpdateService avatarUpdateService,
         IWorld world)
     {
         _instanceRepository = instanceRepository;
         _readModelRepository = readModelRepository;
+        _avatarUpdateService = avatarUpdateService;
         _world = world;
     }
 
@@ -188,6 +192,18 @@ internal sealed class ApplyBattleDialogueEffectsHandler : IRequestHandler<ApplyB
             }
 
             await _readModelRepository.InvalidateCacheAsync(command.AvatarId, command.SagaArcRef, ct);
+
+            // Fold the battle's recorded results (damage, energy spend, equipment durability) into
+            // the persisted avatar when the battle concluded HERE — a dialogue truce/surrender/
+            // scripted victory. Combat-driven conclusions already do this in ExecuteBattleTurnHandler/
+            // SubmitReactionHandler; without it a dialogue ending discarded the whole battle, giving
+            // the player a free heal after every scripted end.
+            if (!string.IsNullOrEmpty(command.EndBattleResult))
+            {
+                var foldedAvatar = await _avatarUpdateService.UpdateAvatarForBattleAsync(
+                    command.Avatar, instance, command.BattleInstanceId, ct);
+                await _avatarUpdateService.PersistAvatarAsync(foldedAvatar, ct);
+            }
 
             return SagaCommandResult.Success(
                 instance.InstanceId,

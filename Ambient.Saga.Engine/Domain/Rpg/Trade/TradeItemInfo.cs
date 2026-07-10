@@ -28,11 +28,20 @@ public class TradeItemInfo
     /// </summary>
     public float? Condition { get; }
 
-    public TradeItemInfo(ITradeable item, int price, int? quantity = null, float? condition = null)
+    /// <summary>
+    /// The exact inventory ref this row trades. Usually equals <see cref="Item"/>.RefName, but
+    /// the provider may resolve several refs to one definition, so the transfer uses this ref
+    /// rather than the definition's.
+    /// </summary>
+    public string ItemRef { get; }
+
+    public TradeItemInfo(ITradeable item, int price, int? quantity = null, float? condition = null,
+        string? itemRef = null)
     {
         Item = item;
         Price = price;
         Quantity = quantity;
         Condition = condition;
+        ItemRef = itemRef ?? item.RefName;
     }
 }

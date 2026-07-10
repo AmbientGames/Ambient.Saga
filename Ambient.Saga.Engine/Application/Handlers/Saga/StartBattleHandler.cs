@@ -75,10 +75,18 @@ internal sealed class StartBattleHandler : IRequestHandler<StartBattleCommand, S
             if (existingBattle != null)
             {
                 System.Diagnostics.Debug.WriteLine("[StartBattle] Battle already started - returning existing battle ID");
+                // Return the BattleInstanceId in Data exactly like the new-battle path below.
+                // Without it BattleModal.InitializeBattleAsync treats the resume as a failed
+                // start, never refreshes state, and shows "Preparing for battle..." forever —
+                // permanently bricking any character whose battle was left un-ended (quit mid-fight).
                 return SagaCommandResult.Success(
                     instance.InstanceId,
                     new List<Guid> { existingBattle.TransactionId },
-                    existingBattle.SequenceNumber);
+                    existingBattle.SequenceNumber,
+                    new Dictionary<string, object>
+                    {
+                        [TransactionDataKeys.BattleInstanceId] = existingBattle.TransactionId
+                    });
             }
 
             // The enemy keeps damage taken in previous battles (e.g. the player fled and

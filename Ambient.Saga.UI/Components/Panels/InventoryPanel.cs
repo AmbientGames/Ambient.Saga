@@ -658,27 +658,28 @@ public class InventoryPanel
     /// </summary>
     private void RenderBlocks(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        // Get actual block inventory from BlockOwnership (backed by Capabilities.Blocks)
-        var blockOwnership = viewModel.Avatar?.BlockOwnership ?? (IDictionary<string, float>)new Dictionary<string, float>();
-        var blockCount = blockOwnership.Count(kvp => kvp.Value >= 1);
+        // Get actual block inventory from BlockOwnership (backed by Capabilities.Blocks).
+        // One row per stack — a stack's identity is its opaque ref.
+        var stacks = viewModel.Avatar?.BlockOwnership?.Entries.Where(e => e.Quantity >= 1).ToList() ?? new List<BlockEntry>();
+        var blockCount = stacks.Count;
 
         if (ImGui.CollapsingHeader($"Blocks ({blockCount})"))
         {
-            if (blockOwnership.Any(kvp => kvp.Value >= 1))
+            if (stacks.Count > 0)
             {
-                // Sort by display name for consistent ordering
-                var sortedBlocks = blockOwnership
-                    .Where(kvp => kvp.Value >= 1)  // Only show blocks with at least 1 whole block
-                    .OrderBy(kvp => viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(kvp.Key)?.DisplayName ?? kvp.Key)
+                // Sort by display name (then by ref) for consistent ordering
+                var sortedBlocks = stacks
+                    .OrderBy(e => viewModel.CurrentWorld?.BlockProvider?.GetDisplayName(e.BlockRef) ?? e.BlockRef)
+                    .ThenBy(e => e.BlockRef)
                     .ToList();
 
-                foreach (var kvp in sortedBlocks)
+                foreach (var stack in sortedBlocks)
                 {
-                    var blockRef = kvp.Key;
-                    var quantity = (int)kvp.Value;  // Truncate to whole blocks for display
+                    var blockRef = stack.BlockRef;       // opaque stack identity
+                    var quantity = (int)stack.Quantity;  // Truncate to whole blocks for display
 
                     var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(blockRef);
-                    var blockName = blockDef?.DisplayName ?? blockRef;
+                    var blockName = viewModel.CurrentWorld?.BlockProvider?.GetDisplayName(blockRef) ?? blockRef;
                     ImGui.Indent();
 
                     var maxTextWidth = GetAvailableTextWidth();
@@ -1188,7 +1189,7 @@ public class InventoryPanel
         return slot.ItemType switch
         {
             HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Block => world.BlockProvider?.GetDisplayName(slot.RefName) ?? slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName
@@ -1239,7 +1240,7 @@ public class InventoryPanel
 
     private void DiscardBlock(SagaMainViewModel viewModel, string blockRef, string displayName)
     {
-        // BlockOwnership is backed by Capabilities.Blocks — single remove handles both
+        // BlockOwnership is backed by Capabilities.Blocks — drops only the specific stack
         viewModel.Avatar?.BlockOwnership?.Remove(blockRef);
         viewModel.AddToastMessage($"Dropped {displayName}");
     }

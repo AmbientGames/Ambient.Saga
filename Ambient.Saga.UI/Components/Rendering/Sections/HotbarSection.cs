@@ -175,7 +175,7 @@ public class HotbarSection : IHudSection
         return slot.ItemType switch
         {
             HotbarItemType.Tool => world.TryGetToolByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
-            HotbarItemType.Block => world.BlockProvider?.GetBlockByRefName(slot.RefName)?.DisplayName ?? slot.RefName,
+            HotbarItemType.Block => world.BlockProvider?.GetDisplayName(slot.RefName) ?? slot.RefName,
             HotbarItemType.Consumable => world.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             HotbarItemType.Equipment => world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == slot.RefName)?.DisplayName ?? slot.RefName,
             _ => slot.RefName

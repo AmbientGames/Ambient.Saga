@@ -36,7 +36,7 @@ public static class AvatarBaseExtensions
     /// <param name="delta">The amount to adjust (positive or negative).</param>
     public static void AdjustBlockOwnership(this AvatarBase avatar, string blockRef, float delta)
     {
-        avatar.BlockOwnership[blockRef] = avatar.BlockOwnership.GetValueOrDefault(blockRef) + delta;
+        avatar.BlockOwnership.Adjust(blockRef, delta);
     }
 
     /// <summary>

@@ -53,7 +53,7 @@ public class HotbarService
     }
 
     /// <summary>
-    /// Assigns an item to a hotbar slot.
+    /// Assigns an item to a hotbar slot. The slot identity is the ref.
     /// </summary>
     public void AssignToSlot(int slotIndex, HotbarItemType itemType, string refName)
     {
@@ -94,8 +94,7 @@ public class HotbarService
 
             case HotbarItemType.Block:
                 avatar.CurrentBlockRef = slot.RefName;
-                var blockDef = world?.BlockProvider?.GetBlockByRefName(slot.RefName);
-                var blockName = blockDef?.DisplayName ?? slot.RefName;
+                var blockName = world?.BlockProvider?.GetDisplayName(slot.RefName) ?? slot.RefName;
                 _viewModel.AddToastMessage($"{blockName} selected");
                 break;
 

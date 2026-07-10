@@ -193,14 +193,15 @@ public class MerchantTradeModal
 
                 foreach (var tradeItem in _tradeViewModel.TradeInventory)
                 {
-                    // Use stable ID based on item RefName, not object hash (which changes each frame)
-                    ImGui.PushID(tradeItem.Item.RefName);
+                    // Use stable ID based on the trade identity (the exact ref), not object hash
+                    // (which changes each frame)
+                    ImGui.PushID(tradeItem.ItemRef);
 
                     // Item row with styled background
                     ImGui.BeginGroup();
 
-                    // Item name
-                    ImGui.TextColored(new Vector4(0.95f, 0.95f, 0.9f, 1), tradeItem.Item.DisplayName);
+                    // Item name (the provider resolves block refs to their label)
+                    ImGui.TextColored(new Vector4(0.95f, 0.95f, 0.9f, 1), _tradeViewModel.GetDisplayName(tradeItem));
 
                     // Quantity if > 1
                     if (tradeItem.Quantity > 1)
@@ -231,7 +232,7 @@ public class MerchantTradeModal
                         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.5f, 0.3f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.65f, 0.4f, 1));
 
-                        var buttonClicked = ImGui.Button($"{_tradeViewModel.ItemBuyLabel}##{tradeItem.Item.RefName}", new Vector2(60, itemButtonHeight));
+                        var buttonClicked = ImGui.Button($"{_tradeViewModel.ItemBuyLabel}##{tradeItem.ItemRef}", new Vector2(60, itemButtonHeight));
                         var isHovered = ImGui.IsItemHovered();
                         var isActive = ImGui.IsItemActive();
 
@@ -253,7 +254,7 @@ public class MerchantTradeModal
                         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.25f, 0.15f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.35f, 0.2f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.45f, 0.25f, 1));
-                        if (ImGui.Button($"{_tradeViewModel.ItemSellLabel}##{tradeItem.Item.RefName}", new Vector2(60, itemButtonHeight)))
+                        if (ImGui.Button($"{_tradeViewModel.ItemSellLabel}##{tradeItem.ItemRef}", new Vector2(60, itemButtonHeight)))
                         {
                             System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Sell button clicked for {tradeItem.Item.RefName}");
                             _tradeViewModel.SellItemCommand.Execute(tradeItem);

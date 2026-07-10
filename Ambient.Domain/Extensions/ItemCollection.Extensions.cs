@@ -7,6 +7,25 @@ namespace Ambient.Domain.Extensions;
 /// </summary>
 public static class ItemCollectionExtensions
 {
+    /// <summary>
+    /// Deep-copies the collection into a new <see cref="ItemCollection"/> with fresh entry
+    /// instances, so mutating the copy's quantities or conditions never touches the source.
+    /// Used to isolate a shared world-template character's gear from per-battle / per-instance
+    /// state (a null source yields an empty collection).
+    /// </summary>
+    public static ItemCollection DeepClone(this ItemCollection? source)
+    {
+        return new ItemCollection
+        {
+            Blocks = source?.Blocks?.Select(b => new BlockEntry { BlockRef = b.BlockRef, Quantity = b.Quantity }).ToArray(),
+            Tools = source?.Tools?.Select(t => new ToolEntry { ToolRef = t.ToolRef, Condition = t.Condition }).ToArray(),
+            Equipment = source?.Equipment?.Select(e => new EquipmentEntry { EquipmentRef = e.EquipmentRef, Condition = e.Condition }).ToArray(),
+            Consumables = source?.Consumables?.Select(c => new ConsumableEntry { ConsumableRef = c.ConsumableRef, Quantity = c.Quantity }).ToArray(),
+            Spells = source?.Spells?.Select(s => new SpellEntry { SpellRef = s.SpellRef, Condition = s.Condition }).ToArray(),
+            BuildingMaterials = source?.BuildingMaterials?.Select(m => new BuildingMaterialEntry { BuildingMaterialRef = m.BuildingMaterialRef, Quantity = m.Quantity }).ToArray(),
+        };
+    }
+
     #region Equipment (Condition-based)
 
     public static bool TryGetEquipment(this ItemCollection collection, string equipmentRef, [NotNullWhen(true)] out EquipmentEntry? equipment)

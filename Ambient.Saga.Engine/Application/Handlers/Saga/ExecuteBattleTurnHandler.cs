@@ -102,6 +102,12 @@ internal sealed class ExecuteBattleTurnHandler : IRequestHandler<ExecuteBattleTu
             }
             if (enemyCharacter.Capabilities != null)
             {
+                // NOTE: this aliases the SHARED world template. Within-battle consumable/durability
+                // consumption relies on mutating it (the log records no enemy consumption to replay),
+                // so it persists across turns — but it also leaks across battles/respawns until the
+                // world reloads (R4-18). Cloning here breaks within-battle persistence (the enemy
+                // re-heals every turn); the real fix is to record enemy consumption and replay it,
+                // like ApplyRecordedEquipmentConditions does for the avatar.
                 enemyCombatant.Capabilities = enemyCharacter.Capabilities;
             }
 

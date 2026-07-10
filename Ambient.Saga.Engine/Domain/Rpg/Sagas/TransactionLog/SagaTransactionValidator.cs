@@ -73,6 +73,11 @@ public static class SagaTransactionValidator
             // Trading
             SagaTransactionType.ItemTraded => ValidateItemTraded(state, transaction, world),
 
+            // Currency ledger marker read by CurrencyCollected quest objectives. Has live
+            // client producers (trade + dialogue rewards); default-denying it rejected every
+            // priced trade/reward on sync and regressed quest progress.
+            SagaTransactionType.CurrencyChanged => ValidateCurrencyChanged(transaction),
+
             // Combat results are client-reported — bound them to plausible values
             SagaTransactionType.BattleTurnExecuted => ValidateBattleTurn(transaction),
 
@@ -164,12 +169,22 @@ public static class SagaTransactionValidator
 
             var itemRef = tx.GetData<string>(TransactionDataKeys.ItemRef);
             var item = ResolveTradeable(world, itemRef);
-            if (item != null)
+            var isBuying = tx.TryGetData<bool>(TransactionDataKeys.IsBuying, out var buying) && buying;
+            if (item == null)
+            {
+                // Every real tradeable — equipment, consumable, tool, spell, material, block —
+                // resolves via ResolveTradeable. A priced BUY of a ref that resolves to nothing
+                // was the owner-revenue mint bypass: a bogus ItemRef skipped all price checks
+                // while the server still credited the arc owner. Zero-price takes are harmless
+                // (owner is credited 0), so only a priced buy is rejected.
+                if (isBuying && pricePerItem > 0)
+                    return (false, $"'{itemRef}' is not a priced tradeable item");
+            }
+            else
             {
                 if (item.WholesalePrice == int.MaxValue)
                     return (false, $"'{itemRef}' is not tradeable");
 
-                var isBuying = tx.TryGetData<bool>(TransactionDataKeys.IsBuying, out var buying) && buying;
                 var tradeEngine = new TradeEngine(world);
                 if (isBuying)
                 {
@@ -177,6 +192,14 @@ public static class SagaTransactionValidator
                         characterTraits: new List<string> { "Friendly", "TradeDiscount" });
                     if (pricePerItem < floor)
                         return (false, $"Price {pricePerItem} for '{itemRef}' is below the catalog minimum {floor}");
+
+                    // Ceiling: shops may mark up steeply — cross-map arbitrage (buy in Jiri,
+                    // sell in Gorak Shep, a 5+ day walk) is a legitimate playstyle — but not
+                    // without bound, or an unbounded buy price mints owner revenue. Cap at 10x
+                    // the standard (undiscounted) merchant price.
+                    var ceiling = tradeEngine.CalculateBuyPrice(item, isMerchant: true) * MaxShopMarkup;
+                    if (pricePerItem > ceiling)
+                        return (false, $"Price {pricePerItem} for '{itemRef}' exceeds the {MaxShopMarkup}x markup ceiling {ceiling}");
                 }
                 else
                 {
@@ -187,6 +210,15 @@ public static class SagaTransactionValidator
             }
         }
 
+        return (true, null);
+    }
+
+    private static (bool, string?) ValidateCurrencyChanged(SagaTransaction tx)
+    {
+        // The authoritative balance moves via /api/avatar/credits/apply (bounded there);
+        // this transaction is only the quest-progress ledger marker. Require the Amount key.
+        if (!tx.TryGetData<int>(TransactionDataKeys.Amount, out _))
+            return (false, "CurrencyChanged requires an Amount");
         return (true, null);
     }
 
@@ -202,6 +234,12 @@ public static class SagaTransactionValidator
         if (world.BuildingMaterialsLookup.TryGetValue(itemRef, out var material)) return material;
         return world.BlockProvider?.GetBlockByRefName(itemRef);
     }
+
+    // Shops may charge up to this multiple of the standard merchant price. Deliberately high
+    // (10x): cross-map arbitrage is a legitimate playstyle — buying in one town and selling in
+    // another can be a 5+ day in-world walk (e.g. Jiri → Gorak Shep). This is a ceiling only,
+    // to bound the owner-revenue credit path against an unbounded-price mint.
+    private const int MaxShopMarkup = 10;
 
     // The largest single-award any dialogue action plausibly grants; one WoW-style
     // level spans 3000-21000 points, so a single node granting more than this is a mint

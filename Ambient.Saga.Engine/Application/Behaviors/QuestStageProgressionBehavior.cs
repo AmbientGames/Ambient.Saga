@@ -2,6 +2,7 @@ using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Entities;
 using Ambient.Saga.Engine.Application.Commands.Saga;
+using Ambient.Saga.Engine.Application.Handlers.Saga;
 using Ambient.Saga.Engine.Application.Results.Saga;
 using Ambient.Saga.Engine.Contracts.Cqrs;
 using Ambient.Saga.Engine.Domain.Rpg.Quests;
@@ -110,7 +111,11 @@ public class QuestStageProgressionBehavior<TRequest, TResponse> : IPipelineBehav
         if (currentState.ActiveQuests.Count == 0)
             return;
 
-        var transactions = instance.GetCommittedTransactions();
+        // Objectives are intentionally cross-arc: a quest given in this arc may be
+        // satisfied by triggers/tokens/dialogue/defeats that landed in another arc's
+        // instance. Evaluate stage completion against the avatar's whole cross-arc
+        // committed log, not just this arc's instance (see CrossArcQuestTransactionLog).
+        var transactions = await CrossArcQuestTransactionLog.BuildAsync(avatarId, instanceRepository, ct);
 
         // Which spawned character (if any) the executed command interacted with —
         // used to gate final-stage turn-in on meeting the quest giver

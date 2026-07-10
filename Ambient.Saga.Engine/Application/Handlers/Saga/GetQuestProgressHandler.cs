@@ -83,8 +83,12 @@ internal sealed class GetQuestProgressHandler : IRequestHandler<GetQuestProgress
                 return null;
             }
 
-            // Build progress snapshot from quest state
-            var snapshot = BuildProgressSnapshot(quest, questState, instance.GetCommittedTransactions());
+            // Build progress snapshot from quest state. Objectives can be satisfied
+            // cross-arc (the satisfying transaction may live in a different arc's
+            // instance than the quest's owner), so evaluate against the avatar's whole
+            // cross-arc committed log (see CrossArcQuestTransactionLog).
+            var transactions = await CrossArcQuestTransactionLog.BuildAsync(query.AvatarId, _instanceRepository, ct);
+            var snapshot = BuildProgressSnapshot(quest, questState, transactions);
 
             return snapshot;
         }

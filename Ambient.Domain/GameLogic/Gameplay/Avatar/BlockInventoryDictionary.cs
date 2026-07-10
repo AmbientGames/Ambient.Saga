@@ -1,11 +1,12 @@
 using System.Collections;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Ambient.Domain.GameLogic.Gameplay.Avatar;
 
 /// <summary>
 /// IDictionary&lt;string, float&gt; wrapper backed by Capabilities.Blocks (BlockEntry[]).
 /// All reads/writes go through the array — no separate copy.
+/// A stack's identity is its <see cref="BlockEntry.BlockRef"/>, treated as an opaque string:
+/// the dictionary never parses a ref, so distinct refs are simply distinct keys.
 /// </summary>
 public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDictionary<string, float>
 {
@@ -30,29 +31,38 @@ public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDic
     {
         get
         {
-            var entry = Find(key);
-            if (entry == null)
+            if (!TryGetValue(key, out var quantity))
                 throw new KeyNotFoundException($"Block '{key}' not found in inventory.");
-            return entry.Quantity;
+            return quantity;
         }
         set
         {
             EnsureArray();
             var entry = Find(key);
             if (entry != null)
-            {
                 entry.Quantity = value;
-            }
             else
-            {
-                var blocks = Blocks;
-                var newBlocks = new BlockEntry[blocks.Length + 1];
-                Array.Copy(blocks, newBlocks, blocks.Length);
-                newBlocks[blocks.Length] = new BlockEntry { BlockRef = key, Quantity = value };
-                _setBlocks(newBlocks);
-            }
+                Append(new BlockEntry { BlockRef = key, Quantity = value });
         }
     }
+
+    /// <summary>
+    /// Adjusts the stack identified by <paramref name="blockRef"/> by delta, creating it when absent.
+    /// </summary>
+    public void Adjust(string blockRef, float delta)
+    {
+        EnsureArray();
+        var entry = Find(blockRef);
+        if (entry != null)
+            entry.Quantity += delta;
+        else
+            Append(new BlockEntry { BlockRef = blockRef, Quantity = delta });
+    }
+
+    /// <summary>
+    /// Every stack in the inventory.
+    /// </summary>
+    public IReadOnlyList<BlockEntry> Entries => Blocks;
 
     public ICollection<string> Keys => Blocks.Select(b => b.BlockRef).ToList();
     public ICollection<float> Values => Blocks.Select(b => b.Quantity).ToList();
@@ -63,7 +73,7 @@ public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDic
 
     public void Add(string key, float value)
     {
-        if (Find(key) != null)
+        if (ContainsKey(key))
             throw new ArgumentException($"Block '{key}' already exists in inventory.");
         this[key] = value;
     }
@@ -77,8 +87,7 @@ public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDic
 
     public bool Contains(KeyValuePair<string, float> item)
     {
-        var entry = Find(item.Key);
-        return entry != null && entry.Quantity == item.Value;
+        return TryGetValue(item.Key, out var quantity) && quantity == item.Value;
     }
 
     public bool ContainsKey(string key) => Find(key) != null;
@@ -94,13 +103,9 @@ public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDic
     public bool Remove(string key)
     {
         var blocks = Blocks;
-        var index = Array.FindIndex(blocks, b => b.BlockRef == key);
-        if (index < 0) return false;
+        if (!blocks.Any(b => b.BlockRef == key)) return false;
 
-        var newBlocks = new BlockEntry[blocks.Length - 1];
-        Array.Copy(blocks, 0, newBlocks, 0, index);
-        Array.Copy(blocks, index + 1, newBlocks, index, blocks.Length - index - 1);
-        _setBlocks(newBlocks);
+        _setBlocks(blocks.Where(b => b.BlockRef != key).ToArray());
         return true;
     }
 
@@ -113,13 +118,8 @@ public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDic
     public bool TryGetValue(string key, out float value)
     {
         var entry = Find(key);
-        if (entry != null)
-        {
-            value = entry.Quantity;
-            return true;
-        }
-        value = 0;
-        return false;
+        value = entry?.Quantity ?? 0;
+        return entry != null;
     }
 
     public IEnumerator<KeyValuePair<string, float>> GetEnumerator()
@@ -132,5 +132,14 @@ public class BlockInventoryDictionary : IDictionary<string, float>, IReadOnlyDic
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private BlockEntry? Find(string key) => Array.Find(Blocks, b => b.BlockRef == key);
+    private BlockEntry? Find(string blockRef) => Array.Find(Blocks, b => b.BlockRef == blockRef);
+
+    private void Append(BlockEntry entry)
+    {
+        var blocks = Blocks;
+        var newBlocks = new BlockEntry[blocks.Length + 1];
+        Array.Copy(blocks, newBlocks, blocks.Length);
+        newBlocks[blocks.Length] = entry;
+        _setBlocks(newBlocks);
+    }
 }
