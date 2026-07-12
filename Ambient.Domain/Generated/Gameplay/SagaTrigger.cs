@@ -29,7 +29,7 @@ namespace Ambient.Domain {
         private string[] givesQuestTokenRefField;
         
         private float enterRadiusField;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Spawn")]
         public CharacterSpawn[] Spawn {

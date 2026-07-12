@@ -25,7 +25,7 @@ namespace Ambient.Domain {
         private Interactable interactableField;
         
         private CharacterTrait[] traitsField;
-
+        
         private string[] givesQuestTokenOnDefeatField;
         
         private CharacterTrigger[] battleDialogueField;

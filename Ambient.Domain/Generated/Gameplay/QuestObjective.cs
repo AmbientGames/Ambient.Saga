@@ -29,11 +29,11 @@ namespace Ambient.Domain {
         private string displayNameField;
         
         private string characterRefField;
-
+        
         private CharacterTraitType traitField;
-
+        
         private bool traitFieldSpecified;
-
+        
         private string dialogueRefField;
         
         private string choiceRefField;
@@ -116,7 +116,7 @@ namespace Ambient.Domain {
                 this.traitField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlIgnoreAttribute()]
         public bool TraitSpecified {

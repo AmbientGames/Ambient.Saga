@@ -21,11 +21,11 @@ namespace Ambient.Domain {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="Ambient.Domain")]
     public partial class BlockEntry {
-
+        
         private string blockRefField;
-
+        
         private float quantityField;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public string BlockRef {
@@ -36,7 +36,7 @@ namespace Ambient.Domain {
                 this.blockRefField = value;
             }
         }
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]
         public float Quantity {

@@ -27,7 +27,7 @@ namespace Ambient.Domain {
         private QuestStages stagesField;
         
         private QuestReward[] rewardsField;
-
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute("Prerequisite", IsNullable=false)]
         public QuestPrerequisite[] Prerequisites {

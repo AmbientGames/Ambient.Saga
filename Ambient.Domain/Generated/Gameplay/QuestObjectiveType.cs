@@ -25,7 +25,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         CharactersDefeatedByTrait,
-
+        
         /// <remarks/>
         CharactersDefeatedAtTrigger,
         
@@ -52,7 +52,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         ItemDelivered,
-
+        
         /// <remarks/>
         ItemTraded,
         

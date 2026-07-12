@@ -22,7 +22,7 @@ namespace Ambient.Domain {
         
         /// <remarks/>
         OnSuccess,
-
+        
         /// <remarks/>
         OnBranch,
         
