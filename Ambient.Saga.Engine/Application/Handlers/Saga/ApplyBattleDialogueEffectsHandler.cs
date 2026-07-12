@@ -158,14 +158,6 @@ internal sealed class ApplyBattleDialogueEffectsHandler : IRequestHandler<ApplyB
                         [TransactionDataKeys.BattleTransactionId] = command.BattleInstanceId.ToString()
                     };
 
-                    var tagVocabulary = (enemyCharacter.Tags ?? Array.Empty<string>())
-                        .Concat((enemyCharacter.Traits ?? Array.Empty<CharacterTrait>()).Select(tr => tr.Name.ToString()))
-                        .Where(x => !string.IsNullOrEmpty(x))
-                        .Distinct()
-                        .ToList();
-                    if (tagVocabulary.Count > 0)
-                        defeatData[TransactionDataKeys.CharacterTag] = string.Join(",", tagVocabulary);
-
                     var defeatTx = new SagaTransaction
                     {
                         TransactionId = Guid.NewGuid(),

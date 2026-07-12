@@ -454,6 +454,56 @@ public class BattleTransactionIntegrityTests : IDisposable
         Assert.Equal(expectedEnemyHealth, newBattleEnemyHealth, 3);
     }
 
+    [Fact]
+    public async Task TurnNumberGap_IsRejectedAsCorrupted_NotResumed()
+    {
+        // The contiguity guard is the log's corruption tripwire: a battle's turns
+        // must be numbered 1..N with no gaps. Simulate a corrupted/tampered log by
+        // appending a turn whose TurnNumber skips ahead, then try to keep playing —
+        // the handler must refuse rather than resume on top of a broken fold.
+        var (avatarId, sagaRef, battleId, avatar) = await StartTestBattle();
+
+        var first = await _mediator.Send(new ExecuteBattleTurnCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            BattleInstanceId = battleId,
+            AvatarAction = new CombatAction { ActionType = ActionType.Attack },
+            Avatar = avatar
+        });
+        Assert.True(first.Successful, $"Setup turn failed: {first.ErrorMessage}");
+
+        var instance = await _repository.GetOrCreateInstanceAsync(avatarId, sagaRef);
+        var lastTurn = instance.GetCommittedTransactions()
+            .Where(t => t.Type == SagaTransactionType.BattleTurnExecuted &&
+                        t.Data[TransactionDataKeys.BattleTransactionId] == battleId.ToString())
+            .OrderBy(t => t.SequenceNumber)
+            .Last();
+
+        var rogueTurn = new SagaTransaction
+        {
+            TransactionId = Guid.NewGuid(),
+            Type = SagaTransactionType.BattleTurnExecuted,
+            AvatarId = avatarId.ToString(),
+            LocalTimestamp = DateTime.UtcNow,
+            Data = new Dictionary<string, string>(lastTurn.Data)
+        };
+        rogueTurn.Data[TransactionDataKeys.TurnNumber] = "99";
+        await _repository.AddAndCommitTransactionsAsync(instance.InstanceId, new List<SagaTransaction> { rogueTurn });
+
+        var next = await _mediator.Send(new ExecuteBattleTurnCommand
+        {
+            AvatarId = avatarId,
+            SagaArcRef = sagaRef,
+            BattleInstanceId = battleId,
+            AvatarAction = new CombatAction { ActionType = ActionType.Attack },
+            Avatar = avatar
+        });
+
+        Assert.False(next.Successful);
+        Assert.Contains("Transaction sequence corrupted", next.ErrorMessage);
+    }
+
     public void Dispose()
     {
         _database?.Dispose();

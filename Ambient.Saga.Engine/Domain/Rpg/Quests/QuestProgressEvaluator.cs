@@ -29,8 +29,8 @@ public static class QuestProgressEvaluator
         return objective.Type switch
         {
             QuestObjectiveType.CharacterDefeated => CountCharacterDefeated(objective, relevantTransactions),
-            QuestObjectiveType.CharactersDefeatedByTag => CountCharacterDefeatedByTag(objective, relevantTransactions),
-            QuestObjectiveType.CharactersDefeatedByType => CountCharacterDefeatedByType(objective, relevantTransactions, world),
+            QuestObjectiveType.CharactersDefeatedByTrait => CountCharacterDefeatedByTrait(objective, relevantTransactions, world),
+            QuestObjectiveType.CharactersDefeatedAtTrigger => CountCharacterDefeatedAtTrigger(objective, relevantTransactions, transactions),
 
             QuestObjectiveType.DialogueCompleted => CountDialogueCompleted(objective, relevantTransactions),
             QuestObjectiveType.DialogueChoiceSelected => CountDialogueChoiceSelected(objective, relevantTransactions),
@@ -263,40 +263,54 @@ public static class QuestProgressEvaluator
             (string.IsNullOrEmpty(objective.CharacterRef) || t.GetData<string>(TransactionDataKeys.CharacterRef) == objective.CharacterRef));
     }
 
-    private static int CountCharacterDefeatedByTag(QuestObjective objective, List<SagaTransaction> transactions)
+    private static int CountCharacterDefeatedByTrait(QuestObjective objective, List<SagaTransaction> transactions, IWorld world)
     {
-        // CharacterTag carries the defeated character's Tags plus its boolean trait names
-        // (content authors objectives against both vocabularies, e.g. "BanditScout"/"hostile")
+        if (!objective.TraitSpecified)
+            return 0;
+
+        // Resolve the defeated character's template and check the trait
         return transactions.Count(t =>
             t.Type == SagaTransactionType.CharacterDefeated &&
-            t.TryGetData<string>(TransactionDataKeys.CharacterTag, out var tags) &&
-            tags!.Split(',').Contains(objective.CharacterTag, StringComparer.OrdinalIgnoreCase));
+            CharacterCarriesTrait(world, t.GetData<string>(TransactionDataKeys.CharacterRef), objective.Trait));
     }
 
-    private static int CountCharacterDefeatedByType(QuestObjective objective, List<SagaTransaction> transactions, IWorld world)
+    private static bool CharacterCarriesTrait(IWorld world, string? characterRef, CharacterTraitType trait) =>
+        !string.IsNullOrEmpty(characterRef) &&
+        world.CharactersLookup.TryGetValue(characterRef, out var character) &&
+        character.CarriesTrait(trait);
+
+    private static int CountCharacterDefeatedAtTrigger(QuestObjective objective, List<SagaTransaction> scopedTransactions, List<SagaTransaction> allTransactions)
     {
-        // No emitter writes a CharacterType data key, so resolve the defeated
-        // character's template and match RefName/trait names against the type
-        // (same convention as AchievementProgressEvaluator.CountCharacterDefeatsByType)
-        return transactions.Count(t =>
+        if (string.IsNullOrEmpty(objective.TriggerRef))
+            return 0;
+
+        // Spawn records carry the trigger, defeats carry the character instance —
+        // join on CharacterInstanceId so only kills at this site count. The spawn
+        // set is built from the FULL committed log, not the acceptance scope:
+        // spawning is quest-independent (a guardian spawned before the quest was
+        // accepted must still count when defeated after acceptance, or the
+        // objective soft-locks for non-respawning characters). Only the DEFEATS
+        // are acceptance-scoped.
+        var instancesFromTrigger = new HashSet<string>();
+        foreach (var t in allTransactions)
         {
-            if (t.Type != SagaTransactionType.CharacterDefeated)
-                return false;
+            if (t.Status == TransactionStatus.Committed &&
+                t.Type == SagaTransactionType.CharacterSpawned &&
+                t.GetData<string>(TransactionDataKeys.SagaTriggerRef) == objective.TriggerRef)
+            {
+                var instanceId = t.GetData<string>(TransactionDataKeys.CharacterInstanceId);
+                if (!string.IsNullOrEmpty(instanceId))
+                    instancesFromTrigger.Add(instanceId);
+            }
+        }
 
-            if (t.TryGetData<string>(TransactionDataKeys.CharacterType, out var type))
-                return type == objective.CharacterType;
+        // Common case: the player has never been near the trigger — skip the defeat scan
+        if (instancesFromTrigger.Count == 0)
+            return 0;
 
-            var characterRef = t.GetData<string>(TransactionDataKeys.CharacterRef);
-            if (string.IsNullOrEmpty(characterRef) ||
-                !world.CharactersLookup.TryGetValue(characterRef, out var character))
-                return false;
-
-            if (character.RefName?.Contains(objective.CharacterType, StringComparison.OrdinalIgnoreCase) == true)
-                return true;
-
-            return character.Traits?.Any(tr =>
-                tr.Name.ToString().Contains(objective.CharacterType, StringComparison.OrdinalIgnoreCase)) == true;
-        });
+        return scopedTransactions.Count(t =>
+            t.Type == SagaTransactionType.CharacterDefeated &&
+            instancesFromTrigger.Contains(t.GetData<string>(TransactionDataKeys.CharacterInstanceId) ?? ""));
     }
 
     private static int CountDialogueCompleted(QuestObjective objective, List<SagaTransaction> transactions)

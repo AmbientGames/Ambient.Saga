@@ -1,4 +1,5 @@
 using Ambient.Domain;
+using Ambient.Domain.Contracts;
 using Ambient.Domain.GameLogic.Gameplay.Avatar;
 using Ambient.Domain.Hotbar;
 using Ambient.Saga.Presentation.UI.ViewModels;
@@ -25,6 +26,22 @@ public class InventoryPanel
     private HashSet<string> _pendingUseOperations = new();
     // Track pending sharpen operations for async feedback
     private HashSet<string> _pendingSharpenOperations = new();
+
+    // Cached filtered+sorted block stacks. Stack membership changes always swap the
+    // backing BlockEntry[] (append/remove/clear), but Quantity mutates in place — so
+    // EnsureBlockCache also re-checks per-entry filter membership (Quantity >= 1).
+    private List<BlockEntry> _cachedBlockStacks = new();
+    private object? _cachedBlockSource;
+    private object? _cachedBlockWorld;
+
+    // Cached loadout slots and equipment-by-slot lookup. Slot list and equipment
+    // definitions are immutable per world; inventory membership changes always swap
+    // Capabilities.Equipment (entries themselves mutate in place, e.g. Condition,
+    // which the cached references pick up live).
+    private List<LoadoutSlot> _cachedLoadoutSlots = new();
+    private Dictionary<string, List<(EquipmentEntry entry, Equipment? def)>> _cachedEquipmentBySlot = new();
+    private object? _cachedEquipmentSource;
+    private object? _cachedEquipmentWorld;
 
     // Hotbar assignment state
     private bool _showHotbarAssignPopup = false;
@@ -131,7 +148,7 @@ public class InventoryPanel
     /// </summary>
     private void RenderConsumables(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        if (ImGui.CollapsingHeader($"Consumables ({caps.Consumables?.Length ?? 0})", ImGuiTreeNodeFlags.DefaultOpen))
+        if (ImGui.CollapsingHeader($"Consumables ({caps.Consumables?.Length ?? 0})###Consumables", ImGuiTreeNodeFlags.DefaultOpen))
         {
             if (caps.Consumables != null && caps.Consumables.Length > 0)
             {
@@ -146,7 +163,7 @@ public class InventoryPanel
                     var maxTextWidth = GetAvailableTextWidth();
                     var quantityText = $" x{consumable.Quantity}";
                     var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
-                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{consumable.ConsumableRef}");
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}###con_{consumable.ConsumableRef}");
 
                     if (truncatedName != name && ImGui.IsItemHovered())
                     {
@@ -219,7 +236,7 @@ public class InventoryPanel
     /// </summary>
     private void RenderSpells(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        if (ImGui.CollapsingHeader($"Spells ({caps.Spells?.Length ?? 0})"))
+        if (ImGui.CollapsingHeader($"Spells ({caps.Spells?.Length ?? 0})###Spells"))
         {
             if (caps.Spells != null && caps.Spells.Length > 0)
             {
@@ -233,7 +250,7 @@ public class InventoryPanel
                     var maxTextWidth = GetAvailableTextWidth();
                     var conditionText = $" ({spell.Condition:P0})";
                     var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(conditionText).X - 30f);
-                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{conditionText}##{spell.SpellRef}");
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{conditionText}###spl_{spell.SpellRef}");
 
                     if (truncatedName != name && ImGui.IsItemHovered())
                     {
@@ -313,7 +330,7 @@ public class InventoryPanel
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.8f, 0.5f, 1f, 1f)); // Purple for spirit/affinity
         }
 
-        var isOpen = ImGui.CollapsingHeader($"{headerText}##Affinity", ImGuiTreeNodeFlags.DefaultOpen);
+        var isOpen = ImGui.CollapsingHeader($"{headerText}###Affinity", ImGuiTreeNodeFlags.DefaultOpen);
 
         if (hasActive)
         {
@@ -436,21 +453,11 @@ public class InventoryPanel
         var slot = world?.LoadoutSlotsLookup?.GetValueOrDefault("Stance");
         if (slot == null) return;
 
-        // Get equipment items for this slot
-        var stanceEquipment = new List<(EquipmentEntry entry, Equipment? def)>();
-        if (caps.Equipment != null)
-        {
-            foreach (var equip in caps.Equipment)
-            {
-                var equipDef = world?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
-                if (equipDef?.SlotRef == "Stance")
-                {
-                    stanceEquipment.Add((equip, equipDef));
-                }
-            }
-        }
+        // Get equipment items for this slot (from the cached equipment-by-slot lookup)
+        EnsureEquipmentCache(world!, caps);
+        var stanceEquipment = _cachedEquipmentBySlot["Stance"];
 
-        var equippedItem = stanceEquipment.FirstOrDefault(e => viewModel.IsItemEquipped(e.entry.EquipmentRef));
+        var equippedItem = FindEquippedItem(viewModel, stanceEquipment);
         var hasEquipped = equippedItem.entry != null;
 
         var slotDisplayName = slot.DisplayName ?? "Battle Stance";
@@ -463,7 +470,7 @@ public class InventoryPanel
             ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 1f, 0.5f, 1f));
         }
 
-        var isOpen = ImGui.CollapsingHeader($"{headerText}##Stance");
+        var isOpen = ImGui.CollapsingHeader($"{headerText}###Stance");
 
         if (hasEquipped)
         {
@@ -503,7 +510,7 @@ public class InventoryPanel
     /// </summary>
     private void RenderTools(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        if (ImGui.CollapsingHeader($"Tools ({caps.Tools?.Length ?? 0})"))
+        if (ImGui.CollapsingHeader($"Tools ({caps.Tools?.Length ?? 0})###Tools"))
         {
             if (caps.Tools != null && caps.Tools.Length > 0)
             {
@@ -516,7 +523,7 @@ public class InventoryPanel
                     var maxTextWidth = GetAvailableTextWidth();
                     var conditionText = $" ({tool.Condition:P0})";
                     var truncatedName = TruncateToFit(toolName, maxTextWidth - ImGui.CalcTextSize(conditionText).X - 30f);
-                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{conditionText}##{tool.ToolRef}");
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{conditionText}###tool_{tool.ToolRef}");
 
                     if (truncatedName != toolName && ImGui.IsItemHovered())
                     {
@@ -660,20 +667,15 @@ public class InventoryPanel
     {
         // Get actual block inventory from BlockOwnership (backed by Capabilities.Blocks).
         // One row per stack — a stack's identity is its opaque ref.
-        var stacks = viewModel.Avatar?.BlockOwnership?.Entries.Where(e => e.Quantity >= 1).ToList() ?? new List<BlockEntry>();
+        EnsureBlockCache(viewModel);
+        var stacks = _cachedBlockStacks;
         var blockCount = stacks.Count;
 
-        if (ImGui.CollapsingHeader($"Blocks ({blockCount})"))
+        if (ImGui.CollapsingHeader($"Blocks ({blockCount})###Blocks"))
         {
             if (stacks.Count > 0)
             {
-                // Sort by display name (then by ref) for consistent ordering
-                var sortedBlocks = stacks
-                    .OrderBy(e => viewModel.CurrentWorld?.GetItemDisplayName(e.BlockRef) ?? e.BlockRef)
-                    .ThenBy(e => e.BlockRef)
-                    .ToList();
-
-                foreach (var stack in sortedBlocks)
+                foreach (var stack in stacks)
                 {
                     var blockRef = stack.BlockRef;       // opaque stack identity
                     var quantity = (int)stack.Quantity;  // Truncate to whole blocks for display
@@ -685,7 +687,7 @@ public class InventoryPanel
                     var maxTextWidth = GetAvailableTextWidth();
                     var quantityText = $" x{quantity}";
                     var truncatedName = TruncateToFit(blockName, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
-                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{blockRef}");
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}###blk_{blockRef}");
 
                     if (truncatedName != blockName && ImGui.IsItemHovered())
                     {
@@ -767,11 +769,64 @@ public class InventoryPanel
     }
 
     /// <summary>
+    /// Rebuilds the filtered+sorted block stack list when the backing array, the world,
+    /// or the set of displayable stacks (Quantity >= 1) changes. Quantity mutates in
+    /// place without swapping the array, so membership is re-verified every frame:
+    /// same qualifying count AND every cached stack still qualifying means the same set.
+    /// </summary>
+    private void EnsureBlockCache(SagaMainViewModel viewModel)
+    {
+        var entries = viewModel.Avatar?.BlockOwnership?.Entries;
+        var world = viewModel.CurrentWorld;
+
+        var rebuild = !ReferenceEquals(_cachedBlockSource, entries) || !ReferenceEquals(_cachedBlockWorld, world);
+        if (!rebuild && entries != null)
+        {
+            var qualifying = 0;
+            for (var i = 0; i < entries.Count; i++)
+            {
+                if (entries[i].Quantity >= 1)
+                    qualifying++;
+            }
+
+            if (qualifying != _cachedBlockStacks.Count)
+            {
+                rebuild = true;
+            }
+            else
+            {
+                foreach (var stack in _cachedBlockStacks)
+                {
+                    if (stack.Quantity < 1)
+                    {
+                        rebuild = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!rebuild)
+            return;
+
+        _cachedBlockSource = entries;
+        _cachedBlockWorld = world;
+
+        var stacks = entries?.Where(e => e.Quantity >= 1).ToList() ?? new List<BlockEntry>();
+
+        // Sort by display name (then by ref) for consistent ordering
+        _cachedBlockStacks = stacks
+            .OrderBy(e => world?.GetItemDisplayName(e.BlockRef) ?? e.BlockRef)
+            .ThenBy(e => e.BlockRef)
+            .ToList();
+    }
+
+    /// <summary>
     /// Renders the Materials section with expandable details.
     /// </summary>
     private void RenderMaterials(SagaMainViewModel viewModel, ItemCollection caps)
     {
-        if (ImGui.CollapsingHeader($"Materials ({caps.BuildingMaterials?.Length ?? 0})"))
+        if (ImGui.CollapsingHeader($"Materials ({caps.BuildingMaterials?.Length ?? 0})###Materials"))
         {
             if (caps.BuildingMaterials != null && caps.BuildingMaterials.Length > 0)
             {
@@ -785,7 +840,7 @@ public class InventoryPanel
                     var maxTextWidth = GetAvailableTextWidth();
                     var quantityText = $" x{material.Quantity}";
                     var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(quantityText).X - 30f);
-                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}##{material.BuildingMaterialRef}");
+                    var treeNodeOpen = ImGui.TreeNode($"{truncatedName}{quantityText}###mat_{material.BuildingMaterialRef}");
 
                     if (truncatedName != name && ImGui.IsItemHovered())
                     {
@@ -900,33 +955,14 @@ public class InventoryPanel
         var world = viewModel.CurrentWorld;
         if (world == null) return;
 
+        EnsureEquipmentCache(world, caps);
+
         // Get all loadout slots from the world
-        var loadoutSlots = world.LoadoutSlotsLookup?.Values.ToList() ?? new List<LoadoutSlot>();
+        var loadoutSlots = _cachedLoadoutSlots;
         if (loadoutSlots.Count == 0)
         {
             ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No equipment slots defined");
             return;
-        }
-
-        // Build a lookup of equipment by slot
-        var equipmentBySlot = new Dictionary<string, List<(EquipmentEntry entry, Equipment? def)>>();
-        foreach (var slot in loadoutSlots)
-        {
-            equipmentBySlot[slot.RefName] = new List<(EquipmentEntry entry, Equipment? def)>();
-        }
-
-        // Group avatar's equipment by slot
-        if (caps.Equipment != null)
-        {
-            foreach (var equip in caps.Equipment)
-            {
-                var equipDef = world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
-                var slotRef = equipDef?.SlotRef ?? "Unknown";
-                if (equipmentBySlot.ContainsKey(slotRef))
-                {
-                    equipmentBySlot[slotRef].Add((equip, equipDef));
-                }
-            }
         }
 
         // Render each slot (skip Affinity and Stance - they're rendered separately)
@@ -936,8 +972,8 @@ public class InventoryPanel
             if (slot.RefName == "Affinity" || slot.RefName == "Stance")
                 continue;
 
-            var slotEquipment = equipmentBySlot.GetValueOrDefault(slot.RefName, new List<(EquipmentEntry entry, Equipment? def)>());
-            var equippedItem = slotEquipment.FirstOrDefault(e => viewModel.IsItemEquipped(e.entry.EquipmentRef));
+            var slotEquipment = _cachedEquipmentBySlot[slot.RefName];
+            var equippedItem = FindEquippedItem(viewModel, slotEquipment);
             var hasEquipped = equippedItem.entry != null;
 
             // Build header text
@@ -952,7 +988,7 @@ public class InventoryPanel
                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.5f, 1f, 0.5f, 1f));
             }
 
-            var isOpen = ImGui.CollapsingHeader($"{headerText}##{slot.RefName}");
+            var isOpen = ImGui.CollapsingHeader($"{headerText}###slot_{slot.RefName}");
 
             if (hasEquipped)
             {
@@ -987,6 +1023,63 @@ public class InventoryPanel
     }
 
     /// <summary>
+    /// Rebuilds the loadout slot list and equipment-by-slot lookup when the world or
+    /// the Capabilities.Equipment array changes. Membership changes always swap the
+    /// array; per-entry state (Condition) mutates in place and is read live through
+    /// the cached references.
+    /// </summary>
+    private void EnsureEquipmentCache(IWorld world, ItemCollection caps)
+    {
+        if (ReferenceEquals(_cachedEquipmentWorld, world) && ReferenceEquals(_cachedEquipmentSource, caps.Equipment))
+            return;
+
+        _cachedEquipmentWorld = world;
+        _cachedEquipmentSource = caps.Equipment;
+
+        // Get all loadout slots from the world
+        _cachedLoadoutSlots = world.LoadoutSlotsLookup?.Values.ToList() ?? new List<LoadoutSlot>();
+
+        // Build a lookup of equipment by slot
+        var equipmentBySlot = new Dictionary<string, List<(EquipmentEntry entry, Equipment? def)>>();
+        foreach (var slot in _cachedLoadoutSlots)
+        {
+            equipmentBySlot[slot.RefName] = new List<(EquipmentEntry entry, Equipment? def)>();
+        }
+
+        // Group avatar's equipment by slot
+        if (caps.Equipment != null)
+        {
+            foreach (var equip in caps.Equipment)
+            {
+                var equipDef = world.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == equip.EquipmentRef);
+                var slotRef = equipDef?.SlotRef ?? "Unknown";
+                if (equipmentBySlot.ContainsKey(slotRef))
+                {
+                    equipmentBySlot[slotRef].Add((equip, equipDef));
+                }
+            }
+        }
+
+        _cachedEquipmentBySlot = equipmentBySlot;
+    }
+
+    /// <summary>
+    /// First item in the slot list that is currently equipped. Allocation-free
+    /// equivalent of FirstOrDefault — equip state changes frame-to-frame without any
+    /// collection change, so it must be evaluated every frame, never cached.
+    /// </summary>
+    private static (EquipmentEntry entry, Equipment? def) FindEquippedItem(
+        SagaMainViewModel viewModel, List<(EquipmentEntry entry, Equipment? def)> slotEquipment)
+    {
+        foreach (var candidate in slotEquipment)
+        {
+            if (viewModel.IsItemEquipped(candidate.entry.EquipmentRef))
+                return candidate;
+        }
+        return default;
+    }
+
+    /// <summary>
     /// Renders a single equipment item within a slot section.
     /// </summary>
     private void RenderEquipmentItem(SagaMainViewModel viewModel, EquipmentEntry equip, Equipment? equipItem, string slotRef)
@@ -1004,7 +1097,7 @@ public class InventoryPanel
         var fullHeaderText = $"{name}{conditionText}{statusSuffix}";
         var truncatedName = TruncateToFit(name, maxTextWidth - ImGui.CalcTextSize(conditionText + statusSuffix).X - 30f);
         var headerText = $"{truncatedName}{conditionText}{statusSuffix}";
-        var treeNodeOpen = ImGui.TreeNode($"{headerText}##{equip.EquipmentRef}");
+        var treeNodeOpen = ImGui.TreeNode($"{headerText}###eq_{equip.EquipmentRef}");
 
         // Show full name on hover if truncated
         if (truncatedName != name && ImGui.IsItemHovered())

@@ -46,7 +46,7 @@ public static class MapLegend
     /// </summary>
     private static void RenderLocationsLegend()
     {
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Locations:");
+        ImGui.TextColored(UIColors.TextHighlight, "Locations:");
         ImGui.Spacing();
         ImGui.Indent(10 * UIConstants.DpiScale);
 
@@ -56,7 +56,7 @@ public static class MapLegend
         RenderLegendCircle(SagaColors.Complete, "Complete", filled: true);
 
         ImGui.Unindent(10 * UIConstants.DpiScale);
-        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Hover for details");
+        ImGui.TextColored(UIColors.TextDim, "Hover for details");
     }
 
     /// <summary>
@@ -65,7 +65,7 @@ public static class MapLegend
     /// </summary>
     private static void RenderTriggersLegend()
     {
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Trigger Rings:");
+        ImGui.TextColored(UIColors.TextHighlight, "Trigger Rings:");
         ImGui.Spacing();
         ImGui.Indent(10 * UIConstants.DpiScale);
 
@@ -81,13 +81,13 @@ public static class MapLegend
     /// </summary>
     private static void RenderCharactersLegend()
     {
-        ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Characters:");
+        ImGui.TextColored(UIColors.TextHighlight, "Characters:");
         ImGui.Spacing();
         ImGui.Indent(10 * UIConstants.DpiScale);
 
         // Matches MainViewModel character coloring
         RenderLegendCircle(new Vector4(1f, 0.65f, 0f, 1f), "Alive", filled: true);    // Orange
-        RenderLegendCircle(new Vector4(0.5f, 0.5f, 0.5f, 1f), "Dead", filled: true);  // Gray
+        RenderLegendCircle(UIColors.TextDisabled, "Dead", filled: true);  // Gray
         RenderLegendCircle(new Vector4(0f, 1f, 1f, 1f), "You", filled: true);         // Cyan
 
         ImGui.Unindent(10 * UIConstants.DpiScale);
@@ -104,7 +104,7 @@ public static class MapLegend
         ImGui.Spacing();
         ImGui.Indent(10 * UIConstants.DpiScale);
 
-        ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Hover shows:");
+        ImGui.TextColored(UIColors.TextDim, "Hover shows:");
         ImGui.BulletText("Feature type");
         ImGui.BulletText("Saga/Character ref");
         ImGui.BulletText("Interaction status");

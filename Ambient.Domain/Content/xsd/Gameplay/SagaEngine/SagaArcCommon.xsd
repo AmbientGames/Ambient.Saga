@@ -44,11 +44,6 @@
                         <xs:documentation>Distance in meters from the SagaArc center at which this trigger activates.</xs:documentation>
                     </xs:annotation>
                 </xs:attribute>
-                <xs:attribute name="Tags" type="xs:string" use="optional">
-                    <xs:annotation>
-                        <xs:documentation>Comma-separated tags for filtering or categorizing this trigger.</xs:documentation>
-                    </xs:annotation>
-                </xs:attribute>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>

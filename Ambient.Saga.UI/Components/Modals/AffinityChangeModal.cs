@@ -49,8 +49,8 @@ public class AffinityChangeModal
             ImGui.Spacing();
 
             // Info text
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1.0f), "Switching affinity grants +5% health");
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1.0f), "and defensive positioning.");
+            ImGui.TextColored(UIColors.TextMuted, "Switching affinity grants +5% health");
+            ImGui.TextColored(UIColors.TextMuted, "and defensive positioning.");
             ImGui.Spacing();
             ImGui.Separator();
             ImGui.Spacing();
@@ -59,7 +59,7 @@ public class AffinityChangeModal
             var currentAffinityName = GetAffinityDisplayName(_avatar.AffinityRef);
             ImGui.Text($"Current: ");
             ImGui.SameLine();
-            ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.4f, 1.0f), currentAffinityName);
+            ImGui.TextColored(UIColors.GoldenYellow, currentAffinityName);
             ImGui.Spacing();
             ImGui.Spacing();
 
@@ -77,9 +77,9 @@ public class AffinityChangeModal
                 }
 
                 // Style based on affinity (could be color-coded based on element)
-                ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.15f, 0.35f, 0.35f, 1.0f));
-                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.2f, 0.5f, 0.5f, 1.0f));
-                ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.25f, 0.65f, 0.65f, 1.0f));
+                ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAffinity);
+                ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAffinityHovered);
+                ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAffinityActive);
 
                 var buttonHeight = ImGui.GetFrameHeight() * 1.2f;
                 if (ImGui.Button(isCurrent ? $"{displayName} (Current)" : displayName, new Vector2(ImGuiSizes.Fill, buttonHeight)))
@@ -98,7 +98,7 @@ public class AffinityChangeModal
 
             if (_availableAffinities.Count == 0)
             {
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1.0f), "No other affinities available");
+                ImGui.TextColored(UIColors.TextDim, "No other affinities available");
             }
 
             ImGui.Spacing();

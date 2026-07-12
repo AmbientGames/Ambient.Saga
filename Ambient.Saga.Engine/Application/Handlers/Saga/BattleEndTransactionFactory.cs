@@ -56,12 +56,6 @@ internal static class BattleEndTransactionFactory
                 [TransactionDataKeys.BattleTransactionId] = battleInstanceId.ToString()
             };
 
-            // Add character tags for quest objective tracking
-            if (enemyCharacter.Tags != null && enemyCharacter.Tags.Length > 0)
-            {
-                data[TransactionDataKeys.CharacterTag] = string.Join(",", enemyCharacter.Tags);
-            }
-
             var characterDefeatedTx = new SagaTransaction
             {
                 TransactionId = Guid.NewGuid(),

@@ -30,12 +30,12 @@ public class ImportTransactionsProjectionTests : IDisposable
 
     public void Dispose() => _database?.Dispose();
 
-    private SagaTransaction ServerToken(string tokenRef, long sequenceNumber) => new()
+    private SagaTransaction ServerToken(string tokenRef, long sequenceNumber, Guid? author = null) => new()
     {
         TransactionId = Guid.NewGuid(),
         SequenceNumber = sequenceNumber,
         Type = SagaTransactionType.QuestTokenAwarded,
-        AvatarId = _avatarId.ToString(),
+        AvatarId = (author ?? _avatarId).ToString(),
         Status = TransactionStatus.Committed,
         LocalTimestamp = DateTime.UtcNow,
         ServerTimestamp = DateTime.UtcNow,
@@ -46,12 +46,12 @@ public class ImportTransactionsProjectionTests : IDisposable
         }
     };
 
-    private SagaTransaction ServerDefeat(string characterRef, long sequenceNumber) => new()
+    private SagaTransaction ServerDefeat(string characterRef, long sequenceNumber, Guid? author = null) => new()
     {
         TransactionId = Guid.NewGuid(),
         SequenceNumber = sequenceNumber,
         Type = SagaTransactionType.CharacterDefeated,
-        AvatarId = _avatarId.ToString(),
+        AvatarId = (author ?? _avatarId).ToString(),
         Status = TransactionStatus.Committed,
         LocalTimestamp = DateTime.UtcNow,
         ServerTimestamp = DateTime.UtcNow,
@@ -123,6 +123,37 @@ public class ImportTransactionsProjectionTests : IDisposable
         Assert.Equal(1, second);
         Assert.Equal(2, _progressRepo.GetBossDefeatedCount(_avatarId, "DRAGON_LORD"));
         Assert.Equal(100, _progressRepo.GetFactionReputation(_avatarId, "GUILD_OF_MAGES"));
+    }
+
+    [Fact]
+    public async Task Import_SharedArc_ProjectsPerAuthor_NeverToPuller()
+    {
+        // Shared multiplayer arcs (no owner) carry transactions authored by OTHER
+        // avatars. Projection must credit each author — never the pulling avatar,
+        // or playing near peers would inflate the puller's cross-arc quest/boss/
+        // reputation state (which gates prerequisites, dialogue, and triggers).
+        var instance = await _sagaRepo.GetOrRegisterMultiplayerInstanceAsync("SharedArc");
+        var peerId = Guid.NewGuid();
+
+        var imported = await _sagaRepo.ImportTransactionsAsync(
+            _avatarId,
+            instance.InstanceId,
+            new List<SagaTransaction>
+            {
+                ServerToken("PEER_SEAL", sequenceNumber: 1, author: peerId),
+                ServerDefeat("SHARED_BOSS", sequenceNumber: 2, author: peerId),
+                ServerToken("OWN_SEAL", sequenceNumber: 3) // authored by the puller
+            });
+
+        Assert.Equal(3, imported);
+        // Peer-authored rows land in the peer's tables…
+        Assert.True(_progressRepo.HasQuestToken(peerId, "PEER_SEAL"));
+        Assert.Equal(1, _progressRepo.GetBossDefeatedCount(peerId, "SHARED_BOSS"));
+        // …and never in the puller's
+        Assert.False(_progressRepo.HasQuestToken(_avatarId, "PEER_SEAL"));
+        Assert.Equal(0, _progressRepo.GetBossDefeatedCount(_avatarId, "SHARED_BOSS"));
+        // The puller's own-authored transaction still projects to the puller
+        Assert.True(_progressRepo.HasQuestToken(_avatarId, "OWN_SEAL"));
     }
 
     [Fact]

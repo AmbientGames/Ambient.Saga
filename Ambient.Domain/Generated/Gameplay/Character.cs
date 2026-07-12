@@ -25,9 +25,7 @@ namespace Ambient.Domain {
         private Interactable interactableField;
         
         private CharacterTrait[] traitsField;
-        
-        private string[] tagsField;
-        
+
         private string[] givesQuestTokenOnDefeatField;
         
         private CharacterTrigger[] battleDialogueField;
@@ -56,17 +54,6 @@ namespace Ambient.Domain {
             }
             set {
                 this.traitsField = value;
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlArrayItemAttribute("Tag", IsNullable=false)]
-        public string[] Tags {
-            get {
-                return this.tagsField;
-            }
-            set {
-                this.tagsField = value;
             }
         }
         

@@ -42,7 +42,7 @@ public class HotbarSection : IHudSection
     // Item type colors for visual distinction
     private static readonly Dictionary<HotbarItemType, Vector4> ItemTypeColors = new()
     {
-        { HotbarItemType.Empty, new Vector4(0.4f, 0.4f, 0.4f, 0.6f) },
+        { HotbarItemType.Empty, EmptySlotTextColor },
         { HotbarItemType.Tool, new Vector4(0.7f, 0.7f, 0.9f, 1f) },
         { HotbarItemType.Block, new Vector4(0.6f, 0.5f, 0.4f, 1f) },
         { HotbarItemType.Consumable, new Vector4(0.4f, 0.9f, 0.5f, 1f) },

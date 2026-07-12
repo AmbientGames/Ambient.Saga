@@ -218,26 +218,6 @@ public static class WorldValidationService
         }
     }
 
-    private static void ValidateQuestTokenRef(IWorld world, List<string> errors, string context,
-        string? QuestTokenRef, Dictionary<string, List<string>> QuestTokenProviders)
-    {
-        if (string.IsNullOrEmpty(QuestTokenRef))
-            return;
-
-        // Check that the quest key exists in QuestTokensLookup
-        if (!world.QuestTokensLookup.ContainsKey(QuestTokenRef))
-        {
-            errors.Add($"{context}: RequiredQuestTokenRef '{QuestTokenRef}' not found in QuestTokens catalog");
-            return;
-        }
-
-        // Check that at least one entity provides this quest key (character or saga feature)
-        if (!QuestTokenProviders.ContainsKey(QuestTokenRef))
-        {
-            errors.Add($"{context}: RequiredQuestTokenRef '{QuestTokenRef}' is not provided by any character or saga feature (orphaned quest key)");
-        }
-    }
-
     private static void ValidateSagaTriggerQuestTokens(IWorld world, List<string> errors, string context, SagaTrigger trigger)
     {
         if (trigger == null) return;
@@ -1217,6 +1197,12 @@ public static class WorldValidationService
             var achievementContext = $"Achievement '{achievement.RefName}' ({achievement.DisplayName})";
             var criteria = achievement.Criteria;
 
+            // Same rule as quest objectives: ByTrait without a Trait matches nothing
+            if (criteria.Type == AchievementCriteriaType.CharactersDefeatedByTrait && !criteria.TraitSpecified)
+            {
+                errors.Add($"{achievementContext}: CharactersDefeatedByTrait requires the Trait attribute");
+            }
+
             // Validate CharacterRef (used by CharactersDefeatedByRef)
             if (!string.IsNullOrEmpty(criteria.CharacterRef))
             {
@@ -1250,11 +1236,8 @@ public static class WorldValidationService
                 ValidateReference(world.FactionsLookup, criteria.FactionRef, achievementContext, "FactionRef", "Factions", errors);
             }
 
-            // Note: CharacterType, CharacterTag, and TraitType are string-based filters
-            // They don't reference catalogs, so no validation needed
-            // CharacterType: "Boss", "Merchant", etc. (free-form)
-            // CharacterTag: Tags from Character.Tags array (free-form)
-            // TraitType: "Friendly", "Hostile", etc. (free-form)
+            // Note: Trait is schema-validated (CharacterTraitType enum); CharacterType
+            // remains a free-form filter for TraitsAssignedToCharacterType only
         }
     }
 
@@ -1288,20 +1271,26 @@ public static class WorldValidationService
                 }
             }
 
-            // Validate Rewards Reputation FactionRef
+            // Reward REFERENCES are a load-gate concern (a dangling ref must fail
+            // loudly at load, not at quest turn-in); reward TARGETS (OnBranch/
+            // OnObjective) are checked by the playability gate
             if (quest.Rewards != null)
             {
                 foreach (var reward in quest.Rewards)
                 {
-                    if (reward.Reputation != null)
+                    ValidateQuestRewardReferences(world, reward, $"{questContext} Reward (Condition: {reward.Condition})", errors);
+                }
+            }
+
+            if (quest.Stages?.Stage != null)
+            {
+                foreach (var stage in quest.Stages.Stage)
+                {
+                    if (stage.Rewards == null) continue;
+
+                    foreach (var reward in stage.Rewards)
                     {
-                        foreach (var reputation in reward.Reputation)
-                        {
-                            if (!string.IsNullOrEmpty(reputation.FactionRef))
-                            {
-                                ValidateReference(world.FactionsLookup, reputation.FactionRef, $"{questContext} Reward (Condition: {reward.Condition})", "Reputation.FactionRef", "Factions", errors);
-                            }
-                        }
+                        ValidateQuestRewardReferences(world, reward, $"{questContext} Stage '{stage.RefName}' Reward (Condition: {reward.Condition})", errors);
                     }
                 }
             }
@@ -1521,13 +1510,10 @@ public static class WorldValidationService
 
                         if (!hasSetCharacterState)
                         {
-                            // Check if character is already hostile (Hostile trait = 1)
-                            var isAlreadyHostile = false;
-                            if (world.CharactersLookup.TryGetValue(charRef, out var character))
-                            {
-                                var hostileTrait = character.Traits?.FirstOrDefault(t => t.Name == CharacterTraitType.Hostile);
-                                isAlreadyHostile = hostileTrait?.Value == 1;
-                            }
+                            // Check if character is already hostile
+                            var isAlreadyHostile =
+                                world.CharactersLookup.TryGetValue(charRef, out var character) &&
+                                character.CarriesTrait(CharacterTraitType.Hostile);
 
                             if (!isAlreadyHostile)
                             {
@@ -1585,7 +1571,7 @@ public static class WorldValidationService
 
                 // Determine max stat value based on character type
                 // Boss characters and characters with BossFight trait can have boosted stats
-                var isBoss = character.Traits?.Any(t => t.Name == CharacterTraitType.BossFight && t.Value == 1) == true;
+                var isBoss = character.CarriesTrait(CharacterTraitType.BossFight);
                 var maxStat = isBoss ? 2.0f : 1.0f; // Bosses can have up to 2x normal stats
 
                 ValidateStatRange(character.Stats.Health, "Health", 0, maxStat, context, errors);
@@ -1692,8 +1678,8 @@ public static class WorldValidationService
             var context = $"Character '{charRef}' (spawned in Saga)";
 
             // Check for exemptions
-            var isBossFight = character.Traits?.Any(t => t.Name == CharacterTraitType.BossFight && t.Value == 1) == true;
-            var isHostile = character.Traits?.Any(t => t.Name == CharacterTraitType.Hostile && t.Value == 1) == true;
+            var isBossFight = character.CarriesTrait(CharacterTraitType.BossFight);
+            var isHostile = character.CarriesTrait(CharacterTraitType.Hostile);
 
             // Pure combat enemies (BossFight + Hostile with no dialogue) are allowed
             // BUT they should have BattleDialogue for mid-battle interactions
@@ -1737,6 +1723,608 @@ public static class WorldValidationService
             {
                 characterRefs.Add(spawn.CharacterRef);
             }
+        }
+    }
+
+    /// <summary>
+    /// Stricter, content-playability validation of quests: objective refs and
+    /// satisfiability, reward targets, and quest reachability. Deliberately NOT
+    /// part of <see cref="ValidateReferentialIntegrity"/> (which gates world
+    /// LOADING): a dead side-quest should fail the content test gate, not make
+    /// the whole world refuse to load. Run by the world content tests.
+    /// </summary>
+    public static void ValidateQuestPlayability(IWorld world, ILogger? logger = null)
+    {
+        var errors = new List<string>();
+
+        ValidateQuestObjectives(world, errors);
+        ValidateQuestRewards(world, errors);
+        ValidateQuestAcceptance(world, errors);
+
+        if (errors.Count > 0)
+        {
+            logger?.LogError("Quest playability validation failed with {ErrorCount} errors for world {WorldRef}:",
+                errors.Count, world.WorldConfiguration?.RefName ?? "unknown");
+            foreach (var error in errors)
+            {
+                logger?.LogError("  Validation error: {ValidationError}", error);
+            }
+
+            throw new InvalidOperationException(
+                "Quest playability validation failed:\n" + string.Join("\n", errors));
+        }
+    }
+
+    /// <summary>
+    /// Validates every quest stage/branch objective against the semantics
+    /// QuestProgressEvaluator actually applies at runtime, including
+    /// satisfiability: an objective whose target exists but can never be
+    /// reached (a token nothing grants, a kill target nothing spawns, a
+    /// collect item no character's loot offers) sits at 0 forever and
+    /// soft-locks the quest.
+    /// </summary>
+    private static void ValidateQuestObjectives(IWorld world, List<string> errors)
+    {
+        if (world.Gameplay.Quests == null) return;
+
+        var content = WorldContentIndex.Build(world);
+
+        foreach (var quest in world.Gameplay.Quests)
+        {
+            foreach (var (stage, objective, branch) in EnumerateObjectives(quest))
+            {
+                var context = branch == null
+                    ? $"Quest '{quest.RefName}' Stage '{stage.RefName}' Objective '{objective.RefName}' ({objective.Type})"
+                    : $"Quest '{quest.RefName}' Stage '{stage.RefName}' Branch '{branch.RefName}' Objective '{objective.RefName}' ({objective.Type})";
+
+                if (objective.Threshold < 1)
+                {
+                    errors.Add($"{context}: Threshold {objective.Threshold} makes the objective trivially complete (must be >= 1)");
+                }
+
+                ValidateObjectiveTarget(world, content, objective, context, errors);
+            }
+        }
+    }
+
+    private static IEnumerable<(QuestStage Stage, QuestObjective Objective, QuestBranch? Branch)> EnumerateObjectives(Quest quest)
+    {
+        if (quest.Stages?.Stage == null) yield break;
+
+        foreach (var stage in quest.Stages.Stage)
+        {
+            if (stage.Objectives?.Objective != null)
+            {
+                foreach (var objective in stage.Objectives.Objective)
+                    yield return (stage, objective, null);
+            }
+
+            if (stage.Branches?.Branch != null)
+            {
+                foreach (var branch in stage.Branches.Branch)
+                {
+                    if (branch.Objective != null)
+                        yield return (stage, branch.Objective, branch);
+                }
+            }
+        }
+    }
+
+    private static void ValidateObjectiveTarget(IWorld world, WorldContentIndex content, QuestObjective objective, string context, List<string> errors)
+    {
+        switch (objective.Type)
+        {
+            case QuestObjectiveType.CharacterDefeated:
+                // Empty CharacterRef is legal (any defeat counts)
+                if (!string.IsNullOrEmpty(objective.CharacterRef))
+                {
+                    if (!world.CharactersLookup.ContainsKey(objective.CharacterRef))
+                    {
+                        errors.Add($"{context}: CharacterRef '{objective.CharacterRef}' not found in Characters");
+                    }
+                    else if (!content.FightableCharacters.Contains(objective.CharacterRef))
+                    {
+                        errors.Add($"{context}: CharacterRef '{objective.CharacterRef}' is never spawned by a saga trigger or dialogue action, so it can never be defeated");
+                    }
+                    else if (!content.RespawningCharacters.Contains(objective.CharacterRef) &&
+                             content.SpawnSupply.GetValueOrDefault(objective.CharacterRef) < objective.Threshold)
+                    {
+                        errors.Add($"{context}: Threshold {objective.Threshold} exceeds the {content.SpawnSupply.GetValueOrDefault(objective.CharacterRef)} instance(s) of '{objective.CharacterRef}' the world can ever spawn (no respawn), so the objective can never complete");
+                    }
+                }
+                break;
+
+            case QuestObjectiveType.CharactersDefeatedByTrait:
+                if (!objective.TraitSpecified)
+                {
+                    errors.Add($"{context}: Trait attribute is required (the evaluator matches nothing without it)");
+                }
+                else if (!content.CarriedTraits.Contains(objective.Trait))
+                {
+                    errors.Add($"{context}: no character carries trait '{objective.Trait}', so the objective can never complete");
+                }
+                break;
+
+            case QuestObjectiveType.CharactersDefeatedAtTrigger:
+                if (string.IsNullOrEmpty(objective.TriggerRef))
+                {
+                    errors.Add($"{context}: TriggerRef is required (the evaluator matches nothing without it)");
+                }
+                else if (!content.TriggerRefs.Contains(objective.TriggerRef))
+                {
+                    errors.Add($"{context}: TriggerRef '{objective.TriggerRef}' matches no SagaTrigger RefName");
+                }
+                else if (!content.TriggersWithFightableSpawns.Contains(objective.TriggerRef))
+                {
+                    errors.Add($"{context}: trigger '{objective.TriggerRef}' spawns no hostile or boss character, so nothing there can be defeated");
+                }
+                break;
+
+            case QuestObjectiveType.DialogueCompleted:
+                // Both filters are optional; each one set must resolve
+                if (!string.IsNullOrEmpty(objective.DialogueRef))
+                {
+                    if (!world.DialogueTreesLookup.ContainsKey(objective.DialogueRef))
+                    {
+                        errors.Add($"{context}: DialogueRef '{objective.DialogueRef}' not found in DialogueTrees");
+                    }
+                    else if (!content.CharacterDialogueTrees.Contains(objective.DialogueRef))
+                    {
+                        errors.Add($"{context}: DialogueTree '{objective.DialogueRef}' is not any character's DialogueTreeRef, so it can never be completed");
+                    }
+                }
+                if (!string.IsNullOrEmpty(objective.CharacterRef))
+                {
+                    ValidateReference(world.CharactersLookup, objective.CharacterRef, context, "CharacterRef", "Characters", errors);
+                }
+                break;
+
+            case QuestObjectiveType.DialogueChoiceSelected:
+                // Choices have no identity of their own: ChoiceRef is the chosen node's id
+                ValidateObjectiveDialogueNode(world, content, objective.DialogueRef, objective.ChoiceRef, "ChoiceRef", context, errors);
+                break;
+
+            case QuestObjectiveType.DialogueNodeVisited:
+                ValidateObjectiveDialogueNode(world, content, objective.DialogueRef, objective.NodeRef, "NodeRef", context, errors);
+                break;
+
+            case QuestObjectiveType.ItemCollected:
+                // Collection counts merchant purchases and victory loot, both drawn
+                // from Interactable.Loot — an item no character's loot offers can
+                // never be "collected"
+                if (string.IsNullOrEmpty(objective.ItemRef))
+                {
+                    errors.Add($"{context}: ItemRef is required (the evaluator matches nothing without it)");
+                }
+                else if (!content.IsKnownItem(world, objective.ItemRef))
+                {
+                    errors.Add($"{context}: ItemRef '{objective.ItemRef}' not found in any item catalog or character loot");
+                }
+                else if (!content.LootableItems.Contains(objective.ItemRef))
+                {
+                    errors.Add($"{context}: ItemRef '{objective.ItemRef}' is not in any character's Interactable.Loot, so it can never be collected (no merchant sells it, no victory loot drops it)");
+                }
+                break;
+
+            case QuestObjectiveType.ItemDelivered:
+                // The evaluator compares ItemRef by equality with no empty-guard,
+                // so an empty ref never matches a trade transaction
+                if (string.IsNullOrEmpty(objective.ItemRef))
+                {
+                    errors.Add($"{context}: ItemRef is required (the evaluator matches nothing without it)");
+                }
+                else if (!content.IsKnownItem(world, objective.ItemRef))
+                {
+                    errors.Add($"{context}: ItemRef '{objective.ItemRef}' not found in any item catalog or character loot");
+                }
+                break;
+
+            case QuestObjectiveType.ItemTraded:
+                if (!string.IsNullOrEmpty(objective.ItemRef) && !content.IsKnownItem(world, objective.ItemRef))
+                {
+                    errors.Add($"{context}: ItemRef '{objective.ItemRef}' not found in any item catalog or character loot");
+                }
+                break;
+
+            case QuestObjectiveType.QuestTokenCollected:
+                // The evaluator honors ItemRef as a fallback for the token ref
+                var tokenRef = !string.IsNullOrEmpty(objective.QuestTokenRef) ? objective.QuestTokenRef : objective.ItemRef;
+                if (string.IsNullOrEmpty(tokenRef))
+                {
+                    errors.Add($"{context}: QuestTokenRef (or ItemRef fallback) is required (the evaluator matches nothing without it)");
+                }
+                else if (!world.QuestTokensLookup.ContainsKey(tokenRef))
+                {
+                    errors.Add($"{context}: QuestTokenRef '{tokenRef}' not found in QuestTokens");
+                }
+                else if (!content.GrantedTokens.Contains(tokenRef))
+                {
+                    errors.Add($"{context}: QuestToken '{tokenRef}' is never granted by any dialogue action, saga trigger, or character, so the objective can never complete");
+                }
+                break;
+
+            case QuestObjectiveType.SagaDiscovered:
+                if (!string.IsNullOrEmpty(objective.SagaArcRef) && !world.SagaArcLookup.ContainsKey(objective.SagaArcRef))
+                {
+                    errors.Add($"{context}: SagaArcRef '{objective.SagaArcRef}' not found in SagaArcs");
+                }
+                break;
+
+            case QuestObjectiveType.LocationReached:
+                // LocationRef, when present, must name a saga trigger (the evaluator
+                // matches it against SagaTriggerRef on TriggerActivated transactions)
+                if (!string.IsNullOrEmpty(objective.LocationRef) && !content.TriggerRefs.Contains(objective.LocationRef))
+                {
+                    errors.Add($"{context}: LocationRef '{objective.LocationRef}' matches no SagaTrigger RefName");
+                }
+                break;
+
+            case QuestObjectiveType.TriggerActivated:
+                if (!string.IsNullOrEmpty(objective.TriggerRef) && !content.TriggerRefs.Contains(objective.TriggerRef))
+                {
+                    errors.Add($"{context}: TriggerRef '{objective.TriggerRef}' matches no SagaTrigger RefName");
+                }
+                break;
+
+            case QuestObjectiveType.CurrencyCollected:
+                // Threshold is the amount; the generic Threshold >= 1 check covers it
+                break;
+        }
+    }
+
+    private static void ValidateObjectiveDialogueNode(IWorld world, WorldContentIndex content, string dialogueRef, string nodeId, string attributeName, string context, List<string> errors)
+    {
+        if (string.IsNullOrEmpty(dialogueRef))
+        {
+            errors.Add($"{context}: DialogueRef is required (the evaluator matches nothing without it)");
+            return;
+        }
+
+        if (!world.DialogueTreesLookup.TryGetValue(dialogueRef, out var tree))
+        {
+            errors.Add($"{context}: DialogueRef '{dialogueRef}' not found in DialogueTrees");
+            return;
+        }
+
+        if (!content.CharacterDialogueTrees.Contains(dialogueRef))
+        {
+            errors.Add($"{context}: DialogueTree '{dialogueRef}' is not any character's DialogueTreeRef, so its nodes can never be visited");
+        }
+
+        if (string.IsNullOrEmpty(nodeId))
+        {
+            errors.Add($"{context}: {attributeName} is required (the evaluator matches nothing without it)");
+        }
+        else if (tree.Node?.Any(n => string.Equals(n.NodeId, nodeId, StringComparison.OrdinalIgnoreCase)) != true)
+        {
+            errors.Add($"{context}: {attributeName} '{nodeId}' does not match any Node.NodeId in DialogueTree '{dialogueRef}'");
+        }
+    }
+
+    /// <summary>
+    /// Validates quest-level and stage-level rewards: item/achievement refs must
+    /// exist, OnBranch rewards must name a real branch, OnObjective rewards a
+    /// real objective, and amounts must be sane.
+    /// </summary>
+    private static void ValidateQuestRewards(IWorld world, List<string> errors)
+    {
+        if (world.Gameplay.Quests == null) return;
+
+        foreach (var quest in world.Gameplay.Quests)
+        {
+            var objectiveRefs = new HashSet<string>(
+                EnumerateObjectives(quest).Select(o => o.Objective.RefName).Where(r => !string.IsNullOrEmpty(r)),
+                StringComparer.OrdinalIgnoreCase);
+            var branchRefs = new HashSet<string>(
+                quest.Stages?.Stage?
+                    .Where(s => s.Branches?.Branch != null)
+                    .SelectMany(s => s.Branches.Branch)
+                    .Select(b => b.RefName)
+                    .Where(r => !string.IsNullOrEmpty(r)) ?? [],
+                StringComparer.OrdinalIgnoreCase);
+
+            if (quest.Rewards != null)
+            {
+                foreach (var reward in quest.Rewards)
+                {
+                    ValidateQuestReward(reward, $"Quest '{quest.RefName}' Reward (Condition: {reward.Condition})", objectiveRefs, branchRefs, errors);
+                }
+            }
+
+            if (quest.Stages?.Stage == null) continue;
+
+            foreach (var stage in quest.Stages.Stage)
+            {
+                if (stage.Rewards == null) continue;
+
+                foreach (var reward in stage.Rewards)
+                {
+                    ValidateQuestReward(reward, $"Quest '{quest.RefName}' Stage '{stage.RefName}' Reward (Condition: {reward.Condition})", objectiveRefs, branchRefs, errors);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Referential half of reward validation — runs in the LOAD gate.
+    /// </summary>
+    private static void ValidateQuestRewardReferences(IWorld world, QuestReward reward, string context, List<string> errors)
+    {
+        if (reward.Equipment != null)
+        {
+            foreach (var equipment in reward.Equipment)
+            {
+                ValidateReference(world.EquipmentLookup, equipment.EquipmentRef, context, "Equipment.EquipmentRef", "Equipment", errors);
+            }
+        }
+
+        if (reward.Consumable != null)
+        {
+            foreach (var consumable in reward.Consumable)
+            {
+                ValidateReference(world.ConsumablesLookup, consumable.ConsumableRef, context, "Consumable.ConsumableRef", "Consumables", errors);
+            }
+        }
+
+        if (reward.Achievement != null)
+        {
+            foreach (var achievement in reward.Achievement)
+            {
+                ValidateReference(world.AchievementsLookup, achievement.AchievementRef, context, "Achievement.AchievementRef", "Achievements", errors);
+            }
+        }
+
+        if (reward.Reputation != null)
+        {
+            foreach (var reputation in reward.Reputation)
+            {
+                if (!string.IsNullOrEmpty(reputation.FactionRef))
+                {
+                    ValidateReference(world.FactionsLookup, reputation.FactionRef, context, "Reputation.FactionRef", "Factions", errors);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Reachability half of reward validation — runs in the playability gate.
+    /// </summary>
+    private static void ValidateQuestReward(QuestReward reward, string context, HashSet<string> objectiveRefs, HashSet<string> branchRefs, List<string> errors)
+    {
+        switch (reward.Condition)
+        {
+            case QuestRewardCondition.OnBranch when string.IsNullOrEmpty(reward.BranchRef):
+                errors.Add($"{context}: OnBranch reward requires BranchRef");
+                break;
+            case QuestRewardCondition.OnBranch when !branchRefs.Contains(reward.BranchRef):
+                errors.Add($"{context}: BranchRef '{reward.BranchRef}' does not match any Branch in this quest");
+                break;
+            case QuestRewardCondition.OnObjective when string.IsNullOrEmpty(reward.ObjectiveRef):
+                errors.Add($"{context}: OnObjective reward requires ObjectiveRef");
+                break;
+            case QuestRewardCondition.OnObjective when !objectiveRefs.Contains(reward.ObjectiveRef):
+                errors.Add($"{context}: ObjectiveRef '{reward.ObjectiveRef}' does not match any Objective in this quest");
+                break;
+        }
+
+        if (reward.Currency != null && reward.Currency.Amount < 0)
+        {
+            errors.Add($"{context}: Currency Amount cannot be negative (was {reward.Currency.Amount})");
+        }
+
+        if (reward.Experience != null && reward.Experience.Amount < 0)
+        {
+            errors.Add($"{context}: Experience Amount cannot be negative (was {reward.Experience.Amount})");
+        }
+    }
+
+    /// <summary>
+    /// Every quest must be offered somewhere: quests are only ever accepted via
+    /// a dialogue AcceptQuest action (the quest log has no direct accept), so a
+    /// quest no dialogue offers is unreachable dead content.
+    /// </summary>
+    private static void ValidateQuestAcceptance(IWorld world, List<string> errors)
+    {
+        if (world.Gameplay.Quests == null) return;
+
+        var offeredQuests = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        if (world.Gameplay.DialogueTrees != null)
+        {
+            foreach (var tree in world.Gameplay.DialogueTrees)
+            {
+                if (tree.Node == null) continue;
+
+                foreach (var node in tree.Node)
+                {
+                    if (node.Action == null) continue;
+
+                    foreach (var action in node.Action)
+                    {
+                        if (action.Type == DialogueActionType.AcceptQuest && !string.IsNullOrEmpty(action.RefName))
+                        {
+                            offeredQuests.Add(action.RefName);
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach (var quest in world.Gameplay.Quests)
+        {
+            if (!offeredQuests.Contains(quest.RefName))
+            {
+                errors.Add($"Quest '{quest.RefName}': Never offered by any dialogue AcceptQuest action, so it can never be started");
+            }
+        }
+    }
+
+    /// <summary>
+    /// One-pass index of "what the content can actually deliver", shared by the
+    /// objective satisfiability checks: which tokens are grantable, which items
+    /// appear in loot, which characters can be fought, which dialogue trees are
+    /// attached to characters, which traits the cast carries, and which triggers
+    /// spawn something fightable.
+    /// </summary>
+    private sealed class WorldContentIndex
+    {
+        public HashSet<string> GrantedTokens { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> LootableItems { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> FightableCharacters { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> CharacterDialogueTrees { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<CharacterTraitType> CarriedTraits { get; } = new();
+        public HashSet<string> TriggerRefs { get; } = new(StringComparer.OrdinalIgnoreCase);
+        public HashSet<string> TriggersWithFightableSpawns { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Total instances the world can ever spawn per character (trigger spawns + dialogue spawns).</summary>
+        public Dictionary<string, int> SpawnSupply { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Characters with RespawnIntervalSeconds &gt; 0 — unlimited defeat supply.</summary>
+        public HashSet<string> RespawningCharacters { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+        public static WorldContentIndex Build(IWorld world)
+        {
+            var index = new WorldContentIndex();
+
+            if (world.Gameplay.SagaArcs != null)
+            {
+                foreach (var saga in world.Gameplay.SagaArcs)
+                {
+                    if (saga.SagaTrigger == null) continue;
+
+                    foreach (var trigger in saga.SagaTrigger)
+                    {
+                        if (!string.IsNullOrEmpty(trigger.RefName))
+                            index.TriggerRefs.Add(trigger.RefName);
+
+                        if (trigger.GivesQuestTokenRef != null)
+                        {
+                            foreach (var token in trigger.GivesQuestTokenRef.Where(t => !string.IsNullOrEmpty(t)))
+                                index.GrantedTokens.Add(token);
+                        }
+
+                        if (trigger.Spawn != null)
+                        {
+                            foreach (var spawn in trigger.Spawn)
+                            {
+                                if (string.IsNullOrEmpty(spawn.CharacterRef))
+                                    continue;
+
+                                index.FightableCharacters.Add(spawn.CharacterRef);
+                                index.SpawnSupply[spawn.CharacterRef] =
+                                    index.SpawnSupply.GetValueOrDefault(spawn.CharacterRef) + Math.Max(1, spawn.Count);
+
+                                if (!string.IsNullOrEmpty(trigger.RefName) &&
+                                    world.CharactersLookup.TryGetValue(spawn.CharacterRef, out var spawned) &&
+                                    spawned.IsFightable)
+                                {
+                                    index.TriggersWithFightableSpawns.Add(trigger.RefName);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (world.Gameplay.DialogueTrees != null)
+            {
+                foreach (var tree in world.Gameplay.DialogueTrees)
+                {
+                    if (tree.Node == null) continue;
+
+                    foreach (var node in tree.Node)
+                    {
+                        if (node.Action == null) continue;
+
+                        foreach (var action in node.Action)
+                        {
+                            switch (action.Type)
+                            {
+                                case DialogueActionType.GiveQuestToken when !string.IsNullOrEmpty(action.RefName):
+                                    index.GrantedTokens.Add(action.RefName);
+                                    break;
+                                case DialogueActionType.SpawnCharacters:
+                                case DialogueActionType.StartCombat:
+                                case DialogueActionType.StartBossBattle:
+                                    if (!string.IsNullOrEmpty(action.CharacterRef) && !IsSpecialReference(action.CharacterRef))
+                                    {
+                                        index.FightableCharacters.Add(action.CharacterRef);
+                                        index.SpawnSupply[action.CharacterRef] =
+                                            index.SpawnSupply.GetValueOrDefault(action.CharacterRef) +
+                                            (action.Type == DialogueActionType.SpawnCharacters ? Math.Max(1, action.Amount) : 1);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (world.Gameplay.Characters != null)
+            {
+                foreach (var character in world.Gameplay.Characters)
+                {
+                    if (character.Interactable?.GivesQuestTokenRef != null)
+                    {
+                        foreach (var token in character.Interactable.GivesQuestTokenRef.Where(t => !string.IsNullOrEmpty(t)))
+                            index.GrantedTokens.Add(token);
+                    }
+
+                    if (!string.IsNullOrEmpty(character.Interactable?.DialogueTreeRef))
+                        index.CharacterDialogueTrees.Add(character.Interactable.DialogueTreeRef);
+
+                    if (character.Traits != null)
+                    {
+                        foreach (var trait in character.Traits.Where(t => t.Value != 0))
+                            index.CarriedTraits.Add(trait.Name);
+                    }
+
+                    if (character.RespawnIntervalSeconds > 0 && !string.IsNullOrEmpty(character.RefName))
+                        index.RespawningCharacters.Add(character.RefName);
+
+                    CollectLootRefs(character.Interactable?.Loot, index.LootableItems);
+                }
+            }
+
+            return index;
+        }
+
+        /// <summary>
+        /// An item ref is known when any typed catalog declares it, or when it
+        /// appears in loot (block refs live outside IWorld and can only be
+        /// recognized that way).
+        /// </summary>
+        public bool IsKnownItem(IWorld world, string itemRef) =>
+            world.EquipmentLookup.ContainsKey(itemRef) ||
+            world.ConsumablesLookup.ContainsKey(itemRef) ||
+            world.ToolsLookup.ContainsKey(itemRef) ||
+            world.SpellsLookup.ContainsKey(itemRef) ||
+            world.BuildingMaterialsLookup.ContainsKey(itemRef) ||
+            world.QuestTokensLookup.ContainsKey(itemRef) ||
+            LootableItems.Contains(itemRef);
+
+        private static void CollectLootRefs(ItemCollection? loot, HashSet<string> items)
+        {
+            if (loot == null) return;
+
+            if (loot.Equipment != null)
+                foreach (var entry in loot.Equipment.Where(e => !string.IsNullOrEmpty(e.EquipmentRef)))
+                    items.Add(entry.EquipmentRef);
+            if (loot.Consumables != null)
+                foreach (var entry in loot.Consumables.Where(e => !string.IsNullOrEmpty(e.ConsumableRef)))
+                    items.Add(entry.ConsumableRef);
+            if (loot.Tools != null)
+                foreach (var entry in loot.Tools.Where(e => !string.IsNullOrEmpty(e.ToolRef)))
+                    items.Add(entry.ToolRef);
+            if (loot.Spells != null)
+                foreach (var entry in loot.Spells.Where(e => !string.IsNullOrEmpty(e.SpellRef)))
+                    items.Add(entry.SpellRef);
+            if (loot.BuildingMaterials != null)
+                foreach (var entry in loot.BuildingMaterials.Where(e => !string.IsNullOrEmpty(e.BuildingMaterialRef)))
+                    items.Add(entry.BuildingMaterialRef);
+            if (loot.Blocks != null)
+                foreach (var entry in loot.Blocks.Where(e => !string.IsNullOrEmpty(e.BlockRef)))
+                    items.Add(entry.BlockRef);
         }
     }
 }

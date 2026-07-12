@@ -174,16 +174,6 @@ public class MapViewPanel
                     var normalizedX = posInImageX / displayWidth;
                     var normalizedY = posInImageY / displayHeight;
 
-                    // Convert to pixel coordinates and then to GPS for BEFORE logging
-                    var pixelXBefore = (int)(normalizedX * heightMapWidth);
-                    var pixelYBefore = (int)(normalizedY * heightMapHeight);
-                    double latBefore = 0, lonBefore = 0;
-                    if (viewModel.CurrentWorld?.HeightMapMetadata != null)
-                    {
-                        latBefore = CoordinateConverter.HeightMapPixelYToLatitude(pixelYBefore, viewModel.CurrentWorld.HeightMapMetadata);
-                        lonBefore = CoordinateConverter.HeightMapPixelXToLongitude(pixelXBefore, viewModel.CurrentWorld.HeightMapMetadata);
-                    }
-
                     // Apply zoom (exponential for consistent feel at all zoom levels)
                     var oldZoom = viewModel.ZoomFactor;
                     var newZoom = wheel > 0
@@ -211,20 +201,6 @@ public class MapViewPanel
 
                         ImGui.SetScrollX(newScrollX);
                         ImGui.SetScrollY(newScrollY);
-
-                        // Now check what GPS location is under the mouse AFTER zoom
-                        // We need to wait for ImGui to process, but let's calculate what SHOULD be there
-                        var pixelXAfter = (int)(normalizedX * heightMapWidth);
-                        var pixelYAfter = (int)(normalizedY * heightMapHeight);
-                        double latAfter = 0, lonAfter = 0;
-                        if (viewModel.CurrentWorld?.HeightMapMetadata != null)
-                        {
-                            latAfter = CoordinateConverter.HeightMapPixelYToLatitude(pixelYAfter, viewModel.CurrentWorld.HeightMapMetadata);
-                            lonAfter = CoordinateConverter.HeightMapPixelXToLongitude(pixelXAfter, viewModel.CurrentWorld.HeightMapMetadata);
-                        }
-
-                        System.Diagnostics.Debug.WriteLine($"ZOOM: Before=({latBefore:F6}, {lonBefore:F6}) After=({latAfter:F6}, {lonAfter:F6})");
-                        System.Diagnostics.Debug.WriteLine($"      Normalized: ({normalizedX:F6}, {normalizedY:F6}) Scroll: ({currentScrollX:F1}, {currentScrollY:F1}) Mouse: ({mouseOffsetX:F1}, {mouseOffsetY:F1})");
                     }
                 }
             }
@@ -499,7 +475,10 @@ public class MapViewPanel
             //    System.Diagnostics.Debug.WriteLine($"[MapViewPanel] Rendering {viewModel.Characters.Count} characters");
             //}
 
-            foreach (var character in viewModel.Characters.ToList())
+            // Characters is only ever replaced wholesale (atomic publish in SagaMainViewModel;
+            // a published collection is never mutated in place), so iterating the reference
+            // captured by the foreach is safe without a defensive ToList copy.
+            foreach (var character in viewModel.Characters)
             {
                 var pos = PixelToScreen(character.PixelX, character.PixelY);
                 //System.Diagnostics.Debug.WriteLine($"[MapViewPanel] Character '{character.DisplayName}' at pixel ({character.PixelX:F1}, {character.PixelY:F1}) -> screen ({pos.X:F1}, {pos.Y:F1})");

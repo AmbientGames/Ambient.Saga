@@ -120,11 +120,11 @@ public class ArchetypeSelectionModal
                         ImGui.SetCursorPosX(startPos.X + textPadding);
                         var affinity = viewModel.CurrentWorld?.TryGetCharacterAffinityByRefName(archetype.AffinityRef ?? "");
                         var affinityName = affinity?.DisplayName ?? archetype.AffinityRef ?? "None";
-                        ImGui.TextColored(new Vector4(0.6f, 0.8f, 1, 1), $"Affinity: {affinityName}");
+                        ImGui.TextColored(UIColors.TextInfo, $"Affinity: {affinityName}");
 
                         ImGui.SetCursorPosX(startPos.X + textPadding);
                         ImGui.PushTextWrapPos(startPos.X + ImGui.GetContentRegionAvail().X - textPadding);
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), archetype.Description ?? "");
+                        ImGui.TextColored(UIColors.TextMuted, archetype.Description ?? "");
                         ImGui.PopTextWrapPos();
 
                         // Move cursor to end of card
@@ -149,7 +149,7 @@ public class ArchetypeSelectionModal
                     }
                     else
                     {
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "Select an archetype to view details");
+                        ImGui.TextColored(UIColors.TextMuted, "Select an archetype to view details");
                     }
 
                     ImGui.EndChild();
@@ -274,7 +274,7 @@ public class ArchetypeSelectionModal
 
             if (!hasAnyBias)
             {
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No stat bonuses");
+                ImGui.TextColored(UIColors.TextDim, "No stat bonuses");
             }
 
             ImGui.Spacing();
@@ -337,7 +337,7 @@ public class ArchetypeSelectionModal
                 // Row 3: Progression
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
-                ImGui.TextColored(new Vector4(1, 0.843f, 0, 1), $"{currencyName}:");
+                ImGui.TextColored(UIColors.Gold, $"{currencyName}:");
                 ImGui.TableNextColumn();
                 ImGui.Text($"{stats.Credits:N0}");
 
@@ -352,7 +352,7 @@ public class ArchetypeSelectionModal
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "Default starting stats");
+            ImGui.TextColored(UIColors.TextDim, "Default starting stats");
         }
 
         ImGui.Spacing();
@@ -360,7 +360,7 @@ public class ArchetypeSelectionModal
         ImGui.Spacing();
 
         // Capabilities
-        ImGui.TextColored(new Vector4(0.5f, 1, 0.5f, 1), "Starting Inventory");
+        ImGui.TextColored(UIColors.TextSuccess, "Starting Inventory");
         ImGui.Separator();
         ImGui.Spacing();
 
@@ -371,7 +371,7 @@ public class ArchetypeSelectionModal
 
             if (caps.Equipment != null && caps.Equipment.Length > 0)
             {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Equipment:");
+                ImGui.TextColored(UIColors.TextHighlight, "Equipment:");
                 foreach (var item in caps.Equipment)
                 {
                     var equipDef = viewModel.CurrentWorld?.Gameplay?.Equipment?.FirstOrDefault(e => e.RefName == item.EquipmentRef);
@@ -384,7 +384,7 @@ public class ArchetypeSelectionModal
 
             if (caps.Consumables != null && caps.Consumables.Length > 0)
             {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Consumables:");
+                ImGui.TextColored(UIColors.TextHighlight, "Consumables:");
                 foreach (var item in caps.Consumables)
                 {
                     var consumableDef = viewModel.CurrentWorld?.Gameplay?.Consumables?.FirstOrDefault(c => c.RefName == item.ConsumableRef);
@@ -397,7 +397,7 @@ public class ArchetypeSelectionModal
 
             if (caps.Spells != null && caps.Spells.Length > 0)
             {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Spells:");
+                ImGui.TextColored(UIColors.TextHighlight, "Spells:");
                 foreach (var item in caps.Spells)
                 {
                     var spellDef = viewModel.CurrentWorld?.Gameplay?.Spells?.FirstOrDefault(s => s.RefName == item.SpellRef);
@@ -410,7 +410,7 @@ public class ArchetypeSelectionModal
 
             if (caps.Tools != null && caps.Tools.Length > 0)
             {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Tools:");
+                ImGui.TextColored(UIColors.TextHighlight, "Tools:");
                 foreach (var item in caps.Tools)
                 {
                     var toolDef = viewModel.CurrentWorld?.Gameplay?.Tools?.FirstOrDefault(t => t.RefName == item.ToolRef);
@@ -423,7 +423,7 @@ public class ArchetypeSelectionModal
 
             if (caps.Blocks != null && caps.Blocks.Length > 0)
             {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Blocks:");
+                ImGui.TextColored(UIColors.TextHighlight, "Blocks:");
                 foreach (var item in caps.Blocks)
                 {
                     var blockDef = viewModel.CurrentWorld?.BlockProvider?.GetBlockByRefName(item.BlockRef);
@@ -436,7 +436,7 @@ public class ArchetypeSelectionModal
 
             if (caps.BuildingMaterials != null && caps.BuildingMaterials.Length > 0)
             {
-                ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), "Building Materials:");
+                ImGui.TextColored(UIColors.TextHighlight, "Building Materials:");
                 foreach (var item in caps.BuildingMaterials)
                 {
                     var materialDef = viewModel.CurrentWorld?.TryGetBuildingMaterialByRefName(item.BuildingMaterialRef);
@@ -448,12 +448,12 @@ public class ArchetypeSelectionModal
 
             if (!hasAnyItems)
             {
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No starting items");
+                ImGui.TextColored(UIColors.TextDim, "No starting items");
             }
         }
         else
         {
-            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), "No starting items");
+            ImGui.TextColored(UIColors.TextDim, "No starting items");
         }
 
         // Weight & Carry Capacity
@@ -468,7 +468,7 @@ public class ArchetypeSelectionModal
             var maxWeight = CarryWeightCalculator.GetMaxCarryWeight(archetype);
             var currentWeight = CarryWeightCalculator.CalculateTotalWeight(archetype.SpawnCapabilities, worldConfig);
 
-            ImGui.TextColored(new Vector4(0.5f, 0.8f, 1, 1), "Physical");
+            ImGui.TextColored(UIColors.TextInfo, "Physical");
             ImGui.Separator();
             ImGui.Spacing();
 
@@ -495,16 +495,16 @@ public class ArchetypeSelectionModal
     }
 
     private static Vector4 SpeedColor(float speed) => speed >= 0.8f
-        ? new Vector4(0.2f, 1f, 0.2f, 1f)
+        ? UIColors.TextSuccessBright
         : speed >= 0.5f
-            ? new Vector4(1f, 0.8f, 0.3f, 1f)
-            : new Vector4(1f, 0.4f, 0.4f, 1f);
+            ? UIColors.TextWarning
+            : UIColors.TextDanger;
 
     private void RenderModifierLine(string statName, float modifier)
     {
         var color = modifier > 0
-            ? new Vector4(0.2f, 1, 0.2f, 1)   // Green for positive
-            : new Vector4(1, 0.4f, 0.4f, 1);  // Red for negative
+            ? UIColors.TextSuccessBright   // Green for positive
+            : UIColors.TextDanger;         // Red for negative
         var sign = modifier > 0 ? "+" : "";
         ImGui.TextColored(color, $"{statName}: {sign}{modifier:P0}");
     }

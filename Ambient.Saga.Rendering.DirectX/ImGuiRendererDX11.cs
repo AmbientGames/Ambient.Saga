@@ -31,6 +31,8 @@ public class ImGuiRendererDX11 : IDisposable
     private DepthStencilState _depthStencilState = null!;
     private SamplerState _samplerState = null!;
     private ShaderResourceView _fontTextureView = null!;
+    private ShaderResourceView? _boundTextureView;
+    private readonly IntPtr _hwnd;
 
     private int _vertexBufferSize = 10000;
     private int _indexBufferSize = 30000;
@@ -42,6 +44,7 @@ public class ImGuiRendererDX11 : IDisposable
 
     public ImGuiRendererDX11(IntPtr hwnd, Device device, int width, int height)
     {
+        _hwnd = hwnd;
         _device = device;
         _deviceContext = device.ImmediateContext;
 
@@ -200,6 +203,22 @@ public class ImGuiRendererDX11 : IDisposable
         io.Fonts.SetTexID(_fontTextureView.NativePointer);
     }
 
+    /// <summary>
+    /// Rebuilds the fonts and font atlas texture at the window's current DPI.
+    /// Call from WM_DPICHANGED / Form.DpiChanged, between frames (not inside NewFrame/Render).
+    /// No-op when the effective scale is unchanged.
+    /// </summary>
+    public void RebuildFontAtlas()
+    {
+        var dpiScale = GetDpiScaleForWindow(_hwnd);
+        if (Math.Abs(dpiScale - UIConstants.DpiScale) < 0.0001f)
+            return;
+
+        UIConstants.LoadFonts(dpiScale);
+        _fontTextureView.Dispose();
+        CreateFontsTexture();
+    }
+
     public void UpdateMousePos(float x, float y)
     {
         var io = ImGui.GetIO();
@@ -331,8 +350,14 @@ public class ImGuiRendererDX11 : IDisposable
                     (int)cmd.ClipRect.Z,
                     (int)cmd.ClipRect.W);
 
-                var textureView = new ShaderResourceView(cmd.TextureId);
-                _deviceContext.PixelShader.SetShaderResource(0, textureView);
+                // Non-owning wrapper reused across commands: constructing from a raw pointer
+                // does not AddRef, so it must never be disposed — and allocating one per
+                // command per frame churned the GC.
+                if (_boundTextureView == null)
+                    _boundTextureView = new ShaderResourceView(cmd.TextureId);
+                else
+                    _boundTextureView.NativePointer = cmd.TextureId;
+                _deviceContext.PixelShader.SetShaderResource(0, _boundTextureView);
 
                 _deviceContext.DrawIndexed((int)cmd.ElemCount, (int)(idxOffset + cmd.IdxOffset), (int)(vtxOffset + cmd.VtxOffset));
             }

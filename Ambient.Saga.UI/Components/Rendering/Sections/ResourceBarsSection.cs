@@ -50,15 +50,13 @@ public class ResourceBarsSection : IHudSection
         // Health bar (red)
         RenderBar(drawList, startPos.X, currentY, LabelWidth, BarWidth, BarHeight,
             "HP", stats.Health, 1.0f,
-            new Vector4(0.8f, 0.2f, 0.2f, 1f),
-            new Vector4(0.3f, 0.1f, 0.1f, 1f));
+            UIColors.BarHealth, UIColors.BarHealthBg);
         currentY += BarHeight + BarSpacing;
 
         // Stamina bar (green)
         RenderBar(drawList, startPos.X, currentY, LabelWidth, BarWidth, BarHeight,
             "ST", stats.Stamina, 1.0f,
-            new Vector4(0.2f, 0.7f, 0.3f, 1f),
-            new Vector4(0.1f, 0.25f, 0.1f, 1f));
+            UIColors.BarStamina, UIColors.BarStaminaBg);
         currentY += BarHeight + BarSpacing;
 
         // Mana bar (blue) - only show if character has mana
@@ -66,8 +64,7 @@ public class ResourceBarsSection : IHudSection
         {
             RenderBar(drawList, startPos.X, currentY, LabelWidth, BarWidth, BarHeight,
                 "MP", stats.Mana, 1.0f,
-                new Vector4(0.3f, 0.4f, 0.9f, 1f),
-                new Vector4(0.1f, 0.15f, 0.35f, 1f));
+                UIColors.BarMana, UIColors.BarManaBg);
         }
 
         // Advance cursor past all bars
@@ -105,7 +102,7 @@ public class ResourceBarsSection : IHudSection
         drawList.AddRect(
             new Vector2(barX, y),
             new Vector2(barX + barWidth, y + barHeight),
-            ImGui.ColorConvertFloat4ToU32(new Vector4(0.4f, 0.4f, 0.4f, 0.8f)), BarRounding);
+            ImGui.ColorConvertFloat4ToU32(UIColors.BarBorder), BarRounding);
 
         // Percentage text (only if bar is wide enough)
         var percentText = $"{(int)(fraction * 100)}%";
@@ -115,7 +112,7 @@ public class ResourceBarsSection : IHudSection
             var textPos = new Vector2(
                 barX + (barWidth - percentTextSize.X) / 2,
                 y + (barHeight - percentTextSize.Y) / 2);
-            drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(new Vector4(1f, 1f, 1f, 0.9f)), percentText);
+            drawList.AddText(textPos, ImGui.ColorConvertFloat4ToU32(UIColors.BarText), percentText);
         }
     }
 }

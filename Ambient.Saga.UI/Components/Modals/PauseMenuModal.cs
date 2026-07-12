@@ -53,7 +53,7 @@ public class PauseMenuModal
             var titleSize = ImGui.CalcTextSize(titleText);
             var avail = ImGui.GetContentRegionAvail();
             ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (avail.X - titleSize.X) * 0.5f);
-            ImGui.TextColored(new Vector4(1, 0.9f, 0.5f, 1), titleText);
+            ImGui.TextColored(UIColors.GoldenYellow, titleText);
             ImGui.PopFont();
 
             ImGui.Spacing();
@@ -110,7 +110,7 @@ public class PauseMenuModal
             var hintSize = ImGui.CalcTextSize(hintText);
             var hintAvail = ImGui.GetContentRegionAvail();
             ImGui.SetCursorPosX(ImGui.GetCursorPosX() + (hintAvail.X - hintSize.X) * 0.5f);
-            ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1), hintText);
+            ImGui.TextColored(UIColors.TextDim, hintText);
         }
         ImGui.End();
 

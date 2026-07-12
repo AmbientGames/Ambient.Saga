@@ -101,7 +101,7 @@ public class WorldSelectionScreen
         // Display selected world info
         if (viewModel.SelectedConfiguration != null)
         {
-            ImGui.TextColored(new Vector4(0.8f, 0.8f, 1, 1), viewModel.SelectedConfiguration.DisplayName ?? viewModel.SelectedConfiguration.RefName);
+            ImGui.TextColored(UIColors.TextHighlight, viewModel.SelectedConfiguration.DisplayName ?? viewModel.SelectedConfiguration.RefName);
             ImGui.Indent(10 * UIConstants.DpiScale);
 
             if (!string.IsNullOrEmpty(viewModel.SelectedConfiguration.Description))
@@ -198,7 +198,7 @@ public class WorldSelectionScreen
                 ImGui.PopStyleColor(3);
                 ImGui.EndDisabled();
 
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _worldContentGenerator.StatusMessage);
+                ImGui.TextColored(UIColors.TextMuted, _worldContentGenerator.StatusMessage);
             }
 
             // Show generation result message
@@ -206,8 +206,8 @@ public class WorldSelectionScreen
             {
                 ImGui.Spacing();
                 var color = _lastGenerationMessage.StartsWith("Error")
-                    ? new Vector4(1, 0.3f, 0.3f, 1)
-                    : new Vector4(0.3f, 1, 0.3f, 1);
+                    ? UIColors.TextError
+                    : UIColors.TextSuccessBright;
                 ImGui.TextColored(color, _lastGenerationMessage);
             }
 

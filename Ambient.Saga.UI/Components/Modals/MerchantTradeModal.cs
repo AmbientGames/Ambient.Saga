@@ -65,9 +65,9 @@ public class MerchantTradeModal
             // baselines with the name; the modal's window titlebar already carries the
             // bigger "Shop"/"Geocache"/"Remnant Loot" label.
             ImGui.PushFont(UIConstants.FontHeading);
-            ImGui.TextColored(new Vector4(1, 0.85f, 0.3f, 1), character.DisplayName);
+            ImGui.TextColored(UIColors.Gold, character.DisplayName);
             ImGui.SameLine();
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _tradeViewModel.HeaderSubtitle);
+            ImGui.TextColored(UIColors.TextMuted, _tradeViewModel.HeaderSubtitle);
             ImGui.PopFont();
 
             ImGui.Separator();
@@ -81,9 +81,9 @@ public class MerchantTradeModal
                 ImGui.BeginChild("AvatarMoney", new Vector2(ImGuiSizes.Fill, moneyBarHeight), ImGuiChildFlags.Borders);
                 ImGui.Spacing();
                 ImGui.Indent(10 * UIConstants.DpiScale);
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "Your Funds:");
+                ImGui.TextColored(UIColors.TextMuted, "Your Funds:");
                 ImGui.SameLine();
-                ImGui.TextColored(new Vector4(1f, 0.85f, 0.3f, 1),
+                ImGui.TextColored(UIColors.Gold,
                     $"{_tradeViewModel.Avatar.Stats.Credits:N0} {_tradeViewModel.PluralCurrencyName}");
                 ImGui.Unindent(10 * UIConstants.DpiScale);
                 ImGui.EndChild();
@@ -102,15 +102,15 @@ public class MerchantTradeModal
                 // Buy button
                 if (isBuyMode)
                 {
-                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.4f, 0.2f, 1));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.25f, 0.5f, 0.25f, 1));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.3f, 0.6f, 0.3f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
                 }
                 else
                 {
-                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.25f, 0.25f, 0.25f, 1));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.35f, 0.35f, 0.35f, 1));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.4f, 0.4f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonNeutral);
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonNeutralHovered);
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonNeutralActive);
                 }
                 if (ImGui.Button(_tradeViewModel.BuyModeLabel, new Vector2(modeButtonWidth, toggleButtonHeight)))
                 {
@@ -123,15 +123,15 @@ public class MerchantTradeModal
                 // Sell button
                 if (isSellMode)
                 {
-                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.4f, 0.3f, 0.2f, 1));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.4f, 0.25f, 1));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.6f, 0.5f, 0.3f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonWarning);
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonWarningHovered);
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonWarningActive);
                 }
                 else
                 {
-                    ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.25f, 0.25f, 0.25f, 1));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.35f, 0.35f, 0.35f, 1));
-                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.4f, 0.4f, 1));
+                    ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonNeutral);
+                    ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonNeutralHovered);
+                    ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonNeutralActive);
                 }
                 if (ImGui.Button(_tradeViewModel.SellModeLabel, new Vector2(modeButtonWidth, toggleButtonHeight)))
                 {
@@ -149,9 +149,9 @@ public class MerchantTradeModal
                 var currentIndex = categories.IndexOf(_tradeViewModel.SelectedTradeCategory);
                 if (currentIndex < 0) currentIndex = 0;
 
-                ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), "Category:");
+                ImGui.TextColored(UIColors.TextMuted, "Category:");
                 ImGui.SameLine();
-                ImGui.SetNextItemWidth(200);
+                ImGui.SetNextItemWidth(200 * UIConstants.DpiScale);
                 if (ImGui.Combo("##Category", ref currentIndex, categories.ToArray(), categories.Count))
                 {
                     _tradeViewModel.SelectedTradeCategory = categories[currentIndex];
@@ -180,7 +180,7 @@ public class MerchantTradeModal
                     : _tradeViewModel.EmptySellText;
                 var textSize = ImGui.CalcTextSize(emptyText);
                 ImGui.SetCursorPosX((ImGui.GetWindowWidth() - textSize.X) * 0.5f);
-                ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1), emptyText);
+                ImGui.TextColored(UIColors.TextDisabled, emptyText);
             }
             else
             {
@@ -207,7 +207,7 @@ public class MerchantTradeModal
                     if (tradeItem.Quantity > 1)
                     {
                         ImGui.SameLine();
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), $"x{tradeItem.Quantity}");
+                        ImGui.TextColored(UIColors.TextMuted, $"x{tradeItem.Quantity}");
                     }
 
                     var rowWidth = ImGui.GetContentRegionAvail().X;
@@ -218,9 +218,9 @@ public class MerchantTradeModal
                     if (_tradeViewModel.ShowPrices)
                     {
                         ImGui.SameLine(priceColumnX);
-                        ImGui.TextColored(new Vector4(1f, 0.85f, 0.3f, 1), $"{tradeItem.Price:N0}");
+                        ImGui.TextColored(UIColors.Gold, $"{tradeItem.Price:N0}");
                         ImGui.SameLine();
-                        ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1), _tradeViewModel.CurrencyName);
+                        ImGui.TextColored(UIColors.TextMuted, _tradeViewModel.CurrencyName);
                     }
 
                     // Buy/Sell (or Take/Deposit) button
@@ -228,11 +228,11 @@ public class MerchantTradeModal
                     ImGui.SameLine(actionButtonX);
                     if (_tradeViewModel.TradeMode == "Buy")
                     {
-                        ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.2f, 0.35f, 0.2f, 1));
-                        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.3f, 0.5f, 0.3f, 1));
-                        ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.4f, 0.65f, 0.4f, 1));
+                        ImGui.PushStyleColor(ImGuiCol.Button, UIColors.ButtonAccept);
+                        ImGui.PushStyleColor(ImGuiCol.ButtonHovered, UIColors.ButtonAcceptHovered);
+                        ImGui.PushStyleColor(ImGuiCol.ButtonActive, UIColors.ButtonAcceptActive);
 
-                        var buttonClicked = ImGui.Button($"{_tradeViewModel.ItemBuyLabel}##{tradeItem.ItemRef}", new Vector2(60, itemButtonHeight));
+                        var buttonClicked = ImGui.Button(_tradeViewModel.ItemBuyLabel, new Vector2(actionButtonWidth, itemButtonHeight));
                         var isHovered = ImGui.IsItemHovered();
                         var isActive = ImGui.IsItemActive();
 
@@ -254,7 +254,7 @@ public class MerchantTradeModal
                         ImGui.PushStyleColor(ImGuiCol.Button, new Vector4(0.35f, 0.25f, 0.15f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonHovered, new Vector4(0.5f, 0.35f, 0.2f, 1));
                         ImGui.PushStyleColor(ImGuiCol.ButtonActive, new Vector4(0.65f, 0.45f, 0.25f, 1));
-                        if (ImGui.Button($"{_tradeViewModel.ItemSellLabel}##{tradeItem.ItemRef}", new Vector2(60, itemButtonHeight)))
+                        if (ImGui.Button(_tradeViewModel.ItemSellLabel, new Vector2(actionButtonWidth, itemButtonHeight)))
                         {
                             System.Diagnostics.Debug.WriteLine($"[MerchantTradeModal] Sell button clicked for {tradeItem.Item.RefName}");
                             _tradeViewModel.SellItemCommand.Execute(tradeItem);

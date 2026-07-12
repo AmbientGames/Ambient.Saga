@@ -31,6 +31,33 @@ public class JournalPanel
     private string _historyFilter = "";
     private string _achievementFilter = "";
 
+    // Bestiary cache — the Characters collection is only ever replaced wholesale
+    // (atomic publish in SagaMainViewModel; a published collection is never mutated),
+    // so the grouped result only changes when the collection reference or filter changes.
+    private object? _cachedBestiarySource;
+    private string _cachedBestiaryFilter = "";
+    private List<(string Key, List<CharacterViewModel> Members)> _cachedBestiaryGroups = new();
+
+    // History cache — RecentTransactions is replaced wholesale on load/refresh, never
+    // mutated in place; key on the collection reference (+ count for safety) and filter.
+    private object? _cachedHistorySource;
+    private int _cachedHistoryCount;
+    private string _cachedHistoryFilter = "";
+    private List<SagaTransaction> _cachedHistoryEntries = new();
+
+    // Achievements cache — RefreshAchievements clears and refills the same collections
+    // with brand-new display items (also when only progress changes), so the first item
+    // of each collection acts as a change sentinel alongside the counts.
+    private object? _cachedAchUnlockedSource;
+    private object? _cachedAchLockedSource;
+    private object? _cachedAchUnlockedSentinel;
+    private object? _cachedAchLockedSentinel;
+    private int _cachedAchUnlockedCount = -1;
+    private int _cachedAchLockedCount = -1;
+    private string _cachedAchFilter = "";
+    private List<AchievementDisplayItem>? _cachedUnlockedAchievements;
+    private List<AchievementDisplayItem>? _cachedLockedAchievements;
+
     public void Render(SagaMainViewModel viewModel, ModalManager modalManager)
     {
         // Header
@@ -268,7 +295,7 @@ public class JournalPanel
     private void RenderBestiaryContent(SagaMainViewModel viewModel, ModalManager modalManager)
     {
         // Filter input
-        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 50);
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 50 * UIConstants.DpiScale);
         ImGui.InputTextWithHint("##BestiaryFilter", "Filter...", ref _bestiaryFilter, 100);
         ImGui.SameLine();
         if (ImGui.SmallButton("X##ClearBestiary"))
@@ -287,30 +314,39 @@ public class JournalPanel
             return;
         }
 
-        // Filter characters
-        IEnumerable<CharacterViewModel> filteredCharacters = string.IsNullOrWhiteSpace(_bestiaryFilter)
-            ? viewModel.Characters
-            : viewModel.Characters.Where(c =>
-                (c.DisplayName?.Contains(_bestiaryFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                (c.CharacterType?.Contains(_bestiaryFilter, StringComparison.OrdinalIgnoreCase) ?? false));
+        // Filter and group characters (cached; rebuilt when the collection or filter changes)
+        var characters = viewModel.Characters;
+        if (!ReferenceEquals(_cachedBestiarySource, characters) || _cachedBestiaryFilter != _bestiaryFilter)
+        {
+            _cachedBestiarySource = characters;
+            _cachedBestiaryFilter = _bestiaryFilter;
 
-        if (!filteredCharacters.Any())
+            IEnumerable<CharacterViewModel> filteredCharacters = string.IsNullOrWhiteSpace(_bestiaryFilter)
+                ? characters
+                : characters.Where(c =>
+                    (c.DisplayName?.Contains(_bestiaryFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                    (c.CharacterType?.Contains(_bestiaryFilter, StringComparison.OrdinalIgnoreCase) ?? false));
+
+            // Group by type
+            _cachedBestiaryGroups = filteredCharacters
+                .GroupBy(c => c.CharacterType ?? "Unknown")
+                .OrderBy(g => g.Key)
+                .Select(g => (g.Key, g.ToList()))
+                .ToList();
+        }
+
+        if (_cachedBestiaryGroups.Count == 0)
         {
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), "No matches.");
             ImGui.EndChild();
             return;
         }
 
-        // Group by type
-        var grouped = filteredCharacters
-            .GroupBy(c => c.CharacterType ?? "Unknown")
-            .OrderBy(g => g.Key);
-
-        foreach (var group in grouped)
+        foreach (var group in _cachedBestiaryGroups)
         {
-            if (ImGui.CollapsingHeader($"{group.Key} ({group.Count()})", ImGuiTreeNodeFlags.DefaultOpen))
+            if (ImGui.CollapsingHeader($"{group.Key} ({group.Members.Count})###best_{group.Key}", ImGuiTreeNodeFlags.DefaultOpen))
             {
-                foreach (var character in group)
+                foreach (var character in group.Members)
                 {
                     RenderBestiaryEntry(character, viewModel, modalManager);
                 }
@@ -442,7 +478,7 @@ public class JournalPanel
         foreach (var group in grouped)
         {
             var categoryName = GetCategoryDisplayName(group.Key);
-            if (ImGui.CollapsingHeader($"{categoryName} ({group.Count()})", ImGuiTreeNodeFlags.DefaultOpen))
+            if (ImGui.CollapsingHeader($"{categoryName} ({group.Count()})###atlas_{group.Key}", ImGuiTreeNodeFlags.DefaultOpen))
             {
                 foreach (var location in group.OrderBy(l => l.DisplayName ?? l.RefName))
                 {
@@ -549,7 +585,7 @@ public class JournalPanel
     private void RenderHistoryContent(SagaMainViewModel viewModel)
     {
         // Filter input
-        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 50);
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 50 * UIConstants.DpiScale);
         ImGui.InputTextWithHint("##HistoryFilter", "Filter...", ref _historyFilter, 100);
         ImGui.SameLine();
         if (ImGui.SmallButton("X##ClearHistory"))
@@ -570,17 +606,30 @@ public class JournalPanel
             return;
         }
 
-        // Filter transactions
-        IEnumerable<SagaTransaction> filteredTransactions = string.IsNullOrWhiteSpace(_historyFilter)
-            ? transactions
-            : transactions.Where(t =>
-                GetTransactionDisplayText(t).Contains(_historyFilter, StringComparison.OrdinalIgnoreCase) ||
-                t.Type.ToString().Contains(_historyFilter, StringComparison.OrdinalIgnoreCase));
+        // Filter transactions (cached; rebuilt when the collection, its count or the filter changes)
+        if (!ReferenceEquals(_cachedHistorySource, transactions) ||
+            _cachedHistoryCount != transactions.Count ||
+            _cachedHistoryFilter != _historyFilter)
+        {
+            _cachedHistorySource = transactions;
+            _cachedHistoryCount = transactions.Count;
+            _cachedHistoryFilter = _historyFilter;
 
-        var transactionList = filteredTransactions.ToList();
+            IEnumerable<SagaTransaction> filteredTransactions = string.IsNullOrWhiteSpace(_historyFilter)
+                ? transactions
+                : transactions.Where(t =>
+                    GetTransactionDisplayText(t).Contains(_historyFilter, StringComparison.OrdinalIgnoreCase) ||
+                    t.Type.ToString().Contains(_historyFilter, StringComparison.OrdinalIgnoreCase));
+
+            // Reverse chronological order (most recent first)
+            _cachedHistoryEntries = filteredTransactions
+                .OrderByDescending(t => t.GetCanonicalTimestamp())
+                .Take(50)
+                .ToList();
+        }
 
         // Display transactions in reverse chronological order (most recent first)
-        foreach (var transaction in transactionList.OrderByDescending(t => t.GetCanonicalTimestamp()).Take(50))
+        foreach (var transaction in _cachedHistoryEntries)
         {
             RenderHistoryEntry(transaction);
         }
@@ -774,7 +823,7 @@ public class JournalPanel
         }
 
         // Filter and toggle row
-        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 100);
+        ImGui.SetNextItemWidth(ImGui.GetContentRegionAvail().X - 100 * UIConstants.DpiScale);
         ImGui.InputTextWithHint("##AchievementFilter", "Filter...", ref _achievementFilter, 100);
         ImGui.SameLine();
         ImGui.Checkbox("Locked", ref _showLockedAchievements);
@@ -785,12 +834,10 @@ public class JournalPanel
         // Filter achievements
         var filterActive = !string.IsNullOrWhiteSpace(_achievementFilter);
 
+        EnsureAchievementsCache(viewModel, filterActive);
+
         // Unlocked Achievements
-        var unlockedAchievements = viewModel.Achievements.UnlockedAchievements?
-            .Where(a => !filterActive ||
-                (a.DisplayName?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                (a.Description?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false))
-            .ToList();
+        var unlockedAchievements = _cachedUnlockedAchievements;
 
         var filteredUnlockedCount = unlockedAchievements?.Count ?? 0;
         ImGui.TextColored(new Vector4(0.5f, 0.8f, 0.5f, 1f), $"Unlocked ({filteredUnlockedCount})");
@@ -815,11 +862,7 @@ public class JournalPanel
             ImGui.Separator();
             ImGui.Spacing();
 
-            var lockedAchievements = viewModel.Achievements.LockedAchievements?
-                .Where(a => !filterActive ||
-                    (a.DisplayName?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
-                    (a.Description?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false))
-                .ToList();
+            var lockedAchievements = _cachedLockedAchievements;
 
             var filteredLockedCount = lockedAchievements?.Count ?? 0;
             ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1f), $"Locked ({filteredLockedCount})");
@@ -839,6 +882,51 @@ public class JournalPanel
         }
 
         ImGui.EndChild();
+    }
+
+    /// <summary>
+    /// Rebuilds the filtered unlocked/locked lists when the source collections change.
+    /// RefreshAchievements (the only mutator) clears and refills the collections with
+    /// brand-new items — also for pure progress updates — so besides the collection
+    /// references and counts, the first item of each collection is a change sentinel.
+    /// </summary>
+    private void EnsureAchievementsCache(SagaMainViewModel viewModel, bool filterActive)
+    {
+        var unlockedSource = viewModel.Achievements.UnlockedAchievements;
+        var lockedSource = viewModel.Achievements.LockedAchievements;
+        var unlockedSentinel = unlockedSource is { Count: > 0 } ? unlockedSource[0] : null;
+        var lockedSentinel = lockedSource is { Count: > 0 } ? lockedSource[0] : null;
+
+        if (ReferenceEquals(_cachedAchUnlockedSource, unlockedSource) &&
+            ReferenceEquals(_cachedAchLockedSource, lockedSource) &&
+            ReferenceEquals(_cachedAchUnlockedSentinel, unlockedSentinel) &&
+            ReferenceEquals(_cachedAchLockedSentinel, lockedSentinel) &&
+            _cachedAchUnlockedCount == (unlockedSource?.Count ?? -1) &&
+            _cachedAchLockedCount == (lockedSource?.Count ?? -1) &&
+            _cachedAchFilter == _achievementFilter)
+        {
+            return;
+        }
+
+        _cachedAchUnlockedSource = unlockedSource;
+        _cachedAchLockedSource = lockedSource;
+        _cachedAchUnlockedSentinel = unlockedSentinel;
+        _cachedAchLockedSentinel = lockedSentinel;
+        _cachedAchUnlockedCount = unlockedSource?.Count ?? -1;
+        _cachedAchLockedCount = lockedSource?.Count ?? -1;
+        _cachedAchFilter = _achievementFilter;
+
+        _cachedUnlockedAchievements = unlockedSource?
+            .Where(a => !filterActive ||
+                (a.DisplayName?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (a.Description?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
+
+        _cachedLockedAchievements = lockedSource?
+            .Where(a => !filterActive ||
+                (a.DisplayName?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (a.Description?.Contains(_achievementFilter, StringComparison.OrdinalIgnoreCase) ?? false))
+            .ToList();
     }
 
     private void RenderAchievementEntry(Ambient.Presentation.WindowsUI.RpgControls.ViewModels.AchievementDisplayItem achievement, bool isUnlocked)
@@ -930,8 +1018,7 @@ public class JournalPanel
 
             // Combat
             AchievementCriteriaType.CharactersDefeated => $"Defeat {threshold:F0} characters",
-            AchievementCriteriaType.CharactersDefeatedByType => $"Defeat {threshold:F0} of specific type",
-            AchievementCriteriaType.CharactersDefeatedByTag => $"Defeat {threshold:F0} with tag",
+            AchievementCriteriaType.CharactersDefeatedByTrait => $"Defeat {threshold:F0} with trait",
             AchievementCriteriaType.CharactersDefeatedByRef => $"Defeat specific character",
             AchievementCriteriaType.CriticalHitsDealt => $"Deal {threshold:F0} critical hits",
             AchievementCriteriaType.CombosExecuted => $"Execute {threshold:F0} combos",

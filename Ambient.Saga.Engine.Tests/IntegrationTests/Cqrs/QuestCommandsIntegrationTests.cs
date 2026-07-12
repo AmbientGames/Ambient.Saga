@@ -1,4 +1,4 @@
-using Ambient.Application.Contracts;
+﻿using Ambient.Application.Contracts;
 using Ambient.Domain;
 using Ambient.Domain.Contracts;
 using Ambient.Domain.Partials;
@@ -90,8 +90,9 @@ public class QuestCommandsIntegrationTests : IDisposable
                                 new QuestObjective
                                 {
                                     RefName = "DEFEAT_BANDITS_OBJ",
-                                    Type = QuestObjectiveType.CharactersDefeatedByTag,
-                                    CharacterTag = "bandit",
+                                    Type = QuestObjectiveType.CharactersDefeatedByTrait,
+                                    Trait = CharacterTraitType.Hostile,
+                                    TraitSpecified = true,
                                     Threshold = 3,
                                     DisplayName = "Defeat bandits (0/3)"
                                 }
@@ -134,7 +135,6 @@ public class QuestCommandsIntegrationTests : IDisposable
                                 {
                                     RefName = "TALK_WITNESSES",
                                     Type = QuestObjectiveType.DialogueCompleted,
-                                    CharacterTag = "witness",
                                     Threshold = 2,
                                     DisplayName = "Interview witnesses (0/2)"
                                 },
@@ -215,6 +215,19 @@ public class QuestCommandsIntegrationTests : IDisposable
         world.QuestsLookup[quest.RefName] = quest;
         world.QuestsLookup[murderMystery.RefName] = murderMystery;
         world.SagaTriggersLookup[sagaArc.RefName] = new List<SagaTrigger>();
+
+        // Bandit templates for the trait-based defeat objective (the evaluator
+        // resolves each defeated character's template to check its traits)
+        for (var i = 0; i < 3; i++)
+        {
+            var refName = $"BANDIT_{i}";
+            world.CharactersLookup[refName] = new Character
+            {
+                RefName = refName,
+                DisplayName = refName,
+                Traits = new[] { new CharacterTrait { Name = CharacterTraitType.Hostile, Value = 1 } }
+            };
+        }
 
         return world;
     }
@@ -332,8 +345,7 @@ public class QuestCommandsIntegrationTests : IDisposable
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterRef"] = $"BANDIT_{i}",
-                    ["CharacterTag"] = "bandit"
+                    ["CharacterRef"] = $"BANDIT_{i}"
                 }
             };
 
@@ -395,8 +407,7 @@ public class QuestCommandsIntegrationTests : IDisposable
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = "BANDIT_1",
-                ["CharacterTag"] = "bandit"
+                ["CharacterRef"] = "BANDIT_1"
             }
         };
 
@@ -459,8 +470,7 @@ public class QuestCommandsIntegrationTests : IDisposable
             LocalTimestamp = DateTime.UtcNow,
             Data = new Dictionary<string, string>
             {
-                ["CharacterRef"] = "BANDIT_1",
-                ["CharacterTag"] = "bandit"
+                ["CharacterRef"] = "BANDIT_1"
             }
         };
 
@@ -565,8 +575,7 @@ public class QuestCommandsIntegrationTests : IDisposable
                 LocalTimestamp = DateTime.UtcNow,
                 Data = new Dictionary<string, string>
                 {
-                    ["CharacterRef"] = $"BANDIT_{i}",
-                    ["CharacterTag"] = "bandit"
+                    ["CharacterRef"] = $"BANDIT_{i}"
                 }
             };
 

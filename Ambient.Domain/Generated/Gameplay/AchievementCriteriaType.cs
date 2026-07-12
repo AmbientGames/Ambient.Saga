@@ -30,11 +30,8 @@ namespace Ambient.Domain {
         CharactersDefeated,
         
         /// <remarks/>
-        CharactersDefeatedByType,
-        
-        /// <remarks/>
-        CharactersDefeatedByTag,
-        
+        CharactersDefeatedByTrait,
+
         /// <remarks/>
         CharactersDefeatedByRef,
         

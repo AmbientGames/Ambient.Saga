@@ -19,46 +19,9 @@ public interface ILocationGenerator
 // ============================================================================
 
 /// <summary>
-/// Battle dialogue lines for Boss/Hostile characters.
-/// </summary>
-public sealed record BattleDialogueEntry(
-    string Opening,
-    string? FirstBlood,
-    string Berserk,
-    string? Retreat,
-    string Defeated);
-
-/// <summary>
-/// Dialogue hints for generating full conversation trees.
-/// </summary>
-public sealed record DialogueHintsEntry(
-    string Backstory,
-    string? QuestHook,
-    string? TradeComment,
-    string? Rumor,
-    string Farewell);
-
-/// <summary>
-/// Character data for a location's NPC.
-/// </summary>
-public sealed record CharacterEntry(
-    string Name,
-    string Role,
-    string Greeting,
-    string Personality,
-    BattleDialogueEntry? BattleDialogue,
-    DialogueHintsEntry? DialogueHints);
-
-/// <summary>
-/// Story assignment connecting a location to a canon story bundle.
-/// </summary>
-public sealed record StoryAssignmentEntry(
-    string Story,
-    string StoryRole,
-    string? CharacterRef);
-
-/// <summary>
-/// A single point of interest with geographic coordinates, character, and optional story assignment.
+/// A single point of interest with geographic coordinates. Characters, dialogue,
+/// and story assignments are NOT part of location generation - they are produced
+/// later, during world generation (world enrichment).
 /// </summary>
 public sealed record GeneratedLocationEntry(
     string Name,
@@ -66,9 +29,7 @@ public sealed record GeneratedLocationEntry(
     double Latitude,
     double Longitude,
     string Category,
-    string Kind,
-    CharacterEntry? Character,
-    StoryAssignmentEntry? StoryAssignment);
+    string Kind);
 
 /// <summary>
 /// Request parameters for generating locations.

@@ -32,7 +32,5 @@ public sealed record WorldGenerationResult(
     bool IsSuccess,
     string? ConfigurationPath,
     int LocationCount,
-    int StoryCount,
-    int CharacterCount,
     List<string>? ParseErrors,
     string Summary);

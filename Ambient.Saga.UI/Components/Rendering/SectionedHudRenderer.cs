@@ -32,6 +32,15 @@ public class SectionedHudRenderer : IHudRenderer
     private readonly List<IHudSection> _sections;
     private Panels.PanelManager? _panelManager;
 
+    // Per-region section lists, rebuilt only when _sections changes —
+    // grouping/sorting per frame allocated every frame of gameplay.
+    private readonly List<IHudSection> _topLeftSections = new();
+    private readonly List<IHudSection> _topRightSections = new();
+    private readonly List<IHudSection> _bottomLeftSections = new();
+    private readonly List<IHudSection> _bottomCenterSections = new();
+    private readonly List<IHudSection> _bottomRightSections = new();
+    private bool _sectionsDirty = true;
+
     // Base layout constants at 96 DPI (1.0 scale)
     private const float CornerPaddingBase = 8f;
     private const float TopLeftCornerWidthBase = 150f;
@@ -80,6 +89,7 @@ public class SectionedHudRenderer : IHudRenderer
     public void AddSection(IHudSection section)
     {
         _sections.Add(section);
+        _sectionsDirty = true;
     }
 
     /// <summary>
@@ -87,7 +97,9 @@ public class SectionedHudRenderer : IHudRenderer
     /// </summary>
     public bool RemoveSection(IHudSection section)
     {
-        return _sections.Remove(section);
+        var removed = _sections.Remove(section);
+        _sectionsDirty |= removed;
+        return removed;
     }
 
     /// <summary>
@@ -95,7 +107,24 @@ public class SectionedHudRenderer : IHudRenderer
     /// </summary>
     public void RemoveSectionsOfType<T>() where T : IHudSection
     {
-        _sections.RemoveAll(s => s is T);
+        _sectionsDirty |= _sections.RemoveAll(s => s is T) > 0;
+    }
+
+    private void RebuildRegionCaches()
+    {
+        _topLeftSections.Clear();
+        _topRightSections.Clear();
+        _bottomLeftSections.Clear();
+        _bottomCenterSections.Clear();
+        _bottomRightSections.Clear();
+
+        _topLeftSections.AddRange(_sections.Where(s => s.Region == HudRegion.TopLeft).OrderBy(s => s.Priority));
+        _topRightSections.AddRange(_sections.Where(s => s.Region == HudRegion.TopRight).OrderBy(s => s.Priority));
+        _bottomLeftSections.AddRange(_sections.Where(s => s.Region == HudRegion.BottomLeft).OrderBy(s => s.Priority));
+        _bottomCenterSections.AddRange(_sections.Where(s => s.Region == HudRegion.BottomCenter).OrderBy(s => s.Priority));
+        _bottomRightSections.AddRange(_sections.Where(s => s.Region == HudRegion.BottomRight).OrderBy(s => s.Priority));
+
+        _sectionsDirty = false;
     }
 
     /// <summary>
@@ -143,19 +172,18 @@ public class SectionedHudRenderer : IHudRenderer
             PanelManager = _panelManager
         };
 
-        // Group sections by region
-        var topLeftSections = _sections.Where(s => s.Region == HudRegion.TopLeft).OrderBy(s => s.Priority).ToList();
-        var topRightSections = _sections.Where(s => s.Region == HudRegion.TopRight).OrderBy(s => s.Priority).ToList();
-        var bottomLeftSections = _sections.Where(s => s.Region == HudRegion.BottomLeft).OrderBy(s => s.Priority).ToList();
-        var bottomCenterSections = _sections.Where(s => s.Region == HudRegion.BottomCenter).OrderBy(s => s.Priority).ToList();
-        var bottomRightSections = _sections.Where(s => s.Region == HudRegion.BottomRight).OrderBy(s => s.Priority).ToList();
+        // Group sections by region (cached; rebuilt only when sections change)
+        if (_sectionsDirty)
+        {
+            RebuildRegionCaches();
+        }
 
         // Render corner overlays
-        RenderTopLeftOverlay(context, topLeftSections);
-        RenderTopRightOverlay(context, topRightSections);
+        RenderTopLeftOverlay(context, _topLeftSections);
+        RenderTopRightOverlay(context, _topRightSections);
 
         // Render bottom bar
-        RenderBottomBar(context, bottomLeftSections, bottomCenterSections, bottomRightSections, hudHeight);
+        RenderBottomBar(context, _bottomLeftSections, _bottomCenterSections, _bottomRightSections, hudHeight);
     }
 
     private void RenderTopLeftOverlay(HudContext context, List<IHudSection> sections)

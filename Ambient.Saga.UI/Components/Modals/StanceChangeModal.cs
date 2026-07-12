@@ -48,8 +48,8 @@ public class StanceChangeModal
             ImGui.Spacing();
 
             // Info text
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1.0f), "Switching stance grants +5% health");
-            ImGui.TextColored(new Vector4(0.7f, 0.7f, 0.7f, 1.0f), "and defensive positioning.");
+            ImGui.TextColored(UIColors.TextMuted, "Switching stance grants +5% health");
+            ImGui.TextColored(UIColors.TextMuted, "and defensive positioning.");
             ImGui.Spacing();
             ImGui.Separator();
             ImGui.Spacing();
@@ -59,7 +59,7 @@ public class StanceChangeModal
             var currentStanceName = GetStanceDisplayName(currentStanceRef);
             ImGui.Text($"Current: ");
             ImGui.SameLine();
-            ImGui.TextColored(new Vector4(1.0f, 0.9f, 0.4f, 1.0f), currentStanceName);
+            ImGui.TextColored(UIColors.GoldenYellow, currentStanceName);
             ImGui.Spacing();
             ImGui.Spacing();
 
@@ -99,7 +99,7 @@ public class StanceChangeModal
                     ImGui.SameLine();
                     ImGui.SetCursorPosX(ImGui.GetWindowWidth() - 150);
                     var hints = GetStanceHints(stance);
-                    ImGui.TextColored(new Vector4(0.5f, 0.5f, 0.5f, 1.0f), hints);
+                    ImGui.TextColored(UIColors.TextDisabled, hints);
                 }
 
                 if (isCurrent)
@@ -110,7 +110,7 @@ public class StanceChangeModal
 
             if (stances.Length == 0)
             {
-                ImGui.TextColored(new Vector4(0.6f, 0.6f, 0.6f, 1.0f), "No stances available");
+                ImGui.TextColored(UIColors.TextDim, "No stances available");
             }
 
             ImGui.Spacing();
@@ -147,7 +147,7 @@ public class StanceChangeModal
     private Vector4 GetStanceColor(CombatStance stance)
     {
         // Color-code based on stance effects
-        if (stance.Effects == null) return new Vector4(0.3f, 0.3f, 0.3f, 1.0f);
+        if (stance.Effects == null) return UIColors.ButtonNeutral;
 
         // Aggressive (high strength) = red
         if (stance.Effects.Strength > 1.0f)
@@ -159,14 +159,14 @@ public class StanceChangeModal
 
         // Fast (high speed) = green
         if (stance.Effects.Speed > 1.0f)
-            return new Vector4(0.2f, 0.35f, 0.2f, 1.0f);
+            return UIColors.ButtonAccept;
 
         // Magic-focused = purple
         if (stance.Effects.Magic > 1.0f)
             return new Vector4(0.35f, 0.2f, 0.4f, 1.0f);
 
         // Balanced = neutral
-        return new Vector4(0.3f, 0.3f, 0.3f, 1.0f);
+        return UIColors.ButtonNeutral;
     }
 
     private string GetStanceHints(CombatStance stance)
